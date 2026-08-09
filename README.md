@@ -14,17 +14,22 @@ For theme development, clone both repositories as siblings:
 └── oink.pgsty.com/
 ```
 
-Create a local Go workspace, install the site tooling, and start Hugo:
+Start Hugo with the sibling theme checkout:
 
 ```sh
-go work init .
-go work edit -replace=github.com/pgsty/oink=../oink
-export HUGO_MODULE_WORKSPACE=go.work
-npm install
-npm run serve
+make dev
 ```
 
-`go.work` is intentionally ignored. Published builds resolve the version of
+The shortcut creates or refreshes the ignored `go.work` file and serves the
+site at <http://127.0.0.1:1313/>. Override the port or theme checkout when
+needed:
+
+```sh
+make dev PORT=1314
+make dev THEME_DIR=/path/to/oink
+```
+
+Published builds ignore the workspace and resolve the version of
 `github.com/pgsty/oink` recorded in `go.mod`.
 
 ## License
