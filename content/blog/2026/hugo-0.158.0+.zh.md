@@ -20,14 +20,14 @@ params:
 
 ## 升级摘要 {#upgrade-summary}
 
-- **以下情况适合阅读本指南：**
+- **以下情况适合阅读本指南**：
   - [升级到 Docsy 0.16.0](0.16.0/#upgrade)；
   - 只升级 Hugo。
 - 审阅 {{% _param BADGE BREAKING warning %}} 变更：<a id="breaking-changes"></a>
   - {{% _param BREAKING %}}
     [由 Hugo 管理的 Node 工具要求 Node 22+](#node-tools)；
   - {{% _param BREAKING %}} [HTML 内容与符号链接的安全规则发生变化](#security)。
-- 审阅**弃用项**：<a id="deprecations"></a>
+- 审阅 **弃用项**：<a id="deprecations"></a>
   - [语言配置与模板 API](#language-apis)；
   - [图片处理配置与模板 API](#imaging)。
 - 可以快速浏览：
@@ -49,7 +49,7 @@ Docsy 自身的模板和文档已经改用新名称——这也是 0.16.0
 
 ### 操作 {#language-api-actions}
 
-**适用条件：**多语言站点配置使用旧语言字段。请适时重命名，并检查语言菜单输出：
+**适用条件**：多语言站点配置使用旧语言字段。请适时重命名，并检查语言菜单输出：
 
 ```yaml
 # OLD
@@ -65,7 +65,7 @@ languages:
     direction: ltr
 ```
 
-**适用条件：**站点覆盖语言相关模板或 Partial。请在自定义模板代码中检查以下替换：
+**适用条件**：站点覆盖语言相关模板或 Partial。请在自定义模板代码中检查以下替换：
 
 | 已弃用                           | 替代项                   |
 | -------------------------------- | ------------------------ |
@@ -96,7 +96,7 @@ Hugo [0.160.0][] 修复了该回归，而 [0.160.1][] 是更安全的 0.160.x �
 
 ### 操作 {#amp-escaping-actions}
 
-**适用条件：**曾短暂测试或部署 Hugo 0.159.2。请在生成的 HTML 链接 URL 中搜索
+**适用条件**：曾短暂测试或部署 Hugo 0.159.2。请在生成的 HTML 链接 URL 中搜索
 `&amp;amp;`。
 
 ## 模板与 Module 清理（0.159.x–0.160.x） {#template-module-cleanup}
@@ -106,7 +106,7 @@ Hugo
 
 ### 操作 {#template-module-cleanup-actions}
 
-**适用条件：**站点有自定义模板、Module Mount 或转换脚本。
+**适用条件**：站点有自定义模板、Module Mount 或转换脚本。
 
 - 用 `hugo.Data` 替代已弃用的 `site.Data`；
 - 用 `files` 替代已弃用的 Module Mount 选项 `includeFiles` 与 `excludeFiles`；
@@ -114,7 +114,7 @@ Hugo
 - 如果运行 `hugo mod npm pack`，升级后进行测试；
 - 如果使用 `hugo convert`，提交前审阅生成输出。
 
-**适用条件：**站点使用 Goldmark Passthrough、`RenderShortcodes`
+**适用条件**：站点使用 Goldmark Passthrough、`RenderShortcodes`
 或多语言根分区。Hugo [0.160.1][]
 修复了此版本范围内与标题中的 Passthrough 元素、短代码渲染上下文标记和多语言根分区生成有关的回归；烟雾测试应覆盖这些页面。
 
@@ -130,7 +130,7 @@ Docsy 站点通常使用 PostCSS 处理 CSS，所以即使 Docsy 主题本身没
 
 ### 操作 {#node-tools-actions}
 
-{{% _param BREAKING %}} **适用条件：**站点使用 Hugo
+{{% _param BREAKING %}} **适用条件**：站点使用 Hugo
 0.161.x 或更高版本，并在 Hugo 构建期间运行 PostCSS、Babel、Tailwind 或类似 Node 工具。
 
 - 把 Node 升级到当前活跃 LTS；Docsy 0.16.0 使用 Node LTS 24；
@@ -154,7 +154,7 @@ Hugo 在这一版本范围内收紧了多项安全边界：
 
 ### 操作 {#security-actions}
 
-{{% _param BREAKING %}} **适用条件：**站点使用远程资源、手写 `.html`
+{{% _param BREAKING %}} **适用条件**：站点使用远程资源、手写 `.html`
 内容文件、符号链接内容/资源，或在缓存 Partial 中使用 `templates.Defer`。
 
 - 使用目标 Hugo 版本在本地构建，审阅安全相关错误与警告；
@@ -173,7 +173,7 @@ Hugo [0.163.0][]
 
 ### 操作 {#imaging-actions}
 
-**适用条件：**站点配置使用全局 `imaging.quality` 或 `imaging.compression`。
+**适用条件**：站点配置使用全局 `imaging.quality` 或 `imaging.compression`。
 
 - 改为按格式设置；如果取值与 Hugo 默认值相同，也可以直接删除；
 - 站点依赖 Docsy 风格的锐利照片缩小时，保留 `resampleFilter: CatmullRom`：
@@ -185,7 +185,7 @@ Hugo [0.163.0][]
 
 ### 图片 URL 变动 {#image-url-churn}
 
-**适用条件：**站点提交生成输出、比较 Public 构建，或使用会积极缓存生成图片资源的 CDN。
+**适用条件**：站点提交生成输出、比较 Public 构建，或使用会积极缓存生成图片资源的 CDN。
 
 在 Hugo 0.161.x–0.163.x 中，即使源图片与视觉输出不变，包含 `_hu_<HASH>`
 的缩放图片文件名也可能变化。这是预期的缓存键变动，可能产生嘈杂 Diff 与缓存未命中，但通常并非内容回归。出现差异时，应检查实际渲染图片，而不只是文件名。
@@ -207,7 +207,7 @@ Hugo [0.164.0][]
 
 ### 操作 {#hugo-0-164-0-actions}
 
-**适用条件：**站点规模较大，覆盖或新增模板，或者提交生成输出。
+**适用条件**：站点规模较大，覆盖或新增模板，或者提交生成输出。
 
 - 对干净的生产构建进行基准测试；模板密集型站点的构建时间可能大幅改善；
 - 在自定义模板中用 `templates.Defer` 替代 `resources.PostProcess`；
@@ -229,7 +229,8 @@ Hugo [0.164.0][]
   `download/` 并存——时，请使用 Hugo
   0.163.3，它修复了 0.163.x 早期引入的渲染冲突；
 - 通过外部转换器渲染 Pandoc 或 reStructuredText 内容时，Hugo
-  0.163.2 会在缺少转换器二进制文件时**令构建失败**（与 AsciiDoc 一致），不再静默发布原始内容；所有构建环境都必须安装转换器。
+  0.163.2 会在缺少转换器二进制文件时
+  **令构建失败**（与 AsciiDoc 一致），不再静默发布原始内容；所有构建环境都必须安装转换器。
 
 ### 安全修复 {#security-fixes}
 

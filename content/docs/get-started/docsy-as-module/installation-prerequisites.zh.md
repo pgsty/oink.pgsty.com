@@ -22,7 +22,7 @@ hugo version
 ```
 
 输出必须包含
-`extended`；标准版 Hugo 无法编译主题的 SCSS。请根据平台使用 Hugo 官方[安装指南][]，并在本地开发与 CI 中固定同一版本。
+`extended`；标准版 Hugo 无法编译主题的 SCSS。请根据平台使用 Hugo 官方[安装指南][installation guides]，并在本地开发与 CI 中固定同一版本。
 
 ## 按需安装 Git {#install-git-when-needed}
 

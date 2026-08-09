@@ -21,7 +21,7 @@ params:
 - 审阅 {{% _param BADGE BREAKING warning %}} 变更：<a id="breaking-changes"></a>
   - {{% _param BREAKING %}} [YAML yes/no Token 变为字符串](#yaml-yes-no-etc)
   - {{% _param BREAKING %}} [多维站点的构建顺序发生变化](#build-order)
-- 审阅**弃用项**（不具破坏性，但建议处理）：<a id="deprecations"></a>
+- 审阅 **弃用项**（不具破坏性，但建议处理）：<a id="deprecations"></a>
   - Mount 的 [`lang` 选项已弃用](#lang-mount-deprecation)
   - [`includeFiles`/`excludeFiles` 已弃用](#use-files)
 - 可以快速浏览：
@@ -41,7 +41,7 @@ Matter 中某些 Token 的解释方式发生破坏性变化。
 
 ### 操作：必需与可选 {#yaml-actions}
 
-- {{% _param BREAKING %}} **适用条件：**项目 YAML 中存在未加引号的
+- {{% _param BREAKING %}} **适用条件**：项目 YAML 中存在未加引号的
   `yes`、`no`、`on`、`off` 等 Token。请把它们改为 `true` 或 `false`。
 
   搜索以下未加引号的键或值：
@@ -61,7 +61,7 @@ Matter 中某些 Token 的解释方式发生破坏性变化。
   disabled: false
   ```
 
-- **适用条件：**项目有自定义页面[反馈][]配置。现在可以删除包含 [`yes`、`no`
+- **适用条件**：项目有自定义页面[反馈][]配置。现在可以删除包含 [`yes`、`no`
   等][yes-no-list] Token 的键（或值）外层引号。
 
   ```yaml
@@ -98,7 +98,7 @@ Hugo 现在根据排序后的维度构建站点——先按权重，再按名称
 
 ### 操作：必需与可选 {#build-order-actions}
 
-**适用条件：**项目依赖特定的站点构建顺序，或按位置索引
+**适用条件**：项目依赖特定的站点构建顺序，或按位置索引
 `.Site.Sites`，例如通过下标访问。请改为显式选择默认站点。
 
 具体修复取决于访问站点的方式。例如，代码包含 `index site.Sites 0` 时，应替换为
@@ -110,7 +110,7 @@ Hugo 现在根据排序后的维度构建站点——先按权重，再按名称
 
 #### 操作（建议） {#sites-matrix-actions}
 
-**适用条件：**Mount 使用 `lang`。请切换到 [sites.matrix][]，以消除弃用警告。
+**适用条件**：Mount 使用 `lang`。请切换到 [sites.matrix][]，以消除弃用警告。
 
 示例：
 
@@ -137,7 +137,7 @@ Filter。
 
 #### 操作（建议） {#files-actions}
 
-**适用条件：**Mount 使用 `includeFiles` 或 `excludeFiles`。请切换到
+**适用条件**：Mount 使用 `includeFiles` 或 `excludeFiles`。请切换到
 [files][]，以消除弃用警告。
 
 示例：
@@ -156,8 +156,8 @@ Filter。
 
 > [!CAUTION]
 >
-> 文件排除语法以 `!`
-> 开头，且其后**必须紧跟一个空格**。缺少空格时，Glob 模式会被视为以 `!`
+> 文件排除语法以 `!` 开头，且其后
+> **必须紧跟一个空格**。缺少空格时，Glob 模式会被视为以 `!`
 > 开头的字面路径，无法排除目标文件。相关讨论见[为什么 Glob 取反要求在感叹号后加空格？][56651]
 
 实际示例见 [open-telemetry/opentelemetry.io#9070][]。
@@ -206,7 +206,7 @@ Hugo 0.153.x 的别名处理出现回归，至少影响了一个 Docsy 站点（
 - 支持动态 WebP，包括与动态 GIF 相互转换；
 - `GoogleAnalytics.RespectDoNotTrack` 默认值改为 `true`；
 - 删除重复内容路径警告，输出更安静，但也可能隐藏问题；
-- **macOS 发行包**现在只提供经过签名与公证的 `.pkg` 安装程序，不再支持
+- **macOS 发行包** 现在只提供经过签名与公证的 `.pkg` 安装程序，不再支持
   `.tar.gz`。详见下方说明。
 
 > [!NOTE] macOS 发行包与 `hugo-extended` NPM 软件包

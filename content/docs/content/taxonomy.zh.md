@@ -27,7 +27,7 @@ Hugo 文档提供了一个[电影网站分类法示例][]。
 ## 参数 {#parameters}
 
 项目[配置文件][]中有多项参数可以控制分类法功能。Hugo 默认启用 `tags` 与
-`categories` 分类法。要**禁用**分类法，请在项目配置中添加：
+`categories` 分类法。要 **禁用** 分类法，请在项目配置中添加：
 
 <!-- markdownlint-disable no-shortcut-ref-link -->
 <!-- prettier-ignore-start -->

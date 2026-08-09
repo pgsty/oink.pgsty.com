@@ -4,9 +4,12 @@ Copyright 2018 Google LLC and Docsy contributors.
 
 Oink site work is Copyright 2026 PGSTY contributors.
 
-The site and its upstream are licensed under the Apache License 2.0. The full
-license is in LICENSE. The imported Oink theme carries its own NOTICE and
-third-party manifest in https://github.com/pgsty/oink.
+Site code, build tooling, and material derived from Docsy are licensed under the
+Apache License 2.0; the full license is in LICENSE. Unless otherwise noted,
+original Oink documentation content is licensed under the Creative Commons
+Attribution 4.0 International License; the full license is in
+LICENSE-CC-BY-4.0. The imported Oink theme carries its own NOTICE and third-party
+manifest in https://github.com/pgsty/oink.
 
 The Docsy name and Google trademarks are the property of their respective
 owners. Their inclusion identifies the upstream project and does not imply

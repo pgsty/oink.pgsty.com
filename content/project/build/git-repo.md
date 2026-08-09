@@ -62,6 +62,11 @@ A variant's identity comes from its configuration directory under `config/`:
 | Next                        | `main`            | `_default/`    |
 | Doc-rooted (experimental)   | `doc-rooted`      | `doc-rooted/`  |
 
+The production workflow builds directly from `deploy/prod`, uploads `public/` as
+a GitHub Pages artifact, and deploys it through the Pages API. The `deploy/prod`
+branch contains source only; the repository does not maintain a generated Pages
+branch.
+
 Pull request deploy previews use the Next configuration.
 
 ## Release workflow

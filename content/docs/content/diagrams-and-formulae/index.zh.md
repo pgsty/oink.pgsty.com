@@ -165,7 +165,8 @@ params:
 
 ## 使用 Diagrams.net 绘图 {#diagrams-with-diagramsnet}
 
-[Diagrams.net][]（`draw.io`）可以导出包含可编辑图表副本的 SVG 与 PNG。显式配置编辑器端点后，OINK 可以检测这些图片并显示**编辑**操作。
+[Diagrams.net][]（`draw.io`）可以导出包含可编辑图表副本的 SVG 与 PNG。显式配置编辑器端点后，OINK 可以检测这些图片并显示
+**编辑** 操作。
 
 ```yaml
 params:

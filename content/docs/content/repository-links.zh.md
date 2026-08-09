@@ -55,7 +55,7 @@ params:
 
 ### `github_project_repo`（可选） {#github_project_repo-optional}
 
-设置另一个产品仓库，以显示**创建项目 issue**：
+设置另一个产品仓库，以显示 **创建项目 issue**：
 
 ```yaml
 params:
@@ -132,7 +132,8 @@ github_url: https://github.com/OWNER/UPSTREAM/edit/main/README.md
 ---
 ```
 
-使用该值的页面只显示**编辑本页**。当目标与 GitHub 不兼容时，更适合使用站点专属模板覆盖。
+使用该值的页面只显示
+**编辑本页**。当目标与 GitHub 不兼容时，更适合使用站点专属模板覆盖。
 
 ### 禁用链接 {#disabling-links}
 

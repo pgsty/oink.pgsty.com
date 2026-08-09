@@ -67,6 +67,8 @@ markup:
 params:
   logo: icons/logo.svg
   offlineSearch: true
+  offlineSearchIndex: summary
+  offlineSearchMaxResults: 10
   github_repo: https://github.com/example/product-docs
   github_branch: main
   footer_icp: ''
@@ -155,6 +157,9 @@ params:
     sidebar_search_disable: false
     breadcrumb_disable: false
     showLightDarkModeMenu: true
+    page_context_menu:
+      enable: true
+      links: []
     readingtime:
       enable: true
 ```
@@ -165,6 +170,21 @@ matter 中覆盖。侧栏最小与最大值以像素为单位，用来限制桌�
 
 `quick_links` 指定外壳中显示的顶层 page
 reference。请在各语言主菜单中定义相应的本地化名称。
+
+页面上下文菜单在所有视口宽度下都把“复制 Markdown”“查看 Markdown”、编辑、反馈与打印入口放在页面标题旁。`links`
+默认为空，因此站点未主动启用时，不会向外部 AI 服务发送页面信息。自定义链接可使用经过 URL 编码的
+`{url}`、`{title}` 与 `{markdown_url}` 占位符：
+
+```yaml
+params:
+  ui:
+    page_context_menu:
+      enable: true
+      links: []
+      # - name: 询问外部助手
+      #   icon: fa-solid fa-wand-magic-sparkles
+      #   url: https://assistant.example/new?source={markdown_url}&title={title}
+```
 
 ## 首页与页脚 {#homepage-and-footer}
 
@@ -206,9 +226,17 @@ starter 默认使用本地搜索：
 ```yaml
 params:
   offlineSearch: true
+  offlineSearchIndex: summary
   offlineSearchSummaryLength: 70
   offlineSearchMaxResults: 10
 ```
+
+`offlineSearchIndex`
+控制每种语言索引中可下载的文本范围，四档范围逐级累加：`title`
+索引标题与分类元数据；`heading` 增加页面标题；`summary`
+增加描述或摘要；`content` 再加入完整正文。`content`
+是兼容旧行为的默认值，而多数文档站可从体积更小的 `summary`
+开始。`offlineSearchMaxResults` 同时约束 Lunr 与 CJK 子串兜底结果数。
 
 每种语言都会得到独立索引。通过 Docsy 既有配置仍可使用托管搜索，但启用它们会显式增加外部服务边界。除非已经决定界面应显示哪一种，否则不要同时配置多个相互竞争的搜索提供方。
 

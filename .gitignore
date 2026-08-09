@@ -6,6 +6,7 @@ tmp
 
 # Local tooling
 .DS_Store
+/.idea/
 node_modules/
 go.work
 go.work.sum

@@ -23,7 +23,9 @@
 
 ```bash
 npm run wt -- build -- --destination /tmp/oink-docsy-review --baseURL http://localhost
+node scripts/check-markdown-style.mjs
 node scripts/check-doc-translations.mjs --public /tmp/oink-docsy-review
+node scripts/check-rendered-markdown.mjs /tmp/oink-docsy-review
 node scripts/check-rendered-links.mjs /tmp/oink-docsy-review
 ```
 
@@ -96,6 +98,10 @@ node scripts/check-rendered-links.mjs /tmp/oink-docsy-review
 
 - 中文与英文单词、阿拉伯数字之间留一个半角空格；中文标点前后不加空格。
 - 正文使用全角中文标点；代码、命令、URL、版本和原样引用保持半角。
+- 强调标记与前后普通文字之间各留一个半角空格；紧邻中文标点时不加空格。Prettier可能把
+  `*强调*` 规范化为 `_强调_`，两种形式都必须保留清晰的外部边界，不要写作
+  `正文_强调_正文`。加粗标签后紧接正文时，把中文标点放在标记之外，例如写作
+  `**适用条件**：正文`，不要写作可能无法闭合的 `**适用条件：**正文`。
 - 技术名词以准确、可检索为先，不为追求“汉化”创造陌生译名。
 - 一段只表达一个中心意思；拆解英文长句，避免被动句和多层从句直译。
 - 列表项保持并列关系与语法一致；表格以读者扫描效率为准调整列宽和换行。

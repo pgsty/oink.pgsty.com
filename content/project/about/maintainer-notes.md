@@ -378,7 +378,7 @@ If not adjust accordingly.
       ```
 
       <details>
-      <summary class="h6 text-primary">Define a `push-all-remotes` alias</summary>
+      <summary class="h6 text-primary">Define a <code>push-all-remotes</code> alias</summary>
 
       First check if the `push-all-remotes` alias is already defined:
 

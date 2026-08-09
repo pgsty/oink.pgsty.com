@@ -121,4 +121,4 @@ Pages 项目连接到源分支，使用固定 Hugo 版本构建、公开发布�
 - [配置](/zh/docs/oink/configuration/)
 - [迁移指南](/zh/docs/oink/migration/)
 - [发布流程](/zh/docs/oink/release/)
-- [实施日记](../oink-implementation-diary/)
+- [实施日记](/zh/blog/2026/oink-implementation-diary/)

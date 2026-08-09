@@ -20,9 +20,8 @@ Start Hugo with the sibling theme checkout:
 make dev
 ```
 
-The shortcut creates or refreshes the ignored `go.work` file and serves the
-site at <http://127.0.0.1:1313/>. Override the port or theme checkout when
-needed:
+The shortcut creates or refreshes the ignored `go.work` file and serves the site
+at <http://127.0.0.1:1313/>. Override the port or theme checkout when needed:
 
 ```sh
 make dev PORT=1314
@@ -34,5 +33,8 @@ Published builds ignore the workspace and resolve the version of
 
 ## License
 
-The site is derived from the Docsy project site and is licensed under the Apache
-License 2.0.
+Site code, build tooling, and material derived from the Docsy project site are
+licensed under the [Apache License 2.0](LICENSE).
+
+Unless otherwise noted, original Oink documentation content is licensed under
+the [Creative Commons Attribution 4.0 International License](LICENSE-CC-BY-4.0).

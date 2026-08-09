@@ -102,7 +102,8 @@ OINK 的标准品牌层还公开
 
 ### 浅色/深色主题与模式支持 {#lightdark-color-feature}
 
-颜色**主题**是组件采用的配色方案，颜色**模式**则是整个站点当前处于浅色还是深色状态。OINK 使用 Bootstrap 的
+颜色 **主题** 是组件采用的配色方案，颜色 **模式**
+则是整个站点当前处于浅色还是深色状态。OINK 使用 Bootstrap 的
 `data-bs-theme="light|dark"`
 属性，并把读者明确选择的模式保存在浏览器本地存储中。没有明确选择时，站点跟随
 `prefers-color-scheme`。

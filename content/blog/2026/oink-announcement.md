@@ -162,4 +162,4 @@ not as an unversioned production dependency.
 - [Configuration](/docs/oink/configuration/)
 - [Migration guide](/docs/oink/migration/)
 - [Release process](/docs/oink/release/)
-- [Implementation diary](../oink-implementation-diary/)
+- [Implementation diary](/blog/2026/oink-implementation-diary/)

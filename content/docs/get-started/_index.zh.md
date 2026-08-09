@@ -12,13 +12,13 @@ Extended 即可构建；默认流程不安装 Node.js 软件包、不运行 Post
 
 ## 选择起点 {#choose-a-starting-point}
 
-- **Hugo Module（推荐）：**在已有或新建 Hugo 站点中导入
+- **Hugo Module（推荐）**：在已有或新建 Hugo 站点中导入
   `github.com/pgsty/oink`。参阅
   [Oink 快速开始](/zh/docs/oink/getting-started/)。
-- **项目站点：**把独立的
+- **项目站点**：把独立的
   [`pgsty/oink.pgsty.com`](https://github.com/pgsty/oink.pgsty.com)
   仓库作为完整双语配置与回归参考。
-- **现有 Docsy 站点：**按照[迁移指南](/zh/docs/oink/migration/)删除公共覆盖和消费端 npm 资源管线，无需重写正文。
+- **现有 Docsy 站点**：按照[迁移指南](/zh/docs/oink/migration/)删除公共覆盖和消费端 npm 资源管线，无需重写正文。
 
 ## 安装前提条件 {#install-the-prerequisites}
 

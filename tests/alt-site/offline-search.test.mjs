@@ -36,9 +36,13 @@ test('offline-search index covers all site languages', (t) => {
       entries.length > 80,
       `Suspiciously few ${language} index entries: ${entries.length}`,
     );
-    for (const key of ['ref', 'title', 'body', 'excerpt']) {
+    for (const key of ['ref', 'title', 'description', 'headings', 'excerpt']) {
       assert.ok(key in entries[0], `${language} entries lack "${key}"`);
     }
+    assert.ok(
+      !('body' in entries[0]),
+      `${language} summary entries unexpectedly contain full page bodies`,
+    );
     assert.ok(
       entries.some((e) => e.ref === ref),
       `Index lacks an entry for ${ref}`,

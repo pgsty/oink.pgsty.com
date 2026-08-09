@@ -103,7 +103,7 @@ Bootstrap Partial、布局与组件中按需导入。无论选择哪种策略，
 Map 初始化限制，使用 Bootstrap 的项目都必须做到（着重号为本文所加）：
 
 > ……变量定制必须位于 `@import "functions"` **之后**，但在 `@import "variables"`
-> 及 [Bootstrap] 其余导入栈**之前**。
+> 及 [Bootstrap] 其余导入栈 **之前**。
 
 详情请参阅迁移页面的[新增 `_maps.scss`](https://getbootstrap.com/docs/5.2/migration/#new-_mapsscss)，以及 Bootstrap
 Sass 定制文档中的[导入](https://getbootstrap.com/docs/5.2/customize/sass/)。

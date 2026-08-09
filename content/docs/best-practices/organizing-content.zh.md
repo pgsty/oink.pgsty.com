@@ -11,16 +11,18 @@ description: 关于如何组织文档站点的可选指导和建议。
 
 不过，我们建议至少提供以下内容（本站也是如此）：
 
-- 产品的**概览**——可以放在文档首页，也可以单独成页，用来告诉用户为什么值得关注你的项目；
-- **开始使用**页面；
-- 一些**示例**。
+- 产品的
+  **概览**——可以放在文档首页，也可以单独成页，用来告诉用户为什么值得关注你的项目；
+- **开始使用** 页面；
+- 一些 **示例**。
 
 你也可以围绕项目功能编写任务指南或操作方法。如果更喜欢本站这种精简结构，可以复制整个 Docsy 用户指南站点，也可以只复制其中的文档分区。
 
 > [!TIP]
 >
-> 如果想复制本指南，请注意它的[源文件](https://github.com/google/docsy/tree/main/docsy.dev)位于 Docsy 主题仓库**内部**，因此没有自己的
-> `themes/` 目录；我们通过运行 `hugo server --themesDir ../..`
+> 如果想复制本指南，请注意它的[源文件](https://github.com/google/docsy/tree/main/docsy.dev)位于 Docsy 主题仓库
+> **内部**，因此没有自己的 `themes/` 目录；我们通过运行
+> `hugo server --themesDir ../..`
 > 使用父目录中的 Docsy。你可以复制站点并[添加包含 Docsy 的 `themes/` 目录](/zh/docs/get-started/other-options/#option-2-clone-the-docsy-theme)，也可以只把
 > `docs/` 文件夹复制到现有站点的内容根目录。
 

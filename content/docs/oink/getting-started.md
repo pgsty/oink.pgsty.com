@@ -137,8 +137,8 @@ module:
 ```
 
 Add menus, outputs, markup extensions, repository links, and optional features
-as the site grows. See [Configuration](../configuration/) for the supported
-model.
+as the site grows. See [Configuration](/docs/oink/configuration/) for the
+supported model.
 
 ## Validate before publishing
 

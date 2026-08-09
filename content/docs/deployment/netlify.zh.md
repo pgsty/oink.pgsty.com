@@ -40,7 +40,7 @@ HUGO_VERSION = "0.164.0"
 除非预览环境专门用于测试升级，否则生产环境和部署预览应使用同一个 Hugo 版本。如果预览构建需要把自动生成的 URL 作为 base
 URL，请在对应环境的 Hugo 命令中加入 Netlify 部署 URL。
 
-如果不希望非生产部署被索引，请按照[构建环境与索引][]中的说明使用非生产 Hugo 环境。
+如果不希望非生产部署被索引，请按照[构建环境与索引][Build environments and indexing]中的说明使用非生产 Hugo 环境。
 
 保存设置后触发一次部署，并检查构建日志。正常的消费端构建应该只出现一条 Hugo 命令，不应运行 npm、PostCSS、Autoprefixer、CDN 下载或构建期远程资源步骤。
 

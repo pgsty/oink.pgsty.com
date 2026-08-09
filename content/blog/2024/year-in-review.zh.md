@@ -24,17 +24,17 @@ description: >-
 
 今年我们发布了三个版本。每个版本都以稳定性为核心，同时至少引入一项重要功能增强：
 
-- **[0.9.0](0.9.0/)** 增加了几项_期待已久_的能力：
+- **[0.9.0](0.9.0/)** 增加了几项 _期待已久_ 的能力：
   - 通过 GitHub Actions 运行
     **CI 测试**，保障 Linux 与 Windows 上的质量和可靠性；
   - **Footer 定制**——解决 Docsy
     [存在时间最长的 Issue（#2）][#2]！——同时改进仓库链接、无障碍能力与外观风格。
 - **[0.10.0](0.10.0/)**：
-  - 升级到 Bootstrap 5.3，启用颜色主题和**深色模式**，标志着 2021 年启动的
+  - 升级到 Bootstrap 5.3，启用颜色主题和 **深色模式**，标志着 2021 年启动的
     [Bootstrap 5 迁移][]正式完成；同时调整短代码与样式，以兼容深色模式；
   - 处理核心 Hugo 升级到 0.123.0 带来的破坏性变更。
 - **[0.11.0](https://github.com/google/docsy/releases/tag/v0.11.0)**：
-  - 利用 Bootstrap 的 RTL 能力重新引入**从右向左（RTL）语言支持**，增强国际化。
+  - 利用 Bootstrap 的 RTL 能力重新引入 **从右向左（RTL）语言支持**，增强国际化。
 
 [#2]: https://github.com/google/docsy/issues/2
 [Bootstrap 5 迁移]: https://github.com/google/docsy/issues/470
@@ -82,8 +82,8 @@ description: >-
 
 ## 项目采用与 Docsy Starter {#adoptions-and-the-docsy-starter}
 
-Docsy 使用量持续增长，是 2024 年最令人振奋的进展之一。GitHub 分析数据显示，截至本文写作时，使用量**增长 57%**，达到
-**2,200 个项目**。
+Docsy 使用量持续增长，是 2024 年最令人振奋的进展之一。GitHub 分析数据显示，截至本文写作时，使用量
+**增长 57%**，达到 **2,200 个项目**。
 
 与 [2023 年报告][]相比，CNCF 项目的采用量也有所增加。今年，[Linux
 Foundation 导师项目学员][LFX] [Sandra Dindi][] 与 [Dariksha Ansari][] 使用 [CNCF

@@ -71,6 +71,8 @@ markup:
 params:
   logo: icons/logo.svg
   offlineSearch: true
+  offlineSearchIndex: summary
+  offlineSearchMaxResults: 10
   github_repo: https://github.com/example/product-docs
   github_branch: main
   footer_icp: ''
@@ -165,6 +167,9 @@ params:
     sidebar_search_disable: false
     breadcrumb_disable: false
     showLightDarkModeMenu: true
+    page_context_menu:
+      enable: true
+      links: []
     readingtime:
       enable: true
 ```
@@ -176,6 +181,23 @@ values retain the compact ellipsis behavior.
 
 `quick_links` names top-level page references shown by the shell. Define their
 translated names in each language's main menu.
+
+The page context menu keeps Copy as Markdown, View Markdown, edit, issue, and
+print actions beside the page title at every viewport width. `links` is empty by
+default, so no external assistant receives page data unless the site opts in.
+Custom links accept URL-encoded `{url}`, `{title}`, and `{markdown_url}`
+placeholders:
+
+```yaml
+params:
+  ui:
+    page_context_menu:
+      enable: true
+      links: []
+      # - name: Ask an external assistant
+      #   icon: fa-solid fa-wand-magic-sparkles
+      #   url: https://assistant.example/new?source={markdown_url}&title={title}
+```
 
 ## Homepage and footer
 
@@ -224,9 +246,17 @@ Local search is the starter default:
 ```yaml
 params:
   offlineSearch: true
+  offlineSearchIndex: summary
   offlineSearchSummaryLength: 70
   offlineSearchMaxResults: 10
 ```
+
+`offlineSearchIndex` controls how much text is downloadable in each language's
+index. The scopes are cumulative: `title` indexes titles and taxonomy metadata;
+`heading` adds page headings; `summary` adds descriptions or summaries; and
+`content` also adds the complete body. `content` is the compatibility default,
+while `summary` is a smaller starting point for most documentation sites.
+`offlineSearchMaxResults` applies to both Lunr and the CJK substring fallback.
 
 Each language receives a distinct index. Hosted alternatives remain supported
 through their established Docsy settings, but enabling them intentionally adds

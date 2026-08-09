@@ -56,7 +56,8 @@ Awesome 版本，以及它是否对免费版用户开放。OINK 随发行物内�
 
 ## 添加 favicon {#add-your-favicons}
 
-主题本身不提供 favicon 文件，但会**发现并链接**采用约定名称的图标。请[生成 favicon 文件](#generate-favicons)，然后放入项目的
+主题本身不提供 favicon 文件，但会 **发现并链接**
+采用约定名称的图标。请[生成 favicon 文件](#generate-favicons)，然后放入项目的
 `static`
 目录，使其发布到站点根目录——浏览器会在那里探测这些文件。OINK 会按以下顺序，为找到的文件在每个页面的
 `<head>` 中添加 `<link>` 元素：

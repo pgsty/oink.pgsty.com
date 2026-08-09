@@ -4,7 +4,7 @@ hero:
     - words:
         - { text: OINK }
   # prettier-ignore
-  lead: Docsy features and Fumadocs design, delivered as a ready-to-use, local-first documentation experience for engineers.
+  lead: Docsy features and Fumadocs design, delivered as a ready‑to‑use, local‑first documentation experience for engineers.
   actions:
     - label: Read the docs
       url: docs/oink/

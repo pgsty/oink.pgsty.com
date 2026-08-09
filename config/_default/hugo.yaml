@@ -122,6 +122,7 @@ params:
   time_format_default: January 2, 2006
   rss_sections: [blog] # TODO: drop since this is the default
   offlineSearch: true
+  offlineSearchIndex: summary
   offlineSearchSummaryLength: 70
   offlineSearchMaxResults: 10
   prism_syntax_highlighting: false
@@ -130,6 +131,9 @@ params:
     # algolia:
   ui:
     quick_links: [docs, blog]
+    page_context_menu:
+      enable: true
+      links: []
     # showLightDarkModeMenu param values:
     showLightDarkModeMenu:
       true # default

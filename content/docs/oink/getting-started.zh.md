@@ -131,7 +131,7 @@ module:
     min: 0.160.1
 ```
 
-站点扩展后，再逐步加入菜单、输出格式、Markdown 扩展、仓库链接和可选功能。支持的配置模型详见[配置](../configuration/)。
+站点扩展后，再逐步加入菜单、输出格式、Markdown 扩展、仓库链接和可选功能。支持的配置模型详见[配置](/zh/docs/oink/configuration/)。
 
 ## 发布前验证 {#validate-before-publishing}
 
