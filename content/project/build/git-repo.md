@@ -44,9 +44,8 @@ The theme repository uses:
 
 The site repository uses:
 
-- `main` for documentation and preview development;
-- `deploy/prod` for the production documentation baseline;
-- `doc-rooted` for the experimental doc-rooted variant.
+- `main` as its only long-lived branch for documentation, previews, and
+  production deployment.
 
 Site-only changes do not require a theme release. Theme changes are first
 validated against a local sibling checkout, released from the theme repository,
@@ -56,16 +55,15 @@ then pinned in the site's `go.mod`.
 
 A variant's identity comes from its configuration directory under `config/`:
 
-| Site variant                | Publishing branch | Version params |
-| --------------------------- | ----------------- | -------------- |
-| [Latest release][prod-site] | `deploy/prod`     | `production/`  |
-| Next                        | `main`            | `_default/`    |
-| Doc-rooted (experimental)   | `doc-rooted`      | `doc-rooted/`  |
+| Site variant              | Source branch | Version params |
+| ------------------------- | ------------- | -------------- |
+| [Production][prod-site]   | `main`        | `production/`  |
+| Next/local preview        | `main`        | `_default/`    |
+| Doc-rooted (experimental) | `main`        | `doc-rooted/`  |
 
-The production workflow builds directly from `deploy/prod`, uploads `public/` as
-a GitHub Pages artifact, and deploys it through the Pages API. The `deploy/prod`
-branch contains source only; the repository does not maintain a generated Pages
-branch.
+The production workflow builds directly from `main`, uploads `public/` as a
+GitHub Pages artifact, and deploys it through the Pages API. The repository does
+not maintain a generated Pages branch.
 
 Pull request deploy previews use the Next configuration.
 
@@ -76,7 +74,8 @@ Pull request deploy previews use the Next configuration.
    theme repository.
 3. Update the site with `hugo mod get github.com/pgsty/oink@vX.Y.Z`, run its
    checks, and merge the resulting `go.mod` and `go.sum` changes.
-4. Publish site updates by advancing `deploy/prod` from `main` when ready.
+4. Merge and push the reviewed site update to `main`; that push triggers the
+   production deployment.
 
 This keeps theme artifacts immutable and lets documentation deploy on its own
 schedule.

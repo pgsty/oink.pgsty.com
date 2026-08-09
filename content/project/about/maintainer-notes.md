@@ -459,19 +459,9 @@ If not adjust accordingly.
     - Verify the published version.
     - Verify that the `latest` and `next` dist-tags point at it.
 
-16. Update the [deploy/prod][] branch from `$BASE`.
-
-    For stable releases from `main`, use:
-
-    ```sh
-    git checkout deploy/prod
-    git merge --ff-only main
-    git push-all-remotes deploy/prod
-    ```
-
-    For patch releases from `release`, selectively merge from `release`.
-
-    The branch update will trigger a production deploy of the website.
+16. Merge the reviewed site update to `main` and push it. The site repository
+    uses `main` as its only long-lived branch, and that push triggers the
+    production deploy.
 
 17. Wait for the production deploy to complete and check that [oink.pgsty.com][]
     has been updated to the new release.
@@ -522,21 +512,16 @@ If not adjust accordingly.
     For patch releases, the release-prep PR should already target `release`, so
     there is no separate `main` to `release` fast-forward.
 
-23. Update the [doc-rooted][] branch from [deploy/prod][]:
+23. Optionally validate the doc-rooted configuration from `main`:
 
     ```sh
-    git checkout doc-rooted
-    git merge --ff-only deploy/prod
     npm run doc-rooted -- build
     # Optionally take a look at the preview
     npm run doc-rooted -- serve
     curl http://localhost:1313/index.md
-    # Push the changes
-    git push-all-remotes doc-rooted
     ```
 
-    If the fast-forward merge fails, stop and reconcile the branch history. Once
-    pushed, wait for the Netlify deploy and check the doc-rooted preview.
+    This is a configuration check, not a separate publishing branch.
 
 24. Update, create, or close GitHub milestones as appropriate.
 
@@ -556,9 +541,8 @@ with the following modifications:
 
 2.  Perform [step 6](#ci-test-step) onwards as above to test, create a PR,
     create a release and publish it with one difference:
-    - Once the deploy/prod branch has been updated, wait for the production
-      deploy to complete and check that [example.docsy.dev][] has been updated
-      to the new release.
+    - Once `main` has been updated, wait for the production deploy to complete
+      and check that [example.docsy.dev][] has been updated to the new release.
     - To create a new release draft, visit [Docsy-example release draft][].
 
 3.  **Update the [Examples page][]** Docsy version in the Starter templates
@@ -707,8 +691,6 @@ To test a Docsy branch or release from a consumer site, for each site:
 [breaking change]: /project/about/changelog/#breaking-change
 [changelog]: /project/about/changelog/
 [contributing]: /docs/contributing/
-[deploy/prod]: <{{% param github_repo %}}/tree/deploy/prod>
-[doc-rooted]: <{{% param github_repo %}}/tree/doc-rooted>
 [docsy-example]: <{{% param github_repo %}}-example>
 [docsy-starter]: https://github.com/chalin/docsy-starter
 [oink.pgsty.com]: <{{% _param baseURL %}}>
