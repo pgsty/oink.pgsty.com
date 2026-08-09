@@ -1,0 +1,45 @@
+---
+title: 更新 OINK Hugo 模块
+linkTitle: Hugo 模块
+aliases: [/docs/updating/updating-hugo-module/]
+weight: 1
+description: 更新以固定版本 Hugo 模块形式导入主题的站点。
+---
+
+## 固定版本 {#pin-a-version}
+
+生产站点应导入发布标签或不可变的 commit，绝不能跟随未固定版本的分支。在站点根目录，把 Oink 更新到指定 ref：
+
+```sh
+hugo mod get github.com/pgsty/oink@THEME_REF
+hugo mod tidy
+```
+
+将 `THEME_REF` 替换为该版本发布说明指定的根标签或 commit。
+
+## 测试本地 checkout {#test-a-local-checkout}
+
+如果要在不修改已提交模块版本的前提下测试本地 OINK checkout，请使用被忽略的 Go
+workspace：
+
+```sh
+go work init .
+go work edit -replace=github.com/pgsty/oink=/absolute/path/to/oink
+export HUGO_MODULE_WORKSPACE=go.work
+hugo --gc --minify
+```
+
+不要把包含开发者机器专属绝对路径的 `go.work` 提交到仓库。
+
+## 验证解析出的模块 {#verify-the-resolved-module}
+
+检查 Hugo 的依赖图：
+
+```sh
+hugo mod graph
+```
+
+确认主题解析到预期的标签、commit 或本地 replacement。OINK 不需要运行
+`hugo mod npm pack` 或 `npm install`，因为浏览器依赖已经随主题提供。
+
+随后继续[审查主题覆盖](/zh/docs/update/#update-overrides)。

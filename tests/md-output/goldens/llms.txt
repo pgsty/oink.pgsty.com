@@ -1,0 +1,26 @@
+# OINK
+
+> A local-first, Hugo-only theme for technical documentation
+
+## Site index
+
+- [Home page](http://localhost/index.md)
+- [Docs](http://localhost/docs/index.md): Product guides, configuration, components, and deployment reference
+- [Examples](http://localhost/examples/index.md): Build the bilingual starter, explore OINK features, and compare inherited Docsy references
+- [Community](http://localhost/community/index.md)
+- [Blog](http://localhost/blog/index.md): Release notes, upgrade guidance, and OINK engineering stories
+
+## Documentation index
+
+- [Get started](http://localhost/docs/get-started/index.md)
+- [Content and Customization](http://localhost/docs/content/index.md)
+- [OINK](http://localhost/docs/oink/index.md)
+- [Deployment and previews](http://localhost/docs/deployment/index.md)
+- [Update OINK](http://localhost/docs/update/index.md)
+- [Best Practices](http://localhost/docs/best-practices/index.md)
+- [About OINK](http://localhost/docs/about/index.md)
+
+## Site locales
+
+- [English](http://localhost/index.md)
+- [简体中文](http://localhost/zh/index.md)

@@ -1,0 +1,29 @@
+# Hugo build configuration for Netlify
+# (https://gohugo.io/host-and-deploy/host-on-netlify/#configure-hugo-version-in-netlify)
+
+[build]
+publish = "public"
+command = "npm run build:preview"
+
+[build.environment]
+GO_VERSION = "1.25.5"
+HUGO_VERSION = "0.164.0"
+
+[context.production]
+command = "npm run build:production"
+
+[context.doc-rooted.environment]
+TD_BUILD_CTX = "doc-rooted"
+
+# Redirects for slug swap: /docs/adding-content/ → /docs/content/
+[[redirects]]
+  from = "/docs/adding-content/content"
+  to = "/docs/content/adding-content"
+  status = 301
+
+[[redirects]]
+  from = "/docs/adding-content/*"
+  to = "/docs/content/:splat"
+  status = 301
+
+# cSpell:ignore docsy

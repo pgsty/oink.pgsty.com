@@ -1,0 +1,202 @@
+hero:
+  eyebrow: 本地优先 · 仅依赖 Hugo 的技术文档主题
+  title_lines:
+    - words:
+        - { text: OINK }
+  # prettier-ignore
+  lead: 继承 Docsy 的功能与 Fumadocs 的设计，提供开箱即用，本地优先的工程文档体验
+  actions:
+    - label: 浏览文档
+      url: docs/oink/
+      icon: fa-solid fa-book-open
+      style: primary
+    - label: 开始使用
+      url: docs/get-started/
+      icon: fa-solid fa-arrow-right
+      style: ghost
+capabilities:
+  eyebrow: 价值主张
+  title: 工程文档所需的能力，默认就绪
+  # prettier-ignore
+  text: 从部署、检索和多版本管理，到富内容表达，OINK 保持简洁素雅、本地优先，并只按页面加载所需能力。
+  items:
+    - ref: 01 / 工程文档
+      title: 为工程师与文档站设计
+      url: docs/get-started/
+      motto: 从第一次构建到长期维护都没有额外阻力
+      bullets:
+        - '开箱即用，提供零阻力的[部署上线](docs/deployment/)体验'
+        - '自带[全文检索](docs/content/search/#local-search-with-lunr)、[i18n](docs/language/#configure-languages)
+          与[多版本支持](docs/content/versioning/#adding-a-version-drop-down-menu)'
+        - '自带
+          [RSS](docs/content/adding-content/#rss-feeds)、[SEO](docs/content/feedback/#search-engine-optimization-metadata)
+          与 [Google Analytics](docs/content/feedback/#adding-analytics) 集成'
+      value: 内容团队可以把时间用在文档上，而不是重复搭建站点基础设施。
+      visual:
+        type: shell
+        brand: OINK
+        search: 全文检索
+        shortcut: ⌘ K
+        section: 文档
+        section_icon: fa-solid fa-book
+        items:
+          - { label: 开始使用, active: true }
+          - { label: 内容 }
+          - { label: 多版本 }
+          - { label: 部署 }
+        eyebrow: 工程文档 / 快速上线
+        title_lines: [开箱即用。, 持续维护。]
+        rules: ['88%', '72%', '55%']
+    - ref: 02 / 设计与能力
+      title: 简洁、素雅、功能齐全
+      url: docs/content/lookandfeel/
+      motto: 现代文档视觉与成熟内容能力兼得
+      bullets:
+        - '借鉴 [Fumadocs](https://fumadocs.dev/) /
+          [Nextra](https://nextra.site/) 的界面风格'
+        - '继承 [Hugo](https://gohugo.io/) [Docsy](https://www.docsy.dev/)
+          的成熟能力'
+        - '针对[开源项目与工程审美](docs/content/lookandfeel/)进行优化'
+      value: 界面保持克制，成熟文档站所需的功能一项不少。
+      visual:
+        type: components
+        items:
+          - {
+              icon: fa-solid fa-window-maximize,
+              title: FUMADOCS,
+              detail: 克制的文档外壳,
+            }
+          - {
+              icon: fa-solid fa-layer-group,
+              title: NEXTRA,
+              detail: 清晰的内容层级,
+            }
+          - {
+              icon: fa-solid fa-book-open,
+              title: DOCSY,
+              detail: 成熟的功能底座,
+            }
+          - {
+              icon: fa-solid fa-code-branch,
+              title: OPEN SOURCE,
+              detail: 面向工程社区,
+            }
+    - ref: 03 / 本地优先
+      title: 本地优先，无外部依赖
+      url: docs/oink/local-first/
+      motto: CSS、JavaScript、字体与运行时全部本地化
+      bullets:
+        - '一条 [**hugo**](https://gohugo.io/) 命令完成全部构建'
+        - '[无需 **npm install** 或 PostCSS
+          构建](docs/oink/local-first/#what-local-first-covers)'
+        - '[所有资源本地提供](docs/oink/local-first/#what-local-first-covers)，[断网也能服务](docs/oink/local-first/#obtain-an-offline-archive)'
+      value: 开发、CI 与生产环境使用同一条可确定的构建路径。
+      visual:
+        type: code
+        aria_label: Hugo 构建示例
+        title: build.sh
+        lines:
+          - { class: c, prefix: '# ', text: 一条命令，一份确定性输出 }
+          - { class: p, prefix: '$ ', text: hugo --gc --minify }
+          - { class: ok, prefix: '✓ ', text: 本地资源已打包 }
+          - { class: ok, prefix: '✓ ', text: 多语言路由已生成 }
+          - { class: ok, prefix: '✓ ', text: public/ 可以部署 }
+    - ref: 04 / 功能扩展
+      title: 功能扩展
+      url: docs/oink/components/
+      motto: 把工程内容需要的表达能力直接带进主题
+      bullets:
+        - '[Asciinema](docs/oink/components/#asciinema) 终端录屏与
+          [ECharts](docs/oink/components/#echarts) 图表'
+        - '[Infographic](docs/oink/components/#infographic) 信息图与
+          [KaTeX](docs/content/diagrams-and-formulae/#latex-support-with-katex)
+          公式'
+        - '[按页面加载](docs/oink/local-first/#per-page-assets)，默认不增加无关运行时'
+      value: 富内容能力属于主题，普通页面不会因此背上额外负担。
+      visual:
+        type: components
+        items:
+          - {
+              icon: fa-solid fa-terminal,
+              title: ASCIINEMA,
+              detail: terminal.cast,
+            }
+          - {
+              icon: fa-solid fa-chart-line,
+              title: ECHARTS,
+              detail: metrics.json,
+            }
+          - {
+              icon: fa-solid fa-diagram-project,
+              title: INFOGRAPHIC,
+              detail: story.svg,
+            }
+          - {
+              icon: fa-solid fa-square-root-variable,
+              title: KATEX,
+              detail: formula.tex,
+            }
+
+principles:
+  eyebrow: 主题原则
+  title: 直接、可配置、可长期维护
+  items:
+    - icon: fa-solid fa-layer-group
+      title: 独立品牌
+      text: OINK 直接定制 Docsy，不把核心设计藏在增量皮肤后面。
+    - icon: fa-solid fa-sliders
+      title: 一等配置
+      text: 品牌、导航、首页、footer 与组件均使用清晰的站点数据和参数。
+    - icon: fa-solid fa-code-branch
+      title: 保留上游价值
+      text: 保留 Docsy 的成熟能力，也保留从上游摘取修复与新特性的路径。
+
+cta:
+  title: 从可运行的双语 Starter 开始。
+  text: 复制配置，替换内容，然后只用 Hugo 构建。
+  label: 开始使用
+  url: docs/get-started/
+  style: primary
+
+footer:
+  brand:
+    name: OINK
+    tagline: '**O**pen **I**nfrastructure，**N**etworkless **K**nowledge。'
+    slogan: 面向工程师、本地优先、仅依赖 Hugo 的技术文档主题。
+  columns:
+    - title: 产品
+      links:
+        - { label: OINK 概览, url: docs/oink/ }
+        - { label: 本地优先设计, url: docs/oink/local-first/ }
+        - { label: 架构, url: docs/oink/architecture/ }
+        - { label: 配置, url: docs/oink/configuration/ }
+    - title: 资源
+      links:
+        - { label: 使用文档, url: docs/ }
+        - { label: 开始使用, url: docs/get-started/ }
+        - { label: 内容组件, url: docs/content/shortcodes/ }
+        - { label: 示例, url: examples/ }
+    - title: 社区
+      links:
+        - { label: 博客, url: blog/ }
+        - { label: 贡献指南, url: docs/contributing/ }
+        - {
+            label: GitHub,
+            url: 'https://github.com/pgsty/oink',
+            external: true,
+          }
+        - {
+            label: Discussions,
+            url: 'https://github.com/google/docsy/discussions',
+            external: true,
+          }
+    - title: 关于
+      links:
+        - { label: 关于 OINK, url: docs/about/ }
+        - { label: 变更记录, url: project/about/changelog/ }
+        - {
+            label: 开源协议,
+            url: 'https://github.com/pgsty/oink/blob/main/LICENSE',
+            external: true,
+          }
+        - { label: 上游项目, url: docs/about/#relationship-to-docsy }

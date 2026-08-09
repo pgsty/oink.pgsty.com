@@ -1,0 +1,256 @@
+# cSpell:ignore goldmark markmap plantuml readingtime
+#
+# baseURL moved to be after params
+title: OINK
+enableRobotsTXT: true
+enableGitInfo: true
+enableEmoji: true
+defaultContentLanguage: en
+
+ignoreLogs:
+  # FIXME: find a better way to encode `site` pages than having to ignore warnings.
+  - warning-frontmatter-params-overrides # cSpell:disable-line
+
+outputs:
+  home: [HTML, markdown, LLMS]
+  page: [HTML, markdown]
+  section: [HTML, RSS, print, markdown]
+
+imaging:
+  resampleFilter: CatmullRom # cSpell:disable-line
+
+languages:
+  en:
+    label: English
+    locale: en-US
+    weight: 1
+    title: OINK
+    params:
+      description: A local-first, Hugo-only documentation theme
+  zh:
+    label: 简体中文
+    locale: zh-CN
+    weight: 2
+    title: OINK 文档主题
+    params:
+      description: 本地优先、仅依赖 Hugo 的文档主题
+      copyright:
+        authors: >-
+          OINK 与 Docsy 贡献者 · 内容采用 [CC BY
+          4.0](https://creativecommons.org/licenses/by/4.0)
+      time_format_blog: 2006年1月2日
+      time_format_default: 2006年1月2日
+      links:
+        user:
+          - name: 使用文档
+            url: /zh/docs/
+            icon: fa-solid fa-book-open
+            desc: 阅读产品指南与参考资料
+          - name: 项目博客
+            url: /zh/blog/
+            icon: fa-solid fa-newspaper
+            desc: 查看版本说明与实现日记
+          - name: GitHub Issues
+            url: https://github.com/pgsty/oink/issues
+            icon: fa-brands fa-github
+            desc: 报告主题或文档问题
+          - name: Docsy Discussions
+            url: https://github.com/google/docsy/discussions
+            icon: fa-solid fa-comments
+            desc: 讨论上游 Docsy 兼容性
+        developer:
+          - name: 贡献指南
+            url: /zh/docs/contributing/
+            icon: fa-solid fa-code-fork
+            desc: 了解如何参与贡献
+          - name: 项目文档与站点信息
+            url: /zh/project/
+            icon: fa-solid fa-book
+            desc: 查阅站点设计文档与资源
+          - name: 测试与演示
+            url: /zh/tests/
+            icon: fa-solid fa-flask
+            desc: 查看测试页与功能演示
+          - name: GitHub
+            url: https://github.com/pgsty/oink
+            icon: fa-brands fa-github
+            desc: OINK 在这里开放开发
+      ui:
+        feedback:
+          yes: >-
+            很高兴本页对你有帮助！欢迎<a
+            href="https://github.com/pgsty/oink/issues/new">告诉我们如何继续改进</a>。
+          no: >-
+            很抱歉本页没有解决问题。请<a
+            href="https://github.com/pgsty/oink/issues/new">告诉我们缺少什么</a>。
+markup:
+  tableOfContents:
+    endLevel: 4
+  goldmark:
+    parser:
+      attribute:
+        block: true
+    extensions:
+      passthrough:
+        enable: true
+        delimiters:
+          block: [['\[', '\]'], ['$$', '$$']]
+          inline: [['\(', '\)']]
+    renderer:
+      unsafe: true
+  highlight:
+    noClasses: false # Required for dark-mode
+
+params:
+  hugoMinVersion: &hugoMinVersion 0.160.1
+  productionURL: &productionURL https://oink.pgsty.com
+  mainBranchPreviewURL: https://main--docsydocs.netlify.app/
+  copyright:
+    authors: >-
+      OINK & Docsy contributors · Content licensed under [CC BY
+      4.0](https://creativecommons.org/licenses/by/4.0)
+    from_year: 2018
+    to_year: present
+  footer_icp: ''
+  footer_icp_url: https://beian.miit.gov.cn/
+  privacy_policy: https://policies.google.com/privacy
+  github_repo: https://github.com/pgsty/oink.pgsty.com
+  github_project_repo: https://github.com/pgsty/oink
+  github_subdir: ''
+  example_site_url: &exampleSiteURL https://example.docsy.dev
+  time_format_blog: Monday, January 02, 2006
+  time_format_default: January 2, 2006
+  rss_sections: [blog] # TODO: drop since this is the default
+  offlineSearch: true
+  offlineSearchSummaryLength: 70
+  offlineSearchMaxResults: 10
+  prism_syntax_highlighting: false
+  page_width: normal
+  search:
+    # algolia:
+  ui:
+    quick_links: [docs, blog]
+    # showLightDarkModeMenu param values:
+    showLightDarkModeMenu:
+      true # default
+      # false # disable
+      # 'enable-only (experimental)'
+    sidebar_menu_compact: true
+    sidebar_menu_foldable: true
+    sidebar_search_disable: false
+    sidebar_root_enabled: true
+    sidebar_root_menu: true
+    sidebar_width_min: 220
+    sidebar_width_max: 480
+    sidebar_item_overflow: ellipsis
+    sidebar_menu_truncate: 2000
+    ul_show: 2
+    scrollSpy:
+      disable: true
+    feedback:
+      enable: false
+      yes: >-
+        Glad to hear it! Please <a
+        href="https://github.com/pgsty/oink/issues/new">tell us how we can
+        improve</a>.
+      no: >-
+        Sorry to hear that. Please <a
+        href="https://github.com/pgsty/oink/issues/new">tell us how we can
+        improve</a>.
+    readingtime:
+      enable: false
+  links:
+    user:
+      - name: Documentation
+        url: /docs/
+        icon: fa-solid fa-book-open
+        desc: Product guides and reference
+      - name: Project blog
+        url: /blog/
+        icon: fa-solid fa-newspaper
+        desc: Release notes and implementation diary
+      - name: GitHub Issues
+        url: https://github.com/pgsty/oink/issues
+        icon: fa-brands fa-github
+        desc: Report theme or documentation issues
+      - name: Docsy Discussions
+        url: https://github.com/google/docsy/discussions
+        icon: fa-solid fa-comments
+        desc: Discuss upstream Docsy compatibility
+    developer:
+      - name: Contributing
+        url: /docs/contributing/
+        icon: fa-solid fa-code-fork
+        desc: How to contribute
+      - name: Project docs and site info
+        url: /project/
+        icon: fa-solid fa-book
+        desc: Site design documentation and resources
+      - name: Tests
+        url: /tests/
+        icon: fa-solid fa-flask
+        desc: Test and demo pages
+      - name: GitHub
+        url: https://github.com/pgsty/oink
+        icon: fa-brands fa-github
+        desc: OINK development takes place here
+
+  plantuml:
+    enable: true
+    theme: default
+    svg_image_url: https://www.plantuml.com/plantuml/svg/
+    svg: false
+  print:
+    disable_toc: false
+  markmap:
+    enable: true
+  drawio:
+    enable: true
+    drawio_server: https://embed.diagrams.net/
+
+  # UG helpers: use with _param
+  FA: <i class="fa-{1} fa-{2} text-{3} px-1"></i>
+  FAS: <i class="fa-solid fa-{1} text-{2} px-1"></i>
+  FAS_LG: <i class="fa-solid fa-{1} text-{2} fa-lg"></i>
+  # Badge usage: {{% _param BADGE text color %}}
+  BADGE: <span class="badge text-bg-{2} rounded-pill text-small">{1}</span>
+  btn-lg: class="btn btn-lg btn-{1}" role="button"
+
+baseURL: *productionURL
+
+taxonomies:
+  tag: tags
+  category: categories
+
+# Allow Netlify build environment variables to be accessed in templates.
+#
+# TODO: consider instead using a CI script to write the build information to a
+# data file that Hugo could read.
+security:
+  funcs: # cspell:disable-line
+    getenv: # cspell:disable-line
+      # Netlify build env var
+      - ^(BRANCH|BUILD_ID|COMMIT_REF|CONTEXT|DEPLOY_ID|NETLIFY|PULL_REQUEST|REVIEW_ID)$
+
+module:
+  imports:
+    - path: github.com/pgsty/oink
+  hugoVersion:
+    extended: true
+    min: *hugoMinVersion
+  mounts:
+    # English sources and colocated .zh.md translations.
+    - source: content
+      target: content
+      sites: &sites { matrix: { languages: [en, zh] } }
+    # Tests
+    # cSpell:ignore quang nguyen vinh therato
+    - source: &bg-img content/background-pexels-quang-nguyen-vinh-222549-2131841.jpg
+      target: content/tests/blocks-cover/height-auto/background.jpg
+      sites: *sites
+    - source: content/docs/about/background-pexels-therato-3472764.jpg
+      target: content/tests/blocks-cover/height-full/background.jpg
+      sites: *sites
+    - source: *bg-img
+      target: content/tests/blocks-cover/height-min/background.jpg
+      sites: *sites

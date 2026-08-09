@@ -1,0 +1,19 @@
+# OINK
+
+> A local-first, Hugo-only theme for technical documentation
+
+---
+
+LLMS index: [llms.txt](/llms.txt)
+
+---
+
+Section pages:
+
+- [Blog](/blog/): Release notes, upgrade guidance, and OINK engineering stories
+- [Welcome to OINK](/docs/): Product guides, configuration, components, and deployment reference
+- [Community](/community/)
+- [OINK examples and templates](/examples/): Build the bilingual starter, explore OINK features, and compare inherited Docsy references
+- [Oink project and website documentation](/project/): How the Oink theme and website are built, maintained, and deployed.
+- [Search Results](/search/)
+- [Docsy tests](/tests/): Tests of Docsy features
