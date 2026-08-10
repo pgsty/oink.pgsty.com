@@ -27,17 +27,17 @@ OINK 把已经在多个 PGSTY 站点证明具有复用价值的内容组件纳�
 
 {{< asciinema file="oink/demo.cast" speed="1.5" markers="0:开始,1:完成" >}}
 
-`file` 是必填参数，也可以作为第一个位置参数传入。支持的选项包括
-`theme`、`fit`（`width`、`height`、`both` 或 `none`）、`autoplay`、`loop`、
-`preload`、`speed`、`startAt`、`poster`、`cols`、`rows`、`idleTimeLimit`、
+`file` 是必填参数，也可以作为第一个位置参数传入。终端窗口优先显示显式传入的
+`title`，没有 `title` 时显示 `file` 的值。支持的选项包括 `title`、`theme`、
+`fit`（`width`、`height`、`both` 或 `none`）、`autoplay`、`loop`、`preload`、
+`speed`、`startAt`、`poster`、`cols`、`rows`、`idleTimeLimit`、
 `pauseOnMarkers`，以及逗号分隔的 `markers`。
 
 为了离线使用，请把 cast 文件保存在本地。只有作者显式提供远程 URL 时，组件才会访问远端。
 
 ## ECharts {#echarts}
 
-默认安全模式接受 JSON 或 YAML，并把解析后的值序列化到 `application/json`
-元素中：
+短代码接受 JSON 或 YAML，并把解析后的值序列化到 `application/json` 元素中：
 
 ```go-html-template
 {{</* echarts height="280px" */>}}
@@ -60,16 +60,9 @@ series: [{ type: bar, data: [1, 2, 3] }]
 `height` 默认为 `400px`，并且必须使用安全的 CSS 长度单位。`theme`
 用来选择 ECharts 主题，`full=true` 则移除通常的正文宽度限制。
 
-旧页面可能包含 JavaScript 围栏代码块与 `$fn:name` 引用。除非短代码设置
-`unsafe=true`，或站点临时启用以下开关，否则 OINK 会拒绝这种可执行形式：
-
-```yaml
-params:
-  content:
-    echarts_unsafe: true
-```
-
-该开关只能用于经过审查的迁移过程。新图表应始终采用结构化 JSON/YAML 模式。
+需要回调的图表可以加入 JavaScript 围栏代码块，再从 JSON/YAML 选项中通过
+`$fn:name`
+引用其中声明的函数。代码会在访问者的浏览器中执行，因此只能使用受信任作者提交并经过审查的代码；无需回调时应优先使用结构化选项。
 
 ## Infographic {#infographic}
 

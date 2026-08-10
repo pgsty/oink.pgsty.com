@@ -33,9 +33,10 @@ Use `asciinema` for a terminal recording stored as a local `.cast` file:
 
 {{< asciinema file="oink/demo.cast" speed="1.5" markers="0:Start,1:Done" >}}
 
-`file` is required and can also be the first positional argument. Supported
-options are `theme`, `fit` (`width`, `height`, `both`, or `none`), `autoplay`,
-`loop`, `preload`, `speed`, `startAt`, `poster`, `cols`, `rows`,
+`file` is required and can also be the first positional argument. The terminal
+window uses `title` when supplied and otherwise displays the `file` value.
+Supported options are `title`, `theme`, `fit` (`width`, `height`, `both`, or
+`none`), `autoplay`, `loop`, `preload`, `speed`, `startAt`, `poster`, `cols`, `rows`,
 `idleTimeLimit`, `pauseOnMarkers`, and comma-separated `markers`.
 
 Keep cast files local for offline use. A remote URL is accepted only when the
@@ -43,7 +44,7 @@ author explicitly supplies it.
 
 ## ECharts
 
-The safe default accepts JSON or YAML and serializes the parsed value into an
+The shortcode accepts JSON or YAML and serializes the parsed value into an
 `application/json` element:
 
 ```go-html-template
@@ -68,18 +69,10 @@ series: [{ type: bar, data: [1, 2, 3] }]
 selects an ECharts theme, and `full=true` removes the normal content-width
 constraint.
 
-Legacy pages may contain a fenced JavaScript block and `$fn:name` references.
-OINK rejects that executable form unless the shortcode sets `unsafe=true` or the
-site temporarily enables:
-
-```yaml
-params:
-  content:
-    echarts_unsafe: true
-```
-
-Use the switch only during a reviewed migration. New charts should remain in the
-structured JSON/YAML mode.
+Charts that need callbacks may include a fenced JavaScript block and reference
+its declared functions from JSON/YAML options as `$fn:name`. The code runs in
+the visitor's browser, so include only reviewed code from trusted authors and
+prefer structured options when callbacks are unnecessary.
 
 ## Infographic
 

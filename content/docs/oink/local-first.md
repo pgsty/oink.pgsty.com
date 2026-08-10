@@ -149,10 +149,11 @@ repeat it for every release candidate and after bundled dependency updates.
 ## Content security policy
 
 Local assets make a strict Content Security Policy practical, but OINK does not
-invent one universal policy for every site. Inline author HTML, ECharts unsafe
-mode, analytics, remote specifications, and custom integrations can all change
-the required directives.
+invent one universal policy for every site. Inline author HTML, ECharts callback
+scripts, analytics, remote specifications, and custom integrations can all
+change the required directives.
 
 Start with the smallest policy that supports the site's reviewed features. Keep
-ECharts in structured-data mode, avoid arbitrary inline scripts, and add remote
-origins only for integrations that the site deliberately enables.
+ECharts options structured when callbacks are unnecessary, review inline
+scripts, and add remote origins only for integrations that the site deliberately
+enables.

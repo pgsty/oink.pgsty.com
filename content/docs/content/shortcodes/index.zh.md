@@ -186,28 +186,146 @@ UI 实例。
     markers="0:开始,18:验证" fit="width" */>}}
 ```
 
-主要参数包括
-`theme`、`autoplay`、`loop`、`preload`、`speed`、`startAt`、`poster`、`cols`、`rows`、`idleTimeLimit`、`pauseOnMarkers`、`markers`
-和 `fit`（`width`、`height`、`both` 或 `none`）。本地录像可以来自 Hugo
-assets 或站点相对 URL。不要自动播放，必须清除终端历史中的机密，并为关键步骤提供相邻文字说明。
+窗口标题优先使用 `title`，没有 `title` 时显示 `file`。其他主要参数包括
+`theme`、`autoplay`、`loop`、`preload`、`speed`、`startAt`、`poster`、`cols`、
+`rows`、`idleTimeLimit`、`pauseOnMarkers`、`markers` 和
+`fit`（`width`、`height`、`both` 或 `none`）。本地录像可以来自 Hugo assets
+或站点相对 URL。不要自动播放，必须清除终端历史中的机密，并为关键步骤提供相邻文字说明。
 
 ### `echarts` {#echarts}
 
 根据 JSON 或 YAML 选项对象渲染 Apache ECharts：
 
-```markdown
-{{</* echarts height="320px" */>}} xAxis: type: category data:
-[构建, 测试, 发布] yAxis: type: value series:
+{{< echarts height="820px" >}}
 
-- type: bar data: [42, 38, 12] {{</* /echarts */>}}
+```js
+var fnum = function (n) {
+  n = Number(n);
+  return Number.isFinite(n) ? n.toLocaleString('zh-CN') : '';
+};
+var labfmt = function (params) {
+  if (!params || params.value == null) return '';
+  return fnum(params.value);
+};
+var tipfmt = function (params) {
+  if (!params || !params.length) return '';
+  return (
+    '<b>' +
+    params[0].name +
+    '</b><br/>' +
+    params[0].marker +
+    ' Star: ' +
+    fnum(params[0].value)
+  );
+};
+var barclr = function (params) {
+  if (params.name === 'pgsty/pigsty') {
+    return new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+      { offset: 0, color: '#d94841' },
+      { offset: 1, color: '#f97316' },
+    ]);
+  }
+  return '#7aa6c2';
+};
 ```
+
+```yaml
+tooltip:
+  trigger: axis
+  axisPointer: { type: shadow }
+  formatter: $fn:tipfmt
+grid: { left: 320, right: 72, top: 20, bottom: 26 }
+xAxis:
+  type: value
+  max: 5600
+  name: GitHub Star
+  nameLocation: middle
+  nameGap: 24
+  axisLabel: { formatter: $fn:fnum }
+  splitLine: { show: true, lineStyle: { type: dashed, opacity: 0.45 } }
+yAxis:
+  type: category
+  inverse: true
+  axisLabel:
+    align: right
+    margin: 8
+    width: 300
+    overflow: truncate
+    fontSize: 11
+    fontFamily: monospace
+  data:
+    - 'pgsty/pigsty'
+    - 'polardb/PolarDB-for-PostgreSQL'
+    - 'tensorchord/pgvecto.rs'
+    - 'tensorchord/VectorChord'
+    - 'Tencent/TBase'
+    - 'apache/cloudberry'
+    - 'IvorySQL/IvorySQL'
+    - 'pgplex/pgschema'
+    - 'amutu/zhparser'
+    - 'opengauss-mirror/openGauss-server'
+    - 'HaloTech-Co-Ltd/openHalo'
+    - 'jaiminpan/pg_jieba'
+    - 'alitrack/duckdb_fdw'
+    - 'tensorchord/VectorChord-bm25'
+    - 'pgsty/pg_exporter'
+    - 'ChenHuajun/pg_roaringbitmap'
+    - 'pgsty/pig'
+    - 'tensorchord/pg_bestmatch.rs'
+    - 'wublabdubdub/PDU-PostgreSQLDataUnloader'
+    - 'tensorchord/pg_tokenizer.rs'
+    - 'jaiminpan/pg_scws'
+    - 'pgsty/pgext'
+series:
+  - name: Star
+    type: bar
+    barWidth: 20
+    showBackground: true
+    backgroundStyle: { color: 'rgba(148, 163, 184, 0.16)' }
+    itemStyle:
+      color: $fn:barclr
+      borderRadius: [0, 5, 5, 0]
+    label:
+      show: true
+      position: right
+      formatter: $fn:labfmt
+      color: '#334155'
+      fontWeight: 600
+    data:
+      [
+        5502,
+        3189,
+        2181,
+        1767,
+        1439,
+        1251,
+        1049,
+        994,
+        866,
+        784,
+        438,
+        417,
+        409,
+        375,
+        357,
+        286,
+        197,
+        101,
+        100,
+        45,
+        41,
+        30,
+      ]
+```
+
+{{< /echarts >}}
 
 `height` 必须是安全的 CSS 长度；`theme` 选择 ECharts 主题，`full=true`
 会取消常规正文宽度限制。
 
-短代码内部的 JavaScript 块默认会被拒绝。只有单次调用设置
-`unsafe=true`，或全局设置 `params.content.echarts_unsafe=true`
-时才能执行。该选项允许可执行内容，绝不能为不可信作者启用。应优先使用声明式 JSON/YAML，添加相邻文字摘要，并验证深色模式。
+短代码内部可以加入 JavaScript 围栏代码块来定义回调函数，再从 JSON/YAML 选项中通过
+`$fn:name`
+引用。代码会在访问者的浏览器中执行，因此只能使用受信任作者提交并经过审查的代码。无需回调时应优先使用声明式 JSON/YAML，并为图表添加相邻文字摘要、验证深色模式。
 
 ### `infographic` {#infographic}
 

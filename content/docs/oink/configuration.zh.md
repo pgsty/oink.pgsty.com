@@ -201,6 +201,10 @@ hero:
         - { mark: P, text: roduct, color: red }
         - { mark: D, text: ocs, color: blue }
   lead: 只用 Hugo 构建和交付的技术文档。
+  image:
+    light: images/hero-light.webp
+    dark: images/hero-dark.webp
+    alt: 产品文档工作流插图
   actions:
     - { label: 阅读文档, url: docs/, icon: fa-solid fa-book, style: primary }
 
@@ -215,9 +219,41 @@ footer:
         - { label: 概览, url: docs/ }
 ```
 
+可选的 `hero.image` 会在 Hero 右侧添加一幅跟随颜色主题的图片。将 `light` 与
+`dark` 指向站点 `static/` 目录下的文件，图片会随主题选择器切换。只配置
+`src`、`light` 或 `dark`
+中的一项时，OINK 会在两种主题下复用该图；也可以直接用字符串配置通用图片。省略
+`image` 则保持纯文字 Hero。
+
 首页会在通用小页脚上方渲染品牌与导航组成的大页脚。小页脚左侧来自
 `params.copyright`，中间使用可选的 `params.footer_icp` 与
 `params.footer_icp_url`，右侧列出所有已配置语言。版权作者与大页脚品牌文字中的 Markdown 会渲染为真实链接与行内标记。
+
+价值主张区块可以把组件面板变成紧凑导航。为每个可导航项目添加 `url`，用
+`aria_label`
+命名导航区域，并配置一至四列。没有 URL 的项目仍是装饰卡片，因此既有面板会保持原有行为：
+
+```yaml
+capabilities:
+  items:
+    - title: 按需加载内容能力
+      visual:
+        type: components
+        aria_label: 浏览内容组件
+        columns: 3
+        compact: true
+        items:
+          - {
+              title: Asciinema,
+              icon: fa-solid fa-terminal,
+              url: docs/oink/components/#asciinema,
+            }
+          - {
+              title: Mermaid,
+              icon: fa-solid fa-share-nodes,
+              url: docs/content/diagrams-and-formulae/#diagrams-with-mermaid,
+            }
+```
 
 ## 搜索 {#search}
 
@@ -273,20 +309,6 @@ params:
 ```
 
 网络隔离站点应保持这些功能关闭，除非上述 URL 可以在隔离网络内部访问。
-
-### ECharts 迁移开关 {#echarts-migration-switch}
-
-结构化 ECharts 输入默认安全：
-
-```yaml
-params:
-  content:
-    echarts_unsafe: false
-```
-
-只有迁移包含 JavaScript 且已经审查的旧页面时，才把它设为
-`true`。更好的做法是在最小范围的短代码实例上设置
-`unsafe=true`，随后重写图表并删除例外。
 
 ## 页面级覆盖 {#page-level-overrides}
 

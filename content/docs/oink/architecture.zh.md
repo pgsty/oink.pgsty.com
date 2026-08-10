@@ -94,10 +94,10 @@ Oink 把语言身份交给 Hugo 管理。选择器使用每页的 `.Translations
 
 ## 安全边界 {#security-boundaries}
 
-Oink 区分作者数据与作者提供的可执行代码：
+Oink 让作者数据与作者提供的可执行代码保持显式：
 
 - 结构化 ECharts 选项按 JSON 或 YAML 解析并安全序列化；
-- ECharts 中的 JavaScript 默认拒绝，除非显式启用 unsafe 迁移开关；
+- 可选的 ECharts JavaScript 块只在声明它们的页面注册回调；
 - 组件 ID 与配置由模板生成，不通过未转义 HTML 字符串拼装；
 - 托管搜索、分析、评论、远程媒体与服务端点始终由站点显式决定。
 

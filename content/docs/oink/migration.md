@@ -68,21 +68,6 @@ Continue using `title`, `languages.*`, `github_repo`, `github_project_repo`,
 `github_branch`, `page_width`, and `ui.*` in their existing semantic locations.
 Do not migrate values into an `oink.*` namespace.
 
-### ECharts legacy
-
-Old Pigsty pages can contain JavaScript inside ECharts blocks. During a reviewed
-transition only:
-
-```yaml
-params:
-  content:
-    echarts_unsafe: true
-```
-
-New and converted charts should use JSON or YAML. Remove the site-wide switch
-when migration is complete, or constrain `unsafe=true` to a shortcode that
-cannot yet be converted.
-
 ### Fonts
 
 The legacy Sass switch `$td-enable-google-fonts: true` now selects the local
@@ -131,7 +116,7 @@ The current migration plan uses these boundaries:
 | SILO   | Common docs/blog shell, core shortcodes, duplicate runtimes; set `logo: img/silo.svg`                               | Home page, download page, product data                 |
 | PGSTY  | Common shell and core shortcodes; set `logo: img/logo/logo.svg`                                                     | Portal, solution, and enterprise pages                 |
 | SOW    | Common docs/blog shell, core shortcodes, duplicate runtimes; set `logo: img/sow.svg`                                | Home page and repository-specific content              |
-| Pigsty | Common shell, core shortcodes, duplicate runtimes; set `logo: icons/logo.svg` and temporarily review legacy ECharts | Extension matrices, home/pricing pages, catalog styles |
+| Pigsty | Common shell, core shortcodes, duplicate runtimes; set `logo: icons/logo.svg` and retain reviewed ECharts callbacks | Extension matrices, home/pricing pages, catalog styles |
 
 The matrix is a starting inventory, not permission to delete every similarly
 named file. Resolve actual template references in the target checkout.
@@ -159,7 +144,7 @@ The latest recorded rehearsal on 2026-08-08 used Hugo Extended `0.164.0`:
 | SILO   | Removed 20 common overrides; built complete English and Chinese content with OINK shell, same-origin search, and site logo |      1,095 |
 | PGSTY  | Removed 20 common overrides; built the bilingual portal and a temporary docs page for shell validation                     |         16 |
 | SOW    | Removed 20 common overrides; built complete English and Chinese content with OINK shell, same-origin search, and site logo |        128 |
-| Pigsty | Removed 24 common overrides; kept three business matrix shortcodes and enabled reviewed legacy ECharts unsafe mode         |      2,473 |
+| Pigsty | Removed 24 common overrides; kept three business matrix shortcodes and existing ECharts callbacks                          |      2,473 |
 
 These are temporary-copy build results, not proof that the four production sites
 have been migrated or deployed.

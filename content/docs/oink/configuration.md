@@ -214,6 +214,10 @@ hero:
         - { mark: P, text: roduct, color: red }
         - { mark: D, text: ocs, color: blue }
   lead: Documentation built and served with Hugo.
+  image:
+    light: images/hero-light.webp
+    dark: images/hero-dark.webp
+    alt: Product documentation workflow
   actions:
     - {
         label: Read the docs,
@@ -233,11 +237,44 @@ footer:
         - { label: Overview, url: docs/ }
 ```
 
+The optional `hero.image` block adds a theme-aware visual on the right. Set
+`light` and `dark` to files under the site's `static/` directory; the active
+image follows the color-theme selector. If only `src`, `light`, or `dark` is
+provided, OINK uses that image for both themes. A string value is also accepted
+as a shared image. Omit `image` to keep the text-only Hero.
+
 The homepage renders the large brand-and-navigation footer above the common
 footline. The footline uses `params.copyright` on the left, optional
 `params.footer_icp` and `params.footer_icp_url` in the center, and every
 configured language on the right. Markdown in the copyright author and footer
 brand text is rendered as links and inline markup.
+
+A capability row can turn its component board into a compact navigator. Add a
+`url` to each linked item, name the region with `aria_label`, and choose one to
+four columns. Items without a URL remain decorative, so existing boards keep
+their current behavior:
+
+```yaml
+capabilities:
+  items:
+    - title: Content on demand
+      visual:
+        type: components
+        aria_label: Browse content components
+        columns: 3
+        compact: true
+        items:
+          - {
+              title: Asciinema,
+              icon: fa-solid fa-terminal,
+              url: docs/oink/components/#asciinema,
+            }
+          - {
+              title: Mermaid,
+              icon: fa-solid fa-share-nodes,
+              url: docs/content/diagrams-and-formulae/#diagrams-with-mermaid,
+            }
+```
 
 ## Search
 
@@ -298,20 +335,6 @@ params:
 
 Leave the features disabled in an air-gap site unless those URLs are reachable
 inside the isolated network.
-
-### ECharts migration switch
-
-Structured ECharts input is safe by default:
-
-```yaml
-params:
-  content:
-    echarts_unsafe: false
-```
-
-Set it to `true` only while migrating reviewed legacy pages that contain
-JavaScript. Prefer `unsafe=true` on the smallest necessary shortcode instance,
-then rewrite the chart and remove the exception.
 
 ## Page-level overrides
 

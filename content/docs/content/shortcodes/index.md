@@ -210,11 +210,13 @@ Plays an asciinema `.cast` recording:
     markers="0:Start,18:Verify" fit="width" */>}}
 ```
 
-Important parameters include `theme`, `autoplay`, `loop`, `preload`, `speed`,
-`startAt`, `poster`, `cols`, `rows`, `idleTimeLimit`, `pauseOnMarkers`,
-`markers`, and `fit` (`width`, `height`, `both`, or `none`). Local recordings
-can come from Hugo assets or a site-relative URL. Avoid autoplay, remove secrets
-from terminal history, and provide nearby text for essential steps.
+The window title uses `title` when supplied and otherwise displays `file`.
+Other important parameters include `theme`, `autoplay`, `loop`, `preload`,
+`speed`, `startAt`, `poster`, `cols`, `rows`, `idleTimeLimit`,
+`pauseOnMarkers`, `markers`, and `fit` (`width`, `height`, `both`, or `none`).
+Local recordings can come from Hugo assets or a site-relative URL. Avoid
+autoplay, remove secrets from terminal history, and provide nearby text for
+essential steps.
 
 ### `echarts`
 
@@ -230,11 +232,11 @@ Publish] yAxis: type: value series:
 `height` must be a safe CSS length; `theme` selects an ECharts theme and
 `full=true` removes the normal content-width clamp.
 
-JavaScript blocks inside the shortcode are rejected by default. They require
-`unsafe=true` on that call or `params.content.echarts_unsafe=true`. This opt-in
-allows executable content and must never be enabled for untrusted authors.
-Prefer declarative JSON/YAML, add an adjacent textual summary, and verify dark
-mode.
+Fenced JavaScript blocks inside the shortcode can define callbacks referenced
+from the JSON/YAML options as `$fn:name`. That code runs in the visitor's
+browser, so include only reviewed code from trusted authors. Prefer declarative
+JSON/YAML when callbacks are unnecessary, add an adjacent textual summary, and
+verify dark mode.
 
 ### `infographic`
 
