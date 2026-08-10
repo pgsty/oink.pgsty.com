@@ -25,13 +25,13 @@ Use `asciinema` for a terminal recording stored as a local `.cast` file:
 
 ```go-html-template
 {{</* asciinema
-  file="oink/demo.cast"
+  file="images/install.cast"
   speed="1.5"
   markers="0:Start,1:Done"
 */>}}
 ```
 
-{{< asciinema file="oink/demo.cast" speed="1.5" markers="0:Start,1:Done" >}}
+{{< asciinema file="images/install.cast" speed="1.5" markers="0:Start,1:Done" >}}
 
 `file` is required and can also be the first positional argument. The terminal
 window uses `title` when supplied and otherwise displays the `file` value.

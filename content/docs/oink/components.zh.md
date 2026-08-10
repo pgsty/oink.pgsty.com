@@ -19,13 +19,13 @@ OINK 把已经在多个 PGSTY 站点证明具有复用价值的内容组件纳�
 
 ```go-html-template
 {{</* asciinema
-  file="oink/demo.cast"
+  file="images/install.cast"
   speed="1.5"
   markers="0:开始,1:完成"
 */>}}
 ```
 
-{{< asciinema file="oink/demo.cast" speed="1.5" markers="0:开始,1:完成" >}}
+{{< asciinema file="images/install.cast" speed="1.5" markers="0:开始,1:完成" >}}
 
 `file` 是必填参数，也可以作为第一个位置参数传入。终端窗口优先显示显式传入的
 `title`，没有 `title` 时显示 `file` 的值。支持的选项包括 `title`、`theme`、
