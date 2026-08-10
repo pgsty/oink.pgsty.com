@@ -60,6 +60,40 @@ for (const width of widths) {
   });
 }
 
+for (const [locale, path, docsLabel, docsHref, blogLabel, blogHref] of [
+  ['en', docPath, 'Docs', '/docs/', 'Blog', '/blog/'],
+  [
+    'zh',
+    '/zh/docs/content/configuration/',
+    '文档',
+    '/zh/docs/',
+    '博客',
+    '/zh/blog/',
+  ],
+]) {
+  test(`${locale} root switcher resolves docs and blog sections`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 820, height: 900 });
+    await openCleanPage(page, path);
+
+    const trigger = page.locator('.td-shell-root__trigger');
+    await expect(trigger).toContainText(docsLabel);
+    await trigger.click();
+
+    const items = page.locator('.td-shell-root__item');
+    await expect(items).toHaveCount(2);
+    await expect(items.nth(0)).toHaveAttribute('href', docsHref);
+    await expect(items.nth(0).locator('.td-shell-root__item-title')).toHaveText(
+      docsLabel,
+    );
+    await expect(items.nth(1)).toHaveAttribute('href', blogHref);
+    await expect(items.nth(1).locator('.td-shell-root__item-title')).toHaveText(
+      blogLabel,
+    );
+  });
+}
+
 test('page actions are complete and keyboard operable', async ({ page }) => {
   await page.setViewportSize({ width: 820, height: 900 });
   await openCleanPage(page);
