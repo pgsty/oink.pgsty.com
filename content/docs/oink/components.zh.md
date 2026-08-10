@@ -18,14 +18,10 @@ OINK 把已经在多个 PGSTY 站点证明具有复用价值的内容组件纳�
 使用 `asciinema` 播放保存在本地的 `.cast` 终端录像：
 
 ```go-html-template
-{{</* asciinema
-  file="images/install.cast"
-  speed="1.5"
-  markers="0:开始,1:完成"
-*/>}}
+{{</* asciinema file="images/install.cast" speed="1.5" */>}}
 ```
 
-{{< asciinema file="images/install.cast" speed="1.5" markers="0:开始,1:完成" >}}
+{{< asciinema file="images/install.cast" speed="1.5" >}}
 
 `file` 是必填参数，也可以作为第一个位置参数传入。终端窗口优先显示显式传入的
 `title`，没有 `title` 时显示 `file` 的值。支持的选项包括 `title`、`theme`、
@@ -39,23 +35,126 @@ OINK 把已经在多个 PGSTY 站点证明具有复用价值的内容组件纳�
 
 短代码接受 JSON 或 YAML，并把解析后的值序列化到 `application/json` 元素中：
 
-```go-html-template
-{{</* echarts height="280px" */>}}
-xAxis: { type: category, data: [源码, 构建, 发布] }
-yAxis: { type: value }
-series: [{ type: bar, data: [1, 2, 3] }]
-{{</* /echarts */>}}
+{{< echarts height="520px" >}}
+
+```js
+var fmt = function (params) {
+  if (!params || !params.length || params[0].name === '') return '';
+  return (
+    '<b>' +
+    params[0].name +
+    '</b><br/>' +
+    params
+      .filter((p) => p.value !== '-' && p.value != null)
+      .map((p) => p.marker + ' ' + p.seriesName + ': ' + p.value + 's')
+      .join('<br/>')
+  );
+};
 ```
 
-<!-- prettier-ignore-start -->
+```yaml
+tooltip: { trigger: axis, axisPointer: { type: shadow }, formatter: $fn:fmt }
+legend: { top: 0, itemGap: 12, data: [租约过期, 从库检测, 抢锁提拔, 健康检查] }
+grid: { left: 64, right: 24, bottom: 32, top: 40 }
+xAxis:
+  {
+    type: value,
+    name: 秒,
+    nameLocation: end,
+    max: 160,
+    axisLine: { show: true },
+    axisTick: { show: true },
+    splitLine: { show: true, lineStyle: { type: dashed, opacity: 0.5 } },
+    minorTick: { show: true, splitNumber: 5 },
+    minorSplitLine: { show: true, lineStyle: { type: dotted, opacity: 0.2 } },
+  }
+yAxis:
+  {
+    type: category,
+    axisLine: { show: true },
+    axisTick: { show: true },
+    splitLine: { show: false },
+    axisLabel: { fontSize: 10, fontFamily: monospace },
+    data:
+      [
+        wide-max,
+        wide-avg,
+        wide-min,
+        '',
+        safe-max,
+        safe-avg,
+        safe-min,
+        '',
+        norm-max,
+        norm-avg,
+        norm-min,
+        '',
+        fast-max,
+        fast-avg,
+        fast-min,
+      ],
+  }
+series:
+  - {
+      name: 租约过期,
+      type: bar,
+      stack: main,
+      barWidth: 20,
+      z: 2,
+      emphasis: { focus: series },
+      itemStyle: { color: '#e15759' },
+      data: [120, 110, 100, '-', 60, 55, 50, '-', 30, 27, 25, '-', 20, 17, 15],
+    }
+  - {
+      name: 从库检测,
+      type: bar,
+      stack: main,
+      z: 2,
+      emphasis: { focus: series },
+      itemStyle: { color: '#edc949' },
+      data: [20, 10, 0, '-', 10, 5, 0, '-', 5, 3, 0, '-', 5, 3, 0],
+    }
+  - {
+      name: 抢锁提拔,
+      type: bar,
+      stack: main,
+      z: 2,
+      emphasis: { focus: series },
+      itemStyle: { color: '#59a14f' },
+      data: [2, 1, 0, '-', 2, 1, 0, '-', 2, 1, 0, '-', 2, 1, 0],
+    }
+  - {
+      name: 健康检查,
+      type: bar,
+      stack: main,
+      z: 2,
+      emphasis: { focus: series },
+      itemStyle: { color: '#4e79a7' },
+      data: [8, 6, 4, '-', 6, 5, 3, '-', 4, 3, 2, '-', 2, 2, 1],
+    }
+  - {
+      name: RTO总计,
+      type: bar,
+      barGap: '-100%',
+      barWidth: 20,
+      z: 1,
+      itemStyle: { color: '#888', opacity: 0 },
+      emphasis: { itemStyle: { opacity: 0 } },
+      data: [150, 127, 104, '-', 78, 66, 53, '-', 41, 34, 27, '-', 29, 23, 16],
+    }
+  - {
+      name: RTO预算,
+      type: bar,
+      barGap: '-100%',
+      barWidth: 20,
+      z: 0,
+      itemStyle: { color: 'rgba(0,0,0,0.08)' },
+      emphasis: { itemStyle: { color: 'rgba(0,0,0,0.12)' } },
+      data: [150, 150, 150, '-', 90, 90, 90, '-', 45, 45, 45, '-', 30, 30, 30],
+    }
+```
 
-{{< echarts height="280px" >}}
-xAxis: { type: category, data: [源码, 构建, 发布] }
-yAxis: { type: value }
-series: [{ type: bar, data: [1, 2, 3] }]
 {{< /echarts >}}
-
-<!-- prettier-ignore-end -->
 
 `height` 默认为 `400px`，并且必须使用安全的 CSS 长度单位。`theme`
 用来选择 ECharts 主题，`full=true` 则移除通常的正文宽度限制。
@@ -87,13 +186,23 @@ data
 {{< infographic >}}
 infographic list-row-simple-horizontal-arrow
 data
+  title 租约过期故障切换流程
+  desc 当整个节点宕机，Patroni 无法主动释放租约，只能等待 TTL 过期
   items
-    - label 源码
-      desc Markdown 与配置
-    - label 构建
-      desc Hugo Extended
-    - label 发布
-      desc 静态文件
+    - label 租约过期
+      desc Patroni 失联，被动等待主库租约 TTL 过期
+      icon mingcute/close-circle-fill
+    - label 从库检测
+      desc 从库从循环中醒来后发现租约过期，开始竞选
+      icon mingcute/key-2-fill
+    - label 抢锁提拔
+      desc 从库相互比较并抢锁，胜利者提升自己的PG
+      icon mingcute/radar-fill
+    - label 健康检查
+      desc HAPROXY 健康检查发现新主上线，分配流量
+      icon mingcute/arrow-up-circle-fill
+theme light
+  palette antv
 {{< /infographic >}}
 
 <!-- prettier-ignore-end -->
