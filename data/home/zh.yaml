@@ -2,9 +2,13 @@ hero:
   eyebrow: 本地优先 · 仅依赖 Hugo 的技术文档主题
   title_lines:
     - words:
-        - { text: OINK }
+        - { text: PGSTY OINK }
   # prettier-ignore
-  lead: 继承 Docsy 的功能与 Fumadocs 的设计，提供开箱即用，本地优先的工程文档体验
+  lead: 继承 Docsy 的功能与 Fumadocs 的设计，<br>提供开箱即用，本地优先的工程文档体验
+  image:
+    light: images/hero-light.webp
+    dark: images/hero-dark.webp
+    alt: OINK 工程文档插图
   actions:
     - label: 浏览文档
       url: docs/oink/
@@ -16,9 +20,9 @@ hero:
       style: ghost
 capabilities:
   eyebrow: 价值主张
-  title: 工程文档所需的能力，默认就绪
+  title: 工程文档所需的能力，开箱即用
   # prettier-ignore
-  text: 从部署、检索和多版本管理，到富内容表达，OINK 保持简洁素雅、本地优先，并只按页面加载所需能力。
+  text: 部署、检索，多语言，多版本管理，简洁素雅、本地优先，按需加载所需能力。
   items:
     - ref: 01 / 工程文档
       title: 为工程师与文档站设计
@@ -52,11 +56,10 @@ capabilities:
       url: docs/content/lookandfeel/
       motto: 现代文档视觉与成熟内容能力兼得
       bullets:
-        - '借鉴 [Fumadocs](https://fumadocs.dev/) /
-          [Nextra](https://nextra.site/) 的界面风格'
         - '继承 [Hugo](https://gohugo.io/) [Docsy](https://www.docsy.dev/)
-          的成熟能力'
-        - '针对[开源项目与工程审美](docs/content/lookandfeel/)进行优化'
+          的强大文档能力'
+        - '借鉴参考 [Fumadocs](https://fumadocs.dev/) 的界面审美风格'
+        - '针对 [开源项目与工程审美](docs/content/lookandfeel/) 进行优化'
       value: 界面保持克制，成熟文档站所需的功能一项不少。
       visual:
         type: components
@@ -106,35 +109,77 @@ capabilities:
       url: docs/oink/components/
       motto: 把工程内容需要的表达能力直接带进主题
       bullets:
-        - '[Asciinema](docs/oink/components/#asciinema) 终端录屏与
-          [ECharts](docs/oink/components/#echarts) 图表'
-        - '[Infographic](docs/oink/components/#infographic) 信息图与
-          [KaTeX](docs/content/diagrams-and-formulae/#latex-support-with-katex)
-          公式'
-        - '[按页面加载](docs/oink/local-first/#per-page-assets)，默认不增加无关运行时'
+        - '[Asciinema](docs/oink/components/#asciinema)、[ECharts](docs/oink/components/#echarts)
+          与 [Infographic](docs/oink/components/#infographic)，完整表达工程内容'
+        - '[KaTeX](docs/content/diagrams-and-formulae/#latex-support-with-katex)、[Mermaid](docs/content/diagrams-and-formulae/#diagrams-with-mermaid)
+          与完整的图表工具箱'
+        - '每个[短代码与组件](docs/content/shortcodes/)都有文档，并且只在使用时加载'
       value: 富内容能力属于主题，普通页面不会因此背上额外负担。
       visual:
         type: components
+        aria_label: 浏览短代码与内容组件
+        columns: 3
+        compact: true
         items:
           - {
               icon: fa-solid fa-terminal,
-              title: ASCIINEMA,
-              detail: terminal.cast,
+              title: Asciinema,
+              url: docs/oink/components/#asciinema,
             }
           - {
               icon: fa-solid fa-chart-line,
-              title: ECHARTS,
-              detail: metrics.json,
+              title: ECharts,
+              url: docs/oink/components/#echarts,
             }
           - {
               icon: fa-solid fa-diagram-project,
-              title: INFOGRAPHIC,
-              detail: story.svg,
+              title: Infographic,
+              url: docs/oink/components/#infographic,
             }
           - {
               icon: fa-solid fa-square-root-variable,
-              title: KATEX,
-              detail: formula.tex,
+              title: KaTeX,
+              url: docs/content/diagrams-and-formulae/#latex-support-with-katex,
+            }
+          - {
+              icon: fa-solid fa-share-nodes,
+              title: Mermaid,
+              url: docs/content/diagrams-and-formulae/#diagrams-with-mermaid,
+            }
+          - {
+              icon: fa-solid fa-sitemap,
+              title: Markmap,
+              url: docs/content/diagrams-and-formulae/#mind-map-support-with-markmap,
+            }
+          - {
+              icon: fa-solid fa-code-branch,
+              title: PlantUML,
+              url: docs/content/diagrams-and-formulae/#uml-diagrams-with-plantuml,
+            }
+          - {
+              icon: fa-solid fa-pen-ruler,
+              title: Diagrams.net,
+              url: docs/content/diagrams-and-formulae/#diagrams-with-diagramsnet,
+            }
+          - {
+              icon: fa-solid fa-file-code,
+              title: Swagger UI,
+              url: docs/content/shortcodes/#swaggerui,
+            }
+          - {
+              icon: fa-solid fa-book-open,
+              title: Redoc,
+              url: docs/content/shortcodes/#redoc,
+            }
+          - {
+              icon: fa-solid fa-id-card,
+              title: Cards,
+              url: docs/oink/components/#cards-and-carousel,
+            }
+          - {
+              icon: fa-solid fa-images,
+              title: Carousel,
+              url: docs/oink/components/#cards-and-carousel,
             }
 
 principles:
@@ -160,9 +205,9 @@ cta:
 
 footer:
   brand:
-    name: OINK
-    tagline: '**O**pen **I**nfrastructure，**N**etworkless **K**nowledge。'
-    slogan: 面向工程师、本地优先、仅依赖 Hugo 的技术文档主题。
+    name: PGSTY OINK
+    tagline: '**O**pen **I**ndexed，**N**avigable **K**nowledge'
+    slogan: A local-first, Hugo theme for engineering documentation
   columns:
     - title: 产品
       links:
