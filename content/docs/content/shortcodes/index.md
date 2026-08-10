@@ -210,13 +210,12 @@ Plays an asciinema `.cast` recording:
     markers="0:Start,18:Verify" fit="width" */>}}
 ```
 
-The window title uses `title` when supplied and otherwise displays `file`.
-Other important parameters include `theme`, `autoplay`, `loop`, `preload`,
-`speed`, `startAt`, `poster`, `cols`, `rows`, `idleTimeLimit`,
-`pauseOnMarkers`, `markers`, and `fit` (`width`, `height`, `both`, or `none`).
-Local recordings can come from Hugo assets or a site-relative URL. Avoid
-autoplay, remove secrets from terminal history, and provide nearby text for
-essential steps.
+The window title uses `title` when supplied and otherwise displays `file`. Other
+important parameters include `theme`, `autoplay`, `loop`, `preload`, `speed`,
+`startAt`, `poster`, `cols`, `rows`, `idleTimeLimit`, `pauseOnMarkers`,
+`markers`, and `fit` (`width`, `height`, `both`, or `none`). Local recordings
+can come from Hugo assets or a site-relative URL. Avoid autoplay, remove secrets
+from terminal history, and provide nearby text for essential steps.
 
 ### `echarts`
 

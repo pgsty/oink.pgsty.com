@@ -60,9 +60,7 @@ for (const width of widths) {
   });
 }
 
-test('page actions are complete and keyboard operable', async ({
-  page,
-}) => {
+test('page actions are complete and keyboard operable', async ({ page }) => {
   await page.setViewportSize({ width: 820, height: 900 });
   await openCleanPage(page);
 

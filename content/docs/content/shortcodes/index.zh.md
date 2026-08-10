@@ -189,8 +189,8 @@ UI 实例。
 窗口标题优先使用 `title`，没有 `title` 时显示 `file`。其他主要参数包括
 `theme`、`autoplay`、`loop`、`preload`、`speed`、`startAt`、`poster`、`cols`、
 `rows`、`idleTimeLimit`、`pauseOnMarkers`、`markers` 和
-`fit`（`width`、`height`、`both` 或 `none`）。本地录像可以来自 Hugo assets
-或站点相对 URL。不要自动播放，必须清除终端历史中的机密，并为关键步骤提供相邻文字说明。
+`fit`（`width`、`height`、`both` 或 `none`）。本地录像可以来自 Hugo
+assets 或站点相对 URL。不要自动播放，必须清除终端历史中的机密，并为关键步骤提供相邻文字说明。
 
 ### `echarts` {#echarts}
 

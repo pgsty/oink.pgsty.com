@@ -36,8 +36,8 @@ Use `asciinema` for a terminal recording stored as a local `.cast` file:
 `file` is required and can also be the first positional argument. The terminal
 window uses `title` when supplied and otherwise displays the `file` value.
 Supported options are `title`, `theme`, `fit` (`width`, `height`, `both`, or
-`none`), `autoplay`, `loop`, `preload`, `speed`, `startAt`, `poster`, `cols`, `rows`,
-`idleTimeLimit`, `pauseOnMarkers`, and comma-separated `markers`.
+`none`), `autoplay`, `loop`, `preload`, `speed`, `startAt`, `poster`, `cols`,
+`rows`, `idleTimeLimit`, `pauseOnMarkers`, and comma-separated `markers`.
 
 Keep cast files local for offline use. A remote URL is accepted only when the
 author explicitly supplies it.
