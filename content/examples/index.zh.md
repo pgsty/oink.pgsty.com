@@ -13,6 +13,21 @@ cSpell:ignore: Agones kubeflow Navidrome tekton fluxcd Graphviz Stroom protobuf 
 
 当前检出内容是一份实现预览。示例能在本地正常运行，只能证明源码可以构建；它本身并不能证明 OINK 已有公开版本、稳定的远程模块路径或投入生产的托管站点。
 
+## 使用 OINK 的站点 {#sites-using-oink}
+
+以下站点使用 OINK 主题构建：
+
+| 站点                                      | 简介                               |
+| ----------------------------------------- | ---------------------------------- |
+| [pigsty.io](https://pigsty.io/)           | 开箱即用的 PostgreSQL 数据库发行版 |
+| [pigsty.cc](https://pigsty.cc/)           | Pigsty 中文站点                    |
+| [silo.pgsty.com](https://silo.pgsty.com/) | 兼容 S3/MinIO 的开源对象存储       |
+| [pig.pgsty.com](https://pig.pgsty.com/)   | PostgreSQL 包管理器                |
+| [sow.pgsty.com](https://sow.pgsty.com/)   | APT/DNF 仓库管理器                 |
+| [exp.pgsty.com](https://exp.pgsty.com/)   | Postgres/PgBouncer 监控指标导出器  |
+| [oink.pgsty.com](https://oink.pgsty.com/) | 本主题的介绍站点                   |
+| [pgsty.com](https://pgsty.com/)           | PGSTY 组织主站                     |
+
 <a id="starter-templates"></a>
 
 ## 内置双语 starter {#included-bilingual-starter}
@@ -96,7 +111,7 @@ OINK 直接演化自 Docsy，并有意保留其中仍然有价值的兼容内容
 [构建双语 starter]: /zh/docs/oink/getting-started/
 [内容组件]: /zh/docs/oink/components/
 [Docsy]: https://www.docsy.dev/
-[实现日记]: /zh/blog/2026/oink-implementation-diary/
+[实现日记]: /zh/blog/oink/oink-implementation-diary/
 [多语言支持]: /zh/docs/language/
 [OINK 产品参考]: /zh/docs/oink/
 [starter-repo]: <{{% param github_repo %}}/tree/main/starter>

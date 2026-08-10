@@ -20,6 +20,21 @@ The current checkout is an implementation preview. A working local example is
 evidence that the source builds; it is not by itself evidence of a public OINK
 release, stable remote module path, or hosted production deployment.
 
+## Sites using OINK {#sites-using-oink}
+
+The following sites are built with OINK:
+
+| Site                                      | What it is                                               |
+| ----------------------------------------- | -------------------------------------------------------- |
+| [pigsty.io](https://pigsty.io/)           | An out-of-the-box PostgreSQL distribution                |
+| [pigsty.cc](https://pigsty.cc/)           | The Chinese-language Pigsty site                         |
+| [silo.pgsty.com](https://silo.pgsty.com/) | Open source S3/MinIO-compatible object storage           |
+| [pig.pgsty.com](https://pig.pgsty.com/)   | A PostgreSQL package manager                             |
+| [sow.pgsty.com](https://sow.pgsty.com/)   | An APT/DNF repository manager                            |
+| [exp.pgsty.com](https://exp.pgsty.com/)   | A monitoring metrics exporter for Postgres and PgBouncer |
+| [oink.pgsty.com](https://oink.pgsty.com/) | The showcase site for this theme                         |
+| [pgsty.com](https://pgsty.com/)           | The main site for the PGSTY organization                 |
+
 <a id="starter-templates"></a>
 
 ## Included bilingual starter
@@ -112,7 +127,7 @@ deployments:
 [Build the bilingual starter]: /docs/oink/getting-started/
 [Content components]: /docs/oink/components/
 [Docsy]: https://www.docsy.dev/
-[Implementation diary]: /blog/2026/oink-implementation-diary/
+[Implementation diary]: /blog/oink/oink-implementation-diary/
 [Multi-language support]: /docs/language/
 [OINK product reference]: /docs/oink/
 [starter-repo]: <{{% param github_repo %}}/tree/main/starter>
