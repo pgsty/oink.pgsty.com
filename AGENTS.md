@@ -7,8 +7,9 @@ branching, CI/CD, and releases. Start with `content/project/build/git-repo.md`.
 
 - This repository contains the documentation and regression site.
 - Theme code belongs in `github.com/pgsty/oink`.
-- The site imports the theme in `config/_default/hugo.yaml` and pins it in
-  `go.mod`.
+- The site imports the theme in `hugo.yml` and pins it in `go.mod`.
+- Site configuration is a single root `hugo.yml`; there is no `config/`
+  directory and no per-environment config overlay.
 - For sibling-checkout development, use an ignored `go.work` and set
   `HUGO_MODULE_WORKSPACE=go.work`.
 

@@ -7,18 +7,18 @@ import { fileURLToPath } from 'node:url';
 
 const siteDir = fileURLToPath(new URL('../../', import.meta.url));
 
-// Build the site with the `test-offline-search` config overlay
-// (config/test-offline-search/hugo.yaml), which enables offline search, and
-// validate the generated language-specific indexes. This guards the page
-// collection used by theme/assets/json/offline-search-index.json.
+// Build the site in a non-production environment -- `params.offlineSearch` is
+// on in `hugo.yml`, and a non-production build leaves the index filenames
+// un-fingerprinted -- then validate the generated language-specific indexes.
+// This guards the page collection used by
+// theme/assets/json/offline-search-index.json.
 test('offline-search index covers all site languages', (t) => {
   // Scratch space, kept after the run for inspection; cleared at start.
-  const outDir = join(siteDir, 'tmp', 'test-offline-search');
+  const outDir = join(siteDir, 'tmp', 'offline-search');
   rmSync(outDir, { recursive: true, force: true });
 
   const res = spawnSync(
-    `npm run _hugo -- -e test-offline-search -DFE ` +
-      `--baseURL http://localhost -d ${outDir}`,
+    `npm run _hugo -- -e dev -DFE ` + `--baseURL http://localhost -d ${outDir}`,
     { cwd: siteDir, shell: true, encoding: 'utf8' },
   );
   const output = `${res.stdout ?? ''}${res.stderr ?? ''}`;

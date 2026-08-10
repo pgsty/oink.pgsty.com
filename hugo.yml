@@ -26,18 +26,17 @@ languages:
     weight: 1
     title: OINK
     params:
-      description: A local-first, Hugo-only documentation theme
+      description: A Hugo theme for engineering docs
   zh:
     label: 简体中文
     locale: zh-CN
     weight: 2
-    title: OINK 文档主题
+    title: OINK
     params:
-      description: 本地优先、仅依赖 Hugo 的文档主题
+      description: 为工程而设计的 Hugo 文档主题
       copyright:
         authors: >-
-          OINK 与 Docsy 贡献者 · 内容采用 [CC BY
-          4.0](https://creativecommons.org/licenses/by/4.0)
+          OINK·[CC BY4.0](https://creativecommons.org/licenses/by/4.0)
       time_format_blog: 2006年1月2日
       time_format_default: 2006年1月2日
       links:
@@ -49,7 +48,7 @@ languages:
           - name: 项目博客
             url: /zh/blog/
             icon: fa-solid fa-newspaper
-            desc: 查看版本说明与实现日记
+            desc: 阅读 Docsy、OINK 与发布注记
           - name: GitHub Issues
             url: https://github.com/pgsty/oink/issues
             icon: fa-brands fa-github
@@ -102,14 +101,34 @@ markup:
     noClasses: false # Required for dark-mode
 
 params:
+  wordmark: logo.svg
+
+  # Version related parameters
+  #
+  # `version` identifies the published site variant (badge, welcome line,
+  # version menu) and is not always a git ref. Content that needs a resolvable
+  # release ref -- install commands, for example -- uses `tdVersion.latest`.
+  tdVersion:
+    latest: &tdLatestVers v0.1.0
+    dev: &tdDevVers v0.2.0
+  version: v0.1.0
+  version_menu: v0.1.0
+  version_menu_pagelinks: false
+  # Populate to enable the navbar version menu, for example:
+  versions: # []
+    - name: '**Versions**'
+    - version: *tdLatestVers
+      kind: latest
+      url: https://oink.pgsty.com
+
   hugoMinVersion: &hugoMinVersion 0.160.1
   productionURL: &productionURL https://oink.pgsty.com
-  mainBranchPreviewURL: https://main--docsydocs.netlify.app/
   copyright:
     authors: >-
-      OINK & Docsy contributors · Content licensed under [CC BY
+      [Ruohang Feng](https://vonng.com/en) ([@Vonng](https://github.com/Vonng))
+      @ [PGSTY](https://pgsty.com), [CC BY
       4.0](https://creativecommons.org/licenses/by/4.0)
-    from_year: 2018
+    from_year: 2026
     to_year: present
   footer_icp: ''
   footer_icp_url: https://beian.miit.gov.cn/
@@ -120,7 +139,7 @@ params:
   example_site_url: &exampleSiteURL https://example.docsy.dev
   time_format_blog: Monday, January 02, 2006
   time_format_default: January 2, 2006
-  rss_sections: [blog] # TODO: drop since this is the default
+  rss_sections: [blog]
   offlineSearch: true
   offlineSearchIndex: summary
   offlineSearchSummaryLength: 70
@@ -172,7 +191,7 @@ params:
       - name: Project blog
         url: /blog/
         icon: fa-solid fa-newspaper
-        desc: Release notes and implementation diary
+        desc: Docsy, OINK, and release notes
       - name: GitHub Issues
         url: https://github.com/pgsty/oink/issues
         icon: fa-brands fa-github
@@ -225,16 +244,6 @@ baseURL: *productionURL
 taxonomies:
   tag: tags
   category: categories
-
-# Allow Netlify build environment variables to be accessed in templates.
-#
-# TODO: consider instead using a CI script to write the build information to a
-# data file that Hugo could read.
-security:
-  funcs: # cspell:disable-line
-    getenv: # cspell:disable-line
-      # Netlify build env var
-      - ^(BRANCH|BUILD_ID|COMMIT_REF|CONTEXT|DEPLOY_ID|NETLIFY|PULL_REQUEST|REVIEW_ID)$
 
 module:
   imports:

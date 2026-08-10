@@ -17,9 +17,9 @@ for (const width of widths) {
     await page.setViewportSize({ width, height: 900 });
     await openCleanPage(page);
 
-    await expect(page.locator('.td-page-context')).toBeVisible();
+    const context = page.locator('[data-td-page-context]');
     const toc = page.locator('.td-shell-toc__panel');
-    const utilities = page.locator('.td-shell-sidebar__mobile-utils');
+    const utilities = page.locator('.td-shell-sidebar__utils');
 
     if (width < 768) {
       await expect(page.locator('.td-shell-subnav')).toBeVisible();
@@ -36,15 +36,23 @@ for (const width of widths) {
       await expect(utilities).toBeVisible();
       await expect(toc).toBeHidden();
     } else {
-      await expect(utilities).toBeHidden();
+      await expect(utilities).toBeVisible();
       await expect(toc).toBeVisible();
     }
 
     if (width < 1200) {
+      const actionsToggle = page.locator(
+        '[aria-controls="td-shell-aside-actions"]:visible',
+      );
+      await expect(actionsToggle).toBeVisible();
+      await actionsToggle.click();
+      await expect(actionsToggle).toHaveAttribute('aria-expanded', 'true');
+      await expect(context).toBeVisible();
       await expect(utilities.locator('.td-language-selector')).toBeVisible();
       await expect(utilities.locator('[data-td-theme-toggle]')).toBeVisible();
       await expect(utilities.locator('a[aria-label="GitHub"]')).toBeVisible();
     } else {
+      await expect(context).toBeVisible();
       await expect(toc.locator('.td-shell-language-selector')).toBeVisible();
       await expect(toc.locator('[data-td-theme-toggle]')).toBeVisible();
       await expect(toc.locator('a[aria-label="GitHub"]')).toBeVisible();
@@ -52,33 +60,38 @@ for (const width of widths) {
   });
 }
 
-test('page context menu is complete and keyboard operable', async ({
+test('page actions are complete and keyboard operable', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 820, height: 900 });
   await openCleanPage(page);
 
-  const context = page.locator('.td-page-context');
-  const toggle = context.locator('[data-td-page-context-toggle]');
-  const menu = context.getByRole('menu');
-  await toggle.focus();
-  await toggle.press('ArrowDown');
-  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
-  await expect(menu).toBeVisible();
+  const actionsToggle = page.locator(
+    '[aria-controls="td-shell-aside-actions"]:visible',
+  );
+  await actionsToggle.focus();
+  await actionsToggle.press('Enter');
+  await expect(actionsToggle).toHaveAttribute('aria-expanded', 'true');
 
-  const items = menu.getByRole('menuitem');
-  await expect(items.first()).toBeFocused();
-  await expect(menu).toContainText('Copy as Markdown');
-  await expect(menu).toContainText('View Markdown');
-  await expect(menu).toContainText('Edit this page');
-  await expect(menu).toContainText('Create documentation issue');
-  await expect(menu).toContainText('Print this page');
+  const context = page.locator('[data-td-page-context]');
+  const actions = context.locator('.td-page-meta__action');
+  await expect(context).toBeVisible();
+  await expect(context).toContainText('Copy as Markdown');
+  await expect(context).toContainText('View Markdown');
+  await expect(context).toContainText('Edit this page');
+  await expect(context).toContainText('Create documentation issue');
+  await expect(context).toContainText('Print this page');
 
-  await items.first().press('ArrowDown');
-  await expect(items.nth(1)).toBeFocused();
-  await items.nth(1).press('Escape');
-  await expect(menu).toBeHidden();
-  await expect(toggle).toBeFocused();
+  await actions.first().focus();
+  await expect(actions.first()).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(actions.nth(1)).toBeFocused();
+
+  await actionsToggle.focus();
+  await actionsToggle.press('Enter');
+  await expect(actionsToggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(context).toBeHidden();
+  await expect(actionsToggle).toBeFocused();
 });
 
 test('sidebar sections use a semantic keyboard toggle', async ({ page }) => {
@@ -138,7 +151,7 @@ test('print media produces a clean document surface', async ({ page }) => {
   await openCleanPage(page, '/docs/oink/local-first/');
   await page.emulateMedia({ media: 'print' });
 
-  await expect(page.locator('.td-page-context')).toBeHidden();
+  await expect(page.locator('[data-td-page-context]')).toBeHidden();
   await expect(page.locator('.td-shell-sidebar')).toBeHidden();
   await expect(page.locator('.td-shell-toc')).toBeHidden();
 

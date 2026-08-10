@@ -53,19 +53,15 @@ then pinned in the site's `go.mod`.
 
 ## Published site variants
 
-A variant's identity comes from its configuration directory under `config/`:
-
-| Site variant              | Source branch | Version params |
-| ------------------------- | ------------- | -------------- |
-| [Production][prod-site]   | `main`        | `production/`  |
-| Next/local preview        | `main`        | `_default/`    |
-| Doc-rooted (experimental) | `main`        | `doc-rooted/`  |
+The site has a single configuration file, `hugo.yml` at the repository root.
+There are no per-environment config overlays, so [production][prod-site],
+previews, and local builds all resolve the same parameters; the Hugo environment
+(`-e`) only selects build-time behavior such as asset fingerprinting and
+minification.
 
 The production workflow builds directly from `main`, uploads `public/` as a
 GitHub Pages artifact, and deploys it through the Pages API. The repository does
 not maintain a generated Pages branch.
-
-Pull request deploy previews use the Next configuration.
 
 ## Release workflow
 
