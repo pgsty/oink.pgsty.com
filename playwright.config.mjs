@@ -28,7 +28,8 @@ export default defineConfig({
   webServer: process.env.PLAYWRIGHT_BASE_URL
     ? undefined
     : {
-        command: 'npm run _serve -- --bind 127.0.0.1 --port 4173 --noBuildLock',
+        command:
+          'npm run _serve -- --bind 127.0.0.1 --port 4173 --noBuildLock --disableLiveReload',
         env: moduleWorkspace
           ? { HUGO_MODULE_WORKSPACE: moduleWorkspace }
           : undefined,
