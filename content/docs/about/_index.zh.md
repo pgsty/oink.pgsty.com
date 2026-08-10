@@ -142,7 +142,7 @@ Nama 与 Fumadocs 社区的贡献者。感谢他们开放分享这些成果，�
 
 - [构建双语 starter](/zh/docs/oink/getting-started/)；
 - 查看[架构](/zh/docs/oink/architecture/)与[本地优先契约](/zh/docs/oink/local-first/)；
-- 阅读[实现日记](/zh/blog/2026/oink-implementation-diary/)；
+- 阅读[实现日记](/zh/blog/oink/oink-implementation-diary/)；
 - 遵循[发布检查表](/zh/docs/oink/release/)；
 - 加入[社区](/zh/community/)，或阅读[贡献指南](/zh/docs/contributing/)。
 

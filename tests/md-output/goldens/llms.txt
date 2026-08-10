@@ -8,7 +8,7 @@
 - [Docs](http://localhost/docs/index.md): Product guides, configuration, components, and deployment reference
 - [Examples](http://localhost/examples/index.md): Build the bilingual starter, explore OINK features, and compare inherited Docsy references
 - [Community](http://localhost/community/index.md)
-- [Blog](http://localhost/blog/index.md): Release notes, upgrade guidance, and OINK engineering stories
+- [Blog](http://localhost/blog/index.md): Docsy articles, OINK engineering stories, and OINK release notes
 
 ## Documentation index
 

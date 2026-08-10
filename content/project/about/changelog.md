@@ -113,7 +113,7 @@ Specifically, the Docsy team **officially supports** the following:
 
 - The tool versions as specified for the Docsy release you are using:
   - **Hugo**:
-    - The version pinned as `HUGO_VERSION` in [site netlify.toml][]
+    - The version pinned as `HUGO_VERSION` in the [site Pages workflow][]
       ({{% hugo-version %}})
     - Older versions, down to Docsy's declared [minimum Hugo version][], usually
       work.
@@ -125,7 +125,7 @@ Everything else — including Windows — is supported on a best-effort basis.
 
 <!-- prettier-ignore-start -->
 [@docsy/theme]: https://www.npmjs.com/package/@docsy/theme
-[site netlify.toml]: https://github.com/pgsty/oink.pgsty.com/blob/main/netlify.toml
+[site Pages workflow]: https://github.com/pgsty/oink.pgsty.com/blob/main/.github/workflows/pages.yml
 [minimum Hugo version]: /docs/get-started/docsy-as-module/installation-prerequisites/#install-hugo
 [package.json]: https://github.com/google/docsy/blob/main/package.json
 <!-- prettier-ignore-end -->
@@ -243,20 +243,20 @@ changes, see the [0.16.0][] release page or the [git history since 0.15.0][].
 [#2659]: https://github.com/google/docsy/issues/2659
 [#2668]: https://github.com/google/docsy/issues/2668
 [#2683]: https://github.com/google/docsy/issues/2683
-[0.16.0 release report]: /blog/2026/0.16.0/
-[0.16.0-blog-favicons]: /blog/2026/0.16.0/#favicons
-[0.16.0-blog-hugo]: /blog/2026/0.16.0/#hugo
-[0.16.0-blog-maintainers]: /blog/2026/0.16.0/#for-maintainers
-[0.16.0-blog-npm-deps]: /blog/2026/0.16.0/#npm-deps
-[0.16.0-blog-npm-registry]: /blog/2026/0.16.0/#npm-registry
-[0.16.0-blog-postcss]: /blog/2026/0.16.0/#postcss
-[0.16.0-blog-shared-chrome]: /blog/2026/0.16.0/#shared-chrome
-[0.16.0-blog-theme-folder]: /blog/2026/0.16.0/#theme-folder
+[0.16.0 release report]: /blog/docsy/0.16.0/
+[0.16.0-blog-favicons]: /blog/docsy/0.16.0/#favicons
+[0.16.0-blog-hugo]: /blog/docsy/0.16.0/#hugo
+[0.16.0-blog-maintainers]: /blog/docsy/0.16.0/#for-maintainers
+[0.16.0-blog-npm-deps]: /blog/docsy/0.16.0/#npm-deps
+[0.16.0-blog-npm-registry]: /blog/docsy/0.16.0/#npm-registry
+[0.16.0-blog-postcss]: /blog/docsy/0.16.0/#postcss
+[0.16.0-blog-shared-chrome]: /blog/docsy/0.16.0/#shared-chrome
+[0.16.0-blog-theme-folder]: /blog/docsy/0.16.0/#theme-folder
 [0.16.0]: https://github.com/google/docsy/releases/tag/v0.16.0
 [chrome]: /docs/deployment/chrome/
 [favicons]: /docs/content/iconsimages/#add-your-favicons
 [git history since 0.15.0]: https://github.com/google/docsy/compare/v0.15.0...v0.16.0
-[Hugo 0.158+ upgrade guide]: /blog/2026/hugo-0.158.0+/
+[Hugo 0.158+ upgrade guide]: /blog/docsy/hugo-0.158.0+/
 [hugo-0.160.1]: https://github.com/gohugoio/hugo/releases/tag/v0.160.1
 [hugo-0.164.0]: https://github.com/gohugoio/hugo/releases/tag/v0.164.0
 [option-3-npm]: /docs/get-started/other-options/#option-3-docsy-as-an-npm-package
@@ -316,13 +316,13 @@ full list of changes, see the [0.15.0][] release page.
 [#2601]: https://github.com/google/docsy/pull/2601
 [#2605]: https://github.com/google/docsy/pull/2605
 [#2606]: https://github.com/google/docsy/pull/2606
-[0.15.0 release report]: /blog/2026/0.15.0/
-[0.15.0-blog-agent-support]: /blog/2026/0.15.0/#agent-support
-[0.15.0-blog-card]: /blog/2026/0.15.0/#card-shortcode
-[0.15.0-blog-community-footer]: /blog/2026/0.15.0/#community-footer-links
-[0.15.0-blog-doc-rooted]: /blog/2026/0.15.0/#doc-rooted-sites
-[0.15.0-blog-internationalization]: /blog/2026/0.15.0/#internationalization
-[0.15.0-blog-version-menu]: /blog/2026/0.15.0/#version-menu
+[0.15.0 release report]: /blog/docsy/0.15.0/
+[0.15.0-blog-agent-support]: /blog/docsy/0.15.0/#agent-support
+[0.15.0-blog-card]: /blog/docsy/0.15.0/#card-shortcode
+[0.15.0-blog-community-footer]: /blog/docsy/0.15.0/#community-footer-links
+[0.15.0-blog-doc-rooted]: /blog/docsy/0.15.0/#doc-rooted-sites
+[0.15.0-blog-internationalization]: /blog/docsy/0.15.0/#internationalization
+[0.15.0-blog-version-menu]: /blog/docsy/0.15.0/#version-menu
 [0.15.0]: https://github.com/google/docsy/releases/v0.15.0
 <!-- prettier-ignore-end -->
 
@@ -364,7 +364,7 @@ For the full list of changes, see the [release report][0.14.2-blog] and
 [#2548]: https://github.com/google/docsy/pull/2548
 [#2549]: https://github.com/google/docsy/pull/2549
 [0.14.2]: https://github.com/google/docsy/releases/v0.14.2
-[0.14.2-blog]: /blog/2026/0.14.0/#0.14.2
+[0.14.2-blog]: /blog/docsy/0.14.0/#0.14.2
 
 ## v0.14.1 {#v0.14.1}
 
@@ -430,17 +430,17 @@ Patch release [0.14.1][]: fixed **ToC** sidebar width in xl viewports
 [#2524]: https://github.com/google/docsy/pull/2524
 [#2533]: https://github.com/google/docsy/pull/2533
 [#2538]: https://github.com/google/docsy/pull/2538
-[0.14.0-blog-alerts]: /blog/2026/0.14.0/#alerts
-[0.14.0-blog-cover]: /blog/2026/0.14.0/#blocks-cover
-[0.14.0-blog-heading-aliases]: /blog/2026/0.14.0/#heading-aliases
-[0.14.0-blog-hugo]: /blog/2026/0.14.0/#hugo
-[0.14.0-blog-internationalization]: /blog/2026/0.14.0/#internationalization
-[0.14.0-blog-navbar]: /blog/2026/0.14.0/#navbar
-[0.14.0-blog-scss]: /blog/2026/0.14.0/#improved-scss-soc
-[0.14.0-blog-shortcodes]: /blog/2026/0.14.0/#shortcodes
-[0.14.0-blog-style-fixes]: /blog/2026/0.14.0/#style-improvements-and-fixes
-[0.14.0-blog-swagger]: /blog/2026/0.14.0/#swagger-scss
-[0.14.0-blog]: /blog/2026/0.14.0/
+[0.14.0-blog-alerts]: /blog/docsy/0.14.0/#alerts
+[0.14.0-blog-cover]: /blog/docsy/0.14.0/#blocks-cover
+[0.14.0-blog-heading-aliases]: /blog/docsy/0.14.0/#heading-aliases
+[0.14.0-blog-hugo]: /blog/docsy/0.14.0/#hugo
+[0.14.0-blog-internationalization]: /blog/docsy/0.14.0/#internationalization
+[0.14.0-blog-navbar]: /blog/docsy/0.14.0/#navbar
+[0.14.0-blog-scss]: /blog/docsy/0.14.0/#improved-scss-soc
+[0.14.0-blog-shortcodes]: /blog/docsy/0.14.0/#shortcodes
+[0.14.0-blog-style-fixes]: /blog/docsy/0.14.0/#style-improvements-and-fixes
+[0.14.0-blog-swagger]: /blog/docsy/0.14.0/#swagger-scss
+[0.14.0-blog]: /blog/docsy/0.14.0/
 [0.14.0]: https://github.com/google/docsy/releases/v0.14.0
 
 ## v0.13.0 {#v0.13.0}
@@ -512,14 +512,14 @@ Patch release [0.14.1][]: fixed **ToC** sidebar width in xl viewports
 [#2406]: https://github.com/google/docsy/pull/2406
 [#941]: https://github.com/google/docsy/pull/941
 [0.13.0]: https://github.com/google/docsy/releases/v0.13.0
-[0.13.0-blog]: /blog/2025/0.13.0/
-[0.13.0-blog-lang-menu]: /blog/2025/0.13.0/#language-menu-visibility
-[0.13.0-blog-alert]: /blog/2025/0.13.0/#alert-shortcode
-[0.13.0-blog-toc]: /blog/2025/0.13.0/#active-toc-entry-tracking
-[0.13.0-blog-sidebar]: /blog/2025/0.13.0/#section-sidebar-root
-[0.13.0-blog-accessibility]: /blog/2025/0.13.0/#accessibility
-[0.13.0-blog-fouc]: /blog/2025/0.13.0/#accessibility
-[0.13.0-blog-breaking]: /blog/2025/0.13.0/#breaking-changes
+[0.13.0-blog]: /blog/docsy/0.13.0/
+[0.13.0-blog-lang-menu]: /blog/docsy/0.13.0/#language-menu-visibility
+[0.13.0-blog-alert]: /blog/docsy/0.13.0/#alert-shortcode
+[0.13.0-blog-toc]: /blog/docsy/0.13.0/#active-toc-entry-tracking
+[0.13.0-blog-sidebar]: /blog/docsy/0.13.0/#section-sidebar-root
+[0.13.0-blog-accessibility]: /blog/docsy/0.13.0/#accessibility
+[0.13.0-blog-fouc]: /blog/docsy/0.13.0/#accessibility
+[0.13.0-blog-breaking]: /blog/docsy/0.13.0/#breaking-changes
 [diagrams-formulae]:
   /docs/content/diagrams-and-formulae/#latex-support-with-katex
 [How to pick colors with good color-contrast]:
@@ -633,8 +633,8 @@ dark-mode support][dark-mode].
 
 [#1952]: https://github.com/google/docsy/pull/1952
 [0.10.0]: https://github.com/google/docsy/releases/v0.10.0
-[0.10.0 release report]: /blog/2024/0.10.0/
-[dark-mode]: /blog/2024/0.10.0/#color-themes-and-dark-mode-support
+[0.10.0 release report]: /blog/docsy/0.10.0/
+[dark-mode]: /blog/docsy/0.10.0/#color-themes-and-dark-mode-support
 
 ## v0.9.1 {#v0.9.1}
 
@@ -687,16 +687,16 @@ For details concerning all footer changes, see [#1818][].
 - [Look and feel][] updates.
 
 [0.9.0]: https://github.com/google/docsy/releases/v0.9.0
-[0.9.0 release report]: /blog/2024/0.9.0/
+[0.9.0 release report]: /blog/docsy/0.9.0/
 [#1410]: https://github.com/google/docsy/pull/1410
 [#1744]: https://github.com/google/docsy/pull/1744
 [#1818]: https://github.com/google/docsy/pull/1818
 [disabling links]: /docs/content/repository-links/#disabling-links
-[Footer layout]: /blog/2024/0.9.0/#footer-layout
-[Footer copyright]: /blog/2024/0.9.0/#footer-copyright
-[Footer streamlined]: /blog/2024/0.9.0/#footer-streamlined
-[0.9.0:hsl]: /blog/2024/0.9.0/#heading-self-links
-[look and feel]: /blog/2024/0.9.0/#look-and-feel
+[Footer layout]: /blog/docsy/0.9.0/#footer-layout
+[Footer copyright]: /blog/docsy/0.9.0/#footer-copyright
+[Footer streamlined]: /blog/docsy/0.9.0/#footer-streamlined
+[0.9.0:hsl]: /blog/docsy/0.9.0/#heading-self-links
+[look and feel]: /blog/docsy/0.9.0/#look-and-feel
 [mermaid]: /docs/content/diagrams-and-formulae/#diagrams-with-mermaid
 [multi-language]: /docs/language/
 [path_base_for_github_subdir]:

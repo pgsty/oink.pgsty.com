@@ -214,7 +214,7 @@ content/docs/tutorial/
 
 包含子页面的分区使用分支页面包（`_index.md`），带资源的末端页面使用叶子页面包（`index.md`）。
 
-## 添加文档与博客文章 {#adding-docs-and-blog-posts}
+## 添加文档、博客文章与发布注记 {#adding-docs-blog-posts-and-release-notes}
 
 每个持续维护的英文页面都应在同一目录下配有中文页面：
 
@@ -250,28 +250,40 @@ no_list: true
 
 可以关闭自动列表。每种语言都应提供本地化标题和描述，并保持结构选项一致。
 
-### 组织博客文章 {#organizing-your-blog-posts}
+### 组织博客文章与发布注记 {#organizing-blog-posts-and-release-notes}
 
-博客文章既可以直接放在 `blog/`
-下，也可以按年份或分类建目录。OINK 使用日期目录，并为每篇文章配对：
+按发布方与受众拆分文章：所有 Docsy 上游文章（包括 Docsy 发布报告）平铺在
+`blog/docsy/`；OINK 专属普通文章平铺在 `blog/oink/`；`blog/release/`
+只存放 OINK 自己带版本号的发布注记。不要增加年份子目录，每篇文章在原地配对：
 
 ```text
-blog/2026/
-├── oink-release.md
-└── oink-release.zh.md
+content/blog/
+├── docsy/
+│   ├── 0.16.0.md
+│   ├── 0.16.0.zh.md
+│   ├── hugo-upgrade.md
+│   └── hugo-upgrade.zh.md
+├── oink/
+│   ├── implementation-diary.md
+│   └── implementation-diary.zh.md
+└── release/
+    ├── 0.1.0.md
+    └── 0.1.0.zh.md
 ```
 
-文章通常包含：
+Docsy 发布注记通常使用带发布方名称的 `linkTitle`：
 
 ```yaml
 ---
-title: OINK 1.0
-description: A local-first Docsy distribution.
-date: 2026-08-08
-author: OINK maintainers
-tags: [release]
+title: 0.16.0 发布报告与升级指南
+linkTitle: Docsy 0.16.0 发布
+date: 2026-07-29
+tags: [发布, 升级]
 ---
 ```
+
+其他 Docsy 文章的 `linkTitle` 也以 `Docsy`
+开头，让混合侧边栏和列表能直接显示内容归属。
 
 不同语言版本的发布日期与作者身份应保持一致。标题、描述、分类标签、图注和正文需要翻译；提交 ID、发布标签、命令和 URL 不应翻译。
 

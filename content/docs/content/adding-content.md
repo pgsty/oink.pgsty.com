@@ -247,7 +247,7 @@ meaningful text; give the localized resource a clear language suffix.
 Use branch bundles (`_index.md`) for sections that contain child pages and leaf
 bundles (`index.md`) for terminal pages with resources.
 
-## Adding docs and blog posts
+## Adding docs, blog posts, and release notes
 
 Create every maintained English page and its Chinese peer in the same directory:
 
@@ -288,28 +288,41 @@ no_list: true
 to suppress the generated list. Give each language variant a localized title and
 description, and keep the structural option identical.
 
-### Organizing your blog posts
+### Organizing blog posts and release notes
 
-Blog posts can live directly below `blog/` or in year/category directories. OINK
-uses dated directories and pairs each article:
+Separate posts by publisher and audience. Keep every upstream Docsy article,
+including Docsy release reports, flat under `blog/docsy/`. Keep OINK-specific
+articles flat under `blog/oink/`, and reserve `blog/release/` for versioned OINK
+release notes. Do not add year subdirectories; pair each article in place:
 
 ```text
-blog/2026/
-├── oink-release.md
-└── oink-release.zh.md
+content/blog/
+├── docsy/
+│   ├── 0.16.0.md
+│   ├── 0.16.0.zh.md
+│   ├── hugo-upgrade.md
+│   └── hugo-upgrade.zh.md
+├── oink/
+│   ├── implementation-diary.md
+│   └── implementation-diary.zh.md
+└── release/
+    ├── 0.1.0.md
+    └── 0.1.0.zh.md
 ```
 
-A post normally supplies:
+A Docsy release note normally supplies a publisher-qualified `linkTitle`:
 
 ```yaml
 ---
-title: OINK 1.0
-description: A local-first Docsy distribution.
-date: 2026-08-08
-author: OINK maintainers
-tags: [release]
+title: Release 0.16.0 report and upgrade guide
+linkTitle: Docsy 0.16.0 release
+date: 2026-07-29
+tags: [release, upgrade]
 ---
 ```
+
+Prefix link titles for other Docsy articles with `Docsy` as well, so mixed
+sidebar and list views make ownership clear.
 
 Keep the publication date and author identity consistent across translations.
 Translate the title, description, taxonomy labels, caption text, and body. Do

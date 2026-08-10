@@ -10,7 +10,7 @@ LLMS index: [llms.txt](/llms.txt)
 
 Section pages:
 
-- [Blog](/blog/): Release notes, upgrade guidance, and OINK engineering stories
+- [Blog](/blog/): Docsy articles, OINK engineering stories, and OINK release notes
 - [Community](/community/)
 - [Welcome to OINK](/docs/): Product guides, configuration, components, and deployment reference
 - [OINK examples and templates](/examples/): Build the bilingual starter, explore OINK features, and compare inherited Docsy references

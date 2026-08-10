@@ -36,7 +36,7 @@ and uses Prettier and Markdownlint to enforce basic formatting rules.
 ### Verb tense
 
 - Use [present tense][] for all content, except as noted below.
-- For [release][] and [upgrade][] blog posts:
+- For [release notes][] and [upgrade][] posts:
   - Use [present tense][] when referring to the release itself, for example:
     > Docsy 0.14.0 adds ...
   - Use **past tense** only when describing previous releases or pre-release
@@ -51,6 +51,6 @@ and uses Prettier and Markdownlint to enforce basic formatting rules.
 [changelog]: /project/about/changelog/
 [cl-style-guide]: /project/about/changelog/#style-guide
 [present tense]: https://developers.google.com/style/tense
-[release]: <{{% _param baseURL %}}/tags/release/>
+[release notes]: <{{% _param baseURL %}}/tags/release/>
 [upgrade]: <{{% _param baseURL %}}/tags/upgrade/>
 <!-- prettier-ignore-end -->

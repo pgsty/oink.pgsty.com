@@ -191,7 +191,7 @@ stable remote module path.
 - [Build the bilingual starter](/docs/oink/getting-started/).
 - Review the [architecture](/docs/oink/architecture/) and
   [local-first contract](/docs/oink/local-first/).
-- Read the [implementation diary](/blog/2026/oink-implementation-diary/).
+- Read the [implementation diary](/blog/oink/oink-implementation-diary/).
 - Follow the [release checklist](/docs/oink/release/).
 - Join the [community](/community/) or read the
   [contribution guide](/docs/contributing/).

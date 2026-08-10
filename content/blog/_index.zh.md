@@ -1,6 +1,6 @@
 ---
 title: 博客
-description: 版本说明、升级指南与 OINK 工程实践
+description: Docsy 文章、OINK 工程实践与 OINK 发布注记
 menu: { main: { weight: 50 } }
 type: blog
 icon: fa-solid fa-blog

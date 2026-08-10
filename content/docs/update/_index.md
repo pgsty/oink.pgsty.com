@@ -8,7 +8,7 @@ icon: fa-solid fa-arrows-rotate
 ---
 
 These pages describe the OINK update contract. A **target release** is the
-version that you are moving the site to. Read its release post before starting:
+version that you are moving the site to. Read its release note before starting:
 it records breaking changes, required actions, and the validated Hugo range.
 
 <a id="update-node"></a>
@@ -22,7 +22,7 @@ tooling for theme maintainers, not a site-update step.
 - Record the currently pinned theme revision and Hugo Extended version.
 - Build the current production site once so that new failures can be separated
   from pre-existing ones.
-- Read every release post between the current and target versions; do not skip
+- Read every release note between the current and target versions; do not skip
   intermediate migration actions.
 
 ## Order of steps {#update-order}
@@ -46,7 +46,7 @@ hugo version
 ```
 
 The current validation baseline is Hugo Extended `0.164.0`; the theme's current
-minimum is `0.160.1`. A release post takes precedence if it changes either
+minimum is `0.160.1`. A release note takes precedence if it changes either
 value.
 
 ## Update the theme {#update-theme}
@@ -86,7 +86,8 @@ hugo --gc --minify
 Verify at least the following:
 
 - [ ] The build completes without errors, warnings, or deprecation notices.
-- [ ] English and Chinese home, documentation, and blog pages render.
+- [ ] English and Chinese home, documentation, ordinary blog, and release-note
+      pages render.
 - [ ] Navigation, breadcrumbs, table of contents, stable heading links, and
       language switching resolve correctly.
 - [ ] Local search returns results in both languages.
@@ -97,4 +98,4 @@ Verify at least the following:
       components still render.
 - [ ] Site-owned shortcodes and business pages remain intact.
 
-Finally, run every release-specific check from the target release post.
+Finally, run every release-specific check from the target release note.

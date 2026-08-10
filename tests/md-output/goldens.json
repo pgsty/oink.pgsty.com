@@ -18,6 +18,24 @@
     "skip": false
   },
   {
+    "path": "blog/docsy/index.md",
+    "kind": "nested section",
+    "covers": ["description", "!body", "children"],
+    "skip": false
+  },
+  {
+    "path": "blog/oink/index.md",
+    "kind": "nested section",
+    "covers": ["description", "!body", "children"],
+    "skip": false
+  },
+  {
+    "path": "blog/release/index.md",
+    "kind": "nested section",
+    "covers": ["description", "!body", "children"],
+    "skip": false
+  },
+  {
     "path": "docs/index.md",
     "kind": "section",
     "covers": ["!description", "body", "children"],
@@ -36,7 +54,7 @@
     "skip": false
   },
   {
-    "path": "blog/2022/hello/index.md",
+    "path": "blog/docsy/hello/index.md",
     "kind": "page",
     "covers": ["description", "body", "!children"],
     "skip": false
