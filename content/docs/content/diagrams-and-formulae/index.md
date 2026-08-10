@@ -1,6 +1,8 @@
 ---
 downstream_modified: true
 title: Diagrams and formulae
+weight: 100
+icon: fa-solid fa-diagram-project
 description: Add local diagrams, mind maps, and scientific formulae to a page.
 cSpell:ignore: markmap mhchem plantuml
 ---
@@ -208,8 +210,7 @@ stay inside an organization, deploy an approved [self-hosted editor][] and set
 - Use text-based diagrams when reviewable diffs are valuable.
 - Provide alt text or adjacent prose for essential meaning.
 - Test light, dark, mobile, print, and reduced-motion behavior.
-- Keep local runtimes pinned in `theme/VENDOR.json` and load them only when
-  used.
+- Keep local runtimes pinned in `VENDOR.json` and load them only when used.
 - Never include secrets in diagram source sent to a service endpoint.
 - Use pre-rendered output when an online renderer is unacceptable.
 - Verify all asset and endpoint URLs under a subpath `baseURL`.

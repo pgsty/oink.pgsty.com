@@ -7,6 +7,7 @@ type: blog
 icon: fa-solid fa-blog
 sidebar_root_for: self
 sidebar_root_link_self: true
+comments: false
 cascade:
   type: blog
   params:

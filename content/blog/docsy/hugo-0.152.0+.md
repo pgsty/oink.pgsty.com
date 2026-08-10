@@ -7,7 +7,7 @@ author: >-
   [Patrice Chalin](https://github.com/chalin) ([CNCF](https://www.cncf.io/)),
   for the [Docsy Steering Committee](/blog/docsy/hello/#introducing-the-psc)
 body_class: release-highlights
-tags: [hugo, upgrade]
+tags: [Docsy, Release]
 params:
   hugoMinVersion: 0.157.0
 # prettier-ignore
@@ -92,7 +92,7 @@ list of tokens, see [0.152.0 release notes][yes-no-list].
         no: Sorry to hear that. ...
   ```
 
-[Feedback]: /docs/content/feedback/#user-feedback
+[Feedback]: /docs/advanced/analytics/#user-feedback
 
 ## Multidimensional content model (0.153.0) {#0.153.0}
 
@@ -109,8 +109,6 @@ summarized next.
 Hugo now builds sites based on sorted dimensions (by weight, then name) instead
 of starting with the default content language. This also affects `.Site.Sites`
 sort order.
-
-<!-- TODO: can we use weights to fix the order of sites? -->
 
 ### Actions: required and optional {#build-order-actions}
 

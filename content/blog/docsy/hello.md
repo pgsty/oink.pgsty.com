@@ -4,6 +4,7 @@ linkTitle: Docsy hello
 date: 2022-04-07
 description: Welcome to the Docsy blog!
 aliases: [/blog/2022/hello/]
+tags: [Docsy, Release]
 ---
 
 ## Hello

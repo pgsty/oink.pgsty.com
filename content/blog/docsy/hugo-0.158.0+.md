@@ -12,7 +12,7 @@ author: >-
   [Patrice Chalin](https://github.com/chalin) ([CNCF](https://www.cncf.io/)),
   for the [Docsy Steering Committee](/blog/docsy/hello/#introducing-the-psc)
 body_class: release-highlights
-tags: [hugo, upgrade]
+tags: [Docsy, Release]
 params:
   hugoSupportedVersion: 0.164.0
 # prettier-ignore
@@ -335,12 +335,12 @@ Confirm that you've addressed [every action][] that applies to your site. Then:
 [0.163.2]: https://github.com/gohugoio/hugo/releases/tag/v0.163.2
 [0.163.3]: https://github.com/gohugoio/hugo/releases/tag/v0.163.3
 [0.164.0]: https://github.com/gohugoio/hugo/releases/tag/v0.164.0
-[check]: /docs/update/#check
+[check]: /docs/upgrade/#check
 [every action]: #upgrade-summary
 [hugo-extended]: https://www.npmjs.com/package/hugo-extended
 [hugo-supported-version]: <https://github.com/gohugoio/hugo/releases/tag/v{{% param hugoSupportedVersion %}}>
 [hugo-164-perf]: https://discourse.gohugo.io/t/hugo-building-slowly-from-release-0-128-0/57314/21
 [hvm]: https://github.com/jmooring/hvm
-[Install Hugo]: /docs/get-started/docsy-as-module/installation-prerequisites/#install-hugo
-[Multi-language support]: /docs/language/
+[Install Hugo]: /docs/tutorial/prerequisites/#install-hugo
+[Multi-language support]: /docs/advanced/language/
 <!-- prettier-ignore-end -->

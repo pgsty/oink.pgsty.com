@@ -9,6 +9,7 @@ author: >
 date: 2023-06-05
 canonical_url: https://www.cncf.io/blog/docsy/06/05/migrating-docsy-to-bootstrap-5/
 aliases: [/blog/2023/bootstrap-5-migration/]
+tags: [Docsy, Release]
 ---
 
 [Docsy](https://docsy.dev)
@@ -198,6 +199,6 @@ _本文另有一个版本首发于 [CNCF 博客][]，题为[将 Docsy 迁移到 
 
 [CNCF 博客]: https://www.cncf.io/blog/
 [cncf-docsy]:
-  https://www.cncf.io/blog/docsy/01/19/fast-and-effective-tools-for-cncf-and-open-source-project-websites/
+  https://www.cncf.io/blog/2023/01/19/fast-and-effective-tools-for-cncf-and-open-source-project-websites/
 [后续博客文章]: /zh/blog/docsy/0.7.x/
 [原文]: <{{% param canonical_url %}}>

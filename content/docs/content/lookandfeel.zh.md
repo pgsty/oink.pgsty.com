@@ -1,6 +1,8 @@
 ---
 title: 外观与风格
-description: 定制 OINK 的本地优先视觉系统、主题、字体、代码样式与布局。
+weight: 60
+icon: fa-solid fa-palette
+description: 定制主题、字体、代码样式与页面布局。
 ---
 
 OINK 在 Bootstrap 与 Docsy 基础上提供完整的视觉系统，并将字体、图标、样式和浏览器端代码全部本地化。使用方无需重建 Node 依赖树，就能通过设计变量和项目样式完成定制。
@@ -158,7 +160,7 @@ $font-family-monospace: 'IBM Plex Mono', ui-monospace, monospace;
 ```
 
 新增字体时，应制作所需子集并自行托管，包含必要字形，设置
-`font-display: swap`，在 `theme/VENDOR.json`
+`font-display: swap`，在 `VENDOR.json`
 中记录许可证，并测试 CJK 后备字体。页面渲染不能依赖字体 CDN。
 
 ## CSS 工具类 {#css-utilities}
@@ -197,7 +199,7 @@ OINK 使用基于 class 的输出，以便浅色和深色模式采用不同样�
 
 #### 浅色/深色代码样式及其他配置 {#lightdark-code-styles}
 
-主题在 `theme/assets/scss/td/chroma/`
+主题在 `assets/scss/td/chroma/`
 中提供两套 Chroma 配色，并按模式应用。项目覆盖项应在相应主题属性下定位
 `.chroma`，不要硬编码全局背景。
 

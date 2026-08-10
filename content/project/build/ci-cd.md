@@ -19,8 +19,8 @@ npm run check:afdocs:dev  # From another terminal
 ```
 
 The latter command saves the generated scorecard to
-`docs/content/agent-support/afdocs-scorecard.txt` under `content`, which will be
-included in [Scorecard examples][] on the next build.
+`docs/advanced/agent-support/afdocs-scorecard.txt` under `content`, which will
+be included in [Scorecard examples][] on the next build.
 
 Note that the scorecard generation is not run as a part of the full CI/CD
 pipeline. It needs to be run manually.
@@ -72,4 +72,4 @@ and we'll be able to remove this hack.
 [#15528]: https://github.com/prettier/prettier/issues/15528
 [#15720]: https://github.com/prettier/prettier/issues/15720
 [package.json]: https://github.com/pgsty/oink.pgsty.com/blob/main/package.json
-[Scorecard examples]: /docs/content/agent-support/#scorecard-examples
+[Scorecard examples]: /docs/advanced/agent-support/#scorecard-examples

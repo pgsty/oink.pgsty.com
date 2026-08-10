@@ -1,23 +1,67 @@
+# Compose only the sections that help readers choose a path. The theme example
+# demonstrates the remaining generic section types.
+sections:
+  - hero
+  - metrics
+  - capabilities
+  - gallery
+  - type: logo_wall
+    key: stack
+  - principles
+  - faq
+  - cta
+
 hero:
   eyebrow: Local-first · Hugo-only technical documentation
   title_lines:
     - words:
         - { text: PGSTY OINK }
   # prettier-ignore
-  lead: Docsy features and Fumadocs design,<br>a hugo theme for engineering docs.
+  lead: Docsy features and Fumadocs design,<br>a Hugo theme for engineering docs.
   image:
     light: images/hero-light.webp
     dark: images/hero-dark.webp
     alt: OINK engineering documentation illustration
   actions:
     - label: Read the docs
-      url: docs/oink/
+      url: docs/
       icon: fa-solid fa-book-open
       style: primary
     - label: Get started
-      url: docs/get-started/
+      url: docs/tutorial/
       icon: fa-solid fa-arrow-right
       style: ghost
+
+metrics:
+  eyebrow: OINK 0.2.0
+  title: One theme. A complete documentation surface.
+  text:
+    The project stays small at build time while covering the paths a technical
+    documentation site needs.
+  columns: 4
+  items:
+    - value: '12'
+      name: Composable homepage sections
+      label: Composable homepage sections
+      icon: fa-solid fa-layer-group
+      url: docs/content/configuration/#homepage-and-footer
+    - value: '2'
+      name: Reviewed language editions
+      label: Reviewed language editions
+      icon: fa-solid fa-language
+      url: docs/advanced/language/
+    - value: '0'
+      name: Theme-required hosted assets
+      label: Theme-required hosted assets
+      desc: Optional integrations remain explicit.
+      icon: fa-solid fa-cloud-arrow-down
+      url: docs/about/local-first/#what-local-first-does-not-cover
+    - value: '1'
+      name: One Hugo build command
+      label: Hugo build command
+      icon: fa-solid fa-terminal
+      url: docs/tutorial/create-site/#preview-and-build
+
 capabilities:
   eyebrow: Why OINK
   title: Docs. Engineered.
@@ -26,17 +70,18 @@ capabilities:
   items:
     - ref: 01 / ENGINEERING FIRST
       title: Built for Engineers
-      url: docs/get-started/
+      url: docs/tutorial/
       motto: Ship docs, not build pipelines
       bullets:
-        - '[Production-ready](docs/deployment/) from day one'
-        - '[Full-text search](docs/content/search/#local-search-with-lunr),
-          [i18n](docs/language/#configure-languages), and
-          [versioning](docs/content/versioning/#adding-a-version-drop-down-menu)
+        - '[Production-ready](docs/deploy/) from day one'
+        - '[Full-text search](docs/advanced/search/#local-search-with-lunr),
+          [i18n](docs/advanced/language/#configure-languages), and
+          [versioning](docs/advanced/versioning/#adding-a-version-drop-down-menu)
           built in'
         - '[RSS](docs/content/adding-content/#rss-feeds),
-          [SEO](docs/content/feedback/#search-engine-optimization-metadata), and
-          [Google Analytics](docs/content/feedback/#adding-analytics) ready'
+          [SEO](docs/advanced/analytics/#search-engine-optimization-metadata),
+          and [Google Analytics](docs/advanced/analytics/#adding-analytics)
+          ready'
       value: Focus on documentation, not site plumbing.
       visual:
         type: shell
@@ -53,74 +98,14 @@ capabilities:
         eyebrow: ENGINEERING DOCS / SHIP FAST
         title_lines: [Ready to use., Built to last.]
         rules: ['88%', '72%', '55%']
-    - ref: 02 / CLEAN BY DESIGN
-      title: Clean. Complete.
-      url: docs/content/lookandfeel/
-      motto: Modern design. Proven foundation.
-      bullets:
-        - 'User Experience inspired by [Fumadocs](https://fumadocs.dev/) &
-          [Hextra](https://imfing.github.io/hextra/)'
-        - 'The powerful [Hugo](https://gohugo.io/)
-          [Docsy](https://www.docsy.dev/) documentation feature set'
-        - '[Look and feel](docs/content/lookandfeel/) tuned for open source and
-          engineering teams'
-      value: Quiet interface. Serious capability.
-      visual:
-        type: components
-        items:
-          - {
-              icon: fa-solid fa-window-maximize,
-              title: FUMADOCS,
-              detail: restrained docs shell,
-            }
-          - {
-              icon: fa-solid fa-layer-group,
-              title: NEXTRA,
-              detail: clear content hierarchy,
-            }
-          - {
-              icon: fa-solid fa-book-open,
-              title: DOCSY,
-              detail: mature feature base,
-            }
-          - {
-              icon: fa-solid fa-code-branch,
-              title: OPEN SOURCE,
-              detail: built for engineers,
-            }
-    - ref: 03 / LOCAL FIRST
-      title: Hugo. Nothing Else.
-      url: docs/oink/local-first/
-      motto: Everything ships with the theme
-      bullets:
-        - 'One [**hugo**](https://gohugo.io/) command builds everything'
-        - '[No **npm install**. No
-          PostCSS.](docs/oink/local-first/#what-local-first-covers)'
-        - '[All assets local](docs/oink/local-first/#what-local-first-covers).
-          [Fully offline.](docs/oink/local-first/#obtain-an-offline-archive)'
-      value: One deterministic path from laptop to production.
-      visual:
-        type: code
-        aria_label: Hugo build example
-        title: build.sh
-        lines:
-          - {
-              class: c,
-              prefix: '# ',
-              text: 'one command, one deterministic output',
-            }
-          - { class: p, prefix: '$ ', text: hugo --gc --minify }
-          - { class: ok, prefix: '✓ ', text: assets bundled locally }
-          - { class: ok, prefix: '✓ ', text: multilingual routes built }
-          - { class: ok, prefix: '✓ ', text: public/ ready to deploy }
-    - ref: 04 / EXTENSIBLE
-      title: Content. On Demand.
-      url: docs/oink/components/
+    - ref: 02 / EXTENSIBLE
+      title: Extend. Customize.
+      url: docs/content/components/
       motto: First-class components, loaded per page
       bullets:
-        - '[Asciinema](docs/oink/components/#asciinema),
-          [ECharts](docs/oink/components/#echarts), and
-          [Infographic](docs/oink/components/#infographic) for engineering
+        - '[Asciinema](docs/content/components/#asciinema),
+          [ECharts](docs/content/components/#echarts), and
+          [Infographic](docs/content/components/#infographic) for engineering
           stories'
         - '[KaTeX](docs/content/diagrams-and-formulae/#latex-support-with-katex),
           [Mermaid](docs/content/diagrams-and-formulae/#diagrams-with-mermaid),
@@ -137,17 +122,17 @@ capabilities:
           - {
               icon: fa-solid fa-terminal,
               title: Asciinema,
-              url: docs/oink/components/#asciinema,
+              url: docs/content/components/#asciinema,
             }
           - {
               icon: fa-solid fa-chart-line,
               title: ECharts,
-              url: docs/oink/components/#echarts,
+              url: docs/content/components/#echarts,
             }
           - {
               icon: fa-solid fa-diagram-project,
               title: Infographic,
-              url: docs/oink/components/#infographic,
+              url: docs/content/components/#infographic,
             }
           - {
               icon: fa-solid fa-square-root-variable,
@@ -187,74 +172,239 @@ capabilities:
           - {
               icon: fa-solid fa-id-card,
               title: Cards,
-              url: docs/oink/components/#cards-and-carousel,
+              url: docs/content/components/#cards-and-carousel,
             }
           - {
               icon: fa-solid fa-images,
               title: Carousel,
-              url: docs/oink/components/#cards-and-carousel,
+              url: docs/content/components/#cards-and-carousel,
             }
+    - ref: 03 / CLEAN BY DESIGN
+      title: Clean. Complete.
+      url: docs/content/lookandfeel/
+      motto: Modern design. Proven foundation.
+      bullets:
+        - 'User Experience inspired by [Fumadocs](https://fumadocs.dev/) &
+          [Hextra](https://imfing.github.io/hextra/)'
+        - 'The powerful [Hugo](https://gohugo.io/)
+          [Docsy](https://www.docsy.dev/) documentation feature set'
+        - '[Look and feel](docs/content/lookandfeel/) tuned for open source and
+          engineering teams'
+      value: Quiet interface. Serious capability.
+      visual:
+        type: components
+        items:
+          - {
+              icon: fa-solid fa-window-maximize,
+              title: FUMADOCS,
+              detail: restrained docs shell,
+            }
+          - {
+              icon: fa-solid fa-layer-group,
+              title: NEXTRA,
+              detail: clear content hierarchy,
+            }
+          - {
+              icon: fa-solid fa-book-open,
+              title: DOCSY,
+              detail: mature feature base,
+            }
+          - {
+              icon: fa-solid fa-code-branch,
+              title: OPEN SOURCE,
+              detail: built for engineers,
+            }
+    - ref: 04 / LOCAL FIRST
+      title: Hugo. Nothing Else.
+      url: docs/about/local-first/
+      motto: Everything ships with the theme
+      bullets:
+        - 'One [**hugo**](https://gohugo.io/) command builds everything'
+        - '[No **npm install**. No
+          PostCSS.](docs/about/local-first/#what-local-first-covers)'
+        - '[All assets local](docs/about/local-first/#what-local-first-covers).
+          [Fully offline.](docs/about/local-first/#obtain-an-offline-archive)'
+      value: One deterministic path from laptop to production.
+      visual:
+        type: code
+        aria_label: Hugo build example
+        title: build.sh
+        lines:
+          - {
+              class: c,
+              prefix: '# ',
+              text: 'one command, one deterministic output',
+            }
+          - { class: p, prefix: '$ ', text: hugo }
+          - { class: ok, prefix: '✓ ', text: assets bundled locally }
+          - { class: ok, prefix: '✓ ', text: multilingual routes built }
+          - { class: ok, prefix: '✓ ', text: public/ ready to deploy }
+
+gallery:
+  eyebrow: Explore OINK
+  title: Take the shortest path to an answer.
+  text:
+    Start with a working site, inspect the architecture, or jump directly to the
+    capability you need.
+  columns: 3
+  link_label: Open guide
+  items:
+    - title: Create a site
+      badge: Tutorial
+      icon: fa-solid fa-rocket
+      desc: Build a minimal or bilingual OINK site from an empty directory.
+      url: docs/tutorial/create-site/
+    - title: Configure the theme
+      badge: Reference
+      icon: fa-solid fa-sliders
+      desc: Set languages, branding, navigation, homepage sections, and search.
+      url: docs/content/configuration/
+    - title: Author rich content
+      badge: Components
+      icon: fa-solid fa-shapes
+      desc: Use local terminal recordings, charts, diagrams, cards, and steps.
+      url: docs/content/components/
+    - title: Migrate from Docsy
+      badge: Upgrade
+      icon: fa-solid fa-route
+      desc: Remove obsolete overrides while preserving site-owned behavior.
+      url: docs/upgrade/migrate-from-docsy/
+    - title: Deploy static output
+      badge: Operations
+      icon: fa-solid fa-cloud-arrow-up
+      desc: Publish the same Hugo output to Pages, Cloudflare, Netlify, or S3.
+      url: docs/deploy/
+    - title: Review OINK 0.2.0
+      badge: Release
+      icon: fa-solid fa-tag
+      desc: Read the migration note, compatibility contract, and verified scope.
+      url: blog/release/0.2.0/
+
+stack:
+  eyebrow: Project lineage
+  title: Familiar foundations, explicit relationships.
+  text: OINK builds on proven tools and documents the role each one plays.
+  columns: 4
+  items:
+    - name: Hugo
+      desc: Static build platform
+      icon: fa-solid fa-bolt
+      url: https://gohugo.io/
+      external: true
+    - name: Docsy
+      desc: Upstream content model
+      icon: fa-solid fa-book-open
+      url: https://www.docsy.dev/
+      external: true
+    - name: Fumadocs
+      desc: Design inspiration
+      icon: fa-solid fa-wand-magic-sparkles
+      url: https://fumadocs.dev/
+      external: true
+    - name: Git
+      desc: Reviewable delivery history
+      icon: fa-brands fa-git-alt
+      url: https://git-scm.com/
+      external: true
 
 principles:
-  eyebrow: Theme principles
-  title: Built to Last.
+  eyebrow: Operating principles
+  title: Predictable from source to production.
+  columns: 3
   items:
-    - icon: fa-solid fa-layer-group
-      title: Own the Brand
-      text: OINK customizes Docsy directly—no add-on skin.
-    - icon: fa-solid fa-sliders
-      title: Configure Everything
-      text: Brand, navigation, homepage, footer, and components are data-driven.
+    - icon: fa-solid fa-box-archive
+      title: Local by default
+      desc: Theme-owned assets and browser runtimes ship with the module.
     - icon: fa-solid fa-code-branch
-      title: Track Upstream
-      text: Keep Docsy's strengths and take upstream fixes cleanly.
+      title: Compatible by design
+      desc:
+        Stable content contracts keep site-owned changes small and reviewable.
+    - icon: fa-solid fa-list-check
+      title: Evidence at every layer
+      desc:
+        Source, tests, theme tags, and hosted deployments are verified
+        separately.
+
+faq:
+  eyebrow: Practical answers
+  title: What maintainers usually ask first.
+  items:
+    - question: Does an OINK site require Node.js or npm?
+      answer:
+        No. A consuming site builds with Hugo Extended. This project site uses
+        npm only for its regression, formatting, and browser test suite.
+      url: docs/about/local-first/
+      link_label: Read the local-first contract
+      open: true
+    - question: Can an existing Docsy site migrate incrementally?
+      answer:
+        Yes. Pin OINK, inventory site-owned overrides, move configuration in
+        stages, and preserve aliases while validating representative pages.
+      url: docs/upgrade/migrate-from-docsy/
+      link_label: Follow the migration guide
+    - question: Does local-first mean every optional integration is offline?
+      answer:
+        No. Core theme assets are local; analytics, comments, remote diagrams,
+        and authored external media remain explicit network choices.
+      url: docs/about/local-first/#what-local-first-does-not-cover
+      link_label: Review network boundaries
+    - question: Can I reorder or repeat homepage sections?
+      answer:
+        Yes. The `sections` list controls order, and a map entry can reuse a
+        section type through a different data `key` without overriding a
+        template.
+      url: docs/content/configuration/#homepage-and-footer
+      link_label: See the homepage schema
 
 cta:
   title: Start with OINK.
-  text: Copy the starter. Replace the content. Build with Hugo.
+  text: Create the site. Replace the content. Build with Hugo.
   label: Get started
-  url: docs/get-started/
+  url: docs/tutorial/
   style: primary
 
 footer:
   brand:
     name: PGSTY OINK
-    tagline: '**O**pen **I**ndexed，**N**avigable **K**nowledge'
-    slogan: A local-first, Hugo theme for engineering documentation
+    tagline: '**O**pen · **I**ndexed · **N**avigable · **K**nowledge'
+    slogan: A local-first Hugo theme for engineering documentation
   columns:
     - title: Product
       links:
-        - { label: OINK overview, url: docs/oink/ }
-        - { label: Local-first design, url: docs/oink/local-first/ }
-        - { label: Architecture, url: docs/oink/architecture/ }
-        - { label: Configuration, url: docs/oink/configuration/ }
+        - { label: OINK overview, url: docs/about/ }
+        - { label: Local-first design, url: docs/about/local-first/ }
+        - { label: Architecture, url: docs/about/architecture/ }
+        - { label: Configuration, url: docs/content/configuration/ }
     - title: Resources
       links:
         - { label: Documentation, url: docs/ }
-        - { label: Get started, url: docs/get-started/ }
-        - { label: Components, url: docs/content/shortcodes/ }
-        - { label: Examples, url: examples/ }
+        - { label: Get started, url: docs/tutorial/ }
+        - { label: Components, url: docs/content/components/ }
+        - { label: Examples, url: docs/about/examples/ }
     - title: Community
       links:
         - { label: Blog, url: blog/ }
-        - { label: Contributing, url: docs/contributing/ }
+        - { label: Contributing, url: docs/about/contributing/ }
         - {
             label: GitHub,
             url: 'https://github.com/pgsty/oink',
             external: true,
           }
         - {
-            label: Discussions,
-            url: 'https://github.com/google/docsy/discussions',
+            label: Issues,
+            url: 'https://github.com/pgsty/oink/issues',
             external: true,
           }
     - title: About
       links:
         - { label: About OINK, url: docs/about/ }
-        - { label: Changelog, url: project/about/changelog/ }
+        - { label: Releases, url: blog/release/ }
         - {
             label: License,
             url: 'https://github.com/pgsty/oink/blob/main/LICENSE',
             external: true,
           }
-        - { label: Upstream projects, url: docs/about/#relationship-to-docsy }
+        - {
+            label: Licenses and acknowledgements,
+            url: docs/about/license/#projects-oink-acknowledges,
+          }

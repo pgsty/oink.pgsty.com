@@ -8,7 +8,7 @@ description: >-
   A technical diary of the decisions, migrations, safety boundaries, tests, and
   documentation work behind the OINK implementation preview.
 author: OINK maintainers
-tags: [oink, engineering, diary, architecture]
+tags: [Oink]
 ---
 
 OINK began with an awkward observation: several production documentation sites

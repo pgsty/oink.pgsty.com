@@ -1,9 +1,9 @@
 ---
 downstream_modified: true
-title: Look and Feel
-description:
-  Customize OINK's local-first visual system, themes, typography, code, and
-  layouts.
+title: Look and feel
+weight: 60
+icon: fa-solid fa-palette
+description: Customize themes, typography, code styles, and page layouts.
 ---
 
 OINK ships a complete visual system built on Bootstrap and Docsy, with local
@@ -183,7 +183,7 @@ $font-family-monospace: 'IBM Plex Mono', ui-monospace, monospace;
 ```
 
 If you add a font, subset and self-host it, include the required scripts, use
-`font-display: swap`, document its license in `theme/VENDOR.json`, and test CJK
+`font-display: swap`, document its license in `VENDOR.json`, and test CJK
 fallback. Do not make page rendering depend on a font CDN.
 
 ## CSS utilities
@@ -227,8 +227,8 @@ brand background.
 
 #### Light/dark code styles and more {#lightdark-code-styles}
 
-The theme includes separate Chroma palettes under `theme/assets/scss/td/chroma/`
-and applies them by mode. Project overrides should target `.chroma` beneath the
+The theme includes separate Chroma palettes under `assets/scss/td/chroma/` and
+applies them by mode. Project overrides should target `.chroma` beneath the
 relevant theme attribute, not hard-code a global background.
 
 ##### Selecting console block content

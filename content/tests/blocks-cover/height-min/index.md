@@ -3,13 +3,13 @@ title: Height min with td-below-navbar and dark navbar
 linkTitle: Height min dark
 type: home
 layout: home
-description: A Hugo theme for creating great technical documentation sites
+description: A local-first Hugo theme for engineering documentation
 params:
   ui: { navbar_theme: dark }
 ---
 
 {{% blocks/cover
-  title="Welcome to Docsy!"
+  title="Welcome to OINK!"
   height="min td-below-navbar"
 %}}
 
@@ -20,11 +20,11 @@ params:
 <!-- prettier-ignore -->
 <div class="td-cta-buttons my-5">
   <a {{% _param btn-lg primary %}}
-    href='{{% siteGetPage "/docs/get-started" RelPermalink %}}'>
+    href='{{% siteGetPage "/docs/tutorial" RelPermalink %}}'>
     Get started
   </a>
   <a {{% _param btn-lg secondary %}}
-    href="/examples/">
+    href="/docs/about/examples/">
     Explore examples
   </a>
 </div>
@@ -35,39 +35,33 @@ params:
 
 {{% blocks/lead color="white" %}}
 
-Docsy is a theme for the [Hugo][] static site generator that's specifically
-designed for technical documentation sets. Our aim is to help you get a working
-documentation site up and running as easily as possible, so you can concentrate
-on creating great content for your users.
-
-[![Deploys by Netlify][netlify-badge]][netlify]
+OINK is a local-first theme for the [Hugo][] static site generator. It combines
+a focused documentation shell with multilingual search, rich content components,
+and a Hugo-only consumer build.
 
 [Hugo]: https://gohugo.io/
-[netlify]: https://www.netlify.com/
-[netlify-badge]:
-  https://www.netlify.com/assets/badges/netlify-badge-color-accent.svg
 
 {{% /blocks/lead %}}
 
 {{% blocks/section color="primary" type="row" %}}
 
-{{% blocks/feature icon="fa-lightbulb" title="See Docsy in action!" url="/examples/" %}}
+{{% blocks/feature icon="fa-lightbulb" title="See OINK in action!" url="/docs/about/examples/" %}}
 
-As well as our example site, there's a growing number of projects using Docsy
-for their doc sites.
-
-{{% /blocks/feature %}}
-
-{{% blocks/feature icon="fa-brands fa-github" title="Contributions welcome!" url="https://github.com/google/docsy" %}}
-
-We do a [Pull Request](https://github.com/google/docsy/pulls) contributions
-workflow on **GitHub**. New users are always welcome!
+Compare the complete bilingual project site with the minimal theme example.
 
 {{% /blocks/feature %}}
 
-{{% blocks/feature icon="fa-brands fa-x-twitter" title="Follow us on Twitter!" url="https://twitter.com/docsydocs" %}}
+{{% blocks/feature icon="fa-brands fa-github" title="Contributions welcome!" url="https://github.com/pgsty/oink" %}}
 
-Find out about new features and how our users are using Docsy.
+OINK uses a [pull request](https://github.com/pgsty/oink/pulls) workflow on
+**GitHub**. Theme and documentation changes have separate repository boundaries.
+
+{{% /blocks/feature %}}
+
+{{% blocks/feature icon="fa-solid fa-tag" title="Read release notes" url="/blog/release/" %}}
+
+Review upgrade requirements, compatibility contracts, and verified scope for
+each OINK release.
 
 {{% /blocks/feature %}}
 

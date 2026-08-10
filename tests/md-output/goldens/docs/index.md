@@ -1,6 +1,6 @@
 # Welcome to OINK
 
-> Product guides, configuration, components, and deployment reference
+> Install, customize, deploy, and maintain Oink documentation sites.
 
 ---
 
@@ -10,10 +10,10 @@ LLMS index: [llms.txt](/llms.txt)
 
 <!-- markdownlint-disable-next-line no-space-in-links -->
 
-<span class="badge bg-primary text-bg-primary fs-6">v0.1.0
+<span class="badge bg-primary text-bg-primary fs-6">v0.2.0
 </span>
 
-Welcome to the OINK user guide for version `v0.1.0`. This guide
+Welcome to the OINK user guide for version `v0.2.0`. This guide
 covers the theme's Hugo-only build, local-first runtime, multilingual framework,
 content components, customization, and deployment.
 
@@ -39,8 +39,8 @@ OINK includes:
 - local Mermaid, KaTeX, Markmap, Swagger UI, Redoc, Asciinema, ECharts, and
   Infographic runtimes;
 - reusable details, tabs, cards, navigation cards, and document carousels;
-- a bilingual starter, Cloudflare Pages guidance, an air-gap distribution, and
-  an auditable vendor manifest.
+- a bilingual project site, static-host deployment guides, local theme assets,
+  and an auditable vendor manifest.
 
 OINK itself does **not** provide source hosting or deploy your generated site.
 Keep your project in GitHub, GitLab, a private Git service, or a local
@@ -60,10 +60,10 @@ the site rather than forcing them into the theme.
 
 ## Ready to get started?
 
-Read the [OINK overview](/docs/oink/) to understand the product boundaries, then
-[build the bilingual starter](/docs/oink/getting-started/). The remaining user
-guide documents the inherited Docsy content model and the compatible APIs that
-OINK continues to support.
+Read the [Oink overview](/docs/about/) to understand the product boundaries,
+then [install Oink](/docs/tutorial/install/) or
+[create a bilingual site](/docs/tutorial/create-site/). The remaining guide
+covers authoring, advanced features, deployment, and upgrades.
 
 [Docsy]: https://github.com/google/docsy
 [Hugo]: https://gohugo.io/
@@ -72,12 +72,9 @@ OINK continues to support.
 
 Section pages:
 
-- [Get started](/docs/get-started/): Build a bilingual Oink documentation site with Hugo Extended.
-- [Content and Customization](/docs/content/): How to add content to and customize your Docsy site.
-- [OINK](/docs/oink/): Product boundaries, architecture, and operating model
-- [Deployment and previews](/docs/deployment/): Deploying your Docsy site.
-- [Multi-language support](/docs/language/): Configure languages, translations, stable links, search, and RTL.
-- [Update OINK](/docs/update/): Update the theme, Hugo Extended, and local overrides safely.
-- [Best Practices](/docs/best-practices/): Optional guidance and recommendations about organizing, authoring, and managing your technical documentation.
-- [Contribution guidelines](/docs/contributing/): How to contribute code and bilingual documentation to OINK.
-- [About OINK](/docs/about/): OINK is a local-first, Hugo-only theme for multilingual technical documentation
+- [About Oink](/docs/about/): Understand Oink's examples, design principles, architecture, and open-source model.
+- [Get Started](/docs/tutorial/): Build a bilingual Oink documentation site with Hugo Extended.
+- [Authoring](/docs/content/): Author, organize, and style content for an Oink documentation site.
+- [Advanced](/docs/advanced/): Configure visualizations, languages, search, versions, and integrations.
+- [Deployment](/docs/deploy/): Build Oink once, publish its static output, and verify the result.
+- [Upgrade](/docs/upgrade/): Upgrade Oink, Hugo Extended, or an existing Docsy site safely.

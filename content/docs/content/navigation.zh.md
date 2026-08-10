@@ -1,6 +1,8 @@
 ---
 title: 导航与菜单
-description: 配置 OINK 导航、语言切换、侧边栏和页面大纲。
+weight: 50
+icon: fa-solid fa-bars
+description: 配置导航、语言切换、侧栏与页面大纲。
 ---
 
 OINK 把 Hugo 的内容树和菜单模型组织成一套文档工作台：全局导航栏、可折叠且可调整宽度的分区侧边栏，以及可折叠的页面大纲。同一套结构适用于英文、中文和从右向左书写的语言。
@@ -76,7 +78,7 @@ OINK 根据 Hugo 的 `AllTranslations`
 
 ### 搜索框 {#search-box}
 
-启用离线搜索后，文档工作台会使用本地搜索对话框。侧边栏按钮会显示当前平台快捷键（Command/Ctrl+K）。在线搜索集成仍可通过显式配置启用。详见[搜索](/zh/docs/content/search/)。
+启用离线搜索后，文档工作台会使用本地搜索对话框。侧边栏按钮会显示当前平台快捷键（Command/Ctrl+K）。在线搜索集成仍可通过显式配置启用。详见[搜索](/zh/docs/advanced/search/)。
 
 ### 为导航栏添加图标 {#adding-icons-to-the-navbar}
 

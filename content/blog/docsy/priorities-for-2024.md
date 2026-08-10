@@ -6,6 +6,7 @@ author: >
   for the [Docsy Steering Committee](/blog/docsy/hello/#introducing-the-psc)
 date: 2023-11-28
 aliases: [/blog/2023/priorities-for-2024/]
+tags: [Docsy, Release]
 # prettier-ignore
 cSpell:ignore: opentelemetry namespacing customizability deprioritize
 ---
@@ -76,7 +77,7 @@ and feature consolidation.
     one) Mermaid support.
 
 [blogged about elsewhere]:
-  https://www.cncf.io/blog/docsy/01/19/fast-and-effective-tools-for-cncf-and-open-source-project-websites/
+  https://www.cncf.io/blog/2023/01/19/fast-and-effective-tools-for-cncf-and-open-source-project-websites/
 [docsy-analytics]: https://github.com/google/docsy/network/dependents
 [ce]: https://github.com/kentcdodds/cross-env/issues/257
 [sc]: /blog/docsy/hello/#introducing-the-psc

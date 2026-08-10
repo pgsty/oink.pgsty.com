@@ -13,8 +13,10 @@ Oink uses two focused repositories:
 | [Oink theme][]        | Published Hugo Module, layouts, assets, and i18n  |
 | [Oink project site][] | Documentation, examples, regression tests, and CI |
 
-The theme repository has no embedded example site or npm workspace. Consumer
-sites import `github.com/pgsty/oink`; the project site is one such consumer.
+The theme repository includes a deliberately small `exampleSite/` for checking
+the theme checkout, but no project-site content or npm workspace. Consumer sites
+import `github.com/pgsty/oink`; the independent project site is one such
+consumer.
 
 For local development, clone both repositories as siblings and connect them with
 an ignored Go workspace:
@@ -30,7 +32,7 @@ cd ~/pgsty/oink.pgsty.com
 go work init .
 go work edit -replace=github.com/pgsty/oink=../oink
 export HUGO_MODULE_WORKSPACE=go.work
-npm install
+npm ci
 npm run serve
 ```
 

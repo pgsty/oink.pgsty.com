@@ -61,7 +61,7 @@ function renderedHeadingIds(file) {
   );
 }
 
-const sources = ['docs', 'blog', 'examples', 'community']
+const sources = ['docs', 'blog']
   .flatMap((scope) => walk(path.join(contentRoot, scope)))
   .filter((file) => file.endsWith('.md') && !file.endsWith('.zh.md'))
   .sort();

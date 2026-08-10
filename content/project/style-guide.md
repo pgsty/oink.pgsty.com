@@ -47,7 +47,7 @@ and uses Prettier and Markdownlint to enforce basic formatting rules.
 
 <!-- prettier-ignore-start -->
 [alert syntax]: /docs/content/adding-content/#alerts
-[agent-support]: /docs/content/agent-support/
+[agent-support]: /docs/advanced/agent-support/
 [changelog]: /project/about/changelog/
 [cl-style-guide]: /project/about/changelog/#style-guide
 [present tense]: https://developers.google.com/style/tense

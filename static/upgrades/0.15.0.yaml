@@ -100,7 +100,7 @@ breaking:
     references:
       blog: /blog/docsy/0.15.0/#version-menu
       user-guide:
-        - /docs/content/versioning/#adding-a-version-drop-down-menu
+        - /docs/advanced/versioning/#adding-a-version-drop-down-menu
         - /docs/content/navigation/#version-menu
       partials:
         - https://github.com/google/docsy/tree/v0.15.0/layouts/_partials
@@ -171,7 +171,7 @@ experimental:
     references:
       blog: /blog/docsy/0.15.0/#agent-support
       user-guide:
-        - /docs/content/agent-support/
+        - /docs/advanced/agent-support/
       prs: [2597, 2601, 2605, 2606]
 
 # Sanity checks to run after upgrading. These are project-agnostic.

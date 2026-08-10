@@ -8,7 +8,7 @@
   "scripts": {
     "_build": "npm run _hugo-dev --",
     "_check:afdocs": "npx afdocs check --config agent-docs.config.yml --format scorecard",
-    "check:afdocs:dev": "npm run -s _check:afdocs -- http://localhost:1313 | tee content/docs/content/agent-support/afdocs-scorecard.txt",
+    "check:afdocs:dev": "npm run -s _check:afdocs -- http://localhost:1313 | tee content/docs/advanced/agent-support/afdocs-scorecard.txt",
     "_check:format": "npx prettier --config .prettierrc.json --check .",
     "_check:markdown-style": "node scripts/check-markdown-style.mjs",
     "_check:rendered-markdown": "node scripts/check-rendered-markdown.mjs public",

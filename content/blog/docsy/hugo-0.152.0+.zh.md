@@ -7,7 +7,7 @@ author: >-
   [Patrice Chalin](https://github.com/chalin)（[CNCF](https://www.cncf.io/)），
   代表 [Docsy 指导委员会](/zh/blog/docsy/hello/#introducing-the-psc)
 body_class: release-highlights
-tags: [hugo, 升级]
+tags: [Docsy, Release]
 params:
   hugoMinVersion: 0.157.0
 ---
@@ -84,7 +84,7 @@ Matter 中某些 Token 的解释方式发生破坏性变化。
         no: Sorry to hear that. ...
   ```
 
-[反馈]: /zh/docs/content/feedback/#user-feedback
+[反馈]: /zh/docs/advanced/analytics/#user-feedback
 
 ## 多维内容模型（0.153.0） {#0.153.0}
 

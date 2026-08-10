@@ -1,6 +1,8 @@
 ---
 downstream_modified: true
 title: Shortcodes
+weight: 80
+icon: fa-solid fa-code
 description: Use OINK's local-first content components safely and accessibly.
 ---
 
@@ -38,8 +40,8 @@ Creates a hero from the page bundle image matching `*background*` and optional
 
 ```markdown
 {{</* blocks/cover title="OINK" subtitle="Local-first documentation"
-    color="dark" height="max" */>}} [Get started](/docs/get-started/){ .btn
-.btn-lg .btn-primary } {{</* /blocks/cover */>}}
+    color="dark" height="max" */>}} [Get started](/docs/tutorial/){ .btn .btn-lg
+.btn-primary } {{</* /blocks/cover */>}}
 ```
 
 `image_anchor` and `logo_anchor` control image cropping; `byline` attributes the
@@ -78,7 +80,7 @@ Creates one feature cell, normally inside a section:
 
 ```markdown
 {{%/* blocks/feature icon="fa-solid fa-box-archive"
-    title="Works offline" url="/docs/oink/local-first/"
+    title="Works offline" url="/docs/about/local-first/"
     url_text="Read the design" */%}} All required browser assets are pinned and
 served locally. {{%/* /blocks/feature */%}}
 ```
@@ -187,7 +189,7 @@ security and privacy boundary, not a general layout tool.
 ## OINK content components
 
 The following components are additions carried by OINK. Each runtime is pinned
-in `theme/VENDOR.json` and loaded on demand from the same origin.
+in `VENDOR.json` and loaded on demand from the same origin.
 
 ### `details`
 
@@ -200,6 +202,58 @@ Markdown. {{%/* /details */%}}
 
 `closed` defaults to true. Use a concise summary and do not hide mandatory
 instructions inside a closed disclosure.
+
+### `steps` {#steps}
+
+`steps` presents a sequence with automatically generated numbers and a visual
+guide line. Write ordinary Markdown headings and content inside the shortcode;
+do not type the numbers yourself.
+
+{{% steps %}}
+
+#### Create the content {#steps-create-content}
+
+Write one direct child heading for each step, followed by any Markdown content
+that belongs to it.
+
+#### Check the sequence {#steps-check-sequence}
+
+Move, add, or remove whole steps. The displayed numbers update automatically.
+
+#### Publish the result {#steps-publish-result}
+
+Verify the sequence on narrow screens and in both color themes.
+
+{{% /steps %}}
+
+Use Markdown shortcode delimiters so Hugo renders the inner content:
+
+```markdown
+{{%/* steps */%}}
+
+### Create the content
+
+Add the first instruction.
+
+### Check the sequence
+
+Add the next instruction. The number is generated automatically.
+
+#### Optional detail {class="no-step-marker"}
+
+This heading belongs to the current step and does not consume a number.
+
+### Publish the result
+
+Add the final instruction.
+
+{{%/* /steps */%}}
+```
+
+Every direct child heading from `h2` through `h6` becomes a step. Add
+`class="no-step-marker"` when a direct child heading is a subsection of the
+current step. Keep the same heading level for peer steps, preserve a logical
+page outline, and avoid nesting one `steps` block inside another.
 
 ### `asciinema`
 
@@ -217,39 +271,32 @@ important parameters include `theme`, `autoplay`, `loop`, `preload`, `speed`,
 can come from Hugo assets or a site-relative URL. Avoid autoplay, remove secrets
 from terminal history, and provide nearby text for essential steps.
 
-### `echarts`
+### `echarts` {#echarts}
 
-Renders an Apache ECharts options object from JSON or YAML:
+Apache ECharts is a full visualization system rather than a one-paragraph
+shortcode. Its advanced guide documents the wrapper, structured options, themes,
+responsive behavior, accessibility, and trusted callback boundary:
 
-```markdown
-{{</* echarts height="320px" */>}} xAxis: type: category data: [Build, Test,
-Publish] yAxis: type: value series:
+- [ECharts quick start](/docs/advanced/echarts/)
+- [Declarative chart gallery](/docs/advanced/echarts/gallery/)
+- [Callbacks and trusted code](/docs/advanced/echarts/callbacks/)
 
-- type: bar data: [42, 38, 12] {{</* /echarts */>}}
-```
+The shortcode body accepts a JSON or YAML options object. Use `height`, `theme`,
+and `full` only as described in the dedicated guide.
 
-`height` must be a safe CSS length; `theme` selects an ECharts theme and
-`full=true` removes the normal content-width clamp.
+### `infographic` {#infographic}
 
-Fenced JavaScript blocks inside the shortcode can define callbacks referenced
-from the JSON/YAML options as `$fn:name`. That code runs in the visitor's
-browser, so include only reviewed code from trusted authors. Prefer declarative
-JSON/YAML when callbacks are unnecessary, add an adjacent textual summary, and
-verify dark mode.
+AntV Infographic has its own advanced guide because template choice, DSL
+structure, themes, visual semantics, and accessibility need more than an inline
+example:
 
-### `infographic`
+- [Infographic quick start](/docs/advanced/infographic/)
+- [Processes, timelines, and cycles](/docs/advanced/infographic/processes/)
+- [Layouts, funnels, and themes](/docs/advanced/infographic/layouts/)
 
-Renders the locally vendored infographic DSL:
-
-```markdown
-{{</* infographic height="360px" */>}} infographic
-list-row-simple-horizontal-arrow data items - label Build - label Test - label
-Publish {{</* /infographic */>}}
-```
-
-`height` is `auto` or a safe CSS length; `full=true` removes the width clamp.
-The DSL is data, not arbitrary HTML. Provide prose that communicates the same
-conclusion when the visualization is unavailable.
+The shortcode body contains the Infographic DSL. Use `height` and `full` as
+documented there, and keep an equivalent textual explanation beside every
+essential visualization.
 
 ### `doc-cards` and `nav-cards`
 
@@ -258,8 +305,8 @@ Both containers accept `cols` from 1 through 4. Their child cards accept
 
 ```markdown
 {{</* nav-cards cols="2" */>}}
-{{</* nav-card title="Get started" link="/docs/get-started/"
-      icon="fa-solid fa-rocket" desc="Build with Hugo {version}." */>}} {{</* nav-card title="Architecture" link="/docs/oink/architecture/"
+{{</* nav-card title="Get started" link="/docs/tutorial/"
+      icon="fa-solid fa-rocket" desc="Build with Hugo {version}." */>}} {{</* nav-card title="Architecture" link="/docs/about/architecture/"
       badge="Design" */>}}
 {{</* /nav-cards */>}}
 ```

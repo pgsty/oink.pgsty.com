@@ -1,8 +1,9 @@
 ---
 downstream_modified: true
-title: Adding Content
-description:
-  Structure and author bilingual documentation and blog content in OINK.
+title: Adding content
+weight: 20
+icon: fa-solid fa-file-circle-plus
+description: Structure and author bilingual documentation and blog content.
 ---
 
 OINK uses Hugo's content model: Markdown carries the information, front matter
@@ -207,7 +208,7 @@ nearby pages or bundle resources. Hugo's `ref` and `relref` shortcodes validate
 content references and account for language and permalink rules:
 
 ```markdown
-[Configuration]({{</* ref "/docs/oink/configuration" */>}})
+[Configuration]({{</* ref "/docs/about/configuration" */>}})
 ```
 
 For bilingual pages:
@@ -269,7 +270,7 @@ implementation's package tree. Each documentation subsection needs an
 
 Prefer a shallow hierarchy. Split a page when it serves a distinct task or
 audience; do not split merely to shorten a file. See
-[Organizing Your Content](/docs/best-practices/organizing-content/).
+[Organizing Your Content](/docs/content/organize-content/).
 
 #### Docs section landing pages
 
@@ -386,8 +387,8 @@ Prefer page resources or Hugo Pipes for assets that need resizing,
 fingerprinting, or bundle-relative lookup.
 
 OINK's browser runtime is intentionally shipped from the theme or site itself.
-When adding a library, vendor and pin it, record it in `theme/VENDOR.json`, and
-do not introduce an implicit CDN fallback.
+When adding a library, vendor and pin it, record it in `VENDOR.json`, and do not
+introduce an implicit CDN fallback.
 
 ## RSS feeds
 

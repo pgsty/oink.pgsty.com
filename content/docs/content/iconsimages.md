@@ -1,187 +1,115 @@
 ---
-title: Logos and Images
-# date: 2017-01-05
-description: Add and customize logos, icons, and images in your project.
-cSpell:ignore: lookandfeel imgproc
+title: Logos and images
+weight: 70
+icon: fa-solid fa-images
+description: Configure logos, page icons, favicons, and images.
+cSpell:ignore: imgproc
 ---
 
-## Add your logo
+## Add brand marks {#add-your-logo}
 
-By default, Docsy shows a site logo at the start of the navbar, that is, at the
-extreme left. Place your project's SVG logo in `assets/icons/logo.svg`. This
-overrides the default Docsy logo in the theme.
+Oink uses `assets/icons/logo.svg` as its default brand mark. Override it with
+`params.logo`, or set `params.wordmark` when the header should show a complete
+wordmark instead of an icon followed by the site title:
 
-If you don't want a logo to appear in the navbar, then set site parameter
-`navbar_logo` to `false` in your project's config:
-
-<!-- markdownlint-disable no-shortcut-ref-link -->
-<!-- prettier-ignore-start -->
-{{< tabpane >}}
-{{< tab header="Configuration file:" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
-[params.ui]
-navbar_logo = false
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
+```yaml
 params:
-  ui:
-    navbar_logo: false
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
-
-{
-  "params": {
-    "ui": {
-      "navbar_logo": false
-    }
-  }
-}
-{{< /tab >}}
-{{< /tabpane >}}
-<!-- prettier-ignore-end -->
-<!-- markdownlint-enable no-shortcut-ref-link -->
-
-For information about styling your logo, see [Styling your project logo and
-name][].
-
-[Styling your project logo and name]:
-  /docs/content/lookandfeel/#styling-your-project-logo-and-name
-
-## Use icons
-
-Docsy includes the free FontAwesome icons by default, including logos for sites
-like GitHub and Stack Overflow. You can view all available icons in the
-[FontAwesome documentation](https://fontawesome.com/icons/), including the
-FontAwesome version when the icon was added and whether it is available for free
-tier users. Check Docsy's [package.json][] and release notes for Docsy's
-currently included version of FontAwesome.
-
-You can add FontAwesome icons to your [navbar][], [side nav][], or anywhere in
-your text.
-
-## Add your favicons
-
-The theme ships no favicon files, but it **discovers and links** a set of
-conventionally named icons when you supply them:
-[create your favicon files](#generate-favicons) and put them in your site
-project's `static` directory so they publish at the site root (where browsers
-probe for them). Docsy adds `<link>` elements inside each page's `<head>` for
-whichever of these files it finds, in this order:
-
-| File                       | Link                                             |
-| -------------------------- | ------------------------------------------------ |
-| `favicon.ico`              | `rel="icon"`[^ico-link]                          |
-| `favicon.svg`              | `rel="icon"` with `type="image/svg+xml"`         |
-| `favicon-NxN.png`          | `rel="icon"` with `type="image/png" sizes="NxN"` |
-| `apple-touch-icon.png`     | `rel="apple-touch-icon"` (implicit size 180x180) |
-| `apple-touch-icon-NxN.png` | `rel="apple-touch-icon"` with `sizes="NxN"`      |
-
-If you have any square-size variants listed above, Docsy adds them in ascending
-size order.
-
-[^ico-link]:
-    The `.ico` link carries no `sizes`: the file is self-describing (browsers
-    read the frame sizes it contains), so declaring sizes here would only risk
-    drifting from the actual file. When you also supply a `favicon.svg`,
-    browsers that support SVG favicons (most modern ones) prefer it, and the
-    `.ico` serves as the fallback.
-
-A modern `favicon.ico` plus an SVG and an `apple-touch-icon.png` covers common
-browser and platform favicon needs. For anything beyond that:
-
-- Add web app manifest `<link>` elements to [hooks/head-end.html][].
-- If you need to customize the favicon links themselves, override
-  [layouts/_partials/favicons.html][]. Make sure you use `relURL` so links stay
-  correct when your site's `baseURL` includes a subpath.
-
-### Generate favicons
-
-Don't have a favicon yet? You can generate favicons from a single image with an
-online tool such as [favicon.io](https://favicon.io) or
-[RealFaviconGenerator][].
-
-If you have a source SVG and [ImageMagick][] installed, Docsy also ships a
-`gen-favicons` helper. Save your source SVG as `static/favicon.svg` -- the theme
-links it directly -- then generate the raster icons alongside it. Run the
-command from your site project root.
-
-For an npm package install of Docsy:
-
-```sh
-npx --no-install gen-favicons static/favicon.svg static/
+  logo: icons/product.svg
+  wordmark: images/product-wordmark.svg
 ```
 
-Otherwise, run:
+Both parameters can name a Hugo asset or a public path. Prefer `assets/` for
+theme-processed files and `static/` when a file must be copied unchanged. Keep
+the source SVG tightly cropped so the header, sidebar, and footer can size it
+consistently.
 
-```sh
-node DOCSY_THEME_DIR/scripts/gen-favicons/cli.mjs static/favicon.svg static/
+For brand typography, dimensions, and project SCSS, see [Look and feel][].
+
+## Use icons {#use-icons}
+
+Oink bundles Font Awesome Free and serves its fonts locally. Set a page's `icon`
+in front matter to give the page and its navigation entry a stable visual cue:
+
+```yaml
+---
+title: Deployment
+icon: fa-solid fa-cloud-arrow-up
+---
 ```
 
-For a Git submodule install of Docsy, _`DOCSY_THEME_DIR`_ is
-`themes/docsy/theme`. For a Hugo module install, it is the directory printed by
-`go list -m -f '{{.Dir}}' github.com/google/docsy/theme`.
+Use an icon available in the bundled free set. The exact vendored version is
+recorded in the theme's [`VENDOR.json`][]. Menu-specific icon behavior is
+covered in [Navigation and menus][].
 
-For the sizes and other options you can pass, run the command with `--help`.
+## Add favicons {#add-your-favicons}
 
-## Add images
+Oink does not impose a product favicon. Instead, it discovers conventionally
+named files in the consumer site's `static/` directory and adds the matching
+`<link>` elements to every page.
 
-### Landing pages
+| File                       | Generated link                             |
+| -------------------------- | ------------------------------------------ |
+| `favicon.ico`              | `rel="icon"`                               |
+| `favicon.svg`              | `rel="icon"` and `type="image/svg+xml"`    |
+| `favicon-NxN.png`          | `rel="icon"`, PNG type, and `sizes="NxN"`  |
+| `apple-touch-icon.png`     | `rel="apple-touch-icon"`                   |
+| `apple-touch-icon-NxN.png` | `rel="apple-touch-icon"` and `sizes="NxN"` |
 
-Docsy's [`blocks/cover` shortcode](/docs/content/shortcodes/#blocks-cover) makes
-it easy to add cover images (also known as hero images) to landing pages. The
-shortcode looks for an image with the word "background" in the name within the
-landing page's [page bundle](adding-content/#page-bundles).
+Square numbered variants are emitted in ascending size order. A practical
+baseline is `favicon.ico`, `favicon.svg`, and `apple-touch-icon.png`.
 
-For example, the example site's landing page `content/en/_index.md` uses the
-image `content/en/featured-background.jpg`, which is in the same directory --
-see the [content/en][] folder on GitHub.
+For a web app manifest or other head metadata, add markup in
+[`layouts/_partials/hooks/head-end.html`][]. To change discovery itself,
+override [`layouts/_partials/favicons.html`][] and keep URLs subpath-safe with
+`relURL`.
 
-Use the block's [`height` parameter][] to set the preferred display height of
-the cover container (and therefore its image). For a full viewport height, use
-`full`, along with the `td-below-navbar` helper class to position the cover
-below the navbar:
+### Generate favicons {#generate-favicons}
+
+Generate the files with a reviewed graphics workflow such as ImageMagick,
+[favicon.io][], or [RealFaviconGenerator][]. Oink's production build does not
+depend on Node.js or a favicon generator; Hugo only publishes the files already
+present in `static/`.
+
+## Add images {#add-images}
+
+Put images beside a page when they belong to that page bundle. This keeps the
+source and its media together and lets Hugo process the resource. Use regular
+Markdown for simple images or the [`imgproc` shortcode][] when you need resize,
+crop, or display options.
+
+### Landing-page covers {#landing-pages}
+
+The [`blocks/cover` shortcode][] selects the first page resource whose filename
+contains `background`. For raster images, Oink creates responsive 1920x1080 and
+960x540 variants. Use `image_anchor` to control the crop and `height` to choose
+`auto`, `min`, `med`, `max`, or `full`:
 
 ```go-html-template
 {{%/* blocks/cover
-  title="Welcome to Docsy!"
-  image_anchor="top"
-  height="full td-below-navbar"
+  title="Welcome to Oink"
+  image_anchor="center"
+  height="min"
 */%}}
-...
+Documentation that gets out of the way.
 {{%/* /blocks/cover */%}}
 ```
 
-For a shorter image, as in the [example site's About][] page, use one of `min`,
-`med`, `max`, or `auto` (the image's natural height):
+### Static images {#other-pages}
 
-```go-html-template
-{{%/* blocks/cover
-  title="About the Docsy Example"
-  image_anchor="bottom"
-  height="min td-below-navbar"
-*/%}}
-...
-{{%/* /blocks/cover */%}}
-```
+Put files in `static/` when they must retain a fixed public path and do not need
+Hugo image processing. Reference them with a root-relative URL, and verify that
+the same URL works when the site is built with its production `baseURL`. See
+[Adding static content][] for the trade-offs.
 
-### Other pages
-
-To add inline images to other pages, use the
-[`imgproc` shortcode](/docs/content/shortcodes/#imgproc). Alternatively, if you
-prefer, just use regular Markdown or HTML images and add your image files to
-your project's `static` directory. You can find out more about using this
-directory in
-[Adding static content](/docs/content/adding-content/#adding-static-content).
-
-<!-- prettier-ignore-start -->
-[content/en]: https://github.com/google/docsy-example/tree/main/content/en
-[example site's About]: <{{% param example_site_url %}}/about/>
-[`height` parameter]: shortcodes/#blocks
-[hooks/head-end.html]: https://github.com/google/docsy/blob/main/theme/layouts/_partials/hooks/head-end.html
-[ImageMagick]: https://imagemagick.org
-[layouts/_partials/favicons.html]: https://github.com/google/docsy/blob/main/theme/layouts/_partials/favicons.html
-[navbar]: /docs/content/navigation/#adding-icons-to-the-navbar
-[package.json]: https://github.com/google/docsy/blob/main/package.json
-[RealFaviconGenerator]: https://realfavicongenerator.net
-[side nav]: /docs/content/navigation/#adding-icons-to-the-side-nav
-<!-- prettier-ignore-end -->
+[Adding static content]: /docs/content/adding-content/#adding-static-content
+[`blocks/cover` shortcode]: /docs/content/shortcodes/#blocks-cover
+[favicon.io]: https://favicon.io/
+[`imgproc` shortcode]: /docs/content/shortcodes/#imgproc
+[`layouts/_partials/favicons.html`]:
+  https://github.com/pgsty/oink/blob/main/layouts/_partials/favicons.html
+[`layouts/_partials/hooks/head-end.html`]:
+  https://github.com/pgsty/oink/blob/main/layouts/_partials/hooks/head-end.html
+[Look and feel]: /docs/content/lookandfeel/#styling-your-project-logo-and-name
+[Navigation and menus]: /docs/content/navigation/#adding-icons-to-the-side-nav
+[RealFaviconGenerator]: https://realfavicongenerator.net/
+[`VENDOR.json`]: https://github.com/pgsty/oink/blob/main/VENDOR.json

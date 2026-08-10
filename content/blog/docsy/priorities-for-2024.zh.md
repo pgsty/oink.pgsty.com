@@ -6,6 +6,7 @@ author: >
   代表 [Docsy 指导委员会](/zh/blog/docsy/hello/#introducing-the-psc)
 date: 2023-11-28
 aliases: [/blog/2023/priorities-for-2024/]
+tags: [Docsy, Release]
 ---
 
 > **摘要**：已有 1,400 个项目使用 Docsy！2024 年面向使用方项目的首要任务，是提升 Docsy 的稳定性、易用性、可定制性与整体一致性，同时整合现有功能。
@@ -46,7 +47,7 @@ Google 在五年多前将 Docsy 开源。得益于社区贡献，它的稳定性
     核心范围之外的功能甚至可以迁移到由社区维护的独立仓库。指导委员会也在考虑为部分次要功能设计“插件”架构，例如 Mermaid 支持。
 
 [其他文章]:
-  https://www.cncf.io/blog/docsy/01/19/fast-and-effective-tools-for-cncf-and-open-source-project-websites/
+  https://www.cncf.io/blog/2023/01/19/fast-and-effective-tools-for-cncf-and-open-source-project-websites/
 [docsy-analytics]: https://github.com/google/docsy/network/dependents
 [ce]: https://github.com/kentcdodds/cross-env/issues/257
 [sc]: /zh/blog/docsy/hello/#introducing-the-psc

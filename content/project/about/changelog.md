@@ -1,20 +1,26 @@
 ---
 downstream_modified: true
-title: Changelog
-description: Docsy repository changelog
+title: Docsy changelog archive
+description:
+  Historical upstream Docsy changes retained for the imported release articles.
 aliases: [../changelog]
 # prettier-ignore
 cSpell:ignore: deining FOUC gitmodules gtag katex lookandfeel mhchem navs notoc tabpane onedark
 ---
 
-We document **breaking changes** and release **highlights** in this page, with
-maintainer-facing changes summarized at the end of each release section. For the
-full list of changes of any particular release, see the [release
-notes][releases].
+This page preserves the upstream Docsy changelog referenced by the imported
+Docsy release articles. It is historical context, not the OINK theme changelog
+or the project site's release status.
 
-Useful links: [Releases][] & [tags][], jump to the [latest][] release, and view
-the [milestones][].
+For current OINK changes, read the [OINK release reports][] or the theme's
+[source changelog][]. Upstream references below continue to point to Docsy so
+their original version links and terminology remain accurate.
 
+Useful upstream links: [Docsy releases][releases], [tags][], the [latest][]
+release, and [milestones][].
+
+[OINK release reports]: /blog/release/
+[source changelog]: https://github.com/pgsty/oink/blob/main/CHANGELOG.md
 [latest]: https://github.com/google/docsy/releases/latest
 [milestones]: https://github.com/google/docsy/milestones
 [releases]: https://github.com/google/docsy/releases
@@ -22,7 +28,7 @@ the [milestones][].
 
 ## Style guide
 
-- Use past tense when when describing releases.
+- Use past tense when describing releases.
 - Generally, start each change entry with a verb (in the past tense). For
   example: Added, Changed, Deprecated, Fixed.
 - It's ok to follow that with "you can now...". For example:
@@ -126,7 +132,7 @@ Everything else — including Windows — is supported on a best-effort basis.
 <!-- prettier-ignore-start -->
 [@docsy/theme]: https://www.npmjs.com/package/@docsy/theme
 [site Pages workflow]: https://github.com/pgsty/oink.pgsty.com/blob/main/.github/workflows/pages.yml
-[minimum Hugo version]: /docs/get-started/docsy-as-module/installation-prerequisites/#install-hugo
+[minimum Hugo version]: /docs/tutorial/prerequisites/#install-hugo
 [package.json]: https://github.com/google/docsy/blob/main/package.json
 <!-- prettier-ignore-end -->
 
@@ -138,40 +144,7 @@ unless they extend beyond a fix and affect user-facing functionality. In that
 case, classify them as a [Breaking change](#breaking-change) or **New**
 functionality, depending on scope. Prefer narrow, focused PRs where possible.
 
-<!-- TODO: look into https://www.conventionalcommits.org/en/v1.0.0/#summary -->
-
 </details>
-
-## v0.16.1 or v0.17.0 - UNRELEASED {#next}
-
-> **UNRELEASED: this planned version is still under development**
-
-For the full list of changes, see the [0.16.1][] or [0.17.0][] release page.
-
-[**Breaking changes**](#breaking-change):
-
-- ...
-
-**New**:
-
-- ...
-
-**Other changes**:
-
-- ...
-
-[**Experimental**](#experimental):
-
-- ...
-
-**For maintainers**:
-
-- Committed the npm lockfiles; dependency installs are now lock-exact, and
-  unreviewed dependency scripts are disabled ([#2700][]).
-
-[#2700]: https://github.com/google/docsy/pull/2700
-[0.16.1]: https://github.com/google/docsy/releases/latest?FIXME=v0.16.1
-[0.17.0]: https://github.com/google/docsy/releases/latest?FIXME=v0.17.0
 
 ## v0.16.0 {#v0.16.0}
 
@@ -253,13 +226,13 @@ changes, see the [0.16.0][] release page or the [git history since 0.15.0][].
 [0.16.0-blog-shared-chrome]: /blog/docsy/0.16.0/#shared-chrome
 [0.16.0-blog-theme-folder]: /blog/docsy/0.16.0/#theme-folder
 [0.16.0]: https://github.com/google/docsy/releases/tag/v0.16.0
-[chrome]: /docs/deployment/chrome/
+[chrome]: /docs/about/page-shell/
 [favicons]: /docs/content/iconsimages/#add-your-favicons
 [git history since 0.15.0]: https://github.com/google/docsy/compare/v0.15.0...v0.16.0
 [Hugo 0.158+ upgrade guide]: /blog/docsy/hugo-0.158.0+/
 [hugo-0.160.1]: https://github.com/gohugoio/hugo/releases/tag/v0.160.1
 [hugo-0.164.0]: https://github.com/gohugoio/hugo/releases/tag/v0.164.0
-[option-3-npm]: /docs/get-started/other-options/#option-3-docsy-as-an-npm-package
+[option-3-npm]: /docs/tutorial/installation-options/#option-3-docsy-as-an-npm-package
 [@shurup]: https://github.com/shurup
 <!-- prettier-ignore-end -->
 
@@ -607,7 +580,7 @@ For the full list of changes, see the [0.11.0][] release page.
 [bs-rtl]: https://getbootstrap.com/docs/5.3/getting-started/rtl/
 [Adding a community page]: /docs/content/adding-content/#adding-a-community-page
 [params.ui.sidebar_menu_truncate]: /docs/content/navigation/#side-nav-options
-[rtl]: /docs/language/#right-to-left-languages
+[rtl]: /docs/advanced/language/#right-to-left-languages
 
 ## v0.10.0 {#v0.10.0}
 
@@ -691,17 +664,17 @@ For details concerning all footer changes, see [#1818][].
 [#1410]: https://github.com/google/docsy/pull/1410
 [#1744]: https://github.com/google/docsy/pull/1744
 [#1818]: https://github.com/google/docsy/pull/1818
-[disabling links]: /docs/content/repository-links/#disabling-links
+[disabling links]: /docs/advanced/repository-links/#disabling-links
 [Footer layout]: /blog/docsy/0.9.0/#footer-layout
 [Footer copyright]: /blog/docsy/0.9.0/#footer-copyright
 [Footer streamlined]: /blog/docsy/0.9.0/#footer-streamlined
 [0.9.0:hsl]: /blog/docsy/0.9.0/#heading-self-links
 [look and feel]: /blog/docsy/0.9.0/#look-and-feel
 [mermaid]: /docs/content/diagrams-and-formulae/#diagrams-with-mermaid
-[multi-language]: /docs/language/
+[multi-language]: /docs/advanced/language/
 [path_base_for_github_subdir]:
-  /docs/content/repository-links/#path_base_for_github_subdir-optional
-[Repository Links]: /docs/content/repository-links/
+  /docs/advanced/repository-links/#path_base_for_github_subdir-optional
+[Repository Links]: /docs/advanced/repository-links/
 [union file system]:
   https://gohugo.io/getting-started/directory-structure/#unified-file-system
 
@@ -737,9 +710,9 @@ For the full list of changes, see the [0.8.0][] release page.
 [#2116]: https://github.com/google/docsy/issues/2116
 [0.8.0]: https://github.com/google/docsy/releases/v0.8.0
 [Docsy as an NPM package]:
-  /docs/get-started/other-options/#option-3-docsy-as-an-npm-package
-[Use Docsy as a Hugo Module]: /docs/get-started/docsy-as-module/
-[User feedback]: /docs/content/feedback/#user-feedback
+  /docs/tutorial/installation-options/#option-3-docsy-as-an-npm-package
+[Use Docsy as a Hugo Module]: /docs/tutorial/install/
+[User feedback]: /docs/advanced/analytics/#user-feedback
 
 ## v0.7.2 {#v0.7.2}
 
@@ -765,7 +738,7 @@ noteworthy changes here:
 [#1661]: https://github.com/google/docsy/pull/1661
 [#1662]: https://github.com/google/docsy/pull/1662
 [0.7.2]: https://github.com/google/docsy/releases/v0.7.2
-[Algolia DocSearch]: /docs/content/search/#algolia-docsearch
+[Algolia DocSearch]: /docs/advanced/search/#algolia-docsearch
 [Tabbed panes]: /docs/content/shortcodes/#tabbed-panes
 
 ## v0.7.1 {#v0.7.1}
@@ -910,7 +883,7 @@ CHANGES** are documented below.
   tags. For details, see [Adding Analytics > Setup][].
 
 [0.5.1]: https://github.com/google/docsy/releases/v0.5.1
-[adding analytics > setup]: /docs/content/feedback/#setup
+[adding analytics > setup]: /docs/advanced/analytics/#setup
 [v4.6.2 release page]: https://github.com/twbs/bootstrap/releases/tag/v4.6.2
 [gtag.js]: https://support.google.com/analytics/answer/10220869
 [styling your project logo and name]:
@@ -975,8 +948,8 @@ site, follow these steps (execute commands from your project's root directory):
 Proceed as usual to build or serve your site.
 
 [0.4.0]: https://github.com/google/docsy/releases/v0.4.0
-[hugo module]: /docs/get-started/docsy-as-module/
-[other docsy setups]: /docs/get-started/other-options/
+[hugo module]: /docs/tutorial/install/
+[other docsy setups]: /docs/tutorial/installation-options/
 [prepare]:
   https://docs.npmjs.com/cli/v10/using-npm/scripts#prepare-and-prepublish
 
@@ -1010,41 +983,10 @@ For the full list of changes, see the [0.2.0][] release page.
   implemented this feature. Thanks to [@deining][] and [@LisaFC][] for the doc
   updates.
 
-  For details, see
-  [Migrate to Hugo Modules](/docs/update/convert-site-to-module/).
+  For details, see [Migrate to Hugo Modules](/docs/upgrade/migrate-from-docsy/).
 
 [@deining]: https://github.com/deining
 [@lisafc]: https://github.com/LisaFC
 [0.2.0]: https://github.com/google/docsy/releases/v0.2.0
 [hugo modules]: https://gohugo.io/hugo-modules/
 [semver]: https://semver.org/
-
-<!-- ENTRY TEMPLATE ------------------------------------------------------
-
-```
-## v0.X.Y
-
-> **UNRELEASED: this planned version is still under development**
-
-For the full list of changes, see the [0.X.Y][] release page.
-
-[**Breaking changes**](#breaking-change):
-
-- ...
-
-**New**:
-
-- ...
-
-**Other changes**:
-
-- ...
-
-[**Experimental**](#experimental):
-
-- ...
-
-[0.X.Y]: https://github.com/google/docsy/releases/latest?FIXME=v0.X.Y
-```
-
----------------------------------------------------------------------------->

@@ -5,3 +5,10 @@
 ---
 
 LLMS index: [llms.txt](/llms.txt)
+
+---
+
+Section pages:
+
+- [Oink 0.2.0 — Richer content and sharper presentation](/blog/release/0.2.0/): Oink 0.2.0 adds composable homepage sections, theme-aware media, wordmarks, navigable component boards, a steps shortcode, polished terminal recordings, and a clearer release-publishing experience.
+- [Oink 0.1.0 — A stable local-first foundation](/blog/release/0.1.0/): The first stable Oink release turns the implementation preview into a polished Hugo module with a responsive shell, multilingual infrastructure, local-first components, and a stronger accessibility baseline.

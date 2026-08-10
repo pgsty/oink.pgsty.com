@@ -48,7 +48,7 @@
     "skip": false
   },
   {
-    "path": "docs/get-started/index.md",
+    "path": "docs/tutorial/index.md",
     "kind": "section",
     "covers": ["description", "body", "children"],
     "skip": false

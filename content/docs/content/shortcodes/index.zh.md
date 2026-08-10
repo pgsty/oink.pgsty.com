@@ -1,5 +1,7 @@
 ---
 title: 短代码
+weight: 80
+icon: fa-solid fa-code
 description: 安全、无障碍地使用 OINK 的本地优先内容组件。
 ---
 
@@ -30,8 +32,8 @@ Hugo 支持两种形式：
 
 ```markdown
 {{</* blocks/cover title="OINK" subtitle="本地优先文档"
-    color="dark" height="max" */>}} [开始使用](/zh/docs/get-started/){ .btn
-.btn-lg .btn-primary } {{</* /blocks/cover */>}}
+    color="dark" height="max" */>}} [开始使用](/zh/docs/tutorial/){ .btn .btn-lg
+.btn-primary } {{</* /blocks/cover */>}}
 ```
 
 `image_anchor` 和 `logo_anchor` 控制图片裁切位置，`byline`
@@ -69,7 +71,7 @@ Extended 即可构建完整文档体验。 {{%/* /blocks/lead */%}}
 
 ```markdown
 {{%/* blocks/feature icon="fa-solid fa-box-archive"
-    title="离线可用" url="/zh/docs/oink/local-first/"
+    title="离线可用" url="/zh/docs/about/local-first/"
     url_text="阅读设计说明" */%}} 所需浏览器资源均已锁定版本并从本地提供。
 {{%/* /blocks/feature */%}}
 ```
@@ -163,8 +165,7 @@ UI 实例。
 
 ## OINK 内容组件 {#oink-content-components}
 
-以下组件由 OINK 新增。各运行时都在 `theme/VENDOR.json`
-中锁定版本，并按需从同源加载。
+以下组件由 OINK 新增。各运行时都在 `VENDOR.json` 中锁定版本，并按需从同源加载。
 
 ### `details` {#details}
 
@@ -176,6 +177,56 @@ UI 实例。
 ```
 
 `closed` 默认为 true。摘要应简洁，而且不得把强制操作隐藏在默认关闭的折叠区中。
+
+### `steps` {#steps}
+
+`steps`
+通过自动生成的序号和垂直引导线展示连续步骤。在短代码中直接编写普通 Markdown 标题和正文，不需要手工填写数字。
+
+{{% steps %}}
+
+#### 创建内容 {#steps-create-content}
+
+每一步先写一个直接子标题，再在标题后添加属于该步骤的任意 Markdown 内容。
+
+#### 检查顺序 {#steps-check-sequence}
+
+整体移动、新增或删除步骤；显示的序号会自动更新。
+
+#### 发布结果 {#steps-publish-result}
+
+在窄屏和两种配色主题下检查这组步骤。
+
+{{% /steps %}}
+
+请使用 Markdown 短代码分隔符，让 Hugo 渲染内部内容：
+
+```markdown
+{{%/* steps */%}}
+
+### 创建内容
+
+添加第一条说明。
+
+### 检查顺序
+
+添加下一条说明，序号会自动生成。
+
+#### 可选细节 {class="no-step-marker"}
+
+这个标题属于当前步骤，不会占用序号。
+
+### 发布结果
+
+添加最后一条说明。
+
+{{%/* /steps */%}}
+```
+
+`h2` 至 `h6`
+级别的每个直接子标题都会成为一步。如果直接子标题只是当前步骤的子分区，请添加
+`class="no-step-marker"`。同级步骤应使用相同的标题级别，并保持页面大纲合理；不要在一个
+`steps` 块中嵌套另一个 `steps` 块。
 
 ### `asciinema` {#asciinema}
 
@@ -194,151 +245,27 @@ assets 或站点相对 URL。不要自动播放，必须清除终端历史中的
 
 ### `echarts` {#echarts}
 
-根据 JSON 或 YAML 选项对象渲染 Apache ECharts：
+Apache
+ECharts 是完整的可视化系统，无法用一个段落说明清楚。高级特性指南会完整介绍包装层、结构化选项、主题、响应式行为、无障碍与可信回调边界：
 
-{{< echarts height="820px" >}}
+- [ECharts 快速开始](/zh/docs/advanced/echarts/)
+- [声明式图表示例集](/zh/docs/advanced/echarts/gallery/)
+- [回调与可信代码](/zh/docs/advanced/echarts/callbacks/)
 
-```js
-var fnum = function (n) {
-  n = Number(n);
-  return Number.isFinite(n) ? n.toLocaleString('zh-CN') : '';
-};
-var labfmt = function (params) {
-  if (!params || params.value == null) return '';
-  return fnum(params.value);
-};
-var tipfmt = function (params) {
-  if (!params || !params.length) return '';
-  return (
-    '<b>' +
-    params[0].name +
-    '</b><br/>' +
-    params[0].marker +
-    ' Star: ' +
-    fnum(params[0].value)
-  );
-};
-var barclr = function (params) {
-  if (params.name === 'pgsty/pigsty') {
-    return new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-      { offset: 0, color: '#d94841' },
-      { offset: 1, color: '#f97316' },
-    ]);
-  }
-  return '#7aa6c2';
-};
-```
-
-```yaml
-tooltip:
-  trigger: axis
-  axisPointer: { type: shadow }
-  formatter: $fn:tipfmt
-grid: { left: 320, right: 72, top: 20, bottom: 26 }
-xAxis:
-  type: value
-  max: 5600
-  name: GitHub Star
-  nameLocation: middle
-  nameGap: 24
-  axisLabel: { formatter: $fn:fnum }
-  splitLine: { show: true, lineStyle: { type: dashed, opacity: 0.45 } }
-yAxis:
-  type: category
-  inverse: true
-  axisLabel:
-    align: right
-    margin: 8
-    width: 300
-    overflow: truncate
-    fontSize: 11
-    fontFamily: monospace
-  data:
-    - 'pgsty/pigsty'
-    - 'polardb/PolarDB-for-PostgreSQL'
-    - 'tensorchord/pgvecto.rs'
-    - 'tensorchord/VectorChord'
-    - 'Tencent/TBase'
-    - 'apache/cloudberry'
-    - 'IvorySQL/IvorySQL'
-    - 'pgplex/pgschema'
-    - 'amutu/zhparser'
-    - 'opengauss-mirror/openGauss-server'
-    - 'HaloTech-Co-Ltd/openHalo'
-    - 'jaiminpan/pg_jieba'
-    - 'alitrack/duckdb_fdw'
-    - 'tensorchord/VectorChord-bm25'
-    - 'pgsty/pg_exporter'
-    - 'ChenHuajun/pg_roaringbitmap'
-    - 'pgsty/pig'
-    - 'tensorchord/pg_bestmatch.rs'
-    - 'wublabdubdub/PDU-PostgreSQLDataUnloader'
-    - 'tensorchord/pg_tokenizer.rs'
-    - 'jaiminpan/pg_scws'
-    - 'pgsty/pgext'
-series:
-  - name: Star
-    type: bar
-    barWidth: 20
-    showBackground: true
-    backgroundStyle: { color: 'rgba(148, 163, 184, 0.16)' }
-    itemStyle:
-      color: $fn:barclr
-      borderRadius: [0, 5, 5, 0]
-    label:
-      show: true
-      position: right
-      formatter: $fn:labfmt
-      color: '#334155'
-      fontWeight: 600
-    data:
-      [
-        5502,
-        3189,
-        2181,
-        1767,
-        1439,
-        1251,
-        1049,
-        994,
-        866,
-        784,
-        438,
-        417,
-        409,
-        375,
-        357,
-        286,
-        197,
-        101,
-        100,
-        45,
-        41,
-        30,
-      ]
-```
-
-{{< /echarts >}}
-
-`height` 必须是安全的 CSS 长度；`theme` 选择 ECharts 主题，`full=true`
-会取消常规正文宽度限制。
-
-短代码内部可以加入 JavaScript 围栏代码块来定义回调函数，再从 JSON/YAML 选项中通过
-`$fn:name`
-引用。代码会在访问者的浏览器中执行，因此只能使用受信任作者提交并经过审查的代码。无需回调时应优先使用声明式 JSON/YAML，并为图表添加相邻文字摘要、验证深色模式。
+短代码正文接受 JSON 或 YAML 选项对象。`height`、`theme` 与 `full`
+只能按照专门指南中的说明使用。
 
 ### `infographic` {#infographic}
 
-渲染本地纳管的信息图 DSL：
+AntV
+Infographic 也有独立的高级特性指南，因为模板选择、DSL 结构、主题、视觉语义与无障碍都需要比行内示例更完整的解释：
 
-```markdown
-{{</* infographic height="360px" */>}} infographic
-list-row-simple-horizontal-arrow data items - label 构建 - label 测试 -
-label 发布 {{</* /infographic */>}}
-```
+- [信息图快速开始](/zh/docs/advanced/infographic/)
+- [流程、时间线与循环](/zh/docs/advanced/infographic/processes/)
+- [布局、漏斗与主题](/zh/docs/advanced/infographic/layouts/)
 
-`height` 可以是 `auto` 或安全 CSS 长度；`full=true`
-会取消宽度限制。DSL 属于数据，并非任意 HTML。可视化不可用时，相邻正文也必须能表达相同结论。
+短代码正文使用 Infographic DSL。请按照专门指南使用 `height` 与
+`full`，并为所有关键可视化提供含义等价的相邻文字说明。
 
 ### `doc-cards` 与 `nav-cards` {#doc-cards-and-nav-cards}
 
@@ -347,8 +274,8 @@ label 发布 {{</* /infographic */>}}
 
 ```markdown
 {{</* nav-cards cols="2" */>}}
-{{</* nav-card title="开始使用" link="/zh/docs/get-started/"
-      icon="fa-solid fa-rocket" desc="使用 Hugo {version} 构建。" */>}} {{</* nav-card title="架构" link="/zh/docs/oink/architecture/"
+{{</* nav-card title="开始使用" link="/zh/docs/tutorial/"
+      icon="fa-solid fa-rocket" desc="使用 Hugo {version} 构建。" */>}} {{</* nav-card title="架构" link="/zh/docs/about/architecture/"
       badge="设计" */>}}
 {{</* /nav-cards */>}}
 ```

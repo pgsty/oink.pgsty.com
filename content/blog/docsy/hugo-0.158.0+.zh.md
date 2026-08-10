@@ -11,7 +11,7 @@ author: >-
   [Patrice Chalin](https://github.com/chalin)（[CNCF](https://www.cncf.io/)），
   代表 [Docsy 指导委员会](/zh/blog/docsy/hello/#introducing-the-psc)
 body_class: release-highlights
-tags: [hugo, 升级]
+tags: [Docsy, Release]
 params:
   hugoSupportedVersion: 0.164.0
 ---
@@ -289,12 +289,12 @@ hvm use {{% param hugoSupportedVersion %}}/extended
 [0.163.2]: https://github.com/gohugoio/hugo/releases/tag/v0.163.2
 [0.163.3]: https://github.com/gohugoio/hugo/releases/tag/v0.163.3
 [0.164.0]: https://github.com/gohugoio/hugo/releases/tag/v0.164.0
-[check]: /zh/docs/update/#check
+[check]: /zh/docs/upgrade/#check
 [每项操作]: #upgrade-summary
 [hugo-extended]: https://www.npmjs.com/package/hugo-extended
 [hugo-supported-version]: <https://github.com/gohugoio/hugo/releases/tag/v{{% param hugoSupportedVersion %}}>
 [hugo-164-perf]: https://discourse.gohugo.io/t/hugo-building-slowly-from-release-0-128-0/57314/21
 [hvm]: https://github.com/jmooring/hvm
-[安装 Hugo]: /zh/docs/get-started/docsy-as-module/installation-prerequisites/#install-hugo
-[多语言支持]: /zh/docs/language/
+[安装 Hugo]: /zh/docs/tutorial/prerequisites/#install-hugo
+[多语言支持]: /zh/docs/advanced/language/
 <!-- prettier-ignore-end -->

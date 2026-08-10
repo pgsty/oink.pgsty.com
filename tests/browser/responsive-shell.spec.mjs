@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const docPath = '/docs/oink/configuration/';
+const docPath = '/docs/content/configuration/';
 const widths = [360, 768, 820, 1024, 1200, 1440];
 
 async function openCleanPage(page, path = docPath) {
@@ -74,10 +74,10 @@ test('page actions are complete and keyboard operable', async ({ page }) => {
   const context = page.locator('[data-td-page-context]');
   const actions = context.locator('.td-page-meta__action');
   await expect(context).toBeVisible();
-  await expect(context).toContainText('Copy as Markdown');
+  await expect(context).toContainText('Copy Markdown');
   await expect(context).toContainText('View Markdown');
   await expect(context).toContainText('Edit this page');
-  await expect(context).toContainText('Create documentation issue');
+  await expect(context).toContainText('Create docs issue');
   await expect(context).toContainText('Print this page');
 
   await actions.first().focus();
@@ -116,7 +116,7 @@ test('sidebar sections use a semantic keyboard toggle', async ({ page }) => {
 
 for (const [locale, path, query] of [
   ['en', docPath, 'OINK'],
-  ['zh', '/zh/docs/oink/configuration/', '配置'],
+  ['zh', '/zh/docs/content/configuration/', '配置'],
 ]) {
   test(`${locale} search exposes listbox state and respects the result cap`, async ({
     page,
@@ -146,7 +146,7 @@ for (const [locale, path, query] of [
 
 test('print media produces a clean document surface', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await openCleanPage(page, '/docs/oink/local-first/');
+  await openCleanPage(page, '/docs/about/local-first/');
   await page.emulateMedia({ media: 'print' });
 
   await expect(page.locator('[data-td-page-context]')).toBeHidden();

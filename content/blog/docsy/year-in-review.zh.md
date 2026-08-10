@@ -9,6 +9,7 @@ author: >-
 description: >-
   回顾 Docsy 2024 年在功能与采用方面的增长：使用量提高 57%，新增深色模式，
   并改进国际化支持。
+tags: [Docsy, Release]
 ---
 
 回顾 2024 年，我们很高兴看到项目稳步实现 [2024
@@ -109,7 +110,7 @@ Docsy Starter][]，把以下站点迁移到 Docsy：
 [LFX]:
   https://www.cncf.io/blog/2024/09/27/congratulations-to-45-cncf-term-1-2024-lfx-program-mentees/
 [2023 年报告]:
-  https://www.cncf.io/blog/docsy/01/19/fast-and-effective-tools-for-cncf-and-open-source-project-websites/
+  https://www.cncf.io/blog/2023/01/19/fast-and-effective-tools-for-cncf-and-open-source-project-websites/
 [in-toto.io#76]: https://github.com/in-toto/in-toto.io/issues/76
 [Kubernetes 网站]: https://github.com/kubernetes/website
 [Dariksha Ansari]:

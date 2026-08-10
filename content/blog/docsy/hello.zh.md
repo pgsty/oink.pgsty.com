@@ -4,6 +4,7 @@ linkTitle: Docsy，你好
 date: 2022-04-07
 description: 欢迎来到 Docsy 博客！
 aliases: [/blog/2022/hello/]
+tags: [Docsy, Release]
 ---
 
 ## 你好 {#hello}

@@ -5,20 +5,17 @@
 ## Site index
 
 - [Home page](http://localhost/index.md)
-- [Docs](http://localhost/docs/index.md): Product guides, configuration, components, and deployment reference
-- [Examples](http://localhost/examples/index.md): Build the bilingual starter, explore OINK features, and compare inherited Docsy references
-- [Community](http://localhost/community/index.md)
+- [Docs](http://localhost/docs/index.md): Install, customize, deploy, and maintain Oink documentation sites.
 - [Blog](http://localhost/blog/index.md): Docsy articles, OINK engineering stories, and OINK release notes
 
 ## Documentation index
 
-- [Get started](http://localhost/docs/get-started/index.md)
-- [Content and Customization](http://localhost/docs/content/index.md)
-- [OINK](http://localhost/docs/oink/index.md)
-- [Deployment and previews](http://localhost/docs/deployment/index.md)
-- [Update OINK](http://localhost/docs/update/index.md)
-- [Best Practices](http://localhost/docs/best-practices/index.md)
-- [About OINK](http://localhost/docs/about/index.md)
+- [About Oink](http://localhost/docs/about/index.md)
+- [Get Started](http://localhost/docs/tutorial/index.md)
+- [Authoring](http://localhost/docs/content/index.md)
+- [Advanced](http://localhost/docs/advanced/index.md)
+- [Deployment](http://localhost/docs/deploy/index.md)
+- [Upgrade](http://localhost/docs/upgrade/index.md)
 
 ## Site locales
 

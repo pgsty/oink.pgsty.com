@@ -14,6 +14,4 @@ Section pages:
 - [Search Results](/zh/search/)
 - [Docsy tests](/zh/tests/): Tests of Docsy features
 - [博客](/zh/blog/): Docsy 文章、OINK 工程实践与 OINK 发布注记
-- [社区](/zh/community/)
-- [OINK 示例与模板](/zh/examples/): 构建双语 starter，体验 OINK 功能，并对照继承自 Docsy 的参考站点
-- [欢迎使用 OINK](/zh/docs/): 产品指南、配置、内容组件与部署参考
+- [欢迎使用 OINK](/zh/docs/): 安装、定制、部署与维护 Oink 文档站。

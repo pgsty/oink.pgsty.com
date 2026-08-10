@@ -2,13 +2,14 @@
 downstream_modified: true
 title: Welcome to OINK
 linkTitle: Docs
-description: Product guides, configuration, components, and deployment reference
+description: Install, customize, deploy, and maintain Oink documentation sites.
 menu: { main: { weight: 20 } }
 type: docs
 icon: fa-solid fa-book
 sidebar_expanded: true
 sidebar_root_for: self
 sidebar_root_link_self: true
+comments: false
 ---
 
 <!-- markdownlint-disable-next-line no-space-in-links -->
@@ -42,8 +43,8 @@ OINK includes:
 - local Mermaid, KaTeX, Markmap, Swagger UI, Redoc, Asciinema, ECharts, and
   Infographic runtimes;
 - reusable details, tabs, cards, navigation cards, and document carousels;
-- a bilingual starter, Cloudflare Pages guidance, an air-gap distribution, and
-  an auditable vendor manifest.
+- a bilingual project site, static-host deployment guides, local theme assets,
+  and an auditable vendor manifest.
 
 OINK itself does **not** provide source hosting or deploy your generated site.
 Keep your project in GitHub, GitLab, a private Git service, or a local
@@ -63,10 +64,10 @@ the site rather than forcing them into the theme.
 
 ## Ready to get started?
 
-Read the [OINK overview](/docs/oink/) to understand the product boundaries, then
-[build the bilingual starter](/docs/oink/getting-started/). The remaining user
-guide documents the inherited Docsy content model and the compatible APIs that
-OINK continues to support.
+Read the [Oink overview](/docs/about/) to understand the product boundaries,
+then [install Oink](/docs/tutorial/install/) or
+[create a bilingual site](/docs/tutorial/create-site/). The remaining guide
+covers authoring, advanced features, deployment, and upgrades.
 
 [Docsy]: https://github.com/google/docsy
 [Hugo]: https://gohugo.io/

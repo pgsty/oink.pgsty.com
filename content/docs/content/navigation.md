@@ -1,8 +1,9 @@
 ---
 downstream_modified: true
-title: Navigation and Menus
-description:
-  Configure OINK navigation, language switching, sidebars, and page outlines.
+title: Navigation and menus
+weight: 50
+icon: fa-solid fa-bars
+description: Configure navigation, language switching, sidebars, and outlines.
 ---
 
 OINK combines Hugo's content tree and menu model with a documentation workspace:
@@ -91,7 +92,7 @@ a theme control. See
 The documentation workspace uses a local search dialog when offline search is
 enabled. The sidebar button advertises the platform shortcut (Command/Ctrl+K).
 Online search integrations remain available by explicit configuration. See
-[Search](/docs/content/search/).
+[Search](/docs/advanced/search/).
 
 ### Adding icons to the navbar
 

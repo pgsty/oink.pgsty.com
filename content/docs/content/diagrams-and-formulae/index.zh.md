@@ -1,5 +1,7 @@
 ---
 title: 图表与公式
+weight: 100
+icon: fa-solid fa-diagram-project
 description: 在页面中添加本地图表、思维导图与科学公式。
 cSpell:ignore: markmap mhchem plantuml
 ---
@@ -186,7 +188,7 @@ diagram**。页面可以离线显示导出图片，但打开编辑器需要连�
 - 当可评审 diff 很重要时，优先使用文本图表。
 - 为关键信息提供替代文字或相邻正文。
 - 测试深浅色、移动端、打印和减少动态效果模式。
-- 在 `theme/VENDOR.json` 中固定本地运行时，并且只在使用时加载。
+- 在 `VENDOR.json` 中固定本地运行时，并且只在使用时加载。
 - 绝不能把机密写入会发送给服务端点的图表源码。
 - 无法接受在线渲染器时，使用预渲染输出。
 - 在子路径 `baseURL` 下验证所有资源与端点 URL。

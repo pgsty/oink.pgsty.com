@@ -1,12 +1,24 @@
 HUGO ?= hugo
+NPM ?= npm
 BIND ?= 127.0.0.1
-PORT ?= 1313
+PORT ?=
 THEME_DIR ?= ../oink
 
-.PHONY: dev workspace
+.PHONY: default b build c check d dev s serve workspace
+
+default: dev
+
+b: build
+build: workspace
+	@HUGO_MODULE_WORKSPACE="$(CURDIR)/go.work" $(NPM) run build
+
+c: check
+check: workspace
+	@HUGO_MODULE_WORKSPACE="$(CURDIR)/go.work" $(NPM) test
+
+d: dev
 
 dev: workspace
-	@printf 'Oink preview: http://%s:%s/\n' "$(BIND)" "$(PORT)"
 	@HUGO_MODULE_WORKSPACE="$(CURDIR)/go.work" $(HUGO) server \
 		--cleanDestinationDir \
 		--logLevel info \
@@ -16,8 +28,11 @@ dev: workspace
 		--disableFastRender \
 		--renderToMemory \
 		--minify \
-		--bind "$(BIND)" \
-		--port "$(PORT)"
+		--bind "$(BIND)" $(if $(strip $(PORT)),--port "$(PORT)")
+
+s: serve
+serve: workspace
+	@HUGO_MODULE_WORKSPACE="$(CURDIR)/go.work" $(NPM) run serve -- --bind "$(BIND)" $(if $(strip $(PORT)),--port "$(PORT)")
 
 workspace:
 	@test -f "$(THEME_DIR)/go.mod" || { \

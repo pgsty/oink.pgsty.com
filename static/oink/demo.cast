@@ -1,4 +1,0 @@
-{"version":2,"width":80,"height":16,"timestamp":0,"env":{"TERM":"xterm-256color","SHELL":"/bin/sh"}}
-[0.1,"o","$ hugo --gc --minify\r\n"]
-[0.7,"o","Start building sites …\r\n"]
-[1.1,"o","Built in 842 ms\r\n"]

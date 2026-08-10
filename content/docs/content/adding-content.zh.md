@@ -1,6 +1,8 @@
 ---
 title: 添加内容
-description: 在 OINK 中组织和编写中英双语文档与博客内容。
+weight: 20
+icon: fa-solid fa-file-circle-plus
+description: 组织和编写双语文档与博客内容。
 ---
 
 OINK 沿用 Hugo 的内容模型：Markdown 承载信息，Front
@@ -181,7 +183,7 @@ OINK 支持 GitHub 风格的块引用告警，也支持可选的 Obsidian 风格
 `ref` 与 `relref` 短代码可以校验内容引用，并处理语言和永久链接规则：
 
 ```markdown
-[配置]({{</* ref "/docs/oink/configuration" */>}})
+[配置]({{</* ref "/docs/about/configuration" */>}})
 ```
 
 编写双语页面时：
@@ -232,7 +234,7 @@ guide.zh.md
 `_index.md` 与 `_index.zh.md`。子页面会按 `weight`
 排列在侧边栏中，权重相同时再使用配置的后备顺序。
 
-层级应尽量浅。页面面向独立任务或受众时才拆分，不要仅仅因为文件较长而拆分。详见[组织内容](/zh/docs/best-practices/organizing-content/)。
+层级应尽量浅。页面面向独立任务或受众时才拆分，不要仅仅因为文件较长而拆分。详见[组织内容](/zh/docs/content/organize-content/)。
 
 #### 文档分区落地页 {#docs-section-landing-pages}
 
@@ -337,7 +339,7 @@ static/reference/api/index.html
 Pipes。
 
 OINK 的浏览器运行时有意从主题或站点自身提供。新增依赖库时，必须本地纳管并锁定版本，在
-`theme/VENDOR.json` 中登记，而且不得引入隐式 CDN 后备地址。
+`VENDOR.json` 中登记，而且不得引入隐式 CDN 后备地址。
 
 ## RSS Feed {#rss-feeds}
 

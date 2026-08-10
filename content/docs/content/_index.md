@@ -1,7 +1,13 @@
 ---
 downstream_modified: true
-title: Content and Customization
+title: Authoring
 weight: 3
 icon: fa-solid fa-pen-ruler
-description: How to add content to and customize your Docsy site.
+description: Author, organize, and style content for an Oink documentation site.
+aliases: [/content/, /docs/best-practices/]
 ---
+
+Start with site-wide [configuration](configuration/), then shape the content
+tree, writing conventions, navigation, visual language, media, shortcodes, and
+reusable components. These pages focus on authoring choices that remain under
+the consuming site's control.

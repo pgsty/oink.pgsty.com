@@ -14,14 +14,20 @@ For theme development, clone both repositories as siblings:
 └── oink.pgsty.com/
 ```
 
-Start Hugo with the sibling theme checkout:
+Use the short Make targets for common development tasks:
 
 ```sh
-make dev
+make b  # Build the site against the sibling theme checkout
+make d  # Develop against the sibling theme checkout
+make s  # Serve the site against the sibling theme checkout
+make c  # Run the complete site test suite
 ```
 
-The shortcut creates or refreshes the ignored `go.work` file and serves the site
-at <http://127.0.0.1:1313/>. Override the port or theme checkout when needed:
+These targets create or refresh the ignored `go.work` file and use the sibling
+theme checkout. The `dev` and `serve` targets do not pin a port, so Hugo can
+select an available one. The long target names (`build`, `dev`, `serve`, and
+`check`) work too. Override the automatically selected port or theme checkout
+only when needed:
 
 ```sh
 make dev PORT=1314

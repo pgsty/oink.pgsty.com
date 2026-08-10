@@ -10,6 +10,7 @@ description: >-
   Celebrating Docsy's 2024 growth in features and adoption, including a 57%
   usage increase, new features like dark mode, and improved internationalization
   support.
+tags: [Docsy, Release]
 # prettier-ignore
 cSpell:ignore: jaegertracing mentees opentelemetry toto upvoted kubernetes theupdateframework Dindi Dariksha Ansari
 ---
@@ -129,7 +130,7 @@ the [0.3.x upgrade][] and [0.5.x upgrade][].
 [LFX]:
   https://www.cncf.io/blog/2024/09/27/congratulations-to-45-cncf-term-1-2024-lfx-program-mentees/
 [2023 report]:
-  https://www.cncf.io/blog/docsy/01/19/fast-and-effective-tools-for-cncf-and-open-source-project-websites/
+  https://www.cncf.io/blog/2023/01/19/fast-and-effective-tools-for-cncf-and-open-source-project-websites/
 [in-toto.io#76]: https://github.com/in-toto/in-toto.io/issues/76
 [Kubernetes website]: https://github.com/kubernetes/website
 [Dariksha Ansari]:

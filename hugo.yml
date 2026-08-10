@@ -8,13 +8,25 @@ enableEmoji: true
 defaultContentLanguage: en
 
 ignoreLogs:
-  # FIXME: find a better way to encode `site` pages than having to ignore warnings.
+  # Project-documentation pages intentionally override theme parameters.
   - warning-frontmatter-params-overrides # cSpell:disable-line
+
+# Allow iframe-hosted custom themes (for example, Giscus) to load during local previews.
+# These headers are only used by `hugo server`; they do not affect generated production files.
+server:
+  headers:
+    - for: /**
+      values:
+        Access-Control-Allow-Origin: '*'
 
 outputs:
   home: [HTML, markdown, LLMS]
   page: [HTML, markdown]
   section: [HTML, RSS, print, markdown]
+
+services:
+  googleAnalytics:
+    id: G-6JLQEHYFQG
 
 imaging:
   resampleFilter: CatmullRom # cSpell:disable-line
@@ -27,6 +39,10 @@ languages:
     title: OINK
     params:
       description: A Hugo theme for engineering docs
+      comments:
+        giscus:
+          ariaLabel: Comments
+          errorMessage: Comments could not be loaded. Please try again later.
   zh:
     label: 简体中文
     locale: zh-CN
@@ -34,9 +50,10 @@ languages:
     title: OINK
     params:
       description: 为工程而设计的 Hugo 文档主题
-      copyright:
-        authors: >-
-          OINK·[CC BY4.0](https://creativecommons.org/licenses/by/4.0)
+      comments:
+        giscus:
+          ariaLabel: 评论
+          errorMessage: 评论加载失败，请稍后重试。
       time_format_blog: 2006年1月2日
       time_format_default: 2006年1月2日
       links:
@@ -59,7 +76,7 @@ languages:
             desc: 讨论上游 Docsy 兼容性
         developer:
           - name: 贡献指南
-            url: /zh/docs/contributing/
+            url: /zh/docs/about/contributing/
             icon: fa-solid fa-code-fork
             desc: 了解如何参与贡献
           - name: 项目文档与站点信息
@@ -109,10 +126,9 @@ params:
   # version menu) and is not always a git ref. Content that needs a resolvable
   # release ref -- install commands, for example -- uses `tdVersion.latest`.
   tdVersion:
-    latest: &tdLatestVers v0.1.0
-    dev: &tdDevVers v0.2.0
-  version: v0.1.0
-  version_menu: v0.1.0
+    latest: &tdLatestVers v0.2.0
+  version: v0.2.0
+  version_menu: v0.2.0
   version_menu_pagelinks: false
   # Populate to enable the navbar version menu, for example:
   versions: # []
@@ -126,7 +142,7 @@ params:
   copyright:
     authors: >-
       [Ruohang Feng](https://vonng.com/en) ([@Vonng](https://github.com/Vonng))
-      @ [PGSTY](https://pgsty.com), [CC BY
+      @ [PGSTY](https://pgsty.com/), [CC BY
       4.0](https://creativecommons.org/licenses/by/4.0)
     from_year: 2026
     to_year: present
@@ -146,6 +162,23 @@ params:
   offlineSearchMaxResults: 10
   prism_syntax_highlighting: false
   page_width: normal
+  comments:
+    enable: true
+    type: giscus
+    giscus:
+      repo: pgsty/oink.pgsty.com
+      repoId: R_kgDOTzFZAg
+      category: Announcements
+      categoryId: DIC_kwDOTzFZAs4DDCm-
+      mapping: pathname
+      strict: 0
+      reactionsEnabled: 1
+      emitMetadata: 0
+      inputPosition: bottom
+      theme: auto
+      lightTheme: /css/giscus-oink-light.css?v=0.2.0
+      darkTheme: /css/giscus-oink-dark.css?v=0.2.0
+      loading: lazy
   search:
     # algolia:
   ui:
@@ -202,7 +235,7 @@ params:
         desc: Discuss upstream Docsy compatibility
     developer:
       - name: Contributing
-        url: /docs/contributing/
+        url: /docs/about/contributing/
         icon: fa-solid fa-code-fork
         desc: How to contribute
       - name: Project docs and site info
@@ -255,15 +288,4 @@ module:
     # English sources and colocated .zh.md translations.
     - source: content
       target: content
-      sites: &sites { matrix: { languages: [en, zh] } }
-    # Tests
-    # cSpell:ignore quang nguyen vinh therato
-    - source: &bg-img content/background-pexels-quang-nguyen-vinh-222549-2131841.jpg
-      target: content/tests/blocks-cover/height-auto/background.jpg
-      sites: *sites
-    - source: content/docs/about/background-pexels-therato-3472764.jpg
-      target: content/tests/blocks-cover/height-full/background.jpg
-      sites: *sites
-    - source: *bg-img
-      target: content/tests/blocks-cover/height-min/background.jpg
-      sites: *sites
+      sites: { matrix: { languages: [en, zh] } }

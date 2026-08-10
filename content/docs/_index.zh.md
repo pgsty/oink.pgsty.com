@@ -1,13 +1,14 @@
 ---
 title: 欢迎使用 OINK
 linkTitle: 文档
-description: 产品指南、配置、内容组件与部署参考
+description: 安装、定制、部署与维护 Oink 文档站。
 menu: { main: { weight: 20 } }
 type: docs
 icon: fa-solid fa-book
 sidebar_expanded: true
 sidebar_root_for: self
 sidebar_root_link_self: true
+comments: false
 ---
 
 <!-- markdownlint-disable-next-line no-space-in-links -->
@@ -34,7 +35,7 @@ OINK 提供：
 - 本地 Mermaid、KaTeX、Markmap、Swagger
   UI、Redoc、Asciinema、ECharts 和 Infographic 运行时；
 - 可复用的折叠块、标签页、卡片、导航卡片和文档轮播；
-- 双语 starter、Cloudflare Pages 指南、网络隔离发行包和可审计的 vendor 清单。
+- 双语项目站、静态托管部署指南、本地主题资源与可审计的 vendor 清单。
 
 OINK 本身 **不提供**
 源码托管，也不会替你部署生成后的站点。你可以把项目放在 GitHub、GitLab、私有 Git 服务或本地仓库中，再通过任意合适的平台发布 Hugo 生成的静态文件。
@@ -48,7 +49,7 @@ OINK 本身 **不提供**
 ## 准备开始了吗？ {#ready-to-get-started}
 
 先阅读
-[OINK 概览](/zh/docs/oink/)了解产品边界，再[构建双语 starter](/zh/docs/oink/getting-started/)。其余用户指南介绍 OINK 沿用的 Docsy 内容模型与兼容 API。
+[Oink 概览](/zh/docs/about/)了解产品边界，再[安装 Oink](/zh/docs/tutorial/install/)或[创建双语站点](/zh/docs/tutorial/create-site/)。其余指南覆盖内容创作、高级特性、部署与升级。
 
 [Docsy]: https://github.com/google/docsy
 [Hugo]: https://gohugo.io/

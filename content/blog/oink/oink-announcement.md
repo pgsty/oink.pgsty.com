@@ -9,7 +9,7 @@ description: >-
   documentation theme with multilingual infrastructure and reusable content
   components.
 author: OINK maintainers
-tags: [oink, announcement, local-first, multilingual]
+tags: [Oink]
 ---
 
 Today we are publishing the OINK implementation preview: a directly evolved
@@ -156,11 +156,11 @@ not as an unversioned production dependency.
 
 ## Read next
 
-- [OINK overview](/docs/oink/)
-- [Architecture](/docs/oink/architecture/)
-- [Local-first operation](/docs/oink/local-first/)
-- [Content components](/docs/oink/components/)
-- [Configuration](/docs/oink/configuration/)
-- [Migration guide](/docs/oink/migration/)
-- [Release process](/docs/oink/release/)
+- [OINK overview](/docs/about/)
+- [Architecture](/docs/about/architecture/)
+- [Local-first operation](/docs/about/local-first/)
+- [Content components](/docs/content/components/)
+- [Configuration](/docs/content/configuration/)
+- [Migration guide](/docs/upgrade/migrate-from-docsy/)
+- [Release process](/docs/about/release/)
 - [Implementation diary](/blog/oink/oink-implementation-diary/)

@@ -8,7 +8,7 @@ description: >-
   OINK 将直接定制的 Docsy 代码库演化为本地优先、仅依赖 Hugo
   的文档主题，并提供多语言基础设施与可复用内容组件。
 author: OINK 维护者
-tags: [oink, 公告, 本地优先, 多语言]
+tags: [Oink]
 ---
 
 今天，我们发布 OINK 实现预览：它从 Docsy 直接演化而来，提供唯一标准产品外壳、仅依赖 Hugo 的消费端构建、本地优先浏览器依赖、通用多语言框架，以及一组从 PGSTY 文档站提炼出的可复用内容组件。
@@ -116,11 +116,11 @@ Pages 项目连接到源分支，使用固定 Hugo 版本构建、公开发布�
 
 ## 继续阅读 {#read-next}
 
-- [OINK 概览](/zh/docs/oink/)
-- [架构](/zh/docs/oink/architecture/)
-- [本地优先运行](/zh/docs/oink/local-first/)
-- [内容组件](/zh/docs/oink/components/)
-- [配置](/zh/docs/oink/configuration/)
-- [迁移指南](/zh/docs/oink/migration/)
-- [发布流程](/zh/docs/oink/release/)
+- [OINK 概览](/zh/docs/about/)
+- [架构](/zh/docs/about/architecture/)
+- [本地优先运行](/zh/docs/about/local-first/)
+- [内容组件](/zh/docs/content/components/)
+- [配置](/zh/docs/content/configuration/)
+- [迁移指南](/zh/docs/upgrade/migrate-from-docsy/)
+- [发布流程](/zh/docs/about/release/)
 - [实施日记](/zh/blog/oink/oink-implementation-diary/)

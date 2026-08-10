@@ -2,7 +2,9 @@
 title: 分类法支持
 tags: [标签, 内容结构, 标注]
 categories: [分类法]
-description: 使用标签、类别、标记等分类法组织内容。
+weight: 110
+icon: fa-solid fa-tags
+description: 使用标签、类别与自定义分类法组织内容。
 cSpell:ignore: taxo
 ---
 
@@ -133,7 +135,7 @@ params:
 <!-- prettier-ignore-end -->
 <!-- markdownlint-enable no-shortcut-ref-link -->
 
-以上设置只会在 OINK 右侧栏中显示 `projects` 和 `tags` 的分类云（标题分别为“ Our
+以上设置只会在 OINK 右侧栏中显示 `projects` 和 `tags` 的分类云（标题分别为“Our
 Projects”和“Tag Cloud”），并在每个页面显示 `tags` 和 `categories`
 分类法中已经分配的术语。
 

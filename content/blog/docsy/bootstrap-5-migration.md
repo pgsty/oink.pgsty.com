@@ -10,6 +10,7 @@ author: >
 date: 2023-06-05
 canonical_url: https://www.cncf.io/blog/docsy/06/05/migrating-docsy-to-bootstrap-5/
 aliases: [/blog/2023/bootstrap-5-migration/]
+tags: [Docsy, Release]
 cSpell:ignore: opentelemetry techdocs
 ---
 
@@ -277,6 +278,6 @@ _A version of this article originally appeared as the [CNCF blog][] post
 
 [cncf blog]: https://www.cncf.io/blog/
 [cncf-docsy]:
-  https://www.cncf.io/blog/docsy/01/19/fast-and-effective-tools-for-cncf-and-open-source-project-websites/
+  https://www.cncf.io/blog/2023/01/19/fast-and-effective-tools-for-cncf-and-open-source-project-websites/
 [followup blog post]: /blog/docsy/0.7.x/
 [original post]: <{{% param canonical_url %}}>

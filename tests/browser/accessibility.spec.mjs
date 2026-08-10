@@ -4,8 +4,8 @@ import { expect, test } from '@playwright/test';
 const wcagTags = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
 const widths = [360, 768, 820, 1024, 1200, 1440];
 const locales = [
-  ['en', '/docs/oink/configuration/'],
-  ['zh', '/zh/docs/oink/configuration/'],
+  ['en', '/docs/content/configuration/'],
+  ['zh', '/zh/docs/content/configuration/'],
 ];
 const themes = ['light', 'dark'];
 const requestedPaths = (process.env.A11Y_PATHS || '')
