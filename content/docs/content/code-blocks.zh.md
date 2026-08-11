@@ -9,7 +9,11 @@ OINK 在不替换 Chroma、也不引入浏览器端高亮器的前提下增强 H
 
 ## 增强围栏 {#enhanced-fences}
 
-在 Hugo 围栏属性列表中补充元数据：
+在 Hugo 围栏属性列表中补充元数据。没有属性的围栏也会获得同一套响应式外壳与默认复制行为。`filename`
+会增加可见标题栏；`title`
+是它的兼容别名，同时设置两者会导致构建失败。两者都没有时，OINK 使用紧凑浮层，不绘制空标题栏。
+
+**作者写法**
 
 ````markdown {filename="content/docs/example.md" copy="all"}
 ```yaml {filename="hugo.yml" copy="all" lineNos="table" hl_lines="4 7-9" wrap=false collapse=18}
@@ -18,11 +22,9 @@ params:
 ```
 ````
 
-没有属性的围栏也会获得同一套响应式外壳与默认复制行为。`filename`
-会增加可见标题栏；`title` 是普通围栏中 `filename`
-的兼容别名，同时设置两者会导致构建失败。两者都没有时，OINK 使用紧凑浮层，不会绘制空标题栏。
-
 ### 实时效果 {#live-result}
+
+**实际效果**
 
 下面的代码块同时使用了文件名、内联行号、稳定根 ID、行链接和源码行高亮。显示的行号从 12 开始，但
 `hl_lines` 仍按围栏内的源码行编号：
@@ -66,7 +68,22 @@ Hugo 通用 `class`、安全的 `data-*`、`aria-*` 与全局属性会保留在 
 中，因此既有 token 级覆盖可以继续工作。新的稳定外层元素是 `.td-code`；使用
 `.td-content > .highlight` 等直接子选择器的站点需要更新选择器。
 
+界面会把常见的 `bash`、`sh` 与 `shell` lexer 别名统一显示为
+`BASH`。传给 Chroma 的原始 lexer 值以及 `data-language` 不会改变。
+
 Diff 有意继续使用 Chroma 标准的 `diff` lexer，不引入自定义 transformer：
+
+**作者写法**
+
+````markdown {filename="content/docs/configuration.md"}
+```diff {filename="hugo.yaml.diff"}
+ params:
+-  offlineSearch: false
++  offlineSearch: true
+```
+````
+
+**实际效果**
 
 ```diff {filename="hugo.yaml.diff"}
  params:
@@ -83,11 +100,26 @@ Diff 有意继续使用 Chroma 标准的 `diff` lexer，不引入自定义 trans
 复制会保留缩进、内部空行与 Unicode，移除行号，只裁掉末尾换行符并补上恰好一个最终换行。会话 lexer 没有生成提示符 token 时，界面会报告本地化失败并且不复制任何内容。设置
 `params.disable_click2copy_chroma: true` 可以在整个站点硬关闭复制。
 
+复制控件只显示紧凑图标，不在旁边重复文字。它仍通过无障碍名称与悬停提示提供本地化说明；成功或失败时也会切换图标并更新实时状态消息。
+
 多行终端命令应在每个续行中写出续行提示符（通常为
 `>`）。Chroma 会把没有提示符的行分类为输出，因此 `copy="command"`
 会有意排除这些行。
 
 下面这个实时会话的复制操作只会得到两条命令，不会包含提示符与输出：
+
+**作者写法**
+
+````markdown {filename="content/docs/terminal.md"}
+```console {title="终端会话"}
+$ hugo version
+hugo v0.164.0+extended darwin/arm64
+$ hugo --gc --minify
+Total in 742 ms
+```
+````
+
+**实际效果**
 
 ```console {title="终端会话"}
 $ hugo version
@@ -106,12 +138,44 @@ Total in 742 ms
 
 第一个示例会在视觉上换行长值，但不会改动复制出的文本：
 
+**作者写法**
+
+````markdown {filename="content/docs/downloads.md"}
+```text {filename="config/artifacts.env" wrap=true}
+ARTIFACT_URL=https://downloads.example.com/releases/2026/08/oink-complete-offline-distribution-arm64.tar.zst
+CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
+```
+````
+
+**实际效果**
+
 ```text {filename="config/artifacts.env" wrap=true}
 ARTIFACT_URL=https://downloads.example.com/releases/2026/08/oink-complete-offline-distribution-arm64.tar.zst
 CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 ```
 
 第二个示例由服务器输出全部内容，但在浏览器中初始只显示六行：
+
+**作者写法**
+
+````markdown {filename="content/docs/configuration.md"}
+```yaml {filename="hugo.yaml" collapse=6}
+baseURL: https://docs.example.com/
+title: Product Documentation
+defaultContentLanguage: en
+languages:
+  en:
+    label: English
+    weight: 1
+  zh:
+    label: 简体中文
+    weight: 2
+params:
+  offlineSearch: true
+```
+````
+
+**实际效果**
 
 ```yaml {filename="hugo.yaml" collapse=6}
 baseURL: https://docs.example.com/
@@ -133,11 +197,19 @@ params:
 发布行号链接时应设置页面内唯一的明确
 `id`。ID 不能包含 ASCII 空白或控制字符，也不能与其他代码组件生成的 viewport、标签、面板、标题或行锚点 ID 冲突；任何此类冲突都会导致构建失败：
 
+**作者写法**
+
 ````markdown {filename="content/docs/server.md"}
-```go {id="server-start" lineNos="inline" anchorLineNos=true}
+```go {id="zh-server-start" lineNos="inline" anchorLineNos=true}
 func start() {}
 ```
 ````
+
+**实际效果**
+
+```go {id="zh-server-start" lineNos="inline" anchorLineNos=true}
+func start() {}
+```
 
 OINK 会从该 ID 派生唯一行锚点前缀。自动生成的 ID 在页面内是安全的，但依赖代码块顺序，不构成永久链接契约；在前面插入新围栏可能改变它。
 
@@ -145,8 +217,10 @@ OINK 会从该 ID 派生唯一行锚点前缀。自动生成的 ID 在页面内�
 
 如果多个示例是同一任务的替代方案，应使用 `code-group`：
 
+**作者写法**
+
 ```go-html-template {filename="content/docs/install.md" wrap=true}
-{{</* code-group id="install-client" sync="package-manager" persist=true
+{{</* code-group id="zh-docs-install-client" sync="zh-docs-package-manager" persist=false
     label="选择包管理器" copy="all" */>}}
   {{</* code-tab title="npm" value="npm" lang="bash" */>}}
 npm install @example/client
@@ -154,8 +228,26 @@ npm install @example/client
   {{</* code-tab title="pnpm" value="pnpm" lang="bash" selected=true */>}}
 pnpm add @example/client
   {{</* /code-tab */>}}
+  {{</* code-tab title="yarn" value="yarn" lang="bash" */>}}
+yarn add @example/client
+  {{</* /code-tab */>}}
 {{</* /code-group */>}}
 ```
+
+**实际效果**
+
+<!-- prettier-ignore -->
+{{< code-group id="zh-docs-install-client" sync="zh-docs-package-manager" persist=false label="选择包管理器" copy="all" >}}
+  {{< code-tab title="npm" value="npm" lang="bash" >}}
+npm install @example/client
+  {{< /code-tab >}}
+  {{< code-tab title="pnpm" value="pnpm" lang="bash" selected=true >}}
+pnpm add @example/client
+  {{< /code-tab >}}
+  {{< code-tab title="yarn" value="yarn" lang="bash" >}}
+yarn add @example/client
+  {{< /code-tab >}}
+{{< /code-group >}}
 
 `code-tab`
 包含原始代码而不是 Markdown。OINK 会移除用于排版的首个换行和结束短代码前的缩进，同时保留源码内部的全部空白。Markdown 格式化工具可能会重排这段原始内容；使用 Prettier 时，应像下面的实时示例一样，在每个
@@ -186,23 +278,28 @@ hash、已保存值、`selected=true`、第一个子项。
 
 ### 实时同步分组 {#live-synchronized-groups}
 
-下面两个实时分组共享同一个 `sync`
-key。在任意分组中选择包管理器，另一个分组都会随之切换。第一个分组的
+上面的安装分组与下面的运行分组共享同一个 `sync`
+key。在任意分组中选择包管理器，另一个分组都会随之切换。安装分组的
 [npm](#zh-docs-install-client-npm)、[pnpm](#zh-docs-install-client-pnpm) 与
 [yarn](#zh-docs-install-client-yarn) 面板也都有可分享的 hash。
 
-<!-- prettier-ignore -->
-{{< code-group id="zh-docs-install-client" sync="zh-docs-package-manager" persist=false >}}
-  {{< code-tab title="npm" value="npm" lang="bash" >}}
-npm install @example/client
-  {{< /code-tab >}}
-  {{< code-tab title="pnpm" value="pnpm" lang="bash" selected=true >}}
-pnpm add @example/client
-  {{< /code-tab >}}
-  {{< code-tab title="yarn" value="yarn" lang="bash" >}}
-yarn add @example/client
-  {{< /code-tab >}}
-{{< /code-group >}}
+**作者写法**
+
+```go-html-template {filename="content/docs/run.md" wrap=true}
+{{</* code-group id="zh-docs-run-client" sync="zh-docs-package-manager" persist=false */>}}
+  {{</* code-tab title="npm" value="npm" lang="bash" */>}}
+npm run docs:dev
+  {{</* /code-tab */>}}
+  {{</* code-tab title="pnpm" value="pnpm" lang="bash" selected=true */>}}
+pnpm docs:dev
+  {{</* /code-tab */>}}
+  {{</* code-tab title="yarn" value="yarn" lang="bash" */>}}
+yarn docs:dev
+  {{</* /code-tab */>}}
+{{</* /code-group */>}}
+```
+
+**实际效果**
 
 <!-- prettier-ignore -->
 {{< code-group id="zh-docs-run-client" sync="zh-docs-package-manager" persist=false >}}

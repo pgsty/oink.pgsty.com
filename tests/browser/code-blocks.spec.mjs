@@ -1,3 +1,4 @@
+import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 const codeFixture = '/tests/code-blocks/';
@@ -19,7 +20,26 @@ test.describe('Enhanced code blocks', () => {
     await page.locator('#copy-source [data-td-code-copy]').click();
     await expect
       .poll(() => clipboardText(page))
-      .toBe("message: '你好, OINK'\nitems:\n  - first\n\n  - third\n");
+      .toBe(
+        "message: '你好, OINK'\nenabled: true\nitems:\n  - first\n\n  - third\n",
+      );
+
+    const copyButton = page.locator('#copy-source [data-td-code-copy]');
+    await expect(copyButton).toHaveAccessibleName('Copy code');
+    await expect(copyButton).toHaveText('');
+    await expect
+      .poll(() =>
+        copyButton.evaluate((node) => node.getBoundingClientRect().width),
+      )
+      .toBeLessThanOrEqual(36);
+
+    await expect(page.locator('#copy-disabled')).toHaveAttribute(
+      'data-language',
+      'sh',
+    );
+    await expect(page.locator('#copy-disabled .td-code__language')).toHaveText(
+      'BASH',
+    );
 
     await page.locator('#numbered-inline [data-td-code-copy]').click();
     await expect
@@ -103,8 +123,62 @@ test.describe('Enhanced code blocks', () => {
       )
       .toEqual([
         'copy',
-        "message: '你好, OINK'\nitems:\n  - first\n\n  - third\n",
+        "message: '你好, OINK'\nenabled: true\nitems:\n  - first\n\n  - third\n",
       ]);
+  });
+
+  test('dark syntax colors retain token roles without error boxes or line borders', async ({
+    page,
+  }) => {
+    await page.goto(codeFixture, { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() =>
+      document.documentElement.setAttribute('data-bs-theme', 'dark'),
+    );
+
+    const colors = await page.locator('#copy-source').evaluate((root) => {
+      const color = (selector) =>
+        getComputedStyle(root.querySelector(selector)).color;
+      return {
+        key: color('.nt'),
+        boolean: color('.kc'),
+        string: color('.s1'),
+      };
+    });
+    expect(new Set(Object.values(colors)).size).toBe(3);
+
+    const terminal = await page
+      .locator('#console-commands')
+      .evaluate((root) => ({
+        prompt: getComputedStyle(root.querySelector('.gp')).color,
+        output: getComputedStyle(root.querySelector('.go')).color,
+        command: getComputedStyle(root.querySelector('.cl')).color,
+      }));
+    expect(terminal.prompt).not.toBe(terminal.output);
+    expect(terminal.output).not.toBe(terminal.command);
+
+    const errorBackgrounds = await page
+      .locator('#template-source .err')
+      .evaluateAll((tokens) =>
+        tokens.map((token) => getComputedStyle(token).backgroundColor),
+      );
+    expect(errorBackgrounds.length).toBeGreaterThan(0);
+    expect(new Set(errorBackgrounds)).toEqual(new Set(['rgba(0, 0, 0, 0)']));
+
+    const highlight = await page
+      .locator('#numbered-inline .hl')
+      .first()
+      .evaluate((line) => ({
+        background: getComputedStyle(line).backgroundColor,
+        shadow: getComputedStyle(line).boxShadow,
+      }));
+    expect(highlight.background).not.toBe('rgba(0, 0, 0, 0)');
+    const parsedChannels = highlight.background.match(/[\d.]+/g).map(Number);
+    const channels = highlight.background.startsWith('color(')
+      ? parsedChannels.slice(0, 3).map((channel) => channel * 255)
+      : parsedChannels.slice(0, 3);
+    expect(Math.max(...channels)).toBeLessThan(60);
+    expect(highlight.shadow).toContain('3px 0px');
+    expect(highlight.shadow).not.toContain('0px 0px 0px 1px');
   });
 
   test('collapse is measured, reversible, hash-aware, and motion-safe', async ({
@@ -299,6 +373,89 @@ test.describe('Code Group state', () => {
       )
       .toEqual(['8', '8']);
   });
+});
+
+test('the EN and ZH guide pair every authoring example with a rendered result', async ({
+  page,
+}) => {
+  for (const [path, authoring, rendered] of [
+    ['/docs/content/code-blocks/', 'Authoring', 'Rendered result'],
+    ['/zh/docs/content/code-blocks/', '作者写法', '实际效果'],
+  ]) {
+    await page.goto(path, { waitUntil: 'domcontentloaded' });
+    const pairs = await page.locator('article').evaluate(
+      (article, labels) => {
+        const labelParagraphs = [...article.querySelectorAll('p')].filter(
+          (paragraph) =>
+            paragraph.children.length === 1 &&
+            paragraph.firstElementChild?.tagName === 'STRONG',
+        );
+        const authors = labelParagraphs.filter(
+          (paragraph) => paragraph.textContent.trim() === labels.authoring,
+        );
+        const results = labelParagraphs.filter(
+          (paragraph) => paragraph.textContent.trim() === labels.rendered,
+        );
+        const hasComponentBeforeNextLabel = (start) => {
+          for (
+            let node = start.nextElementSibling;
+            node;
+            node = node.nextElementSibling
+          ) {
+            if (labelParagraphs.includes(node)) return false;
+            if (node.matches('.td-code, .td-code-group')) return true;
+          }
+          return false;
+        };
+        return {
+          authorCount: authors.length,
+          resultCount: results.length,
+          authorSources: authors.every(hasComponentBeforeNextLabel),
+          renderedOutputs: results.every(hasComponentBeforeNextLabel),
+        };
+      },
+      { authoring, rendered },
+    );
+    expect(pairs.authorCount).toBeGreaterThanOrEqual(8);
+    expect(pairs.resultCount).toBe(pairs.authorCount);
+    expect(pairs.authorSources).toBe(true);
+    expect(pairs.renderedOutputs).toBe(true);
+  }
+});
+
+test('code guide surfaces meet WCAG AA in both color themes', async ({
+  page,
+}) => {
+  for (const path of [
+    '/docs/content/code-blocks/',
+    '/zh/docs/content/code-blocks/',
+    codeFixture,
+  ]) {
+    for (const theme of ['light', 'dark']) {
+      await page.goto(path, { waitUntil: 'domcontentloaded' });
+      await page.evaluate(
+        (selectedTheme) =>
+          localStorage.setItem('td-color-theme', selectedTheme),
+        theme,
+      );
+      await page.reload({ waitUntil: 'domcontentloaded' });
+      await expect(page.locator('html')).toHaveAttribute(
+        'data-bs-theme',
+        theme,
+      );
+      const { violations } = await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+        .analyze();
+      expect(
+        violations.map((violation) => ({
+          id: violation.id,
+          impact: violation.impact,
+          targets: violation.nodes.map((node) => node.target),
+        })),
+        `${path} · ${theme}`,
+      ).toEqual([]);
+    }
+  }
 });
 
 test('code runtimes are absent on a page without code or tabs', async ({

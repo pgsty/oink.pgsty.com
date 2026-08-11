@@ -12,6 +12,7 @@ LLMS index: [llms.txt](/llms.txt)
 
 ```yaml {id="copy-source" filename="config/very-long-service-configuration-file-name.yml" copy="all"}
 message: '你好, OINK'
+enabled: true
 items:
   - first
 
@@ -20,7 +21,7 @@ items:
 
 ## Numbered source
 
-```go {id="numbered-inline" lineNos="inline" lineNoStart=7 anchorLineNos=true hl_lines="8" collapse=2}
+```go {id="numbered-inline" lineNos="inline" lineNoStart=7 anchorLineNos=true hl_lines="3" collapse=2}
 package main
 
 func main() {
@@ -57,8 +58,13 @@ all
 this line deliberately has no prompt token
 ```
 
-```bash {id="copy-disabled" copy=false}
+```sh {id="copy-disabled" copy=false}
 echo "no copy control"
+```
+
+```go-html-template {id="template-source" copy=false}
+{{< code-group id="sample" >}}
+{{< /code-group >}}
 ```
 
 ## Wrap and collapse

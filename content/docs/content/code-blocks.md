@@ -13,7 +13,12 @@ small page-scoped scripts only enable Copy, visual collapse, and tab state.
 
 ## Enhanced fences
 
-Add metadata in Hugo's fence attribute list:
+Add metadata in Hugo's fence attribute list. A fence without attributes still
+receives the same responsive shell and its normal Copy default. `filename` adds
+a visible header; `title` is its compatible alias, and setting both is a build
+error. With neither, OINK uses a compact overlay instead of an empty title row.
+
+**Authoring**
 
 ````markdown {filename="content/docs/example.md" copy="all"}
 ```yaml {filename="hugo.yml" copy="all" lineNos="table" hl_lines="4 7-9" wrap=false collapse=18}
@@ -22,12 +27,9 @@ params:
 ```
 ````
 
-A fence without attributes also receives the same responsive shell and its
-normal Copy default. `filename` adds a visible header. `title` is a compatible
-alias for `filename`; setting both is a build error. With neither, OINK uses a
-compact overlay instead of drawing an empty title row.
-
 ### Live result
+
+**Rendered result**
 
 This block combines a filename, inline line numbers, a stable root ID, line
 links, and highlighted source lines. Line numbers begin at 12, while `hl_lines`
@@ -74,8 +76,24 @@ token-level overrides keep working. The new stable outer element is `.td-code`;
 sites using direct-child selectors such as `.td-content > .highlight` should
 update those selectors.
 
+The visible language label normalizes the common `bash`, `sh`, and `shell` lexer
+aliases to `BASH`. The original lexer value is still passed to Chroma and
+retained in `data-language`.
+
 Diffs deliberately use Chroma's standard `diff` lexer rather than a custom
 transformer:
+
+**Authoring**
+
+````markdown {filename="content/docs/configuration.md"}
+```diff {filename="hugo.yaml.diff"}
+ params:
+-  offlineSearch: false
++  offlineSearch: true
+```
+````
+
+**Rendered result**
 
 ```diff {filename="hugo.yaml.diff"}
  params:
@@ -96,12 +114,29 @@ newline. A session lexer that emits no prompt token reports a localized failure
 and copies nothing. Set `params.disable_click2copy_chroma: true` to hard-disable
 Copy for the entire site.
 
+Copy is shown as a compact icon without adjacent text. Its localized label is
+still exposed to assistive technology and as a hover tooltip; success and
+failure also change the icon and update the live status message.
+
 For a multi-line terminal command, include the continuation prompt (normally
 `>`) on every continued transcript line. Chroma classifies an unprompted line as
 output, so `copy="command"` deliberately excludes it.
 
 The Copy action on this live session copies the two commands, not the prompts or
 output:
+
+**Authoring**
+
+````markdown {filename="content/docs/terminal.md"}
+```console {title="Terminal session"}
+$ hugo version
+hugo v0.164.0+extended darwin/arm64
+$ hugo --gc --minify
+Total in 742 ms
+```
+````
+
+**Rendered result**
 
 ```console {title="Terminal session"}
 $ hugo version
@@ -124,12 +159,44 @@ Reduced-motion preferences disable the height animation.
 
 The first example wraps a long value without altering copied text:
 
+**Authoring**
+
+````markdown {filename="content/docs/downloads.md"}
+```text {filename="config/artifacts.env" wrap=true}
+ARTIFACT_URL=https://downloads.example.com/releases/2026/08/oink-complete-offline-distribution-arm64.tar.zst
+CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
+```
+````
+
+**Rendered result**
+
 ```text {filename="config/artifacts.env" wrap=true}
 ARTIFACT_URL=https://downloads.example.com/releases/2026/08/oink-complete-offline-distribution-arm64.tar.zst
 CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 ```
 
 The second emits all lines on the server but initially shows six in a browser:
+
+**Authoring**
+
+````markdown {filename="content/docs/configuration.md"}
+```yaml {filename="hugo.yaml" collapse=6}
+baseURL: https://docs.example.com/
+title: Product Documentation
+defaultContentLanguage: en
+languages:
+  en:
+    label: English
+    weight: 1
+  zh:
+    label: 简体中文
+    weight: 2
+params:
+  offlineSearch: true
+```
+````
+
+**Rendered result**
 
 ```yaml {filename="hugo.yaml" collapse=6}
 baseURL: https://docs.example.com/
@@ -153,11 +220,19 @@ contain ASCII whitespace or control characters and cannot collide with another
 code component's generated viewport, tab, panel, title, or line-anchor ID. OINK
 reports any such collision as a build error:
 
+**Authoring**
+
 ````markdown {filename="content/docs/server.md"}
 ```go {id="server-start" lineNos="inline" anchorLineNos=true}
 func start() {}
 ```
 ````
+
+**Rendered result**
+
+```go {id="server-start" lineNos="inline" anchorLineNos=true}
+func start() {}
+```
 
 OINK derives unique line-anchor prefixes from that ID. Generated IDs are safe
 inside a page but depend on the block ordinal and are not a permalink contract;
@@ -167,8 +242,10 @@ inserting an earlier fence can change them.
 
 Use `code-group` when examples are alternatives rather than independent tabs:
 
+**Authoring**
+
 ```go-html-template {filename="content/docs/install.md" wrap=true}
-{{</* code-group id="install-client" sync="package-manager" persist=true
+{{</* code-group id="docs-install-client" sync="docs-package-manager" persist=false
     label="Choose a package manager" copy="all" */>}}
   {{</* code-tab title="npm" value="npm" lang="bash" */>}}
 npm install @example/client
@@ -176,8 +253,26 @@ npm install @example/client
   {{</* code-tab title="pnpm" value="pnpm" lang="bash" selected=true */>}}
 pnpm add @example/client
   {{</* /code-tab */>}}
+  {{</* code-tab title="yarn" value="yarn" lang="bash" */>}}
+yarn add @example/client
+  {{</* /code-tab */>}}
 {{</* /code-group */>}}
 ```
+
+**Rendered result**
+
+<!-- prettier-ignore -->
+{{< code-group id="docs-install-client" sync="docs-package-manager" persist=false label="Choose a package manager" copy="all" >}}
+  {{< code-tab title="npm" value="npm" lang="bash" >}}
+npm install @example/client
+  {{< /code-tab >}}
+  {{< code-tab title="pnpm" value="pnpm" lang="bash" selected=true >}}
+pnpm add @example/client
+  {{< /code-tab >}}
+  {{< code-tab title="yarn" value="yarn" lang="bash" >}}
+yarn add @example/client
+  {{< /code-tab >}}
+{{< /code-group >}}
 
 `code-tab` contains raw code, not Markdown. OINK removes the framing newline and
 closing-shortcode indentation while preserving all source whitespace inside.
@@ -211,23 +306,28 @@ saved preference. `persist=false` disables storage, not in-page synchronization.
 
 ### Live synchronized groups
 
-Here are two live groups with the same `sync` key. Choose a package manager in
-either group and the other follows. The first group's
-[npm](#docs-install-client-npm), [pnpm](#docs-install-client-pnpm), and
+The rendered install group above and the run group below share the same `sync`
+key. Choose a package manager in either group and the other follows. The first
+group's [npm](#docs-install-client-npm), [pnpm](#docs-install-client-pnpm), and
 [yarn](#docs-install-client-yarn) panels also have shareable hashes.
 
-<!-- prettier-ignore -->
-{{< code-group id="docs-install-client" sync="docs-package-manager" persist=false >}}
-  {{< code-tab title="npm" value="npm" lang="bash" >}}
-npm install @example/client
-  {{< /code-tab >}}
-  {{< code-tab title="pnpm" value="pnpm" lang="bash" selected=true >}}
-pnpm add @example/client
-  {{< /code-tab >}}
-  {{< code-tab title="yarn" value="yarn" lang="bash" >}}
-yarn add @example/client
-  {{< /code-tab >}}
-{{< /code-group >}}
+**Authoring**
+
+```go-html-template {filename="content/docs/run.md" wrap=true}
+{{</* code-group id="docs-run-client" sync="docs-package-manager" persist=false */>}}
+  {{</* code-tab title="npm" value="npm" lang="bash" */>}}
+npm run docs:dev
+  {{</* /code-tab */>}}
+  {{</* code-tab title="pnpm" value="pnpm" lang="bash" selected=true */>}}
+pnpm docs:dev
+  {{</* /code-tab */>}}
+  {{</* code-tab title="yarn" value="yarn" lang="bash" */>}}
+yarn docs:dev
+  {{</* /code-tab */>}}
+{{</* /code-group */>}}
+```
+
+**Rendered result**
 
 <!-- prettier-ignore -->
 {{< code-group id="docs-run-client" sync="docs-package-manager" persist=false >}}
