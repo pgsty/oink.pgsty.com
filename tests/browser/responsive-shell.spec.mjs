@@ -40,19 +40,21 @@ for (const width of widths) {
       await expect(toc).toBeVisible();
     }
 
-    if (width < 1200) {
-      const actionsToggle = page.locator(
-        '[aria-controls="td-shell-aside-actions"]:visible',
-      );
-      await expect(actionsToggle).toBeVisible();
+    const actionsToggle = page.locator(
+      '[aria-controls="td-shell-aside-actions"]:visible',
+    );
+    await expect(actionsToggle).toBeVisible();
+    if ((await actionsToggle.getAttribute('aria-expanded')) === 'false') {
       await actionsToggle.click();
-      await expect(actionsToggle).toHaveAttribute('aria-expanded', 'true');
-      await expect(context).toBeVisible();
+    }
+    await expect(actionsToggle).toHaveAttribute('aria-expanded', 'true');
+    await expect(context).toBeVisible();
+
+    if (width < 1200) {
       await expect(utilities.locator('.td-language-selector')).toBeVisible();
       await expect(utilities.locator('[data-td-theme-toggle]')).toBeVisible();
       await expect(utilities.locator('a[aria-label="GitHub"]')).toBeVisible();
     } else {
-      await expect(context).toBeVisible();
       await expect(toc.locator('.td-shell-language-selector')).toBeVisible();
       await expect(toc.locator('[data-td-theme-toggle]')).toBeVisible();
       await expect(toc.locator('a[aria-label="GitHub"]')).toBeVisible();
@@ -108,11 +110,49 @@ test('page actions are complete and keyboard operable', async ({ page }) => {
   const context = page.locator('[data-td-page-context]');
   const actions = context.locator('.td-page-meta__action');
   await expect(context).toBeVisible();
+  await expect(context).toContainText('Open in ChatGPT');
+  await expect(context).toContainText('Open in Claude');
   await expect(context).toContainText('Copy Markdown');
   await expect(context).toContainText('View Markdown');
   await expect(context).toContainText('Edit this page');
   await expect(context).toContainText('Create docs issue');
   await expect(context).toContainText('Print this page');
+
+  const chatgpt = context.locator('[data-td-page-open-in="chatgpt"]');
+  const claude = context.locator('[data-td-page-open-in="claude"]');
+  await expect(chatgpt).toHaveAttribute('target', '_blank');
+  await expect(chatgpt).toHaveAttribute('rel', 'noopener noreferrer');
+  await expect(claude).toHaveAttribute('target', '_blank');
+  await expect(claude).toHaveAttribute('rel', 'noopener noreferrer');
+
+  await page.evaluate(() =>
+    history.replaceState(null, '', '?mode=review#code-blocks'),
+  );
+  await chatgpt.evaluate((link) => {
+    link.addEventListener('click', (event) => event.preventDefault(), {
+      once: true,
+    });
+    link.click();
+  });
+  await claude.evaluate((link) => {
+    link.addEventListener('click', (event) => event.preventDefault(), {
+      once: true,
+    });
+    link.click();
+  });
+
+  const currentURL = page.url();
+  const chatgptURL = new URL(await chatgpt.getAttribute('href'));
+  const claudeURL = new URL(await claude.getAttribute('href'));
+  expect(chatgptURL.origin).toBe('https://chatgpt.com');
+  expect(chatgptURL.searchParams.get('hints')).toBe('search');
+  expect(chatgptURL.searchParams.get('prompt')).toBe(
+    `Read from ${currentURL} so I can ask questions about it.`,
+  );
+  expect(claudeURL.origin).toBe('https://claude.ai');
+  expect(claudeURL.searchParams.get('q')).toBe(
+    `Read from ${currentURL} so I can ask questions about it.`,
+  );
 
   await actions.first().focus();
   await expect(actions.first()).toBeFocused();
@@ -124,6 +164,27 @@ test('page actions are complete and keyboard operable', async ({ page }) => {
   await expect(actionsToggle).toHaveAttribute('aria-expanded', 'false');
   await expect(context).toBeHidden();
   await expect(actionsToggle).toBeFocused();
+});
+
+test('page actions localize AI labels and prompts', async ({ page }) => {
+  await page.setViewportSize({ width: 820, height: 900 });
+  await openCleanPage(page, '/zh/docs/content/configuration/');
+
+  const actionsToggle = page.locator(
+    '[aria-controls="td-shell-aside-actions"]:visible',
+  );
+  await actionsToggle.click();
+
+  const context = page.locator('[data-td-page-context]');
+  await expect(context).toContainText('在 ChatGPT 中打开');
+  await expect(context).toContainText('在 Claude 中打开');
+
+  const prompt = new URL(
+    await context
+      .locator('[data-td-page-open-in="chatgpt"]')
+      .getAttribute('href'),
+  ).searchParams.get('prompt');
+  expect(prompt).toBe(`请阅读 ${page.url()} 的内容，以便我就此向你提问。`);
 });
 
 test('sidebar sections use a semantic keyboard toggle', async ({ page }) => {

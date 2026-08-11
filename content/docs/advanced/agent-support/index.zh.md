@@ -24,6 +24,8 @@ cSpell:ignore: llmstxt
 - **发现机制**：页面 HTML 的 header 会包含指向该页 Markdown 版本的
   `rel="alternate"` 链接。
 - **查看 Markdown**：页面元信息区域会显示指向 Markdown 版本的“查看 Markdown”链接。
+- **在 ChatGPT /
+  Claude 中打开**：文档页面操作可以把当前浏览器 URL 交给相应助手。OINK 只在读者激活链接时构造提示词，并保留实际部署域名、查询参数与片段。
 - **[`llms.txt`](#llms-txt)**：位于站点根目录的内容清单文件。
 
 本页其余部分介绍如何启用各项功能，并结合示例讨论相应的[验证与指标](#validation-and-metrics)。

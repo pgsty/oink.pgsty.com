@@ -29,6 +29,9 @@ Oink enables:
   Markdown version of the page.
 - **View Markdown**: page meta area includes a **View Markdown** link to the
   Markdown version of the page.
+- **Open in ChatGPT / Claude**: documentation page actions can hand the current
+  browser URL to either assistant. Oink builds the prompt only when the reader
+  activates the link, preserving the deployed host, query string, and fragment.
 - **[`llms.txt`](#llms-txt)**: site-root file listing.
 
 The remainder of this page explains how to enable each feature, and discusses
