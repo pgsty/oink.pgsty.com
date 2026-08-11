@@ -32,8 +32,8 @@ $secondary: #b4762e;
 
 ```scss
 // assets/scss/_styles_project.scss
-.td-content {
-  --td-content-max-width: 78ch;
+body.td-blog {
+  --td-body-font-family: 'Noto Serif', 'Noto Serif SC', serif;
 }
 ```
 
@@ -41,6 +41,8 @@ $secondary: #b4762e;
 Awesome 或本地字体文件。主题更新会覆盖这些改动，也会模糊依赖边界。
 
 ### 高级样式定制 {#advanced-style-customization}
+
+稳定的定制层次、字体 preset、语义字体角色与按内容限定作用域的完整说明，参见[高级定制][]。
 
 OINK 的 SCSS 导入顺序如下：
 
@@ -158,6 +160,8 @@ $td-enable-google-fonts: true;
 $font-family-sans-serif: 'Noto Sans SC', 'Open Sans', system-ui, sans-serif;
 $font-family-monospace: 'IBM Plex Mono', ui-monospace, monospace;
 ```
+
+OINK 还提供构建时字体 preset 与不依赖运行时脚本的语义字体角色。博客、OpenAPI 或代码密集页面的作用域示例与完整公开接口，参见[高级定制][]。
 
 新增字体时，应制作所需子集并自行托管，包含必要字形，设置
 `font-display: swap`，在 `VENDOR.json`
@@ -338,3 +342,5 @@ body_class: product-reference
 
 OINK 会把该值追加到自动生成的 body
 class。请使用项目专属且有语义的名称，绝不能向该字段写入不可信内容。
+
+[高级定制]: /zh/docs/advanced/customize/

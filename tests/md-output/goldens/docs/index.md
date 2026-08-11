@@ -75,6 +75,6 @@ Section pages:
 - [About Oink](/docs/about/): Understand Oink's examples, design principles, architecture, and open-source model.
 - [Get Started](/docs/tutorial/): Build a bilingual Oink documentation site with Hugo Extended.
 - [Authoring](/docs/content/): Author, organize, and style content for an Oink documentation site.
-- [Advanced](/docs/advanced/): Configure visualizations, languages, search, versions, and integrations.
+- [Advanced](/docs/advanced/): Configure customization, visualizations, languages, search, versions, and integrations.
 - [Deployment](/docs/deploy/): Build Oink once, publish its static output, and verify the result.
 - [Upgrade](/docs/upgrade/): Upgrade Oink, Hugo Extended, or an existing Docsy site safely.

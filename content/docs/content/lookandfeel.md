@@ -36,8 +36,8 @@ $secondary: #b4762e;
 
 ```scss
 // assets/scss/_styles_project.scss
-.td-content {
-  --td-content-max-width: 78ch;
+body.td-blog {
+  --td-body-font-family: 'Noto Serif', 'Noto Serif SC', serif;
 }
 ```
 
@@ -46,6 +46,9 @@ branding. A theme update would overwrite those changes and obscure the
 dependency boundary.
 
 ### Advanced style customization
+
+For the stable customization layers, typography presets, semantic font roles,
+and content-scoped patterns, read [Advanced customization][].
 
 OINK's SCSS import order is:
 
@@ -181,6 +184,10 @@ $td-enable-google-fonts: true;
 $font-family-sans-serif: 'Noto Sans SC', 'Open Sans', system-ui, sans-serif;
 $font-family-monospace: 'IBM Plex Mono', ui-monospace, monospace;
 ```
+
+OINK also exposes build-time typography presets and runtime-independent semantic
+font roles. See [Advanced customization][] for the complete public interface and
+examples that scope a font to blog, OpenAPI, or code-heavy pages.
 
 If you add a font, subset and self-host it, include the required scripts, use
 `font-display: swap`, document its license in `VENDOR.json`, and test CJK
@@ -400,3 +407,5 @@ body_class: product-reference
 
 OINK appends the value to its generated body classes. Use a project-specific,
 semantic class name and never insert untrusted content into this field.
+
+[Advanced customization]: /docs/advanced/customize/
