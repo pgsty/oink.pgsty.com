@@ -26,7 +26,7 @@ air-gapped builds and the simplest way to preserve an exact distribution.
 
 Extract the theme under the site's `themes/` directory:
 
-```text
+```text {title="Theme directory layout" copy=false}
 site/
 ├── hugo.yaml
 └── themes/
@@ -35,7 +35,7 @@ site/
 
 Configure:
 
-```yaml
+```yaml {filename="hugo.yaml"}
 theme: oink
 ```
 
@@ -59,7 +59,7 @@ git commit -m "Add OINK theme at THEME_REF"
 
 Configure the nested theme path:
 
-```yaml
+```yaml {filename="hugo.yaml"}
 theme: oink
 ```
 
@@ -96,7 +96,7 @@ hugo mod tidy
 
 Import it in `hugo.yaml`:
 
-```yaml
+```yaml {filename="hugo.yaml"}
 module:
   imports:
     - path: github.com/pgsty/oink

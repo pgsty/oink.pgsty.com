@@ -31,7 +31,7 @@ submodule 安装主题，请启用递归 submodule 检出。如果使用 Hugo �
 
 也可以把同样的设置写入 `netlify.toml` 并提交：
 
-```toml
+```toml {filename="netlify.toml"}
 [build]
 command = "hugo --gc --minify"
 publish = "public"

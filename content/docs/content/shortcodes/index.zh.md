@@ -341,6 +341,12 @@ offlineSearch = true {{</* /tab */>}} {{</* /tabpane */>}}
 `header`、`selected`、`lang`、`highlight`、`text`、`right` 和
 `disabled`。只能选中一个标签。面向读者的标题需要翻译，语言标识则必须稳定。
 
+### 代码组 {#code-groups}
+
+只包含代码的替代方案如果需要稳定公开 hash、同步 value 与精确复制行为，应使用
+`code-group`/`code-tab`。与旧 `tabpane` 不同，每个子项都必须提供机器可读的
+`value`，非交互输出则会展开所有示例。完整参数与持久化契约参见[代码块与代码组](/zh/docs/content/code-blocks/)。
+
 ## 卡片面板 {#card-panes}
 
 旧版 `cardpane`/`card`

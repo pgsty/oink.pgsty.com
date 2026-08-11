@@ -103,7 +103,7 @@ for (const sourceFile of pages) {
     for (let node = iterator.nextNode(); node; node = iterator.nextNode()) {
       if (
         node.parentElement?.closest(
-          'pre, code, samp, kbd, script, style, textarea',
+          'pre, code, samp, kbd, script, style, textarea, [data-td-code-group-tab], .td-code-group__print-title, .td-code-group__static-title',
         )
       ) {
         continue;

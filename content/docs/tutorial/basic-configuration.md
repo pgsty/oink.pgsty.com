@@ -16,7 +16,7 @@ remain easy to scan and review.
 
 The following excerpt shows the important structure for the Hugo Module.
 
-```yaml
+```yaml {filename="hugo.yaml" lineNos="inline" collapse=24}
 title: Product Documentation
 baseURL: https://docs.example.com/
 defaultContentLanguage: en
@@ -84,7 +84,7 @@ click cycles to the next language and when the full hover menu is rendered.
 
 Put translations beside each other:
 
-```text
+```text {title="Content tree" copy=false}
 content/
 ├── _index.md
 ├── _index.zh.md

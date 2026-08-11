@@ -55,6 +55,24 @@ result or verification command. Separate local preview, production build, hosted
 deployment, and public release evidence; success at one layer does not establish
 the next.
 
+## Make code examples actionable {#make-code-examples-actionable}
+
+Name a block when it represents a real file, use `console` for a transcript with
+prompts and output, and collapse long reference listings that readers do not
+need to scan before continuing. Use a Code Group only when panels are
+interchangeable ways to complete the same task.
+
+```yaml {filename="hugo.yaml" hl_lines="3"}
+params:
+  offlineSearch: true
+  print:
+    disable_toc: false
+```
+
+Metadata should clarify an example, not decorate every fence. See
+[Code blocks and Code Groups](/docs/content/code-blocks/) for filenames, Copy
+policies, wrapping, collapse, line links, and synchronized alternatives.
+
 ## Review rendered states {#review-rendered-states}
 
 Build both languages and inspect representative pages on desktop and mobile, in

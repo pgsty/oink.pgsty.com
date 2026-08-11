@@ -171,7 +171,7 @@ $font-family-monospace: 'IBM Plex Mono', ui-monospace, monospace;
 ## 代码块 {#code-blocks}
 
 OINK 默认支持 Hugo
-Chroma，并提供本地纳管的 Prism 兼容选项。一个站点应统一选择一种高亮器；同时启用会产生重复标记或样式。
+Chroma，并提供本地纳管的 Prism 兼容选项。一个站点应统一选择一种高亮器；同时启用会产生重复标记或样式。文件名、复制策略、换行、折叠、行锚点与可分享代码组的完整说明参见[代码块与代码组](/zh/docs/content/code-blocks/)。
 
 ### 使用 Chroma 进行代码高亮 {#code-highlighting-with-chroma}
 

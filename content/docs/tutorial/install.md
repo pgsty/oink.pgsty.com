@@ -36,7 +36,7 @@ hugo mod get github.com/pgsty/oink@THEME_REF
 Replace `THEME_REF` with a published tag such as `v0.2.0` or an immutable
 commit. Add the import to `hugo.yaml`:
 
-```yaml
+```yaml {filename="hugo.yaml"}
 module:
   imports:
     - path: github.com/pgsty/oink
@@ -67,7 +67,7 @@ runtimes, and its content components. A consuming site does not need a
 
 Clone the theme and site as siblings, then use a local Go workspace:
 
-```text
+```text {title="Sibling checkout layout" copy=false}
 ~/pgsty/
 ├── oink/
 └── product-docs/
@@ -111,7 +111,7 @@ deep links, preserve the English heading ID explicitly in the Chinese heading:
 
 The essential configuration is small:
 
-```yaml
+```yaml {filename="hugo.yaml" collapse=20}
 title: Product Docs
 baseURL: https://docs.example.com/
 defaultContentLanguage: en

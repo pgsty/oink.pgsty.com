@@ -18,7 +18,7 @@ The following `Dockerfile` installs the currently validated Hugo Extended
 version from its release package. Keep the version aligned with the theme's
 support matrix.
 
-```dockerfile
+```dockerfile {filename="Dockerfile" wrap=true collapse=12}
 FROM debian:bookworm-slim
 
 ARG HUGO_VERSION=0.164.0

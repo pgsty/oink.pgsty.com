@@ -60,6 +60,17 @@
     "skip": false
   },
   {
+    "path": "tests/code-blocks/index.md",
+    "kind": "page",
+    "covers": [
+      "code-group",
+      "dynamic-fence",
+      "legacy-tabpane",
+      "!interactive-html"
+    ],
+    "skip": false
+  },
+  {
     "path": "zh/index.md",
     "kind": "home",
     "covers": ["description", "body", "children", "i18n:zh"],

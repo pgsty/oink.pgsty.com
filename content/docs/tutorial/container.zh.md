@@ -15,7 +15,7 @@ Extended。如果团队希望固定工具镜像，或不想在开发者工作站
 下面的 `Dockerfile` 从发布包安装当前验证过的 Hugo
 Extended 版本。请让该版本始终与主题支持矩阵保持一致。
 
-```dockerfile
+```dockerfile {filename="Dockerfile" wrap=true collapse=12}
 FROM debian:bookworm-slim
 
 ARG HUGO_VERSION=0.164.0

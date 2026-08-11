@@ -35,7 +35,7 @@ from the wrong location.
 Create `.github/workflows/pages.yml` with the following contents. Keep
 `HUGO_VERSION` aligned with a version validated by the theme.
 
-```yaml
+```yaml {filename=".github/workflows/pages.yml" lineNos="inline" collapse=24}
 name: Deploy Hugo site to Pages
 
 on:

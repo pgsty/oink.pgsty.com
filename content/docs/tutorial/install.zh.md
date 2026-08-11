@@ -34,7 +34,7 @@ hugo mod get github.com/pgsty/oink@THEME_REF
 请把 `THEME_REF` 替换为 `v0.2.0` 之类的已发布标签，或不可变的 commit。然后在
 `hugo.yaml` 中添加导入：
 
-```yaml
+```yaml {filename="hugo.yaml"}
 module:
   imports:
     - path: github.com/pgsty/oink
@@ -64,7 +64,7 @@ Awesome、字体、搜索、图表、API 文档运行时和内容组件。消费
 
 把主题与站点克隆为同级目录，再使用本地 Go workspace：
 
-```text
+```text {title="同级 checkout 布局" copy=false}
 ~/pgsty/
 ├── oink/
 └── product-docs/
@@ -106,7 +106,7 @@ matter 标识符、代码、命令、参数名与链接目标应保持语义一�
 
 最基本的配置很精简：
 
-```yaml
+```yaml {filename="hugo.yaml" collapse=20}
 title: Product Docs
 baseURL: https://docs.example.com/
 defaultContentLanguage: en

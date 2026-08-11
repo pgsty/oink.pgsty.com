@@ -14,7 +14,7 @@ Hugo 从 `hugo.yaml`、`hugo.toml` 或 `hugo.json`
 
 下面的节选展示了 Hugo Module 的关键结构。
 
-```yaml
+```yaml {filename="hugo.yaml" lineNos="inline" collapse=24}
 title: Product Documentation
 baseURL: https://docs.example.com/
 defaultContentLanguage: en
@@ -80,7 +80,7 @@ module:
 
 将译文并置存放：
 
-```text
+```text {title="内容目录树" copy=false}
 content/
 ├── _index.md
 ├── _index.zh.md

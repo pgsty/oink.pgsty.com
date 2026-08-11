@@ -37,7 +37,7 @@ download.
 
 The same settings can be committed as `netlify.toml`:
 
-```toml
+```toml {filename="netlify.toml"}
 [build]
 command = "hugo --gc --minify"
 publish = "public"

@@ -378,6 +378,14 @@ group label.
 `highlight`, `text`, `right`, and `disabled`. Only one tab should be selected.
 Translate reader-facing headers, but keep language identifiers stable.
 
+### Code Groups
+
+Use `code-group`/`code-tab` for code-only alternatives that need stable public
+hashes, synchronized values, and exact Copy behavior. Unlike legacy `tabpane`,
+each child has a required machine `value`, and non-interactive outputs expand
+every example. Read [Code blocks and Code Groups](/docs/content/code-blocks/)
+for the complete parameter and persistence contract.
+
 ## Card panes
 
 The legacy `cardpane`/`card` pair lays out Bootstrap-style cards. New navigation

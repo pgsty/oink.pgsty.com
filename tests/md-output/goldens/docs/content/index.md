@@ -23,6 +23,7 @@ Section pages:
 - [Hugo authoring tips](/docs/content/writing-guide/): Avoid common pitfalls when writing content for an Oink site.
 - [Navigation and menus](/docs/content/navigation/): Configure navigation, language switching, sidebars, and outlines.
 - [Look and feel](/docs/content/lookandfeel/): Customize themes, typography, code styles, and page layouts.
+- [Code blocks and Code Groups](/docs/content/code-blocks/): Add filenames, exact Copy behavior, wrapping, collapse, and shareable groups to Hugo code examples.
 - [Logos and images](/docs/content/iconsimages/): Configure logos, page icons, favicons, and images.
 - [Shortcodes](/docs/content/shortcodes/): Use OINK's local-first content components safely and accessibly.
 - [Content components](/docs/content/components/): Use Oink's local, reusable components for richer documentation.

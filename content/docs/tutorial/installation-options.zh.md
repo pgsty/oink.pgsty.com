@@ -21,7 +21,7 @@ Module。以下选项只改变 Hugo 获取同一份主题源码的方式，不�
 
 把主题解压到站点的 `themes/` 目录：
 
-```text
+```text {title="主题目录布局" copy=false}
 site/
 ├── hugo.yaml
 └── themes/
@@ -30,7 +30,7 @@ site/
 
 配置如下：
 
-```yaml
+```yaml {filename="hugo.yaml"}
 theme: oink
 ```
 
@@ -52,7 +52,7 @@ git commit -m "Add OINK theme at THEME_REF"
 
 配置嵌套主题路径：
 
-```yaml
+```yaml {filename="hugo.yaml"}
 theme: oink
 ```
 
@@ -88,7 +88,7 @@ hugo mod tidy
 
 在 `hugo.yaml` 中导入：
 
-```yaml
+```yaml {filename="hugo.yaml"}
 module:
   imports:
     - path: github.com/pgsty/oink
