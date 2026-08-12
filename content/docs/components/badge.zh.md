@@ -1,8 +1,7 @@
 ---
 title: Badge
 description: 使用紧凑的语义状态标签，无需自定义颜色或 JavaScript。
-weight: 10
-icon: fa-solid fa-tag
+weight: 20
 ---
 
 Badge 用于在功能、选项或版本名称旁边放置简短状态。作者选择语义 tone，Oink 再把它映射到主题 token，确保浅色与深色模式下都有足够的对比度。

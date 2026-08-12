@@ -1,7 +1,6 @@
 ---
 title: 搜索
 weight: 20
-icon: fa-solid fa-magnifying-glass
 description: 配置本地多语言搜索，或显式启用在线服务商。
 aliases: [/docs/content/search/, /docs/feature/search/]
 cSpell:ignore: GCSE docsearch

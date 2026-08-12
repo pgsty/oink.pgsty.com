@@ -3,8 +3,7 @@ title: Image Zoom
 description:
   Let readers inspect meaningful standalone images with an optional native
   dialog.
-weight: 50
-icon: fa-solid fa-magnifying-glass-plus
+weight: 70
 params:
   ui:
     image_zoom:

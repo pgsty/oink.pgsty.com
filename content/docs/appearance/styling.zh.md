@@ -1,7 +1,6 @@
 ---
 title: 外观与风格
 weight: 60
-icon: fa-solid fa-palette
 description: 定制主题、字体、代码样式与页面布局。
 ---
 
@@ -310,7 +309,7 @@ OINK 样例使用带本地渐变效果的文字标识。站点标题在语言配
 ## 告警 {#alerts}
 
 Markdown 告警类型会映射到语义化 OINK/Bootstrap 样式。`.alert-*`
-与告警渲染钩子应成对调整，保留可见标签或图标，并测试每种背景中的链接和行内代码。语法参见[添加内容](/zh/docs/content/adding-content/#alerts)。
+与告警渲染钩子应成对调整，保留可见标签或图标，并测试每种背景中的链接和行内代码。语法参见[添加内容](/zh/docs/content/writing/#alerts)。
 
 ## 表格 {#tables}
 

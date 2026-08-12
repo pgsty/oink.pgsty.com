@@ -1,7 +1,6 @@
 ---
 title: Migrate an existing Docsy site
 weight: 40
-icon: fa-solid fa-right-left
 description: Replace copied Docsy shells while preserving site-owned behavior.
 aliases:
   [

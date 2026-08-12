@@ -162,5 +162,5 @@ not as an unversioned production dependency.
 - [Content components](/docs/components/)
 - [Configuration](/docs/configure/overview/)
 - [Migration guide](/docs/upgrade/from-docsy/)
-- [Release process](/docs/about/release/)
+- [Release process](/docs/about/)
 - [Implementation diary](/blog/oink/oink-implementation-diary/)

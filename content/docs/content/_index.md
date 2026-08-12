@@ -1,13 +1,20 @@
 ---
-downstream_modified: true
 title: Authoring
-weight: 3
+linkTitle: Authoring
+weight: 30
 icon: fa-solid fa-pen-ruler
-description: Author, organize, and style content for an Oink documentation site.
-aliases: [/content/, /docs/best-practices/]
+description:
+  How the content tree is organized, writing conventions, media, and taxonomies.
 ---
 
-Start with site-wide [configuration](/docs/configure/overview/), then shape the
-content tree, writing conventions, navigation, visual language, media,
-shortcodes, and reusable components. These pages focus on authoring choices that
-remain under the consuming site's control.
+This chapter is about **how to write**. The available building blocks are in
+[Components](/docs/components/); site-level settings are in
+[Site configuration](/docs/configure/).
+
+## In this chapter {#in-this-chapter}
+
+- [Organize content](organize/): the content tree, sections, page bundles, front
+  matter
+- [Writing conventions](writing/): Markdown, alerts, links, bilingual authoring
+- [Images and media](media/): logos, favicons, icons, and images
+- [Taxonomies](taxonomy/): taxonomy configuration and multilingual support

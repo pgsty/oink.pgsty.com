@@ -2,8 +2,8 @@
 title: 升级迁移
 description: 安全升级 Oink、Hugo Extended，或迁移现有 Docsy 站点。
 aliases: [/upgrade/, /docs/update/, /docs/updating/]
-weight: 6
-icon: fa-solid fa-arrows-rotate
+weight: 80
+icon: fa-solid fa-arrow-up-right-dots
 ---
 
 本节介绍 OINK 的更新合同。**目标版本**

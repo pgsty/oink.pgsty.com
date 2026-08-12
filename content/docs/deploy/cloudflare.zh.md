@@ -3,7 +3,6 @@ title: 部署到 Cloudflare Pages
 linkTitle: Cloudflare Pages
 description: 使用 Cloudflare Pages 构建并发布 Oink 站点。
 weight: 30
-icon: fa-brands fa-cloudflare
 aliases: [/docs/deployment/cloudflare/]
 ---
 

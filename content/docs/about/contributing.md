@@ -4,7 +4,6 @@ title: Contribution guidelines
 description: Contribute code and bilingual documentation to Oink.
 aliases: [contribution-guidelines, /docs/contributing/]
 weight: 40
-icon: fa-solid fa-code-pull-request
 ---
 
 OINK is an independent theme derived from Docsy. Contributions must preserve the

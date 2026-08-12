@@ -6,7 +6,7 @@ description:
   model.
 type: docs
 aliases: [/about/, /docs/oink/]
-weight: 1
+weight: 90
 icon: fa-solid fa-circle-info
 ---
 
@@ -43,9 +43,7 @@ The About section follows the lifecycle from evaluation through maintenance:
    runtime, and extension boundaries.
 4. [Contribution guidelines](contributing/) covers theme and bilingual
    documentation changes.
-5. [Release process](release/) separates source completion, validation, public
-   release, documentation updates, and hosted deployment.
-6. [Open-source licenses](license/) explains provenance, dependencies,
+5. [Open-source licenses](license/) explains provenance, dependencies,
    acknowledgements, and the licenses for the site and theme.
 
 ## Repository boundaries {#repository-boundaries}

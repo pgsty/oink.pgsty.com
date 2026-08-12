@@ -5,7 +5,6 @@ description:
   consumer.
 downstream_modified: true
 weight: 10
-icon: fa-solid fa-cubes
 aliases: [/examples/, /docs/examples/, /docs/about/example/]
 ---
 

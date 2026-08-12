@@ -1,7 +1,6 @@
 ---
 title: Advanced customization
 weight: 35
-icon: fa-solid fa-sliders
 description:
   Customize typography and scoped visual styles through Docsy-compatible Sass
   inputs and OINK semantic tokens.

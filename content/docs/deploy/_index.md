@@ -1,6 +1,6 @@
 ---
 title: Deployment
-weight: 5
+weight: 70
 icon: fa-solid fa-cloud-arrow-up
 description: Build Oink once, publish its static output, and verify the result.
 aliases: [/deploy/, /docs/deployment/, /docs/oink/deployment/]

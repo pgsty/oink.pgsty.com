@@ -3,7 +3,6 @@ title: 部署到 Netlify
 linkTitle: Netlify
 description: 仅使用 Hugo 将 OINK 站点部署到 Netlify。
 weight: 40
-icon: fa-solid fa-globe
 aliases: [/docs/deployment/netlify/]
 ---
 

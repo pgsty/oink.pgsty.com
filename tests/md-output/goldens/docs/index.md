@@ -72,12 +72,12 @@ covers authoring, advanced features, deployment, and upgrades.
 
 Section pages:
 
-- [About Oink](/docs/about/): Understand Oink's examples, design principles, architecture, and open-source model.
-- [Authoring](/docs/content/): Author, organize, and style content for an Oink documentation site.
+- [Get started](/docs/tutorial/): Build a bilingual OINK documentation site from scratch and deploy it.
+- [Site configuration](/docs/configure/): Navigation menus, languages, versions, and repository links.
+- [Authoring](/docs/content/): How the content tree is organized, writing conventions, media, and taxonomies.
+- [Components](/docs/components/): Every component available for writing, ordered by how often you reach for it.
+- [Appearance](/docs/appearance/): Typography presets, colors, and style overrides.
 - [Advanced](/docs/advanced/): Configure customization, visualizations, languages, search, versions, and integrations.
 - [Deployment](/docs/deploy/): Build Oink once, publish its static output, and verify the result.
 - [Upgrade](/docs/upgrade/): Upgrade Oink, Hugo Extended, or an existing Docsy site safely.
-- [Get started](/docs/tutorial/): Build a bilingual OINK documentation site from scratch and deploy it.
-- [Site configuration](/docs/configure/): Navigation menus, languages, versions, and repository links.
-- [Content components](/docs/components/): Use Oink's local, reusable components for richer documentation.
-- [Appearance](/docs/appearance/): Typography presets, colors, and style overrides.
+- [About Oink](/docs/about/): Understand Oink's examples, design principles, architecture, and open-source model.

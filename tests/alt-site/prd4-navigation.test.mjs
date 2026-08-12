@@ -81,8 +81,8 @@ for (const [deployment, baseURL, prefix] of [
     }
 
     for (const [languagePath, labels] of [
-      ['', ['Docs', 'Tutorials', 'Blog']],
-      ['/zh', ['文档', '教程', '博客']],
+      ['', ['Docs', 'Get started', 'Blog']],
+      ['/zh', ['文档', '快速上手', '博客']],
     ]) {
       const home = documentAt(outDir, languagePath || '/');
       const desktop = navbarEntries(home);
@@ -97,10 +97,11 @@ for (const [deployment, baseURL, prefix] of [
           label,
         );
       }
-      assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 2);
+      // Docs, About, and Blog each carry one level of children.
+      assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 3);
       assert.equal(
         home.querySelectorAll('[data-td-navbar-accordion-toggle]').length,
-        2,
+        3,
       );
 
       const controls = [...home.querySelectorAll('[aria-controls]')]
@@ -125,7 +126,7 @@ for (const [deployment, baseURL, prefix] of [
       `${prefix}/docs/`,
     );
     assert.equal(
-      englishHome.find((entry) => entry.label === 'Tutorials').href,
+      englishHome.find((entry) => entry.label === 'Get started').href,
       `${prefix}/docs/tutorial/`,
     );
     const chineseHome = navbarEntries(documentAt(outDir, '/zh'));

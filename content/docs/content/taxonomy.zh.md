@@ -3,7 +3,6 @@ title: 分类法支持
 tags: [标签, 内容结构, 标注]
 categories: [分类法]
 weight: 110
-icon: fa-solid fa-tags
 description: 使用标签、类别与自定义分类法组织内容。
 cSpell:ignore: taxo
 ---

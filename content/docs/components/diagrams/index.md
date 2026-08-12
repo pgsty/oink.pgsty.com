@@ -1,8 +1,7 @@
 ---
 downstream_modified: true
 title: Diagrams and formulae
-weight: 100
-icon: fa-solid fa-diagram-project
+weight: 90
 description: Add local diagrams, mind maps, and scientific formulae to a page.
 cSpell:ignore: markmap mhchem plantuml
 ---

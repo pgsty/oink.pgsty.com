@@ -3,7 +3,6 @@ title: 部署到 GitHub Pages
 linkTitle: GitHub Pages
 description: 使用 GitHub Actions 与 Pages 构建并发布 Oink 站点。
 weight: 20
-icon: fa-brands fa-github
 aliases: [/docs/deployment/github-pages/]
 ---
 

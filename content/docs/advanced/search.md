@@ -2,7 +2,6 @@
 downstream_modified: true
 title: Search
 weight: 20
-icon: fa-solid fa-magnifying-glass
 description: Configure local multilingual search or an explicit online provider.
 aliases: [/docs/content/search/, /docs/feature/search/]
 cSpell:ignore: GCSE docsearch

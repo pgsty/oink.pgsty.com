@@ -1,8 +1,7 @@
 ---
 title: Image Zoom
 description: 使用可选的原生对话框查看有意义的独立图片细节。
-weight: 50
-icon: fa-solid fa-magnifying-glass-plus
+weight: 70
 params:
   ui:
     image_zoom:

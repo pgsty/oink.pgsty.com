@@ -1,6 +1,6 @@
 ---
 title: 部署站点
-weight: 5
+weight: 70
 icon: fa-solid fa-cloud-arrow-up
 description: 一次构建 Oink，发布静态产物并验证结果。
 aliases: [/deploy/, /docs/deployment/, /docs/oink/deployment/]

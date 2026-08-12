@@ -33,7 +33,7 @@ capabilities:
         - '自带[全文检索](docs/advanced/search/#local-search-with-lunr)、[i18n](docs/configure/language/#configure-languages)
           与[多版本支持](docs/configure/versioning/#adding-a-version-drop-down-menu)'
         - '自带
-          [RSS](docs/content/adding-content/#rss-feeds)、[SEO](docs/advanced/analytics/#search-engine-optimization-metadata)
+          [RSS](docs/content/writing/#rss-feeds)、[SEO](docs/advanced/analytics/#search-engine-optimization-metadata)
           与 [Google Analytics](docs/advanced/analytics/#adding-analytics) 集成'
       value: 内容团队可以把时间用在文档上，而不是重复搭建站点基础设施。
       visual:
@@ -109,11 +109,11 @@ capabilities:
       url: docs/components/
       motto: 把工程内容需要的表达能力直接带进主题
       bullets:
-        - '[Asciinema](docs/components/#asciinema)、[ECharts](docs/components/#echarts)
-          与 [Infographic](docs/components/#infographic)，完整表达工程内容'
-        - '[KaTeX](docs/content/diagrams-and-formulae/#latex-support-with-katex)、[Mermaid](docs/content/diagrams-and-formulae/#diagrams-with-mermaid)
+        - '[Asciinema](docs/components/layout/)、[ECharts](docs/components/echarts/)
+          与 [Infographic](docs/components/infographic/)，完整表达工程内容'
+        - '[KaTeX](docs/components/diagrams/#latex-support-with-katex)、[Mermaid](docs/components/diagrams/#diagrams-with-mermaid)
           与完整的图表工具箱'
-        - '每个[短代码与组件](docs/content/shortcodes/)都有文档，并且只在使用时加载'
+        - '每个[短代码与组件](docs/components/layout/)都有文档，并且只在使用时加载'
       value: 富内容能力属于主题，普通页面不会因此背上额外负担。
       visual:
         type: components
@@ -124,62 +124,62 @@ capabilities:
           - {
               icon: fa-solid fa-terminal,
               title: Asciinema,
-              url: docs/components/#asciinema,
+              url: docs/components/layout/,
             }
           - {
               icon: fa-solid fa-chart-line,
               title: ECharts,
-              url: docs/components/#echarts,
+              url: docs/components/echarts/,
             }
           - {
               icon: fa-solid fa-diagram-project,
               title: Infographic,
-              url: docs/components/#infographic,
+              url: docs/components/infographic/,
             }
           - {
               icon: fa-solid fa-square-root-variable,
               title: KaTeX,
-              url: docs/content/diagrams-and-formulae/#latex-support-with-katex,
+              url: docs/components/diagrams/#latex-support-with-katex,
             }
           - {
               icon: fa-solid fa-share-nodes,
               title: Mermaid,
-              url: docs/content/diagrams-and-formulae/#diagrams-with-mermaid,
+              url: docs/components/diagrams/#diagrams-with-mermaid,
             }
           - {
               icon: fa-solid fa-sitemap,
               title: Markmap,
-              url: docs/content/diagrams-and-formulae/#mind-map-support-with-markmap,
+              url: docs/components/diagrams/#mind-map-support-with-markmap,
             }
           - {
               icon: fa-solid fa-code-branch,
               title: PlantUML,
-              url: docs/content/diagrams-and-formulae/#uml-diagrams-with-plantuml,
+              url: docs/components/diagrams/#uml-diagrams-with-plantuml,
             }
           - {
               icon: fa-solid fa-pen-ruler,
               title: Diagrams.net,
-              url: docs/content/diagrams-and-formulae/#diagrams-with-diagramsnet,
+              url: docs/components/diagrams/#diagrams-with-diagramsnet,
             }
           - {
               icon: fa-solid fa-file-code,
               title: Swagger UI,
-              url: docs/content/shortcodes/#swaggerui,
+              url: docs/components/layout/#swaggerui,
             }
           - {
               icon: fa-solid fa-book-open,
               title: Redoc,
-              url: docs/content/shortcodes/#redoc,
+              url: docs/components/layout/#redoc,
             }
           - {
               icon: fa-solid fa-id-card,
               title: Cards,
-              url: docs/components/#cards-and-carousel,
+              url: docs/components/layout/,
             }
           - {
               icon: fa-solid fa-images,
               title: Carousel,
-              url: docs/components/#cards-and-carousel,
+              url: docs/components/layout/,
             }
 
 principles:
@@ -219,7 +219,7 @@ footer:
       links:
         - { label: 使用文档, url: docs/ }
         - { label: 开始使用, url: docs/tutorial/ }
-        - { label: 内容组件, url: docs/content/shortcodes/ }
+        - { label: 内容组件, url: docs/components/layout/ }
         - { label: 示例, url: docs/about/examples/ }
     - title: 社区
       links:

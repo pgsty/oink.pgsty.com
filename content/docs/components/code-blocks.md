@@ -3,8 +3,7 @@ title: Code blocks and Code Groups
 description:
   Add filenames, exact Copy behavior, wrapping, collapse, and shareable groups
   to Hugo code examples.
-weight: 65
-icon: fa-solid fa-code
+weight: 10
 ---
 
 OINK enhances Hugo's ordinary fenced code blocks without replacing Chroma or

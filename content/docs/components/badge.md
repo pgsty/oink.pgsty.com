@@ -2,8 +2,7 @@
 title: Badge
 description:
   Add compact, semantic status labels without custom colors or JavaScript.
-weight: 10
-icon: fa-solid fa-tag
+weight: 20
 ---
 
 Use Badge to place a short status beside a feature, option, or release name. The

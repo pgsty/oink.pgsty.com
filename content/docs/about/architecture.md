@@ -1,7 +1,6 @@
 ---
 title: Architecture
 weight: 30
-icon: fa-solid fa-network-wired
 description: See how Oink turns content and local assets into a static site.
 aliases:
   - /docs/oink/architecture/

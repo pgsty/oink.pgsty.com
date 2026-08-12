@@ -31,6 +31,24 @@ services:
 imaging:
   resampleFilter: CatmullRom # cSpell:disable-line
 
+markup:
+  tableOfContents:
+    endLevel: 4
+  goldmark:
+    parser:
+      attribute:
+        block: true
+    extensions:
+      passthrough:
+        enable: true
+        delimiters:
+          block: [['\[', '\]'], ['$$', '$$']]
+          inline: [['\(', '\)']]
+    renderer:
+      unsafe: true
+  highlight:
+    noClasses: false # Required for dark-mode
+
 languages:
   en:
     label: English
@@ -60,28 +78,72 @@ languages:
           weight: 20
         - identifier: docs-tutorial
           parent: docs
-          name: Tutorials
+          name: Get started
           pageRef: /docs/tutorial
           weight: 10
           params:
-            icon: fa-solid fa-route
+            icon: fa-solid fa-rocket
             description: Install OINK and build your first documentation site
-        - identifier: docs-content
+        - identifier: docs-configure
           parent: docs
-          name: Content
-          pageRef: /docs/content
+          name: Site configuration
+          pageRef: /docs/configure
           weight: 20
           params:
-            icon: fa-solid fa-pen-ruler
-            description: Author pages, components, diagrams, and API references
-        - identifier: docs-advanced
+            icon: fa-solid fa-sliders
+            description: Menus, languages, versions, and repository links
+        - identifier: docs-components
           parent: docs
-          name: Advanced
-          pageRef: /docs/advanced
+          name: Components
+          pageRef: /docs/components
           weight: 30
           params:
-            icon: fa-solid fa-gears
-            description: Configure integrations, deployment, and versioning
+            icon: fa-solid fa-cubes
+            description: Code blocks, fields, diagrams, and the rest
+        - identifier: docs-deploy
+          parent: docs
+          name: Deployment
+          pageRef: /docs/deploy
+          weight: 40
+          params:
+            icon: fa-solid fa-cloud-arrow-up
+            description: Publish to Cloudflare Pages, GitHub Pages, and others
+        - identifier: about
+          name: About
+          pageRef: /docs/about
+          weight: 40
+        - identifier: about-examples
+          parent: about
+          name: Example sites
+          pageRef: /docs/about/examples
+          weight: 10
+          params:
+            icon: fa-solid fa-star
+            description: Sites built with OINK
+        - identifier: about-local-first
+          parent: about
+          name: Local-first
+          pageRef: /docs/about/local-first
+          weight: 20
+          params:
+            icon: fa-solid fa-box-archive
+            description: Build and browse without hidden network access
+        - identifier: about-architecture
+          parent: about
+          name: Architecture
+          pageRef: /docs/about/architecture
+          weight: 30
+          params:
+            icon: fa-solid fa-network-wired
+            description: How content and local assets become a static site
+        - identifier: about-contributing
+          parent: about
+          name: Contributing
+          pageRef: /docs/about/contributing
+          weight: 40
+          params:
+            icon: fa-solid fa-code-pull-request
+            description: Contribute code and bilingual documentation
         - identifier: blog
           name: Blog
           pageRef: /blog
@@ -108,6 +170,7 @@ languages:
           weight: 90
           params:
             icon: fa-brands fa-github
+
   zh:
     label: 简体中文
     locale: zh-CN
@@ -183,28 +246,72 @@ languages:
           weight: 20
         - identifier: docs-tutorial
           parent: docs
-          name: 教程
+          name: 快速上手
           pageRef: /docs/tutorial
           weight: 10
           params:
-            icon: fa-solid fa-route
+            icon: fa-solid fa-rocket
             description: 安装 OINK，并创建你的第一个文档站
-        - identifier: docs-content
+        - identifier: docs-configure
           parent: docs
-          name: 内容创作
-          pageRef: /docs/content
+          name: 站点配置
+          pageRef: /docs/configure
           weight: 20
           params:
-            icon: fa-solid fa-pen-ruler
-            description: 编写页面、组件、图表与 API 参考
-        - identifier: docs-advanced
+            icon: fa-solid fa-sliders
+            description: 菜单、多语言、版本管理与仓库链接
+        - identifier: docs-components
           parent: docs
-          name: 高级功能
-          pageRef: /docs/advanced
+          name: 组件参考
+          pageRef: /docs/components
           weight: 30
           params:
-            icon: fa-solid fa-gears
-            description: 配置集成、部署与版本管理
+            icon: fa-solid fa-cubes
+            description: 代码块、Fields、图表等全部组件
+        - identifier: docs-deploy
+          parent: docs
+          name: 部署
+          pageRef: /docs/deploy
+          weight: 40
+          params:
+            icon: fa-solid fa-cloud-arrow-up
+            description: 发布到 Cloudflare Pages、GitHub Pages 及其他托管
+        - identifier: about
+          name: 关于
+          pageRef: /docs/about
+          weight: 40
+        - identifier: about-examples
+          parent: about
+          name: 示例站点
+          pageRef: /docs/about/examples
+          weight: 10
+          params:
+            icon: fa-solid fa-star
+            description: 用 OINK 搭建的站点
+        - identifier: about-local-first
+          parent: about
+          name: 本地优先
+          pageRef: /docs/about/local-first
+          weight: 20
+          params:
+            icon: fa-solid fa-box-archive
+            description: 构建与浏览都不依赖隐式网络访问
+        - identifier: about-architecture
+          parent: about
+          name: 架构概览
+          pageRef: /docs/about/architecture
+          weight: 30
+          params:
+            icon: fa-solid fa-network-wired
+            description: 内容与本地资源如何变成静态站点
+        - identifier: about-contributing
+          parent: about
+          name: 贡献指南
+          pageRef: /docs/about/contributing
+          weight: 40
+          params:
+            icon: fa-solid fa-code-pull-request
+            description: 参与代码与双语文档贡献
         - identifier: blog
           name: 博客
           pageRef: /blog
@@ -231,7 +338,7 @@ languages:
           weight: 90
           params:
             icon: fa-brands fa-github
-markup:
+
   tableOfContents:
     endLevel: 4
   goldmark:

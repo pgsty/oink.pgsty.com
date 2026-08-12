@@ -2,9 +2,7 @@
 title: Apache ECharts
 linkTitle: ECharts
 description: 使用结构化 JSON 或 YAML 创建响应式、本地优先图表。
-weight: 40
-icon: fa-solid fa-chart-column
-aliases: [/docs/feature/echarts/, /docs/content/echarts/]
+weight: 100
 ---
 
 `echarts` 短代码使用 Oink 随主题分发的固定版本 Apache
@@ -65,8 +63,7 @@ series:
 
 ## 选择指南 {#choose-a-guide}
 
-- [图表示例集](gallery/)演示数据集、柱状图、折线图、面积图、饼图、散点图、图例与视觉编码；
-- [回调与可信代码](callbacks/)解释格式化函数、数据驱动样式、`$fn:name`
+- 回调与可信代码：解释格式化函数、数据驱动样式、`$fn:name`
   桥接方式及其安全边界。
 
 请先使用声明式 JSON 或 YAML；只有 ECharts 选项无法用数据表达时，才添加 JavaScript 回调。

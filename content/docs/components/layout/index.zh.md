@@ -1,7 +1,6 @@
 ---
 title: 短代码
 weight: 80
-icon: fa-solid fa-code
 description: 安全、无障碍地使用 OINK 的本地优先内容组件。
 ---
 
@@ -100,7 +99,7 @@ Extended 即可构建完整文档体验。 {{%/* /blocks/lead */%}}
 ```
 
 `color`
-映射到 Bootstrap 告警后缀。新内容通常应采用[添加内容](/zh/docs/content/adding-content/#alerts)介绍的 Markdown 告警语法。
+映射到 Bootstrap 告警后缀。新内容通常应采用[添加内容](/zh/docs/content/writing/#alerts)介绍的 Markdown 告警语法。
 
 #### 告警、缩进与示例 {#alerts-indentation-and-examples}
 
@@ -248,9 +247,9 @@ assets 或站点相对 URL。不要自动播放，必须清除终端历史中的
 Apache
 ECharts 是完整的可视化系统，无法用一个段落说明清楚。高级特性指南会完整介绍包装层、结构化选项、主题、响应式行为、无障碍与可信回调边界：
 
-- [ECharts 快速开始](/zh/docs/advanced/echarts/)
-- [声明式图表示例集](/zh/docs/advanced/echarts/gallery/)
-- [回调与可信代码](/zh/docs/advanced/echarts/callbacks/)
+- [ECharts 快速开始](/zh/docs/components/echarts/)
+- [声明式图表示例集](/zh/docs/components/echarts/)
+- [回调与可信代码](/zh/docs/components/echarts/)
 
 短代码正文接受 JSON 或 YAML 选项对象。`height`、`theme` 与 `full`
 只能按照专门指南中的说明使用。
@@ -260,9 +259,9 @@ ECharts 是完整的可视化系统，无法用一个段落说明清楚。高级
 AntV
 Infographic 也有独立的高级特性指南，因为模板选择、DSL 结构、主题、视觉语义与无障碍都需要比行内示例更完整的解释：
 
-- [信息图快速开始](/zh/docs/advanced/infographic/)
-- [流程、时间线与循环](/zh/docs/advanced/infographic/processes/)
-- [布局、漏斗与主题](/zh/docs/advanced/infographic/layouts/)
+- [信息图快速开始](/zh/docs/components/infographic/)
+- [流程、时间线与循环](/zh/docs/components/infographic/)
+- [布局、漏斗与主题](/zh/docs/components/infographic/)
 
 短代码正文使用 Infographic DSL。请按照专门指南使用 `height` 与
 `full`，并为所有关键可视化提供含义等价的相邻文字说明。

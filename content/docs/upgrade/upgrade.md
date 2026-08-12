@@ -4,7 +4,6 @@ title: Upgrade the Oink Hugo Module
 linkTitle: Hugo module
 aliases: [/docs/update/hugo-module/, /docs/updating/updating-hugo-module/]
 weight: 10
-icon: fa-solid fa-cube
 description: Upgrade a site that imports Oink as a pinned Hugo Module.
 ---
 

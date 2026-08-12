@@ -1,7 +1,6 @@
 ---
 title: 打印支持
 weight: 100
-icon: fa-solid fa-print
 description: 配置单页与整节文档的打印输出。
 aliases: [/docs/content/print/, /docs/feature/print/]
 ---

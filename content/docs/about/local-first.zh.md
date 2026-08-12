@@ -1,7 +1,6 @@
 ---
 title: 本地优先运行
 weight: 20
-icon: fa-solid fa-box-archive
 description: 无需隐藏网络访问即可构建并浏览 Oink。
 aliases: [/docs/oink/local-first/]
 ---

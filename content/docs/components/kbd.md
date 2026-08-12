@@ -1,8 +1,7 @@
 ---
 title: Kbd
 description: Write keyboard shortcuts as accessible, static key sequences.
-weight: 20
-icon: fa-solid fa-keyboard
+weight: 30
 ---
 
 Use Kbd to distinguish literal keys and shortcuts from surrounding prose. It

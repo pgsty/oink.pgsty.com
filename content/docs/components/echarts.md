@@ -2,9 +2,7 @@
 title: Apache ECharts
 linkTitle: ECharts
 description: Build responsive, local-first charts from structured JSON or YAML.
-weight: 40
-icon: fa-solid fa-chart-column
-aliases: [/docs/feature/echarts/, /docs/content/echarts/]
+weight: 100
 ---
 
 The `echarts` shortcode renders an Apache ECharts options object with the
@@ -75,10 +73,10 @@ of creating a blank chart silently.
 
 ## Choose a guide {#choose-a-guide}
 
-- [Chart gallery](gallery/) demonstrates datasets, bars, lines, areas, pies,
-  scatter plots, legends, and visual encodings.
-- [Callbacks and trusted code](callbacks/) explains formatter functions,
-  data-dependent styles, the `$fn:name` bridge, and its security boundary.
+scatter plots, legends, and visual encodings.
+
+- Callbacks and trusted code: explains formatter functions, data-dependent
+  styles, the `$fn:name` bridge, and its security boundary.
 
 Start with declarative JSON or YAML. Add JavaScript callbacks only when the
 ECharts option cannot be expressed as data.

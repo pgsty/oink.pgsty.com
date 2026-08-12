@@ -1,188 +1,77 @@
 ---
-downstream_modified: true
-title: Adding content
-weight: 20
-icon: fa-solid fa-file-circle-plus
-description: Structure and author bilingual documentation and blog content.
+title: Hugo authoring tips
+weight: 40
+description: Avoid common pitfalls when writing content for an Oink site.
+aliases: [/docs/best-practices/site-guidance/, /docs/tutorial/writing-guide/]
 ---
 
-OINK uses Hugo's content model: Markdown carries the information, front matter
-carries page metadata, and layouts turn both into a static site. This guide
-describes the conventions used by the bundled English and Simplified Chinese
-sample site.
+Oink is a Hugo theme, so ordinary Markdown and Hugo's content model remain the
+authoring foundation. These conventions keep pages readable in source form and
+stable after translation, reorganization, or subpath deployment.
 
-## Content root directory
+## Link to published routes {#link-to-published-routes}
 
-Site content lives below `content/`. A multilingual site can use separate roots
-such as `content/en/` and `content/zh/`, or translated filename suffixes in one
-mounted tree. This repository uses the second form:
+Link readers to the canonical published URL, not to a neighboring source-file
+path. Root-relative links such as `/docs/content/` are easy to audit across the
+site. When a link should follow a page through source moves, Hugo's `ref` and
+`relref` shortcodes can resolve the target page:
 
-```text
-content/docs/content/
-├── adding-content.md
-└── adding-content.zh.md
+```markdown
+[Configuration]({{</* ref "/docs/content/configuration" */>}})
 ```
 
-The English file is the source page and the `.zh.md` file is its Simplified
-Chinese translation. Both files share the same logical path after Hugo applies
-the language suffix.
+After moving a page, add an alias for the old public route and update every
+internal link to the new canonical route. Do not rely on the alias as the site's
+permanent navigation path. See [Adding content](/docs/content/writing/#links)
+for link and image behavior.
 
-Keep generated files and files that must be copied byte-for-byte outside the
-content tree. Put those in `static/` as described in
-[Adding static content](#adding-static-content).
+## Keep front matter useful {#keep-front-matter-useful}
 
-## Content sections and templates
+Every navigable page needs a clear `title`, concise `description`, intentional
+`weight`, and suitable Font Awesome `icon`. Keep descriptions to one sentence
+that fits on one line in a normal desktop content card. Add `linkTitle` only
+when the navigation label genuinely needs to differ from the page title.
 
-Every top-level content directory is a Hugo section. OINK includes layouts for:
+English is the primary source language. Add the Simplified Chinese peer beside
+it as `.zh.md`, and translate reader-facing metadata as carefully as the body.
 
-- `docs`: documentation with a section tree, table of contents, breadcrumbs,
-  previous/next navigation, and repository links;
-- `blog`: dated articles, taxonomy metadata, feeds, and chronological lists;
-- `community`: project and contributor links;
-- default pages: landing pages without the documentation sidebar.
+## Preserve stable headings {#preserve-stable-headings}
 
-Hugo chooses a layout from the content section. A page below `content/docs/`
-therefore uses the `docs` layout. Set `type` in front matter only when a page
-must use another section's layout.
+Use explicit heading IDs when pages are translated or widely linked:
 
-### Custom sections
-
-Create a directory below the content root, then give its pages a type when the
-default layout is not sufficient:
-
-```yaml
----
-title: Architecture decisions
-description: Accepted design decisions for the project.
-type: docs
-weight: 30
----
+```markdown
+## Failure recovery {#failure-recovery}
 ```
 
-For section-wide behavior, put shared values in the section's `_index.md`
-`cascade` rather than repeating them on every page. Add a project layout under
-`layouts/` only when no existing OINK layout or partial is suitable.
+Copy the same ID to the corresponding Chinese heading. When renaming a heading,
+preserve an established ID unless its meaning also changes.
 
-## Doc-rooted sites <a id="alternative-site-structure"></a>
+## Write procedures as tasks {#write-procedures-as-tasks}
 
-{{% _param BADGE EXPERIMENTAL info %}}
+State prerequisites before commands, use imperative steps, and show the expected
+result or verification command. Separate local preview, production build, hosted
+deployment, and public release evidence; success at one layer does not establish
+the next.
 
-A documentation-first site can publish the `docs` section at the URL root while
-keeping source files under `content/.../docs/`:
+## Make code examples actionable {#make-code-examples-actionable}
 
-```yaml
-permalinks:
-  page:
-    docs: /:sections[1:]/:slug/
-  section:
-    docs: /:sections[1:]
+Name a block when it represents a real file, use `console` for a transcript with
+prompts and output, and collapse long reference listings that readers do not
+need to scan before continuing. Use a Code Group only when panels are
+interchangeable ways to complete the same task.
+
+```yaml {filename="hugo.yaml" hl_lines="3"}
+params:
+  offlineSearch: true
+  print:
+    disable_toc: false
 ```
 
-The docs section landing page then becomes the home page. Add this front matter
-to the physical site-root index for each language so it can still act as a link
-without competing for the same output path:
+Metadata should clarify an example, not decorate every fence. See
+[Code blocks and Code Groups](/docs/components/code-blocks/) for filenames, Copy
+policies, wrapping, collapse, line links, and synchronized alternatives.
 
-```yaml
-build: { render: link }
-```
-
-### Check for path conflicts
-
-Docs now share the URL root with blog, community, and other sections. Build with
-`--printPathWarnings` and resolve every duplicate target before publishing:
-
-```bash
-hugo --printPathWarnings
-```
-
-### Legacy _docs-only_ setup
-
-Older Docsy examples used a front matter cascade to force page types. Remove
-that workaround when moving to the permalink-based doc-rooted setup; otherwise
-the home page and section layouts can resolve inconsistently.
-
-## Page front matter
-
-Front matter is page metadata written in YAML, TOML, or JSON. OINK's sample site
-uses YAML:
-
-```yaml
----
-title: Local-first architecture
-linkTitle: Local-first
-description: How OINK removes browser and build-time CDN dependencies.
-weight: 20
-date: 2026-08-08
-tags: [architecture, offline]
----
-```
-
-`title` is the practical minimum. In maintained documentation, also provide a
-concise `description` for search and metadata, and a `weight` when order
-matters. Use `linkTitle` only when navigation needs a shorter label.
-
-Translations should localize human-facing metadata while preserving structural
-values:
-
-```yaml
----
-title: 本地优先架构
-linkTitle: 本地优先
-description: OINK 如何消除浏览器端与构建期的 CDN 依赖。
-weight: 20
-date: 2026-08-08
-tags: [架构, 离线]
----
-```
-
-Do not translate keys, shortcode names, configuration keys, file paths, or
-stable identifiers.
-
-### Footer metadata
-
-Docs and blog pages render a compact metadata block above the site footer. The
-last-modified date comes from Hugo's `.Lastmod` value. Two optional front matter
-fields add provenance notices:
-
-```yaml
-lastmod: 2026-08-09
-upstream_attribution: https://upstream.example/docs/page/
-downstream_modified: true
-```
-
-`upstream_attribution` links to the upstream source and its attribution.
-`downstream_modified: true` states that the downstream project changed the page.
-Omit either field when its notice does not apply.
-
-## Page content
-
-Write pages in Markdown unless a layout genuinely requires HTML. Hugo renders
-Markdown with Goldmark and supports attributes, footnotes, tables, task lists,
-render hooks, and fenced code blocks.
-
-### Markdown
-
-Keep source readable without the rendered site:
-
-- use ATX headings (`## Heading`);
-- put blank lines around lists, blocks, and fenced code;
-- specify the language of every code fence when one exists;
-- use descriptive link text and image alternative text;
-- wrap prose at a review-friendly width, but never reflow code or URLs.
-
-OINK adds render hooks for blockquote alerts and for Mermaid, math, chemistry,
-Markmap, and PlantUML code blocks. See
-[Diagrams and Formulae](/docs/content/diagrams-and-formulae/).
-
-### Markup, shortcodes, and content features {#markup-and-content-features}
-
-Use standard Markdown for ordinary prose. Use a
-[shortcode](/docs/content/shortcodes/) when it supplies meaningful behavior such
-as tabs, cards, a terminal recording, an API viewer, or a safe chart. Shortcodes
-are part of the content contract: verify their arguments in both languages and
-avoid copying rendered HTML into translations.
-
-### Alerts
+## Alerts {#alerts}
 
 OINK supports GitHub-style blockquote alerts and optional Obsidian-style titles:
 
@@ -201,7 +90,7 @@ Supported semantic types include `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, and
 important instructions must still make sense to screen readers and in print. See
 [Alerts](/docs/appearance/styling/#alerts) for appearance.
 
-### Links
+## Links {#links}
 
 Use root-relative links for stable public routes and ordinary relative links for
 nearby pages or bundle resources. Hugo's `ref` and `relref` shortcodes validate
@@ -220,7 +109,7 @@ For bilingual pages:
 
 Run the internal-link check after changing routes or headings.
 
-### Content style
+## Content style {#content-style}
 
 Write task-oriented documentation in direct language. Introduce a concept before
 its configuration, state defaults explicitly, and distinguish local build
@@ -261,7 +150,7 @@ For bundle pages, pair `index.md` with `index.zh.md`. Keep routing metadata,
 dates, weights, aliases, and resource declarations aligned unless a
 language-specific difference is intentional.
 
-### Organizing your documentation
+## Organizing your documentation
 
 Use directories to reflect the reader's information architecture, not the
 implementation's package tree. Each documentation subsection needs an
@@ -270,7 +159,7 @@ implementation's package tree. Each documentation subsection needs an
 
 Prefer a shallow hierarchy. Split a page when it serves a distinct task or
 audience; do not split merely to shorten a file. See
-[Organizing Your Content](/docs/content/organize-content/).
+[Organizing Your Content](/docs/content/organize/).
 
 #### Docs section landing pages
 
@@ -289,7 +178,7 @@ no_list: true
 to suppress the generated list. Give each language variant a localized title and
 description, and keep the structural option identical.
 
-### Organizing blog posts and release notes
+## Organizing blog posts and release notes
 
 Separate posts by publisher and audience. Keep every upstream Docsy article,
 including Docsy release reports, flat under `blog/docsy/`. Keep OINK-specific
@@ -334,17 +223,17 @@ not translate commit IDs, release tags, commands, or URLs.
 Default-layout pages are suitable for the home page, product overview, and other
 destinations that do not need the docs sidebar.
 
-### Customizing the example site pages
+## Customizing the example site pages
 
 The bundled home page is `content/_index.md` with `content/_index.zh.md` as its
 translation. It uses the same local assets and theme pipeline as the rest of
 OINK. Change content and project assets in the site; do not edit vendored
 runtime files merely to alter branding.
 
-### Building your own landing pages
+## Building your own landing pages
 
 Compose landing pages from standard Markdown and
-[`blocks/*` shortcodes](/docs/content/shortcodes/#blocks). Keep essential
+[`blocks/*` shortcodes](/docs/components/layout/#blocks). Keep essential
 information in text, make call-to-action links meaningful, and test the page at
 mobile and desktop widths in both languages.
 
@@ -433,3 +322,9 @@ sitemap:
 Treat `changefreq` and `priority` as hints, not promises. Exclude drafts,
 private material, and noncanonical duplicates before deployment, then inspect
 the generated sitemap for every published language.
+
+## Review rendered states {#review-rendered-states}
+
+Build both languages and inspect representative pages on desktop and mobile, in
+light and dark modes. Verify headings, fragments, code, tables, alerts,
+navigation, search, print output, and page descriptions in the rendered site.

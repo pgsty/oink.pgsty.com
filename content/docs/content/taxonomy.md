@@ -3,7 +3,6 @@ title: Taxonomy support
 tags: [Tagging, Structuring Content, Labelling]
 categories: [Taxonomies]
 weight: 110
-icon: fa-solid fa-tags
 description: Organize content with tags, categories, and custom taxonomies.
 cSpell:ignore: taxo
 ---

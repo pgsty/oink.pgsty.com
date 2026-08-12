@@ -2,8 +2,7 @@
 title: Infographics with AntV
 linkTitle: Infographics
 description: Turn concise declarative data into local SVG infographics.
-weight: 50
-icon: fa-solid fa-wand-magic-sparkles
+weight: 110
 aliases:
   [
     /docs/feature/infographic/,
@@ -89,10 +88,10 @@ and surrounding-page contrast in both modes.
 
 ## Choose a guide {#choose-a-guide}
 
-- [Processes, timelines, and cycles](processes/) demonstrates three common ways
-  to explain a sequence.
-- [Layouts, funnels, and themes](layouts/) demonstrates grids, narrowing stages,
-  template selection, and a built-in hand-drawn theme.
+- Processes, timelines, and cycles: demonstrates three common ways to explain a
+  sequence.
+- Layouts, funnels, and themes: demonstrates grids, narrowing stages, template
+  selection, and a built-in hand-drawn theme.
 
 The AntV package contains many templates. Start with the smallest visual form
 that clarifies the relationship, not the most decorative form available.

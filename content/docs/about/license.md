@@ -5,7 +5,6 @@ description:
   Understand Oink's upstream lineage, dependencies, acknowledgements, and
   licensing boundaries.
 weight: 60
-icon: fa-solid fa-scale-balanced
 aliases: [/license/, /docs/about/licenses/]
 ---
 

@@ -3,8 +3,7 @@ title: FileTree
 description:
   Present repository and directory structures as semantic, progressively
   disclosed lists.
-weight: 40
-icon: fa-solid fa-folder-tree
+weight: 50
 ---
 
 Use FileTree to explain the part of a repository or directory layout that

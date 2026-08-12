@@ -34,7 +34,7 @@ capabilities:
           [i18n](docs/configure/language/#configure-languages), and
           [versioning](docs/configure/versioning/#adding-a-version-drop-down-menu)
           built in'
-        - '[RSS](docs/content/adding-content/#rss-feeds),
+        - '[RSS](docs/content/writing/#rss-feeds),
           [SEO](docs/advanced/analytics/#search-engine-optimization-metadata),
           and [Google Analytics](docs/advanced/analytics/#adding-analytics)
           ready'
@@ -119,13 +119,13 @@ capabilities:
       url: docs/components/
       motto: First-class components, loaded per page
       bullets:
-        - '[Asciinema](docs/components/#asciinema),
-          [ECharts](docs/components/#echarts), and
-          [Infographic](docs/components/#infographic) for engineering stories'
-        - '[KaTeX](docs/content/diagrams-and-formulae/#latex-support-with-katex),
-          [Mermaid](docs/content/diagrams-and-formulae/#diagrams-with-mermaid),
-          and the complete diagram toolkit'
-        - 'Every [shortcode and component](docs/content/shortcodes/) is
+        - '[Asciinema](docs/components/layout/),
+          [ECharts](docs/components/echarts/), and
+          [Infographic](docs/components/infographic/) for engineering stories'
+        - '[KaTeX](docs/components/diagrams/#latex-support-with-katex),
+          [Mermaid](docs/components/diagrams/#diagrams-with-mermaid), and the
+          complete diagram toolkit'
+        - 'Every [shortcode and component](docs/components/layout/) is
           documented and loaded only when needed'
       value: More expression. Zero baggage elsewhere.
       visual:
@@ -137,62 +137,62 @@ capabilities:
           - {
               icon: fa-solid fa-terminal,
               title: Asciinema,
-              url: docs/components/#asciinema,
+              url: docs/components/layout/,
             }
           - {
               icon: fa-solid fa-chart-line,
               title: ECharts,
-              url: docs/components/#echarts,
+              url: docs/components/echarts/,
             }
           - {
               icon: fa-solid fa-diagram-project,
               title: Infographic,
-              url: docs/components/#infographic,
+              url: docs/components/infographic/,
             }
           - {
               icon: fa-solid fa-square-root-variable,
               title: KaTeX,
-              url: docs/content/diagrams-and-formulae/#latex-support-with-katex,
+              url: docs/components/diagrams/#latex-support-with-katex,
             }
           - {
               icon: fa-solid fa-share-nodes,
               title: Mermaid,
-              url: docs/content/diagrams-and-formulae/#diagrams-with-mermaid,
+              url: docs/components/diagrams/#diagrams-with-mermaid,
             }
           - {
               icon: fa-solid fa-sitemap,
               title: Markmap,
-              url: docs/content/diagrams-and-formulae/#mind-map-support-with-markmap,
+              url: docs/components/diagrams/#mind-map-support-with-markmap,
             }
           - {
               icon: fa-solid fa-code-branch,
               title: PlantUML,
-              url: docs/content/diagrams-and-formulae/#uml-diagrams-with-plantuml,
+              url: docs/components/diagrams/#uml-diagrams-with-plantuml,
             }
           - {
               icon: fa-solid fa-pen-ruler,
               title: Diagrams.net,
-              url: docs/content/diagrams-and-formulae/#diagrams-with-diagramsnet,
+              url: docs/components/diagrams/#diagrams-with-diagramsnet,
             }
           - {
               icon: fa-solid fa-file-code,
               title: Swagger UI,
-              url: docs/content/shortcodes/#swaggerui,
+              url: docs/components/layout/#swaggerui,
             }
           - {
               icon: fa-solid fa-book-open,
               title: Redoc,
-              url: docs/content/shortcodes/#redoc,
+              url: docs/components/layout/#redoc,
             }
           - {
               icon: fa-solid fa-id-card,
               title: Cards,
-              url: docs/components/#cards-and-carousel,
+              url: docs/components/layout/,
             }
           - {
               icon: fa-solid fa-images,
               title: Carousel,
-              url: docs/components/#cards-and-carousel,
+              url: docs/components/layout/,
             }
 
 principles:
@@ -232,7 +232,7 @@ footer:
       links:
         - { label: Documentation, url: docs/ }
         - { label: Get started, url: docs/tutorial/ }
-        - { label: Components, url: docs/content/shortcodes/ }
+        - { label: Components, url: docs/components/layout/ }
         - { label: Examples, url: docs/about/examples/ }
     - title: Community
       links:

@@ -3,7 +3,6 @@ downstream_modified: true
 title: Serving your site locally
 linkTitle: Local
 weight: 10
-icon: fa-solid fa-laptop-code
 description: Preview content locally with Hugo's development server.
 aliases: [/docs/deployment/local/]
 ---

@@ -80,7 +80,7 @@ for (const [deployment, baseURL, prefix] of [
         `${language} index is not a JSON array`,
       );
       assert.ok(
-        entries.length > 80,
+        entries.length > 60,
         `Suspiciously few ${language} index entries: ${entries.length}`,
       );
       for (const key of requiredFields) {

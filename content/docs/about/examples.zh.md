@@ -2,7 +2,6 @@
 title: 示例站点
 description: 查看完整项目站、主题示例与最小双语消费站点。
 weight: 10
-icon: fa-solid fa-cubes
 aliases: [/examples/, /docs/examples/, /docs/about/example/]
 ---
 

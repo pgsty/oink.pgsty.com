@@ -1,7 +1,6 @@
 ---
 title: Logos and images
 weight: 70
-icon: fa-solid fa-images
 description: Configure logos, page icons, favicons, and images.
 cSpell:ignore: imgproc
 ---
@@ -33,7 +32,6 @@ in front matter to give the page and its navigation entry a stable visual cue:
 ```yaml
 ---
 title: Deployment
-icon: fa-solid fa-cloud-arrow-up
 ---
 ```
 
@@ -101,10 +99,10 @@ Hugo image processing. Reference them with a root-relative URL, and verify that
 the same URL works when the site is built with its production `baseURL`. See
 [Adding static content][] for the trade-offs.
 
-[Adding static content]: /docs/content/adding-content/#adding-static-content
-[`blocks/cover` shortcode]: /docs/content/shortcodes/#blocks-cover
+[Adding static content]: /docs/content/writing/#adding-static-content
+[`blocks/cover` shortcode]: /docs/components/layout/#blocks-cover
 [favicon.io]: https://favicon.io/
-[`imgproc` shortcode]: /docs/content/shortcodes/#imgproc
+[`imgproc` shortcode]: /docs/components/layout/#imgproc
 [`layouts/_partials/favicons.html`]:
   https://github.com/pgsty/oink/blob/main/layouts/_partials/favicons.html
 [`layouts/_partials/hooks/head-end.html`]:

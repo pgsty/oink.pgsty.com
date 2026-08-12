@@ -1,7 +1,6 @@
 ---
 title: 图表与公式
-weight: 100
-icon: fa-solid fa-diagram-project
+weight: 90
 description: 在页面中添加本地图表、思维导图与科学公式。
 cSpell:ignore: markmap mhchem plantuml
 ---

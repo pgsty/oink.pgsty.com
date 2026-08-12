@@ -3,7 +3,6 @@ title: 升级 Oink Hugo Module
 linkTitle: Hugo 模块
 aliases: [/docs/update/hugo-module/, /docs/updating/updating-hugo-module/]
 weight: 10
-icon: fa-solid fa-cube
 description: 升级以固定版本 Hugo Module 导入 Oink 的站点。
 ---
 

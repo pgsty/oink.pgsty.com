@@ -3,7 +3,6 @@ title: Gallery
 description:
   Arrange related images in a responsive static grid that can reuse Image Zoom.
 weight: 60
-icon: fa-solid fa-images
 params:
   ui:
     image_zoom:

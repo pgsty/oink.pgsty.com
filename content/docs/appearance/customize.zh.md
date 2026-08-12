@@ -1,7 +1,6 @@
 ---
 title: 高级定制
 weight: 35
-icon: fa-solid fa-sliders
 description:
   通过兼容 Docsy 的 Sass 输入与 OINK 语义 token 定制字体和局部视觉样式。
 cSpell:ignore: Cascadia Chakra Petch PingFang Sarasa

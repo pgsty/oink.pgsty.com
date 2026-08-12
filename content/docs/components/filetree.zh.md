@@ -1,8 +1,7 @@
 ---
 title: FileTree
 description: 使用语义化渐进展开列表展示仓库与目录结构。
-weight: 40
-icon: fa-solid fa-folder-tree
+weight: 50
 ---
 
 FileTree 用于解释仓库或目录结构中与读者有关的部分。交互式 HTML 使用原生展开控件表示目录，所有输出格式都会保留完整嵌套结构。

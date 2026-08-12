@@ -1,8 +1,7 @@
 ---
 title: Kbd
 description: 使用具备无障碍语义的静态按键序列编写快捷键。
-weight: 20
-icon: fa-solid fa-keyboard
+weight: 30
 ---
 
 Kbd 用于把实际按键和快捷键与周围正文区分开。它输出语义化 HTML，在 Markdown 与打印中仍然清晰，而且不需要 JavaScript。

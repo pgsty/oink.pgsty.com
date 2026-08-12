@@ -341,7 +341,7 @@ capabilities:
           - {
               title: Mermaid,
               icon: fa-solid fa-share-nodes,
-              url: docs/content/diagrams-and-formulae/#diagrams-with-mermaid,
+              url: docs/components/diagrams/#diagrams-with-mermaid,
             }
 ```
 

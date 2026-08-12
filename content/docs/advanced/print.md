@@ -1,7 +1,6 @@
 ---
 title: Print support
 weight: 100
-icon: fa-solid fa-print
 description: Configure printable pages and whole-section print output.
 aliases: [/docs/content/print/, /docs/feature/print/]
 ---

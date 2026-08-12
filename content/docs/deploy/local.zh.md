@@ -2,7 +2,6 @@
 title: 在本地运行站点
 linkTitle: 本地预览
 weight: 10
-icon: fa-solid fa-laptop-code
 description: 使用 Hugo 开发服务器在本地预览内容。
 aliases: [/docs/deployment/local/]
 ---

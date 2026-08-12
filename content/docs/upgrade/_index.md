@@ -3,8 +3,8 @@ downstream_modified: true
 title: Upgrade
 description: Upgrade Oink, Hugo Extended, or an existing Docsy site safely.
 aliases: [/upgrade/, /docs/update/, /docs/updating/]
-weight: 6
-icon: fa-solid fa-arrows-rotate
+weight: 80
+icon: fa-solid fa-arrow-up-right-dots
 ---
 
 These pages describe the OINK update contract. A **target release** is the

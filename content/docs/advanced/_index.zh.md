@@ -1,7 +1,7 @@
 ---
 title: 高级特性
-weight: 4
-icon: fa-solid fa-wand-magic-sparkles
+weight: 60
+icon: fa-solid fa-gears
 description: 配置高级定制、可视化、语言、搜索、版本与外部集成。
 aliases: [/advanced/, /feature/, /docs/feature/]
 ---

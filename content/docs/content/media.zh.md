@@ -1,7 +1,6 @@
 ---
 title: Logo 与图片
 weight: 70
-icon: fa-solid fa-images
 description: 配置 Logo、页面图标、favicon 与图片。
 cSpell:ignore: imgproc
 ---
@@ -32,7 +31,6 @@ Oink 内置 Font Awesome Free，并从站点本地提供字体。为页面 front
 ```yaml
 ---
 title: 部署站点
-icon: fa-solid fa-cloud-arrow-up
 ---
 ```
 
@@ -95,10 +93,10 @@ Oink 不强制使用某个产品 favicon，而是发现消费端站点 `static/`
 `static/`。使用根路径相对 URL 引用，并确认站点以生产 `baseURL`
 构建后同一 URL 仍可访问。具体取舍请参阅[添加静态内容][]。
 
-[添加静态内容]: /zh/docs/content/adding-content/#adding-static-content
-[`blocks/cover` 短代码]: /zh/docs/content/shortcodes/#blocks-cover
+[添加静态内容]: /zh/docs/content/writing/#adding-static-content
+[`blocks/cover` 短代码]: /zh/docs/components/layout/#blocks-cover
 [favicon.io]: https://favicon.io/
-[`imgproc` 短代码]: /zh/docs/content/shortcodes/#imgproc
+[`imgproc` 短代码]: /zh/docs/components/layout/#imgproc
 [`layouts/_partials/favicons.html`]:
   https://github.com/pgsty/oink/blob/main/layouts/_partials/favicons.html
 [`layouts/_partials/hooks/head-end.html`]:

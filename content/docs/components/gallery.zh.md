@@ -2,7 +2,6 @@
 title: Gallery
 description: 使用响应式静态网格组织相关图片，并可复用 Image Zoom。
 weight: 60
-icon: fa-solid fa-images
 params:
   ui:
     image_zoom:

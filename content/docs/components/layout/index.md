@@ -2,7 +2,6 @@
 downstream_modified: true
 title: Shortcodes
 weight: 80
-icon: fa-solid fa-code
 description: Use OINK's local-first content components safely and accessibly.
 ---
 
@@ -112,7 +111,7 @@ blockquote alerts for new content. {{%/* /alert */%}}
 
 `color` maps to a Bootstrap alert suffix. New content should generally use the
 Markdown alert syntax described in
-[Adding Content](/docs/content/adding-content/#alerts).
+[Adding Content](/docs/content/writing/#alerts).
 
 #### Alerts, indentation, and examples
 
@@ -277,9 +276,9 @@ Apache ECharts is a full visualization system rather than a one-paragraph
 shortcode. Its advanced guide documents the wrapper, structured options, themes,
 responsive behavior, accessibility, and trusted callback boundary:
 
-- [ECharts quick start](/docs/advanced/echarts/)
-- [Declarative chart gallery](/docs/advanced/echarts/gallery/)
-- [Callbacks and trusted code](/docs/advanced/echarts/callbacks/)
+- [ECharts quick start](/docs/components/echarts/)
+- [Declarative chart gallery](/docs/components/echarts/)
+- [Callbacks and trusted code](/docs/components/echarts/)
 
 The shortcode body accepts a JSON or YAML options object. Use `height`, `theme`,
 and `full` only as described in the dedicated guide.
@@ -290,9 +289,9 @@ AntV Infographic has its own advanced guide because template choice, DSL
 structure, themes, visual semantics, and accessibility need more than an inline
 example:
 
-- [Infographic quick start](/docs/advanced/infographic/)
-- [Processes, timelines, and cycles](/docs/advanced/infographic/processes/)
-- [Layouts, funnels, and themes](/docs/advanced/infographic/layouts/)
+- [Infographic quick start](/docs/components/infographic/)
+- [Processes, timelines, and cycles](/docs/components/infographic/)
+- [Layouts, funnels, and themes](/docs/components/infographic/)
 
 The shortcode body contains the Infographic DSL. Use `height` and `full` as
 documented there, and keep an equivalent textual explanation beside every

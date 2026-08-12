@@ -4,7 +4,6 @@ title: Deployment on Netlify
 linkTitle: Netlify
 description: Deploying your OINK site on Netlify with Hugo alone.
 weight: 40
-icon: fa-solid fa-globe
 aliases: [/docs/deployment/netlify/]
 ---
 

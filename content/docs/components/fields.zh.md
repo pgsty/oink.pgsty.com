@@ -2,8 +2,7 @@
 title: Fields 与 Field
 linkTitle: Fields
 description: 使用响应式语义 HTML 描述配置、参数、属性与响应字段。
-weight: 30
-icon: fa-solid fa-list-check
+weight: 40
 ---
 
 `fields` 与 `field`

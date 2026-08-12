@@ -3,7 +3,6 @@ title: 开源许可与致谢
 linkTitle: 开源许可
 description: 了解 Oink 的上游传承、依赖、致谢与许可证边界。
 weight: 60
-icon: fa-solid fa-scale-balanced
 aliases: [/license/, /docs/about/licenses/]
 ---
 

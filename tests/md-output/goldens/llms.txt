@@ -6,21 +6,25 @@
 
 - [Home page](http://localhost/index.md)
 - [Docs](http://localhost/docs/index.md): Install, customize, deploy, and maintain Oink documentation sites.
+- [About](http://localhost/docs/about/index.md): Understand Oink's examples, design principles, architecture, and open-source model.
 - [Blog](http://localhost/blog/index.md): Docsy articles, OINK engineering stories, and OINK release notes
 
 ## Documentation index
 
-- [About Oink](http://localhost/docs/about/index.md)
+- [Get started](http://localhost/docs/tutorial/index.md)
+- [Site configuration](http://localhost/docs/configure/index.md)
 - [Authoring](http://localhost/docs/content/index.md)
+- [Components](http://localhost/docs/components/index.md)
+- [Appearance](http://localhost/docs/appearance/index.md)
 - [Advanced](http://localhost/docs/advanced/index.md)
 - [Deployment](http://localhost/docs/deploy/index.md)
 - [Upgrade](http://localhost/docs/upgrade/index.md)
-- [Get started](http://localhost/docs/tutorial/index.md)
-- [Site configuration](http://localhost/docs/configure/index.md)
-- [Content components](http://localhost/docs/components/index.md)
-- [Appearance](http://localhost/docs/appearance/index.md)
+- [About Oink](http://localhost/docs/about/index.md)
 
 ## Site locales
 
 - [English](http://localhost/index.md)
 - [简体中文](http://localhost/zh/index.md)
+- [](http://localhost/goldmark/index.md)
+- [](http://localhost/highlight/index.md)
+- [](http://localhost/tableofcontents/index.md)

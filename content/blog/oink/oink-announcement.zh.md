@@ -122,5 +122,5 @@ Pages 项目连接到源分支，使用固定 Hugo 版本构建、公开发布�
 - [内容组件](/zh/docs/components/)
 - [配置](/zh/docs/configure/overview/)
 - [迁移指南](/zh/docs/upgrade/from-docsy/)
-- [发布流程](/zh/docs/about/release/)
+- [发布流程](/zh/docs/about/)
 - [实施日记](/zh/blog/oink/oink-implementation-diary/)

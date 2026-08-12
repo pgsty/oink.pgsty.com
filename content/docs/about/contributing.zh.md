@@ -3,7 +3,6 @@ title: 贡献指南
 description: 为 Oink 贡献代码与双语文档。
 aliases: [contribution-guidelines, /docs/contributing/]
 weight: 40
-icon: fa-solid fa-code-pull-request
 ---
 
 OINK 是从 Docsy 派生的独立主题。贡献必须保留 Apache-2.0 历史和适用的第三方 NOTICE，同时改进唯一的标准实现。

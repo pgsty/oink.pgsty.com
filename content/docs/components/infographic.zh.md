@@ -2,8 +2,7 @@
 title: 使用 AntV 创建信息图
 linkTitle: 信息图
 description: 把简洁的声明式数据转换成本地 SVG 信息图。
-weight: 50
-icon: fa-solid fa-wand-magic-sparkles
+weight: 110
 aliases:
   [
     /docs/feature/infographic/,
@@ -78,8 +77,8 @@ AntV 主题属于 DSL，而不是短代码参数。它不会自动跟随 Oink �
 
 ## 选择指南 {#choose-a-guide}
 
-- [流程、时间线与循环](processes/)演示三种常见的顺序说明方式；
-- [布局、漏斗与主题](layouts/)演示网格、逐步收窄的阶段、模板选择与内置手绘主题。
+- 流程、时间线与循环：演示三种常见的顺序说明方式；
+- 布局、漏斗与主题：演示网格、逐步收窄的阶段、模板选择与内置手绘主题。
 
 AntV 包含大量模板。请优先选择足以解释关系的最小视觉形式，不要只追求最具装饰性的模板。
 

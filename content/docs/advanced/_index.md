@@ -1,7 +1,7 @@
 ---
 title: Advanced
-weight: 4
-icon: fa-solid fa-wand-magic-sparkles
+weight: 60
+icon: fa-solid fa-gears
 description:
   Configure customization, visualizations, languages, search, versions, and
   integrations.

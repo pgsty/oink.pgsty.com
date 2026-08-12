@@ -1,8 +1,7 @@
 ---
 title: 代码块与代码组
 description: 为 Hugo 代码示例添加文件名、精确复制、换行、折叠与可分享的代码组。
-weight: 65
-icon: fa-solid fa-code
+weight: 10
 ---
 
 OINK 在不替换 Chroma、也不引入浏览器端高亮器的前提下增强 Hugo 普通围栏代码块。服务器输出完整代码与外壳；按页面加载的小型脚本只负责复制、视觉折叠与标签状态。

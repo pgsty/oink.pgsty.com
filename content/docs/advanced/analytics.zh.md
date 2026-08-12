@@ -1,7 +1,6 @@
 ---
 title: 分析、用户反馈与 SEO
 weight: 70
-icon: fa-solid fa-chart-line
 description: 配置分析、用户反馈与搜索元数据。
 aliases: [/docs/content/feedback/, /docs/feature/analytics/]
 cSpell:ignore: fabform pageviews

@@ -1,7 +1,6 @@
 ---
 title: 架构
 weight: 30
-icon: fa-solid fa-network-wired
 description: 了解 Oink 如何把内容与本地资源构建成静态站点。
 aliases:
   - /docs/oink/architecture/

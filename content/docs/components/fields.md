@@ -4,8 +4,7 @@ linkTitle: Fields
 description:
   Describe configuration, parameters, properties, and response fields with
   responsive semantic HTML.
-weight: 30
-icon: fa-solid fa-list-check
+weight: 40
 ---
 
 Use `fields` with `field` children to document named values and their metadata.

@@ -1,7 +1,6 @@
 ---
 title: Local-first operation
 weight: 20
-icon: fa-solid fa-box-archive
 description: Build and browse Oink without hidden network access.
 aliases: [/docs/oink/local-first/]
 ---

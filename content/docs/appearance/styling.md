@@ -2,7 +2,6 @@
 downstream_modified: true
 title: Look and feel
 weight: 60
-icon: fa-solid fa-palette
 description: Customize themes, typography, code styles, and page layouts.
 ---
 
@@ -367,7 +366,7 @@ page types.
 Markdown alert types map to semantic OINK/Bootstrap styles. Customize `.alert-*`
 and the alert render hook only as a pair, retain a visible label or icon, and
 test links and inline code inside every background. See
-[Adding Content](/docs/content/adding-content/#alerts) for syntax.
+[Adding Content](/docs/content/writing/#alerts) for syntax.
 
 ## Tables
 

@@ -2,7 +2,6 @@
 title: AI 智能体支持
 linkTitle: 智能体支持
 weight: 90
-icon: fa-solid fa-robot
 description: 向 AI 智能体与工具提供 Markdown 和发现元数据。
 aliases: [/docs/content/agent-support/, /docs/feature/agent-support/]
 cSpell:ignore: llmstxt

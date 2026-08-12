@@ -4,7 +4,6 @@ title: Deployment on GitHub Pages
 linkTitle: GitHub Pages
 description: Build and publish an Oink site with GitHub Actions and Pages.
 weight: 20
-icon: fa-brands fa-github
 aliases: [/docs/deployment/github-pages/]
 ---
 

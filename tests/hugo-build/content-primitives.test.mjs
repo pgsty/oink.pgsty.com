@@ -64,14 +64,14 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
   for (const fixture of [
     {
       prefix: '',
-      heading: 'Everyday content primitives',
+      heading: 'Everyday writing',
       label: 'Repository structure',
       caption: 'A global image resource with known intrinsic dimensions.',
       linkedAlt: 'Linked OINK image remains a link',
     },
     {
       prefix: 'zh',
-      heading: '日常内容原语',
+      heading: '日常写作',
       label: '仓库结构',
       caption: '具有已知固有尺寸的全局图片资源。',
       linkedAlt: '带链接的 OINK 图片仍然保持链接',
@@ -109,10 +109,7 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
       'utf8',
     );
 
-    assert.match(
-      overview,
-      new RegExp(`<h2 id="everyday-content-primitives">${fixture.heading}`),
-    );
+    assert.match(overview, new RegExp(`<h2 id="everyday">${fixture.heading}`));
     for (const pageName of [
       'badge',
       'kbd',

@@ -3,7 +3,7 @@ title: 关于 Oink
 description: 了解 Oink 的示例、设计原则、架构与开源模式。
 type: docs
 aliases: [/about/, /docs/oink/]
-weight: 1
+weight: 90
 icon: fa-solid fa-circle-info
 ---
 
@@ -30,8 +30,7 @@ About 章节按照从评估到维护的顺序组织：
 2. [本地优先](local-first/)定义哪些构建与浏览器能力无需隐藏的网络访问。
 3. [架构](architecture/)解释仓库、构建、页面外壳、运行时与扩展边界。
 4. [贡献指南](contributing/)说明如何修改主题与双语文档。
-5. [发布流程](release/)区分源码完成、验证、公开发布、文档更新与线上部署。
-6. [开源许可](license/)说明项目渊源、依赖、致谢，以及站点与主题各自适用的许可证。
+5. [开源许可](license/)说明项目渊源、依赖、致谢，以及站点与主题各自适用的许可证。
 
 ## 仓库边界 {#repository-boundaries}
 

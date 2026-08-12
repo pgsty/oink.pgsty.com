@@ -3,7 +3,6 @@ title: Deployment on Cloudflare Pages
 linkTitle: Cloudflare Pages
 description: Build and publish an Oink site with Cloudflare Pages.
 weight: 30
-icon: fa-brands fa-cloudflare
 aliases: [/docs/deployment/cloudflare/]
 ---
 
