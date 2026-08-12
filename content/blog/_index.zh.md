@@ -1,7 +1,6 @@
 ---
 title: 博客
 description: Docsy 文章、OINK 工程实践与 OINK 发布注记
-menu: { main: { weight: 50 } }
 type: blog
 icon: fa-solid fa-blog
 sidebar_root_for: self

@@ -1,8 +1,13 @@
 ---
 title: Oink project and website documentation
-linkTitle: Project docs
+linkTitle: Project
 description: How the Oink theme and website are built, maintained, and deployed.
 aliases: [site]
+type: docs
+icon: fa-solid fa-diagram-project
+sidebar_root_for: self
+sidebar_root_link_self: true
+comments: false
 cascade:
   type: docs
   params:

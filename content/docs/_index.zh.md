@@ -2,7 +2,6 @@
 title: 欢迎使用 OINK
 linkTitle: 文档
 description: 安装、定制、部署与维护 Oink 文档站。
-menu: { main: { weight: 20 } }
 type: docs
 icon: fa-solid fa-book
 sidebar_expanded: true

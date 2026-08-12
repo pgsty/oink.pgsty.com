@@ -2,7 +2,6 @@
 downstream_modified: true
 title: Blog
 description: Docsy articles, OINK engineering stories, and OINK release notes
-menu: { main: { weight: 50 } }
 type: blog
 icon: fa-solid fa-blog
 sidebar_root_for: self

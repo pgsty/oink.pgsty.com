@@ -1,0 +1,57 @@
+# Non-production degradation fixture: Advanced is deliberately nested below a
+# direct child. The theme must warn and flatten it below a static group heading.
+languages:
+  en:
+    menus:
+      main:
+        - identifier: docs
+          name: Docs
+          pageRef: /docs
+          weight: 20
+        - identifier: docs-tutorial
+          parent: docs
+          name: Tutorials
+          pageRef: /docs/tutorial
+          weight: 10
+          params:
+            icon: fa-solid fa-route
+            description: Task-oriented tutorials
+        - identifier: docs-advanced
+          parent: docs-tutorial
+          name: Advanced setup
+          pageRef: /docs/advanced
+          weight: 10
+          params:
+            icon: fa-solid fa-gears
+            description: Deliberate depth-two regression entry
+        - identifier: project
+          name: Project
+          pageRef: /project
+          weight: 70
+  zh:
+    menus:
+      main:
+        - identifier: docs
+          name: 文档
+          pageRef: /docs
+          weight: 20
+        - identifier: docs-tutorial
+          parent: docs
+          name: 教程
+          pageRef: /docs/tutorial
+          weight: 10
+          params:
+            icon: fa-solid fa-route
+            description: 任务导向的教程
+        - identifier: docs-advanced
+          parent: docs-tutorial
+          name: 高级配置
+          pageRef: /docs/advanced
+          weight: 10
+          params:
+            icon: fa-solid fa-gears
+            description: 用于深度降级回归的二级条目
+        - identifier: project
+          name: 项目
+          pageRef: /project
+          weight: 70

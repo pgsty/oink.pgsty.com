@@ -3,7 +3,6 @@ downstream_modified: true
 title: Welcome to OINK
 linkTitle: Docs
 description: Install, customize, deploy, and maintain Oink documentation sites.
-menu: { main: { weight: 20 } }
 type: docs
 icon: fa-solid fa-book
 sidebar_expanded: true

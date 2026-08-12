@@ -176,4 +176,33 @@ test.describe('WCAG AA contract', () => {
       ).toEqual([]);
     });
   }
+
+  for (const { label, viewport, open } of [
+    {
+      label: 'desktop navbar disclosure',
+      viewport: { width: 1280, height: 900 },
+      open: async (page) => {
+        await page.locator('[data-td-navbar-toggle]').first().click();
+      },
+    },
+    {
+      label: 'mobile navbar accordion',
+      viewport: { width: 390, height: 844 },
+      open: async (page) => {
+        await page.locator('[data-menu-toggle]').click();
+        await page.locator('[data-td-navbar-accordion-toggle]').first().click();
+      },
+    },
+  ]) {
+    test(`open ${label}`, async ({ page }) => {
+      await page.setViewportSize(viewport);
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
+      await open(page);
+      const { violations } = await scan(page);
+      expect(
+        violations,
+        `${label}\n${describeViolations('/', violations)}`,
+      ).toEqual([]);
+    });
+  }
 });

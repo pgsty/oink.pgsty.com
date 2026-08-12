@@ -1,0 +1,251 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { existsSync, readFileSync, rmSync } from 'node:fs';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { JSDOM } from 'jsdom';
+
+const siteDir = fileURLToPath(new URL('../../', import.meta.url));
+const fixtureDir = join(siteDir, 'tests', 'fixtures', 'prd4-navigation');
+const localWorkspace = join(siteDir, 'go.work');
+const moduleWorkspace =
+  process.env.HUGO_MODULE_WORKSPACE ||
+  (existsSync(localWorkspace) ? localWorkspace : undefined);
+
+function build(name, { baseURL, fixture } = {}) {
+  const outDir = join(siteDir, 'tmp', `prd4-navigation-${name}`);
+  rmSync(outDir, { recursive: true, force: true });
+  const args = [
+    'run',
+    '_hugo',
+    '--',
+    '-e',
+    'dev',
+    '-DFE',
+    '--baseURL',
+    baseURL,
+    '--destination',
+    outDir,
+    '--noBuildLock',
+    '--printPathWarnings',
+  ];
+  if (fixture) {
+    args.push('--config', `hugo.yml,${join(fixtureDir, fixture)}`);
+  }
+  const result = spawnSync('npm', args, {
+    cwd: siteDir,
+    encoding: 'utf8',
+    env: {
+      ...process.env,
+      ...(moduleWorkspace ? { HUGO_MODULE_WORKSPACE: moduleWorkspace } : {}),
+    },
+  });
+  const output = `${result.stdout ?? ''}${result.stderr ?? ''}`;
+  assert.equal(result.status, 0, `Build failed:\n${output}`);
+  return { outDir, output };
+}
+
+function documentAt(outDir, path) {
+  const file = join(outDir, path.replace(/^\//, ''), 'index.html');
+  assert.ok(existsSync(file), `Missing rendered route ${path}`);
+  return new JSDOM(readFileSync(file, 'utf8')).window.document;
+}
+
+function navbarEntries(document, region = 'desktop') {
+  return [
+    ...document.querySelectorAll(`[data-td-navbar-region="${region}"]`),
+  ].map((node) => ({
+    label: node.dataset.tdNavbarLabel,
+    href: node.getAttribute('href'),
+    level: Number(node.dataset.tdNavbarLevel),
+    kind: node.dataset.tdNavbarKind,
+    target: node.getAttribute('target') || '',
+    rel: node.getAttribute('rel') || '',
+    description:
+      node.querySelector('.td-navbar-entry__description')?.textContent.trim() ||
+      '',
+  }));
+}
+
+for (const [deployment, baseURL, prefix] of [
+  ['root', 'https://example.test/', ''],
+  ['subpath', 'https://example.test/preview/', '/preview'],
+]) {
+  test(`nested navigation resolves EN/ZH under ${deployment} deployment`, () => {
+    const { outDir, output } = build(deployment, { baseURL });
+    assert.doesNotMatch(output, /supports one interactive child level/);
+
+    for (const route of [
+      '/docs',
+      '/blog',
+      '/project',
+      '/zh/docs',
+      '/zh/blog',
+      '/zh/project',
+    ]) {
+      documentAt(outDir, route);
+    }
+
+    for (const [languagePath, labels] of [
+      ['', ['Docs', 'Tutorials', 'Blog', 'Project', 'Issues']],
+      ['/zh', ['文档', '教程', '博客', '项目', '问题反馈']],
+    ]) {
+      const home = documentAt(outDir, languagePath || '/');
+      const desktop = navbarEntries(home);
+      const mobile = navbarEntries(home, 'mobile');
+      for (const label of labels) {
+        assert.ok(
+          desktop.some((entry) => entry.label === label),
+          label,
+        );
+        assert.ok(
+          mobile.some((entry) => entry.label === label),
+          label,
+        );
+      }
+      assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 2);
+      assert.equal(
+        home.querySelectorAll('[data-td-navbar-accordion-toggle]').length,
+        2,
+      );
+
+      const controls = [...home.querySelectorAll('[aria-controls]')]
+        .map((button) => button.getAttribute('aria-controls'))
+        .filter((id) => id?.startsWith('td-navbar-'));
+      assert.equal(new Set(controls).size, controls.length);
+      for (const id of controls) {
+        assert.equal(home.querySelectorAll(`#${id}`).length, 1, id);
+      }
+
+      const tutorial = desktop.find((entry) => entry.label === labels[1]);
+      assert.equal(tutorial.level, 1);
+      assert.ok(tutorial.description.length > 10);
+      const external = desktop.find((entry) => entry.label === labels[4]);
+      assert.equal(external.target, '_blank');
+      assert.equal(external.rel, 'noopener noreferrer');
+      assert.equal(external.href, 'https://github.com/pgsty/oink/issues');
+    }
+
+    const englishHome = navbarEntries(documentAt(outDir, '/'));
+    assert.equal(
+      englishHome.find((entry) => entry.label === 'Docs').href,
+      `${prefix}/docs/`,
+    );
+    assert.equal(
+      englishHome.find((entry) => entry.label === 'Tutorials').href,
+      `${prefix}/docs/tutorial/`,
+    );
+    const chineseHome = navbarEntries(documentAt(outDir, '/zh'));
+    assert.equal(
+      chineseHome.find((entry) => entry.label === '文档').href,
+      `${prefix}/zh/docs/`,
+    );
+
+    for (const [route, current, expected] of [
+      ['/docs', 'Docs', ['Docs', 'Blog', 'Project']],
+      ['/project', 'Project', ['Docs', 'Blog', 'Project']],
+      ['/zh/docs', '文档', ['文档', '博客', '项目']],
+      ['/zh/project', '项目', ['文档', '博客', '项目']],
+    ]) {
+      const page = documentAt(outDir, route);
+      assert.equal(
+        page.querySelector('.td-shell-root__title')?.textContent.trim(),
+        current,
+      );
+      const roots = [
+        ...page.querySelectorAll('.td-shell-root__item-title'),
+      ].map((node) => node.textContent.trim());
+      assert.deepEqual(roots, expected);
+    }
+
+    for (const route of [
+      '/docs',
+      '/blog',
+      '/project',
+      '/zh/docs',
+      '/zh/blog',
+      '/zh/project',
+    ]) {
+      assert.equal(
+        documentAt(outDir, route)
+          .querySelector('[data-sidebar-icon-policy]')
+          ?.getAttribute('data-sidebar-icon-policy'),
+        'groups',
+        `${route} sidebar policy`,
+      );
+    }
+  });
+}
+
+test('flat legacy fixture emits links without disclosure controls', () => {
+  const { outDir, output } = build('flat', {
+    baseURL: 'https://example.test/preview/',
+    fixture: 'flat.yml',
+  });
+  assert.doesNotMatch(output, /supports one interactive child level/);
+  const home = documentAt(outDir, '/');
+  assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 0);
+  assert.equal(
+    home.querySelectorAll('[data-td-navbar-accordion-toggle]').length,
+    0,
+  );
+  assert.deepEqual(
+    navbarEntries(home).map(({ label, href, level, target, rel }) => ({
+      label,
+      href,
+      level,
+      target,
+      rel,
+    })),
+    [
+      { label: 'Docs', href: '/preview/docs/', level: 0, target: '', rel: '' },
+      { label: 'Blog', href: '/preview/blog/', level: 0, target: '', rel: '' },
+      {
+        label: 'Project',
+        href: '/preview/project/',
+        level: 0,
+        target: '',
+        rel: '',
+      },
+      {
+        label: 'Issues',
+        href: 'https://github.com/pgsty/oink/issues',
+        level: 0,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      },
+    ],
+  );
+});
+
+test('deep fixture warns and degrades to a static group', () => {
+  const { outDir, output } = build('deep', {
+    baseURL: 'https://example.test/preview/',
+    fixture: 'deep.yml',
+  });
+  assert.match(output, /supports one interactive child level/);
+  const home = documentAt(outDir, '/');
+  assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 1);
+  assert.equal(
+    home.querySelectorAll('[data-td-navbar-accordion-toggle]').length,
+    1,
+  );
+  assert.equal(home.querySelectorAll('[data-td-navbar-group]').length, 2);
+
+  const desktop = navbarEntries(home);
+  const tutorial = desktop.find((entry) => entry.label === 'Tutorials');
+  const advanced = desktop.find((entry) => entry.label === 'Advanced setup');
+  assert.deepEqual(
+    { level: tutorial.level, kind: tutorial.kind },
+    { level: 1, kind: 'group' },
+  );
+  assert.deepEqual(
+    { level: advanced.level, kind: advanced.kind },
+    { level: 2, kind: 'link' },
+  );
+  assert.equal(
+    home.querySelectorAll('[data-td-navbar-group] button').length,
+    0,
+  );
+});
