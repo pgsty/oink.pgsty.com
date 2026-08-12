@@ -30,7 +30,7 @@ capabilities:
       motto: Ship docs, not build pipelines
       bullets:
         - '[Production-ready](docs/deploy/) from day one'
-        - '[Full-text search](docs/advanced/search/#local-search-with-lunr),
+        - '[Full-text search](docs/advanced/search/#enable-local-search),
           [i18n](docs/configure/language/#configure-languages), and
           [versioning](docs/configure/versioning/#adding-a-version-drop-down-menu)
           built in'

@@ -2,7 +2,7 @@
 title: 使用 giscus 添加评论
 linkTitle: giscus 评论
 description: 使用 giscus 添加 GitHub 评论。
-weight: 60
+weight: 40
 aliases: [/docs/content/giscus/, /docs/feature/giscus/]
 cSpell:ignore:
   giscus repoId categoryId reactionsEnabled emitMetadata inputPosition ariaLabel

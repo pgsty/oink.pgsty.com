@@ -1,171 +1,167 @@
 ---
-title: 搜索
-weight: 20
-description: 配置本地多语言搜索，或显式启用在线服务商。
-aliases: [/docs/content/search/, /docs/feature/search/]
-cSpell:ignore: GCSE docsearch
+title: 搜索与命令面板
+linkTitle: 搜索与命令面板
+weight: 10
+description: 本地索引、搜索排序、命令面板的三种模式与可选的在线搜索。
 ---
 
-OINK 默认并推荐使用本地搜索。Hugo 会为每种语言生成独立索引；主题从同源资源提供 Lunr 及其 CJK 回退。站点无需公共爬虫、外部账户、CDN 或网络连接，即可完成构建和搜索。
+OINK 默认且推荐本地搜索：Hugo 为每种语言生成独立索引，Lunr 与 CJK 回退都从同源资源提供。站点不需要公共爬虫、外部账户、CDN 或网络连接就能完成构建和搜索。
 
 Google Custom Search 与 Algolia
-DocSearch 仍作为兼容的在线集成保留。它们默认关闭；只有站点明确接受相应的外部请求、索引方式、可用性与隐私边界时，才应启用。
+DocSearch 作为兼容集成保留，默认关闭。**同一时间只能启用一种搜索实现。**
 
-同一时间只能启用一种搜索实现。
+## 启用本地搜索 {#enable-local-search}
 
-## 使用 Lunr 的本地搜索 {#local-search-with-lunr}
-
-在 `hugo.yaml` 中启用本地搜索：
-
-```yaml
+```yaml {filename="hugo.yaml"}
 params:
   offlineSearch: true
-```
-
-不要同时配置 `gcs_engine_id` 或
-`params.search.algolia`。生产构建完成后，输出中会为每种语言生成一个索引，例如：
-
-```text
-offline-search-index.en.json
-offline-search-index.zh.json
-```
-
-浏览器加载当前语言的索引，并在不离开页面的情况下显示结果。中文内容使用 OINK 的 CJK 回退，不依赖以空格分词。
-
-### 测试前构建索引 {#build-the-index-before-testing}
-
-启动预览前先执行常规构建：
-
-```sh
-hugo --gc
-hugo server --disableFastRender
-```
-
-如果索引变化时 server 已经在运行，请将其重启。对于子路径部署，请确认浏览器从配置的
-`baseURL` 下请求索引，而不是从域名根目录请求。
-
-### 配置结果摘要与数量限制 {#configure-result-summaries-and-limits}
-
-设置摘要长度和最大结果数：
-
-```yaml
-params:
-  offlineSearch: true
+  offlineSearchIndex: summary # summary | content
   offlineSearchSummaryLength: 120
   offlineSearchMaxResults: 12
 ```
 
-所选限制应确保搜索对话框在移动设备上保持流畅。摘要用于帮助发现内容，不能替代认真编写的页面描述。
+{{< fields >}}
+{{% field name="offlineSearch" type="boolean" default="false" required=true %}}
+启用本地索引与命令面板。不要同时配置 `gcs_engine_id` 或
+`params.search.algolia`。 {{% /field %}}
+{{% field name="offlineSearchIndex" type="string" default="content" %}}
+`summary` 只索引标题、描述与摘要；`content` 索引全部正文。**千页级站点应该用
+`summary`**——`content` 会产生数 MB 的索引，读者每次搜索都要先下载它。
+{{% /field %}}
+{{% field name="offlineSearchSummaryLength" type="integer" default="70" %}}
+结果摘要的长度。 {{% /field %}}
+{{% field name="offlineSearchMaxResults" type="integer" default="10" %}}
+最多显示几条结果。数值要保证对话框在移动端仍然好用。 {{% /field %}}
+{{< /fields >}}
 
-### 排除页面 {#exclude-a-page}
+构建后每种语言会生成一个索引：
 
-在页面 front matter 中设置 `exclude_search: true`：
+```text {copy=false}
+public/offline-search-index.en.json
+public/offline-search-index.zh.json
+```
+
+> [!IMPORTANT] 子路径部署时，确认浏览器是从配置的 `baseURL`
+> 下请求索引，而不是域名根目录。这是搜索「没结果」最常见的原因，而且页面本身看起来是正常的。
+
+## 命令面板 {#command-palette}
+
+本地搜索的入口是命令面板，有三种模式：
+
+| 模式     | 触发                  | 内容                         |
+| -------- | --------------------- | ---------------------------- |
+| 空查询   | `Cmd/Ctrl-K` 后不输入 | 快捷入口、页面操作、偏好设置 |
+| 文本查询 | 直接输入              | 按分区分组的页面结果         |
+| 命令模式 | `/` 或输入 `>` 前缀   | 只搜索命令，不查页面         |
+
+`/`
+是单字符快捷键，所以它只在可编辑控件之外生效——在 input、textarea、select 和 contenteditable 区域里打斜杠仍然是打字符。带修饰键的组合（`Ctrl-/`）也不会触发。
+
+面板已打开时按 `/` 不会清空当前查询。
+
+### 面板里有什么 {#palette-contents}
+
+- **快捷入口**：由 `params.ui.quick_links` 指定的顶级菜单项
+- **页面操作**：复制文本、在 ChatGPT/Claude 中打开、查阅源码、查阅编辑历史、编辑此页、报告问题、打印
+- **偏好设置**：切换配色、语言、版本
+
+页面操作和面板命令走同一套注册表，所以无论从右侧栏还是面板触发，行为完全一致。
+
+### 自定义命令 {#custom-commands}
+
+站点可以添加自己的命令：
+
+```yaml {filename="hugo.yaml"}
+languages:
+  zh:
+    params:
+      ui:
+        command_palette:
+          commands:
+            - id: status
+              title: 服务状态
+              description: 查看当前服务健康状况
+              url: https://status.example.com/
+              icon: fa-solid fa-signal
+              keywords: [可用性, 事故]
+```
+
+只接受 **URL** 或内置 action ID，不接受任意 JavaScript 回调。
+
+> [!WARNING] 不要用 `action:`
+> 给内置动作起别名。内置动作已经在面板里了，再包一层只会让同一个功能以两个不同名字出现两次。这个坑本站踩过。
+
+多语言站点在 `languages.<lang>.params` 下分别定义，标题和关键词才能本地化。
+
+## 搜索排序 {#search-ranking}
+
+页面可以通过 front matter 影响排序：
 
 ```yaml
 ---
-title: Internal index
-exclude_search: true
+title: PostgreSQL 配置
+search_keywords: [postgres, postgresql, pg]
+search_boost: 1.5
+search_exclude: false
 ---
 ```
 
-该设置适用于工具页、重复页、生成页或测试页。不要仅仅因为当前译文不完整就排除页面；应修复译文。
+{{< fields >}} {{% field name="search_keywords" type="string 或数组" %}}
+额外的匹配词。Latin 与 CJK 两条路径都会用到——读者搜 `pg`
+也能命中标题里只写了「PostgreSQL」的页面。 {{% /field %}}
+{{% field name="search_boost" type="number" default="1.0" %}}
+正数权重乘子。非法值（零、负数、非数字）会告警并按 `1.0` 处理。 {{% /field %}}
+{{% field name="search_exclude" type="boolean" default="false" %}}
+把页面排除出索引。旧的 `exclude_search` 与 `excludeSearch` 仍然兼容。
+{{% /field %}} {{< /fields >}}
 
-### 设置结果面板样式 {#style-the-result-panel}
-
-结果面板会随内容扩展。站点可以在 `assets/scss/_styles_project.scss` 中限制宽度：
-
-```scss
-.td-offline-search-results {
-  max-width: 46rem;
-}
-```
-
-覆盖搜索样式时，必须保留键盘焦点、可见选中状态、移动端宽度和深色模式对比度。
-
-## 搜索入口 {#search-entry-points}
-
-OINK 会在品牌外壳中提供搜索入口，也可以在侧栏显示输入框。如果要隐藏侧栏输入框，同时保留主搜索入口，请配置：
-
-```yaml
-params:
-  ui:
-    sidebar_search_disable: true
-```
-
-外壳的打开与关闭控件会向辅助技术暴露对话框关系和状态。自定义实现必须保留这些语义。
-
-## 多语言搜索 {#multilingual-search}
-
-搜索始终停留在当前语言。请验证：
-
-- 每种已发布语言都有自己的索引；
-- 译文标题、描述和正文出现在对应索引中；
-- 结果 URL 包含正确的语言前缀；
-- 英文结果不会通过内容回退取代中文结果；
-- 结果页上的语言选择器能前往对应译文，或按文档规则回退到语言首页。
-
-中文搜索出现故障时，应先检查生成的中文 JSON，再考虑修改分词。索引缺失或只包含英文，通常属于内容或构建配置问题。
-
-## Google Custom Search（可选） {#google-search}
-
-Google Custom Search
-Engine（GCSE）通过 Google 索引搜索公开站点。它需要已经部署且允许爬取的生产站点，并会把查询发送给第三方服务。
-
-在 [Google Programmable Search][] 中创建搜索引擎后，添加搜索结果页：
+`search_boost` 可以通过 cascade 给整个分区设默认值，页面级设置会覆盖它：
 
 ```yaml
 ---
-title: 搜索结果
-layout: search
+title: 文档
+cascade:
+  search_boost: 1.25
 ---
 ```
 
-随后配置搜索引擎 ID：
+排除采用任一为真即排除的优先级：只要规范字段或任何兼容别名为真，页面就被排除。`search_exclude: false`
+不能覆盖一个为真的旧别名。
 
-```yaml
+> [!NOTE] 本地索引对所有访问者都是可下载的，**它不是访问控制**。不该公开的内容不要放进索引，也不要指望搜索排除能保护它。
+
+## 中文与 CJK {#cjk}
+
+Lunr 无法可靠地对中文分词，所以命令面板检测到 CJK 字符时会切换到子串匹配路径。两条路径应用相同的
+`search_boost` 加权，结果排序是一致的。
+
+中文搜索没结果时，先确认中文页面的内容确实进了中文索引，再考虑改分词逻辑。
+
+## 可选的在线搜索 {#hosted-search}
+
+### Google Custom Search {#google-search}
+
+```yaml {filename="hugo.yaml"}
 params:
   gcs_engine_id: YOUR_ENGINE_ID
-  offlineSearch: false
 ```
 
-Google 搜索的暗色兼容样式默认不加载。启用 GCSE 时，请在消费站点的
-`assets/scss/_styles_project.scss` 中显式导入：
+### Algolia DocSearch {#algolia-docsearch}
 
-```scss
-@import 'td/gcs-search-dark';
-```
-
-为每种支持语言创建译文结果页；必要时使用适合该语言的搜索引擎配置。删除
-`gcs_engine_id` 即可禁用 GCSE。
-
-消费站点应在隐私政策中说明外部请求和隐私影响。GCSE 无法在网络隔离部署中使用。
-
-## Algolia DocSearch（可选） {#algolia-docsearch}
-
-Algolia
-DocSearch 为符合条件的公开文档站点提供托管爬虫和交互式结果面板。取得项目的 application
-ID、搜索 API key 和索引名称后，配置：
-
-```yaml
+```yaml {filename="hugo.yaml"}
 params:
-  offlineSearch: false
   search:
     algolia:
       appId: YOUR_APP_ID
-      apiKey: YOUR_SEARCH_API_KEY
-      indexName: YOUR_INDEX_NAME
+      apiKey: YOUR_SEARCH_ONLY_KEY
+      indexName: YOUR_INDEX
 ```
 
-只能使用公开的只读搜索 key，绝不能使用管理 key。爬虫规则、语言 facet、索引更新与外部服务声明应与站点配置一同维护。该集成有意与本地优先默认值分离。
+三个值都必须显式提供，缺一个就中断构建——OINK 不会回退到别的项目的公共索引。
 
-可以覆盖主题 partial `layouts/_partials/algolia/head.html` 和
-`layouts/_partials/algolia/scripts.html`，实现站点专属集成。空的覆盖文件会禁用对应主题 partial。
+启用在线搜索意味着接受对应的外部请求、索引方式、可用性与隐私边界。这是明确的产品决策，应该写进站点的隐私说明。
 
-## 自定义搜索 {#custom-search}
+## 下一步 {#next-steps}
 
-如果现有选项都不合适，站点可以替换搜索输入、结果行为与样式。应尽量复用外壳的对话框与无障碍合同。除非自定义代码与服务商无关，并且能被多个产品复用，否则应保留在站点层。
-
-自定义在线服务商必须显式启用，并说明网络、隐私、索引、故障与离线行为。自定义本地服务商必须从站点或主题发布全部运行时资源，并遵守语言和
-`baseURL` 边界。
-
-[Google Programmable Search]: https://programmablesearchengine.google.com/
+- [多语言](/zh/docs/configure/language/)：分语言索引的细节
+- [AI 与 Agent 支持](../agent-support/)：Markdown 输出与 `llms.txt`

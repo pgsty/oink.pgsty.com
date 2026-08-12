@@ -1,6 +1,6 @@
 ---
 title: Print support
-weight: 100
+weight: 20
 description: Configure printable pages and whole-section print output.
 aliases: [/docs/content/print/, /docs/feature/print/]
 ---

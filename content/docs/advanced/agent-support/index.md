@@ -2,7 +2,7 @@
 downstream_modified: true
 title: AI-agent support
 linkTitle: Agent support
-weight: 90
+weight: 30
 description: Expose Markdown and discovery metadata to AI agents and tools.
 aliases: [/docs/content/agent-support/, /docs/feature/agent-support/]
 cSpell:ignore: llmstxt

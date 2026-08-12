@@ -1,7 +1,7 @@
 ---
 downstream_modified: true
 title: Analytics, user feedback, and SEO
-weight: 70
+weight: 50
 description: Configure analytics, feedback, and search metadata.
 aliases: [/docs/content/feedback/, /docs/feature/analytics/]
 cSpell:ignore: fabform pageviews

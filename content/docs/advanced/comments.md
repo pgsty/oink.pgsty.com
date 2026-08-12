@@ -2,7 +2,7 @@
 title: Comments with giscus
 linkTitle: giscus comments
 description: Add GitHub-backed comments with giscus.
-weight: 60
+weight: 40
 aliases: [/docs/content/giscus/, /docs/feature/giscus/]
 cSpell:ignore:
   giscus repoId categoryId reactionsEnabled emitMetadata inputPosition ariaLabel
