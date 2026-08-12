@@ -335,7 +335,7 @@ Confirm that you've addressed [every action][] that applies to your site. Then:
 [0.163.2]: https://github.com/gohugoio/hugo/releases/tag/v0.163.2
 [0.163.3]: https://github.com/gohugoio/hugo/releases/tag/v0.163.3
 [0.164.0]: https://github.com/gohugoio/hugo/releases/tag/v0.164.0
-[check]: /docs/upgrade/#check
+[check]: /docs/upgrade/upgrade/
 [every action]: #upgrade-summary
 [hugo-extended]: https://www.npmjs.com/package/hugo-extended
 [hugo-supported-version]: <https://github.com/gohugoio/hugo/releases/tag/v{{% param hugoSupportedVersion %}}>

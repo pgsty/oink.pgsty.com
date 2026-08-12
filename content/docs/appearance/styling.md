@@ -1,7 +1,7 @@
 ---
 downstream_modified: true
 title: Look and feel
-weight: 60
+weight: 20
 description: Customize themes, typography, code styles, and page layouts.
 ---
 

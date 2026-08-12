@@ -1,6 +1,6 @@
 ---
 title: 迁移现有 Docsy 站点
-weight: 40
+weight: 20
 description: 替换复制的 Docsy 外壳，同时保留站点自有行为。
 aliases:
   [

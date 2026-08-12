@@ -46,4 +46,4 @@ Confirm that the theme resolves to the intended tag, commit, or local
 replacement. No `hugo mod npm pack` or `npm install` step is required for OINK:
 browser dependencies already ship with the theme.
 
-Continue with [Review theme overrides](/docs/upgrade/#update-overrides).
+Continue with [Review theme overrides](/docs/upgrade/upgrade/).

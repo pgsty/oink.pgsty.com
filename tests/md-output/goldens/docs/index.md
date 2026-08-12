@@ -78,6 +78,6 @@ Section pages:
 - [Components](/docs/components/): Every component available for writing, ordered by how often you reach for it.
 - [Appearance](/docs/appearance/): Typography presets, colors, and style overrides.
 - [Advanced](/docs/advanced/): Configure customization, visualizations, languages, search, versions, and integrations.
-- [Deployment](/docs/deploy/): Build Oink once, publish its static output, and verify the result.
-- [Upgrade](/docs/upgrade/): Upgrade Oink, Hugo Extended, or an existing Docsy site safely.
+- [Deployment](/docs/deploy/): Build once, publish to any static host.
+- [Upgrade and migrate](/docs/upgrade/): Upgrade the OINK version, or migrate from Docsy.
 - [About Oink](/docs/about/): Understand Oink's examples, design principles, architecture, and open-source model.

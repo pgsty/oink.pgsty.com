@@ -42,4 +42,4 @@ hugo mod graph
 确认主题解析到预期的标签、commit 或本地 replacement。OINK 不需要运行
 `hugo mod npm pack` 或 `npm install`，因为浏览器依赖已经随主题提供。
 
-随后继续[审查主题覆盖](/zh/docs/upgrade/#update-overrides)。
+随后继续[审查主题覆盖](/zh/docs/upgrade/upgrade/)。

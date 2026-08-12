@@ -1,6 +1,6 @@
 ---
 title: Advanced customization
-weight: 35
+weight: 30
 description:
   Customize typography and scoped visual styles through Docsy-compatible Sass
   inputs and OINK semantic tokens.

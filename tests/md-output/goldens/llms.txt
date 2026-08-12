@@ -18,7 +18,7 @@
 - [Appearance](http://localhost/docs/appearance/index.md)
 - [Advanced](http://localhost/docs/advanced/index.md)
 - [Deployment](http://localhost/docs/deploy/index.md)
-- [Upgrade](http://localhost/docs/upgrade/index.md)
+- [Upgrade and migrate](http://localhost/docs/upgrade/index.md)
 - [About Oink](http://localhost/docs/about/index.md)
 
 ## Site locales

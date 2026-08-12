@@ -2,7 +2,7 @@
 downstream_modified: true
 title: Serving your site locally
 linkTitle: Local
-weight: 10
+weight: 40
 description: Preview content locally with Hugo's development server.
 aliases: [/docs/deployment/local/]
 ---

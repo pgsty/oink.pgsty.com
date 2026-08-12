@@ -2,7 +2,7 @@
 title: Deployment on Cloudflare Pages
 linkTitle: Cloudflare Pages
 description: Build and publish an Oink site with Cloudflare Pages.
-weight: 30
+weight: 10
 aliases: [/docs/deployment/cloudflare/]
 ---
 

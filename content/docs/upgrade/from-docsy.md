@@ -1,6 +1,6 @@
 ---
 title: Migrate an existing Docsy site
-weight: 40
+weight: 20
 description: Replace copied Docsy shells while preserving site-owned behavior.
 aliases:
   [

@@ -2,7 +2,7 @@
 title: 开源许可与致谢
 linkTitle: 开源许可
 description: 了解 Oink 的上游传承、依赖、致谢与许可证边界。
-weight: 60
+weight: 50
 aliases: [/license/, /docs/about/licenses/]
 ---
 
@@ -52,15 +52,23 @@ Module 安装方式时由 Go 解析模块，Git 则承载源码与发布流程�
 
 ## Oink 致敬的项目 {#projects-oink-acknowledges}
 
-| 项目         | 与 Oink 的关系 | 对项目的贡献                                                 |
-| ------------ | -------------- | ------------------------------------------------------------ |
-| [Hugo][]     | 构建平台       | 内容模型、模板、资源流水线、多语言路由、分类法与静态站点生成 |
-| [Docsy][]    | 直接上游       | 仓库历史、文档约定、布局、Bootstrap 基础与兼容 API           |
-| [Fumadocs][] | 设计灵感       | 以内容为中心的呈现、信息层级、导航结构与页内目录处理         |
+| 项目         | 与 Oink 的关系            | 借鉴之处                                                                       |
+| ------------ | ------------------------- | ------------------------------------------------------------------------------ |
+| [Hugo][]     | 构建平台                  | 内容模型、模板、资源流水线、多语言路由、分类法与静态站点生成                   |
+| [Docsy][]    | **直接上游（Fork 来源）** | 仓库历史、文档约定、布局、Bootstrap 基础与兼容 API                             |
+| [Fumadocs][] | 设计参考                  | 以内容为中心的呈现、信息层级、页内目录处理、Files 与 Type Table 一类的写作组件 |
+| [Nextra][]   | 设计参考                  | 精炼的文档壳层、代码块的文件名与复制交互、每页布局开关                         |
+| [Hextra][]   | 设计参考                  | Hugo 原生的实现取向、FileTree、Badge、Tabs 与轻量横幅                          |
+| [Mintlify][] | 设计参考                  | 结构化导航分层、同步代码分组、API 参考的阅读体验                               |
 
-Fumadocs 是设计参考，不是 Oink 的代码上游或运行时依赖。OINK 针对 Hugo 与源自 Docsy 的代码库重新诠释这些思路，而不是逐像素复制。我们感谢 Hugo、Docsy、Fumadocs 与各依赖项目的社区开放并持续维护这些成果。
+OINK **Fork 自 Docsy**——这是唯一的代码上游，源码历史、Apache-2.0 许可与 `NOTICE`
+中的署名都完整保留。
 
-这些引用用于说明项目传承、依赖或设计灵感，并不表示相关项目为 OINK 背书；各项目与产品名称仍归其权利人所有。
+Fumadocs、Nextra、Hextra 与 Mintlify 是设计语言上的参考，不是代码来源，也不是运行时依赖。OINK 针对 Hugo 与源自 Docsy 的代码库重新诠释这些思路，而不是逐像素复制，更没有移植它们的代码。
+
+感谢 Hugo、Docsy 以及上述项目的社区把这些成果开放出来并持续维护。
+
+这些引用用于说明项目传承、依赖或设计灵感，**不表示相关项目为 OINK 背书**；各项目与产品名称仍归其权利人所有。
 
 ## 复用文档 {#reusing-the-documentation}
 
@@ -94,3 +102,6 @@ Apache-2.0 允许按照条款使用、修改和分发所涵盖的主题源码与
   https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE-CC-BY-4.0
 [site-license]: https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE
 [site-notice]: https://github.com/pgsty/oink.pgsty.com/blob/main/NOTICE
+[Nextra]: https://nextra.site/
+[Hextra]: https://imfing.github.io/hextra/
+[Mintlify]: https://mintlify.com/

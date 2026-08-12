@@ -4,7 +4,7 @@ linkTitle: Open-source licenses
 description:
   Understand Oink's upstream lineage, dependencies, acknowledgements, and
   licensing boundaries.
-weight: 60
+weight: 50
 aliases: [/license/, /docs/about/licenses/]
 ---
 
@@ -71,20 +71,29 @@ source, license files, and any required notice in the same change.
 
 ## Projects Oink acknowledges {#projects-oink-acknowledges}
 
-| Project      | Relationship to Oink | Contribution to the project                                                                             |
-| ------------ | -------------------- | ------------------------------------------------------------------------------------------------------- |
-| [Hugo][]     | Build platform       | Content model, templates, asset pipeline, multilingual routing, taxonomies, and static-site generation  |
-| [Docsy][]    | Direct upstream      | Repository history, documentation conventions, layouts, Bootstrap foundation, and compatible APIs       |
-| [Fumadocs][] | Design inspiration   | Content-first presentation, information hierarchy, navigation geometry, and table-of-contents treatment |
+| Project      | Relationship to Oink              | What Oink drew from it                                                                                                           |
+| ------------ | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| [Hugo][]     | Build platform                    | Content model, templates, asset pipeline, multilingual routing, taxonomies, static site generation                               |
+| [Docsy][]    | **Direct upstream (forked from)** | Repository history, documentation conventions, layouts, Bootstrap foundation, compatible APIs                                    |
+| [Fumadocs][] | Design reference                  | Content-first presentation, information hierarchy, table-of-contents handling, authoring components such as Files and Type Table |
+| [Nextra][]   | Design reference                  | A spare documentation shell, filename and copy affordances on code blocks, per-page layout switches                              |
+| [Hextra][]   | Design reference                  | A Hugo-native implementation posture, FileTree, Badge, Tabs, and lightweight banners                                             |
+| [Mintlify][] | Design reference                  | Structured navigation tiers, synchronized code groups, API reference reading experience                                          |
 
-Fumadocs is a design reference, not Oink's code upstream or a runtime
-dependency. OINK reinterprets those ideas for Hugo and its Docsy-derived
-codebase rather than making a pixel-for-pixel copy. We thank the Hugo, Docsy,
-Fumadocs, and dependency communities for publishing and maintaining their work.
+OINK is **forked from Docsy**, its only code upstream. The source history, the
+Apache-2.0 license, and the attribution in `NOTICE` are all preserved.
 
-These references identify lineage, dependencies, or inspiration. They do not
-imply endorsement, and the project and product names remain the property of
-their respective owners.
+Fumadocs, Nextra, Hextra, and Mintlify are **design references, not code sources
+and not runtime dependencies**. OINK reinterprets those ideas for Hugo and a
+Docsy-derived codebase rather than copying them pixel for pixel, and no code was
+ported from any of them.
+
+Thanks to the Hugo and Docsy communities, and to the projects above, for
+publishing and maintaining this work in the open.
+
+These references describe lineage, dependency, or design inspiration. They **do
+not imply endorsement**; project and product names remain the property of their
+respective owners.
 
 ## Reusing the documentation {#reusing-the-documentation}
 
@@ -129,3 +138,6 @@ files linked below.
   https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE-CC-BY-4.0
 [site-license]: https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE
 [site-notice]: https://github.com/pgsty/oink.pgsty.com/blob/main/NOTICE
+[Nextra]: https://nextra.site/
+[Hextra]: https://imfing.github.io/hextra/
+[Mintlify]: https://mintlify.com/

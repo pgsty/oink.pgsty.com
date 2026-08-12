@@ -1,6 +1,6 @@
 ---
 title: 外观与风格
-weight: 60
+weight: 20
 description: 定制主题、字体、代码样式与页面布局。
 ---
 
