@@ -33,7 +33,7 @@ hugo mod init github.com/example/product-docs
 hugo mod get github.com/pgsty/oink@THEME_REF
 ```
 
-Replace `THEME_REF` with a published tag such as `v0.2.0` or an immutable
+Replace `THEME_REF` with a published tag such as `v0.3.0` or an immutable
 commit. Add the import to `hugo.yaml`:
 
 ```yaml {filename="hugo.yaml"}

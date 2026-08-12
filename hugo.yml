@@ -318,9 +318,9 @@ params:
   # version menu) and is not always a git ref. Content that needs a resolvable
   # release ref -- install commands, for example -- uses `tdVersion.latest`.
   tdVersion:
-    latest: &tdLatestVers v0.2.0
-  version: v0.2.0
-  version_menu: v0.2.0
+    latest: &tdLatestVers v0.3.0
+  version: v0.3.0
+  version_menu: v0.3.0
   version_menu_pagelinks: false
   # Populate to enable the navbar version menu, for example:
   versions: # []
@@ -368,8 +368,8 @@ params:
       emitMetadata: 0
       inputPosition: bottom
       theme: auto
-      lightTheme: /css/giscus-oink-light.css?v=0.2.0
-      darkTheme: /css/giscus-oink-dark.css?v=0.2.0
+      lightTheme: /css/giscus-oink-light.css?v=0.3.0
+      darkTheme: /css/giscus-oink-dark.css?v=0.3.0
       loading: lazy
   search:
     # algolia:

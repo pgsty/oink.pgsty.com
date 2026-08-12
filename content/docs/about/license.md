@@ -58,7 +58,7 @@ checksums, and license paths.
 
 | Capability             | Included projects                                          | License families recorded by the theme        |
 | ---------------------- | ---------------------------------------------------------- | --------------------------------------------- |
-| UI foundation          | Bootstrap, Popper, jQuery                                  | MIT                                           |
+| UI foundation          | Bootstrap, Popper                                          | MIT                                           |
 | Icons and fonts        | Font Awesome, Open Sans, Chakra Petch, IBM Plex Mono       | CC BY 4.0, SIL OFL 1.1, and MIT as applicable |
 | Search                 | Lunr, DocSearch                                            | MIT                                           |
 | Diagrams and formulae  | Mermaid, KaTeX, Markmap, D3, Highlight.js, Web Font Loader | MIT, ISC, BSD-3-Clause, and Apache-2.0        |

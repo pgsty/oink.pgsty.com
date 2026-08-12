@@ -41,7 +41,7 @@ Module 安装方式时由 Go 解析模块，Git 则承载源码与发布流程�
 
 | 能力           | 随主题分发的项目                                           | 主题记录的许可证类型                         |
 | -------------- | ---------------------------------------------------------- | -------------------------------------------- |
-| UI 基础        | Bootstrap、Popper、jQuery                                  | MIT                                          |
+| UI 基础        | Bootstrap、Popper                                          | MIT                                          |
 | 图标与字体     | Font Awesome、Open Sans、Chakra Petch、IBM Plex Mono       | 按组件分别采用 CC BY 4.0、SIL OFL 1.1 与 MIT |
 | 搜索           | Lunr、DocSearch                                            | MIT                                          |
 | 图表与公式     | Mermaid、KaTeX、Markmap、D3、Highlight.js、Web Font Loader | MIT、ISC、BSD-3-Clause 与 Apache-2.0         |

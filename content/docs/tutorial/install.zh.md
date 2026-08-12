@@ -31,7 +31,7 @@ hugo mod init github.com/example/product-docs
 hugo mod get github.com/pgsty/oink@THEME_REF
 ```
 
-请把 `THEME_REF` 替换为 `v0.2.0` 之类的已发布标签，或不可变的 commit。然后在
+请把 `THEME_REF` 替换为 `v0.3.0` 之类的已发布标签，或不可变的 commit。然后在
 `hugo.yaml` 中添加导入：
 
 ```yaml {filename="hugo.yaml"}
