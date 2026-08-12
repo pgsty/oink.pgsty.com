@@ -12,6 +12,8 @@ env:
   GO_VERSION: 1.25.5
   HUGO_VERSION: 0.164.0
   NODE_VERSION: 24
+  HUGO_CACHEDIR: ${{ github.workspace }}/.hugo_cache
+  GOMODCACHE: ${{ github.workspace }}/.hugo_cache/modules/filecache/modules/pkg/mod
 
 jobs:
   axe:
@@ -33,6 +35,8 @@ jobs:
           curl -L -o hugo.deb \
             "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
           sudo dpkg -i hugo.deb
+      - name: Download Hugo module
+        run: go mod download github.com/pgsty/oink
       - run: npm ci --ignore-scripts
       - run: npx playwright install --with-deps chromium
       - run: npm run test:a11y
@@ -62,6 +66,8 @@ jobs:
           curl -L -o hugo.deb \
             "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
           sudo dpkg -i hugo.deb
+      - name: Download Hugo module
+        run: go mod download github.com/pgsty/oink
       - run: npm ci --ignore-scripts
       - run: npx playwright install --with-deps chromium
       - run: npm run test:responsive-shell
