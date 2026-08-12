@@ -268,7 +268,7 @@ of the page even if their data remains in the file.
 
 ### Built-in sections {#built-in-sections}
 
-OINK 0.2.0 provides 12 section types:
+OINK 0.3.0 provides 12 section types:
 
 | Type           | Use it for                                                  |
 | -------------- | ----------------------------------------------------------- |
@@ -359,7 +359,7 @@ capabilities:
           - {
               title: Asciinema,
               icon: fa-solid fa-terminal,
-              url: docs/content/components/#asciinema,
+              url: docs/components/layout/#asciinema,
             }
           - {
               title: Mermaid,

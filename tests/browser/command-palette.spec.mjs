@@ -1,8 +1,8 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const docsPath = '/docs/content/configuration/';
-const zhDocsPath = '/zh/docs/content/configuration/';
+const docsPath = '/docs/configure/overview/';
+const zhDocsPath = '/zh/docs/configure/overview/';
 
 async function openPalette(page, path = docsPath, viewport = null) {
   if (viewport) await page.setViewportSize(viewport);

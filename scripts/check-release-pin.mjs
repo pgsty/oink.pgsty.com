@@ -6,6 +6,28 @@ function fail(message) {
   process.exitCode = 1;
 }
 
+function hasThemeReplacement(goMod) {
+  let replaceBlock = false;
+  for (const sourceLine of goMod.split(/\r?\n/)) {
+    const line = sourceLine.replace(/\s*\/\/.*$/, '').trim();
+    if (!line) continue;
+    if (replaceBlock) {
+      if (line === ')') {
+        replaceBlock = false;
+      } else if (/^github\.com\/pgsty\/oink(?:\s|$)/.test(line)) {
+        return true;
+      }
+      continue;
+    }
+    if (/^replace\s*\($/.test(line)) {
+      replaceBlock = true;
+    } else if (/^replace\s+github\.com\/pgsty\/oink(?:\s|$)/.test(line)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 try {
   const config = readFileSync(new URL('../hugo.yml', import.meta.url), 'utf8');
   const goMod = readFileSync(new URL('../go.mod', import.meta.url), 'utf8');
@@ -28,9 +50,9 @@ try {
     siteVersion,
     `go.mod pins ${pinnedTheme ?? '(missing)'} while the site advertises ${siteVersion}`,
   );
-  assert.doesNotMatch(
-    goMod,
-    /^\s*replace\s+github\.com\/pgsty\/oink(?:\s|$)/m,
+  assert.equal(
+    hasThemeReplacement(goMod),
+    false,
     'go.mod must not replace the published OINK module in a release build',
   );
   console.log(

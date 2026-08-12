@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const docPath = '/docs/content/configuration/';
+const docPath = '/docs/configure/overview/';
 const widths = [360, 768, 820, 1024, 1200, 1440];
 
 async function openCleanPage(page, path = docPath) {
@@ -133,15 +133,10 @@ test('desktop navbar keeps parent navigation separate from disclosure', async ({
   await expect(panel).toBeHidden();
   await expect(toggle).toBeFocused();
 
-  const issues = page.locator(
-    '[data-td-navbar-region="desktop"][data-td-navbar-label="Issues"]',
-  );
-  await expect(issues).toHaveAttribute(
-    'href',
-    'https://github.com/pgsty/oink/issues',
-  );
-  await expect(issues).toHaveAttribute('target', '_blank');
-  await expect(issues).toHaveAttribute('rel', 'noopener noreferrer');
+  const github = page.locator('.nav-github[aria-label="GitHub"]');
+  await expect(github).toHaveAttribute('href', 'https://github.com/pgsty/oink');
+  await expect(github).toHaveAttribute('target', '_blank');
+  await expect(github).toHaveAttribute('rel', 'noopener noreferrer');
 });
 
 test('mobile navbar accordions allow multiple open parents', async ({
@@ -154,9 +149,13 @@ test('mobile navbar accordions allow multiple open parents', async ({
   await expect(drawer).toBeVisible();
 
   const sections = drawer.locator('[data-td-navbar-accordion]');
-  await expect(sections).toHaveCount(2);
-  const docs = sections.nth(0);
-  const blog = sections.nth(1);
+  await expect(sections).toHaveCount(3);
+  const docs = sections.filter({
+    has: page.locator('.mobile-menu-parent-link[data-td-navbar-label="Docs"]'),
+  });
+  const blog = sections.filter({
+    has: page.locator('.mobile-menu-parent-link[data-td-navbar-label="Blog"]'),
+  });
   await expect(docs.locator('.mobile-menu-parent-link')).toHaveAttribute(
     'href',
     '/docs/',
@@ -167,8 +166,8 @@ test('mobile navbar accordions allow multiple open parents', async ({
   await expect(docs.locator('[data-td-navbar-accordion-panel]')).toBeVisible();
   await expect(blog.locator('[data-td-navbar-accordion-panel]')).toBeVisible();
   await expect(
-    docs.locator('[data-td-navbar-label="Tutorials"]'),
-  ).toContainText('Tutorials');
+    docs.locator('[data-td-navbar-label="Get started"]'),
+  ).toContainText('Get started');
 
   await expect(drawer.locator('[data-td-shell-search-open]')).toBeVisible();
   await expect(drawer.locator('[data-td-theme-toggle]')).toBeVisible();
@@ -250,7 +249,7 @@ test('page actions are complete and keyboard operable', async ({ page }) => {
 
 test('page actions localize AI labels and prompts', async ({ page }) => {
   await page.setViewportSize({ width: 820, height: 900 });
-  await openCleanPage(page, '/zh/docs/content/configuration/');
+  await openCleanPage(page, '/zh/docs/configure/overview/');
 
   const actionsToggle = page.locator(
     '[aria-controls="td-shell-aside-actions"]:visible',
@@ -296,7 +295,7 @@ test('sidebar sections use a semantic keyboard toggle', async ({ page }) => {
 
 for (const [locale, path, query] of [
   ['en', docPath, 'OINK'],
-  ['zh', '/zh/docs/content/configuration/', '配置'],
+  ['zh', '/zh/docs/configure/overview/', '配置'],
 ]) {
   test(`${locale} search exposes listbox state and keeps the page result cap`, async ({
     page,

@@ -1,5 +1,13 @@
+sections:
+  - hero
+  - type: cards
+    key: release
+  - capabilities
+  - principles
+  - cta
+
 hero:
-  eyebrow: 本地优先 · 仅依赖 Hugo 的技术文档主题
+  eyebrow: OINK 0.3.0 · 本地优先 · 仅依赖 Hugo
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -10,14 +18,50 @@ hero:
     dark: images/hero-dark.webp
     alt: OINK 工程文档插图
   actions:
-    - label: 浏览文档
-      url: docs/about/
+    - label: 查看 0.3.0 新特性
+      url: blog/release/0.3.0/
       icon: fa-solid fa-book-open
       style: primary
     - label: 开始使用
       url: docs/tutorial/
       icon: fa-solid fa-arrow-right
       style: ghost
+
+release:
+  eyebrow: OINK 0.3.0
+  title: 写得更快，找得更准，页面更轻
+  text:
+    0.3.0 在保持纯 Hugo
+    交付方式不变的前提下，系统提升了日常写作、内容发现与阅读体验。
+  columns: 4
+  link_label: 了解详情
+  items:
+    - title: 像文档一样工作的代码
+      meta: 写作
+      icon: fa-solid fa-code
+      desc:
+        增强代码块与同步 Code Group
+        支持文件名、精确复制、换行、折叠及可分享的选项状态。
+      url: docs/components/code-blocks/
+    - title: 高频内容组件
+      meta: 组件
+      icon: fa-solid fa-cubes
+      desc:
+        Badge、Kbd、Fields、FileTree、Gallery 与 Image Zoom
+        以语义化、静态优先的方式覆盖日常文档模式。
+      url: docs/components/
+    - title: 更有目的的内容发现
+      meta: 导航
+      icon: fa-solid fa-compass
+      desc: 嵌套菜单、加权多语言检索、统一页面操作与命令面板，把读者直接带到正确页面或操作。
+      url: docs/advanced/search/#command-palette
+    - title: 更轻、更易适配的页面
+      meta: 呈现
+      icon: fa-solid fa-feather-pointed
+      desc:
+        语义化字体预设让排版选择更明确；移除 jQuery 后，典型文档页的 CSS 与
+        JavaScript 约减少 88 KB。
+      url: docs/appearance/typography/
 capabilities:
   eyebrow: 价值主张
   title: 工程文档所需的能力，开箱即用
@@ -39,14 +83,14 @@ capabilities:
       visual:
         type: shell
         brand: OINK
-        search: 全文检索
+        search: 搜索内容或执行命令
         shortcut: ⌘ K
         section: 文档
         section_icon: fa-solid fa-book
         items:
-          - { label: 开始使用, active: true }
-          - { label: 内容 }
-          - { label: 多版本 }
+          - { label: 快速上手, active: true }
+          - { label: 站点配置 }
+          - { label: 组件参考 }
           - { label: 部署 }
         eyebrow: 工程文档 / 快速上线
         title_lines: [开箱即用。, 持续维护。]
@@ -109,11 +153,13 @@ capabilities:
       url: docs/components/
       motto: 把工程内容需要的表达能力直接带进主题
       bullets:
-        - '[Asciinema](docs/components/layout/)、[ECharts](docs/components/echarts/)
-          与 [Infographic](docs/components/infographic/)，完整表达工程内容'
-        - '[KaTeX](docs/components/diagrams/#latex-support-with-katex)、[Mermaid](docs/components/diagrams/#diagrams-with-mermaid)
-          与完整的图表工具箱'
-        - '每个[短代码与组件](docs/components/layout/)都有文档，并且只在使用时加载'
+        - '[Code
+          Group](docs/components/code-blocks/#code-groups)、[FileTree](docs/components/filetree/)
+          与 [Fields](docs/components/fields/) 覆盖日常技术写作'
+        - '[Gallery](docs/components/gallery/)、[Image
+          Zoom](docs/components/image-zoom/) 与图表组件用于视觉化说明'
+        - '每个[组件](docs/components/)都有语义化 Markdown
+          与打印输出，只在交互确实需要时加载 JavaScript'
       value: 富内容能力属于主题，普通页面不会因此背上额外负担。
       visual:
         type: components
@@ -122,9 +168,39 @@ capabilities:
         compact: true
         items:
           - {
-              icon: fa-solid fa-terminal,
-              title: Asciinema,
-              url: docs/components/layout/,
+              icon: fa-solid fa-code,
+              title: Code Groups,
+              url: docs/components/code-blocks/#code-groups,
+            }
+          - {
+              icon: fa-solid fa-tags,
+              title: Badge,
+              url: docs/components/badge/,
+            }
+          - {
+              icon: fa-solid fa-keyboard,
+              title: Kbd,
+              url: docs/components/kbd/,
+            }
+          - {
+              icon: fa-solid fa-list-check,
+              title: Fields,
+              url: docs/components/fields/,
+            }
+          - {
+              icon: fa-solid fa-folder-tree,
+              title: FileTree,
+              url: docs/components/filetree/,
+            }
+          - {
+              icon: fa-solid fa-magnifying-glass-plus,
+              title: Image Zoom,
+              url: docs/components/image-zoom/,
+            }
+          - {
+              icon: fa-solid fa-images,
+              title: Gallery,
+              url: docs/components/gallery/,
             }
           - {
               icon: fa-solid fa-chart-line,
@@ -133,52 +209,22 @@ capabilities:
             }
           - {
               icon: fa-solid fa-diagram-project,
+              title: Diagrams,
+              url: docs/components/diagrams/,
+            }
+          - {
+              icon: fa-solid fa-terminal,
+              title: Asciinema,
+              url: docs/components/layout/,
+            }
+          - {
+              icon: fa-solid fa-chart-simple,
               title: Infographic,
               url: docs/components/infographic/,
             }
           - {
-              icon: fa-solid fa-square-root-variable,
-              title: KaTeX,
-              url: docs/components/diagrams/#latex-support-with-katex,
-            }
-          - {
-              icon: fa-solid fa-share-nodes,
-              title: Mermaid,
-              url: docs/components/diagrams/#diagrams-with-mermaid,
-            }
-          - {
-              icon: fa-solid fa-sitemap,
-              title: Markmap,
-              url: docs/components/diagrams/#mind-map-support-with-markmap,
-            }
-          - {
-              icon: fa-solid fa-code-branch,
-              title: PlantUML,
-              url: docs/components/diagrams/#uml-diagrams-with-plantuml,
-            }
-          - {
-              icon: fa-solid fa-pen-ruler,
-              title: Diagrams.net,
-              url: docs/components/diagrams/#diagrams-with-diagramsnet,
-            }
-          - {
               icon: fa-solid fa-file-code,
-              title: Swagger UI,
-              url: docs/components/layout/#swaggerui,
-            }
-          - {
-              icon: fa-solid fa-book-open,
-              title: Redoc,
-              url: docs/components/layout/#redoc,
-            }
-          - {
-              icon: fa-solid fa-id-card,
-              title: Cards,
-              url: docs/components/layout/,
-            }
-          - {
-              icon: fa-solid fa-images,
-              title: Carousel,
+              title: API Docs,
               url: docs/components/layout/,
             }
 
@@ -219,7 +265,7 @@ footer:
       links:
         - { label: 使用文档, url: docs/ }
         - { label: 开始使用, url: docs/tutorial/ }
-        - { label: 内容组件, url: docs/components/layout/ }
+        - { label: 内容组件, url: docs/components/ }
         - { label: 示例, url: docs/about/examples/ }
     - title: 社区
       links:
@@ -231,17 +277,14 @@ footer:
             external: true,
           }
         - {
-            label: Discussions,
+            label: Docsy 讨论区,
             url: 'https://github.com/google/docsy/discussions',
             external: true,
           }
     - title: 关于
       links:
         - { label: 关于 OINK, url: docs/about/ }
-        - {
-            label: 变更记录,
-            url: https://github.com/google/docsy/blob/main/CHANGELOG.md,
-          }
+        - { label: 版本发布, url: blog/release/ }
         - {
             label: 开源协议,
             url: 'https://github.com/pgsty/oink/blob/main/LICENSE',

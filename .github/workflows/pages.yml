@@ -62,9 +62,10 @@ jobs:
         run: node scripts/check-release-pin.mjs
 
       - name: Build site
-        run: >-
-          hugo --cleanDestinationDir --gc --minify --environment production
-          --baseURL "${{ steps.pages.outputs.base_url }}/"
+        run: |
+          hugo --cleanDestinationDir --gc --minify --environment production \
+            --printPathWarnings --panicOnWarning \
+            --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5

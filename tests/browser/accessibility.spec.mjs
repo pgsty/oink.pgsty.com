@@ -4,8 +4,8 @@ import { expect, test } from '@playwright/test';
 const wcagTags = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
 const widths = [360, 768, 820, 1024, 1200, 1440];
 const locales = [
-  ['en', '/docs/content/configuration/'],
-  ['zh', '/zh/docs/content/configuration/'],
+  ['en', '/docs/configure/overview/'],
+  ['zh', '/zh/docs/configure/overview/'],
 ];
 const themes = ['light', 'dark'];
 const requestedPaths = (process.env.A11Y_PATHS || '')
@@ -144,13 +144,13 @@ test.describe('WCAG AA contract', () => {
   for (const { locale, path, theme, viewport } of [
     {
       locale: 'en',
-      path: '/docs/content/components/gallery/',
+      path: '/docs/components/gallery/',
       theme: 'light',
       viewport: { width: 1200, height: 900 },
     },
     {
       locale: 'zh',
-      path: '/zh/docs/content/components/gallery/',
+      path: '/zh/docs/components/gallery/',
       theme: 'dark',
       viewport: { width: 390, height: 844 },
     },

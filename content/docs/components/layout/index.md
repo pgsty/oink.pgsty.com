@@ -263,6 +263,8 @@ Plays an asciinema `.cast` recording:
     markers="0:Start,18:Verify" fit="width" */>}}
 ```
 
+{{< asciinema file="images/install.cast" speed="1.5" markers="0:Start,1:Done" >}}
+
 The window title uses `title` when supplied and otherwise displays `file`. Other
 important parameters include `theme`, `autoplay`, `loop`, `preload`, `speed`,
 `startAt`, `poster`, `cols`, `rows`, `idleTimeLimit`, `pauseOnMarkers`,

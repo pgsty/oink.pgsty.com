@@ -236,6 +236,8 @@ UI 实例。
     markers="0:开始,18:验证" fit="width" */>}}
 ```
 
+{{< asciinema file="images/install.cast" speed="1.5" markers="0:开始,1:完成" >}}
+
 窗口标题优先使用 `title`，没有 `title` 时显示 `file`。其他主要参数包括
 `theme`、`autoplay`、`loop`、`preload`、`speed`、`startAt`、`poster`、`cols`、
 `rows`、`idleTimeLimit`、`pauseOnMarkers`、`markers` 和

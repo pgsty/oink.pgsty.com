@@ -14,7 +14,7 @@ Oink 是一款 Hugo 主题，因此普通 Markdown 与 Hugo 内容模型仍是�
 `ref` 或 `relref` 短代码：
 
 ```markdown
-[配置]({{</* ref "/docs/content/configuration" */>}})
+[站点配置]({{</* ref "/docs/configure/overview" */>}})
 ```
 
 移动页面后，应为旧公开路径添加 alias，并把所有站内链接更新为新的规范路由。不要让 alias 长期承担站点导航职责。链接与图片行为详见[添加内容](/zh/docs/content/writing/#links)。

@@ -379,8 +379,8 @@ test('the EN and ZH guide pair every authoring example with a rendered result', 
   page,
 }) => {
   for (const [path, authoring, rendered] of [
-    ['/docs/content/code-blocks/', 'Authoring', 'Rendered result'],
-    ['/zh/docs/content/code-blocks/', '作者写法', '实际效果'],
+    ['/docs/components/code-blocks/', 'Authoring', 'Rendered result'],
+    ['/zh/docs/components/code-blocks/', '作者写法', '实际效果'],
   ]) {
     await page.goto(path, { waitUntil: 'domcontentloaded' });
     const pairs = await page.locator('article').evaluate(
@@ -431,8 +431,8 @@ test('code guide surfaces meet WCAG AA in both color themes', async ({
   await page.route('https://giscus.app/**', (route) => route.abort());
 
   for (const path of [
-    '/docs/content/code-blocks/',
-    '/zh/docs/content/code-blocks/',
+    '/docs/components/code-blocks/',
+    '/zh/docs/components/code-blocks/',
     codeFixture,
   ]) {
     for (const theme of ['light', 'dark']) {

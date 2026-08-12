@@ -1,12 +1,13 @@
 import { expect, test } from '@playwright/test';
 
-const componentsPath = '/docs/content/components/';
+const componentsPath = '/docs/components/';
 const badgePath = `${componentsPath}badge/`;
 const kbdPath = `${componentsPath}kbd/`;
 const fieldsPath = `${componentsPath}fields/`;
 const fileTreePath = `${componentsPath}filetree/`;
 const imageZoomPath = `${componentsPath}image-zoom/`;
 const galleryPath = `${componentsPath}gallery/`;
+const layoutPath = `${componentsPath}layout/`;
 
 async function gridColumnCount(grid) {
   return grid.evaluate(
@@ -248,7 +249,7 @@ test.describe('Everyday content primitive guides', () => {
     ).text();
     expect(componentBundle).toContain('data-td-image-zoom-dialog');
 
-    await page.goto('/docs/content/configuration/', {
+    await page.goto('/docs/configure/overview/', {
       waitUntil: 'domcontentloaded',
     });
     await expect(page.locator('[data-td-image-zoom-dialog]')).toHaveCount(0);
@@ -315,7 +316,7 @@ test('Asciinema waits for its web font before measuring terminal cells', async (
     },
   );
 
-  await page.goto(componentsPath, {
+  await page.goto(layoutPath, {
     waitUntil: 'domcontentloaded',
   });
   await fontRequested;

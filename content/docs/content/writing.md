@@ -17,7 +17,7 @@ site. When a link should follow a page through source moves, Hugo's `ref` and
 `relref` shortcodes can resolve the target page:
 
 ```markdown
-[Configuration]({{</* ref "/docs/content/configuration" */>}})
+[Site configuration]({{</* ref "/docs/configure/overview" */>}})
 ```
 
 After moving a page, add an alias for the old public route and update every

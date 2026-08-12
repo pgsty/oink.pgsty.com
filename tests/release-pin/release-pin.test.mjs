@@ -3,6 +3,7 @@ import {
   copyFileSync,
   mkdirSync,
   mkdtempSync,
+  readFileSync,
   rmSync,
   writeFileSync,
 } from 'node:fs';
@@ -85,6 +86,23 @@ test('rejects a local replacement even when the exact tag is required', () => {
   assert.match(result.stderr, /must not replace the published OINK module/);
 });
 
+test('rejects a local replacement inside a replace block', () => {
+  const result = runCheck(
+    [
+      'module example.test/site',
+      '',
+      'require github.com/pgsty/oink v0.3.0',
+      'replace (',
+      '  // Release builds must not use this local checkout.',
+      '  github.com/pgsty/oink => ../oink',
+      ')',
+      '',
+    ].join('\n'),
+  );
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /must not replace the published OINK module/);
+});
+
 test('rejects disagreement between the advertised current and latest versions', () => {
   const result = runCheck(
     'module example.test/site\n\nrequire github.com/pgsty/oink v0.3.0\n',
@@ -100,5 +118,24 @@ test('rejects disagreement between the advertised current and latest versions', 
   assert.match(
     result.stderr,
     /tdVersion\.latest v0\.2\.1 differs from v0\.3\.0/,
+  );
+});
+
+test('Pages resolves a public pin without a workspace and fails on warnings', () => {
+  const workflow = readFileSync(
+    new URL('../../.github/workflows/pages.yml', import.meta.url),
+    'utf8',
+  );
+  assert.match(workflow, /^  GOWORK: off$/m);
+  assert.match(workflow, /^  HUGO_MODULE_WORKSPACE: off$/m);
+  assert.match(workflow, /go mod download github\.com\/pgsty\/oink/);
+  assert.match(workflow, /node scripts\/check-release-pin\.mjs/);
+  assert.match(workflow, /--printPathWarnings --panicOnWarning/);
+  assert.ok(
+    workflow.indexOf('go mod download github.com/pgsty/oink') <
+      workflow.indexOf('node scripts/check-release-pin.mjs') &&
+      workflow.indexOf('node scripts/check-release-pin.mjs') <
+        workflow.indexOf('hugo --cleanDestinationDir'),
+    'Pages must resolve the public module and verify its pin before building',
   );
 });

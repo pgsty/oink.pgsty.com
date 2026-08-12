@@ -1,5 +1,13 @@
+sections:
+  - hero
+  - type: cards
+    key: release
+  - capabilities
+  - principles
+  - cta
+
 hero:
-  eyebrow: Local-first · Hugo-only technical documentation
+  eyebrow: OINK 0.3.0 · Local-first · Hugo-only
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -10,14 +18,52 @@ hero:
     dark: images/hero-dark.webp
     alt: OINK engineering documentation illustration
   actions:
-    - label: Read the docs
-      url: docs/about/
+    - label: What's new in 0.3.0
+      url: blog/release/0.3.0/
       icon: fa-solid fa-book-open
       style: primary
     - label: Get started
       url: docs/tutorial/
       icon: fa-solid fa-arrow-right
       style: ghost
+
+release:
+  eyebrow: OINK 0.3.0
+  title: Write faster. Navigate farther. Ship less JavaScript.
+  text:
+    The 0.3.0 release sharpens the everyday authoring and reading experience
+    while preserving the same Hugo-only delivery model.
+  columns: 4
+  link_label: Explore
+  items:
+    - title: Code that works like documentation
+      meta: Authoring
+      icon: fa-solid fa-code
+      desc:
+        Enhanced fences and synchronized Code Groups add filenames, exact Copy
+        behavior, wrapping, collapse, and shareable variants.
+      url: docs/components/code-blocks/
+    - title: Everyday content primitives
+      meta: Components
+      icon: fa-solid fa-cubes
+      desc:
+        Badge, Kbd, Fields, FileTree, Gallery, and Image Zoom cover common
+        documentation patterns with semantic, static-first output.
+      url: docs/components/
+    - title: Navigation with intent
+      meta: Discovery
+      icon: fa-solid fa-compass
+      desc:
+        Nested menus, weighted multilingual search, shared page actions, and the
+        Command Palette lead readers to the right page or action.
+      url: docs/advanced/search/#command-palette
+    - title: A lighter, adaptable page
+      meta: Presentation
+      icon: fa-solid fa-feather-pointed
+      desc:
+        Semantic typography presets make fonts deliberate, while removing jQuery
+        cuts about 88 KB of CSS and JavaScript from a typical docs page.
+      url: docs/appearance/typography/
 capabilities:
   eyebrow: Why OINK
   title: Docs. Engineered.
@@ -42,14 +88,14 @@ capabilities:
       visual:
         type: shell
         brand: OINK
-        search: Full-text search
+        search: Search or run a command
         shortcut: ⌘ K
         section: Docs
         section_icon: fa-solid fa-book
         items:
-          - { label: Getting started, active: true }
-          - { label: Content }
-          - { label: Versions }
+          - { label: Get started, active: true }
+          - { label: Configuration }
+          - { label: Components }
           - { label: Deployment }
         eyebrow: ENGINEERING DOCS / SHIP FAST
         title_lines: [Ready to use., Built to last.]
@@ -119,14 +165,14 @@ capabilities:
       url: docs/components/
       motto: First-class components, loaded per page
       bullets:
-        - '[Asciinema](docs/components/layout/),
-          [ECharts](docs/components/echarts/), and
-          [Infographic](docs/components/infographic/) for engineering stories'
-        - '[KaTeX](docs/components/diagrams/#latex-support-with-katex),
-          [Mermaid](docs/components/diagrams/#diagrams-with-mermaid), and the
-          complete diagram toolkit'
-        - 'Every [shortcode and component](docs/components/layout/) is
-          documented and loaded only when needed'
+        - '[Code Groups](docs/components/code-blocks/#code-groups),
+          [FileTree](docs/components/filetree/), and
+          [Fields](docs/components/fields/) for everyday technical writing'
+        - '[Gallery](docs/components/gallery/), [Image
+          Zoom](docs/components/image-zoom/), and diagrams for visual
+          explanations'
+        - 'Every [component](docs/components/) has semantic Markdown and print
+          output, with JavaScript loaded only when interaction needs it'
       value: More expression. Zero baggage elsewhere.
       visual:
         type: components
@@ -135,9 +181,39 @@ capabilities:
         compact: true
         items:
           - {
-              icon: fa-solid fa-terminal,
-              title: Asciinema,
-              url: docs/components/layout/,
+              icon: fa-solid fa-code,
+              title: Code Groups,
+              url: docs/components/code-blocks/#code-groups,
+            }
+          - {
+              icon: fa-solid fa-tags,
+              title: Badge,
+              url: docs/components/badge/,
+            }
+          - {
+              icon: fa-solid fa-keyboard,
+              title: Kbd,
+              url: docs/components/kbd/,
+            }
+          - {
+              icon: fa-solid fa-list-check,
+              title: Fields,
+              url: docs/components/fields/,
+            }
+          - {
+              icon: fa-solid fa-folder-tree,
+              title: FileTree,
+              url: docs/components/filetree/,
+            }
+          - {
+              icon: fa-solid fa-magnifying-glass-plus,
+              title: Image Zoom,
+              url: docs/components/image-zoom/,
+            }
+          - {
+              icon: fa-solid fa-images,
+              title: Gallery,
+              url: docs/components/gallery/,
             }
           - {
               icon: fa-solid fa-chart-line,
@@ -146,52 +222,22 @@ capabilities:
             }
           - {
               icon: fa-solid fa-diagram-project,
+              title: Diagrams,
+              url: docs/components/diagrams/,
+            }
+          - {
+              icon: fa-solid fa-terminal,
+              title: Asciinema,
+              url: docs/components/layout/,
+            }
+          - {
+              icon: fa-solid fa-chart-simple,
               title: Infographic,
               url: docs/components/infographic/,
             }
           - {
-              icon: fa-solid fa-square-root-variable,
-              title: KaTeX,
-              url: docs/components/diagrams/#latex-support-with-katex,
-            }
-          - {
-              icon: fa-solid fa-share-nodes,
-              title: Mermaid,
-              url: docs/components/diagrams/#diagrams-with-mermaid,
-            }
-          - {
-              icon: fa-solid fa-sitemap,
-              title: Markmap,
-              url: docs/components/diagrams/#mind-map-support-with-markmap,
-            }
-          - {
-              icon: fa-solid fa-code-branch,
-              title: PlantUML,
-              url: docs/components/diagrams/#uml-diagrams-with-plantuml,
-            }
-          - {
-              icon: fa-solid fa-pen-ruler,
-              title: Diagrams.net,
-              url: docs/components/diagrams/#diagrams-with-diagramsnet,
-            }
-          - {
               icon: fa-solid fa-file-code,
-              title: Swagger UI,
-              url: docs/components/layout/#swaggerui,
-            }
-          - {
-              icon: fa-solid fa-book-open,
-              title: Redoc,
-              url: docs/components/layout/#redoc,
-            }
-          - {
-              icon: fa-solid fa-id-card,
-              title: Cards,
-              url: docs/components/layout/,
-            }
-          - {
-              icon: fa-solid fa-images,
-              title: Carousel,
+              title: API Docs,
               url: docs/components/layout/,
             }
 
@@ -232,7 +278,7 @@ footer:
       links:
         - { label: Documentation, url: docs/ }
         - { label: Get started, url: docs/tutorial/ }
-        - { label: Components, url: docs/components/layout/ }
+        - { label: Components, url: docs/components/ }
         - { label: Examples, url: docs/about/examples/ }
     - title: Community
       links:
@@ -244,17 +290,14 @@ footer:
             external: true,
           }
         - {
-            label: Discussions,
+            label: Docsy discussions,
             url: 'https://github.com/google/docsy/discussions',
             external: true,
           }
     - title: About
       links:
         - { label: About OINK, url: docs/about/ }
-        - {
-            label: Changelog,
-            url: https://github.com/google/docsy/blob/main/CHANGELOG.md,
-          }
+        - { label: Releases, url: blog/release/ }
         - {
             label: License,
             url: 'https://github.com/pgsty/oink/blob/main/LICENSE',

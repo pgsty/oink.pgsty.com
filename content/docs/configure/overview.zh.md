@@ -254,7 +254,7 @@ ecosystem:
 
 ### 内置分区 {#built-in-sections}
 
-OINK 0.2.0 提供 12 种分区类型：
+OINK 0.3.0 提供 12 种分区类型：
 
 | 类型           | 适用内容                               |
 | -------------- | -------------------------------------- |
@@ -336,7 +336,7 @@ capabilities:
           - {
               title: Asciinema,
               icon: fa-solid fa-terminal,
-              url: docs/content/components/#asciinema,
+              url: docs/components/layout/#asciinema,
             }
           - {
               title: Mermaid,

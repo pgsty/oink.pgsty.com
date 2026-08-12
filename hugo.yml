@@ -207,10 +207,10 @@ languages:
             url: /zh/docs/about/contributing/
             icon: fa-solid fa-code-fork
             desc: 了解如何参与贡献
-          - name: 项目文档与站点信息
-            url: /zh/project/
-            icon: fa-solid fa-book
-            desc: 查阅站点设计文档与资源
+          - name: 站点源码
+            url: https://github.com/pgsty/oink.pgsty.com
+            icon: fa-brands fa-github
+            desc: 查看本站内容、测试与发布配置
           - name: 测试与演示
             url: /zh/tests/
             icon: fa-solid fa-flask
@@ -339,23 +339,6 @@ languages:
           params:
             icon: fa-brands fa-github
 
-  tableOfContents:
-    endLevel: 4
-  goldmark:
-    parser:
-      attribute:
-        block: true
-    extensions:
-      passthrough:
-        enable: true
-        delimiters:
-          block: [['\[', '\]'], ['$$', '$$']]
-          inline: [['\(', '\)']]
-    renderer:
-      unsafe: true
-  highlight:
-    noClasses: false # Required for dark-mode
-
 params:
   wordmark: logo.svg
 
@@ -421,6 +404,8 @@ params:
   search:
     # algolia:
   ui:
+    typography:
+      preset: technical
     quick_links: [docs, blog]
     # Starter sites use the quieter group-only policy explicitly. The theme
     # keeps its pre-1.0 compatibility default (`all`) when this is omitted.
@@ -481,10 +466,10 @@ params:
         url: /docs/about/contributing/
         icon: fa-solid fa-code-fork
         desc: How to contribute
-      - name: Project docs and site info
-        url: /project/
-        icon: fa-solid fa-book
-        desc: Site design documentation and resources
+      - name: Site source
+        url: https://github.com/pgsty/oink.pgsty.com
+        icon: fa-brands fa-github
+        desc: Review this site's content, tests, and deployment configuration
       - name: Tests
         url: /tests/
         icon: fa-solid fa-flask
