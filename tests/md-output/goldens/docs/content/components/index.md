@@ -297,7 +297,7 @@ name:
 Current version: {{< param version >}}
 ```
 
-Current version: `v0.2.0`
+Current version: `v0.3.0`
 
 The shortcode fails the build when the named parameter does not exist. This is
 intentional: a missing release or repository value should not silently produce

@@ -10,10 +10,10 @@ LLMS index: [llms.txt](/llms.txt)
 
 <!-- markdownlint-disable-next-line no-space-in-links -->
 
-<span class="badge bg-primary text-bg-primary fs-6">v0.2.0
+<span class="badge bg-primary text-bg-primary fs-6">v0.3.0
 </span>
 
-Welcome to the OINK user guide for version `v0.2.0`. This guide
+Welcome to the OINK user guide for version `v0.3.0`. This guide
 covers the theme's Hugo-only build, local-first runtime, multilingual framework,
 content components, customization, and deployment.
 
