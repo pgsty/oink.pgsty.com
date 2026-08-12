@@ -50,8 +50,20 @@ OINK 本身 **不提供**
 
 ## 准备开始了吗？ {#ready-to-get-started}
 
-先阅读
-[Oink 概览](/zh/docs/about/)了解产品边界，再[安装 Oink](/zh/docs/tutorial/install/)或[创建双语站点](/zh/docs/tutorial/create-site/)。其余指南覆盖内容创作、高级特性、部署与升级。
+第一次接触，从[快速上手](/zh/docs/tutorial/)开始——七页读完可以得到一个能部署的双语站点。
+
+想直接查具体内容：
+
+| 你要做的事                | 去哪                             |
+| ------------------------- | -------------------------------- |
+| 装好并跑起来              | [快速上手](/zh/docs/tutorial/)   |
+| 配菜单、多语言、多版本    | [站点配置](/zh/docs/configure/)  |
+| 写页面、组织内容树        | [创作内容](/zh/docs/content/)    |
+| 查某个组件怎么用          | [组件参考](/zh/docs/components/) |
+| 换字体、改配色            | [定制外观](/zh/docs/appearance/) |
+| 搜索、打印、评论、AI 支持 | [高级功能](/zh/docs/advanced/)   |
+| 发布到线上                | [部署](/zh/docs/deploy/)         |
+| 升级版本或从 Docsy 迁移   | [升级迁移](/zh/docs/upgrade/)    |
 
 [Docsy]: https://github.com/google/docsy
 [Hugo]: https://gohugo.io/

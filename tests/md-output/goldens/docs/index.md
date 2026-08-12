@@ -60,10 +60,21 @@ the site rather than forcing them into the theme.
 
 ## Ready to get started?
 
-Read the [Oink overview](/docs/about/) to understand the product boundaries,
-then [install Oink](/docs/tutorial/install/) or
-[create a bilingual site](/docs/tutorial/create-site/). The remaining guide
-covers authoring, advanced features, deployment, and upgrades.
+If this is your first time, start with [Get started](/docs/tutorial/) — seven
+pages that end with a deployable bilingual site.
+
+To go straight to something specific:
+
+| What you want to do                  | Where                                  |
+| ------------------------------------ | -------------------------------------- |
+| Install and run it                   | [Get started](/docs/tutorial/)         |
+| Configure menus, languages, versions | [Site configuration](/docs/configure/) |
+| Write pages and organize the tree    | [Authoring](/docs/content/)            |
+| Look up a component                  | [Components](/docs/components/)        |
+| Change fonts and colors              | [Appearance](/docs/appearance/)        |
+| Search, print, comments, AI support  | [Advanced](/docs/advanced/)            |
+| Publish it                           | [Deployment](/docs/deploy/)            |
+| Upgrade or migrate from Docsy        | [Upgrade](/docs/upgrade/)              |
 
 [Docsy]: https://github.com/google/docsy
 [Hugo]: https://gohugo.io/
