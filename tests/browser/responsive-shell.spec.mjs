@@ -309,7 +309,7 @@ for (const [locale, path, query] of [
   ['en', docPath, 'OINK'],
   ['zh', '/zh/docs/content/configuration/', '配置'],
 ]) {
-  test(`${locale} search exposes listbox state and respects the result cap`, async ({
+  test(`${locale} search exposes listbox state and keeps the page result cap`, async ({
     page,
   }) => {
     await page.setViewportSize({ width: 820, height: 900 });
@@ -322,8 +322,24 @@ for (const [locale, path, query] of [
     await input.fill(query);
 
     const options = page.locator('#td-shell-search-results [role="option"]');
+    await expect(
+      page.locator('#td-shell-search-results mark', { hasText: query }).first(),
+    ).toBeVisible();
     await expect(options.first()).toBeVisible();
-    expect(await options.count()).toBeLessThanOrEqual(10);
+    const pageOptionCount = await page
+      .locator('#td-shell-search-results [role="group"]')
+      .evaluateAll((groups) =>
+        groups.reduce((total, group) => {
+          const labelId = group.getAttribute('aria-labelledby');
+          return (
+            total +
+            (labelId === 'td-shell-search-group-actions'
+              ? 0
+              : group.querySelectorAll('[role="option"]').length)
+          );
+        }, 0),
+      );
+    expect(pageOptionCount).toBeLessThanOrEqual(10);
 
     const activeId = await input.getAttribute('aria-activedescendant');
     expect(activeId).toBeTruthy();
