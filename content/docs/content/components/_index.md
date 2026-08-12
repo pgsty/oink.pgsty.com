@@ -4,6 +4,7 @@ weight: 90
 icon: fa-solid fa-shapes
 description: Use Oink's local, reusable components for richer documentation.
 aliases: [/docs/oink/components/]
+sidebar_expanded: true
 ---
 
 OINK promotes the content components that proved reusable across PGSTY sites
@@ -11,7 +12,7 @@ into the theme. Each component has a stable authoring API, unique instance IDs,
 local assets, and a defined safety boundary. Site-specific data widgets remain
 outside the theme.
 
-## Loading model
+## Loading model {#loading-model}
 
 Interactive shortcodes mark the features used by a page. OINK then adds each
 required stylesheet or runtime once, even if the page has several component
@@ -21,7 +22,62 @@ Relative asset and link parameters pass through Hugo's URL handling, so they
 remain correct under a subpath `baseURL`. Component markup also has print,
 dark-mode, mobile, keyboard, and reduced-motion behavior where applicable.
 
-## Asciinema
+## Everyday content primitives {#everyday-content-primitives}
+
+Everyday primitives cover small structures that recur throughout engineering
+documentation. Each guide below explains when to use the primitive, shows the
+rendered result beside its source, and records its complete version-one API.
+
+### Choose a primitive {#choose-a-primitive}
+
+| Documentation need                         | Reference                   | JavaScript                    |
+| ------------------------------------------ | --------------------------- | ----------------------------- |
+| Release state, lifecycle, or short status  | [Badge](badge/)             | None                          |
+| Shortcut or key sequence                   | [Kbd](kbd/)                 | None                          |
+| Configuration, parameter, or response data | [Fields and Field](fields/) | None                          |
+| Repository or directory structure          | [FileTree](filetree/)       | None; folders use `details`   |
+| Inspect a screenshot or architecture image | [Image Zoom](image-zoom/)   | Optional, loaded on demand    |
+| Compare several related images             | [Gallery](gallery/)         | Reuses optional Image Zoom JS |
+
+### Shared authoring contract {#shared-authoring-contract}
+
+All primitives except Kbd use named parameters and standard `{{</* ... */>}}`
+shortcode notation. Parameter names are case-sensitive. Unknown parameters,
+quoted booleans or integers, empty required strings, invalid enum values, and
+incorrect parent/child combinations stop the build with the source position.
+
+The public APIs do not accept arbitrary `class`, `style`, colors, or event
+handlers. Visible labels come from the author or Oink's translations. Static
+primitives add no JavaScript; interactive primitives mark their page so the
+required runtime is included once.
+
+### Validation and fallbacks {#validation-and-fallbacks}
+
+The output contract keeps the same information available without a browser
+runtime:
+
+| Primitive    | HTML                               | Markdown                   | Print and RSS             | JavaScript               |
+| ------------ | ---------------------------------- | -------------------------- | ------------------------- | ------------------------ |
+| Badge        | Semantic status span or link       | Emphasized text or link    | Static inline content     | None                     |
+| Kbd          | Nested `kbd` sequence              | `Ctrl + K`                 | Plain key notation        | None                     |
+| Fields       | Responsive definition list         | Metadata bullet list       | Complete definitions      | None                     |
+| FileTree     | Nested lists and native disclosure | Nested list                | Fully expanded tree       | None                     |
+| Shared image | Figure, image, and caption         | Ordinary image and caption | Static figure             | Reuses Zoom when enabled |
+| Gallery      | Responsive figure grid             | Images and captions        | Sequential static figures | Reuses Zoom when enabled |
+
+Missing required parameters and invalid values fail the Hugo build instead of
+silently changing meaning. Historical positional `imgproc` remains compatible,
+but new content should use the accessible named form.
+
+### Deliberate limits {#deliberate-limits}
+
+Version one does not add a public Icon shortcode or an `icon` parameter to
+Badge. Oink's private shell SVG registry remains separate from author-facing
+content icons. Automatic TypeScript parsing, API playgrounds, directory reads,
+remote image downloads, and complex pan or wheel-zoom controls also remain
+outside the Hugo-only theme boundary.
+
+## Asciinema {#asciinema}
 
 Use `asciinema` for a terminal recording stored as a local `.cast` file:
 

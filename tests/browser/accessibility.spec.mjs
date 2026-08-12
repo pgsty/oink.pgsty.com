@@ -72,11 +72,19 @@ function describeViolations(path, violations) {
     .join(`\n  page: ${path}\n`);
 }
 
-async function scan(page) {
-  return new AxeBuilder({ page }).withTags(wcagTags).analyze();
+async function scan(page, include) {
+  const builder = new AxeBuilder({ page }).withTags(wcagTags);
+  if (include) builder.include(include);
+  return builder.analyze();
 }
 
 test.describe('WCAG AA contract', () => {
+  test.beforeEach(async ({ page }) => {
+    // Giscus owns its cross-origin widget DOM. Keep the OINK accessibility
+    // contract deterministic and scan only surfaces maintained by this site.
+    await page.route('https://giscus.app/**', (route) => route.abort());
+  });
+
   test('every page in the multilingual sitemap', async ({ page, request }) => {
     test.setTimeout(20 * 60_000);
     await page.setViewportSize({ width: 1440, height: 900 });
@@ -131,5 +139,41 @@ test.describe('WCAG AA contract', () => {
         });
       }
     }
+  }
+
+  for (const { locale, path, theme, viewport } of [
+    {
+      locale: 'en',
+      path: '/docs/content/components/gallery/',
+      theme: 'light',
+      viewport: { width: 1200, height: 900 },
+    },
+    {
+      locale: 'zh',
+      path: '/zh/docs/content/components/gallery/',
+      theme: 'dark',
+      viewport: { width: 390, height: 844 },
+    },
+  ]) {
+    test(`open Image Zoom dialog · ${locale} · ${theme}`, async ({ page }) => {
+      await page.setViewportSize(viewport);
+      await page.addInitScript((selectedTheme) => {
+        localStorage.setItem('td-color-theme', selectedTheme);
+      }, theme);
+      await page.goto(path, { waitUntil: 'domcontentloaded' });
+      await page.locator('.td-gallery .td-image-zoom__trigger').first().click();
+      const dialog = page.locator('[data-td-image-zoom-dialog]');
+      await expect.poll(() => dialog.evaluate((node) => node.open)).toBe(true);
+      await expect(dialog.locator('[data-td-image-zoom-close]')).toBeFocused();
+
+      const { violations } = await scan(page, '[data-td-image-zoom-dialog]');
+      expect(
+        violations,
+        `${locale} ${theme} open Image Zoom dialog\n${describeViolations(
+          path,
+          violations,
+        )}`,
+      ).toEqual([]);
+    });
   }
 });

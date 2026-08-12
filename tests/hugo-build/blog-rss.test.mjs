@@ -37,6 +37,43 @@ test('top-level blog RSS recursively includes every section feed', () => {
       path.join(probe, '_index.md'),
       '---\ntitle: RSS probe\ndescription: Code Group feed probe.\n---\n',
     );
+    writeFileSync(
+      path.join(probe, 'primitive-summary.md'),
+      `---
+title: RSS primitive summary
+date: 2020-08-09
+---
+
+Summary before {{< badge text="Before more" tone="info" >}}.
+
+<!--more-->
+
+RSS_MUST_NOT_INCLUDE_AFTER_MORE {{< badge text="After more" tone="danger" >}}.
+      `,
+    );
+    writeFileSync(
+      path.join(probe, 'front-summary.md'),
+      `---
+title: RSS front matter summary
+date: 2020-08-08
+summary: Front matter summary must win.
+---
+
+RSS_MUST_NOT_REPLACE_FRONT_SUMMARY {{< badge text="Body only" tone="danger" >}}.
+`,
+    );
+    writeFileSync(
+      path.join(probe, 'automatic-summary.md'),
+      `---
+title: RSS automatic summary
+date: 2020-08-07
+---
+
+RSS_AUTO_SUMMARY_MUST_APPEAR {{< badge text="Automatic badge" tone="success" >}} followed by enough ordinary words to exceed the configured summary target without requiring the next paragraph. This sentence deliberately continues with stable filler words for the feed regression test across both supported Hugo versions: alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima mike november oscar papa quebec romeo sierra tango uniform victor whiskey xray yankee zulu amber birch cedar dogwood elm fir ginkgo hazel ivy juniper koa linden maple nutmeg oak pine quince redwood spruce teak umber violet willow yew zephyr. These words keep the automatic summary boundary inside the first paragraph without relying on the full article body.
+
+RSS_AUTO_SUMMARY_MUST_NOT_INCLUDE appears only after the first long paragraph.
+`,
+    );
     const overlayConfig = path.join(probeDir, 'rss-probe.yml');
     writeFileSync(
       overlayConfig,
@@ -99,6 +136,7 @@ The complete article continues here.
         '--cleanDestinationDir',
         '--logLevel',
         'warn',
+        '--noBuildLock',
       ],
       {
         encoding: 'utf8',
@@ -143,6 +181,19 @@ The complete article continues here.
       probeFeed,
       /data-td-code-group|nav-tabs|data-td-code-copy|data-td-code-status|&lt;button|<button/,
     );
+    assert.match(probeFeed, /Before more/);
+    assert.doesNotMatch(
+      probeFeed,
+      /RSS_MUST_NOT_INCLUDE_AFTER_MORE|After more/,
+    );
+    assert.match(probeFeed, /Front matter summary must win/);
+    assert.doesNotMatch(
+      probeFeed,
+      /RSS_MUST_NOT_REPLACE_FRONT_SUMMARY|Body only/,
+    );
+    assert.match(probeFeed, /RSS_AUTO_SUMMARY_MUST_APPEAR/);
+    assert.match(probeFeed, /Automatic badge/);
+    assert.doesNotMatch(probeFeed, /RSS_AUTO_SUMMARY_MUST_NOT_INCLUDE/);
   } finally {
     rmSync(probeDir, { recursive: true, force: true });
   }

@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const siteDir = fileURLToPath(new URL('../../', import.meta.url));
+const moduleWorkspace = join(siteDir, 'go.work');
 
 // Build the site in a non-production environment -- `params.offlineSearch` is
 // on in `hugo.yml`, and a non-production build leaves the index filenames
@@ -18,8 +19,19 @@ test('offline-search index covers all site languages', (t) => {
   rmSync(outDir, { recursive: true, force: true });
 
   const res = spawnSync(
-    `npm run _hugo -- -e dev -DFE ` + `--baseURL http://localhost -d ${outDir}`,
-    { cwd: siteDir, shell: true, encoding: 'utf8' },
+    `npm run _hugo -- -e dev -DFE ` +
+      `--baseURL http://localhost -d ${outDir} --noBuildLock`,
+    {
+      cwd: siteDir,
+      shell: true,
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        ...(existsSync(moduleWorkspace)
+          ? { HUGO_MODULE_WORKSPACE: moduleWorkspace }
+          : {}),
+      },
+    },
   );
   const output = `${res.stdout ?? ''}${res.stderr ?? ''}`;
   assert.equal(res.status, 0, `Build failed:\n${output}`);

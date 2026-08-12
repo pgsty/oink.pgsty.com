@@ -1,0 +1,122 @@
+# Fields and Field
+
+> Describe configuration, parameters, properties, and response fields with responsive semantic HTML.
+
+---
+
+LLMS index: [llms.txt](/llms.txt)
+
+---
+
+Use `fields` with `field` children to document named values and their metadata.
+The component favors a responsive definition list over a wide fixed table, so
+long names and descriptions remain usable on narrow screens.
+
+## When to use {#when-to-use}
+
+Fields works for configuration keys, command or API parameters, object
+properties, and response members. Use a regular Markdown table when readers must
+compare many rows across the same columns. Use prose when the entries are steps
+rather than definitions.
+
+## Quick start {#quick-start}
+
+### Source {#source}
+
+```go-html-template
+{{< fields label="Search configuration" >}}
+  {{< field name="offlineSearch" type="boolean" required=true default=true >}}
+  Builds a **local** search index and command palette.
+  {{< /field >}}
+
+  {{< field name="offlineSearchMaxResults" type="integer" default=10 >}}
+  Limits the number of visible results.
+  {{< /field >}}
+{{< /fields >}}
+```
+
+### Rendered result {#rendered-result}
+
+<!-- prettier-ignore-start -->
+
+**Search configuration**
+
+- `offlineSearch` — `boolean`; required; default: `true`
+
+  Builds a **local** search index and command palette.
+
+- `offlineSearchMaxResults` — `integer`; default: `10`
+
+  Limits the number of visible results while retaining keyboard navigation.
+
+- `searchPlaceholder` — `string`; default: `""`
+
+  Sets optional placeholder text. The empty-string default remains visible.
+
+- `theme.components.media.previewMaximumWidthInCharacters` — `string`; default: `auto`
+
+  This deliberately long field name demonstrates wrapping without widening the page.
+
+<!-- prettier-ignore-end -->
+
+Descriptions accept Markdown, including links, emphasis, inline code, and lists.
+Keep each description self-contained because Markdown output presents each one
+beneath its metadata.
+
+## Fields parameters {#fields-parameters}
+
+<!-- prettier-ignore-start -->
+
+**fields parameters**
+
+- `label` — `string`
+
+  A nonempty visible label associated with the complete definition list.
+
+<!-- prettier-ignore-end -->
+
+The container must have at least one direct `field` child. Text or another
+shortcode directly inside `fields` stops the build.
+
+## Field parameters {#field-parameters}
+
+<!-- prettier-ignore-start -->
+
+**field parameters**
+
+- `name` — `string`; required
+
+  A nonempty string identifying the field.
+
+- `type` — `string`
+
+  A nonempty type label such as `boolean`, `string[]`, or `duration`.
+
+- `required` — `boolean`; default: `false`
+
+  When true, adds the localized required marker.
+
+- `default` — `scalar`
+
+  A string, boolean, integer, or floating-point value. `false`, `0`, and `""` are preserved.
+
+<!-- prettier-ignore-end -->
+
+Every `field` also requires a nonempty body. It must be a direct child of
+`fields`. Parameter names and types are validated at build time, and unknown
+parameters are errors.
+
+## Semantics and fallback {#semantics-and-fallback}
+
+HTML uses `dl`, `dt`, and `dd`. Metadata is displayed as columns where space
+permits and stacks naturally on mobile. The optional label names the definition
+list for assistive technology. Markdown emits an indented bullet list with
+code-formatted names, types, and defaults; print and RSS retain every
+definition. No JavaScript is loaded.
+
+## Deliberate limits {#deliberate-limits}
+
+Version one does not implement `kind`, `deprecated`, `since`, `location`, or
+per-field links. It also does not parse TypeScript or an API schema inside Hugo.
+An external generator may emit these shortcodes later, keeping compiler and
+schema runtimes outside the theme while preserving this output contract.

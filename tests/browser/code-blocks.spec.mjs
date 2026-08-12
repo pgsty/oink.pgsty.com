@@ -426,6 +426,10 @@ test('the EN and ZH guide pair every authoring example with a rendered result', 
 test('code guide surfaces meet WCAG AA in both color themes', async ({
   page,
 }) => {
+  // Giscus owns its cross-origin widget DOM. This test covers the code guide
+  // surfaces, so prevent the third-party iframe from racing the axe scan.
+  await page.route('https://giscus.app/**', (route) => route.abort());
+
   for (const path of [
     '/docs/content/code-blocks/',
     '/zh/docs/content/code-blocks/',

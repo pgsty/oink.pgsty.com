@@ -71,6 +71,42 @@
     "skip": false
   },
   {
+    "path": "docs/content/components/index.md",
+    "kind": "nested section",
+    "covers": ["content-primitives", "children", "i18n:en"],
+    "skip": false
+  },
+  {
+    "path": "zh/docs/content/components/index.md",
+    "kind": "nested section",
+    "covers": ["content-primitives", "children", "i18n:zh"],
+    "skip": false
+  },
+  {
+    "path": "docs/content/components/fields/index.md",
+    "kind": "page",
+    "covers": ["fields", "markdown-fallback", "i18n:en"],
+    "skip": false
+  },
+  {
+    "path": "zh/docs/content/components/fields/index.md",
+    "kind": "page",
+    "covers": ["fields", "markdown-fallback", "i18n:zh"],
+    "skip": false
+  },
+  {
+    "path": "docs/content/components/gallery/index.md",
+    "kind": "page",
+    "covers": ["gallery", "image-fallback", "i18n:en"],
+    "skip": false
+  },
+  {
+    "path": "zh/docs/content/components/gallery/index.md",
+    "kind": "page",
+    "covers": ["gallery", "image-fallback", "i18n:zh"],
+    "skip": false
+  },
+  {
     "path": "zh/index.md",
     "kind": "home",
     "covers": ["description", "body", "children", "i18n:zh"],

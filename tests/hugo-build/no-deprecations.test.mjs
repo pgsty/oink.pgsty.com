@@ -1,12 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+} from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const siteDir = fileURLToPath(new URL('../../', import.meta.url));
 const tmpDir = join(siteDir, 'tmp');
+const moduleWorkspace = join(siteDir, 'go.work');
 
 // Build the real site to a throwaway destination under the gitignored `tmp/` so
 // this probe build never clobbers the published `public/` that `test:base`
@@ -15,10 +22,16 @@ function buildSite() {
   mkdirSync(tmpDir, { recursive: true });
   const destDir = mkdtempSync(join(tmpDir, 'no-deprecations-'));
   try {
-    const res = spawnSync('npm run build -- -d ' + destDir, {
+    const res = spawnSync('npm run build -- -d ' + destDir + ' --noBuildLock', {
       cwd: siteDir,
       shell: true,
       encoding: 'utf8',
+      env: {
+        ...process.env,
+        ...(existsSync(moduleWorkspace)
+          ? { HUGO_MODULE_WORKSPACE: moduleWorkspace }
+          : {}),
+      },
     });
     const output = `${res.stdout ?? ''}${res.stderr ?? ''}`;
     const deprecations = output
