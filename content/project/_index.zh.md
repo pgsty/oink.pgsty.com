@@ -2,6 +2,7 @@
 title: OINK 项目与站点文档
 linkTitle: 项目
 description: OINK 主题与项目站的构建、维护和部署说明。
+search_keywords: [架构, 维护, 部署, 代码仓库]
 aliases: [site]
 type: docs
 icon: fa-solid fa-diagram-project
@@ -10,6 +11,7 @@ sidebar_root_link_self: true
 comments: false
 cascade:
   type: docs
+  search_boost: 1.15
   params:
     hide_feedback: true
 ---

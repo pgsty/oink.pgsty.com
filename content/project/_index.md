@@ -2,6 +2,7 @@
 title: Oink project and website documentation
 linkTitle: Project
 description: How the Oink theme and website are built, maintained, and deployed.
+search_keywords: [architecture, maintenance, deployment, repository]
 aliases: [site]
 type: docs
 icon: fa-solid fa-diagram-project
@@ -10,6 +11,7 @@ sidebar_root_link_self: true
 comments: false
 cascade:
   type: docs
+  search_boost: 1.15
   params:
     hide_feedback: true
 cSpell:ignore: docsydocs

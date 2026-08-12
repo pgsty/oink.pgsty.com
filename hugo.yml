@@ -43,6 +43,33 @@ languages:
         giscus:
           ariaLabel: Comments
           errorMessage: Comments could not be loaded. Please try again later.
+      ui:
+        command_palette:
+          commands:
+            - id: theme_issues
+              title: OINK issues
+              description: Report or review theme and documentation issues
+              url: https://github.com/pgsty/oink/issues
+              icon: fa-brands fa-github
+              keywords: [bug, support, roadmap]
+            - id: copy_source
+              title: Copy page Markdown
+              description: Copy the current page source as Markdown
+              action: copy_markdown
+              icon: fa-regular fa-copy
+              keywords: [copy, source, markdown]
+            - id: print_page
+              title: Print this page
+              description: Open the browser print dialog
+              action: print
+              icon: fa-solid fa-print
+              keywords: [paper, pdf, print]
+            - id: choose_theme
+              title: Choose color theme
+              description: Select automatic, light, or dark appearance
+              action: switch_theme
+              icon: fa-solid fa-circle-half-stroke
+              keywords: [dark, light, appearance]
     menus:
       main:
         - identifier: docs
@@ -160,6 +187,32 @@ languages:
             icon: fa-brands fa-github
             desc: OINK 在这里开放开发
       ui:
+        command_palette:
+          commands:
+            - id: print_page
+              title: 打印当前页面
+              description: 打开浏览器打印对话框
+              action: print
+              icon: fa-solid fa-print
+              keywords: [打印, 纸张, PDF]
+            - id: theme_issues
+              title: OINK 问题反馈
+              description: 报告或查看主题与文档问题
+              url: https://github.com/pgsty/oink/issues
+              icon: fa-brands fa-github
+              keywords: [缺陷, 支持, 路线图]
+            - id: choose_theme
+              title: 选择颜色主题
+              description: 选择自动、浅色或深色外观
+              action: switch_theme
+              icon: fa-solid fa-circle-half-stroke
+              keywords: [深色, 浅色, 外观]
+            - id: copy_source
+              title: 复制页面 Markdown
+              description: 将当前页面源码复制为 Markdown
+              action: copy_markdown
+              icon: fa-regular fa-copy
+              keywords: [复制, 源码, Markdown]
         feedback:
           yes: >-
             很高兴本页对你有帮助！欢迎<a

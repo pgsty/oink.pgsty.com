@@ -2,6 +2,7 @@
 downstream_modified: true
 title: Blog
 description: Docsy articles, OINK engineering stories, and OINK release notes
+search_keywords: [oink news, release notes, docsy]
 type: blog
 icon: fa-solid fa-blog
 sidebar_root_for: self
@@ -9,6 +10,7 @@ sidebar_root_link_self: true
 comments: false
 cascade:
   type: blog
+  search_boost: 0.9
   params:
     ui:
       sidebar_menu_foldable: false

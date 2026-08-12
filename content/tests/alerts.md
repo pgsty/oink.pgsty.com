@@ -1,5 +1,6 @@
 ---
 title: Alerts
+search_exclude: true
 cSpell:ignore: thumbsup
 ---
 

@@ -2,12 +2,15 @@
 title: 欢迎使用 OINK
 linkTitle: 文档
 description: 安装、定制、部署与维护 Oink 文档站。
+search_keywords: [OINK, Hugo 主题, 工程文档]
 type: docs
 icon: fa-solid fa-book
 sidebar_expanded: true
 sidebar_root_for: self
 sidebar_root_link_self: true
 comments: false
+cascade:
+  search_boost: 1.35
 ---
 
 <!-- markdownlint-disable-next-line no-space-in-links -->

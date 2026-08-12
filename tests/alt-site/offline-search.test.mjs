@@ -4,69 +4,159 @@ import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { gzipSync } from 'node:zlib';
 
 const siteDir = fileURLToPath(new URL('../../', import.meta.url));
-const moduleWorkspace = join(siteDir, 'go.work');
+const localWorkspace = join(siteDir, 'go.work');
+const moduleWorkspace =
+  process.env.HUGO_MODULE_WORKSPACE ||
+  (existsSync(localWorkspace) ? localWorkspace : undefined);
+const rawBudget = 2 * 1024 * 1024;
+const gzipBudget = 512 * 1024;
+const requiredFields = [
+  'ref',
+  'title',
+  'categories',
+  'tags',
+  'excerpt',
+  'headings',
+  'description',
+  'root',
+  'section',
+  'type',
+  'keywords',
+  'boost',
+  'breadcrumb',
+  'icon',
+];
+
+function entryBySuffix(entries, suffix) {
+  const matches = entries.filter((entry) => entry.ref.endsWith(suffix));
+  assert.equal(matches.length, 1, `Expected one index entry ending ${suffix}`);
+  return matches[0];
+}
 
 // Build the site in a non-production environment -- `params.offlineSearch` is
 // on in `hugo.yml`, and a non-production build leaves the index filenames
 // un-fingerprinted -- then validate the generated language-specific indexes.
 // This guards the page collection used by
 // theme/assets/json/offline-search-index.json.
-test('offline-search index covers all site languages', (t) => {
-  // Scratch space, kept after the run for inspection; cleared at start.
-  const outDir = join(siteDir, 'tmp', 'offline-search');
-  rmSync(outDir, { recursive: true, force: true });
+for (const [deployment, baseURL, prefix] of [
+  ['root', 'https://example.test/', ''],
+  ['subpath', 'https://example.test/preview/', '/preview'],
+]) {
+  test(`offline-search index covers all site languages under ${deployment}`, (t) => {
+    // Scratch space, kept after the run for inspection; cleared at start.
+    const outDir = join(siteDir, 'tmp', `offline-search-${deployment}`);
+    rmSync(outDir, { recursive: true, force: true });
 
-  const res = spawnSync(
-    `npm run _hugo -- -e dev -DFE ` +
-      `--baseURL http://localhost -d ${outDir} --noBuildLock`,
-    {
-      cwd: siteDir,
-      shell: true,
-      encoding: 'utf8',
-      env: {
-        ...process.env,
-        ...(existsSync(moduleWorkspace)
-          ? { HUGO_MODULE_WORKSPACE: moduleWorkspace }
-          : {}),
+    const res = spawnSync(
+      `npm run _hugo -- -e dev -DFE ` +
+        `--baseURL ${baseURL} -d ${outDir} --noBuildLock`,
+      {
+        cwd: siteDir,
+        shell: true,
+        encoding: 'utf8',
+        env: {
+          ...process.env,
+          ...(moduleWorkspace
+            ? { HUGO_MODULE_WORKSPACE: moduleWorkspace }
+            : {}),
+        },
       },
-    },
-  );
-  const output = `${res.stdout ?? ''}${res.stderr ?? ''}`;
-  assert.equal(res.status, 0, `Build failed:\n${output}`);
+    );
+    const output = `${res.stdout ?? ''}${res.stderr ?? ''}`;
+    assert.equal(res.status, 0, `Build failed:\n${output}`);
 
-  for (const [language, ref] of [
-    ['en', '/docs/'],
-    ['zh', '/zh/docs/'],
-  ]) {
-    const indexPath = join(outDir, `offline-search-index.${language}.json`);
-    assert.ok(existsSync(indexPath), `Missing ${indexPath}`);
-    const entries = JSON.parse(readFileSync(indexPath, 'utf8'));
-    assert.ok(Array.isArray(entries), `${language} index is not a JSON array`);
-    assert.ok(
-      entries.length > 80,
-      `Suspiciously few ${language} index entries: ${entries.length}`,
-    );
-    for (const key of ['ref', 'title', 'description', 'headings', 'excerpt']) {
-      assert.ok(key in entries[0], `${language} entries lack "${key}"`);
-    }
-    assert.ok(
-      !('body' in entries[0]),
-      `${language} summary entries unexpectedly contain full page bodies`,
-    );
-    assert.ok(
-      entries.some((e) => e.ref === ref),
-      `Index lacks an entry for ${ref}`,
-    );
-    assert.ok(
-      entries.every((entry) =>
+    for (const [language, ref] of [
+      ['en', `${prefix}/docs/`],
+      ['zh', `${prefix}/zh/docs/`],
+    ]) {
+      const indexPath = join(outDir, `offline-search-index.${language}.json`);
+      assert.ok(existsSync(indexPath), `Missing ${indexPath}`);
+      const entries = JSON.parse(readFileSync(indexPath, 'utf8'));
+      assert.ok(
+        Array.isArray(entries),
+        `${language} index is not a JSON array`,
+      );
+      assert.ok(
+        entries.length > 80,
+        `Suspiciously few ${language} index entries: ${entries.length}`,
+      );
+      for (const key of requiredFields) {
+        assert.ok(key in entries[0], `${language} entries lack "${key}"`);
+      }
+      assert.ok(
+        !('body' in entries[0]),
+        `${language} summary entries unexpectedly contain full page bodies`,
+      );
+      assert.ok(
+        entries.some((e) => e.ref === ref),
+        `Index lacks an entry for ${ref}`,
+      );
+      assert.ok(
+        entries.every((entry) =>
+          language === 'zh'
+            ? entry.ref.startsWith(`${prefix}/zh/`)
+            : entry.ref.startsWith(`${prefix}/`) &&
+              !entry.ref.startsWith(`${prefix}/zh/`),
+        ),
+        `${language} index contains another language`,
+      );
+
+      const payload = readFileSync(indexPath);
+      assert.ok(
+        payload.length <= rawBudget,
+        `${language} raw index exceeds budget`,
+      );
+      const compressed = gzipSync(payload, { mtime: 0 });
+      assert.ok(
+        compressed.length <= gzipBudget,
+        `${language} gzip index exceeds budget`,
+      );
+
+      const config = entryBySuffix(entries, '/docs/content/configuration/');
+      const tutorial = entryBySuffix(entries, '/docs/tutorial/install/');
+      const blog = entryBySuffix(entries, '/blog/oink/oink-announcement/');
+      const project = entryBySuffix(entries, '/project/build/ci-cd/');
+      assert.equal(config.boost, 1.6);
+      assert.equal(tutorial.boost, 1.35);
+      assert.equal(blog.boost, 0.9);
+      assert.equal(project.boost, 1.15);
+      assert.deepEqual(
+        config.keywords,
         language === 'zh'
-          ? entry.ref.startsWith('/zh/')
-          : !entry.ref.startsWith('/zh/'),
-      ),
-      `${language} index contains another language`,
-    );
-    t.diagnostic(`${language} index entries: ${entries.length}`);
-  }
-});
+          ? ['配置', '设置', '参数', 'YAML']
+          : ['config', 'settings', 'params', 'yaml'],
+      );
+      assert.deepEqual(
+        config.breadcrumb,
+        language === 'zh'
+          ? ['文档', '创作内容', '配置']
+          : ['Docs', 'Authoring', 'Configuration'],
+      );
+      assert.deepEqual(
+        [config.root, blog.root, project.root],
+        ['docs', 'blog', 'project'],
+      );
+      assert.ok(
+        entries.every(
+          (entry) =>
+            ![
+              '/tests/alerts/',
+              '/tests/code-blocks/',
+              '/tests/layouts/no-left-sidebar/',
+            ].some((suffix) => entry.ref.endsWith(suffix)),
+        ),
+        `${language} index retained an excluded alias fixture`,
+      );
+      assert.ok(entries.every((entry) => entry.boost > 0));
+      assert.ok(entries.every((entry) => Array.isArray(entry.keywords)));
+      assert.ok(entries.every((entry) => Array.isArray(entry.breadcrumb)));
+      t.diagnostic(
+        `${language}: ${entries.length} entries, ${payload.length} B raw, ` +
+          `${compressed.length} B gzip`,
+      );
+    }
+  });
+}
