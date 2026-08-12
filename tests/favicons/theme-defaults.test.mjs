@@ -16,17 +16,15 @@ import { fileURLToPath } from 'node:url';
 import { extractFaviconLinks } from './lib/extract.mjs';
 
 const siteDir = fileURLToPath(new URL('../../', import.meta.url));
-const themesDir = fileURLToPath(new URL('../../../', import.meta.url)).replace(
-  /\/$/,
-  '',
-);
 const hugoBin = join(siteDir, 'node_modules', '.bin', 'hugo');
 const hugo = process.env.HUGO ?? (existsSync(hugoBin) ? hugoBin : 'hugo');
 
 // Build a throwaway site that uses the theme, optionally with a site-supplied
 // favicons partial and/or files in `static/`, and return the favicon `<link>`
-// tags it emits. Guards #2595: the theme ships no icon files of its own, only
-// the logic that links the ones a site supplies.
+// tags it emits. The fixture copies the site's module pin so it exercises the
+// published Oink release in CI as well as locally. Guards #2595: the theme
+// ships no icon files of its own, only the logic that links the ones a site
+// supplies.
 function buildSiteFavicons(
   partial,
   baseURL = 'http://localhost/',
@@ -39,11 +37,15 @@ function buildSiteFavicons(
       [
         `baseURL = "${baseURL}"`,
         'title = "Minimal"',
-        'theme = "oink"',
         'disableKinds = ["taxonomy","term","RSS","sitemap","404"]',
+        '[[module.imports]]',
+        'path = "github.com/pgsty/oink"',
         '',
       ].join('\n'),
     );
+    for (const file of ['go.mod', 'go.sum']) {
+      writeFileSync(join(dir, file), readFileSync(join(siteDir, file)));
+    }
     mkdirSync(join(dir, 'content'));
     writeFileSync(join(dir, 'content', '_index.md'), '---\ntitle: Home\n---\n');
     if (staticFiles.length) {
@@ -62,20 +64,15 @@ function buildSiteFavicons(
     }
     const res = spawnSync(
       hugo,
-      [
-        '--themesDir',
-        themesDir,
-        '--cleanDestinationDir',
-        '--logLevel',
-        'error',
-      ],
+      ['--cleanDestinationDir', '--logLevel', 'error'],
       {
         cwd: dir,
         encoding: 'utf8',
         env: {
           ...process.env,
           PATH: `${join(siteDir, 'node_modules', '.bin')}${delimiter}${process.env.PATH ?? ''}`,
-          HUGO_MODULE_WORKSPACE: undefined,
+          GOWORK: 'off',
+          HUGO_MODULE_WORKSPACE: 'off',
           HUGO_THEME: undefined,
         },
       },
