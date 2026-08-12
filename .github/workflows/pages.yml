@@ -18,7 +18,8 @@ env:
   GO_VERSION: 1.25.5
   HUGO_VERSION: 0.164.0
   HUGO_CACHEDIR: ${{ github.workspace }}/.hugo_cache
-  GOMODCACHE: ${{ github.workspace }}/.hugo_cache/modules/filecache/modules/pkg/mod
+  GOMODCACHE:
+    ${{ github.workspace }}/.hugo_cache/modules/filecache/modules/pkg/mod
 
 jobs:
   build:
