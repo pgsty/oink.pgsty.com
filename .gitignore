@@ -1,5 +1,6 @@
 # Hugo
 .hugo_build.lock
+/.hugo_cache/
 /public
 resources/
 tmp

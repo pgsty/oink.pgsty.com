@@ -1,4 +1,6 @@
 /content/tests/alerts.md
 
+/.hugo_cache
+
 /layouts
 /tests/md-output/goldens/**/*.*
