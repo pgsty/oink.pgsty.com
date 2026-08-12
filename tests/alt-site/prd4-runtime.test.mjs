@@ -69,28 +69,18 @@ function manifest(pageHTML) {
 test('subpath manifests localize safe commands and preserve action URLs', () => {
   const outDir = build('manifest');
   for (const [relative, language, titles] of [
-    [
-      'docs/content/configuration/index.html',
-      'en',
-      [
-        'OINK issues',
-        'Copy page Markdown',
-        'Print this page',
-        'Choose color theme',
-      ],
-    ],
-    [
-      'zh/docs/content/configuration/index.html',
-      'zh',
-      ['OINK 问题反馈', '复制页面 Markdown', '打印当前页面', '选择颜色主题'],
-    ],
+    ['docs/content/configuration/index.html', 'en', ['OINK issues']],
+    ['zh/docs/content/configuration/index.html', 'zh', ['OINK 问题反馈']],
   ]) {
     const page = html(outDir, relative);
     const data = manifest(page);
     assert.equal(data.language, language);
     assert.deepEqual(
       data.commands.map((command) => command.id),
-      ['theme_issues', 'copy_source', 'print_page', 'choose_theme'],
+      // The site deliberately defines only genuinely site-specific commands.
+      // Aliasing a built-in action here would surface the same action twice
+      // under two different labels.
+      ['theme_issues'],
     );
     assert.deepEqual(
       data.commands.map((command) => command.title),
@@ -98,7 +88,7 @@ test('subpath manifests localize safe commands and preserve action URLs', () => 
     );
     assert.deepEqual(
       data.commands.map((command) => command.action),
-      ['', 'copy_markdown', 'print', 'switch_theme'],
+      [''],
     );
     assert.equal(data.commands[0].url, 'https://github.com/pgsty/oink/issues');
     assert.deepEqual(
