@@ -17,9 +17,27 @@ env:
     ${{ github.workspace }}/.hugo_cache/modules/filecache/modules/pkg/mod
 
 jobs:
-  axe:
-    name: Axe WCAG AA
+  # One matrix entry per Playwright suite. The `name` values are the published
+  # check names, so they must stay stable for branch protection.
+  browser:
+    name: ${{ matrix.suite.name }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        suite:
+          - name: Axe WCAG AA
+            target: test:a11y
+            artifact: axe
+          - name: Responsive shell and mobile menu
+            target: test:responsive-shell
+            artifact: responsive-shell
+          - name: Content components
+            target: test:content-components
+            artifact: content-components
+          - name: Enhanced code blocks
+            target: test:code-blocks
+            artifact: code-blocks
     steps:
       - uses: actions/checkout@v4
         with:
@@ -40,41 +58,10 @@ jobs:
         run: go mod download github.com/pgsty/oink
       - run: npm ci --ignore-scripts
       - run: npx playwright install --with-deps chromium
-      - run: npm run test:a11y
+      - run: npm run ${{ matrix.suite.target }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: axe-playwright-report
-          path: tmp/playwright-report
-          if-no-files-found: ignore
-
-  responsive-shell:
-    name: Responsive shell and mobile menu
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-go@v6
-        with:
-          go-version: ${{ env.GO_VERSION }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-      - name: Install Hugo Extended
-        run: |
-          curl -L -o hugo.deb \
-            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
-          sudo dpkg -i hugo.deb
-      - name: Download Hugo module
-        run: go mod download github.com/pgsty/oink
-      - run: npm ci --ignore-scripts
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:responsive-shell
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: responsive-shell-playwright-report
+          name: ${{ matrix.suite.artifact }}-playwright-report
           path: tmp/playwright-report
           if-no-files-found: ignore

@@ -1,0 +1,46 @@
+name: Site checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  GO_VERSION: 1.25.5
+  HUGO_VERSION: 0.164.0
+  NODE_VERSION: 24
+  HUGO_CACHEDIR: ${{ github.workspace }}/.hugo_cache
+  GOMODCACHE:
+    ${{ github.workspace }}/.hugo_cache/modules/filecache/modules/pkg/mod
+
+jobs:
+  # `npm test` covers formatting, Markdown style, bilingual coverage, rendered
+  # links, Hugo build assertions, alternate-config builds, and the Markdown and
+  # favicon goldens. None of it needs a browser, so it runs separately from the
+  # Playwright matrix in browser-quality.yml.
+  checks:
+    name: Formatting, goldens, and build assertions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v6
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - name: Install Hugo Extended
+        run: |
+          curl -L -o hugo.deb \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i hugo.deb
+      - name: Download Hugo module
+        run: go mod download github.com/pgsty/oink
+      - run: npm ci --ignore-scripts
+      - run: npm test
