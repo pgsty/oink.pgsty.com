@@ -43,6 +43,101 @@ languages:
         giscus:
           ariaLabel: Comments
           errorMessage: Comments could not be loaded. Please try again later.
+      ui:
+        command_palette:
+          commands:
+            - id: theme_issues
+              title: OINK issues
+              description: Report or review theme and documentation issues
+              url: https://github.com/pgsty/oink/issues
+              icon: fa-brands fa-github
+              keywords: [bug, support, roadmap]
+            - id: copy_source
+              title: Copy page Markdown
+              description: Copy the current page source as Markdown
+              action: copy_markdown
+              icon: fa-regular fa-copy
+              keywords: [copy, source, markdown]
+            - id: print_page
+              title: Print this page
+              description: Open the browser print dialog
+              action: print
+              icon: fa-solid fa-print
+              keywords: [paper, pdf, print]
+            - id: choose_theme
+              title: Choose color theme
+              description: Select automatic, light, or dark appearance
+              action: switch_theme
+              icon: fa-solid fa-circle-half-stroke
+              keywords: [dark, light, appearance]
+    menus:
+      main:
+        - identifier: docs
+          name: Docs
+          pageRef: /docs
+          weight: 20
+        - identifier: docs-tutorial
+          parent: docs
+          name: Tutorials
+          pageRef: /docs/tutorial
+          weight: 10
+          params:
+            icon: fa-solid fa-route
+            description: Install OINK and build your first documentation site
+        - identifier: docs-content
+          parent: docs
+          name: Content
+          pageRef: /docs/content
+          weight: 20
+          params:
+            icon: fa-solid fa-pen-ruler
+            description: Author pages, components, diagrams, and API references
+        - identifier: docs-advanced
+          parent: docs
+          name: Advanced
+          pageRef: /docs/advanced
+          weight: 30
+          params:
+            icon: fa-solid fa-gears
+            description: Configure integrations, deployment, and versioning
+        - identifier: blog
+          name: Blog
+          pageRef: /blog
+          weight: 50
+        - identifier: blog-oink
+          parent: blog
+          name: OINK engineering
+          pageRef: /blog/oink
+          weight: 10
+          params:
+            icon: fa-solid fa-screwdriver-wrench
+            description: Design notes and engineering reports from the theme
+        - identifier: blog-release
+          parent: blog
+          name: Releases
+          pageRef: /blog/release
+          weight: 20
+          params:
+            icon: fa-solid fa-tags
+            description: Version announcements and migration notes
+        - identifier: project
+          name: Project
+          pageRef: /project
+          weight: 70
+          params:
+            icon: fa-solid fa-diagram-project
+        - identifier: issues
+          name: Issues
+          url: https://github.com/pgsty/oink/issues
+          weight: 80
+          params:
+            icon: fa-regular fa-circle-question
+        - identifier: github
+          name: GitHub
+          url: https://github.com/pgsty/oink
+          weight: 90
+          params:
+            icon: fa-brands fa-github
   zh:
     label: 简体中文
     locale: zh-CN
@@ -92,6 +187,32 @@ languages:
             icon: fa-brands fa-github
             desc: OINK 在这里开放开发
       ui:
+        command_palette:
+          commands:
+            - id: print_page
+              title: 打印当前页面
+              description: 打开浏览器打印对话框
+              action: print
+              icon: fa-solid fa-print
+              keywords: [打印, 纸张, PDF]
+            - id: theme_issues
+              title: OINK 问题反馈
+              description: 报告或查看主题与文档问题
+              url: https://github.com/pgsty/oink/issues
+              icon: fa-brands fa-github
+              keywords: [缺陷, 支持, 路线图]
+            - id: choose_theme
+              title: 选择颜色主题
+              description: 选择自动、浅色或深色外观
+              action: switch_theme
+              icon: fa-solid fa-circle-half-stroke
+              keywords: [深色, 浅色, 外观]
+            - id: copy_source
+              title: 复制页面 Markdown
+              description: 将当前页面源码复制为 Markdown
+              action: copy_markdown
+              icon: fa-regular fa-copy
+              keywords: [复制, 源码, Markdown]
         feedback:
           yes: >-
             很高兴本页对你有帮助！欢迎<a
@@ -99,6 +220,74 @@ languages:
           no: >-
             很抱歉本页没有解决问题。请<a
             href="https://github.com/pgsty/oink/issues/new">告诉我们缺少什么</a>。
+    menus:
+      main:
+        - identifier: docs
+          name: 文档
+          pageRef: /docs
+          weight: 20
+        - identifier: docs-tutorial
+          parent: docs
+          name: 教程
+          pageRef: /docs/tutorial
+          weight: 10
+          params:
+            icon: fa-solid fa-route
+            description: 安装 OINK，并创建你的第一个文档站
+        - identifier: docs-content
+          parent: docs
+          name: 内容创作
+          pageRef: /docs/content
+          weight: 20
+          params:
+            icon: fa-solid fa-pen-ruler
+            description: 编写页面、组件、图表与 API 参考
+        - identifier: docs-advanced
+          parent: docs
+          name: 高级功能
+          pageRef: /docs/advanced
+          weight: 30
+          params:
+            icon: fa-solid fa-gears
+            description: 配置集成、部署与版本管理
+        - identifier: blog
+          name: 博客
+          pageRef: /blog
+          weight: 50
+        - identifier: blog-oink
+          parent: blog
+          name: OINK 工程实践
+          pageRef: /blog/oink
+          weight: 10
+          params:
+            icon: fa-solid fa-screwdriver-wrench
+            description: 主题设计记录与工程报告
+        - identifier: blog-release
+          parent: blog
+          name: 版本发布
+          pageRef: /blog/release
+          weight: 20
+          params:
+            icon: fa-solid fa-tags
+            description: 版本公告与迁移说明
+        - identifier: project
+          name: 项目
+          pageRef: /project
+          weight: 70
+          params:
+            icon: fa-solid fa-diagram-project
+        - identifier: issues
+          name: 问题反馈
+          url: https://github.com/pgsty/oink/issues
+          weight: 80
+          params:
+            icon: fa-regular fa-circle-question
+        - identifier: github
+          name: GitHub
+          url: https://github.com/pgsty/oink
+          weight: 90
+          params:
+            icon: fa-brands fa-github
 markup:
   tableOfContents:
     endLevel: 4
@@ -182,7 +371,10 @@ params:
   search:
     # algolia:
   ui:
-    quick_links: [docs, blog]
+    quick_links: [docs, blog, project]
+    # Starter sites use the quieter group-only policy explicitly. The theme
+    # keeps its pre-1.0 compatibility default (`all`) when this is omitted.
+    sidebar_icon_policy: groups
     page_context_menu:
       enable: true
       links: []

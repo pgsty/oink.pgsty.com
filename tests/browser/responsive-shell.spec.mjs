@@ -62,8 +62,17 @@ for (const width of widths) {
   });
 }
 
-for (const [locale, path, docsLabel, docsHref, blogLabel, blogHref] of [
-  ['en', docPath, 'Docs', '/docs/', 'Blog', '/blog/'],
+for (const [
+  locale,
+  path,
+  docsLabel,
+  docsHref,
+  blogLabel,
+  blogHref,
+  projectLabel,
+  projectHref,
+] of [
+  ['en', docPath, 'Docs', '/docs/', 'Blog', '/blog/', 'Project', '/project/'],
   [
     'zh',
     '/zh/docs/content/configuration/',
@@ -71,9 +80,11 @@ for (const [locale, path, docsLabel, docsHref, blogLabel, blogHref] of [
     '/zh/docs/',
     '博客',
     '/zh/blog/',
+    '项目',
+    '/zh/project/',
   ],
 ]) {
-  test(`${locale} root switcher resolves docs and blog sections`, async ({
+  test(`${locale} root switcher resolves docs, blog, and project sections`, async ({
     page,
   }) => {
     await page.setViewportSize({ width: 820, height: 900 });
@@ -84,7 +95,7 @@ for (const [locale, path, docsLabel, docsHref, blogLabel, blogHref] of [
     await trigger.click();
 
     const items = page.locator('.td-shell-root__item');
-    await expect(items).toHaveCount(2);
+    await expect(items).toHaveCount(3);
     await expect(items.nth(0)).toHaveAttribute('href', docsHref);
     await expect(items.nth(0).locator('.td-shell-root__item-title')).toHaveText(
       docsLabel,
@@ -93,8 +104,93 @@ for (const [locale, path, docsLabel, docsHref, blogLabel, blogHref] of [
     await expect(items.nth(1).locator('.td-shell-root__item-title')).toHaveText(
       blogLabel,
     );
+    await expect(items.nth(2)).toHaveAttribute('href', projectHref);
+    await expect(items.nth(2).locator('.td-shell-root__item-title')).toHaveText(
+      projectLabel,
+    );
   });
 }
+
+test('desktop navbar keeps parent navigation separate from disclosure', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await openCleanPage(page, '/');
+
+  const menu = page.locator('[data-td-navbar-menu]').filter({
+    has: page.locator('[data-td-navbar-label="Docs"]'),
+  });
+  const parent = menu.locator('.nav-menu__parent-link');
+  const toggle = menu.locator('[data-td-navbar-toggle]');
+  const panel = menu.locator('[data-td-navbar-panel]');
+  await expect(parent).toHaveAttribute('href', '/docs/');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(panel).toBeHidden();
+
+  await parent.evaluate((link) => {
+    link.addEventListener('click', (event) => event.preventDefault(), {
+      once: true,
+    });
+    link.click();
+  });
+  await expect(panel).toBeHidden();
+
+  await toggle.focus();
+  await toggle.press('ArrowDown');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await expect(panel).toBeVisible();
+  await expect(panel.locator('a').first()).toBeFocused();
+  await expect(
+    panel.locator('.td-navbar-entry__description').first(),
+  ).toHaveText(/first documentation site/);
+
+  await page.keyboard.press('Escape');
+  await expect(panel).toBeHidden();
+  await expect(toggle).toBeFocused();
+
+  const issues = page.locator(
+    '[data-td-navbar-region="desktop"][data-td-navbar-label="Issues"]',
+  );
+  await expect(issues).toHaveAttribute(
+    'href',
+    'https://github.com/pgsty/oink/issues',
+  );
+  await expect(issues).toHaveAttribute('target', '_blank');
+  await expect(issues).toHaveAttribute('rel', 'noopener noreferrer');
+});
+
+test('mobile navbar accordions allow multiple open parents', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openCleanPage(page, '/');
+  await page.locator('[data-menu-toggle]').click();
+  const drawer = page.locator('[data-mobile-menu]');
+  await expect(drawer).toBeVisible();
+
+  const sections = drawer.locator('[data-td-navbar-accordion]');
+  await expect(sections).toHaveCount(2);
+  const docs = sections.nth(0);
+  const blog = sections.nth(1);
+  await expect(docs.locator('.mobile-menu-parent-link')).toHaveAttribute(
+    'href',
+    '/docs/',
+  );
+
+  await docs.locator('[data-td-navbar-accordion-toggle]').click();
+  await blog.locator('[data-td-navbar-accordion-toggle]').click();
+  await expect(docs.locator('[data-td-navbar-accordion-panel]')).toBeVisible();
+  await expect(blog.locator('[data-td-navbar-accordion-panel]')).toBeVisible();
+  await expect(
+    docs.locator('[data-td-navbar-label="Tutorials"]'),
+  ).toContainText('Tutorials');
+
+  await expect(drawer.locator('[data-td-shell-search-open]')).toBeVisible();
+  await expect(drawer.locator('[data-td-theme-toggle]')).toBeVisible();
+  await expect(
+    drawer.locator('.mobile-menu-chip[hreflang="zh-CN"]'),
+  ).toBeVisible();
+});
 
 test('page actions are complete and keyboard operable', async ({ page }) => {
   await page.setViewportSize({ width: 820, height: 900 });
@@ -213,7 +309,7 @@ for (const [locale, path, query] of [
   ['en', docPath, 'OINK'],
   ['zh', '/zh/docs/content/configuration/', '配置'],
 ]) {
-  test(`${locale} search exposes listbox state and respects the result cap`, async ({
+  test(`${locale} search exposes listbox state and keeps the page result cap`, async ({
     page,
   }) => {
     await page.setViewportSize({ width: 820, height: 900 });
@@ -226,8 +322,24 @@ for (const [locale, path, query] of [
     await input.fill(query);
 
     const options = page.locator('#td-shell-search-results [role="option"]');
+    await expect(
+      page.locator('#td-shell-search-results mark', { hasText: query }).first(),
+    ).toBeVisible();
     await expect(options.first()).toBeVisible();
-    expect(await options.count()).toBeLessThanOrEqual(10);
+    const pageOptionCount = await page
+      .locator('#td-shell-search-results [role="group"]')
+      .evaluateAll((groups) =>
+        groups.reduce((total, group) => {
+          const labelId = group.getAttribute('aria-labelledby');
+          return (
+            total +
+            (labelId === 'td-shell-search-group-actions'
+              ? 0
+              : group.querySelectorAll('[role="option"]').length)
+          );
+        }, 0),
+      );
+    expect(pageOptionCount).toBeLessThanOrEqual(10);
 
     const activeId = await input.getAttribute('aria-activedescendant');
     expect(activeId).toBeTruthy();

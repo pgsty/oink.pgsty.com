@@ -3,6 +3,8 @@ title: Configuration
 weight: 10
 icon: fa-solid fa-sliders
 description: Configure Oink with Hugo settings and focused theme parameters.
+search_keywords: [config, settings, params, yaml]
+search_boost: 1.6
 aliases: [/docs/oink/configuration/]
 ---
 

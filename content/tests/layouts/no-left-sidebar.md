@@ -1,6 +1,7 @@
 ---
 title: No left sidebar
 type: docs
+excludeSearch: true
 params:
   body_class: td-no-left-sidebar
 ---

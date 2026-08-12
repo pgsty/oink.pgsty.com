@@ -3,13 +3,15 @@ downstream_modified: true
 title: Welcome to OINK
 linkTitle: Docs
 description: Install, customize, deploy, and maintain Oink documentation sites.
-menu: { main: { weight: 20 } }
+search_keywords: [oink, hugo theme, engineering documentation]
 type: docs
 icon: fa-solid fa-book
 sidebar_expanded: true
 sidebar_root_for: self
 sidebar_root_link_self: true
 comments: false
+cascade:
+  search_boost: 1.35
 ---
 
 <!-- markdownlint-disable-next-line no-space-in-links -->

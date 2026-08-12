@@ -1,5 +1,6 @@
 ---
 title: Enhanced code blocks
+exclude_search: true
 description:
   Browser and output regression fixtures for code blocks and Code Groups.
 weight: 20

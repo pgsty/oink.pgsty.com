@@ -13,7 +13,8 @@ env:
   HUGO_VERSION: 0.164.0
   NODE_VERSION: 24
   HUGO_CACHEDIR: ${{ github.workspace }}/.hugo_cache
-  GOMODCACHE: ${{ github.workspace }}/.hugo_cache/modules/filecache/modules/pkg/mod
+  GOMODCACHE:
+    ${{ github.workspace }}/.hugo_cache/modules/filecache/modules/pkg/mod
 
 jobs:
   axe:
