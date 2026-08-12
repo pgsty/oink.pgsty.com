@@ -62,7 +62,9 @@ npm test
 
 ## 标记并发布主题 {#tag-and-publish-the-theme}
 
-评审完成后，在主题仓库中创建一个不可变的签名根标签：
+评审完成后，在主题仓库中经过评审的 release
+commit 上创建一个不可变的签名根标签。OINK 目前直接标记经过评审的 `main`
+commit；维护分支是可选项，只有实际存在时文档才能引用：
 
 ```sh
 git tag -s vX.Y.Z -m "Oink vX.Y.Z"
@@ -87,7 +89,13 @@ hugo mod graph
 hugo mod get github.com/pgsty/oink@vX.Y.Z
 hugo mod tidy
 npm test
+npm run test:browser
 ```
+
+Pages workflow 还会运行 `node scripts/check-release-pin.mjs`；如果
+`params.version`、`tdVersion.latest` 与 `go.mod`
+中的主题精确版本不是同一个稳定标签，部署就会停止。候选验证仍可使用被忽略的同级目录
+`go.work`，但该 workspace 绝不是公开发布证据。
 
 把
 `go.mod`、`go.sum`、版本参数、变更日志与升级指南一起提交。先验证部署预览，评审通过后再推进生产发布分支。

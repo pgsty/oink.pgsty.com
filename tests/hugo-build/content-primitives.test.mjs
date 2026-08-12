@@ -78,7 +78,7 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
     },
   ]) {
     const root = path.join(publicDir, fixture.prefix);
-    const components = path.join(root, 'docs', 'content', 'components');
+    const components = path.join(root, 'docs', 'components');
     const overview = readFileSync(path.join(components, 'index.html'), 'utf8');
     const badgeHTML = readFileSync(
       path.join(components, 'badge', 'index.html'),
@@ -123,7 +123,7 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
     ]) {
       assert.match(
         overview,
-        new RegExp(`href="/(?:zh/)?docs/content/components/${pageName}/"`),
+        new RegExp(`href="/(?:zh/)?docs/components/${pageName}/"`),
       );
     }
     assert.match(badgeHTML, /<span class="td-badge td-badge--warning/);

@@ -10,7 +10,8 @@ cSpell:ignore: lastmod
 
 OINK 的文档与博客布局可以显示指向当前页面源码仓库的链接：
 
-- **查看页面源码**：打开源文件。
+- **查阅源码**：当启用 Markdown 输出时，打开生成的 Markdown 备用版本。
+- **查阅编辑历史**：打开源文件的提交历史。
 - **编辑本页**：打开可编辑的源码视图。
 - **创建子页面**：在当前页面下新建文件，并可使用站点的
   `assets/stubs/new-page-template.md` 模板。
@@ -36,7 +37,7 @@ matter 中设置这些值。
 
 ### `github_repo` {#github_repo}
 
-文档源码仓库 URL。它用于生成查看、编辑、创建子页面和创建文档 issue 链接：
+文档源码仓库 URL。它用于生成编辑、历史、创建子页面和创建文档 issue 链接：
 
 ```yaml
 params:
@@ -135,8 +136,8 @@ github_url: https://github.com/OWNER/UPSTREAM/edit/main/README.md
 ---
 ```
 
-使用该值的页面只显示
-**编辑本页**。当目标与 GitHub 不兼容时，更适合使用站点专属模板覆盖。
+使用该值的页面会显示 **编辑本页**，但不显示
+**查阅编辑历史**：这个不透明 URL 没有可供 OINK 推导历史链接的仓库路径。当目标与 GitHub 不兼容时，更适合使用站点专属模板覆盖。
 
 ### 禁用链接 {#disabling-links}
 
@@ -144,7 +145,8 @@ github_url: https://github.com/OWNER/UPSTREAM/edit/main/README.md
 
 | 链接           | CSS 类                         |
 | -------------- | ------------------------------ |
-| 查看页面源码   | `.td-page-meta__view`          |
+| 查阅生成源码   | `.td-page-meta__markdown`      |
+| 查阅编辑历史   | `.td-page-meta__history`       |
 | 编辑本页       | `.td-page-meta__edit`          |
 | 创建子页面     | `.td-page-meta__child`         |
 | 创建文档 issue | `.td-page-meta__issue`         |

@@ -86,8 +86,8 @@ Record source, build, release, and hosted verification separately when using an
 example as evidence.
 
 [Architecture]: /docs/about/architecture/
-[Content components]: /docs/content/components/
+[Content components]: /docs/components/
 [Create a new site]: /docs/tutorial/create-site/
 [Deployment]: /docs/deploy/
-[Migration]: /docs/upgrade/migrate-from-docsy/
-[Multi-language support]: /docs/advanced/language/
+[Migration]: /docs/upgrade/from-docsy/
+[Multi-language support]: /docs/configure/language/

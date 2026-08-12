@@ -196,12 +196,14 @@ values retain the compact ellipsis behavior.
 `quick_links` names top-level page references shown by the shell. Define their
 translated names in each language's main menu.
 
-The page context menu keeps Open in ChatGPT / Claude, Copy as Markdown, View
-Markdown, edit, issue, and print actions reachable at every viewport width. The
-built-in assistant links appear on documentation pages and send the current URL
-inside a localized prompt only when a reader activates one; they do not upload
-the page body. `links` is empty by default. Additional custom links accept
-URL-encoded `{url}`, `{title}`, and `{markdown_url}` placeholders:
+The page context menu keeps Copy text, Open in ChatGPT / Claude, View source,
+View edit history, edit, issue, and print actions reachable at every viewport
+width. Built-in assistant links appear on every file-backed page and send the
+current URL inside a localized prompt only when a reader activates one; they do
+not upload the page body. View edit history appears when `github_repo` can
+resolve the same repository path used by Edit this page. `links` is empty by
+default. Additional custom links accept URL-encoded `{url}`, `{title}`, and
+`{markdown_url}` placeholders:
 
 ```yaml
 params:

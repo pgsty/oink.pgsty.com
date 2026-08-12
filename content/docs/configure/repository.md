@@ -12,7 +12,9 @@ cSpell:ignore: lastmod
 OINK's documentation and blog layouts can show links to the current page's
 source repository:
 
-- **View page source** opens the source file.
+- **View source** opens the generated Markdown alternate when that output is
+  enabled.
+- **View edit history** opens the source file's commit history.
 - **Edit this page** opens an editable source view.
 - **Create child page** starts a new file below the current page and can use the
   site's `assets/stubs/new-page-template.md` template.
@@ -41,8 +43,8 @@ front matter when content comes from more than one repository.
 
 ### `github_repo`
 
-The documentation source repository URL. It drives view, edit, child-page, and
-documentation-issue links:
+The documentation source repository URL. It drives edit, history, child-page,
+and documentation-issue links:
 
 ```yaml
 params:
@@ -150,8 +152,10 @@ github_url: https://github.com/OWNER/UPSTREAM/edit/main/README.md
 ---
 ```
 
-Pages using this value expose only **Edit this page**. A site-specific template
-override is preferable when the destination is not GitHub-compatible.
+Pages using this value expose **Edit this page** but not **View edit history**:
+the opaque URL has no repository path from which OINK can derive a history
+destination. A site-specific template override is preferable when the
+destination is not GitHub-compatible.
 
 ### Disabling links
 
@@ -159,7 +163,8 @@ Each action has a stable CSS class:
 
 | Link                       | Class                          |
 | -------------------------- | ------------------------------ |
-| View page source           | `.td-page-meta__view`          |
+| View generated source      | `.td-page-meta__markdown`      |
+| View edit history          | `.td-page-meta__history`       |
 | Edit this page             | `.td-page-meta__edit`          |
 | Create child page          | `.td-page-meta__child`         |
 | Create documentation issue | `.td-page-meta__issue`         |

@@ -1,98 +1,149 @@
 ---
-title: 故障排查与已知问题
+title: 故障排查
 linkTitle: 故障排查
-weight: 100
-icon: fa-solid fa-wrench
-description: 诊断 Oink 安装、构建、语言与平台问题。
-aliases: [known_issues, /docs/get-started/troubleshooting/]
+weight: 70
+description: 构建、语言、搜索、升级与平台五类常见问题的定位方法。
 cSpell:ignore: maxfiles maxfilesperproc
 ---
 
-请从一次干净的生产构建开始诊断：
+诊断从一次干净的生产构建开始：
 
 ```sh
 hugo --gc --minify --logLevel info
 ```
 
-消费端命令不应调用 npm、PostCSS、Autoprefixer，也不应下载主题浏览器资源。
+消费端的构建命令不应该调用 npm、PostCSS 或 Autoprefixer，也不应该下载主题的浏览器资源。如果日志里出现这些，说明配置里混进了上游 Docsy 的流程。
 
 ## 构建问题 {#build-issues}
 
-### Hugo 不是 Extended 版本或版本过旧 {#hugo-is-not-extended-or-is-too-old}
+### Hugo 不是 Extended 版本或版本过旧 {#hugo-is-not-extended-or-too-old}
 
-运行 `hugo version`。输出必须包含 `extended`，版本也不得低于
-`{{% param hugoMinVersion %}}`。如果 shell、编辑器、CI
-runner 或容器仍然选中了旧二进制文件，请检查它的 `PATH`
-和固定工具配置，不要盲目再安装一份。
+```sh
+hugo version
+```
+
+输出必须包含 `extended`，版本不低于 `{{% param hugoMinVersion %}}`。
+
+如果 shell、编辑器、CI runner 或容器仍然选中旧二进制，先查 `PATH`
+和工具版本固定配置，**不要盲目再装一份**——多个 Hugo 共存会让问题更难定位。
 
 ### 找不到主题 {#the-theme-cannot-be-found}
 
 `module "github.com/pgsty/oink" not found`
-一类错误表示 Hugo 无法解析配置中的主题。请按所选安装方式检查：
+说明 Hugo 无法解析主题。按安装方式排查：
 
-- 对于 Git checkout，主题名称必须与目录路径一致；
-- 对于 Hugo 模块，运行 `hugo mod graph`，并检查
-  `go.mod`、`go.sum`，以及所有 Hugo workspace 或 replacement；
-- 对于 CI
-  checkout，请在运行 Hugo 前初始化固定版本的 submodule，或恢复完整发布归档。
+| 安装方式      | 检查项                                                                   |
+| ------------- | ------------------------------------------------------------------------ |
+| Hugo Module   | `hugo mod graph`，以及 `go.mod`、`go.sum`、是否存在 workspace 或 replace |
+| Git submodule | CI 是否在跑 Hugo 前执行了 `git submodule update --init`                  |
+| 归档 / 克隆   | `theme:` 的值是否与 `themes/` 下的目录名一致                             |
 
 ### 缺少本地浏览器资源 {#a-local-browser-asset-is-missing}
 
-如果缺少 Bootstrap、Font
-Awesome、Lunr、Mermaid 或其他 OINK 资源，不要通过添加 CDN
-URL 来掩盖问题。请确认发行物完整，并包含
-`assets/third_party/`、`assets/js/third_party/`、`static/webfonts/` 和
-`VENDOR.json`。如果确有文件缺失，请重新解压或获取同一个固定版本。
+Bootstrap、Font Awesome、Lunr、Mermaid 等资源缺失时，**不要加 CDN
+URL 来掩盖**。确认发行物完整，应包含：
+
+- `assets/third_party/`
+- `assets/js/third_party/`
+- `static/webfonts/`
+- `VENDOR.json`
+
+确实缺文件就重新解压或重新获取同一个固定版本。
+
+## 升级后出现的问题 {#issues-after-upgrading}
+
+### 站点自己的脚本报 `$ is not defined` {#site-scripts-report-dollar-is-not-defined}
+
+OINK 0.3.0 **移除了 jQuery**。此前它在每个页面的 `<head>`
+里加载，所以站点自己的脚本可能一直隐式依赖全局 `$`。
+
+主题的任何功能都不需要它。仍然需要的站点自行打包：
+
+```html {filename="layouts/_partials/hooks/head-end.html"}
+<script src="{{ (resources.Get "js/jquery.min.js").RelPermalink }}"></script>
+```
+
+### 自定义字体失效 {#custom-fonts-stopped-working}
+
+0.3.0 把字体收敛到语义角色之后，正文和标题角色直接作用于内容。只改原始 `body`
+或标题选择器的站点需要改用角色变量：
+
+```scss {filename="assets/scss/_styles_project.scss"}
+/* 改前 */
+body {
+  font-family: 'My Sans', sans-serif;
+}
+
+/* 改后 */
+:root {
+  --td-body-font-family: 'My Sans', sans-serif;
+}
+```
+
+完整迁移清单见[升级 OINK](/zh/docs/upgrade/upgrade/)。
 
 ## 语言与链接问题 {#language-and-link-issues}
 
-### 译文页面没有出现 {#a-translated-page-does-not-appear}
+### 译文页面没出现 {#a-translated-page-does-not-appear}
 
-逐项检查以下四个条件：
+按顺序检查四项：
 
-1. `hugo.yaml` 中存在 `languages.zh`，并且设置了权重。
-2. 文件名是 `page.zh.md`，其中 `zh` 必须小写。
-3. 译文 front matter 没有设置 `draft: true`，日期也不在未来。
-4. 除非有意采用不同路由，否则会影响路由的元数据应与源文件一致。
+1. `hugo.yaml` 里有 `languages.zh` 并设置了 `weight`
+2. 文件名是 `page.zh.md`，`zh` **必须小写**
+3. 译文 front matter 没有 `draft: true`，`date` 也不在未来
+4. 影响路由的元数据与源文件一致（除非有意换路由）
 
-当 Hugo 能找到页面译文时，语言选择器会直接链接过去；否则会按设计回退到目标语言首页。
+Hugo 能找到译文时，语言选择器会直接链过去；找不到时会按设计回退到目标语言首页——这是预期行为，不是 bug。
 
-### 片段链接打开了页面，却没有定位到标题 {#a-fragment-link-opens-the-page-but-not-the-heading}
+### 锚点链接打开了页面却没定位 {#fragment-links-do-not-scroll}
 
-翻译后的标题文字通常会生成不同的自动 ID。请在译文标题中显式加入英文渲染 ID：
+翻译后的标题文字会生成不同的自动 ID。在译文标题里显式写上英文渲染出的 ID：
 
 ```markdown
 ## 安装 {#installation}
 ```
 
-不要推测包含短代码或内联 HTML 的标题 ID。请检查英文渲染结果，再比较中英文标题 ID 列表。
+含 shortcode 或内联 HTML 的标题不要凭文本猜 ID，要看英文渲染出的 HTML。
 
 ## 搜索问题 {#search-issues}
 
-启用 `offlineSearch: true` 后，每种语言都会生成自己的搜索索引。请确认输出中存在
-`offline-search-index.en.json` 和
-`offline-search-index.zh.json`，并检查浏览器是否从站点 base
-URL 请求这些文件。子路径部署中，错误的 `baseURL` 是索引缺失的常见原因。
+`offlineSearch: true` 会为每种语言生成独立索引。确认输出中有：
 
-中文分词使用主题的 CJK 回退。如果搜索结果为空，应先确认中文页面内容确实进入中文索引，而不是立即修改分词器。
+```text {copy=false}
+public/offline-search-index.en.json
+public/offline-search-index.zh.json
+```
+
+再检查浏览器是否从正确的 base URL 请求这些文件。**子路径部署下 `baseURL`
+配错，是索引 404 最常见的原因。**
+
+中文查询走主题的 CJK 子串回退。搜索无结果时，先确认中文页面的内容确实进了中文索引，而不是急着改分词逻辑。
+
+命令面板（`Cmd/Ctrl-K`，或 `/`
+直接进命令模式）在搜索索引不可用时仍然可用——它会提示索引不可用，但页面操作和命令照常工作。
 
 ## 平台问题 {#platform-issues}
 
-### macOS 报告打开文件过多 {#macos-reports-too-many-open-files}
+### macOS 报打开文件过多 {#macos-too-many-open-files}
 
-大型实时预览内容树可能超过 shell 的打开文件数限制。通过 `ulimit -n`
-查看当前限制；如果本地策略允许，可以为当前 shell 临时提高限制。在修改整台机器的限制之前，应优先从监视树中排除生成目录和无关目录。
+大型内容树的实时预览可能超过 shell 的打开文件数限制：
 
-### Windows Subsystem for Linux 速度慢或遗漏变更 {#windows-subsystem-for-linux-is-slow-or-misses-changes}
+```sh
+ulimit -n
+```
 
-请让 Hugo 处理 Linux 文件系统中的路径，而不是 Windows 挂载路径。跨文件系统的通知与权限行为可能让实时重载变慢或不可靠。
+在调整整机限制之前，**先把生成目录和无关目录排除出监视范围**——这通常才是根因。
+
+### WSL 下速度慢或漏掉变更 {#wsl-is-slow-or-misses-changes}
+
+让 Hugo 处理 Linux 文件系统里的路径，不要跨 Windows 挂载点。跨文件系统的变更通知和权限行为会让实时重载变慢甚至失效。
 
 ## 诊断清单 {#diagnostic-checklist}
 
-- 使用固定的准确 Hugo Extended 版本复现问题。
-- 通过项目规定的清理命令删除陈旧的 `public/` 和 `resources/` 产物，再重新构建。
-- 比较开发环境与生产环境的配置层。
-- 关注第一条构建错误，而不只是最后出现的级联报错。
-- 使用最小页面区分主题行为与站点覆盖。
-- 分小组逐步重新启用站点覆盖和内容组件。
-- 检查故障页面的浏览器控制台和网络日志。
+- 用固定的确切 Hugo Extended 版本复现
+- 清掉陈旧的 `public/` 和 `resources/` 再重建
+- 对比开发与生产的配置层
+- **看第一条错误**，而不是最后那条级联报错
+- 用一个最小页面区分「主题行为」和「站点覆盖」
+- 分批重新启用站点覆盖和内容组件，定位到具体那一项
+- 检查故障页面的浏览器控制台和网络日志

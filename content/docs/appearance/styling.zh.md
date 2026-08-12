@@ -175,7 +175,7 @@ OINK 还提供构建时字体 preset 与不依赖运行时脚本的语义字体�
 ## 代码块 {#code-blocks}
 
 OINK 默认支持 Hugo
-Chroma，并提供本地纳管的 Prism 兼容选项。一个站点应统一选择一种高亮器；同时启用会产生重复标记或样式。文件名、复制策略、换行、折叠、行锚点与可分享代码组的完整说明参见[代码块与代码组](/zh/docs/content/code-blocks/)。
+Chroma，并提供本地纳管的 Prism 兼容选项。一个站点应统一选择一种高亮器；同时启用会产生重复标记或样式。文件名、复制策略、换行、折叠、行锚点与可分享代码组的完整说明参见[代码块与代码组](/zh/docs/components/code-blocks/)。
 
 ### 使用 Chroma 进行代码高亮 {#code-highlighting-with-chroma}
 
@@ -343,4 +343,4 @@ body_class: product-reference
 OINK 会把该值追加到自动生成的 body
 class。请使用项目专属且有语义的名称，绝不能向该字段写入不可信内容。
 
-[高级定制]: /zh/docs/advanced/customize/
+[高级定制]: /zh/docs/appearance/customize/

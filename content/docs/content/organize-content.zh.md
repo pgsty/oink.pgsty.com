@@ -40,7 +40,7 @@ Oink 根据 Hugo 内容树生成文档侧栏，因此目录结构也是读者体
 
 优先使用简短明确的 URL，不要建立过深的分类树。通过页面权重安排学习顺序，并让同一分区的权重保持一致间隔，便于插入新页面。每个可导航页面都应提供图标与精简描述，让侧栏和分区索引便于扫描。
 
-Hugo 页面包与分区模型详见[添加内容](/zh/docs/content/adding-content/#organizing-your-documentation)，侧栏行为详见[导航与菜单](/zh/docs/content/navigation/)。
+Hugo 页面包与分区模型详见[添加内容](/zh/docs/content/adding-content/#organizing-your-documentation)，侧栏行为详见[导航与菜单](/zh/docs/configure/navigation/)。
 
 ## 同步规划多语言内容 {#plan-languages-together}
 

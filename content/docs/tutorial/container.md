@@ -1,27 +1,23 @@
 ---
-downstream_modified: true
-title: Run OINK in a container
+title: Container preview
+linkTitle: Container preview
 weight: 60
-icon: fa-solid fa-box
-date: 2018-07-30
-description: Build and preview an OINK site with a Hugo Extended container.
-aliases: [/docs/get-started/quickstart-docker/]
+description:
+  Run previews and production builds in a container instead of installing Hugo
+  locally.
 ---
 
-A container is optional: OINK itself only needs Hugo Extended. Use a container
-when the team wants a pinned tool image or does not install Hugo on developer
-workstations.
+Containers are not required — OINK only asks for Hugo Extended. They suit a team
+that wants a pinned toolchain, or that would rather not install Hugo on every
+workstation.
 
-## Create the Hugo image
+## Build the image {#build-the-image}
 
-The following `Dockerfile` installs the currently validated Hugo Extended
-version from its release package. Keep the version aligned with the theme's
-support matrix.
-
-```dockerfile {filename="Dockerfile" wrap=true collapse=12}
+```dockerfile {filename="Dockerfile" collapse=16}
 FROM debian:bookworm-slim
 
 ARG HUGO_VERSION=0.164.0
+ARG GO_VERSION=1.25.5
 ARG TARGETARCH
 
 RUN apt-get update \
@@ -29,27 +25,34 @@ RUN apt-get update \
     && curl -L -o /tmp/hugo.deb \
       "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.deb" \
     && apt-get install -y /tmp/hugo.deb \
-    && rm -rf /var/lib/apt/lists/* /tmp/hugo.deb
+    && curl -L -o /tmp/go.tgz \
+      "https://go.dev/dl/go${GO_VERSION}.linux-${TARGETARCH}.tar.gz" \
+    && tar -C /usr/local -xzf /tmp/go.tgz \
+    && rm -rf /var/lib/apt/lists/* /tmp/hugo.deb /tmp/go.tgz
 
+ENV PATH="/usr/local/go/bin:${PATH}"
 WORKDIR /src
 EXPOSE 1313
 ENTRYPOINT ["hugo"]
 CMD ["server", "--bind", "0.0.0.0", "--disableFastRender"]
 ```
 
-Build it from the site root:
-
 ```sh
 docker build -t oink-hugo .
 ```
 
-The image build downloads Hugo. For an air-gapped environment, mirror the base
-image and Hugo package in advance or use OINK's complete offline distribution
-with an approved internal image.
+> [!IMPORTANT] The image installs Go. **This is not optional when the site
+> imports the theme as a Hugo Module** — Hugo needs Go to resolve and download
+> modules. Sites using the offline archive, a submodule, or a clone can drop Go
+> and get a much smaller image.
 
-## Preview the site
+Building the image downloads Hugo and Go. In a network-isolated environment,
+mirror the base image and both packages beforehand, or combine OINK's complete
+offline archive with an internally approved image.
 
-Mount the complete site source, including its adjacent or vendored theme:
+## Preview {#preview}
+
+Mount the complete site source:
 
 ```sh
 docker run --rm -it \
@@ -58,10 +61,21 @@ docker run --rm -it \
   oink-hugo
 ```
 
-Open <http://localhost:1313/>. Changes on the host are visible to Hugo's live
-reload process inside the container.
+Open <http://localhost:1313/>. Edits on the host are picked up by Hugo's live
+reload inside the container.
 
-## Run a production build
+With the module method, mount the Go module cache too so each start does not
+re-download:
+
+```sh
+docker run --rm -it \
+  -p 1313:1313 \
+  -v "$PWD:/src" \
+  -v "$HOME/go/pkg/mod:/root/go/pkg/mod" \
+  oink-hugo
+```
+
+## Production build {#production-build}
 
 Override the default server command:
 
@@ -71,8 +85,20 @@ docker run --rm \
   oink-hugo --gc --minify
 ```
 
-The generated site is written to `public/` in the mounted source directory.
-Ensure the container user can write there; in a shared environment, run with a
-mapped user ID or fix ownership according to local policy.
+Output is written to `public/` inside the mounted directory.
 
-No Node.js, npm, PostCSS, or remote browser asset step belongs in this image.
+> [!WARNING] Processes in the container run as root by default, so the generated
+> `public/` is owned by root and the host user cannot delete it. Map the user ID
+> in shared environments:
+>
+> ```sh
+> docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/src" oink-hugo --gc --minify
+> ```
+
+This image needs no Node.js, npm, or PostCSS, and should contain no step that
+fetches remote browser assets.
+
+## Next steps {#next-steps}
+
+- [Troubleshooting](../troubleshooting/): diagnosing failures inside a container
+- [Deployment](/docs/deploy/): publish the output

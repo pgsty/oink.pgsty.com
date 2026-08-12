@@ -1,37 +1,28 @@
 ---
-downstream_modified: true
-title: Create a new site
-date: 2021-12-08T09:21:54+01:00
+title: Create a site
+linkTitle: Create a site
 weight: 30
-icon: fa-solid fa-file-circle-plus
-description: Create a minimal bilingual OINK site without a frontend toolchain.
-aliases: [/docs/get-started/docsy-as-module/start-from-scratch/]
+description: From an empty directory to a first previewable bilingual page.
 ---
 
-The independent [bilingual project site](project-site/) is a useful reference.
-Use this procedure to create a smaller site with its own content structure.
+This page builds a minimal bilingual site from scratch. For a reference that is
+already fully configured, see the [project site](../project-site/) instead.
 
-## Create the site skeleton
-
-Run:
+## Create the skeleton {#create-the-skeleton}
 
 ```sh
-hugo new site --format yaml my-new-site
-cd my-new-site
+hugo new site --format yaml my-docs
+cd my-docs
+hugo mod init github.com/example/my-docs
+hugo mod get github.com/pgsty/oink@{{% param tdVersion.latest %}}
 ```
 
-Initialize the site module and pin Oink:
+## Minimum configuration {#minimum-configuration}
 
-```sh
-hugo mod init github.com/example/my-new-site
-hugo mod get github.com/pgsty/oink@THEME_REF
-```
+Save the following as `hugo.yaml`. This is the smallest set that runs; each
+entry is explained in [Basic configuration](../configuration/):
 
-## Add minimum configuration
-
-Use this as `hugo.yaml`:
-
-```yaml
+```yaml {filename="hugo.yaml" collapse=34}
 title: Product Docs
 baseURL: https://docs.example.com/
 defaultContentLanguage: en
@@ -58,8 +49,6 @@ markup:
   goldmark:
     renderer:
       unsafe: true
-  highlight:
-    noClasses: false
 
 params:
   offlineSearch: true
@@ -75,29 +64,37 @@ module:
     min: {{% param hugoMinVersion %}}
 ```
 
-Commit `go.mod` and `go.sum`. Do not add npm mounts or a PostCSS pipeline.
+Commit `go.mod` and `go.sum`. Do **not** add npm mounts or a PostCSS pipeline.
 
-## Add bilingual content
+> [!NOTE] `markup.goldmark.renderer.unsafe: true` permits inline HTML in
+> Markdown. It exists for trusted project authors and is **not** a sanitizer for
+> untrusted submissions.
 
-Create these files:
+## Organize bilingual content {#organize-bilingual-content}
 
-```text
-content/
-├── _index.md
-├── _index.zh.md
-├── docs/
-│   ├── _index.md
-│   ├── _index.zh.md
-│   ├── getting-started.md
-│   └── getting-started.zh.md
-└── blog/
-    ├── _index.md
-    └── _index.zh.md
-```
+OINK distinguishes languages by filename suffix, and a translation sits **beside
+its source in the same directory**:
 
-Every page needs front matter. For example, `content/docs/getting-started.md`:
+{{< filetree >}} {{< filetree/folder name="content" open=true >}}
+{{< filetree/file name="_index.md" >}} {{< filetree/file name="_index.zh.md" >}}
+{{< filetree/folder name="docs" open=true >}}
+{{< filetree/file name="_index.md" >}} {{< filetree/file name="_index.zh.md" >}}
+{{< filetree/file name="getting-started.md" >}}
+{{< filetree/file name="getting-started.zh.md" >}} {{< /filetree/folder >}}
+{{< filetree/folder name="blog" >}} {{< filetree/file name="_index.md" >}}
+{{< filetree/file name="_index.zh.md" >}} {{< /filetree/folder >}}
+{{< /filetree/folder >}} {{< /filetree >}}
 
-```markdown
+## Stable heading IDs {#stable-heading-ids}
+
+This is the most common bilingual pitfall: **Hugo derives heading IDs from
+heading text**, so a Chinese heading produces a Chinese ID, and
+`/docs/page/#install` and `/zh/docs/page/#安装` become two anchors for the same
+semantic location.
+
+The fix is to write the source language's ID explicitly in the translation:
+
+```markdown {filename="getting-started.md"}
 ---
 title: Getting started
 weight: 10
@@ -108,9 +105,7 @@ weight: 10
 Install the product.
 ```
 
-Its `getting-started.zh.md` translation keeps the explicit heading ID:
-
-```markdown
+```markdown {filename="getting-started.zh.md"}
 ---
 title: 开始使用
 weight: 10
@@ -121,40 +116,45 @@ weight: 10
 安装产品。
 ```
 
-Using the same explicit ID in both examples is harmless and makes the intended
-cross-language contract visible. In a translated existing page, copy the ID from
-the English rendered HTML.
+Both languages now answer to `#install`, so in-site deep links survive a
+language switch.
 
-## Preview and build
+When translating an existing page, copy the ID from the **rendered English
+HTML** rather than guessing from the heading text.
 
-Run the development server:
+## Preview and build {#preview-and-build}
 
 ```sh
 hugo server --disableFastRender
 ```
 
-Then verify the production build separately:
+Then verify a production build separately, because the development server and
+the production build do not use an identical asset pipeline:
 
 ```sh
 hugo --gc --minify
 ```
 
-Check `/docs/`, `/zh/docs/`, the language selector, local search indexes, and
-the browser console before adding custom layouts.
+Before adding custom layouts, confirm that:
 
-## Add features incrementally
+- `/docs/` and `/zh/docs/` both open;
+- the language selector switches;
+- local search returns results;
+- the browser console is clean.
 
-Copy logo and brand assets first, then add repository links and menus. Add
-diagrams, API documentation, and content components only on pages that need
-them; OINK will publish their local runtimes on demand.
+## Add features incrementally {#add-features-incrementally}
 
-If a site needs a business-specific shortcode, keep it under the site's own
-`layouts/_shortcodes/`. Move it into the theme only after its interface is free
-of site assumptions and multiple sites can reuse it.
+Start with the logo and brand assets, then repository links and menus. Add
+diagrams, API documentation, and content components **only on pages that need
+them** — OINK decides which local runtimes to publish from what each page
+actually uses, and ships nothing for unused features.
 
-## What's next?
+If the site needs shortcodes carrying business semantics, keep them in the
+site's own `layouts/_shortcodes/`. Move one into the theme only once its
+interface carries no site assumptions and several sites genuinely reuse it.
 
-- Expand the [basic configuration](/docs/tutorial/basic-configuration/).
-- Learn how to [add content](/docs/content/adding-content/).
-- Review the [OINK architecture](/docs/about/architecture/).
-- Select a [deployment target](/docs/deploy/).
+## Next steps {#next-steps}
+
+- [Basic configuration](../configuration/): complete the configuration
+- [Authoring](/docs/content/): content organization and writing conventions
+- [Deployment](/docs/deploy/): choose a hosting target

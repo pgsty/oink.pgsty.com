@@ -109,7 +109,7 @@ the same URL works when the site is built with its production `baseURL`. See
   https://github.com/pgsty/oink/blob/main/layouts/_partials/favicons.html
 [`layouts/_partials/hooks/head-end.html`]:
   https://github.com/pgsty/oink/blob/main/layouts/_partials/hooks/head-end.html
-[Look and feel]: /docs/content/lookandfeel/#styling-your-project-logo-and-name
-[Navigation and menus]: /docs/content/navigation/#adding-icons-to-the-side-nav
+[Look and feel]: /docs/appearance/styling/#styling-your-project-logo-and-name
+[Navigation and menus]: /docs/configure/navigation/#adding-icons-to-the-side-nav
 [RealFaviconGenerator]: https://realfavicongenerator.net/
 [`VENDOR.json`]: https://github.com/pgsty/oink/blob/main/VENDOR.json

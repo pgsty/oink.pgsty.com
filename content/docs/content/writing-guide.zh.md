@@ -56,7 +56,7 @@ params:
     disable_toc: false
 ```
 
-元数据应帮助读者理解示例，而不是装饰每一个围栏。文件名、复制策略、换行、折叠、行链接与同步替代方案的完整说明参见[代码块与代码组](/zh/docs/content/code-blocks/)。
+元数据应帮助读者理解示例，而不是装饰每一个围栏。文件名、复制策略、换行、折叠、行链接与同步替代方案的完整说明参见[代码块与代码组](/zh/docs/components/code-blocks/)。
 
 ## 检查渲染后的状态 {#review-rendered-states}
 

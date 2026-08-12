@@ -53,18 +53,21 @@ test('empty Palette exposes shared quick links, page actions, and preferences', 
   await expect(quick).toContainText('Blog');
   await expect(quick).toContainText('Project');
   const actions = group(dialog, 'Page actions');
-  await expect(actions).toContainText('Copy Markdown');
-  await expect(actions).toContainText('View Markdown');
+  await expect(actions).toContainText('Copy text');
+  await expect(actions).toContainText('Open in ChatGPT');
+  await expect(actions).toContainText('Open in Claude');
+  await expect(actions).toContainText('View source');
+  await expect(actions).toContainText('View edit history');
   await expect(actions).toContainText('Edit this page');
   await expect(actions).toContainText('Create docs issue');
   await expect(actions).toContainText('Print this page');
   const preferences = group(dialog, 'Preferences');
   await expect(preferences).toContainText('Toggle color theme');
   await expect(preferences).toContainText('Switch language');
-  await expect(preferences).toContainText('v0.2.0');
+  await expect(preferences).toContainText('v0.3.0');
   const commands = group(dialog, 'Commands');
   await expect(commands).toContainText('OINK issues');
-  await expect(commands).toContainText('Copy page Markdown');
+  await expect(commands).not.toContainText('Copy text');
 
   const rows = dialog.locator('[role="option"]');
   const activeId = await input.getAttribute('aria-activedescendant');
@@ -112,9 +115,9 @@ test('command mode is index-free and localizes configured commands', async ({
   });
   const { dialog, input } = await openPalette(page, zhDocsPath);
   expect(indexRequests).toEqual([]);
-  await fillCommandAndWait(input, dialog, '> 深色', '选择颜色主题');
+  await fillCommandAndWait(input, dialog, '> 暗色', '切换配色');
   await expect(dialog.locator('[role="option"]')).toHaveCount(1);
-  await expect(dialog.locator('[role="option"]')).toContainText('选择颜色主题');
+  await expect(dialog.locator('[role="option"]')).toContainText('切换配色');
   expect(indexRequests).toEqual([]);
 
   await fillCommandAndWait(input, dialog, '> OINK 问题', 'OINK 问题反馈');
@@ -124,15 +127,48 @@ test('command mode is index-free and localizes configured commands', async ({
   expect(indexRequests).toEqual([]);
 });
 
-test('choice aliases reuse theme, language, and version actions', async ({
+test('slash opens command mode and restores focus on Escape', async ({
+  page,
+}) => {
+  await page.goto(docsPath, { waitUntil: 'domcontentloaded' });
+  const opener = page.locator('[data-td-shell-search-open]:visible').first();
+  await opener.focus();
+  await page.keyboard.press('/');
+
+  const dialog = page.locator('#td-shell-search');
+  const input = dialog.locator('.td-shell-search__input');
+  await expect(dialog).toBeVisible();
+  await expect(input).toBeFocused();
+  await expect(input).toHaveValue('>');
+  await expect(group(dialog, 'Quick links')).toHaveCount(0);
+  await expect(group(dialog, 'Page actions')).toHaveCount(0);
+
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(opener).toBeFocused();
+
+  await page.evaluate(() => {
+    const input = document.createElement('input');
+    input.setAttribute('data-test-slash-field', '');
+    document.body.appendChild(input);
+  });
+  const search = page.locator('[data-test-slash-field]');
+  await search.focus();
+  await search.fill('docs');
+  await search.press('/');
+  await expect(search).toHaveValue('docs/');
+  await expect(dialog).toBeHidden();
+});
+
+test('built-in choice actions reuse theme, language, and version executors', async ({
   page,
 }) => {
   const { dialog, input } = await openPalette(page);
   await fillCommandAndWait(
     input,
     dialog,
-    '> choose theme',
-    'Choose color theme',
+    '> toggle color',
+    'Toggle color theme',
   );
   await page.keyboard.press('Enter');
   await expect(dialog.locator('.td-shell-search__group-label')).toHaveText(
@@ -159,23 +195,18 @@ test('choice aliases reuse theme, language, and version actions', async ({
   await page.keyboard.press(
     process.platform === 'darwin' ? 'Meta+k' : 'Control+k',
   );
-  await fillCommandAndWait(input, dialog, '> version', 'v0.2.0');
+  await fillCommandAndWait(input, dialog, '> version', 'v0.3.0');
   await page.keyboard.press('Enter');
-  await expect(dialog).toContainText('v0.2.0');
+  await expect(dialog).toContainText('v0.3.0');
 });
 
-test('Copy Markdown and Print execute once through the shared registry', async ({
+test('Copy text and Print execute once through the shared registry', async ({
   page,
   context,
 }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   const { dialog, input } = await openPalette(page);
-  await fillCommandAndWait(
-    input,
-    dialog,
-    '> copy page markdown',
-    'Copy page Markdown',
-  );
+  await fillCommandAndWait(input, dialog, '> copy text', 'Copy text');
   await page.keyboard.press('Enter');
   await expect(dialog).toBeVisible();
   await expect
@@ -208,21 +239,75 @@ test('URL actions match progressive-enhancement anchors', async ({ page }) => {
     manifest.actions.find((candidate) => candidate.id === id);
   const controls = page.locator('[data-td-page-context]');
   for (const [id, selector] of [
+    ['open_chatgpt', '[data-oink-action="open_chatgpt"]'],
+    ['open_claude', '[data-oink-action="open_claude"]'],
     ['view_markdown', '[data-oink-action="view_markdown"]'],
+    ['view_history', '[data-oink-action="view_history"]'],
     ['edit_page', '[data-oink-action="edit_page"]'],
     ['create_issue', '[data-oink-action="create_issue"]'],
   ]) {
     const descriptor = action(id);
     const anchor = controls.locator(selector);
-    await expect(anchor).toHaveAttribute('href', descriptor.url);
+    if (id === 'open_chatgpt' || id === 'open_claude') {
+      const href = new URL(await anchor.getAttribute('href'));
+      expect(href.origin).toBe(new URL(descriptor.url).origin);
+      const prompt = href.searchParams.get(
+        id === 'open_chatgpt' ? 'prompt' : 'q',
+      );
+      expect(prompt).toContain(page.url());
+    } else {
+      await expect(anchor).toHaveAttribute('href', descriptor.url);
+    }
     await expect(anchor).toHaveAttribute('target', '_blank');
-    await expect(anchor).toHaveAttribute('rel', 'noopener');
+    await expect(anchor).toHaveAttribute('rel', /noopener/);
   }
 
   await expect(page.locator('a[aria-label="GitHub"]').first()).toHaveAttribute(
     'href',
     action('open_github').url,
   );
+});
+
+test('assistant command resolves the browser URL at activation time', async ({
+  page,
+}) => {
+  const { dialog, input } = await openPalette(page);
+  await page.evaluate(() => {
+    history.replaceState(null, '', '?mode=release-review#literal-$&');
+    window.__openedUrls = [];
+    window.open = (url, target, features) => {
+      window.__openedUrls.push({ url, target, features });
+      return null;
+    };
+  });
+  const currentUrl = page.url();
+  expect(currentUrl).toContain('$&');
+
+  const option = await fillCommandAndWait(
+    input,
+    dialog,
+    '> ChatGPT',
+    'Open in ChatGPT',
+  );
+  await option.click();
+
+  await expect
+    .poll(() => page.evaluate(() => window.__openedUrls))
+    .toHaveLength(1);
+  const opened = await page.evaluate(() => window.__openedUrls[0]);
+  const manifest = await page
+    .locator('#oink-action-manifest')
+    .evaluate((node) => JSON.parse(node.textContent || '{}'));
+  const action = manifest.actions.find(
+    (candidate) => candidate.id === 'open_chatgpt',
+  );
+  const target = new URL(opened.url);
+  expect(target.origin).toBe('https://chatgpt.com');
+  expect(target.searchParams.get('prompt')).toBe(
+    action.promptTemplate.replace('%s', () => currentUrl),
+  );
+  expect(opened.target).toBe('_blank');
+  expect(opened.features).toBe('noopener,noreferrer');
 });
 
 test('mobile Palette restores focus and has no WCAG AA violations', async ({
@@ -239,7 +324,7 @@ test('mobile Palette restores focus and has no WCAG AA violations', async ({
     dialog.locator('.td-shell-search__input'),
     dialog,
     '> 打印',
-    '打印当前页面',
+    '打印此页面',
     /^操作$/,
   );
 

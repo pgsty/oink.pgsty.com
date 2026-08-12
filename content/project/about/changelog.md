@@ -232,7 +232,7 @@ changes, see the [0.16.0][] release page or the [git history since 0.15.0][].
 [Hugo 0.158+ upgrade guide]: /blog/docsy/hugo-0.158.0+/
 [hugo-0.160.1]: https://github.com/gohugoio/hugo/releases/tag/v0.160.1
 [hugo-0.164.0]: https://github.com/gohugoio/hugo/releases/tag/v0.164.0
-[option-3-npm]: /docs/tutorial/installation-options/#option-3-docsy-as-an-npm-package
+[option-3-npm]: /docs/tutorial/install/#option-3-docsy-as-an-npm-package
 [@shurup]: https://github.com/shurup
 <!-- prettier-ignore-end -->
 
@@ -496,7 +496,7 @@ Patch release [0.14.1][]: fixed **ToC** sidebar width in xl viewports
 [diagrams-formulae]:
   /docs/content/diagrams-and-formulae/#latex-support-with-katex
 [How to pick colors with good color-contrast]:
-  /docs/content/lookandfeel/#pick-good-color-contrast
+  /docs/appearance/styling/#pick-good-color-contrast
 
 ## v0.12.0 {#v0.12.0}
 
@@ -556,10 +556,10 @@ For the full list of changes, see the [0.12.0][] release page.
 [#2192]: https://github.com/google/docsy/pull/2192
 [#2223]: https://github.com/google/docsy/pull/2223
 [#2243]: https://github.com/google/docsy/pull/2243
-[before-page-content]: /docs/content/lookandfeel/#before-page-content
-[Breadcrumb navigation]: /docs/content/navigation/#breadcrumb-navigation
+[before-page-content]: /docs/appearance/styling/#before-page-content
+[Breadcrumb navigation]: /docs/configure/navigation/#breadcrumb-navigation
 [content type]: https://gohugo.io/quick-reference/glossary/#content-type
-[Heading self links]: /docs/content/navigation/#heading-self-links
+[Heading self links]: /docs/configure/navigation/#heading-self-links
 [_td-content-after-header.html]:
   https://github.com/google/docsy/blob/main/theme/layouts/_td-content-after-header.html
 
@@ -579,8 +579,8 @@ For the full list of changes, see the [0.11.0][] release page.
 [0.11.0]: https://github.com/google/docsy/releases/v0.11.0
 [bs-rtl]: https://getbootstrap.com/docs/5.3/getting-started/rtl/
 [Adding a community page]: /docs/content/adding-content/#adding-a-community-page
-[params.ui.sidebar_menu_truncate]: /docs/content/navigation/#side-nav-options
-[rtl]: /docs/advanced/language/#right-to-left-languages
+[params.ui.sidebar_menu_truncate]: /docs/configure/navigation/#side-nav-options
+[rtl]: /docs/configure/language/#right-to-left-languages
 
 ## v0.10.0 {#v0.10.0}
 
@@ -664,17 +664,17 @@ For details concerning all footer changes, see [#1818][].
 [#1410]: https://github.com/google/docsy/pull/1410
 [#1744]: https://github.com/google/docsy/pull/1744
 [#1818]: https://github.com/google/docsy/pull/1818
-[disabling links]: /docs/advanced/repository-links/#disabling-links
+[disabling links]: /docs/configure/repository/#disabling-links
 [Footer layout]: /blog/docsy/0.9.0/#footer-layout
 [Footer copyright]: /blog/docsy/0.9.0/#footer-copyright
 [Footer streamlined]: /blog/docsy/0.9.0/#footer-streamlined
 [0.9.0:hsl]: /blog/docsy/0.9.0/#heading-self-links
 [look and feel]: /blog/docsy/0.9.0/#look-and-feel
 [mermaid]: /docs/content/diagrams-and-formulae/#diagrams-with-mermaid
-[multi-language]: /docs/advanced/language/
+[multi-language]: /docs/configure/language/
 [path_base_for_github_subdir]:
-  /docs/advanced/repository-links/#path_base_for_github_subdir-optional
-[Repository Links]: /docs/advanced/repository-links/
+  /docs/configure/repository/#path_base_for_github_subdir-optional
+[Repository Links]: /docs/configure/repository/
 [union file system]:
   https://gohugo.io/getting-started/directory-structure/#unified-file-system
 
@@ -710,7 +710,7 @@ For the full list of changes, see the [0.8.0][] release page.
 [#2116]: https://github.com/google/docsy/issues/2116
 [0.8.0]: https://github.com/google/docsy/releases/v0.8.0
 [Docsy as an NPM package]:
-  /docs/tutorial/installation-options/#option-3-docsy-as-an-npm-package
+  /docs/tutorial/install/#option-3-docsy-as-an-npm-package
 [Use Docsy as a Hugo Module]: /docs/tutorial/install/
 [User feedback]: /docs/advanced/analytics/#user-feedback
 
@@ -792,7 +792,7 @@ For the full list of changes, see the [0.7.0][] release page.
     - `card-code` is deprecated; use `card` with named parameter `code=true`
       instead.
 
-[chroma-docsy]: /docs/content/lookandfeel/#code-highlighting-with-chroma
+[chroma-docsy]: /docs/appearance/styling/#code-highlighting-with-chroma
 [shortcodes with markdown]:
   https://gohugo.io/content-management/shortcodes/#notation
 
@@ -887,7 +887,7 @@ CHANGES** are documented below.
 [v4.6.2 release page]: https://github.com/twbs/bootstrap/releases/tag/v4.6.2
 [gtag.js]: https://support.google.com/analytics/answer/10220869
 [styling your project logo and name]:
-  /docs/content/lookandfeel/#styling-your-project-logo-and-name
+  /docs/appearance/styling/#styling-your-project-logo-and-name
 [upgraded fontawesome to v6]:
   https://web.archive.org/web/20251117042118/https://docs.fontawesome.com/v6/web/setup/upgrade
 [what's changed in v6]:
@@ -949,7 +949,7 @@ Proceed as usual to build or serve your site.
 
 [0.4.0]: https://github.com/google/docsy/releases/v0.4.0
 [hugo module]: /docs/tutorial/install/
-[other docsy setups]: /docs/tutorial/installation-options/
+[other docsy setups]: /docs/tutorial/install/
 [prepare]:
   https://docs.npmjs.com/cli/v10/using-npm/scripts#prepare-and-prepublish
 
@@ -983,7 +983,7 @@ For the full list of changes, see the [0.2.0][] release page.
   implemented this feature. Thanks to [@deining][] and [@LisaFC][] for the doc
   updates.
 
-  For details, see [Migrate to Hugo Modules](/docs/upgrade/migrate-from-docsy/).
+  For details, see [Migrate to Hugo Modules](/docs/upgrade/from-docsy/).
 
 [@deining]: https://github.com/deining
 [@lisafc]: https://github.com/LisaFC

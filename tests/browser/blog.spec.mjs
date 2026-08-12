@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 const blogPath = '/zh/blog/';
 const blogSections = ['release', 'oink', 'docsy'];
 const blogArticles = {
-  release: ['0.2.0', '0.1.0'],
+  release: ['0.3.0', '0.2.0', '0.1.0'],
   oink: ['oink-announcement', 'oink-implementation-diary'],
   docsy: [
     '0.16.0',

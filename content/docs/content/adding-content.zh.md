@@ -175,7 +175,7 @@ OINK 支持 GitHub 风格的块引用告警，也支持可选的 Obsidian 风格
 
 语义类型包括 `NOTE`、`TIP`、`IMPORTANT`、`WARNING` 和
 `CAUTION`，以及与 Bootstrap 兼容的类型和
-`NB`。告警应节制使用：关键信息在屏幕阅读器和打印版中也必须成立。外观设置参见[告警](/zh/docs/content/lookandfeel/#alerts)。
+`NB`。告警应节制使用：关键信息在屏幕阅读器和打印版中也必须成立。外观设置参见[告警](/zh/docs/appearance/styling/#alerts)。
 
 ### 链接 {#links}
 

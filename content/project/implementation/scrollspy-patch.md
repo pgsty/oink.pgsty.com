@@ -55,7 +55,7 @@ this patch ensures that active TOC entry tracking works reliably for all pages.
 [#2382]: https://github.com/google/docsy/pull/2382
 [#2383]: https://github.com/google/docsy/pull/2383
 [Active TOC entry tracking with ScrollSpy]:
-  /docs/content/navigation/#toc-entry-tracking
+  /docs/configure/navigation/#toc-entry-tracking
 [CI/CD `scrollspy-patch` details]:
   https://github.com/google/docsy/blob/main/scripts/scrollspy-patch/README.md
 [ScrollSpy]: https://getbootstrap.com/docs/5.3/components/scrollspy/

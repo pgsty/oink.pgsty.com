@@ -1,18 +1,16 @@
 ---
-title: 查看双语项目站点
-linkTitle: 双语项目站点
-description: 把独立 Oink 项目站点作为完整参考。
+title: 用项目站点起步
+linkTitle: 项目站点
 weight: 50
-icon: fa-solid fa-clone
-aliases: [/docs/get-started/docsy-as-module/example-site-as-template/]
+description: 把 oink.pgsty.com 当模板改，快速得到一个配置完整的双语站点。
 ---
 
-独立的 [`pgsty/oink.pgsty.com`](https://github.com/pgsty/oink.pgsty.com)
-仓库是完整的双语示例与回归站点。它有意比最小消费站点更全面：应把它作为参考，然后只保留产品真正需要的内容与配置。
+[`pgsty/oink.pgsty.com`](https://github.com/pgsty/oink.pgsty.com)
+是 OINK 的双语示例兼回归站点。它有意比一个最小消费站点更完整——把它当参考，然后删掉产品用不到的部分。
 
-## 克隆项目站点 {#clone-the-project-site}
+适合这条路径的情况：你想要一个开箱即用的双语结构，不介意先删再改。想从零精确控制每一项，走[创建站点](../create-site/)。
 
-克隆项目站，即可使用其中固定的 Oink 公开版本完成构建：
+## 克隆并构建 {#clone-and-build}
 
 ```sh
 git clone https://github.com/pgsty/oink.pgsty.com.git product-docs
@@ -20,64 +18,86 @@ cd product-docs
 hugo --gc --minify
 ```
 
-已提交的 `go.mod` 会固定
-`github.com/pgsty/oink`。本地开发主题时，请把主题克隆为同级目录，并使用
-[Oink 快速开始](/zh/docs/tutorial/install/#develop-against-a-local-checkout)记录的 workspace 命令。
+已提交的 `go.mod` 固定了 `github.com/pgsty/oink`
+的公开版本，所以克隆下来就能构建。
 
-## 运行站点检查 {#run-the-site-checks}
+如果你同时要改主题，把主题克隆为同级目录，用[安装页记录的 workspace 命令](../install/#develop-against-a-local-checkout)。
 
-使用 Oink 的站点无论构建还是预览，都不需要 Node.js，也不需要安装 npm 软件包。只有在维护这个示例项目站点仓库，并运行格式、链接、翻译与回归检查时，才需要 Node.js 以及仓库中的 npm 开发依赖：
+## 站点检查需要 Node {#site-checks-need-node}
 
-```sh
-npm ci
-npm test
-```
-
-打开生成的站点，分别检查中英文页面。请从具有译文的详情页使用语言切换器，不要只在首页测试。
+> [!IMPORTANT] 这一点容易误解：**使用 OINK 构建站点不需要 Node.js**。只有维护这个示例仓库、运行格式化/链接/翻译/回归检查时才需要：
+>
+> ```sh
+> npm ci
+> npm test
+> ```
+>
+> 你自己的产品文档站不需要继承这套工具链。
 
 ## 替换示例身份 {#replace-the-example-identity}
 
-编辑 `hugo.yaml` 与 `config/` 下的文件，并替换：
+编辑 `hugo.yml`，替换这些字段：
 
-- 站点标题，以及各语言的标题与描述；
-- `baseURL`；
-- 代码仓库与分支 URL；
-- 版权所有者与起始年份；
-- Logo 与品牌素材；
-- 中英文菜单标签。
-
-不要创建 `oink.*`
-参数命名空间。请使用 Hugo 的语言、菜单、模块、输出和 markup 设置，以及主题已经记录的参数。
+{{< fields >}} {{% field name="title / languages.<lang>.title" type="string" %}}
+站点名称，各语言分别设置。 {{% /field %}}
+{{% field name="baseURL" type="string" %}} 换成你自己的生产地址。 {{% /field %}}
+{{% field name="params.github_repo" type="string" %}}
+指向你自己的内容仓库，否则「编辑此页」会指向 OINK 的仓库。 {{% /field %}}
+{{% field name="params.copyright" type="map" %}} 作者与起始年份。 {{% /field %}}
+{{% field name="params.logo / params.wordmark" type="string" %}}
+品牌素材。同时替换 `static/` 下的 favicon。 {{% /field %}}
+{{% field name="services.googleAnalytics.id" type="string" %}}
+**删掉**，除非你确实要用分析统计。 {{% /field %}}
+{{% field name="params.comments" type="map" %}}
+giscus 配置指向 OINK 的仓库，务必替换或整段删除。 {{% /field %}} {{< /fields >}}
 
 ## 替换示例内容 {#replace-the-example-content}
 
-把每组译文放在一起：
+`content/` 下这些目录是 OINK 自己的内容，删掉：
 
-```text
-content/docs/getting-started.md
-content/docs/getting-started.zh.md
-```
+{{< filetree >}} {{< filetree/folder name="content" open=true >}}
+{{< filetree/folder name="docs" >}}{{< /filetree/folder >}}
+{{< filetree/folder name="blog" >}}{{< /filetree/folder >}}
+{{< filetree/folder name="project" >}}{{< /filetree/folder >}}
+{{< filetree/folder name="tests" >}}{{< /filetree/folder >}}
+{{< /filetree/folder >}} {{< /filetree >}}
 
-删除产品不需要的历史与回归内容。只有在页面不再引用后，才删除对应示例资源。
+`project/` 是 OINK 的项目自述，`tests/` 是回归测试页——两者对你的产品都没有意义。
 
-中文标题应显式使用英文页面实际渲染出的 ID：
+`docs/` 和 `blog/` 保留目录结构和 `_index` 页，把正文换成你自己的。
 
-```markdown
-## Configure search
-```
-
-```markdown
 ## 配置搜索 {#configure-search}
+
+项目站点默认开启本地搜索：
+
+```yaml {filename="hugo.yml"}
+params:
+  offlineSearch: true
+  offlineSearchIndex: summary
+  offlineSearchMaxResults: 10
 ```
 
-## 将新站点纳入版本控制 {#put-the-new-site-in-version-control}
+`offlineSearchIndex` 有两个取值：
 
-发布派生站点前，请修改模块路径、仓库元数据与 remote。继续在 `go.mod`
-中固定 Oink 版本。除非托管工作流有明确要求，否则不要提交生成的 `public/` 产物。
+| 取值      | 索引内容         | 适用                               |
+| --------- | ---------------- | ---------------------------------- |
+| `summary` | 标题、描述、摘要 | **推荐**，索引体积可控             |
+| `content` | 全部正文         | 小站点；千页级站点会产生数 MB 索引 |
 
-## 后续步骤 {#whats-next}
+## 纳入版本控制 {#put-it-in-version-control}
 
-- 查看[基础配置](/zh/docs/tutorial/basic-configuration/)。
-- 学习[内容组件](/zh/docs/content/components/)。
-- 配置[部署](/zh/docs/deploy/)。
-- 使用[发布检查清单](/zh/docs/about/release/)。
+清理干净后重建仓库历史——你的产品文档不应该背着 OINK 的提交记录：
+
+```sh
+rm -rf .git
+git init
+git add .
+git commit -m "Initial documentation site"
+```
+
+同时确认 `.gitignore` 里有 `public/`、`resources/` 和 `go.work`。
+
+## 下一步 {#next-steps}
+
+- [基础配置](../configuration/)：逐项核对配置
+- [部署](/zh/docs/deploy/)：选一个托管目标

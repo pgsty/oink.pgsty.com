@@ -15,7 +15,7 @@ service, or client-side preset loader is required.
 
 This page documents the supported extension points and the first public
 semantic-token slice: typography. For general color-mode, code-highlighting,
-navbar, and template examples, see [Look and feel](/docs/content/lookandfeel/).
+navbar, and template examples, see [Look and feel](/docs/appearance/styling/).
 
 ## Choose the right layer
 
@@ -240,7 +240,7 @@ compiled palette. At runtime, prefer Bootstrap semantic properties such as
 OINK also documents a small brand layer, including `--td-brand-elev`,
 `--td-brand-silk`, `--td-brand-copper`, `--td-brand-header-bg`, and
 `--td-brand-mark-gradient`. Override light and dark values as a pair. The
-[Look and feel](/docs/content/lookandfeel/#colors-and-color-themes) page shows
+[Look and feel](/docs/appearance/styling/#colors-and-color-themes) page shows
 the complete pattern.
 
 Do not globally override a shell or component token merely because its current

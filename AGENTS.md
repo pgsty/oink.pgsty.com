@@ -24,5 +24,6 @@ branching, CI/CD, and releases. Start with `content/project/build/git-repo.md`.
 ## Validation
 
 Use the smallest relevant command from `package.json`; run `npm test` for the
-complete site suite. A local build, a public theme release, and a hosted site
+complete non-browser site suite and `npm run test:browser` for Playwright and
+axe coverage. A local build, a public theme release, and a hosted site
 deployment are separate completion states.

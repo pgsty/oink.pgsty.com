@@ -1,35 +1,27 @@
 ---
-title: 从零新建站点
-date: 2021-12-08T09:21:54+01:00
+title: 创建站点
+linkTitle: 创建站点
 weight: 30
-icon: fa-solid fa-file-circle-plus
-description: 在没有前端工具链的情况下创建最小双语 OINK 站点。
-aliases: [/docs/get-started/docsy-as-module/start-from-scratch/]
+description: 从空目录到第一个可预览的双语页面。
 ---
 
-独立的[双语项目站点](project-site/)是完整参考。需要更小、拥有自身内容结构的站点时，可以采用本流程。
+这一页从零建一个最小双语站点。如果你想要一个已经配置完整的参考，直接看[项目站点](../project-site/)。
 
-## 创建站点骨架 {#create-the-site-skeleton}
-
-运行：
+## 建立骨架 {#create-the-skeleton}
 
 ```sh
-hugo new site --format yaml my-new-site
-cd my-new-site
+hugo new site --format yaml my-docs
+cd my-docs
+hugo mod init github.com/example/my-docs
+hugo mod get github.com/pgsty/oink@{{% param tdVersion.latest %}}
 ```
 
-初始化站点模块并固定 Oink：
+## 最小配置 {#minimum-configuration}
 
-```sh
-hugo mod init github.com/example/my-new-site
-hugo mod get github.com/pgsty/oink@THEME_REF
-```
+把下面的内容存为
+`hugo.yaml`。这是能跑起来的最小集合，逐项含义见[基础配置](../configuration/)：
 
-## 添加最低配置 {#add-minimum-configuration}
-
-将以下内容保存为 `hugo.yaml`：
-
-```yaml
+```yaml {filename="hugo.yaml" collapse=34}
 title: Product Docs
 baseURL: https://docs.example.com/
 defaultContentLanguage: en
@@ -56,8 +48,6 @@ markup:
   goldmark:
     renderer:
       unsafe: true
-  highlight:
-    noClasses: false
 
 params:
   offlineSearch: true
@@ -73,29 +63,33 @@ module:
     min: {{% param hugoMinVersion %}}
 ```
 
-提交 `go.mod` 与 `go.sum`。不要添加 npm 挂载项或 PostCSS 管线。
+提交 `go.mod` 与 `go.sum`。不要添加 npm 挂载或 PostCSS 管线。
 
-## 添加双语内容 {#add-bilingual-content}
+> [!NOTE] `markup.goldmark.renderer.unsafe: true`
+> 允许在 Markdown 里写内联 HTML。它面向的是受信任的项目作者，不是给不受信任投稿用的过滤器。
 
-创建以下文件：
+## 组织双语内容 {#organize-bilingual-content}
 
-```text
-content/
-├── _index.md
-├── _index.zh.md
-├── docs/
-│   ├── _index.md
-│   ├── _index.zh.md
-│   ├── getting-started.md
-│   └── getting-started.zh.md
-└── blog/
-    ├── _index.md
-    └── _index.zh.md
-```
+OINK 用文件名后缀区分语言，译文和原文并排放在同一个目录：
 
-每个页面都需要 front matter。例如，`content/docs/getting-started.md` 可以写成：
+{{< filetree >}} {{< filetree/folder name="content" open=true >}}
+{{< filetree/file name="_index.md" >}} {{< filetree/file name="_index.zh.md" >}}
+{{< filetree/folder name="docs" open=true >}}
+{{< filetree/file name="_index.md" >}} {{< filetree/file name="_index.zh.md" >}}
+{{< filetree/file name="getting-started.md" >}}
+{{< filetree/file name="getting-started.zh.md" >}} {{< /filetree/folder >}}
+{{< filetree/folder name="blog" >}} {{< filetree/file name="_index.md" >}}
+{{< filetree/file name="_index.zh.md" >}} {{< /filetree/folder >}}
+{{< /filetree/folder >}} {{< /filetree >}}
 
-```markdown
+## 稳定的标题 ID {#stable-heading-ids}
+
+这是双语站点最容易踩的坑：**Hugo 从标题文本生成 ID**，所以中文标题会生成中文ID，导致
+`/docs/page/#install` 和 `/zh/docs/page/#安装` 指向同一个语义位置却是两个锚点。
+
+解决办法是在译文标题里显式写上英文原文的 ID：
+
+```markdown {filename="getting-started.md"}
 ---
 title: Getting started
 weight: 10
@@ -106,9 +100,7 @@ weight: 10
 Install the product.
 ```
 
-它的 `getting-started.zh.md` 译文保留显式标题 ID：
-
-```markdown
+```markdown {filename="getting-started.zh.md"}
 ---
 title: 开始使用
 weight: 10
@@ -119,35 +111,38 @@ weight: 10
 安装产品。
 ```
 
-在两个示例中使用相同的显式 ID 不会产生问题，还能直观展示跨语言合同。翻译现有页面时，应从英文渲染 HTML 中复制 ID。
+这样两种语言的 `#install` 锚点都能用，站内深链在切换语言时不会失效。
+
+翻译已有页面时，ID 要从英文渲染出的 HTML 里复制，不要凭标题文本猜。
 
 ## 预览与构建 {#preview-and-build}
-
-启动开发服务器：
 
 ```sh
 hugo server --disableFastRender
 ```
 
-随后单独验证生产构建：
+再单独验证一次生产构建——开发服务器和生产构建的资源管线不完全相同：
 
 ```sh
 hugo --gc --minify
 ```
 
-添加自定义布局前，请检查
-`/docs/`、`/zh/docs/`、语言选择器、本地搜索索引和浏览器控制台。
+在加自定义布局之前，先确认这几项正常：
+
+- `/docs/` 和 `/zh/docs/` 都能打开
+- 语言选择器能切换
+- 本地搜索有结果
+- 浏览器控制台没有报错
 
 ## 逐步添加功能 {#add-features-incrementally}
 
-先复制 Logo 和品牌素材，再添加代码仓库链接与菜单。只在确实需要的页面中加入图表、API 文档和内容组件；OINK 会按需发布对应的本地运行时。
+先放 Logo 和品牌素材，再配仓库链接和菜单。图表、API 文档、内容组件只加在真正需要的页面上——OINK会按页面用到的功能决定发布哪些本地运行时，没用到就不下发。
 
-如果站点需要带业务语义的短代码，请将其保留在站点自己的 `layouts/_shortcodes/`
-下。只有接口已经摆脱站点假设，并且能被多个站点复用后，才应移入主题。
+如果站点需要带业务语义的短代码，放在站点自己的 `layouts/_shortcodes/`
+下。只有当接口已经不含站点假设、并且确实要被多个站点复用时，才考虑移进主题。
 
-## 后续步骤 {#whats-next}
+## 下一步 {#next-steps}
 
-- 扩展[基础配置](/zh/docs/tutorial/basic-configuration/)。
-- 学习如何[添加内容](/zh/docs/content/adding-content/)。
-- 查看 [OINK 架构](/zh/docs/about/architecture/)。
-- 选择[部署目标](/zh/docs/deploy/)。
+- [基础配置](../configuration/)：把配置补完整
+- [创作内容](/zh/docs/content/)：内容组织与写作规范
+- [部署](/zh/docs/deploy/)：选一个托管目标

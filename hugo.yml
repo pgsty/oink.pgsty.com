@@ -344,6 +344,7 @@ params:
     sidebar_icon_policy: groups
     page_context_menu:
       enable: true
+      assistant_links: true
       links: []
     # showLightDarkModeMenu param values:
     showLightDarkModeMenu:

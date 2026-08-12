@@ -11,7 +11,7 @@ OINK 提供一套小而清晰的分层定制接口，站点不需要复制组件
 Extended 与 Hugo
 Pipes 处理，不引入 Node.js、npm、PostCSS、远程字体服务或浏览器端 preset 加载器。
 
-本文记录正式支持的扩展点，以及第一组公开的语义 token：字体系统。颜色模式、代码高亮、导航栏与模板定制示例，参见[外观与风格](/zh/docs/content/lookandfeel/)。
+本文记录正式支持的扩展点，以及第一组公开的语义 token：字体系统。颜色模式、代码高亮、导航栏与模板定制示例，参见[外观与风格](/zh/docs/appearance/styling/)。
 
 ## 选择正确的定制层 {#choose-the-right-layer}
 
@@ -220,7 +220,7 @@ params:
 OINK 还记录了一小组品牌层属性，包括
 `--td-brand-elev`、`--td-brand-silk`、`--td-brand-copper`、`--td-brand-header-bg`
 与
-`--td-brand-mark-gradient`。浅色与深色值应成对覆盖，完整示例参见[外观与风格](/zh/docs/content/lookandfeel/#colors-and-color-themes)。
+`--td-brand-mark-gradient`。浅色与深色值应成对覆盖，完整示例参见[外观与风格](/zh/docs/appearance/styling/#colors-and-color-themes)。
 
 不要仅仅因为某个 shell 或组件 token 的名字看起来顺手，就在全局覆盖它。应先修改它的 Bootstrap 来源或已记录的语义来源；只有该组件确实需要独立变化时，才使用组件别名。
 

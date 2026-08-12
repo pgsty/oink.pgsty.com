@@ -85,7 +85,7 @@ locale, and text-direction attributes.
 
 When color-mode support is enabled, the navbar and documentation workspace show
 a theme control. See
-[Light/dark-mode menu](/docs/content/lookandfeel/#lightdark-mode-menu).
+[Light/dark-mode menu](/docs/appearance/styling/#lightdark-mode-menu).
 
 ### Search box
 

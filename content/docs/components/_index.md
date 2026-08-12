@@ -1,7 +1,7 @@
 ---
 title: Content components
-weight: 90
-icon: fa-solid fa-shapes
+weight: 40
+icon: fa-solid fa-cubes
 description: Use Oink's local, reusable components for richer documentation.
 aliases: [/docs/oink/components/]
 sidebar_expanded: true

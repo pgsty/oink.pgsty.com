@@ -54,7 +54,7 @@ sidebar and section indexes remain scannable.
 See
 [Adding content](/docs/content/adding-content/#organizing-your-documentation)
 for Hugo's bundle and section model, and
-[Navigation and menus](/docs/content/navigation/) for sidebar behavior.
+[Navigation and menus](/docs/configure/navigation/) for sidebar behavior.
 
 ## Plan languages together {#plan-languages-together}
 

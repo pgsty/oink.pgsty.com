@@ -74,7 +74,7 @@ OINK 根据 Hugo 的 `AllTranslations`
 
 ### 浅色/深色主题菜单 {#lightdark-theme-menu}
 
-启用颜色模式后，导航栏与文档工作台会显示主题控件。详见[浅色/深色模式菜单](/zh/docs/content/lookandfeel/#lightdark-mode-menu)。
+启用颜色模式后，导航栏与文档工作台会显示主题控件。详见[浅色/深色模式菜单](/zh/docs/appearance/styling/#lightdark-mode-menu)。
 
 ### 搜索框 {#search-box}
 

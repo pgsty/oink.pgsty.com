@@ -103,7 +103,7 @@ Oink 不强制使用某个产品 favicon，而是发现消费端站点 `static/`
   https://github.com/pgsty/oink/blob/main/layouts/_partials/favicons.html
 [`layouts/_partials/hooks/head-end.html`]:
   https://github.com/pgsty/oink/blob/main/layouts/_partials/hooks/head-end.html
-[外观与风格]: /zh/docs/content/lookandfeel/#styling-your-project-logo-and-name
-[导航与菜单]: /zh/docs/content/navigation/#adding-icons-to-the-side-nav
+[外观与风格]: /zh/docs/appearance/styling/#styling-your-project-logo-and-name
+[导航与菜单]: /zh/docs/configure/navigation/#adding-icons-to-the-side-nav
 [RealFaviconGenerator]: https://realfavicongenerator.net/
 [`VENDOR.json`]: https://github.com/pgsty/oink/blob/main/VENDOR.json

@@ -45,9 +45,8 @@ hugo version
 
 根据站点的安装方式选择对应页面：
 
-- [Hugo 模块](hugo-module/)
-- [Git submodule 或克隆](git/)
-- [从上游 npm 包迁移](npm-package/)
+- [升级 OINK](upgrade/)
+- [从 Docsy 迁移](from-docsy/)
 
 如果使用发布归档，请先保留站点自己的覆盖，再用目标版本归档替换现有主题目录。务必校验归档的 checksum，并让
 `LICENSE`、`NOTICE` 与 `VENDOR.json` 始终随发行物保留。

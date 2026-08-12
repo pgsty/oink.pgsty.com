@@ -69,8 +69,8 @@ hugo server
 本地预览只能证明某个 checkout 可以渲染；它不能证明主题标签已经公开、部署包含相同 commit，或线上路由可用。引用示例作为证据时，应分别记录源码、构建、版本发布与线上验证。
 
 [从零新建站点]: /zh/docs/tutorial/create-site/
-[内容组件]: /zh/docs/content/components/
-[多语言支持]: /zh/docs/advanced/language/
+[内容组件]: /zh/docs/components/
+[多语言支持]: /zh/docs/configure/language/
 [部署]: /zh/docs/deploy/
 [架构]: /zh/docs/about/architecture/
-[迁移]: /zh/docs/upgrade/migrate-from-docsy/
+[迁移]: /zh/docs/upgrade/from-docsy/

@@ -295,6 +295,6 @@ hvm use {{% param hugoSupportedVersion %}}/extended
 [hugo-supported-version]: <https://github.com/gohugoio/hugo/releases/tag/v{{% param hugoSupportedVersion %}}>
 [hugo-164-perf]: https://discourse.gohugo.io/t/hugo-building-slowly-from-release-0-128-0/57314/21
 [hvm]: https://github.com/jmooring/hvm
-[安装 Hugo]: /zh/docs/tutorial/prerequisites/#install-hugo
-[多语言支持]: /zh/docs/advanced/language/
+[安装 Hugo]: /zh/docs/tutorial/prerequisites/#install-hugo-extended
+[多语言支持]: /zh/docs/configure/language/
 <!-- prettier-ignore-end -->

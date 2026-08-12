@@ -12,11 +12,14 @@
 ## Documentation index
 
 - [About Oink](http://localhost/docs/about/index.md)
-- [Get Started](http://localhost/docs/tutorial/index.md)
 - [Authoring](http://localhost/docs/content/index.md)
 - [Advanced](http://localhost/docs/advanced/index.md)
 - [Deployment](http://localhost/docs/deploy/index.md)
 - [Upgrade](http://localhost/docs/upgrade/index.md)
+- [Get started](http://localhost/docs/tutorial/index.md)
+- [Site configuration](http://localhost/docs/configure/index.md)
+- [Content components](http://localhost/docs/components/index.md)
+- [Appearance](http://localhost/docs/appearance/index.md)
 
 ## Site locales
 

@@ -205,7 +205,7 @@ breakpoints. Project-wide patterns belong in `_styles_project.scss`.
 OINK supports Hugo Chroma by default and a locally vendored Prism option. Choose
 one highlighter consistently; enabling both produces duplicate markup or styles.
 For filenames, Copy policies, wrapping, collapse, line anchors, and shareable
-Code Groups, see [Code blocks and Code Groups](/docs/content/code-blocks/).
+Code Groups, see [Code blocks and Code Groups](/docs/components/code-blocks/).
 
 ### Code highlighting with Chroma
 
@@ -408,4 +408,4 @@ body_class: product-reference
 OINK appends the value to its generated body classes. Use a project-specific,
 semantic class name and never insert untrusted content into this field.
 
-[Advanced customization]: /docs/advanced/customize/
+[Advanced customization]: /docs/appearance/customize/

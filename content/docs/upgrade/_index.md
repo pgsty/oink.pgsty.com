@@ -53,9 +53,8 @@ value.
 
 Use the page matching the site's installation mode:
 
-- [Hugo module](hugo-module/)
-- [Git submodule or clone](git/)
-- [Migration from the upstream npm package](npm-package/)
+- [Upgrade OINK](upgrade/)
+- [Migrate from Docsy](from-docsy/)
 
 For a released archive, replace the existing theme directory with the target
 archive only after preserving site-owned overrides. Verify its checksum and keep

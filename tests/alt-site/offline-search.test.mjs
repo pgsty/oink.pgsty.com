@@ -115,7 +115,7 @@ for (const [deployment, baseURL, prefix] of [
         `${language} gzip index exceeds budget`,
       );
 
-      const config = entryBySuffix(entries, '/docs/content/configuration/');
+      const config = entryBySuffix(entries, '/docs/configure/overview/');
       const tutorial = entryBySuffix(entries, '/docs/tutorial/install/');
       const blog = entryBySuffix(entries, '/blog/oink/oink-announcement/');
       const project = entryBySuffix(entries, '/project/build/ci-cd/');
@@ -132,8 +132,8 @@ for (const [deployment, baseURL, prefix] of [
       assert.deepEqual(
         config.breadcrumb,
         language === 'zh'
-          ? ['文档', '创作内容', '配置']
-          : ['Docs', 'Authoring', 'Configuration'],
+          ? ['文档', '站点配置', '配置']
+          : ['Docs', 'Site configuration', 'Configuration'],
       );
       assert.deepEqual(
         [config.root, blog.root, project.root],

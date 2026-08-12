@@ -199,7 +199,7 @@ OINK supports GitHub-style blockquote alerts and optional Obsidian-style titles:
 Supported semantic types include `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, and
 `CAUTION`, plus the Bootstrap-compatible types and `NB`. Use alerts sparingly:
 important instructions must still make sense to screen readers and in print. See
-[Alerts](/docs/content/lookandfeel/#alerts) for appearance.
+[Alerts](/docs/appearance/styling/#alerts) for appearance.
 
 ### Links
 

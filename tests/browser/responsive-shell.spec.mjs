@@ -208,8 +208,9 @@ test('page actions are complete and keyboard operable', async ({ page }) => {
   await expect(context).toBeVisible();
   await expect(context).toContainText('Open in ChatGPT');
   await expect(context).toContainText('Open in Claude');
-  await expect(context).toContainText('Copy Markdown');
-  await expect(context).toContainText('View Markdown');
+  await expect(context).toContainText('Copy text');
+  await expect(context).toContainText('View source');
+  await expect(context).toContainText('View edit history');
   await expect(context).toContainText('Edit this page');
   await expect(context).toContainText('Create docs issue');
   await expect(context).toContainText('Print this page');
@@ -274,6 +275,9 @@ test('page actions localize AI labels and prompts', async ({ page }) => {
   const context = page.locator('[data-td-page-context]');
   await expect(context).toContainText('在 ChatGPT 中打开');
   await expect(context).toContainText('在 Claude 中打开');
+  await expect(context).toContainText('复制文本');
+  await expect(context).toContainText('查阅源码');
+  await expect(context).toContainText('查阅编辑历史');
 
   const prompt = new URL(
     await context

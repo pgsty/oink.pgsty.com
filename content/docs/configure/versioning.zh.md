@@ -1,32 +1,25 @@
 ---
-title: Versioning
-# date: 2020-02-02
+title: 文档版本管理
 weight: 30
 icon: fa-solid fa-code-branch
-description: Link documentation versions and mark archived releases.
+description: 连接多个文档版本并标记归档版本。
 aliases: [/docs/content/versioning/, /docs/feature/versioning/]
 cSpell:ignore: pagelinks Kubeflow
 ---
 
 <!-- markdownlint-disable blanks-around-headings no-bare-urls single-h1 -->
 
-Depending on your project's releases and versioning, you may want to let your
-users access previous versions of your documentation. How you deploy the
-previous versions is up to you. This page describes the Oink features that you
-can use to provide navigation between the various versions of your docs and to
-display an information banner on the archived sites.
+根据项目的发布和版本管理方式，你可能需要让用户访问旧版文档。旧版本的具体部署方式由你决定。本页介绍 OINK 提供的功能：在各个文档版本之间导航，并在归档站点上显示信息横幅。
 
-## Adding a version drop-down menu {#adding-a-version-drop-down-menu}
+## 添加版本下拉菜单 {#adding-a-version-drop-down-menu}
 
-If you add some `[params.versions]` in `hugo.toml`/`hugo.yaml`/`hugo.json`, the
-Oink adds a version selector drop-down to the navbar. You specify a URL and a
-name for each version you would like to add to the menu, as in the following
-example:
+如果在 `hugo.toml`、`hugo.yaml` 或 `hugo.json` 中添加
+`[params.versions]`，OINK 会在顶部导航栏加入版本下拉选择器。请为每个需要加入菜单的版本指定 URL 和名称，例如：
 
 <!-- markdownlint-disable no-shortcut-ref-link -->
 <!-- prettier-ignore-start -->
 {{< tabpane >}}
-{{< tab header="Configuration file:" disabled=true />}}
+{{< tab header="配置文件：" disabled=true />}}
 {{< tab header="hugo.toml" lang="toml" >}}
 # Add your release versions here
 [[params.versions]]
@@ -75,16 +68,15 @@ params:
 <!-- prettier-ignore-end -->
 <!-- markdownlint-enable no-shortcut-ref-link -->
 
-Remember to add your current version so that users can navigate back!
+别忘了加入当前版本，这样用户才能返回！
 
-The default title for the version drop-down menu is **Releases**. To change the
-title, change the site parameter `version_menu` in
-`hugo.toml`/`hugo.yaml`/`hugo.json`:
+版本下拉菜单的默认标题是 **Releases**。要修改标题，请在 `hugo.toml`、`hugo.yaml`
+或 `hugo.json` 中调整站点参数 `version_menu`：
 
 <!-- markdownlint-disable no-shortcut-ref-link -->
 <!-- prettier-ignore-start -->
 {{< tabpane >}}
-{{< tab header="Configuration file:" disabled=true />}}
+{{< tab header="配置文件：" disabled=true />}}
 {{< tab header="hugo.toml" lang="toml" >}}
 [params]
 version_menu = "Releases"
@@ -104,23 +96,19 @@ params:
 <!-- prettier-ignore-end -->
 <!-- markdownlint-enable no-shortcut-ref-link -->
 
-If you set the `version_menu_pagelinks` parameter to `true`, then links in the
-version drop-down menu point to the current page in the other version, instead
-of the main page. This can be useful if the document doesn't change much between
-the different versions. Note that if the current page doesn't exist in the other
-version, the link will be broken.
+如果把 `version_menu_pagelinks` 参数设为
+`true`，版本下拉菜单会链接到其他版本中的当前页面，而不是它们的首页。如果文档在不同版本之间变化不大，这项功能会很有用。请注意：如果当前页面在另一版本中不存在，链接就会失效。
 
-You can also configure individual menu entries:
+还可以分别配置每个菜单项：
 
-- Use `name` instead of `version` when the menu label is not a version number.
-- Set `name` to `---` to add a menu separator.
-- Omit `url` to render a disabled text item, such as a group heading.
-- Set `kind` to add a kind-specific class for styling. For details, see
-  [Navigation and menus][].
-- Set `pagelinks: false` on an entry to link to that version's main URL even
-  when the global `version_menu_pagelinks` parameter is `true`.
+- 如果菜单标签不是版本号，使用 `name` 代替 `version`。
+- 将 `name` 设为 `---` 可添加菜单分隔线。
+- 省略 `url` 可渲染禁用的文本项，例如分组标题。
+- 设置 `kind` 可添加与类型对应的 CSS 类。详情请参阅[导航与菜单][]。
+- 即使全局 `version_menu_pagelinks` 参数为 `true`，仍可在某个菜单项上设置
+  `pagelinks: false`，让它始终链接到该版本首页。
 
-For example:
+例如：
 
 ```yaml
 params:
@@ -141,38 +129,33 @@ params:
       url: https://preview.example.com
 ```
 
-To learn more about Oink menus, see [Navigation and menus][].
+要进一步了解 OINK 菜单，请参阅[导航与菜单][]。
 
-[Navigation and menus]: /docs/content/navigation/#version-menu
+[导航与菜单]: /zh/docs/configure/navigation/#version-menu
 
-## Displaying a banner on archived doc sites {#displaying-a-banner-on-archived-doc-sites}
+## 在归档文档站点显示横幅 {#displaying-a-banner-on-archived-doc-sites}
 
-If you create archived snapshots for older versions of your docs, you can add a
-note at the top of every page in the archived docs to let readers know that
-they’re seeing an unmaintained snapshot and give them a link to the latest
-version.
+如果为旧版文档创建归档快照，可以在归档文档的每个页面顶部添加提示，告诉读者他们正在查看不再维护的快照，并提供指向最新版本的链接。
 
-For example, see the archived docs for
-[Kubeflow v0.6](https://v0-6.kubeflow.org/docs/):
+例如，可以查看 [Kubeflow v0.6 归档文档](https://v0-6.kubeflow.org/docs/)：
 
 <figure>
   <img src="/images/version-banner.png"
-       alt="A text box explaining that this is an unmaintained snapshot of the docs."
+       alt="一个文本框，说明当前页面是不再维护的文档快照。"
        class="mt-3 mb-3 border border-info rounded" />
-  <figcaption>Figure 1. The banner on the archived docs for Kubeflow v0.6
-  </figcaption>
+  <figcaption>图 1：Kubeflow v0.6 归档文档中的横幅</figcaption>
 </figure>
 
-To add the banner to your doc site, make the following changes in your
-`hugo.toml`/`hugo.yaml`/`hugo.json` file:
+要在文档站点加入横幅，请在 `hugo.toml`、`hugo.yaml` 或 `hugo.json`
+中完成以下修改：
 
 <!-- markdownlint-disable no-shortcut-ref-link -->
 <!-- prettier-ignore-start -->
 
-1. Set the site parameter `archived_version` to `true`:
+1. 将站点参数 `archived_version` 设为 `true`：
 
     {{< tabpane >}}
-{{< tab header="Configuration file:" disabled=true />}}
+{{< tab header="配置文件：" disabled=true />}}
 {{< tab header="hugo.toml" lang="toml" >}}
 [params]
 archived_version = true
@@ -190,11 +173,10 @@ params:
 {{< /tab >}}
     {{< /tabpane >}}
 
-1. Set the site parameter `version` to the version of the archived doc set. For
-  example, if the archived docs are for version 0.1:
+1. 将站点参数 `version` 设为归档文档集的版本。例如，如果归档文档对应 0.1 版：
 
     {{< tabpane >}}
-{{< tab header="Configuration file:" disabled=true />}}
+{{< tab header="配置文件：" disabled=true />}}
 {{< tab header="hugo.toml" lang="toml" >}}
 [params]
 version = "0.1"
@@ -212,12 +194,10 @@ params:
 {{< /tab >}}
     {{< /tabpane >}}
 
-1. Make sure that site parameter `url_latest_version` contains the URL of the website that you
-  want to point readers to. In most cases, this should be the URL of the latest
-  version of your docs:
+1. 确认站点参数 `url_latest_version` 包含希望读者前往的网站 URL。大多数情况下，它应该是最新版文档的 URL：
 
     {{< tabpane >}}
-{{< tab header="Configuration file:" disabled=true />}}
+{{< tab header="配置文件：" disabled=true />}}
 {{< tab header="hugo.toml" lang="toml" >}}
 [params]
 url_latest_version = "https://your-latest-doc-site.com"

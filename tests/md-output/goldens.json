@@ -71,37 +71,37 @@
     "skip": false
   },
   {
-    "path": "docs/content/components/index.md",
+    "path": "docs/components/index.md",
     "kind": "nested section",
     "covers": ["content-primitives", "children", "i18n:en"],
     "skip": false
   },
   {
-    "path": "zh/docs/content/components/index.md",
+    "path": "zh/docs/components/index.md",
     "kind": "nested section",
     "covers": ["content-primitives", "children", "i18n:zh"],
     "skip": false
   },
   {
-    "path": "docs/content/components/fields/index.md",
+    "path": "docs/components/fields/index.md",
     "kind": "page",
     "covers": ["fields", "markdown-fallback", "i18n:en"],
     "skip": false
   },
   {
-    "path": "zh/docs/content/components/fields/index.md",
+    "path": "zh/docs/components/fields/index.md",
     "kind": "page",
     "covers": ["fields", "markdown-fallback", "i18n:zh"],
     "skip": false
   },
   {
-    "path": "docs/content/components/gallery/index.md",
+    "path": "docs/components/gallery/index.md",
     "kind": "page",
     "covers": ["gallery", "image-fallback", "i18n:en"],
     "skip": false
   },
   {
-    "path": "zh/docs/content/components/gallery/index.md",
+    "path": "zh/docs/components/gallery/index.md",
     "kind": "page",
     "covers": ["gallery", "image-fallback", "i18n:zh"],
     "skip": false

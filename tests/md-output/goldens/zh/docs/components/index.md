@@ -1,10 +1,11 @@
+# 内容组件
+
+> 使用 Oink 提供的本地可复用组件丰富文档。
+
 ---
-title: 内容组件
-weight: 90
-icon: fa-solid fa-shapes
-description: 使用 Oink 提供的本地可复用组件丰富文档。
-aliases: [/docs/oink/components/]
-sidebar_expanded: true
+
+LLMS index: [llms.txt](/zh/llms.txt)
+
 ---
 
 OINK 把已经在多个 PGSTY 站点证明具有复用价值的内容组件纳入主题。每个组件都有稳定的作者接口、唯一实例 ID、本地资源和明确的安全边界。站点专用的数据控件仍然留在主题之外。
@@ -33,7 +34,7 @@ OINK 把已经在多个 PGSTY 站点证明具有复用价值的内容组件纳�
 
 ### 统一作者契约 {#shared-authoring-contract}
 
-除 Kbd 外，这些原语都使用命名参数与标准 `{{</* ... */>}}`
+除 Kbd 外，这些原语都使用命名参数与标准 `{{< ... >}}`
 短代码写法。参数名区分大小写。未知参数、带引号的布尔值或整数、空的必填字符串、非法枚举值，以及错误的父子关系都会让构建停止，并报告源文件位置。
 
 公共接口不接受任意
@@ -66,10 +67,19 @@ Playground、读取本地目录、下载远程图片，以及复杂的拖拽或�
 使用 `asciinema` 播放保存在本地的 `.cast` 终端录像：
 
 ```go-html-template
-{{</* asciinema file="images/install.cast" speed="1.5" */>}}
+{{< asciinema file="images/install.cast" speed="1.5" >}}
 ```
 
-{{< asciinema file="images/install.cast" speed="1.5" >}}
+<div id="td-asciinema-fc97c7ccc0930dfcd771117cbe18264d-0" class="td-asciinema td-max-width-on-larger-screens" data-td-asciinema
+  data-timer-label="播放时间">
+  <div class="td-asciinema__chrome">
+    <span class="td-asciinema__lights" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="td-asciinema__title" dir="auto">images/install.cast</span>
+  </div>
+  <div data-td-asciinema-player></div>
+  <script type="application/json" data-td-asciinema-config>{"options":{"autoPlay":false,"fit":"width","loop":false,"preload":false,"speed":1.5,"startAt":0},"src":"/images/install.cast","theme":"auto"}</script>
+</div>
+
 
 `file` 是必填参数，也可以作为第一个位置参数传入。终端窗口优先显示显式传入的
 `title`，没有 `title` 时显示 `file` 的值。支持的选项包括 `title`、`theme`、
@@ -101,27 +111,39 @@ ECharts 与 Infographic 仍然是 Oink 内容组件，但现在分别在“高�
 可以创建一至四列的响应式卡片组。这些别名让现有站点内容继续使用语义最贴切的名称，同时避免复制标记与样式。
 
 ```go-html-template
-{{</* nav-cards cols="3" */>}}
-  {{</* nav-card
+{{< nav-cards cols="3" >}}
+  {{< nav-card
     title="架构"
     link="/zh/docs/about/architecture/"
     icon="fa-solid fa-diagram-project"
     desc="了解构建与运行时边界。"
-  */>}}
-  {{</* nav-card
+  >}}
+  {{< nav-card
     title="部署"
     link="/zh/docs/deploy/"
     badge="仅依赖 Hugo"
-  */>}}发布静态输出。{{</* /nav-card */>}}
-{{</* /nav-cards */>}}
+  >}}发布静态输出。{{< /nav-card >}}
+{{< /nav-cards >}}
 ```
 
 <!-- prettier-ignore-start -->
 
-{{< nav-cards cols="3" >}}
-{{< nav-card title="架构" link="/zh/docs/about/architecture/" icon="fa-solid fa-diagram-project" desc="了解构建与运行时边界。" />}}
-{{< nav-card title="部署" link="/zh/docs/deploy/" badge="仅依赖 Hugo" >}}发布静态输出。{{< /nav-card >}}
-{{< /nav-cards >}}
+<div id="td-nav-cards-fc97c7ccc0930dfcd771117cbe18264d-1" class="td-content-cards" style="--td-card-columns: 3">
+<article id="td-nav-card-fc97c7ccc0930dfcd771117cbe18264d-nav-cards-1-0" class="td-content-card">
+  <div class="td-content-card__body">
+    <div class="td-content-card__head"><i class="fa-solid fa-diagram-project td-content-card__icon" aria-hidden="true"></i><a class="td-content-card__title" href="/zh/docs/about/architecture/">架构</a></div><p class="td-content-card__description">了解构建与运行时边界。</p>
+  </div>
+</article>
+
+<article id="td-nav-card-fc97c7ccc0930dfcd771117cbe18264d-nav-cards-1-1" class="td-content-card">
+  <div class="td-content-card__body">
+    <div class="td-content-card__head"><a class="td-content-card__title" href="/zh/docs/deploy/">部署</a><span class="td-content-card__badge">仅依赖 Hugo</span></div>
+    <div class="td-content-card__links">发布静态输出。</div>
+  </div>
+</article>
+
+</div>
+
 
 <!-- prettier-ignore-end -->
 
@@ -132,20 +154,46 @@ ECharts 与 Infographic 仍然是 Oink 内容组件，但现在分别在“高�
 把文档卡片放进 `doc-carousel`，即可生成无障碍横向轮播：
 
 ```go-html-template
-{{</* doc-carousel label="OINK 工作流" */>}}
-  {{</* doc-card title="编写" */>}}创建成对内容。{{</* /doc-card */>}}
-  {{</* doc-card title="构建" */>}}运行 Hugo Extended。{{</* /doc-card */>}}
-  {{</* doc-card title="验证" */>}}检查静态站点。{{</* /doc-card */>}}
-{{</* /doc-carousel */>}}
+{{< doc-carousel label="OINK 工作流" >}}
+  {{< doc-card title="编写" >}}创建成对内容。{{< /doc-card >}}
+  {{< doc-card title="构建" >}}运行 Hugo Extended。{{< /doc-card >}}
+  {{< doc-card title="验证" >}}检查静态站点。{{< /doc-card >}}
+{{< /doc-carousel >}}
 ```
 
 <!-- prettier-ignore-start -->
 
-{{< doc-carousel label="OINK 工作流" >}}
-{{< doc-card title="编写" >}}创建成对内容。{{< /doc-card >}}
-{{< doc-card title="构建" >}}运行 Hugo Extended。{{< /doc-card >}}
-{{< doc-card title="验证" >}}检查静态站点。{{< /doc-card >}}
-{{< /doc-carousel >}}
+<section id="td-carousel-fc97c7ccc0930dfcd771117cbe18264d-2" class="td-doc-carousel" data-td-carousel role="region"
+  aria-roledescription="carousel" aria-label="OINK 工作流">
+  <button class="td-doc-carousel__button" type="button" data-td-carousel-action="previous"
+    aria-controls="td-carousel-fc97c7ccc0930dfcd771117cbe18264d-2-track" aria-label="上一张卡片">‹</button>
+  <div id="td-carousel-fc97c7ccc0930dfcd771117cbe18264d-2-track" class="td-doc-carousel__track" data-td-carousel-track tabindex="0">
+<article id="td-doc-card-fc97c7ccc0930dfcd771117cbe18264d-doc-carousel-2-0" class="td-content-card">
+  <div class="td-content-card__body">
+    <div class="td-content-card__head"><strong class="td-content-card__title">编写</strong></div>
+    <div class="td-content-card__links">创建成对内容。</div>
+  </div>
+</article>
+
+<article id="td-doc-card-fc97c7ccc0930dfcd771117cbe18264d-doc-carousel-2-1" class="td-content-card">
+  <div class="td-content-card__body">
+    <div class="td-content-card__head"><strong class="td-content-card__title">构建</strong></div>
+    <div class="td-content-card__links">运行 Hugo Extended。</div>
+  </div>
+</article>
+
+<article id="td-doc-card-fc97c7ccc0930dfcd771117cbe18264d-doc-carousel-2-2" class="td-content-card">
+  <div class="td-content-card__body">
+    <div class="td-content-card__head"><strong class="td-content-card__title">验证</strong></div>
+    <div class="td-content-card__links">检查静态站点。</div>
+  </div>
+</article>
+
+</div>
+  <button class="td-doc-carousel__button" type="button" data-td-carousel-action="next"
+    aria-controls="td-carousel-fc97c7ccc0930dfcd771117cbe18264d-2-track" aria-label="下一张卡片">›</button>
+</section>
+
 
 <!-- prettier-ignore-end -->
 
@@ -157,16 +205,20 @@ ECharts 与 Infographic 仍然是 Oink 内容组件，但现在分别在“高�
 `details` 输出原生 `details` 与 `summary` 元素：
 
 ```go-html-template
-{{%/* details title="为什么只依赖 Hugo？" closed="false" */%}}
+{{% details title="为什么只依赖 Hugo？" closed="false" %}}
 已经提交的浏览器资源让消费端构建保持可复现。
-{{%/* /details */%}}
+{{% /details %}}
 ```
 
 <!-- prettier-ignore-start -->
 
-{{% details title="为什么只依赖 Hugo？" closed="false" %}}
+<details id="td-details-fc97c7ccc0930dfcd771117cbe18264d-3" class="td-details" open>
+  <summary>为什么只依赖 Hugo？</summary>
+  <div class="td-details__body">
 已经提交的浏览器资源让消费端构建保持可复现。
-{{% /details %}}
+</div>
+</details>
+
 
 <!-- prettier-ignore-end -->
 
@@ -178,26 +230,25 @@ OINK 沿用 Docsy 的 `tabpane` 与 `tab` 创作模型，同时保留导入站�
 `selected=true` 与空白处理行为：
 
 ```go-html-template
-{{</* tabpane text=true */>}}
-  {{</* tab header="本地" selected=true */>}}
+{{< tabpane text=true >}}
+  {{< tab header="本地" selected=true >}}
   使用完整本地主题构建。
-  {{</* /tab */>}}
-  {{</* tab header="Cloudflare" */>}}
+  {{< /tab >}}
+  {{< tab header="Cloudflare" >}}
   从源分支运行同一条 Hugo 命令。
-  {{</* /tab */>}}
-{{</* /tabpane */>}}
+  {{< /tab >}}
+{{< /tabpane >}}
 ```
 
 <!-- prettier-ignore-start -->
 
-{{< tabpane text=true >}}
-{{< tab header="本地" selected=true >}}
+**本地**
+
 使用完整本地主题构建。
-{{< /tab >}}
-{{< tab header="Cloudflare" >}}
+
+**Cloudflare**
+
 从源分支运行同一条 Hugo 命令。
-{{< /tab >}}
-{{< /tabpane >}}
 
 <!-- prettier-ignore-end -->
 
@@ -209,10 +260,10 @@ Markdown 内容应设置
 `param` 输出页面参数；页面没有该参数时，会回退到同名站点参数：
 
 ```go-html-template
-当前版本：{{</* param version */>}}
+当前版本：{{< param version >}}
 ```
 
-当前版本：`{{< param version >}}`
+当前版本：`v0.3.0`
 
 指定参数不存在时，短代码会让构建失败。这是有意设计：缺少发布版本或仓库信息时，不应悄悄生成误导性文档。
 
@@ -234,3 +285,15 @@ OINK 也为继承而来的内容功能提供本地运行时：
 - 创建新包装组件时，要在同一页测试多个完全相同的实例。
 - 检查键盘导航、焦点可见性、深浅色主题、移动布局、打印输出与减少动态效果行为。
 - 把带有业务语义的数据组件留在消费站点。
+
+---
+
+Section pages:
+
+- [Badge](/zh/docs/components/badge/): 使用紧凑的语义状态标签，无需自定义颜色或 JavaScript。
+- [Kbd](/zh/docs/components/kbd/): 使用具备无障碍语义的静态按键序列编写快捷键。
+- [Fields 与 Field](/zh/docs/components/fields/): 使用响应式语义 HTML 描述配置、参数、属性与响应字段。
+- [FileTree](/zh/docs/components/filetree/): 使用语义化渐进展开列表展示仓库与目录结构。
+- [Image Zoom](/zh/docs/components/image-zoom/): 使用可选的原生对话框查看有意义的独立图片细节。
+- [Gallery](/zh/docs/components/gallery/): 使用响应式静态网格组织相关图片，并可复用 Image Zoom。
+- [代码块与代码组](/zh/docs/components/code-blocks/): 为 Hugo 代码示例添加文件名、精确复制、换行、折叠与可分享的代码组。

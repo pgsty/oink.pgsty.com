@@ -1,67 +1,79 @@
 ---
-downstream_modified: true
-title: Get Started
-description: Build a bilingual Oink documentation site with Hugo Extended.
-date: 2018-07-30
-aliases: [/tutorial/, /docs/get-started/, /docs/getting-started/]
-weight: 2
+title: Get started
+linkTitle: Get started
+description:
+  Build a bilingual OINK documentation site from scratch and deploy it.
+weight: 10
 icon: fa-solid fa-rocket
 ---
 
-Oink is a Hugo theme whose complete browser runtime ships with the theme. A
-consumer site builds with Hugo Extended alone: no Node.js package installation,
-PostCSS step, CDN, or build-time remote asset download is part of the default
-path.
+OINK is a Hugo theme that ships its browser runtimes with the theme. A consuming
+site needs **only Hugo Extended**: no Node.js, no PostCSS, no CDN, and no remote
+theme asset download during the build.
 
-## Choose a starting point
+## What this chapter covers {#what-this-chapter-covers}
 
-- **Hugo Module — recommended:** import `github.com/pgsty/oink` in an existing
-  or new Hugo site. See the [Oink quick start](/docs/tutorial/install/).
-- **Project site:** use the independent
-  [`pgsty/oink.pgsty.com`](https://github.com/pgsty/oink.pgsty.com) repository
-  as a complete bilingual configuration and regression reference.
-- **Existing Docsy site:** follow the
-  [migration guide](/docs/upgrade/migrate-from-docsy/) to remove common
-  overrides and the consumer npm asset pipeline without rewriting content.
+Read these seven pages in order and you will have a deployable bilingual
+documentation site:
 
-## Install the prerequisites
+{{< fields >}} {{% field name="Prerequisites" type="5 min" %}} Install Hugo
+Extended and confirm the binary reports `extended`. Git and Go are needed
+depending on how you obtain the theme. {{% /field %}}
+{{% field name="Install OINK" type="5 min" %}} Pin a version with Hugo Modules.
+The other three distribution methods — offline archive, submodule, clone — are
+on the same page. {{% /field %}}
+{{% field name="Create a site" type="15 min" %}} From an empty directory to a
+previewable page, including how bilingual content is organized. {{% /field %}}
+{{% field name="Basic configuration" type="20 min" %}} Site identity, languages,
+search, repository links, and production build flags. {{% /field %}}
+{{% field name="Project site" type="optional" %}} Adapt `oink.pgsty.com`
+directly as a template, which suits an open-source project that wants a
+documentation site quickly. {{% /field %}}
+{{% field name="Container preview" type="optional" %}} Run previews and
+production builds in a container instead of installing Hugo locally.
+{{% /field %}} {{% field name="Troubleshooting" type="reference" %}} How to
+locate build, language, search, and platform problems. {{% /field %}}
+{{< /fields >}}
 
-Install Git, Go, and Hugo Extended `{{% param hugoMinVersion %}}` or newer. See
-[Before you begin](prerequisites/) for platform notes and verification commands.
+## Three starting points {#three-starting-points}
 
-## Add Oink
+| Your situation      | Suggested path                                                                        |
+| ------------------- | ------------------------------------------------------------------------------------- |
+| New project         | [Prerequisites](prerequisites/) → [Install](install/) → [Create a site](create-site/) |
+| Existing Hugo site  | Go straight to [Install](install/) and import OINK as a module                        |
+| Existing Docsy site | See [Migrate from Docsy](/docs/upgrade/from-docsy/); prose does not need rewriting    |
 
-From the site root:
+## Shortest path {#shortest-path}
+
+With Hugo Extended, Git, and Go already installed, three commands get you
+running:
 
 ```sh
 hugo mod init github.com/example/product-docs
-hugo mod get github.com/pgsty/oink@THEME_REF
+hugo mod get github.com/pgsty/oink@{{% param tdVersion.latest %}}
+hugo server
 ```
 
-Then import the theme in `hugo.yaml`:
+Add the module import to `hugo.yaml`:
 
-```yaml
+```yaml {filename="hugo.yaml"}
 module:
   imports:
     - path: github.com/pgsty/oink
 ```
 
-Pin `THEME_REF` to a released tag or immutable commit and commit `go.mod` and
-`go.sum`.
-
-## Build contract
-
-The same commands preview and build every supported module consumer:
+Every supported installation method uses the same preview and production
+commands:
 
 ```sh
-hugo server --disableFastRender
-hugo --gc --minify
+hugo server --disableFastRender   # local preview
+hugo --gc --minify                # production build
 ```
 
-## Next steps
+## Next steps {#next-steps}
 
-1. Set the [basic configuration](basic-configuration/).
-2. Add repository, copyright, logo, and menu values.
-3. Put translations side by side as `page.md` and `page.zh.md`.
-4. Add and customize [content](/docs/content/).
-5. Choose a [deployment target](/docs/deploy/).
+Once the site runs, continue as needed:
+
+- [Site configuration](/docs/configure/): navigation menus, languages, versions
+- [Components](/docs/components/): code blocks, Fields, FileTree, and the rest
+- [Deployment](/docs/deploy/): Cloudflare Pages, GitHub Pages, and other hosts

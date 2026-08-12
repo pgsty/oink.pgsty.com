@@ -70,7 +70,10 @@ repository.
 
 ## Tag and publish the theme
 
-After review, create one immutable signed root tag in the theme repository:
+After review, create one immutable signed root tag on the reviewed release
+commit in the theme repository. OINK currently tags the reviewed `main` commit;
+a maintenance branch is optional and must exist before documentation refers to
+it:
 
 ```sh
 git tag -s vX.Y.Z -m "Oink vX.Y.Z"
@@ -97,7 +100,13 @@ Once the theme tag resolves publicly, update the independent site repository:
 hugo mod get github.com/pgsty/oink@vX.Y.Z
 hugo mod tidy
 npm test
+npm run test:browser
 ```
+
+The Pages workflow also runs `node scripts/check-release-pin.mjs`; deployment
+stops if `params.version`, `tdVersion.latest`, and the exact theme requirement
+in `go.mod` are not the same stable tag. Candidate testing can still use the
+ignored sibling `go.work`, but that workspace is never publication evidence.
 
 Commit `go.mod`, `go.sum`, version parameters, changelog, and upgrade guidance
 together. Deploy previews first, then advance the production publishing branch

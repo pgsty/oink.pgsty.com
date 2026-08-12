@@ -30,8 +30,8 @@ capabilities:
       motto: 从第一次构建到长期维护都没有额外阻力
       bullets:
         - '开箱即用，提供零阻力的[部署上线](docs/deploy/)体验'
-        - '自带[全文检索](docs/advanced/search/#local-search-with-lunr)、[i18n](docs/advanced/language/#configure-languages)
-          与[多版本支持](docs/advanced/versioning/#adding-a-version-drop-down-menu)'
+        - '自带[全文检索](docs/advanced/search/#local-search-with-lunr)、[i18n](docs/configure/language/#configure-languages)
+          与[多版本支持](docs/configure/versioning/#adding-a-version-drop-down-menu)'
         - '自带
           [RSS](docs/content/adding-content/#rss-feeds)、[SEO](docs/advanced/analytics/#search-engine-optimization-metadata)
           与 [Google Analytics](docs/advanced/analytics/#adding-analytics) 集成'
@@ -53,13 +53,13 @@ capabilities:
         rules: ['88%', '72%', '55%']
     - ref: 02 / 设计与能力
       title: 简洁、素雅、功能齐全
-      url: docs/content/lookandfeel/
+      url: docs/appearance/styling/
       motto: 现代文档视觉与成熟内容能力兼得
       bullets:
         - '继承 [Hugo](https://gohugo.io/) [Docsy](https://www.docsy.dev/)
           的强大文档能力'
         - '借鉴参考 [Fumadocs](https://fumadocs.dev/) 的界面审美风格'
-        - '针对 [开源项目与工程审美](docs/content/lookandfeel/) 进行优化'
+        - '针对 [开源项目与工程审美](docs/appearance/styling/) 进行优化'
       value: 界面保持克制，成熟文档站所需的功能一项不少。
       visual:
         type: components
@@ -106,12 +106,11 @@ capabilities:
           - { class: ok, prefix: '✓ ', text: public/ 可以部署 }
     - ref: 04 / 功能扩展
       title: 功能扩展
-      url: docs/content/components/
+      url: docs/components/
       motto: 把工程内容需要的表达能力直接带进主题
       bullets:
-        - '[Asciinema](docs/content/components/#asciinema)、[ECharts](docs/content/components/#echarts)
-          与
-          [Infographic](docs/content/components/#infographic)，完整表达工程内容'
+        - '[Asciinema](docs/components/#asciinema)、[ECharts](docs/components/#echarts)
+          与 [Infographic](docs/components/#infographic)，完整表达工程内容'
         - '[KaTeX](docs/content/diagrams-and-formulae/#latex-support-with-katex)、[Mermaid](docs/content/diagrams-and-formulae/#diagrams-with-mermaid)
           与完整的图表工具箱'
         - '每个[短代码与组件](docs/content/shortcodes/)都有文档，并且只在使用时加载'
@@ -125,17 +124,17 @@ capabilities:
           - {
               icon: fa-solid fa-terminal,
               title: Asciinema,
-              url: docs/content/components/#asciinema,
+              url: docs/components/#asciinema,
             }
           - {
               icon: fa-solid fa-chart-line,
               title: ECharts,
-              url: docs/content/components/#echarts,
+              url: docs/components/#echarts,
             }
           - {
               icon: fa-solid fa-diagram-project,
               title: Infographic,
-              url: docs/content/components/#infographic,
+              url: docs/components/#infographic,
             }
           - {
               icon: fa-solid fa-square-root-variable,
@@ -175,12 +174,12 @@ capabilities:
           - {
               icon: fa-solid fa-id-card,
               title: Cards,
-              url: docs/content/components/#cards-and-carousel,
+              url: docs/components/#cards-and-carousel,
             }
           - {
               icon: fa-solid fa-images,
               title: Carousel,
-              url: docs/content/components/#cards-and-carousel,
+              url: docs/components/#cards-and-carousel,
             }
 
 principles:
@@ -215,7 +214,7 @@ footer:
         - { label: OINK 概览, url: docs/about/ }
         - { label: 本地优先设计, url: docs/about/local-first/ }
         - { label: 架构, url: docs/about/architecture/ }
-        - { label: 配置, url: docs/content/configuration/ }
+        - { label: 配置, url: docs/configure/overview/ }
     - title: 资源
       links:
         - { label: 使用文档, url: docs/ }

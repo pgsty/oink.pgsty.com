@@ -69,8 +69,8 @@ function manifest(pageHTML) {
 test('subpath manifests localize safe commands and preserve action URLs', () => {
   const outDir = build('manifest');
   for (const [relative, language, titles] of [
-    ['docs/content/configuration/index.html', 'en', ['OINK issues']],
-    ['zh/docs/content/configuration/index.html', 'zh', ['OINK 问题反馈']],
+    ['docs/configure/overview/index.html', 'en', ['OINK issues']],
+    ['zh/docs/configure/overview/index.html', 'zh', ['OINK 问题反馈']],
   ]) {
     const page = html(outDir, relative);
     const data = manifest(page);
@@ -99,8 +99,8 @@ test('subpath manifests localize safe commands and preserve action URLs', () => 
       data.quickLinks.every((link) => link.url.startsWith('/preview/')),
     );
     for (const [id, suffix] of [
-      ['copy_markdown', '/docs/content/configuration/index.md'],
-      ['view_markdown', '/docs/content/configuration/index.md'],
+      ['copy_markdown', '/docs/configure/overview/index.md'],
+      ['view_markdown', '/docs/configure/overview/index.md'],
     ]) {
       const action = data.actions.find((candidate) => candidate.id === id);
       const languagePrefix = language === 'zh' ? '/preview/zh' : '/preview';
@@ -108,7 +108,10 @@ test('subpath manifests localize safe commands and preserve action URLs', () => 
     }
     for (const id of [
       'copy_markdown',
+      'open_chatgpt',
+      'open_claude',
       'view_markdown',
+      'view_history',
       'edit_page',
       'create_issue',
       'print',
@@ -122,6 +125,7 @@ test('subpath manifests localize safe commands and preserve action URLs', () => 
         id,
       );
     }
+    assert.equal(data.actions.length, 12);
   }
 });
 
@@ -131,8 +135,8 @@ test('search-disabled pages omit the Palette runtime but retain page actions', (
     'hugo.yml,tests/fixtures/prd4-palette/search-disabled.yml',
   ]);
   for (const relative of [
-    'docs/content/configuration/index.html',
-    'zh/docs/content/configuration/index.html',
+    'docs/configure/overview/index.html',
+    'zh/docs/configure/overview/index.html',
   ]) {
     const page = html(outDir, relative);
     assert.doesNotMatch(page, /id="td-shell-search"/);

@@ -90,7 +90,7 @@ Use `asciinema` for a terminal recording stored as a local `.cast` file:
 >}}
 ```
 
-<div id="td-asciinema-c60ee6f0045bc2d3da5f0495b20f717e-0" class="td-asciinema td-max-width-on-larger-screens" data-td-asciinema
+<div id="td-asciinema-c2991d9c1e63802fe6d6714eb471381a-0" class="td-asciinema td-max-width-on-larger-screens" data-td-asciinema
   data-timer-label="Playback time">
   <div class="td-asciinema__chrome">
     <span class="td-asciinema__lights" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -156,14 +156,14 @@ markup or styles.
 
 <!-- prettier-ignore-start -->
 
-<div id="td-nav-cards-c60ee6f0045bc2d3da5f0495b20f717e-1" class="td-content-cards" style="--td-card-columns: 3">
-<article id="td-nav-card-c60ee6f0045bc2d3da5f0495b20f717e-nav-cards-1-0" class="td-content-card">
+<div id="td-nav-cards-c2991d9c1e63802fe6d6714eb471381a-1" class="td-content-cards" style="--td-card-columns: 3">
+<article id="td-nav-card-c2991d9c1e63802fe6d6714eb471381a-nav-cards-1-0" class="td-content-card">
   <div class="td-content-card__body">
     <div class="td-content-card__head"><i class="fa-solid fa-diagram-project td-content-card__icon" aria-hidden="true"></i><a class="td-content-card__title" href="/docs/about/architecture/">Architecture</a></div><p class="td-content-card__description">Understand the build and runtime boundaries.</p>
   </div>
 </article>
 
-<article id="td-nav-card-c60ee6f0045bc2d3da5f0495b20f717e-nav-cards-1-1" class="td-content-card">
+<article id="td-nav-card-c2991d9c1e63802fe6d6714eb471381a-nav-cards-1-1" class="td-content-card">
   <div class="td-content-card__body">
     <div class="td-content-card__head"><a class="td-content-card__title" href="/docs/deploy/">Deployment</a><span class="td-content-card__badge">Hugo-only</span></div>
     <div class="td-content-card__links">Publish the static output.</div>
@@ -192,26 +192,26 @@ carousel:
 
 <!-- prettier-ignore-start -->
 
-<section id="td-carousel-c60ee6f0045bc2d3da5f0495b20f717e-2" class="td-doc-carousel" data-td-carousel role="region"
+<section id="td-carousel-c2991d9c1e63802fe6d6714eb471381a-2" class="td-doc-carousel" data-td-carousel role="region"
   aria-roledescription="carousel" aria-label="OINK workflow">
   <button class="td-doc-carousel__button" type="button" data-td-carousel-action="previous"
-    aria-controls="td-carousel-c60ee6f0045bc2d3da5f0495b20f717e-2-track" aria-label="Previous card">‹</button>
-  <div id="td-carousel-c60ee6f0045bc2d3da5f0495b20f717e-2-track" class="td-doc-carousel__track" data-td-carousel-track tabindex="0">
-<article id="td-doc-card-c60ee6f0045bc2d3da5f0495b20f717e-doc-carousel-2-0" class="td-content-card">
+    aria-controls="td-carousel-c2991d9c1e63802fe6d6714eb471381a-2-track" aria-label="Previous card">‹</button>
+  <div id="td-carousel-c2991d9c1e63802fe6d6714eb471381a-2-track" class="td-doc-carousel__track" data-td-carousel-track tabindex="0">
+<article id="td-doc-card-c2991d9c1e63802fe6d6714eb471381a-doc-carousel-2-0" class="td-content-card">
   <div class="td-content-card__body">
     <div class="td-content-card__head"><strong class="td-content-card__title">Write</strong></div>
     <div class="td-content-card__links">Create paired content.</div>
   </div>
 </article>
 
-<article id="td-doc-card-c60ee6f0045bc2d3da5f0495b20f717e-doc-carousel-2-1" class="td-content-card">
+<article id="td-doc-card-c2991d9c1e63802fe6d6714eb471381a-doc-carousel-2-1" class="td-content-card">
   <div class="td-content-card__body">
     <div class="td-content-card__head"><strong class="td-content-card__title">Build</strong></div>
     <div class="td-content-card__links">Run Hugo Extended.</div>
   </div>
 </article>
 
-<article id="td-doc-card-c60ee6f0045bc2d3da5f0495b20f717e-doc-carousel-2-2" class="td-content-card">
+<article id="td-doc-card-c2991d9c1e63802fe6d6714eb471381a-doc-carousel-2-2" class="td-content-card">
   <div class="td-content-card__body">
     <div class="td-content-card__head"><strong class="td-content-card__title">Verify</strong></div>
     <div class="td-content-card__links">Inspect the static site.</div>
@@ -220,7 +220,7 @@ carousel:
 
 </div>
   <button class="td-doc-carousel__button" type="button" data-td-carousel-action="next"
-    aria-controls="td-carousel-c60ee6f0045bc2d3da5f0495b20f717e-2-track" aria-label="Next card">›</button>
+    aria-controls="td-carousel-c2991d9c1e63802fe6d6714eb471381a-2-track" aria-label="Next card">›</button>
 </section>
 
 
@@ -242,7 +242,7 @@ Committed browser assets keep the consuming build reproducible.
 
 <!-- prettier-ignore-start -->
 
-<details id="td-details-c60ee6f0045bc2d3da5f0495b20f717e-3" class="td-details" open>
+<details id="td-details-c2991d9c1e63802fe6d6714eb471381a-3" class="td-details" open>
   <summary>Why Hugo-only?</summary>
   <div class="td-details__body">
 Committed browser assets keep the consuming build reproducible.
@@ -330,9 +330,10 @@ authoring reference.
 
 Section pages:
 
-- [Badge](/docs/content/components/badge/): Add compact, semantic status labels without custom colors or JavaScript.
-- [Kbd](/docs/content/components/kbd/): Write keyboard shortcuts as accessible, static key sequences.
-- [Fields and Field](/docs/content/components/fields/): Describe configuration, parameters, properties, and response fields with responsive semantic HTML.
-- [FileTree](/docs/content/components/filetree/): Present repository and directory structures as semantic, progressively disclosed lists.
-- [Image Zoom](/docs/content/components/image-zoom/): Let readers inspect meaningful standalone images with an optional native dialog.
-- [Gallery](/docs/content/components/gallery/): Arrange related images in a responsive static grid that can reuse Image Zoom.
+- [Badge](/docs/components/badge/): Add compact, semantic status labels without custom colors or JavaScript.
+- [Kbd](/docs/components/kbd/): Write keyboard shortcuts as accessible, static key sequences.
+- [Fields and Field](/docs/components/fields/): Describe configuration, parameters, properties, and response fields with responsive semantic HTML.
+- [FileTree](/docs/components/filetree/): Present repository and directory structures as semantic, progressively disclosed lists.
+- [Image Zoom](/docs/components/image-zoom/): Let readers inspect meaningful standalone images with an optional native dialog.
+- [Gallery](/docs/components/gallery/): Arrange related images in a responsive static grid that can reuse Image Zoom.
+- [Code blocks and Code Groups](/docs/components/code-blocks/): Add filenames, exact Copy behavior, wrapping, collapse, and shareable groups to Hugo code examples.

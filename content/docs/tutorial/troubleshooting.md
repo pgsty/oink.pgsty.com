@@ -1,111 +1,166 @@
 ---
-downstream_modified: true
-title: Troubleshooting and known issues
+title: Troubleshooting
 linkTitle: Troubleshooting
-weight: 100
-icon: fa-solid fa-wrench
-description: Diagnose Oink installation, build, language, and platform issues.
-aliases: [known_issues, /docs/get-started/troubleshooting/]
+weight: 70
+description: Locating build, language, search, upgrade, and platform problems.
 cSpell:ignore: maxfiles maxfilesperproc
 ---
 
-Start diagnosis from a clean production build:
+Diagnosis starts from a clean production build:
 
 ```sh
 hugo --gc --minify --logLevel info
 ```
 
-The consumer command should not invoke npm, PostCSS, Autoprefixer, or download
-theme browser assets.
+A consumer build command should **never** invoke npm, PostCSS, or Autoprefixer,
+and should never download the theme's browser assets. Seeing those in the log
+means an upstream Docsy workflow has leaked into the configuration.
 
-## Build issues
+## Build issues {#build-issues}
 
-### Hugo is not Extended or is too old
+### Hugo is not Extended, or is too old {#hugo-is-not-extended-or-too-old}
 
-Run `hugo version`. The output must include `extended`, and the version must be
-at least `{{% param hugoMinVersion %}}`. If a shell, editor, CI runner, or
-container still selects an older binary, inspect its `PATH` and pinned tool
-configuration rather than installing another copy blindly.
+```sh
+hugo version
+```
 
-### The theme cannot be found
+The output must contain `extended` and be at least
+`{{% param hugoMinVersion %}}`.
 
-An error such as `module "github.com/pgsty/oink" not found` means that Hugo
-cannot resolve the configured theme. Check the selected installation mode:
+If a shell, editor, CI runner, or container still selects an old binary, inspect
+`PATH` and the pinned tool configuration. **Do not just install another copy** —
+several coexisting Hugos make the problem harder to find.
 
-- for a Git checkout, the `theme` name and directory path must agree;
-- for a Hugo module, run `hugo mod graph` and inspect `go.mod`, `go.sum`, and
-  any configured Hugo workspace or replacement;
-- for a CI checkout, initialize the pinned submodule or restore the complete
-  release archive before running Hugo.
+### The theme cannot be found {#the-theme-cannot-be-found}
 
-### A local browser asset is missing
+`module "github.com/pgsty/oink" not found` means Hugo cannot resolve the theme.
+Check according to the installation method:
 
-Do not fix a missing Bootstrap, Font Awesome, Lunr, Mermaid, or other OINK asset
-by adding a CDN URL. Confirm that the distribution is complete and contains
-`assets/third_party/`, `assets/js/third_party/`, `static/webfonts/`, and
-`VENDOR.json`. Re-extract or re-fetch the same pinned release if files are
-missing.
+| Method          | Check                                                                   |
+| --------------- | ----------------------------------------------------------------------- |
+| Hugo Module     | `hugo mod graph`, plus `go.mod`, `go.sum`, and any workspace or replace |
+| Git submodule   | Whether CI runs `git submodule update --init` before Hugo               |
+| Archive / clone | Whether `theme:` matches the directory name under `themes/`             |
 
-## Language and link issues
+### A local browser asset is missing {#a-local-browser-asset-is-missing}
 
-### A translated page does not appear
+When Bootstrap, Font Awesome, Lunr, or Mermaid is missing, **do not paper over
+it with a CDN URL**. Confirm the distribution is complete and contains:
 
-Check all four conditions:
+- `assets/third_party/`
+- `assets/js/third_party/`
+- `static/webfonts/`
+- `VENDOR.json`
 
-1. `languages.zh` exists and has a weight in `hugo.yaml`.
-2. The file is named `page.zh.md`, including lowercase `zh`.
-3. The translated front matter does not set `draft: true` or a future date.
-4. Route-affecting metadata matches the source unless a different route is
-   intentional.
+If files really are missing, re-extract or re-fetch the same pinned version.
 
-The language selector links to a page translation when Hugo reports one;
-otherwise it deliberately falls back to the target-language home page.
+## Issues after upgrading {#issues-after-upgrading}
 
-### A fragment link opens the page but not the heading
+### Site scripts report `$ is not defined` {#site-scripts-report-dollar-is-not-defined}
 
-Translated heading text normally generates a different automatic ID. Add the
-English rendered ID explicitly to the translated heading:
+OINK 0.3.0 **removed jQuery**. It was previously loaded in every page's
+`<head>`, so a site's own scripts may have depended on the global `$` without
+saying so.
+
+No theme feature needs it. Sites that still do can bundle it themselves:
+
+```html {filename="layouts/_partials/hooks/head-end.html"}
+<script src="{{ (resources.Get "js/jquery.min.js").RelPermalink }}"></script>
+```
+
+### Custom fonts stopped working {#custom-fonts-stopped-working}
+
+Since 0.3.0 moved fonts behind semantic roles, the body and heading roles apply
+directly to content. A site that only restyled raw `body` or heading selectors
+should move to the role variables:
+
+```scss {filename="assets/scss/_styles_project.scss"}
+/* Before */
+body {
+  font-family: 'My Sans', sans-serif;
+}
+
+/* After */
+:root {
+  --td-body-font-family: 'My Sans', sans-serif;
+}
+```
+
+The full migration list is in [Upgrade OINK](/docs/upgrade/upgrade/).
+
+## Language and link issues {#language-and-link-issues}
+
+### A translated page does not appear {#a-translated-page-does-not-appear}
+
+Check four things in order:
+
+1. `languages.zh` exists in `hugo.yaml` and has a `weight`.
+2. The filename is `page.zh.md`, with `zh` in **lower case**.
+3. The translation's front matter has no `draft: true` and no future `date`.
+4. Routing metadata matches the source unless a different route is intended.
+
+When Hugo finds a translation, the language selector links straight to it;
+otherwise it falls back to the target language home page by design. That is
+expected behavior, not a bug.
+
+### Fragment links open the page but do not scroll {#fragment-links-do-not-scroll}
+
+Translated heading text produces a different automatic ID. Write the rendered
+English ID explicitly in the translation:
 
 ```markdown
 ## 安装 {#installation}
 ```
 
-Do not infer IDs for headings containing shortcodes or inline HTML. Inspect the
-English rendered HTML, then compare the English and Chinese heading ID lists.
+For headings containing shortcodes or inline HTML, **do not guess the ID from
+the text** — read the rendered English HTML.
 
-## Search issues
+## Search issues {#search-issues}
 
-With `offlineSearch: true`, each language produces its own search index. Check
-that `offline-search-index.en.json` and `offline-search-index.zh.json` exist in
-the output and that the browser requests them from the site's base URL. A wrong
-`baseURL` is a common cause of missing indexes on subpath deployments.
+`offlineSearch: true` builds a separate index per language. Confirm the output
+contains:
 
-Chinese tokenization uses the theme's CJK fallback. If results are empty, first
-verify that the Chinese page content is present in the Chinese index rather than
-changing the tokenizer.
+```text {copy=false}
+public/offline-search-index.en.json
+public/offline-search-index.zh.json
+```
 
-## Platform issues
+Then check that the browser requests them from the correct base URL. **A wrong
+`baseURL` under a subpath deployment is the most common cause of a 404 index.**
 
-### macOS reports too many open files
+Chinese queries use the theme's CJK substring fallback. When a search returns
+nothing, first confirm the Chinese content actually reached the Chinese index
+rather than immediately changing tokenization.
 
-Large live-preview trees can exceed the shell's open-file limit. Inspect the
-current limit with `ulimit -n` and raise it temporarily for the current shell if
-local policy permits. Prefer excluding generated or unrelated directories from
-the watched tree before applying a machine-wide limit change.
+The Command Palette (`Cmd/Ctrl-K`, or `/` for command mode) still works when the
+index is unavailable: it reports the index as unavailable while page actions and
+commands continue to function.
 
-### Windows Subsystem for Linux is slow or misses changes
+## Platform issues {#platform-issues}
 
-Run Hugo against a Linux filesystem path rather than a Windows-mounted path.
-Cross-filesystem notification and permission behavior can make live reload slow
-or unreliable.
+### macOS reports too many open files {#macos-too-many-open-files}
 
-## Diagnostic checklist
+Live preview over a large content tree can exceed the shell's open-file limit:
 
-- Reproduce with the exact pinned Hugo Extended version.
-- Remove stale `public/` and `resources/` output through the project's normal
-  clean command, then rebuild.
-- Compare development and production configuration layers.
-- Check the first build error, not only the final cascading message.
-- Test a minimal page to separate theme behavior from site overrides.
-- Re-enable site overrides and content components in small groups.
-- Inspect the browser console and network log for the failing page.
+```sh
+ulimit -n
+```
+
+Before raising a machine-wide limit, **exclude generated and unrelated
+directories from the watch set** — that is usually the real cause.
+
+### WSL is slow or misses changes {#wsl-is-slow-or-misses-changes}
+
+Let Hugo work on paths inside the Linux filesystem rather than across a Windows
+mount. Cross-filesystem change notification and permission behavior make live
+reload slow or unreliable.
+
+## Diagnostic checklist {#diagnostic-checklist}
+
+- Reproduce with a pinned, exact Hugo Extended version.
+- Remove stale `public/` and `resources/` output and rebuild.
+- Compare the development and production configuration layers.
+- **Read the first error**, not the last cascading one.
+- Use a minimal page to separate theme behavior from site overrides.
+- Re-enable site overrides and content components in batches to isolate one.
+- Check the browser console and network log on the failing page.

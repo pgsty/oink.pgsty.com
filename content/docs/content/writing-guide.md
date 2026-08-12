@@ -70,7 +70,7 @@ params:
 ```
 
 Metadata should clarify an example, not decorate every fence. See
-[Code blocks and Code Groups](/docs/content/code-blocks/) for filenames, Copy
+[Code blocks and Code Groups](/docs/components/code-blocks/) for filenames, Copy
 policies, wrapping, collapse, line links, and synchronized alternatives.
 
 ## Review rendered states {#review-rendered-states}

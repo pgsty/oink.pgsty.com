@@ -1,19 +1,25 @@
 ---
-title: Install Oink
+title: Install OINK
+linkTitle: Install OINK
 weight: 20
-icon: fa-solid fa-puzzle-piece
-description: Add the pinned Oink Hugo Module to a site.
-aliases: [/docs/oink/getting-started/, /docs/get-started/docsy-as-module/]
+description:
+  Pin an OINK version with Hugo Modules, or choose the offline archive,
+  submodule, or clone alternatives.
 ---
 
-Oink is published as the Hugo Module `github.com/pgsty/oink`. A consuming site
-builds with Hugo Extended alone; Node.js, npm, PostCSS, and CDN-hosted browser
-packages are not part of the build contract.
+OINK is published as the Hugo Module `github.com/pgsty/oink`. **Modules are the
+recommended method for every site** — it is the only one where Hugo resolves the
+version, verifies checksums, and leaves an audit record in `go.sum`.
 
-## Prerequisites
+The other three methods exist for specific constraints: network isolation, a
+platform that requires a complete source tree, or an organization that reviews
+its own copy of the theme. They are covered under
+[Other installation methods](#other-installation-methods).
 
-Install Git, Go, and Hugo Extended `0.160.1` or newer. The project site
-currently validates with `0.164.0`:
+## Prerequisites {#prerequisites}
+
+The module method needs Git, Go, and Hugo Extended
+`{{% param hugoMinVersion %}}` or newer:
 
 ```sh
 git --version
@@ -21,20 +27,22 @@ go version
 hugo version
 ```
 
-The Hugo version output must include `extended`.
+The `hugo version` output must contain `extended`. Standard Hugo cannot compile
+the theme's SCSS and fails the build.
 
-## Add the module
+Platform-specific instructions are in [Prerequisites](../prerequisites/).
 
-From your Hugo site root, initialize a module if the site does not already have
-one, then pin an Oink release:
+## Add the module {#add-the-module}
+
+Initialize a module in the site root if it does not have one, then pin an OINK
+version:
 
 ```sh
 hugo mod init github.com/example/product-docs
-hugo mod get github.com/pgsty/oink@THEME_REF
+hugo mod get github.com/pgsty/oink@{{% param tdVersion.latest %}}
 ```
 
-Replace `THEME_REF` with a published tag such as `v0.3.0` or an immutable
-commit. Add the import to `hugo.yaml`:
+Import it in `hugo.yaml`:
 
 ```yaml {filename="hugo.yaml"}
 module:
@@ -42,36 +50,36 @@ module:
     - path: github.com/pgsty/oink
 ```
 
-Commit the resulting `go.mod` and `go.sum`. Do not run production builds against
-an unpinned branch.
+Commit the generated `go.mod` and `go.sum`.
 
-## Preview the site
+> [!IMPORTANT] A production site must pin a release tag or an immutable commit
+> rather than following `main`. `@latest` is a one-time resolution, not a
+> version policy: it writes whatever is newest at that moment into `go.mod`, and
+> someone running it later can resolve something different.
 
-Start an editing server:
-
-```sh
-hugo server --disableFastRender
-```
-
-Create a production artifact with:
+## Preview and build {#preview-and-build}
 
 ```sh
-hugo --gc --minify
+hugo server --disableFastRender   # local preview
+hugo --gc --minify                # production build
 ```
 
-Oink ships Bootstrap, Font Awesome, fonts, search, diagrams, API documentation
-runtimes, and its content components. A consuming site does not need a
-`node_modules` directory.
+Bootstrap, Font Awesome, fonts, search, diagrams, API documentation runtimes,
+and content components all ship with the theme. **A consuming site needs no
+`node_modules` directory** and installs no frontend toolchain for the theme.
 
-## Develop against a local checkout
+## Develop against a local checkout {#develop-against-a-local-checkout}
 
-Clone the theme and site as siblings, then use a local Go workspace:
+This section applies only when you change the theme and the site together. Clone
+both repositories as siblings:
 
-```text {title="Sibling checkout layout" copy=false}
+```text {title="Sibling layout" copy=false}
 ~/pgsty/
-├── oink/
-└── product-docs/
+├── oink/            # theme
+└── product-docs/    # your site
 ```
+
+Point the module at the local copy with a Go workspace:
 
 ```sh
 cd ~/pgsty/product-docs
@@ -81,76 +89,80 @@ export HUGO_MODULE_WORKSPACE=go.work
 hugo server
 ```
 
-Keep `go.work` out of version control. The committed `go.mod` remains pinned to
-the public module; the workspace substitutes the sibling checkout only on your
-machine.
+> [!WARNING] Do not commit `go.work`. The committed `go.mod` still pins the
+> public module; the workspace only substitutes the sibling checkout on your
+> machine. CI and production builds never see `go.work` and use the pinned
+> version.
 
-## Add bilingual content
+## Other installation methods {#other-installation-methods}
 
-Create the English page first:
+These three methods do not need Go, and the site references the theme with
+`theme: oink` instead of `module.imports`. Their shared cost is that **version
+resolution and integrity verification become your responsibility**.
 
-```text
-content/docs/operations.md
+### Offline archive {#offline-archive}
+
+The first choice for network-isolated environments. A complete archive contains
+the theme, local browser runtimes, fonts, `LICENSE`, `NOTICE`, `VENDOR.json`,
+and checksums.
+
+```text {title="Theme directory layout" copy=false}
+site/
+├── hugo.yaml
+└── themes/
+    └── oink/
 ```
 
-Then add its translation beside it:
-
-```text
-content/docs/operations.zh.md
+```yaml {filename="hugo.yaml"}
+theme: oink
 ```
 
-Keep front matter identifiers, code, commands, parameter names, and link targets
-semantically aligned. Translate reader-facing prose. For stable cross-language
-deep links, preserve the English heading ID explicitly in the Chinese heading:
+Verify the archive checksum before extracting. Use only archives attached to a
+published release; a locally assembled file must not be described as a published
+distribution.
 
-```markdown
-## 故障恢复 {#failure-recovery}
+### Git submodule {#git-submodule}
+
+Records the exact theme commit in the site repository:
+
+```sh
+git submodule add https://github.com/pgsty/oink.git themes/oink
+git -C themes/oink fetch --tags
+git -C themes/oink checkout {{% param tdVersion.latest %}}
+git add .gitmodules themes/oink
+git commit -m "Add OINK theme at {{% param tdVersion.latest %}}"
 ```
 
-## Configure the minimum site
+CI must initialize the submodule before running Hugo, or `themes/oink` is empty:
 
-The essential configuration is small:
-
-```yaml {filename="hugo.yaml" collapse=20}
-title: Product Docs
-baseURL: https://docs.example.com/
-defaultContentLanguage: en
-
-languages:
-  en:
-    label: English
-    locale: en-US
-    weight: 1
-  zh:
-    label: 简体中文
-    locale: zh-CN
-    weight: 2
-
-params:
-  logo: icons/logo.svg
-  offlineSearch: true
-
-module:
-  imports:
-    - path: github.com/pgsty/oink
-  hugoVersion:
-    extended: true
-    min: 0.160.1
+```sh
+git submodule update --init --recursive
 ```
 
-Add menus, outputs, markup extensions, repository links, and optional features
-as the site grows. See [Configuration](/docs/content/configuration/) for the
-supported model.
+### Pinned clone {#pinned-clone}
 
-## Validate before publishing
+Use this when the hosting platform requires the build input to contain a
+complete theme tree:
 
-At minimum:
+```sh
+git clone https://github.com/pgsty/oink.git themes/oink
+git -C themes/oink checkout {{% param tdVersion.latest %}}
+```
 
-1. build from a clean checkout with the committed module files;
-2. run `hugo --gc --minify` with the pinned Hugo Extended version;
-3. browse representative English and Chinese pages;
-4. verify language switching, search, mobile navigation, dark mode, and print;
-5. inspect browser network requests if the site promises offline operation.
+Record the resolved commit and the restore procedure. If these files are
+committed to the site repository, **OINK's `LICENSE`, `NOTICE`, and
+`VENDOR.json` must be preserved**.
 
-These checks establish a build artifact. Publishing that artifact and verifying
-the hosted URL are separate deployment steps.
+### Comparing the four methods {#comparison}
+
+| Method          | Needs Go | Version auditable             | Use when                       |
+| --------------- | -------- | ----------------------------- | ------------------------------ |
+| **Hugo Module** | yes      | `go.sum` verifies it          | the default                    |
+| Offline archive | no       | manual checksum               | network isolation              |
+| Git submodule   | no       | repository records the commit | theme source must live in-repo |
+| Pinned clone    | no       | you record it                 | platform requires a full tree  |
+
+## Next steps {#next-steps}
+
+- [Create a site](../create-site/): from an empty directory to a first page
+- [Basic configuration](../configuration/): identity, languages, search

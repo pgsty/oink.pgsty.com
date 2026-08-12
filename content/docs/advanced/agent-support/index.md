@@ -27,11 +27,13 @@ Oink enables:
   `outputs` configuration controls which page kinds publish Markdown.
 - **Discovery**: page HTML headers include `rel="alternate"` links to the
   Markdown version of the page.
-- **View Markdown**: page meta area includes a **View Markdown** link to the
-  Markdown version of the page.
-- **Open in ChatGPT / Claude**: documentation page actions can hand the current
+- **Copy text / View source**: page actions can copy or open the Markdown
+  version of the page when that output exists.
+- **Open in ChatGPT / Claude**: file-backed page actions can hand the current
   browser URL to either assistant. Oink builds the prompt only when the reader
   activates the link, preserving the deployed host, query string, and fragment.
+- **View edit history**: opens the current source file's commit history when
+  `github_repo` and its repository path are available.
 - **[`llms.txt`](#llms-txt)**: site-root file listing.
 
 The remainder of this page explains how to enable each feature, and discusses

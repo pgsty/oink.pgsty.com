@@ -31,8 +31,8 @@ capabilities:
       bullets:
         - '[Production-ready](docs/deploy/) from day one'
         - '[Full-text search](docs/advanced/search/#local-search-with-lunr),
-          [i18n](docs/advanced/language/#configure-languages), and
-          [versioning](docs/advanced/versioning/#adding-a-version-drop-down-menu)
+          [i18n](docs/configure/language/#configure-languages), and
+          [versioning](docs/configure/versioning/#adding-a-version-drop-down-menu)
           built in'
         - '[RSS](docs/content/adding-content/#rss-feeds),
           [SEO](docs/advanced/analytics/#search-engine-optimization-metadata),
@@ -56,14 +56,14 @@ capabilities:
         rules: ['88%', '72%', '55%']
     - ref: 02 / CLEAN BY DESIGN
       title: Clean. Complete.
-      url: docs/content/lookandfeel/
+      url: docs/appearance/styling/
       motto: Modern design. Proven foundation.
       bullets:
         - 'User Experience inspired by [Fumadocs](https://fumadocs.dev/) &
           [Hextra](https://imfing.github.io/hextra/)'
         - 'The powerful [Hugo](https://gohugo.io/)
           [Docsy](https://www.docsy.dev/) documentation feature set'
-        - '[Look and feel](docs/content/lookandfeel/) tuned for open source and
+        - '[Look and feel](docs/appearance/styling/) tuned for open source and
           engineering teams'
       value: Quiet interface. Serious capability.
       visual:
@@ -116,13 +116,12 @@ capabilities:
           - { class: ok, prefix: '✓ ', text: public/ ready to deploy }
     - ref: 04 / EXTENSIBLE
       title: Content. On Demand.
-      url: docs/content/components/
+      url: docs/components/
       motto: First-class components, loaded per page
       bullets:
-        - '[Asciinema](docs/content/components/#asciinema),
-          [ECharts](docs/content/components/#echarts), and
-          [Infographic](docs/content/components/#infographic) for engineering
-          stories'
+        - '[Asciinema](docs/components/#asciinema),
+          [ECharts](docs/components/#echarts), and
+          [Infographic](docs/components/#infographic) for engineering stories'
         - '[KaTeX](docs/content/diagrams-and-formulae/#latex-support-with-katex),
           [Mermaid](docs/content/diagrams-and-formulae/#diagrams-with-mermaid),
           and the complete diagram toolkit'
@@ -138,17 +137,17 @@ capabilities:
           - {
               icon: fa-solid fa-terminal,
               title: Asciinema,
-              url: docs/content/components/#asciinema,
+              url: docs/components/#asciinema,
             }
           - {
               icon: fa-solid fa-chart-line,
               title: ECharts,
-              url: docs/content/components/#echarts,
+              url: docs/components/#echarts,
             }
           - {
               icon: fa-solid fa-diagram-project,
               title: Infographic,
-              url: docs/content/components/#infographic,
+              url: docs/components/#infographic,
             }
           - {
               icon: fa-solid fa-square-root-variable,
@@ -188,12 +187,12 @@ capabilities:
           - {
               icon: fa-solid fa-id-card,
               title: Cards,
-              url: docs/content/components/#cards-and-carousel,
+              url: docs/components/#cards-and-carousel,
             }
           - {
               icon: fa-solid fa-images,
               title: Carousel,
-              url: docs/content/components/#cards-and-carousel,
+              url: docs/components/#cards-and-carousel,
             }
 
 principles:
@@ -228,7 +227,7 @@ footer:
         - { label: OINK overview, url: docs/about/ }
         - { label: Local-first design, url: docs/about/local-first/ }
         - { label: Architecture, url: docs/about/architecture/ }
-        - { label: Configuration, url: docs/content/configuration/ }
+        - { label: Configuration, url: docs/configure/overview/ }
     - title: Resources
       links:
         - { label: Documentation, url: docs/ }

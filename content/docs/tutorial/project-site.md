@@ -1,22 +1,22 @@
 ---
-downstream_modified: true
-title: Inspect the bilingual project site
-linkTitle: Bilingual project site
-description: Use the independent Oink project site as a complete reference.
+title: Start from the project site
+linkTitle: Project site
 weight: 50
-icon: fa-solid fa-clone
-aliases: [/docs/get-started/docsy-as-module/example-site-as-template/]
+description:
+  Adapt oink.pgsty.com as a template to get a fully configured bilingual site
+  quickly.
 ---
 
-The independent
-[`pgsty/oink.pgsty.com`](https://github.com/pgsty/oink.pgsty.com) repository is
-the complete bilingual example and regression site. It is intentionally more
-comprehensive than a minimal consumer: use it as a reference, then keep only the
-content and configuration your product needs.
+[`pgsty/oink.pgsty.com`](https://github.com/pgsty/oink.pgsty.com) is OINK's
+bilingual example and regression site. It is **deliberately more complete than a
+minimal consuming site** — treat it as a reference, then delete what your
+product does not need.
 
-## Clone the project site
+This path suits you if you want a working bilingual structure immediately and do
+not mind deleting before editing. To control every setting from the start, use
+[Create a site](../create-site/).
 
-Clone the project site and build its pinned public Oink release directly:
+## Clone and build {#clone-and-build}
 
 ```sh
 git clone https://github.com/pgsty/oink.pgsty.com.git product-docs
@@ -24,71 +24,94 @@ cd product-docs
 hugo --gc --minify
 ```
 
-The committed `go.mod` pins `github.com/pgsty/oink`. For local theme
-development, clone the theme as a sibling and use the workspace commands
-documented in the
-[Oink quick start](/docs/tutorial/install/#develop-against-a-local-checkout).
+The committed `go.mod` pins a public version of `github.com/pgsty/oink`, so a
+fresh clone builds as-is.
 
-## Run the site checks
+If you are changing the theme at the same time, clone it as a sibling and use
+the
+[workspace commands on the install page](../install/#develop-against-a-local-checkout).
 
-Building or previewing a site with Oink does not require Node.js or installing
-npm packages. Node.js and the development dependencies in this example
-repository are needed only when maintaining the project site and running its
-formatting, link, translation, and regression checks:
+## Site checks need Node {#site-checks-need-node}
+
+> [!IMPORTANT] This is easy to misread: **building a site with OINK does not
+> need Node.js**. Node is required only to maintain this example repository and
+> run its formatting, link, translation, and regression checks:
+>
+> ```sh
+> npm ci
+> npm test
+> ```
+>
+> Your own product documentation site does not inherit that toolchain.
+
+## Replace the example identity {#replace-the-example-identity}
+
+Edit `hugo.yml` and replace these fields:
+
+{{< fields >}} {{% field name="title / languages.<lang>.title" type="string" %}}
+The site name, set per language. {{% /field %}}
+{{% field name="baseURL" type="string" %}} Your own production address.
+{{% /field %}} {{% field name="params.github_repo" type="string" %}} Your own
+content repository, or Edit this page points at OINK's repository.
+{{% /field %}} {{% field name="params.copyright" type="map" %}} Authors and
+starting year. {{% /field %}}
+{{% field name="params.logo / params.wordmark" type="string" %}} Brand assets.
+Replace the favicons under `static/` as well. {{% /field %}}
+{{% field name="services.googleAnalytics.id" type="string" %}} **Delete it**
+unless you actually want analytics. {{% /field %}}
+{{% field name="params.comments" type="map" %}} The giscus configuration points
+at OINK's repository; replace or remove it. {{% /field %}} {{< /fields >}}
+
+## Replace the example content {#replace-the-example-content}
+
+These directories under `content/` are OINK's own content. Delete them:
+
+{{< filetree >}} {{< filetree/folder name="content" open=true >}}
+{{< filetree/folder name="docs" >}}{{< /filetree/folder >}}
+{{< filetree/folder name="blog" >}}{{< /filetree/folder >}}
+{{< filetree/folder name="project" >}}{{< /filetree/folder >}}
+{{< filetree/folder name="tests" >}}{{< /filetree/folder >}}
+{{< /filetree/folder >}} {{< /filetree >}}
+
+`project/` is OINK's own project record and `tests/` holds regression pages;
+neither means anything for your product.
+
+Keep the directory structure and `_index` pages of `docs/` and `blog/`, and
+replace the prose with your own.
+
+## Configure search {#configure-search}
+
+The project site enables local search by default:
+
+```yaml {filename="hugo.yml"}
+params:
+  offlineSearch: true
+  offlineSearchIndex: summary
+  offlineSearchMaxResults: 10
+```
+
+`offlineSearchIndex` takes two values:
+
+| Value     | Indexed content             | Use when                                             |
+| --------- | --------------------------- | ---------------------------------------------------- |
+| `summary` | Title, description, excerpt | **Recommended**; keeps the index small               |
+| `content` | Full body text              | Small sites; a thousand-page site produces megabytes |
+
+## Put it in version control {#put-it-in-version-control}
+
+After cleaning up, restart the repository history — your product documentation
+should not carry OINK's commits:
 
 ```sh
-npm ci
-npm test
+rm -rf .git
+git init
+git add .
+git commit -m "Initial documentation site"
 ```
 
-Open the generated site and check both English and Chinese pages. Use the
-language switcher from a translated detail page, not only from the home page.
+Confirm `.gitignore` covers `public/`, `resources/`, and `go.work`.
 
-## Replace the example identity
+## Next steps {#next-steps}
 
-Edit `hugo.yaml` and the files under `config/`, then replace:
-
-- site and per-language titles and descriptions;
-- `baseURL`;
-- repository and branch URLs;
-- copyright holder and starting year;
-- logo and brand assets;
-- English and Chinese menu labels.
-
-Do not create an `oink.*` parameter namespace. Use Hugo's language, menu,
-module, output, and markup settings plus the documented theme parameters.
-
-## Replace the example content
-
-Keep each translation pair together:
-
-```text
-content/docs/getting-started.md
-content/docs/getting-started.zh.md
-```
-
-Delete historical and regression content that the product does not need. Remove
-an example asset only after no page references it.
-
-For translated headings, use the English rendered ID explicitly:
-
-```markdown
-## Configure search
-```
-
-```markdown
-## 配置搜索 {#configure-search}
-```
-
-## Put the new site in version control
-
-Change the module path, repository metadata, and remote before publishing a
-derived site. Keep the Oink version pinned in `go.mod`. Do not commit generated
-`public/` output unless the hosting workflow explicitly requires it.
-
-## What's next?
-
-- Review [basic configuration](/docs/tutorial/basic-configuration/).
-- Learn the [content components](/docs/content/components/).
-- Configure [deployment](/docs/deploy/).
-- Use the [release checklist](/docs/about/release/).
+- [Basic configuration](../configuration/): review each setting
+- [Deployment](/docs/deploy/): choose a hosting target

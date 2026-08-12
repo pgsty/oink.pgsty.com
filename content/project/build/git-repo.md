@@ -38,11 +38,10 @@ npm run serve
 
 ## Branch model
 
-The theme repository uses:
-
-- `main` for the next theme release;
-- `release` for the current stable release and maintenance work;
-- `vX.Y.Z` tags for immutable public releases.
+The theme repository uses `main` as its long-lived development and release
+branch, with `vX.Y.Z` tags for immutable public releases. A maintenance line may
+use a dedicated release branch when one actually exists; documentation and
+automation must not assume such a branch merely by convention.
 
 The site repository uses:
 
@@ -68,8 +67,9 @@ not maintain a generated Pages branch.
 ## Release workflow
 
 1. Develop the theme on `main` and test it against the sibling site checkout.
-2. Merge the release candidate to `release` and create the `vX.Y.Z` tag in the
-   theme repository.
+2. Review the exact release commit on `main` and create the `vX.Y.Z` tag in the
+   theme repository; use a maintenance branch only when the release explicitly
+   established one.
 3. Update the site with `hugo mod get github.com/pgsty/oink@vX.Y.Z`, run its
    checks, and merge the resulting `go.mod` and `go.sum` changes.
 4. Merge and push the reviewed site update to `main`; that push triggers the

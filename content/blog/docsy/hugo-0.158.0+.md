@@ -341,6 +341,6 @@ Confirm that you've addressed [every action][] that applies to your site. Then:
 [hugo-supported-version]: <https://github.com/gohugoio/hugo/releases/tag/v{{% param hugoSupportedVersion %}}>
 [hugo-164-perf]: https://discourse.gohugo.io/t/hugo-building-slowly-from-release-0-128-0/57314/21
 [hvm]: https://github.com/jmooring/hvm
-[Install Hugo]: /docs/tutorial/prerequisites/#install-hugo
-[Multi-language support]: /docs/advanced/language/
+[Install Hugo]: /docs/tutorial/prerequisites/#install-hugo-extended
+[Multi-language support]: /docs/configure/language/
 <!-- prettier-ignore-end -->

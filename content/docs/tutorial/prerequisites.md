@@ -1,85 +1,116 @@
 ---
-downstream_modified: true
-title: Before you begin
-date: 2021-12-08
-weight: 1
-description: Prerequisites for building an OINK site.
-icon: fa-solid fa-list-check
-aliases: [/docs/get-started/docsy-as-module/installation-prerequisites/]
+title: Prerequisites
+linkTitle: Prerequisites
+weight: 10
+description: Install Hugo Extended, plus Git and Go when your method needs them.
 ---
 
-The consumer prerequisite is Hugo Extended. Git and Go are conditional on how
-the theme source is obtained.
+The only **required** tool on the consumer side is Hugo Extended. Whether you
+also need Git and Go depends on how you obtain the theme.
 
-<a id="install-hugo"></a>
+## Install Hugo Extended {#install-hugo-extended}
 
-## Install Hugo Extended
+Install `{{% param hugoMinVersion %}}` or newer. The project site currently
+validates against `0.164.0`.
 
-Install version `{{% param hugoMinVersion %}}` or newer. The current validation
-baseline is `0.164.0`. A release's support matrix takes precedence when these
-values change.
-
-Verify the selected binary:
+Follow Hugo's [installation guides][installation guides] for your platform, then
+check which binary is actually selected:
 
 ```sh
 hugo version
 ```
 
-The output must contain `extended`. Standard Hugo cannot compile the theme's
-SCSS. Use Hugo's official [installation guides][] for the platform and pin the
-same version in local development and CI.
+The output **must contain `extended`**:
 
-## Install Git when needed
+```console
+$ hugo version
+hugo v0.164.0+extended+withdeploy darwin/arm64
+                  ^^^^^^^^
+```
 
-Git is required to clone the site, use submodules, preserve `.GitInfo`, or fetch
-a theme checkout. Verify it with:
+Standard Hugo has no embedded Sass compiler, cannot build the theme's SCSS, and
+fails the build outright.
+
+> [!TIP] Pin the same Hugo version locally and in CI. Debugging a build
+> difference caused by version drift costs far more than writing a version into
+> CI.
+
+## When Git is needed {#when-git-is-needed}
+
+Git is needed to:
+
+- clone the site repository;
+- obtain the theme as a submodule or clone;
+- let Hugo read `.GitInfo`, which is where page last-modified dates come from.
 
 ```sh
 git --version
 ```
 
-A site built from an already extracted offline archive can run Hugo without
-network access, but keeping the source in version control remains recommended.
+Building from an already-extracted offline archive works with no network at all.
+Version control is still recommended for the source itself.
 
-## Install Go only for Hugo Modules
+## When Go is needed {#when-go-is-needed}
 
-Hugo's module commands use Go. Install Go when the site imports the theme as a
-Hugo Module, then verify:
+**Only the Hugo Module method needs Go.** Module commands call Go's module
+machinery underneath:
 
 ```sh
 go version
 hugo mod graph
 ```
 
-A versioned archive, adjacent theme directory, or Git submodule does not require
-Go at site build time.
+The offline archive, submodule, and clone methods build without Go.
 
-<a id="install-postcss"></a>
+## No frontend toolchain {#no-frontend-toolchain}
 
-## Do not install a frontend toolchain
+OINK ships Bootstrap, Font Awesome, LTR and RTL stylesheets, fonts, search, and
+every browser runtime as **versioned local assets** inside the theme.
 
-OINK ships Bootstrap, Font Awesome, LTR and RTL CSS, fonts, search, and browser
-runtimes as local versioned assets. Consumer sites do not install Node.js, npm,
-PostCSS, Autoprefixer, or RTLCSS for the theme.
+A consuming site does **not** install any of the following for the theme:
 
-Node-based commands in the project-site repository are maintainer-only tools.
-The production consumer command is:
+- Node.js / npm
+- PostCSS / Autoprefixer
+- RTLCSS
+- any CDN-hosted browser package
+
+If a tutorial tells you to install npm dependencies for a Docsy site, that is
+the upstream Docsy workflow and does not apply to OINK.
+
+There is one production command on the consumer side:
 
 ```sh
 hugo --gc --minify
 ```
 
-## Check the complete distribution
+> [!NOTE] The OINK project-site repository (`oink.pgsty.com`) does contain Node
+> commands, but those belong to **theme maintainers** running regression tests.
+> They are not part of a consuming site's build.
 
-For offline or air-gapped use, confirm that the theme archive contains `go.mod`,
-`hugo.yaml`, `assets/`, `layouts/`, `static/`, `i18n/`, `LICENSE`, `NOTICE`, and
-`VENDOR.json`. Install Hugo Extended before entering the isolated environment,
-then run the same build command with network access disabled.
+## Offline and isolated environments {#offline-environments}
 
-## What's next?
+Before building in an isolated environment, confirm the theme archive contains:
 
-- [Inspect the bilingual project site](project-site/)
-- [Create a site from scratch](create-site/)
-- [Compare distribution options](/docs/tutorial/installation-options/)
+{{< filetree >}} {{< filetree/folder name="oink" open=true >}}
+{{< filetree/file name="go.mod" >}} {{< filetree/file name="hugo.yaml" >}}
+{{< filetree/file name="LICENSE" >}} {{< filetree/file name="NOTICE" >}}
+{{< filetree/file name="VENDOR.json" >}}
+{{< filetree/folder name="assets" >}}{{< /filetree/folder >}}
+{{< filetree/folder name="layouts" >}}{{< /filetree/folder >}}
+{{< filetree/folder name="static" >}}{{< /filetree/folder >}}
+{{< filetree/folder name="i18n" >}}{{< /filetree/folder >}}
+{{< /filetree/folder >}} {{< /filetree >}}
+
+`VENDOR.json` records the version, source, license path, and SHA-256 of every
+bundled third-party component, and is the basis for an offline audit.
+
+Install Hugo Extended **before** entering the isolated environment, then verify
+by running the same build command with the network disabled.
+
+## Next steps {#next-steps}
+
+- [Install OINK](../install/): choose a distribution method and pin a version
+- [Local-first](/docs/about/local-first/): the reasoning behind these
+  constraints
 
 [installation guides]: https://gohugo.io/installation/
