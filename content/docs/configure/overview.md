@@ -1,11 +1,9 @@
 ---
 title: Configuration
 weight: 10
-icon: fa-solid fa-sliders
 description: Configure Oink with Hugo settings and focused theme parameters.
 search_keywords: [config, settings, params, yaml]
 search_boost: 1.6
-aliases: [/docs/oink/configuration/]
 ---
 
 OINK follows a "native first" configuration model. Site identity, languages,
@@ -183,6 +181,7 @@ params:
     showLightDarkModeMenu: true
     page_context_menu:
       enable: true
+      assistant_links: false
       links: []
     readingtime:
       enable: true
@@ -196,20 +195,25 @@ values retain the compact ellipsis behavior.
 `quick_links` names top-level page references shown by the shell. Define their
 translated names in each language's main menu.
 
-The page context menu keeps Copy text, Open in ChatGPT / Claude, View source,
-View edit history, edit, issue, and print actions reachable at every viewport
-width. Built-in assistant links appear on every file-backed page and send the
-current URL inside a localized prompt only when a reader activates one; they do
-not upload the page body. View edit history appears when `github_repo` can
-resolve the same repository path used by Edit this page. `links` is empty by
-default. Additional custom links accept URL-encoded `{url}`, `{title}`, and
-`{markdown_url}` placeholders:
+The page context menu keeps Copy text, View source, View edit history, edit,
+issue, and print actions reachable at every viewport width. Built-in Open in
+ChatGPT / Claude actions are disabled by default. Set `assistant_links: true` to
+show them on file-backed pages; when a reader activates one, the full current
+URL — including its query string and fragment — leaves the site inside a
+localized prompt. Oink does not upload the page body. Avoid secrets in URLs and
+disclose this third-party boundary. A page can override the site policy with
+boolean `assistant_links` front matter.
+
+View edit history appears when `github_repo` can resolve the same repository
+path used by Edit this page. `links` is empty by default. Additional custom
+links accept URL-encoded `{url}`, `{title}`, and `{markdown_url}` placeholders:
 
 ```yaml
 params:
   ui:
     page_context_menu:
       enable: true
+      assistant_links: true
       links: []
       # - name: Ask an external assistant
       #   icon: fa-solid fa-wand-magic-sparkles

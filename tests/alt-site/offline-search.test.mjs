@@ -118,11 +118,9 @@ for (const [deployment, baseURL, prefix] of [
       const config = entryBySuffix(entries, '/docs/configure/overview/');
       const tutorial = entryBySuffix(entries, '/docs/tutorial/install/');
       const blog = entryBySuffix(entries, '/blog/oink/oink-announcement/');
-      const project = entryBySuffix(entries, '/project/build/ci-cd/');
       assert.equal(config.boost, 1.6);
       assert.equal(tutorial.boost, 1.35);
       assert.equal(blog.boost, 0.9);
-      assert.equal(project.boost, 1.15);
       assert.deepEqual(
         config.keywords,
         language === 'zh'
@@ -135,10 +133,7 @@ for (const [deployment, baseURL, prefix] of [
           ? ['文档', '站点配置', '配置']
           : ['Docs', 'Site configuration', 'Configuration'],
       );
-      assert.deepEqual(
-        [config.root, blog.root, project.root],
-        ['docs', 'blog', 'project'],
-      );
+      assert.deepEqual([config.root, blog.root], ['docs', 'blog']);
       assert.ok(
         entries.every(
           (entry) =>

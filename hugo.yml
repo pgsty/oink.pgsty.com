@@ -102,18 +102,6 @@ languages:
           params:
             icon: fa-solid fa-tags
             description: Version announcements and migration notes
-        - identifier: project
-          name: Project
-          pageRef: /project
-          weight: 70
-          params:
-            icon: fa-solid fa-diagram-project
-        - identifier: issues
-          name: Issues
-          url: https://github.com/pgsty/oink/issues
-          weight: 80
-          params:
-            icon: fa-regular fa-circle-question
         - identifier: github
           name: GitHub
           url: https://github.com/pgsty/oink
@@ -237,18 +225,6 @@ languages:
           params:
             icon: fa-solid fa-tags
             description: 版本公告与迁移说明
-        - identifier: project
-          name: 项目
-          pageRef: /project
-          weight: 70
-          params:
-            icon: fa-solid fa-diagram-project
-        - identifier: issues
-          name: 问题反馈
-          url: https://github.com/pgsty/oink/issues
-          weight: 80
-          params:
-            icon: fa-regular fa-circle-question
         - identifier: github
           name: GitHub
           url: https://github.com/pgsty/oink
@@ -338,7 +314,7 @@ params:
   search:
     # algolia:
   ui:
-    quick_links: [docs, blog, project]
+    quick_links: [docs, blog]
     # Starter sites use the quieter group-only policy explicitly. The theme
     # keeps its pre-1.0 compatibility default (`all`) when this is omitted.
     sidebar_icon_policy: groups

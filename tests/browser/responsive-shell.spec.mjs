@@ -62,29 +62,18 @@ for (const width of widths) {
   });
 }
 
-for (const [
-  locale,
-  path,
-  docsLabel,
-  docsHref,
-  blogLabel,
-  blogHref,
-  projectLabel,
-  projectHref,
-] of [
-  ['en', docPath, 'Docs', '/docs/', 'Blog', '/blog/', 'Project', '/project/'],
+for (const [locale, path, docsLabel, docsHref, blogLabel, blogHref] of [
+  ['en', docPath, 'Docs', '/docs/', 'Blog', '/blog/'],
   [
     'zh',
-    '/zh/docs/content/configuration/',
+    '/zh/docs/configure/overview/',
     '文档',
     '/zh/docs/',
     '博客',
     '/zh/blog/',
-    '项目',
-    '/zh/project/',
   ],
 ]) {
-  test(`${locale} root switcher resolves docs, blog, and project sections`, async ({
+  test(`${locale} root switcher resolves docs and blog sections`, async ({
     page,
   }) => {
     await page.setViewportSize({ width: 820, height: 900 });
@@ -95,7 +84,7 @@ for (const [
     await trigger.click();
 
     const items = page.locator('.td-shell-root__item');
-    await expect(items).toHaveCount(3);
+    await expect(items).toHaveCount(2);
     await expect(items.nth(0)).toHaveAttribute('href', docsHref);
     await expect(items.nth(0).locator('.td-shell-root__item-title')).toHaveText(
       docsLabel,
@@ -103,10 +92,6 @@ for (const [
     await expect(items.nth(1)).toHaveAttribute('href', blogHref);
     await expect(items.nth(1).locator('.td-shell-root__item-title')).toHaveText(
       blogLabel,
-    );
-    await expect(items.nth(2)).toHaveAttribute('href', projectHref);
-    await expect(items.nth(2).locator('.td-shell-root__item-title')).toHaveText(
-      projectLabel,
     );
   });
 }

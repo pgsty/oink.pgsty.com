@@ -1,21 +1,18 @@
 ---
-downstream_modified: true
-title: Multi-language support
-weight: 10
-icon: fa-solid fa-language
-description: Configure languages, translations, stable links, and RTL layouts.
-aliases: [/docs/language/, /docs/feature/language/]
+title: Languages
+linkTitle: Languages
+weight: 30
+description:
+  Language configuration, translation layout, stable anchors, and RTL support.
 ---
 
-OINK uses Hugo's multilingual page model rather than site-specific domain or
-template assumptions. The included site makes English the primary language, and
-Simplified Chinese (`zh`) the second language.
+OINK uses Hugo's multilingual page model directly and introduces no
+site-specific domain convention or template assumption. This site treats English
+as the primary language and Simplified Chinese (`zh`) as the second.
 
-## Configure languages
+## Configure languages {#configure-languages}
 
-Define the default language and every enabled language in `hugo.yaml`:
-
-```yaml
+```yaml {filename="hugo.yaml"}
 defaultContentLanguage: en
 
 languages:
@@ -37,145 +34,135 @@ languages:
       time_format_blog: 2006年1月2日
 ```
 
-`weight` controls both language ordering and the selector order. `label` is
-shown in that language's own script. `locale` supplies standards-friendly
-language tags for HTML, alternate links, and Open Graph metadata.
+{{< fields >}} {{% field name="label" type="string" required=true %}} The name
+shown in the language selector, written in that language — `简体中文`, not
+`Chinese`. {{% /field %}} {{% field name="locale" type="string" %}} The standard
+language tag used for `<html lang>`, `hreflang` alternates, and Open Graph
+metadata. {{% /field %}} {{% field name="weight" type="integer" %}} Sets both
+the language order and the selector's cycle order; lower comes first.
+{{% /field %}} {{% field name="title" type="string" %}} The site title in that
+language. {{% /field %}} {{% field name="params.*" type="map" %}} Language-level
+parameters override the global value of the same name; anything undefined is
+inherited. Date formats usually need a per-language value. {{% /field %}}
+{{< /fields >}}
 
-Language-specific parameters override global values; other parameters inherit
-their global value. Put translated menus under each language when labels differ.
+When menu labels differ by language, define `menus` under each language.
 
-## Organize translated content
+## Organize translations {#organize-translations}
 
-The Oink project site colocates translations:
+A translation sits **beside its source in the same directory**, distinguished by
+a filename suffix:
 
-```text
-content/docs/
-├── install.md
-└── install.zh.md
-```
+{{< filetree >}} {{< filetree/folder name="content/docs" open=true >}}
+{{< filetree/file name="install.md" >}}
+{{< filetree/file name="install.zh.md" >}} {{< /filetree/folder >}}
+{{< /filetree >}}
 
-The base name makes the files translations of one page. Keep dates, weights,
-aliases, resources, and route-affecting metadata aligned unless a deliberate
-language-specific difference is required.
+The shared base filename is what makes Hugo treat them as one page in two
+languages.
 
-Translate all visible text, including front matter titles and descriptions,
-summaries, menu labels, tags, image alternatives, callouts, and shortcode
-arguments. Preserve commands, identifiers, configuration keys, filenames, URLs,
-and product names.
+**Keep identical**: dates, weights, aliases, page resources, and every piece of
+metadata that affects routing.
 
-Sites with very large independently maintained language trees may use Hugo's
-language-specific `contentDir` model instead. Do not mix layouts casually: pick
-one model, document it, and verify how Hugo associates translations.
+**Translate**: front matter `title` and `description`, summaries, menu labels,
+tags, image alt text, callouts, and visible shortcode parameters.
 
-## Keep heading links stable
+**Do not translate**: commands, identifiers, configuration keys, filenames,
+URLs, and product names.
 
-Automatic heading IDs depend on the heading text, so translated headings would
-normally break shared fragment links. Use the English page's actual rendered ID
-as an explicit ID in the translation:
+> [!NOTE] For a large tree maintained by separate teams, Hugo also supports a
+> per-language `contentDir` model. **Do not mix the two layouts** — pick one,
+> write it into your conventions, and verify that Hugo links the translations.
+
+## Stable heading anchors {#stable-heading-anchors}
+
+This is where multilingual documentation most often breaks. Hugo derives heading
+IDs from heading text, so a Chinese heading produces a Chinese ID and
+`/docs/page/#install` and `/zh/docs/page/#安装` become two unrelated anchors.
+
+Write the source ID explicitly in the translation:
 
 ```markdown
-## Configure local search
+## 安装 {#install}
 ```
 
-```markdown
-## 配置本地搜索 {#configure-local-search}
+When translating an existing page, take the ID from the **rendered English
+HTML**. Do not guess from the heading text — headings containing shortcodes or
+inline code often generate something other than what you expect.
+
+This site enforces identical heading count, order, and IDs with a script:
+
+```sh
+node scripts/check-doc-translations.mjs --public public
 ```
 
-Inspect rendered HTML rather than guessing. Inline HTML, punctuation, badges,
-and shortcodes can affect Hugo's generated ID. Corresponding pages should have
-the same heading order and rendered ID list.
+## Language selector behavior {#language-selector-behavior}
 
-## Language selector behavior
+The selector reads each page's `.Translations`:
 
-The selector is generated from Hugo's configured sites and page translations. It
-is hidden for a single language. With two or more languages it renders one
-consistent language button: a direct click advances to the next language by
-configured weight, while hovering for half a second or focusing the control
-reveals the complete language menu.
+- the target language **has** a translation → it links straight to that page;
+- the target language **has none** → it falls back to that language's home page.
 
-For each target language, the selector links to the current page's translation
-when it exists. If it does not exist, it links to that language's home page
-instead of producing a dead or falsely translated route. The current language
-has visible and `aria-current` state.
+The fallback is deliberate, not a defect. Sending a reader to a URL that does
+not exist would be worse.
 
-## SEO and document metadata
+## Search and languages {#search-and-languages}
 
-Every page emits:
+With `offlineSearch: true`, each language gets **its own index**:
 
-- the correct HTML `lang` and `dir` values;
-- its canonical URL;
-- `rel="alternate"` links with `hreflang` for configured languages;
-- Open Graph locale and alternate-locale metadata.
+```text {copy=false}
+public/offline-search-index.en.json
+public/offline-search-index.zh.json
+```
 
-Alternate targets follow the same translated-page-or-language-home fallback as
-the visible selector. Use a correct production `baseURL`; subpath deployments
-are supported and must not be replaced by hardcoded absolute paths in layouts.
+A reader searching from a Chinese page matches only Chinese content.
 
-## Right-to-left languages
+Chinese queries use the theme's CJK substring fallback: Lunr cannot tokenize
+Chinese reliably, so the Command Palette switches to substring matching when it
+detects CJK characters. Both paths apply the same ranking boost.
 
-Set `direction: rtl` on an RTL language:
+## Right-to-left languages {#right-to-left-languages}
 
-```yaml
+Declare the writing direction on the language:
+
+```yaml {filename="hugo.yaml"}
 languages:
   ar:
     label: العربية
     locale: ar
-    direction: rtl
-    weight: 4
+    languageDirection: rtl
+    weight: 3
 ```
 
-The theme loads its committed local Bootstrap RTL artifact and uses logical CSS
-properties in its own shell. LTR and RTL sites use the same command:
+OINK loads Bootstrap's RTL stylesheet, and the theme's own CSS uses logical
+properties (`margin-inline-start` rather than `margin-left`), so mirroring is
+automatic.
 
-```sh
-hugo --gc --minify
+Site-authored CSS should use logical properties too, or it will break under RTL.
+
+## UI translations {#internationalization-bundles}
+
+The theme ships interface strings for 32 locales. English, Simplified Chinese
+(`zh-cn` and generic `zh`), and Traditional Chinese (`zh-tw`) are fully
+reviewed; the rest keep their inherited Docsy translations, and OINK-only labels
+currently fall back to English.
+
+To override one string, create a file of the same name under the site's `i18n/`:
+
+```yaml {filename="i18n/zh.yaml"}
+ui_search: 搜索文档
 ```
 
-Consumer sites do not install RTLCSS, PostCSS, or npm. Test actual RTL content,
-navigation, code, tables, diagrams, and mixed-direction strings rather than
-assuming stylesheet selection is sufficient.
+## Translation checklist {#translation-checklist}
 
-<a id="internationalization-bundles"></a>
+- [ ] every `page.md` has a matching `page.zh.md`
+- [ ] Chinese headings carry explicit IDs matching the rendered English IDs
+- [ ] routing-affecting front matter is consistent
+- [ ] commands, configuration keys, and URLs are untranslated
+- [ ] the language selector is verified on pages with and without translations
+- [ ] search returns results in both languages
 
-## UI translation bundles
+## Next steps {#next-steps}
 
-Theme UI strings live in `i18n/`. OINK includes English, Simplified Chinese,
-Traditional Chinese, and other inherited bundles. A site can override only the
-strings it needs by creating its own `i18n/<language>.yaml`; remaining values
-fall back to the theme bundle.
-
-During translation work, run:
-
-```sh
-hugo server --printI18nWarnings
-```
-
-Contribute generally useful translations to the theme. Keep product-specific
-language in the site bundle.
-
-## Search by language
-
-With `offlineSearch: true`, OINK generates a separate same-origin index for each
-language. The Simplified Chinese index uses the theme's CJK fallback. Search
-results stay within the active language.
-
-Verify that both `offline-search-index.en.json` and
-`offline-search-index.zh.json` are generated, contain the expected pages, and
-resolve under the deployed `baseURL`.
-
-## Translation checklist
-
-- [ ] Every source page in the supported scope has a `.zh.md` peer.
-- [ ] Front matter identity and route metadata match.
-- [ ] Visible prose, UI strings, alternative text, and metadata are translated.
-- [ ] Every translated Markdown heading has an explicit stable ID.
-- [ ] English and Chinese rendered heading ID lists match.
-- [ ] Internal links and fragments resolve in both languages.
-- [ ] Navigation, breadcrumbs, previous/next links, and search stay in language.
-- [ ] Dates, punctuation, spacing, and technical terminology follow the target
-      language's editorial conventions.
-- [ ] The production build emits correct canonical and alternate metadata.
-
-For Hugo's underlying model, see [Multilingual mode][].
-
-[Multilingual mode]: https://gohugo.io/content-management/multilingual/
+- [Versions](../versioning/): combining languages with versions
+- [Navigation](../navigation/): per-language menus

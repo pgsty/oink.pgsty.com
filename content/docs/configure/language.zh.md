@@ -1,18 +1,15 @@
 ---
-title: 多语言支持
-weight: 10
-icon: fa-solid fa-language
-description: 配置语言、译文、稳定链接与 RTL 布局。
-aliases: [/docs/language/, /docs/feature/language/]
+title: 多语言
+linkTitle: 多语言
+weight: 30
+description: 语言配置、译文组织、稳定锚点与 RTL 支持。
 ---
 
-OINK 使用 Hugo 的多语言页面模型，不依赖某个站点专属的域名或模板假设。随仓库提供的站点将英文设为首要语言，将简体中文（`zh`）设为第二语言。
+OINK 直接使用 Hugo 的多语言页面模型，不引入站点专属的域名约定或模板假设。本站以英文为首要语言、简体中文（`zh`）为第二语言。
 
 ## 配置语言 {#configure-languages}
 
-在 `hugo.yaml` 中定义默认语言与所有启用的语言：
-
-```yaml
+```yaml {filename="hugo.yaml"}
 defaultContentLanguage: en
 
 languages:
@@ -34,122 +31,121 @@ languages:
       time_format_blog: 2006年1月2日
 ```
 
-`weight` 同时决定语言排序和选择器顺序。`label`
-使用该语言自己的文字显示。`locale` 为 HTML、备用链接和 Open
-Graph 元数据提供符合标准的语言标签。
+{{< fields >}} {{% field name="label" type="string" required=true %}}
+语言选择器里显示的名字，用该语言自己的文字写——`简体中文` 而不是 `Chinese`。
+{{% /field %}} {{% field name="locale" type="string" %}} 标准语言标签，用于
+`<html lang>`、`hreflang` 备用链接和 Open Graph 元数据。 {{% /field %}}
+{{% field name="weight" type="integer" %}}
+同时决定语言排序和选择器轮换顺序，数字小的在前。 {{% /field %}}
+{{% field name="title" type="string" %}} 该语言下的站点标题。 {{% /field %}}
+{{% field name="params.*" type="map" %}}
+语言级参数覆盖全局同名值；没定义的继承全局。日期格式通常需要按语言设置。
+{{% /field %}} {{< /fields >}}
 
-语言专属参数会覆盖全局值；未定义的参数继承全局值。菜单标签不同时，请在每种语言下分别定义菜单。
+菜单标签因语言而异时，在各语言下分别定义 `menus`。
 
-## 组织译文内容 {#organize-translated-content}
+## 组织译文 {#organize-translations}
 
-Oink 项目站将译文并置保存：
+译文与原文并排放在同一目录，用文件名后缀区分：
 
-```text
-content/docs/
-├── install.md
-└── install.zh.md
-```
+{{< filetree >}} {{< filetree/folder name="content/docs" open=true >}}
+{{< filetree/file name="install.md" >}}
+{{< filetree/file name="install.zh.md" >}} {{< /filetree/folder >}}
+{{< /filetree >}}
 
-共同的基础文件名会让 Hugo 把这些文件识别为同一页面的不同译文。除非确实需要语言专属差异，否则日期、权重、别名、资源和影响路由的元数据应保持一致。
+相同的基础文件名让 Hugo 把它们识别为同一页面的不同语言版本。
 
-所有可见文本都需要翻译，包括 front
-matter 标题与描述、摘要、菜单标签、标签、图片替代文字、提示块和短代码参数。命令、标识符、配置键、文件名、URL 与产品名称应保持原样。
+**要保持一致的**：日期、权重、别名、页面资源，以及所有影响路由的元数据。
 
-语言树规模很大且由不同团队独立维护时，也可以使用 Hugo 的语言专属 `contentDir`
-模型。不要随意混用两种布局；应选定一种、写入规范，并验证 Hugo 如何关联译文。
+**要翻译的**：front matter 的 `title` 和
+`description`、摘要、菜单标签、标签、图片 alt 文本、提示块、shortcode 的可见参数。
 
-## 保持标题链接稳定 {#keep-heading-links-stable}
+**不要翻译的**：命令、标识符、配置键、文件名、URL、产品名。
 
-自动标题 ID 取决于标题文字，因此翻译后通常会破坏共用的片段链接。请在译文中显式使用英文页面实际渲染出的 ID：
+> [!NOTE] 语言树很大且由不同团队独立维护时，Hugo 还支持按语言分目录的
+> `contentDir`
+> 模型。**不要混用两种布局**——选一种写进规范，并验证 Hugo 是否正确关联了译文。
+
+## 稳定的标题锚点 {#stable-heading-anchors}
+
+这是多语言文档最容易出问题的地方。Hugo 从标题文本生成 ID，所以中文标题会生成中文 ID，`/docs/page/#install`
+和 `/zh/docs/page/#安装` 变成两个互不相通的锚点。
+
+在译文标题里显式写上原文 ID：
 
 ```markdown
-## Configure local search
+## 安装 {#install}
 ```
 
-```markdown
-## 配置本地搜索 {#configure-local-search}
-```
+翻译已有页面时，ID 要从英文渲染出的 HTML 里取，不要凭标题文本猜——含 shortcode 或行内代码的标题，生成的 ID 往往和你想的不一样。
 
-必须检查渲染后的 HTML，不能凭规则猜测。内联 HTML、标点、徽章和短代码都可能影响 Hugo 生成的 ID。对应页面应具有相同的标题顺序和渲染 ID 列表。
+本站用一个脚本强制中英标题数量、顺序和 ID 完全一致：
+
+```sh
+node scripts/check-doc-translations.mjs --public public
+```
 
 ## 语言选择器行为 {#language-selector-behavior}
 
-语言选择器根据 Hugo 配置的站点和页面译文自动生成。只配置一种语言时隐藏；配置两种或更多语言时，统一显示一个语言图标按钮。直接点击会按
-`weight` 顺序切换到下一种语言；悬停半秒或聚焦按钮则展示完整语言菜单。
+选择器读取每个页面的 `.Translations`：
 
-对于每种目标语言，如果当前页面存在译文，选择器就会链接到该译文；如果不存在，则链接到目标语言首页，避免生成断链或冒充译文的路由。当前语言具有可见状态和
-`aria-current` 状态。
+- 目标语言有对应译文 → 直接跳到那一页
+- 目标语言没有译文 → 回退到该语言的首页
 
-## SEO 与文档元数据 {#seo-and-document-metadata}
+回退是有意设计，不是缺陷。把读者送到一个不存在的 URL 更糟。
 
-每个页面都会输出：
+## 搜索与语言 {#search-and-languages}
 
-- 正确的 HTML `lang` 与 `dir` 值；
-- 当前页面的规范 URL；
-- 为所有配置语言生成带 `hreflang` 的 `rel="alternate"` 链接；
-- Open Graph locale 与备用 locale 元数据。
+`offlineSearch: true` 时，每种语言生成各自独立的索引：
 
-备用目标采用与可见选择器相同的“当前页面译文或目标语言首页”回退规则。请使用正确的生产
-`baseURL`；OINK 支持子路径部署，布局中不得用硬编码绝对路径替代它。
+```text {copy=false}
+public/offline-search-index.en.json
+public/offline-search-index.zh.json
+```
 
-## 从右向左语言 {#right-to-left-languages}
+读者在中文页面搜索，只会命中中文内容。
 
-为 RTL 语言设置 `direction: rtl`：
+中文查询走主题的 CJK 子串回退——Lunr 无法可靠地对中文分词，所以命令面板会在检测到 CJK 字符时切换到子串匹配路径，两条路径应用相同的排序加权。
 
-```yaml
+## 从右向左的语言 {#right-to-left-languages}
+
+在语言下声明书写方向：
+
+```yaml {filename="hugo.yaml"}
 languages:
   ar:
     label: العربية
     locale: ar
-    direction: rtl
-    weight: 4
+    languageDirection: rtl
+    weight: 3
 ```
 
-主题会加载已经提交的本地 Bootstrap
-RTL 产物，自有外壳则使用逻辑 CSS 属性。LTR 与 RTL 站点使用同一个命令：
+OINK 会加载 Bootstrap 的 RTL 样式表，主题自身的 CSS 使用逻辑属性（`margin-inline-start`
+而非 `margin-left`），因此镜像布局是自动的。
 
-```sh
-hugo --gc --minify
+站点自己写的 CSS 也应使用逻辑属性，否则 RTL 下会错位。
+
+## 界面文案翻译 {#internationalization-bundles}
+
+主题内置 32 个 locale 的界面文案。英文、简体中文（`zh-cn` 与通用
+`zh`）和繁体中文（`zh-tw`）经过完整审校；其余语言保留继承自 Docsy 的翻译，OINK 新增的标签暂时使用英文兜底。
+
+站点要覆盖某条界面文案时，在自己的 `i18n/` 下建同名文件：
+
+```yaml {filename="i18n/zh.yaml"}
+ui_search: 搜索文档
 ```
-
-消费站点不安装 RTLCSS、PostCSS 或 npm。测试时应使用真实 RTL 内容，并检查导航、代码、表格、图表和双向混排字符串，不能认为选中样式表就已足够。
-
-<a id="internationalization-bundles"></a>
-
-## UI 翻译包 {#ui-translation-bundles}
-
-主题 UI 字符串位于
-`i18n/`。OINK 包含英文、简体中文、繁体中文，以及从上游继承的其他翻译包。站点可以创建自己的
-`i18n/<language>.yaml`，只覆盖确实需要修改的字符串；其余值继续回退到主题翻译包。
-
-翻译期间运行：
-
-```sh
-hugo server --printI18nWarnings
-```
-
-通用译文应贡献到主题中；产品专属语言应留在站点翻译包中。
-
-## 分语言搜索 {#search-by-language}
-
-启用 `offlineSearch: true`
-后，OINK 会为每种语言生成独立的同源索引。简体中文索引使用主题的 CJK 回退，搜索结果不会离开当前语言。
-
-请验证 `offline-search-index.en.json` 和 `offline-search-index.zh.json`
-均已生成，包含预期页面，并能在部署后的 `baseURL` 下正确解析。
 
 ## 翻译检查清单 {#translation-checklist}
 
-- [ ] 支持范围内的每个源页面都有对应 `.zh.md` 文件。
-- [ ] front matter 身份和路由元数据一致。
-- [ ] 可见正文、UI 字符串、替代文字和元数据均已翻译。
-- [ ] 每个中文 Markdown 标题都有显式稳定 ID。
-- [ ] 中英文渲染标题 ID 列表一致。
-- [ ] 站内链接与片段在两种语言中都能解析。
-- [ ] 导航、面包屑、上一页/下一页链接和搜索保持在当前语言。
-- [ ] 日期、标点、空格和技术术语符合目标语言的编辑规范。
-- [ ] 生产构建输出正确的 canonical 与备用语言元数据。
+- [ ] 每个 `page.md` 都有对应的 `page.zh.md`
+- [ ] 中文标题带显式 ID，且与英文渲染 ID 一致
+- [ ] 影响路由的 front matter 保持一致
+- [ ] 命令、配置键、URL 未被翻译
+- [ ] 语言选择器在有译文和无译文的页面上都验证过
+- [ ] 两种语言的搜索都能返回结果
 
-Hugo 底层模型请参阅[多语言模式][Multilingual mode]。
+## 下一步 {#next-steps}
 
-[Multilingual mode]: https://gohugo.io/content-management/multilingual/
+- [版本管理](../versioning/)：语言与版本的组合
+- [导航与菜单](../navigation/)：按语言配置菜单

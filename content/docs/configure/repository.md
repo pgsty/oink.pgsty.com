@@ -3,9 +3,7 @@ downstream_modified: true
 title: Repository links and page information
 linkTitle: Repo links and page info
 description: Help readers inspect, edit, and report issues against page source.
-weight: 80
-icon: fa-solid fa-code
-aliases: [/docs/content/repository-links/, /docs/feature/repository-links/]
+weight: 50
 cSpell:ignore: lastmod
 ---
 

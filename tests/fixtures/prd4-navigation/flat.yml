@@ -12,10 +12,6 @@ languages:
           name: Blog
           pageRef: /blog
           weight: 50
-        - identifier: project
-          name: Project
-          pageRef: /project
-          weight: 70
         - identifier: issues
           name: Issues
           url: https://github.com/pgsty/oink/issues
@@ -33,10 +29,6 @@ languages:
           name: 博客
           pageRef: /blog
           weight: 50
-        - identifier: project
-          name: 项目
-          pageRef: /project
-          weight: 70
         - identifier: issues
           name: 问题反馈
           url: https://github.com/pgsty/oink/issues

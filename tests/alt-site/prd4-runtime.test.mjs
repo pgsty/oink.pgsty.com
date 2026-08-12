@@ -93,7 +93,7 @@ test('subpath manifests localize safe commands and preserve action URLs', () => 
     assert.equal(data.commands[0].url, 'https://github.com/pgsty/oink/issues');
     assert.deepEqual(
       data.quickLinks.map((link) => link.id),
-      ['quick_docs', 'quick_blog', 'quick_project'],
+      ['quick_docs', 'quick_blog'],
     );
     assert.ok(
       data.quickLinks.every((link) => link.url.startsWith('/preview/')),

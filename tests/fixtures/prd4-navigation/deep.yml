@@ -24,10 +24,6 @@ languages:
           params:
             icon: fa-solid fa-gears
             description: Deliberate depth-two regression entry
-        - identifier: project
-          name: Project
-          pageRef: /project
-          weight: 70
   zh:
     menus:
       main:
@@ -51,7 +47,3 @@ languages:
           params:
             icon: fa-solid fa-gears
             description: 用于深度降级回归的二级条目
-        - identifier: project
-          name: 项目
-          pageRef: /project
-          weight: 70

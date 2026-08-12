@@ -30,14 +30,28 @@ Oink enables:
 - **Copy text / View source**: page actions can copy or open the Markdown
   version of the page when that output exists.
 - **Open in ChatGPT / Claude**: file-backed page actions can hand the current
-  browser URL to either assistant. Oink builds the prompt only when the reader
-  activates the link, preserving the deployed host, query string, and fragment.
+  browser URL to either assistant when
+  `params.ui.page_context_menu.assistant_links` is explicitly enabled. Oink
+  builds the prompt only when the reader activates the link, preserving the
+  deployed host, query string, and fragment. The full URL then leaves the site;
+  avoid secrets in URLs and disclose the third-party boundary. The page body is
+  not uploaded.
 - **View edit history**: opens the current source file's commit history when
   `github_repo` and its repository path are available.
 - **[`llms.txt`](#llms-txt)**: site-root file listing.
 
 The remainder of this page explains how to enable each feature, and discusses
 [validation and metrics](#validation-and-metrics) supported with examples.
+
+```yaml
+params:
+  ui:
+    page_context_menu:
+      assistant_links: true
+```
+
+Use boolean `assistant_links` front matter to override this choice on an
+individual page.
 
 ## Enable Markdown output {#markdown-output}
 
@@ -152,7 +166,7 @@ and to validate that generated outputs meet the configured checks. We also
 encourage sites to implement their own monitoring and metrics on agent access
 patterns—for example logging requests to Markdown URLs or `llms.txt`, and
 collecting metrics on their use. For details, see
-[Agent-support checks](/project/build/ci-cd/#agent-support-checks).
+[Agent-support checks](https://github.com/pgsty/oink.pgsty.com/blob/main/package.json).
 
 The `oink.pgsty.com` project contains [AFDocs][] configuration and npm scripts
 so maintainers can score a deployed URL against checks that overlap with Oink's
@@ -176,11 +190,11 @@ For scorecard examples, see:
   </details>
 
 For details on how these checks are configured, see
-[Agent-support checks](/project/build/ci-cd/#agent-support-checks).
+[Agent-support checks](https://github.com/pgsty/oink.pgsty.com/blob/main/package.json).
 
 [afdocs]: https://afdocs.dev/
 [built-in output formats]: https://gohugo.io/configuration/output-formats/
-[experimental]: /project/about/changelog/#experimental
+[experimental]: https://github.com/google/docsy/blob/main/CHANGELOG.md
 [Hugo kinds]: https://gohugo.io/templates/types/
 [layouts/all.html]: https://github.com/pgsty/oink/blob/main/layouts/all.html
 [llmstxt.org]: https://llmstxt.org/

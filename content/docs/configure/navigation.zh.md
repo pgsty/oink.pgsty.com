@@ -1,7 +1,6 @@
 ---
 title: 导航与菜单
-weight: 50
-icon: fa-solid fa-bars
+weight: 20
 description: 配置导航、语言切换、侧栏与页面大纲。
 ---
 
@@ -41,6 +40,35 @@ menus:
 
 需要在配置中引用菜单项时，应为其设置 `identifier`。`name` 或 `linkTitle`
 可以按语言翻译，但标识符必须稳定。
+
+### 嵌套下拉菜单 {#nested-menus}
+
+顶层菜单支持一级下拉。用 Hugo 的 `parent` 建立父子关系：
+
+```yaml {filename="hugo.yaml"}
+menus:
+  main:
+    - identifier: docs
+      name: 文档
+      pageRef: /docs
+      weight: 20
+    - identifier: docs-tutorial
+      parent: docs
+      name: 快速上手
+      pageRef: /docs/tutorial
+      weight: 10
+      params:
+        icon: fa-solid fa-route
+        description: 安装 OINK 并创建第一个文档站
+```
+
+子项的 `params.description` 会显示在下拉项的标题下方，帮助读者判断该去哪。
+
+交互上有一个关键设计：**父级链接和展开按钮是分开的**。点父级文字直接跳转，点旁边的箭头才展开下拉。这样父级页面本身始终可达，不会被下拉「劫持」。
+
+桌面端支持点击、Enter、空格和方向键下打开，Esc 关闭并把焦点还给按钮；移动端是对应的折叠面板。**所有操作都不依赖 hover。**
+
+> [!NOTE] 只支持一级子项。更深的层级会在构建时产生警告，并降级为静态分组标题——不会生成三级悬浮菜单。深层信息架构应该放进内容侧栏，而不是顶部菜单。
 
 ### 版本菜单 {#version-menu}
 
@@ -147,11 +175,31 @@ params:
 ```yaml
 ---
 title: 运维
-icon: fa-solid fa-screwdriver-wrench
 ---
 ```
 
 同级条目的图标用法应保持一致。图标只是辅助线索，不能取代文字标签。
+
+### 侧栏图标密度 {#sidebar-icon-policy}
+
+叶子页面全都带图标会产生明显的视觉噪声。用 `sidebar_icon_policy` 控制密度：
+
+```yaml {filename="hugo.yaml"}
+params:
+  ui:
+    sidebar_icon_policy: groups # all | groups | none
+```
+
+| 取值     | 效果                                               |
+| -------- | -------------------------------------------------- |
+| `all`    | 每个有图标的侧栏条目都显示                         |
+| `groups` | 只有根节点和带子页的节点显示图标，普通叶子页不显示 |
+| `none`   | 侧栏完全不显示条目图标                             |
+
+未设置时的兼容默认值是 `all`。**新站点建议显式设为
+`groups`**——保留了分组的语义标识，同时去掉叶子层的噪声。本站就用这个设置。
+
+无效取值会产生警告并回退到 `all`。
 
 ### 为侧边导航添加手动链接 {#adding-manual-links-to-the-side-nav}
 

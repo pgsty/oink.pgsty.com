@@ -2,9 +2,7 @@
 title: 代码仓库链接与页面信息
 linkTitle: 仓库链接与页面信息
 description: 帮助读者查看、编辑页面源码，并针对源码报告问题。
-weight: 80
-icon: fa-solid fa-code
-aliases: [/docs/content/repository-links/, /docs/feature/repository-links/]
+weight: 50
 cSpell:ignore: lastmod
 ---
 

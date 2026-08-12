@@ -1,8 +1,7 @@
 ---
 downstream_modified: true
 title: Navigation and menus
-weight: 50
-icon: fa-solid fa-bars
+weight: 20
 description: Configure navigation, language switching, sidebars, and outlines.
 ---
 
@@ -46,6 +45,45 @@ menus:
 
 Use an `identifier` for configuration that refers to a menu item. Localize
 `name` or `linkTitle` in language configuration, but keep identifiers stable.
+
+### Nested dropdowns {#nested-menus}
+
+Top-level menus support **one level of dropdown**. Use Hugo's `parent` to
+establish the relationship:
+
+```yaml {filename="hugo.yaml"}
+menus:
+  main:
+    - identifier: docs
+      name: Docs
+      pageRef: /docs
+      weight: 20
+    - identifier: docs-tutorial
+      parent: docs
+      name: Get started
+      pageRef: /docs/tutorial
+      weight: 10
+      params:
+        icon: fa-solid fa-route
+        description: Install OINK and build your first site
+```
+
+A child's `params.description` renders under its title in the dropdown, helping
+a reader decide where to go.
+
+One interaction detail matters: **the parent link and the disclosure button are
+separate**. Clicking the parent text navigates; only the adjacent chevron opens
+the dropdown. The parent page therefore stays reachable rather than being
+captured by its own menu.
+
+Desktop opens with click, Enter, Space, and ArrowDown, and Escape closes and
+returns focus to the button. Mobile uses the matching accordion. **No behavior
+requires hover.**
+
+> [!NOTE] Only one child level is interactive. Deeper entries emit a build
+> warning and degrade to static group headings — they never create a third-level
+> flyout. Deep information architecture belongs in the content sidebar, not the
+> top menu.
 
 ### Version menu
 
@@ -167,12 +205,34 @@ Set `icon` in page front matter:
 ```yaml
 ---
 title: Operations
-icon: fa-solid fa-screwdriver-wrench
 ---
 ```
 
 Use icons consistently across siblings. They are secondary cues, not a
 replacement for text labels.
+
+### Sidebar icon density {#sidebar-icon-policy}
+
+An icon on every leaf page produces noticeable visual noise. Control the density
+with `sidebar_icon_policy`:
+
+```yaml {filename="hugo.yaml"}
+params:
+  ui:
+    sidebar_icon_policy: groups # all | groups | none
+```
+
+| Value    | Effect                                                             |
+| -------- | ------------------------------------------------------------------ |
+| `all`    | Every eligible sidebar entry shows its icon                        |
+| `groups` | Only roots and nodes with children show icons; plain leaves do not |
+| `none`   | Sidebar entry icons are omitted entirely                           |
+
+The compatibility default for an unset value is `all`. **New sites should set
+`groups` explicitly** — it keeps the semantic marker on groups while removing
+the noise at leaf level. This site uses that setting.
+
+An invalid value warns and falls back to `all`.
 
 ### Adding manual links to the side nav
 

@@ -51,7 +51,6 @@ test('empty Palette exposes shared quick links, page actions, and preferences', 
   const quick = group(dialog, 'Quick links');
   await expect(quick).toContainText('Docs');
   await expect(quick).toContainText('Blog');
-  await expect(quick).toContainText('Project');
   const actions = group(dialog, 'Page actions');
   await expect(actions).toContainText('Copy text');
   await expect(actions).toContainText('Open in ChatGPT');

@@ -251,7 +251,10 @@ footer:
     - title: About
       links:
         - { label: About OINK, url: docs/about/ }
-        - { label: Changelog, url: project/about/changelog/ }
+        - {
+            label: Changelog,
+            url: https://github.com/google/docsy/blob/main/CHANGELOG.md,
+          }
         - {
             label: License,
             url: 'https://github.com/pgsty/oink/blob/main/LICENSE',

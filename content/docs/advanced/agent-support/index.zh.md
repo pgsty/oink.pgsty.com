@@ -24,13 +24,23 @@ cSpell:ignore: llmstxt
 - **发现机制**：页面 HTML 的 header 会包含指向该页 Markdown 版本的
   `rel="alternate"` 链接。
 - **复制文本 / 查阅源码**：当页面存在 Markdown 输出时，页面操作可以复制或打开该版本。
-- **在 ChatGPT /
-  Claude 中打开**：有源文件的页面操作可以把当前浏览器 URL 交给相应助手。OINK 只在读者激活链接时构造提示词，并保留实际部署域名、查询参数与片段。
+- **在 ChatGPT / Claude 中打开**：只有显式启用
+  `params.ui.page_context_menu.assistant_links`
+  后，有源文件的页面操作才会把当前浏览器 URL 交给相应助手。OINK 只在读者激活链接时构造提示词，并保留实际部署域名、查询参数与片段。完整 URL 随后会离开本站；请勿在 URL 中放置秘密信息，并披露这一第三方边界。页面正文不会被上传。
 - **查阅编辑历史**：当 `github_repo`
   与仓库路径可用时，打开当前源文件的提交历史。
 - **[`llms.txt`](#llms-txt)**：位于站点根目录的内容清单文件。
 
 本页其余部分介绍如何启用各项功能，并结合示例讨论相应的[验证与指标](#validation-and-metrics)。
+
+```yaml
+params:
+  ui:
+    page_context_menu:
+      assistant_links: true
+```
+
+可用布尔型 `assistant_links` front matter 按页面覆盖这一选择。
 
 ## 启用 Markdown 输出 {#markdown-output}
 
@@ -135,7 +145,7 @@ OINK 通过 [layouts/all.html][] 渲染 Markdown 输出，并通过
 我们使用 [AFDocs][]
 评估面向智能体内容的基础结构支持，并验证生成的输出是否满足配置的检查项。我们也鼓励站点针对智能体访问模式实现自己的监控和指标，例如记录对 Markdown
 URL 或 `llms.txt`
-的请求，并统计其使用情况。详情请参阅[智能体支持检查](/zh/project/build/ci-cd/#agent-support-checks)。
+的请求，并统计其使用情况。详情请参阅[智能体支持检查](https://github.com/pgsty/oink.pgsty.com/blob/main/package.json)。
 
 `oink.pgsty.com` 项目包含 [AFDocs][]
 配置和 npm 脚本，维护者可据此对已部署 URL 评分。这些检查与 OINK 的智能体支持目标有重合，包括 Markdown
@@ -158,11 +168,11 @@ URL、`llms.txt` 和相关类别。
 
   </details>
 
-这些检查的配置详情请参阅[智能体支持检查](/zh/project/build/ci-cd/#agent-support-checks)。
+这些检查的配置详情请参阅[智能体支持检查](https://github.com/pgsty/oink.pgsty.com/blob/main/package.json)。
 
 [afdocs]: https://afdocs.dev/
 [内置输出格式]: https://gohugo.io/configuration/output-formats/
-[实验阶段]: /zh/project/about/changelog/#experimental
+[实验阶段]: https://github.com/google/docsy/blob/main/CHANGELOG.md
 [Hugo 类型]: https://gohugo.io/templates/types/
 [layouts/all.html]: https://github.com/pgsty/oink/blob/main/layouts/all.html
 [llmstxt.org]: https://llmstxt.org/

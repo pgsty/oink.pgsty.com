@@ -165,7 +165,7 @@ SCSS。这样
 ### Docsy 特有变更 {#docsy-specific-changes}
 
 迁移过程中，我们也借机完成了一些迟来的 Docsy 清理工作。Docsy 特有的破坏性与非破坏性变化详见
-[Changelog](/zh/project/about/changelog/#v0.7.0)。尤其值得注意的一项非破坏性重要变化是：[[BSv5] Docsy 变量清理……PR #1462](https://github.com/google/docsy/pull/1462)。
+[Changelog](https://github.com/google/docsy/blob/main/CHANGELOG.md)。尤其值得注意的一项非破坏性重要变化是：[[BSv5] Docsy 变量清理……PR #1462](https://github.com/google/docsy/pull/1462)。
 
 <!-- markdownlint-enable no-shortcut-ref-link -->
 
@@ -177,7 +177,7 @@ SCSS。这样
 
 完成烟雾测试后，仍建议按照前述方式系统审阅 Bootstrap
 [迁移页面](https://getbootstrap.com/docs/5.2/migration/)与 Docsy
-[Changelog](/zh/project/about/changelog/#v0.7.0)。我在
+[Changelog](https://github.com/google/docsy/blob/main/CHANGELOG.md)。我在
 [opentelemetry.io](https://opentelemetry.io/)
 上采用了这一方法；它是第一个升级到 Bootstrap
 5 预发布版 Docsy 的下游项目。整个过程[相当顺利](https://github.com/open-telemetry/opentelemetry.io/issues/2419)。OTel 网站最大的难点是升级 Bootstrap

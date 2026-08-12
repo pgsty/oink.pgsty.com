@@ -1,219 +1,113 @@
 ---
-title: 文档版本管理
-weight: 30
-icon: fa-solid fa-code-branch
-description: 连接多个文档版本并标记归档版本。
-aliases: [/docs/content/versioning/, /docs/feature/versioning/]
-cSpell:ignore: pagelinks Kubeflow
+title: 版本管理
+linkTitle: 版本管理
+weight: 40
+description: 让读者在多个文档版本之间切换，并标记归档版本。
+cSpell:ignore: pagelinks
 ---
 
-<!-- markdownlint-disable blanks-around-headings no-bare-urls single-h1 -->
+产品有多个受支持版本时，文档通常也要分版本。OINK 提供两样东西：版本切换菜单和归档版本横幅。
 
-根据项目的发布和版本管理方式，你可能需要让用户访问旧版文档。旧版本的具体部署方式由你决定。本页介绍 OINK 提供的功能：在各个文档版本之间导航，并在归档站点上显示信息横幅。
+各版本具体怎么部署由你决定——常见做法是每个版本一个子域名或子路径，各自独立构建。
 
-## 添加版本下拉菜单 {#adding-a-version-drop-down-menu}
+## 版本切换菜单 {#adding-a-version-drop-down-menu}
 
-如果在 `hugo.toml`、`hugo.yaml` 或 `hugo.json` 中添加
-`[params.versions]`，OINK 会在顶部导航栏加入版本下拉选择器。请为每个需要加入菜单的版本指定 URL 和名称，例如：
+在 `params.versions` 中列出要出现在菜单里的版本：
 
-<!-- markdownlint-disable no-shortcut-ref-link -->
-<!-- prettier-ignore-start -->
-{{< tabpane >}}
-{{< tab header="配置文件：" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
-# Add your release versions here
-[[params.versions]]
-  version = "master"
-  url = "https://master.kubeflow.org"
-
-[[params.versions]]
-  version = "v0.2"
-  url = "https://v0-2.kubeflow.org"
-
-[[params.versions]]
-  version = "v0.3"
-  url = "https://v0-3.kubeflow.org"
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
+```yaml {filename="hugo.yaml"}
 params:
+  version_menu: v2.1
   versions:
-    - version: master
-      url: 'https://master.kubeflow.org'
-    - version: v0.2
-      url: 'https://v0-2.kubeflow.org'
-    - version: v0.3
-      url: 'https://v0-3.kubeflow.org'
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
-{
-  "params": {
-    "versions": [
-      {
-        "version": "master",
-        "url": "https://master.kubeflow.org"
-      },
-      {
-        "version": "v0.2",
-        "url": "https://v0-2.kubeflow.org"
-      },
-      {
-        "version": "v0.3",
-        "url": "https://v0-3.kubeflow.org"
-      }
-    ]
-  }
-}
-{{< /tab >}}
-{{< /tabpane >}}
-<!-- prettier-ignore-end -->
-<!-- markdownlint-enable no-shortcut-ref-link -->
-
-别忘了加入当前版本，这样用户才能返回！
-
-版本下拉菜单的默认标题是 **Releases**。要修改标题，请在 `hugo.toml`、`hugo.yaml`
-或 `hugo.json` 中调整站点参数 `version_menu`：
-
-<!-- markdownlint-disable no-shortcut-ref-link -->
-<!-- prettier-ignore-start -->
-{{< tabpane >}}
-{{< tab header="配置文件：" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
-[params]
-version_menu = "Releases"
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
-params:
-  version_menu: Releases
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
-{
-  "params": {
-    "version_menu": "Releases"
-  }
-}
-{{< /tab >}}
-{{< /tabpane >}}
-<!-- prettier-ignore-end -->
-<!-- markdownlint-enable no-shortcut-ref-link -->
-
-如果把 `version_menu_pagelinks` 参数设为
-`true`，版本下拉菜单会链接到其他版本中的当前页面，而不是它们的首页。如果文档在不同版本之间变化不大，这项功能会很有用。请注意：如果当前页面在另一版本中不存在，链接就会失效。
-
-还可以分别配置每个菜单项：
-
-- 如果菜单标签不是版本号，使用 `name` 代替 `version`。
-- 将 `name` 设为 `---` 可添加菜单分隔线。
-- 省略 `url` 可渲染禁用的文本项，例如分组标题。
-- 设置 `kind` 可添加与类型对应的 CSS 类。详情请参阅[导航与菜单][]。
-- 即使全局 `version_menu_pagelinks` 参数为 `true`，仍可在某个菜单项上设置
-  `pagelinks: false`，让它始终链接到该版本首页。
-
-例如：
-
-```yaml
-params:
-  version_menu: v1.2
-  version_menu_pagelinks: true
-  versions:
-    - name: '**Versions**'
-    - version: v1.3-dev
-      kind: next
-      url: https://next.example.com
-    - version: v1.2
-      kind: latest
+    - version: v2.1
       url: https://docs.example.com
-    - name: ---
-    - name: Preview variant
-      kind: home
-      pagelinks: false
-      url: https://preview.example.com
+    - version: v2.0
+      url: https://v2-0.docs.example.com
+    - version: v1.9
+      url: https://v1-9.docs.example.com
 ```
 
-要进一步了解 OINK 菜单，请参阅[导航与菜单][]。
+{{< fields >}} {{% field name="version_menu" type="string" %}}
+菜单按钮上显示的文字，通常是当前版本号。 {{% /field %}}
+{{% field name="versions[].version" type="string" required=true %}}
+版本标识，显示在菜单项上。 {{% /field %}}
+{{% field name="versions[].url" type="string" required=true %}}
+该版本文档站的地址。留空的条目会显示为不可用。 {{% /field %}}
+{{% field name="version_menu_pagelinks" type="boolean" default="false" %}}
+是否把当前页面路径附加到目标版本的 URL 后面。 {{% /field %}} {{< /fields >}}
 
-[导航与菜单]: /zh/docs/configure/navigation/#version-menu
+菜单里可以用 `- name: '---'` 插入分隔线，把「受支持版本」和「历史版本」分开：
 
-## 在归档文档站点显示横幅 {#displaying-a-banner-on-archived-doc-sites}
+```yaml {filename="hugo.yaml"}
+params:
+  versions:
+    - name: '**当前版本**'
+    - version: v2.1
+      url: https://docs.example.com
+    - name: '---'
+    - name: '**历史版本**'
+    - version: v1.9
+      url: https://v1-9.docs.example.com
+```
 
-如果为旧版文档创建归档快照，可以在归档文档的每个页面顶部添加提示，告诉读者他们正在查看不再维护的快照，并提供指向最新版本的链接。
+## 逐页跳转的取舍 {#page-level-switching}
 
-例如，可以查看 [Kubeflow v0.6 归档文档](https://v0-6.kubeflow.org/docs/)：
+`version_menu_pagelinks: true`
+会把当前页面路径拼到目标版本的 URL 上，读者切换版本时停留在同一篇文档。
 
-<figure>
-  <img src="/images/version-banner.png"
-       alt="一个文本框，说明当前页面是不再维护的文档快照。"
-       class="mt-3 mb-3 border border-info rounded" />
-  <figcaption>图 1：Kubeflow v0.6 归档文档中的横幅</figcaption>
-</figure>
+代价是：**目标版本不一定有这个页面**。文档结构在版本之间演进，旧版本可能没有新写的页面，读者会撞上 404。
 
-要在文档站点加入横幅，请在 `hugo.toml`、`hugo.yaml` 或 `hugo.json`
-中完成以下修改：
+```yaml {filename="hugo.yaml"}
+params:
+  version_menu_pagelinks: true
+  versions:
+    - version: v2.1
+      url: https://docs.example.com
+    - version: v1.9
+      url: https://v1-9.docs.example.com
+      pagelinks: false # 这个版本结构差异大，只跳首页
+```
 
-<!-- markdownlint-disable no-shortcut-ref-link -->
-<!-- prettier-ignore-start -->
+单个版本条目上的 `pagelinks: false` 会覆盖全局设置，让该版本只跳转到首页。
 
-1. 将站点参数 `archived_version` 设为 `true`：
+> [!TIP] 文档结构在版本间基本稳定时开
+> `pagelinks`；差异大时关掉更好——跳到版本首页虽然多一步，但好过 404。
 
-    {{< tabpane >}}
-{{< tab header="配置文件：" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
-[params]
-archived_version = true
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
+## 归档版本横幅 {#archived-banner}
+
+在不再维护的旧版本站点上，显式告诉读者：
+
+```yaml {filename="hugo.yaml"}
 params:
   archived_version: true
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
-{
-  "params": {
-    "archived_version": true
-  }
-}
-{{< /tab >}}
-    {{< /tabpane >}}
+  version: v1.9
+  url_latest_version: https://docs.example.com
+```
 
-1. 将站点参数 `version` 设为归档文档集的版本。例如，如果归档文档对应 0.1 版：
+{{< fields >}}
+{{% field name="archived_version" type="boolean" default="false" %}} 设为 `true`
+时，在每个页面顶部显示归档提示横幅。 {{% /field %}}
+{{% field name="version" type="string" %}} 横幅中显示的当前版本号。
+{{% /field %}} {{% field name="url_latest_version" type="string" %}}
+指向最新版本的地址。横幅会给出一个链接。 {{% /field %}} {{< /fields >}}
 
-    {{< tabpane >}}
-{{< tab header="配置文件：" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
-[params]
-version = "0.1"
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
-params:
-  version: 0.1
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
-{
-  "params": {
-    "version": "0.1"
-  }
-}
-{{< /tab >}}
-    {{< /tabpane >}}
+横幅文案随站点语言本地化，不需要你自己写。
 
-1. 确认站点参数 `url_latest_version` 包含希望读者前往的网站 URL。大多数情况下，它应该是最新版文档的 URL：
+## 部署布局 {#deployment-layout}
 
-    {{< tabpane >}}
-{{< tab header="配置文件：" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
-[params]
-url_latest_version = "https://your-latest-doc-site.com"
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
-params:
-  url_latest_version: https://your-latest-doc-site.com
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
-{
-  "params": {
-    "url_latest_version": "https://your-latest-doc-site.com"
-  }
-}
-{{< /tab >}}
-    {{< /tabpane >}}
+两种常见做法：
 
-<!-- prettier-ignore-end -->
-<!-- markdownlint-enable no-shortcut-ref-link -->
+| 布局   | `baseURL`                        | 特点                             |
+| ------ | -------------------------------- | -------------------------------- |
+| 子域名 | `https://v1-9.docs.example.com/` | 各版本完全独立，互不影响         |
+| 子路径 | `https://docs.example.com/v1.9/` | 单一域名，需要托管方支持路径路由 |
+
+> [!IMPORTANT] 子路径部署时 `baseURL`
+> 必须包含该路径，否则搜索索引、页面操作和资源链接都会指向错误位置。这是子路径部署最常见的故障。
+
+各版本是独立构建的：从对应的 Git 分支或标签检出内容，用该版本自己的 `hugo.yaml`
+构建，产物发布到对应地址。OINK 不提供跨版本的单次构建。
+
+## 下一步 {#next-steps}
+
+- [多语言](../language/)：语言与版本的组合
+- [部署](/zh/docs/deploy/)：把各版本发布出去

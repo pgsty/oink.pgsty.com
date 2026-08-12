@@ -76,20 +76,13 @@ for (const [deployment, baseURL, prefix] of [
     const { outDir, output } = build(deployment, { baseURL });
     assert.doesNotMatch(output, /supports one interactive child level/);
 
-    for (const route of [
-      '/docs',
-      '/blog',
-      '/project',
-      '/zh/docs',
-      '/zh/blog',
-      '/zh/project',
-    ]) {
+    for (const route of ['/docs', '/blog', '/zh/docs', '/zh/blog']) {
       documentAt(outDir, route);
     }
 
     for (const [languagePath, labels] of [
-      ['', ['Docs', 'Tutorials', 'Blog', 'Project', 'Issues']],
-      ['/zh', ['文档', '教程', '博客', '项目', '问题反馈']],
+      ['', ['Docs', 'Tutorials', 'Blog']],
+      ['/zh', ['文档', '教程', '博客']],
     ]) {
       const home = documentAt(outDir, languagePath || '/');
       const desktop = navbarEntries(home);
@@ -121,10 +114,9 @@ for (const [deployment, baseURL, prefix] of [
       const tutorial = desktop.find((entry) => entry.label === labels[1]);
       assert.equal(tutorial.level, 1);
       assert.ok(tutorial.description.length > 10);
-      const external = desktop.find((entry) => entry.label === labels[4]);
-      assert.equal(external.target, '_blank');
-      assert.equal(external.rel, 'noopener noreferrer');
-      assert.equal(external.href, 'https://github.com/pgsty/oink/issues');
+      // External-link behavior is asserted by the flat fixture, which still
+      // configures a labelled external entry. The live site only has the
+      // icon-only GitHub link, which is not a labelled navbar entry.
     }
 
     const englishHome = navbarEntries(documentAt(outDir, '/'));
@@ -143,10 +135,8 @@ for (const [deployment, baseURL, prefix] of [
     );
 
     for (const [route, current, expected] of [
-      ['/docs', 'Docs', ['Docs', 'Blog', 'Project']],
-      ['/project', 'Project', ['Docs', 'Blog', 'Project']],
-      ['/zh/docs', '文档', ['文档', '博客', '项目']],
-      ['/zh/project', '项目', ['文档', '博客', '项目']],
+      ['/docs', 'Docs', ['Docs', 'Blog']],
+      ['/zh/docs', '文档', ['文档', '博客']],
     ]) {
       const page = documentAt(outDir, route);
       assert.equal(
@@ -159,14 +149,7 @@ for (const [deployment, baseURL, prefix] of [
       assert.deepEqual(roots, expected);
     }
 
-    for (const route of [
-      '/docs',
-      '/blog',
-      '/project',
-      '/zh/docs',
-      '/zh/blog',
-      '/zh/project',
-    ]) {
+    for (const route of ['/docs', '/blog', '/zh/docs', '/zh/blog']) {
       assert.equal(
         documentAt(outDir, route)
           .querySelector('[data-sidebar-icon-policy]')
@@ -201,13 +184,6 @@ test('flat legacy fixture emits links without disclosure controls', () => {
     [
       { label: 'Docs', href: '/preview/docs/', level: 0, target: '', rel: '' },
       { label: 'Blog', href: '/preview/blog/', level: 0, target: '', rel: '' },
-      {
-        label: 'Project',
-        href: '/preview/project/',
-        level: 0,
-        target: '',
-        rel: '',
-      },
       {
         label: 'Issues',
         href: 'https://github.com/pgsty/oink/issues',

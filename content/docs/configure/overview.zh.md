@@ -1,11 +1,9 @@
 ---
 title: 配置
 weight: 10
-icon: fa-solid fa-sliders
 description: 使用 Hugo 设置与职责明确的主题参数配置 Oink。
 search_keywords: [配置, 设置, 参数, YAML]
 search_boost: 1.6
-aliases: [/docs/oink/configuration/]
 ---
 
 OINK 遵循“原生优先”的配置模型。站点身份、语言、菜单、输出、taxonomy、标记与模块继续放在 Hugo 规定的位置；语义仍然适用的 Docsy 参数也保持原位。只有无法可靠推导的行为选择，OINK 才会增加职责明确的配置。
@@ -173,6 +171,7 @@ params:
     showLightDarkModeMenu: true
     page_context_menu:
       enable: true
+      assistant_links: false
       links: []
     readingtime:
       enable: true
@@ -185,9 +184,13 @@ matter 中覆盖。侧栏最小与最大值以像素为单位，用来限制桌�
 `quick_links` 指定外壳中显示的顶层 page
 reference。请在各语言主菜单中定义相应的本地化名称。
 
-页面上下文菜单在所有视口宽度下都保证“复制文本”“在 ChatGPT /
-Claude中打开”“查阅源码”“查阅编辑历史”、编辑、反馈与打印入口可访问。内置助手入口会出现在所有有源文件的页面上，并且仅在读者激活时，才把当前 URL放进本地化提示词中；它不会上传页面正文。当
-`github_repo`
+页面上下文菜单在所有视口宽度下都保证“复制文本”“查阅源码”“查阅编辑历史”、编辑、反馈与打印入口可访问。内置 ChatGPT 和 Claude助手入口默认关闭；设置
+`assistant_links: true`
+后才会在有源文件的页面上显示。读者激活入口时，完整的当前 URL（包括 query
+string 与 fragment）会随本地化提示词离开本站；OINK 不会上传页面正文。请勿在 URL 中放置秘密信息，并披露这一第三方边界。页面可用布尔型
+`assistant_links` front matter 覆盖站点策略。
+
+当 `github_repo`
 能解析“编辑此页面”使用的同一仓库路径时，才会显示“查阅编辑历史”。`links`
 默认为空，额外的自定义链接可使用经过 URL 编码的 `{url}`、`{title}` 与
 `{markdown_url}` 占位符：
@@ -197,6 +200,7 @@ params:
   ui:
     page_context_menu:
       enable: true
+      assistant_links: true
       links: []
       # - name: 询问外部助手
       #   icon: fa-solid fa-wand-magic-sparkles

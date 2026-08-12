@@ -238,7 +238,10 @@ footer:
     - title: 关于
       links:
         - { label: 关于 OINK, url: docs/about/ }
-        - { label: 变更记录, url: project/about/changelog/ }
+        - {
+            label: 变更记录,
+            url: https://github.com/google/docsy/blob/main/CHANGELOG.md,
+          }
         - {
             label: 开源协议,
             url: 'https://github.com/pgsty/oink/blob/main/LICENSE',

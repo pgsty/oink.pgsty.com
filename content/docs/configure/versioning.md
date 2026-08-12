@@ -1,239 +1,125 @@
 ---
-title: Versioning
-# date: 2020-02-02
-weight: 30
-icon: fa-solid fa-code-branch
-description: Link documentation versions and mark archived releases.
-aliases: [/docs/content/versioning/, /docs/feature/versioning/]
-cSpell:ignore: pagelinks Kubeflow
+title: Versions
+linkTitle: Versions
+weight: 40
+description:
+  Let readers move between documentation versions, and mark archived ones.
+cSpell:ignore: pagelinks
 ---
 
-<!-- markdownlint-disable blanks-around-headings no-bare-urls single-h1 -->
+When a product has several supported releases, the documentation usually
+follows. OINK provides two things: a **version switcher** and an **archived
+version banner**.
 
-Depending on your project's releases and versioning, you may want to let your
-users access previous versions of your documentation. How you deploy the
-previous versions is up to you. This page describes the Oink features that you
-can use to provide navigation between the various versions of your docs and to
-display an information banner on the archived sites.
+How each version is deployed is up to you — commonly one subdomain or subpath
+per version, each built separately.
 
-## Adding a version drop-down menu {#adding-a-version-drop-down-menu}
+## Version menu {#adding-a-version-drop-down-menu}
 
-If you add some `[params.versions]` in `hugo.toml`/`hugo.yaml`/`hugo.json`, the
-Oink adds a version selector drop-down to the navbar. You specify a URL and a
-name for each version you would like to add to the menu, as in the following
-example:
+List the versions that should appear in the menu under `params.versions`:
 
-<!-- markdownlint-disable no-shortcut-ref-link -->
-<!-- prettier-ignore-start -->
-{{< tabpane >}}
-{{< tab header="Configuration file:" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
-# Add your release versions here
-[[params.versions]]
-  version = "master"
-  url = "https://master.kubeflow.org"
-
-[[params.versions]]
-  version = "v0.2"
-  url = "https://v0-2.kubeflow.org"
-
-[[params.versions]]
-  version = "v0.3"
-  url = "https://v0-3.kubeflow.org"
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
+```yaml {filename="hugo.yaml"}
 params:
+  version_menu: v2.1
   versions:
-    - version: master
-      url: 'https://master.kubeflow.org'
-    - version: v0.2
-      url: 'https://v0-2.kubeflow.org'
-    - version: v0.3
-      url: 'https://v0-3.kubeflow.org'
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
-{
-  "params": {
-    "versions": [
-      {
-        "version": "master",
-        "url": "https://master.kubeflow.org"
-      },
-      {
-        "version": "v0.2",
-        "url": "https://v0-2.kubeflow.org"
-      },
-      {
-        "version": "v0.3",
-        "url": "https://v0-3.kubeflow.org"
-      }
-    ]
-  }
-}
-{{< /tab >}}
-{{< /tabpane >}}
-<!-- prettier-ignore-end -->
-<!-- markdownlint-enable no-shortcut-ref-link -->
-
-Remember to add your current version so that users can navigate back!
-
-The default title for the version drop-down menu is **Releases**. To change the
-title, change the site parameter `version_menu` in
-`hugo.toml`/`hugo.yaml`/`hugo.json`:
-
-<!-- markdownlint-disable no-shortcut-ref-link -->
-<!-- prettier-ignore-start -->
-{{< tabpane >}}
-{{< tab header="Configuration file:" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
-[params]
-version_menu = "Releases"
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
-params:
-  version_menu: Releases
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
-{
-  "params": {
-    "version_menu": "Releases"
-  }
-}
-{{< /tab >}}
-{{< /tabpane >}}
-<!-- prettier-ignore-end -->
-<!-- markdownlint-enable no-shortcut-ref-link -->
-
-If you set the `version_menu_pagelinks` parameter to `true`, then links in the
-version drop-down menu point to the current page in the other version, instead
-of the main page. This can be useful if the document doesn't change much between
-the different versions. Note that if the current page doesn't exist in the other
-version, the link will be broken.
-
-You can also configure individual menu entries:
-
-- Use `name` instead of `version` when the menu label is not a version number.
-- Set `name` to `---` to add a menu separator.
-- Omit `url` to render a disabled text item, such as a group heading.
-- Set `kind` to add a kind-specific class for styling. For details, see
-  [Navigation and menus][].
-- Set `pagelinks: false` on an entry to link to that version's main URL even
-  when the global `version_menu_pagelinks` parameter is `true`.
-
-For example:
-
-```yaml
-params:
-  version_menu: v1.2
-  version_menu_pagelinks: true
-  versions:
-    - name: '**Versions**'
-    - version: v1.3-dev
-      kind: next
-      url: https://next.example.com
-    - version: v1.2
-      kind: latest
+    - version: v2.1
       url: https://docs.example.com
-    - name: ---
-    - name: Preview variant
-      kind: home
-      pagelinks: false
-      url: https://preview.example.com
+    - version: v2.0
+      url: https://v2-0.docs.example.com
+    - version: v1.9
+      url: https://v1-9.docs.example.com
 ```
 
-To learn more about Oink menus, see [Navigation and menus][].
+{{< fields >}} {{% field name="version_menu" type="string" %}} The label on the
+menu button, usually the current version. {{% /field %}}
+{{% field name="versions[].version" type="string" required=true %}} The version
+identifier shown on the menu entry. {{% /field %}}
+{{% field name="versions[].url" type="string" required=true %}} That version's
+documentation address. An entry with no URL renders as unavailable.
+{{% /field %}}
+{{% field name="version_menu_pagelinks" type="boolean" default="false" %}}
+Whether to append the current page path to the target version's URL.
+{{% /field %}} {{< /fields >}}
 
-[Navigation and menus]: /docs/configure/navigation/#version-menu
+Insert a separator with `- name: '---'` to divide supported from historical
+releases:
 
-## Displaying a banner on archived doc sites {#displaying-a-banner-on-archived-doc-sites}
+```yaml {filename="hugo.yaml"}
+params:
+  versions:
+    - name: '**Current**'
+    - version: v2.1
+      url: https://docs.example.com
+    - name: '---'
+    - name: '**Historical**'
+    - version: v1.9
+      url: https://v1-9.docs.example.com
+```
 
-If you create archived snapshots for older versions of your docs, you can add a
-note at the top of every page in the archived docs to let readers know that
-they’re seeing an unmaintained snapshot and give them a link to the latest
-version.
+## The page-level switching trade-off {#page-level-switching}
 
-For example, see the archived docs for
-[Kubeflow v0.6](https://v0-6.kubeflow.org/docs/):
+`version_menu_pagelinks: true` appends the current page path to the target
+version's URL, so a reader switching versions **stays on the same document**.
 
-<figure>
-  <img src="/images/version-banner.png"
-       alt="A text box explaining that this is an unmaintained snapshot of the docs."
-       class="mt-3 mb-3 border border-info rounded" />
-  <figcaption>Figure 1. The banner on the archived docs for Kubeflow v0.6
-  </figcaption>
-</figure>
+The cost is that **the target version may not have that page**. Documentation
+structure evolves between releases, an older version may not contain a newly
+written page, and the reader lands on a 404.
 
-To add the banner to your doc site, make the following changes in your
-`hugo.toml`/`hugo.yaml`/`hugo.json` file:
+```yaml {filename="hugo.yaml"}
+params:
+  version_menu_pagelinks: true
+  versions:
+    - version: v2.1
+      url: https://docs.example.com
+    - version: v1.9
+      url: https://v1-9.docs.example.com
+      pagelinks: false # structure differs too much; go to the home page
+```
 
-<!-- markdownlint-disable no-shortcut-ref-link -->
-<!-- prettier-ignore-start -->
+`pagelinks: false` on an individual entry overrides the global setting so that
+version only ever receives its home page.
 
-1. Set the site parameter `archived_version` to `true`:
+> [!TIP] Enable `pagelinks` when structure is broadly stable across versions.
+> When it is not, leaving it off is better: an extra click beats a 404.
 
-    {{< tabpane >}}
-{{< tab header="Configuration file:" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
-[params]
-archived_version = true
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
+## Archived version banner {#archived-banner}
+
+On a site for a release you no longer maintain, say so explicitly:
+
+```yaml {filename="hugo.yaml"}
 params:
   archived_version: true
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
-{
-  "params": {
-    "archived_version": true
-  }
-}
-{{< /tab >}}
-    {{< /tabpane >}}
+  version: v1.9
+  url_latest_version: https://docs.example.com
+```
 
-1. Set the site parameter `version` to the version of the archived doc set. For
-  example, if the archived docs are for version 0.1:
+{{< fields >}}
+{{% field name="archived_version" type="boolean" default="false" %}} When
+`true`, shows an archive notice at the top of every page. {{% /field %}}
+{{% field name="version" type="string" %}} The version shown in the banner.
+{{% /field %}} {{% field name="url_latest_version" type="string" %}} The current
+version's address; the banner links to it. {{% /field %}} {{< /fields >}}
 
-    {{< tabpane >}}
-{{< tab header="Configuration file:" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
-[params]
-version = "0.1"
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
-params:
-  version: 0.1
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
-{
-  "params": {
-    "version": "0.1"
-  }
-}
-{{< /tab >}}
-    {{< /tabpane >}}
+The banner text is localized with the site language; you do not write it.
 
-1. Make sure that site parameter `url_latest_version` contains the URL of the website that you
-  want to point readers to. In most cases, this should be the URL of the latest
-  version of your docs:
+## Deployment layout {#deployment-layout}
 
-    {{< tabpane >}}
-{{< tab header="Configuration file:" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
-[params]
-url_latest_version = "https://your-latest-doc-site.com"
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
-params:
-  url_latest_version: https://your-latest-doc-site.com
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
-{
-  "params": {
-    "url_latest_version": "https://your-latest-doc-site.com"
-  }
-}
-{{< /tab >}}
-    {{< /tabpane >}}
+Two common arrangements:
 
-<!-- prettier-ignore-end -->
-<!-- markdownlint-enable no-shortcut-ref-link -->
+| Layout    | `baseURL`                        | Character                      |
+| --------- | -------------------------------- | ------------------------------ |
+| Subdomain | `https://v1-9.docs.example.com/` | Fully independent versions     |
+| Subpath   | `https://docs.example.com/v1.9/` | One domain; needs path routing |
+
+> [!IMPORTANT] Under a subpath deployment, `baseURL` must include that path, or
+> the search index, page actions, and asset links all point to the wrong place.
+> This is the most common subpath failure.
+
+Each version is built **independently**: check out the content from its branch
+or tag, build with that version's own `hugo.yaml`, and publish the output to the
+matching address. OINK does not build several versions in one pass.
+
+## Next steps {#next-steps}
+
+- [Languages](../language/): combining languages with versions
+- [Deployment](/docs/deploy/): publishing each version
