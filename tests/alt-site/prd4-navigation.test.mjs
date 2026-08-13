@@ -86,29 +86,39 @@ for (const [deployment, baseURL, prefix] of [
     ]) {
       const home = documentAt(outDir, languagePath || '/');
       const desktop = navbarEntries(home);
-      const mobile = navbarEntries(home, 'mobile');
       for (const label of labels) {
         assert.ok(
           desktop.some((entry) => entry.label === label),
           label,
         );
-        assert.ok(
-          mobile.some((entry) => entry.label === label),
-          label,
-        );
       }
-      // Docs, About, and Blog each carry one level of children.
-      assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 3);
+      // The compact breakpoint reuses these semantic links as icons; it does
+      // not render a second mobile navigation tree.
+      assert.deepEqual(navbarEntries(home, 'mobile'), []);
+      assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 0);
       assert.equal(
         home.querySelectorAll('[data-td-navbar-accordion-toggle]').length,
-        3,
+        0,
       );
 
-      const controls = [...home.querySelectorAll('[aria-controls]')]
-        .map((button) => button.getAttribute('aria-controls'))
-        .filter((id) => id?.startsWith('td-navbar-'));
-      assert.equal(new Set(controls).size, controls.length);
-      for (const id of controls) {
+      // Docs, About, and Blog each own one hover/focus panel.
+      const controls = [...home.querySelectorAll('[aria-controls]')].filter(
+        (control) =>
+          control.getAttribute('aria-controls')?.startsWith('td-navbar-'),
+      );
+      assert.equal(controls.length, 3);
+      assert.ok(
+        controls.every(
+          (control) =>
+            control.matches('a.nav-menu__parent-link') &&
+            control.getAttribute('aria-expanded') === 'false',
+        ),
+      );
+      const controlledIds = controls.map((control) =>
+        control.getAttribute('aria-controls'),
+      );
+      assert.equal(new Set(controlledIds).size, controlledIds.length);
+      for (const id of controlledIds) {
         assert.equal(home.querySelectorAll(`#${id}`).length, 1, id);
       }
 
@@ -135,19 +145,20 @@ for (const [deployment, baseURL, prefix] of [
       `${prefix}/zh/docs/`,
     );
 
-    for (const [route, current, expected] of [
-      ['/docs', 'Docs', ['Docs', 'Blog']],
-      ['/zh/docs', '文档', ['文档', '博客']],
+    for (const [route, current] of [
+      ['/docs', 'Docs'],
+      ['/zh/docs', '文档'],
     ]) {
       const page = documentAt(outDir, route);
       assert.equal(
         page.querySelector('.td-shell-root__title')?.textContent.trim(),
         current,
       );
-      const roots = [
-        ...page.querySelectorAll('.td-shell-root__item-title'),
-      ].map((node) => node.textContent.trim());
-      assert.deepEqual(roots, expected);
+      assert.ok(page.querySelector('.td-shell-root--static'));
+      assert.equal(
+        page.querySelectorAll('.td-shell-root__item-title').length,
+        0,
+      );
     }
 
     for (const route of ['/docs', '/blog', '/zh/docs', '/zh/blog']) {
@@ -169,6 +180,7 @@ test('flat legacy fixture emits links without disclosure controls', () => {
   });
   assert.doesNotMatch(output, /supports one interactive child level/);
   const home = documentAt(outDir, '/');
+  assert.deepEqual(navbarEntries(home, 'mobile'), []);
   assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 0);
   assert.equal(
     home.querySelectorAll('[data-td-navbar-accordion-toggle]').length,
@@ -203,12 +215,19 @@ test('deep fixture warns and degrades to a static group', () => {
   });
   assert.match(output, /supports one interactive child level/);
   const home = documentAt(outDir, '/');
-  assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 1);
+  assert.deepEqual(navbarEntries(home, 'mobile'), []);
+  assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 0);
   assert.equal(
     home.querySelectorAll('[data-td-navbar-accordion-toggle]').length,
-    1,
+    0,
   );
-  assert.equal(home.querySelectorAll('[data-td-navbar-group]').length, 2);
+  const parent = home.querySelector('.nav-menu__parent-link');
+  assert.equal(parent?.getAttribute('aria-expanded'), 'false');
+  assert.equal(
+    parent?.getAttribute('aria-controls'),
+    home.querySelector('[data-td-navbar-panel]')?.id,
+  );
+  assert.equal(home.querySelectorAll('[data-td-navbar-group]').length, 1);
 
   const desktop = navbarEntries(home);
   const tutorial = desktop.find((entry) => entry.label === 'Tutorials');

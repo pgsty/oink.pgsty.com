@@ -52,21 +52,23 @@ test('empty Palette exposes shared quick links, page actions, and preferences', 
   await expect(quick).toContainText('Docs');
   await expect(quick).toContainText('Blog');
   const actions = group(dialog, 'Page actions');
-  await expect(actions).toContainText('Copy text');
+  await expect(actions).toContainText('Copy Markdown');
   await expect(actions).toContainText('Open in ChatGPT');
   await expect(actions).toContainText('Open in Claude');
-  await expect(actions).toContainText('View source');
+  await expect(actions).toContainText('View markdown');
   await expect(actions).toContainText('View edit history');
   await expect(actions).toContainText('Edit this page');
   await expect(actions).toContainText('Create docs issue');
-  await expect(actions).toContainText('Print this page');
+  await expect(actions).toContainText('Create child page');
+  await expect(actions).toContainText('Create project issue');
+  await expect(actions).toContainText('Print entire section');
   const preferences = group(dialog, 'Preferences');
   await expect(preferences).toContainText('Toggle color theme');
   await expect(preferences).toContainText('Switch language');
   await expect(preferences).toContainText('v0.3.0');
   const commands = group(dialog, 'Commands');
   await expect(commands).toContainText('OINK issues');
-  await expect(commands).not.toContainText('Copy text');
+  await expect(commands).not.toContainText('Copy Markdown');
 
   const rows = dialog.locator('[role="option"]');
   const activeId = await input.getAttribute('aria-activedescendant');
@@ -126,7 +128,7 @@ test('command mode is index-free and localizes configured commands', async ({
   expect(indexRequests).toEqual([]);
 });
 
-test('slash opens command mode and restores focus on Escape', async ({
+test('slash opens search, backslash opens command mode, both yield to fields', async ({
   page,
 }) => {
   await page.goto(docsPath, { waitUntil: 'domcontentloaded' });
@@ -136,6 +138,16 @@ test('slash opens command mode and restores focus on Escape', async ({
 
   const dialog = page.locator('#td-shell-search');
   const input = dialog.locator('.td-shell-search__input');
+  await expect(dialog).toBeVisible();
+  await expect(input).toBeFocused();
+  await expect(input).toHaveValue('');
+  await expect(group(dialog, 'Quick links')).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(opener).toBeFocused();
+
+  await page.keyboard.press('\\');
   await expect(dialog).toBeVisible();
   await expect(input).toBeFocused();
   await expect(input).toHaveValue('>');
@@ -156,6 +168,8 @@ test('slash opens command mode and restores focus on Escape', async ({
   await search.fill('docs');
   await search.press('/');
   await expect(search).toHaveValue('docs/');
+  await search.press('\\');
+  await expect(search).toHaveValue('docs/\\');
   await expect(dialog).toBeHidden();
 });
 
@@ -199,34 +213,20 @@ test('built-in choice actions reuse theme, language, and version executors', asy
   await expect(dialog).toContainText('v0.3.0');
 });
 
-test('Copy text and Print execute once through the shared registry', async ({
+test('Copy Markdown executes once through the shared registry', async ({
   page,
   context,
 }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   const { dialog, input } = await openPalette(page);
-  await fillCommandAndWait(input, dialog, '> copy text', 'Copy text');
+  await fillCommandAndWait(input, dialog, '> copy markdown', 'Copy Markdown');
   await page.keyboard.press('Enter');
   await expect(dialog).toBeVisible();
   await expect
     .poll(() => page.evaluate(() => navigator.clipboard.readText()))
     .toContain('# Configuration');
 
-  const printOption = await fillCommandAndWait(
-    input,
-    dialog,
-    '> print page',
-    'Print this page',
-  );
-  await page.evaluate(() => {
-    window.__printCalls = 0;
-    window.print = () => {
-      window.__printCalls += 1;
-    };
-  });
-  await printOption.click();
-  await expect.poll(() => page.evaluate(() => window.__printCalls)).toBe(1);
-  await expect(dialog).not.toHaveClass(/is-open/);
+  await expect(dialog).toBeVisible();
 });
 
 test('URL actions match progressive-enhancement anchors', async ({ page }) => {
@@ -314,16 +314,16 @@ test('mobile Palette restores focus and has no WCAG AA violations', async ({
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/zh/', { waitUntil: 'domcontentloaded' });
-  const menuToggle = page.locator('[data-menu-toggle]:visible');
-  await menuToggle.click();
-  await page.locator('[data-mobile-menu] [data-td-shell-search-open]').click();
+  const opener = page.locator('[data-td-shell-search-open]:visible');
+  await opener.focus();
+  await opener.click();
   const dialog = page.locator('#td-shell-search');
   await expect(dialog).toBeVisible();
   await fillCommandAndWait(
     dialog.locator('.td-shell-search__input'),
     dialog,
-    '> 打印',
-    '打印此页面',
+    '> 打印完整章节',
+    '打印完整章节',
     /^操作$/,
   );
 
@@ -335,5 +335,5 @@ test('mobile Palette restores focus and has no WCAG AA violations', async ({
 
   await page.keyboard.press('Escape');
   await expect(dialog).toBeHidden();
-  await expect(menuToggle).toBeFocused();
+  await expect(opener).toBeFocused();
 });

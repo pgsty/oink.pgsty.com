@@ -56,18 +56,21 @@ public/offline-search-index.zh.json
 
 Local search is reached through the Command Palette, which has **three modes**:
 
-| Mode         | Trigger                    | Contents                               |
-| ------------ | -------------------------- | -------------------------------------- |
-| Empty query  | `Cmd/Ctrl-K` with no input | Quick links, page actions, preferences |
-| Text query   | Start typing               | Page results grouped by section        |
-| Command mode | `/`, or a `>` prefix       | Commands only, no page results         |
+| Mode         | Trigger                                 | Contents                               |
+| ------------ | --------------------------------------- | -------------------------------------- |
+| Empty query  | `Cmd/Ctrl-K`, `/`, or `f` with no input | Quick links, page actions, preferences |
+| Text query   | Start typing                            | Page results grouped by section        |
+| Command mode | `\`, `c`, or a `>` prefix               | Commands only, no page results         |
 
-`/` is a bare single-character shortcut, so it applies **only outside editable
-controls** — typing a slash inside an input, textarea, select, or
-contenteditable region still types a slash. Modifier combinations such as
-`Ctrl-/` do not trigger it either.
+`/` opens the full search surface; `\` opens commands only. Both are bare
+single-character shortcuts, so they apply **only outside editable controls** —
+typing either character inside an input, textarea, select, or contenteditable
+region still types that character. Modifier combinations such as `Ctrl-/` do not
+trigger them either.
 
-Pressing `/` while the Palette is already open does not clear the current query.
+Pressing `/` or `\` while the Palette is already open does not clear the current
+query. The keyboard-navigation aliases `f` and `c` have the same two modes; see
+[Keyboard navigation](../keyboard/).
 
 ### What the Palette contains {#palette-contents}
 
@@ -75,8 +78,13 @@ Pressing `/` while the Palette is already open does not clear the current query.
 - **Page actions**: Copy Markdown, Open in ChatGPT/Claude, View markdown, View
   edit history, Edit this page, Create child page, Create docs issue, Create
   project issue, Print entire section
-- **Preferences**: switch color theme, language, or version, and open the
-  project repository
+- **Preferences**: switch version, language, or color theme
+- **Commands**: open the project repository, followed by site-configured
+  commands
+
+Browsing lists mirror the navbar control order — version, language, theme, then
+GitHub — and keep site-configured commands after the built-ins. Text queries
+still sort by relevance.
 
 Page actions and Palette commands run through **one shared registry**, so an
 action behaves identically whether it is invoked from the
@@ -198,4 +206,5 @@ belongs in the site's privacy statement.
 ## Next steps {#next-steps}
 
 - [Languages](/docs/configure/language/): per-language index details
+- [Keyboard navigation](../keyboard/): single-key aliases and focus guards
 - [AI and agent support](../agent-support/): Markdown output and `llms.txt`

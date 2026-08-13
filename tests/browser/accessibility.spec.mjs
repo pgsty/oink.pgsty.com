@@ -177,31 +177,38 @@ test.describe('WCAG AA contract', () => {
     });
   }
 
-  for (const { label, viewport, open } of [
+  for (const { label, path, viewport, open } of [
     {
-      label: 'desktop navbar disclosure',
+      label: 'desktop navbar panel',
+      path: '/',
       viewport: { width: 1280, height: 900 },
       open: async (page) => {
-        await page.locator('[data-td-navbar-toggle]').first().click();
+        const parent = page.locator('.nav-menu__parent-link').first();
+        await parent.focus();
+        await expect(parent).toHaveAttribute('aria-expanded', 'true');
       },
     },
     {
-      label: 'mobile navbar accordion',
+      label: 'compact shell drawer',
+      path: '/docs/configure/overview/',
       viewport: { width: 390, height: 844 },
       open: async (page) => {
-        await page.locator('[data-menu-toggle]').click();
-        await page.locator('[data-td-navbar-accordion-toggle]').first().click();
+        await page.locator('[data-td-shell-drawer-open]:visible').click();
+        await expect(page.locator('html')).toHaveAttribute(
+          'data-td-shell-drawer',
+          'open',
+        );
       },
     },
   ]) {
     test(`open ${label}`, async ({ page }) => {
       await page.setViewportSize(viewport);
-      await page.goto('/', { waitUntil: 'domcontentloaded' });
+      await page.goto(path, { waitUntil: 'domcontentloaded' });
       await open(page);
       const { violations } = await scan(page);
       expect(
         violations,
-        `${label}\n${describeViolations('/', violations)}`,
+        `${label}\n${describeViolations(path, violations)}`,
       ).toEqual([]);
     });
   }

@@ -132,9 +132,9 @@ Chinese queries use the theme's CJK substring fallback. When a search returns
 nothing, first confirm the Chinese content actually reached the Chinese index
 rather than immediately changing tokenization.
 
-The Command Palette (`Cmd/Ctrl-K`, or `/` for command mode) still works when the
-index is unavailable: it reports the index as unavailable while page actions and
-commands continue to function.
+The Command Palette (`Cmd/Ctrl-K` or `/` for full search, `\` for command mode)
+still works when the index is unavailable: it reports the index as unavailable
+while page actions and commands continue to function.
 
 ## Platform issues {#platform-issues}
 

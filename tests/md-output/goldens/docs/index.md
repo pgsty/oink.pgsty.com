@@ -88,7 +88,7 @@ Section pages:
 - [Authoring](/docs/content/): How the content tree is organized, writing conventions, media, and taxonomies.
 - [Components](/docs/components/): Every component available for writing, ordered by how often you reach for it.
 - [Appearance](/docs/appearance/): Typography presets, colors, and style overrides.
-- [Advanced](/docs/advanced/): Search and the Command Palette, print output, AI support, comments, and analytics.
+- [Advanced](/docs/advanced/): Keyboard navigation, search and the Command Palette, print output, AI support, comments, and analytics.
 - [Deployment](/docs/deploy/): Build once, publish to any static host.
 - [Upgrade and migrate](/docs/upgrade/): Upgrade the OINK version, or migrate from Docsy.
 - [About Oink](/docs/about/): Understand Oink's examples, design principles, architecture, and open-source model.

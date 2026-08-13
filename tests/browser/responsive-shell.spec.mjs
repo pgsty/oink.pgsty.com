@@ -19,61 +19,49 @@ for (const width of widths) {
 
     const context = page.locator('[data-td-page-context]');
     const toc = page.locator('.td-shell-toc__panel');
-    const utilities = page.locator('.td-shell-sidebar__utils');
+    const navbar = page.locator('.landing-header');
 
     if (width < 768) {
-      await expect(page.locator('.td-shell-subnav')).toBeVisible();
+      await expect(page.locator('.td-shell-subnav')).toHaveCount(0);
       await page.locator('[data-td-shell-drawer-open]:visible').click();
       await expect(page.locator('html')).toHaveAttribute(
         'data-td-shell-drawer',
         'open',
       );
-      await expect(utilities).toBeInViewport();
+      await expect(page.locator('.td-shell-sidebar__panel')).toBeInViewport();
       await expect(toc).toBeHidden();
+      await page.locator('button[data-td-shell-drawer-close]:visible').click();
+      await expect(page.locator('html')).not.toHaveAttribute(
+        'data-td-shell-drawer',
+        'open',
+      );
     } else if (width < 1200) {
-      await expect(page.locator('.td-shell-subnav')).toBeHidden();
+      await expect(page.locator('.td-shell-subnav')).toHaveCount(0);
       await expect(page.locator('.td-shell-sidebar__panel')).toBeVisible();
-      await expect(utilities).toBeVisible();
       await expect(toc).toBeHidden();
     } else {
-      await expect(utilities).toBeVisible();
       await expect(toc).toBeVisible();
     }
 
-    const actionsToggle = page.locator(
-      '[aria-controls="td-shell-aside-actions"]:visible',
-    );
+    const actionsToggle = page.locator('[data-td-page-actions-toggle]:visible');
     await expect(actionsToggle).toBeVisible();
     if ((await actionsToggle.getAttribute('aria-expanded')) === 'false') {
       await actionsToggle.click();
     }
     await expect(actionsToggle).toHaveAttribute('aria-expanded', 'true');
-    await expect(context).toBeVisible();
+    await expect(context.locator('[data-td-page-actions-menu]')).toBeVisible();
 
-    if (width < 1200) {
-      await expect(utilities.locator('.td-language-selector')).toBeVisible();
-      await expect(utilities.locator('[data-td-theme-toggle]')).toBeVisible();
-      await expect(utilities.locator('a[aria-label="GitHub"]')).toBeVisible();
-    } else {
-      await expect(toc.locator('.td-shell-language-selector')).toBeVisible();
-      await expect(toc.locator('[data-td-theme-toggle]')).toBeVisible();
-      await expect(toc.locator('a[aria-label="GitHub"]')).toBeVisible();
-    }
+    await expect(navbar.locator('.td-language-selector')).toBeVisible();
+    await expect(navbar.locator('[data-td-theme-toggle]')).toBeVisible();
+    await expect(navbar.locator('a[aria-label="GitHub"]')).toBeVisible();
   });
 }
 
-for (const [locale, path, docsLabel, docsHref, blogLabel, blogHref] of [
-  ['en', docPath, 'Docs', '/docs/', 'Blog', '/blog/'],
-  [
-    'zh',
-    '/zh/docs/configure/overview/',
-    '文档',
-    '/zh/docs/',
-    '博客',
-    '/zh/blog/',
-  ],
+for (const [locale, path, docsLabel, docsHref] of [
+  ['en', docPath, 'Docs', '/docs/'],
+  ['zh', '/zh/docs/configure/overview/', '文档', '/zh/docs/'],
 ]) {
-  test(`${locale} root switcher resolves docs and blog sections`, async ({
+  test(`${locale} static root row returns to the docs section`, async ({
     page,
   }) => {
     await page.setViewportSize({ width: 820, height: 900 });
@@ -81,22 +69,13 @@ for (const [locale, path, docsLabel, docsHref, blogLabel, blogHref] of [
 
     const trigger = page.locator('.td-shell-root__trigger');
     await expect(trigger).toContainText(docsLabel);
-    await trigger.click();
-
-    const items = page.locator('.td-shell-root__item');
-    await expect(items).toHaveCount(2);
-    await expect(items.nth(0)).toHaveAttribute('href', docsHref);
-    await expect(items.nth(0).locator('.td-shell-root__item-title')).toHaveText(
-      docsLabel,
-    );
-    await expect(items.nth(1)).toHaveAttribute('href', blogHref);
-    await expect(items.nth(1).locator('.td-shell-root__item-title')).toHaveText(
-      blogLabel,
-    );
+    await expect(trigger).toHaveAttribute('href', docsHref);
+    await expect(page.locator('.td-shell-root')).toHaveClass(/--static/);
+    await expect(page.locator('.td-shell-root__item')).toHaveCount(0);
   });
 }
 
-test('desktop navbar keeps parent navigation separate from disclosure', async ({
+test('desktop navbar opens a parent panel on focus without replacing its link', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
@@ -106,24 +85,19 @@ test('desktop navbar keeps parent navigation separate from disclosure', async ({
     has: page.locator('[data-td-navbar-label="Docs"]'),
   });
   const parent = menu.locator('.nav-menu__parent-link');
-  const toggle = menu.locator('[data-td-navbar-toggle]');
   const panel = menu.locator('[data-td-navbar-panel]');
   await expect(parent).toHaveAttribute('href', '/docs/');
-  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(parent).toHaveAttribute('aria-expanded', 'false');
+  await expect(parent).toHaveAttribute(
+    'aria-controls',
+    await panel.getAttribute('id'),
+  );
   await expect(panel).toBeHidden();
 
-  await parent.evaluate((link) => {
-    link.addEventListener('click', (event) => event.preventDefault(), {
-      once: true,
-    });
-    link.click();
-  });
-  await expect(panel).toBeHidden();
-
-  await toggle.focus();
-  await toggle.press('ArrowDown');
-  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await parent.focus();
+  await expect(parent).toHaveAttribute('aria-expanded', 'true');
   await expect(panel).toBeVisible();
+  await parent.press('ArrowDown');
   await expect(panel.locator('a').first()).toBeFocused();
   await expect(
     panel.locator('.td-navbar-entry__description').first(),
@@ -131,7 +105,7 @@ test('desktop navbar keeps parent navigation separate from disclosure', async ({
 
   await page.keyboard.press('Escape');
   await expect(panel).toBeHidden();
-  await expect(toggle).toBeFocused();
+  await expect(parent).toBeFocused();
 
   const github = page.locator('.nav-github[aria-label="GitHub"]');
   await expect(github).toHaveAttribute('href', 'https://github.com/pgsty/oink');
@@ -139,40 +113,35 @@ test('desktop navbar keeps parent navigation separate from disclosure', async ({
   await expect(github).toHaveAttribute('rel', 'noopener noreferrer');
 });
 
-test('mobile navbar accordions allow multiple open parents', async ({
+test('compact navbar keeps the same named root links without a second menu', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openCleanPage(page, '/');
-  await page.locator('[data-menu-toggle]').click();
-  const drawer = page.locator('[data-mobile-menu]');
-  await expect(drawer).toBeVisible();
+  await expect(page.locator('[data-mobile-menu]')).toHaveCount(0);
+  await expect(page.locator('[data-menu-toggle]')).toHaveCount(0);
 
-  const sections = drawer.locator('[data-td-navbar-accordion]');
-  await expect(sections).toHaveCount(3);
-  const docs = sections.filter({
-    has: page.locator('.mobile-menu-parent-link[data-td-navbar-label="Docs"]'),
-  });
-  const blog = sections.filter({
-    has: page.locator('.mobile-menu-parent-link[data-td-navbar-label="Blog"]'),
-  });
-  await expect(docs.locator('.mobile-menu-parent-link')).toHaveAttribute(
-    'href',
-    '/docs/',
-  );
-
-  await docs.locator('[data-td-navbar-accordion-toggle]').click();
-  await blog.locator('[data-td-navbar-accordion-toggle]').click();
-  await expect(docs.locator('[data-td-navbar-accordion-panel]')).toBeVisible();
-  await expect(blog.locator('[data-td-navbar-accordion-panel]')).toBeVisible();
+  for (const [label, href] of [
+    ['Docs', '/docs/'],
+    ['About', '/docs/about/'],
+    ['Blog', '/blog/'],
+  ]) {
+    const link = page
+      .locator(
+        `[data-td-navbar-region="desktop"][data-td-navbar-label="${label}"]`,
+      )
+      .first();
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute('aria-label', label);
+    await expect(link).toHaveAttribute('href', href);
+  }
+  await expect(page.locator('[data-td-navbar-region="mobile"]')).toHaveCount(0);
   await expect(
-    docs.locator('[data-td-navbar-label="Get started"]'),
-  ).toContainText('Get started');
-
-  await expect(drawer.locator('[data-td-shell-search-open]')).toBeVisible();
-  await expect(drawer.locator('[data-td-theme-toggle]')).toBeVisible();
+    page.locator('[data-td-shell-search-open]:visible'),
+  ).toBeVisible();
+  await expect(page.locator('[data-td-theme-toggle]:visible')).toBeVisible();
   await expect(
-    drawer.locator('.mobile-menu-chip[hreflang="zh-CN"]'),
+    page.locator('.nav-util-zone [hreflang="zh-CN"]:visible').first(),
   ).toBeVisible();
 });
 
@@ -180,24 +149,25 @@ test('page actions are complete and keyboard operable', async ({ page }) => {
   await page.setViewportSize({ width: 820, height: 900 });
   await openCleanPage(page);
 
-  const actionsToggle = page.locator(
-    '[aria-controls="td-shell-aside-actions"]:visible',
-  );
+  const actionsToggle = page.locator('[data-td-page-actions-toggle]:visible');
   await actionsToggle.focus();
   await actionsToggle.press('Enter');
   await expect(actionsToggle).toHaveAttribute('aria-expanded', 'true');
 
   const context = page.locator('[data-td-page-context]');
-  const actions = context.locator('.td-page-meta__action');
+  const menu = context.locator('[data-td-page-actions-menu]');
+  const actions = menu.locator('.td-page-actions__item');
   await expect(context).toBeVisible();
   await expect(context).toContainText('Open in ChatGPT');
   await expect(context).toContainText('Open in Claude');
-  await expect(context).toContainText('Copy text');
-  await expect(context).toContainText('View source');
+  await expect(context).toContainText('Copy Markdown');
+  await expect(context).toContainText('View markdown');
   await expect(context).toContainText('View edit history');
   await expect(context).toContainText('Edit this page');
   await expect(context).toContainText('Create docs issue');
-  await expect(context).toContainText('Print this page');
+  await expect(context).toContainText('Create child page');
+  await expect(context).toContainText('Create project issue');
+  await expect(context).toContainText('Print entire section');
 
   const chatgpt = context.locator('[data-td-page-open-in="chatgpt"]');
   const claude = context.locator('[data-td-page-open-in="claude"]');
@@ -235,15 +205,16 @@ test('page actions are complete and keyboard operable', async ({ page }) => {
     `Read from ${currentURL} so I can ask questions about it.`,
   );
 
+  await actionsToggle.click();
+  await expect(menu).toBeVisible();
   await actions.first().focus();
   await expect(actions.first()).toBeFocused();
   await page.keyboard.press('Tab');
   await expect(actions.nth(1)).toBeFocused();
 
-  await actionsToggle.focus();
-  await actionsToggle.press('Enter');
+  await page.keyboard.press('Escape');
   await expect(actionsToggle).toHaveAttribute('aria-expanded', 'false');
-  await expect(context).toBeHidden();
+  await expect(menu).toBeHidden();
   await expect(actionsToggle).toBeFocused();
 });
 
@@ -251,16 +222,14 @@ test('page actions localize AI labels and prompts', async ({ page }) => {
   await page.setViewportSize({ width: 820, height: 900 });
   await openCleanPage(page, '/zh/docs/configure/overview/');
 
-  const actionsToggle = page.locator(
-    '[aria-controls="td-shell-aside-actions"]:visible',
-  );
+  const actionsToggle = page.locator('[data-td-page-actions-toggle]:visible');
   await actionsToggle.click();
 
   const context = page.locator('[data-td-page-context]');
   await expect(context).toContainText('在 ChatGPT 中打开');
   await expect(context).toContainText('在 Claude 中打开');
-  await expect(context).toContainText('复制文本');
-  await expect(context).toContainText('查阅源码');
+  await expect(context).toContainText('复制 Markdown 文本');
+  await expect(context).toContainText('查阅 Markdown 源码');
   await expect(context).toContainText('查阅编辑历史');
 
   const prompt = new URL(

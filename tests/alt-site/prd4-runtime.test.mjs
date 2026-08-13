@@ -106,26 +106,26 @@ test('subpath manifests localize safe commands and preserve action URLs', () => 
       const languagePrefix = language === 'zh' ? '/preview/zh' : '/preview';
       assert.equal(action.url, `${languagePrefix}${suffix}`);
     }
-    for (const id of [
-      'copy_markdown',
-      'open_chatgpt',
-      'open_claude',
-      'view_markdown',
-      'view_history',
-      'edit_page',
-      'create_issue',
-      'print',
-      'switch_theme',
-      'switch_language',
-      'switch_version',
-      'open_github',
-    ]) {
-      assert.ok(
-        data.actions.some((action) => action.id === id),
-        id,
-      );
-    }
-    assert.equal(data.actions.length, 12);
+    assert.deepEqual(
+      data.actions.map((action) => action.id),
+      [
+        'copy_markdown',
+        'open_chatgpt',
+        'open_claude',
+        'view_markdown',
+        'view_history',
+        'edit_page',
+        'create_child_page',
+        'create_issue',
+        'create_project_issue',
+        'print_section',
+        'print',
+        'switch_version',
+        'switch_language',
+        'switch_theme',
+        'open_github',
+      ],
+    );
   }
 });
 
@@ -145,7 +145,9 @@ test('search-disabled pages omit the Palette runtime but retain page actions', (
     assert.match(page, /id="oink-action-manifest"/);
     assert.match(page, /data-oink-action="copy_markdown"/);
     const bundle = mainBundle(outDir, page);
-    assert.doesNotMatch(bundle, /OinkCommandPalette|td-shell-search/);
+    // keyboard-nav.js may reference the palette global as a consumer; only
+    // the controller's own definition is barred on search-off pages.
+    assert.doesNotMatch(bundle, /OinkCommandPalette\s*=|td-shell-search/);
     assert.match(bundle, /OinkActionRegistry/);
     assert.match(bundle, /data-oink-action/);
   }

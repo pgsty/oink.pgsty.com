@@ -31,14 +31,15 @@ async function openCleanBlog(page, width) {
   await page.goto(blogPath, { waitUntil: 'domcontentloaded' });
 }
 
-test('RSS joins the right rail control when the rail is collapsed', async ({
+test('RSS stays in page actions when the right rail is collapsed', async ({
   page,
 }) => {
   await openCleanBlog(page, 1200);
 
-  const contentRSS = page.locator('.td-rss-button--content');
+  const contentRSS = page
+    .locator('[data-td-page-actions]')
+    .getByRole('link', { name: 'RSS' });
   const floatingControls = page.locator('.td-shell-toc-float');
-  const floatingRSS = floatingControls.getByRole('link', { name: 'RSS' });
 
   await expect(contentRSS).toBeVisible();
   await expect(floatingControls).toBeHidden();
@@ -48,9 +49,9 @@ test('RSS joins the right rail control when the rail is collapsed', async ({
     'data-td-shell-toc',
     'collapsed',
   );
-  await expect(contentRSS).toBeHidden();
+  await expect(contentRSS).toBeVisible();
   await expect(floatingControls).toBeVisible();
-  await expect(floatingRSS).toHaveAttribute('href', '/zh/blog/index.xml');
+  await expect(contentRSS).toHaveAttribute('href', '/zh/blog/index.xml');
   await expect(
     floatingControls.locator('[data-td-shell-right-toggle]'),
   ).toBeVisible();
