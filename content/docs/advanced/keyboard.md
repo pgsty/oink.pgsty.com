@@ -44,13 +44,14 @@ swap to match the reading direction.
 | `q` / `e` | Go to the previous / next page in sidebar order         |
 | `h`       | Hide or restore all navigation chrome (focus mode)      |
 
-`j` and `k` follow the same outline as the right-hand table of contents and
-glide with an eased animation; deep inside a section, `k` first returns to the
-section's own start, and pages without headings fall back to smooth scrolling.
-The `h` reading mode hides the navbar, both rails, floating controls, and the
-footer. It is restored before the first painted frame for the rest of the tab's
-session, so flipping pages with `q`/`e` keeps it without a flash. WASD stays
-inert while the sidebar is deliberately hidden.
+`j` and `k` follow the same outline as the right-hand table of contents and land
+with a fast, fixed 100 ms ease-out glide; rapid repeats advance one outline item
+per press instead of waiting for the previous animation. Deep inside a section,
+`k` first returns to the section's own start, and pages without headings fall
+back to the same short glide. The `h` reading mode hides the navbar, both rails,
+floating controls, and the footer. It is restored before the first painted frame
+for the rest of the tab's session, so flipping pages with `q`/`e` keeps it
+without a flash. WASD stays inert while the sidebar is deliberately hidden.
 
 ### Appearance and language {#appearance-and-language}
 

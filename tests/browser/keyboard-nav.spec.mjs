@@ -93,29 +93,55 @@ test('Enter opens the focused page and q/e follow the tree order', async ({
   await page.waitForURL(`**${neighbors.next}`);
 });
 
-test('j and k jump along the page outline while inputs keep every key', async ({
+test('j and k jump quickly to adjacent outline items while inputs keep every key', async ({
   page,
 }) => {
   await openDocs(page, { width: 1000, height: 500 });
 
-  const firstHeading = await page.evaluate(() => {
-    const anchor = document.querySelector('#TableOfContents a[href^="#"]');
-    return anchor ? anchor.getAttribute('href') : null;
+  const outline = await page.evaluate(() => {
+    const offset =
+      (parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue(
+          '--td-shell-nav-h',
+        ),
+      ) || 0) + 24;
+    const max = document.documentElement.scrollHeight - innerHeight;
+    return Array.from(
+      document.querySelectorAll('#TableOfContents a[href^="#"]'),
+    )
+      .slice(0, 2)
+      .map((anchor) => {
+        const hash = anchor.getAttribute('href');
+        const heading = document.getElementById(hash.slice(1));
+        return {
+          hash,
+          y: Math.min(
+            Math.max(scrollY + heading.getBoundingClientRect().top - offset, 0),
+            max,
+          ),
+        };
+      });
   });
-  expect(firstHeading).not.toBe(null);
+  expect(outline).toHaveLength(2);
 
   await page.keyboard.press('j');
-  await expect
-    .poll(() => page.evaluate(() => window.scrollY), { timeout: 3000 })
-    .toBeGreaterThan(50);
-  await expect
-    .poll(() => page.evaluate(() => window.location.hash))
-    .toBe(firstHeading);
+  await page.keyboard.press('j');
+  await page.waitForTimeout(180);
+  expect(
+    Math.abs((await page.evaluate(() => window.scrollY)) - outline[1].y),
+  ).toBeLessThan(3);
+  expect(await page.evaluate(() => window.location.hash)).toBe(outline[1].hash);
 
   await page.keyboard.press('k');
-  await expect
-    .poll(() => page.evaluate(() => window.scrollY), { timeout: 3000 })
-    .toBeLessThan(30);
+  await page.waitForTimeout(180);
+  expect(
+    Math.abs((await page.evaluate(() => window.scrollY)) - outline[0].y),
+  ).toBeLessThan(3);
+  expect(await page.evaluate(() => window.location.hash)).toBe(outline[0].hash);
+
+  await page.keyboard.press('k');
+  await page.waitForTimeout(180);
+  expect(await page.evaluate(() => window.scrollY)).toBeLessThan(3);
 
   await page.evaluate(() => {
     const field = document.createElement('input');
@@ -123,10 +149,13 @@ test('j and k jump along the page outline while inputs keep every key', async ({
     document.body.appendChild(field);
   });
   const field = page.locator('[data-test-kbd-field]');
-  await field.focus();
+  await field.evaluate((element) => element.focus({ preventScroll: true }));
+  const typingScrollY = await page.evaluate(() => window.scrollY);
   await field.press('j');
   await expect(field).toHaveValue('j');
-  expect(await page.evaluate(() => window.scrollY)).toBeLessThan(30);
+  expect(
+    Math.abs((await page.evaluate(() => window.scrollY)) - typingScrollY),
+  ).toBeLessThanOrEqual(1);
   await field.press('s');
   await expect(field).toHaveValue('js');
   await expect(focusedTreeLink(page)).toHaveCount(0);
