@@ -4,6 +4,8 @@ linkTitle: 高级功能
 weight: 60
 icon: fa-solid fa-gears
 description: 搜索与命令面板、打印输出、AI 支持、评论与分析。
+cascade:
+  categories: [高级]
 ---
 
 这一章是可选能力。每一项都需要显式启用——主题提供实现，但不替站点做策略决定。

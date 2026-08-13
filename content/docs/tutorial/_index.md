@@ -5,6 +5,8 @@ description:
   Build a bilingual OINK documentation site from scratch and deploy it.
 weight: 10
 icon: fa-solid fa-rocket
+cascade:
+  categories: [Tutorial]
 ---
 
 OINK is a Hugo theme that ships its browser runtimes with the theme. A consuming

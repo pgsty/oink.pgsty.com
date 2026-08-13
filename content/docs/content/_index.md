@@ -5,6 +5,8 @@ weight: 30
 icon: fa-solid fa-pen-ruler
 description:
   How the content tree is organized, writing conventions, media, and taxonomies.
+cascade:
+  categories: [Content]
 ---
 
 This chapter is about **how to write**. The available building blocks are in

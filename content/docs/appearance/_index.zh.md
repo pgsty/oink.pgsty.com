@@ -4,6 +4,8 @@ linkTitle: 定制外观
 weight: 50
 icon: fa-solid fa-palette
 description: 字体预设、配色与样式覆盖。
+cascade:
+  categories: [外观]
 ---
 
 OINK 的外观定制建立在语义化 CSS 自定义属性之上：站点覆盖少量变量即可换肤，不需要复制主题的组件选择器。

@@ -6,6 +6,8 @@ icon: fa-solid fa-gears
 description:
   Search and the Command Palette, print output, AI support, comments, and
   analytics.
+cascade:
+  categories: [Advanced]
 ---
 
 This chapter covers **optional capabilities**. Each one is enabled explicitly —

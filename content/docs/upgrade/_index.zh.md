@@ -4,6 +4,8 @@ linkTitle: 升级迁移
 weight: 80
 icon: fa-solid fa-arrow-up-right-dots
 description: 升级 OINK 版本，或从 Docsy 迁移过来。
+cascade:
+  categories: [升级]
 ---
 
 ## 本章内容 {#in-this-chapter}

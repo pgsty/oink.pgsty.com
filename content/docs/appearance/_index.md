@@ -4,6 +4,8 @@ linkTitle: Appearance
 weight: 50
 icon: fa-solid fa-palette
 description: Typography presets, colors, and style overrides.
+cascade:
+  categories: [Appearance]
 ---
 
 OINK's appearance customization rests on semantic CSS custom properties: a site

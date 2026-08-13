@@ -4,6 +4,8 @@ linkTitle: Site configuration
 weight: 20
 icon: fa-solid fa-sliders
 description: Navigation menus, languages, versions, and repository links.
+cascade:
+  categories: [Configuration]
 ---
 
 Once the site runs, this chapter covers **site-level structural configuration**:

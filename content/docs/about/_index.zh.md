@@ -5,6 +5,8 @@ type: docs
 aliases: [/about/, /docs/oink/]
 weight: 90
 icon: fa-solid fa-circle-info
+cascade:
+  categories: [关于]
 ---
 
 OINK 把 Markdown、配置与本地资源转换成完整的技术文档站。站点取得主题源码并安装 Hugo

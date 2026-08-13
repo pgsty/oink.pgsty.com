@@ -4,6 +4,8 @@ linkTitle: 创作内容
 weight: 30
 icon: fa-solid fa-pen-ruler
 description: 内容树的组织方式、写作规范、媒体资源与分类标签。
+cascade:
+  categories: [内容]
 ---
 
 这一章讲怎么写。可用的组件在[组件参考](/zh/docs/components/)，站点级配置在[站点配置](/zh/docs/configure/)。

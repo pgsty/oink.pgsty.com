@@ -8,6 +8,8 @@ type: docs
 aliases: [/about/, /docs/oink/]
 weight: 90
 icon: fa-solid fa-circle-info
+cascade:
+  categories: [About]
 ---
 
 OINK turns Markdown, configuration, and local assets into a complete technical

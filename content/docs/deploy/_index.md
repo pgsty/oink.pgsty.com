@@ -4,6 +4,8 @@ linkTitle: Deployment
 weight: 70
 icon: fa-solid fa-cloud-arrow-up
 description: Build once, publish to any static host.
+cascade:
+  categories: [Deployment]
 ---
 
 An OINK site builds to a plain static directory. **Anywhere that serves static

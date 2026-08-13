@@ -4,6 +4,8 @@ linkTitle: Upgrade
 weight: 80
 icon: fa-solid fa-arrow-up-right-dots
 description: Upgrade the OINK version, or migrate from Docsy.
+cascade:
+  categories: [Upgrade]
 ---
 
 ## In this chapter {#in-this-chapter}

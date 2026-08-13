@@ -5,6 +5,8 @@ weight: 40
 icon: fa-solid fa-cubes
 description:
   Every component available for writing, ordered by how often you reach for it.
+cascade:
+  categories: [Components]
 ---
 
 OINK's components fall into two groups: **the writing primitives you use every

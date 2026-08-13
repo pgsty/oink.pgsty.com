@@ -4,6 +4,8 @@ linkTitle: 站点配置
 weight: 20
 icon: fa-solid fa-sliders
 description: 导航菜单、多语言、版本管理与仓库链接。
+cascade:
+  categories: [配置]
 ---
 
 站点跑起来之后，这一章处理站点级的结构性配置：读者怎么导航、内容有几种语言、文档有几个版本、页面操作指向哪个仓库。

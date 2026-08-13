@@ -4,6 +4,8 @@ linkTitle: 快速上手
 description: 从零搭建一个双语 OINK 文档站，并把它部署出去。
 weight: 10
 icon: fa-solid fa-rocket
+cascade:
+  categories: [教程]
 ---
 
 OINK 是一个把浏览器运行时随主题一起发布的 Hugo 主题。消费站点**只需要 Hugo

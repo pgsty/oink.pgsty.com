@@ -4,6 +4,8 @@ linkTitle: 部署
 weight: 70
 icon: fa-solid fa-cloud-arrow-up
 description: 一次构建，发布到任意静态托管。
+cascade:
+  categories: [部署]
 ---
 
 OINK 站点的产物是一个纯静态目录。**任何能托管静态文件的地方都能部署**，不需要 Node 运行时、不需要服务端渲染、也不需要构建插件。

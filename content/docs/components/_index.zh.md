@@ -4,6 +4,8 @@ linkTitle: 组件参考
 weight: 40
 icon: fa-solid fa-cubes
 description: 写文档时可用的全部组件，按使用频率排列。
+cascade:
+  categories: [组件]
 ---
 
 OINK 的组件分两类：**每天都会用到的写作原语**，和特定场景才需要的大型组件。
