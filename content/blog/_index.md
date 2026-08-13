@@ -13,7 +13,6 @@ cascade:
   search_boost: 0.9
   params:
     ui:
-      sidebar_menu_foldable: false
       sidebar_menu_compact: false
       ul_show: 3
     BREAKING:

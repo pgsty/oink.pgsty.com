@@ -236,7 +236,9 @@ params:
 ```
 
 - `sidebar_menu_compact` shows the active branch and nearby entries.
-- `sidebar_menu_foldable` lets readers expand or collapse sections.
+- `sidebar_menu_foldable` lets readers expand or collapse sections. Blog
+  sections start expanded; set `sidebar_expanded: false` in a section's front
+  matter to start it collapsed.
 - `sidebar_menu_truncate` limits entries and emits a build warning when the
   limit is too small.
 - `sidebar_cache_limit` enables shared navigation markup above the configured

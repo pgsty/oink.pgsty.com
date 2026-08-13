@@ -199,7 +199,8 @@ params:
 ```
 
 - `sidebar_menu_compact` 只显示当前分支和附近条目；
-- `sidebar_menu_foldable` 允许读者展开或折叠分区；
+- `sidebar_menu_foldable` 允许读者展开或折叠分区。博客栏目默认展开，在栏目 front
+  matter 中设置 `sidebar_expanded: false` 可让它默认收起；
 - `sidebar_menu_truncate` 限制条目数，数值过小时会发出构建警告；
 - `sidebar_cache_limit` 在站点规模超过阈值后启用共享导航标记；
 - `sidebar_width_min` 与 `sidebar_width_max` 限制桌面端拖拽调整的宽度；
