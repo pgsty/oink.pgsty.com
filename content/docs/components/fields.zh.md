@@ -78,7 +78,7 @@ Fields 适合配置键、命令或 API 参数、对象属性与响应字段。�
   非空类型标签，例如 `boolean`、`string[]` 或 `duration`。
   {{< /field >}}
   {{< field name="required" type="boolean" default=false >}}
-  为 true 时添加本地化的必填标记。
+  为 true 时添加字面量 `required` 标记，该标记不做本地化。
   {{< /field >}}
   {{< field name="default" type="scalar" >}}
   字符串、布尔值、整数或浮点数；`false`、`0` 与 `""` 都会保留。
@@ -92,8 +92,10 @@ Fields 适合配置键、命令或 API 参数、对象属性与响应字段。�
 
 ## 语义与回退 {#semantics-and-fallback}
 
-HTML 使用 `dl`、`dt` 与
-`dd`。空间足够时，元数据按列展示；移动端会自然堆叠。可选标签会为辅助技术命名整个定义列表。Markdown 输出为带缩进的项目列表，名称、类型与默认值使用代码格式；打印与 RSS 保留所有定义。组件不会加载 JavaScript。
+HTML 使用 `dl`、`dt` 与 `dd`。每个条目上下两行：第一行是字段名，随后依次是
+`type`、`required` 与 `default`
+标记，描述在下一行；条目之间以细分隔线分隔。`required` 与 `default`
+标记在所有语言下都保持英文原文。可选标签会为辅助技术命名整个定义列表。Markdown 输出为带缩进的项目列表，名称、类型与默认值使用代码格式；打印与 RSS 保留所有定义。组件不会加载 JavaScript。
 
 ## 有意保留的边界 {#deliberate-limits}
 

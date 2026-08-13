@@ -37,19 +37,19 @@ Fields 适合配置键、命令或 API 参数、对象属性与响应字段。�
 
 **搜索配置**
 
-- `offlineSearch` — `boolean`; 必填; 默认值: `true`
+- `offlineSearch` — `boolean`; required; default: `true`
 
   构建 **本地** 搜索索引与命令面板。
 
-- `offlineSearchMaxResults` — `integer`; 默认值: `10`
+- `offlineSearchMaxResults` — `integer`; default: `10`
 
   限制可见结果数量，同时保留键盘导航能力。
 
-- `searchPlaceholder` — `string`; 默认值: `""`
+- `searchPlaceholder` — `string`; default: `""`
 
   设置可选占位文字。空字符串默认值仍然会明确显示。
 
-- `theme.components.media.previewMaximumWidthInCharacters` — `string`; 默认值: `auto`
+- `theme.components.media.previewMaximumWidthInCharacters` — `string`; default: `auto`
 
   这个刻意加长的字段名用于演示正常换行，而不会撑宽页面。
 
@@ -78,7 +78,7 @@ Fields 适合配置键、命令或 API 参数、对象属性与响应字段。�
 
 **field 参数**
 
-- `name` — `string`; 必填
+- `name` — `string`; required
 
   标识字段的非空字符串。
 
@@ -86,9 +86,9 @@ Fields 适合配置键、命令或 API 参数、对象属性与响应字段。�
 
   非空类型标签，例如 `boolean`、`string[]` 或 `duration`。
 
-- `required` — `boolean`; 默认值: `false`
+- `required` — `boolean`; default: `false`
 
-  为 true 时添加本地化的必填标记。
+  为 true 时添加字面量 `required` 标记，该标记不做本地化。
 
 - `default` — `scalar`
 
@@ -101,8 +101,10 @@ Fields 适合配置键、命令或 API 参数、对象属性与响应字段。�
 
 ## 语义与回退 {#semantics-and-fallback}
 
-HTML 使用 `dl`、`dt` 与
-`dd`。空间足够时，元数据按列展示；移动端会自然堆叠。可选标签会为辅助技术命名整个定义列表。Markdown 输出为带缩进的项目列表，名称、类型与默认值使用代码格式；打印与 RSS 保留所有定义。组件不会加载 JavaScript。
+HTML 使用 `dl`、`dt` 与 `dd`。每个条目上下两行：第一行是字段名，随后依次是
+`type`、`required` 与 `default`
+标记，描述在下一行；条目之间以细分隔线分隔。`required` 与 `default`
+标记在所有语言下都保持英文原文。可选标签会为辅助技术命名整个定义列表。Markdown 输出为带缩进的项目列表，名称、类型与默认值使用代码格式；打印与 RSS 保留所有定义。组件不会加载 JavaScript。
 
 ## 有意保留的边界 {#deliberate-limits}
 

@@ -94,7 +94,7 @@ shortcode directly inside `fields` stops the build.
 
 - `required` — `boolean`; default: `false`
 
-  When true, adds the localized required marker.
+  When true, adds the literal `required` marker. The marker is untranslated API vocabulary.
 
 - `default` — `scalar`
 
@@ -108,10 +108,12 @@ parameters are errors.
 
 ## Semantics and fallback {#semantics-and-fallback}
 
-HTML uses `dl`, `dt`, and `dd`. Metadata is displayed as columns where space
-permits and stacks naturally on mobile. The optional label names the definition
-list for assistive technology. Markdown emits an indented bullet list with
-code-formatted names, types, and defaults; print and RSS retain every
+HTML uses `dl`, `dt`, and `dd`. Each entry stacks a header row — the field name
+followed by its `type`, `required`, and `default` markers — above the
+description, and hairline dividers separate entries. The `required` and
+`default` labels stay in English in every locale. The optional label names the
+definition list for assistive technology. Markdown emits an indented bullet list
+with code-formatted names, types, and defaults; print and RSS retain every
 definition. No JavaScript is loaded.
 
 ## Deliberate limits {#deliberate-limits}

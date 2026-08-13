@@ -63,7 +63,7 @@ Zoom。操作任意图片即可在共享对话框中查看。禁用 JavaScript �
 
 **gallery 参数**
 
-- `columns` — `integer`; 默认值: `2`
+- `columns` — `integer`; default: `2`
 
   从 `1` 到 `4` 的无引号整数；这是桌面端最大列数。
 
@@ -82,11 +82,11 @@ Zoom。操作任意图片即可在共享对话框中查看。禁用 JavaScript �
 
 **gallery\/image 参数**
 
-- `src` — `image URL`; 必填
+- `src` — `image URL`; required
 
   经过校验的页面、全局、静态或远程图片 URL。
 
-- `alt` — `string`; 必填
+- `alt` — `string`; required
 
   描述图片的有意义非空纯文本。
 
