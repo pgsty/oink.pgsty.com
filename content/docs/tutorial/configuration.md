@@ -100,11 +100,11 @@ outputs:
   section: [HTML, RSS, print, markdown]
 ```
 
-| Format     | Effect                                             |
-| ---------- | -------------------------------------------------- |
-| `markdown` | Enables the Copy text and View source page actions |
-| `LLMS`     | Emits `llms.txt` so AI tooling can index the site  |
-| `print`    | Enables the whole-section print view               |
+| Format     | Effect                                                   |
+| ---------- | -------------------------------------------------------- |
+| `markdown` | Enables the Copy Markdown and View markdown page actions |
+| `LLMS`     | Emits `llms.txt` so AI tooling can index the site        |
+| `print`    | Enables the whole-section print view                     |
 
 ## Local runtimes {#local-runtimes}
 

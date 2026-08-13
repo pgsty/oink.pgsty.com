@@ -6,9 +6,9 @@ weight: 50
 cSpell:ignore: lastmod
 ---
 
-OINK 的文档与博客布局可以显示指向当前页面源码仓库的链接：
+OINK 的文档与博客布局可以显示指向当前页面源码仓库的链接。它们位于面包屑行末尾的[页面操作菜单](/zh/docs/configure/navigation/#page-actions)中：
 
-- **查阅源码**：当启用 Markdown 输出时，打开生成的 Markdown 备用版本。
+- **查阅 Markdown 源码**：当启用 Markdown 输出时，打开生成的 Markdown 备用版本。
 - **查阅编辑历史**：打开源文件的提交历史。
 - **编辑本页**：打开可编辑的源码视图。
 - **创建子页面**：在当前页面下新建文件，并可使用站点的
@@ -139,24 +139,26 @@ github_url: https://github.com/OWNER/UPSTREAM/edit/main/README.md
 
 ### 禁用链接 {#disabling-links}
 
-每种操作都有稳定的 CSS 类：
+菜单中的每个条目都在 `data-oink-action` 上携带稳定的操作 ID：
 
-| 链接           | CSS 类                         |
-| -------------- | ------------------------------ |
-| 查阅生成源码   | `.td-page-meta__markdown`      |
-| 查阅编辑历史   | `.td-page-meta__history`       |
-| 编辑本页       | `.td-page-meta__edit`          |
-| 创建子页面     | `.td-page-meta__child`         |
-| 创建文档 issue | `.td-page-meta__issue`         |
-| 创建项目 issue | `.td-page-meta__project-issue` |
+| 链接           | 操作 ID                |
+| -------------- | ---------------------- |
+| 查阅生成源码   | `view_markdown`        |
+| 查阅编辑历史   | `view_history`         |
+| 编辑本页       | `edit_page`            |
+| 创建子页面     | `create_child_page`    |
+| 创建文档 issue | `create_issue`         |
+| 创建项目 issue | `create_project_issue` |
 
 当目标不支持某项操作时，可以在 `assets/scss/_styles_project.scss` 中将其隐藏：
 
 ```scss
-.td-page-meta__child {
+.td-page-actions__item[data-oink-action='create_child_page'] {
   display: none;
 }
 ```
+
+命令面板中的操作使用同一批 ID，因此只隐藏菜单条目并不会让对应命令从面板中消失。
 
 对于全局不可用的目标，应优先从配置中省略。CSS 隐藏适合选择性策略，但不能让错误链接变正确。
 

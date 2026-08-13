@@ -72,13 +72,21 @@ Pressing `/` while the Palette is already open does not clear the current query.
 ### What the Palette contains {#palette-contents}
 
 - **Quick links**: the top-level menu entries named by `params.ui.quick_links`
-- **Page actions**: Copy text, Open in ChatGPT/Claude, View source, View edit
-  history, Edit this page, Report an issue, Print
-- **Preferences**: switch color theme, language, or version
+- **Page actions**: Copy Markdown, Open in ChatGPT/Claude, View markdown, View
+  edit history, Edit this page, Create child page, Create docs issue, Create
+  project issue, Print entire section
+- **Preferences**: switch color theme, language, or version, and open the
+  project repository
 
 Page actions and Palette commands run through **one shared registry**, so an
-action behaves identically whether it is invoked from the page rail or the
+action behaves identically whether it is invoked from the
+[breadcrumb split button](/docs/configure/navigation/#page-actions) or the
 Palette.
+
+> [!NOTE] The page-level `print` action is retired. Printing one page is what
+> the browser's `Cmd/Ctrl+P` already does; `print_section` remains, because
+> rendering a whole section as one printable document is not something the
+> browser can do on its own.
 
 ### Custom commands {#custom-commands}
 

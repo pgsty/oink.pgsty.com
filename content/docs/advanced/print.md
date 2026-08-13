@@ -6,7 +6,9 @@ aliases: [/docs/content/print/, /docs/feature/print/]
 ---
 
 Individual documentation pages print well from most browsers as the layouts have
-been styled to omit navigational chrome from the printed output.
+been styled to omit navigational chrome from the printed output. Printing one
+page is therefore the browser's own `Cmd/Ctrl+P`; OINK offers no page-level
+print action of its own.
 
 On some sites, it can be useful to enable a "print entire section" feature (as
 seen in this user guide). Selecting this option renders the entire current
@@ -47,8 +49,9 @@ outputs:
 <!-- prettier-ignore-end -->
 <!-- markdownlint-enable no-shortcut-ref-link -->
 
-The site should then show a "Print entire section" link in the right hand
-navigation.
+The site should then show a "Print entire section" entry in the
+[page actions menu](/docs/configure/navigation/#page-actions) and, as
+`print_section`, in the Command Palette.
 
 ## Further Customization
 

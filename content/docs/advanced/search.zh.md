@@ -62,10 +62,14 @@ public/offline-search-index.zh.json
 ### 面板里有什么 {#palette-contents}
 
 - **快捷入口**：由 `params.ui.quick_links` 指定的顶级菜单项
-- **页面操作**：复制文本、在 ChatGPT/Claude 中打开、查阅源码、查阅编辑历史、编辑此页、报告问题、打印
-- **偏好设置**：切换配色、语言、版本
+- **页面操作**：复制 Markdown 文本、在 ChatGPT/Claude 中打开、查阅 Markdown 源码、查阅编辑历史、编辑本页、创建子页面、提交文档 issue、提交项目 issue、打印整个分区
+- **偏好设置**：切换配色、语言、版本，以及打开项目仓库
 
-页面操作和面板命令走同一套注册表，所以无论从右侧栏还是面板触发，行为完全一致。
+页面操作和面板命令走同一套注册表，所以无论从[面包屑拆分按钮](/zh/docs/configure/navigation/#page-actions)还是面板触发，行为完全一致。
+
+> [!NOTE] 页面级的 `print` 操作已废弃。打印单个页面本来就是浏览器 `Cmd/Ctrl+P`
+> 的职责；`print_section`
+> 保留下来，因为把整个分区渲染成一份可打印文档并不是浏览器自己能做到的事。
 
 ### 自定义命令 {#custom-commands}
 

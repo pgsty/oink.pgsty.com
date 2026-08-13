@@ -160,6 +160,36 @@ If you don't set the parameters `taxonomyCloud` resp. `taxonomyPageHeader` the
 taxonomy clouds resp. assigned terms for all defined taxonomies will be
 generated.
 
+## Sidebar and right rail {#sidebar-and-rail}
+
+Clouds are **scoped to the reader's current top-level section**: on a docs page
+each term counts only its docs members, and on a blog page only its blog
+members. The counts therefore describe the section the reader is browsing rather
+than the whole site.
+
+A taxonomy term page has no place in the content tree, so it borrows one. If
+every page carrying the term lives under the same top-level section, the term
+page adopts that section for its sidebar tree, its root link, and its own clouds
+— following a docs tag keeps you inside the docs navigation. When the term's
+members span several sections, the term page falls back to the site-wide tree
+and shows no root row.
+
+Each cloud renders as a right-rail group with the same header treatment as the
+page outline, and its icon can be set per plural taxonomy name:
+
+```yaml {filename="hugo.yaml"}
+params:
+  ui:
+    taxonomy_icons:
+      categories: fa-solid fa-folder
+      tags: fa-solid fa-tags
+      projects: fa-solid fa-diagram-project
+```
+
+`categories` and `tags` have the defaults shown above; a taxonomy that is not
+named here gets a generic shapes glyph. See
+[Right-rail groups](/docs/configure/navigation/#rail-groups).
+
 ## Partials {#partials}
 
 The partials used by default for displaying taxonomies are defined so that you

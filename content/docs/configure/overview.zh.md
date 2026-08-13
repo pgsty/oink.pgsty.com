@@ -140,9 +140,11 @@ params:
 是内容站在 monorepo 中的路径。`github_branch`
 必须能够解析；用于展示的版本号不一定是 Git ref。
 
-如果希望首页导航、文档页头、移动端抽屉与页脚使用横向品牌图，请设置
+如果希望导航栏、侧边栏抽屉与页脚使用横向品牌图，请设置
 `params.wordmark`。它接受与 `params.logo` 相同的 Hugo Asset 或 `static/`
-路径。省略 `wordmark` 时，OINK 保留原有的“图标 + 标题”样式：
+路径。紧凑状态的导航栏会自动回退到
+`params.logo`，因为横向品牌图会占满整行；完全没有设置 `wordmark`
+时，OINK 保留原有的“图标 + 标题”样式：
 
 ```yaml
 params:
@@ -158,6 +160,8 @@ OINK 沿用 Docsy 菜单与 UI 参数，并增加职责明确的外壳控制项�
 params:
   page_width: normal
   ui:
+    navbar_enabled: true
+    footer_style: fat # fat | slim | none
     quick_links: [docs, blog]
     sidebar_width_min: 220
     sidebar_width_max: 480
@@ -169,6 +173,9 @@ params:
     sidebar_search_disable: false
     breadcrumb_disable: false
     showLightDarkModeMenu: true
+    taxonomy_icons:
+      categories: fa-solid fa-folder
+      tags: fa-solid fa-tags
     page_context_menu:
       enable: true
       assistant_links: false
@@ -177,14 +184,26 @@ params:
       enable: true
 ```
 
+`navbar_enabled` 与 `footer_style`
+决定每个页面是否带站点导航栏、以及使用哪种页脚形态。两者默认开启（分别为 `true`
+与 `fat`），作用于所有布局，可以通过 cascade 按分区覆盖，也可以在页面 front
+matter 中覆盖；`footer_style`
+取值无法识别时构建会失败。详见[导航与菜单](/zh/docs/configure/navigation/#navbar-enabled)与[站点页脚](/zh/docs/configure/navigation/#site-footer)。
+
+> [!NOTE] `navbar_accordion_single_open`
+> 已废弃。现在没有独立的移动菜单可供折叠——小于 `lg`
+> 时导航栏把所有条目保留为图标。
+
 `page_width` 接受 `normal`、`wide` 或 `full`，也可以在页面 front
 matter 中覆盖。侧栏最小与最大值以像素为单位，用来限制桌面端拖动调整的范围。`sidebar_item_overflow: wrap`
 会让长标签换行；其他值保持紧凑的省略号行为。
 
 `quick_links` 指定外壳中显示的顶层 page
-reference。请在各语言主菜单中定义相应的本地化名称。
+reference。请在各语言主菜单中定义相应的本地化名称。`taxonomy_icons`
+按分类复数名设置右栏分组图标，默认 `categories` 用文件夹、`tags`
+用标签，其余分类使用通用形状图标。
 
-页面上下文菜单在所有视口宽度下都保证“复制文本”“查阅源码”“查阅编辑历史”、编辑、反馈与打印入口可访问。内置 ChatGPT 和 Claude助手入口默认关闭；设置
+页面操作是面包屑行中的拆分按钮：左半边复制本页 Markdown，菜单则在所有视口宽度下保证「复制 Markdown 文本」、助手入口、「查阅 Markdown 源码」「查阅编辑历史」「编辑本页」「创建子页面」、文档与项目 issue，以及「打印整个分区」都可访问。内置 ChatGPT 和 Claude 助手入口默认关闭；设置
 `assistant_links: true`
 后才会在有源文件的页面上显示。读者激活入口时，完整的当前 URL（包括 query
 string 与 fragment）会随本地化提示词离开本站；OINK 不会上传页面正文。请勿在 URL 中放置秘密信息，并披露这一第三方边界。页面可用布尔型
@@ -207,13 +226,13 @@ params:
       #   url: https://assistant.example/new?source={markdown_url}&title={title}
 ```
 
-## 首页与页脚 {#homepage-and-footer}
+## 首页数据 {#homepage-and-footer}
 
 首页内容位于
 `data/home/<language>.yaml`；缺少相应语言数据时回退到英文。每个语言文件包含具名数据块，以及一个可选的
 `sections`
-列表；该列表会按照准确顺序把数据块组合成首页。页脚使用同一份文件，但不受
-`sections` 控制。
+列表；该列表会按照准确顺序把数据块组合成首页。页脚已不再属于这份文件——它现在渲染在所有布局上，数据读取自
+`data/footer/<language>.yaml`。详见[站点页脚](/zh/docs/configure/navigation/#site-footer)。
 
 ### 组合首页分区 {#compose-sections}
 
@@ -277,7 +296,7 @@ OINK 0.3.0 提供 12 种分区类型：
 `external`。普通文字字段会渲染 Markdown。站内 URL 应相对于当前语言根路径；应作为外部导航打开的链接设置
 `external: true`。
 
-### Hero 图片与品牌页脚 {#hero-media-and-brand-footer}
+### Hero 图片 {#hero-media-and-brand-footer}
 
 每个区块都可以省略，因此无需复制布局也能得到更精简的首页。例如：
 
@@ -295,16 +314,6 @@ hero:
     alt: 产品文档工作流插图
   actions:
     - { label: 阅读文档, url: docs/, icon: fa-solid fa-book, style: primary }
-
-footer:
-  brand:
-    name: Product Docs
-    tagline: 支持 **Markdown** 的简短介绍。
-    slogan: 让答案离产品更近。
-  columns:
-    - title: 产品
-      links:
-        - { label: 概览, url: docs/ }
 ```
 
 可选的 `hero.image` 会在 Hero 右侧添加一幅跟随颜色主题的图片。将 `light` 与
@@ -313,9 +322,14 @@ footer:
 中的一项时，OINK 会在两种主题下复用该图；也可以直接用字符串配置通用图片。省略
 `image` 则保持纯文字 Hero。
 
-首页会在通用小页脚上方渲染品牌与导航组成的大页脚。小页脚左侧来自
+首页各分区之下，每个页面都以同一个站点页脚收尾：`footer_style` 为 `fat`
+时先渲染多列网格，然后是版权行。版权行左侧来自
 `params.copyright`，中间使用可选的 `params.footer_icp` 与
-`params.footer_icp_url`，右侧列出所有已配置语言。版权作者与大页脚品牌文字中的 Markdown 会渲染为真实链接与行内标记。
+`params.footer_icp_url`，右侧列出所有已配置语言。版权作者与页脚品牌文字中的 Markdown 会渲染为真实链接与行内标记。
+
+仍在 `data/home/<language>.yaml` 中保留 `footer`
+块的站点照常读取该数据。**这份数据现在供给所有页面的页脚**，而不只是首页。方便时请迁移到
+`data/footer/<language>.yaml`。
 
 ### 可导航的功能面板 {#linked-capability-boards}
 
@@ -408,6 +422,8 @@ Hugo 的 `.Param` 查找机制允许在 front matter 中覆盖许多站点参数
 ---
 title: Wide reference
 page_width: wide
+navbar_enabled: false
+footer_style: slim
 hide_feedback: true
 hide_readingtime: true
 ui:
@@ -416,6 +432,9 @@ ui:
     disable: false
 ---
 ```
+
+`navbar_enabled` 与 `footer_style` 直接从 front matter 顶层读取，不在 `ui`
+块内，因此分区可以在自己的 `cascade` 中一次性设定。
 
 只应为真实的内容差异使用覆盖，不要靠逐页设置重建另一套视觉系统。
 

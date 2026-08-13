@@ -285,22 +285,31 @@ the language or plugin. Do not pull Prism components from a CDN at runtime.
 ## Navbar
 
 OINK's navbar contains the project identity, main menu, version and language
-selectors when applicable, color-mode control, and search. On small screens,
-overflowing primary items remain horizontally reachable.
+selectors when applicable, color-mode control, search, and the repository link.
+It renders on every layout unless a page turns it off with
+[`navbar_enabled`](/docs/configure/navigation/#navbar-enabled).
 
 ### Default look and feel
 
-The navbar uses the local brand palette and a fixed minimum height.
+The navbar uses the local brand palette and a fixed minimum height, and it has
+[two states](/docs/configure/navigation/#navbar-states) rather than a desktop
+layout plus a separate mobile menu.
 
 #### On mobile
 
-The brand and actions stay visible while the primary menu can scroll. Test long
-Chinese labels, 200% zoom, touch targets, focus order, and both page directions.
+Below `lg` the navbar keeps the logo and turns every remaining item into a
+right-aligned icon; nothing is hidden behind a hamburger. Below `md`, shell
+pages gain one more icon that opens the sidebar drawer. Test long Chinese
+labels, 200% zoom, touch targets, focus order, and both page directions — and
+give every top-level menu entry a `pre` icon, because the icon is all that
+survives at this width.
 
 #### On desktop
 
-The main menu expands inline; version, language, mode, and search controls stay
-grouped. Avoid enough custom entries to push controls outside the viewport.
+At `lg` and up the main menu expands inline with its labels; version, language,
+mode, search, and repository controls stay grouped at the end. Menu parents open
+their panel on hover or keyboard focus and navigate on click. Avoid enough
+custom entries to push controls outside the viewport.
 
 ##### Translucent over cover images {#default-over-cover}
 
@@ -357,9 +366,11 @@ replace brand text with an image when selectable text works.
 
 ### Light/dark-mode menu
 
-The selector appears when `params.ui.showLightDarkModeMenu` is true. Keep it in
-the shared navigation so its state applies consistently across languages and
-page types.
+The selector appears when `params.ui.showLightDarkModeMenu` is true. Clicking
+the navbar icon toggles light and dark; hovering or focusing it opens the
+**System / Light / Dark** picker, where System follows the reader's operating
+system. Keep it in the shared navigation so its state applies consistently
+across languages and page types.
 
 ## Alerts
 

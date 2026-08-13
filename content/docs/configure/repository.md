@@ -8,9 +8,11 @@ cSpell:ignore: lastmod
 ---
 
 OINK's documentation and blog layouts can show links to the current page's
-source repository:
+source repository. They live in the
+[page actions menu](/docs/configure/navigation/#page-actions) at the end of the
+breadcrumb row:
 
-- **View source** opens the generated Markdown alternate when that output is
+- **View markdown** opens the generated Markdown alternate when that output is
   enabled.
 - **View edit history** opens the source file's commit history.
 - **Edit this page** opens an editable source view.
@@ -157,25 +159,28 @@ destination is not GitHub-compatible.
 
 ### Disabling links
 
-Each action has a stable CSS class:
+Every entry in the menu carries a stable action ID in `data-oink-action`:
 
-| Link                       | Class                          |
-| -------------------------- | ------------------------------ |
-| View generated source      | `.td-page-meta__markdown`      |
-| View edit history          | `.td-page-meta__history`       |
-| Edit this page             | `.td-page-meta__edit`          |
-| Create child page          | `.td-page-meta__child`         |
-| Create documentation issue | `.td-page-meta__issue`         |
-| Create project issue       | `.td-page-meta__project-issue` |
+| Link                       | Action ID              |
+| -------------------------- | ---------------------- |
+| View generated source      | `view_markdown`        |
+| View edit history          | `view_history`         |
+| Edit this page             | `edit_page`            |
+| Create child page          | `create_child_page`    |
+| Create documentation issue | `create_issue`         |
+| Create project issue       | `create_project_issue` |
 
 Hide an action in `assets/scss/_styles_project.scss` when the destination does
 not support it:
 
 ```scss
-.td-page-meta__child {
+.td-page-actions__item[data-oink-action='create_child_page'] {
   display: none;
 }
 ```
+
+The same IDs name the actions in the Command Palette, so hiding the menu entry
+alone leaves the command reachable there.
 
 Prefer omitting an unavailable global destination in configuration. CSS hiding
 is useful for selective policy; it does not make a malformed link correct.

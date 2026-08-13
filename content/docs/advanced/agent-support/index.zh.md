@@ -22,7 +22,7 @@ cSpell:ignore: llmstxt
   配置决定哪些页面类型发布 Markdown。
 - **发现机制**：页面 HTML 的 header 会包含指向该页 Markdown 版本的
   `rel="alternate"` 链接。
-- **复制文本 / 查阅源码**：当页面存在 Markdown 输出时，页面操作可以复制或打开该版本。
+- **复制 Markdown 文本 / 查阅 Markdown 源码**：当页面存在 Markdown 输出时，页面操作可以复制或打开该版本。复制是面包屑行中拆分按钮的左半边，其余入口在它的菜单里。
 - **在 ChatGPT / Claude 中打开**：只有显式启用
   `params.ui.page_context_menu.assistant_links`
   后，有源文件的页面操作才会把当前浏览器 URL 交给相应助手。OINK 只在读者激活链接时构造提示词，并保留实际部署域名、查询参数与片段。完整 URL 随后会离开本站；请勿在 URL 中放置秘密信息，并披露这一第三方边界。页面正文不会被上传。

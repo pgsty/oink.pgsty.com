@@ -150,9 +150,10 @@ is the content site's path inside a monorepo. Keep `github_branch` resolvable; a
 display version is not necessarily a Git ref.
 
 Use `params.wordmark` for a horizontal brand asset that should appear in the
-landing navigation, documentation header, mobile drawer, and footer. It accepts
-the same asset and `static/` paths as `params.logo`. If `wordmark` is absent,
-OINK keeps the existing logo-and-title treatment:
+navbar, the sidebar drawer, and the footer. It accepts the same asset and
+`static/` paths as `params.logo`. The compact navbar falls back to `params.logo`
+on its own, because a wordmark would consume the whole row; if `wordmark` is
+absent entirely, OINK keeps the existing logo-and-title treatment:
 
 ```yaml
 params:
@@ -168,6 +169,8 @@ OINK retains Docsy menus and UI parameters and adds focused shell controls:
 params:
   page_width: normal
   ui:
+    navbar_enabled: true
+    footer_style: fat # fat | slim | none
     quick_links: [docs, blog]
     sidebar_width_min: 220
     sidebar_width_max: 480
@@ -179,6 +182,9 @@ params:
     sidebar_search_disable: false
     breadcrumb_disable: false
     showLightDarkModeMenu: true
+    taxonomy_icons:
+      categories: fa-solid fa-folder
+      tags: fa-solid fa-tags
     page_context_menu:
       enable: true
       assistant_links: false
@@ -187,22 +193,36 @@ params:
       enable: true
 ```
 
+`navbar_enabled` and `footer_style` decide whether each page carries the site
+navbar and which footer shape it uses. Both default to on (`true` and `fat`),
+apply to every layout, and can be overridden per section through a cascade or
+per page in front matter; an unknown `footer_style` fails the build. See
+[Navigation and menus](/docs/configure/navigation/#navbar-enabled) and
+[Site footer](/docs/configure/navigation/#site-footer).
+
+> [!NOTE] `navbar_accordion_single_open` is retired. There is no separate mobile
+> menu to accordion — below `lg` the navbar keeps every item visible as an icon.
+
 `page_width` accepts `normal`, `wide`, or `full` and can be overridden in page
 front matter. Sidebar minimum and maximum values are pixels used to clamp the
 desktop drag resizer. `sidebar_item_overflow: wrap` wraps long labels; other
 values retain the compact ellipsis behavior.
 
 `quick_links` names top-level page references shown by the shell. Define their
-translated names in each language's main menu.
+translated names in each language's main menu. `taxonomy_icons` sets the
+right-rail group icon per plural taxonomy name, defaulting to a folder for
+`categories`, tags for `tags`, and a generic shape elsewhere.
 
-The page context menu keeps Copy text, View source, View edit history, edit,
-issue, and print actions reachable at every viewport width. Built-in Open in
-ChatGPT / Claude actions are disabled by default. Set `assistant_links: true` to
-show them on file-backed pages; when a reader activates one, the full current
-URL — including its query string and fragment — leaves the site inside a
-localized prompt. Oink does not upload the page body. Avoid secrets in URLs and
-disclose this third-party boundary. A page can override the site policy with
-boolean `assistant_links` front matter.
+The page actions are a split button in the breadcrumb row: the primary half
+copies the page's Markdown, and its menu keeps Copy Markdown, the assistant
+links, View markdown, View edit history, Edit this page, Create child page, the
+documentation and project issues, and Print entire section reachable at every
+viewport width. Built-in Open in ChatGPT / Claude actions are disabled by
+default. Set `assistant_links: true` to show them on file-backed pages; when a
+reader activates one, the full current URL — including its query string and
+fragment — leaves the site inside a localized prompt. Oink does not upload the
+page body. Avoid secrets in URLs and disclose this third-party boundary. A page
+can override the site policy with boolean `assistant_links` front matter.
 
 View edit history appears when `github_repo` can resolve the same repository
 path used by Edit this page. `links` is empty by default. Additional custom
@@ -220,12 +240,14 @@ params:
       #   url: https://assistant.example/new?source={markdown_url}&title={title}
 ```
 
-## Homepage and footer {#homepage-and-footer}
+## Homepage data {#homepage-and-footer}
 
 Homepage content lives in `data/home/<language>.yaml`, with English used as the
 fallback. Each language file contains named data blocks and an optional
 `sections` list that composes those blocks into the exact landing-page order.
-The footer uses the same file but is rendered independently of `sections`.
+The site footer is no longer part of that file — it now renders on every layout
+and reads `data/footer/<language>.yaml`. See
+[Site footer](/docs/configure/navigation/#site-footer).
 
 ### Compose sections {#compose-sections}
 
@@ -291,7 +313,7 @@ and `items`. Item fields vary by presentation but consistently use `title` or
 fields render Markdown. Keep internal URLs relative to the language root; set
 `external: true` for links that should open as external navigation.
 
-### Hero media and brand footer {#hero-media-and-brand-footer}
+### Hero media {#hero-media-and-brand-footer}
 
 Every block is optional, so a site can keep a short landing page without copying
 the layout. For example:
@@ -315,16 +337,6 @@ hero:
         icon: fa-solid fa-book,
         style: primary,
       }
-
-footer:
-  brand:
-    name: Product Docs
-    tagline: A short **Markdown-enabled** description.
-    slogan: Clear answers, close to the product.
-  columns:
-    - title: Product
-      links:
-        - { label: Overview, url: docs/ }
 ```
 
 The optional `hero.image` block adds a theme-aware visual on the right. Set
@@ -333,11 +345,16 @@ image follows the color-theme selector. If only `src`, `light`, or `dark` is
 provided, OINK uses that image for both themes. A string value is also accepted
 as a shared image. Omit `image` to keep the text-only Hero.
 
-The homepage renders the large brand-and-navigation footer above the common
-footline. The footline uses `params.copyright` on the left, optional
-`params.footer_icp` and `params.footer_icp_url` in the center, and every
-configured language on the right. Markdown in the copyright author and footer
-brand text is rendered as links and inline markup.
+Below the landing sections, every page ends with the same site footer: the
+column grid when `footer_style` is `fat`, then the copyright line. That line
+uses `params.copyright` on the left, optional `params.footer_icp` and
+`params.footer_icp_url` in the center, and every configured language on the
+right. Markdown in the copyright author and footer brand text is rendered as
+links and inline markup.
+
+A site that still keeps a `footer` block in `data/home/<language>.yaml` is read
+as before, but that data now feeds the footer on **every** page rather than the
+homepage alone. Move it to `data/footer/<language>.yaml` when convenient.
 
 ### Linked capability boards {#linked-capability-boards}
 
@@ -437,6 +454,8 @@ matter:
 ---
 title: Wide reference
 page_width: wide
+navbar_enabled: false
+footer_style: slim
 hide_feedback: true
 hide_readingtime: true
 ui:
@@ -445,6 +464,9 @@ ui:
     disable: false
 ---
 ```
+
+`navbar_enabled` and `footer_style` are read from front matter directly, not
+from a `ui` block, so a section can set them once in its `cascade`.
 
 Use overrides for real content differences, not to reconstruct a separate visual
 system page by page.

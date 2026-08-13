@@ -148,6 +148,26 @@ Projects”和“Tag Cloud”），并在每个页面显示 `tags` 和 `categori
 如果没有设置 `taxonomyCloud` 或
 `taxonomyPageHeader`，系统会为所有已定义分类法生成相应的分类云或已分配术语。
 
+## 侧边栏与右栏 {#sidebar-and-rail}
+
+**标签云的范围限定在读者当前所在的顶层分区之内**：文档页面上，每个术语只统计属于文档的成员；博客页面上只统计属于博客的成员。因此计数描述的是读者正在浏览的分区，而不是整个站点。
+
+分类术语页在内容树中没有位置，于是它会借用一个。如果带有该术语的页面全部位于同一个顶层分区之下，术语页就采用该分区来渲染侧边栏树、根链接和自己的标签云——点进文档标签后仍然停留在文档导航中。当术语的成员横跨多个分区时，术语页回退到站点级的树，并且不显示根节点行。
+
+每个标签云都渲染为右栏中的一个分组，标题行样式与页面大纲一致，图标可以按分类复数名设置：
+
+```yaml {filename="hugo.yaml"}
+params:
+  ui:
+    taxonomy_icons:
+      categories: fa-solid fa-folder
+      tags: fa-solid fa-tags
+      projects: fa-solid fa-diagram-project
+```
+
+`categories` 与 `tags`
+的默认值就是上面这两个；未在此列出的分类使用通用的形状图标。详见[右栏分组](/zh/docs/configure/navigation/#rail-groups)。
+
 ## Partial {#partials}
 
 显示分类法时默认使用的 partial 经过专门设计，可以方便地在自定义布局中复用。

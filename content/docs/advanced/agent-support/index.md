@@ -26,8 +26,9 @@ Oink enables:
   `outputs` configuration controls which page kinds publish Markdown.
 - **Discovery**: page HTML headers include `rel="alternate"` links to the
   Markdown version of the page.
-- **Copy text / View source**: page actions can copy or open the Markdown
-  version of the page when that output exists.
+- **Copy Markdown / View markdown**: page actions can copy or open the Markdown
+  version of the page when that output exists. Copy is the primary half of the
+  split button in the breadcrumb row; the rest live in its menu.
 - **Open in ChatGPT / Claude**: file-backed page actions can hand the current
   browser URL to either assistant when
   `params.ui.page_context_menu.assistant_links` is explicitly enabled. Oink

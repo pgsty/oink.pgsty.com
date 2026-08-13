@@ -5,7 +5,8 @@ description: 配置单页与整节文档的打印输出。
 aliases: [/docs/content/print/, /docs/feature/print/]
 ---
 
-大多数浏览器都能很好地打印单篇文档，因为页面样式会从打印输出中移除导航外壳。
+大多数浏览器都能很好地打印单篇文档，因为页面样式会从打印输出中移除导航外壳。因此，打印单个页面交给浏览器自带的
+`Cmd/Ctrl+P` 即可，OINK 不再提供页面级的打印操作。
 
 有些站点适合启用“打印整节”功能（本用户指南就是如此）。选择后，系统会把当前顶层分区（例如本页所在的“高级特性”）连同全部子页面和子分区渲染为适合打印的格式，并附上该分区的完整目录。
 
@@ -42,7 +43,8 @@ outputs:
 <!-- prettier-ignore-end -->
 <!-- markdownlint-enable no-shortcut-ref-link -->
 
-随后，站点右侧导航中会显示“打印整节”链接。
+随后，[页面操作菜单](/zh/docs/configure/navigation/#page-actions)中会出现「打印整个分区」条目，命令面板中则以
+`print_section` 的形式出现。
 
 ## 进一步自定义 {#further-customization}
 

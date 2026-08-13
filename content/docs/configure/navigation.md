@@ -6,15 +6,59 @@ description: Configure navigation, language switching, sidebars, and outlines.
 ---
 
 OINK combines Hugo's content tree and menu model with a documentation workspace:
-a global navbar, a collapsible and resizable section sidebar, and a collapsible
-page outline. The same structure works for English, Chinese, and right-to-left
-languages.
+a site navbar on every layout, a collapsible and resizable section sidebar, a
+collapsible page outline in the right rail, and a site footer. The same
+structure works for English, Chinese, and right-to-left languages.
 
 ## Site navbar
 
-The global navbar is built from Hugo's `main` menu plus OINK-generated controls.
-Depending on configuration and page type, it can include version, language,
-color-mode, and search controls.
+The navbar is built from Hugo's `main` menu plus OINK-generated controls: the
+version selector, the language selector, the color-mode control, search, and the
+project repository link. It renders on **every layout** — landing pages, docs,
+blog, Swagger, and taxonomy pages alike — so the same site-level navigation is
+one click away from anywhere.
+
+### Turning the navbar off {#navbar-enabled}
+
+`navbar_enabled` defaults to `true`. Turn the navbar off for the whole site, for
+one section through a front-matter cascade, or for a single page:
+
+```yaml {filename="hugo.yaml"}
+params:
+  ui:
+    navbar_enabled: false
+```
+
+```yaml
+---
+title: Standalone report
+navbar_enabled: false
+---
+```
+
+Front matter wins over the site parameter, and an explicit `false` is honored at
+every level. Without the navbar OINK restores the chrome the navbar replaced:
+the mobile subnav, the sidebar's brand and search rows, the utility buttons on
+the TOC rail, and the sidebar footer utilities. Use it for a page that has to
+own the full viewport, not as a general layout preference.
+
+### Two states, no separate mobile menu {#navbar-states}
+
+The navbar has exactly two states:
+
+| Width       | State                                                      |
+| ----------- | ---------------------------------------------------------- |
+| `lg` and up | Full: brand, menu labels, and the utility controls         |
+| Below `lg`  | Compact: the logo, then every item as a right-aligned icon |
+
+Compact is not a reduced menu. Menu entries keep their icons, search stays a
+magnifier, and the version, language, and theme controls stay where they are —
+nothing collapses into a hamburger, because there is no separate mobile menu to
+collapse into. The one width-gated control is on shell pages below `md`, where
+an extra icon opens the sidebar drawer.
+
+> [!NOTE] `navbar_accordion_single_open` is retired. The parameter is ignored;
+> remove it from existing configuration.
 
 ### Adding `main` menu entries
 
@@ -71,14 +115,12 @@ menus:
 A child's `params.description` renders under its title in the dropdown, helping
 a reader decide where to go.
 
-One interaction detail matters: **the parent link and the disclosure button are
-separate**. Clicking the parent text navigates; only the adjacent chevron opens
-the dropdown. The parent page therefore stays reachable rather than being
-captured by its own menu.
-
-Desktop opens with click, Enter, Space, and ArrowDown, and Escape closes and
-returns focus to the button. Mobile uses the matching accordion. **No behavior
-requires hover.**
+One interaction detail matters: **the parent is a plain link**. Its panel opens
+on hover and on keyboard focus, and clicking or pressing Enter navigates to the
+parent page. There is no disclosure caret to press, and no state in which the
+parent page is captured by its own menu. Escape closes the panel and leaves
+focus on the link; touch users navigate straight to the parent page, which
+carries the same links in its own content.
 
 > [!NOTE] Only one child level is interactive. Deeper entries emit a build
 > warning and degrade to static group headings — they never create a third-level
@@ -87,8 +129,10 @@ requires hover.**
 
 ### Version menu
 
-The selector appears when `params.versions` is configured. Each entry can be a
-heading, separator, release, development build, or site variant:
+The selector appears when `params.versions` is configured. It is a branch icon
+that opens its list on hover or keyboard focus, sharing one popover style with
+the language and theme controls. Each entry can be a heading, separator,
+release, development build, or site variant:
 
 ```yaml
 params:
@@ -113,24 +157,26 @@ equivalent path on the target version and otherwise uses its configured URL.
 
 OINK builds language targets from Hugo's `AllTranslations`. When a translated
 peer is missing, the target language's home page is used instead of a broken
-URL. One configured language hides the control. With two or more languages, a
-click advances to the next language by weight, while hovering for half a second
-or focusing the control opens the complete menu. The current site cycles from
-English to Simplified Chinese and back. Targets include `lang`, `hreflang`,
-locale, and text-direction attributes.
+URL. One configured language hides the control. With two or more languages, the
+language icon advances to the next language by weight on click, while hovering
+for half a second or focusing it opens the complete menu. The current site
+cycles from English to Simplified Chinese and back. Targets include `lang`,
+`hreflang`, locale, and text-direction attributes.
 
 ### Light/dark theme menu
 
-When color-mode support is enabled, the navbar and documentation workspace show
-a theme control. See
+When color-mode support is enabled, the navbar shows a theme control. Clicking
+it toggles light and dark; hovering or focusing it opens a **System / Light /
+Dark** picker, where System follows the reader's operating system. See
 [Light/dark-mode menu](/docs/appearance/styling/#lightdark-mode-menu).
 
 ### Search box
 
-The documentation workspace uses a local search dialog when offline search is
-enabled. The sidebar button advertises the platform shortcut (Command/Ctrl+K).
-Online search integrations remain available by explicit configuration. See
-[Search](/docs/advanced/search/).
+Search is a magnifier icon in the navbar. It opens the Command Palette, as do
+`Cmd/Ctrl-K` and, outside editable controls, `/`. The icon appears when offline
+search is enabled; with the navbar disabled the search row returns to the top of
+the sidebar. Online search integrations remain available by explicit
+configuration. See [Search](/docs/advanced/search/).
 
 ### Adding icons to the navbar
 
@@ -151,6 +197,10 @@ menus:
 Decorative icons need `aria-hidden="true"`; the link itself must retain a useful
 text or accessible label. External links that open a new tab must use
 `rel="noopener"`.
+
+Below `lg` the icon is all that remains of a menu entry, so give every top-level
+entry a `pre` icon. An entry without one has nothing to show in the compact
+state.
 
 ## Side navigation {#side-nav}
 
@@ -253,9 +303,12 @@ reference; Hugo then fails the build if it cannot resolve the destination. OINK
 adds `noopener` for new-tab links. Include a short body explaining the
 destination because Hugo still generates a page for the placeholder.
 
-### Section as sidebar root (EXPERIMENTAL) {#sidebar-root}
+### Section as sidebar root {#sidebar-root}
 
-Enable rooted sidebars:
+The sidebar tree is rooted at the reader's current top-level section, and the
+row above the tree names that root. A large sub-tree — a versioned API
+reference, a separate handbook — can become a root of its own so readers can
+switch into it without leaving the section:
 
 ```yaml
 params:
@@ -264,7 +317,7 @@ params:
     sidebar_root_menu: true
 ```
 
-Then set a section's `_index.md`:
+Then set a descendant section's `_index.md`:
 
 ```yaml
 ---
@@ -275,16 +328,26 @@ sidebar_root_link_self: true
 ```
 
 `self` applies the root to the section index and descendants; `children` keeps
-the index in the parent tree but roots its descendants. The optional root menu
-lets readers switch between roots. Rooted sections can nest, but redundant or
-invalid values produce build warnings.
+the index in the parent tree but roots its descendants. Rooted sections can
+nest, but redundant or invalid values produce build warnings.
+
+The switcher is **scoped to the current top-level section**. Its entries are
+that section itself, which is the default, plus every descendant that sets
+`sidebar_root_for: self`. Sibling top-level sections are not listed — moving
+between Docs and Blog is the navbar's job. A section with no switchable
+descendant therefore shows no dropdown at all: the row is a plain, unboxed link
+to the section landing page, flush with the tree's top-level rows.
+
+Taxonomy term pages have no content ancestry, so a term adopts the top section
+its members share. Following a tag from a docs page keeps the docs tree and the
+docs root link instead of falling back to the site-wide tree; a term whose
+members span several sections shows no root row.
 
 ## Table of contents (TOC) {#table-of-contents}
 
 Hugo builds the right-side page outline from Markdown headings. OINK renders it
-as a fixed documentation panel with quick links, language and theme controls,
-repository metadata, and taxonomy terms. Readers can collapse the panel; its
-state is stored locally.
+as the first group in a fixed right rail, followed by the taxonomy clouds for
+the current section. Readers can collapse the rail; its state is stored locally.
 
 Headings emitted by Markdown shortcodes (`{{%/* ... */%}}`) participate in
 Hugo's table of contents. Headings emitted only by standard shortcodes
@@ -313,6 +376,30 @@ Localize labels such as `toc_on_this_page` in the site's i18n bundle. If custom
 CSS changes the outline rail or fixed-panel dimensions, test active tracking,
 zoom, keyboard focus, and pages with no headings.
 
+### Right-rail groups {#rail-groups}
+
+Every group in the rail uses the same header row: an icon, a title, and a
+chevron, with the whole row highlighting as one item. The outline group is
+titled **Content**, and its icon is a three-line glyph that collapses the rail
+rather than a decoration. In the sidebar drawer the same group keeps a static
+three-line icon so it reads like the taxonomy heads beside it.
+
+Taxonomy group icons are configurable by plural taxonomy name:
+
+```yaml {filename="hugo.yaml"}
+params:
+  ui:
+    taxonomy_icons:
+      categories: fa-solid fa-folder
+      tags: fa-solid fa-tags
+      projects: fa-solid fa-diagram-project
+```
+
+`categories` defaults to a folder and `tags` to tags; any other taxonomy gets a
+generic shapes glyph until it is named here. See
+[Taxonomy support](/docs/content/taxonomy/#sidebar-and-rail) for how the clouds
+themselves are scoped.
+
 ### Active TOC entry tracking with ScrollSpy {#toc-entry-tracking}
 
 OINK uses a local Bootstrap ScrollSpy patch and IntersectionObserver to track
@@ -339,8 +426,10 @@ that contain duplicate or missing IDs.
 
 ## Breadcrumb navigation
 
-Breadcrumbs are shown above ordinary content pages and in taxonomy results.
-Disable them globally:
+Breadcrumbs are shown above ordinary content pages and in taxonomy results, and
+that row also carries the page actions. Top-level section pages keep their
+one-crumb breadcrumb so the row stays anchored at every depth. Disable
+breadcrumbs globally:
 
 ```yaml
 params:
@@ -352,6 +441,105 @@ params:
 The same `ui.breadcrumb_disable` value can be set in a page or section cascade.
 Breadcrumb labels come from localized page titles and must follow the same
 logical hierarchy as the sidebar.
+
+### Page actions {#page-actions}
+
+The page actions are an icon-only split button at the end of the breadcrumb row.
+The primary half copies the page's Markdown and flips to a green check on
+success; the caret opens a menu of ten actions in two halves. The reading half
+takes the page somewhere else:
+
+- Copy Markdown
+- Open in ChatGPT
+- Open in Claude
+- View markdown
+- View edit history
+
+A separator follows, then the acting half, which changes or produces something:
+
+- Edit this page
+- Create child page
+- Create docs issue
+- Create project issue
+- Print entire section
+
+Configured `page_context_menu.links` come last, after a second separator. Every
+entry appears only when it can resolve: the Markdown actions need the `markdown`
+output format, the repository actions need `github_repo`, the project issue
+needs `github_project_repo`, and the assistant actions need
+`params.ui.page_context_menu.assistant_links`.
+
+On the blog root and its first-level sections the primary half is the RSS link
+instead of the copy control, and the menu still offers Copy Markdown. Blog leaf
+pages carry no feed icon. A page with no Markdown output drops the primary half
+and renders a labeled **Actions** button instead.
+
+`create_child_page`, `create_project_issue`, and `print_section` are first-class
+registry actions, so they appear in the
+[Command Palette](/docs/advanced/search/#palette-contents) too. The page-level
+`print` action is retired; readers use the browser's own `Cmd/Ctrl+P`.
+
+## Site footer {#site-footer}
+
+The footer renders on every layout and has three shapes, selected with
+`footer_style`:
+
+| Value  | Renders                                                |
+| ------ | ------------------------------------------------------ |
+| `fat`  | The column grid above the copyright line (the default) |
+| `slim` | The copyright line only                                |
+| `none` | No footer at all                                       |
+
+```yaml {filename="hugo.yaml"}
+params:
+  ui:
+    footer_style: fat
+```
+
+Front matter — including a section cascade — overrides the site value:
+
+```yaml
+---
+title: Embedded reference
+footer_style: slim
+---
+```
+
+An unrecognized value **fails the build** instead of falling back silently.
+
+### Fat-footer data {#footer-data}
+
+The column grid reads `data/footer/<language>.yaml`, or `data/footer.yaml` on a
+single-language site:
+
+```yaml {filename="data/footer/en.yaml"}
+brand:
+  name: Product Docs
+  tagline: A short **Markdown-enabled** description.
+  slogan: Clear answers, close to the product.
+columns:
+  - title: Documentation
+    links:
+      - { label: Docs, url: /docs/ }
+      - { label: Blog, url: /blog/ }
+  - title: Project
+    links:
+      - { label: GitHub, url: https://github.com/pgsty/oink, external: true }
+```
+
+`brand.name` and `brand.logo` fall back to the site's own brand name, logo, and
+wordmark. `tagline` and `slogan` render Markdown. Internal `url` values resolve
+against the language root; `external: true` opens the link in a new tab with
+`rel="noopener noreferrer"`. The grid's track count follows the number of
+columns in the data.
+
+A `fat` footer with no data degrades to `slim`, so a site can keep the default
+while it writes the columns.
+
+> [!NOTE] The `footer` block in `data/home/<language>.yaml` is still read as a
+> fallback. It used to render on the homepage only and now applies site-wide, so
+> check that the columns still make sense from a deep documentation page before
+> keeping the legacy location.
 
 ## Heading self links
 
