@@ -107,6 +107,52 @@
     "skip": false
   },
   {
+    "path": "tests/prd5/fig/index.md",
+    "kind": "PRD 5 figure fallback",
+    "covers": ["fig", "xref", "markdown-fallback", "i18n:en"],
+    "skip": false
+  },
+  {
+    "path": "zh/tests/prd5/fig/index.md",
+    "kind": "PRD 5 figure fallback",
+    "covers": ["fig", "xref", "markdown-fallback", "i18n:zh"],
+    "skip": false
+  },
+  {
+    "path": "tests/prd5/assets/index.md",
+    "kind": "PRD 5 release assets fallback",
+    "covers": [
+      "release-assets",
+      "full-checksum",
+      "markdown-fallback",
+      "i18n:en"
+    ],
+    "skip": false
+  },
+  {
+    "path": "zh/tests/prd5/assets/index.md",
+    "kind": "PRD 5 release assets fallback",
+    "covers": [
+      "release-assets",
+      "full-checksum",
+      "markdown-fallback",
+      "i18n:zh"
+    ],
+    "skip": false
+  },
+  {
+    "path": "tests/prd5/download/index.md",
+    "kind": "PRD 5 download fallback",
+    "covers": ["rolling", "pinned", "source-commands", "i18n:en"],
+    "skip": false
+  },
+  {
+    "path": "zh/tests/prd5/download/index.md",
+    "kind": "PRD 5 download fallback",
+    "covers": ["rolling", "pinned", "source-commands", "i18n:zh"],
+    "skip": false
+  },
+  {
     "path": "zh/index.md",
     "kind": "home",
     "covers": ["description", "body", "children", "i18n:zh"],

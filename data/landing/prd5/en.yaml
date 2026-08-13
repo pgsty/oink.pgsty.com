@@ -1,0 +1,37 @@
+sections:
+  - type: hero
+    data:
+      eyebrow: PRD 5 regression fixture
+      title: Scenario components compose without a custom template
+      lead:
+        This non-home page reuses the shared navbar, Command Palette, Landing
+        registry, and footer.
+      actions:
+        - label: Inspect the figure
+          url: /tests/prd5/fig/
+          style: primary
+  - type: logo-wall
+    key: scenario-marquee
+    data:
+      title: Pauseable CSS marquee
+      desc:
+        One authored item list is duplicated by the template, while the
+        duplicate stays out of accessibility and focus trees.
+      layout: marquee
+      direction: left
+      speed: fast
+      rows: 1
+      link_label: Open fixture
+      items:
+        - title: Reading
+          desc: Sidebar-order pager
+          icon: fa-solid fa-book-open
+          url: /tests/prd5/reading/middle/
+        - title: Release assets
+          desc: Strict checksum copy
+          icon: fa-solid fa-box-open
+          url: /tests/prd5/assets/
+        - title: Download
+          desc: Shared version facts
+          icon: fa-solid fa-download
+          url: /tests/prd5/download/

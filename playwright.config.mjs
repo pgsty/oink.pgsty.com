@@ -31,7 +31,7 @@ export default defineConfig({
     ? undefined
     : {
         command:
-          'npm run _serve -- --bind 127.0.0.1 --port 4173 --noBuildLock --disableLiveReload',
+          'npm run _serve -- --bind 127.0.0.1 --port 4173 --noBuildLock --disableLiveReload --watch=false',
         env: moduleWorkspace
           ? { HUGO_MODULE_WORKSPACE: moduleWorkspace }
           : undefined,

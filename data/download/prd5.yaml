@@ -1,0 +1,34 @@
+version: 0.6.0
+repo: pgsty/oink
+published: true
+channels:
+  - id: script
+    kind: rolling
+    title: Install script
+    title_zh: 安装脚本
+    icon: fa-solid fa-bolt
+    note: The rolling channel deliberately contains no version interpolation.
+    note_zh: 滚动渠道刻意不插入版本号。
+    steps:
+      - title: Install
+        title_zh: 安装
+        code: curl -fsSL https://repo.example.org/oink/install | bash
+        lang: bash
+  - id: source
+    kind: pinned
+    title: Source archive
+    title_zh: 源码归档
+    icon: fa-solid fa-code-branch
+    url: https://github.com/pgsty/oink/archive/refs/tags/${tag}.tar.gz
+    steps:
+      - title: Clone the tag
+        title_zh: 克隆标签
+        code: git clone --branch ${tag} https://github.com/pgsty/oink.git
+        lang: bash
+  - id: assets
+    kind: pinned
+    title: Release assets
+    title_zh: 发布资产
+    icon: fa-solid fa-box-open
+    checksums: |
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  oink-0.6.0.tar.gz

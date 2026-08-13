@@ -146,6 +146,13 @@ test('j and k jump quickly to adjacent outline items while inputs keep every key
   await page.evaluate(() => {
     const field = document.createElement('input');
     field.setAttribute('data-test-kbd-field', '');
+    // Keep the synthetic editor inside the viewport. An offscreen caret has
+    // native browser scroll behavior unrelated to shortcut ownership.
+    Object.assign(field.style, {
+      position: 'fixed',
+      inset: '80px auto auto 80px',
+      zIndex: '1000',
+    });
     document.body.appendChild(field);
   });
   const field = page.locator('[data-test-kbd-field]');

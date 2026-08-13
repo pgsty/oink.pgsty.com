@@ -1,0 +1,33 @@
+sections:
+  - type: hero
+    data:
+      eyebrow: PRD 5 回归夹具
+      title: 场景组件无需自定义模板即可完成装配
+      lead: 此非首页页面复用共享导航栏、命令面板、Landing 注册表与页脚。
+      actions:
+        - label: 查看编号图片
+          url: /zh/tests/prd5/fig/
+          style: primary
+  - type: logo-wall
+    key: scenario-marquee
+    data:
+      title: 可暂停的纯 CSS 跑马灯
+      desc: 模板负责复制一份条目，副本不会进入无障碍树与键盘焦点序列。
+      layout: marquee
+      direction: left
+      speed: fast
+      rows: 1
+      link_label: 打开夹具
+      items:
+        - title: 顺序阅读
+          desc: 与侧栏一致的 Pager
+          icon: fa-solid fa-book-open
+          url: /zh/tests/prd5/reading/middle/
+        - title: 发布资产
+          desc: 严格校验和复制
+          icon: fa-solid fa-box-open
+          url: /zh/tests/prd5/assets/
+        - title: 下载
+          desc: 共享版本事实
+          icon: fa-solid fa-download
+          url: /zh/tests/prd5/download/
