@@ -368,8 +368,7 @@ params:
       4.0](https://creativecommons.org/licenses/by/4.0)
     from_year: 2026
     to_year: present
-  footer_icp: ''
-  footer_icp_url: https://beian.miit.gov.cn/
+  footer_center_info: 'Powered by [Oink](https://oink.pgsty.com)'
   privacy_policy: https://policies.google.com/privacy
   github_repo: https://github.com/pgsty/oink.pgsty.com
   github_project_repo: https://github.com/pgsty/oink

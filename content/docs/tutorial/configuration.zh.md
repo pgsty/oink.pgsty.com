@@ -47,8 +47,9 @@ params:
   github_repo: https://github.com/example/product-docs
   github_branch: main
   copyright:
-    authors: Example Authors
+    authors: '[Example Authors](https://example.org/)'
     from_year: 2026
+  footer_center_info: 'Powered by [Oink](https://oink.pgsty.com)'
   ui:
     showLightDarkModeMenu: true
     sidebar_menu_foldable: true

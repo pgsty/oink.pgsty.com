@@ -76,11 +76,10 @@ params:
   offlineSearchMaxResults: 10
   github_repo: https://github.com/example/product-docs
   github_branch: main
-  footer_icp: ''
-  footer_icp_url: https://beian.miit.gov.cn/
   copyright:
-    authors: Example Authors
+    authors: '[Example Authors](https://example.org/)'
     from_year: 2026
+  footer_center_info: 'Powered by [Oink](https://oink.pgsty.com)'
   ui:
     showLightDarkModeMenu: true
     quick_links: [docs, blog]
@@ -346,11 +345,12 @@ provided, OINK uses that image for both themes. A string value is also accepted
 as a shared image. Omit `image` to keep the text-only Hero.
 
 Below the landing sections, every page ends with the same site footer: the
-column grid when `footer_style` is `fat`, then the copyright line. That line
-uses `params.copyright` on the left, optional `params.footer_icp` and
-`params.footer_icp_url` in the center, and every configured language on the
-right. Markdown in the copyright author and footer brand text is rendered as
-links and inline markup.
+column grid when `footer_style` is `fat`, then the bottom bar. Its left side
+retains Docsy's `params.copyright` API: use a Markdown string or a map with
+`authors`, `from_year`, and `to_year`; when omitted, Hugo's top-level
+`copyright` value is rendered as-is. OINK's `params.footer_center_info` accepts
+inline Markdown, defaults to `Powered by Oink`, and can be set to an empty
+string to hide the center region. The right side contains the language controls.
 
 A site that still keeps a `footer` block in `data/home/<language>.yaml` is read
 as before, but that data now feeds the footer on **every** page rather than the

@@ -53,8 +53,10 @@ The site name, set per language. {{% /field %}}
 {{% field name="baseURL" type="string" %}} Your own production address.
 {{% /field %}} {{% field name="params.github_repo" type="string" %}} Your own
 content repository, or Edit this page points at OINK's repository.
-{{% /field %}} {{% field name="params.copyright" type="map" %}} Authors and
-starting year. {{% /field %}}
+{{% /field %}} {{% field name="params.copyright" type="string | map" %}}
+Docsy-compatible authors and year range for the bottom bar. {{% /field %}}
+{{% field name="params.footer_center_info" type="string" %}} Optional inline
+Markdown in the center of the bottom bar. {{% /field %}}
 {{% field name="params.logo / params.wordmark" type="string" %}} Brand assets.
 Replace the favicons under `static/` as well. {{% /field %}}
 {{% field name="services.googleAnalytics.id" type="string" %}} **Delete it**

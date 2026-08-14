@@ -73,11 +73,10 @@ params:
   offlineSearchMaxResults: 10
   github_repo: https://github.com/example/product-docs
   github_branch: main
-  footer_icp: ''
-  footer_icp_url: https://beian.miit.gov.cn/
   copyright:
-    authors: Example Authors
+    authors: '[Example Authors](https://example.org/)'
     from_year: 2026
+  footer_center_info: 'Powered by [Oink](https://oink.pgsty.com)'
   ui:
     showLightDarkModeMenu: true
     quick_links: [docs, blog]
@@ -323,9 +322,11 @@ hero:
 `image` 则保持纯文字 Hero。
 
 首页各分区之下，每个页面都以同一个站点页脚收尾：`footer_style` 为 `fat`
-时先渲染多列网格，然后是版权行。版权行左侧来自
-`params.copyright`，中间使用可选的 `params.footer_icp` 与
-`params.footer_icp_url`，右侧列出所有已配置语言。版权作者与页脚品牌文字中的 Markdown 会渲染为真实链接与行内标记。
+时先渲染多列网格，然后是 bottom bar。左侧保留 Docsy 的 `params.copyright`
+API：可以使用 Markdown 字符串，也可以使用包含 `authors`、`from_year`、`to_year`
+的 Map；未设置时原样渲染 Hugo 顶层的 `copyright`。OINK 的
+`params.footer_center_info` 接受行内 Markdown，默认显示
+`Powered by Oink`，显式设为空字符串可隐藏中间区域。右侧保留语言控件。
 
 仍在 `data/home/<language>.yaml` 中保留 `footer`
 块的站点照常读取该数据。**这份数据现在供给所有页面的页脚**，而不只是首页。方便时请迁移到

@@ -43,7 +43,10 @@ hugo --gc --minify
 {{% field name="baseURL" type="string" %}} 换成你自己的生产地址。 {{% /field %}}
 {{% field name="params.github_repo" type="string" %}}
 指向你自己的内容仓库，否则「编辑此页」会指向 OINK 的仓库。 {{% /field %}}
-{{% field name="params.copyright" type="map" %}} 作者与起始年份。 {{% /field %}}
+{{% field name="params.copyright" type="string | map" %}} bottom
+bar 中兼容 Docsy 的作者与年份范围。 {{% /field %}}
+{{% field name="params.footer_center_info" type="string" %}} bottom
+bar 中间可选的行内 Markdown。 {{% /field %}}
 {{% field name="params.logo / params.wordmark" type="string" %}}
 品牌素材。同时替换 `static/` 下的 favicon。 {{% /field %}}
 {{% field name="services.googleAnalytics.id" type="string" %}}
