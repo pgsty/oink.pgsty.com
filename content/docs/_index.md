@@ -45,6 +45,7 @@ OINK includes:
 - local Mermaid, KaTeX, Markmap, Swagger UI, Redoc, Asciinema, ECharts, and
   Infographic runtimes;
 - reusable details, tabs, cards, navigation cards, and document carousels;
+- scenario-level reading, release, Landing, and Book publishing workflows;
 - a bilingual project site, static-host deployment guides, local theme assets,
   and an auditable vendor manifest.
 
@@ -71,16 +72,17 @@ pages that end with a deployable bilingual site.
 
 To go straight to something specific:
 
-| What you want to do                  | Where                                  |
-| ------------------------------------ | -------------------------------------- |
-| Install and run it                   | [Get started](/docs/tutorial/)         |
-| Configure menus, languages, versions | [Site configuration](/docs/configure/) |
-| Write pages and organize the tree    | [Authoring](/docs/content/)            |
-| Look up a component                  | [Components](/docs/components/)        |
-| Change fonts and colors              | [Appearance](/docs/appearance/)        |
-| Search, print, comments, AI support  | [Advanced](/docs/advanced/)            |
-| Publish it                           | [Deployment](/docs/deploy/)            |
-| Upgrade or migrate from Docsy        | [Upgrade](/docs/upgrade/)              |
+| What you want to do                    | Where                                  |
+| -------------------------------------- | -------------------------------------- |
+| Install and run it                     | [Get started](/docs/tutorial/)         |
+| Configure menus, languages, versions   | [Site configuration](/docs/configure/) |
+| Write pages and organize the tree      | [Authoring](/docs/content/)            |
+| Look up a component                    | [Components](/docs/components/)        |
+| Build a release, Landing page, or Book | [Scenarios](/docs/scenarios/)          |
+| Change fonts and colors                | [Appearance](/docs/appearance/)        |
+| Search, print, comments, AI support    | [Advanced](/docs/advanced/)            |
+| Publish it                             | [Deployment](/docs/deploy/)            |
+| Upgrade or migrate from Docsy          | [Upgrade](/docs/upgrade/)              |
 
 [Docsy]: https://github.com/google/docsy
 [Hugo]: https://gohugo.io/

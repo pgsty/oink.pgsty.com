@@ -7,7 +7,7 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 0.3.0 · 本地优先 · 仅依赖 Hugo
+  eyebrow: OINK 0.4.0 · 本地优先 · 仅依赖 Hugo
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -18,8 +18,8 @@ hero:
     dark: images/hero-dark.webp
     alt: OINK 工程文档插图
   actions:
-    - label: 查看 0.3.0 新特性
-      url: blog/release/0.3.0/
+    - label: 查看 0.4.0 新特性
+      url: blog/release/0.4.0/
       icon: fa-solid fa-book-open
       style: primary
     - label: 开始使用
@@ -28,40 +28,36 @@ hero:
       style: ghost
 
 release:
-  eyebrow: OINK 0.3.0
-  title: 写得更快，找得更准，页面更轻
+  eyebrow: OINK 0.4.0
+  title: 连贯阅读，可靠发布，构建 Landing 与 Book
   text:
-    0.3.0 在保持纯 Hugo
-    交付方式不变的前提下，系统提升了日常写作、内容发现与阅读体验。
+    OINK 0.4.0 完整交付场景组件体系，同时保持本地优先、仅依赖 Hugo
+    的交付方式不变。
   columns: 4
   link_label: 了解详情
   items:
-    - title: 像文档一样工作的代码
-      meta: 写作
-      icon: fa-solid fa-code
-      desc:
-        增强代码块与同步 Code Group
-        支持文件名、精确复制、换行、折叠及可分享的选项状态。
-      url: docs/components/code-blocks/
-    - title: 高频内容组件
-      meta: 组件
-      icon: fa-solid fa-cubes
-      desc:
-        Badge、Kbd、Fields、FileTree、Gallery 与 Image Zoom
-        以语义化、静态优先的方式覆盖日常文档模式。
-      url: docs/components/
-    - title: 更有目的的内容发现
-      meta: 导航
-      icon: fa-solid fa-compass
-      desc: 嵌套菜单、加权多语言检索、统一页面操作与命令面板，把读者直接带到正确页面或操作。
-      url: docs/advanced/search/#command-palette
-    - title: 更轻、更易适配的页面
+    - title: 阅读与发布流程
+      meta: 发布
+      icon: fa-solid fa-arrow-right-arrow-left
+      desc: 按内容树排序的翻页、本地数学公式、发布卡片、校验和资产与严格下载渠道，把源码事实转化为可靠发布。
+      url: docs/scenarios/
+    - title: 可复用的 Landing 页面
       meta: 呈现
-      icon: fa-solid fa-feather-pointed
+      icon: fa-solid fa-layer-group
       desc:
-        语义化字体预设让排版选择更明确；移除 jQuery 后，典型文档页的 CSS 与
-        JavaScript 约减少 88 KB。
-      url: docs/appearance/typography/
+        任意页面都能使用本地多语言数据组合 21
+        种服务端渲染分区，无需新增前端构建链。
+      url: docs/scenarios/landing/
+    - title: 带稳定引用的 Book
+      meta: 长篇出版
+      icon: fa-solid fa-book-open
+      desc: 编号图片、表格、公式、交叉引用、索引与整本打印，共用一套经过验证的创作模型。
+      url: docs/scenarios/book/
+    - title: 键盘优先的外壳
+      meta: 导航
+      icon: fa-solid fa-keyboard
+      desc: 单键阅读控制、全站导航栏、统一页面操作和可配置页脚，让大型站点依然可以快速穿行。
+      url: docs/advanced/keyboard/
 capabilities:
   eyebrow: 价值主张
   title: 工程文档所需的能力，开箱即用

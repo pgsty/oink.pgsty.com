@@ -10,10 +10,10 @@ LLMS index: [llms.txt](/llms.txt)
 
 <!-- markdownlint-disable-next-line no-space-in-links -->
 
-<span class="badge bg-primary text-bg-primary fs-6">v0.3.0
+<span class="badge bg-primary text-bg-primary fs-6">v0.4.0
 </span>
 
-Welcome to the OINK user guide for version `v0.3.0`. This guide
+Welcome to the OINK user guide for version `v0.4.0`. This guide
 covers the theme's Hugo-only build, local-first runtime, multilingual framework,
 content components, customization, and deployment.
 
@@ -39,6 +39,7 @@ OINK includes:
 - local Mermaid, KaTeX, Markmap, Swagger UI, Redoc, Asciinema, ECharts, and
   Infographic runtimes;
 - reusable details, tabs, cards, navigation cards, and document carousels;
+- scenario-level reading, release, Landing, and Book publishing workflows;
 - a bilingual project site, static-host deployment guides, local theme assets,
   and an auditable vendor manifest.
 
@@ -65,16 +66,17 @@ pages that end with a deployable bilingual site.
 
 To go straight to something specific:
 
-| What you want to do                  | Where                                  |
-| ------------------------------------ | -------------------------------------- |
-| Install and run it                   | [Get started](/docs/tutorial/)         |
-| Configure menus, languages, versions | [Site configuration](/docs/configure/) |
-| Write pages and organize the tree    | [Authoring](/docs/content/)            |
-| Look up a component                  | [Components](/docs/components/)        |
-| Change fonts and colors              | [Appearance](/docs/appearance/)        |
-| Search, print, comments, AI support  | [Advanced](/docs/advanced/)            |
-| Publish it                           | [Deployment](/docs/deploy/)            |
-| Upgrade or migrate from Docsy        | [Upgrade](/docs/upgrade/)              |
+| What you want to do                    | Where                                  |
+| -------------------------------------- | -------------------------------------- |
+| Install and run it                     | [Get started](/docs/tutorial/)         |
+| Configure menus, languages, versions   | [Site configuration](/docs/configure/) |
+| Write pages and organize the tree      | [Authoring](/docs/content/)            |
+| Look up a component                    | [Components](/docs/components/)        |
+| Build a release, Landing page, or Book | [Scenarios](/docs/scenarios/)          |
+| Change fonts and colors                | [Appearance](/docs/appearance/)        |
+| Search, print, comments, AI support    | [Advanced](/docs/advanced/)            |
+| Publish it                             | [Deployment](/docs/deploy/)            |
+| Upgrade or migrate from Docsy          | [Upgrade](/docs/upgrade/)              |
 
 [Docsy]: https://github.com/google/docsy
 [Hugo]: https://gohugo.io/
@@ -87,6 +89,7 @@ Section pages:
 - [Site configuration](/docs/configure/): Navigation menus, languages, versions, and repository links.
 - [Authoring](/docs/content/): How the content tree is organized, writing conventions, media, and taxonomies.
 - [Components](/docs/components/): Every component available for writing, ordered by how often you reach for it.
+- [Scenario components](/docs/scenarios/): Configure complete reading, release, landing-page, and Book publishing workflows from local content and data.
 - [Appearance](/docs/appearance/): Typography presets, colors, and style overrides.
 - [Advanced](/docs/advanced/): Keyboard navigation, search and the Command Palette, print output, AI support, comments, and analytics.
 - [Deployment](/docs/deploy/): Build once, publish to any static host.

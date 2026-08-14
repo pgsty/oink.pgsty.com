@@ -11,11 +11,12 @@ description: 升级以固定版本 Hugo Module 导入 Oink 的站点。
 生产站点应导入发布标签或不可变的 commit，绝不能跟随未固定版本的分支。在站点根目录，把 Oink 更新到指定 ref：
 
 ```sh
-hugo mod get github.com/pgsty/oink@THEME_REF
+hugo mod get github.com/pgsty/oink@TARGET_VERSION
 hugo mod tidy
 ```
 
-将 `THEME_REF` 替换为该版本发布说明指定的根标签或 commit。
+请把 `TARGET_VERSION` 替换为发布注记指定的不可变标签，例如
+`v0.4.0`。生产升级策略不要使用未限定版本的模块路径或 `@latest`。
 
 ## 测试本地 checkout {#test-a-local-checkout}
 

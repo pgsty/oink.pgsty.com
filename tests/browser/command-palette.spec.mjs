@@ -65,7 +65,7 @@ test('empty Palette exposes shared quick links, page actions, and preferences', 
   const preferences = group(dialog, 'Preferences');
   await expect(preferences).toContainText('Toggle color theme');
   await expect(preferences).toContainText('Switch language');
-  await expect(preferences).toContainText('v0.3.0');
+  await expect(preferences).toContainText('v0.4.0');
   const commands = group(dialog, 'Commands');
   await expect(commands).toContainText('OINK issues');
   await expect(commands).not.toContainText('Copy Markdown');
@@ -208,9 +208,9 @@ test('built-in choice actions reuse theme, language, and version executors', asy
   await page.keyboard.press(
     process.platform === 'darwin' ? 'Meta+k' : 'Control+k',
   );
-  await fillCommandAndWait(input, dialog, '> version', 'v0.3.0');
+  await fillCommandAndWait(input, dialog, '> version', 'v0.4.0');
   await page.keyboard.press('Enter');
-  await expect(dialog).toContainText('v0.3.0');
+  await expect(dialog).toContainText('v0.4.0');
 });
 
 test('Copy Markdown executes once through the shared registry', async ({

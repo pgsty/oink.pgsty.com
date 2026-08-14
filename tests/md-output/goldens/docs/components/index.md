@@ -9,7 +9,9 @@ LLMS index: [llms.txt](/llms.txt)
 ---
 
 OINK's components fall into two groups: **the writing primitives you use every
-day**, and **the larger components you need for specific situations**.
+day**, and **the larger components you need for specific situations**. Complete
+multi-page publishing workflows live under
+[Scenario components](/docs/scenarios/).
 
 They all follow one contract: semantic HTML, no JavaScript for the
 non-interactive ones, a defined presentation in print and Markdown output, and a
@@ -45,6 +47,19 @@ failed build rather than silent degradation when a parameter is invalid.
 | [Diagrams and formulae](diagrams/) | Mermaid, KaTeX, Markmap, PlantUML | Per page |
 | [ECharts](echarts/)                | Interactive data charts           | Per page |
 | [Infographic](infographic/)        | Process and information graphics  | Per page |
+
+## Scenario workflows {#scenario-workflows}
+
+| Scenario                                         | Coordinated capabilities                           |
+| ------------------------------------------------ | -------------------------------------------------- |
+| [Sequential reading](../scenarios/reading/)      | Pager order, head relations, local mathematics     |
+| [Releases and downloads](../scenarios/releases/) | Facts, checksums, rolling and pinned channels      |
+| [Landing pages](../scenarios/landing/)           | Full-width shell, local data, 21 reusable sections |
+| [Book publishing](../scenarios/book/)            | Numbered media, xrefs, indexes, whole-Book print   |
+
+These scenarios compose several primitives with navigation, data, and output
+rules. Their pages are the authoritative adoption guides; do not infer a
+scenario contract from one shortcode example alone.
 
 ## Shared contract {#shared-contract}
 

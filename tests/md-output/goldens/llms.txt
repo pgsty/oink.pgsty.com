@@ -15,6 +15,7 @@
 - [Site configuration](http://localhost/docs/configure/index.md)
 - [Authoring](http://localhost/docs/content/index.md)
 - [Components](http://localhost/docs/components/index.md)
+- [Scenario components](http://localhost/docs/scenarios/index.md)
 - [Appearance](http://localhost/docs/appearance/index.md)
 - [Advanced](http://localhost/docs/advanced/index.md)
 - [Deployment](http://localhost/docs/deploy/index.md)

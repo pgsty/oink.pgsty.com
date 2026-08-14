@@ -8,7 +8,7 @@ cascade:
   categories: [组件]
 ---
 
-OINK 的组件分两类：**每天都会用到的写作原语**，和特定场景才需要的大型组件。
+OINK 的组件分两类：**每天都会用到的写作原语**，和特定场景才需要的大型组件。跨多个页面的完整出版工作流位于[场景组件](/zh/docs/scenarios/)。
 
 所有组件都遵循同一套契约：语义化 HTML、非交互组件不加载 JavaScript、在打印和 Markdown 输出下都有明确的呈现方式、参数非法时构建直接失败而不是静默降级。
 
@@ -42,6 +42,17 @@ OINK 的组件分两类：**每天都会用到的写作原语**，和特定场�
 | [图表与公式](diagrams/)     | Mermaid、KaTeX、Markmap、PlantUML | 按页加载 |
 | [ECharts](echarts/)         | 交互式数据图表                    | 按页加载 |
 | [Infographic](infographic/) | 流程与信息图                      | 按页加载 |
+
+## 场景工作流 {#scenario-workflows}
+
+| 场景                                     | 协同能力                          |
+| ---------------------------------------- | --------------------------------- |
+| [顺序阅读](../scenarios/reading/)        | 翻页顺序、head 关系、本地数学公式 |
+| [版本发布与下载](../scenarios/releases/) | 事实、校验和、滚动/固定渠道       |
+| [Landing 页面](../scenarios/landing/)    | 全宽外壳、本地数据、21 种分区     |
+| [Book 出版](../scenarios/book/)          | 编号媒体、xref、索引、整本打印    |
+
+这些场景会把多个原语与导航、数据和输出规则组合起来。对应页面是采用场景时的权威指南，不要只看一个 shortcode 示例就推断完整场景契约。
 
 ## 共同约定 {#shared-contract}
 

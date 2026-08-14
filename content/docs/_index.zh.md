@@ -37,6 +37,7 @@ OINK 提供：
 - 本地 Mermaid、KaTeX、Markmap、Swagger
   UI、Redoc、Asciinema、ECharts 和 Infographic 运行时；
 - 可复用的折叠块、标签页、卡片、导航卡片和文档轮播；
+- 面向顺序阅读、版本发布、Landing 与 Book 出版的场景级工作流；
 - 双语项目站、静态托管部署指南、本地主题资源与可审计的 vendor 清单。
 
 OINK 本身 **不提供**
@@ -54,16 +55,17 @@ OINK 本身 **不提供**
 
 想直接查具体内容：
 
-| 你要做的事                | 去哪                             |
-| ------------------------- | -------------------------------- |
-| 装好并跑起来              | [快速上手](/zh/docs/tutorial/)   |
-| 配菜单、多语言、多版本    | [站点配置](/zh/docs/configure/)  |
-| 写页面、组织内容树        | [创作内容](/zh/docs/content/)    |
-| 查某个组件怎么用          | [组件参考](/zh/docs/components/) |
-| 换字体、改配色            | [定制外观](/zh/docs/appearance/) |
-| 搜索、打印、评论、AI 支持 | [高级功能](/zh/docs/advanced/)   |
-| 发布到线上                | [部署](/zh/docs/deploy/)         |
-| 升级版本或从 Docsy 迁移   | [升级迁移](/zh/docs/upgrade/)    |
+| 你要做的事                  | 去哪                             |
+| --------------------------- | -------------------------------- |
+| 装好并跑起来                | [快速上手](/zh/docs/tutorial/)   |
+| 配菜单、多语言、多版本      | [站点配置](/zh/docs/configure/)  |
+| 写页面、组织内容树          | [创作内容](/zh/docs/content/)    |
+| 查某个组件怎么用            | [组件参考](/zh/docs/components/) |
+| 制作发布页、Landing 或 Book | [场景组件](/zh/docs/scenarios/)  |
+| 换字体、改配色              | [定制外观](/zh/docs/appearance/) |
+| 搜索、打印、评论、AI 支持   | [高级功能](/zh/docs/advanced/)   |
+| 发布到线上                  | [部署](/zh/docs/deploy/)         |
+| 升级版本或从 Docsy 迁移     | [升级迁移](/zh/docs/upgrade/)    |
 
 [Docsy]: https://github.com/google/docsy
 [Hugo]: https://gohugo.io/

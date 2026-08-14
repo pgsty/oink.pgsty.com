@@ -46,7 +46,7 @@ test('Release asset controls copy exact sha256sum lines', async ({
   await expect
     .poll(() => page.evaluate(() => navigator.clipboard.readText()))
     .toBe(
-      '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef  oink-0.6.0-linux-amd64.tar.gz\n',
+      '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef  oink-0.4.0-linux-amd64.tar.gz\n',
     );
   await expect(firstCopy).toHaveAttribute('data-state', 'success');
 
@@ -55,8 +55,8 @@ test('Release asset controls copy exact sha256sum lines', async ({
   await expect
     .poll(() => page.evaluate(() => navigator.clipboard.readText()))
     .toBe(
-      '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef  oink-0.6.0-linux-amd64.tar.gz\n' +
-        'fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210 *oink-0.6.0-darwin-arm64.tar.gz\n',
+      '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef  oink-0.4.0-linux-amd64.tar.gz\n' +
+        'fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210 *oink-0.4.0-darwin-arm64.tar.gz\n',
     );
   await expect(copyAll).toHaveAttribute('data-state', 'success');
 });

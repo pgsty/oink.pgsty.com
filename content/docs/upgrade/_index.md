@@ -10,6 +10,7 @@ cascade:
 
 ## In this chapter {#in-this-chapter}
 
+- [Upgrade to 0.4.0](v0-4/): Scenario Components migration and behavior review
 - [Upgrade OINK](upgrade/): version-to-version steps and breaking changes
 - [Migrate from Docsy](from-docsy/): move an existing Docsy site to OINK
 

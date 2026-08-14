@@ -10,6 +10,7 @@ cascade:
 
 ## 本章内容 {#in-this-chapter}
 
+- [升级到 0.4.0](v0-4/)：场景组件迁移与行为变化检查
 - [升级 OINK](upgrade/)：跨版本升级步骤与破坏性变更清单
 - [从 Docsy 迁移](from-docsy/)：把既有 Docsy 站点切换到 OINK
 

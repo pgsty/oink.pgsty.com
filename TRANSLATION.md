@@ -17,17 +17,21 @@
 两棵内容树在初次盘点时共有 503 个 Markdown 标题。除此之外，中文首页、OINK 专属文档、发布注记、开发日志，以及
 `about/`、`examples/`、`community/` 三个一级内容入口也属于交付范围。
 
-当前交付包含 70 组中英文页面，校准了 644 个英文源标题。覆盖检查逐一核对
+当前交付包含 88 组中英文页面，校准了 822 个英文源标题。覆盖检查逐一核对
 `docs/`、`blog/`、`about/`、`examples/` 与
 `community/`。以下命令同时检查文件覆盖率、显式锚点、中英文渲染 ID 和站内链接：
 
 ```bash
-npm run wt -- build -- --destination /tmp/oink-docsy-review --baseURL http://localhost
-node scripts/check-markdown-style.mjs
-node scripts/check-doc-translations.mjs --public /tmp/oink-docsy-review
-node scripts/check-rendered-markdown.mjs /tmp/oink-docsy-review
-node scripts/check-rendered-links.mjs /tmp/oink-docsy-review
+make build
+npm run _check:markdown-style
+npm run _check:translations
+npm run _check:rendered-markdown
+npm run _check:rendered-links
 ```
+
+`make build` 使用同级主题 checkout 做开发验收。发布前还要设置
+`HUGO_MODULE_WORKSPACE=off`，单独验证 `go.mod`
+中固定的公开主题标签；两种构建证据不能互相替代。
 
 ## 文件与元数据
 

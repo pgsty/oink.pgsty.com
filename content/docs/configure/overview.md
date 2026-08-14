@@ -259,7 +259,7 @@ sections:
   - hero
   - metrics
   - capabilities
-  - type: logo_wall
+  - type: logo-wall
     key: ecosystem
   - gallery
   - faq
@@ -289,22 +289,35 @@ of the page even if their data remains in the file.
 
 ### Built-in sections {#built-in-sections}
 
-OINK 0.3.0 provides 12 section types:
+OINK 0.4.0 provides 21 section types:
 
-| Type           | Use it for                                                  |
-| -------------- | ----------------------------------------------------------- |
-| `hero`         | Primary message, actions, and theme-aware artwork           |
-| `metrics`      | Compact facts, numbers, links, and supporting text          |
-| `capabilities` | Alternating feature narratives and specialist visual panels |
-| `principles`   | Numbered product or operating principles                    |
-| `cards`        | Generic feature, benefit, service, or path collections      |
-| `logo_wall`    | Tools, integrations, partners, or project lineage           |
-| `gallery`      | Screenshots or icon-led examples with badges and actions    |
-| `testimonials` | Quotations with optional attribution and source links       |
-| `contributors` | People, roles, avatars, and profile links                   |
-| `faq`          | Native disclosure controls with Markdown answers            |
-| `markdown`     | Free-form prose when no collection layout is appropriate    |
-| `cta`          | One final action or a compact group of actions              |
+| Type              | Use it for                                                  |
+| ----------------- | ----------------------------------------------------------- |
+| `hero`            | Primary message, actions, and theme-aware artwork           |
+| `metrics`         | Compact facts, numbers, links, and supporting text          |
+| `capabilities`    | Alternating feature narratives and specialist visual panels |
+| `principles`      | Numbered product or operating principles                    |
+| `cards`           | Generic feature, benefit, service, or path collections      |
+| `logo-wall`       | Tools, integrations, partners, or project lineage           |
+| `gallery`         | Screenshots or icon-led examples with badges and actions    |
+| `testimonials`    | Quotations with optional attribution and source links       |
+| `contributors`    | People, roles, avatars, and profile links                   |
+| `faq`             | Native disclosure controls with Markdown answers            |
+| `markdown`        | Free-form prose when no collection layout is appropriate    |
+| `cta`             | One final action or a compact group of actions              |
+| `pricing`         | Product tiers, prices, features, and calls to action        |
+| `pricing-compare` | Feature comparison matrices across pricing tiers            |
+| `command-box`     | A focused command with Copy support and an optional note    |
+| `steps`           | Ordered procedures with optional command examples           |
+| `timeline`        | Dated milestones, roadmaps, and release histories           |
+| `code-plate`      | Static code or line arrays in a presentation panel          |
+| `case-study`      | Evidence-led stories with metrics, quotation, and source    |
+| `download`        | Validated rolling and pinned download channels              |
+| `bar-chart`       | Comparable non-negative values rendered without chart JS    |
+
+The homepage and regular `layout: landing` pages use the same registry. See
+[Landing pages](/docs/scenarios/landing/) for data resolution, the nine
+scenario-oriented section contracts, no-JavaScript behavior, and output rules.
 
 Common collection blocks accept `eyebrow`, `title`, `desc` or `text`, `columns`,
 and `items`. Item fields vary by presentation but consistently use `title` or

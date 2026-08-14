@@ -243,7 +243,7 @@ sections:
   - hero
   - metrics
   - capabilities
-  - type: logo_wall
+  - type: logo-wall
     key: ecosystem
   - gallery
   - faq
@@ -272,22 +272,35 @@ ecosystem:
 
 ### 内置分区 {#built-in-sections}
 
-OINK 0.3.0 提供 12 种分区类型：
+OINK 0.4.0 提供 21 种分区类型：
 
-| 类型           | 适用内容                               |
-| -------------- | -------------------------------------- |
-| `hero`         | 核心信息、操作按钮与跟随主题的图片     |
-| `metrics`      | 紧凑的事实、数字、链接与辅助文字       |
-| `capabilities` | 交替的功能叙事与专用视觉面板           |
-| `principles`   | 带编号的产品原则或工作原则             |
-| `cards`        | 通用功能、价值、服务或路径集合         |
-| `logo_wall`    | 工具、集成、合作伙伴或项目渊源         |
-| `gallery`      | 带徽标与操作的截图或图标示例           |
-| `testimonials` | 带可选署名与来源链接的引语             |
-| `contributors` | 人员、角色、头像与个人页链接           |
-| `faq`          | 使用原生展开控件与 Markdown 答案的问答 |
-| `markdown`     | 没有合适集合布局时使用的自由文字       |
-| `cta`          | 最后一个操作，或一组紧凑操作           |
+| 类型              | 适用内容                               |
+| ----------------- | -------------------------------------- |
+| `hero`            | 核心信息、操作按钮与跟随主题的图片     |
+| `metrics`         | 紧凑的事实、数字、链接与辅助文字       |
+| `capabilities`    | 交替的功能叙事与专用视觉面板           |
+| `principles`      | 带编号的产品原则或工作原则             |
+| `cards`           | 通用功能、价值、服务或路径集合         |
+| `logo-wall`       | 工具、集成、合作伙伴或项目渊源         |
+| `gallery`         | 带徽标与操作的截图或图标示例           |
+| `testimonials`    | 带可选署名与来源链接的引语             |
+| `contributors`    | 人员、角色、头像与个人页链接           |
+| `faq`             | 使用原生展开控件与 Markdown 答案的问答 |
+| `markdown`        | 没有合适集合布局时使用的自由文字       |
+| `cta`             | 最后一个操作，或一组紧凑操作           |
+| `pricing`         | 产品层级、价格、功能与操作按钮         |
+| `pricing-compare` | 不同价格层级之间的功能对比矩阵         |
+| `command-box`     | 带复制操作与可选说明的聚焦命令         |
+| `steps`           | 带可选命令示例的有序步骤               |
+| `timeline`        | 带日期的里程碑、路线图与发布历史       |
+| `code-plate`      | 展示面板中的静态代码或逐行内容         |
+| `case-study`      | 带指标、引语和来源的证据型案例         |
+| `download`        | 经过验证的滚动与固定版本下载渠道       |
+| `bar-chart`       | 无需图表 JS 的非负数值比较             |
+
+首页与普通 `layout: landing`
+页面使用同一套注册表。数据解析、9 种场景型分区契约、无 JavaScript 行为与输出规则见
+[Landing 页面](/zh/docs/scenarios/landing/)。
 
 通用集合区块接受 `eyebrow`、`title`、`desc` 或 `text`、 `columns` 与
 `items`。条目字段随呈现方式而异，但统一使用 `title` 或 `name`、`desc` 或

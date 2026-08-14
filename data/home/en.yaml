@@ -7,7 +7,7 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 0.3.0 · Local-first · Hugo-only
+  eyebrow: OINK 0.4.0 · Local-first · Hugo-only
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -18,8 +18,8 @@ hero:
     dark: images/hero-dark.webp
     alt: OINK engineering documentation illustration
   actions:
-    - label: What's new in 0.3.0
-      url: blog/release/0.3.0/
+    - label: What's new in 0.4.0
+      url: blog/release/0.4.0/
       icon: fa-solid fa-book-open
       style: primary
     - label: Get started
@@ -28,42 +28,42 @@ hero:
       style: ghost
 
 release:
-  eyebrow: OINK 0.3.0
-  title: Write faster. Navigate farther. Ship less JavaScript.
+  eyebrow: OINK 0.4.0
+  title: Read in sequence. Publish releases. Build landing pages and books.
   text:
-    The 0.3.0 release sharpens the everyday authoring and reading experience
-    while preserving the same Hugo-only delivery model.
+    OINK 0.4.0 consolidates the complete Scenario Components system while
+    preserving the same local-first, Hugo-only delivery model.
   columns: 4
   link_label: Explore
   items:
-    - title: Code that works like documentation
-      meta: Authoring
-      icon: fa-solid fa-code
+    - title: Reading and release flows
+      meta: Publishing
+      icon: fa-solid fa-arrow-right-arrow-left
       desc:
-        Enhanced fences and synchronized Code Groups add filenames, exact Copy
-        behavior, wrapping, collapse, and shareable variants.
-      url: docs/components/code-blocks/
-    - title: Everyday content primitives
-      meta: Components
-      icon: fa-solid fa-cubes
-      desc:
-        Badge, Kbd, Fields, FileTree, Gallery, and Image Zoom cover common
-        documentation patterns with semantic, static-first output.
-      url: docs/components/
-    - title: Navigation with intent
-      meta: Discovery
-      icon: fa-solid fa-compass
-      desc:
-        Nested menus, weighted multilingual search, shared page actions, and the
-        Command Palette lead readers to the right page or action.
-      url: docs/advanced/search/#command-palette
-    - title: A lighter, adaptable page
+        Tree-order pagers, local math, release cards, checksum assets, and
+        validated download channels turn source facts into reliable releases.
+      url: docs/scenarios/
+    - title: Reusable landing pages
       meta: Presentation
-      icon: fa-solid fa-feather-pointed
+      icon: fa-solid fa-layer-group
       desc:
-        Semantic typography presets make fonts deliberate, while removing jQuery
-        cuts about 88 KB of CSS and JavaScript from a typical docs page.
-      url: docs/appearance/typography/
+        Any page can compose 21 server-rendered sections from local,
+        language-aware data without adding a frontend build pipeline.
+      url: docs/scenarios/landing/
+    - title: Books with stable references
+      meta: Long-form
+      icon: fa-solid fa-book-open
+      desc:
+        Numbered figures, tables, equations, cross-references, indexes, and
+        whole-book print output share one validated authoring model.
+      url: docs/scenarios/book/
+    - title: A keyboard-first shell
+      meta: Navigation
+      icon: fa-solid fa-keyboard
+      desc:
+        Single-key reading controls, a universal navbar, shared page actions,
+        and configurable footers keep large sites fast to traverse.
+      url: docs/advanced/keyboard/
 capabilities:
   eyebrow: Why OINK
   title: Docs. Engineered.

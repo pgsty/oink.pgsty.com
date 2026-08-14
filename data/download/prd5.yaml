@@ -1,4 +1,4 @@
-version: 0.6.0
+version: 0.4.0
 repo: pgsty/oink
 published: true
 channels:
@@ -31,4 +31,4 @@ channels:
     title_zh: 发布资产
     icon: fa-solid fa-box-open
     checksums: |
-      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  oink-0.6.0.tar.gz
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  oink-0.4.0.tar.gz

@@ -13,11 +13,13 @@ Production sites should import a release tag or immutable commit, never an
 unversioned branch. From the site root, update Oink to a specific ref:
 
 ```sh
-hugo mod get github.com/pgsty/oink@THEME_REF
+hugo mod get github.com/pgsty/oink@TARGET_VERSION
 hugo mod tidy
 ```
 
-Replace `THEME_REF` with the published root tag or commit named by the release.
+Replace `TARGET_VERSION` with the immutable tag named by the release note, for
+example `v0.4.0`. Do not use an unqualified module path or `@latest` as a
+production upgrade policy.
 
 ## Test a local checkout
 

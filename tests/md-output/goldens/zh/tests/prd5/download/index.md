@@ -20,16 +20,16 @@ curl -fsSL https://repo.example.org/oink/install | bash
 
 ## 源码归档
 
-[源码归档](https://github.com/pgsty/oink/archive/refs/tags/v0.6.0.tar.gz)
+[源码归档](https://github.com/pgsty/oink/archive/refs/tags/v0.4.0.tar.gz)
 
 **克隆标签**
 
 ```bash
-git clone --branch v0.6.0 https://github.com/pgsty/oink.git
+git clone --branch v0.4.0 https://github.com/pgsty/oink.git
 ```
 
 ## 发布资产
 
 | 文件 | 校验和 |
 | --- | --- |
-| [oink\-0\.6\.0\.tar\.gz](https://github.com/pgsty/oink/releases/download/v0.6.0/oink-0.6.0.tar.gz) | SHA-256 · `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` |
+| [oink\-0\.4\.0\.tar\.gz](https://github.com/pgsty/oink/releases/download/v0.4.0/oink-0.4.0.tar.gz) | SHA-256 · `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` |
