@@ -49,7 +49,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  GO_VERSION: 1.25.5
+  GO_VERSION: 1.26.6
   HUGO_VERSION: 0.164.0
 
 jobs:

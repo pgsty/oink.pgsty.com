@@ -99,12 +99,9 @@ test('j and k jump quickly to adjacent outline items while inputs keep every key
   await openDocs(page, { width: 1000, height: 500 });
 
   const outline = await page.evaluate(() => {
-    const offset =
-      (parseFloat(
-        getComputedStyle(document.documentElement).getPropertyValue(
-          '--td-shell-nav-h',
-        ),
-      ) || 0) + 24;
+    const rootStyle = getComputedStyle(document.documentElement);
+    const scrollPadding =
+      parseFloat(rootStyle.getPropertyValue('scroll-padding-top')) || 0;
     const max = document.documentElement.scrollHeight - innerHeight;
     return Array.from(
       document.querySelectorAll('#TableOfContents a[href^="#"]'),
@@ -113,6 +110,14 @@ test('j and k jump quickly to adjacent outline items while inputs keep every key
       .map((anchor) => {
         const hash = anchor.getAttribute('href');
         const heading = document.getElementById(hash.slice(1));
+        const headingStyle = getComputedStyle(heading);
+        const scrollMargin =
+          parseFloat(
+            headingStyle.getPropertyValue('scroll-margin-block-start'),
+          ) ||
+          parseFloat(headingStyle.getPropertyValue('scroll-margin-top')) ||
+          0;
+        const offset = Math.max(0, scrollPadding + scrollMargin);
         return {
           hash,
           y: Math.min(

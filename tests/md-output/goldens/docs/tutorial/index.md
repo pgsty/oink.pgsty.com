@@ -70,7 +70,7 @@ running:
 
 ```sh
 hugo mod init github.com/example/product-docs
-hugo mod get github.com/pgsty/oink@v0.4.0
+hugo mod get github.com/pgsty/oink@v0.4.1
 hugo server
 ```
 

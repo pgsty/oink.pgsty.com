@@ -18,7 +18,7 @@ hugo mod tidy
 ```
 
 Replace `TARGET_VERSION` with the immutable tag named by the release note, for
-example `v0.4.0`. Do not use an unqualified module path or `@latest` as a
+example `v0.4.1`. Do not use an unqualified module path or `@latest` as a
 production upgrade policy.
 
 ## Test a local checkout

@@ -16,7 +16,7 @@ hugo mod tidy
 ```
 
 请把 `TARGET_VERSION` 替换为发布注记指定的不可变标签，例如
-`v0.4.0`。生产升级策略不要使用未限定版本的模块路径或 `@latest`。
+`v0.4.1`。生产升级策略不要使用未限定版本的模块路径或 `@latest`。
 
 ## 测试本地 checkout {#test-a-local-checkout}
 

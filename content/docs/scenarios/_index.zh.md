@@ -38,7 +38,7 @@ cascade:
 请固定拥有这些契约的最低版本：
 
 ```go
-require github.com/pgsty/oink v0.4.0
+require github.com/pgsty/oink v0.4.1
 ```
 
 使用 Hugo Extended

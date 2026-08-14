@@ -49,7 +49,7 @@ spans multiple pages, files, or output formats.
 Pin the minimum release that owns these contracts:
 
 ```go
-require github.com/pgsty/oink v0.4.0
+require github.com/pgsty/oink v0.4.1
 ```
 
 Use Hugo Extended 0.160.1 or newer. Adopt one scenario at a time, build every
