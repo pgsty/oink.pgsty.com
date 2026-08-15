@@ -1,11 +1,8 @@
-# Enhanced code blocks
-
-> Browser and output regression fixtures for code blocks and Code Groups.
-
 ---
-
-LLMS index: [llms.txt](/llms.txt)
-
+title: Enhanced code blocks
+exclude_search: true
+description: Browser regression fixtures for code blocks and Code Groups.
+weight: 20
 ---
 
 ## Exact copy source
@@ -63,8 +60,8 @@ echo "no copy control"
 ```
 
 ```go-html-template {id="template-source" copy=false}
-{{< code-group id="sample" >}}
-{{< /code-group >}}
+{{</* code-group id="sample" */>}}
+{{</* /code-group */>}}
 ```
 
 ## Wrap and collapse
@@ -95,64 +92,49 @@ beta
 ## Package manager groups
 
 <!-- prettier-ignore -->
-**npm**
-
-```bash
+{{< code-group id="install-client" sync="package-manager" persist=true label="Choose a package manager" copy="all" >}}
+  {{< code-tab title="npm" value="npm" lang="bash" >}}
 npm install @example/client
-```
-
-**pnpm**
-
-```bash
+  {{< /code-tab >}}
+  {{< code-tab title="pnpm" value="pnpm" lang="bash" selected=true >}}
 pnpm add @example/client
-```
-
-**yarn**
-
-```bash
+  {{< /code-tab >}}
+  {{< code-tab title="yarn" value="yarn" lang="bash" >}}
 yarn add @example/client
-```
+  {{< /code-tab >}}
+{{< /code-group >}}
 
 <!-- prettier-ignore -->
-**npm**
-
-```bash
+{{< code-group id="install-tool" sync="package-manager" persist=true >}}
+  {{< code-tab title="npm" value="npm" lang="bash" >}}
 npm install --global @example/tool
-```
-
-**pnpm**
-
-```bash
+  {{< /code-tab >}}
+  {{< code-tab title="pnpm" value="pnpm" lang="bash" >}}
 pnpm add --global @example/tool
-```
+  {{< /code-tab >}}
+{{< /code-group >}}
 
 <!-- prettier-ignore -->
-**Backticks \*\*literal\*\* \[label\]**
-
-````text
+{{< code-group id="literal-markers" persist=false collapse=2 >}}
+  {{< code-tab title="Backticks **literal** [label]" value="ticks" lang="text" >}}
 before ``` marker
 after
-````
-
-**Plain**
-
-```text
+  {{< /code-tab >}}
+  {{< code-tab title="Plain" value="plain" lang="text" >}}
 one
 two
 three
-```
+  {{< /code-tab >}}
+{{< /code-group >}}
 
 ## Legacy tabpane
 
 <!-- prettier-ignore -->
-**YAML**
-
-```yaml
+{{< tabpane persist="lang" >}}
+  {{< tab header="YAML" lang="yaml" selected=true >}}
 message: legacy-compatible
-```
-
-**JSON**
-
-```json
+  {{< /tab >}}
+  {{< tab header="JSON" lang="json" >}}
 {"message":"legacy-compatible"}
-```
+  {{< /tab >}}
+{{< /tabpane >}}

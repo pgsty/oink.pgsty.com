@@ -60,17 +60,6 @@
     "skip": false
   },
   {
-    "path": "tests/code-blocks/index.md",
-    "kind": "page",
-    "covers": [
-      "code-group",
-      "dynamic-fence",
-      "legacy-tabpane",
-      "!interactive-html"
-    ],
-    "skip": false
-  },
-  {
     "path": "docs/components/index.md",
     "kind": "nested section",
     "covers": ["content-primitives", "children", "i18n:en"],
@@ -104,52 +93,6 @@
     "path": "zh/docs/components/gallery/index.md",
     "kind": "page",
     "covers": ["gallery", "image-fallback", "i18n:zh"],
-    "skip": false
-  },
-  {
-    "path": "tests/prd5/fig/index.md",
-    "kind": "PRD 5 figure fallback",
-    "covers": ["fig", "xref", "markdown-fallback", "i18n:en"],
-    "skip": false
-  },
-  {
-    "path": "zh/tests/prd5/fig/index.md",
-    "kind": "PRD 5 figure fallback",
-    "covers": ["fig", "xref", "markdown-fallback", "i18n:zh"],
-    "skip": false
-  },
-  {
-    "path": "tests/prd5/assets/index.md",
-    "kind": "PRD 5 release assets fallback",
-    "covers": [
-      "release-assets",
-      "full-checksum",
-      "markdown-fallback",
-      "i18n:en"
-    ],
-    "skip": false
-  },
-  {
-    "path": "zh/tests/prd5/assets/index.md",
-    "kind": "PRD 5 release assets fallback",
-    "covers": [
-      "release-assets",
-      "full-checksum",
-      "markdown-fallback",
-      "i18n:zh"
-    ],
-    "skip": false
-  },
-  {
-    "path": "tests/prd5/download/index.md",
-    "kind": "PRD 5 download fallback",
-    "covers": ["rolling", "pinned", "source-commands", "i18n:en"],
-    "skip": false
-  },
-  {
-    "path": "zh/tests/prd5/download/index.md",
-    "kind": "PRD 5 download fallback",
-    "covers": ["rolling", "pinned", "source-commands", "i18n:zh"],
     "skip": false
   },
   {

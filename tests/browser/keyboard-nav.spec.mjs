@@ -93,6 +93,25 @@ test('Enter opens the focused page and q/e follow the tree order', async ({
   await page.waitForURL(`**${neighbors.next}`);
 });
 
+test('the Docs landing is the first focus and paging destination', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 600 });
+  await page.goto('/docs/', { waitUntil: 'domcontentloaded' });
+  const links = page.locator('#td-sidebar-menu a.td-shell-tree__link');
+  await expect(links.first()).toHaveAttribute('href', '/docs/');
+  await expect(links.first()).toHaveAttribute('aria-current', 'page');
+
+  await page.keyboard.press('w');
+  await expect(links.first()).toBeFocused();
+  const firstChild = await links.nth(1).getAttribute('href');
+  await page.keyboard.press('Escape');
+  await page.keyboard.press('e');
+  await page.waitForURL(`**${firstChild}`);
+  await page.keyboard.press('q');
+  await page.waitForURL('**/docs/');
+});
+
 test('j and k jump quickly to adjacent outline items while inputs keep every key', async ({
   page,
 }) => {
@@ -173,6 +192,100 @@ test('j and k jump quickly to adjacent outline items while inputs keep every key
   await expect(focusedTreeLink(page)).toHaveCount(0);
 });
 
+test('homepage n, j, and k jump between landing sections while h hides page chrome', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 600 });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+  const sections = page.locator('[data-td-landing] > section[id]');
+  await expect(sections).toHaveCount(5);
+  expect(await sections.nth(0).getAttribute('id')).toBe('hero');
+  expect(await sections.nth(1).getAttribute('id')).toBe('release');
+
+  await page.keyboard.press('j');
+  await page.waitForTimeout(180);
+  expect(await page.evaluate(() => location.hash)).toBe('#release');
+  expect(await page.evaluate(() => scrollY)).toBeGreaterThan(100);
+
+  await page.keyboard.press('k');
+  await page.waitForTimeout(180);
+  expect(await page.evaluate(() => scrollY)).toBeLessThan(3);
+  expect(await page.evaluate(() => location.hash)).toBe('#hero');
+
+  await page.keyboard.press('n');
+  await page.waitForTimeout(180);
+  expect(await page.evaluate(() => location.hash)).toBe('#release');
+  expect(await page.evaluate(() => scrollY)).toBeGreaterThan(100);
+
+  await page.keyboard.press('h');
+  await expect(page.locator('html')).toHaveAttribute('data-td-kbd-zen', '');
+  await expect(page.locator('.landing-header')).toBeHidden();
+  await expect(page.locator('[data-td-shell-footer]')).toBeHidden();
+});
+
+test('docs and blog cascades disable desktop navbars and keep slim footers', async ({
+  page,
+}) => {
+  for (const path of ['/docs/configure/overview/', '/blog/release/0.4.0/']) {
+    await page.goto(path, { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('.landing-header')).toHaveCount(0);
+    await expect(page.locator('.td-shell-subnav')).toHaveCount(1);
+    await expect(page.locator('.td-shell-footline')).toHaveCount(1);
+    await expect(page.locator('#td-site-footer')).toHaveCount(0);
+  }
+});
+
+test('the narrowest tier forces the navbar-off mobile bar to stay visible', async ({
+  page,
+}) => {
+  await openDocs(page, { width: 479, height: 844 });
+  const header = page.locator('.td-shell-subnav');
+  await expect(page.locator('.landing-header')).toHaveCount(0);
+  await expect(header).toBeVisible();
+  await expect(header).toHaveCSS('position', 'sticky');
+
+  const [bar, menu] = await Promise.all([
+    header.boundingBox(),
+    header.locator('.td-shell-subnav__menu').boundingBox(),
+  ]);
+  expect(bar).not.toBeNull();
+  expect(menu).not.toBeNull();
+  expect(
+    Math.abs(menu.x + menu.width / 2 - (bar.x + bar.width / 2)),
+  ).toBeLessThanOrEqual(1);
+
+  await page.evaluate(() => sessionStorage.setItem('td-kbd-zen', '1'));
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await expect(page.locator('html')).toHaveAttribute('data-td-kbd-zen', '');
+  await expect(page.locator('.td-shell-subnav')).toBeVisible();
+});
+
+test('collapsed rail restore buttons align with the article topline', async ({
+  page,
+}) => {
+  await openDocs(page, { width: 1280, height: 900 });
+  await page
+    .locator('#td-shell-sidebar [data-td-shell-sidebar-toggle]')
+    .first()
+    .evaluate((button) => button.click());
+  await page
+    .locator('.td-shell-toc__panel [data-td-shell-right-toggle]')
+    .first()
+    .evaluate((button) => button.click());
+
+  const [topline, leftRestore, rightRestore] = await Promise.all([
+    page.locator('.td-shell-topline').boundingBox(),
+    page.locator('.td-shell-float').boundingBox(),
+    page.locator('.td-shell-toc-float').boundingBox(),
+  ]);
+  expect(topline).not.toBeNull();
+  expect(leftRestore).not.toBeNull();
+  expect(rightRestore).not.toBeNull();
+  expect(Math.abs(leftRestore.y - topline.y)).toBeLessThanOrEqual(4);
+  expect(Math.abs(rightRestore.y - topline.y)).toBeLessThanOrEqual(4);
+});
+
 test('modified keys and visible dialog surfaces keep ownership', async ({
   page,
 }) => {
@@ -198,7 +311,9 @@ test('WASD restores a collapsed sidebar but yields while zen mode hides it', asy
   const sidebarToggle = page
     .locator('#td-shell-sidebar [data-td-shell-sidebar-toggle]')
     .first();
-  await sidebarToggle.click();
+  // Trigger the setup action directly so this test stays about keyboard-owned
+  // sidebar restoration rather than pointer targeting.
+  await sidebarToggle.evaluate((button) => button.click());
   await expect(page.locator('html')).toHaveAttribute(
     'data-td-shell-sidebar',
     'collapsed',
@@ -248,7 +363,7 @@ test('h toggles the chrome-free reading mode and survives paging', async ({
   await expect(page.locator('#td-shell-sidebar')).toBeVisible();
 });
 
-test('t flips the color theme and l switches the language', async ({
+test('t flips the color theme and l/y switch the language', async ({
   page,
 }) => {
   await openDocs(page);
@@ -266,6 +381,8 @@ test('t flips the color theme and l switches the language', async ({
 
   await page.keyboard.press('l');
   await page.waitForURL(`**/zh${docsPath}`);
+  await page.keyboard.press('y');
+  await page.waitForURL(`**${docsPath}`);
 });
 
 test('f and c open the palette in search and command mode', async ({
@@ -291,9 +408,13 @@ test('f and c open the palette in search and command mode', async ({
 test('the footer arrow collapses the fat footer and persists', async ({
   page,
 }) => {
-  await openDocs(page);
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
   const toggle = page.locator('[data-td-footer-toggle]');
   const grid = page.locator('#td-site-footer');
+  await expect(page.locator('.td-site-footer__column').first()).toHaveCSS(
+    'padding-left',
+    '10px',
+  );
   await toggle.scrollIntoViewIfNeeded();
   await expect(toggle).toHaveAttribute('aria-expanded', 'true');
   await expect(grid).toBeVisible();

@@ -61,7 +61,9 @@ test.describe('Everyday content primitive guides', () => {
     );
 
     await page.goto(kbdPath, { waitUntil: 'domcontentloaded' });
-    const keySequence = page.locator('.td-kbd-sequence').first();
+    const keySequence = page
+      .locator('#td-main-content .td-kbd-sequence')
+      .first();
     await expect(keySequence.locator('kbd')).toHaveCount(2);
     await expect(keySequence.locator('kbd').nth(0)).toHaveText('Ctrl');
     await expect(keySequence.locator('kbd').nth(1)).toHaveText('K');

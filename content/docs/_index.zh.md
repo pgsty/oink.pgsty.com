@@ -8,8 +8,12 @@ icon: fa-solid fa-book
 sidebar_expanded: true
 sidebar_root_for: self
 sidebar_root_link_self: true
-comments: false
+navbar_enabled: false
 cascade:
+  navbar_enabled: false
+  footer_style: slim
+  comments: true
+  feedback: true
   search_boost: 1.35
 ---
 

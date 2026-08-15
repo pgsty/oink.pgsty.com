@@ -185,7 +185,7 @@ alone leaves the command reachable there.
 Prefer omitting an unavailable global destination in configuration. CSS hiding
 is useful for selective policy; it does not make a malformed link correct.
 
-## Last-modified page metadata
+## Page annotation and last-modified metadata {#last-modified-page-metadata}
 
 Enable Hugo Git information and configure the source repository:
 
@@ -199,6 +199,38 @@ OINK can then show the last commit date, subject, hash, and source link on
 documentation and blog pages. CI must fetch enough Git history for the current
 file; shallow checkouts can produce missing or misleading metadata.
 
-To hide the note for a particular site or section, override its style or the
-responsible page-meta partial. Do not label a file “last modified” from the
-build timestamp when Git history is unavailable.
+This note is the default **Annotation** component. It appears after Feedback and
+before Previous/Next navigation. Annotation is on by default; set
+`annotation: false` in page front matter or a cascade to hide it.
+
+Consumers may override the stable slot at
+`layouts/_partials/page-annotation.html`. The default slot delegates to
+`page-meta-lastmod.html`, so an existing override of that older partial keeps
+working. A site-specific annotation can read any front matter schema, for
+example:
+
+```yaml
+upstream:
+  project: minio/docs
+  url: https://github.com/minio/docs
+  license: CC BY 4.0
+modified_by: Silo project
+translated_from:
+  language: English
+  revision: 9d02de5
+```
+
+```go-html-template {filename="layouts/_partials/page-annotation.html"}
+{{ partial "page-meta-lastmod.html" . }}
+{{ with .Params.upstream }}
+  <p>Portions adapted from <a href="{{ .url }}">{{ .project }}</a>,
+    under {{ .license }}.</p>
+{{ end }}
+{{ with .Params.translated_from }}
+  <p>Translated from {{ .language }}, revision {{ .revision }}.</p>
+{{ end }}
+```
+
+OINK intentionally does not prescribe the extension fields: the stable partial
+and page-end position are the contract. Do not label a file “last modified” from
+the build timestamp when Git history is unavailable.

@@ -31,16 +31,16 @@ Analytics 请求。应彻底删除相关配置，而不是填写虚假 ID。
 
 ## 用户反馈 {#user-feedback}
 
-OINK 可以在文档页底部显示“本页是否有帮助？”小组件。它提供 **是** 与 **否**
-两个操作，随后显示配置好的响应；响应通常包含创建文档 issue 的链接。
+OINK 可以显示紧凑的“这篇文档解决了你的问题吗？”提示。选择 **已解决** 或
+**未解决**
+后，结构化结果会立即记录。选择“未解决”时，还可以补充一个可选原因：缺少必要信息、内容错误或过时、操作步骤没有生效，或者内容难以理解。
 
-<figure>
-  <img src="/images/feedback.png"
-       alt="页面询问内容是否有帮助，并提供“是”和“否”两个按钮。"/>
-  <figcaption>图 1：页面反馈组件</figcaption>
-</figure>
+组件不收集自由文本，也不会为反馈发起网络请求。选择会保存在浏览器本地存储中，因此再次访问时仍可查看或修改。若页面已有 Google
+Analytics，同样的固定枚举值也会作为事件上报；没有 Analytics 时，本地交互仍然完整可用。
 
-即使不启用分析，响应仍然可以发挥作用：它可以把读者引导到 issue 模板、讨论区、电子邮箱或站点自有的其他反馈渠道。只有站点配置了适当目标后，才会发生数据收集和事件上报。
+[Giscus](https://giscus.app/)
+仍是独立的 Comments 组件。当前页启用评论时，反馈结果会提供跳转到评论区的链接，供读者补充详情。OINK 不会代替读者写入 Giscus
+iframe，也不会创建 GitHub 身份。
 
 ### 反馈数据有什么用？ {#how-feedback-data-is-useful}
 
@@ -52,55 +52,54 @@ OINK 可以在文档页底部显示“本页是否有帮助？”小组件。它
 
 ### 配置 {#user-feedback-setup}
 
-OINK 默认关闭该小组件。请设置全局默认值，并配置本地化响应。英文配置如下：
+OINK 默认关闭 Feedback。可以全局开启，并决定负面反馈是否显示原因选项：
 
 ```yaml
 params:
   ui:
     feedback:
-      enable: false
-languages:
-  en:
-    params:
-      ui:
-        feedback:
-          yes: >-
-            Glad to hear it! Please <a
-            href="https://github.com/OWNER/REPOSITORY/issues/new">tell us how we
-            can improve</a>.
-          no: >-
-            Sorry to hear that. Please <a
-            href="https://github.com/OWNER/REPOSITORY/issues/new">tell us how we
-            can improve</a>.
+      enable: true
+      reasons: true
 ```
 
-简体中文字符串放在 `languages.zh.params` 下：
+只为一个栏目开启时，使用 cascade；页面配置会覆盖站点默认值：
 
 ```yaml
-languages:
-  zh:
-    params:
-      ui:
-        feedback:
-          yes: >-
-            很高兴本页对你有帮助！欢迎<a
-            href="https://github.com/OWNER/REPOSITORY/issues/new">告诉我们如何继续改进</a>。
-          no: >-
-            很抱歉本页没有解决问题。请<a
-            href="https://github.com/OWNER/REPOSITORY/issues/new">告诉我们缺少什么</a>。
+---
+title: 文档
+cascade:
+  feedback: true
+---
 ```
 
-可见响应 HTML 属于可信站点配置。内容应保持精简，链接需要经过评审，并且不能插入不可信值。
+如果只需两个主选项，可全局设置 `reasons: false`，也可以用页面级 map 单独设置：
 
-配置 Google Analytics 后，小组件可以发送自定义 `page_helpful` 事件。正面操作使用
-`params.ui.feedback.max_value`（默认为 100），负面操作使用 0。
+```yaml
+---
+title: 简短参考
+feedback:
+  enable: true
+  reasons: false
+---
+```
 
-### 访问反馈数据 {#access-feedback-data}
+旧版原型字段 `yes`、`no`、`max_value`、`endpoint` 与 `max_length`
+已经不再使用，应从配置中删除。
 
-使用 Google Analytics 时，可以在服务商的事件报告中查看
-`page_helpful`，并按需创建页面级报告。没有事件并不一定表示没有用户反馈；也可能是分析被阻止或禁用、用户没有同意，或者所选时间范围不正确。
+### Analytics 事件 {#analytics-event}
 
-不要仅仅为了显示小组件就启用分析。站点可以保留响应和链接体验，同时关闭事件收集。
+页面存在全局 `gtag` 函数时，主选项会发送：
+
+```text
+docs_feedback { result, page_path, language }
+```
+
+`result` 只可能是 `solved` 或 `not_solved`。选择可选原因时，会再发送一条包含
+`reason` 与 `refinement: true` 的 `docs_feedback`
+事件。Analytics故障不会阻止界面更新或本地保存。
+
+可以在分析服务商的事件报告中查看
+`docs_feedback`，并按需创建页面级报告。没有事件不一定表示没有交互；也可能是 Analytics 被禁用或拦截、用户未同意，或者选择的时间范围不正确。
 
 ### 在单个页面覆盖反馈设置 {#disable-feedback-on-one-page}
 
@@ -118,8 +117,7 @@ feedback: true
 
 ### 设置所有页面的默认值 {#disable-feedback-on-all-pages}
 
-设置以下站点参数。OINK 默认值为
-`false`；只有大多数文档页都应显示小组件时，才将其设为 `true`：
+设置以下站点参数。OINK 默认值为 `false`：
 
 ```yaml
 params:

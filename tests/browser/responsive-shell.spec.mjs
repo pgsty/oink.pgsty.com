@@ -19,10 +19,13 @@ for (const width of widths) {
 
     const context = page.locator('[data-td-page-context]');
     const toc = page.locator('.td-shell-toc__panel');
-    const navbar = page.locator('.landing-header');
+    const subnav = page.locator('.td-shell-subnav');
+    const utilityDock = page.locator('.td-shell-sidebar__footer');
+
+    await expect(page.locator('.landing-header')).toHaveCount(0);
 
     if (width < 768) {
-      await expect(page.locator('.td-shell-subnav')).toHaveCount(0);
+      await expect(subnav).toBeVisible();
       await page.locator('[data-td-shell-drawer-open]:visible').click();
       await expect(page.locator('html')).toHaveAttribute(
         'data-td-shell-drawer',
@@ -30,17 +33,29 @@ for (const width of widths) {
       );
       await expect(page.locator('.td-shell-sidebar__panel')).toBeInViewport();
       await expect(toc).toBeHidden();
+      await expect(utilityDock.locator('.td-language-selector')).toBeVisible();
+      await expect(utilityDock.locator('.td-shell-keyboard')).toBeVisible();
+      await expect(utilityDock.locator('[data-td-theme-toggle]')).toBeVisible();
+      await expect(utilityDock.locator('a[aria-label="GitHub"]')).toBeVisible();
       await page.locator('button[data-td-shell-drawer-close]:visible').click();
       await expect(page.locator('html')).not.toHaveAttribute(
         'data-td-shell-drawer',
         'open',
       );
     } else if (width < 1200) {
-      await expect(page.locator('.td-shell-subnav')).toHaveCount(0);
+      await expect(subnav).toBeHidden();
       await expect(page.locator('.td-shell-sidebar__panel')).toBeVisible();
       await expect(toc).toBeHidden();
     } else {
+      await expect(subnav).toBeHidden();
       await expect(toc).toBeVisible();
+    }
+
+    if (width >= 768) {
+      await expect(utilityDock.locator('.td-language-selector')).toBeVisible();
+      await expect(utilityDock.locator('.td-shell-keyboard')).toBeVisible();
+      await expect(utilityDock.locator('[data-td-theme-toggle]')).toBeVisible();
+      await expect(utilityDock.locator('a[aria-label="GitHub"]')).toBeVisible();
     }
 
     const actionsToggle = page.locator('[data-td-page-actions-toggle]:visible');
@@ -50,18 +65,14 @@ for (const width of widths) {
     }
     await expect(actionsToggle).toHaveAttribute('aria-expanded', 'true');
     await expect(context.locator('[data-td-page-actions-menu]')).toBeVisible();
-
-    await expect(navbar.locator('.td-language-selector')).toBeVisible();
-    await expect(navbar.locator('[data-td-theme-toggle]')).toBeVisible();
-    await expect(navbar.locator('a[aria-label="GitHub"]')).toBeVisible();
   });
 }
 
-for (const [locale, path, docsLabel, docsHref] of [
-  ['en', docPath, 'Docs', '/docs/'],
-  ['zh', '/zh/docs/configure/overview/', '文档', '/zh/docs/'],
+for (const [locale, path, docsLabel, docsHref, blogHref] of [
+  ['en', docPath, 'Docs', '/docs/', '/blog/'],
+  ['zh', '/zh/docs/configure/overview/', '文档', '/zh/docs/', '/zh/blog/'],
 ]) {
-  test(`${locale} static root row returns to the docs section`, async ({
+  test(`${locale} root switcher keeps the active docs and blog roots`, async ({
     page,
   }) => {
     await page.setViewportSize({ width: 820, height: 900 });
@@ -69,9 +80,15 @@ for (const [locale, path, docsLabel, docsHref] of [
 
     const trigger = page.locator('.td-shell-root__trigger');
     await expect(trigger).toContainText(docsLabel);
-    await expect(trigger).toHaveAttribute('href', docsHref);
-    await expect(page.locator('.td-shell-root')).toHaveClass(/--static/);
-    await expect(page.locator('.td-shell-root__item')).toHaveCount(0);
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    await trigger.click();
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    await expect(
+      page.locator(`.td-shell-root__item[href="${docsHref}"]`),
+    ).toHaveClass(/is-active/);
+    await expect(
+      page.locator(`.td-shell-root__item[href="${blogHref}"]`),
+    ).toHaveCount(1);
   });
 }
 
@@ -123,7 +140,6 @@ test('compact navbar keeps the same named root links without a second menu', asy
 
   for (const [label, href] of [
     ['Docs', '/docs/'],
-    ['About', '/docs/about/'],
     ['Blog', '/blog/'],
   ]) {
     const link = page
@@ -139,10 +155,85 @@ test('compact navbar keeps the same named root links without a second menu', asy
   await expect(
     page.locator('[data-td-shell-search-open]:visible'),
   ).toBeVisible();
-  await expect(page.locator('[data-td-theme-toggle]:visible')).toBeVisible();
   await expect(
-    page.locator('.nav-util-zone [hreflang="zh-CN"]:visible').first(),
-  ).toBeVisible();
+    page.locator('.nav-util-zone [data-td-theme-toggle]'),
+  ).toBeHidden();
+  await expect(
+    page.locator('.nav-util-zone [hreflang="zh-CN"]').first(),
+  ).toBeHidden();
+  await expect(page.locator('.nav-util-zone .nav-github')).toBeHidden();
+
+  const [bar, menu] = await Promise.all([
+    page.locator('.landing-nav').boundingBox(),
+    page.locator('.nav-menu-zone').boundingBox(),
+  ]);
+  expect(bar).not.toBeNull();
+  expect(menu).not.toBeNull();
+  expect(
+    Math.abs(menu.x + menu.width / 2 - (bar.x + bar.width / 2)),
+  ).toBeLessThanOrEqual(1);
+});
+
+test('desktop and mobile search actions immediately precede their navigation controls', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await openCleanPage(page);
+
+  const desktopSearch = page.locator(
+    '.td-shell-sidebar__brand-row > [data-td-shell-search-open]',
+  );
+  await expect(desktopSearch).toBeVisible();
+  expect(
+    await desktopSearch.evaluate((button) =>
+      button.nextElementSibling?.matches('[data-td-shell-sidebar-toggle]'),
+    ),
+  ).toBe(true);
+  await desktopSearch.click();
+  await expect(page.locator('#td-shell-search')).toBeVisible();
+  await page.keyboard.press('Escape');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  const mobileSearch = page.locator(
+    '.td-shell-subnav__actions > [data-td-shell-search-open]',
+  );
+  await expect(mobileSearch).toBeVisible();
+  expect(
+    await mobileSearch.evaluate((button) =>
+      button.nextElementSibling?.matches('[data-td-shell-drawer-open]'),
+    ),
+  ).toBe(true);
+  await mobileSearch.click();
+  await expect(page.locator('#td-shell-search')).toBeVisible();
+});
+
+test('shortcut help uses KBD keycaps on desktop and in the mobile drawer', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await openCleanPage(page);
+  const trigger = page.locator('.td-shell-keyboard__trigger');
+  const help = page.locator('.td-shell-keyboard-help');
+  await trigger.hover();
+  await expect(help).toBeVisible();
+  await expect(help.locator('.td-kbd-sequence kbd')).not.toHaveCount(0);
+  await expect(help.locator('pre, code')).toHaveCount(0);
+  expect(
+    await trigger.evaluate((button) =>
+      button
+        .closest('.td-shell-keyboard')
+        ?.nextElementSibling?.classList.contains('td-shell-sidebar__theme'),
+    ),
+  ).toBe(true);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.locator('[data-td-shell-drawer-open]:visible').click();
+  await page
+    .locator('.td-shell-keyboard__trigger')
+    .evaluate((button) => button.click());
+  await expect(page.locator('.td-shell-keyboard-help')).toBeVisible();
 });
 
 test('page actions are complete and keyboard operable', async ({ page }) => {

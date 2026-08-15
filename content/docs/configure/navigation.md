@@ -60,6 +60,19 @@ an extra icon opens the sidebar drawer.
 > [!NOTE] `navbar_accordion_single_open` is retired. The parameter is ignored;
 > remove it from existing configuration.
 
+### Auto-hide and the reveal zone {#navbar-autohide}
+
+Set `params.ui.navbar_autohide: true`, or cascade `navbar_autohide: true` from a
+section, to tuck the navbar above the viewport. With a fine pointer at widths of
+768px and above, moving into the central part of the upper 60% of its original
+top strip reveals it. The leftmost and rightmost 64px are deliberately excluded
+so the collapsed sidebar and outline restore buttons remain clickable; those
+buttons align with the breadcrumb and RSS/copy action row.
+
+Below 768px, and on coarse/touch pointers, auto-hide is disabled and the normal
+sticky navbar remains visible. The explicit <kbd>H</kbd> reading-mode shortcut
+is still allowed to hide all chrome.
+
 ### Adding `main` menu entries
 
 Define a menu entry in page front matter:
@@ -126,6 +139,19 @@ carries the same links in its own content.
 > warning and degrade to static group headings — they never create a third-level
 > flyout. Deep information architecture belongs in the content sidebar, not the
 > top menu.
+
+When a top-level entry points to a taxonomy page such as `/tags`, OINK builds
+the dropdown from that taxonomy automatically instead of requiring menu
+children. It renders one `tag + count` chip per term in descending count order:
+
+```yaml
+menus:
+  main:
+    - identifier: tags
+      name: Tags
+      pageRef: /tags
+      weight: 60
+```
 
 ### Version menu
 
@@ -333,12 +359,16 @@ sidebar_root_link_self: true
 the index in the parent tree but roots its descendants. Rooted sections can
 nest, but redundant or invalid values produce build warnings.
 
-The switcher is **scoped to the current top-level section**. Its entries are
-that section itself, which is the default, plus every descendant that sets
-`sidebar_root_for: self`. Sibling top-level sections are not listed — moving
-between Docs and Blog is the navbar's job. A section with no switchable
-descendant therefore shows no dropdown at all: the row is a plain, unboxed link
-to the section landing page, flush with the tree's top-level rows.
+The switcher is global: it contains every top-level content section plus every
+section anywhere in the site that sets `sidebar_root_for: self`. Set
+`sidebar_root_menu: false` in a top-level section's front matter to keep a
+private utility section out of this list. With one entry, the control becomes a
+plain unboxed link; with two or more it becomes a dropdown.
+
+The root landing page remains the first link in the navigation tree below the
+switcher. This is intentional: the switcher selects a tree, while the root link
+selects a document. It keeps the landing page reachable through W/S focus, Q/E
+sequential navigation, and the Previous/Next pager.
 
 Taxonomy term pages have no content ancestry, so a term adopts the top section
 its members share. Following a tag from a docs page keeps the docs tree and the
@@ -349,7 +379,9 @@ members span several sections shows no root row.
 
 Hugo builds the right-side page outline from Markdown headings. OINK renders it
 as the first group in a fixed right rail, followed by the taxonomy clouds for
-the current section. Readers can collapse the rail; its state is stored locally.
+the current section. Its first row shares the content-top spacing token with the
+breadcrumb/action context row, so the two rails begin on the same visual line.
+Readers can collapse the rail; its state is stored locally.
 
 Headings emitted by Markdown shortcodes (`{{%/* ... */%}}`) participate in
 Hugo's table of contents. Headings emitted only by standard shortcodes
@@ -429,9 +461,9 @@ that contain duplicate or missing IDs.
 ## Breadcrumb navigation
 
 Breadcrumbs are shown above ordinary content pages and in taxonomy results, and
-that row also carries the page actions. Top-level section pages keep their
-one-crumb breadcrumb so the row stays anchored at every depth. Disable
-breadcrumbs globally:
+that row also carries the page actions. A top-level section or taxonomy index
+omits its redundant one-crumb breadcrumb, while the context row keeps the same
+geometry whenever page actions are present. Disable breadcrumbs globally:
 
 ```yaml
 params:
@@ -446,8 +478,8 @@ logical hierarchy as the sidebar.
 
 ### Page actions {#page-actions}
 
-The page actions are an icon-only split button at the end of the breadcrumb row.
-The primary half copies the page's Markdown and flips to a green check on
+The page actions are an icon-only split button at the end of the page context
+row. The primary half copies the page's Markdown and flips to a green check on
 success; the caret opens a menu of ten actions in two halves. The reading half
 takes the page somewhere else:
 

@@ -162,7 +162,7 @@ github_url: https://github.com/OWNER/UPSTREAM/edit/main/README.md
 
 对于全局不可用的目标，应优先从配置中省略。CSS 隐藏适合选择性策略，但不能让错误链接变正确。
 
-## 页面最后修改信息 {#last-modified-page-metadata}
+## 页面注释与最后修改信息 {#last-modified-page-metadata}
 
 启用 Hugo Git 信息并配置源码仓库：
 
@@ -174,4 +174,35 @@ params:
 
 OINK 随后可以在文档与博客页显示最后一次提交的日期、主题、hash 和源码链接。CI 必须为当前文件获取足够的 Git 历史；浅克隆可能导致元数据缺失或产生误导。
 
-如果要在特定站点或分区隐藏提示，可以覆盖样式或负责页面元信息的 partial。当 Git 历史不可用时，不要把构建时间冒充为“最后修改”时间。
+这行信息是默认的 **Annotation**
+组件，位于 Feedback 之后、上一页/下一页之前。Annotation 默认开启；在页面 front
+matter 或 cascade 中设置 `annotation: false` 即可关闭。
+
+消费站可以覆盖稳定插槽
+`layouts/_partials/page-annotation.html`。默认插槽继续调用
+`page-meta-lastmod.html`，因此旧站点对后者的覆盖仍然兼容。自定义 Annotation 可以读取任意 front
+matter，例如：
+
+```yaml
+upstream:
+  project: minio/docs
+  url: https://github.com/minio/docs
+  license: CC BY 4.0
+modified_by: Silo project
+translated_from:
+  language: English
+  revision: 9d02de5
+```
+
+```go-html-template {filename="layouts/_partials/page-annotation.html"}
+{{ partial "page-meta-lastmod.html" . }}
+{{ with .Params.upstream }}
+  <p>部分内容改编自 <a href="{{ .url }}">{{ .project }}</a>，
+    采用 {{ .license }}。</p>
+{{ end }}
+{{ with .Params.translated_from }}
+  <p>译自 {{ .language }}，原始版本 {{ .revision }}。</p>
+{{ end }}
+```
+
+OINK 不规定这些扩展字段的 schema；稳定的 partial 和页尾位置才是契约。当 Git 历史不可用时，不要把构建时间冒充为“最后修改”时间。

@@ -80,9 +80,9 @@ for (const [deployment, baseURL, prefix] of [
       documentAt(outDir, route);
     }
 
-    for (const [languagePath, labels] of [
-      ['', ['Docs', 'Get started', 'Blog']],
-      ['/zh', ['文档', '快速上手', '博客']],
+    for (const [languagePath, labels, panelCount] of [
+      ['', ['Docs', 'Get started', 'Blog', 'Tags'], 3],
+      ['/zh', ['文档', '快速上手', '博客', '标签'], 4],
     ]) {
       const home = documentAt(outDir, languagePath || '/');
       const desktop = navbarEntries(home);
@@ -101,12 +101,12 @@ for (const [deployment, baseURL, prefix] of [
         0,
       );
 
-      // Docs, About, and Blog each own one hover/focus panel.
+      // Nested parents and the generated Tags cloud each own one panel.
       const controls = [...home.querySelectorAll('[aria-controls]')].filter(
         (control) =>
           control.getAttribute('aria-controls')?.startsWith('td-navbar-'),
       );
-      assert.equal(controls.length, 3);
+      assert.equal(controls.length, panelCount);
       assert.ok(
         controls.every(
           (control) =>
@@ -145,19 +145,20 @@ for (const [deployment, baseURL, prefix] of [
       `${prefix}/zh/docs/`,
     );
 
-    for (const [route, current] of [
-      ['/docs', 'Docs'],
-      ['/zh/docs', '文档'],
+    for (const [route, current, roots] of [
+      ['/docs', 'Docs', ['Blog', 'Docs']],
+      ['/zh/docs', '文档', ['博客', '文档']],
     ]) {
       const page = documentAt(outDir, route);
       assert.equal(
         page.querySelector('.td-shell-root__title')?.textContent.trim(),
         current,
       );
-      assert.ok(page.querySelector('.td-shell-root--static'));
-      assert.equal(
-        page.querySelectorAll('.td-shell-root__item-title').length,
-        0,
+      assert.deepEqual(
+        [...page.querySelectorAll('.td-shell-root__item-title')]
+          .map((node) => node.textContent.trim())
+          .sort(),
+        roots.sort(),
       );
     }
 

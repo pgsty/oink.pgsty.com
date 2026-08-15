@@ -62,6 +62,7 @@ languages:
           ariaLabel: Comments
           errorMessage: Comments could not be loaded. Please try again later.
       ui:
+        navbar_autohide: true
         command_palette:
           commands:
             - id: theme_issues
@@ -108,42 +109,6 @@ languages:
           params:
             icon: fa-solid fa-cloud-arrow-up
             description: Publish to Cloudflare Pages, GitHub Pages, and others
-        - identifier: about
-          name: About
-          pageRef: /docs/about
-          weight: 40
-        - identifier: about-examples
-          parent: about
-          name: Example sites
-          pageRef: /docs/about/examples
-          weight: 10
-          params:
-            icon: fa-solid fa-star
-            description: Sites built with OINK
-        - identifier: about-local-first
-          parent: about
-          name: Local-first
-          pageRef: /docs/about/local-first
-          weight: 20
-          params:
-            icon: fa-solid fa-box-archive
-            description: Build and browse without hidden network access
-        - identifier: about-architecture
-          parent: about
-          name: Architecture
-          pageRef: /docs/about/architecture
-          weight: 30
-          params:
-            icon: fa-solid fa-network-wired
-            description: How content and local assets become a static site
-        - identifier: about-contributing
-          parent: about
-          name: Contributing
-          pageRef: /docs/about/contributing
-          weight: 40
-          params:
-            icon: fa-solid fa-code-pull-request
-            description: Contribute code and bilingual documentation
         - identifier: blog
           name: Blog
           pageRef: /blog
@@ -164,6 +129,12 @@ languages:
           params:
             icon: fa-solid fa-tags
             description: Version announcements and migration notes
+        - identifier: tags
+          name: Tags
+          pageRef: /tags
+          weight: 60
+          params:
+            icon: fa-solid fa-tags
         - identifier: github
           name: GitHub
           url: https://github.com/pgsty/oink
@@ -211,15 +182,12 @@ languages:
             url: https://github.com/pgsty/oink.pgsty.com
             icon: fa-brands fa-github
             desc: 查看本站内容、测试与发布配置
-          - name: 测试与演示
-            url: /zh/tests/
-            icon: fa-solid fa-flask
-            desc: 查看测试页与功能演示
           - name: GitHub
             url: https://github.com/pgsty/oink
             icon: fa-brands fa-github
             desc: OINK 在这里开放开发
       ui:
+        navbar_autohide: true
         command_palette:
           commands:
             # Keep this order aligned with the English catalog: the palette
@@ -231,13 +199,6 @@ languages:
               url: https://github.com/pgsty/oink/issues
               icon: fa-brands fa-github
               keywords: [缺陷, 支持, 路线图]
-        feedback:
-          yes: >-
-            很高兴本页对你有帮助！欢迎<a
-            href="https://github.com/pgsty/oink/issues/new">告诉我们如何继续改进</a>。
-          no: >-
-            很抱歉本页没有解决问题。请<a
-            href="https://github.com/pgsty/oink/issues/new">告诉我们缺少什么</a>。
     menus:
       main:
         - identifier: docs
@@ -332,6 +293,12 @@ languages:
           params:
             icon: fa-solid fa-tags
             description: 版本公告与迁移说明
+        - identifier: tags
+          name: 标签
+          pageRef: /tags
+          weight: 60
+          params:
+            icon: fa-solid fa-tags
         - identifier: github
           name: GitHub
           url: https://github.com/pgsty/oink
@@ -378,6 +345,9 @@ params:
   time_format_default: January 2, 2006
   rss_sections: [blog]
   offlineSearch: true
+  # Keep the search entry points functional in the local Hugo preview used for
+  # visual and browser QA, not only in a production build.
+  offlineSearchOnServe: true
   offlineSearchIndex: summary
   offlineSearchSummaryLength: 70
   offlineSearchMaxResults: 10
@@ -432,14 +402,7 @@ params:
       disable: true
     feedback:
       enable: false
-      yes: >-
-        Glad to hear it! Please <a
-        href="https://github.com/pgsty/oink/issues/new">tell us how we can
-        improve</a>.
-      no: >-
-        Sorry to hear that. Please <a
-        href="https://github.com/pgsty/oink/issues/new">tell us how we can
-        improve</a>.
+      reasons: true
     readingtime:
       enable: false
   links:
@@ -469,10 +432,6 @@ params:
         url: https://github.com/pgsty/oink.pgsty.com
         icon: fa-brands fa-github
         desc: Review this site's content, tests, and deployment configuration
-      - name: Tests
-        url: /tests/
-        icon: fa-solid fa-flask
-        desc: Test and demo pages
       - name: GitHub
         url: https://github.com/pgsty/oink
         icon: fa-brands fa-github

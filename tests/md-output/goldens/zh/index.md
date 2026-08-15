@@ -11,6 +11,5 @@ LLMS index: [llms.txt](/zh/llms.txt)
 Section pages:
 
 - [Search Results](/zh/search/)
-- [Docsy tests](/zh/tests/): Tests of Docsy features
 - [博客](/zh/blog/): Docsy 文章、OINK 工程实践与 OINK 发布注记
 - [欢迎使用 OINK](/zh/docs/): 安装、定制、部署与维护 Oink 文档站。

@@ -107,11 +107,18 @@ test('CSS marquee pauses by focus or choice and isolates its duplicate track', a
 test('Landing page opens the shared Command Palette without article rails', async ({
   page,
 }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto(landingPath, { waitUntil: 'domcontentloaded' });
   await expect(page.locator('[data-td-landing]')).toBeVisible();
   await expect(page.locator('#td-section-nav')).toHaveCount(0);
 
+  // This fixture enables navbar auto-hide. Reveal the real pointer target
+  // before exercising its Search button instead of bypassing the interaction.
+  await page
+    .locator('[data-td-navbar-autohide]')
+    .hover({ position: { x: 640, y: 8 } });
   const opener = page.locator('[data-td-shell-search-open]:visible').first();
+  await expect(opener).toBeInViewport();
   await opener.click();
   const dialog = page.locator('#td-shell-search');
   const input = dialog.locator('.td-shell-search__input');

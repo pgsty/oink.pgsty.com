@@ -6,8 +6,8 @@
 
 - [Home page](http://localhost/index.md)
 - [Docs](http://localhost/docs/index.md): Install, customize, deploy, and maintain Oink documentation sites.
-- [About](http://localhost/docs/about/index.md): Understand Oink's examples, design principles, architecture, and open-source model.
 - [Blog](http://localhost/blog/index.md): Docsy articles, OINK engineering stories, and OINK release notes
+- [Tags](http://localhost/tags/)
 
 ## Documentation index
 

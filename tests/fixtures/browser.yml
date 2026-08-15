@@ -1,0 +1,6 @@
+module:
+  mounts:
+    - source: content
+      target: content
+    - source: tests/fixtures/browser/content
+      target: content/tests

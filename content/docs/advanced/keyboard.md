@@ -4,12 +4,14 @@ weight: 5
 description: Browse the docs with WASD, hjkl-style keys, and single-key toggles.
 ---
 
-OINK ships single-key keyboard navigation on docs, blog, and Swagger pages. It
-is on by default, every binding yields to anything you are typing into, and a
-site or a single page can switch it off. The design treats the current page as
-the implicit sidebar cursor, reuses the rendered table of contents for section
-jumps, and delegates every action to an existing theme mechanism rather than
-building a parallel navigation state.
+OINK ships single-key keyboard navigation across its interactive pages. Docs,
+blog, and Swagger pages receive the complete reading shell; the homepage shares
+the `j`/`k` section jumps and `h` focus mode and adds `n` as a next-section
+alias. It is on by default, every binding yields to anything you are typing
+into, and a site or a single page can switch it off. The design treats the
+current page as the implicit sidebar cursor, reuses rendered navigation
+structures for section jumps, and delegates every action to an existing theme
+mechanism rather than building a parallel state.
 
 ## Shortcuts {#shortcuts}
 
@@ -22,6 +24,10 @@ there. The focused row is tinted a step stronger than the current-page pill, so
 where the sidebar lives in a drawer, the first press opens the drawer. If the
 desktop sidebar was collapsed, the same press restores it and still performs the
 requested one-step move or fold.
+
+The section landing itself is the first sidebar item. It is not replaced by the
+root switcher, so `w`/`s` can focus it and `q`/`e` can move between it and the
+first child page.
 
 | Key                     | Action                                                    |
 | ----------------------- | --------------------------------------------------------- |
@@ -41,24 +47,28 @@ swap to match the reading direction.
 | Key       | Action                                                  |
 | --------- | ------------------------------------------------------- |
 | `j` / `k` | Jump to the next / previous section of the page outline |
+| `n`       | On the homepage, jump to the next top-level section     |
 | `q` / `e` | Go to the previous / next page in sidebar order         |
 | `h`       | Hide or restore all navigation chrome (focus mode)      |
 
-`j` and `k` follow the same outline as the right-hand table of contents and land
-with a fast, fixed 100 ms ease-out glide; rapid repeats advance one outline item
-per press instead of waiting for the previous animation. Deep inside a section,
-`k` first returns to the section's own start, and pages without headings fall
-back to the same short glide. The `h` reading mode hides the navbar, both rails,
-floating controls, and the footer. It is restored before the first painted frame
-for the rest of the tab's session, so flipping pages with `q`/`e` keeps it
-without a flash. WASD stays inert while the sidebar is deliberately hidden.
+On the homepage, `j` and `k` move through the top-level Landing sections, with
+`n` as a mnemonic alias for the next section. On a shell page they follow the
+same outline as the right-hand table of contents and land with a fast, fixed 100
+ms ease-out glide; rapid repeats advance one target per press instead of waiting
+for the previous animation. Deep inside a shell section, `k` first returns to
+the section's own start, and pages without headings fall back to the same short
+glide. The `h` reading mode hides the navbar and footer on the homepage; on
+shell pages it also hides both rails and floating controls. It is restored
+before the first painted frame for the rest of the tab's session, so flipping
+pages with `q`/`e` keeps it without a flash. WASD stays inert while the sidebar
+is deliberately hidden.
 
 ### Appearance and language {#appearance-and-language}
 
-| Key | Action                                |
-| --- | ------------------------------------- |
-| `l` | Cycle through the available languages |
-| `t` | Toggle between light and dark mode    |
+| Key       | Action                                |
+| --------- | ------------------------------------- |
+| `l` / `y` | Cycle through the available languages |
+| `t`       | Toggle between light and dark mode    |
 
 ### Search and commands {#search-and-commands}
 
@@ -70,8 +80,10 @@ without a flash. WASD stays inert while the sidebar is deliberately hidden.
 
 Inside the palette, prefixing a query with `>` also restricts it to commands.
 Command listings mirror the navbar control order — version, language, theme,
-then GitHub — with your configured commands after the built-ins. The `?` key is
-reserved for a future shortcut help overlay.
+then GitHub — with your configured commands after the built-ins. Hover or focus
+the question-mark button in the sidebar footer to open a context-aware shortcut
+sheet rendered with the same KBD keycaps used in page content. The `?` key
+itself remains unbound and reserved.
 
 ## Footer collapse {#footer-collapse}
 

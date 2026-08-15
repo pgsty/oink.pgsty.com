@@ -6,9 +6,15 @@ type: blog
 icon: fa-solid fa-blog
 sidebar_root_for: self
 sidebar_root_link_self: true
-comments: false
+navbar_enabled: false
+footer_style: slim
+comments: true
 cascade:
   type: blog
+  navbar_enabled: false
+  footer_style: slim
+  comments: true
+  feedback: false
   search_boost: 0.9
   params:
     ui:

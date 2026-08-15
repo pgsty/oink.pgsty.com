@@ -39,20 +39,20 @@ configuration entirely rather than inserting a fake identifier.
 
 ## User feedback
 
-OINK can show a “Was this page helpful?” widget at the bottom of documentation
-pages. The widget presents **Yes** and **No** actions and then displays a
-configured response, usually with a link to open a documentation issue.
+OINK can show a compact “Was this page helpful?” prompt. Choosing **Solved** or
+**Not solved** records the structured choice immediately. A negative choice can
+then be refined with one optional reason: missing information, outdated content,
+failed steps, or unclear writing.
 
-<figure>
-  <img src="/images/feedback.png"
-       alt="The page asks whether it was helpful and offers Yes and No buttons."/>
-  <figcaption>Figure 1. The page feedback widget</figcaption>
-</figure>
+The component sends no free text and makes no feedback network request. It
+remembers the choice in local storage so the reader can see or change it on a
+later visit. When Google Analytics is available, the same fixed values are also
+reported as events; without Analytics, the local interaction still works.
 
-The response can remain useful without analytics: it can direct the reader to an
-issue template, discussion, email address, or another site-owned feedback
-channel. Collection and event reporting happen only when the site configures an
-appropriate destination.
+[Giscus](https://giscus.app/) remains a separate Comments component. When it is
+active on the page, Feedback offers a link to the comment section for details.
+OINK does not post into the Giscus iframe or create a GitHub identity on the
+reader's behalf.
 
 ### How feedback data is useful
 
@@ -70,61 +70,59 @@ accessibility review, support data, or technical validation.
 
 ### Setup {#user-feedback-setup}
 
-OINK keeps the widget off by default. Set the global default and configure
-localized responses. For English:
+OINK keeps Feedback off by default. Enable it globally and decide whether a
+negative response should offer reason chips:
 
 ```yaml
 params:
   ui:
     feedback:
-      enable: false
-languages:
-  en:
-    params:
-      ui:
-        feedback:
-          yes: >-
-            Glad to hear it! Please <a
-            href="https://github.com/OWNER/REPOSITORY/issues/new">tell us how we
-            can improve</a>.
-          no: >-
-            Sorry to hear that. Please <a
-            href="https://github.com/OWNER/REPOSITORY/issues/new">tell us how we
-            can improve</a>.
+      enable: true
+      reasons: true
 ```
 
-For Simplified Chinese, put translated strings in `languages.zh.params`:
+To enable Feedback only for one section, use a cascade. Page values override the
+site default:
 
 ```yaml
-languages:
-  zh:
-    params:
-      ui:
-        feedback:
-          yes: >-
-            很高兴本页对你有帮助！欢迎<a
-            href="https://github.com/OWNER/REPOSITORY/issues/new">告诉我们如何继续改进</a>。
-          no: >-
-            很抱歉本页没有解决问题。请<a
-            href="https://github.com/OWNER/REPOSITORY/issues/new">告诉我们缺少什么</a>。
+---
+title: Documentation
+cascade:
+  feedback: true
+---
 ```
 
-Visible response HTML is trusted site configuration. Keep it small, review its
-links, and do not interpolate untrusted values.
+Set `reasons: false` globally, or use a page-level map, when only the two
+primary choices should be shown:
 
-When Google Analytics is configured, the widget can emit a custom `page_helpful`
-event. A positive action uses `params.ui.feedback.max_value` (100 by default); a
-negative action uses 0.
+```yaml
+---
+title: Short reference
+feedback:
+  enable: true
+  reasons: false
+---
+```
 
-### Access feedback data
+Legacy prototype fields such as `yes`, `no`, `max_value`, `endpoint`, and
+`max_length` are no longer used and should be removed.
 
-For Google Analytics, inspect the `page_helpful` event in the provider's events
-report and create a page-level report when needed. An absent event may mean no
-interaction occurred, analytics was blocked or disabled, consent was not given,
-or the selected time range is wrong.
+### Analytics event
 
-Do not enable analytics solely to make the widget visible. A site can keep the
-response-and-link experience while leaving event collection disabled.
+When a global `gtag` function exists, the primary choice emits:
+
+```text
+docs_feedback { result, page_path, language }
+```
+
+`result` is either `solved` or `not_solved`. Selecting an optional reason emits
+a second `docs_feedback` event containing `reason` and `refinement: true`.
+Analytics failures never block the UI or local persistence.
+
+Inspect `docs_feedback` in the analytics provider's event report and build a
+page-level report if needed. An absent event may mean that no interaction
+occurred, Analytics was disabled or blocked, consent was not given, or the
+selected time range is wrong.
 
 ### Override feedback on one page {#disable-feedback-on-one-page}
 
@@ -144,8 +142,7 @@ is not set.
 
 ### Set the default for all pages {#disable-feedback-on-all-pages}
 
-Set the site parameter. OINK defaults it to `false`; set it to `true` only when
-most documentation pages should show the widget:
+Set the site parameter. OINK defaults it to `false`:
 
 ```yaml
 params:
