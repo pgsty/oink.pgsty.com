@@ -16,7 +16,7 @@ OINK 把 Hugo 的内容树和菜单模型组织成一套文档工作台：出现
 `navbar_enabled` 默认为 `true`。可以对整个站点关闭导航栏，也可以通过 front
 matter（前置元数据）cascade 对某个分区关闭，或只对单个页面关闭：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   ui:
     navbar_enabled: false
@@ -89,7 +89,7 @@ menus:
 
 顶层菜单支持一级下拉。用 Hugo 的 `parent` 建立父子关系：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 menus:
   main:
     - identifier: docs
@@ -232,7 +232,7 @@ title: 运维
 
 叶子页面全都带图标会产生明显的视觉噪声。用 `sidebar_icon_policy` 控制密度：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   ui:
     sidebar_icon_policy: groups # all | groups | none
@@ -346,7 +346,7 @@ markup:
 
 分类分组的图标可以按分类复数名配置：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   ui:
     taxonomy_icons:
@@ -432,7 +432,7 @@ params:
 | `slim` | 只有版权行                     |
 | `none` | 完全不渲染页脚                 |
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   ui:
     footer_style: fat
@@ -454,7 +454,7 @@ footer_style: slim
 多列网格读取 `data/footer/<语言>.yaml`；单语言站点可以直接使用
 `data/footer.yaml`：
 
-```yaml {filename="data/footer/zh.yaml"}
+```yaml {title="data/footer/zh.yaml"}
 brand:
   name: 产品文档
   tagline: 一段简短的**支持 Markdown 的**说明。

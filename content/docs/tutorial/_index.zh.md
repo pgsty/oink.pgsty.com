@@ -15,20 +15,20 @@ Extended**：不装 Node.js、不跑 PostCSS、不依赖 CDN，构建期间也�
 
 按顺序读完这七页，你会得到一个可以部署的双语文档站：
 
-{{< fields >}} {{% field name="环境准备" type="5 分钟" %}} 装 Hugo
+{{< fields >}} {{< field name="环境准备" type="5 分钟" >}} 装 Hugo
 Extended，确认版本带 `extended` 标记。Git 和 Go 是否需要取决于你怎么获取主题。
-{{% /field %}} {{% field name="安装 OINK" type="5 分钟" %}} 推荐用 Hugo
+{{< /field >}} {{< field name="安装 OINK" type="5 分钟" >}} 推荐用 Hugo
 Module 固定一个版本。另外三种发行方式（离线归档、submodule、克隆）也在这一页。
-{{% /field %}} {{% field name="创建站点" type="15 分钟" %}}
-从空目录到第一个可预览的页面，包含双语内容的组织方式。 {{% /field %}}
-{{% field name="基础配置" type="20 分钟" %}}
-站点身份、语言、搜索、仓库链接、生产构建参数。 {{% /field %}}
-{{% field name="项目站点" type="可选" %}} 直接拿 `oink.pgsty.com`
-当模板改，适合给开源项目快速起一个文档站。 {{% /field %}}
-{{% field name="容器预览" type="可选" %}}
-不在本机装 Hugo，用容器跑预览和生产构建。 {{% /field %}}
-{{% field name="故障排查" type="备查" %}}
-构建、语言、搜索、平台四类常见问题的定位方法。 {{% /field %}} {{< /fields >}}
+{{< /field >}} {{< field name="创建站点" type="15 分钟" >}}
+从空目录到第一个可预览的页面，包含双语内容的组织方式。 {{< /field >}}
+{{< field name="基础配置" type="20 分钟" >}}
+站点身份、语言、搜索、仓库链接、生产构建参数。 {{< /field >}}
+{{< field name="项目站点" type="可选" >}} 直接拿 `oink.pgsty.com`
+当模板改，适合给开源项目快速起一个文档站。 {{< /field >}}
+{{< field name="容器预览" type="可选" >}}
+不在本机装 Hugo，用容器跑预览和生产构建。 {{< /field >}}
+{{< field name="故障排查" type="备查" >}}
+构建、语言、搜索、平台四类常见问题的定位方法。 {{< /field >}} {{< /fields >}}
 
 ## 三条起步路径 {#three-starting-points}
 
@@ -50,7 +50,7 @@ hugo server
 
 `hugo.yaml` 里加上模块导入：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 module:
   imports:
     - path: github.com/pgsty/oink

@@ -15,20 +15,20 @@ aliases: [/docs/content/print/, /docs/feature/print/]
 
 <!-- markdownlint-disable no-shortcut-ref-link -->
 <!-- prettier-ignore-start -->
-{{< tabpane >}}
-{{< tab header="配置文件：" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
+```toml {tab="hugo.toml" group="hugotoml-hugoyaml-hugojson" value="hugotoml"}
 [outputs]
 section = [ "HTML", "RSS", "print" ]
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
+```
+
+```yaml {tab="hugo.yaml" value="hugoyaml"}
 outputs:
   section:
     - HTML
     - RSS
     - print
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
+```
+
+```json {tab="hugo.json" value="hugojson"}
 {
   "outputs": {
     "section": [
@@ -38,8 +38,7 @@ outputs:
     ]
   }
 }
-{{< /tab >}}
-{{< /tabpane >}}
+```
 <!-- prettier-ignore-end -->
 <!-- markdownlint-enable no-shortcut-ref-link -->
 
@@ -55,45 +54,44 @@ outputs:
 
 <!-- markdownlint-disable -->
 <!-- prettier-ignore-start -->
-{{< tabpane langEqualsHeader=true >}}
-{{< tab header="Front matter：" disabled=true />}}
-{{< tab toml >}}
+```toml {tab="toml" group="toml-yaml-json" value="toml"}
 +++
 …
 disable_toc = true
 …
 +++
-{{< /tab >}}
-{{< tab yaml >}}
+```
+
+```yaml {tab="yaml" value="yaml"}
 ---
 …
 disable_toc: true
 …
 ---
-{{< /tab >}}
-{{< tab json >}}
+```
+
+```json {tab="json" value="json"}
 {
   …,
   "disable_toc": true,
   …
 }
-{{< /tab >}}
-{{< /tabpane >}}
+```
 <!-- prettier-ignore-end -->
 
 <!-- prettier-ignore-start -->
-{{< tabpane >}}
-{{< tab header="配置文件：" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
+```toml {tab="hugo.toml" group="hugotoml-hugoyaml-hugojson" value="hugotoml"}
 [params.print]
 disable_toc = true
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
+```
+
+```yaml {tab="hugo.yaml" value="hugoyaml"}
 params:
   print:
     disable_toc: true
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
+```
+
+```json {tab="hugo.json" value="hugojson"}
 {
   "params": {
     "print": {
@@ -101,8 +99,7 @@ params:
     }
   }
 }
-{{< /tab >}}
-{{< /tabpane >}}
+```
 <!-- prettier-ignore-end -->
 <!-- markdownlint-restore -->
 

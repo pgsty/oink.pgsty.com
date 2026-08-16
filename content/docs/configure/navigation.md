@@ -23,7 +23,7 @@ one click away from anywhere.
 `navbar_enabled` defaults to `true`. Turn the navbar off for the whole site, for
 one section through a front-matter cascade, or for a single page:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   ui:
     navbar_enabled: false
@@ -108,7 +108,7 @@ Use an `identifier` for configuration that refers to a menu item. Localize
 Top-level menus support **one level of dropdown**. Use Hugo's `parent` to
 establish the relationship:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 menus:
   main:
     - identifier: docs
@@ -294,7 +294,7 @@ replacement for text labels.
 An icon on every leaf page produces noticeable visual noise. Control the density
 with `sidebar_icon_policy`:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   ui:
     sidebar_icon_policy: groups # all | groups | none
@@ -420,7 +420,7 @@ three-line icon so it reads like the taxonomy heads beside it.
 
 Taxonomy group icons are configurable by plural taxonomy name:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   ui:
     taxonomy_icons:
@@ -524,7 +524,7 @@ The footer renders on every layout and has three shapes, selected with
 | `slim` | The copyright line only                                |
 | `none` | No footer at all                                       |
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   ui:
     footer_style: fat
@@ -546,7 +546,7 @@ An unrecognized value **fails the build** instead of falling back silently.
 The column grid reads `data/footer/<language>.yaml`, or `data/footer.yaml` on a
 single-language site:
 
-```yaml {filename="data/footer/en.yaml"}
+```yaml {title="data/footer/en.yaml"}
 brand:
   name: Product Docs
   tagline: A short **Markdown-enabled** description.

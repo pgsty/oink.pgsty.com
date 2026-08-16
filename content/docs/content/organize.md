@@ -122,7 +122,7 @@ For section-wide behavior, put shared values in the section's `_index.md`
 
 ## Doc-rooted sites <a id="alternative-site-structure"></a>
 
-{{% _param BADGE EXPERIMENTAL info %}}
+{{< badge text="EXPERIMENTAL" tone="info" >}}
 
 A documentation-first site can publish the `docs` section at the URL root while
 keeping source files under `content/.../docs/`:

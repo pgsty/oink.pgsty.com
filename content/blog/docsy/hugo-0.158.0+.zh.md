@@ -24,10 +24,10 @@ params:
 - **以下情况适合阅读本指南**：
   - [升级到 Docsy 0.16.0](/zh/blog/docsy/0.16.0/#upgrade)；
   - 只升级 Hugo。
-- 审阅 {{% _param BADGE BREAKING warning %}} 变更：<a id="breaking-changes"></a>
-  - {{% _param BREAKING %}}
+- 审阅 {{< badge text="BREAKING" tone="warning" >}} 变更：<a id="breaking-changes"></a>
+  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
     [由 Hugo 管理的 Node 工具要求 Node 22+](#node-tools)；
-  - {{% _param BREAKING %}} [HTML 内容与符号链接的安全规则发生变化](#security)。
+  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> [HTML 内容与符号链接的安全规则发生变化](#security)。
 - 审阅 **弃用项**：<a id="deprecations"></a>
   - [语言配置与模板 API](#language-apis)；
   - [图片处理配置与模板 API](#imaging)。
@@ -37,7 +37,7 @@ params:
   - [模板与 Module 清理](#template-module-cleanup)；
   - [更快的构建与更严格的模板](#hugo-0-164-0)；
   - [重要变化](#notable-changes)。
-- {{% _param FAS rocket primary %}}
+- <i class="fa-solid fa-rocket text-primary px-1"></i>
   准备好后，直接阅读[升级到 Hugo {{% param hugoSupportedVersion %}}](#upgrade)。
 
 ## 语言 API 弃用项（0.158.0） {#language-apis}
@@ -119,7 +119,7 @@ Hugo
 或多语言根分区。Hugo [0.160.1][]
 修复了此版本范围内与标题中的 Passthrough 元素、短代码渲染上下文标记和多语言根分区生成有关的回归；烟雾测试应覆盖这些页面。
 
-## {{% _param BREAKING %}} Node 管理的工具（0.161.x） {#node-tools}
+## <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> Node 管理的工具（0.161.x） {#node-tools}
 
 Hugo 0.161.x 在 Node 的 `--permission`
 沙箱中运行 PostCSS、Babel、Tailwind 等 Node 工具，因此要求 **Node
@@ -131,7 +131,7 @@ Docsy 站点通常使用 PostCSS 处理 CSS，所以即使 Docsy 主题本身没
 
 ### 操作 {#node-tools-actions}
 
-{{% _param BREAKING %}} **适用条件**：站点使用 Hugo
+<i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> **适用条件**：站点使用 Hugo
 0.161.x 或更高版本，并在 Hugo 构建期间运行 PostCSS、Babel、Tailwind 或类似 Node 工具。
 
 - 把 Node 升级到当前活跃 LTS；Docsy 0.16.0 使用 Node LTS 24；
@@ -144,7 +144,7 @@ Docsy 站点通常使用 PostCSS 处理 CSS，所以即使 Docsy 主题本身没
 - Node 工具确实需要创建子进程，却被 Hugo [0.161.1][] 或更高版本拦截时，请审阅
   `security.node.permissions.AllowChildProcess`。
 
-## {{% _param BREAKING %}} 内容与资源安全（0.161.x–0.163.x） {#security}
+## <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> 内容与资源安全（0.161.x–0.163.x） {#security}
 
 Hugo 在这一版本范围内收紧了多项安全边界：
 
@@ -155,7 +155,7 @@ Hugo 在这一版本范围内收紧了多项安全边界：
 
 ### 操作 {#security-actions}
 
-{{% _param BREAKING %}} **适用条件**：站点使用远程资源、手写 `.html`
+<i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> **适用条件**：站点使用远程资源、手写 `.html`
 内容文件、符号链接内容/资源，或在缓存 Partial 中使用 `templates.Defer`。
 
 - 使用目标 Hugo 版本在本地构建，审阅安全相关错误与警告；
@@ -250,7 +250,7 @@ String）现在会转义，这对渲染不可信 Markdown 的站点尤其重要�
 - Hugo 0.164.0 的 `hugo gen chromastyles` 新增 `--mode` 与 `--modeSelector`
   参数，可以生成合并的浅色/深色语法高亮样式表。
 
-## {{% _param FAS rocket primary %}} 升级到 Hugo {{% param hugoSupportedVersion %}} {#upgrade}
+## <i class="fa-solid fa-rocket text-primary px-1"></i> 升级到 Hugo {{% param hugoSupportedVersion %}} {#upgrade}
 
 处理所有适用的破坏性变更与弃用项后，升级到 Hugo
 [{{% param hugoSupportedVersion %}}][hugo-supported-version]。
@@ -269,7 +269,7 @@ hvm use {{% param hugoSupportedVersion %}}/extended
 
 其他安装方式见[安装 Hugo][]。
 
-### {{% _param FAS square-check primary %}} 基本检查 {#sanity-checks}
+### <i class="fa-solid fa-square-check text-primary px-1"></i> 基本检查 {#sanity-checks}
 
 确认已经处理适用于站点的[每项操作][]，然后：
 

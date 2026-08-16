@@ -22,7 +22,7 @@ hugo mod get github.com/pgsty/oink@{{% param tdVersion.latest %}}
 Save the following as `hugo.yaml`. This is the smallest set that runs; each
 entry is explained in [Basic configuration](../configuration/):
 
-```yaml {filename="hugo.yaml" collapse=34}
+```yaml {title="hugo.yaml" collapse=34}
 title: Product Docs
 baseURL: https://docs.example.com/
 defaultContentLanguage: en
@@ -75,15 +75,18 @@ Commit `go.mod` and `go.sum`. Do **not** add npm mounts or a PostCSS pipeline.
 OINK distinguishes languages by filename suffix, and a translation sits **beside
 its source in the same directory**:
 
-{{< filetree >}} {{< filetree/folder name="content" open=true >}}
-{{< filetree/file name="_index.md" >}} {{< filetree/file name="_index.zh.md" >}}
-{{< filetree/folder name="docs" open=true >}}
-{{< filetree/file name="_index.md" >}} {{< filetree/file name="_index.zh.md" >}}
-{{< filetree/file name="getting-started.md" >}}
-{{< filetree/file name="getting-started.zh.md" >}} {{< /filetree/folder >}}
-{{< filetree/folder name="blog" >}} {{< filetree/file name="_index.md" >}}
-{{< filetree/file name="_index.zh.md" >}} {{< /filetree/folder >}}
-{{< /filetree/folder >}} {{< /filetree >}}
+- content/
+  - _index.md
+  - _index.zh.md
+  - docs/
+    - _index.md
+    - _index.zh.md
+    - getting-started.md
+    - getting-started.zh.md
+  - blog/
+    - _index.md
+    - _index.zh.md
+{.filetree}
 
 ## Stable heading IDs {#stable-heading-ids}
 
@@ -94,7 +97,7 @@ semantic location.
 
 The fix is to write the source language's ID explicitly in the translation:
 
-```markdown {filename="getting-started.md"}
+```markdown {title="getting-started.md"}
 ---
 title: Getting started
 weight: 10
@@ -105,7 +108,7 @@ weight: 10
 Install the product.
 ```
 
-```markdown {filename="getting-started.zh.md"}
+```markdown {title="getting-started.zh.md"}
 ---
 title: 开始使用
 weight: 10

@@ -30,7 +30,7 @@ submodule 安装主题，请启用递归 submodule 检出。如果使用 Hugo �
 
 也可以把同样的设置写入 `netlify.toml` 并提交：
 
-```toml {filename="netlify.toml"}
+```toml {title="netlify.toml"}
 [build]
 command = "hugo --gc --minify"
 publish = "public"
@@ -77,36 +77,35 @@ CDN（内容分发网络）来加速已部署内容的传输。
 
 1. 在 `hugo.toml`、`hugo.yaml` 或 `hugo.json` 中添加如下 `[deployment]` 分区：
 
-    {{< tabpane >}}
-{{< tab header="配置文件：" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
-[deployment]
-[[deployment.targets]]
-name = "aws"
-URL = "s3://www.your-domain.tld"
-cloudFrontDistributionID = "E9RZ8T1EXAMPLEID"
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
-deployment:
-  targets:
-    - name: aws
-      URL: 's3://www.your-domain.tld'
-      cloudFrontDistributionID: E9RZ8T1EXAMPLEID
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
-{
-  "deployment": {
-    "targets": [
-      {
-        "name": "aws",
-        "URL": "s3://www.your-domain.tld",
-        "cloudFrontDistributionID": "E9RZ8T1EXAMPLEID"
+    ```toml {tab="hugo.toml" group="hugotoml-hugoyaml-hugojson" value="hugotoml"}
+    [deployment]
+    [[deployment.targets]]
+    name = "aws"
+    URL = "s3://www.your-domain.tld"
+    cloudFrontDistributionID = "E9RZ8T1EXAMPLEID"
+    ```
+
+    ```yaml {tab="hugo.yaml" value="hugoyaml"}
+    deployment:
+      targets:
+        - name: aws
+          URL: 's3://www.your-domain.tld'
+          cloudFrontDistributionID: E9RZ8T1EXAMPLEID
+    ```
+
+    ```json {tab="hugo.json" value="hugojson"}
+    {
+      "deployment": {
+        "targets": [
+          {
+            "name": "aws",
+            "URL": "s3://www.your-domain.tld",
+            "cloudFrontDistributionID": "E9RZ8T1EXAMPLEID"
+          }
+        ]
       }
-    ]
-  }
-}
-{{< /tab >}}
-    {{< /tabpane >}}
+    }
+    ```
 
 <!-- prettier-ignore-end -->
 

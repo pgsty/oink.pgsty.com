@@ -23,10 +23,10 @@ This post summarizes the breaking and notable changes in Hugo 0.152.0 to
 This guide highlights breaking changes in Hugo 0.152.0–0.155.x and the actions
 you may need to take.
 
-- Review {{% _param BADGE BREAKING warning %}} changes:
+- Review {{< badge text="BREAKING" tone="warning" >}} changes:
   <a id="breaking-changes"></a>
-  - {{% _param BREAKING %}} [YAML yes/no tokens are strings](#yaml-yes-no-etc)
-  - {{% _param BREAKING %}}
+  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> [YAML yes/no tokens are strings](#yaml-yes-no-etc)
+  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
     [Build order changes for multidimensional sites](#build-order)
 - Review **deprecations** (non-breaking, but recommended):
   <a id="deprecations"></a>
@@ -35,10 +35,10 @@ you may need to take.
 - Optionally skim:
   - [Known issues and fixes](#known-issues)
   - [Notable changes](#notable-changes)
-- {{% _param FAS rocket primary %}} Jump to [Upgrade to Hugo 0.155.x](#upgrade)
+- <i class="fa-solid fa-rocket text-primary px-1"></i> Jump to [Upgrade to Hugo 0.155.x](#upgrade)
   once you're ready
 
-## {{% _param BREAKING %}} YAML yes/no tokens are strings (0.152.0) <a id="0.152.0"></a> {#yaml-yes-no-etc}
+## <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> YAML yes/no tokens are strings (0.152.0) <a id="0.152.0"></a> {#yaml-yes-no-etc}
 
 Release [0.152.0][] (2025-10-21) upgrades to a more modern YAML library, which
 introduces a breaking change to the way that YAML interprets certain tokens
@@ -50,7 +50,7 @@ list of tokens, see [0.152.0 release notes][yes-no-list].
 
 ### Actions: required and optional {#yaml-actions}
 
-- {{% _param BREAKING %}} **Applies if** your project has YAML with unquoted
+- <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> **Applies if** your project has YAML with unquoted
   `yes`, `no`, `on`, `off`, and similar tokens. Update them to `true` or
   `false`.
 
@@ -104,7 +104,7 @@ configuration option.
 Breaking and deprecation changes related to multidimensional sites are
 summarized next.
 
-### {{% _param BREAKING %}} Build order for multidimensional sites {#build-order}
+### <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> Build order for multidimensional sites {#build-order}
 
 Hugo now builds sites based on sorted dimensions (by weight, then name) instead
 of starting with the default content language. This also affects `.Site.Sites`
@@ -242,7 +242,7 @@ Notable changes that are non-breaking include:
 > - The [hugo-extended][] NPM package briefly required `sudo` in versions
 >   0.153.0–0.153.3.
 
-## {{% _param FAS rocket primary %}} Upgrade to Hugo 0.155.x {#upgrade}
+## <i class="fa-solid fa-rocket text-primary px-1"></i> Upgrade to Hugo 0.155.x {#upgrade}
 
 After addressing all [breaking changes](#breaking-changes) and
 [deprecations](#deprecations), upgrade to the latest release of Hugo 0.155.x. If
@@ -303,7 +303,7 @@ recommend using Hugo [{{% param hugoMinVersion %}}][hugo-min-version] or later:
 ```yaml
 module:
   hugoVersion:
-    min: '{{% _param hugoMinVersion %}}'
+    min: '{{< param hugoMinVersion >}}'
 ```
 
 [0.152.0]: https://github.com/gohugoio/hugo/releases/tag/v0.152.0

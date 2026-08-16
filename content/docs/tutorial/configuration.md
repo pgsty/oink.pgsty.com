@@ -17,7 +17,7 @@ multilingual details, and version management are in
 
 ## Complete minimum configuration {#minimum-configuration}
 
-```yaml {filename="hugo.yaml" lineNos="table" collapse=28}
+```yaml {title="hugo.yaml" lineNos="table" collapse=28}
 title: Product Documentation
 baseURL: https://docs.example.com/
 defaultContentLanguage: en
@@ -69,32 +69,32 @@ module:
 
 ## Key parameters {#key-parameters}
 
-{{< fields >}} {{% field name="baseURL" type="string" required=true %}} The real
+{{< fields >}} {{< field name="baseURL" type="string" required=true >}} The real
 production address, **including any subpath**. Deploying to `example.com/docs/`
 requires `https://example.com/docs/`, or every asset link points at the wrong
-location. {{% /field %}}
-{{% field name="defaultContentLanguage" type="string" default="en" %}} The
+location. {{< /field >}}
+{{< field name="defaultContentLanguage" type="string" default="en" >}} The
 default language. It decides which language the unprefixed URLs serve.
-{{% /field %}} {{% field name="languages.<lang>.weight" type="integer" %}}
+{{< /field >}} {{< field name="languages.<lang>.weight" type="integer" >}}
 Language order. The lowest weight comes first, and the language button cycles in
-that order. {{% /field %}}
-{{% field name="params.offlineSearch" type="boolean" default="false" %}} Enables
+that order. {{< /field >}}
+{{< field name="params.offlineSearch" type="boolean" default=false >}} Enables
 the theme's same-origin Lunr index and CJK substring fallback. Indexes are
-generated per language and queries never leave the site. {{% /field %}}
-{{% field name="params.github_repo" type="string" %}} The content repository.
+generated per language and queries never leave the site. {{< /field >}}
+{{< field name="params.github_repo" type="string" >}} The content repository.
 Edit this page, View edit history, and Report an issue are all derived from it.
-{{% /field %}}
-{{% field name="params.github_branch" type="string" default="main" %}} The
-branch that edit and history links point at. {{% /field %}}
-{{% field name="params.ui.showLightDarkModeMenu" type="boolean" default="false" %}}
+{{< /field >}}
+{{< field name="params.github_branch" type="string" default="main" >}} The
+branch that edit and history links point at. {{< /field >}}
+{{< field name="params.ui.showLightDarkModeMenu" type="boolean" default=false >}}
 Shows the light/dark control. OINK's interactive features are opt-in; the theme
-does not set site policy on a site's behalf. {{% /field %}} {{< /fields >}}
+does not set site policy on a site's behalf. {{< /field >}} {{< /fields >}}
 
 ## Output formats {#output-formats}
 
 OINK forces no optional output format. A site declares what it wants:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 outputs:
   home: [HTML, RSS, markdown, LLMS]
   page: [HTML, markdown]
@@ -117,7 +117,7 @@ PlantUML and Draw.io are the exception: their normal workflow depends on a
 rendering service, so OINK provides **no default endpoint**. Enabling one
 without configuring an endpoint fails the build:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   plantuml:
     enable: true

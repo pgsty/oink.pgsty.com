@@ -38,32 +38,32 @@ hugo --gc --minify
 
 编辑 `hugo.yml`，替换这些字段：
 
-{{< fields >}} {{% field name="title / languages.<lang>.title" type="string" %}}
-站点名称，各语言分别设置。 {{% /field %}}
-{{% field name="baseURL" type="string" %}} 换成你自己的生产地址。 {{% /field %}}
-{{% field name="params.github_repo" type="string" %}}
-指向你自己的内容仓库，否则「编辑此页」会指向 OINK 的仓库。 {{% /field %}}
-{{% field name="params.copyright" type="string | map" %}} bottom
-bar 中兼容 Docsy 的作者与年份范围。 {{% /field %}}
-{{% field name="params.footer_center_info" type="string" %}} bottom
-bar 中间可选的行内 Markdown。 {{% /field %}}
-{{% field name="params.logo / params.wordmark" type="string" %}}
-品牌素材。同时替换 `static/` 下的 favicon。 {{% /field %}}
-{{% field name="services.googleAnalytics.id" type="string" %}}
-**删掉**，除非你确实要用分析统计。 {{% /field %}}
-{{% field name="params.comments" type="map" %}}
-giscus 配置指向 OINK 的仓库，务必替换或整段删除。 {{% /field %}} {{< /fields >}}
+{{< fields >}} {{< field name="title / languages.<lang>.title" type="string" >}}
+站点名称，各语言分别设置。 {{< /field >}}
+{{< field name="baseURL" type="string" >}} 换成你自己的生产地址。 {{< /field >}}
+{{< field name="params.github_repo" type="string" >}}
+指向你自己的内容仓库，否则「编辑此页」会指向 OINK 的仓库。 {{< /field >}}
+{{< field name="params.copyright" type="string | map" >}} bottom
+bar 中兼容 Docsy 的作者与年份范围。 {{< /field >}}
+{{< field name="params.footer_center_info" type="string" >}} bottom
+bar 中间可选的行内 Markdown。 {{< /field >}}
+{{< field name="params.logo / params.wordmark" type="string" >}}
+品牌素材。同时替换 `static/` 下的 favicon。 {{< /field >}}
+{{< field name="services.googleAnalytics.id" type="string" >}}
+**删掉**，除非你确实要用分析统计。 {{< /field >}}
+{{< field name="params.comments" type="map" >}}
+giscus 配置指向 OINK 的仓库，务必替换或整段删除。 {{< /field >}} {{< /fields >}}
 
 ## 替换示例内容 {#replace-the-example-content}
 
 `content/` 下这些目录是 OINK 自己的内容，删掉：
 
-{{< filetree >}} {{< filetree/folder name="content" open=true >}}
-{{< filetree/folder name="docs" >}}{{< /filetree/folder >}}
-{{< filetree/folder name="blog" >}}{{< /filetree/folder >}}
-{{< filetree/folder name="project" >}}{{< /filetree/folder >}}
-{{< filetree/folder name="tests" >}}{{< /filetree/folder >}}
-{{< /filetree/folder >}} {{< /filetree >}}
+- content/
+  - docs/
+  - blog/
+  - project/
+  - tests/
+{.filetree}
 
 `project/` 是 OINK 的项目自述，`tests/` 是回归测试页——两者对你的产品都没有意义。
 
@@ -73,7 +73,7 @@ giscus 配置指向 OINK 的仓库，务必替换或整段删除。 {{% /field %
 
 项目站点默认开启本地搜索：
 
-```yaml {filename="hugo.yml"}
+```yaml {title="hugo.yml"}
 params:
   offlineSearch: true
   offlineSearchIndex: summary

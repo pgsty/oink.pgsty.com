@@ -31,7 +31,7 @@ instructions, or a deadline.
 {{< badge text="Neutral" >}} {{< badge text="Info" tone="info" >}}
 {{< badge text="Supported" tone="success" >}}
 {{< badge text="Beta" tone="warning" >}}
-{{< badge text="Deprecated" tone="danger" outline=false >}}
+{{< badge text="Deprecated" tone="danger" >}}
 {{< badge text="v0.3" tone="info" link="/blog/release/" >}}
 
 The final badge is a link. The others are static inline labels.

@@ -37,7 +37,7 @@ data
 
 <!-- prettier-ignore-start -->
 
-{{< infographic >}}
+```infographic
 infographic list-row-simple-horizontal-arrow
 data
   title 文档工作流
@@ -48,7 +48,7 @@ data
       desc 检查事实与语言
     - label 发布
       desc 构建并验证站点
-{{< /infographic >}}
+```
 
 <!-- prettier-ignore-end -->
 

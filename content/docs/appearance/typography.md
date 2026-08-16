@@ -16,7 +16,7 @@ Hugo compiles the whole mechanism into the same static stylesheet at build time:
 
 ## Two built-in presets {#presets}
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   ui:
     typography:
@@ -36,20 +36,20 @@ The selected value is emitted as `data-td-typography` on `<html>`. An
 
 ## The seven semantic roles {#roles}
 
-{{< fields >}} {{% field name="--td-ui-font-family" type="CSS property" %}}
+{{< fields >}} {{< field name="--td-ui-font-family" type="CSS property" >}}
 Navigation, controls, and general chrome. Seeded from `--bs-body-font-family`.
-{{% /field %}} {{% field name="--td-body-font-family" type="CSS property" %}}
-Article and blog prose. Inherits the UI role by default. {{% /field %}}
-{{% field name="--td-heading-font-family" type="CSS property" %}} Content
+{{< /field >}} {{< field name="--td-body-font-family" type="CSS property" >}}
+Article and blog prose. Inherits the UI role by default. {{< /field >}}
+{{< field name="--td-heading-font-family" type="CSS property" >}} Content
 headings. Takes `$headings-font-family`, falling back to the body role.
-{{% /field %}} {{% field name="--td-code-font-family" type="CSS property" %}}
-Code and terminal content. Takes `$font-family-code`. {{% /field %}}
-{{% field name="--td-display-font-family" type="CSS property" %}} Wordmarks and
-display titles. Chakra Petch, then the UI role. {{% /field %}}
-{{% field name="--td-meta-font-family" type="CSS property" %}} Technical labels
-and metadata. IBM Plex Mono, then the code role. {{% /field %}}
-{{% field name="--td-print-font-family" type="CSS property" %}} Print-only body
-copy. {{% /field %}} {{< /fields >}}
+{{< /field >}} {{< field name="--td-code-font-family" type="CSS property" >}}
+Code and terminal content. Takes `$font-family-code`. {{< /field >}}
+{{< field name="--td-display-font-family" type="CSS property" >}} Wordmarks and
+display titles. Chakra Petch, then the UI role. {{< /field >}}
+{{< field name="--td-meta-font-family" type="CSS property" >}} Technical labels
+and metadata. IBM Plex Mono, then the code role. {{< /field >}}
+{{< field name="--td-print-font-family" type="CSS property" >}} Print-only body
+copy. {{< /field >}} {{< /fields >}}
 
 Theme components consume these roles or a component alias such as
 `--td-asciinema-font-family`; they **never name a font directly**. The
@@ -68,7 +68,7 @@ Put local `.woff2` files under the site's `static/webfonts/`, declare the faces
 in `_styles_project.scss`, and override the roles you need. Hugo loads that file
 after the theme styles:
 
-```scss {filename="assets/scss/_styles_project.scss"}
+```scss {title="assets/scss/_styles_project.scss"}
 @font-face {
   font-family: 'My Sans';
   font-display: swap;
@@ -104,7 +104,7 @@ Font files and stylesheets stay local, reviewable build inputs.
 Roles inherit normally, so giving one kind of content its own treatment needs
 neither a new global preset nor copied component selectors:
 
-```scss {filename="assets/scss/_styles_project.scss"}
+```scss {title="assets/scss/_styles_project.scss"}
 body.td-blog {
   --td-body-font-family: 'My Serif', 'Noto Serif SC', serif;
   --td-heading-font-family: var(--td-body-font-family);

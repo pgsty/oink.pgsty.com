@@ -31,7 +31,7 @@ URL。项目站点必须包含仓库路径，否则 CSS、JavaScript 和其他�
 创建 `.github/workflows/pages.yml`，内容如下。请让 `HUGO_VERSION`
 始终与主题已经验证的版本保持一致。
 
-```yaml {filename=".github/workflows/pages.yml" lineNos="inline" collapse=24}
+```yaml {title=".github/workflows/pages.yml" lineNos="inline" collapse=24}
 name: Deploy Hugo site to Pages
 
 on:

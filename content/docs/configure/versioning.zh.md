@@ -14,7 +14,7 @@ cSpell:ignore: pagelinks
 
 在 `params.versions` 中列出要出现在菜单里的版本：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   version_menu: v2.1
   versions:
@@ -26,18 +26,18 @@ params:
       url: https://v1-9.docs.example.com
 ```
 
-{{< fields >}} {{% field name="version_menu" type="string" %}}
-菜单按钮上显示的文字，通常是当前版本号。 {{% /field %}}
-{{% field name="versions[].version" type="string" required=true %}}
-版本标识，显示在菜单项上。 {{% /field %}}
-{{% field name="versions[].url" type="string" required=true %}}
-该版本文档站的地址。留空的条目会显示为不可用。 {{% /field %}}
-{{% field name="version_menu_pagelinks" type="boolean" default="false" %}}
-是否把当前页面路径附加到目标版本的 URL 后面。 {{% /field %}} {{< /fields >}}
+{{< fields >}} {{< field name="version_menu" type="string" >}}
+菜单按钮上显示的文字，通常是当前版本号。 {{< /field >}}
+{{< field name="versions[].version" type="string" required=true >}}
+版本标识，显示在菜单项上。 {{< /field >}}
+{{< field name="versions[].url" type="string" required=true >}}
+该版本文档站的地址。留空的条目会显示为不可用。 {{< /field >}}
+{{< field name="version_menu_pagelinks" type="boolean" default=false >}}
+是否把当前页面路径附加到目标版本的 URL 后面。 {{< /field >}} {{< /fields >}}
 
 菜单里可以用 `- name: '---'` 插入分隔线，把「受支持版本」和「历史版本」分开：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   versions:
     - name: '**当前版本**'
@@ -56,7 +56,7 @@ params:
 
 代价是：**目标版本不一定有这个页面**。文档结构在版本之间演进，旧版本可能没有新写的页面，读者会撞上 404。
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   version_menu_pagelinks: true
   versions:
@@ -76,7 +76,7 @@ params:
 
 在不再维护的旧版本站点上，显式告诉读者：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   archived_version: true
   version: v1.9
@@ -84,11 +84,11 @@ params:
 ```
 
 {{< fields >}}
-{{% field name="archived_version" type="boolean" default="false" %}} 设为 `true`
-时，在每个页面顶部显示归档提示横幅。 {{% /field %}}
-{{% field name="version" type="string" %}} 横幅中显示的当前版本号。
-{{% /field %}} {{% field name="url_latest_version" type="string" %}}
-指向最新版本的地址。横幅会给出一个链接。 {{% /field %}} {{< /fields >}}
+{{< field name="archived_version" type="boolean" default=false >}} 设为 `true`
+时，在每个页面顶部显示归档提示横幅。 {{< /field >}}
+{{< field name="version" type="string" >}} 横幅中显示的当前版本号。
+{{< /field >}} {{< field name="url_latest_version" type="string" >}}
+指向最新版本的地址。横幅会给出一个链接。 {{< /field >}} {{< /fields >}}
 
 横幅文案随站点语言本地化，不需要你自己写。
 

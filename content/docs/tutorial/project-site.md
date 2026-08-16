@@ -48,32 +48,32 @@ the
 
 Edit `hugo.yml` and replace these fields:
 
-{{< fields >}} {{% field name="title / languages.<lang>.title" type="string" %}}
-The site name, set per language. {{% /field %}}
-{{% field name="baseURL" type="string" %}} Your own production address.
-{{% /field %}} {{% field name="params.github_repo" type="string" %}} Your own
+{{< fields >}} {{< field name="title / languages.<lang>.title" type="string" >}}
+The site name, set per language. {{< /field >}}
+{{< field name="baseURL" type="string" >}} Your own production address.
+{{< /field >}} {{< field name="params.github_repo" type="string" >}} Your own
 content repository, or Edit this page points at OINK's repository.
-{{% /field %}} {{% field name="params.copyright" type="string | map" %}}
-Docsy-compatible authors and year range for the bottom bar. {{% /field %}}
-{{% field name="params.footer_center_info" type="string" %}} Optional inline
-Markdown in the center of the bottom bar. {{% /field %}}
-{{% field name="params.logo / params.wordmark" type="string" %}} Brand assets.
-Replace the favicons under `static/` as well. {{% /field %}}
-{{% field name="services.googleAnalytics.id" type="string" %}} **Delete it**
-unless you actually want analytics. {{% /field %}}
-{{% field name="params.comments" type="map" %}} The giscus configuration points
-at OINK's repository; replace or remove it. {{% /field %}} {{< /fields >}}
+{{< /field >}} {{< field name="params.copyright" type="string | map" >}}
+Docsy-compatible authors and year range for the bottom bar. {{< /field >}}
+{{< field name="params.footer_center_info" type="string" >}} Optional inline
+Markdown in the center of the bottom bar. {{< /field >}}
+{{< field name="params.logo / params.wordmark" type="string" >}} Brand assets.
+Replace the favicons under `static/` as well. {{< /field >}}
+{{< field name="services.googleAnalytics.id" type="string" >}} **Delete it**
+unless you actually want analytics. {{< /field >}}
+{{< field name="params.comments" type="map" >}} The giscus configuration points
+at OINK's repository; replace or remove it. {{< /field >}} {{< /fields >}}
 
 ## Replace the example content {#replace-the-example-content}
 
 These directories under `content/` are OINK's own content. Delete them:
 
-{{< filetree >}} {{< filetree/folder name="content" open=true >}}
-{{< filetree/folder name="docs" >}}{{< /filetree/folder >}}
-{{< filetree/folder name="blog" >}}{{< /filetree/folder >}}
-{{< filetree/folder name="project" >}}{{< /filetree/folder >}}
-{{< filetree/folder name="tests" >}}{{< /filetree/folder >}}
-{{< /filetree/folder >}} {{< /filetree >}}
+- content/
+  - docs/
+  - blog/
+  - project/
+  - tests/
+{.filetree}
 
 `project/` is OINK's own project record and `tests/` holds regression pages;
 neither means anything for your product.
@@ -85,7 +85,7 @@ replace the prose with your own.
 
 The project site enables local search by default:
 
-```yaml {filename="hugo.yml"}
+```yaml {title="hugo.yml"}
 params:
   offlineSearch: true
   offlineSearchIndex: summary

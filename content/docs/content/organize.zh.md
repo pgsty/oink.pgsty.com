@@ -98,7 +98,7 @@ weight: 30
 
 ## 以文档为根的站点 <a id="alternative-site-structure"></a> {#doc-rooted-sites}
 
-{{% _param BADGE EXPERIMENTAL info %}}
+{{< badge text="EXPERIMENTAL" tone="info" >}}
 
 以文档为主的站点可以把 `docs` 分区发布到 URL 根路径，同时仍将源码保存在
 `content/.../docs/` 下：

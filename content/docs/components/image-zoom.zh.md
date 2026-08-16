@@ -59,9 +59,10 @@ params:
 
 使用指针、Enter 或 Space 打开图片。按 Escape、可见关闭按钮或点击背景即可关闭对话框。
 
-{{< imgproc src="images/content-primitives/oink.webp" command="Fit" options="640x320" alt="OINK 本地优先文档预览" >}}
+{{< image src="images/content-primitives/oink.webp" command="Fit" options="640x320" alt="OINK 本地优先文档预览" >}}
 文档中显示处理后的预览，Image Zoom 打开的是
-**原始资源**，关闭后焦点会回到这个触发按钮。 {{< /imgproc >}}
+**原始资源**，关闭后焦点会回到这个触发按钮。
+{{< /image >}}
 
 链接中的图片会被有意跳过，并继续作为链接工作：
 

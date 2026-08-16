@@ -38,20 +38,19 @@ project config:
 
 <!-- markdownlint-disable no-shortcut-ref-link -->
 <!-- prettier-ignore-start -->
-{{< tabpane >}}
-{{< tab header="Configuration file:" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
+```toml {tab="hugo.toml" group="hugotoml-hugoyaml-hugojson" value="hugotoml"}
 disableKinds = ["taxonomy"]
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
+```
+
+```yaml {tab="hugo.yaml" value="hugoyaml"}
 disableKinds: [taxonomy]
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
+```
+
+```json {tab="hugo.json" value="hugojson"}
 {
   "disableKinds": [ "taxonomy" ]
 }
-{{< /tab >}}
-{{< /tabpane >}}
+```
 <!-- prettier-ignore-end -->
 <!-- markdownlint-enable no-shortcut-ref-link -->
 
@@ -66,21 +65,21 @@ With the following example you define a additional taxonomy `projects` beside
 the default taxonomies `tags` and `categories`:
 
 <!-- prettier-ignore-start -->
-{{< tabpane >}}
-{{< tab header="Configuration file:" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
+```toml {tab="hugo.toml" group="hugotoml-hugoyaml-hugojson" value="hugotoml"}
 [taxonomies]
 tag = "tags"
 category = "categories"
 project = "projects"
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
+```
+
+```yaml {tab="hugo.yaml" value="hugoyaml"}
 taxonomies:
   tag: tags
   category: categories
   project: projects
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
+```
+
+```json {tab="hugo.json" value="hugojson"}
 {
   "taxonomies": {
     "tag": "tags",
@@ -88,8 +87,7 @@ taxonomies:
     "project": "projects"
   }
 }
-{{< /tab >}}
-{{< /tabpane >}}
+```
 <!-- prettier-ignore-end -->
 
 You can use the following parameters in your project's config to control the
@@ -98,15 +96,14 @@ and blog sections, plus a taxonomy cloud in Oink's right sidebar:
 
 <!-- markdownlint-disable no-shortcut-ref-link -->
 <!-- prettier-ignore-start -->
-{{< tabpane >}}
-{{< tab header="Configuration file:" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
+```toml {tab="hugo.toml" group="hugotoml-hugoyaml-hugojson" value="hugotoml"}
 [params.taxonomy]
 taxonomyCloud = ["projects", "tags"] # set taxonomyCloud = [] to hide taxonomy clouds
 taxonomyCloudTitle = ["Our Projects", "Tag Cloud"] # if used, must have same length as taxonomyCloud
 taxonomyPageHeader = ["tags", "categories"] # set taxonomyPageHeader = [] to hide taxonomies on the page headers
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
+```
+
+```yaml {tab="hugo.yaml" value="hugoyaml"}
 params:
   taxonomy:
     taxonomyCloud:
@@ -118,8 +115,9 @@ params:
     taxonomyPageHeader:
       - tags        # remove all entries
       - categories  # to hide taxonomy clouds
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
+```
+
+```json {tab="hugo.json" value="hugojson"}
 {
   "params": {
     "taxonomy": {
@@ -138,8 +136,7 @@ params:
     }
   }
 }
-{{< /tab >}}
-{{< /tabpane >}}
+```
 <!-- prettier-ignore-end -->
 <!-- markdownlint-enable no-shortcut-ref-link -->
 
@@ -177,7 +174,7 @@ and shows no root row.
 Each cloud renders as a right-rail group with the same header treatment as the
 page outline, and its icon can be set per plural taxonomy name:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   ui:
     taxonomy_icons:

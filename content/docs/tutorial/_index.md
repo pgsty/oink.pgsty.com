@@ -18,23 +18,23 @@ theme asset download during the build.
 Read these seven pages in order and you will have a deployable bilingual
 documentation site:
 
-{{< fields >}} {{% field name="Prerequisites" type="5 min" %}} Install Hugo
+{{< fields >}} {{< field name="Prerequisites" type="5 min" >}} Install Hugo
 Extended and confirm the binary reports `extended`. Git and Go are needed
-depending on how you obtain the theme. {{% /field %}}
-{{% field name="Install OINK" type="5 min" %}} Pin a version with Hugo Modules.
+depending on how you obtain the theme. {{< /field >}}
+{{< field name="Install OINK" type="5 min" >}} Pin a version with Hugo Modules.
 The other three distribution methods — offline archive, submodule, clone — are
-on the same page. {{% /field %}}
-{{% field name="Create a site" type="15 min" %}} From an empty directory to a
-previewable page, including how bilingual content is organized. {{% /field %}}
-{{% field name="Basic configuration" type="20 min" %}} Site identity, languages,
-search, repository links, and production build flags. {{% /field %}}
-{{% field name="Project site" type="optional" %}} Adapt `oink.pgsty.com`
+on the same page. {{< /field >}}
+{{< field name="Create a site" type="15 min" >}} From an empty directory to a
+previewable page, including how bilingual content is organized. {{< /field >}}
+{{< field name="Basic configuration" type="20 min" >}} Site identity, languages,
+search, repository links, and production build flags. {{< /field >}}
+{{< field name="Project site" type="optional" >}} Adapt `oink.pgsty.com`
 directly as a template, which suits an open-source project that wants a
-documentation site quickly. {{% /field %}}
-{{% field name="Container preview" type="optional" %}} Run previews and
+documentation site quickly. {{< /field >}}
+{{< field name="Container preview" type="optional" >}} Run previews and
 production builds in a container instead of installing Hugo locally.
-{{% /field %}} {{% field name="Troubleshooting" type="reference" %}} How to
-locate build, language, search, and platform problems. {{% /field %}}
+{{< /field >}} {{< field name="Troubleshooting" type="reference" >}} How to
+locate build, language, search, and platform problems. {{< /field >}}
 {{< /fields >}}
 
 ## Three starting points {#three-starting-points}
@@ -58,7 +58,7 @@ hugo server
 
 Add the module import to `hugo.yaml`:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 module:
   imports:
     - path: github.com/pgsty/oink

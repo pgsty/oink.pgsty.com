@@ -32,20 +32,19 @@ Hugo 文档提供了一个[电影网站分类法示例][]。
 
 <!-- markdownlint-disable no-shortcut-ref-link -->
 <!-- prettier-ignore-start -->
-{{< tabpane >}}
-{{< tab header="配置文件：" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
+```toml {tab="hugo.toml" group="hugotoml-hugoyaml-hugojson" value="hugotoml"}
 disableKinds = ["taxonomy"]
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
+```
+
+```yaml {tab="hugo.yaml" value="hugoyaml"}
 disableKinds: [taxonomy]
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
+```
+
+```json {tab="hugo.json" value="hugojson"}
 {
   "disableKinds": [ "taxonomy" ]
 }
-{{< /tab >}}
-{{< /tabpane >}}
+```
 <!-- prettier-ignore-end -->
 <!-- markdownlint-enable no-shortcut-ref-link -->
 
@@ -58,21 +57,21 @@ disableKinds: [taxonomy]
 
 <!-- markdownlint-disable no-shortcut-ref-link -->
 <!-- prettier-ignore-start -->
-{{< tabpane >}}
-{{< tab header="配置文件：" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
+```toml {tab="hugo.toml" group="hugotoml-hugoyaml-hugojson" value="hugotoml"}
 [taxonomies]
 tag = "tags"
 category = "categories"
 project = "projects"
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
+```
+
+```yaml {tab="hugo.yaml" value="hugoyaml"}
 taxonomies:
   tag: tags
   category: categories
   project: projects
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
+```
+
+```json {tab="hugo.json" value="hugojson"}
 {
   "taxonomies": {
     "tag": "tags",
@@ -80,8 +79,7 @@ taxonomies:
     "project": "projects"
   }
 }
-{{< /tab >}}
-{{< /tabpane >}}
+```
 <!-- prettier-ignore-end -->
 <!-- markdownlint-enable no-shortcut-ref-link -->
 
@@ -89,15 +87,14 @@ taxonomies:
 
 <!-- markdownlint-disable no-shortcut-ref-link -->
 <!-- prettier-ignore-start -->
-{{< tabpane >}}
-{{< tab header="配置文件：" disabled=true />}}
-{{< tab header="hugo.toml" lang="toml" >}}
+```toml {tab="hugo.toml" group="hugotoml-hugoyaml-hugojson" value="hugotoml"}
 [params.taxonomy]
 taxonomyCloud = ["projects", "tags"] # set taxonomyCloud = [] to hide taxonomy clouds
 taxonomyCloudTitle = ["Our Projects", "Tag Cloud"] # if used, must have same length as taxonomyCloud
 taxonomyPageHeader = ["tags", "categories"] # set taxonomyPageHeader = [] to hide taxonomies on the page headers
-{{< /tab >}}
-{{< tab header="hugo.yaml" lang="yaml" >}}
+```
+
+```yaml {tab="hugo.yaml" value="hugoyaml"}
 params:
   taxonomy:
     taxonomyCloud:
@@ -109,8 +106,9 @@ params:
     taxonomyPageHeader:
       - tags        # remove all entries
       - categories  # to hide taxonomy clouds
-{{< /tab >}}
-{{< tab header="hugo.json" lang="json" >}}
+```
+
+```json {tab="hugo.json" value="hugojson"}
 {
   "params": {
     "taxonomy": {
@@ -129,8 +127,7 @@ params:
     }
   }
 }
-{{< /tab >}}
-{{< /tabpane >}}
+```
 <!-- prettier-ignore-end -->
 <!-- markdownlint-enable no-shortcut-ref-link -->
 
@@ -156,7 +153,7 @@ Projects”和“Tag Cloud”），并在每个页面显示 `tags` 和 `categori
 
 每个标签云都渲染为右栏中的一个分组，标题行样式与页面大纲一致，图标可以按分类复数名设置：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   ui:
     taxonomy_icons:

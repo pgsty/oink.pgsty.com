@@ -25,7 +25,7 @@ Badge 适合 Beta、New、Experimental 与 Deprecated 等生命周期状态。�
 {{< badge text="默认" >}} {{< badge text="信息" tone="info" >}}
 {{< badge text="已支持" tone="success" >}}
 {{< badge text="Beta" tone="warning" >}}
-{{< badge text="已弃用" tone="danger" outline=false >}}
+{{< badge text="已弃用" tone="danger" >}}
 {{< badge text="v0.3" tone="info" link="/zh/blog/release/" >}}
 
 最后一个 Badge 是链接，其余都是静态行内标签。

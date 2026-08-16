@@ -44,11 +44,10 @@ noncurrent items is acceptable.
 
 <!-- prettier-ignore-start -->
 
-{{< gallery columns=3 label="OINK screenshots and layout examples" >}}
-  {{< gallery/image src="images/content-primitives/oink.webp" alt="OINK documentation overview" caption="A global image resource with known intrinsic dimensions." >}}
-  {{< gallery/image src="/images/feedback.png" alt="OINK feedback interface" caption="A deliberately long caption demonstrates wrapping on desktop and mobile without covering an adjacent image or widening the document." >}}
-  {{< gallery/image src="/images/version-banner.png" alt="OINK version banner interface" caption="The responsive grid reduces its effective column count on a narrow viewport." >}}
-{{< /gallery >}}
+- ![OINK documentation overview](images/content-primitives/oink.webp) — A global image resource with known intrinsic dimensions.
+- ![OINK feedback interface](/images/feedback.png) — A deliberately long caption demonstrates wrapping on desktop and mobile without covering an adjacent image or widening the document.
+- ![OINK version banner interface](/images/version-banner.png) — The responsive grid reduces its effective column count on a narrow viewport.
+{.gallery}
 
 <!-- prettier-ignore-end -->
 

@@ -11,7 +11,7 @@ OINK 把字体选择收敛到七个语义化 CSS 自定义属性之后。站点�
 
 ## 两个内置预设 {#presets}
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   ui:
     typography:
@@ -31,20 +31,20 @@ params:
 
 ## 七个语义角色 {#roles}
 
-{{< fields >}} {{% field name="--td-ui-font-family" type="CSS 属性" %}}
-导航、控件与界面外壳。默认继承 `--bs-body-font-family`。 {{% /field %}}
-{{% field name="--td-body-font-family" type="CSS 属性" %}}
-文章与博客正文。默认继承 UI 角色。 {{% /field %}}
-{{% field name="--td-heading-font-family" type="CSS 属性" %}} 内容标题。默认取
-`$headings-font-family`，未设置时回落到正文角色。 {{% /field %}}
-{{% field name="--td-code-font-family" type="CSS 属性" %}}
-代码与终端内容。默认取 `$font-family-code`。 {{% /field %}}
-{{% field name="--td-display-font-family" type="CSS 属性" %}}
-文字商标与展示型标题。默认 Chakra Petch，然后回落到 UI 角色。 {{% /field %}}
-{{% field name="--td-meta-font-family" type="CSS 属性" %}}
-技术标签与元信息。默认 IBM Plex Mono，然后回落到代码角色。 {{% /field %}}
-{{% field name="--td-print-font-family" type="CSS 属性" %}}
-仅用于打印输出的正文。 {{% /field %}} {{< /fields >}}
+{{< fields >}} {{< field name="--td-ui-font-family" type="CSS 属性" >}}
+导航、控件与界面外壳。默认继承 `--bs-body-font-family`。 {{< /field >}}
+{{< field name="--td-body-font-family" type="CSS 属性" >}}
+文章与博客正文。默认继承 UI 角色。 {{< /field >}}
+{{< field name="--td-heading-font-family" type="CSS 属性" >}} 内容标题。默认取
+`$headings-font-family`，未设置时回落到正文角色。 {{< /field >}}
+{{< field name="--td-code-font-family" type="CSS 属性" >}}
+代码与终端内容。默认取 `$font-family-code`。 {{< /field >}}
+{{< field name="--td-display-font-family" type="CSS 属性" >}}
+文字商标与展示型标题。默认 Chakra Petch，然后回落到 UI 角色。 {{< /field >}}
+{{< field name="--td-meta-font-family" type="CSS 属性" >}}
+技术标签与元信息。默认 IBM Plex Mono，然后回落到代码角色。 {{< /field >}}
+{{< field name="--td-print-font-family" type="CSS 属性" >}}
+仅用于打印输出的正文。 {{< /field >}} {{< /fields >}}
 
 主题组件只消费这些角色或组件级别名（例如
 `--td-asciinema-font-family`），**不会直接写死字体名**。依赖方向始终是：
@@ -60,7 +60,7 @@ Bootstrap 基础变量  →  OINK 语义角色  →  组件别名
 把本地 `.woff2` 放到站点的 `static/webfonts/` 下，在 `_styles_project.scss`
 里声明字体并覆盖需要的角色。Hugo会在主题样式之后加载这个文件：
 
-```scss {filename="assets/scss/_styles_project.scss"}
+```scss {title="assets/scss/_styles_project.scss"}
 @font-face {
   font-family: 'My Sans';
   font-display: swap;
@@ -93,7 +93,7 @@ Bootstrap 基础变量  →  OINK 语义角色  →  组件别名
 
 角色是正常继承的，所以给某一类内容单独换字体不需要新增全局预设，也不用复制组件选择器：
 
-```scss {filename="assets/scss/_styles_project.scss"}
+```scss {title="assets/scss/_styles_project.scss"}
 body.td-blog {
   --td-body-font-family: 'My Serif', 'Noto Serif SC', serif;
   --td-heading-font-family: var(--td-body-font-family);

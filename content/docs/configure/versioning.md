@@ -18,7 +18,7 @@ per version, each built separately.
 
 List the versions that should appear in the menu under `params.versions`:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   version_menu: v2.1
   versions:
@@ -30,21 +30,21 @@ params:
       url: https://v1-9.docs.example.com
 ```
 
-{{< fields >}} {{% field name="version_menu" type="string" %}} The label on the
-menu button, usually the current version. {{% /field %}}
-{{% field name="versions[].version" type="string" required=true %}} The version
-identifier shown on the menu entry. {{% /field %}}
-{{% field name="versions[].url" type="string" required=true %}} That version's
+{{< fields >}} {{< field name="version_menu" type="string" >}} The label on the
+menu button, usually the current version. {{< /field >}}
+{{< field name="versions[].version" type="string" required=true >}} The version
+identifier shown on the menu entry. {{< /field >}}
+{{< field name="versions[].url" type="string" required=true >}} That version's
 documentation address. An entry with no URL renders as unavailable.
-{{% /field %}}
-{{% field name="version_menu_pagelinks" type="boolean" default="false" %}}
+{{< /field >}}
+{{< field name="version_menu_pagelinks" type="boolean" default=false >}}
 Whether to append the current page path to the target version's URL.
-{{% /field %}} {{< /fields >}}
+{{< /field >}} {{< /fields >}}
 
 Insert a separator with `- name: '---'` to divide supported from historical
 releases:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   versions:
     - name: '**Current**'
@@ -65,7 +65,7 @@ The cost is that **the target version may not have that page**. Documentation
 structure evolves between releases, an older version may not contain a newly
 written page, and the reader lands on a 404.
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   version_menu_pagelinks: true
   versions:
@@ -86,7 +86,7 @@ version only ever receives its home page.
 
 On a site for a release you no longer maintain, say so explicitly:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   archived_version: true
   version: v1.9
@@ -94,11 +94,11 @@ params:
 ```
 
 {{< fields >}}
-{{% field name="archived_version" type="boolean" default="false" %}} When
-`true`, shows an archive notice at the top of every page. {{% /field %}}
-{{% field name="version" type="string" %}} The version shown in the banner.
-{{% /field %}} {{% field name="url_latest_version" type="string" %}} The current
-version's address; the banner links to it. {{% /field %}} {{< /fields >}}
+{{< field name="archived_version" type="boolean" default=false >}} When
+`true`, shows an archive notice at the top of every page. {{< /field >}}
+{{< field name="version" type="string" >}} The version shown in the banner.
+{{< /field >}} {{< field name="url_latest_version" type="string" >}} The current
+version's address; the banner links to it. {{< /field >}} {{< /fields >}}
 
 The banner text is localized with the site language; you do not write it.
 

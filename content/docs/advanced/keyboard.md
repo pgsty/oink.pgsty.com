@@ -110,7 +110,7 @@ instantly instead of animating.
 
 `keyboard_nav.enable` defaults to `true`. Disable it site-wide:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   ui:
     keyboard_nav:

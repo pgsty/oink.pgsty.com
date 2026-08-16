@@ -39,21 +39,16 @@ FileTree 适合安装指南、架构概览、部署手册与贡献说明中的�
 
 <!-- prettier-ignore-start -->
 
-{{< filetree label="仓库结构" >}}
-  {{< filetree/folder name="content" open=true comment="页面包与模板" owner="docs" group="writers" mode="0755" >}}
-    {{< filetree/file name="_index.md" icon="fa-solid fa-file-code" color="primary" comment="分区入口页" owner="docs" group="writers" mode="0644" >}}
-    {{< filetree/folder name="docs" open=true comment="产品指南" >}}
-      {{< filetree/folder name="operations-and-troubleshooting" open=true icon="fa-solid fa-screwdriver-wrench" color="warning" comment="操作手册与故障恢复" >}}
-        {{< filetree/file name="a-deliberately-long-runbook-filename-that-wraps-without-horizontal-overflow.md" link="/zh/docs/" color="danger" comment="应急操作流程" owner="sre" group="on-call" mode="0640" >}}
-      {{< /filetree/folder >}}
-      {{< filetree/file name="configuration.md" link="/zh/docs/configure/" icon="fa-solid fa-gears" color="info" comment="运行参数" >}}
-    {{< /filetree/folder >}}
-    {{< filetree/folder name="blog" comment="版本说明与文章" >}}
-      {{< filetree/file name="release.md" icon="fa-regular fa-newspaper" color="secondary" comment="版本公告" >}}
-    {{< /filetree/folder >}}
-  {{< /filetree/folder >}}
-  {{< filetree/file name="hugo.yml" link="https://github.com/pgsty/oink.pgsty.com/blob/main/hugo.yml" icon="fa-solid fa-gears" color="warning" comment="站点配置" owner="root" group="wheel" mode="0640" >}}
-{{< /filetree >}}
+- content/ — 0755 docs:writers · 页面包与模板
+  - _index.md — 0644 docs:writers · 分区入口页
+  - docs/ — 产品指南
+    - operations-and-troubleshooting/ — 操作手册与故障恢复
+      - [a-deliberately-long-runbook-filename-that-wraps-without-horizontal-overflow.md](/zh/docs/) — 0640 sre:on-call · 应急操作流程
+    - [configuration.md](/zh/docs/configure/) — 运行参数
+  - blog/ — 版本说明与文章
+    - release.md — 版本公告
+- [hugo.yml](https://github.com/pgsty/oink.pgsty.com/blob/main/hugo.yml) — 0640 root:wheel · 站点配置
+{.filetree}
 
 <!-- prettier-ignore-end -->
 
@@ -88,19 +83,14 @@ FileTree 适合安装指南、架构概览、部署手册与贡献说明中的�
 
 <!-- prettier-ignore-start -->
 
-{{< filetree label="部署文件系统" >}}
-  {{< filetree/folder name="/srv/atlas" open=true icon="fa-solid fa-server" color="primary" comment="应用根目录" owner="root" group="root" mode="0755" >}}
-    {{< filetree/folder name="releases" open=true color="secondary" comment="不可变构建" owner="deploy" group="release-engineering" mode="0750" >}}
-      {{< filetree/folder name="2026.08.16" open=true icon="fa-solid fa-box-archive" color="success" comment="当前版本" owner="deploy" group="release-engineering" mode="0750" >}}
-        {{< filetree/file name="atlas-server" icon="fa-solid fa-terminal" color="success" comment="可执行文件" owner="deploy" group="atlas" mode="0555" >}}
-        {{< filetree/file name="app.toml" icon="fa-solid fa-gears" color="info" comment="运行配置" owner="root" group="atlas" mode="0640" >}}
-      {{< /filetree/folder >}}
-    {{< /filetree/folder >}}
-    {{< filetree/folder name="secrets" icon="fa-solid fa-lock" color="danger" comment="受限凭据" owner="root" group="security" mode="0700" >}}
-      {{< filetree/file name="production.env" color="danger" owner="root" group="security" mode="0600" >}}
-    {{< /filetree/folder >}}
-  {{< /filetree/folder >}}
-{{< /filetree >}}
+- /srv/atlas/ — 0755 root:root · 应用根目录
+  - releases/ — 0750 deploy:release-engineering · 不可变构建
+    - 2026.08.16/ — 0750 deploy:release-engineering · 当前版本
+      - atlas-server — 0555 deploy:atlas · 可执行文件
+      - app.toml — 0640 root:atlas · 运行配置
+  - secrets/ — 0700 root:security · 受限凭据
+    - production.env — 0600 root:security
+{.filetree}
 
 <!-- prettier-ignore-end -->
 
@@ -133,20 +123,16 @@ FileTree 适合安装指南、架构概览、部署手册与贡献说明中的�
 
 <!-- prettier-ignore-start -->
 
-{{< filetree label="数据平台工作区" >}}
-  {{< filetree/folder name="warehouse" open=true icon="fa-solid fa-database" color="primary" comment="持久化数据集" >}}
-    {{< filetree/file name="customers.parquet" icon="fa-solid fa-table-columns" color="info" comment="已整理的客户维度" >}}
-  {{< /filetree/folder >}}
-  {{< filetree/folder name="pipelines" open=true icon="fa-solid fa-diagram-project" color="secondary" comment="定时数据转换" >}}
-    {{< filetree/file name="extract.py" icon="fa-brands fa-python" color="warning" comment="源数据采集" >}}
-    {{< filetree/file name="quality.sql" icon="fa-solid fa-database" color="success" comment="数据质量检查" >}}
-  {{< /filetree/folder >}}
-  {{< filetree/folder name="secrets" icon="fa-solid fa-lock" color="danger" comment="不提交到仓库" >}}
-    {{< filetree/file name=".env" color="danger" comment="本地凭据" >}}
-  {{< /filetree/folder >}}
-  {{< filetree/file name="Dockerfile" icon="fa-brands fa-docker" color="info" comment="运行时镜像" >}}
-  {{< filetree/file name="README.md" link="/zh/docs/" icon="fa-brands fa-markdown" color="neutral" comment="运维指南" >}}
-{{< /filetree >}}
+- warehouse/ — 持久化数据集
+  - customers.parquet — 已整理的客户维度
+- pipelines/ — 定时数据转换
+  - extract.py — 源数据采集
+  - quality.sql — 数据质量检查
+- secrets/ — 不提交到仓库
+  - .env — 本地凭据
+- Dockerfile — 运行时镜像
+- [README.md](/zh/docs/) — 运维指南
+{.filetree}
 
 <!-- prettier-ignore-end -->
 

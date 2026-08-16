@@ -91,15 +91,17 @@ hugo --gc --minify
 
 Before building in an isolated environment, confirm the theme archive contains:
 
-{{< filetree >}} {{< filetree/folder name="oink" open=true >}}
-{{< filetree/file name="go.mod" >}} {{< filetree/file name="hugo.yaml" >}}
-{{< filetree/file name="LICENSE" >}} {{< filetree/file name="NOTICE" >}}
-{{< filetree/file name="VENDOR.json" >}}
-{{< filetree/folder name="assets" >}}{{< /filetree/folder >}}
-{{< filetree/folder name="layouts" >}}{{< /filetree/folder >}}
-{{< filetree/folder name="static" >}}{{< /filetree/folder >}}
-{{< filetree/folder name="i18n" >}}{{< /filetree/folder >}}
-{{< /filetree/folder >}} {{< /filetree >}}
+- oink/
+  - go.mod
+  - hugo.yaml
+  - LICENSE
+  - NOTICE
+  - VENDOR.json
+  - assets/
+  - layouts/
+  - static/
+  - i18n/
+{.filetree}
 
 `VENDOR.json` records the version, source, license path, and SHA-256 of every
 bundled third-party component, and is the basis for an offline audit.

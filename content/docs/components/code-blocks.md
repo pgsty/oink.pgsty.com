@@ -19,7 +19,7 @@ error. With neither, OINK uses a compact overlay instead of an empty title row.
 
 **Authoring**
 
-````markdown {filename="content/docs/example.md" copy="all"}
+````markdown {title="content/docs/example.md" copy="all"}
 ```yaml {filename="hugo.yml" copy="all" lineNos="table" hl_lines="4 7-9" wrap=false collapse=18}
 params:
   offlineSearch: true
@@ -34,7 +34,7 @@ This block combines a filename, inline line numbers, a stable root ID, line
 links, and highlighted source lines. Line numbers begin at 12, while `hl_lines`
 still addresses the source lines inside the fence:
 
-```yaml {id="docs-code-config" filename="hugo.yaml" copy="all" lineNos="inline" lineNoStart=12 hl_lines="3 6-7" anchorLineNos=true}
+```yaml {id="docs-code-config" title="hugo.yaml" copy="all" lineNos="inline" lineNoStart=12 hl_lines="3 6-7" anchorLineNos=true}
 markup:
   highlight:
     noClasses: false
@@ -84,7 +84,7 @@ transformer:
 
 **Authoring**
 
-````markdown {filename="content/docs/configuration.md"}
+````markdown {title="content/docs/configuration.md"}
 ```diff {filename="hugo.yaml.diff"}
  params:
 -  offlineSearch: false
@@ -94,7 +94,7 @@ transformer:
 
 **Rendered result**
 
-```diff {filename="hugo.yaml.diff"}
+```diff {title="hugo.yaml.diff"}
  params:
 -  offlineSearch: false
 +  offlineSearch: true
@@ -126,7 +126,7 @@ output:
 
 **Authoring**
 
-````markdown {filename="content/docs/terminal.md"}
+````markdown {title="content/docs/terminal.md"}
 ```console {title="Terminal session"}
 $ hugo version
 hugo v0.164.0+extended darwin/arm64
@@ -160,7 +160,7 @@ The first example wraps a long value without altering copied text:
 
 **Authoring**
 
-````markdown {filename="content/docs/downloads.md"}
+````markdown {title="content/docs/downloads.md"}
 ```text {filename="config/artifacts.env" wrap=true}
 ARTIFACT_URL=https://downloads.example.com/releases/2026/08/oink-complete-offline-distribution-arm64.tar.zst
 CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
@@ -169,7 +169,7 @@ CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 
 **Rendered result**
 
-```text {filename="config/artifacts.env" wrap=true}
+```text {title="config/artifacts.env" wrap=true}
 ARTIFACT_URL=https://downloads.example.com/releases/2026/08/oink-complete-offline-distribution-arm64.tar.zst
 CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 ```
@@ -178,7 +178,7 @@ The second emits all lines on the server but initially shows six in a browser:
 
 **Authoring**
 
-````markdown {filename="content/docs/configuration.md"}
+````markdown {title="content/docs/configuration.md"}
 ```yaml {filename="hugo.yaml" collapse=6}
 baseURL: https://docs.example.com/
 title: Product Documentation
@@ -197,7 +197,7 @@ params:
 
 **Rendered result**
 
-```yaml {filename="hugo.yaml" collapse=6}
+```yaml {title="hugo.yaml" collapse=6}
 baseURL: https://docs.example.com/
 title: Product Documentation
 defaultContentLanguage: en
@@ -221,7 +221,7 @@ reports any such collision as a build error:
 
 **Authoring**
 
-````markdown {filename="content/docs/server.md"}
+````markdown {title="content/docs/server.md"}
 ```go {id="server-start" lineNos="inline" anchorLineNos=true}
 func start() {}
 ```
@@ -243,7 +243,7 @@ Use `code-group` when examples are alternatives rather than independent tabs:
 
 **Authoring**
 
-```go-html-template {filename="content/docs/install.md" wrap=true}
+```go-html-template {title="content/docs/install.md" wrap=true}
 {{</* code-group id="docs-install-client" sync="docs-package-manager" persist=false
     label="Choose a package manager" copy="all" */>}}
   {{</* code-tab title="npm" value="npm" lang="bash" */>}}
@@ -261,17 +261,17 @@ yarn add @example/client
 **Rendered result**
 
 <!-- prettier-ignore -->
-{{< code-group id="docs-install-client" sync="docs-package-manager" persist=false label="Choose a package manager" copy="all" >}}
-  {{< code-tab title="npm" value="npm" lang="bash" >}}
+```bash {tab="npm" copy="all"}
 npm install @example/client
-  {{< /code-tab >}}
-  {{< code-tab title="pnpm" value="pnpm" lang="bash" selected=true >}}
+```
+
+```bash {tab="pnpm" copy="all"}
 pnpm add @example/client
-  {{< /code-tab >}}
-  {{< code-tab title="yarn" value="yarn" lang="bash" >}}
+```
+
+```bash {tab="yarn" copy="all"}
 yarn add @example/client
-  {{< /code-tab >}}
-{{< /code-group >}}
+```
 
 `code-tab` contains raw code, not Markdown. OINK removes the framing newline and
 closing-shortcode indentation while preserving all source whitespace inside.
@@ -312,7 +312,7 @@ group's [npm](#docs-install-client-npm), [pnpm](#docs-install-client-pnpm), and
 
 **Authoring**
 
-```go-html-template {filename="content/docs/run.md" wrap=true}
+```go-html-template {title="content/docs/run.md" wrap=true}
 {{</* code-group id="docs-run-client" sync="docs-package-manager" persist=false */>}}
   {{</* code-tab title="npm" value="npm" lang="bash" */>}}
 npm run docs:dev
@@ -329,17 +329,17 @@ yarn docs:dev
 **Rendered result**
 
 <!-- prettier-ignore -->
-{{< code-group id="docs-run-client" sync="docs-package-manager" persist=false >}}
-  {{< code-tab title="npm" value="npm" lang="bash" >}}
+```bash {tab="npm"}
 npm run docs:dev
-  {{< /code-tab >}}
-  {{< code-tab title="pnpm" value="pnpm" lang="bash" selected=true >}}
+```
+
+```bash {tab="pnpm"}
 pnpm docs:dev
-  {{< /code-tab >}}
-  {{< code-tab title="yarn" value="yarn" lang="bash" >}}
+```
+
+```bash {tab="yarn"}
 yarn docs:dev
-  {{< /code-tab >}}
-{{< /code-group >}}
+```
 
 ## Output and compatibility
 

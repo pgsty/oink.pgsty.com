@@ -85,7 +85,7 @@ footer 时，版权行右端有一个小箭头，可收起或恢复上方的链�
 
 `keyboard_nav.enable` 默认为 `true`。全站关闭：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   ui:
     keyboard_nav:

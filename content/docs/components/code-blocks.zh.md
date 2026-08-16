@@ -14,7 +14,7 @@ OINK 在不替换 Chroma、也不引入浏览器端高亮器的前提下增强 H
 
 **作者写法**
 
-````markdown {filename="content/docs/example.md" copy="all"}
+````markdown {title="content/docs/example.md" copy="all"}
 ```yaml {filename="hugo.yml" copy="all" lineNos="table" hl_lines="4 7-9" wrap=false collapse=18}
 params:
   offlineSearch: true
@@ -28,7 +28,7 @@ params:
 下面的代码块同时使用了文件名、内联行号、稳定根 ID、行链接和源码行高亮。显示的行号从 12 开始，但
 `hl_lines` 仍按围栏内的源码行编号：
 
-```yaml {id="zh-docs-code-config" filename="hugo.yaml" copy="all" lineNos="inline" lineNoStart=12 hl_lines="3 6-7" anchorLineNos=true}
+```yaml {id="zh-docs-code-config" title="hugo.yaml" copy="all" lineNos="inline" lineNoStart=12 hl_lines="3 6-7" anchorLineNos=true}
 markup:
   highlight:
     noClasses: false
@@ -74,7 +74,7 @@ Diff 有意继续使用 Chroma 标准的 `diff` lexer，不引入自定义 trans
 
 **作者写法**
 
-````markdown {filename="content/docs/configuration.md"}
+````markdown {title="content/docs/configuration.md"}
 ```diff {filename="hugo.yaml.diff"}
  params:
 -  offlineSearch: false
@@ -84,7 +84,7 @@ Diff 有意继续使用 Chroma 标准的 `diff` lexer，不引入自定义 trans
 
 **实际效果**
 
-```diff {filename="hugo.yaml.diff"}
+```diff {title="hugo.yaml.diff"}
  params:
 -  offlineSearch: false
 +  offlineSearch: true
@@ -109,7 +109,7 @@ Diff 有意继续使用 Chroma 标准的 `diff` lexer，不引入自定义 trans
 
 **作者写法**
 
-````markdown {filename="content/docs/terminal.md"}
+````markdown {title="content/docs/terminal.md"}
 ```console {title="终端会话"}
 $ hugo version
 hugo v0.164.0+extended darwin/arm64
@@ -139,7 +139,7 @@ Total in 742 ms
 
 **作者写法**
 
-````markdown {filename="content/docs/downloads.md"}
+````markdown {title="content/docs/downloads.md"}
 ```text {filename="config/artifacts.env" wrap=true}
 ARTIFACT_URL=https://downloads.example.com/releases/2026/08/oink-complete-offline-distribution-arm64.tar.zst
 CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
@@ -148,7 +148,7 @@ CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 
 **实际效果**
 
-```text {filename="config/artifacts.env" wrap=true}
+```text {title="config/artifacts.env" wrap=true}
 ARTIFACT_URL=https://downloads.example.com/releases/2026/08/oink-complete-offline-distribution-arm64.tar.zst
 CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 ```
@@ -157,7 +157,7 @@ CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 
 **作者写法**
 
-````markdown {filename="content/docs/configuration.md"}
+````markdown {title="content/docs/configuration.md"}
 ```yaml {filename="hugo.yaml" collapse=6}
 baseURL: https://docs.example.com/
 title: Product Documentation
@@ -176,7 +176,7 @@ params:
 
 **实际效果**
 
-```yaml {filename="hugo.yaml" collapse=6}
+```yaml {title="hugo.yaml" collapse=6}
 baseURL: https://docs.example.com/
 title: Product Documentation
 defaultContentLanguage: en
@@ -198,7 +198,7 @@ params:
 
 **作者写法**
 
-````markdown {filename="content/docs/server.md"}
+````markdown {title="content/docs/server.md"}
 ```go {id="zh-server-start" lineNos="inline" anchorLineNos=true}
 func start() {}
 ```
@@ -218,7 +218,7 @@ OINK 会从该 ID 派生唯一行锚点前缀。自动生成的 ID 在页面内�
 
 **作者写法**
 
-```go-html-template {filename="content/docs/install.md" wrap=true}
+```go-html-template {title="content/docs/install.md" wrap=true}
 {{</* code-group id="zh-docs-install-client" sync="zh-docs-package-manager" persist=false
     label="选择包管理器" copy="all" */>}}
   {{</* code-tab title="npm" value="npm" lang="bash" */>}}
@@ -236,17 +236,17 @@ yarn add @example/client
 **实际效果**
 
 <!-- prettier-ignore -->
-{{< code-group id="zh-docs-install-client" sync="zh-docs-package-manager" persist=false label="选择包管理器" copy="all" >}}
-  {{< code-tab title="npm" value="npm" lang="bash" >}}
+```bash {tab="npm" copy="all"}
 npm install @example/client
-  {{< /code-tab >}}
-  {{< code-tab title="pnpm" value="pnpm" lang="bash" selected=true >}}
+```
+
+```bash {tab="pnpm" copy="all"}
 pnpm add @example/client
-  {{< /code-tab >}}
-  {{< code-tab title="yarn" value="yarn" lang="bash" >}}
+```
+
+```bash {tab="yarn" copy="all"}
 yarn add @example/client
-  {{< /code-tab >}}
-{{< /code-group >}}
+```
 
 `code-tab`
 包含原始代码而不是 Markdown。OINK 会移除用于排版的首个换行和结束短代码前的缩进，同时保留源码内部的全部空白。Markdown 格式化工具可能会重排这段原始内容；使用 Prettier 时，应像下面的实时示例一样，在每个
@@ -284,7 +284,7 @@ key。在任意分组中选择包管理器，另一个分组都会随之切换�
 
 **作者写法**
 
-```go-html-template {filename="content/docs/run.md" wrap=true}
+```go-html-template {title="content/docs/run.md" wrap=true}
 {{</* code-group id="zh-docs-run-client" sync="zh-docs-package-manager" persist=false */>}}
   {{</* code-tab title="npm" value="npm" lang="bash" */>}}
 npm run docs:dev
@@ -301,17 +301,17 @@ yarn docs:dev
 **实际效果**
 
 <!-- prettier-ignore -->
-{{< code-group id="zh-docs-run-client" sync="zh-docs-package-manager" persist=false >}}
-  {{< code-tab title="npm" value="npm" lang="bash" >}}
+```bash {tab="npm"}
 npm run docs:dev
-  {{< /code-tab >}}
-  {{< code-tab title="pnpm" value="pnpm" lang="bash" selected=true >}}
+```
+
+```bash {tab="pnpm"}
 pnpm docs:dev
-  {{< /code-tab >}}
-  {{< code-tab title="yarn" value="yarn" lang="bash" >}}
+```
+
+```bash {tab="yarn"}
 yarn docs:dev
-  {{< /code-tab >}}
-{{< /code-group >}}
+```
 
 ## 输出与兼容性 {#output-and-compatibility}
 

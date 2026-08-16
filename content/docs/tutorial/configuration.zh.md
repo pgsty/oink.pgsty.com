@@ -12,7 +12,7 @@ Hugo 从 `hugo.yaml`、`hugo.toml` 或 `hugo.json`
 
 ## 完整最小配置 {#minimum-configuration}
 
-```yaml {filename="hugo.yaml" lineNos="table" collapse=28}
+```yaml {title="hugo.yaml" lineNos="table" collapse=28}
 title: Product Documentation
 baseURL: https://docs.example.com/
 defaultContentLanguage: en
@@ -64,29 +64,29 @@ module:
 
 ## 关键参数 {#key-parameters}
 
-{{< fields >}} {{% field name="baseURL" type="string" required=true %}}
+{{< fields >}} {{< field name="baseURL" type="string" required=true >}}
 生产环境的真实地址，**包含子路径**。部署到 `example.com/docs/` 时必须写成
-`https://example.com/docs/`，否则所有资源链接都会指向错误位置。 {{% /field %}}
-{{% field name="defaultContentLanguage" type="string" default="en" %}}
-默认语言。它决定了不带语言前缀的 URL 对应哪种语言。 {{% /field %}}
-{{% field name="languages.<lang>.weight" type="integer" %}}
-语言排序。权重最小的排在最前，点击语言按钮时按此顺序轮换。 {{% /field %}}
-{{% field name="params.offlineSearch" type="boolean" default="false" %}}
+`https://example.com/docs/`，否则所有资源链接都会指向错误位置。 {{< /field >}}
+{{< field name="defaultContentLanguage" type="string" default="en" >}}
+默认语言。它决定了不带语言前缀的 URL 对应哪种语言。 {{< /field >}}
+{{< field name="languages.<lang>.weight" type="integer" >}}
+语言排序。权重最小的排在最前，点击语言按钮时按此顺序轮换。 {{< /field >}}
+{{< field name="params.offlineSearch" type="boolean" default=false >}}
 启用主题内置的同源 Lunr 索引与 CJK 子串回退。索引按语言分别生成，查询不出站。
-{{% /field %}} {{% field name="params.github_repo" type="string" %}}
+{{< /field >}} {{< field name="params.github_repo" type="string" >}}
 内容仓库地址。页面操作里的「编辑此页」「查阅编辑历史」「报告问题」都由它推导。
-{{% /field %}}
-{{% field name="params.github_branch" type="string" default="main" %}}
-编辑与历史链接指向的分支。 {{% /field %}}
-{{% field name="params.ui.showLightDarkModeMenu" type="boolean" default="false" %}}
+{{< /field >}}
+{{< field name="params.github_branch" type="string" default="main" >}}
+编辑与历史链接指向的分支。 {{< /field >}}
+{{< field name="params.ui.showLightDarkModeMenu" type="boolean" default=false >}}
 显示明暗主题切换。OINK 的交互特性一律是显式启用，主题不替站点做策略决定。
-{{% /field %}} {{< /fields >}}
+{{< /field >}} {{< /fields >}}
 
 ## 输出格式 {#output-formats}
 
 OINK 不强制启用任何可选输出格式，需要什么由站点自己声明：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 outputs:
   home: [HTML, RSS, markdown, LLMS]
   page: [HTML, markdown]
@@ -107,7 +107,7 @@ UI、Redoc、Asciinema、ECharts、Infographic全部由主题本地提供，**�
 PlantUML 和 Draw.io 是例外——它们的正常工作流依赖渲染服务，所以 OINK
 **不提供默认端点**。启用但不配置端点会直接让构建失败：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   plantuml:
     enable: true

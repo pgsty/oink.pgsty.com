@@ -29,7 +29,7 @@ series:
 
 <!-- prettier-ignore-start -->
 
-{{< echarts height="300px" >}}
+```echarts {height="300px"}
 xAxis:
   type: category
   data: [草稿, 评审, 发布]
@@ -38,7 +38,7 @@ yAxis:
 series:
   - type: bar
     data: [12, 9, 4]
-{{< /echarts >}}
+```
 
 <!-- prettier-ignore-end -->
 

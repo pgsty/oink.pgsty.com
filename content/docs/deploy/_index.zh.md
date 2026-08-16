@@ -18,11 +18,11 @@ hugo --gc --minify
 
 产物写入 `public/`。这个目录可以脱离源码树独立部署。
 
-{{< fields >}} {{% field name="--gc" type="flag" %}}
-构建后清理未被引用的缓存资源。 {{% /field %}}
-{{% field name="--minify" type="flag" %}} 压缩 HTML、CSS、JS 与 XML 输出。
-{{% /field %}} {{% field name="--baseURL" type="string" %}} 覆盖配置里的
-`baseURL`。**部署到子路径时必须带上该路径。** {{% /field %}} {{< /fields >}}
+{{< fields >}} {{< field name="--gc" type="flag" >}}
+构建后清理未被引用的缓存资源。 {{< /field >}}
+{{< field name="--minify" type="flag" >}} 压缩 HTML、CSS、JS 与 XML 输出。
+{{< /field >}} {{< field name="--baseURL" type="string" >}} 覆盖配置里的
+`baseURL`。**部署到子路径时必须带上该路径。** {{< /field >}} {{< /fields >}}
 
 ## baseURL 是最常见的故障源 {#baseurl}
 
@@ -49,7 +49,7 @@ Hugo 的 `-e` 只选择构建期行为（指纹、压缩），**不区分站点�
 
 预览环境应该阻止搜索引擎收录：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   # 预览部署设为 true
   private: true

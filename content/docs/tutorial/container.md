@@ -13,7 +13,7 @@ workstation.
 
 ## Build the image {#build-the-image}
 
-```dockerfile {filename="Dockerfile" collapse=16}
+```dockerfile {title="Dockerfile" collapse=16}
 FROM debian:bookworm-slim
 
 ARG HUGO_VERSION=0.164.0

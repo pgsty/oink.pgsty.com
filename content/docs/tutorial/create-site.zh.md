@@ -21,7 +21,7 @@ hugo mod get github.com/pgsty/oink@{{% param tdVersion.latest %}}
 把下面的内容存为
 `hugo.yaml`。这是能跑起来的最小集合，逐项含义见[基础配置](../configuration/)：
 
-```yaml {filename="hugo.yaml" collapse=34}
+```yaml {title="hugo.yaml" collapse=34}
 title: Product Docs
 baseURL: https://docs.example.com/
 defaultContentLanguage: en
@@ -72,15 +72,18 @@ module:
 
 OINK 用文件名后缀区分语言，译文和原文并排放在同一个目录：
 
-{{< filetree >}} {{< filetree/folder name="content" open=true >}}
-{{< filetree/file name="_index.md" >}} {{< filetree/file name="_index.zh.md" >}}
-{{< filetree/folder name="docs" open=true >}}
-{{< filetree/file name="_index.md" >}} {{< filetree/file name="_index.zh.md" >}}
-{{< filetree/file name="getting-started.md" >}}
-{{< filetree/file name="getting-started.zh.md" >}} {{< /filetree/folder >}}
-{{< filetree/folder name="blog" >}} {{< filetree/file name="_index.md" >}}
-{{< filetree/file name="_index.zh.md" >}} {{< /filetree/folder >}}
-{{< /filetree/folder >}} {{< /filetree >}}
+- content/
+  - _index.md
+  - _index.zh.md
+  - docs/
+    - _index.md
+    - _index.zh.md
+    - getting-started.md
+    - getting-started.zh.md
+  - blog/
+    - _index.md
+    - _index.zh.md
+{.filetree}
 
 ## 稳定的标题 ID {#stable-heading-ids}
 
@@ -89,7 +92,7 @@ OINK 用文件名后缀区分语言，译文和原文并排放在同一个目录
 
 解决办法是在译文标题里显式写上英文原文的 ID：
 
-```markdown {filename="getting-started.md"}
+```markdown {title="getting-started.md"}
 ---
 title: Getting started
 weight: 10
@@ -100,7 +103,7 @@ weight: 10
 Install the product.
 ```
 
-```markdown {filename="getting-started.zh.md"}
+```markdown {title="getting-started.zh.md"}
 ---
 title: 开始使用
 weight: 10

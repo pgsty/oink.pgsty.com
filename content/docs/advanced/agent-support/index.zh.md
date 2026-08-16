@@ -47,29 +47,21 @@ Hugo 提供多种[内置输出格式][]，其中包括
 `markdown`。要启用 Markdown 输出，请在 Hugo 的 [outputs][] 配置中，把 `markdown`
 加入需要支持的页面类型。例如：
 
-{{< tabpane text=true persist=lang >}}
-{{< tab header="配置文件：" disabled=true />}}
-{{% tab header="hugo.yaml" lang="yaml" %}}
-
-```yaml
+```yaml {tab="hugo.yaml" group="hugoyaml-hugotoml-hugojson" value="hugoyaml"}
 outputs:
   home: [HTML, markdown]
   page: [HTML, markdown]
   section: [HTML, RSS, print, markdown]
 ```
 
-{{% /tab %}} {{% tab header="hugo.toml" lang="toml" %}}
-
-```toml
+```toml {tab="hugo.toml" value="hugotoml"}
 [outputs]
 home = [ "HTML", "markdown" ]
 page = [ "HTML", "markdown" ]
 section = [ "HTML", "RSS", "print", "markdown" ]
 ```
 
-{{% /tab %}} {{% tab header="hugo.json" lang="json" %}}
-
-```json
+```json {tab="hugo.json" value="hugojson"}
 {
   "outputs": {
     "home": ["HTML", "markdown"],
@@ -78,8 +70,6 @@ section = [ "HTML", "RSS", "print", "markdown" ]
   }
 }
 ```
-
-{{% /tab %}} {{< /tabpane >}}
 
 ### 让页面退出 Markdown 输出 {#opt-pages-out}
 
@@ -158,14 +148,8 @@ URL、`llms.txt` 和相关类别。
 
 - 本站的 AFDocs 评分表：
 
-  <details>
-  <summary><code>oink.pgsty.com</code> 评分表</summary>
-
-  ```text
-  {{< readfile "afdocs-scorecard.txt" >}}
-  ```
-
-  </details>
+  > [!DETAILS]- `oink.pgsty.com` 评分表
+  > {{< include file="afdocs-scorecard.txt" code=true lang="text" >}}
 
 这些检查的配置详情请参阅[智能体支持检查](https://github.com/pgsty/oink.pgsty.com/blob/main/package.json)。
 

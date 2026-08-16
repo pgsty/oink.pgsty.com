@@ -59,29 +59,21 @@ Hugo comes with several [built-in output formats][], including `markdown`. To
 enable Markdown output, add `markdown` to the Hugo [outputs][] configuration for
 the page kinds you want to support. For example:
 
-{{< tabpane text=true persist=lang >}}
-{{< tab header="Configuration file:" disabled=true />}}
-{{% tab header="hugo.yaml" lang="yaml" %}}
-
-```yaml
+```yaml {tab="hugo.yaml" group="hugoyaml-hugotoml-hugojson" value="hugoyaml"}
 outputs:
   home: [HTML, markdown]
   page: [HTML, markdown]
   section: [HTML, RSS, print, markdown]
 ```
 
-{{% /tab %}} {{% tab header="hugo.toml" lang="toml" %}}
-
-```toml
+```toml {tab="hugo.toml" value="hugotoml"}
 [outputs]
 home = [ "HTML", "markdown" ]
 page = [ "HTML", "markdown" ]
 section = [ "HTML", "RSS", "print", "markdown" ]
 ```
 
-{{% /tab %}} {{% tab header="hugo.json" lang="json" %}}
-
-```json
+```json {tab="hugo.json" value="hugojson"}
 {
   "outputs": {
     "home": ["HTML", "markdown"],
@@ -90,8 +82,6 @@ section = [ "HTML", "RSS", "print", "markdown" ]
   }
 }
 ```
-
-{{% /tab %}} {{< /tabpane >}}
 
 ### Opt pages out {#opt-pages-out}
 
@@ -180,14 +170,8 @@ For scorecard examples, see:
 
 - An AFDocs scorecard for this site:
 
-  <details>
-  <summary><code>oink.pgsty.com</code> scorecard</summary>
-
-  ```text
-  {{< readfile "afdocs-scorecard.txt" >}}
-  ```
-
-  </details>
+  > [!DETAILS]- `oink.pgsty.com` scorecard
+  > {{< include file="afdocs-scorecard.txt" code=true lang="text" >}}
 
 For details on how these checks are configured, see
 [Agent-support checks](https://github.com/pgsty/oink.pgsty.com/blob/main/package.json).

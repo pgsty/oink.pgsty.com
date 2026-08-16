@@ -20,19 +20,19 @@ params:
 
 本指南重点说明 Hugo 0.152.0–0.155.x 的破坏性变更，以及可能需要执行的操作。
 
-- 审阅 {{% _param BADGE BREAKING warning %}} 变更：<a id="breaking-changes"></a>
-  - {{% _param BREAKING %}} [YAML yes/no Token 变为字符串](#yaml-yes-no-etc)
-  - {{% _param BREAKING %}} [多维站点的构建顺序发生变化](#build-order)
+- 审阅 {{< badge text="BREAKING" tone="warning" >}} 变更：<a id="breaking-changes"></a>
+  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> [YAML yes/no Token 变为字符串](#yaml-yes-no-etc)
+  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> [多维站点的构建顺序发生变化](#build-order)
 - 审阅 **弃用项**（不具破坏性，但建议处理）：<a id="deprecations"></a>
   - Mount 的 [`lang` 选项已弃用](#lang-mount-deprecation)
   - [`includeFiles`/`excludeFiles` 已弃用](#use-files)
 - 可以快速浏览：
   - [已知问题与修复](#known-issues)
   - [重要变化](#notable-changes)
-- {{% _param FAS rocket primary %}}
+- <i class="fa-solid fa-rocket text-primary px-1"></i>
   准备好后，直接阅读[升级到 Hugo 0.155.x](#upgrade)
 
-## {{% _param BREAKING %}} YAML yes/no Token 变为字符串（0.152.0）<a id="0.152.0"></a> {#yaml-yes-no-etc}
+## <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> YAML yes/no Token 变为字符串（0.152.0）<a id="0.152.0"></a> {#yaml-yes-no-etc}
 
 [0.152.0][]（2025-10-21）升级到更现代的 YAML 库，导致配置文件和页面 Front
 Matter 中某些 Token 的解释方式发生破坏性变化。
@@ -43,7 +43,7 @@ Matter 中某些 Token 的解释方式发生破坏性变化。
 
 ### 操作：必需与可选 {#yaml-actions}
 
-- {{% _param BREAKING %}} **适用条件**：项目 YAML 中存在未加引号的
+- <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> **适用条件**：项目 YAML 中存在未加引号的
   `yes`、`no`、`on`、`off` 等 Token。请把它们改为 `true` 或 `false`。
 
   搜索以下未加引号的键或值：
@@ -93,7 +93,7 @@ Matter 中某些 Token 的解释方式发生破坏性变化。
 
 下面总结与多维站点相关的破坏性变更和弃用项。
 
-### {{% _param BREAKING %}} 多维站点的构建顺序 {#build-order}
+### <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> 多维站点的构建顺序 {#build-order}
 
 Hugo 现在根据排序后的维度构建站点——先按权重，再按名称——而不再从默认内容语言开始。`.Site.Sites`
 的排序也会受到影响。
@@ -217,7 +217,7 @@ Hugo 0.153.x 的别名处理出现回归，至少影响了一个 Docsy 站点（
 >   [hugo-extended#183][]；
 > - [hugo-extended][] NPM 软件包在 0.153.0–0.153.3 期间曾短暂要求 `sudo`。
 
-## {{% _param FAS rocket primary %}} 升级到 Hugo 0.155.x {#upgrade}
+## <i class="fa-solid fa-rocket text-primary px-1"></i> 升级到 Hugo 0.155.x {#upgrade}
 
 处理所有[破坏性变更](#breaking-changes)和[弃用项](#deprecations)后，升级到 Hugo
 0.155.x 的最新版本。使用 [hugo-extended][] NPM 软件包时，可以运行：
@@ -271,7 +271,7 @@ Matrix 功能，而且希望获得多维站点中最新别名修复与支持的�
 ```yaml
 module:
   hugoVersion:
-    min: '{{% _param hugoMinVersion %}}'
+    min: '{{< param hugoMinVersion >}}'
 ```
 
 [0.152.0]: https://github.com/gohugoio/hugo/releases/tag/v0.152.0

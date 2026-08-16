@@ -83,15 +83,17 @@ hugo --gc --minify
 
 准备在隔离环境构建时，先确认主题归档包含这些内容：
 
-{{< filetree >}} {{< filetree/folder name="oink" open=true >}}
-{{< filetree/file name="go.mod" >}} {{< filetree/file name="hugo.yaml" >}}
-{{< filetree/file name="LICENSE" >}} {{< filetree/file name="NOTICE" >}}
-{{< filetree/file name="VENDOR.json" >}}
-{{< filetree/folder name="assets" >}}{{< /filetree/folder >}}
-{{< filetree/folder name="layouts" >}}{{< /filetree/folder >}}
-{{< filetree/folder name="static" >}}{{< /filetree/folder >}}
-{{< filetree/folder name="i18n" >}}{{< /filetree/folder >}}
-{{< /filetree/folder >}} {{< /filetree >}}
+- oink/
+  - go.mod
+  - hugo.yaml
+  - LICENSE
+  - NOTICE
+  - VENDOR.json
+  - assets/
+  - layouts/
+  - static/
+  - i18n/
+{.filetree}
 
 `VENDOR.json`
 记录了每个第三方组件的版本、来源、许可证路径和 SHA-256，是离线审计的依据。

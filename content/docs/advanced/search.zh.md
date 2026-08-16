@@ -12,7 +12,7 @@ DocSearch 作为兼容集成保留，默认关闭。**同一时间只能启用�
 
 ## 启用本地搜索 {#enable-local-search}
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   offlineSearch: true
   offlineSearchIndex: summary # summary | content
@@ -21,17 +21,17 @@ params:
 ```
 
 {{< fields >}}
-{{% field name="offlineSearch" type="boolean" default="false" required=true %}}
+{{< field name="offlineSearch" type="boolean" default=false required=true >}}
 启用本地索引与命令面板。不要同时配置 `gcs_engine_id` 或
-`params.search.algolia`。 {{% /field %}}
-{{% field name="offlineSearchIndex" type="string" default="content" %}}
+`params.search.algolia`。 {{< /field >}}
+{{< field name="offlineSearchIndex" type="string" default="content" >}}
 `summary` 只索引标题、描述与摘要；`content` 索引全部正文。**千页级站点应该用
 `summary`**——`content` 会产生数 MB 的索引，读者每次搜索都要先下载它。
-{{% /field %}}
-{{% field name="offlineSearchSummaryLength" type="integer" default="70" %}}
-结果摘要的长度。 {{% /field %}}
-{{% field name="offlineSearchMaxResults" type="integer" default="10" %}}
-最多显示几条结果。数值要保证对话框在移动端仍然好用。 {{% /field %}}
+{{< /field >}}
+{{< field name="offlineSearchSummaryLength" type="integer" default=70 >}}
+结果摘要的长度。 {{< /field >}}
+{{< field name="offlineSearchMaxResults" type="integer" default=10 >}}
+最多显示几条结果。数值要保证对话框在移动端仍然好用。 {{< /field >}}
 {{< /fields >}}
 
 构建后每种语言会生成一个索引：
@@ -80,7 +80,7 @@ public/offline-search-index.zh.json
 
 站点可以添加自己的命令：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 languages:
   zh:
     params:
@@ -115,14 +115,14 @@ search_exclude: false
 ---
 ```
 
-{{< fields >}} {{% field name="search_keywords" type="string 或数组" %}}
+{{< fields >}} {{< field name="search_keywords" type="string 或数组" >}}
 额外的匹配词。Latin 与 CJK 两条路径都会用到——读者搜 `pg`
-也能命中标题里只写了「PostgreSQL」的页面。 {{% /field %}}
-{{% field name="search_boost" type="number" default="1.0" %}}
-正数权重乘子。非法值（零、负数、非数字）会告警并按 `1.0` 处理。 {{% /field %}}
-{{% field name="search_exclude" type="boolean" default="false" %}}
+也能命中标题里只写了「PostgreSQL」的页面。 {{< /field >}}
+{{< field name="search_boost" type="number" default="1.0" >}}
+正数权重乘子。非法值（零、负数、非数字）会告警并按 `1.0` 处理。 {{< /field >}}
+{{< field name="search_exclude" type="boolean" default=false >}}
 把页面排除出索引。旧的 `exclude_search` 与 `excludeSearch` 仍然兼容。
-{{% /field %}} {{< /fields >}}
+{{< /field >}} {{< /fields >}}
 
 `search_boost` 可以通过 cascade 给整个分区设默认值，页面级设置会覆盖它：
 
@@ -150,14 +150,14 @@ Lunr 无法可靠地对中文分词，所以命令面板检测到 CJK 字符时�
 
 ### Google Custom Search {#google-search}
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   gcs_engine_id: YOUR_ENGINE_ID
 ```
 
 ### Algolia DocSearch {#algolia-docsearch}
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   search:
     algolia:

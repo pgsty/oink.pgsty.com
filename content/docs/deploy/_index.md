@@ -21,12 +21,12 @@ hugo --gc --minify
 Output goes to `public/`, which can be deployed independently of the source
 tree.
 
-{{< fields >}} {{% field name="--gc" type="flag" %}} Cleans unreferenced cache
-resources after the build. {{% /field %}}
-{{% field name="--minify" type="flag" %}} Minifies HTML, CSS, JS, and XML
-output. {{% /field %}} {{% field name="--baseURL" type="string" %}} Overrides
+{{< fields >}} {{< field name="--gc" type="flag" >}} Cleans unreferenced cache
+resources after the build. {{< /field >}}
+{{< field name="--minify" type="flag" >}} Minifies HTML, CSS, JS, and XML
+output. {{< /field >}} {{< field name="--baseURL" type="string" >}} Overrides
 the configured `baseURL`. **Must include the path when deploying to a subpath.**
-{{% /field %}} {{< /fields >}}
+{{< /field >}} {{< /fields >}}
 
 ## baseURL is the most common failure {#baseurl}
 
@@ -57,7 +57,7 @@ It does **not** change which content exists.
 
 A preview environment should keep search engines out:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   # true on preview deployments
   private: true

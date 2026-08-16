@@ -12,7 +12,7 @@ as the primary language and Simplified Chinese (`zh`) as the second.
 
 ## Configure languages {#configure-languages}
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 defaultContentLanguage: en
 
 languages:
@@ -34,16 +34,16 @@ languages:
       time_format_blog: 2006年1月2日
 ```
 
-{{< fields >}} {{% field name="label" type="string" required=true %}} The name
+{{< fields >}} {{< field name="label" type="string" required=true >}} The name
 shown in the language selector, written in that language — `简体中文`, not
-`Chinese`. {{% /field %}} {{% field name="locale" type="string" %}} The standard
+`Chinese`. {{< /field >}} {{< field name="locale" type="string" >}} The standard
 language tag used for `<html lang>`, `hreflang` alternates, and Open Graph
-metadata. {{% /field %}} {{% field name="weight" type="integer" %}} Sets both
+metadata. {{< /field >}} {{< field name="weight" type="integer" >}} Sets both
 the language order and the selector's cycle order; lower comes first.
-{{% /field %}} {{% field name="title" type="string" %}} The site title in that
-language. {{% /field %}} {{% field name="params.*" type="map" %}} Language-level
+{{< /field >}} {{< field name="title" type="string" >}} The site title in that
+language. {{< /field >}} {{< field name="params.*" type="map" >}} Language-level
 parameters override the global value of the same name; anything undefined is
-inherited. Date formats usually need a per-language value. {{% /field %}}
+inherited. Date formats usually need a per-language value. {{< /field >}}
 {{< /fields >}}
 
 When menu labels differ by language, define `menus` under each language.
@@ -53,10 +53,10 @@ When menu labels differ by language, define `menus` under each language.
 A translation sits **beside its source in the same directory**, distinguished by
 a filename suffix:
 
-{{< filetree >}} {{< filetree/folder name="content/docs" open=true >}}
-{{< filetree/file name="install.md" >}}
-{{< filetree/file name="install.zh.md" >}} {{< /filetree/folder >}}
-{{< /filetree >}}
+- content/docs/
+  - install.md
+  - install.zh.md
+{.filetree}
 
 The shared base filename is what makes Hugo treat them as one page in two
 languages.
@@ -125,7 +125,7 @@ detects CJK characters. Both paths apply the same ranking boost.
 
 Declare the writing direction on the language:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 languages:
   ar:
     label: العربية
@@ -149,7 +149,7 @@ currently fall back to English.
 
 To override one string, create a file of the same name under the site's `i18n/`:
 
-```yaml {filename="i18n/zh.yaml"}
+```yaml {title="i18n/zh.yaml"}
 ui_search: 搜索文档
 ```
 

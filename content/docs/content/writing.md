@@ -60,7 +60,7 @@ prompts and output, and collapse long reference listings that readers do not
 need to scan before continuing. Use a Code Group only when panels are
 interchangeable ways to complete the same task.
 
-```yaml {filename="hugo.yaml" hl_lines="3"}
+```yaml {title="hugo.yaml" hl_lines="3"}
 params:
   offlineSearch: true
   print:

@@ -71,10 +71,10 @@ A processed preview with a **Markdown caption**.
 Activate the image with a pointer, Enter, or Space. Close the dialog with
 Escape, the visible close button, or the backdrop.
 
-{{< imgproc src="images/content-primitives/oink.webp" command="Fit" options="640x320" alt="OINK local-first documentation preview" >}}
+{{< image src="images/content-primitives/oink.webp" command="Fit" options="640x320" alt="OINK local-first documentation preview" >}}
 The document displays a processed preview. Image Zoom opens the **original
 resource**, and closing the dialog restores focus to this trigger.
-{{< /imgproc >}}
+{{< /image >}}
 
 An image inside a link is deliberately skipped and remains a link:
 

@@ -44,7 +44,7 @@ hugo mod get github.com/pgsty/oink@{{% param tdVersion.latest %}}
 
 Import it in `hugo.yaml`:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 module:
   imports:
     - path: github.com/pgsty/oink
@@ -113,7 +113,7 @@ site/
     └── oink/
 ```
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 theme: oink
 ```
 

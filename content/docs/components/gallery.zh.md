@@ -38,11 +38,10 @@ Gallery 适合比较少量截图、状态或相关视觉示例。如果顺序和
 
 <!-- prettier-ignore-start -->
 
-{{< gallery columns=3 label="OINK 截图与布局示例" >}}
-  {{< gallery/image src="images/content-primitives/oink.webp" alt="OINK 文档概览" caption="具有已知固有尺寸的全局图片资源。" >}}
-  {{< gallery/image src="/images/feedback.png" alt="OINK 反馈界面" caption="这段刻意加长的说明文字用于演示桌面端和移动端都能正常换行，不会遮挡相邻图片或撑宽文档。" >}}
-  {{< gallery/image src="/images/version-banner.png" alt="OINK 版本横幅界面" caption="窄视口会自动减少响应式网格的实际列数。" >}}
-{{< /gallery >}}
+- ![OINK 文档概览](images/content-primitives/oink.webp) — 具有已知固有尺寸的全局图片资源。
+- ![OINK 反馈界面](/images/feedback.png) — 这段刻意加长的说明文字用于演示桌面端和移动端都能正常换行，不会遮挡相邻图片或撑宽文档。
+- ![OINK 版本横幅界面](/images/version-banner.png) — 窄视口会自动减少响应式网格的实际列数。
+{.gallery}
 
 <!-- prettier-ignore-end -->
 

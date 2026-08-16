@@ -42,7 +42,7 @@ checks facts and language, and publication builds and verifies the site.
 
 <!-- prettier-ignore-start -->
 
-{{< infographic >}}
+```infographic
 infographic list-row-simple-horizontal-arrow
 data
   title Documentation workflow
@@ -53,7 +53,7 @@ data
       desc Check facts and language
     - label Publish
       desc Build and verify the site
-{{< /infographic >}}
+```
 
 <!-- prettier-ignore-end -->
 

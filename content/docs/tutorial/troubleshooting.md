@@ -64,7 +64,7 @@ saying so.
 
 No theme feature needs it. Sites that still do can bundle it themselves:
 
-```html {filename="layouts/_partials/hooks/head-end.html"}
+```html {title="layouts/_partials/hooks/head-end.html"}
 <script src="{{ (resources.Get "js/jquery.min.js").RelPermalink }}"></script>
 ```
 
@@ -74,7 +74,7 @@ Since 0.3.0 moved fonts behind semantic roles, the body and heading roles apply
 directly to content. A site that only restyled raw `body` or heading selectors
 should move to the role variables:
 
-```scss {filename="assets/scss/_styles_project.scss"}
+```scss {title="assets/scss/_styles_project.scss"}
 /* Before */
 body {
   font-family: 'My Sans', sans-serif;

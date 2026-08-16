@@ -10,7 +10,7 @@ Extended。适合用容器的情况：团队要固定工具链版本，或者不
 
 ## 构建镜像 {#build-the-image}
 
-```dockerfile {filename="Dockerfile" collapse=16}
+```dockerfile {title="Dockerfile" collapse=16}
 FROM debian:bookworm-slim
 
 ARG HUGO_VERSION=0.164.0

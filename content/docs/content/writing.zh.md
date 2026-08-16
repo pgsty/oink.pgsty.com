@@ -48,7 +48,7 @@ Oink 是一款 Hugo 主题，因此普通 Markdown 与 Hugo 内容模型仍是�
 代码块对应真实文件时应标出文件名；包含提示符与输出的会话应使用
 `console`；不必在继续阅读前看完的长参考配置可以折叠。只有当多个面板是完成同一任务的可互换方案时，才使用代码组。
 
-```yaml {filename="hugo.yaml" hl_lines="3"}
+```yaml {title="hugo.yaml" hl_lines="3"}
 params:
   offlineSearch: true
   print:

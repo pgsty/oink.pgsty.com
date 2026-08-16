@@ -40,7 +40,7 @@ hugo mod get github.com/pgsty/oink@{{% param tdVersion.latest %}}
 
 在 `hugo.yaml` 中导入：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 module:
   imports:
     - path: github.com/pgsty/oink
@@ -104,7 +104,7 @@ site/
     └── oink/
 ```
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 theme: oink
 ```
 

@@ -59,7 +59,7 @@ OINK 0.3.0 **移除了 jQuery**。此前它在每个页面的 `<head>`
 
 主题的任何功能都不需要它。仍然需要的站点自行打包：
 
-```html {filename="layouts/_partials/hooks/head-end.html"}
+```html {title="layouts/_partials/hooks/head-end.html"}
 <script src="{{ (resources.Get "js/jquery.min.js").RelPermalink }}"></script>
 ```
 
@@ -68,7 +68,7 @@ OINK 0.3.0 **移除了 jQuery**。此前它在每个页面的 `<head>`
 0.3.0 把字体收敛到语义角色之后，正文和标题角色直接作用于内容。只改原始 `body`
 或标题选择器的站点需要改用角色变量：
 
-```scss {filename="assets/scss/_styles_project.scss"}
+```scss {title="assets/scss/_styles_project.scss"}
 /* 改前 */
 body {
   font-family: 'My Sans', sans-serif;

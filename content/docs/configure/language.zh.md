@@ -9,7 +9,7 @@ OINK 直接使用 Hugo 的多语言页面模型，不引入站点专属的域名
 
 ## 配置语言 {#configure-languages}
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 defaultContentLanguage: en
 
 languages:
@@ -31,16 +31,16 @@ languages:
       time_format_blog: 2006年1月2日
 ```
 
-{{< fields >}} {{% field name="label" type="string" required=true %}}
+{{< fields >}} {{< field name="label" type="string" required=true >}}
 语言选择器里显示的名字，用该语言自己的文字写——`简体中文` 而不是 `Chinese`。
-{{% /field %}} {{% field name="locale" type="string" %}} 标准语言标签，用于
-`<html lang>`、`hreflang` 备用链接和 Open Graph 元数据。 {{% /field %}}
-{{% field name="weight" type="integer" %}}
-同时决定语言排序和选择器轮换顺序，数字小的在前。 {{% /field %}}
-{{% field name="title" type="string" %}} 该语言下的站点标题。 {{% /field %}}
-{{% field name="params.*" type="map" %}}
+{{< /field >}} {{< field name="locale" type="string" >}} 标准语言标签，用于
+`<html lang>`、`hreflang` 备用链接和 Open Graph 元数据。 {{< /field >}}
+{{< field name="weight" type="integer" >}}
+同时决定语言排序和选择器轮换顺序，数字小的在前。 {{< /field >}}
+{{< field name="title" type="string" >}} 该语言下的站点标题。 {{< /field >}}
+{{< field name="params.*" type="map" >}}
 语言级参数覆盖全局同名值；没定义的继承全局。日期格式通常需要按语言设置。
-{{% /field %}} {{< /fields >}}
+{{< /field >}} {{< /fields >}}
 
 菜单标签因语言而异时，在各语言下分别定义 `menus`。
 
@@ -48,10 +48,10 @@ languages:
 
 译文与原文并排放在同一目录，用文件名后缀区分：
 
-{{< filetree >}} {{< filetree/folder name="content/docs" open=true >}}
-{{< filetree/file name="install.md" >}}
-{{< filetree/file name="install.zh.md" >}} {{< /filetree/folder >}}
-{{< /filetree >}}
+- content/docs/
+  - install.md
+  - install.zh.md
+{.filetree}
 
 相同的基础文件名让 Hugo 把它们识别为同一页面的不同语言版本。
 
@@ -111,7 +111,7 @@ public/offline-search-index.zh.json
 
 在语言下声明书写方向：
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 languages:
   ar:
     label: العربية
@@ -132,7 +132,7 @@ OINK 会加载 Bootstrap 的 RTL 样式表，主题自身的 CSS 使用逻辑属
 
 站点要覆盖某条界面文案时，在自己的 `i18n/` 下建同名文件：
 
-```yaml {filename="i18n/zh.yaml"}
+```yaml {title="i18n/zh.yaml"}
 ui_search: 搜索文档
 ```
 

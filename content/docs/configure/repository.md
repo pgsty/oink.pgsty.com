@@ -220,7 +220,7 @@ translated_from:
   revision: 9d02de5
 ```
 
-```go-html-template {filename="layouts/_partials/page-annotation.html"}
+```go-html-template {title="layouts/_partials/page-annotation.html"}
 {{ partial "page-meta-lastmod.html" . }}
 {{ with .Params.upstream }}
   <p>Portions adapted from <a href="{{ .url }}">{{ .project }}</a>,

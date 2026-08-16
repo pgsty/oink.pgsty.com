@@ -35,7 +35,7 @@ publish.
 
 <!-- prettier-ignore-start -->
 
-{{< echarts height="300px" >}}
+```echarts {height="300px"}
 xAxis:
   type: category
   data: [Draft, Review, Publish]
@@ -44,7 +44,7 @@ yAxis:
 series:
   - type: bar
     data: [12, 9, 4]
-{{< /echarts >}}
+```
 
 <!-- prettier-ignore-end -->
 

@@ -48,21 +48,16 @@ semantic colors, `#` comments, and the compact mode/owner:group region.
 
 <!-- prettier-ignore-start -->
 
-{{< filetree label="Repository structure" >}}
-  {{< filetree/folder name="content" open=true comment="Page bundles and templates" owner="docs" group="writers" mode="0755" >}}
-    {{< filetree/file name="_index.md" icon="fa-solid fa-file-code" color="primary" comment="Section landing page" owner="docs" group="writers" mode="0644" >}}
-    {{< filetree/folder name="docs" open=true comment="Product guides" >}}
-      {{< filetree/folder name="operations-and-troubleshooting" open=true icon="fa-solid fa-screwdriver-wrench" color="warning" comment="Runbooks and recovery" >}}
-        {{< filetree/file name="a-deliberately-long-runbook-filename-that-wraps-without-horizontal-overflow.md" link="/docs/" color="danger" comment="Emergency procedure" owner="sre" group="on-call" mode="0640" >}}
-      {{< /filetree/folder >}}
-      {{< filetree/file name="configuration.md" link="/docs/configure/" icon="fa-solid fa-gears" color="info" comment="Runtime settings" >}}
-    {{< /filetree/folder >}}
-    {{< filetree/folder name="blog" comment="Release notes and stories" >}}
-      {{< filetree/file name="release.md" icon="fa-regular fa-newspaper" color="secondary" comment="Release announcement" >}}
-    {{< /filetree/folder >}}
-  {{< /filetree/folder >}}
-  {{< filetree/file name="hugo.yml" link="https://github.com/pgsty/oink.pgsty.com/blob/main/hugo.yml" icon="fa-solid fa-gears" color="warning" comment="Site configuration" owner="root" group="wheel" mode="0640" >}}
-{{< /filetree >}}
+- content/ — 0755 docs:writers · Page bundles and templates
+  - _index.md — 0644 docs:writers · Section landing page
+  - docs/ — Product guides
+    - operations-and-troubleshooting/ — Runbooks and recovery
+      - [a-deliberately-long-runbook-filename-that-wraps-without-horizontal-overflow.md](/docs/) — 0640 sre:on-call · Emergency procedure
+    - [configuration.md](/docs/configure/) — Runtime settings
+  - blog/ — Release notes and stories
+    - release.md — Release announcement
+- [hugo.yml](https://github.com/pgsty/oink.pgsty.com/blob/main/hugo.yml) — 0640 root:wheel · Site configuration
+{.filetree}
 
 <!-- prettier-ignore-end -->
 
@@ -98,19 +93,14 @@ independently instead of pushing the filename out of view.
 
 <!-- prettier-ignore-start -->
 
-{{< filetree label="Deployment filesystem" >}}
-  {{< filetree/folder name="/srv/atlas" open=true icon="fa-solid fa-server" color="primary" comment="Application root" owner="root" group="root" mode="0755" >}}
-    {{< filetree/folder name="releases" open=true color="secondary" comment="Immutable builds" owner="deploy" group="release-engineering" mode="0750" >}}
-      {{< filetree/folder name="2026.08.16" open=true icon="fa-solid fa-box-archive" color="success" comment="Active release" owner="deploy" group="release-engineering" mode="0750" >}}
-        {{< filetree/file name="atlas-server" icon="fa-solid fa-terminal" color="success" comment="Executable" owner="deploy" group="atlas" mode="0555" >}}
-        {{< filetree/file name="app.toml" icon="fa-solid fa-gears" color="info" comment="Runtime configuration" owner="root" group="atlas" mode="0640" >}}
-      {{< /filetree/folder >}}
-    {{< /filetree/folder >}}
-    {{< filetree/folder name="secrets" icon="fa-solid fa-lock" color="danger" comment="Restricted credentials" owner="root" group="security" mode="0700" >}}
-      {{< filetree/file name="production.env" color="danger" owner="root" group="security" mode="0600" >}}
-    {{< /filetree/folder >}}
-  {{< /filetree/folder >}}
-{{< /filetree >}}
+- /srv/atlas/ — 0755 root:root · Application root
+  - releases/ — 0750 deploy:release-engineering · Immutable builds
+    - 2026.08.16/ — 0750 deploy:release-engineering · Active release
+      - atlas-server — 0555 deploy:atlas · Executable
+      - app.toml — 0640 root:atlas · Runtime configuration
+  - secrets/ — 0700 root:security · Restricted credentials
+    - production.env — 0600 root:security
+{.filetree}
 
 <!-- prettier-ignore-end -->
 
@@ -144,20 +134,16 @@ icons and colors are decorative and disappear from Markdown output.
 
 <!-- prettier-ignore-start -->
 
-{{< filetree label="Data platform workspace" >}}
-  {{< filetree/folder name="warehouse" open=true icon="fa-solid fa-database" color="primary" comment="Persistent datasets" >}}
-    {{< filetree/file name="customers.parquet" icon="fa-solid fa-table-columns" color="info" comment="Curated customer dimension" >}}
-  {{< /filetree/folder >}}
-  {{< filetree/folder name="pipelines" open=true icon="fa-solid fa-diagram-project" color="secondary" comment="Scheduled transformations" >}}
-    {{< filetree/file name="extract.py" icon="fa-brands fa-python" color="warning" comment="Source ingestion" >}}
-    {{< filetree/file name="quality.sql" icon="fa-solid fa-database" color="success" comment="Validation checks" >}}
-  {{< /filetree/folder >}}
-  {{< filetree/folder name="secrets" icon="fa-solid fa-lock" color="danger" comment="Not committed" >}}
-    {{< filetree/file name=".env" color="danger" comment="Local credentials" >}}
-  {{< /filetree/folder >}}
-  {{< filetree/file name="Dockerfile" icon="fa-brands fa-docker" color="info" comment="Runtime image" >}}
-  {{< filetree/file name="README.md" link="/docs/" icon="fa-brands fa-markdown" color="neutral" comment="Operator guide" >}}
-{{< /filetree >}}
+- warehouse/ — Persistent datasets
+  - customers.parquet — Curated customer dimension
+- pipelines/ — Scheduled transformations
+  - extract.py — Source ingestion
+  - quality.sql — Validation checks
+- secrets/ — Not committed
+  - .env — Local credentials
+- Dockerfile — Runtime image
+- [README.md](/docs/) — Operator guide
+{.filetree}
 
 <!-- prettier-ignore-end -->
 

@@ -28,11 +28,11 @@ This post is a companion to the
 - **This guide is for you if** you're:
   - [Upgrading to Docsy 0.16.0](/blog/docsy/0.16.0/#upgrade)
   - Upgrading only Hugo
-- Review {{% _param BADGE BREAKING warning %}} changes:
+- Review {{< badge text="BREAKING" tone="warning" >}} changes:
   <a id="breaking-changes"></a>
-  - {{% _param BREAKING %}}
+  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
     [Node 22+ is required for Hugo-managed Node tools](#node-tools)
-  - {{% _param BREAKING %}}
+  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
     [HTML content and symlink security changed](#security)
 - Review **deprecations**: <a id="deprecations"></a>
   - [Language config and template APIs](#language-apis)
@@ -43,7 +43,7 @@ This post is a companion to the
   - [Template and module cleanup](#template-module-cleanup)
   - [Faster builds and stricter templates](#hugo-0-164-0)
   - [Notable changes](#notable-changes)
-- {{% _param FAS rocket primary %}} Jump to
+- <i class="fa-solid fa-rocket text-primary px-1"></i> Jump to
   [Upgrade to Hugo {{% param hugoSupportedVersion %}}](#upgrade) once you're
   ready.
 
@@ -135,7 +135,7 @@ around passthrough elements in headings, shortcode rendering context markers,
 and multilingual root section generation; include such pages in your smoke
 tests.
 
-## {{% _param BREAKING %}} Node-managed tools (0.161.x) {#node-tools}
+## <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> Node-managed tools (0.161.x) {#node-tools}
 
 Hugo 0.161.x runs Node-based tools such as PostCSS, Babel, and Tailwind under
 Node's `--permission` sandbox. This requires **Node 22 or later**.
@@ -147,7 +147,7 @@ breaking change even when the Docsy theme itself has not changed. Hugo
 
 ### Actions {#node-tools-actions}
 
-{{% _param BREAKING %}} **Applies if** your site uses Hugo 0.161.x or later and
+<i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> **Applies if** your site uses Hugo 0.161.x or later and
 runs PostCSS, Babel, Tailwind, or similar Node tools during the Hugo build.
 
 - Upgrade Node to the active LTS release. For Docsy 0.16.0, use Node LTS 24.
@@ -162,7 +162,7 @@ runs PostCSS, Babel, Tailwind, or similar Node tools during the Hugo build.
 - If a Node tool legitimately spawns child processes and Hugo [0.161.1][] or
   later blocks it, review `security.node.permissions.AllowChildProcess`.
 
-## {{% _param BREAKING %}} Content and resource security (0.161.x-0.163.x) {#security}
+## <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> Content and resource security (0.161.x-0.163.x) {#security}
 
 Hugo tightened several security boundaries in this range:
 
@@ -176,7 +176,7 @@ Hugo tightened several security boundaries in this range:
 
 ### Actions {#security-actions}
 
-{{% _param BREAKING %}} **Applies if** your site uses remote resources,
+<i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> **Applies if** your site uses remote resources,
 hand-authored `.html` content files, symlinked content/assets, or
 `templates.Defer` inside cached partials.
 
@@ -296,7 +296,7 @@ stopping at 0.160.1.
 - On Hugo 0.164.0, `hugo gen chromastyles` gains `--mode` and `--modeSelector`
   flags for generating combined light/dark syntax-highlighting stylesheets.
 
-## {{% _param FAS rocket primary %}} Upgrade to Hugo {{% param hugoSupportedVersion %}} {#upgrade}
+## <i class="fa-solid fa-rocket text-primary px-1"></i> Upgrade to Hugo {{% param hugoSupportedVersion %}} {#upgrade}
 
 After addressing applicable breaking changes and deprecations, upgrade to Hugo
 [{{% param hugoSupportedVersion %}}][hugo-supported-version].
@@ -315,7 +315,7 @@ hvm use {{% param hugoSupportedVersion %}}/extended
 
 For other installation methods, see [Install Hugo][].
 
-### {{% _param FAS square-check primary %}} Sanity checks
+### <i class="fa-solid fa-square-check text-primary px-1"></i> Sanity checks
 
 Confirm that you've addressed [every action][] that applies to your site. Then:
 

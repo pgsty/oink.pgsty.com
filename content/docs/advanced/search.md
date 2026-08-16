@@ -17,7 +17,7 @@ are off by default. **Only one search implementation can be active at a time.**
 
 ## Enable local search {#enable-local-search}
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   offlineSearch: true
   offlineSearchIndex: summary # summary | content
@@ -26,19 +26,19 @@ params:
 ```
 
 {{< fields >}}
-{{% field name="offlineSearch" type="boolean" default="false" required=true %}}
+{{< field name="offlineSearch" type="boolean" default=false required=true >}}
 Enables the local index and the Command Palette. Do not also configure
-`gcs_engine_id` or `params.search.algolia`. {{% /field %}}
-{{% field name="offlineSearchIndex" type="string" default="content" %}}
+`gcs_engine_id` or `params.search.algolia`. {{< /field >}}
+{{< field name="offlineSearchIndex" type="string" default="content" >}}
 `summary` indexes titles, descriptions, and excerpts; `content` indexes full
 body text. **A thousand-page site should use `summary`** — `content` produces a
 multi-megabyte index that every reader downloads before their first search.
-{{% /field %}}
-{{% field name="offlineSearchSummaryLength" type="integer" default="70" %}} The
-length of a result summary. {{% /field %}}
-{{% field name="offlineSearchMaxResults" type="integer" default="10" %}} How
+{{< /field >}}
+{{< field name="offlineSearchSummaryLength" type="integer" default=70 >}} The
+length of a result summary. {{< /field >}}
+{{< field name="offlineSearchMaxResults" type="integer" default=10 >}} How
 many results to show. Keep it low enough that the dialog stays usable on mobile.
-{{% /field %}} {{< /fields >}}
+{{< /field >}} {{< /fields >}}
 
 The build produces one index per language:
 
@@ -100,7 +100,7 @@ Palette.
 
 A site can add its own commands:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 languages:
   en:
     params:
@@ -138,15 +138,15 @@ search_exclude: false
 ---
 ```
 
-{{< fields >}} {{% field name="search_keywords" type="string or array" %}} Extra
+{{< fields >}} {{< field name="search_keywords" type="string or array" >}} Extra
 matching terms, used on both the Latin and CJK paths — a reader searching `pg`
-reaches a page whose title only says "PostgreSQL". {{% /field %}}
-{{% field name="search_boost" type="number" default="1.0" %}} A positive
+reaches a page whose title only says "PostgreSQL". {{< /field >}}
+{{< field name="search_boost" type="number" default="1.0" >}} A positive
 multiplier. Invalid values — zero, negative, non-numeric — warn and fall back to
-`1.0`. {{% /field %}}
-{{% field name="search_exclude" type="boolean" default="false" %}} Excludes the
+`1.0`. {{< /field >}}
+{{< field name="search_exclude" type="boolean" default=false >}} Excludes the
 page from the index. The older `exclude_search` and `excludeSearch` remain
-accepted. {{% /field %}} {{< /fields >}}
+accepted. {{< /field >}} {{< /fields >}}
 
 `search_boost` can be set for a whole section through cascade, with page-level
 values winning:
@@ -180,14 +180,14 @@ actually reached the Chinese index before changing tokenization.
 
 ### Google Custom Search {#google-search}
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   gcs_engine_id: YOUR_ENGINE_ID
 ```
 
 ### Algolia DocSearch {#algolia-docsearch}
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 params:
   search:
     algolia:
