@@ -94,14 +94,13 @@ date: 2020-08-11
 description: Feed-safe grouped code.
 ---
 
-{{< code-group id="rss-install" persist=false >}}
-  {{< code-tab title="npm" value="npm" lang="bash" >}}
+\`\`\`bash {tab="npm" group="rss-install" value="npm"}
 npm install example
-  {{< /code-tab >}}
-  {{< code-tab title="pnpm" value="pnpm" lang="bash" >}}
+\`\`\`
+
+\`\`\`bash {tab="pnpm" value="pnpm"}
 pnpm add example
-  {{< /code-tab >}}
-{{< /code-group >}}
+\`\`\`
 `,
     );
     writeFileSync(
@@ -179,7 +178,7 @@ The complete article continues here.
     assert.match(probeFeed, /rss-safe/);
     assert.doesNotMatch(
       probeFeed,
-      /data-td-code-group|nav-tabs|data-td-code-copy|data-td-code-status|&lt;button|<button/,
+      /data-td-code-group|data-td-tabs|nav-tabs|data-td-code-copy|data-td-code-status|&lt;button|<button/,
     );
     assert.match(probeFeed, /Before more/);
     assert.doesNotMatch(

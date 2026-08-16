@@ -1,186 +1,265 @@
 ---
-title: 短代码
+downstream_modified: true
+title: Callouts、标签页、步骤与卡片
+linkTitle: 版式
 weight: 80
-description: 安全、无障碍地使用 OINK 的本地优先内容组件。
+description:
+  用 Markdown 原生的 callout、标签页、步骤、卡片以及少数保留短代码组织页面结构。
 ---
 
-短代码用于表达普通 Markdown 无法承载的行为。OINK 保留 Docsy 核心组件，并新增本地提供的图表、终端录像、信息图、轮播、卡片和折叠组件。浏览器运行时只在实际使用它们的页面加载。
+OINK 的大多数组件都有 **原生形态**：一个普通 Markdown 块，加上 `{.steps}`
+之类的标记或 `{tab="npm"}`
+之类的属性行。同一份源码在 GitHub、任何 Markdown 编辑器和 OINK 自己的 Markdown 输出里读起来完全一样。只有当普通块表达不了内容时才使用短代码（**全量形态**）：标签页和卡片里的任意 Markdown 正文、处理型图片、引入文件，以及 Book 能力包。
 
-标题、正文、列表、链接、表格和图片应优先使用 Markdown。短代码一旦投入使用，就成为内容 API 的一部分：修改名称或参数可能破坏所有调用它的页面。
+本页介绍结构类组件。代码围栏、表格、图片和更小的原语各有独立页面；主题仓库中的[编写指南](https://github.com/pgsty/oink/blob/main/docs/components.md)是规范性的 API 摘要。
 
-## 短代码分隔符 {#shortcode-delimiters}
+## 分隔符与标记 {#shortcode-delimiters}
 
-Hugo 支持两种形式：
+Hugo 有两种短代码分隔符，OINK 有意区分使用：
 
-- `{{</* name */>}}` 使用标准分隔符，原样传递内部内容；
-- `{{%/* name */%}}`
-  使用 Markdown 分隔符，在周围内容的上下文中渲染内部 Markdown。
+- `{{%/* steps */%}}` 是 **唯一** 的 `{{%/* */%}}`
+  短代码。它的正文是页面级 Markdown，因此其中的标题会进入目录（TOC）。
+- 其余短代码一律使用 `{{</* name */>}}`。`tabs`、`cards`、`fields`、`image`
+  等容器由模板自己渲染 Markdown 正文。
 
-请采用各组件文档指定的形式。嵌套、缩进和空行都会影响结果，在列表和块引用中尤其如此。示例里的
+标记是写在列表或表格下一行的 Goldmark 块属性：`{.steps}`、`{.cards}`、`{.filetree}`、`{.gallery}`、`{.fields}`、`{.matrix}`
+与
+`{.full-width}`。标记必须紧贴块的最后一行；中间隔一个空行会让它悄悄脱离。示例里的
 `/* ... */` 转义用于防止 Hugo 执行正在展示的短代码。
 
-## `blocks/*` 短代码 <a id="shortcode-blocks"></a> {#blocks}
+两项站点设置让原生形态生效，也是 OINK 预检的一部分：`markup.goldmark.renderer.unsafe: true`
+与 `markup.goldmark.parser.attribute.block: true`。
 
-块短代码用于组合全宽落地页。`color`
-参数使用 OINK/Bootstrap 语义颜色或项目自定义块样式，`height`
-参数接受各组件说明的取值。
+## Callouts {#callouts}
 
-### `blocks/cover` <a id="blockscover"></a> {#blocks-cover}
+<a id="alert"></a><a id="pageinfo"></a><a id="helpers-shortcodes"></a>
 
-使用页面包中匹配 `*background*` 的图片以及可选的 `*logo*` 创建首屏：
+Callout 是 GitHub 风格的块引用，可选 Obsidian 风格的标题与折叠符号。不需要短代码，也不需要 JavaScript。
 
-```markdown
-{{</* blocks/cover title="OINK" subtitle="本地优先文档"
-    color="dark" height="max" */>}} [开始使用](/zh/docs/tutorial/){ .btn .btn-lg
-.btn-primary } {{</* /blocks/cover */>}}
-```
+### 源码 {#callouts-source}
 
-`image_anchor` 和 `logo_anchor` 控制图片裁切位置，`byline`
-用于标注图片来源。高度可取 `auto`、`min`、`med`、`max` 或
-`full`。即使背景无法显示，首屏关键信息也必须保持可读。
-
-### `blocks/lead` <a id="blockslead"></a> {#blocks-lead}
-
-创建醒目的介绍区块：
+<!-- prettier-ignore-start -->
 
 ```markdown
-{{%/* blocks/lead color="primary" height="min" */%}} OINK 只用 Hugo
-Extended 即可构建完整文档体验。 {{%/* /blocks/lead */%}}
+> [!TIP] 标题是行内 Markdown
+>
+> 正文是页面级 Markdown：列表、围栏、表格、嵌套 callout 都可以。
+
+> [!NOTE]- 默认折叠
+>
+> `-` 折叠 callout；`+` 同样折叠但默认展开。
+
+> [!DETAILS] 中性折叠块
+>
+> 默认收起，没有语义颜色。
+{icon="fa-solid fa-rocket"}
 ```
 
-高度支持 `auto`、`min`、`med`、`max` 或 `full`。
+<!-- prettier-ignore-end -->
 
-### `blocks/section` <a id="blockssection"></a> {#blocks-section}
+### 渲染结果 {#callouts-rendered-result}
 
-创建通用落地页区块：
+<!-- prettier-ignore-start -->
+
+> [!TIP] 标题是行内 Markdown
+>
+> 正文是页面级 Markdown：列表、围栏、表格、嵌套 callout 都可以。
+
+> [!NOTE]- 默认折叠
+>
+> `-` 折叠 callout；`+` 同样折叠但默认展开。
+
+> [!DETAILS] 中性折叠块
+>
+> 默认收起，没有语义颜色。
+{icon="fa-solid fa-rocket"}
+
+<!-- prettier-ignore-end -->
+
+### 类型与规则 {#callout-types}
+
+| 类型                                            | 行为                                                |
+| ----------------------------------------------- | --------------------------------------------------- |
+| `NOTE` `TIP` `IMPORTANT` `WARNING` `CAUTION`    | GitHub 的五种类型，在 GitHub 上也原生渲染           |
+| `SUCCESS` `DANGER` `QUESTION` `EXAMPLE` `QUOTE` | 额外的语义类型，各有图标与强调色                    |
+| `DETAILS`                                       | 中性折叠块，默认收起，写成 `[!DETAILS]+` 时默认展开 |
+| `[!TYPE]-` / `[!TYPE]+`                         | 折叠任意类型：默认收起或展开，使用原生 `<details>`  |
+
+- 标记后的标题是行内 Markdown；省略时使用本地化的类型名。
+- 属性行接受 `icon`（恰好一对 Font Awesome class）与
+  `class`；`style`、事件处理器和未知键会导致构建失败。
+- 未知类型会渲染成普通块引用并保留可见的 `[!TYPE]`
+  标记，因此不会有内容悄悄丢失。
+- 打印和 RSS 会把所有 callout 静态展开；Markdown 输出保留源码块引用。
+- 如果内容会经过 Prettier 之类的 Markdown 格式化工具，请像上面一样在标题行后保留一个空的
+  `>` 行，并把 `{icon=…}`、`{.steps}` 这类标记行包在
+  `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->`
+  之间；否则格式化工具会把标题并入正文，或把标记行并进上一个块。
+
+## 标签页 {#tabs}
+
+<a id="tabbed-panes"></a><a id="code-groups"></a>
+
+标签页用于并列等价的表示形式——包管理器、YAML/TOML/JSON、环境变量与配置项。它不能用来隐藏顺序步骤或互不相关的选择。
+
+### 相邻围栏 {#adjacent-fences}
+
+给连续的围栏加上 `tab` 属性，它们就组成一个标签页集。在第一个围栏上加 `group`
+可启用 URL
+hash、页内多组同步与浏览器持久化；分组内的每个围栏随后都需要一个稳定的 `value`。
+
+**作者写法**
+
+<!-- prettier-ignore-start -->
+
+````markdown
+```bash {tab="Homebrew" group="install" value="brew"}
+brew install pigsty
+```
+
+```bash {tab="APT" value="apt"}
+sudo apt install pigsty
+```
+````
+
+<!-- prettier-ignore-end -->
+
+**渲染结果**
+
+<!-- prettier-ignore-start -->
+
+```bash {tab="Homebrew" group="install" value="brew"}
+brew install pigsty
+```
+
+```bash {tab="APT" value="apt"}
+sudo apt install pigsty
+```
+
+<!-- prettier-ignore-end -->
+
+没有 JavaScript、在 GitHub 上以及打印时，读者看到的是连续的带标题代码块；运行时增强页面之前不会隐藏任何内容。围栏的
+`tab` 可以与 `title`
+共存（文件名标题栏留在面板内）。[代码块](/zh/docs/components/code-blocks/#tabs)记录了完整的属性契约。
+
+### 相邻表格 {#adjacent-tables}
+
+同样的属性也适用于表格：连续带 `{tab="…"}` 的表格组成一个标签页集。
+
+<!-- prettier-ignore-start -->
+
+| 参数              | 取值 |
+| ----------------- | ---- |
+| `max_connections` | 100  |
+{tab="PG 17" group="pgver" value="pg17"}
+
+| 参数              | 取值 |
+| ----------------- | ---- |
+| `max_connections` | 200  |
+{tab="PG 16" value="pg16"}
+
+<!-- prettier-ignore-end -->
+
+### `tabs` 短代码 {#tabs-shortcode}
+
+当一个标签页承载正文、标题、列表或多个块时，使用短代码：
+
+```go-html-template
+{{</* tabs group="setting" default="conf" label="MinIO 设置" */>}}
+{{</* tab label="环境变量" value="env" */>}}
+在环境中设置 `MINIO_LOGGER_WEBHOOK_QUEUE_DIR`。
+{{</* /tab */>}}
+{{</* tab label="配置项" value="conf" */>}}
+用 `mc admin config set` 设置 `logger_webhook queue_dir`。
+
+> [!TIP]
+> 标签页内可以放任何块。
+{{</* /tab */>}}
+{{</* /tabs */>}}
+```
+
+<!-- prettier-ignore-start -->
+
+{{< tabs group="setting" default="conf" label="MinIO 设置" >}}
+{{< tab label="环境变量" value="env" >}}
+在环境中设置 `MINIO_LOGGER_WEBHOOK_QUEUE_DIR`。
+{{< /tab >}}
+{{< tab label="配置项" value="conf" >}}
+用 `mc admin config set` 设置 `logger_webhook queue_dir`。
+
+> [!TIP]
+> 标签页内可以放任何块。
+{{< /tab >}}
+{{< /tabs >}}
+
+<!-- prettier-ignore-end -->
+
+`tabs` 接受
+`group`（选择性启用 hash、同步与持久化）、`default`（某个子项的 value，需要
+`group`）与 `label`（标签栏的无障碍名称）。`tab` 必须有 `label`；有分组时
+`value` 必填，无分组时禁止。重复的 value、空的 `tabs`
+或子项之间的多余内容都会导致构建失败。
+
+### 行为 {#tabs-behaviour}
+
+- 分组的标签页集共享 `#<group>-<value>` hash，在页内互相同步，并把读者的选择记在
+  `localStorage`（`td-tabs:v1:<group>`）里。无分组的标签页集只在本地切换。
+- 键盘：左右方向键（感知 RTL）与 Home/End 移动并激活；焦点停留在标签上。
+- 打印和 RSS 渲染为带标题的静态分节；Markdown 输出为每个标签生成一个
+  `**标签名**` 小节。
+
+## 步骤 {#steps}
+
+Steps 会自动为一组顺序步骤编号。原生形态是带 `{.steps}`
+的有序列表；全量形态包裹标题。
+
+### 原生形态 {#steps-native}
+
+<!-- prettier-ignore-start -->
 
 ```markdown
-{{%/* blocks/section color="light" type="row" height="auto" */%}}
+1. 安装依赖
 
-### 一个分区
+   步骤里可以放任何块：段落、围栏、callout、嵌套列表。
 
-区块内部使用普通 Markdown。 {{%/* /blocks/section */%}}
+1. ### 初始化工作区 {#init}
+
+   步骤内的标题会进入目录。
+
+1. 验证安装
+{.steps}
 ```
 
-`type` 选择容器形式，`height` 使用块高度取值。标题级别必须与页面大纲保持一致。
+<!-- prettier-ignore-end -->
 
-### `blocks/feature` <a id="blocksfeature"></a> {#blocks-feature}
+<!-- prettier-ignore-start -->
 
-创建单个功能单元，通常放在 Section 中：
+1. 安装依赖
 
-```markdown
-{{%/* blocks/feature icon="fa-solid fa-box-archive"
-    title="离线可用" url="/zh/docs/about/local-first/"
-    url_text="阅读设计说明" */%}} 所需浏览器资源均已锁定版本并从本地提供。
-{{%/* /blocks/feature */%}}
-```
+   步骤里可以放任何块：段落、围栏、callout、嵌套列表。
 
-图标只是装饰，含义必须由 `title` 和链接文本表达。
+   ```bash
+   brew install pigsty
+   ```
 
-### `blocks/link-down` <a id="blockslinkdown"></a> {#blocks-link-down}
+1. 初始化工作区
 
-从当前块添加指向下一块的链接。它必须嵌套在块内。生成目标必须长期稳定时，应显式设置
-`id`。
+   > [!NOTE]
+   > 步骤内可以使用 callout。
 
-### 导航栏下方布局校正 {#td-below-navbar}
+1. 验证安装
+{.steps}
 
-直接位于固定导航下方的块使用 `td-below-navbar`/`td-anchor-no-extra-offset`
-校正导航栏高度。不要自行添加任意上边距；修改导航栏尺寸后，应验证直接访问片段链接的效果。
+<!-- prettier-ignore-end -->
 
-## 辅助短代码 <a id="helpers-shortcodes"></a> {#helpers-shortcodes}
+每一项都写成
+`1.`，这样内容缩进恒为三个空格，重新排序也不必手工改号。步骤项可以包含任何块和任何
+`{{</* */>}}` 短代码，但不能包含 `{{%/* */%}}` 容器。
 
-### `alert` {#alert}
+### 全量形态 {#steps-full}
 
-旧版告警短代码仍可使用：
-
-```markdown
-{{%/* alert title="兼容性说明" color="warning" */%}}
-新内容优先使用 Markdown 块引用告警。 {{%/* /alert */%}}
-```
-
-`color`
-映射到 Bootstrap 告警后缀。新内容通常应采用[添加内容](/zh/docs/content/writing/#alerts)介绍的 Markdown 告警语法。
-
-#### 告警、缩进与示例 {#alerts-indentation-and-examples}
-
-开始和结束短代码应与外层列表或块引用对齐，块级 Markdown 前后应保留空行。需要原样展示短代码时，应转义分隔符，不要把活动调用包在另一个组件中。
-
-### `pageinfo` {#pageinfo}
-
-在 Markdown 外渲染信息面板：
-
-```markdown
-{{%/* pageinfo color="info" */%}} 本页介绍预览接口。 {{%/* /pageinfo */%}}
-```
-
-警告信息应使用语义告警；`pageinfo` 适合提供页面上下文。
-
-### `imgproc` {#imgproc}
-
-处理当前页面包中的图片：
-
-```markdown
-{{%/* imgproc "architecture" Fit "960x540" */%}} OINK 运行时架构。
-{{%/* /imgproc */%}}
-```
-
-命令可取 `Fit`、`Resize`、`Fill` 和
-`Crop`，第三个参数遵循 Hugo 图片处理语法。内部文字会成为图注；资源存在
-`params.byline` 时会附加署名。始终提供有意义的替代文字或相邻说明。
-
-### `swaggerui` {#swaggerui}
-
-嵌入本地纳管的 Swagger UI 运行时：
-
-```markdown
-{{</* swaggerui src="/openapi.yaml" */>}}
-```
-
-离线或严格 CSP 部署应使用同源规范。远程 `src`
-是显式网络依赖，也可能向该主机暴露读者元数据。当前兼容短代码在一页中只应放置一个 Swagger
-UI 实例。
-
-### `redoc` {#redoc}
-
-嵌入本地纳管的 Redoc 运行时：
-
-```markdown
-{{</* redoc "openapi.yaml" */>}}
-```
-
-第一个参数可以是页面相对、站点相对或显式 HTTP 规范；可选第二个参数包含 Redoc 元素选项。规范内容必须经过审查，大型 Schema 还应测试移动端表现。
-
-### `iframe` {#iframe}
-
-嵌入另一个页面：
-
-```markdown
-{{</* iframe src="/demo/" name="demo" id="demo-frame"
-    sandbox="allow-scripts allow-same-origin" */>}}
-```
-
-请设置有描述力的 `name`、唯一的 `id`、后备 `sub` 提示，以及满足需求的最严格
-`sandbox`。默认值支持宽度和自动高度，但跨域文档并不总能测量。iframe 是安全与隐私边界，不是通用布局工具。
-
-## OINK 内容组件 {#oink-content-components}
-
-以下组件由 OINK 新增。各运行时都在 `VENDOR.json` 中锁定版本，并按需从同源加载。
-
-### `details` {#details}
-
-创建无障碍折叠内容：
-
-```markdown
-{{%/* details title="显示迁移说明" closed="false" */%}} 正文支持 Markdown。
-{{%/* /details */%}}
-```
-
-`closed` 默认为 true。摘要应简洁，而且不得把强制操作隐藏在默认关闭的折叠区中。
-
-### `steps` {#steps}
-
-`steps`
-通过自动生成的序号和垂直引导线展示连续步骤。在短代码中直接编写普通 Markdown 标题和正文，不需要手工填写数字。
+当步骤很长，或者需要放 `tabs`、`cards` 之类的容器短代码时，使用
+`{{%/* steps */%}}`：每个直接子标题就是一个步骤，正文无需缩进：
 
 {{% steps %}}
 
@@ -198,7 +277,7 @@ UI 实例。
 
 {{% /steps %}}
 
-请使用 Markdown 短代码分隔符，让 Hugo 渲染内部内容：
+<!-- prettier-ignore-start -->
 
 ```markdown
 {{%/* steps */%}}
@@ -209,215 +288,179 @@ UI 实例。
 
 ### 检查顺序
 
-添加下一条说明，序号会自动生成。
-
-#### 可选细节 {class="no-step-marker"}
-
-这个标题属于当前步骤，不会占用序号。
-
-### 发布结果
-
-添加最后一条说明。
+添加下一条说明。序号会自动生成。
 
 {{%/* /steps */%}}
 ```
 
-`h2` 至 `h6`
-级别的每个直接子标题都会成为一步。如果直接子标题只是当前步骤的子分区，请添加
-`class="no-step-marker"`。同级步骤应使用相同的标题级别，并保持页面大纲合理；不要在一个
-`steps` 块中嵌套另一个 `steps` 块。
+<!-- prettier-ignore-end -->
 
-### `asciinema` {#asciinema}
+同级步骤保持相同的标题层级，不要把一个 `steps` 块嵌套在另一个里面。
 
-播放 asciinema `.cast` 录像：
+## 卡片 {#cards}
+
+<a id="doc-cards-and-nav-cards"></a><a id="card-panes"></a><a id="shortcode-card-programming-code"></a><a id="shortcode-card-textual-content"></a>
+
+### 原生形态 {#cards-native}
+
+带 `{.cards}` 的链接列表会变成卡片网格。链接是卡片标题，其后的内容是描述。
+
+<!-- prettier-ignore-start -->
 
 ```markdown
-{{</* asciinema file="casts/install.cast" speed="1.25"
-    markers="0:开始,18:验证" fit="width" */>}}
+- [安装](/zh/docs/tutorial/) — 从零开始部署。
+- [配置](/zh/docs/configure/) — 调整运行参数。
+{.cards}
+```
+
+<!-- prettier-ignore-end -->
+
+<!-- prettier-ignore-start -->
+
+- [安装](/zh/docs/tutorial/) — 从零开始部署。
+- [配置](/zh/docs/configure/) — 调整运行参数。
+- [组件参考](/zh/docs/components/) — 本页介绍的所有组件。
+{.cards}
+
+<!-- prettier-ignore-end -->
+
+### `cards` 短代码 {#cards-shortcode}
+
+需要图标、徽章、图片或 Markdown 正文时使用短代码：
+
+```go-html-template
+{{</* cards */>}}
+{{</* card title="快速上手" link="/zh/docs/tutorial/" icon="fa-solid fa-rocket" badge="新" */>}}
+用 Hugo 构建，描述里 *支持 Markdown*。
+{{</* /card */>}}
+{{</* card title="架构" link="/zh/docs/about/architecture/" icon="fa-solid fa-diagram-project" */>}}
+主题各部分如何协作。
+{{</* /card */>}}
+{{</* /cards */>}}
+```
+
+<!-- prettier-ignore-start -->
+
+{{< cards >}}
+{{< card title="快速上手" link="/zh/docs/tutorial/" icon="fa-solid fa-rocket" badge="新" >}}
+用 Hugo 构建，描述里 *支持 Markdown*。
+{{< /card >}}
+{{< card title="架构" link="/zh/docs/about/architecture/" icon="fa-solid fa-diagram-project" >}}
+主题各部分如何协作。
+{{< /card >}}
+{{< card title="组件参考" link="/zh/docs/components/" image="images/content-primitives/oink.webp" image_alt="OINK 文档总览" >}}
+图片卡片经共享图片解析器解析。
+{{< /card >}}
+{{< /cards >}}
+
+<!-- prettier-ignore-end -->
+
+`cards` 没有参数。`card` 接受 `title`（必填）、`link`、`icon`（一对 Font Awesome
+class）、`badge`（纯文本），以及 `image` 与 `image_alt` 或 `decorative=true`
+之一。没有 `cols`、`accent` 或 `desc` 参数：网格随宽度自适应，描述就是正文。
+
+## 表格 {#tables}
+
+表格有一族标记与属性——`{.full-width}`、`{.fields}`、`{.matrix}`、`{caption="…"}`、带编号的 Book 表格与
+`{tab="…"}`——见[表格](/zh/docs/components/tables/)。
+
+## 引入文件、参数与注释 {#include-external-files}
+
+### 引入文件 {#reuse-documentation}
+
+`include` 内联页面资源、全局资源或 `content/` 下的文件（以 `/`
+开头表示内容根目录，否则相对于当前页面所在目录）。不带 `code=true`
+时文件是在页面上下文中渲染的 Markdown；带上时文件成为代码块：
+
+```go-html-template
+{{</* include file="includes/installation.zh.md" */>}}
+{{</* include file="includes/config.yaml" code=true lang="yaml" */>}}
+```
+
+{{< include file="includes/installation.zh.md" >}}
+
+{{< include file="includes/config.yaml" code=true lang="yaml" >}}
+
+文件缺失、路径含 `..`
+或参数未知都会导致构建失败；没有草稿占位输出。被引入的 Markdown 不是独立发布的页面，不参与页面配对审计；语言相关的引入文件应并排放置。
+
+### 打印参数 {#param}
+
+`param` 打印页面参数，并按 Hugo 的 `Page.Param` 规则回退到站点配置：
+
+```go-html-template
+OINK 需要 Hugo {{</* param hugoMinVersion */>}} 或更高版本。
+```
+
+OINK 需要 Hugo {{< param hugoMinVersion >}} 或更高版本。
+
+参数缺失会导致构建失败；只打印标量值（字符串、数字、布尔值），并做 HTML 转义。`param`
+绝不注入原始 HTML。
+
+### 注释 {#comment}
+
+`{{</* comment */>}}…{{</* /comment */>}}`
+在所有输出——HTML、打印、Markdown 与RSS——中丢弃内容。适合写不该泄漏到 `llms.txt`
+的编辑备注。
+
+## 终端录像 {#asciinema}
+
+`asciinema` 用本地随附的播放器播放 `.cast` 录像：
+
+```go-html-template
+{{</* asciinema file="images/install.cast" speed="1.5" markers="0:开始,1:完成" */>}}
 ```
 
 {{< asciinema file="images/install.cast" speed="1.5" markers="0:开始,1:完成" >}}
 
-窗口标题优先使用 `title`，没有 `title` 时显示 `file`。其他主要参数包括
-`theme`、`autoplay`、`loop`、`preload`、`speed`、`startAt`、`poster`、`cols`、
-`rows`、`idleTimeLimit`、`pauseOnMarkers`、`markers` 和
-`fit`（`width`、`height`、`both` 或 `none`）。本地录像可以来自 Hugo
-assets 或站点相对 URL。不要自动播放，必须清除终端历史中的机密，并为关键步骤提供相邻文字说明。
+窗口标题优先使用 `title`，否则显示 `file`。其他参数包括
+`theme`、`autoplay`、`loop`、`preload`、`speed`、`startAt`、`poster`、`cols`、`rows`、`idleTimeLimit`、`pauseOnMarkers`、`markers`
+与 `fit`（`width`、`height`、`both` 或
+`none`）。避免自动播放，清除终端历史中的密钥，并在附近用文字说明关键步骤。
 
-### `echarts` {#echarts}
+## OpenAPI {#openapi}
 
-Apache
-ECharts 是完整的可视化系统，无法用一个段落说明清楚。高级特性指南会完整介绍包装层、结构化选项、主题、响应式行为、无障碍与可信回调边界：
+### `swaggerui` {#swaggerui}
 
-- [ECharts 快速开始](/zh/docs/components/echarts/)
-- [声明式图表示例集](/zh/docs/components/echarts/)
-- [回调与可信代码](/zh/docs/components/echarts/)
+嵌入本地随附的 Swagger UI 运行时并加载规范：
 
-短代码正文接受 JSON 或 YAML 选项对象。`height`、`theme` 与 `full`
-只能按照专门指南中的说明使用。
-
-### `infographic` {#infographic}
-
-AntV
-Infographic 也有独立的高级特性指南，因为模板选择、DSL 结构、主题、视觉语义与无障碍都需要比行内示例更完整的解释：
-
-- [信息图快速开始](/zh/docs/components/infographic/)
-- [流程、时间线与循环](/zh/docs/components/infographic/)
-- [布局、漏斗与主题](/zh/docs/components/infographic/)
-
-短代码正文使用 Infographic DSL。请按照专门指南使用 `height` 与
-`full`，并为所有关键可视化提供含义等价的相邻文字说明。
-
-### `doc-cards` 与 `nav-cards` {#doc-cards-and-nav-cards}
-
-两个容器都接受 1 至 4 的 `cols`。子卡片接受
-`title`、`link`、`image`、`alt`、`icon`、`desc`、`accent` 与 `badge`：
-
-```markdown
-{{</* nav-cards cols="2" */>}}
-{{</* nav-card title="开始使用" link="/zh/docs/tutorial/"
-      icon="fa-solid fa-rocket" desc="使用 Hugo {version} 构建。" */>}} {{</* nav-card title="架构" link="/zh/docs/about/architecture/"
-      badge="设计" */>}}
-{{</* /nav-cards */>}}
+```go-html-template
+{{</* swaggerui src="/openapi.yaml" */>}}
 ```
 
-`doc-card`/`doc-cards` 与其共享渲染契约，适合编辑型内容；`nav-card`/`nav-cards`
-则明确表示导航。`{version}`
-等描述占位符会从站点参数解析。卡片图片采用延迟加载；除非图片纯属装饰，否则必须提供有意义的
-`alt`。
+### `redoc` {#redoc}
 
-### `doc-carousel` {#doc-carousel}
+嵌入本地随附的 Redoc 运行时：
 
-把 `doc-card` 放入支持键盘滚动的轮播：
-
-```markdown
-{{</* doc-carousel label="发布亮点" */>}}
-{{</* doc-card title="本地资源" */>}}无需 CDN。{{</* /doc-card */>}}
-{{</* doc-card title="中英双语" */>}}稳定的中英文路由。{{</* /doc-card */>}}
-{{</* /doc-carousel */>}}
+```go-html-template
+{{</* redoc "openapi.yaml" */>}}
 ```
 
-`label`
-为辅助技术命名该区域。上一项/下一项按钮会本地化。信息不能只存在于屏幕外卡片中；禁用脚本后，轨道仍应可用。
+两者都指向页面相对、站点相对或显式 `http(s)`
+的规范。远程规范是一项网络依赖，并可能向该主机暴露读者元数据；隔离网络与 CSP 安全部署应使用同源规范，且一个页面只放一个 Swagger
+UI 实例。
 
-### `param` {#param}
+## 落地页 {#blocks}
 
-输出页面参数；根据 Hugo 的 `Page.Param` 规则，在页面缺省时回退到站点配置：
+<a id="shortcode-blocks"></a><a id="blocks-cover"></a><a id="blocks-lead"></a><a id="blocks-section"></a><a id="blocks-feature"></a><a id="blocks-link-down"></a><a id="td-below-navbar"></a>
 
-```markdown
-OINK 版本 {{</* param version */>}}。
-```
+Docsy 的 `blocks/*`
+短代码（`cover`、`lead`、`section`、`feature`、`link-down`）已经移除。落地页改用
+`layout: landing`
+加本地数据构建——分区目录与配置见[Landing 页面](/zh/docs/scenarios/landing/)。
 
-找不到参数会令构建失败。`param`
-适合显示标量值，不应用于注入未经审查的 HTML。内部兼容短代码 `_param`
-还会为旧内容执行带编号的占位符替换。
+## 从 0.4 迁移 {#migration}
 
-## 标签页 {#tabbed-panes}
+下列短代码已被上述形态取代。主题仓库中的[迁移工具](https://github.com/pgsty/oink/blob/main/scripts/migrations/oink06.py)（`report`、`migrate`、`check`）会改写既有内容，并列出所有无法自动转换的构造。
 
-标签页用于组织 YAML/TOML/JSON 配置等同一信息的等价表示，不应隐藏连续步骤或互不相关的选择。
-
-```markdown
-{{</* tabpane text=true persist=lang */>}}
-{{</* tab header="YAML" lang="yaml" */>}} params: offlineSearch: true
-{{</* /tab */>}} {{</* tab header="TOML" lang="toml" */>}} [params]
-offlineSearch = true {{</* /tab */>}} {{</* /tabpane */>}}
-```
-
-选择状态保存在浏览器本地。`persist` 接受 `header`、`lang` 或
-`disabled`。已弃用的 `persistLang` 不应出现在新内容中。
-
-### 短代码细节 {#shortcode-details}
-
-`text=true` 将内部内容渲染为正文而不是高亮代码；`right=true`
-把标签对齐到末端；`langEqualsHeader=true`
-根据标题推导语言标识。父级默认值可以由单个标签覆盖。
-
-#### `tabpane` {#tabpane}
-
-父组件会校验布尔值和持久化参数、生成唯一 ID，并确保存在选中项。只有禁用的标题标签确实能提供有用分组信息时才使用它。
-
-#### `tab` {#tab}
-
-`tab` 必须放在 `tabpane` 内部。它接受
-`header`、`selected`、`lang`、`highlight`、`text`、`right` 和
-`disabled`。只能选中一个标签。面向读者的标题需要翻译，语言标识则必须稳定。
-
-### 代码组 {#code-groups}
-
-只包含代码的替代方案如果需要稳定公开 hash、同步 value 与精确复制行为，应使用
-`code-group`/`code-tab`。与旧 `tabpane` 不同，每个子项都必须提供机器可读的
-`value`，非交互输出则会展开所有示例。完整参数与持久化契约参见[代码块与代码组](/zh/docs/components/code-blocks/)。
-
-## 卡片面板 {#card-panes}
-
-旧版 `cardpane`/`card`
-组合用于布局 Bootstrap 风格卡片。新的导航表面应优先使用 OINK 内容卡片，既有 Docsy 内容可以继续使用兼容组件。
-
-### `card` 短代码：文本内容 {#shortcode-card-textual-content}
-
-```markdown
-{{%/* cardpane */%}}
-{{%/* card header="说明" title="本地构建" footer="已验证" */%}} Markdown
-**正文**。 {{%/* /card */%}} {{%/* /cardpane */%}}
-```
-
-`header`、`title`、`subtitle` 和 `footer`
-接受渲染文本。并列卡片应保持简洁，不能用卡片取代标题结构。
-
-### `card` 短代码：程序代码 {#shortcode-card-programming-code}
-
-设置 `code=true`，并按需设置 `lang`/`highlight`：
-
-```markdown
-{{</* cardpane */>}} {{</* card code=true header="Go" lang="go" */>}}
-fmt.Println("OINK") {{</* /card */>}} {{</* /cardpane */>}}
-```
-
-### 卡片组 {#card-groups}
-
-`cardpane`
-中相邻的卡片会形成响应式分组。应测试文字长度不一、移动端堆叠、代码溢出以及两种语言版本。
-
-## 引入外部文件 {#include-external-files}
-
-`readfile`
-短代码在构建期读取仓库文件，并将其渲染为 Markdown 或高亮代码。除非路径以 `/`
-开头，否则路径相对于当前内容文件。
-
-### 复用文档 {#reuse-documentation}
-
-```markdown
-{{%/* readfile "includes/installation.md" */%}}
-```
-
-被引入的 Markdown 不是独立发布页面，因此不参加页面配对审计。如果共享正文面向读者，应有意识地创建并选择语言专属的 include 文件；Hugo 不会自动翻译 include。
-
-## 安装 {#installation}
-
-可复用片段应放在调用方附近的 `includes/`
-目录中。需要明确其所有权，并避免多层嵌套：读者和审阅者应能迅速找到源文件。
-
-### 引入代码文件 {#include-code-files}
-
-```markdown
-{{</* readfile file="includes/config.yaml" code="true" lang="yaml" */>}}
-```
-
-`code=true` 会用 `lang` 高亮文件。绝不能引入机密、生成的凭据或不可信路径。
-
-### 错误报告 {#error-reporting}
-
-找不到文件时构建会失败。`draft=true`
-会把失败改为可见的草稿警告，只适合创作阶段，绝不能进入正式发布构建。
-
-## 条件文本 {#conditional-text}
-
-`conditional-text` 根据 `params.buildCondition` 选择内容：
-
-```markdown
-{{%/* conditional-text include-if="enterprise,preview" */%}}
-这段文字只出现在匹配的构建中。 {{%/* /conditional-text */%}}
-```
-
-`include-if` 与 `exclude-if`
-接受条件列表，同一条件不能同时出现在二者中。该功能适用于确实不同的发布变体，不应用来选择语言；多语言内容必须写入翻译后的页面文件。
+| 已移除                                                                            | 改用                                              |
+| --------------------------------------------------------------------------------- | ------------------------------------------------- |
+| `alert`、`details`、`pageinfo`、原始 `<details><summary>`                         | `> [!TYPE] 标题`、`> [!DETAILS]-`                 |
+| `tabpane`/`tab`、`code-group`/`code-tab`                                          | 带 `{tab=}` 的相邻围栏或 `tabs`/`tab`             |
+| `doc-cards`/`doc-card`、`nav-cards`/`nav-card`、`cardpane`/`card`、`doc-carousel` | `{.cards}` 列表或 `cards`/`card`                  |
+| `filetree`、`filetree/folder`、`filetree/file`                                    | 嵌套列表 + `{.filetree}`                          |
+| `gallery`、`gallery/image`                                                        | 图片列表 + `{.gallery}`                           |
+| `imgproc`                                                                         | `image`（具名参数）                               |
+| `readfile`                                                                        | `include`                                         |
+| `echarts`、`infographic` 短代码                                                   | 同名围栏                                          |
+| `iframe`、`conditional-text`、`_param`、`blocks/*`                                | 原始 HTML、独立页面、徽章/图标、`layout: landing` |

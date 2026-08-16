@@ -1,8 +1,9 @@
 ---
-title: Code blocks and Code Groups
+title: Code blocks and tabs
+linkTitle: Code blocks
 description:
-  Add filenames, exact Copy behavior, wrapping, collapse, and shareable groups
-  to Hugo code examples.
+  Add titles, exact Copy behavior, wrapping, collapse, and shareable tab sets to
+  Hugo code examples.
 weight: 10
 ---
 
@@ -10,23 +11,23 @@ OINK enhances Hugo's ordinary fenced code blocks without replacing Chroma or
 requiring a browser highlighter. The server emits the complete code and shell;
 small page-scoped scripts only enable Copy, visual collapse, and tab state.
 
-## Enhanced fences
+## Enhanced fences {#enhanced-fences}
 
 Add metadata in Hugo's fence attribute list. A fence without attributes still
-receives the same responsive shell and its normal Copy default. `filename` adds
-a visible header; `title` is its compatible alias, and setting both is a build
-error. With neither, OINK uses a compact overlay instead of an empty title row.
+receives the same responsive shell and its normal Copy default. `title` adds a
+visible header (`filename` is its historical alias; setting both is a build
+error). With neither, OINK uses a compact overlay instead of an empty title row.
 
 **Authoring**
 
 ````markdown {title="content/docs/example.md" copy="all"}
-```yaml {filename="hugo.yml" copy="all" lineNos="table" hl_lines="4 7-9" wrap=false collapse=18}
+```yaml {title="hugo.yml" copy="all" lineNos="table" hl_lines="4 7-9" wrap=false collapse=18}
 params:
   offlineSearch: true
 ```
 ````
 
-### Live result
+### Live result {#live-result}
 
 **Rendered result**
 
@@ -44,25 +45,30 @@ params:
     sidebar_menu_foldable: true
 ```
 
-### Shell parameters
+### Shell parameters {#shell-parameters}
 
-| Attribute  | Values                               | Behavior                                       |
-| ---------- | ------------------------------------ | ---------------------------------------------- |
-| `filename` | string                               | Visible filename and accessible group name     |
-| `title`    | string                               | Alias for `filename` on an ordinary fence      |
-| `copy`     | `all`, `command`, `false`, or `true` | Copy policy; `true` is shorthand for `all`     |
-| `wrap`     | `true` or `false`                    | Visually wrap long lines without changing text |
-| `collapse` | positive integer                     | Initial maximum number of visible source lines |
-| `label`    | string                               | Accessible label when no filename is suitable  |
-| `id`       | string                               | Stable public block ID and line-anchor prefix  |
+| Attribute  | Values                               | Behavior                                                         |
+| ---------- | ------------------------------------ | ---------------------------------------------------------------- |
+| `title`    | string                               | Visible filename and accessible group name                       |
+| `filename` | string                               | Historical alias for `title`; using both is a build error        |
+| `copy`     | `all`, `command`, `false`, or `true` | Copy policy; `true` is shorthand for `all`                       |
+| `wrap`     | `true` or `false`                    | Visually wrap long lines without changing text                   |
+| `collapse` | positive integer                     | Initial maximum number of visible source lines                   |
+| `label`    | string                               | Accessible label when no filename is suitable                    |
+| `id`       | string                               | Stable public block ID and line-anchor prefix                    |
+| `tab`      | string                               | Tab label; consecutive fences with `tab` form a [tab set](#tabs) |
+| `group`    | lower-case token                     | Opt-in hash, sync, and persistence for the tab run               |
+| `value`    | lower-case token                     | Stable tab value inside a grouped run                            |
+| `num`      | `[0-9A-Za-z.-]+`                     | Numbered Book example (`eg`); requires `caption`                 |
+| `caption`  | string                               | Caption of a numbered Book example; requires `num`               |
 
-Hugo generic `class`, safe `data-*`, `aria-*`, and global attributes remain on
-the `.td-code` root. Names beginning with `data-td-code` and `data-language` are
-reserved. OINK rejects event-handler and inline-style attributes. Use `label` to
-override a filename-derived accessible name; a generic `aria-label` together
-with `label` or `filename` is a build error.
+`class`, `data-*`, and `aria-*` attributes remain on the `.td-code` root. Names
+beginning with `data-td-code` and `data-language` are reserved; any other
+unknown attribute, event handlers, and inline styles fail the build. Use `label`
+to override a filename-derived accessible name; a generic `aria-label` together
+with `label` or `title` is a build error.
 
-### Hugo options
+### Hugo options {#hugo-options}
 
 The render hook continues to pass these options to Hugo:
 
@@ -85,7 +91,7 @@ transformer:
 **Authoring**
 
 ````markdown {title="content/docs/configuration.md"}
-```diff {filename="hugo.yaml.diff"}
+```diff {title="hugo.yaml.diff"}
  params:
 -  offlineSearch: false
 +  offlineSearch: true
@@ -100,7 +106,7 @@ transformer:
 +  offlineSearch: true
 ```
 
-## Copy semantics
+## Copy semantics {#copy-semantics}
 
 Ordinary source defaults to `copy="all"`. `console` and `shell-session` default
 to `copy="command"`: only lines carrying Chroma prompt tokens are copied, and
@@ -144,7 +150,7 @@ $ hugo --gc --minify
 Total in 742 ms
 ```
 
-## Wrapping and collapse
+## Wrapping and collapse {#wrapping-and-collapse}
 
 `wrap=true` changes presentation only; copied source is untouched. It is
 incompatible with Chroma's table line-number layout because separately wrapped
@@ -161,7 +167,7 @@ The first example wraps a long value without altering copied text:
 **Authoring**
 
 ````markdown {title="content/docs/downloads.md"}
-```text {filename="config/artifacts.env" wrap=true}
+```text {title="config/artifacts.env" wrap=true}
 ARTIFACT_URL=https://downloads.example.com/releases/2026/08/oink-complete-offline-distribution-arm64.tar.zst
 CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 ```
@@ -179,7 +185,7 @@ The second emits all lines on the server but initially shows six in a browser:
 **Authoring**
 
 ````markdown {title="content/docs/configuration.md"}
-```yaml {filename="hugo.yaml" collapse=6}
+```yaml {title="hugo.yaml" collapse=6}
 baseURL: https://docs.example.com/
 title: Product Documentation
 defaultContentLanguage: en
@@ -212,7 +218,7 @@ params:
   offlineSearch: true
 ```
 
-## Stable IDs and line links
+## Stable IDs and line links {#stable-ids-and-line-links}
 
 Set a page-unique explicit `id` when publishing line-number links. IDs cannot
 contain ASCII whitespace or control characters and cannot collide with another
@@ -237,119 +243,126 @@ OINK derives unique line-anchor prefixes from that ID. Generated IDs are safe
 inside a page but depend on the block ordinal and are not a permalink contract;
 inserting an earlier fence can change them.
 
-## Code Groups
+## Tabs {#tabs}
 
-Use `code-group` when examples are alternatives rather than independent tabs:
+<a id="code-groups"></a>
 
-**Authoring**
-
-```go-html-template {title="content/docs/install.md" wrap=true}
-{{</* code-group id="docs-install-client" sync="docs-package-manager" persist=false
-    label="Choose a package manager" copy="all" */>}}
-  {{</* code-tab title="npm" value="npm" lang="bash" */>}}
-npm install @example/client
-  {{</* /code-tab */>}}
-  {{</* code-tab title="pnpm" value="pnpm" lang="bash" selected=true */>}}
-pnpm add @example/client
-  {{</* /code-tab */>}}
-  {{</* code-tab title="yarn" value="yarn" lang="bash" */>}}
-yarn add @example/client
-  {{</* /code-tab */>}}
-{{</* /code-group */>}}
-```
-
-**Rendered result**
-
-<!-- prettier-ignore -->
-```bash {tab="npm" copy="all"}
-npm install @example/client
-```
-
-```bash {tab="pnpm" copy="all"}
-pnpm add @example/client
-```
-
-```bash {tab="yarn" copy="all"}
-yarn add @example/client
-```
-
-`code-tab` contains raw code, not Markdown. OINK removes the framing newline and
-closing-shortcode indentation while preserving all source whitespace inside.
-Because a Markdown formatter can otherwise reflow that raw body, put
-`<!-- prettier-ignore -->` immediately before each live `code-group` when using
-Prettier, as in the examples below.
-
-### Group and tab parameters
-
-Every group requires a page-unique lower-case `id`. Optional `sync`, `persist`,
-`label`, `copy`, `wrap`, and `collapse` values apply to the group; the last
-three are inherited defaults. `persist` defaults to `true`.
-
-Every child requires a plain-text `title` and stable lower-case `value`. `lang`
-defaults to `text`; `selected`, `copy`, `wrap`, `collapse`, and the Hugo
-highlight options can override group defaults. A group cannot be empty, repeat a
-value, or contain more than one `selected=true` child. Filenames are omitted
-inside groups because the tab itself identifies the example.
-
-### Selection, sync, and persistence
-
-A selected panel has the public hash `#<group-id>-<value>`, for example
-`#install-client-pnpm`. Initial selection priority is URL hash, saved value,
-`selected=true`, then the first child.
-
-Groups sharing `sync` select the same value when that value exists in each
-group; a peer missing it stays unchanged. A user selection updates the hash with
-`replaceState` and saves the value when persistence is enabled. Visiting a
-shared hash activates the requested examples without overwriting the reader's
-saved preference. `persist=false` disables storage, not in-page synchronization.
-
-### Live synchronized groups
-
-The rendered install group above and the run group below share the same `sync`
-key. Choose a package manager in either group and the other follows. The first
-group's [npm](#docs-install-client-npm), [pnpm](#docs-install-client-pnpm), and
-[yarn](#docs-install-client-yarn) panels also have shareable hashes.
+Consecutive fences that carry a `tab` attribute become one tab set. This is the
+native form of code tabs: each fence stays a complete, titled block on the
+server; a small runtime regroups adjacent blocks in the browser.
 
 **Authoring**
 
-```go-html-template {title="content/docs/run.md" wrap=true}
-{{</* code-group id="docs-run-client" sync="docs-package-manager" persist=false */>}}
-  {{</* code-tab title="npm" value="npm" lang="bash" */>}}
-npm run docs:dev
-  {{</* /code-tab */>}}
-  {{</* code-tab title="pnpm" value="pnpm" lang="bash" selected=true */>}}
-pnpm docs:dev
-  {{</* /code-tab */>}}
-  {{</* code-tab title="yarn" value="yarn" lang="bash" */>}}
-yarn docs:dev
-  {{</* /code-tab */>}}
-{{</* /code-group */>}}
+````markdown {title="content/docs/install.md"}
+```bash {tab="npm" group="docs-package-manager" value="npm"}
+npm install @example/client
 ```
+
+```bash {tab="pnpm" value="pnpm"}
+pnpm add @example/client
+```
+
+```bash {tab="yarn" value="yarn"}
+yarn add @example/client
+```
+````
 
 **Rendered result**
 
-<!-- prettier-ignore -->
-```bash {tab="npm"}
+<!-- prettier-ignore-start -->
+
+```bash {tab="npm" group="docs-package-manager" value="npm"}
+npm install @example/client
+```
+
+```bash {tab="pnpm" value="pnpm"}
+pnpm add @example/client
+```
+
+```bash {tab="yarn" value="yarn"}
+yarn add @example/client
+```
+
+<!-- prettier-ignore-end -->
+
+### Tab attributes {#group-and-tab-parameters}
+
+| Attribute | Values                  | Behavior                                                                                   |
+| --------- | ----------------------- | ------------------------------------------------------------------------------------------ |
+| `tab`     | non-empty string        | Visible tab label; also the block title without JavaScript                                 |
+| `group`   | `^[a-z][a-z0-9_-]*$`    | On the first fence of a run: enables the URL hash, page-wide sync, and browser persistence |
+| `value`   | `^[a-z0-9][a-z0-9_-]*$` | Stable machine value; required on every fence of a grouped run, forbidden without a group  |
+
+`group` or `value` without `tab`, a grouped run with a missing or duplicate
+`value`, and `tab` together with a Book `num` are build errors. `tab` and
+`title` coexist: the tab label goes to the tab list and the filename header
+stays inside the panel. Fences with different `group` values, or a non-code
+block between them, start a new run.
+
+### Selection, sync, and persistence {#selection-sync-and-persistence}
+
+A grouped panel has the public hash `#<group>-<value>`, for example
+`#docs-package-manager-pnpm`. Initial selection priority is URL hash, saved
+value, then the first fence. Sets sharing a `group` select the same value when
+that value exists in each set; a peer missing it stays unchanged. A user
+selection updates the hash with `replaceState` and saves the value in
+`localStorage` under `td-tabs:v1:<group>`. Ungrouped runs switch locally and
+touch neither the hash nor storage.
+
+### Live synchronized sets {#live-synchronized-groups}
+
+The install set above and the run set below share the same `group`. Choose a
+package manager in either and the other follows; the panels also have shareable
+hashes: open this page with `#docs-package-manager-pnpm` and both sets select
+pnpm.
+
+**Authoring**
+
+````markdown {title="content/docs/run.md"}
+```bash {tab="npm" group="docs-package-manager" value="npm"}
 npm run docs:dev
 ```
 
-```bash {tab="pnpm"}
+```bash {tab="pnpm" value="pnpm"}
+pnpm docs:dev
+```
+````
+
+**Rendered result**
+
+<!-- prettier-ignore-start -->
+
+```bash {tab="npm" group="docs-package-manager" value="npm"}
+npm run docs:dev
+```
+
+```bash {tab="pnpm" value="pnpm"}
 pnpm docs:dev
 ```
 
-```bash {tab="yarn"}
-yarn docs:dev
-```
+<!-- prettier-ignore-end -->
 
-## Output and compatibility
+### Prose tabs {#prose-tabs}
 
-Print hides controls and tab rows, expands every listing, and places each group
-title before its code. Markdown output turns every grouped or legacy tab into a
-readable titled fence and chooses a longer delimiter when source contains
-backticks. Feeds and other non-interactive outputs use stacked examples. Pages
-without applicable code or tabs do not load their runtimes.
+When a tab holds Markdown rather than one fence, use the `tabs`/`tab` shortcode
+documented in
+[Callouts, tabs, steps, and cards](/docs/components/layout/#tabs-shortcode).
+Both forms share one runtime, one DOM contract, and the same keyboard behavior:
+Left/Right (RTL aware) and Home/End move and activate, focus stays on the tab,
+and no panel is hidden before the runtime enhances the page.
 
-Existing `tabpane` source and its `td-tp-persist:*` browser keys remain
-compatible. Prism remains a legacy alternative and does not receive Enhanced
-Code Blocks or Code Groups. Specialized `mermaid`, `math`, `chem`, `markmap`,
-and `plantuml` hooks continue using their own renderers.
+## Output and compatibility {#output-and-compatibility}
+
+Print hides controls and tab rows, expands every listing, and places each tab
+title before its code. Markdown output keeps every fence, including its `tab`
+attributes, and chooses a longer delimiter when source contains backticks. Feeds
+and other non-interactive outputs use stacked, titled examples. Pages without
+applicable code or tabs do not load their runtimes.
+
+The Docsy `tabpane`/`tab` and the OINK `code-group`/`code-tab` shortcodes were
+removed; the theme's migration toolkit rewrites existing content into adjacent
+fences or the `tabs` shortcode. Prism remains a legacy alternative and does not
+receive Enhanced Code Blocks or tabs. Specialized `mermaid`, `math`, `chem`,
+`markmap`, and `plantuml` hooks continue using their own renderers, and the
+`echarts`, `infographic`, and `checksums` fences are
+[data fences](/docs/components/echarts/).

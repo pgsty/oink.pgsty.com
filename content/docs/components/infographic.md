@@ -1,7 +1,9 @@
 ---
 title: Infographics with AntV
 linkTitle: Infographics
-description: Turn concise declarative data into local SVG infographics.
+description:
+  Turn concise declarative data in an infographic fence into local SVG
+  infographics.
 weight: 110
 aliases:
   [
@@ -11,19 +13,19 @@ aliases:
   ]
 ---
 
-The `infographic` shortcode renders the AntV Infographic DSL with the versioned
-runtime bundled by Oink. Use it for processes, timelines, cycles, funnels,
-roadmaps, and compact visual summaries where a statistical chart would be too
-literal.
+An `infographic` fenced code block renders the AntV Infographic DSL with the
+versioned runtime bundled by OINK. Use it for processes, timelines, cycles,
+funnels, roadmaps, and compact visual summaries where a statistical chart would
+be too literal.
 
-The DSL is serialized as data, not inserted as arbitrary HTML or executable
-code. The browser runtime turns it into SVG and loads only on pages that use the
-shortcode.
+The DSL is serialized as data, not inserted as arbitrary HTML or executable code
+— the fence stays a readable code block on GitHub. The browser runtime turns it
+into SVG and loads only on pages that use the fence.
 
 ## Quick start {#quick-start}
 
-```go-html-template
-{{</* infographic */>}}
+````markdown
+```infographic
 infographic list-row-simple-horizontal-arrow
 data
   title Documentation workflow
@@ -34,8 +36,8 @@ data
       desc Check facts and language
     - label Publish
       desc Build and verify the site
-{{</* /infographic */>}}
 ```
+````
 
 The same three steps appear below. Drafting creates the first version, review
 checks facts and language, and publication builds and verifies the site.
@@ -71,18 +73,19 @@ Indentation defines structure. Keep labels short, use descriptions for context,
 and choose a template whose visual relationship matches the prose. A decorative
 sequence is not a substitute for an actual hierarchy or comparison.
 
-## Shortcode parameters {#shortcode-parameters}
+## Fence attributes {#shortcode-parameters}
 
-| Parameter | Default | Behavior                                                                          |
+| Attribute | Default | Behavior                                                                          |
 | --------- | ------- | --------------------------------------------------------------------------------- |
 | `height`  | `auto`  | Accepts `auto` or a nonnegative number with `px`, `rem`, `em`, `vh`, `vw`, or `%` |
-| `full`    | `false` | Set to `true` to remove Oink's normal content-width clamp                         |
+| `full`    | `false` | Set to `true` to remove OINK's normal content-width clamp                         |
 
-Invalid height values and an empty DSL body fail the Hugo build. DSL schema or
-template errors are reported by the browser runtime in the infographic
-container.
+Write them on the fence line: ` ```infographic {height="480px" full=true} `.
+Invalid height values, unknown attributes, and an empty DSL body fail the Hugo
+build. DSL schema or template errors are reported by the browser runtime in the
+infographic container; print, Markdown, and RSS output show the fence source.
 
-AntV themes belong to the DSL rather than the shortcode parameters. They do not
+AntV themes belong to the DSL rather than the fence attributes. They do not
 automatically follow Oink's site color mode, so verify foreground, background,
 and surrounding-page contrast in both modes.
 
@@ -113,7 +116,7 @@ Essential instructions must remain available in adjacent prose.
 
 ## Further reference {#further-reference}
 
-OINK documents its shortcode and delivery boundary. For the full DSL, template
+OINK documents its fence and delivery boundary. For the full DSL, template
 gallery, and theme model, use the
 [AntV Infographic documentation](https://infographic.antv.vision/learn),
 [gallery](https://infographic.antv.vision/gallery), and

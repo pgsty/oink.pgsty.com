@@ -134,7 +134,7 @@ passthrough 也能工作。无参数 `eq` 仍是无编号块级公式兜底，�
 参见{{</* xref page="../replication" anchor="sec_replication_sync" */>}}同步复制{{</* /xref */>}}。
 ```
 
-`xref` 最多接受一种类型键（`fig`、`tbl` 或 `eq`），以及可选的 `page` 与
+`xref` 最多接受一种类型键（`fig`、`tbl`、`eq` 或 `eg`），以及可选的 `page` 与
 `anchor`。类型会提供本地化默认标签，并能推导默认锚点；只提供锚点时必须写内部链接文字。跨页查找使用 Hugo 当前语言的页面解析，因此源码无需硬编码
 `/en/` 路径。
 
@@ -157,8 +157,9 @@ xref 会变为文档内片段。普通 Markdown 跨页链接刻意保留为站�
 
 ```go-html-template
 {{</* book-figures */>}}
-{{</* book-figures kind="tbl" */>}}
-{{</* book-figures kind="eq" */>}}
+{{</* book-tables */>}}
+{{</* book-equations */>}}
+{{</* book-examples */>}}
 ```
 
 这些短代码会以确定方式触发并聚合后代内容，然后链接到稳定目标 ID，不需要复制一份注册表文件。

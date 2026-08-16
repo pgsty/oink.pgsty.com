@@ -36,6 +36,8 @@ markup:
     endLevel: 4
   goldmark:
     parser:
+      # Block images can carry an attribute line ({caption=…}, Book figures).
+      wrapStandAloneImageWithinParagraph: false
       attribute:
         block: true
     extensions:

@@ -55,7 +55,7 @@ params:
     disable_toc: false
 ```
 
-元数据应帮助读者理解示例，而不是装饰每一个围栏。文件名、复制策略、换行、折叠、行链接与同步替代方案的完整说明参见[代码块与代码组](/zh/docs/components/code-blocks/)。
+元数据应帮助读者理解示例，而不是装饰每一个围栏。文件名、复制策略、换行、折叠、行链接与同步替代方案的完整说明参见[代码块与标签页](/zh/docs/components/code-blocks/)。
 
 ## 告警 {#alerts}
 
@@ -71,9 +71,11 @@ OINK 支持 GitHub 风格的块引用告警，也支持可选的 Obsidian 风格
 > 译文标题必须保留英文页面渲染后的 ID。
 ```
 
-语义类型包括 `NOTE`、`TIP`、`IMPORTANT`、`WARNING` 和
-`CAUTION`，以及与 Bootstrap 兼容的类型和
-`NB`。告警应节制使用：关键信息在屏幕阅读器和打印版中也必须成立。外观设置参见[告警](/zh/docs/appearance/styling/#alerts)。
+支持的类型有
+`NOTE`、`TIP`、`IMPORTANT`、`WARNING`、`CAUTION`、`SUCCESS`、`DANGER`、`QUESTION`、`EXAMPLE`、`QUOTE`
+以及中性的 `DETAILS` 折叠块；类型后面的 `-` 或 `+`
+会折叠告警。告警应节制使用：关键信息在屏幕阅读器和打印版中也必须成立。完整说明参见
+[Callouts](/zh/docs/components/layout/#callouts)，外观设置参见[告警](/zh/docs/appearance/styling/#alerts)。
 
 ## 链接 {#links}
 
@@ -198,7 +200,10 @@ tags: [发布, 升级]
 
 ## 构建自己的落地页 {#building-your-own-landing-pages}
 
-使用标准 Markdown 和[`blocks/*` 短代码](/zh/docs/components/layout/#blocks)组合落地页。关键信息必须保留为文本，行动链接应说明实际去向，并在两种语言中分别测试移动端和桌面端布局。
+使用 `layout: landing` 与
+[Landing 页面](/zh/docs/scenarios/landing/)中的可复用分区组合落地页；Docsy的
+`blocks/*`
+短代码[已不再提供](/zh/docs/components/layout/#blocks)。关键信息必须保留为文本，行动链接应说明实际去向，并在两种语言中分别测试移动端和桌面端布局。
 
 ## 添加社区页面 {#adding-a-community-page}
 

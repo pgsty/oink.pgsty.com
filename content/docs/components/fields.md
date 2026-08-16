@@ -7,9 +7,10 @@ description:
 weight: 40
 ---
 
-Use `fields` with `field` children to document named values and their metadata.
-The component favors a responsive definition list over a wide fixed table, so
-long names and descriptions remain usable on narrow screens.
+Fields documents named values and their metadata as a responsive definition
+list, so long names and descriptions remain usable on narrow screens. It has two
+forms: an ordinary Markdown table followed by `{.fields}`, and the `fields` /
+`field` shortcode pair for typed metadata and multi-paragraph descriptions.
 
 ## When to use {#when-to-use}
 
@@ -18,7 +19,43 @@ properties, and response members. Use a regular Markdown table when readers must
 compare many rows across the same columns. Use prose when the entries are steps
 rather than definitions.
 
-## Quick start {#quick-start}
+## Table form {#table-form}
+
+Write a pipe table and put `{.fields}` on the line after it. The **first
+column** is the field name, the **last column** is the description, and every
+column in between is metadata labelled by its header — in any language, no fixed
+vocabulary:
+
+<!-- prettier-ignore-start -->
+
+```markdown
+| Parameter                                | Type    | Default | Description                              |
+| ---------------------------------------- | ------- | ------- | ---------------------------------------- |
+| `offlineSearch`                          | boolean | `false` | Builds a **local** search index          |
+| `offlineSearchMaxResults`                | integer | `10`    | Limits the number of visible results     |
+| `searchPlaceholder`                      | string  |         | Optional placeholder; empty cells vanish |
+{.fields caption="Search configuration"}
+```
+
+<!-- prettier-ignore-end -->
+
+<!-- prettier-ignore-start -->
+
+| Parameter                  | Type    | Default | Description                              |
+| -------------------------- | ------- | ------- | ---------------------------------------- |
+| `offlineSearch`            | boolean | `false` | Builds a **local** search index          |
+| `offlineSearchMaxResults`  | integer | `10`    | Limits the number of visible results     |
+| `searchPlaceholder`        | string  |         | Optional placeholder; empty cells vanish |
+{.fields caption="Search configuration"}
+
+<!-- prettier-ignore-end -->
+
+Cells accept inline Markdown (links, code, emphasis); the first cell must be
+non-empty and unique. `caption` becomes the visible label. On GitHub the source
+is still a readable table, and OINK's Markdown output keeps it as one. Use the
+shortcode form when a description needs several paragraphs, lists, or fences.
+
+## Shortcode form {#quick-start}
 
 ### Source {#source}
 
@@ -101,12 +138,14 @@ parameters are errors.
 
 ## Semantics and fallback {#semantics-and-fallback}
 
-HTML uses `dl`, `dt`, and `dd`. Each entry stacks a header row — the field name
-followed by its `type`, `required`, and `default` markers — above the
-description, and hairline dividers separate entries. The `required` and
-`default` labels stay in English in every locale. The optional label names the
-definition list for assistive technology. Markdown emits an indented bullet list
-with code-formatted names, types, and defaults; print and RSS retain every
+Both forms render the same `dl`, `dt`, and `dd` structure. Each entry stacks a
+header row — the field name followed by its metadata chips — above the
+description, and hairline dividers separate entries. In the shortcode form the
+chips are `type`, `required`, and `default` (labels that stay in English in
+every locale); in the table form each chip is `header: value`. The optional
+label names the definition list for assistive technology. Markdown output keeps
+the source table, or emits an indented bullet list with code-formatted names,
+types, and defaults for the shortcode form; print and RSS retain every
 definition. No JavaScript is loaded.
 
 ## Deliberate limits {#deliberate-limits}

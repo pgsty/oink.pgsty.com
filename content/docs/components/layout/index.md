@@ -1,212 +1,286 @@
 ---
 downstream_modified: true
-title: Shortcodes
+title: Callouts, tabs, steps, and cards
+linkTitle: Layout
 weight: 80
-description: Use OINK's local-first content components safely and accessibly.
+description:
+  Structure a page with Markdown-native callouts, tabs, steps, cards, and the
+  small set of remaining shortcodes.
 ---
 
-Shortcodes add behavior that ordinary Markdown cannot express. OINK retains the
-core Docsy components and adds locally served charts, terminal recordings,
-infographics, carousels, cards, and disclosure widgets. Browser runtimes load
-only on pages that use them.
+Most OINK components have a **native form**: one ordinary Markdown block plus a
+marker such as `{.steps}` or an attribute line such as `{tab="npm"}`. The source
+reads the same on GitHub, in any Markdown editor, and in OINK's own Markdown
+output. A shortcode (the **full form**) exists only where a plain block cannot
+express the content: arbitrary Markdown bodies inside tabs and cards, processed
+images, included files, and the Book pack.
 
-Prefer Markdown for headings, prose, lists, links, tables, and images. A
-shortcode becomes part of the content API: changing its name or parameters can
-break every page that calls it.
+This page covers the structural components. Code fences, tables, images, and the
+smaller primitives have their own pages; the
+[authoring guide](https://github.com/pgsty/oink/blob/main/docs/components.md) in
+the theme repository is the normative API summary.
 
-## Shortcode delimiters
+## Delimiters and markers {#shortcode-delimiters}
 
-Hugo supports two forms:
+Hugo has two shortcode delimiters, and OINK uses them deliberately:
 
-- `{{</* name */>}}` uses standard delimiters and passes inner content as-is;
-- `{{%/* name */%}}` uses Markdown delimiters and renders inner Markdown in the
-  surrounding content context.
+- `{{%/* steps */%}}` is the **only** `{{%/* */%}}` shortcode. Its body is
+  top-level page Markdown, so headings inside it enter the table of contents.
+- Every other shortcode uses `{{</* name */>}}`. Containers such as `tabs`,
+  `cards`, `fields`, and `image` render their Markdown bodies themselves.
 
-Use the form documented for the component. Nesting, indentation, and blank lines
-matter, especially inside lists and blockquotes. In examples, the `/* ... */`
-escape prevents Hugo from executing the displayed shortcode.
+Markers are Goldmark block attributes written on the line right after a list or
+table: `{.steps}`, `{.cards}`, `{.filetree}`, `{.gallery}`, `{.fields}`,
+`{.matrix}`, and `{.full-width}`. Keep the marker directly under the block; a
+blank line in between silently detaches it. In the examples below, the
+`/* ... */` escape prevents Hugo from executing the displayed shortcode.
 
-## `blocks/*` shortcodes <a id="shortcode-blocks"></a> {#blocks}
+Two site settings make the native forms work and are part of the OINK preflight:
+`markup.goldmark.renderer.unsafe: true` and
+`markup.goldmark.parser.attribute.block: true`.
 
-Block shortcodes compose full-width landing pages. Their `color` argument uses
-OINK/Bootstrap semantic colors or a project-defined block style. Their `height`
-argument accepts the values documented for each block.
+## Callouts {#callouts}
 
-### `blocks/cover` <a id="blockscover"></a> {#blocks-cover}
+<a id="alert"></a><a id="pageinfo"></a><a id="helpers-shortcodes"></a>
 
-Creates a hero from the page bundle image matching `*background*` and optional
-`*logo*`:
+Callouts are GitHub-style blockquotes with an optional Obsidian-style title and
+fold sign. They need no shortcode and no JavaScript.
 
-```markdown
-{{</* blocks/cover title="OINK" subtitle="Local-first documentation"
-    color="dark" height="max" */>}} [Get started](/docs/tutorial/){ .btn .btn-lg
-.btn-primary } {{</* /blocks/cover */>}}
-```
+### Source {#callouts-source}
 
-`image_anchor` and `logo_anchor` control image cropping; `byline` attributes the
-image. Heights are `auto`, `min`, `med`, `max`, or `full`. Essential hero text
-must remain readable without the background.
-
-### `blocks/lead` <a id="blockslead"></a> {#blocks-lead}
-
-Creates a prominent introductory band:
+<!-- prettier-ignore-start -->
 
 ```markdown
-{{%/* blocks/lead color="primary" height="min" */%}} OINK builds the whole
-documentation experience with Hugo Extended. {{%/* /blocks/lead */%}}
+> [!TIP] Titles are inline Markdown
+>
+> The body is page-level Markdown: lists, fences, tables, nested callouts.
+
+> [!NOTE]- Collapsed by default
+>
+> A `-` sign folds the callout; `+` folds it but starts open.
+
+> [!DETAILS] Neutral disclosure block
+>
+> Collapsed by default, no semantic color.
+{icon="fa-solid fa-rocket"}
 ```
 
-The height accepts `auto`, `min`, `med`, `max`, or `full`.
+<!-- prettier-ignore-end -->
 
-### `blocks/section` <a id="blockssection"></a> {#blocks-section}
+### Rendered result {#callouts-rendered-result}
 
-Creates a general landing-page band:
+<!-- prettier-ignore-start -->
+
+> [!TIP] Titles are inline Markdown
+>
+> The body is page-level Markdown: lists, fences, tables, nested callouts.
+
+> [!NOTE]- Collapsed by default
+>
+> A `-` sign folds the callout; `+` folds it but starts open.
+
+> [!DETAILS] Neutral disclosure block
+>
+> Collapsed by default, no semantic color.
+{icon="fa-solid fa-rocket"}
+
+<!-- prettier-ignore-end -->
+
+### Types and rules {#callout-types}
+
+| Type                                            | Behaviour                                                           |
+| ----------------------------------------------- | ------------------------------------------------------------------- |
+| `NOTE` `TIP` `IMPORTANT` `WARNING` `CAUTION`    | The five GitHub types; they render natively on GitHub too           |
+| `SUCCESS` `DANGER` `QUESTION` `EXAMPLE` `QUOTE` | Additional semantic types with their own icon and accent            |
+| `DETAILS`                                       | Neutral disclosure block, collapsed unless written as `[!DETAILS]+` |
+| `[!TYPE]-` / `[!TYPE]+`                         | Fold any type: closed or open by default, native `<details>`        |
+
+- The title after the marker is inline Markdown; when omitted, the localized
+  type name is used.
+- The attribute line accepts `icon` (exactly one Font Awesome class pair) and
+  `class`; `style`, event handlers, and unknown keys fail the build.
+- An unknown type is rendered as a plain blockquote with its `[!TYPE]` marker
+  left visible, so nothing is lost silently.
+- Print and RSS render every callout expanded and static; Markdown output keeps
+  the source blockquote.
+- If a Markdown formatter such as Prettier runs over your content, keep an empty
+  `>` line after the title line (as above) and wrap marker lines such as
+  `{icon=…}` or `{.steps}` in `<!-- prettier-ignore-start -->` /
+  `<!-- prettier-ignore-end -->`; a formatter would otherwise reflow the title
+  into the body or pull the marker into the previous block.
+
+## Tabs {#tabs}
+
+<a id="tabbed-panes"></a><a id="code-groups"></a>
+
+Tabs group equivalent representations — package managers, YAML/TOML/JSON, an
+environment variable and its configuration setting. They must not hide
+sequential steps or unrelated choices.
+
+### Adjacent fences {#adjacent-fences}
+
+Give consecutive fences a `tab` attribute and they become one tab set. Add a
+`group` on the first fence to enable the URL hash, synchronization with other
+sets on the page, and browser persistence; every fence of a grouped run then
+needs a stable `value`.
+
+**Authoring**
+
+<!-- prettier-ignore-start -->
+
+````markdown
+```bash {tab="Homebrew" group="install" value="brew"}
+brew install pigsty
+```
+
+```bash {tab="APT" value="apt"}
+sudo apt install pigsty
+```
+````
+
+<!-- prettier-ignore-end -->
+
+**Rendered result**
+
+<!-- prettier-ignore-start -->
+
+```bash {tab="Homebrew" group="install" value="brew"}
+brew install pigsty
+```
+
+```bash {tab="APT" value="apt"}
+sudo apt install pigsty
+```
+
+<!-- prettier-ignore-end -->
+
+Without JavaScript, on GitHub, and in print the reader sees consecutive titled
+code blocks; nothing is hidden before the runtime enhances the page. A fence
+`tab` coexists with `title` (the filename header stays inside the panel).
+[Code blocks](/docs/components/code-blocks/#tabs) documents the complete
+attribute contract.
+
+### Adjacent tables {#adjacent-tables}
+
+The same attribute works on tables: consecutive tables with `{tab="…"}` become
+one tab set.
+
+<!-- prettier-ignore-start -->
+
+| Parameter         | Value |
+| ----------------- | ----- |
+| `max_connections` | 100   |
+{tab="PG 17" group="pgver" value="pg17"}
+
+| Parameter         | Value |
+| ----------------- | ----- |
+| `max_connections` | 200   |
+{tab="PG 16" value="pg16"}
+
+<!-- prettier-ignore-end -->
+
+### The `tabs` shortcode {#tabs-shortcode}
+
+Use the shortcode when a tab holds prose, headings, lists, or several blocks:
+
+```go-html-template
+{{</* tabs group="setting" default="conf" label="MinIO settings" */>}}
+{{</* tab label="Environment Variable" value="env" */>}}
+Set `MINIO_LOGGER_WEBHOOK_QUEUE_DIR` in the environment.
+{{</* /tab */>}}
+{{</* tab label="Configuration Setting" value="conf" */>}}
+Set `logger_webhook queue_dir` with `mc admin config set`.
+
+> [!TIP]
+> Any block works inside a tab.
+{{</* /tab */>}}
+{{</* /tabs */>}}
+```
+
+<!-- prettier-ignore-start -->
+
+{{< tabs group="setting" default="conf" label="MinIO settings" >}}
+{{< tab label="Environment Variable" value="env" >}}
+Set `MINIO_LOGGER_WEBHOOK_QUEUE_DIR` in the environment.
+{{< /tab >}}
+{{< tab label="Configuration Setting" value="conf" >}}
+Set `logger_webhook queue_dir` with `mc admin config set`.
+
+> [!TIP]
+> Any block works inside a tab.
+{{< /tab >}}
+{{< /tabs >}}
+
+<!-- prettier-ignore-end -->
+
+`tabs` accepts `group` (opt-in hash, sync, and persistence), `default` (a child
+value, requires `group`), and `label` (accessible tablist name). `tab` requires
+`label`; `value` is required with a group and forbidden without one. Duplicate
+values, an empty `tabs`, or stray content between children fail the build.
+
+### Behaviour {#tabs-behaviour}
+
+- Grouped sets share `#<group>-<value>` hashes, synchronize on the page, and
+  remember the reader's choice in `localStorage` (`td-tabs:v1:<group>`).
+  Ungrouped sets switch locally.
+- Keyboard: Left/Right (RTL aware) and Home/End move and activate; focus stays
+  on the tab.
+- Print and RSS render titled static sections; Markdown output renders one
+  `**Label**` section per tab.
+
+## Steps {#steps}
+
+Steps number a sequence automatically. The native form is an ordered list with
+`{.steps}`; the full form wraps headings.
+
+### Native form {#steps-native}
+
+<!-- prettier-ignore-start -->
 
 ```markdown
-{{%/* blocks/section color="light" type="row" height="auto" */%}}
+1. Install the dependencies
 
-### One section
+   Any block can live in a step: paragraphs, fences, callouts, nested lists.
 
-Use ordinary Markdown inside the block. {{%/* /blocks/section */%}}
+1. ### Initialise the workspace {#init}
+
+   A heading inside a step enters the table of contents.
+
+1. Verify the installation
+{.steps}
 ```
 
-`type` selects the container treatment; `height` uses the block height values.
-Keep heading levels consistent with the page outline.
+<!-- prettier-ignore-end -->
 
-### `blocks/feature` <a id="blocksfeature"></a> {#blocks-feature}
+<!-- prettier-ignore-start -->
 
-Creates one feature cell, normally inside a section:
+1. Install the dependencies
 
-```markdown
-{{%/* blocks/feature icon="fa-solid fa-box-archive"
-    title="Works offline" url="/docs/about/local-first/"
-    url_text="Read the design" */%}} All required browser assets are pinned and
-served locally. {{%/* /blocks/feature */%}}
-```
+   Any block can live in a step: paragraphs, fences, callouts, nested lists.
 
-The icon is decorative; `title` and link text must carry the meaning.
+   ```bash
+   brew install pigsty
+   ```
 
-### `blocks/link-down` <a id="blockslinkdown"></a> {#blocks-link-down}
+1. Initialise the workspace
 
-Adds a link from one block to the next. It must be nested inside a block. Set an
-explicit `id` when the generated target must remain stable.
+   > [!NOTE]
+   > Callouts work inside steps.
 
-### Below-navbar layout correction {#td-below-navbar}
+1. Verify the installation
+{.steps}
 
-Blocks that begin directly below fixed navigation use
-`td-below-navbar`/`td-anchor-no-extra-offset` to compensate for navbar height.
-Reuse these classes rather than adding arbitrary top margins; verify direct
-fragment navigation after changing navbar dimensions.
+<!-- prettier-ignore-end -->
 
-## Helper shortcodes <a id="helpers-shortcodes"></a> {#helpers-shortcodes}
+Write every item as `1.` so the content indent stays a constant three spaces and
+reordering never renumbers by hand. Items may contain any block and any
+`{{</* */>}}` shortcode, but not a `{{%/* */%}}` container.
 
-### `alert`
+### Full form {#steps-full}
 
-The legacy alert shortcode remains available:
-
-```markdown
-{{%/* alert title="Compatibility note" color="warning" */%}} Prefer Markdown
-blockquote alerts for new content. {{%/* /alert */%}}
-```
-
-`color` maps to a Bootstrap alert suffix. New content should generally use the
-Markdown alert syntax described in
-[Adding Content](/docs/content/writing/#alerts).
-
-#### Alerts, indentation, and examples
-
-Keep the opening and closing shortcode aligned with their surrounding list or
-blockquote. Leave a blank line around block Markdown. If an example must show a
-shortcode literally, escape its delimiters rather than wrapping an active call
-in another component.
-
-### `pageinfo`
-
-Renders an informational panel around Markdown:
-
-```markdown
-{{%/* pageinfo color="info" */%}} This page describes a preview interface.
-{{%/* /pageinfo */%}}
-```
-
-Use a semantic alert for warnings; `pageinfo` is intended for contextual page
-information.
-
-### `imgproc`
-
-Processes an image from the current page bundle:
-
-```markdown
-{{%/* imgproc "architecture" Fit "960x540" */%}} OINK runtime architecture.
-{{%/* /imgproc */%}}
-```
-
-Commands are `Fit`, `Resize`, `Fill`, and `Crop`. The third argument follows
-Hugo image-processing syntax. The inner text becomes a caption, and a resource
-`params.byline` is appended when present. Always provide useful alternative or
-adjacent text.
-
-### `swaggerui`
-
-Embeds the locally vendored Swagger UI runtime:
-
-```markdown
-{{</* swaggerui src="/openapi.yaml" */>}}
-```
-
-Use a same-origin specification for offline and CSP-safe deployments. A remote
-`src` is an explicit network dependency and can expose reader metadata to that
-host. Only one Swagger UI instance should be placed on a page with the current
-compatibility shortcode.
-
-### `redoc`
-
-Embeds the locally vendored Redoc runtime:
-
-```markdown
-{{</* redoc "openapi.yaml" */>}}
-```
-
-The first argument is a page-relative, site-relative, or explicit HTTP
-specification. The optional second argument contains Redoc element options.
-Treat specification content as reviewed input and test large schemas on mobile.
-
-### `iframe`
-
-Embeds another page:
-
-```markdown
-{{</* iframe src="/demo/" name="demo" id="demo-frame"
-    sandbox="allow-scripts allow-same-origin" */>}}
-```
-
-Set a descriptive `name`, a unique `id`, a fallback `sub` message, and the
-narrowest viable `sandbox`. The defaults support width and automatic-height
-behavior, but cross-origin documents cannot always be measured. An iframe is a
-security and privacy boundary, not a general layout tool.
-
-## OINK content components
-
-The following components are additions carried by OINK. Each runtime is pinned
-in `VENDOR.json` and loaded on demand from the same origin.
-
-### `details`
-
-Creates an accessible disclosure:
-
-```markdown
-{{%/* details title="Show migration notes" closed="false" */%}} The body accepts
-Markdown. {{%/* /details */%}}
-```
-
-`closed` defaults to true. Use a concise summary and do not hide mandatory
-instructions inside a closed disclosure.
-
-### `steps` {#steps}
-
-`steps` presents a sequence with automatically generated numbers and a visual
-guide line. Write ordinary Markdown headings and content inside the shortcode;
-do not type the numbers yourself.
+Use `{{%/* steps */%}}` when the steps are long or contain container shortcodes
+such as `tabs` or `cards`. Every direct child heading becomes a step; the body
+needs no indentation:
 
 {{% steps %}}
 
@@ -225,7 +299,7 @@ Verify the sequence on narrow screens and in both color themes.
 
 {{% /steps %}}
 
-Use Markdown shortcode delimiters so Hugo renders the inner content:
+<!-- prettier-ignore-start -->
 
 ```markdown
 {{%/* steps */%}}
@@ -238,232 +312,190 @@ Add the first instruction.
 
 Add the next instruction. The number is generated automatically.
 
-#### Optional detail {class="no-step-marker"}
-
-This heading belongs to the current step and does not consume a number.
-
-### Publish the result
-
-Add the final instruction.
-
 {{%/* /steps */%}}
 ```
 
-Every direct child heading from `h2` through `h6` becomes a step. Add
-`class="no-step-marker"` when a direct child heading is a subsection of the
-current step. Keep the same heading level for peer steps, preserve a logical
-page outline, and avoid nesting one `steps` block inside another.
+<!-- prettier-ignore-end -->
 
-### `asciinema`
+Keep the same heading level for peer steps and do not nest one `steps` block
+inside another.
 
-Plays an asciinema `.cast` recording:
+## Cards {#cards}
+
+<a id="doc-cards-and-nav-cards"></a><a id="card-panes"></a><a id="shortcode-card-programming-code"></a><a id="shortcode-card-textual-content"></a>
+
+### Native form {#cards-native}
+
+A link list with `{.cards}` becomes a card grid. The link is the card title;
+everything after it is the description.
+
+<!-- prettier-ignore-start -->
 
 ```markdown
-{{</* asciinema file="casts/install.cast" speed="1.25"
-    markers="0:Start,18:Verify" fit="width" */>}}
+- [Install](/docs/tutorial/) — Deploy from scratch.
+- [Configure](/docs/configure/) — Tune the runtime.
+{.cards}
+```
+
+<!-- prettier-ignore-end -->
+
+<!-- prettier-ignore-start -->
+
+- [Install](/docs/tutorial/) — Deploy from scratch.
+- [Configure](/docs/configure/) — Tune the runtime.
+- [Components](/docs/components/) — Everything on this page and more.
+{.cards}
+
+<!-- prettier-ignore-end -->
+
+### The `cards` shortcode {#cards-shortcode}
+
+Use the shortcode for icons, badges, images, and Markdown bodies:
+
+```go-html-template
+{{</* cards */>}}
+{{</* card title="Get started" link="/docs/tutorial/" icon="fa-solid fa-rocket" badge="New" */>}}
+Build with Hugo, *with Markdown* in the description.
+{{</* /card */>}}
+{{</* card title="Architecture" link="/docs/about/architecture/" icon="fa-solid fa-diagram-project" */>}}
+How the theme fits together.
+{{</* /card */>}}
+{{</* /cards */>}}
+```
+
+<!-- prettier-ignore-start -->
+
+{{< cards >}}
+{{< card title="Get started" link="/docs/tutorial/" icon="fa-solid fa-rocket" badge="New" >}}
+Build with Hugo, *with Markdown* in the description.
+{{< /card >}}
+{{< card title="Architecture" link="/docs/about/architecture/" icon="fa-solid fa-diagram-project" >}}
+How the theme fits together.
+{{< /card >}}
+{{< card title="Components" link="/docs/components/" image="images/content-primitives/oink.webp" image_alt="OINK documentation overview" >}}
+Image cards resolve through the shared image resolver.
+{{< /card >}}
+{{< /cards >}}
+
+<!-- prettier-ignore-end -->
+
+`cards` takes no parameters. `card` accepts `title` (required), `link`, `icon`
+(one Font Awesome class pair), `badge` (plain text), and `image` with either
+`image_alt` or `decorative=true`. There is no `cols`, `accent`, or `desc`
+parameter: the grid adapts to the width and the description is the body.
+
+## Tables {#tables}
+
+Tables have a family of markers and attributes — `{.full-width}`, `{.fields}`,
+`{.matrix}`, `{caption="…"}`, numbered Book tables, and `{tab="…"}` — described
+on [Tables](/docs/components/tables/).
+
+## Include, param, and comment {#include-external-files}
+
+### Include files {#reuse-documentation}
+
+`include` inlines a page resource, a global asset, or a file under `content/` (a
+leading `/` is the content root; otherwise the path is relative to the page's
+directory). Without `code=true` the file is Markdown rendered in the page
+context; with it, the file becomes a code block:
+
+```go-html-template
+{{</* include file="includes/installation.md" */>}}
+{{</* include file="includes/config.yaml" code=true lang="yaml" */>}}
+```
+
+{{< include file="includes/installation.md" >}}
+
+{{< include file="includes/config.yaml" code=true lang="yaml" >}}
+
+A missing file, `..` in the path, or an unknown parameter fails the build; there
+is no draft placeholder. Included Markdown is not an independent published page
+and is exempt from the page-pair audit; keep language-specific include files
+side by side.
+
+### Print a parameter {#param}
+
+`param` prints a page parameter, falling back through Hugo's `Page.Param` rules
+to site configuration:
+
+```go-html-template
+OINK requires Hugo {{</* param hugoMinVersion */>}} or later.
+```
+
+OINK requires Hugo {{< param hugoMinVersion >}} or later.
+
+A missing parameter fails the build; only scalar values (strings, numbers,
+booleans) are printed, HTML-escaped. `param` never injects raw HTML.
+
+### Comments {#comment}
+
+`{{</* comment */>}}…{{</* /comment */>}}` drops its content in every output —
+HTML, print, Markdown, and RSS. Use it for editorial notes that must not leak
+into `llms.txt`.
+
+## Terminal recordings {#asciinema}
+
+`asciinema` plays a `.cast` recording with the locally vendored player:
+
+```go-html-template
+{{</* asciinema file="images/install.cast" speed="1.5" markers="0:Start,1:Done" */>}}
 ```
 
 {{< asciinema file="images/install.cast" speed="1.5" markers="0:Start,1:Done" >}}
 
 The window title uses `title` when supplied and otherwise displays `file`. Other
-important parameters include `theme`, `autoplay`, `loop`, `preload`, `speed`,
-`startAt`, `poster`, `cols`, `rows`, `idleTimeLimit`, `pauseOnMarkers`,
-`markers`, and `fit` (`width`, `height`, `both`, or `none`). Local recordings
-can come from Hugo assets or a site-relative URL. Avoid autoplay, remove secrets
+parameters include `theme`, `autoplay`, `loop`, `preload`, `speed`, `startAt`,
+`poster`, `cols`, `rows`, `idleTimeLimit`, `pauseOnMarkers`, `markers`, and
+`fit` (`width`, `height`, `both`, or `none`). Avoid autoplay, remove secrets
 from terminal history, and provide nearby text for essential steps.
 
-### `echarts` {#echarts}
+## OpenAPI {#openapi}
 
-Apache ECharts is a full visualization system rather than a one-paragraph
-shortcode. Its advanced guide documents the wrapper, structured options, themes,
-responsive behavior, accessibility, and trusted callback boundary:
+### `swaggerui` {#swaggerui}
 
-- [ECharts quick start](/docs/components/echarts/)
-- [Declarative chart gallery](/docs/components/echarts/)
-- [Callbacks and trusted code](/docs/components/echarts/)
+Embeds the locally vendored Swagger UI runtime with a specification:
 
-The shortcode body accepts a JSON or YAML options object. Use `height`, `theme`,
-and `full` only as described in the dedicated guide.
-
-### `infographic` {#infographic}
-
-AntV Infographic has its own advanced guide because template choice, DSL
-structure, themes, visual semantics, and accessibility need more than an inline
-example:
-
-- [Infographic quick start](/docs/components/infographic/)
-- [Processes, timelines, and cycles](/docs/components/infographic/)
-- [Layouts, funnels, and themes](/docs/components/infographic/)
-
-The shortcode body contains the Infographic DSL. Use `height` and `full` as
-documented there, and keep an equivalent textual explanation beside every
-essential visualization.
-
-### `doc-cards` and `nav-cards`
-
-Both containers accept `cols` from 1 through 4. Their child cards accept
-`title`, `link`, `image`, `alt`, `icon`, `desc`, `accent`, and `badge`:
-
-```markdown
-{{</* nav-cards cols="2" */>}}
-{{</* nav-card title="Get started" link="/docs/tutorial/"
-      icon="fa-solid fa-rocket" desc="Build with Hugo {version}." */>}} {{</* nav-card title="Architecture" link="/docs/about/architecture/"
-      badge="Design" */>}}
-{{</* /nav-cards */>}}
+```go-html-template
+{{</* swaggerui src="/openapi.yaml" */>}}
 ```
 
-`doc-card`/`doc-cards` share the rendering contract and suit editorial content;
-`nav-card`/`nav-cards` signal navigation. Description tokens such as `{version}`
-resolve from site parameters. Card images are lazy-loaded; supply meaningful
-`alt` text unless the image is decorative.
+### `redoc` {#redoc}
 
-### `doc-carousel`
+Embeds the locally vendored Redoc runtime:
 
-Places `doc-card` elements in a keyboard-scrollable carousel:
-
-```markdown
-{{</* doc-carousel label="Release highlights" */>}}
-{{</* doc-card title="Local assets" */>}}No CDN required.{{</* /doc-card */>}}
-{{</* doc-card title="Bilingual" */>}}Stable English and Chinese
-routes.{{</* /doc-card */>}} {{</* /doc-carousel */>}}
+```go-html-template
+{{</* redoc "openapi.yaml" */>}}
 ```
 
-`label` names the region for assistive technology. Previous/next buttons are
-localized. Do not place information only in an off-screen card; the track must
-remain usable without script.
+Point both at a page-relative, site-relative, or explicit `http(s)`
+specification. A remote specification is a network dependency and can expose
+reader metadata to that host; use a same-origin specification for offline and
+CSP-safe deployments, and place only one Swagger UI instance on a page.
 
-### `param`
+## Landing pages {#blocks}
 
-Prints a page parameter, falling back through Hugo's `Page.Param` rules to site
-configuration:
+<a id="shortcode-blocks"></a><a id="blocks-cover"></a><a id="blocks-lead"></a><a id="blocks-section"></a><a id="blocks-feature"></a><a id="blocks-link-down"></a><a id="td-below-navbar"></a>
 
-```markdown
-OINK version {{</* param version */>}}.
-```
+The Docsy `blocks/*` shortcodes (`cover`, `lead`, `section`, `feature`,
+`link-down`) are gone. Landing pages are built with `layout: landing` and local
+data instead — see [Landing pages](/docs/scenarios/landing/) for the section
+catalogue and configuration.
 
-A missing parameter fails the build. Use `param` for scalar display values, not
-for injecting unreviewed HTML. The internal `_param` compatibility shortcode
-also performs numbered placeholder replacement for legacy content.
+## Migrated from 0.4 {#migration}
 
-## Tabbed panes
+The following shortcodes were removed in favour of the forms above. The
+[migration toolkit](https://github.com/pgsty/oink/blob/main/scripts/migrations/oink06.py)
+in the theme repository rewrites existing content (`report`, `migrate`, `check`)
+and lists everything it cannot convert automatically.
 
-Tabs group equivalent representations, such as YAML/TOML/JSON configuration.
-They must not hide sequential steps or unrelated choices.
-
-```markdown
-{{</* tabpane text=true persist=lang */>}}
-{{</* tab header="YAML" lang="yaml" */>}} params: offlineSearch: true
-{{</* /tab */>}} {{</* tab header="TOML" lang="toml" */>}} [params]
-offlineSearch = true {{</* /tab */>}} {{</* /tabpane */>}}
-```
-
-Selection persistence is local to the browser. `persist` accepts `header`,
-`lang`, or `disabled`. The deprecated `persistLang` should not be used in new
-content.
-
-### Shortcode details
-
-`text=true` renders inner content as prose rather than highlighted code.
-`right=true` aligns tabs to the end. `langEqualsHeader=true` derives language
-identifiers from headers. Pane defaults can be overridden per tab.
-
-#### `tabpane`
-
-The parent validates boolean and persistence parameters, builds unique IDs, and
-ensures a selected tab. Use one disabled header tab only when it adds a useful
-group label.
-
-#### `tab`
-
-`tab` must be inside `tabpane`. It accepts `header`, `selected`, `lang`,
-`highlight`, `text`, `right`, and `disabled`. Only one tab should be selected.
-Translate reader-facing headers, but keep language identifiers stable.
-
-### Code Groups
-
-Use `code-group`/`code-tab` for code-only alternatives that need stable public
-hashes, synchronized values, and exact Copy behavior. Unlike legacy `tabpane`,
-each child has a required machine `value`, and non-interactive outputs expand
-every example. Read [Code blocks and Code Groups](/docs/components/code-blocks/)
-for the complete parameter and persistence contract.
-
-## Card panes
-
-The legacy `cardpane`/`card` pair lays out Bootstrap-style cards. New navigation
-surfaces should prefer OINK content cards, but existing Docsy content can keep
-the compatibility component.
-
-### Shortcode `card`: textual content
-
-```markdown
-{{%/* cardpane */%}}
-{{%/* card header="Note" title="Local build" footer="Verified" */%}} Markdown
-**content**. {{%/* /card */%}} {{%/* /cardpane */%}}
-```
-
-`header`, `title`, `subtitle`, and `footer` accept rendered text. Keep equal
-cards concise and avoid using cards as a replacement for headings.
-
-### Shortcode `card`: programming code
-
-Set `code=true` and optionally `lang`/`highlight`:
-
-```markdown
-{{</* cardpane */>}} {{</* card code=true header="Go" lang="go" */>}}
-fmt.Println("OINK") {{</* /card */>}} {{</* /cardpane */>}}
-```
-
-### Card groups
-
-Adjacent cards in `cardpane` form a responsive group. Test unequal text length,
-mobile stacking, code overflow, and both language variants.
-
-## Include external files
-
-The `readfile` shortcode reads a repository file at build time and either
-renders it as Markdown or highlights it as code. The path is relative to the
-current content file unless it begins with `/`.
-
-### Reuse documentation
-
-```markdown
-{{%/* readfile "includes/installation.md" */%}}
-```
-
-Included Markdown is not an independent published page and is exempt from the
-page-pair audit. If shared prose is reader-facing, create and select
-language-specific include files deliberately; Hugo cannot translate an include.
-
-## Installation
-
-Keep reusable fragments under an `includes/` directory near their callers.
-Document ownership and avoid deep include chains: readers and reviewers should
-be able to locate the source quickly.
-
-### Include code files
-
-```markdown
-{{</* readfile file="includes/config.yaml" code="true" lang="yaml" */>}}
-```
-
-`code=true` highlights the file with `lang`. Never include secrets, generated
-credentials, or untrusted paths.
-
-### Error reporting
-
-A missing file fails the build. `draft=true` replaces that failure with a
-visible draft warning, which is suitable only during authoring and must not
-reach a release build.
-
-## Conditional text
-
-`conditional-text` selects content using `params.buildCondition`:
-
-```markdown
-{{%/* conditional-text include-if="enterprise,preview" */%}} This paragraph
-appears only in matching builds. {{%/* /conditional-text */%}}
-```
-
-`include-if` and `exclude-if` accept condition lists. A condition cannot appear
-in both. Use the feature for genuinely different published variants, not for
-language selection; multilingual content belongs in translated page files.
+| Removed                                                                           | Use instead                                               |
+| --------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `alert`, `details`, `pageinfo`, raw `<details><summary>`                          | `> [!TYPE] title`, `> [!DETAILS]-`                        |
+| `tabpane`/`tab`, `code-group`/`code-tab`                                          | adjacent fences with `{tab=}` or `tabs`/`tab`             |
+| `doc-cards`/`doc-card`, `nav-cards`/`nav-card`, `cardpane`/`card`, `doc-carousel` | `{.cards}` list or `cards`/`card`                         |
+| `filetree`, `filetree/folder`, `filetree/file`                                    | nested list + `{.filetree}`                               |
+| `gallery`, `gallery/image`                                                        | image list + `{.gallery}`                                 |
+| `imgproc`                                                                         | `image` (named parameters)                                |
+| `readfile`                                                                        | `include`                                                 |
+| `echarts`, `infographic` shortcodes                                               | fences of the same name                                   |
+| `iframe`, `conditional-text`, `_param`, `blocks/*`                                | raw HTML, separate pages, badges/icons, `layout: landing` |

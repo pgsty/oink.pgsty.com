@@ -25,7 +25,8 @@ you may need to take.
 
 - Review {{< badge text="BREAKING" tone="warning" >}} changes:
   <a id="breaking-changes"></a>
-  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> [YAML yes/no tokens are strings](#yaml-yes-no-etc)
+  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
+    [YAML yes/no tokens are strings](#yaml-yes-no-etc)
   - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
     [Build order changes for multidimensional sites](#build-order)
 - Review **deprecations** (non-breaking, but recommended):
@@ -35,8 +36,8 @@ you may need to take.
 - Optionally skim:
   - [Known issues and fixes](#known-issues)
   - [Notable changes](#notable-changes)
-- <i class="fa-solid fa-rocket text-primary px-1"></i> Jump to [Upgrade to Hugo 0.155.x](#upgrade)
-  once you're ready
+- <i class="fa-solid fa-rocket text-primary px-1"></i> Jump to
+  [Upgrade to Hugo 0.155.x](#upgrade) once you're ready
 
 ## <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> YAML yes/no tokens are strings (0.152.0) <a id="0.152.0"></a> {#yaml-yes-no-etc}
 
@@ -50,9 +51,9 @@ list of tokens, see [0.152.0 release notes][yes-no-list].
 
 ### Actions: required and optional {#yaml-actions}
 
-- <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> **Applies if** your project has YAML with unquoted
-  `yes`, `no`, `on`, `off`, and similar tokens. Update them to `true` or
-  `false`.
+- <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
+  **Applies if** your project has YAML with unquoted `yes`, `no`, `on`, `off`,
+  and similar tokens. Update them to `true` or `false`.
 
   Search for these unquoted key or value tokens:
   - `yes`, `Yes`, `YES`, `y`, `Y`, `on`, `On`, `ON`: change to `true`
@@ -185,22 +186,19 @@ For a concrete example, see [open-telemetry/opentelemetry.io#9070][].
 
 ### Alias handling in 0.153.x {#aliases-issues}
 
-<details>
-<summary class="h6 text-primary">Known issues with <b>aliases</b></summary>
-
-In Hugo 0.153.x, alias handling had regressions that affected at least one
-Docsy-based site ([docsy.dev][]). The issues were:
-
-- **Default language alias**: behavior changes could cause refresh-page issues.
-  See [gohugoio/hugo#14363][#14363] and [gohugoio/hugo#14361][#14361].
-- **Page aliases**: could point to the wrong language in some configurations.
-  See [Docsy #2433](https://github.com/google/docsy/issues/2433). Fixed in
-  0.154.0 and 0.155.0 (alias handling improvements).
-
-[#14361]: https://github.com/gohugoio/hugo/issues/14361
-[#14363]: https://github.com/gohugoio/hugo/pull/14363
-
-</details>
+> [!DETAILS]- Known issues with **aliases**
+>
+> In Hugo 0.153.x, alias handling had regressions that affected at least one
+> Docsy-based site ([docsy.dev][]). The issues were:
+>
+> - **Default language alias**: behavior changes could cause refresh-page
+>   issues. See [gohugoio/hugo#14363][#14363] and [gohugoio/hugo#14361][#14361].
+> - **Page aliases**: could point to the wrong language in some configurations.
+>   See [Docsy #2433](https://github.com/google/docsy/issues/2433). Fixed in
+>   0.154.0 and 0.155.0 (alias handling improvements).
+>
+> [#14361]: https://github.com/gohugoio/hugo/issues/14361
+> [#14363]: https://github.com/gohugoio/hugo/pull/14363
 
 [docsy.dev]: https://docsy.dev
 

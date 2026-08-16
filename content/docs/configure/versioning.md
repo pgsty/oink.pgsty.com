@@ -37,9 +37,9 @@ identifier shown on the menu entry. {{< /field >}}
 {{< field name="versions[].url" type="string" required=true >}} That version's
 documentation address. An entry with no URL renders as unavailable.
 {{< /field >}}
-{{< field name="version_menu_pagelinks" type="boolean" default=false >}}
-Whether to append the current page path to the target version's URL.
-{{< /field >}} {{< /fields >}}
+{{< field name="version_menu_pagelinks" type="boolean" default=false >}} Whether
+to append the current page path to the target version's URL. {{< /field >}}
+{{< /fields >}}
 
 Insert a separator with `- name: '---'` to divide supported from historical
 releases:
@@ -94,8 +94,8 @@ params:
 ```
 
 {{< fields >}}
-{{< field name="archived_version" type="boolean" default=false >}} When
-`true`, shows an archive notice at the top of every page. {{< /field >}}
+{{< field name="archived_version" type="boolean" default=false >}} When `true`,
+shows an archive notice at the top of every page. {{< /field >}}
 {{< field name="version" type="string" >}} The version shown in the banner.
 {{< /field >}} {{< field name="url_latest_version" type="string" >}} The current
 version's address; the banner links to it. {{< /field >}} {{< /fields >}}

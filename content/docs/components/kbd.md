@@ -47,8 +47,10 @@ alternatives inside one key sequence.
 
 ## Semantics and fallback {#semantics-and-fallback}
 
-HTML contains one nested `kbd` element per key. Visual plus signs are hidden
-from assistive technology; a localized word separates the keys for screen
+Raw `<kbd>Ctrl</kbd>` written in Markdown is styled the same way, which is what
+GitHub renders too; the shortcode adds the separators and the accessible
+sequence. HTML contains one nested `kbd` element per key. Visual plus signs are
+hidden from assistive technology; a localized word separates the keys for screen
 readers. Markdown, print, and RSS use an unambiguous sequence such as
 `Ctrl + K`. The instruction remains complete when CSS or JavaScript is absent.
 

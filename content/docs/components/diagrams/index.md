@@ -61,18 +61,27 @@ Fill the arrays with Hugo's documented delimiter pairs. Choose pairs that do not
 conflict with the site's prose or code and apply the setting consistently in
 every build environment.
 
-#### Add the `passthrough` render hook
+#### The `passthrough` render hook {#add-the-passthrough-render-hook}
 
-For delimiter-based math, create `layouts/_markup/render-passthrough.html` in
-the site:
+OINK ships the passthrough render hook
+(`layouts/_markup/render-passthrough.html`), so a site only enables the
+extension: `$$` blocks and the configured inline delimiter pairs render through
+the local KaTeX engine. A block formula can carry an attribute line to become a
+numbered Book equation:
 
-```go-html-template
-{{ partial "scripts/math.html" . }}
+<!-- prettier-ignore-start -->
+
+```markdown
+$$
+X \approx \frac{C}{R+Z}
+$$
+{#eq_latency num="5.3"}
 ```
 
-The hook can be scoped to a content type or section by placing it under the
-corresponding layout directory. A scoped hook avoids treating unrelated content
-as mathematical passthrough.
+<!-- prettier-ignore-end -->
+
+See [Book publishing](/docs/scenarios/book/) for numbered media and cross
+references.
 
 ### Chemical equations and physical units
 

@@ -79,6 +79,8 @@ disable_toc: true
 ```
 <!-- prettier-ignore-end -->
 
+或者写在站点配置文件中：
+
 <!-- prettier-ignore-start -->
 ```toml {tab="hugo.toml" group="hugotoml-hugoyaml-hugojson" value="hugotoml"}
 [params.print]

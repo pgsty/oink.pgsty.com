@@ -20,9 +20,12 @@ params:
 
 本指南重点说明 Hugo 0.152.0–0.155.x 的破坏性变更，以及可能需要执行的操作。
 
-- 审阅 {{< badge text="BREAKING" tone="warning" >}} 变更：<a id="breaking-changes"></a>
-  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> [YAML yes/no Token 变为字符串](#yaml-yes-no-etc)
-  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> [多维站点的构建顺序发生变化](#build-order)
+- 审阅 {{< badge text="BREAKING" tone="warning" >}}
+  变更：<a id="breaking-changes"></a>
+  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
+    [YAML yes/no Token 变为字符串](#yaml-yes-no-etc)
+  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
+    [多维站点的构建顺序发生变化](#build-order)
 - 审阅 **弃用项**（不具破坏性，但建议处理）：<a id="deprecations"></a>
   - Mount 的 [`lang` 选项已弃用](#lang-mount-deprecation)
   - [`includeFiles`/`excludeFiles` 已弃用](#use-files)
@@ -43,8 +46,9 @@ Matter 中某些 Token 的解释方式发生破坏性变化。
 
 ### 操作：必需与可选 {#yaml-actions}
 
-- <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> **适用条件**：项目 YAML 中存在未加引号的
-  `yes`、`no`、`on`、`off` 等 Token。请把它们改为 `true` 或 `false`。
+- <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
+  **适用条件**：项目 YAML 中存在未加引号的 `yes`、`no`、`on`、`off`
+  等 Token。请把它们改为 `true` 或 `false`。
 
   搜索以下未加引号的键或值：
 
@@ -168,20 +172,17 @@ Filter。
 
 ### 0.153.x 中的别名处理 {#aliases-issues}
 
-<details>
-<summary class="h6 text-primary"><b>别名</b>的已知问题</summary>
-
-Hugo 0.153.x 的别名处理出现回归，至少影响了一个 Docsy 站点（[docsy.dev][]）：
-
-- **默认语言别名**：行为变化可能导致刷新页面异常，见
-  [gohugoio/hugo#14363][#14363] 与 [gohugoio/hugo#14361][#14361]；
-- **页面别名**：在部分配置中可能指向错误语言，见
-  [Docsy #2433](https://github.com/google/docsy/issues/2433)。别名处理改进已经在 0.154.0 和 0.155.0 中修复此问题。
-
-[#14361]: https://github.com/gohugoio/hugo/issues/14361
-[#14363]: https://github.com/gohugoio/hugo/pull/14363
-
-</details>
+> [!DETAILS]- 关于 **别名** 的已知问题
+>
+> Hugo 0.153.x 的别名处理出现回归，至少影响了一个 Docsy 站点（[docsy.dev][]）：
+>
+> - **默认语言别名**：行为变化可能导致刷新页面异常，见
+>   [gohugoio/hugo#14363][#14363] 与 [gohugoio/hugo#14361][#14361]；
+> - **页面别名**：在部分配置中可能指向错误语言，见
+>   [Docsy #2433](https://github.com/google/docsy/issues/2433)。别名处理改进已经在 0.154.0 和 0.155.0 中修复此问题。
+>
+> [#14361]: https://github.com/gohugoio/hugo/issues/14361
+> [#14363]: https://github.com/gohugoio/hugo/pull/14363
 
 [docsy.dev]: https://docsy.dev
 

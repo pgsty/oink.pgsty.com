@@ -1,7 +1,7 @@
 ---
 title: 使用 AntV 创建信息图
 linkTitle: 信息图
-description: 把简洁的声明式数据转换成本地 SVG 信息图。
+description: 把 infographic 围栏中简洁的声明式数据转换成本地 SVG 信息图。
 weight: 110
 aliases:
   [
@@ -11,15 +11,15 @@ aliases:
   ]
 ---
 
-`infographic` 短代码使用 Oink 随主题分发的固定版本 AntV
+`infographic` 围栏代码块使用 OINK 随主题分发的固定版本 AntV
 Infographic 运行时渲染 DSL。它适合展示流程、时间线、循环、漏斗、路线图与紧凑信息摘要；如果统计图显得过于生硬，可以选择信息图。
 
-DSL 会作为数据序列化，不会作为任意 HTML 或可执行代码插入页面。浏览器运行时把它转换成 SVG，并且只在实际使用该短代码的页面加载。
+DSL 会作为数据序列化，不会作为任意 HTML 或可执行代码插入页面——围栏在 GitHub 上仍是一段可读的代码块。浏览器运行时把它转换成 SVG，并且只在实际使用该围栏的页面加载。
 
 ## 快速开始 {#quick-start}
 
-```go-html-template
-{{</* infographic */>}}
+````markdown
+```infographic
 infographic list-row-simple-horizontal-arrow
 data
   title 文档工作流
@@ -30,8 +30,8 @@ data
       desc 检查事实与语言
     - label 发布
       desc 构建并验证站点
-{{</* /infographic */>}}
 ```
+````
 
 下图展示同样的三个步骤：草稿阶段写出初版，评审阶段核对事实与语言，发布阶段则构建并验证站点。
 
@@ -63,17 +63,17 @@ data
 
 缩进决定结构。标签应保持简短，描述用于补充上下文；模板表达的视觉关系必须与正文一致。装饰性的序列不能替代真实的层级或对比关系。
 
-## 短代码参数 {#shortcode-parameters}
+## 围栏属性 {#shortcode-parameters}
 
-| 参数     | 默认值  | 行为                                                              |
+| 属性     | 默认值  | 行为                                                              |
 | -------- | ------- | ----------------------------------------------------------------- |
 | `height` | `auto`  | 接受 `auto`，或非负数字与 `px`、`rem`、`em`、`vh`、`vw`、`%` 单位 |
-| `full`   | `false` | 设为 `true` 后移除 Oink 的常规正文宽度限制                        |
+| `full`   | `false` | 设为 `true` 后移除 OINK 的常规正文宽度限制                        |
 
-无效高度与空 DSL 正文会让 Hugo 构建失败。DSL
-Schema 或模板错误则由浏览器运行时显示在信息图容器中。
+属性写在围栏行上：` ```infographic {height="480px" full=true} `。无效高度、未知属性与空 DSL 正文会让 Hugo 构建失败。DSL
+Schema 或模板错误则由浏览器运行时显示在信息图容器中；打印、Markdown 与 RSS 输出显示围栏源码。
 
-AntV 主题属于 DSL，而不是短代码参数。它不会自动跟随 Oink 站点配色模式，因此必须在深浅两种模式中检查前景、背景与页面周围区域的对比度。
+AntV 主题属于 DSL，而不是围栏属性。它不会自动跟随 Oink 站点配色模式，因此必须在深浅两种模式中检查前景、背景与页面周围区域的对比度。
 
 ## 选择指南 {#choose-a-guide}
 
@@ -95,7 +95,7 @@ SVG 可以提高视觉保真度，但不能保证每种模板都能提供与原�
 
 ## 延伸参考 {#further-reference}
 
-OINK 负责记录短代码与交付边界。完整 DSL、模板图库与主题模型请查阅
+OINK 负责记录围栏与交付边界。完整 DSL、模板图库与主题模型请查阅
 [AntV Infographic 文档](https://infographic.antv.vision/learn)、
 [图库](https://infographic.antv.vision/gallery)与
 [源码仓库](https://github.com/antvis/Infographic)。Oink 主题的 `VENDOR.json`

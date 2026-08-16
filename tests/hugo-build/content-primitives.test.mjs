@@ -65,14 +65,14 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
     {
       prefix: '',
       heading: 'Everyday writing',
-      label: 'Repository structure',
+      entry: 'content/ — Page bundles and templates',
       caption: 'A global image resource with known intrinsic dimensions.',
       linkedAlt: 'Linked OINK image remains a link',
     },
     {
       prefix: 'zh',
       heading: '日常写作',
-      label: '仓库结构',
+      entry: 'content/ — 页面包与模板',
       caption: '具有已知固有尺寸的全局图片资源。',
       linkedAlt: '带链接的 OINK 图片仍然保持链接',
     },
@@ -126,21 +126,34 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
     assert.match(badgeHTML, /<span class="td-badge td-badge--warning/);
     assert.match(kbdHTML, /<span class="td-kbd-sequence"><kbd>Ctrl<\/kbd>/);
     assert.match(fieldsHTML, /<dl class="td-fields__list"/);
-    assert.match(fileTreeHTML, /<details class="td-filetree__details" open>/);
-    assert.doesNotMatch(fileTreeHTML, /role="tree"/);
+    // FileTree is a plain nested list with the `{.filetree}` marker: no
+    // disclosure widgets, no tree roles, folders are nested `<ul>`s.
+    assert.match(fileTreeHTML, /<ul class="filetree">/);
+    assert.doesNotMatch(fileTreeHTML, /role="tree"|td-filetree|<details/);
+    const fileTree = fileTreeHTML.match(
+      /<ul class="filetree">[\s\S]*?<\/ul>\s*<\/li>\s*<\/ul>/,
+    )?.[0];
+    assert.ok(fileTree, 'FileTree lost its nested list');
+    assert.ok(fileTree.includes(`<li>${fixture.entry}`));
+    assert.ok((fileTree.match(/<ul>/g) || []).length >= 3);
+    // Gallery is an image list with the `{.gallery}` marker.
+    assert.match(galleryHTML, /<ul class="gallery">/);
+    assert.doesNotMatch(galleryHTML, /td-gallery/);
+    const galleryList = galleryHTML.match(
+      /<ul class="gallery">[\s\S]*?<\/ul>/,
+    )?.[0];
+    assert.ok(galleryList, 'Gallery lost its image list');
+    assert.equal((galleryList.match(/<li><img /g) || []).length, 3);
+    assert.ok(galleryList.includes(fixture.caption));
+    // Markdown images render through the image hook: figures with captions.
     assert.match(
-      fileTreeHTML,
-      /td-filetree__comment-marker" aria-hidden="true">#<\/span>/,
+      imageZoomHTML,
+      /<figure class="td-figure"[\s\S]*?<figcaption>[\s\S]*?<\/figcaption>/,
     );
     assert.match(
-      fileTreeHTML,
-      /td-filetree__meta--mode" title="mode: 0755"[^>]*>.*?>0755<\/span>/,
+      imageZoomHTML,
+      /<figure class="td-figure td-figure--processed"/,
     );
-    assert.match(
-      fileTreeHTML,
-      /td-filetree__meta--identity" title="owner: docs; group: writers"[^>]*>.*?>docs:writers<\/span>/,
-    );
-    assert.match(galleryHTML, /class="td-gallery td-gallery--columns-3"/);
     assert.equal(
       (imageZoomHTML.match(/data-td-image-zoom-dialog/g) || []).length,
       1,
@@ -167,27 +180,21 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
     assert.match(markdownByPage.badge, /\*\*Beta\*\*/);
     assert.match(markdownByPage.kbd, /Ctrl \+ K/);
     assert.match(markdownByPage.fields, /- `offlineSearch` — `boolean`/);
-    assert.match(
-      markdownByPage.filetree,
-      new RegExp(`\\*\\*${fixture.label}\\*\\*`),
-    );
-    assert.match(
-      markdownByPage.filetree,
-      /# .*?\(mode: `0755`; owner: `docs:writers`\)/,
-    );
-    assert.ok(
-      markdownByPage.gallery.includes(fixture.caption.replaceAll('.', '\\.')),
-    );
+    // Native list forms stay source Markdown in the Markdown output.
+    assert.ok(markdownByPage.filetree.includes(`- ${fixture.entry}`));
+    assert.match(markdownByPage.filetree, /^\{\.filetree\}$/m);
+    assert.match(markdownByPage.gallery, /^\{\.gallery\}$/m);
+    assert.ok(markdownByPage.gallery.includes(fixture.caption));
     for (const markdown of Object.values(markdownByPage)) {
       assert.doesNotMatch(
         markdown,
-        /td-badge|td-kbd-sequence|td-fields|td-filetree|td-gallery|td-image-zoom/,
+        /td-badge|td-kbd-sequence|td-fields|td-filetree|td-gallery|td-image-zoom|<ul class=/,
       );
     }
 
-    const printGalleryImage = print.match(
-      /<img class="td-gallery__image"[^>]+>/,
-    )?.[0];
+    const printGallery = print.match(/<ul class="gallery">[\s\S]*?<\/ul>/)?.[0];
+    assert.ok(printGallery, 'Print output lost the Gallery list');
+    const printGalleryImage = printGallery.match(/<img [^>]+>/)?.[0];
     assert.ok(printGalleryImage, 'Print output lost Gallery images');
     assert.doesNotMatch(
       printGalleryImage,
@@ -231,16 +238,13 @@ Press {{< kbd "Ctrl" "K" >}}.
   {{< /field >}}
 {{< /fields >}}
 
-{{< filetree label="Probe tree" >}}
-  {{< filetree/folder name="closed" >}}
-    {{< filetree/file name="nested.md" >}}
-  {{< /filetree/folder >}}
-{{< /filetree >}}
+- closed/
+  - nested.md
+{.filetree}
 
-{{< gallery columns=2 label="Probe gallery" >}}
-  {{< gallery/image src="images/content-primitives/oink.webp" alt="Probe overview" caption="Probe caption one." >}}
-  {{< gallery/image src="/images/feedback.png" alt="Probe feedback" caption="Probe caption two." >}}
-{{< /gallery >}}
+- ![Probe overview](images/content-primitives/oink.webp) — Probe caption one.
+- ![Probe feedback](/images/feedback.png) — Probe caption two.
+{.gallery}
 
 <!--more-->
 
@@ -279,10 +283,18 @@ Content after the explicit feed summary boundary.
       markdown,
       /- `enabled` — `boolean`; required; default: `false`/,
     );
-    assert.match(markdown, /- closed\/\n  - nested\\\.md/);
+    assert.match(markdown, /- closed\/\n  - nested\.md\n\{\.filetree\}/);
     assert.match(markdown, /!\[Probe overview\]/);
-    assert.match(markdown, /_Probe caption one\\\._/);
+    assert.match(markdown, /— Probe caption one\.\n.*\n\{\.gallery\}/);
     assert.doesNotMatch(markdown, /td-badge|td-filetree|td-gallery|<dialog/);
+    assert.match(
+      html,
+      /<ul class="filetree">\s*<li>closed\/\s*<ul>\s*<li>nested\.md<\/li>/,
+    );
+    assert.match(
+      html,
+      /<ul class="gallery">\s*<li><img [^>]*alt="Probe overview"/,
+    );
 
     for (const source of [print, rss]) {
       assert.match(source, /Probe badge/);
@@ -296,11 +308,11 @@ Content after the explicit feed summary boundary.
         /data-td-image-zoom|data-zoom-src|data-no-zoom|<dialog class="td-image-zoom/,
       );
     }
-    assert.match(print, /class="td-filetree td-filetree--static"/);
-    assert.doesNotMatch(print, /\*\*Probe tree\*\*/);
-    assert.doesNotMatch(print, /td-filetree__details|td-filetree__summary/);
-    assert.match(rss, /td-filetree--static/);
-    assert.doesNotMatch(rss, /td-filetree__details|td-filetree__summary/);
+    assert.match(print, /<ul class="filetree">/);
+    assert.match(print, /<ul class="gallery">/);
+    assert.doesNotMatch(print, /td-filetree|td-gallery|<details/);
+    assert.match(rss, /&lt;ul class=&#34;filetree&#34;&gt;/);
+    assert.doesNotMatch(rss, /td-filetree|td-gallery/);
   } finally {
     rmSync(fixtureDir, { recursive: true, force: true });
   }

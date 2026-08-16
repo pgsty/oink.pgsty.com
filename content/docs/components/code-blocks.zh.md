@@ -1,6 +1,7 @@
 ---
-title: 代码块与代码组
-description: 为 Hugo 代码示例添加文件名、精确复制、换行、折叠与可分享的代码组。
+title: 代码块与标签页
+linkTitle: 代码块
+description: 为 Hugo 代码示例添加标题、精确复制、换行、折叠与可分享的标签页。
 weight: 10
 ---
 
@@ -8,14 +9,14 @@ OINK 在不替换 Chroma、也不引入浏览器端高亮器的前提下增强 H
 
 ## 增强围栏 {#enhanced-fences}
 
-在 Hugo 围栏属性列表中补充元数据。没有属性的围栏也会获得同一套响应式外壳与默认复制行为。`filename`
-会增加可见标题栏；`title`
-是它的兼容别名，同时设置两者会导致构建失败。两者都没有时，OINK 使用紧凑浮层，不绘制空标题栏。
+在 Hugo 围栏属性列表中补充元数据。没有属性的围栏也会获得同一套响应式外壳与默认复制行为。`title`
+会增加可见标题栏（`filename`
+是它的历史别名，同时设置两者会导致构建失败）。两者都没有时，OINK 使用紧凑浮层，不绘制空标题栏。
 
 **作者写法**
 
 ````markdown {title="content/docs/example.md" copy="all"}
-```yaml {filename="hugo.yml" copy="all" lineNos="table" hl_lines="4 7-9" wrap=false collapse=18}
+```yaml {title="hugo.yml" copy="all" lineNos="table" hl_lines="4 7-9" wrap=false collapse=18}
 params:
   offlineSearch: true
 ```
@@ -40,20 +41,25 @@ params:
 
 ### 外壳参数 {#shell-parameters}
 
-| 属性       | 取值                                | 行为                          |
-| ---------- | ----------------------------------- | ----------------------------- |
-| `filename` | 字符串                              | 可见文件名与无障碍分组名称    |
-| `title`    | 字符串                              | 普通围栏中 `filename` 的别名  |
-| `copy`     | `all`、`command`、`false` 或 `true` | 复制策略；`true` 等价于 `all` |
-| `wrap`     | `true` 或 `false`                   | 仅在视觉上换行，不改变源码    |
-| `collapse` | 正整数                              | 初始最多显示的源码行数        |
-| `label`    | 字符串                              | 文件名不适用时的无障碍标签    |
-| `id`       | 字符串                              | 稳定公开块 ID 与行锚点前缀    |
+| 属性       | 取值                                | 行为                                                 |
+| ---------- | ----------------------------------- | ---------------------------------------------------- |
+| `title`    | 字符串                              | 可见文件名与无障碍分组名称                           |
+| `filename` | 字符串                              | `title` 的历史别名；同时使用会导致构建失败           |
+| `copy`     | `all`、`command`、`false` 或 `true` | 复制策略；`true` 等价于 `all`                        |
+| `wrap`     | `true` 或 `false`                   | 仅在视觉上换行，不改变源码                           |
+| `collapse` | 正整数                              | 初始最多显示的源码行数                               |
+| `label`    | 字符串                              | 文件名不适用时的无障碍标签                           |
+| `id`       | 字符串                              | 稳定公开块 ID 与行锚点前缀                           |
+| `tab`      | 字符串                              | 标签名；连续带 `tab` 的围栏组成一个[标签页集](#tabs) |
+| `group`    | 小写 token                          | 为整组标签页启用 hash、同步与持久化                  |
+| `value`    | 小写 token                          | 分组内稳定的标签值                                   |
+| `num`      | `[0-9A-Za-z.-]+`                    | 带编号的 Book 示例（`eg`）；需要 `caption`           |
+| `caption`  | 字符串                              | 编号 Book 示例的标题；需要 `num`                     |
 
-Hugo 通用 `class`、安全的 `data-*`、`aria-*` 与全局属性会保留在 `.td-code`
-根元素。以 `data-td-code` 开头的名称和 `data-language`
-为保留项；事件处理器与内联样式属性会被拒绝。需要覆盖由文件名派生的无障碍名称时，应使用
-`label`；同时设置通用 `aria-label` 与 `label` 或 `filename` 会导致构建失败。
+`class`、`data-*` 与 `aria-*` 属性会保留在 `.td-code` 根元素。以 `data-td-code`
+开头的名称和 `data-language`
+为保留项；其它未知属性、事件处理器与内联样式会导致构建失败。需要覆盖由文件名派生的无障碍名称时，应使用
+`label`；同时设置通用 `aria-label` 与 `label` 或 `title` 会导致构建失败。
 
 ### Hugo 选项 {#hugo-options}
 
@@ -75,7 +81,7 @@ Diff 有意继续使用 Chroma 标准的 `diff` lexer，不引入自定义 trans
 **作者写法**
 
 ````markdown {title="content/docs/configuration.md"}
-```diff {filename="hugo.yaml.diff"}
+```diff {title="hugo.yaml.diff"}
  params:
 -  offlineSearch: false
 +  offlineSearch: true
@@ -140,7 +146,7 @@ Total in 742 ms
 **作者写法**
 
 ````markdown {title="content/docs/downloads.md"}
-```text {filename="config/artifacts.env" wrap=true}
+```text {title="config/artifacts.env" wrap=true}
 ARTIFACT_URL=https://downloads.example.com/releases/2026/08/oink-complete-offline-distribution-arm64.tar.zst
 CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 ```
@@ -158,7 +164,7 @@ CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 **作者写法**
 
 ````markdown {title="content/docs/configuration.md"}
-```yaml {filename="hugo.yaml" collapse=6}
+```yaml {title="hugo.yaml" collapse=6}
 baseURL: https://docs.example.com/
 title: Product Documentation
 defaultContentLanguage: en
@@ -212,112 +218,115 @@ func start() {}
 
 OINK 会从该 ID 派生唯一行锚点前缀。自动生成的 ID 在页面内是安全的，但依赖代码块顺序，不构成永久链接契约；在前面插入新围栏可能改变它。
 
-## 代码组 {#code-groups}
+## 标签页 {#tabs}
 
-如果多个示例是同一任务的替代方案，应使用 `code-group`：
+<a id="code-groups"></a>
+
+连续带有 `tab`
+属性的围栏会组成一个标签页集。这是代码标签页的原生形态：每个围栏在服务器端都是一个完整的带标题代码块；一段小型运行时在浏览器里把相邻的块重新组合成标签页。
 
 **作者写法**
 
-```go-html-template {title="content/docs/install.md" wrap=true}
-{{</* code-group id="zh-docs-install-client" sync="zh-docs-package-manager" persist=false
-    label="选择包管理器" copy="all" */>}}
-  {{</* code-tab title="npm" value="npm" lang="bash" */>}}
+````markdown {title="content/docs/install.md"}
+```bash {tab="npm" group="docs-package-manager" value="npm"}
 npm install @example/client
-  {{</* /code-tab */>}}
-  {{</* code-tab title="pnpm" value="pnpm" lang="bash" selected=true */>}}
-pnpm add @example/client
-  {{</* /code-tab */>}}
-  {{</* code-tab title="yarn" value="yarn" lang="bash" */>}}
-yarn add @example/client
-  {{</* /code-tab */>}}
-{{</* /code-group */>}}
 ```
+
+```bash {tab="pnpm" value="pnpm"}
+pnpm add @example/client
+```
+
+```bash {tab="yarn" value="yarn"}
+yarn add @example/client
+```
+````
 
 **实际效果**
 
-<!-- prettier-ignore -->
-```bash {tab="npm" copy="all"}
+<!-- prettier-ignore-start -->
+
+```bash {tab="npm" group="docs-package-manager" value="npm"}
 npm install @example/client
 ```
 
-```bash {tab="pnpm" copy="all"}
+```bash {tab="pnpm" value="pnpm"}
 pnpm add @example/client
 ```
 
-```bash {tab="yarn" copy="all"}
+```bash {tab="yarn" value="yarn"}
 yarn add @example/client
 ```
 
-`code-tab`
-包含原始代码而不是 Markdown。OINK 会移除用于排版的首个换行和结束短代码前的缩进，同时保留源码内部的全部空白。Markdown 格式化工具可能会重排这段原始内容；使用 Prettier 时，应像下面的实时示例一样，在每个
-`code-group` 前紧邻放置 `<!-- prettier-ignore -->`。
+<!-- prettier-ignore-end -->
 
-### 分组与标签参数 {#group-and-tab-parameters}
+### 标签属性 {#group-and-tab-parameters}
 
-每个分组都需要页面内唯一的小写 `id`。可选的
-`sync`、`persist`、`label`、`copy`、`wrap` 和 `collapse`
-作用于整个分组；后三项会作为子项继承的默认值。`persist` 默认为 `true`。
+| 属性    | 取值                    | 行为                                                          |
+| ------- | ----------------------- | ------------------------------------------------------------- |
+| `tab`   | 非空字符串              | 可见标签名；没有 JavaScript 时就是代码块标题                  |
+| `group` | `^[a-z][a-z0-9_-]*$`    | 写在一组的第一个围栏上：启用 URL hash、页内同步与浏览器持久化 |
+| `value` | `^[a-z0-9][a-z0-9_-]*$` | 稳定的机器值；分组内每个围栏必填，无分组时禁止                |
 
-每个子项都需要纯文本 `title` 与稳定的小写 `value`。`lang` 默认为
-`text`；`selected`、`copy`、`wrap`、`collapse`
-和 Hugo 高亮选项可以覆盖分组默认值。分组不能为空、不能重复 value，也不能有多个
-`selected=true` 子项。代码组不支持文件名，因为标签本身已经标识示例。
+没有 `tab` 的 `group`/`value`、分组内缺失或重复的 `value`、以及 `tab` 与 Book
+`num` 同时出现，都会导致构建失败。`tab` 可以与 `title`
+共存：标签名进入标签栏，文件名标题栏留在面板内。`group`
+不同的围栏或中间隔着非代码块，都会开始新的一组。
 
 ### 选择、同步与持久化 {#selection-sync-and-persistence}
 
-选中面板的公开 hash 是 `#<group-id>-<value>`，例如
-`#install-client-pnpm`。初始选择优先级依次为 URL
-hash、已保存值、`selected=true`、第一个子项。
+分组面板拥有公开 hash `#<group>-<value>`，例如
+`#docs-package-manager-pnpm`。初始选择的优先级依次为 URL
+hash、已保存的值、第一个围栏。共享同一 `group`
+的标签页集会选中同一个值（前提是各组都有该值；缺少该值的一组保持不变）。用户选择会通过
+`replaceState` 更新 hash，并把值保存到 `localStorage` 的 `td-tabs:v1:<group>`
+键。无分组的标签页集只在本地切换，不改动 hash 也不写存储。
 
-共享 `sync`
-的分组会在双方都存在某个 value 时同步选择；缺少该 value 的同伴保持不变。用户选择会通过
-`replaceState`
-更新 hash，并在启用持久化时保存 value。访问分享 hash 会激活指定示例，但不会覆盖读者保存的偏好。`persist=false`
-只关闭存储，不会关闭页面内同步。
+### 实时同步的标签页 {#live-synchronized-groups}
 
-### 实时同步分组 {#live-synchronized-groups}
-
-上面的安装分组与下面的运行分组共享同一个 `sync`
-key。在任意分组中选择包管理器，另一个分组都会随之切换。安装分组的
-[npm](#zh-docs-install-client-npm)、[pnpm](#zh-docs-install-client-pnpm) 与
-[yarn](#zh-docs-install-client-yarn) 面板也都有可分享的 hash。
+上面的安装标签页集与下面的运行标签页集共享同一个
+`group`。在任意一组选择包管理器，另一组会随之切换；各面板也拥有可分享的 hash：带着
+`#docs-package-manager-pnpm` 打开本页，两组都会选中 pnpm。
 
 **作者写法**
 
-```go-html-template {title="content/docs/run.md" wrap=true}
-{{</* code-group id="zh-docs-run-client" sync="zh-docs-package-manager" persist=false */>}}
-  {{</* code-tab title="npm" value="npm" lang="bash" */>}}
+````markdown {title="content/docs/run.md"}
+```bash {tab="npm" group="docs-package-manager" value="npm"}
 npm run docs:dev
-  {{</* /code-tab */>}}
-  {{</* code-tab title="pnpm" value="pnpm" lang="bash" selected=true */>}}
-pnpm docs:dev
-  {{</* /code-tab */>}}
-  {{</* code-tab title="yarn" value="yarn" lang="bash" */>}}
-yarn docs:dev
-  {{</* /code-tab */>}}
-{{</* /code-group */>}}
 ```
+
+```bash {tab="pnpm" value="pnpm"}
+pnpm docs:dev
+```
+````
 
 **实际效果**
 
-<!-- prettier-ignore -->
-```bash {tab="npm"}
+<!-- prettier-ignore-start -->
+
+```bash {tab="npm" group="docs-package-manager" value="npm"}
 npm run docs:dev
 ```
 
-```bash {tab="pnpm"}
+```bash {tab="pnpm" value="pnpm"}
 pnpm docs:dev
 ```
 
-```bash {tab="yarn"}
-yarn docs:dev
-```
+<!-- prettier-ignore-end -->
+
+### 正文标签页 {#prose-tabs}
+
+当一个标签页承载的是 Markdown 而不是单个围栏时，使用[Callouts、标签页、步骤与卡片](/zh/docs/components/layout/#tabs-shortcode)中记录的
+`tabs`/`tab`
+短代码。两种形态共用同一个运行时、同一套 DOM 契约和同样的键盘行为：左右方向键（感知 RTL）与 Home/End 移动并激活标签，焦点停留在标签上，运行时增强前不会隐藏任何面板。
 
 ## 输出与兼容性 {#output-and-compatibility}
 
-打印会隐藏控件与标签行、展开全部代码，并在每个分组示例前显示标题。Markdown 输出会把代码组与旧标签分别还原为可读的带标题围栏；源码包含反引号时会自动选择更长的围栏。Feed 与其他非交互输出使用顺序堆叠示例。没有相关代码或标签的页面不会加载对应 runtime。
+打印时隐藏控件与标签栏，展开所有代码，并把每个标签的标题放在对应代码之前。Markdown输出保留每个围栏及其
+`tab`
+属性，并在源码包含反引号时选择更长的分隔符。RSS等非交互输出使用堆叠的带标题示例。没有相应代码或标签页的页面不会加载对应运行时。
 
-既有 `tabpane` 源码及其 `td-tp-persist:*`
-浏览器键保持兼容。Prism 仍是旧版替代方案，不会获得 Enhanced Code Block 或 Code
-Group。`mermaid`、`math`、`chem`、`markmap` 与 `plantuml`
-等专用钩子继续使用各自渲染器。
+Docsy 的 `tabpane`/`tab` 与 OINK 的 `code-group`/`code-tab`
+短代码已删除；主题的迁移工具会把既有内容改写为相邻围栏或 `tabs`
+短代码。Prism 仍是遗留备选方案，不会获得增强代码块与标签页能力。`mermaid`、`math`、`chem`、`markmap`
+与 `plantuml` 钩子继续使用各自的渲染器，`echarts`、`infographic` 与 `checksums`
+围栏属于[数据围栏](/zh/docs/components/echarts/)。

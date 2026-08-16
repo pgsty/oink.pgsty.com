@@ -2,7 +2,6 @@
 title: Logos and images
 weight: 70
 description: Configure logos, page icons, favicons, and images.
-cSpell:ignore: imgproc
 ---
 
 ## Add brand marks {#add-your-logo}
@@ -72,25 +71,15 @@ present in `static/`.
 
 Put images beside a page when they belong to that page bundle. This keeps the
 source and its media together and lets Hugo process the resource. Use regular
-Markdown for simple images or the [`imgproc` shortcode][] when you need resize,
-crop, or display options.
+Markdown for simple images — an attribute line such as `{caption="…"}` turns a
+standalone image into a figure — or the [`image` shortcode][] when you need
+resize, crop, or display options.
 
 ### Landing-page covers {#landing-pages}
 
-The [`blocks/cover` shortcode][] selects the first page resource whose filename
-contains `background`. For raster images, Oink creates responsive 1920x1080 and
-960x540 variants. Use `image_anchor` to control the crop and `height` to choose
-`auto`, `min`, `med`, `max`, or `full`:
-
-```go-html-template
-{{%/* blocks/cover
-  title="Welcome to Oink"
-  image_anchor="center"
-  height="min"
-*/%}}
-Documentation that gets out of the way.
-{{%/* /blocks/cover */%}}
-```
+Landing pages are built with `layout: landing`; the hero section takes its
+background image from local page resources or data, as described in [Landing
+pages][]. The Docsy `blocks/cover` shortcode is no longer available.
 
 ### Static images {#other-pages}
 
@@ -100,9 +89,9 @@ the same URL works when the site is built with its production `baseURL`. See
 [Adding static content][] for the trade-offs.
 
 [Adding static content]: /docs/content/writing/#adding-static-content
-[`blocks/cover` shortcode]: /docs/components/layout/#blocks-cover
+[Landing pages]: /docs/scenarios/landing/
 [favicon.io]: https://favicon.io/
-[`imgproc` shortcode]: /docs/components/layout/#imgproc
+[`image` shortcode]: /docs/components/image-zoom/#processed-images
 [`layouts/_partials/favicons.html`]:
   https://github.com/pgsty/oink/blob/main/layouts/_partials/favicons.html
 [`layouts/_partials/hooks/head-end.html`]:

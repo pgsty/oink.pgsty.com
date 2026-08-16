@@ -36,8 +36,8 @@ multi-megabyte index that every reader downloads before their first search.
 {{< /field >}}
 {{< field name="offlineSearchSummaryLength" type="integer" default=70 >}} The
 length of a result summary. {{< /field >}}
-{{< field name="offlineSearchMaxResults" type="integer" default=10 >}} How
-many results to show. Keep it low enough that the dialog stays usable on mobile.
+{{< field name="offlineSearchMaxResults" type="integer" default=10 >}} How many
+results to show. Keep it low enough that the dialog stays usable on mobile.
 {{< /field >}} {{< /fields >}}
 
 The build produces one index per language:

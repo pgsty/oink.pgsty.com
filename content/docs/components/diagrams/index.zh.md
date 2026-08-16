@@ -54,16 +54,23 @@ markup:
 
 请根据 Hugo 文档填写分隔符数组。所选分隔符不能与站点正文或代码冲突，并且必须在所有构建环境中保持一致。
 
-#### 添加 `passthrough` 渲染钩子 {#add-the-passthrough-render-hook}
+#### `passthrough` 渲染钩子 {#add-the-passthrough-render-hook}
 
-对于使用分隔符的数学公式，请在站点中创建
-`layouts/_markup/render-passthrough.html`：
+OINK 随主题提供 passthrough 渲染钩子（`layouts/_markup/render-passthrough.html`），站点只需启用扩展：`$$`
+块与配置的行内分隔符对都会经本地 KaTeX 引擎渲染。块级公式下方可以加一行属性，成为带编号的 Book 公式：
 
-```go-html-template
-{{ partial "scripts/math.html" . }}
+<!-- prettier-ignore-start -->
+
+```markdown
+$$
+X \approx \frac{C}{R+Z}
+$$
+{#eq_latency num="5.3"}
 ```
 
-也可以把钩子放在对应布局目录下，将其限制到某种内容类型或某个分区。限制作用域可以避免把无关内容当作数学 passthrough 处理。
+<!-- prettier-ignore-end -->
+
+编号媒体与交叉引用见 [Book 出版](/zh/docs/scenarios/book/)。
 
 ### 化学方程式与物理单位 {#chemical-equations-and-physical-units}
 

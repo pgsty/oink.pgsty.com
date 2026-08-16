@@ -75,6 +75,8 @@ Commit `go.mod` and `go.sum`. Do **not** add npm mounts or a PostCSS pipeline.
 OINK distinguishes languages by filename suffix, and a translation sits **beside
 its source in the same directory**:
 
+<!-- prettier-ignore-start -->
+
 - content/
   - _index.md
   - _index.zh.md
@@ -87,6 +89,8 @@ its source in the same directory**:
     - _index.md
     - _index.zh.md
 {.filetree}
+
+<!-- prettier-ignore-end -->
 
 ## Stable heading IDs {#stable-heading-ids}
 

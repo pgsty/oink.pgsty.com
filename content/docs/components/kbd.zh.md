@@ -39,7 +39,9 @@ Kbd 接受一个或多个非空位置字符串：
 
 ## 语义与回退 {#semantics-and-fallback}
 
-HTML 为每个按键输出一个嵌套的 `kbd`
+直接写在 Markdown 里的原始 `<kbd>Ctrl</kbd>`
+也会得到同样的样式（GitHub 也这样渲染）；短代码额外提供分隔符与无障碍序列。HTML 为每个按键输出一个嵌套的
+`kbd`
 元素。视觉上的加号会对辅助技术隐藏，屏幕阅读器则使用本地化连接词分隔按键。Markdown、打印与 RSS 使用
 `Ctrl + K` 这样的明确序列。即使没有 CSS 或 JavaScript，操作说明仍然完整。
 

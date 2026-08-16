@@ -83,6 +83,8 @@ hugo --gc --minify
 
 准备在隔离环境构建时，先确认主题归档包含这些内容：
 
+<!-- prettier-ignore-start -->
+
 - oink/
   - go.mod
   - hugo.yaml
@@ -94,6 +96,8 @@ hugo --gc --minify
   - static/
   - i18n/
 {.filetree}
+
+<!-- prettier-ignore-end -->
 
 `VENDOR.json`
 记录了每个第三方组件的版本、来源、许可证路径和 SHA-256，是离线审计的依据。

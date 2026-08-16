@@ -144,8 +144,8 @@ Reference a heading on another page with explicit link text:
 See {{</* xref page="../replication" anchor="sec_replication_sync" */>}}synchronous replication{{</* /xref */>}}.
 ```
 
-`xref` accepts at most one kind (`fig`, `tbl`, or `eq`), plus optional `page`
-and `anchor`. A kind supplies the localized default label and derives the
+`xref` accepts at most one kind (`fig`, `tbl`, `eq`, or `eg`), plus optional
+`page` and `anchor`. A kind supplies the localized default label and derives the
 default anchor. An anchor-only reference requires inner text. Cross-page lookup
 uses Hugo's current-language page resolution, so source never hard-codes an
 `/en/` route.
@@ -171,8 +171,9 @@ Generate figure, table, or equation lists:
 
 ```go-html-template
 {{</* book-figures */>}}
-{{</* book-figures kind="tbl" */>}}
-{{</* book-figures kind="eq" */>}}
+{{</* book-tables */>}}
+{{</* book-equations */>}}
+{{</* book-examples */>}}
 ```
 
 These shortcodes trigger and aggregate descendant content deterministically,

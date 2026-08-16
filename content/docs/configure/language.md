@@ -53,10 +53,14 @@ When menu labels differ by language, define `menus` under each language.
 A translation sits **beside its source in the same directory**, distinguished by
 a filename suffix:
 
+<!-- prettier-ignore-start -->
+
 - content/docs/
   - install.md
   - install.zh.md
 {.filetree}
+
+<!-- prettier-ignore-end -->
 
 The shared base filename is what makes Hugo treat them as one page in two
 languages.

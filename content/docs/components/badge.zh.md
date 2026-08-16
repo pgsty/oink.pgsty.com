@@ -16,7 +16,7 @@ Badge 适合 Beta、New、Experimental 与 Deprecated 等生命周期状态。�
 
 ```go-html-template
 {{</* badge text="Beta" tone="warning" */>}}
-{{</* badge text="已弃用" tone="danger" outline=false */>}}
+{{</* badge text="已弃用" tone="danger" */>}}
 {{</* badge text="v0.3" tone="info" link="/zh/blog/release/" */>}}
 ```
 
@@ -44,15 +44,12 @@ Badge 适合 Beta、New、Experimental 与 Deprecated 等生命周期状态。�
   {{< field name="link" type="URL" >}}
   经过校验的站内、相对、HTTP(S) 或 `mailto:` 目标。设置后 Badge 会成为链接。
   {{< /field >}}
-  {{< field name="outline" type="boolean" default=true >}}
-  设置为 `false` 时使用实心样式。
-  {{< /field >}}
 {{< /fields >}}
 
 <!-- prettier-ignore-end -->
 
-布尔值不能加引号。例如应写作 `outline=false`，而不是
-`outline="false"`。未知参数、非法 tone 或非法链接都会让 Hugo 构建停止，并报告源文件位置。
+未知参数（包括过去的 `outline`
+开关）、非法 tone 或非法链接都会让 Hugo 构建停止，并报告源文件位置。
 
 ## 语义与回退 {#semantics-and-fallback}
 
@@ -61,5 +58,6 @@ Badge 适合 Beta、New、Experimental 与 Deprecated 等生命周期状态。�
 
 ## 有意保留的边界 {#deliberate-limits}
 
-Badge 不接受任意颜色、CSS class、样式或事件处理器。第一版也不提供 `icon`
-参数。目前请使用简短而明确的文字；内容图标应在名称、许可证、无障碍与 Markdown 回退契约确定后，再单独提供公共接口。
+Badge 不接受任意颜色、CSS
+class、样式、事件处理器或视觉变体开关：tone 是唯一的样式输入，因此站内所有徽章外观一致。没有
+`icon` 参数；请使用简短而明确的文字。

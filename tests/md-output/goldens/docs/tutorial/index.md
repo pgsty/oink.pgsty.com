@@ -19,41 +19,41 @@ documentation site:
 
 - `Prerequisites` — `5 min`
 
-  <p>Install Hugo
-  Extended and confirm the binary reports <code>extended</code>. Git and Go are needed
-  depending on how you obtain the theme.</p>
+  Install Hugo
+  Extended and confirm the binary reports `extended`. Git and Go are needed
+  depending on how you obtain the theme.
 
 - `Install OINK` — `5 min`
 
-  <p>Pin a version with Hugo Modules.
+  Pin a version with Hugo Modules.
   The other three distribution methods — offline archive, submodule, clone — are
-  on the same page.</p>
+  on the same page.
 
 - `Create a site` — `15 min`
 
-  <p>From an empty directory to a
-  previewable page, including how bilingual content is organized.</p>
+  From an empty directory to a
+  previewable page, including how bilingual content is organized.
 
 - `Basic configuration` — `20 min`
 
-  <p>Site identity, languages,
-  search, repository links, and production build flags.</p>
+  Site identity, languages,
+  search, repository links, and production build flags.
 
 - `Project site` — `optional`
 
-  <p>Adapt <code>oink.pgsty.com</code>
+  Adapt `oink.pgsty.com`
   directly as a template, which suits an open-source project that wants a
-  documentation site quickly.</p>
+  documentation site quickly.
 
 - `Container preview` — `optional`
 
-  <p>Run previews and
-  production builds in a container instead of installing Hugo locally.</p>
+  Run previews and
+  production builds in a container instead of installing Hugo locally.
 
 - `Troubleshooting` — `reference`
 
-  <p>How to
-  locate build, language, search, and platform problems.</p>
+  How to
+  locate build, language, search, and platform problems.
 
 ## Three starting points {#three-starting-points}
 
@@ -76,7 +76,7 @@ hugo server
 
 Add the module import to `hugo.yaml`:
 
-```yaml {filename="hugo.yaml"}
+```yaml {title="hugo.yaml"}
 module:
   imports:
     - path: github.com/pgsty/oink

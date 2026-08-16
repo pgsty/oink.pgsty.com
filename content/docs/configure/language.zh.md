@@ -48,10 +48,14 @@ languages:
 
 译文与原文并排放在同一目录，用文件名后缀区分：
 
+<!-- prettier-ignore-start -->
+
 - content/docs/
   - install.md
   - install.zh.md
 {.filetree}
+
+<!-- prettier-ignore-end -->
 
 相同的基础文件名让 Hugo 把它们识别为同一页面的不同语言版本。
 

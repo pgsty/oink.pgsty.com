@@ -147,8 +147,9 @@ breaking change even when the Docsy theme itself has not changed. Hugo
 
 ### Actions {#node-tools-actions}
 
-<i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> **Applies if** your site uses Hugo 0.161.x or later and
-runs PostCSS, Babel, Tailwind, or similar Node tools during the Hugo build.
+<i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
+**Applies if** your site uses Hugo 0.161.x or later and runs PostCSS, Babel,
+Tailwind, or similar Node tools during the Hugo build.
 
 - Upgrade Node to the active LTS release. For Docsy 0.16.0, use Node LTS 24.
 - Build locally and check for Node permission errors.
@@ -176,9 +177,9 @@ Hugo tightened several security boundaries in this range:
 
 ### Actions {#security-actions}
 
-<i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> **Applies if** your site uses remote resources,
-hand-authored `.html` content files, symlinked content/assets, or
-`templates.Defer` inside cached partials.
+<i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
+**Applies if** your site uses remote resources, hand-authored `.html` content
+files, symlinked content/assets, or `templates.Defer` inside cached partials.
 
 - Build locally with your target Hugo version and review security-related errors
   or warnings.

@@ -7,7 +7,7 @@ weight: 20
 
 ## Exact copy source
 
-```yaml {id="copy-source" filename="config/very-long-service-configuration-file-name.yml" copy="all"}
+```yaml {id="copy-source" title="config/very-long-service-configuration-file-name.yml" copy="all"}
 message: '你好, OINK'
 enabled: true
 items:
@@ -92,49 +92,50 @@ beta
 ## Package manager groups
 
 <!-- prettier-ignore -->
-{{< code-group id="install-client" sync="package-manager" persist=true label="Choose a package manager" copy="all" >}}
-  {{< code-tab title="npm" value="npm" lang="bash" >}}
+```bash {tab="npm" group="package-manager" value="npm" copy="all"}
 npm install @example/client
-  {{< /code-tab >}}
-  {{< code-tab title="pnpm" value="pnpm" lang="bash" selected=true >}}
+```
+
+```bash {tab="pnpm" value="pnpm" copy="all"}
 pnpm add @example/client
-  {{< /code-tab >}}
-  {{< code-tab title="yarn" value="yarn" lang="bash" >}}
+```
+
+```bash {tab="yarn" value="yarn" copy="all"}
 yarn add @example/client
-  {{< /code-tab >}}
-{{< /code-group >}}
+```
+
+Install the tool with the same package manager:
 
 <!-- prettier-ignore -->
-{{< code-group id="install-tool" sync="package-manager" persist=true >}}
-  {{< code-tab title="npm" value="npm" lang="bash" >}}
+```bash {tab="npm" group="package-manager" value="npm"}
 npm install --global @example/tool
-  {{< /code-tab >}}
-  {{< code-tab title="pnpm" value="pnpm" lang="bash" >}}
+```
+
+```bash {tab="pnpm" value="pnpm"}
 pnpm add --global @example/tool
-  {{< /code-tab >}}
-{{< /code-group >}}
+```
+
+Literal markers in tab titles stay literal:
 
 <!-- prettier-ignore -->
-{{< code-group id="literal-markers" persist=false collapse=2 >}}
-  {{< code-tab title="Backticks **literal** [label]" value="ticks" lang="text" >}}
+````text {tab="Backticks **literal** [label]" collapse=2}
 before ``` marker
 after
-  {{< /code-tab >}}
-  {{< code-tab title="Plain" value="plain" lang="text" >}}
+````
+
+```text {tab="Plain" collapse=2}
 one
 two
 three
-  {{< /code-tab >}}
-{{< /code-group >}}
+```
 
 ## Legacy tabpane
 
 <!-- prettier-ignore -->
-{{< tabpane persist="lang" >}}
-  {{< tab header="YAML" lang="yaml" selected=true >}}
+```yaml {tab="YAML" group="yaml-json" value="yaml"}
 message: legacy-compatible
-  {{< /tab >}}
-  {{< tab header="JSON" lang="json" >}}
-{"message":"legacy-compatible"}
-  {{< /tab >}}
-{{< /tabpane >}}
+```
+
+```json {tab="JSON" value="json"}
+{ "message": "legacy-compatible" }
+```

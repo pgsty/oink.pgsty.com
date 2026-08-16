@@ -144,13 +144,13 @@ test.describe('WCAG AA contract', () => {
   for (const { locale, path, theme, viewport } of [
     {
       locale: 'en',
-      path: '/docs/components/gallery/',
+      path: '/docs/components/image-zoom/',
       theme: 'light',
       viewport: { width: 1200, height: 900 },
     },
     {
       locale: 'zh',
-      path: '/zh/docs/components/gallery/',
+      path: '/zh/docs/components/image-zoom/',
       theme: 'dark',
       viewport: { width: 390, height: 844 },
     },
@@ -161,7 +161,7 @@ test.describe('WCAG AA contract', () => {
         localStorage.setItem('td-color-theme', selectedTheme);
       }, theme);
       await page.goto(path, { waitUntil: 'domcontentloaded' });
-      await page.locator('.td-gallery .td-image-zoom__trigger').first().click();
+      await page.locator('.td-figure .td-image-zoom__trigger').first().click();
       const dialog = page.locator('[data-td-image-zoom-dialog]');
       await expect.poll(() => dialog.evaluate((node) => node.open)).toBe(true);
       await expect(dialog.locator('[data-td-image-zoom-close]')).toBeFocused();

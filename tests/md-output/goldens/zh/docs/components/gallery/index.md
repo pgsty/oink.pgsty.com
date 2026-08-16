@@ -1,6 +1,6 @@
 # Gallery
 
-> 使用响应式静态网格组织相关图片，并可复用 Image Zoom。
+> 用响应式静态网格排列相关图片，并复用图片缩放。
 
 ---
 
@@ -8,103 +8,66 @@ LLMS index: [llms.txt](/zh/llms.txt)
 
 ---
 
-Gallery 使用响应式网格组织相关图片。它以静态内容为基础：没有 JavaScript 时，图片、替代文字与说明文字仍然完整。启用 Image
-Zoom 后，Gallery 会复用同一个对话框，而不会加载另一套灯箱。
+Gallery 把相关图片排成响应式网格。它是一个 Markdown 图片列表，后面跟着
+`{.gallery}`
+标记：图片、替代文字与说明在没有 JavaScript 时依然可用，在 GitHub 上源码就是一串图片列表。启用图片缩放时，Gallery 复用同一个对话框，而不是再加载一个灯箱。
 
 ## 适用场景 {#when-to-use}
 
-Gallery 适合比较少量截图、状态或相关视觉示例。如果顺序和对比不重要，请使用单张图片。如果内容确实需要幻灯片导航，而且隐藏非当前条目可以接受，请使用 Carousel。
+用 Gallery 比较少量截图、状态或相关的视觉示例。顺序与对比都不重要时使用单张图片；某一张图片需要正式说明文字时使用[带标题的图](/zh/docs/components/image-zoom/#figures)。
 
 ## 快速开始 {#quick-start}
 
 ### 源码 {#source}
 
-```go-html-template
-{{< gallery columns=3 label="OINK 截图" >}}
-  {{< gallery/image
-    src="images/content-primitives/oink.webp"
-    alt="OINK 文档概览"
-    caption="文档概览"
-  >}}
-  {{< gallery/image
-    src="/images/feedback.png"
-    alt="OINK 反馈界面"
-    caption="反馈控件"
-  >}}
-{{< /gallery >}}
+<!-- prettier-ignore-start -->
+
+```markdown
+- ![OINK 文档总览](images/content-primitives/oink.webp) — 文档总览
+- ![OINK 反馈界面](/images/feedback.png) — 反馈控件
+- ![OINK 版本横幅界面](/images/version-banner.png) — 版本横幅
+{.gallery}
 ```
+
+<!-- prettier-ignore-end -->
 
 ### 渲染结果 {#rendered-result}
 
 <!-- prettier-ignore-start -->
 
-**OINK 截图与布局示例**
-
-![OINK 文档概览](/images/content-primitives/oink.webp)
-
-_具有已知固有尺寸的全局图片资源。_
-
-![OINK 反馈界面](/images/feedback.png)
-
-_这段刻意加长的说明文字用于演示桌面端和移动端都能正常换行，不会遮挡相邻图片或撑宽文档。_
-
-![OINK 版本横幅界面](/images/version-banner.png)
-
-_窄视口会自动减少响应式网格的实际列数。_
+- ![OINK 文档总览](images/content-primitives/oink.webp) — 具有已知固有尺寸的全局图片资源。
+- ![OINK 反馈界面](/images/feedback.png) — 这条刻意加长的说明文字演示在桌面端与移动端换行时不会遮挡相邻图片，也不会撑宽文档。
+- ![OINK 版本横幅界面](/images/version-banner.png) — 响应式网格会在窄视口中减少实际列数。
+{.gallery}
 
 <!-- prettier-ignore-end -->
 
-本页启用了 Image
-Zoom。操作任意图片即可在共享对话框中查看。禁用 JavaScript 时，同样三张 figure 仍会按照相同阅读顺序显示。
+本页启用了图片缩放。点击任意图片即可在共享对话框中查看。禁用 JavaScript 时，同样三张图按同样的阅读顺序保留可见。
 
-## Gallery 参数 {#gallery-parameters}
+## 规则 {#rules}
 
 <!-- prettier-ignore-start -->
 
-**gallery 参数**
-
-- `columns` — `integer`; default: `2`
-
-  从 `1` 到 `4` 的无引号整数；这是桌面端最大列数。
-
-- `label` — `string`
-
-  与 Gallery 列表关联的非空可见标签。
+| 元素            | 规则                                                                                                   |
+| --------------- | ------------------------------------------------------------------------------------------------------ |
+| `![alt](src)`   | 每项一张图片；`alt` 必填且必须有意义（空 alt 视为装饰性图片，永远不会缩放）                             |
+| `src`           | 页面资源、全局资源、静态路径或远程 URL；本地资源获得固有尺寸与懒加载                                   |
+| ` — 说明`       | 图片之后可选的文字，显示在图片下方（书写约定，不是语法）                                               |
+| `{.gallery}`    | 紧跟在列表下一行的标记                                                                                 |
+{.fields caption="Gallery 记法"}
 
 <!-- prettier-ignore-end -->
 
-容器至少需要一个直接 `gallery/image`
-子项，不能包含普通正文。小视口会减少实际列数，但不会改变作者要求的桌面端最大值。
-
-## Image 参数 {#image-parameters}
-
-<!-- prettier-ignore-start -->
-
-**gallery\/image 参数**
-
-- `src` — `image URL`; required
-
-  经过校验的页面、全局、静态或远程图片 URL。
-
-- `alt` — `string`; required
-
-  描述图片的有意义非空纯文本。
-
-- `caption` — `string`
-
-  显示在图片下方的非空纯文本。
-
-<!-- prettier-ignore-end -->
-
-对于本地 Hugo 资源，Gallery 会在能够确定时记录固有宽高，并添加 lazy
-loading。它接受远程来源 URL，但绝不会在 Hugo 构建期间下载该图片，因此无法获得远程尺寸。Caption 不渲染 Markdown；请保持简短，把复杂说明放在相邻正文中。
+网格随视口自适应；没有 `columns` 参数，也没有
+`label`。远程图片在 Hugo 构建期间绝不会被下载，因此在浏览器加载之前尺寸未知。
 
 ## 语义与回退 {#semantics-and-fallback}
 
-HTML 使用带标签的 `ul`，其中包含 `figure`、`img` 与可选
-`figcaption`。每张图片保留自己的替代文字，Gallery 标签为整个集合命名。Markdown 输出普通图片，后面接斜体说明；打印与 RSS 输出连续的静态 figure。Gallery 没有私有 JavaScript 运行时，只会在页面级 Image
-Zoom 启用时标记图片。
+HTML 就是你写的带 `gallery` class 的 `ul`：每个 `li`
+包含图片及其说明。图片经主题的图片渲染钩子解析，因此页面资源带有
+`width`/`height`，所有图片都懒加载。Markdown 输出就是源码列表；打印与 RSS 渲染同一份静态列表。Gallery 没有私有的 JavaScript 运行时：仅在页面级图片缩放启用时，才把符合条件的图片标记给缩放功能。
 
-## 有意保留的边界 {#deliberate-limits}
+## 有意的限制 {#deliberate-limits}
 
-Gallery 不会把图片裁剪为强制宽高比，不会按断点重新排序，也不会隐藏溢出或提供幻灯片导航。它没有 Gallery 专用灯箱。这些约束保留了文档顺序，并确保回退内容完整。
+Gallery 不会把图片裁成固定宽高比、按断点重排、隐藏溢出或提供幻灯片导航，也没有 Gallery 专用的灯箱。这些约束保留了文档顺序，并保持回退完整。`gallery`/`gallery/image`
+短代码已移除；迁移工具会把它们改写成列表形态。

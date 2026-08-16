@@ -1,14 +1,17 @@
 ---
 title: Apache ECharts
 linkTitle: ECharts
-description: Build responsive, local-first charts from structured JSON or YAML.
+description:
+  Build responsive, local-first charts from an echarts fence with structured
+  JSON or YAML.
 weight: 100
 ---
 
-The `echarts` shortcode renders an Apache ECharts options object with the
-versioned runtime bundled by Oink. Hugo parses JSON or YAML at build time,
-serializes the result into the page, and loads ECharts only on pages that use
-the component.
+An `echarts` fenced code block renders an Apache ECharts options object with the
+versioned runtime bundled by OINK. The fence body is JSON or YAML — data, not
+code — so it stays a readable code block on GitHub and in any Markdown reader.
+Hugo parses the options at build time, serializes the result into the page, and
+loads ECharts only on pages that use the fence.
 
 Use ECharts for quantitative charts whose axes, encodings, tooltips, or series
 need more control than a diagram or table provides. Keep a nearby textual
@@ -17,8 +20,8 @@ JavaScript.
 
 ## Quick start {#quick-start}
 
-```go-html-template
-{{</* echarts height="300px" */>}}
+````markdown
+```echarts {height="300px"}
 xAxis:
   type: category
   data: [Draft, Review, Publish]
@@ -27,8 +30,8 @@ yAxis:
 series:
   - type: bar
     data: [12, 9, 4]
-{{</* /echarts */>}}
 ```
+````
 
 The example shows 12 draft pages, nine pages in review, and four pages ready to
 publish.
@@ -48,38 +51,55 @@ series:
 
 <!-- prettier-ignore-end -->
 
-## How Oink loads a chart {#how-oink-loads-a-chart}
+## How OINK loads a chart {#how-oink-loads-a-chart}
 
-The shortcode creates a unique chart container and stores the parsed options in
-an `application/json` element. The page includes the local ECharts runtime and
-Oink initializer once, even when it contains several charts.
+The render hook creates a unique chart container and stores the parsed options
+in an `application/json` element. The page includes the local ECharts runtime
+and OINK initializer once, even when it contains several charts.
 
-If `theme` is not set, Oink initializes the chart for the current site color
+If `theme` is not set, OINK initializes the chart for the current site color
 mode and redraws it when the reader changes modes. A `ResizeObserver` resizes
 the chart with its container. Setting an explicit ECharts theme opts out of
 automatic site-theme switching for that chart.
 
-## Shortcode parameters {#shortcode-parameters}
+## Fence attributes {#shortcode-parameters}
 
-| Parameter | Default | Behavior                                                                            |
+| Attribute | Default | Behavior                                                                            |
 | --------- | ------- | ----------------------------------------------------------------------------------- |
 | `height`  | `400px` | Accepts a nonnegative number with `px`, `rem`, `em`, `vh`, `vw`, or `%`             |
 | `theme`   | unset   | Uses a named ECharts theme; when unset, follows the site's light or dark color mode |
-| `full`    | `false` | Set to `true` to remove Oink's normal content-width clamp                           |
+| `full`    | `false` | Set to `true` to remove OINK's normal content-width clamp                           |
 
-Invalid height values fail the Hugo build. The shortcode body must decode to an
-ECharts options object; malformed JSON or YAML also fails at build time instead
-of creating a blank chart silently.
+Invalid height values, unknown attributes, and a body that does not decode to an
+ECharts options mapping fail the Hugo build instead of creating a blank chart
+silently.
 
-## Choose a guide {#choose-a-guide}
+## Callbacks and trusted code {#choose-a-guide}
 
-scatter plots, legends, and visual encodings.
+The fence is declarative only; it cannot carry JavaScript. Where an ECharts
+option needs a function — a tooltip formatter, a data-driven color — write the
+string `"$fn:name"` in the options and register `name` on
+`window.tdEchartsFunctions` from a page-level `<script>` block or a site asset.
+Unregistered names are ignored with a console warning:
 
-- Callbacks and trusted code: explains formatter functions, data-dependent
-  styles, the `$fn:name` bridge, and its security boundary.
+````markdown
+<script>
+window.tdEchartsFunctions = window.tdEchartsFunctions || {};
+window.tdEchartsFunctions.bytesFormatter = (params) => `${params.value} MB`;
+</script>
+
+```echarts {height="240px"}
+tooltip:
+  formatter: "$fn:bytesFormatter"
+series:
+  - type: bar
+    data: [3, 5, 8]
+```
+````
 
 Start with declarative JSON or YAML. Add JavaScript callbacks only when the
-ECharts option cannot be expressed as data.
+ECharts option cannot be expressed as data, and treat that script as reviewed
+site code.
 
 ## Authoring checklist {#authoring-checklist}
 
@@ -95,8 +115,9 @@ ECharts option cannot be expressed as data.
 
 ## Further reference {#further-reference}
 
-OINK documents its wrapper and delivery behavior; the full options schema
-belongs to Apache ECharts. Use the
+OINK documents its fence and delivery behavior; the full options schema belongs
+to Apache ECharts. Print, Markdown, and RSS output show the fence source instead
+of a chart. Use the
 [ECharts concepts handbook](https://echarts.apache.org/handbook/en/concepts/chart-size/),
 [dataset guide](https://echarts.apache.org/handbook/en/concepts/dataset/), and
 [option reference](https://echarts.apache.org/en/option.html) for chart-specific

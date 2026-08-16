@@ -230,32 +230,46 @@ test.describe('Enhanced code blocks', () => {
   });
 });
 
-test.describe('Code Group state', () => {
+// Adjacent fences with a `tab` attribute are regrouped into `.td-tabs` sets at
+// load. Two sets on the fixture share `group="package-manager"` (client and
+// tool installs); a third run has no group and switches locally.
+const packageManagerSets = (page) =>
+  page.locator('.td-tabs[data-td-tabs-group="package-manager"]');
+const tabOf = (set, value) =>
+  set.locator(`[role="tab"][data-td-tabs-value="${value}"]`);
+const activePanel = (set) =>
+  set.locator('.td-tabs__panel[data-td-tabs-active]');
+
+test.describe('Tab set state', () => {
   test('hash wins without overwriting persistence and missing sync values stay put', async ({
     page,
   }) => {
     await page.addInitScript(() => {
-      localStorage.setItem('td-code-group:v1:sync:package-manager', 'npm');
+      localStorage.setItem('td-tabs:v1:package-manager', 'npm');
     });
-    await page.goto(`${codeFixture}#install-client-yarn`, {
+    await page.goto(`${codeFixture}#package-manager-yarn`, {
       waitUntil: 'domcontentloaded',
     });
 
-    await expect(page.locator('#install-client-yarn-tab')).toHaveClass(
-      /active/,
+    const sets = packageManagerSets(page);
+    await expect(sets).toHaveCount(2);
+    const client = sets.nth(0);
+    const tool = sets.nth(1);
+    await expect(tabOf(client, 'yarn')).toHaveAttribute(
+      'aria-selected',
+      'true',
     );
-    await expect(page.locator('#install-tool-npm-tab')).toHaveClass(/active/);
+    // The tool set has no `yarn` value, so it keeps the stored selection.
+    await expect(tabOf(tool, 'npm')).toHaveAttribute('aria-selected', 'true');
     await expect
       .poll(() =>
-        page.evaluate(() =>
-          localStorage.getItem('td-code-group:v1:sync:package-manager'),
-        ),
+        page.evaluate(() => localStorage.getItem('td-tabs:v1:package-manager')),
       )
       .toBe('npm');
     const viewport = page.viewportSize();
     await expect
       .poll(async () => {
-        const box = await page.locator('#install-client').boundingBox();
+        const box = await client.boundingBox();
         return box ? box.y : Number.POSITIVE_INFINITY;
       })
       .toBeLessThan(viewport.height);
@@ -265,72 +279,81 @@ test.describe('Code Group state', () => {
     page,
   }) => {
     await page.goto(codeFixture, { waitUntil: 'domcontentloaded' });
+    const sets = packageManagerSets(page);
+    const client = sets.nth(0);
+    const tool = sets.nth(1);
     const historyLength = await page.evaluate(() => history.length);
-    await page.locator('#install-client-npm-tab').click();
-
-    await expect(page.locator('#install-client-npm-tab')).toHaveClass(/active/);
-    await expect(page.locator('#install-tool-npm-tab')).toHaveClass(/active/);
-    await expect(page).toHaveURL(/#install-client-npm$/);
+    await tabOf(client, 'pnpm').click();
+    await expect(tabOf(client, 'pnpm')).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    await expect(tabOf(tool, 'pnpm')).toHaveAttribute('aria-selected', 'true');
+    await expect(activePanel(tool)).toContainText('pnpm add --global');
+    await expect(page).toHaveURL(/#package-manager-pnpm$/);
     await expect
       .poll(() =>
-        page.evaluate(() =>
-          localStorage.getItem('td-code-group:v1:sync:package-manager'),
-        ),
+        page.evaluate(() => localStorage.getItem('td-tabs:v1:package-manager')),
       )
-      .toBe('npm');
+      .toBe('pnpm');
     expect(await page.evaluate(() => history.length)).toBe(historyLength);
     await expect(
-      page.locator(
-        '#install-client [data-td-code-group-action="npm"] [data-td-code-copy]',
-      ),
+      activePanel(client).locator('[data-td-code-copy]'),
     ).toBeVisible();
   });
 
-  test('persist=false still switches but writes no group key', async ({
+  test('an ungrouped run switches locally, keeps literal titles, and writes no key', async ({
     page,
   }) => {
     await page.goto(codeFixture, { waitUntil: 'domcontentloaded' });
-    await page.locator('#literal-markers-plain-tab').click();
-    await expect(page.locator('#literal-markers-plain-tab')).toHaveClass(
-      /active/,
-    );
-    await expect(page.locator('#literal-markers-ticks-tab')).toHaveText(
+    const literal = page
+      .locator('.td-tabs:not([data-td-tabs-group])')
+      .filter({ has: page.getByRole('tab', { name: 'Plain' }) });
+    await expect(literal).toHaveCount(1);
+    await expect(literal.getByRole('tab')).toHaveText([
       'Backticks **literal** [label]',
+      'Plain',
+    ]);
+    await literal.getByRole('tab', { name: 'Plain' }).click();
+    await expect(literal.getByRole('tab', { name: 'Plain' })).toHaveAttribute(
+      'aria-selected',
+      'true',
     );
-    await expect(page.locator('#literal-markers-plain-code')).toHaveClass(
+    await expect(activePanel(literal).locator('.td-code')).toHaveClass(
       /is-collapsed/,
     );
-    await expect
-      .poll(() =>
-        page.evaluate(() =>
-          localStorage.getItem('td-code-group:v1:group:literal-markers'),
+    await expect(page).not.toHaveURL(/#/);
+    expect(
+      await page.evaluate(() =>
+        Object.keys(localStorage).filter((key) =>
+          key.startsWith('td-tabs:v1:'),
         ),
-      )
-      .toBeNull();
+      ),
+    ).toEqual([]);
   });
 
   test('hash history restores tabs without mutating the saved preference', async ({
     page,
   }) => {
     await page.addInitScript(() => {
-      localStorage.setItem('td-code-group:v1:sync:package-manager', 'pnpm');
+      localStorage.setItem('td-tabs:v1:package-manager', 'pnpm');
     });
-    await page.goto(`${codeFixture}#install-client-npm`, {
+    await page.goto(`${codeFixture}#package-manager-npm`, {
       waitUntil: 'domcontentloaded',
     });
-    await expect(page.locator('#install-client-npm-tab')).toHaveClass(/active/);
+    const client = packageManagerSets(page).nth(0);
+    await expect(tabOf(client, 'npm')).toHaveAttribute('aria-selected', 'true');
 
-    await page.goto(`${codeFixture}#install-client-yarn`);
-    await expect(page.locator('#install-client-yarn-tab')).toHaveClass(
-      /active/,
+    await page.goto(`${codeFixture}#package-manager-yarn`);
+    await expect(tabOf(client, 'yarn')).toHaveAttribute(
+      'aria-selected',
+      'true',
     );
     await page.goBack();
-    await expect(page.locator('#install-client-npm-tab')).toHaveClass(/active/);
+    await expect(tabOf(client, 'npm')).toHaveAttribute('aria-selected', 'true');
     await expect
       .poll(() =>
-        page.evaluate(() =>
-          localStorage.getItem('td-code-group:v1:sync:package-manager'),
-        ),
+        page.evaluate(() => localStorage.getItem('td-tabs:v1:package-manager')),
       )
       .toBe('pnpm');
   });
@@ -345,33 +368,58 @@ test.describe('Code Group state', () => {
       };
     });
     await page.goto(codeFixture, { waitUntil: 'domcontentloaded' });
-    await page.locator('#install-client-npm-tab').click();
-    await expect(page.locator('#install-client-npm-tab')).toHaveClass(/active/);
-    await expect(page.locator('#install-tool-npm-tab')).toHaveClass(/active/);
-    await expect(page).toHaveURL(/#install-client-npm$/);
+    const sets = packageManagerSets(page);
+    await tabOf(sets.nth(0), 'pnpm').click();
+    await expect(tabOf(sets.nth(0), 'pnpm')).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    await expect(tabOf(sets.nth(1), 'pnpm')).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    await expect(page).toHaveURL(/#package-manager-pnpm$/);
   });
 
-  test('legacy tabpane reads and writes its existing timestamp keys', async ({
+  test('a grouped set restores its stored value on load and saves clicks', async ({
     page,
   }) => {
     await page.addInitScript(() => {
-      localStorage.setItem('td-tp-persist-count', '7');
-      localStorage.setItem('td-tp-persist:json', '7');
+      localStorage.setItem('td-tabs:v1:yaml-json', 'json');
     });
     await page.goto(codeFixture, { waitUntil: 'domcontentloaded' });
-    const json = page.locator('[data-td-tp-persist="json"]');
-    const yaml = page.locator('[data-td-tp-persist="yaml"]');
-    await expect(json).toHaveClass(/active/);
-    await yaml.click();
-    await expect(yaml).toHaveClass(/active/);
+    const set = page.locator('.td-tabs[data-td-tabs-group="yaml-json"]');
+    await expect(tabOf(set, 'json')).toHaveAttribute('aria-selected', 'true');
+    await expect(activePanel(set)).toContainText('"message"');
+    await tabOf(set, 'yaml').click();
+    await expect(tabOf(set, 'yaml')).toHaveAttribute('aria-selected', 'true');
     await expect
       .poll(() =>
-        page.evaluate(() => [
-          localStorage.getItem('td-tp-persist-count'),
-          localStorage.getItem('td-tp-persist:yaml'),
-        ]),
+        page.evaluate(() => localStorage.getItem('td-tabs:v1:yaml-json')),
       )
-      .toEqual(['8', '8']);
+      .toBe('yaml');
+  });
+
+  test('arrow keys move and activate tabs while focus stays on the tab', async ({
+    page,
+  }) => {
+    await page.goto(codeFixture, { waitUntil: 'domcontentloaded' });
+    const client = packageManagerSets(page).nth(0);
+    await tabOf(client, 'npm').focus();
+    await page.keyboard.press('ArrowRight');
+    await expect(tabOf(client, 'pnpm')).toBeFocused();
+    await expect(tabOf(client, 'pnpm')).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    await page.keyboard.press('End');
+    await expect(tabOf(client, 'yarn')).toBeFocused();
+    await expect(tabOf(client, 'yarn')).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    await page.keyboard.press('Home');
+    await expect(tabOf(client, 'npm')).toBeFocused();
   });
 });
 
@@ -403,7 +451,7 @@ test('the EN and ZH guide pair every authoring example with a rendered result', 
             node = node.nextElementSibling
           ) {
             if (labelParagraphs.includes(node)) return false;
-            if (node.matches('.td-code, .td-code-group')) return true;
+            if (node.matches('.td-code, .td-tabs, .td-tab-block')) return true;
           }
           return false;
         };
@@ -475,8 +523,8 @@ test('code runtimes are absent on a page without code or tabs', async ({
     return script ? fetch(script.src).then((response) => response.text()) : '';
   });
   expect(source).not.toContain('data-td-code-copy');
-  expect(source).not.toContain('td-code-group:v1');
-  expect(source).not.toContain('td-tp-persist');
+  expect(source).not.toContain('td-tabs:v1');
+  expect(source).not.toContain('data-td-tab-group');
 });
 
 test('print reveals every group panel and hides interactive controls', async ({
@@ -484,14 +532,14 @@ test('print reveals every group panel and hides interactive controls', async ({
 }) => {
   await page.goto(codeFixture, { waitUntil: 'domcontentloaded' });
   await page.emulateMedia({ media: 'print' });
-  const panels = page.locator('#install-client [data-td-code-group-panel]');
+  const panels = packageManagerSets(page).nth(0).locator('.td-tabs__panel');
   await expect(panels).toHaveCount(3);
   for (const panel of await panels.all()) {
     await expect(panel).toHaveCSS('display', 'block');
   }
   await expect(
-    page.locator('#install-client .td-code-group__print-title').first(),
-  ).toBeVisible();
+    packageManagerSets(page).nth(0).locator('.td-tabs__list'),
+  ).toBeHidden();
   await expect(
     page.locator('#wrapped-collapsed [data-td-code-expand]'),
   ).toBeHidden();

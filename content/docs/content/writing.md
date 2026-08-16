@@ -68,8 +68,8 @@ params:
 ```
 
 Metadata should clarify an example, not decorate every fence. See
-[Code blocks and Code Groups](/docs/components/code-blocks/) for filenames, Copy
-policies, wrapping, collapse, line links, and synchronized alternatives.
+[Code blocks and tabs](/docs/components/code-blocks/) for titles, Copy policies,
+wrapping, collapse, line links, and synchronized alternatives.
 
 ## Alerts {#alerts}
 
@@ -85,9 +85,11 @@ OINK supports GitHub-style blockquote alerts and optional Obsidian-style titles:
 > A translated heading must keep the English page's rendered ID.
 ```
 
-Supported semantic types include `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, and
-`CAUTION`, plus the Bootstrap-compatible types and `NB`. Use alerts sparingly:
-important instructions must still make sense to screen readers and in print. See
+Supported types are `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`, `SUCCESS`,
+`DANGER`, `QUESTION`, `EXAMPLE`, `QUOTE`, and the neutral `DETAILS` disclosure;
+a `-` or `+` after the type folds the callout. Use alerts sparingly: important
+instructions must still make sense to screen readers and in print. See
+[Callouts](/docs/components/layout/#callouts) for the complete reference and
 [Alerts](/docs/appearance/styling/#alerts) for appearance.
 
 ## Links {#links}
@@ -232,8 +234,9 @@ runtime files merely to alter branding.
 
 ## Building your own landing pages
 
-Compose landing pages from standard Markdown and
-[`blocks/*` shortcodes](/docs/components/layout/#blocks). Keep essential
+Compose landing pages with `layout: landing` and the reusable sections described
+in [Landing pages](/docs/scenarios/landing/); the Docsy `blocks/*` shortcodes
+are [no longer available](/docs/components/layout/#blocks). Keep essential
 information in text, make call-to-action links meaningful, and test the page at
 mobile and desktop widths in both languages.
 

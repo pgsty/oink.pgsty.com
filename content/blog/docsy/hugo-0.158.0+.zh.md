@@ -24,10 +24,12 @@ params:
 - **以下情况适合阅读本指南**：
   - [升级到 Docsy 0.16.0](/zh/blog/docsy/0.16.0/#upgrade)；
   - 只升级 Hugo。
-- 审阅 {{< badge text="BREAKING" tone="warning" >}} 变更：<a id="breaking-changes"></a>
+- 审阅 {{< badge text="BREAKING" tone="warning" >}}
+  变更：<a id="breaking-changes"></a>
   - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
     [由 Hugo 管理的 Node 工具要求 Node 22+](#node-tools)；
-  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> [HTML 内容与符号链接的安全规则发生变化](#security)。
+  - <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
+    [HTML 内容与符号链接的安全规则发生变化](#security)。
 - 审阅 **弃用项**：<a id="deprecations"></a>
   - [语言配置与模板 API](#language-apis)；
   - [图片处理配置与模板 API](#imaging)。
@@ -131,7 +133,8 @@ Docsy 站点通常使用 PostCSS 处理 CSS，所以即使 Docsy 主题本身没
 
 ### 操作 {#node-tools-actions}
 
-<i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> **适用条件**：站点使用 Hugo
+<i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
+**适用条件**：站点使用 Hugo
 0.161.x 或更高版本，并在 Hugo 构建期间运行 PostCSS、Babel、Tailwind 或类似 Node 工具。
 
 - 把 Node 升级到当前活跃 LTS；Docsy 0.16.0 使用 Node LTS 24；
@@ -155,7 +158,8 @@ Hugo 在这一版本范围内收紧了多项安全边界：
 
 ### 操作 {#security-actions}
 
-<i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i> **适用条件**：站点使用远程资源、手写 `.html`
+<i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
+**适用条件**：站点使用远程资源、手写 `.html`
 内容文件、符号链接内容/资源，或在缓存 Partial 中使用 `templates.Defer`。
 
 - 使用目标 Hugo 版本在本地构建，审阅安全相关错误与警告；

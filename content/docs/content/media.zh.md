@@ -2,7 +2,6 @@
 title: Logo 与图片
 weight: 70
 description: 配置 Logo、页面图标、favicon 与图片。
-cSpell:ignore: imgproc
 ---
 
 ## 添加品牌标识 {#add-your-logo}
@@ -67,25 +66,14 @@ Oink 不强制使用某个产品 favicon，而是发现消费端站点 `static/`
 
 ## 添加图片 {#add-images}
 
-只属于某个页面的图片应放在对应页面包中，让源文档与媒体保持在一起，并允许 Hugo 处理该资源。简单图片可以使用普通 Markdown；需要调整尺寸、裁切或显示选项时，使用
-[`imgproc` 短代码][]。
+只属于某个页面的图片应放在对应页面包中，让源文档与媒体保持在一起，并允许 Hugo 处理该资源。简单图片可以使用普通 Markdown——独立图片下方加一行
+`{caption="…"}` 属性即可变成带图注的图；需要调整尺寸、裁切或显示选项时，使用
+[`image` 短代码][]。
 
 ### 落地页封面 {#landing-pages}
 
-[`blocks/cover` 短代码][]会选择页面资源中首个文件名包含 `background`
-的图片。对于栅格图，Oink 会生成 1920x1080 与 960x540 两种响应式变体。使用
-`image_anchor` 控制裁切位置，并用 `height` 选择 `auto`、`min`、`med`、`max` 或
-`full`：
-
-```go-html-template
-{{%/* blocks/cover
-  title="Welcome to Oink"
-  image_anchor="center"
-  height="min"
-*/%}}
-让文档回归内容本身。
-{{%/* /blocks/cover */%}}
-```
+落地页使用 `layout: landing` 构建；首屏分区的背景图来自本地页面资源或数据，见
+[Landing 页面][]。Docsy的 `blocks/cover` 短代码已不再提供。
 
 ### 静态图片 {#other-pages}
 
@@ -94,9 +82,9 @@ Oink 不强制使用某个产品 favicon，而是发现消费端站点 `static/`
 构建后同一 URL 仍可访问。具体取舍请参阅[添加静态内容][]。
 
 [添加静态内容]: /zh/docs/content/writing/#adding-static-content
-[`blocks/cover` 短代码]: /zh/docs/components/layout/#blocks-cover
+[Landing 页面]: /zh/docs/scenarios/landing/
 [favicon.io]: https://favicon.io/
-[`imgproc` 短代码]: /zh/docs/components/layout/#imgproc
+[`image` 短代码]: /zh/docs/components/image-zoom/#processed-images
 [`layouts/_partials/favicons.html`]:
   https://github.com/pgsty/oink/blob/main/layouts/_partials/favicons.html
 [`layouts/_partials/hooks/head-end.html`]:
