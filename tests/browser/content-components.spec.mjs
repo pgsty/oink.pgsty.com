@@ -91,6 +91,54 @@ test.describe('Everyday content primitive guides', () => {
       'a-deliberately-long-runbook-filename-that-wraps-without-horizontal-overflow.md',
     );
 
+    const firstMetadata = fileTree.locator('.td-filetree__metadata').first();
+    await expect(
+      firstMetadata.locator(':scope > .td-filetree__meta'),
+    ).toHaveCount(2);
+    await expect(
+      firstMetadata.locator(
+        '.td-filetree__meta--mode .td-filetree__meta-value',
+      ),
+    ).toHaveText('0755');
+    await expect(
+      firstMetadata.locator(
+        '.td-filetree__meta--identity .td-filetree__meta-value',
+      ),
+    ).toHaveText('docs:writers');
+    await expect(
+      firstMetadata.locator('.td-filetree__meta--identity'),
+    ).toHaveAttribute('title', 'owner: docs; group: writers');
+
+    const firstComment = fileTree.locator('.td-filetree__comment').first();
+    await expect(
+      firstComment.locator('.td-filetree__comment-marker'),
+    ).toHaveText('#');
+    const rowFonts = await fileTree
+      .locator('.td-filetree__entry')
+      .first()
+      .evaluate((row) => ({
+        name: getComputedStyle(row.querySelector('.td-filetree__name'))
+          .fontFamily,
+        comment: getComputedStyle(row.querySelector('.td-filetree__comment'))
+          .fontFamily,
+      }));
+    expect(rowFonts.comment).toBe(rowFonts.name);
+
+    const commentOffsets = await fileTree.evaluate((tree) => {
+      const wanted = new Set([
+        'Section landing page',
+        'Product guides',
+        'Release notes and stories',
+      ]);
+      return Array.from(tree.querySelectorAll('.td-filetree__comment'))
+        .filter((comment) => wanted.has(comment.title))
+        .map((comment) => Math.round(comment.getBoundingClientRect().left));
+    });
+    expect(commentOffsets).toHaveLength(3);
+    expect(
+      Math.max(...commentOffsets) - Math.min(...commentOffsets),
+    ).toBeLessThanOrEqual(2);
+
     const firstFolder = fileTree.locator('details').first();
     const firstSummary = firstFolder.locator(':scope > summary');
     await expect

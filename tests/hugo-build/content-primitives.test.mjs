@@ -128,6 +128,18 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
     assert.match(fieldsHTML, /<dl class="td-fields__list"/);
     assert.match(fileTreeHTML, /<details class="td-filetree__details" open>/);
     assert.doesNotMatch(fileTreeHTML, /role="tree"/);
+    assert.match(
+      fileTreeHTML,
+      /td-filetree__comment-marker" aria-hidden="true">#<\/span>/,
+    );
+    assert.match(
+      fileTreeHTML,
+      /td-filetree__meta--mode" title="mode: 0755"[^>]*>.*?>0755<\/span>/,
+    );
+    assert.match(
+      fileTreeHTML,
+      /td-filetree__meta--identity" title="owner: docs; group: writers"[^>]*>.*?>docs:writers<\/span>/,
+    );
     assert.match(galleryHTML, /class="td-gallery td-gallery--columns-3"/);
     assert.equal(
       (imageZoomHTML.match(/data-td-image-zoom-dialog/g) || []).length,
@@ -158,6 +170,10 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
     assert.match(
       markdownByPage.filetree,
       new RegExp(`\\*\\*${fixture.label}\\*\\*`),
+    );
+    assert.match(
+      markdownByPage.filetree,
+      /# .*?\(mode: `0755`; owner: `docs:writers`\)/,
     );
     assert.ok(
       markdownByPage.gallery.includes(fixture.caption.replaceAll('.', '\\.')),
