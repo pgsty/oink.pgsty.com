@@ -91,7 +91,6 @@ beta
 
 ## Package manager groups
 
-<!-- prettier-ignore -->
 ```bash {tab="npm" group="package-manager" value="npm" copy="all"}
 npm install @example/client
 ```
@@ -106,7 +105,6 @@ yarn add @example/client
 
 Install the tool with the same package manager:
 
-<!-- prettier-ignore -->
 ```bash {tab="npm" group="package-manager" value="npm"}
 npm install --global @example/tool
 ```
@@ -117,7 +115,6 @@ pnpm add --global @example/tool
 
 Literal markers in tab titles stay literal:
 
-<!-- prettier-ignore -->
 ````text {tab="Backticks **literal** [label]" collapse=2}
 before ``` marker
 after
@@ -131,7 +128,6 @@ three
 
 ## Legacy tabpane
 
-<!-- prettier-ignore -->
 ```yaml {tab="YAML" group="yaml-json" value="yaml"}
 message: legacy-compatible
 ```
