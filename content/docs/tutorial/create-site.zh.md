@@ -72,8 +72,7 @@ module:
 
 OINK 用文件名后缀区分语言，译文和原文并排放在同一个目录：
 
-<!-- prettier-ignore-start -->
-
+```filetree
 - content/
   - _index.md
   - _index.zh.md
@@ -85,9 +84,7 @@ OINK 用文件名后缀区分语言，译文和原文并排放在同一个目录
   - blog/
     - _index.md
     - _index.zh.md
-{.filetree}
-
-<!-- prettier-ignore-end -->
+```
 
 ## 稳定的标题 ID {#stable-heading-ids}
 

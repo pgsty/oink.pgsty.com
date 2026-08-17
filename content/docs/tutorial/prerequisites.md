@@ -91,8 +91,7 @@ hugo --gc --minify
 
 Before building in an isolated environment, confirm the theme archive contains:
 
-<!-- prettier-ignore-start -->
-
+```filetree
 - oink/
   - go.mod
   - hugo.yaml
@@ -103,9 +102,7 @@ Before building in an isolated environment, confirm the theme archive contains:
   - layouts/
   - static/
   - i18n/
-{.filetree}
-
-<!-- prettier-ignore-end -->
+```
 
 `VENDOR.json` records the version, source, license path, and SHA-256 of every
 bundled third-party component, and is the basis for an offline audit.

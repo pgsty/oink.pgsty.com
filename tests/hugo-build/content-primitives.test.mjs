@@ -65,14 +65,14 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
     {
       prefix: '',
       heading: 'Everyday writing',
-      entry: 'content/ — Page bundles and templates',
+      entry: 'Page bundles and templates',
       caption: 'A global image resource with known intrinsic dimensions.',
       linkedAlt: 'Linked OINK image remains a link',
     },
     {
       prefix: 'zh',
       heading: '日常写作',
-      entry: 'content/ — 页面包与模板',
+      entry: '页面包与模板',
       caption: '具有已知固有尺寸的全局图片资源。',
       linkedAlt: '带链接的 OINK 图片仍然保持链接',
     },
@@ -126,16 +126,29 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
     assert.match(badgeHTML, /<span class="td-badge td-badge--warning/);
     assert.match(kbdHTML, /<span class="td-kbd-sequence"><kbd>Ctrl<\/kbd>/);
     assert.match(fieldsHTML, /<dl class="td-fields__list"/);
-    // FileTree is a plain nested list with the `{.filetree}` marker: no
-    // disclosure widgets, no tree roles, folders are nested `<ul>`s.
-    assert.match(fileTreeHTML, /<ul class="filetree">/);
-    assert.doesNotMatch(fileTreeHTML, /role="tree"|td-filetree|<details/);
+    // FileTree is the ```filetree fence: a td-filetree panel with a title bar,
+    // native <details> directories, an aligned comment column and no tree role.
+    assert.doesNotMatch(fileTreeHTML, /role="tree"|<ul class="filetree">/);
     const fileTree = fileTreeHTML.match(
-      /<ul class="filetree">[\s\S]*?<\/ul>\s*<\/li>\s*<\/ul>/,
+      /<div class="td-filetree" style="--td-filetree-name-col:[\s\S]*?<\/ul><\/div><\/div>/,
     )?.[0];
-    assert.ok(fileTree, 'FileTree lost its nested list');
-    assert.ok(fileTree.includes(`<li>${fixture.entry}`));
-    assert.ok((fileTree.match(/<ul>/g) || []).length >= 3);
+    assert.ok(fileTree, 'FileTree lost its panel');
+    assert.match(fileTree, /<p class="td-filetree__title" id="td-filetree-/);
+    assert.match(fileTree, /<details class="td-filetree__details" open><summary class="td-filetree__summary">/);
+    assert.match(fileTree, /<details class="td-filetree__details"><summary/); // {open=false}
+    assert.ok(
+      fileTree.includes(
+        `<span class="td-filetree__hash" aria-hidden="true">#</span><span class="td-filetree__comment-text">${fixture.entry}</span>`,
+      ),
+    );
+    assert.match(fileTree, /<span class="td-filetree__name" title="content\/">content\/<\/span>/);
+    assert.match(fileTree, /<i class="fa-brands fa-markdown td-filetree__glyph"><\/i>/);
+    assert.match(fileTree, /<i class="fa-solid fa-scale-balanced td-filetree__glyph"><\/i>/); // LICENSE
+    assert.equal((fileTree.match(/<details/g) || []).length, 4);
+    assert.equal((fileTree.match(/<ul/g) || []).length, (fileTree.match(/<\/ul>/g) || []).length);
+    // The tree-output example and the plain (comment-less) variant render too.
+    assert.match(fileTreeHTML, /<span class="td-filetree__name" title="\.">\.<\/span>/);
+    assert.match(fileTreeHTML, /td-filetree td-filetree--plain/);
     // Gallery is an image list with the `{.gallery}` marker.
     assert.match(galleryHTML, /<ul class="gallery">/);
     assert.doesNotMatch(galleryHTML, /td-gallery/);
@@ -180,9 +193,10 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
     assert.match(markdownByPage.badge, /\*\*Beta\*\*/);
     assert.match(markdownByPage.kbd, /Ctrl \+ K/);
     assert.match(markdownByPage.fields, /- `offlineSearch` — `boolean`/);
-    // Native list forms stay source Markdown in the Markdown output.
-    assert.ok(markdownByPage.filetree.includes(`- ${fixture.entry}`));
-    assert.match(markdownByPage.filetree, /^\{\.filetree\}$/m);
+    // Native list forms and the filetree fence stay source Markdown.
+    assert.ok(markdownByPage.filetree.includes(`# ${fixture.entry}`));
+    assert.match(markdownByPage.filetree, /^```filetree \{title="[^"]+"\}$/m);
+    assert.doesNotMatch(markdownByPage.filetree, /^\{\.filetree\}$/m);
     assert.match(markdownByPage.gallery, /^\{\.gallery\}$/m);
     assert.ok(markdownByPage.gallery.includes(fixture.caption));
     for (const markdown of Object.values(markdownByPage)) {
@@ -238,9 +252,10 @@ Press {{< kbd "Ctrl" "K" >}}.
   {{< /field >}}
 {{< /fields >}}
 
-- closed/
+\`\`\`filetree
+- closed/   # probe dir
   - nested.md
-{.filetree}
+\`\`\`
 
 - ![Probe overview](images/content-primitives/oink.webp) — Probe caption one.
 - ![Probe feedback](/images/feedback.png) — Probe caption two.
@@ -283,13 +298,13 @@ Content after the explicit feed summary boundary.
       markdown,
       /- `enabled` — `boolean`; required; default: `false`/,
     );
-    assert.match(markdown, /- closed\/\n  - nested\.md\n\{\.filetree\}/);
+    assert.match(markdown, /```filetree\n- closed\/   # probe dir\n  - nested\.md\n```/);
     assert.match(markdown, /!\[Probe overview\]/);
     assert.match(markdown, /— Probe caption one\.\n.*\n\{\.gallery\}/);
     assert.doesNotMatch(markdown, /td-badge|td-filetree|td-gallery|<dialog/);
     assert.match(
       html,
-      /<ul class="filetree">\s*<li>closed\/\s*<ul>\s*<li>nested\.md<\/li>/,
+      /<div class="td-filetree" style="--td-filetree-name-col:[\d.]+ch" data-td-filetree>[\s\S]*?<span class="td-filetree__divider" role="separator"[\s\S]*?<details class="td-filetree__details" open><summary[\s\S]*?title="closed\/">closed\/<\/span>[\s\S]*?probe dir[\s\S]*?title="nested\.md">nested\.md<\/span>/,
     );
     assert.match(
       html,
@@ -308,11 +323,11 @@ Content after the explicit feed summary boundary.
         /data-td-image-zoom|data-zoom-src|data-no-zoom|<dialog class="td-image-zoom/,
       );
     }
-    assert.match(print, /<ul class="filetree">/);
+    assert.match(print, /<div class="td-filetree td-filetree--static"/);
     assert.match(print, /<ul class="gallery">/);
-    assert.doesNotMatch(print, /td-filetree|td-gallery|<details/);
-    assert.match(rss, /&lt;ul class=&#34;filetree&#34;&gt;/);
-    assert.doesNotMatch(rss, /td-filetree|td-gallery/);
+    assert.doesNotMatch(print, /td-gallery|<details/);
+    assert.match(rss, /&lt;pre class=&#34;td-filetree-source&#34;&gt;/);
+    assert.doesNotMatch(rss, /td-filetree__row|td-gallery|&lt;details/);
   } finally {
     rmSync(fixtureDir, { recursive: true, force: true });
   }

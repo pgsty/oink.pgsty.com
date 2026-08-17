@@ -68,16 +68,13 @@ at OINK's repository; replace or remove it. {{< /field >}} {{< /fields >}}
 
 These directories under `content/` are OINK's own content. Delete them:
 
-<!-- prettier-ignore-start -->
-
+```filetree
 - content/
   - docs/
   - blog/
   - project/
   - tests/
-{.filetree}
-
-<!-- prettier-ignore-end -->
+```
 
 `project/` is OINK's own project record and `tests/` holds regression pages;
 neither means anything for your product.

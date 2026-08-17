@@ -24,7 +24,7 @@ OINK 的组件分两类：**每天都会用到的写作原语**，和特定场�
 | [Kbd](kbd/)                    | `{{< kbd >}}` 或原始 `<kbd>`           | 键盘快捷键                      | 否             |
 | [Fields](fields/)              | 表格 + `{.fields}` 或 `{{< fields >}}` | 配置项、参数、返回字段说明      | 否             |
 | [表格](tables/)                | `{.matrix}` `{caption=}` `{.full-width}` … | 矩阵、标题、编号与标签页表格    | 仅标签页表格   |
-| [FileTree](filetree/)          | 嵌套列表 + `{.filetree}`                   | 目录结构                        | 否             |
+| [FileTree](filetree/)          | ` ```filetree ` 围栏                       | 目录结构                        | 否             |
 
 ## 媒体 {#media}
 
@@ -79,7 +79,7 @@ Section pages:
 - [Kbd](/zh/docs/components/kbd/): 使用具备无障碍语义的静态按键序列编写快捷键。
 - [Fields 与 Field](/zh/docs/components/fields/): 使用响应式语义 HTML 描述配置、参数、属性与响应字段。
 - [表格](/zh/docs/components/tables/): 在普通 Markdown 表格下方加一行属性，即可选择表格种类——参考列表、兼容矩阵、带标题、带编号、标签页或全宽。
-- [FileTree](/zh/docs/components/filetree/): 用一个普通的嵌套 Markdown 列表展示带注释的仓库与目录结构。
+- [FileTree](/zh/docs/components/filetree/): 用 `filetree` 代码围栏展示带注释的仓库与目录结构：对齐的备注列、逐条目图标、可折叠的目录。
 - [Gallery](/zh/docs/components/gallery/): 用响应式静态网格排列相关图片，并复用图片缩放。
 - [图片与图片缩放](/zh/docs/components/image-zoom/): 用普通 Markdown 写图片，添加图注与处理型预览，并让读者在原生对话框中查看大图。
 - [Callouts、标签页、步骤与卡片](/zh/docs/components/layout/): 用 Markdown 原生的 callout、标签页、步骤、卡片以及少数保留短代码组织页面结构。

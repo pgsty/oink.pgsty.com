@@ -22,7 +22,7 @@ Hugo 有两种短代码分隔符，OINK 有意区分使用：
 - 其余短代码一律使用 `{{</* name */>}}`。`tabs`、`cards`、`fields`、`image`
   等容器由模板自己渲染 Markdown 正文。
 
-标记是写在列表或表格下一行的 Goldmark 块属性：`{.steps}`、`{.cards}`、`{.filetree}`、`{.gallery}`、`{.fields}`、`{.matrix}`
+标记是写在列表或表格下一行的 Goldmark 块属性：`{.steps}`、`{.cards}`、`{.gallery}`、`{.fields}`、`{.matrix}`
 与
 `{.full-width}`。标记必须紧贴块的最后一行；中间隔一个空行会让它悄悄脱离。示例里的
 `/* ... */` 转义用于防止 Hugo 执行正在展示的短代码。
@@ -37,8 +37,6 @@ Hugo 有两种短代码分隔符，OINK 有意区分使用：
 Callout 是 GitHub 风格的块引用，可选 Obsidian 风格的标题与折叠符号。不需要短代码，也不需要 JavaScript。
 
 ### 源码 {#callouts-source}
-
-<!-- prettier-ignore-start -->
 
 ```markdown
 > [!TIP] 标题是行内 Markdown
@@ -55,11 +53,7 @@ Callout 是 GitHub 风格的块引用，可选 Obsidian 风格的标题与折叠
 {icon="fa-solid fa-rocket"}
 ```
 
-<!-- prettier-ignore-end -->
-
 ### 渲染结果 {#callouts-rendered-result}
-
-<!-- prettier-ignore-start -->
 
 > [!TIP] 标题是行内 Markdown
 >
@@ -73,8 +67,6 @@ Callout 是 GitHub 风格的块引用，可选 Obsidian 风格的标题与折叠
 >
 > 默认收起，没有语义颜色。
 {icon="fa-solid fa-rocket"}
-
-<!-- prettier-ignore-end -->
 
 ### 类型与规则 {#callout-types}
 
@@ -110,8 +102,6 @@ hash、页内多组同步与浏览器持久化；分组内的每个围栏随后�
 
 **作者写法**
 
-<!-- prettier-ignore-start -->
-
 ````markdown
 ```bash {tab="Homebrew" group="install" value="brew"}
 brew install pigsty
@@ -122,11 +112,7 @@ sudo apt install pigsty
 ```
 ````
 
-<!-- prettier-ignore-end -->
-
 **渲染结果**
-
-<!-- prettier-ignore-start -->
 
 ```bash {tab="Homebrew" group="install" value="brew"}
 brew install pigsty
@@ -136,8 +122,6 @@ brew install pigsty
 sudo apt install pigsty
 ```
 
-<!-- prettier-ignore-end -->
-
 没有 JavaScript、在 GitHub 上以及打印时，读者看到的是连续的带标题代码块；运行时增强页面之前不会隐藏任何内容。围栏的
 `tab` 可以与 `title`
 共存（文件名标题栏留在面板内）。[代码块](/zh/docs/components/code-blocks/#tabs)记录了完整的属性契约。
@@ -145,8 +129,6 @@ sudo apt install pigsty
 ### 相邻表格 {#adjacent-tables}
 
 同样的属性也适用于表格：连续带 `{tab="…"}` 的表格组成一个标签页集。
-
-<!-- prettier-ignore-start -->
 
 | 参数              | 取值 |
 | ----------------- | ---- |
@@ -157,8 +139,6 @@ sudo apt install pigsty
 | ----------------- | ---- |
 | `max_connections` | 200  |
 {tab="PG 16" value="pg16"}
-
-<!-- prettier-ignore-end -->
 
 ### `tabs` 短代码 {#tabs-shortcode}
 
@@ -178,8 +158,6 @@ sudo apt install pigsty
 {{</* /tabs */>}}
 ```
 
-<!-- prettier-ignore-start -->
-
 {{< tabs group="setting" default="conf" label="MinIO 设置" >}}
 {{< tab label="环境变量" value="env" >}}
 在环境中设置 `MINIO_LOGGER_WEBHOOK_QUEUE_DIR`。
@@ -191,8 +169,6 @@ sudo apt install pigsty
 > 标签页内可以放任何块。
 {{< /tab >}}
 {{< /tabs >}}
-
-<!-- prettier-ignore-end -->
 
 `tabs` 接受
 `group`（选择性启用 hash、同步与持久化）、`default`（某个子项的 value，需要
@@ -215,8 +191,6 @@ Steps 会自动为一组顺序步骤编号。原生形态是带 `{.steps}`
 
 ### 原生形态 {#steps-native}
 
-<!-- prettier-ignore-start -->
-
 ```markdown
 1. 安装依赖
 
@@ -229,10 +203,6 @@ Steps 会自动为一组顺序步骤编号。原生形态是带 `{.steps}`
 1. 验证安装
 {.steps}
 ```
-
-<!-- prettier-ignore-end -->
-
-<!-- prettier-ignore-start -->
 
 1. 安装依赖
 
@@ -249,8 +219,6 @@ Steps 会自动为一组顺序步骤编号。原生形态是带 `{.steps}`
 
 1. 验证安装
 {.steps}
-
-<!-- prettier-ignore-end -->
 
 每一项都写成
 `1.`，这样内容缩进恒为三个空格，重新排序也不必手工改号。步骤项可以包含任何块和任何
@@ -277,8 +245,6 @@ Steps 会自动为一组顺序步骤编号。原生形态是带 `{.steps}`
 
 {{% /steps %}}
 
-<!-- prettier-ignore-start -->
-
 ```markdown
 {{%/* steps */%}}
 
@@ -293,8 +259,6 @@ Steps 会自动为一组顺序步骤编号。原生形态是带 `{.steps}`
 {{%/* /steps */%}}
 ```
 
-<!-- prettier-ignore-end -->
-
 同级步骤保持相同的标题层级，不要把一个 `steps` 块嵌套在另一个里面。
 
 ## 卡片 {#cards}
@@ -305,24 +269,16 @@ Steps 会自动为一组顺序步骤编号。原生形态是带 `{.steps}`
 
 带 `{.cards}` 的链接列表会变成卡片网格。链接是卡片标题，其后的内容是描述。
 
-<!-- prettier-ignore-start -->
-
 ```markdown
 - [安装](/zh/docs/tutorial/) — 从零开始部署。
 - [配置](/zh/docs/configure/) — 调整运行参数。
 {.cards}
 ```
 
-<!-- prettier-ignore-end -->
-
-<!-- prettier-ignore-start -->
-
 - [安装](/zh/docs/tutorial/) — 从零开始部署。
 - [配置](/zh/docs/configure/) — 调整运行参数。
 - [组件参考](/zh/docs/components/) — 本页介绍的所有组件。
 {.cards}
-
-<!-- prettier-ignore-end -->
 
 ### `cards` 短代码 {#cards-shortcode}
 
@@ -339,8 +295,6 @@ Steps 会自动为一组顺序步骤编号。原生形态是带 `{.steps}`
 {{</* /cards */>}}
 ```
 
-<!-- prettier-ignore-start -->
-
 {{< cards >}}
 {{< card title="快速上手" link="/zh/docs/tutorial/" icon="fa-solid fa-rocket" badge="新" >}}
 用 Hugo 构建，描述里 *支持 Markdown*。
@@ -352,8 +306,6 @@ Steps 会自动为一组顺序步骤编号。原生形态是带 `{.steps}`
 图片卡片经共享图片解析器解析。
 {{< /card >}}
 {{< /cards >}}
-
-<!-- prettier-ignore-end -->
 
 `cards` 没有参数。`card` 接受 `title`（必填）、`link`、`icon`（一对 Font Awesome
 class）、`badge`（纯文本），以及 `image` 与 `image_alt` 或 `decorative=true`
@@ -458,7 +410,7 @@ Docsy 的 `blocks/*`
 | `alert`、`details`、`pageinfo`、原始 `<details><summary>`                         | `> [!TYPE] 标题`、`> [!DETAILS]-`                 |
 | `tabpane`/`tab`、`code-group`/`code-tab`                                          | 带 `{tab=}` 的相邻围栏或 `tabs`/`tab`             |
 | `doc-cards`/`doc-card`、`nav-cards`/`nav-card`、`cardpane`/`card`、`doc-carousel` | `{.cards}` 列表或 `cards`/`card`                  |
-| `filetree`、`filetree/folder`、`filetree/file`                                    | 嵌套列表 + `{.filetree}`                          |
+| `filetree`、`filetree/folder`、`filetree/file`、`{.filetree}` 列表                | ` ```filetree ` 围栏                              |
 | `gallery`、`gallery/image`                                                        | 图片列表 + `{.gallery}`                           |
 | `imgproc`                                                                         | `image`（具名参数）                               |
 | `readfile`                                                                        | `include`                                         |

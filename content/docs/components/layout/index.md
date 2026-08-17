@@ -30,8 +30,8 @@ Hugo has two shortcode delimiters, and OINK uses them deliberately:
   `cards`, `fields`, and `image` render their Markdown bodies themselves.
 
 Markers are Goldmark block attributes written on the line right after a list or
-table: `{.steps}`, `{.cards}`, `{.filetree}`, `{.gallery}`, `{.fields}`,
-`{.matrix}`, and `{.full-width}`. Keep the marker directly under the block; a
+table: `{.steps}`, `{.cards}`, `{.gallery}`, `{.fields}`, `{.matrix}`, and
+`{.full-width}`. Keep the marker directly under the block; a
 blank line in between silently detaches it. In the examples below, the
 `/* ... */` escape prevents Hugo from executing the displayed shortcode.
 
@@ -48,8 +48,6 @@ fold sign. They need no shortcode and no JavaScript.
 
 ### Source {#callouts-source}
 
-<!-- prettier-ignore-start -->
-
 ```markdown
 > [!TIP] Titles are inline Markdown
 >
@@ -65,11 +63,7 @@ fold sign. They need no shortcode and no JavaScript.
 {icon="fa-solid fa-rocket"}
 ```
 
-<!-- prettier-ignore-end -->
-
 ### Rendered result {#callouts-rendered-result}
-
-<!-- prettier-ignore-start -->
 
 > [!TIP] Titles are inline Markdown
 >
@@ -83,8 +77,6 @@ fold sign. They need no shortcode and no JavaScript.
 >
 > Collapsed by default, no semantic color.
 {icon="fa-solid fa-rocket"}
-
-<!-- prettier-ignore-end -->
 
 ### Types and rules {#callout-types}
 
@@ -126,8 +118,6 @@ needs a stable `value`.
 
 **Authoring**
 
-<!-- prettier-ignore-start -->
-
 ````markdown
 ```bash {tab="Homebrew" group="install" value="brew"}
 brew install pigsty
@@ -138,11 +128,7 @@ sudo apt install pigsty
 ```
 ````
 
-<!-- prettier-ignore-end -->
-
 **Rendered result**
-
-<!-- prettier-ignore-start -->
 
 ```bash {tab="Homebrew" group="install" value="brew"}
 brew install pigsty
@@ -151,8 +137,6 @@ brew install pigsty
 ```bash {tab="APT" value="apt"}
 sudo apt install pigsty
 ```
-
-<!-- prettier-ignore-end -->
 
 Without JavaScript, on GitHub, and in print the reader sees consecutive titled
 code blocks; nothing is hidden before the runtime enhances the page. A fence
@@ -165,8 +149,6 @@ attribute contract.
 The same attribute works on tables: consecutive tables with `{tab="…"}` become
 one tab set.
 
-<!-- prettier-ignore-start -->
-
 | Parameter         | Value |
 | ----------------- | ----- |
 | `max_connections` | 100   |
@@ -176,8 +158,6 @@ one tab set.
 | ----------------- | ----- |
 | `max_connections` | 200   |
 {tab="PG 16" value="pg16"}
-
-<!-- prettier-ignore-end -->
 
 ### The `tabs` shortcode {#tabs-shortcode}
 
@@ -197,8 +177,6 @@ Set `logger_webhook queue_dir` with `mc admin config set`.
 {{</* /tabs */>}}
 ```
 
-<!-- prettier-ignore-start -->
-
 {{< tabs group="setting" default="conf" label="MinIO settings" >}}
 {{< tab label="Environment Variable" value="env" >}}
 Set `MINIO_LOGGER_WEBHOOK_QUEUE_DIR` in the environment.
@@ -210,8 +188,6 @@ Set `logger_webhook queue_dir` with `mc admin config set`.
 > Any block works inside a tab.
 {{< /tab >}}
 {{< /tabs >}}
-
-<!-- prettier-ignore-end -->
 
 `tabs` accepts `group` (opt-in hash, sync, and persistence), `default` (a child
 value, requires `group`), and `label` (accessible tablist name). `tab` requires
@@ -235,8 +211,6 @@ Steps number a sequence automatically. The native form is an ordered list with
 
 ### Native form {#steps-native}
 
-<!-- prettier-ignore-start -->
-
 ```markdown
 1. Install the dependencies
 
@@ -249,10 +223,6 @@ Steps number a sequence automatically. The native form is an ordered list with
 1. Verify the installation
 {.steps}
 ```
-
-<!-- prettier-ignore-end -->
-
-<!-- prettier-ignore-start -->
 
 1. Install the dependencies
 
@@ -269,8 +239,6 @@ Steps number a sequence automatically. The native form is an ordered list with
 
 1. Verify the installation
 {.steps}
-
-<!-- prettier-ignore-end -->
 
 Write every item as `1.` so the content indent stays a constant three spaces and
 reordering never renumbers by hand. Items may contain any block and any
@@ -299,8 +267,6 @@ Verify the sequence on narrow screens and in both color themes.
 
 {{% /steps %}}
 
-<!-- prettier-ignore-start -->
-
 ```markdown
 {{%/* steps */%}}
 
@@ -315,8 +281,6 @@ Add the next instruction. The number is generated automatically.
 {{%/* /steps */%}}
 ```
 
-<!-- prettier-ignore-end -->
-
 Keep the same heading level for peer steps and do not nest one `steps` block
 inside another.
 
@@ -329,24 +293,16 @@ inside another.
 A link list with `{.cards}` becomes a card grid. The link is the card title;
 everything after it is the description.
 
-<!-- prettier-ignore-start -->
-
 ```markdown
 - [Install](/docs/tutorial/) — Deploy from scratch.
 - [Configure](/docs/configure/) — Tune the runtime.
 {.cards}
 ```
 
-<!-- prettier-ignore-end -->
-
-<!-- prettier-ignore-start -->
-
 - [Install](/docs/tutorial/) — Deploy from scratch.
 - [Configure](/docs/configure/) — Tune the runtime.
 - [Components](/docs/components/) — Everything on this page and more.
 {.cards}
-
-<!-- prettier-ignore-end -->
 
 ### The `cards` shortcode {#cards-shortcode}
 
@@ -363,8 +319,6 @@ How the theme fits together.
 {{</* /cards */>}}
 ```
 
-<!-- prettier-ignore-start -->
-
 {{< cards >}}
 {{< card title="Get started" link="/docs/tutorial/" icon="fa-solid fa-rocket" badge="New" >}}
 Build with Hugo, *with Markdown* in the description.
@@ -376,8 +330,6 @@ How the theme fits together.
 Image cards resolve through the shared image resolver.
 {{< /card >}}
 {{< /cards >}}
-
-<!-- prettier-ignore-end -->
 
 `cards` takes no parameters. `card` accepts `title` (required), `link`, `icon`
 (one Font Awesome class pair), `badge` (plain text), and `image` with either
@@ -493,7 +445,7 @@ and lists everything it cannot convert automatically.
 | `alert`, `details`, `pageinfo`, raw `<details><summary>`                          | `> [!TYPE] title`, `> [!DETAILS]-`                        |
 | `tabpane`/`tab`, `code-group`/`code-tab`                                          | adjacent fences with `{tab=}` or `tabs`/`tab`             |
 | `doc-cards`/`doc-card`, `nav-cards`/`nav-card`, `cardpane`/`card`, `doc-carousel` | `{.cards}` list or `cards`/`card`                         |
-| `filetree`, `filetree/folder`, `filetree/file`                                    | nested list + `{.filetree}`                               |
+| `filetree`, `filetree/folder`, `filetree/file`, `{.filetree}` lists               | ` ```filetree ` fence                                     |
 | `gallery`, `gallery/image`                                                        | image list + `{.gallery}`                                 |
 | `imgproc`                                                                         | `image` (named parameters)                                |
 | `readfile`                                                                        | `include`                                                 |

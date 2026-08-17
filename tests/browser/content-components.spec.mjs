@@ -88,21 +88,57 @@ test.describe('Everyday content primitive guides', () => {
     );
 
     await page.goto(fileTreePath, { waitUntil: 'domcontentloaded' });
-    // FileTree is a plain nested list: no disclosure widgets, no tree roles.
-    const fileTree = page.locator('#td-main-content ul.filetree').first();
+    // FileTree is the ```filetree fence: a panel with a title bar, native
+    // <details> directories, an aligned comment column, no tree role, no JS.
+    const fileTree = page.locator('#td-main-content .td-filetree').first();
     await expect(fileTree).toBeVisible();
     await expect(fileTree.locator('[role="tree"]')).toHaveCount(0);
-    await expect(fileTree.locator('details')).toHaveCount(0);
-    await expect(fileTree.locator('ul')).toHaveCount(4);
-    await expect(fileTree).toContainText(
-      'a-deliberately-long-runbook-filename-that-wraps-without-horizontal-overflow.md',
+    await expect(fileTree.locator('.td-filetree__title')).toHaveText(
+      /Repository structure|仓库结构/,
     );
+    await expect(fileTree.locator('details')).toHaveCount(4);
+    await expect(fileTree.locator('details[open]')).toHaveCount(3);
     await expect(fileTree).toContainText('Section landing page');
+    const collapsed = fileTree.locator('details').nth(3); // blog/ {open=false}
+    await expect(collapsed).toContainText('blog/');
+    await expect(collapsed).not.toHaveAttribute('open', '');
+    await expect(collapsed.locator('ul')).toBeHidden();
+    await collapsed.locator('> summary').click();
+    await expect(collapsed).toHaveAttribute('open', '');
+    await expect(collapsed.locator('ul')).toBeVisible();
+    // Comment column starts at the same x on every row.
+    const commentLefts = await fileTree
+      .locator('.td-filetree__comment')
+      .evaluateAll((cells) =>
+        cells
+          .filter((cell) => cell.textContent.trim())
+          .map((cell) => Math.round(cell.getBoundingClientRect().left)),
+      );
+    expect(new Set(commentLefts).size).toBe(1);
+    // Long names truncate inside the name column instead of overflowing.
+    const longName = fileTree
+      .locator('.td-filetree__name', {
+        hasText: 'a-deliberately-long-runbook-filename',
+      })
+      .first();
+    const nameBox = await longName.evaluate((el) => ({
+      overflow: getComputedStyle(el).textOverflow,
+      clipped: el.scrollWidth > el.clientWidth,
+      title: el.getAttribute('title'),
+    }));
+    expect(nameBox.overflow).toBe('ellipsis');
+    expect(nameBox.clipped).toBe(true);
+    expect(nameBox.title).toContain('a-deliberately-long-runbook-filename');
     const treeFonts = await fileTree.evaluate((tree) => ({
       tree: getComputedStyle(tree).fontFamily,
       body: getComputedStyle(document.body).fontFamily,
     }));
     expect(treeFonts.tree).not.toBe(treeFonts.body);
+    // Icons are Font Awesome glyphs: a folder pair for directories, markdown for .md.
+    await expect(
+      fileTree.locator('.td-filetree__icon--dir .fa-folder-open').first(),
+    ).toBeVisible();
+    await expect(fileTree.locator('.fa-markdown').first()).toBeAttached();
 
     await page.goto(galleryPath, { waitUntil: 'domcontentloaded' });
     const gallery = page.locator('#td-main-content ul.gallery').first();
@@ -141,7 +177,7 @@ test.describe('Everyday content primitive guides', () => {
       for (const { path, selector } of [
         { path: galleryPath, selector: 'ul.gallery' },
         { path: fieldsPath, selector: '.td-fields' },
-        { path: fileTreePath, selector: 'ul.filetree' },
+        { path: fileTreePath, selector: '.td-filetree' },
       ]) {
         await page.goto(path, { waitUntil: 'domcontentloaded' });
         const overflow = await page.locator(selector).evaluateAll((elements) =>
@@ -151,7 +187,7 @@ test.describe('Everyday content primitive guides', () => {
             scrollWidth: element.scrollWidth,
             right: element.getBoundingClientRect().right,
             viewport: document.documentElement.clientWidth,
-            // FileTree never wraps long names; it scrolls like a code block.
+            // Gallery / Fields never overflow; FileTree truncates in place.
             scrolls: ['auto', 'scroll'].includes(
               getComputedStyle(element).overflowX,
             ),
@@ -302,6 +338,42 @@ test.describe('Everyday content primitive guides', () => {
     await expect(page.locator('.td-image-zoom__trigger')).toHaveCount(0);
     await expect(page.locator('.td-figure img')).toHaveCount(2);
     await expect(page.locator('.td-figure figcaption')).toHaveCount(2);
+  });
+
+  test('folded callouts keep a balanced summary row', async ({ page }) => {
+    await page.goto(layoutPath, { waitUntil: 'domcontentloaded' });
+    const folded = page.locator(
+      '#td-main-content details.td-callout--collapsible:not([open])',
+    );
+    await expect(folded).toHaveCount(2);
+
+    // The <summary> shares the td-callout__title class with the static title
+    // element; the print-only title padding must not leak onto it and squash
+    // the bottom of the closed row (regression: 0px bottom padding).
+    const metrics = await folded.first().evaluate((details) => {
+      const summary = details.querySelector(':scope > summary');
+      const label = summary.querySelector('.td-callout__label');
+      const box = details.getBoundingClientRect();
+      const labelBox = label.getBoundingClientRect();
+      const style = getComputedStyle(summary);
+      return {
+        paddingTop: parseFloat(style.paddingTop),
+        paddingBottom: parseFloat(style.paddingBottom),
+        gapTop: labelBox.top - box.top,
+        gapBottom: box.bottom - labelBox.bottom,
+      };
+    });
+    expect(metrics.paddingBottom).toBeGreaterThan(8);
+    expect(metrics.paddingBottom).toBeCloseTo(metrics.paddingTop, 1);
+    expect(Math.abs(metrics.gapTop - metrics.gapBottom)).toBeLessThan(1);
+
+    // Opening a folded callout must not resize its summary row.
+    const summary = folded.first().locator(':scope > summary');
+    const rowHeight = (element) => element.getBoundingClientRect().height;
+    const closedHeight = await summary.evaluate(rowHeight);
+    await summary.click();
+    await expect(folded).toHaveCount(1);
+    expect(await summary.evaluate(rowHeight)).toBeCloseTo(closedHeight, 1);
   });
 });
 

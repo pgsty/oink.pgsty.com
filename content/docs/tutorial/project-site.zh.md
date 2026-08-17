@@ -58,16 +58,13 @@ giscus 配置指向 OINK 的仓库，务必替换或整段删除。 {{< /field >
 
 `content/` 下这些目录是 OINK 自己的内容，删掉：
 
-<!-- prettier-ignore-start -->
-
+```filetree
 - content/
   - docs/
   - blog/
   - project/
   - tests/
-{.filetree}
-
-<!-- prettier-ignore-end -->
+```
 
 `project/` 是 OINK 的项目自述，`tests/` 是回归测试页——两者对你的产品都没有意义。
 

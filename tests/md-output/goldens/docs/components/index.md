@@ -30,7 +30,7 @@ and a failed build rather than silent degradation when a parameter is invalid.
 | [Kbd](kbd/)                          | `{{< kbd >}}` or raw `<kbd>`            | Keyboard shortcuts                                  | No                 |
 | [Fields](fields/)                    | table + `{.fields}` or `{{< fields >}}` | Configuration, parameter, and response descriptions | No                 |
 | [Tables](tables/)                    | `{.matrix}` `{caption=}` `{.full-width}` …  | Matrices, captions, numbered and tabbed tables      | Only tabbed tables |
-| [FileTree](filetree/)                | nested list + `{.filetree}`                 | Directory structures                                | No                 |
+| [FileTree](filetree/)                | ` ```filetree ` fence                       | Directory structures                                | No                 |
 
 ## Media {#media}
 
@@ -90,7 +90,7 @@ Section pages:
 - [Kbd](/docs/components/kbd/): Write keyboard shortcuts as accessible, static key sequences.
 - [Fields and Field](/docs/components/fields/): Describe configuration, parameters, properties, and response fields with responsive semantic HTML.
 - [Tables](/docs/components/tables/): Choose a table kind — reference list, compatibility matrix, captioned, numbered, tabbed, or full-width — with one attribute line under a normal Markdown table.
-- [FileTree](/docs/components/filetree/): Present annotated repository and directory structures with an ordinary nested Markdown list.
+- [FileTree](/docs/components/filetree/): Present annotated repository and directory structures with a `filetree` code fence: aligned comments, per-entry icons, and collapsible directories.
 - [Gallery](/docs/components/gallery/): Arrange related images in a responsive static grid that can reuse Image Zoom.
 - [Images and Image Zoom](/docs/components/image-zoom/): Write ordinary Markdown images, add figure captions and processed previews, and let readers inspect them in a native dialog.
 - [Callouts, tabs, steps, and cards](/docs/components/layout/): Structure a page with Markdown-native callouts, tabs, steps, cards, and the small set of remaining shortcodes.

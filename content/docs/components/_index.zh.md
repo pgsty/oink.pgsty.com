@@ -24,7 +24,7 @@ OINK 的组件分两类：**每天都会用到的写作原语**，和特定场�
 | [Kbd](kbd/)                    | `{{</* kbd */>}}` 或原始 `<kbd>`           | 键盘快捷键                      | 否             |
 | [Fields](fields/)              | 表格 + `{.fields}` 或 `{{</* fields */>}}` | 配置项、参数、返回字段说明      | 否             |
 | [表格](tables/)                | `{.matrix}` `{caption=}` `{.full-width}` … | 矩阵、标题、编号与标签页表格    | 仅标签页表格   |
-| [FileTree](filetree/)          | 嵌套列表 + `{.filetree}`                   | 目录结构                        | 否             |
+| [FileTree](filetree/)          | ` ```filetree ` 围栏                       | 目录结构                        | 否             |
 
 ## 媒体 {#media}
 

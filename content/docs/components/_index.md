@@ -31,7 +31,7 @@ and a failed build rather than silent degradation when a parameter is invalid.
 | [Kbd](kbd/)                          | `{{</* kbd */>}}` or raw `<kbd>`            | Keyboard shortcuts                                  | No                 |
 | [Fields](fields/)                    | table + `{.fields}` or `{{</* fields */>}}` | Configuration, parameter, and response descriptions | No                 |
 | [Tables](tables/)                    | `{.matrix}` `{caption=}` `{.full-width}` …  | Matrices, captions, numbered and tabbed tables      | Only tabbed tables |
-| [FileTree](filetree/)                | nested list + `{.filetree}`                 | Directory structures                                | No                 |
+| [FileTree](filetree/)                | ` ```filetree ` fence                       | Directory structures                                | No                 |
 
 ## Media {#media}
 
