@@ -30,8 +30,6 @@ OINK 站点上的每张 Markdown 图片都会经过主题的图片渲染钩子�
 `figure`。`width` 与 `height` 为静态或远程图片提供占位尺寸；`class`
 会透传给站点 CSS。
 
-<!-- prettier-ignore-start -->
-
 ```markdown
 ![OINK 反馈界面](/images/feedback.png)
 {caption="文章末尾的反馈控件" width="1200" height="600"}
@@ -39,8 +37,6 @@ OINK 站点上的每张 Markdown 图片都会经过主题的图片渲染钩子�
 
 ![OINK 反馈界面](/images/feedback.png)
 {caption="文章末尾的反馈控件" width="1200" height="600"}
-
-<!-- prettier-ignore-end -->
 
 带编号的 Book 图使用同一行属性加 `num`（以及可选的 `id`）；见
 [Book 出版](/zh/docs/scenarios/book/)。未知属性、`style`
@@ -53,42 +49,34 @@ OINK 站点上的每张 Markdown 图片都会经过主题的图片渲染钩子�
 
 <a id="named-imgproc-parameters"></a>
 
-`image`
-短代码用 Hugo 图片处理对页面或全局图片资源做缩放、适配、填充或裁切。正文是 Markdown 图注：
+在属性行上加 `command` 与 `options`，即可用 Hugo 的图片处理对页面资源或全局资源做适配、缩放、填充或裁切：
 
-```go-html-template
-{{</* image src="images/content-primitives/oink.webp" command="Fit" options="640x320" alt="OINK 本地优先文档预览" */>}}
-带 **Markdown 图注** 的处理型预览。
-{{</* /image */>}}
+```markdown
+![OINK 本地优先文档预览](images/content-primitives/oink.webp)
+{command="Fit" options="640x320" caption="一张处理后的预览图。"}
 ```
 
-{{< image src="images/content-primitives/oink.webp" command="Fit" options="640x320" alt="OINK 本地优先文档预览" >}}
-文档中显示的是处理后的预览。图片缩放会打开
-**原始资源**，关闭对话框后焦点回到这个触发元素。 {{< /image >}}
+![OINK 本地优先文档预览](images/content-primitives/oink.webp)
+{command="Fit" options="640x320" caption="文档中显示的是处理后的预览。图片缩放打开的是原始资源，关闭对话框后焦点回到这个触发元素。"}
 
-<!-- prettier-ignore-start -->
+| 属性 | 类型 | 规则 |
+| --- | --- | --- |
+| `command` | 枚举 | `Fit`、`Resize`、`Fill`、`Crop` 之一，必须与 `options` 同时给出。 |
+| `options` | 字符串 | 非空的 Hugo 图片处理选项，例如 `640x320`。 |
+{.fields caption="图片处理属性"}
 
-{{< fields label="image 参数" >}}
-  {{< field name="src" type="资源路径" required=true >}}
-  精确的页面或全局图片资源。静态路径与远程 URL 无法处理；它们请使用普通 Markdown 图片。
-  {{< /field >}}
-  {{< field name="command" type="enum" required=true >}}
-  `Fit`、`Resize`、`Fill` 或 `Crop` 之一。
-  {{< /field >}}
-  {{< field name="options" type="string" required=true >}}
-  非空的 Hugo 图片处理选项，例如 `640x320`。
-  {{< /field >}}
-  {{< field name="alt" type="string" >}}
-  有意义的替代文字。内容图片必须提供（资源自带 `params.alt` 时除外），只有 `decorative=true` 时才可省略。
-  {{< /field >}}
-  {{< field name="decorative" type="boolean" default=false >}}
-  为 true 时不得设置 `alt`，并禁用图片缩放。
-  {{< /field >}}
-{{< /fields >}}
+渲染出的 `src` 是派生图，其尺寸成为默认值；显式的 `width` 与 `height`
+仍然优先。图片缩放打开的是原图，因为标记里带着原图 URL。替代文字来自
+Markdown 图片本身，所以没有 `alt` 或 `decorative` 属性 —— 空 alt
+即表示装饰性图片，装饰性图片永远不会被缩放。
 
-<!-- prettier-ignore-end -->
+静态路径、远程 URL 和 SVG 无法被处理，会导致构建失败；这些情况请用普通 Markdown 图片。
 
-只接受具名参数；位置参数形式的 `imgproc` 已经移除。
+原先承担这件事的 `image`
+短代码已经移除：属性行覆盖了处理、图注、编号与链接，而它最后仅剩的能力只是一个
+Markdown 图注。图注是纯文本，与其它所有公开字符串参数一致。用
+`python3 scripts/migrations/oink06.py migrate --site <dir>`
+迁移既有内容；含 Markdown 的图注会被报告出来交由人工改写，而不会被压平。
 
 ## 启用图片缩放 {#enable-the-feature}
 

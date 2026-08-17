@@ -36,8 +36,6 @@ Add `{caption="…"}` on the line after a standalone image to render a `figure`
 with a `figcaption`. `width` and `height` give static or remote images their
 box; `class` passes through to site CSS.
 
-<!-- prettier-ignore-start -->
-
 ```markdown
 ![OINK feedback interface](/images/feedback.png)
 {caption="The feedback controls under an article" width="1200" height="600"}
@@ -45,8 +43,6 @@ box; `class` passes through to site CSS.
 
 ![OINK feedback interface](/images/feedback.png)
 {caption="The feedback controls under an article" width="1200" height="600"}
-
-<!-- prettier-ignore-end -->
 
 Numbered Book figures use the same attribute line with `num` (and an optional
 `id`); see [Book publishing](/docs/scenarios/book/). Unknown attributes,
@@ -60,43 +56,39 @@ Goldmark wraps the image in a paragraph and the attribute line is ignored.
 
 <a id="named-imgproc-parameters"></a>
 
-The `image` shortcode resizes, fits, fills, or crops a page or global image
-resource with Hugo's image processing. The body is the Markdown caption:
+Add `command` and `options` to the attribute line to resize, fit, fill, or crop
+a page or global image resource with Hugo's image processing:
 
-```go-html-template
-{{</* image src="images/content-primitives/oink.webp" command="Fit" options="640x320" alt="OINK local-first documentation preview" */>}}
-A processed preview with a **Markdown caption**.
-{{</* /image */>}}
+```markdown
+![OINK local-first documentation preview](images/content-primitives/oink.webp)
+{command="Fit" options="640x320" caption="A processed preview."}
 ```
 
-{{< image src="images/content-primitives/oink.webp" command="Fit" options="640x320" alt="OINK local-first documentation preview" >}}
-The document displays a processed preview. Image Zoom opens the **original
-resource**, and closing the dialog restores focus to this trigger.
-{{< /image >}}
+![OINK local-first documentation preview](images/content-primitives/oink.webp)
+{command="Fit" options="640x320" caption="The document displays a processed preview. Image Zoom opens the original resource, and closing the dialog restores focus to this trigger."}
 
-<!-- prettier-ignore-start -->
+| Attribute | Type | Rule |
+| --- | --- | --- |
+| `command` | enum | One of `Fit`, `Resize`, `Fill`, or `Crop`. Required together with `options`. |
+| `options` | string | Nonempty Hugo image-processing options, such as `640x320`. |
+{.fields caption="image-processing attributes"}
 
-{{< fields label="image parameters" >}}
-  {{< field name="src" type="resource path" required=true >}}
-  An exact page or global image resource. Static paths and remote URLs cannot be processed; use a plain Markdown image for them.
-  {{< /field >}}
-  {{< field name="command" type="enum" required=true >}}
-  One of `Fit`, `Resize`, `Fill`, or `Crop`.
-  {{< /field >}}
-  {{< field name="options" type="string" required=true >}}
-  Nonempty Hugo image-processing options, such as `640x320`.
-  {{< /field >}}
-  {{< field name="alt" type="string" >}}
-  Meaningful alternative text. It is required for content images unless the resource carries `params.alt`, and omitted only with `decorative=true`.
-  {{< /field >}}
-  {{< field name="decorative" type="boolean" default=false >}}
-  When true, `alt` must be absent and Image Zoom is suppressed.
-  {{< /field >}}
-{{< /fields >}}
+The rendered `src` is the derivative and its dimensions become the defaults;
+explicit `width` and `height` still win. Image Zoom opens the **original**,
+because the marker carries the full-size URL. Alt text comes from the Markdown
+image itself, so there is no `alt` or `decorative` attribute — an empty alt
+marks the image decorative, and a decorative image is never zoomed.
 
-<!-- prettier-ignore-end -->
+A static path, a remote URL, or an SVG cannot be processed and fails the build;
+use a plain Markdown image for those.
 
-Only named parameters are accepted; the positional `imgproc` form is gone.
+The `image` shortcode that used to own this is gone: the attribute line covers
+processing, captions, numbering, and links, and keeping a second form alive for
+a Markdown caption was the only thing it still did. Captions are plain text,
+like every other public string parameter. Run
+`python3 scripts/migrations/oink06.py migrate --site <dir>` to convert existing
+content; a caption containing Markdown is reported for a manual rewrite rather
+than flattened.
 
 ## Enable Image Zoom {#enable-the-feature}
 
