@@ -27,7 +27,7 @@ test.describe('Everyday content primitive guides', () => {
     await page.locator('[data-td-image-zoom-close]').click();
 
     await page.goto(galleryPath, { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('ul.gallery > li')).toHaveCount(3);
+    await expect(page.locator('ul.td-gallery > li')).toHaveCount(3);
 
     expect(errors).toEqual([]);
   });
@@ -141,7 +141,7 @@ test.describe('Everyday content primitive guides', () => {
     await expect(fileTree.locator('.fa-markdown').first()).toBeAttached();
 
     await page.goto(galleryPath, { waitUntil: 'domcontentloaded' });
-    const gallery = page.locator('#td-main-content ul.gallery').first();
+    const gallery = page.locator('#td-main-content ul.td-gallery').first();
     await expect(gallery.locator(':scope > li')).toHaveCount(3);
     await expect(gallery.locator('img')).toHaveCount(3);
     await expect(gallery.locator('img').first()).toHaveAttribute(
@@ -156,7 +156,7 @@ test.describe('Everyday content primitive guides', () => {
   test('gallery breakpoints and long content stay within the viewport', async ({
     page,
   }) => {
-    // `ul.gallery` is an auto-fit grid: the column count only shrinks as the
+    // `ul.td-gallery` is an auto-fit grid: the column count only shrinks as the
     // viewport narrows, down to a single column on a phone-sized screen.
     const cases = [
       { width: 1200, minColumns: 2 },
@@ -168,14 +168,14 @@ test.describe('Everyday content primitive guides', () => {
     for (const { width, minColumns, maxColumns } of cases) {
       await page.setViewportSize({ width, height: 900 });
       await page.goto(galleryPath, { waitUntil: 'domcontentloaded' });
-      const grid = page.locator('#td-main-content ul.gallery').first();
+      const grid = page.locator('#td-main-content ul.td-gallery').first();
       const columns = await gridColumnCount(grid);
       expect(columns).toBeGreaterThanOrEqual(minColumns);
       expect(columns).toBeLessThanOrEqual(maxColumns ?? previousColumns);
       previousColumns = columns;
 
       for (const { path, selector } of [
-        { path: galleryPath, selector: 'ul.gallery' },
+        { path: galleryPath, selector: 'ul.td-gallery' },
         { path: fieldsPath, selector: '.td-fields' },
         { path: fileTreePath, selector: '.td-filetree' },
       ]) {
@@ -210,7 +210,7 @@ test.describe('Everyday content primitive guides', () => {
   }) => {
     await page.setViewportSize({ width: 360, height: 900 });
     await page.goto(galleryPath, { waitUntil: 'domcontentloaded' });
-    const item = page.locator('#td-main-content ul.gallery > li').first();
+    const item = page.locator('#td-main-content ul.td-gallery > li').first();
     const image = item.locator('img');
 
     const narrow = await item.evaluate(
@@ -307,16 +307,16 @@ test.describe('Everyday content primitive guides', () => {
       await page.goto(galleryPath, { waitUntil: 'domcontentloaded' });
       await expect(page.locator('.td-image-zoom__trigger')).toHaveCount(0);
       await expect(
-        page.locator('#td-main-content ul.gallery > li'),
+        page.locator('#td-main-content ul.td-gallery > li'),
       ).toHaveCount(3);
-      await expect(page.locator('#td-main-content ul.gallery img')).toHaveCount(
+      await expect(page.locator('#td-main-content ul.td-gallery img')).toHaveCount(
         3,
       );
       await expect(
-        page.locator('#td-main-content ul.gallery > li').first(),
+        page.locator('#td-main-content ul.td-gallery > li').first(),
       ).toBeVisible();
       await expect(
-        page.locator('#td-main-content ul.gallery > li').first(),
+        page.locator('#td-main-content ul.td-gallery > li').first(),
       ).toContainText(
         'A global image resource with known intrinsic dimensions.',
       );

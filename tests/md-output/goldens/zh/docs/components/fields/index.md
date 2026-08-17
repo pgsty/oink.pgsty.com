@@ -20,8 +20,6 @@ Fields 适合配置键、命令或 API 参数、对象属性与响应字段。�
 写一张 pipe 表格，并在下一行加上 `{.fields}`。**第一列** 是字段名，**最后一列**
 是说明，中间的每一列都是以表头为标签的元数据——任何语言都可以，没有固定词汇表：
 
-<!-- prettier-ignore-start -->
-
 ```markdown
 | 参数                         | 类型    | 默认值  | 说明                           |
 | ---------------------------- | ------- | ------- | ------------------------------ |
@@ -31,18 +29,12 @@ Fields 适合配置键、命令或 API 参数、对象属性与响应字段。�
 {.fields caption="搜索配置"}
 ```
 
-<!-- prettier-ignore-end -->
-
-<!-- prettier-ignore-start -->
-
 | 参数                       | 类型    | 默认值  | 说明                                   |
 | -------------------------- | ------- | ------- | -------------------------------------- |
 | `offlineSearch`            | boolean | `false` | 构建 **本地** 搜索索引                 |
 | `offlineSearchMaxResults`  | integer | `10`    | 限制可见结果数量                       |
 | `searchPlaceholder`        | string  |         | 可选占位文字；空单元格会被省略         |
 {.fields caption="搜索配置"}
-
-<!-- prettier-ignore-end -->
 
 单元格接受行内 Markdown（链接、代码、强调）；第一个单元格必须非空且唯一。`caption`
 成为可见标签。在 GitHub 上源码仍然是一张可读的表格，OINK 的 Markdown 输出也保持为表格。描述需要多个段落、列表或围栏时，请使用短代码形态。
@@ -65,8 +57,6 @@ Fields 适合配置键、命令或 API 参数、对象属性与响应字段。�
 
 ### 渲染结果 {#rendered-result}
 
-<!-- prettier-ignore-start -->
-
 **搜索配置**
 
 - `offlineSearch` — `boolean`; required; default: `true`
@@ -85,13 +75,9 @@ Fields 适合配置键、命令或 API 参数、对象属性与响应字段。�
 
   这个刻意加长的字段名用于演示正常换行，而不会撑宽页面。
 
-<!-- prettier-ignore-end -->
-
 描述可以使用 Markdown，包括链接、强调、行内代码与列表。每段描述应保持独立完整，因为 Markdown 输出会把它放在对应元数据下方。
 
 ## Fields 参数 {#fields-parameters}
-
-<!-- prettier-ignore-start -->
 
 **fields 参数**
 
@@ -99,14 +85,10 @@ Fields 适合配置键、命令或 API 参数、对象属性与响应字段。�
 
   与完整定义列表关联的非空可见标签。
 
-<!-- prettier-ignore-end -->
-
 容器至少要有一个直接 `field` 子项。直接放在 `fields`
 中的普通文字或其他短代码会让构建停止。
 
 ## Field 参数 {#field-parameters}
-
-<!-- prettier-ignore-start -->
 
 **field 参数**
 
@@ -125,8 +107,6 @@ Fields 适合配置键、命令或 API 参数、对象属性与响应字段。�
 - `default` — `scalar`
 
   字符串、布尔值、整数或浮点数；`false`、`0` 与 `""` 都会保留。
-
-<!-- prettier-ignore-end -->
 
 每个 `field` 还必须包含非空正文，并且必须是 `fields`
 的直接子项。参数名称与类型在构建时校验，未知参数会被视为错误。

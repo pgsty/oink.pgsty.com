@@ -27,8 +27,6 @@ column** is the field name, the **last column** is the description, and every
 column in between is metadata labelled by its header — in any language, no fixed
 vocabulary:
 
-<!-- prettier-ignore-start -->
-
 ```markdown
 | Parameter                                | Type    | Default | Description                              |
 | ---------------------------------------- | ------- | ------- | ---------------------------------------- |
@@ -38,18 +36,12 @@ vocabulary:
 {.fields caption="Search configuration"}
 ```
 
-<!-- prettier-ignore-end -->
-
-<!-- prettier-ignore-start -->
-
 | Parameter                  | Type    | Default | Description                              |
 | -------------------------- | ------- | ------- | ---------------------------------------- |
 | `offlineSearch`            | boolean | `false` | Builds a **local** search index          |
 | `offlineSearchMaxResults`  | integer | `10`    | Limits the number of visible results     |
 | `searchPlaceholder`        | string  |         | Optional placeholder; empty cells vanish |
 {.fields caption="Search configuration"}
-
-<!-- prettier-ignore-end -->
 
 Cells accept inline Markdown (links, code, emphasis); the first cell must be
 non-empty and unique. `caption` becomes the visible label. On GitHub the source
@@ -74,8 +66,6 @@ shortcode form when a description needs several paragraphs, lists, or fences.
 
 ### Rendered result {#rendered-result}
 
-<!-- prettier-ignore-start -->
-
 **Search configuration**
 
 - `offlineSearch` — `boolean`; required; default: `true`
@@ -94,15 +84,11 @@ shortcode form when a description needs several paragraphs, lists, or fences.
 
   This deliberately long field name demonstrates wrapping without widening the page.
 
-<!-- prettier-ignore-end -->
-
 Descriptions accept Markdown, including links, emphasis, inline code, and lists.
 Keep each description self-contained because Markdown output presents each one
 beneath its metadata.
 
 ## Fields parameters {#fields-parameters}
-
-<!-- prettier-ignore-start -->
 
 **fields parameters**
 
@@ -110,14 +96,10 @@ beneath its metadata.
 
   A nonempty visible label associated with the complete definition list.
 
-<!-- prettier-ignore-end -->
-
 The container must have at least one direct `field` child. Text or another
 shortcode directly inside `fields` stops the build.
 
 ## Field parameters {#field-parameters}
-
-<!-- prettier-ignore-start -->
 
 **field parameters**
 
@@ -136,8 +118,6 @@ shortcode directly inside `fields` stops the build.
 - `default` — `scalar`
 
   A string, boolean, integer, or floating-point value. `false`, `0`, and `""` are preserved.
-
-<!-- prettier-ignore-end -->
 
 Every `field` also requires a nonempty body. It must be a direct child of
 `fields`. Parameter names and types are validated at build time, and unknown

@@ -149,24 +149,33 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
     // The tree-output example and the plain (comment-less) variant render too.
     assert.match(fileTreeHTML, /<span class="td-filetree__name" title="\.">\.<\/span>/);
     assert.match(fileTreeHTML, /td-filetree td-filetree--plain/);
-    // Gallery is an image list with the `{.gallery}` marker.
-    assert.match(galleryHTML, /<ul class="gallery">/);
-    assert.doesNotMatch(galleryHTML, /td-gallery/);
+    // Gallery is a data fence rendered by the theme, so the grid, the per-item
+    // attributes and the Zoom markers are all theme-generated markup.
+    assert.match(galleryHTML, /<ul class="td-gallery/);
+    assert.doesNotMatch(galleryHTML, /<ul class="gallery"/);
     const galleryList = galleryHTML.match(
-      /<ul class="gallery">[\s\S]*?<\/ul>/,
+      /<ul class="td-gallery[^"]*">[\s\S]*?<\/ul>/,
     )?.[0];
-    assert.ok(galleryList, 'Gallery lost its image list');
-    assert.equal((galleryList.match(/<li><img /g) || []).length, 3);
+    assert.ok(galleryList, 'Gallery lost its grid');
+    assert.equal(
+      (galleryList.match(/<li class="td-gallery__item"/g) || []).length,
+      3,
+    );
+    assert.equal(
+      (galleryList.match(/class="td-gallery__image"/g) || []).length,
+      3,
+    );
     assert.ok(galleryList.includes(fixture.caption));
     // Markdown images render through the image hook: figures with captions.
     assert.match(
       imageZoomHTML,
       /<figure class="td-figure"[\s\S]*?<figcaption>[\s\S]*?<\/figcaption>/,
     );
-    assert.match(
-      imageZoomHTML,
-      /<figure class="td-figure td-figure--processed"/,
-    );
+    // A processed image is an ordinary figure now: the `image` shortcode and
+    // its `td-figure--processed` class are gone, and the Zoom marker carries
+    // the full-size original so the dialog never shows the derivative.
+    assert.doesNotMatch(imageZoomHTML, /td-figure--processed/);
+    assert.match(imageZoomHTML, /data-td-image-zoom="[^"]+\.webp"/);
     assert.equal(
       (imageZoomHTML.match(/data-td-image-zoom-dialog/g) || []).length,
       1,
@@ -197,17 +206,22 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
     assert.ok(markdownByPage.filetree.includes(`# ${fixture.entry}`));
     assert.match(markdownByPage.filetree, /^```filetree \{title="[^"]+"\}$/m);
     assert.doesNotMatch(markdownByPage.filetree, /^\{\.filetree\}$/m);
-    assert.match(markdownByPage.gallery, /^\{\.gallery\}$/m);
+    assert.match(markdownByPage.gallery, /^```gallery$/m);
+    assert.doesNotMatch(markdownByPage.gallery, /^\{\.gallery\}$/m);
     assert.ok(markdownByPage.gallery.includes(fixture.caption));
     for (const markdown of Object.values(markdownByPage)) {
       assert.doesNotMatch(
         markdown,
-        /td-badge|td-kbd-sequence|td-fields|td-filetree|td-gallery|td-image-zoom|<ul class=/,
+        // Rendered component markup, not the class names themselves: a guide
+        // may legitimately name `td-gallery` in prose.
+        /class="td-(?:badge|kbd-sequence|fields|filetree|gallery|image-zoom)|<ul class=/,
       );
     }
 
-    const printGallery = print.match(/<ul class="gallery">[\s\S]*?<\/ul>/)?.[0];
-    assert.ok(printGallery, 'Print output lost the Gallery list');
+    const printGallery = print.match(
+      /<ul class="td-gallery[^"]*">[\s\S]*?<\/ul>/,
+    )?.[0];
+    assert.ok(printGallery, 'Print output lost the Gallery grid');
     const printGalleryImage = printGallery.match(/<img [^>]+>/)?.[0];
     assert.ok(printGalleryImage, 'Print output lost Gallery images');
     assert.doesNotMatch(
@@ -257,9 +271,10 @@ Press {{< kbd "Ctrl" "K" >}}.
   - nested.md
 \`\`\`
 
-- ![Probe overview](images/content-primitives/oink.webp) — Probe caption one.
-- ![Probe feedback](/images/feedback.png) — Probe caption two.
-{.gallery}
+\`\`\`gallery
+![Probe overview](images/content-primitives/oink.webp) # Probe caption one.
+![Probe feedback](/images/feedback.png) # Probe caption two.
+\`\`\`
 
 <!--more-->
 
@@ -300,7 +315,7 @@ Content after the explicit feed summary boundary.
     );
     assert.match(markdown, /```filetree\n- closed\/   # probe dir\n  - nested\.md\n```/);
     assert.match(markdown, /!\[Probe overview\]/);
-    assert.match(markdown, /— Probe caption one\.\n.*\n\{\.gallery\}/);
+    assert.match(markdown, /```gallery\n.*# Probe caption one\./);
     assert.doesNotMatch(markdown, /td-badge|td-filetree|td-gallery|<dialog/);
     assert.match(
       html,
@@ -308,7 +323,7 @@ Content after the explicit feed summary boundary.
     );
     assert.match(
       html,
-      /<ul class="gallery">\s*<li><img [^>]*alt="Probe overview"/,
+      /<ul class="td-gallery[^"]*">\s*<li class="td-gallery__item"><img [^>]*alt="Probe overview"/,
     );
 
     for (const source of [print, rss]) {
@@ -324,10 +339,15 @@ Content after the explicit feed summary boundary.
       );
     }
     assert.match(print, /<div class="td-filetree td-filetree--static"/);
-    assert.match(print, /<ul class="gallery">/);
-    assert.doesNotMatch(print, /td-gallery|<details/);
+    assert.match(print, /<ul class="td-gallery[^"]*">/);
+    // Print keeps the grid but in its stacked variant, and expands disclosures.
+    assert.match(print, /td-gallery--static/);
+    assert.doesNotMatch(print, /<details/);
     assert.match(rss, /&lt;pre class=&#34;td-filetree-source&#34;&gt;/);
-    assert.doesNotMatch(rss, /td-filetree__row|td-gallery|&lt;details/);
+    // RSS renders the gallery grid statically (FileTree falls back to source),
+    // so the stacked variant is expected there and disclosures are not.
+    assert.match(rss, /td-gallery--static/);
+    assert.doesNotMatch(rss, /td-filetree__row|&lt;details/);
   } finally {
     rmSync(fixtureDir, { recursive: true, force: true });
   }
