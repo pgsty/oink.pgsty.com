@@ -36,7 +36,7 @@ and a failed build rather than silent degradation when a parameter is invalid.
 
 | Component                            | Form                                              | Purpose                           | Needs JS                |
 | ------------------------------------ | ------------------------------------------------- | --------------------------------- | ----------------------- |
-| [Images and Image Zoom](image-zoom/) | `![alt](src)` + `{caption=}`, `{{< image >}}` | Figures, processed previews, zoom | Per page when enabled   |
+| [Images and Image Zoom](image-zoom/) | `![alt](src)` + `{caption= command= options= link=}` | Figures, processed previews, zoom | Per page when enabled   |
 | [Gallery](gallery/)                  | ```` ```gallery ```` fence                        | A grid of related images          | Reuses the zoom runtime |
 
 ## Layout and structure {#layout}
