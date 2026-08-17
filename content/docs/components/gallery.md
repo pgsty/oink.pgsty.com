@@ -9,11 +9,17 @@ params:
       enable: true
 ---
 
-Gallery groups related images in a responsive grid. It is a Markdown image list
-followed by the `{.gallery}` marker: images, alternative text, and descriptions
-remain available without JavaScript, and on GitHub the source is simply a list
-of images. When Image Zoom is enabled, Gallery reuses the same dialog instead of
-loading another lightbox.
+Gallery groups related images in a responsive grid. It is a `gallery` code
+fence with one image per line, sharing the line grammar of
+[FileTree](/docs/components/filetree/): the image, then `#` and a description,
+then optional `{key=value}` attributes.
+
+The fence replaced an image list with a `{.gallery}` marker. A list marker is
+CSS-only — Markdown lists have no render hook — so the theme could not see the
+items, which meant no per-item attributes and, more importantly, no way to mark
+the images for Image Zoom without guessing at the surrounding markup. The cost
+is that the source no longer renders as images on GitHub; the gain is that the
+grid, all four outputs, and Zoom eligibility are the theme's to guarantee.
 
 ## When to use {#when-to-use}
 
@@ -26,27 +32,21 @@ needs a formal caption.
 
 ### Source {#source}
 
-<!-- prettier-ignore-start -->
-
-```markdown
-- ![OINK documentation overview](images/content-primitives/oink.webp) — Documentation overview
-- ![OINK feedback interface](/images/feedback.png) — Feedback controls
-- ![OINK version banner interface](/images/version-banner.png) — Version banner
-{.gallery}
+````markdown
+```gallery
+![OINK documentation overview](images/content-primitives/oink.webp) # Documentation overview
+![OINK feedback interface](/images/feedback.png) # Feedback controls
+![OINK version banner interface](/images/version-banner.png) # Version banner {link=/docs/}
 ```
-
-<!-- prettier-ignore-end -->
+````
 
 ### Rendered result {#rendered-result}
 
-<!-- prettier-ignore-start -->
-
-- ![OINK documentation overview](images/content-primitives/oink.webp) — A global image resource with known intrinsic dimensions.
-- ![OINK feedback interface](/images/feedback.png) — A deliberately long caption demonstrates wrapping on desktop and mobile without covering an adjacent image or widening the document.
-- ![OINK version banner interface](/images/version-banner.png) — The responsive grid reduces its effective column count on a narrow viewport.
-{.gallery}
-
-<!-- prettier-ignore-end -->
+```gallery
+![OINK documentation overview](images/content-primitives/oink.webp) # A global image resource with known intrinsic dimensions.
+![OINK feedback interface](/images/feedback.png) # A deliberately long caption demonstrates wrapping on desktop and mobile without covering an adjacent image or widening the document.
+![OINK version banner interface](/images/version-banner.png) # The responsive grid reduces its effective column count on a narrow viewport.
+```
 
 This page enables Image Zoom. Activate any image to inspect it in the shared
 dialog. With JavaScript disabled, the same three figures remain visible in the
@@ -54,17 +54,18 @@ same reading order.
 
 ## Rules {#rules}
 
-<!-- prettier-ignore-start -->
-
-| Element                | Rule                                                                                                   |
-| ---------------------- | ------------------------------------------------------------------------------------------------------ |
-| `![alt](src)`          | One image per item; `alt` is required and must be meaningful (an empty alt is decorative and never zooms) |
-| `src`                  | A page resource, a global asset, a static path, or a remote URL; local resources get intrinsic dimensions and lazy loading |
-| ` — description`       | Optional text after the image, shown under it (a writing convention, not syntax)                     |
-| `{.gallery}`           | The marker on the line right after the list                                                            |
+| Element | Rule |
+| --- | --- |
+| `![alt](src)` | Required at the start of each line, so `alt` stays a first-class field rather than an attribute you can forget. It doubles as the item title; an empty alt is decorative and never zooms |
+| `src` | A page resource, a global asset, a static path, or a remote URL; local resources get intrinsic dimensions and lazy loading |
+| `# description` | Optional text after the image, shown under it. Plain text. A `#` inside the alt or the source needs no escaping; `\#` is a literal hash inside the description |
+| `{link=…}` | Makes the item a link — and therefore not zoomable, because the runtime skips images inside anchors |
+| `{class=…}` | Site CSS tokens on that item |
 {.fields caption="Gallery notation"}
 
-<!-- prettier-ignore-end -->
+A line that is not an image, trailing text without the `#` marker, an empty
+description, and unknown or malformed attributes all fail the build with the
+fence line number.
 
 The grid adapts to the viewport; there is no `columns` parameter and no `label`.
 Remote images are never downloaded during the Hugo build, so their dimensions
@@ -72,17 +73,20 @@ remain unknown until the browser loads them.
 
 ## Semantics and fallback {#semantics-and-fallback}
 
-HTML is the `ul` you wrote with the `gallery` class: each `li` holds the image
-and its description. Images resolve through the theme's image render hook, so
-page resources carry `width`/`height` and every image is lazy-loaded. Markdown
-output is the source list; print and RSS render the same static list. Gallery
-has no private JavaScript runtime: it only marks eligible images for Image Zoom
-when that page-level feature is enabled.
+HTML is `ul.td-gallery`, one `li.td-gallery__item` per line. Sources resolve
+through the shared image resolver, so page resources carry `width`/`height` and
+every image is lazy-loaded. Because the theme renders the grid itself, it marks
+each eligible image for Image Zoom at build time rather than inferring
+eligibility from the markup — Gallery still has no runtime of its own and only
+reuses the page-level dialog. Markdown output is the fence source, as it is for
+every data fence; print and RSS render the same grid stacked.
 
 ## Deliberate limits {#deliberate-limits}
 
 Gallery does not crop images to a forced aspect ratio, reorder them by
 breakpoint, hide overflow, or provide slide navigation, and it has no
-Gallery-specific lightbox. These constraints preserve document order and keep
-the fallback complete. The `gallery`/`gallery/image` shortcodes were removed;
-the migration toolkit rewrites them into the list form.
+Gallery-specific lightbox. There is no `columns` attribute: the grid is
+responsive. These constraints preserve document order and keep the fallback
+complete. The migration toolkit rewrites both the `gallery`/`gallery/image`
+shortcodes and the interim `{.gallery}` list into the fence, turning the list
+form's ` — ` separator into `#`.

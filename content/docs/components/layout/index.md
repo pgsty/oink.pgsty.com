@@ -30,7 +30,7 @@ Hugo has two shortcode delimiters, and OINK uses them deliberately:
   `cards`, `fields`, and `image` render their Markdown bodies themselves.
 
 Markers are Goldmark block attributes written on the line right after a list or
-table: `{.steps}`, `{.cards}`, `{.gallery}`, `{.fields}`, `{.matrix}`, and
+table: `{.steps}`, `{.cards}`, `{.fields}`, `{.matrix}`, and
 `{.full-width}`. Keep the marker directly under the block; a
 blank line in between silently detaches it. In the examples below, the
 `/* ... */` escape prevents Hugo from executing the displayed shortcode.
@@ -446,7 +446,7 @@ and lists everything it cannot convert automatically.
 | `tabpane`/`tab`, `code-group`/`code-tab`                                          | adjacent fences with `{tab=}` or `tabs`/`tab`             |
 | `doc-cards`/`doc-card`, `nav-cards`/`nav-card`, `cardpane`/`card`, `doc-carousel` | `{.cards}` list or `cards`/`card`                         |
 | `filetree`, `filetree/folder`, `filetree/file`, `{.filetree}` lists               | ` ```filetree ` fence                                     |
-| `gallery`, `gallery/image`                                                        | image list + `{.gallery}`                                 |
+| `gallery`, `gallery/image`, image list + `{.gallery}`                             | ```` ```gallery ```` fence                                |
 | `imgproc`                                                                         | `image` (named parameters)                                |
 | `readfile`                                                                        | `include`                                                 |
 | `echarts`, `infographic` shortcodes                                               | fences of the same name                                   |

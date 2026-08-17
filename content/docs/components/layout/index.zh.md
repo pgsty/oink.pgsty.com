@@ -22,7 +22,7 @@ Hugo 有两种短代码分隔符，OINK 有意区分使用：
 - 其余短代码一律使用 `{{</* name */>}}`。`tabs`、`cards`、`fields`、`image`
   等容器由模板自己渲染 Markdown 正文。
 
-标记是写在列表或表格下一行的 Goldmark 块属性：`{.steps}`、`{.cards}`、`{.gallery}`、`{.fields}`、`{.matrix}`
+标记是写在列表或表格下一行的 Goldmark 块属性：`{.steps}`、`{.cards}`、`{.fields}`、`{.matrix}`
 与
 `{.full-width}`。标记必须紧贴块的最后一行；中间隔一个空行会让它悄悄脱离。示例里的
 `/* ... */` 转义用于防止 Hugo 执行正在展示的短代码。
@@ -411,7 +411,7 @@ Docsy 的 `blocks/*`
 | `tabpane`/`tab`、`code-group`/`code-tab`                                          | 带 `{tab=}` 的相邻围栏或 `tabs`/`tab`             |
 | `doc-cards`/`doc-card`、`nav-cards`/`nav-card`、`cardpane`/`card`、`doc-carousel` | `{.cards}` 列表或 `cards`/`card`                  |
 | `filetree`、`filetree/folder`、`filetree/file`、`{.filetree}` 列表                | ` ```filetree ` 围栏                              |
-| `gallery`、`gallery/image`                                                        | 图片列表 + `{.gallery}`                           |
+| `gallery`、`gallery/image`、图片列表 + `{.gallery}`                               | ```` ```gallery ```` 围栏                         |
 | `imgproc`                                                                         | `image`（具名参数）                               |
 | `readfile`                                                                        | `include`                                         |
 | `echarts`、`infographic` 短代码                                                   | 同名围栏                                          |
