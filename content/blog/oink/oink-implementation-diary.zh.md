@@ -6,8 +6,10 @@ aliases: [/blog/2026/oink-implementation-diary/]
 lastmod: 2026-08-08
 description: >-
   记录 OINK 实现预览背后的技术决策、迁移方法、安全边界、测试与文档工作。
-author: OINK 维护者
+authors: [vonng]
 tags: [Oink]
+series: [building-oink]
+series_weight: 20
 ---
 
 OINK 始于一个令人不安的事实：多个生产文档站之所以看起来相互关联，是因为它们确实源于同一套实现；但公共实现却以复制文件的形式散落在各处。呈现效果足够一致，维护模型却并非如此。

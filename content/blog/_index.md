@@ -1,8 +1,7 @@
 ---
-downstream_modified: true
 title: Blog
-description: Docsy articles, OINK engineering stories, and OINK release notes
-search_keywords: [oink news, release notes, docsy]
+description: OINK engineering stories, immersive guides, and release notes
+search_keywords: [OINK blog, engineering, immersive reading, release notes]
 type: blog
 icon: fa-solid fa-blog
 sidebar_root_for: self
@@ -10,20 +9,21 @@ sidebar_root_link_self: true
 navbar_enabled: false
 footer_style: slim
 comments: true
+blog_index: cards
+images: [/images/oink.webp]
 cascade:
   type: blog
-  navbar_enabled: false
+  images: [/images/oink.webp]
+  #navbar_enabled: false
   footer_style: slim
   comments: true
+  reading_time: true
+  # The page-end share bar, scoped to the blog. Every entry is a plain intent
+  # link carrying only this page's permalink and title -- no SDK, no iframe, no
+  # third-party script, no share counts -- plus one local copy button.
+  share: [x, bluesky, mastodon, reddit, hackernews, email, copy]
   feedback: false
   search_boost: 0.9
-  params:
-    ui:
-      sidebar_menu_compact: false
-      ul_show: 3
-    BREAKING:
-      <i class="fa-solid fa-triangle-exclamation fa-lg text-warning px-1"></i>
-    NEW: <i class="fa-regular fa-square-check fa-lg text-success px-1"></i>
-    CLEANUP:
-      <i class="fa-regular fa-wand-magic-sparkles fa-lg text-info px-1"></i>
+  sidebar_menu_compact: false
+  sidebar_expand_levels: 3
 ---

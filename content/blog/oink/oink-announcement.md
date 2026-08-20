@@ -8,8 +8,10 @@ description: >-
   OINK turns a directly customized Docsy codebase into a local-first, Hugo-only
   documentation theme with multilingual infrastructure and reusable content
   components.
-author: OINK maintainers
+authors: [oink, vonng]
 tags: [Oink]
+series: [building-oink]
+series_weight: 10
 ---
 
 Today we are publishing the OINK implementation preview: a directly evolved
@@ -160,7 +162,7 @@ not as an unversioned production dependency.
 - [Architecture](/docs/about/architecture/)
 - [Local-first operation](/docs/about/local-first/)
 - [Content components](/docs/components/)
-- [Configuration](/docs/configure/overview/)
+- [Configuration](/docs/customize/config/)
 - [Migration guide](/docs/upgrade/from-docsy/)
 - [Release process](/docs/about/)
 - [Implementation diary](/blog/oink/oink-implementation-diary/)

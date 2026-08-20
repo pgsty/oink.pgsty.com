@@ -7,8 +7,10 @@ lastmod: 2026-08-08
 description: >-
   A technical diary of the decisions, migrations, safety boundaries, tests, and
   documentation work behind the OINK implementation preview.
-author: OINK maintainers
+authors: [vonng]
 tags: [Oink]
+series: [building-oink]
+series_weight: 20
 ---
 
 OINK began with an awkward observation: several production documentation sites
