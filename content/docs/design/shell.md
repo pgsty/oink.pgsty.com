@@ -42,7 +42,10 @@ links target the
 page translation or that language's home, stay relative when languages share a
 host/base path, and become absolute only for language-specific `baseURL`s;
 `hreflang` stays absolute. `navbar_autohide` applies to fine pointers from
-768px, never touch or drawer widths.
+768px, never touch or drawer widths, and the hidden bar keeps its slot: the
+layout reserves the navbar band in both states, revealing fades the bar in
+place without covering resting content, and hero pages ignore the policy in
+favour of their overlay bar.
 
 Sidebar and pager share root and order. `manual_link`, `build.render: link`,
 dividers, hidden nodes, and placeholders retain their documented semantics.

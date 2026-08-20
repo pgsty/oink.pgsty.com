@@ -64,7 +64,7 @@ languages:
           ariaLabel: Comments
           errorMessage: Comments could not be loaded. Please try again later.
       ui:
-        navbar_autohide: false
+        navbar_autohide: true
         command_palette:
           commands:
             - id: theme_issues
@@ -185,7 +185,7 @@ languages:
           ariaLabel: 评论
           errorMessage: 评论加载失败，请稍后重试。
       ui:
-        navbar_autohide: false
+        navbar_autohide: true
         command_palette:
           commands:
             # Keep this order aligned with the English catalog: the palette
