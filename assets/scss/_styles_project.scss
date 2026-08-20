@@ -1,25 +1,26 @@
 // Docsy website styles
 
-// Docsy theme opt-in style imports:
-@import 'td/color-adjustments-dark';
-@import 'td/code-dark';
-@import 'td/extra';
-@import 'td/extra/bs-defaults';
-@import 'td/gcs-search-dark';
-
 // Custom Docsy website styles below this point:
 @import 'blog';
-@import 'navbar';
 
-// EXAMPLE: To keep the `td/extra` color adjustments, while dropping the
-// text-decoration, use the following class (on your body element), or copy the
-// class styles to your project's style file. This class isn't used, it's just
-// an example.
-._td-navbar-no-decoration {
-  .td-navbar {
-    .nav-link {
-      text-decoration: none !important;
-    }
+
+// Landing logo-wall cards (the "example sites" section) are one link target,
+// not a card with a link in its corner. The theme already emits an anchor per
+// card; when the section omits `link_label`, that anchor's accessible name is
+// the site title, so stretching it over the card keeps one meaningful name.
+.td-landing-logo-card {
+  position: relative;
+
+  .td-landing-card-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  &:hover,
+  &:focus-within {
+    border-color: var(--td-brand-line-strong);
   }
 }
 

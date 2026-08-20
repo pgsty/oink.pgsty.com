@@ -4,6 +4,10 @@ This repository contains the source for
 [oink.pgsty.com](https://oink.pgsty.com), the documentation and regression site
 for the [Oink Hugo theme](https://github.com/pgsty/oink).
 
+The bilingual maintainer contracts under `content/docs/design/` are the
+canonical prose source for OINK architecture, components, reading shells,
+Landing pages, and migration boundaries.
+
 ## Local development
 
 For theme development, clone both repositories as siblings:
@@ -14,28 +18,22 @@ For theme development, clone both repositories as siblings:
 └── oink.pgsty.com/
 ```
 
-Use the short Make targets for common development tasks:
+The four Make targets separate published-theme checks from local-theme work:
 
 ```sh
-make b  # Build the site against the sibling theme checkout
-make d  # Develop against the sibling theme checkout
-make s  # Serve the site against the sibling theme checkout
-make c  # Run the complete site test suite
+make build  # Build production output with the version pinned in go.mod
+make check  # Test the sibling theme with the non-browser regression suite
+make dev    # Start the fastest server with the sibling theme
+make serve  # Preview the pinned theme in the production environment
 ```
 
-These targets create or refresh the ignored `go.work` file and use the sibling
-theme checkout. The `dev` and `serve` targets do not pin a port, so Hugo can
-select an available one. The long target names (`build`, `dev`, `serve`, and
-`check`) work too. Override the automatically selected port or theme checkout
-only when needed:
-
-```sh
-make dev PORT=1314
-make dev THEME_DIR=/path/to/oink
-```
-
-Published builds ignore the workspace and resolve the version of
-`github.com/pgsty/oink` recorded in `go.mod`.
+`build` and `serve` invoke Hugo directly and resolve the published version of
+`github.com/pgsty/oink` pinned in `go.mod`. `dev` and `check` set a one-command
+module replacement to `../oink`; they do not create a `go.work` file or modify
+`go.mod`. `dev` keeps Hugo's fast-render defaults and renders to memory;
+`serve` uses the production environment, minifies the output, performs full
+renders after changes, and does not inject live reload. Node and npm are needed
+for the regression tests, not to build the OINK theme or site.
 
 ## License
 

@@ -64,7 +64,7 @@ languages:
           ariaLabel: Comments
           errorMessage: Comments could not be loaded. Please try again later.
       ui:
-        navbar_autohide: true
+        navbar_autohide: false
         command_palette:
           commands:
             - id: theme_issues
@@ -79,42 +79,78 @@ languages:
           name: Docs
           pageRef: /docs
           weight: 20
-        - identifier: docs-tutorial
+          params:
+            columns: 2
+        - identifier: docs-about
           parent: docs
-          name: Get started
-          pageRef: /docs/tutorial
+          name: Introduction
+          pageRef: /docs/about
           weight: 10
           params:
-            icon: fa-solid fa-rocket
-            description: Install OINK and build your first documentation site
-        - identifier: docs-configure
+            icon: fa-solid fa-circle-info
+            description: What OINK is, highlights, showcase, and licenses
+        - identifier: docs-start
           parent: docs
-          name: Site configuration
-          pageRef: /docs/configure
+          name: Get started
+          pageRef: /docs/start
           weight: 20
           params:
-            icon: fa-solid fa-sliders
-            description: Menus, languages, versions, and repository links
+            icon: fa-solid fa-rocket
+            description: Clone this site, preview, make it yours, deploy
+        - identifier: docs-write
+          parent: docs
+          name: Authoring
+          pageRef: /docs/write
+          weight: 30
+          params:
+            icon: fa-solid fa-pen-nib
+            description: Pages, structure, blog, books, releases, API docs
         - identifier: docs-components
           parent: docs
           name: Components
           pageRef: /docs/components
-          weight: 30
-          params:
-            icon: fa-solid fa-cubes
-            description: Code blocks, fields, diagrams, and the rest
-        - identifier: docs-deploy
-          parent: docs
-          name: Deployment
-          pageRef: /docs/deploy
           weight: 40
           params:
-            icon: fa-solid fa-cloud-arrow-up
-            description: Publish to Cloudflare Pages, GitHub Pages, and others
+            icon: fa-solid fa-cubes
+            description: One page per component, examples first
+        - identifier: docs-customize
+          parent: docs
+          name: Customization
+          pageRef: /docs/customize
+          weight: 50
+          params:
+            icon: fa-solid fa-sliders
+            description: Brand, navigation, search, languages, versions, print, agents
+        - identifier: docs-admin
+          parent: docs
+          name: Operations
+          pageRef: /docs/admin
+          weight: 60
+          params:
+            icon: fa-solid fa-screwdriver-wrench
+            description: Preview, deploy, comments, analytics, upgrade
+        - identifier: docs-design
+          parent: docs
+          name: Design
+          pageRef: /docs/design
+          weight: 70
+          params:
+            icon: fa-solid fa-compass-drafting
+            description: Maintainer contracts for architecture, components, shell, landing, and migration
+        - identifier: book
+          name: Book
+          pageRef: /book
+          weight: 30
+        - identifier: case
+          name: Case
+          pageRef: /case
+          weight: 40
         - identifier: blog
           name: Blog
           pageRef: /blog
           weight: 50
+          params:
+            columns: 1
         - identifier: blog-oink
           parent: blog
           name: OINK engineering
@@ -131,12 +167,6 @@ languages:
           params:
             icon: fa-solid fa-tags
             description: Version announcements and migration notes
-        - identifier: tags
-          name: Tags
-          pageRef: /tags
-          weight: 60
-          params:
-            icon: fa-solid fa-tags
         - identifier: github
           name: GitHub
           url: https://github.com/pgsty/oink
@@ -149,47 +179,15 @@ languages:
     locale: zh-CN
     weight: 2
     title: OINK
+    hasCJKLanguage: true
     params:
       description: 为工程而设计的 Hugo 文档主题
       comments:
         giscus:
           ariaLabel: 评论
           errorMessage: 评论加载失败，请稍后重试。
-      time_format_blog: 2006年1月2日
-      time_format_default: 2006年1月2日
-      links:
-        user:
-          - name: 使用文档
-            url: /zh/docs/
-            icon: fa-solid fa-book-open
-            desc: 阅读产品指南与参考资料
-          - name: 项目博客
-            url: /zh/blog/
-            icon: fa-solid fa-newspaper
-            desc: 阅读 Docsy、OINK 与发布注记
-          - name: GitHub Issues
-            url: https://github.com/pgsty/oink/issues
-            icon: fa-brands fa-github
-            desc: 报告主题或文档问题
-          - name: Docsy Discussions
-            url: https://github.com/google/docsy/discussions
-            icon: fa-solid fa-comments
-            desc: 讨论上游 Docsy 兼容性
-        developer:
-          - name: 贡献指南
-            url: /zh/docs/about/contributing/
-            icon: fa-solid fa-code-fork
-            desc: 了解如何参与贡献
-          - name: 站点源码
-            url: https://github.com/pgsty/oink.pgsty.com
-            icon: fa-brands fa-github
-            desc: 查看本站内容、测试与发布配置
-          - name: GitHub
-            url: https://github.com/pgsty/oink
-            icon: fa-brands fa-github
-            desc: OINK 在这里开放开发
       ui:
-        navbar_autohide: true
+        navbar_autohide: false
         command_palette:
           commands:
             # Keep this order aligned with the English catalog: the palette
@@ -207,78 +205,78 @@ languages:
           name: 文档
           pageRef: /docs
           weight: 20
-        - identifier: docs-tutorial
+          params:
+            columns: 2
+        - identifier: docs-about
+          parent: docs
+          name: 简介
+          pageRef: /docs/about
+          weight: 10
+          params:
+            icon: fa-solid fa-circle-info
+            description: OINK 是什么、亮点特性、示例站点与许可
+        - identifier: docs-start
           parent: docs
           name: 快速上手
-          pageRef: /docs/tutorial
-          weight: 10
+          pageRef: /docs/start
+          weight: 20
           params:
             icon: fa-solid fa-rocket
-            description: 安装 OINK，并创建你的第一个文档站
-        - identifier: docs-configure
+            description: 克隆本站、本地预览、替换站点信息、部署上线
+        - identifier: docs-write
           parent: docs
-          name: 站点配置
-          pageRef: /docs/configure
-          weight: 20
+          name: 创作内容
+          pageRef: /docs/write
+          weight: 30
           params:
-            icon: fa-solid fa-sliders
-            description: 菜单、多语言、版本管理与仓库链接
+            icon: fa-solid fa-pen-nib
+            description: 页面、目录、博客、书籍、发布页与 API 文档
         - identifier: docs-components
           parent: docs
-          name: 组件参考
+          name: 组件
           pageRef: /docs/components
-          weight: 30
+          weight: 40
           params:
             icon: fa-solid fa-cubes
-            description: 代码块、Fields、图表等全部组件
-        - identifier: docs-deploy
+            description: 一个组件一页，例子在前
+        - identifier: docs-customize
           parent: docs
-          name: 部署
-          pageRef: /docs/deploy
-          weight: 40
+          name: 定制站点
+          pageRef: /docs/customize
+          weight: 50
           params:
-            icon: fa-solid fa-cloud-arrow-up
-            description: 发布到 Cloudflare Pages、GitHub Pages 及其他托管
-        - identifier: about
-          name: 关于
-          pageRef: /docs/about
-          weight: 40
-        - identifier: about-examples
-          parent: about
-          name: 示例站点
-          pageRef: /docs/about/examples
-          weight: 10
+            icon: fa-solid fa-sliders
+            description: 品牌、导航、搜索、多语言、多版本、打印与 Agent 输出
+        - identifier: docs-admin
+          parent: docs
+          name: 维护管理
+          pageRef: /docs/admin
+          weight: 60
           params:
-            icon: fa-solid fa-star
-            description: 用 OINK 搭建的站点
-        - identifier: about-local-first
-          parent: about
-          name: 本地优先
-          pageRef: /docs/about/local-first
-          weight: 20
+            icon: fa-solid fa-screwdriver-wrench
+            description: 本地预览、发布上线、评论、分析与升级
+        - identifier: docs-design
+          parent: docs
+          name: 设计契约
+          pageRef: /docs/design
+          weight: 70
           params:
-            icon: fa-solid fa-box-archive
-            description: 构建与浏览都不依赖隐式网络访问
-        - identifier: about-architecture
-          parent: about
-          name: 架构概览
-          pageRef: /docs/about/architecture
+            icon: fa-solid fa-compass-drafting
+            description: 面向维护者的架构、组件、阅读壳、落地页与迁移契约
+        - identifier: book
+          name: 教程
+          pageRef: /book
           weight: 30
-          params:
-            icon: fa-solid fa-network-wired
-            description: 内容与本地资源如何变成静态站点
-        - identifier: about-contributing
-          parent: about
-          name: 贡献指南
-          pageRef: /docs/about/contributing
+        - identifier: case
+          name: 案例
+          pageRef: /case
           weight: 40
-          params:
-            icon: fa-solid fa-code-pull-request
-            description: 参与代码与双语文档贡献
         - identifier: blog
           name: 博客
           pageRef: /blog
           weight: 50
+          params:
+            columns: 1
         - identifier: blog-oink
           parent: blog
           name: OINK 工程实践
@@ -295,12 +293,6 @@ languages:
           params:
             icon: fa-solid fa-tags
             description: 版本公告与迁移说明
-        - identifier: tags
-          name: 标签
-          pageRef: /tags
-          weight: 60
-          params:
-            icon: fa-solid fa-tags
         - identifier: github
           name: GitHub
           url: https://github.com/pgsty/oink
@@ -309,17 +301,15 @@ languages:
             icon: fa-brands fa-github
 
 params:
-  wordmark: logo.svg
-
   # Version related parameters
   #
   # `version` identifies the published site variant (badge, welcome line,
   # version menu) and is not always a git ref. Content that needs a resolvable
   # release ref -- install commands, for example -- uses `tdVersion.latest`.
   tdVersion:
-    latest: &tdLatestVers v0.4.1
-  version: v0.4.1
-  version_menu: v0.4.1
+    latest: &tdLatestVers v0.5.1
+  version: v0.5.1
+  version_menu: v0.5.1
   version_menu_pagelinks: false
   # Populate to enable the navbar version menu, for example:
   versions: # []
@@ -338,22 +328,16 @@ params:
     from_year: 2026
     to_year: present
   footer_center_info: 'Powered by [Oink](https://oink.pgsty.com)'
-  privacy_policy: https://policies.google.com/privacy
   github_repo: https://github.com/pgsty/oink.pgsty.com
   github_project_repo: https://github.com/pgsty/oink
   github_subdir: ''
-  example_site_url: &exampleSiteURL https://example.docsy.dev
-  time_format_blog: Monday, January 02, 2006
-  time_format_default: January 2, 2006
-  rss_sections: [blog]
-  offlineSearch: true
+  offline_search: true
   # Keep the search entry points functional in the local Hugo preview used for
   # visual and browser QA, not only in a production build.
-  offlineSearchOnServe: true
-  offlineSearchIndex: summary
-  offlineSearchSummaryLength: 70
-  offlineSearchMaxResults: 10
-  prism_syntax_highlighting: false
+  offline_search_on_serve: true
+  offline_search_index: summary
+  offline_search_summary_length: 70
+  offline_search_max_results: 10
   page_width: normal
   comments:
     enable: true
@@ -369,102 +353,72 @@ params:
       emitMetadata: 0
       inputPosition: bottom
       theme: auto
-      lightTheme: /css/giscus-oink-light.css?v=0.4.0
-      darkTheme: /css/giscus-oink-dark.css?v=0.4.0
       loading: lazy
-  search:
-    # algolia:
   ui:
-    typography:
-      preset: technical
+    typography: technical
+    # The blog index toolbar gets the form cycle (list, cards, table) beside
+    # its feed button, on the root and on every child section index.
+    blog_index_toggle: true
+    # Section indexes (`_index.md` without `no_list`) render their children as
+    # cards; a section can override with front matter `section_index: list`.
+    section_index: cards
+    # The blog index is the card grid rather than the row list, since every
+    # post here carries section art. The featured-image mode and the share bar
+    # are section decisions, so they live in the blog cascades instead.
+    blog_index: cards
+    blog_index_columns: 3
+    # The right-rail cloud lists every declared taxonomy and has no exclude
+    # switch, so `authors` and `series` get their own icons rather than the
+    # generic fallback they would otherwise share.
+    taxonomy_icons:
+      categories: fa-solid fa-folder
+      tags: fa-solid fa-tags
+      authors: fa-solid fa-user-pen
+      series: fa-solid fa-layer-group
     quick_links: [docs, blog]
-    # Starter sites use the quieter group-only policy explicitly. The theme
-    # keeps its pre-1.0 compatibility default (`all`) when this is omitted.
+    # Starter sites use the quieter group-only policy explicitly (theme
+    # default: all).
     sidebar_icon_policy: groups
     page_context_menu:
       enable: true
       assistant_links: true
       links: []
-    # showLightDarkModeMenu param values:
-    showLightDarkModeMenu:
-      true # default
-      # false # disable
-      # 'enable-only (experimental)'
+    dark_mode: true
     sidebar_menu_compact: true
     sidebar_menu_foldable: true
-    sidebar_search_disable: false
     sidebar_root_enabled: true
     sidebar_root_menu: true
-    sidebar_width_min: 220
-    sidebar_width_max: 480
+    sidebar_width_min: 200
+    sidebar_width_max: 500
     sidebar_item_overflow: ellipsis
     sidebar_menu_truncate: 2000
-    ul_show: 2
-    scrollSpy:
-      disable: true
+    sidebar_expand_levels: 2
     feedback:
       enable: false
       reasons: true
-    readingtime:
-      enable: false
-  links:
-    user:
-      - name: Documentation
-        url: /docs/
-        icon: fa-solid fa-book-open
-        desc: Product guides and reference
-      - name: Project blog
-        url: /blog/
-        icon: fa-solid fa-newspaper
-        desc: Docsy, OINK, and release notes
-      - name: GitHub Issues
-        url: https://github.com/pgsty/oink/issues
-        icon: fa-brands fa-github
-        desc: Report theme or documentation issues
-      - name: Docsy Discussions
-        url: https://github.com/google/docsy/discussions
-        icon: fa-solid fa-comments
-        desc: Discuss upstream Docsy compatibility
-    developer:
-      - name: Contributing
-        url: /docs/about/contributing/
-        icon: fa-solid fa-code-fork
-        desc: How to contribute
-      - name: Site source
-        url: https://github.com/pgsty/oink.pgsty.com
-        icon: fa-brands fa-github
-        desc: Review this site's content, tests, and deployment configuration
-      - name: GitHub
-        url: https://github.com/pgsty/oink
-        icon: fa-brands fa-github
-        desc: OINK development takes place here
-
+    reading_time: false
   plantuml:
     enable: true
-    theme: default
     svg_image_url: https://www.plantuml.com/plantuml/svg/
     svg: false
   print:
-    disable_toc: false
-  markmap:
-    enable: true
+    toc: true
+  markmap: true
   drawio:
     enable: true
     drawio_server: https://embed.diagrams.net/
-
-  # UG helpers: use with _param
-  FA: <i class="fa-{1} fa-{2} text-{3} px-1"></i>
-  FAS: <i class="fa-solid fa-{1} text-{2} px-1"></i>
-  FAS_LG: <i class="fa-solid fa-{1} text-{2} fa-lg"></i>
-  # Badge usage: {{% _param BADGE text color %}}
-  BADGE: <span class="badge text-bg-{2} rounded-pill text-small">{1}</span>
-  btn-lg: class="btn btn-lg btn-{1}" role="button"
 
 baseURL: *productionURL
 
 taxonomies:
   tag: tags
   category: categories
+  # Declaring these two is the whole switch: `authors` turns the article head
+  # into portraits and linked names and makes each term page an author profile;
+  # `series` adds the reading-order strip above a post that names one. Neither
+  # has a theme parameter -- see docs/customize/taxonomy/#authors.
+  author: authors
+  series: series
 
 module:
   imports:

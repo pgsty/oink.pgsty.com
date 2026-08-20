@@ -6,20 +6,22 @@
 
 ## 范围基线
 
-2026-08-08 初次盘点结果：
+2026-08-20 的公开内容基线是 116 组中英文页面：
 
-| 内容树          | 英文源文件 | 英文词数 |
-| --------------- | ---------: | -------: |
-| `content/docs/` |         41 |   43,052 |
-| `content/blog/` |         15 |   19,522 |
-| 合计            |         56 |   62,574 |
+| 内容树             | 中英文页面组 |
+| ------------------ | -----------: |
+| 首页               |            1 |
+| `content/docs/`    |           77 |
+| `content/blog/`    |           12 |
+| `content/book/`    |            8 |
+| `content/case/`    |           14 |
+| `content/authors/` |            2 |
+| `content/series/`  |            2 |
+| 合计               |          116 |
 
-两棵内容树在初次盘点时共有 503 个 Markdown 标题。除此之外，中文首页、OINK 专属文档、发布注记、开发日志，以及
-`about/`、`examples/`、`community/` 三个一级内容入口也属于交付范围。
-
-当前交付包含 88 组中英文页面，校准了 822 个英文源标题。覆盖检查逐一核对
-`docs/`、`blog/`、`about/`、`examples/` 与
-`community/`。以下命令同时检查文件覆盖率、显式锚点、中英文渲染 ID 和站内链接：
+覆盖检查逐一核对首页以及 `docs/`、`blog/`、`book/`、`case/`、
+`authors/` 与 `series/`。`content/search.md` 是由主题 i18n 驱动的特殊搜索页面，
+不要求独立的 `.zh.md` 同伴。以下命令同时检查文件覆盖率、显式锚点、中英文渲染 ID 和站内链接：
 
 ```bash
 make build
@@ -29,9 +31,9 @@ npm run _check:rendered-markdown
 npm run _check:rendered-links
 ```
 
-`make build` 使用同级主题 checkout 做开发验收。发布前还要设置
-`HUGO_MODULE_WORKSPACE=off`，单独验证 `go.mod`
-中固定的公开主题标签；两种构建证据不能互相替代。
+`make build` 直接使用 Hugo，验证 `go.mod` 中固定的公开主题标签。
+`make check` 通过一次性的 Hugo 模块替换使用同级主题 checkout 做开发验收，
+不会生成 `go.work` 或修改 `go.mod`；两种构建证据不能互相替代。
 
 ## 文件与元数据
 
@@ -39,8 +41,8 @@ npm run _check:rendered-links
 - 保留日期、作者、权重、别名、资源引用和功能参数的语义；翻译标题、摘要、描述、标签及面向读者的字符串。
 - 不翻译命令、代码、配置键、文件名、URL、版本号、HTML 属性和 shortcode 名称。
 - 英文是第一语言，简体中文 `zh` 是第二语言。
-- 中文页面不得以英文原文作为缺失译文的静默回退；覆盖检查必须保证
-  `docs/`、`blog/`、`about/`、`examples/` 与 `community/` 一一配对。
+- 中文页面不得以英文原文作为缺失译文的静默回退；覆盖检查必须保证首页以及
+  `docs/`、`blog/`、`book/`、`case/`、`authors/` 与 `series/` 一一配对。
 
 ## 稳定锚点
 
