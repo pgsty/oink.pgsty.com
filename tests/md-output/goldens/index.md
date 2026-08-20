@@ -10,6 +10,8 @@ LLMS index: [llms.txt](/llms.txt)
 
 Section pages:
 
-- [Blog](/blog/): Docsy articles, OINK engineering stories, and OINK release notes
-- [Welcome to OINK](/docs/): Install, customize, deploy, and maintain Oink documentation sites.
+- [Write Beautiful Docs](/book/): A practical tutorial for creating clear, beautiful, and maintainable technical content with OINK.
+- [OINK Cases](/case/): Thirteen real sites show how OINK scales from a two-page utility to a multilingual documentation estate and a complete book.
+- [Blog](/blog/): OINK engineering stories, immersive guides, and release notes
+- [OINK Documentation](/docs/): OINK is a documentation theme that needs nothing but Hugo Extended — components are written in Markdown, assets ship with the theme, both languages work out of the box, and one source produces four outputs.
 - [Search Results](/search/)

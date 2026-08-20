@@ -1,124 +1,358 @@
 ---
-title: Infographics with AntV
-linkTitle: Infographics
-description:
-  Turn concise declarative data in an infographic fence into local SVG
-  infographics.
-weight: 110
-aliases:
-  [
-    /docs/feature/infographic/,
-    /docs/content/infographic/,
-    /docs/advanced/infographics/,
-  ]
+title: Infographic
+linkTitle: Infographic
+description: An `infographic` fence picks an AntV template and renders a title plus a list of items as a flow, timeline, funnel, grid or hierarchy.
+weight: 160
+search_keywords: [Infographic, AntV, flow, timeline, funnel, template]
 ---
 
-An `infographic` fenced code block renders the AntV Infographic DSL with the
-versioned runtime bundled by OINK. Use it for processes, timelines, cycles,
-funnels, roadmaps, and compact visual summaries where a statistical chart would
-be too literal.
+An `infographic` fence picks an AntV template and renders "a title plus a list
+of items" as an infographic. Use it for structure: order, hierarchy, comparison.
+When you need axes and numeric precision use
+[ECharts](/docs/components/echarts/); when you need a flow with conditional
+branches use [Mermaid](/docs/components/mermaid/). The fence body is data, and
+it stays readable text on GitHub.
 
-The DSL is serialized as data, not inserted as arbitrary HTML or executable code
-— the fence stays a readable code block on GitHub. The browser runtime turns it
-into SVG and loads only on pages that use the fence.
+## Shortest form {#minimal}
 
-## Quick start {#quick-start}
+The first line is `infographic <template>`, followed by a `data` block: `title`
+is the title and every entry under `items` needs at least a `label`.
 
-````markdown
+````markdown {title="Source"}
 ```infographic
 infographic list-row-simple-horizontal-arrow
 data
-  title Documentation workflow
+  title Three steps in one documentation change
   items
-    - label Draft
-      desc Write the first version
-    - label Review
-      desc Check facts and language
-    - label Publish
-      desc Build and verify the site
+    - label Write
+      desc Start with the source language
+    - label Check
+      desc Zero build warnings, every example really rendered
+    - label Ship
+      desc Add the translated peer, open the PR
 ```
 ````
 
-The same three steps appear below. Drafting creates the first version, review
-checks facts and language, and publication builds and verifies the site.
-
-<!-- prettier-ignore-start -->
-
 ```infographic
 infographic list-row-simple-horizontal-arrow
 data
-  title Documentation workflow
+  title Three steps in one documentation change
   items
-    - label Draft
-      desc Write the first version
-    - label Review
-      desc Check facts and language
-    - label Publish
-      desc Build and verify the site
+    - label Write
+      desc Start with the source language
+    - label Check
+      desc Zero build warnings, every example really rendered
+    - label Ship
+      desc Add the translated peer, open the PR
 ```
 
-<!-- prettier-ignore-end -->
+Indentation decides the structure, two spaces per level. Keep labels short and
+put the explanation in `desc`.
 
-## Syntax anatomy {#syntax-anatomy}
+## Timelines {#timeline}
 
-An infographic normally contains:
+The `sequence-timeline-*` family lays the items out on a time axis, with `label`
+as the point in time and `desc` as the event.
 
-1. `infographic TEMPLATE`, which selects a built-in AntV template;
-2. a `data` block with an optional `title` and `desc`;
-3. an `items` list with `label`, `desc`, optional `value`, and optional nested
-   `children` fields;
-4. an optional `theme` block for a built-in theme or explicit colors.
+````markdown {title="Source"}
+```infographic {height="420px"}
+infographic sequence-timeline-simple
+data
+  title The last five PostgreSQL major versions
+  items
+    - label 2021
+      desc 14: another round of parallel query and logical replication work
+    - label 2022
+      desc 15: the MERGE statement
+    - label 2023
+      desc 16: logical replication from a standby
+    - label 2024
+      desc 17: incremental backup and JSON_TABLE
+    - label 2025
+      desc 18: the asynchronous IO subsystem
+```
+````
 
-Indentation defines structure. Keep labels short, use descriptions for context,
-and choose a template whose visual relationship matches the prose. A decorative
-sequence is not a substitute for an actual hierarchy or comparison.
+```infographic {height="420px"}
+infographic sequence-timeline-simple
+data
+  title The last five PostgreSQL major versions
+  items
+    - label 2021
+      desc 14: another round of parallel query and logical replication work
+    - label 2022
+      desc 15: the MERGE statement
+    - label 2023
+      desc 16: logical replication from a standby
+    - label 2024
+      desc 17: incremental backup and JSON_TABLE
+    - label 2025
+      desc 18: the asynchronous IO subsystem
+```
 
-## Fence attributes {#shortcode-parameters}
+## Funnels {#funnel}
 
-| Attribute | Default | Behavior                                                                          |
-| --------- | ------- | --------------------------------------------------------------------------------- |
-| `height`  | `auto`  | Accepts `auto` or a nonnegative number with `px`, `rem`, `em`, `vh`, `vw`, or `%` |
-| `full`    | `false` | Set to `true` to remove OINK's normal content-width clamp                         |
+`sequence-funnel-simple` draws stages that narrow. Below are the theme's five
+release states: they are not interchangeable, and only the last one is live.
 
-Write them on the fence line: ` ```infographic {height="480px" full=true} `.
-Invalid height values, unknown attributes, and an empty DSL body fail the Hugo
-build. DSL schema or template errors are reported by the browser runtime in the
-infographic container; print, Markdown, and RSS output show the fence source.
+````markdown {title="Source"}
+```infographic {height="420px"}
+infographic sequence-funnel-simple
+data
+  title The five states a theme release passes through
+  items
+    - label Source complete
+      desc The code is written, and that is all
+    - label Validated
+      desc Theme checks and the site suite are green
+    - label Published
+      desc An immutable signed tag, resolvable through the Go proxy
+    - label Documented
+      desc The documentation site pins that tag
+    - label Deployed
+      desc Production runs this version
+```
+````
 
-AntV themes belong to the DSL rather than the fence attributes. They do not
-automatically follow Oink's site color mode, so verify foreground, background,
-and surrounding-page contrast in both modes.
+```infographic {height="420px"}
+infographic sequence-funnel-simple
+data
+  title The five states a theme release passes through
+  items
+    - label Source complete
+      desc The code is written, and that is all
+    - label Validated
+      desc Theme checks and the site suite are green
+    - label Published
+      desc An immutable signed tag, resolvable through the Go proxy
+    - label Documented
+      desc The documentation site pins that tag
+    - label Deployed
+      desc Production runs this version
+```
 
-## Choose a guide {#choose-a-guide}
+## Grid cards {#grid}
 
-- Processes, timelines, and cycles: demonstrates three common ways to explain a
-  sequence.
-- Layouts, funnels, and themes: demonstrates grids, narrowing stages, template
-  selection, and a built-in hand-drawn theme.
+When items have no order between them, `list-grid-*` arranges them in a grid
+rather than a queue.
 
-The AntV package contains many templates. Start with the smallest visual form
-that clarifies the relationship, not the most decorative form available.
+````markdown {title="Source"}
+```infographic {height="380px"}
+infographic list-grid-compact-card
+data
+  title One page, four outputs
+  desc Every content component has to produce something usable in all four
+  items
+    - label HTML
+      desc Interactive, runtimes loaded on demand
+    - label Print
+      desc Disclosures expanded, zoom and copy removed
+    - label Markdown
+      desc Plain text, compared byte for byte against goldens
+    - label RSS
+      desc Static, from the same source as print
+```
+````
 
-## Authoring and accessibility {#authoring-and-accessibility}
+```infographic {height="380px"}
+infographic list-grid-compact-card
+data
+  title One page, four outputs
+  desc Every content component has to produce something usable in all four
+  items
+    - label HTML
+      desc Interactive, runtimes loaded on demand
+    - label Print
+      desc Disclosures expanded, zoom and copy removed
+    - label Markdown
+      desc Plain text, compared byte for byte against goldens
+    - label RSS
+      desc Static, from the same source as print
+```
 
-- Summarize the same conclusion in ordinary text before or after the graphic.
-- Keep the reading order meaningful and labels concise.
-- Do not use color or shape as the only carrier of status.
-- Check long translated labels, narrow screens, printing, and both site color
-  modes.
-- Avoid remote image or icon identifiers in a local-first page unless their
-  network and license boundary has been reviewed explicitly.
-- Record the source and date when values are not illustrative.
+## Items with values {#values}
 
-SVG improves visual fidelity, but it does not guarantee that every template
-exposes the same semantic structure as native headings, lists, and tables.
-Essential instructions must remain available in adjacent prose.
+Add `value` to an item and templates that express proportion — pies, doughnuts,
+progress — will use it.
 
-## Further reference {#further-reference}
+````markdown {title="Source"}
+```infographic {height="400px"}
+infographic chart-pie-donut-plain-text
+data
+  title How the 29 shortcodes break down
+  items
+    - label Core components
+      value 14
+    - label Book numbering and indexes
+      value 10
+    - label Releases and downloads
+      value 3
+    - label OpenAPI
+      value 2
+```
+````
 
-OINK documents its fence and delivery boundary. For the full DSL, template
-gallery, and theme model, use the
-[AntV Infographic documentation](https://infographic.antv.vision/learn),
-[gallery](https://infographic.antv.vision/gallery), and
-[source repository](https://github.com/antvis/Infographic). The Oink theme's
-`VENDOR.json` records the exact bundled version, checksum, and MIT license file.
+```infographic {height="400px"}
+infographic chart-pie-donut-plain-text
+data
+  title How the 29 shortcodes break down
+  items
+    - label Core components
+      value 14
+    - label Book numbering and indexes
+      value 10
+    - label Releases and downloads
+      value 3
+    - label OpenAPI
+      value 2
+```
+
+## Hierarchy and hand-drawn style {#hierarchy-and-theme}
+
+Items can nest through `children`, and `hierarchy-mindmap-*` draws two levels of
+structure. A top-level `theme` block changes the whole look; `type` takes
+`light`, `dark` or `hand-drawn`.
+
+````markdown {title="Source"}
+```infographic {height="320px"}
+infographic hierarchy-mindmap-level-gradient-compact-card
+theme
+  type hand-drawn
+data
+  root
+    label Theme repository
+    children
+      - label layouts
+        desc templates
+        children
+          - label _markup
+            desc render hooks
+          - label _partials
+            desc shell and helpers
+      - label assets
+        desc resources
+        children
+          - label scss
+            desc tokens and component styles
+          - label js
+            desc browser runtimes
+          - label third_party
+            desc libraries shipped with the theme
+```
+````
+
+```infographic {height="320px"}
+infographic hierarchy-mindmap-level-gradient-compact-card
+theme
+  type hand-drawn
+data
+  root
+    label Theme repository
+    children
+      - label layouts
+        desc templates
+        children
+          - label _markup
+            desc render hooks
+          - label _partials
+            desc shell and helpers
+      - label assets
+        desc resources
+        children
+          - label scss
+            desc tokens and component styles
+          - label js
+            desc browser runtimes
+          - label third_party
+            desc libraries shipped with the theme
+```
+
+`theme` belongs to the DSL, not to the fence attributes, and it does not follow
+the site's colour scheme: a diagram with `type dark` stays dark on a light page.
+Check contrast in both modes.
+
+## Picking a template {#templates}
+
+Template names are `structure-variant`, and one structure has several visual
+variants. The common families:
+
+| Structure prefix | What it expresses | Example |
+| --- | --- | --- |
+| `list-row-*` `list-column-*` | Items in a row or a column | `list-row-simple-horizontal-arrow` |
+| `list-grid-*` | A grid, no order between items | `list-grid-compact-card` `list-grid-badge-card` |
+| `list-pyramid-*` `sequence-funnel-*` | Narrowing stages | `sequence-funnel-simple` |
+| `sequence-timeline-*` `sequence-roadmap-vertical-*` | Timelines and roadmaps | `sequence-timeline-simple` |
+| `sequence-steps-*` `sequence-snake-steps-*` | Ordered steps | `sequence-steps-simple` |
+| `compare-binary-horizontal-*` `compare-quadrant-*` | Binary comparison and quadrants | `compare-binary-horizontal-simple-vs` |
+| `hierarchy-mindmap-*` `hierarchy-structure-*` | Hierarchy, with `children` | `hierarchy-mindmap-level-gradient-compact-card` |
+| `chart-pie-*` `chart-bar-*` `chart-column-*` | Illustrative charts, with `value` | `chart-pie-donut-plain-text` |
+| `relation-network-*` `relation-dagre-flow` | Networks and flows, with `relations` | `relation-dagre-flow` |
+
+Choose the smallest form that makes the relationship clear. The full gallery is
+at [AntV Infographic](https://infographic.antv.vision/gallery), and the template
+names match the version shipped with the theme.
+
+## Output {#outputs}
+
+| Output | Shape |
+| --- | --- |
+| HTML | A canvas container inside `<div class="td-infographic">` plus the DSL; the local AntV runtime draws the SVG |
+| Print | No diagram; the DSL source inside `<pre class="td-infographic-source">` |
+| Markdown | The `infographic` fence and its DSL, kept as written |
+| RSS | Same as print — source only |
+
+Whatever the diagram says, say it in the prose too: print and RSS carry the DSL
+and nothing else.
+
+## Parameter reference {#reference}
+
+The fence attribute line (```` ```infographic {…} ````):
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `height` | `auto` or a CSS length | `auto` | A non-negative number plus `px` `rem` `em` `vh` `vw` `%`; anything else fails the build |
+| `full` | bool | `false` | `true` drops the reading-column limit |
+| `class` | space-separated classes | — | Passed through to the container |
+{.fields meta="type default"}
+
+`style`, `on*` and unknown attributes fail the build, and so does an empty DSL
+body.
+
+The DSL's top-level keys (AntV's, not the theme's):
+
+| Key | Description |
+| --- | --- |
+| `infographic` / `template` | The template name, on the first line |
+| `data` | `title`, `desc`, `items` (or `sequences`, `compares`, `nodes`, `values`, `relations`, `root`, depending on the structure), `order` |
+| `theme` | `type` (`light` / `dark` / `hand-drawn`), `palette`, `colorPrimary`, `stylize` … |
+| `width` / `height` | Canvas size at the DSL level; usually left to the fence's `height` |
+| `design` | Per-part tuning; rarely needed |
+{.fields}
+
+Each entry under `items` accepts `label`, `desc`, `value`, `icon`, `children`,
+`group` and `id`. The DSL is defined by the
+[AntV Infographic documentation](https://infographic.antv.vision/learn); the
+version shipped with the theme and its checksum are recorded in the theme's
+`VENDOR.json`.
+
+## Limits {#limits}
+
+- A wrong template name does not fail the build: Hugo checks the fence
+  attributes only, the DSL is parsed by the browser runtime, and a missing
+  template shows a line of error text in the container. Check the page after
+  changing a template name.
+- No colour-scheme awareness: `theme` lives in the DSL, so check contrast in
+  both modes.
+- Print and RSS carry the DSL only, so the conclusion belongs in the prose.
+- SVG is not a semantic structure: the order a screen reader gets is not
+  necessarily the visual order. Prefer headings, lists and tables when they can
+  say it.
+- Keep labels short: long text is truncated or squeezed on a narrow screen, so
+  check at phone width after editing.
+
+## Related {#related}
+
+- [ECharts](/docs/components/echarts/) — when you need axes and exact numbers
+- [Steps](/docs/components/steps/) — when the reader has to follow the procedure
+- [Cards](/docs/components/cards/) — a grid of clickable entry points
+- [Mermaid](/docs/components/mermaid/) — flows with branches and conditions

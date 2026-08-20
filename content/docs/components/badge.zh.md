@@ -1,63 +1,181 @@
 ---
-title: Badge
-description: 使用紧凑的语义状态标签，无需自定义颜色或 JavaScript。
-weight: 20
+title: 徽章
+linkTitle: 徽章
+description: 在功能名、版本号或表格单元格旁边放一枚语义状态标签，五种 tone，不需要自定义颜色。
+weight: 180
+search_keywords: [徽章, Badge, 状态标签, tone, Beta, 已弃用, neutral, info, success, warning, danger]
 ---
 
-Badge 用于在功能、选项或版本名称旁边放置简短状态。作者选择语义 tone，Oink 再把它映射到主题 token，确保浅色与深色模式下都有足够的对比度。
+徽章（Badge）是紧跟在名字旁边的行内状态标签：Beta、已弃用、v0.5、需自建服务。适用于一两个词能说完的状态；作者只选语义 tone，颜色由主题决定，浅色与深色模式下的对比度都有保证。状态需要解释、操作步骤或截止日期时，改用正文或[提示块](/zh/docs/components/callout/)。
 
-## 适用场景 {#when-to-use}
+## 最简例子 {#minimal}
 
-Badge 适合 Beta、New、Experimental 与 Deprecated 等生命周期状态。标签文字必须明确：颜色只能补充含义，不能代替文字。如果状态需要解释、操作说明或截止日期，请改用普通正文或提示框。
-
-## 快速开始 {#quick-start}
-
-### 源码 {#source}
-
-```go-html-template
+```markdown {title="源码"}
 {{</* badge text="Beta" tone="warning" */>}}
-{{</* badge text="已弃用" tone="danger" */>}}
-{{</* badge text="v0.3" tone="info" link="/zh/blog/release/" */>}}
 ```
 
-### 渲染结果 {#rendered-result}
-
-{{< badge text="默认" >}} {{< badge text="信息" tone="info" >}}
-{{< badge text="已支持" tone="success" >}}
 {{< badge text="Beta" tone="warning" >}}
+
+`text` 是唯一必填参数，必须是非空字符串。
+
+## 五种 tone {#tones}
+
+只有这五个取值，没有自定义颜色。
+
+```markdown {title="源码"}
+{{</* badge text="默认" */>}}
+{{</* badge text="信息" tone="info" */>}}
+{{</* badge text="已支持" tone="success" */>}}
+{{</* badge text="实验性" tone="warning" */>}}
+{{</* badge text="已弃用" tone="danger" */>}}
+```
+
+{{< badge text="默认" >}}
+{{< badge text="信息" tone="info" >}}
+{{< badge text="已支持" tone="success" >}}
+{{< badge text="实验性" tone="warning" >}}
 {{< badge text="已弃用" tone="danger" >}}
-{{< badge text="v0.3" tone="info" link="/zh/blog/release/" >}}
 
-最后一个 Badge 是链接，其余都是静态行内标签。
+不写 `tone` 时使用 `neutral`。其它取值让构建失败，报错给出源文件位置。
 
-## 参数 {#parameters}
+## 夹在句子里 {#inline}
 
-<!-- prettier-ignore-start -->
+徽章是行内元素，跟在名字后面，不占单独一行。
 
-{{< fields label="Badge 参数" >}}
-  {{< field name="text" type="string" required=true >}}
-  向读者显示的非空字符串。
-  {{< /field >}}
-  {{< field name="tone" type="enum" default="neutral" >}}
-  可选值为 `neutral`、`info`、`success`、`warning` 或 `danger`。
-  {{< /field >}}
-  {{< field name="link" type="URL" >}}
-  经过校验的站内、相对、HTTP(S) 或 `mailto:` 目标。设置后 Badge 会成为链接。
-  {{< /field >}}
-{{< /fields >}}
+```markdown {title="源码"}
+`params.ui.image_zoom` {{</* badge text="默认关闭" tone="neutral" */>}} 打开后，
+有替代文字的块级图片可以点开看大图。PlantUML {{</* badge text="需自建服务" tone="warning" */>}}
+与 Draw.io {{</* badge text="需自建服务" tone="warning" */>}} 没有配置服务端点时会让构建失败，
+而不是连接公共服务。
+```
 
-<!-- prettier-ignore-end -->
+`params.ui.image_zoom` {{< badge text="默认关闭" tone="neutral" >}} 打开后，
+有替代文字的块级图片可以点开看大图。PlantUML {{< badge text="需自建服务" tone="warning" >}}
+与 Draw.io {{< badge text="需自建服务" tone="warning" >}} 没有配置服务端点时会让构建失败，
+而不是连接公共服务。
 
-未知参数（包括过去的 `outline`
-开关）、非法 tone 或非法链接都会让 Hugo 构建停止，并报告源文件位置。
+## 标题旁边 {#in-headings}
 
-## 语义与回退 {#semantics-and-fallback}
+**标题里不要写 shortcode。**
+Hugo 先生成目录、后替换 shortcode，所以徽章在标题上渲染正常，目录里却会留下一段
+Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 
-静态 Badge 输出为 `span`，带链接的 Badge 输出为
-`a`。Oink 不会把它变成实时状态区域，因此新增 Badge 不会触发意外的屏幕阅读器播报。所有输出都保留可见文字：Markdown 使用强调文本并保留链接，打印与 RSS 使用静态行内内容。Badge 不加载 JavaScript。
+```markdown {title="源码"}
+### OpenAPI 页面 {#openapi-example}
 
-## 有意保留的边界 {#deliberate-limits}
+{{</* badge text="0.5 新增" tone="success" */>}} 这一节介绍……
+```
 
-Badge 不接受任意颜色、CSS
-class、样式、事件处理器或视觉变体开关：tone 是唯一的样式输入，因此站内所有徽章外观一致。没有
-`icon` 参数；请使用简短而明确的文字。
+### OpenAPI 页面 {#openapi-example}
+
+{{< badge text="0.5 新增" tone="success" >}} 徽章紧跟在标题下方，目录保持干净，
+锚点链接分享出去也不会带上徽章文字。
+
+## 表格单元格里 {#in-tables}
+
+对照表里用徽章标状态，比整列写「是」「否」更容易扫读。
+
+```markdown {title="源码"}
+| 组件 | 形态 | 状态 |
+| --- | --- | --- |
+| 提示块 | `> [!NOTE]` | {{</* badge text="稳定" tone="success" */>}} |
+| 画廊 | ` ```gallery ` 围栏 | {{</* badge text="稳定" tone="success" */>}} |
+| PlantUML | ` ```plantuml ` 围栏 | {{</* badge text="需自建服务" tone="warning" */>}} |
+| `image` shortcode | — | {{</* badge text="已移除" tone="danger" */>}} |
+```
+
+| 组件 | 形态 | 状态 |
+| --- | --- | --- |
+| 提示块 | `> [!NOTE]` | {{< badge text="稳定" tone="success" >}} |
+| 画廊 | ` ```gallery ` 围栏 | {{< badge text="稳定" tone="success" >}} |
+| PlantUML | ` ```plantuml ` 围栏 | {{< badge text="需自建服务" tone="warning" >}} |
+| `image` shortcode | — | {{< badge text="已移除" tone="danger" >}} |
+
+## 列表与步骤里 {#in-lists}
+
+```markdown {title="源码"}
+1. 安装 Hugo Extended {{</* badge text="≥ 0.160.1" tone="info" */>}}
+1. 克隆文档站，修改 `hugo.yml` 里的 `baseURL`
+1. `hugo server` 预览 {{</* badge text="1313 端口" tone="neutral" */>}}
+{.steps}
+```
+
+1. 安装 Hugo Extended {{< badge text="≥ 0.160.1" tone="info" >}}
+1. 克隆文档站，修改 `hugo.yml` 里的 `baseURL`
+1. `hugo server` 预览 {{< badge text="1313 端口" tone="neutral" >}}
+{.steps}
+
+## 卡片里 {#in-cards}
+
+卡片有自己的 `badge` 参数（纯文本，固定在标题右侧）；卡片正文里可以放徽章 shortcode。
+
+```markdown {title="源码"}
+{{</* cards */>}}
+{{</* card title="Hugo Module" icon="fa-brands fa-golang" badge="推荐" */>}}
+一行 `hugo mod get` 完成安装 {{</* badge text="需要 Go" tone="info" */>}}
+{{</* /card */>}}
+{{</* card title="离线归档" icon="fa-solid fa-box-archive" */>}}
+不联网的机器也能构建 {{</* badge text="手动升级" tone="warning" */>}}
+{{</* /card */>}}
+{{</* /cards */>}}
+```
+
+{{< cards >}}
+{{< card title="Hugo Module" icon="fa-brands fa-golang" badge="推荐" >}}
+一行 `hugo mod get` 完成安装 {{< badge text="需要 Go" tone="info" >}}
+{{< /card >}}
+{{< card title="离线归档" icon="fa-solid fa-box-archive" >}}
+不联网的机器也能构建 {{< badge text="手动升级" tone="warning" >}}
+{{< /card >}}
+{{< /cards >}}
+
+## 可点击的徽章 {#link}
+
+加 `link` 后徽章变成链接（`<a>`），站内路径、相对路径、`http(s):`、`mailto:` 都可以。
+
+```markdown {title="源码"}
+当前版本 {{</* badge text="v0.5" tone="info" link="/zh/blog/" */>}}，
+升级步骤见 {{</* badge text="版本升级" tone="neutral" link="/zh/docs/admin/upgrade/" */>}}。
+```
+
+当前版本 {{< badge text="v0.5" tone="info" link="/zh/blog/" >}}，
+升级步骤见 {{< badge text="版本升级" tone="neutral" link="/zh/docs/admin/upgrade/" >}}。
+
+链接非法（协议不在白名单里）会让构建失败。
+
+## 输出形态 {#outputs}
+
+| 输出 | 呈现 |
+| --- | --- |
+| HTML | 无链接时 `<span class="td-badge td-badge--<tone>">`，有链接时 `<a class="td-badge …">` |
+| 打印 | 同 HTML，静态行内元素 |
+| Markdown | `**Beta**`，有链接时 `[**Beta**](/…)` |
+| RSS | 同打印 |
+
+不加载 JavaScript。徽章不是实时状态区域，新增徽章不会触发读屏器播报。
+
+## 参数参考 {#reference}
+
+| 参数 | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `text` | 纯文本 | — | 必填，非空。读者看到的文字 |
+| `tone` | 枚举 | `neutral` | `neutral` `info` `success` `warning` `danger` |
+| `link` | URL | — | 设置后徽章变成链接 |
+{.fields meta="type default"}
+
+只接受命名参数。没有 `icon`、`class`、`color`、`outline`、`size` 参数；写了未知参数、空 `text`、非法 `tone` 或非法链接都会让构建失败。
+
+## 限制与常见问题 {#limits}
+
+- 颜色不是唯一的含义载体：tone 是补充，文字要自己说清楚。`{{</* badge text="🔴" */>}}` 对读屏器没有信息。
+- 没有图标参数：需要图标时改用[卡片](/zh/docs/components/cards/)或[提示块](/zh/docs/components/callout/)。
+- 文字要短：徽章不换行地跟在名字后面，超过五六个字的内容写进正文。
+- 同一处不超过三枚：连排的徽章会盖过它修饰的名字。
+- 徽章只有 shortcode 一种形态，没有原生 Markdown 写法；纯 Markdown 阅读器里它退化成加粗文字。
+
+## 相关 {#related}
+
+- [卡片](/zh/docs/components/cards/) — `card` 自己的 `badge` 参数
+- [文件树](/zh/docs/components/filetree/) — `tone` 用的是同一套词汇
+- [按键](/zh/docs/components/kbd/) — 另一枚行内 shortcode
+- [提示块](/zh/docs/components/callout/) — 状态需要解释时用它

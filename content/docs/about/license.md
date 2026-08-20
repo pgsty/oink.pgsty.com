@@ -1,143 +1,164 @@
 ---
-title: Open-source licenses and acknowledgements
-linkTitle: Open-source licenses
-description:
-  Understand Oink's upstream lineage, dependencies, acknowledgements, and
-  licensing boundaries.
-weight: 50
-aliases: [/license/, /docs/about/licenses/]
+title: License and acknowledgements
+linkTitle: License
+description: Which licence applies to which layer — Apache-2.0 for the theme, CC BY 4.0 for the documentation, and their own terms for every third-party runtime shipped with the theme.
+weight: 30
+search_keywords: [license, Apache-2.0, CC BY 4.0, acknowledgements, VENDOR.json, third-party dependencies, Docsy, font licence, Font Awesome]
 ---
 
-OINK combines an Apache-licensed theme, a separately licensed documentation
-site, and third-party components that retain their own licenses. These layers
-are intentionally not relicensed as one undifferentiated work.
+OINK is three layers of material: the theme source, the documentation content,
+and the third-party assets shipped with the theme. None of them is relicensed
+into a single combined work. Every table below points at the authoritative file
+in the repository; **where a summary and the licence text disagree, the file
+wins**.
 
-This page is a practical provenance guide, not a substitute for the license
-texts. When the summary and a license file differ, the license file controls.
+## Which licence covers what {#license-map}
 
-## License map {#license-map}
+| Scope | Licence | Authoritative file |
+| --- | --- | --- |
+| OINK theme source (layouts, partials, shortcodes, SCSS, JS, i18n) | Apache License 2.0 | Theme [`LICENSE`](https://github.com/pgsty/oink/blob/main/LICENSE), [`NOTICE`](https://github.com/pgsty/oink/blob/main/NOTICE) |
+| This site's own code, build scripts and material derived from Docsy | Apache License 2.0 | Site [`LICENSE`](https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE), [`NOTICE`](https://github.com/pgsty/oink.pgsty.com/blob/main/NOTICE) |
+| This site's original documentation content, except where stated otherwise | Creative Commons Attribution 4.0 International | Site [`LICENSE-CC-BY-4.0`](https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE-CC-BY-4.0) |
+| Browser libraries, fonts and icons shipped with the theme | Each component's own licence | Theme [`VENDOR.json`](https://github.com/pgsty/oink/blob/main/VENDOR.json) and the licence files beside each asset |
 
-| Surface                                                   | License                                        | Authoritative record                                                        |
-| --------------------------------------------------------- | ---------------------------------------------- | --------------------------------------------------------------------------- |
-| Oink theme source and Oink theme changes                  | Apache License 2.0                             | Theme [`LICENSE`][] and [`NOTICE`][]                                        |
-| Site code, build tooling, and Docsy-derived material      | Apache License 2.0                             | Site [`LICENSE`][site-license] and [`NOTICE`][site-notice]                  |
-| Original Oink documentation, unless noted otherwise       | Creative Commons Attribution 4.0 International | [`LICENSE-CC-BY-4.0`][site-cc-by] and the page or asset's own attribution   |
-| Browser libraries, fonts, icons, and other bundled assets | Each component's own license                   | Theme [`VENDOR.json`][] and the license files distributed beside the assets |
+Two boundaries are worth keeping straight. CC BY 4.0 covers the original
+documentation content only, not the theme code, the trademarks, the screenshots
+or the third-party assets. And the theme being Apache-2.0 does not turn its
+bundled dependencies into Apache-licensed works.
 
-The Creative Commons license applies to original documentation content, not to
-theme code, copied source code, trademarks, screenshots, or third-party assets
-that carry a different notice. Likewise, Apache-2.0 on the theme does not
-replace a bundled dependency's license.
+## Upstream: Docsy {#upstream-docsy}
 
-## Upstream lineage {#upstream-lineage}
+What the theme's `NOTICE` records:
 
-OINK is an independent theme directly derived from
-[Docsy](https://github.com/google/docsy). It preserves Docsy's source history,
-Apache-2.0 license, copyright notices, content conventions, and compatible APIs
-that remain part of the product. The project site is also derived from the Docsy
-project website and records that origin in its own `NOTICE`.
+- OINK is derived from [Docsy](https://github.com/google/docsy), Copyright 2018 Google LLC and Docsy contributors.
+- OINK's own theme work is Copyright 2026 PGSTY contributors.
+- The project and its upstream are both under Apache License 2.0. The licence, source, version and checksum of every third-party browser dependency are recorded in `VENDOR.json`, and each NOTICE file a dependency requires is distributed beside the asset it belongs to.
+- The Docsy name and Google's trademarks belong to their respective holders; naming them here identifies the upstream project and **implies no endorsement**.
 
-OINK is not an optional skin over a second Docsy installation. The inherited
-codebase has evolved into one standard theme with a Hugo-only consumer build,
-local browser runtimes, multilingual behavior, and its own release process.
-Contributors must retain applicable upstream notices and mark modified files as
-required by Apache-2.0.
+This site is likewise derived from the Docsy project website, and that lineage
+is recorded in the site's own `NOTICE`. Docsy is OINK's only code upstream: the
+source history, the Apache-2.0 obligations and the copyright notices are kept
+intact, and as Apache-2.0 requires, modified files carry a modification notice.
 
-## Projects Oink depends on {#projects-oink-depends-on}
+## Third-party runtimes shipped with the theme {#vendored-runtimes}
 
-[Hugo Extended](https://gohugo.io/) is the build platform. Go resolves the Hugo
-Module when a site uses the module installation path, and Git provides the
-source and release workflow. These tools are prerequisites; the theme does not
-redistribute their executables.
+The theme commits everything the browser needs to the repository
+(`assets/third_party/`, `assets/js/third_party/`, `static/webfonts/`), so a
+consuming site needs no npm and downloads nothing at build time. `VENDOR.json`
+is the machine-readable manifest for that material: for each entry it records
+the name, the pinned version, the source URL, the licence file path and the
+SHA-256 of every selected artifact, plus an aggregate checksum for each of the
+three asset trees.
 
-The theme does redistribute versioned browser assets so a consumer does not need
-npm or a public CDN. The following table groups the current major dependencies;
-`VENDOR.json` is authoritative for exact versions, selected artifacts, sources,
-checksums, and license paths.
+The table below is a snapshot of that manifest (`VENDOR.json` generated
+2026-08-17, schema 1, 26 entries). Versions change with each theme release, so
+**the `VENDOR.json` in the repository is authoritative**. Every source is the
+npm registry (`https://registry.npmjs.org/…`).
 
-| Capability             | Included projects                                          | License families recorded by the theme        |
-| ---------------------- | ---------------------------------------------------------- | --------------------------------------------- |
-| UI foundation          | Bootstrap, Popper                                          | MIT                                           |
-| Icons and fonts        | Font Awesome, Open Sans, Chakra Petch, IBM Plex Mono       | CC BY 4.0, SIL OFL 1.1, and MIT as applicable |
-| Search                 | Lunr, DocSearch                                            | MIT                                           |
-| Diagrams and formulae  | Mermaid, KaTeX, Markmap, D3, Highlight.js, Web Font Loader | MIT, ISC, BSD-3-Clause, and Apache-2.0        |
-| API and terminal views | Swagger UI, Redoc, Asciinema Player                        | Apache-2.0 and MIT                            |
-| Data visualization     | Apache ECharts, AntV Infographic                           | Apache-2.0 and MIT                            |
-| Supporting runtimes    | pako, external-svg-loader, idb-keyval, PrismJS             | MIT, Zlib, and Apache-2.0 as applicable       |
+| Package | Version | Licence | What it does in the theme |
+| --- | --- | --- | --- |
+| bootstrap | 5.3.8 | MIT | Grid, components and the RTL stylesheet |
+| @popperjs/core | 2.11.8 | MIT | Overlay positioning for Bootstrap |
+| @fortawesome/fontawesome-free | 7.3.1 | CC-BY-4.0 AND OFL-1.1 AND MIT | Icons throughout the site |
+| @fontsource-variable/inter | 5.3.0 | OFL-1.1 | Interface and body font |
+| @fontsource/chakra-petch | 5.3.0 | OFL-1.1 | Brand display font |
+| @fontsource/ibm-plex-mono | 5.3.0 | OFL-1.1 | Code font |
+| lunr | 2.3.9 | MIT | Local full-text search |
+| @docsearch/js | 5.0.1 | MIT | The optional Algolia DocSearch front end |
+| @docsearch/css | 5.0.1 | MIT | Its stylesheet |
+| mermaid | 11.16.1 | MIT | Mermaid diagrams |
+| katex | 0.18.4 | MIT | Mathematics |
+| markmap-autoloader | 0.18.12 | MIT | Mind maps |
+| markmap-lib | 0.18.12 | MIT | Mind maps |
+| markmap-view | 0.18.12 | MIT | Mind maps |
+| markmap-toolbar | 0.18.12 | MIT | Mind map toolbar |
+| d3 | 7.9.0 | ISC | Markmap dependency |
+| @highlightjs/cdn-assets | 11.12.0 | BSD-3-Clause | Markmap dependency |
+| webfontloader | 1.6.28 | Apache-2.0 | Markmap dependency |
+| swagger-ui-dist | 5.32.13 | Apache-2.0 | OpenAPI reference pages |
+| redoc | 2.5.3 | MIT | OpenAPI reference pages |
+| asciinema-player | 3.17.0 | Apache-2.0 | Terminal recording playback |
+| echarts | 6.1.0 | Apache-2.0 | Charts |
+| @antv/infographic | 0.2.19 | MIT | Infographics |
+| pako | 3.0.1 | MIT AND Zlib | Decompression (diagram data) |
+| external-svg-loader | 1.7.1 | MIT | Inlining external SVG |
+| idb-keyval | 6.2.0 | Apache-2.0 | Browser-side caching |
 
-Redistributions must keep the license and notice material required by each
-component. Updating a vendored file means updating its manifest entry, checksum,
-source, license files, and any required notice in the same change.
+Licence texts sit beside the asset they belong to — for example
+`assets/third_party/bootstrap/LICENSE` and
+`assets/third_party/katex/LICENSE` — and Swagger UI, Redoc and ECharts also ship
+their own `NOTICE` or bundled-declaration files. Lunr is the one exception: its
+code is in `assets/js/third_party/` while its licence is at
+`assets/third_party/lunr/LICENSE`.
 
-## Projects Oink acknowledges {#projects-oink-acknowledges}
+Redistributing the theme means carrying all of this licence and notice material
+with it. Updating a runtime means updating the artifact, the licence file, the
+source and the checksum in the same change.
 
-| Project      | Relationship to Oink              | What Oink drew from it                                                                                                           |
-| ------------ | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| [Hugo][]     | Build platform                    | Content model, templates, asset pipeline, multilingual routing, taxonomies, static site generation                               |
-| [Docsy][]    | **Direct upstream (forked from)** | Repository history, documentation conventions, layouts, Bootstrap foundation, compatible APIs                                    |
-| [Fumadocs][] | Design reference                  | Content-first presentation, information hierarchy, table-of-contents handling, authoring components such as Files and Type Table |
-| [Nextra][]   | Design reference                  | A spare documentation shell, filename and copy affordances on code blocks, per-page layout switches                              |
-| [Hextra][]   | Design reference                  | A Hugo-native implementation posture, FileTree, Badge, Tabs, and lightweight banners                                             |
-| [Mintlify][] | Design reference                  | Structured navigation tiers, synchronized code groups, API reference reading experience                                          |
+## Fonts and icons {#fonts-and-icons}
 
-OINK is **forked from Docsy**, its only code upstream. The source history, the
-Apache-2.0 license, and the attribution in `NOTICE` are all preserved.
+All three fonts (Inter, Chakra Petch, IBM Plex Mono) are under the SIL Open Font
+License 1.1, and the font files are committed to `static/webfonts/`: fourteen
+Inter subset files, four brand-font files, and Font Awesome's three, twenty-one
+in all. Font Awesome Free 7.3.1 carries a composite licence — CC BY 4.0 for the
+icon artwork, SIL OFL 1.1 for the font files, MIT for the code — with the text
+in `assets/third_party/Font-Awesome/LICENSE.txt`.
 
-Fumadocs, Nextra, Hextra, and Mintlify are **design references, not code sources
-and not runtime dependencies**. OINK reinterprets those ideas for Hugo and a
-Docsy-derived codebase rather than copying them pixel for pixel, and no code was
-ported from any of them.
+The theme makes no request to a remote font service: there is no Google Fonts
+link in the repository, and fonts are always served from the site's own
+`baseURL`. To change fonts or switch to the platform stack, see
+[Brand and appearance](/docs/customize/brand/).
 
-Thanks to the Hugo and Docsy communities, and to the projects above, for
-publishing and maintaining this work in the open.
+## Design references {#design-references}
 
-These references describe lineage, dependency, or design inspiration. They **do
-not imply endorsement**; project and product names remain the property of their
-respective owners.
+Docsy is the only code upstream. The projects below are references for the
+design language. They are neither a source of code nor a runtime dependency, and
+OINK has ported no code from them:
 
-## Reusing the documentation {#reusing-the-documentation}
+| Project | What was learned from it |
+| --- | --- |
+| [Fumadocs](https://www.fumadocs.dev/) | Content-first presentation, information hierarchy, and writing components such as file trees and field lists (the theme's `NOTICE` records this acknowledgement) |
+| [Nextra](https://nextra.site/) | A spare documentation shell, filename and copy affordances on code blocks, per-page layout switches |
+| [Hextra](https://imfing.github.io/hextra/) | A Hugo-native approach to implementation, file trees, badges, tabs |
+| [Mintlify](https://mintlify.com/) | Layered navigation structure, synchronized code groups, the reading experience of an API reference |
 
-CC BY 4.0 permits sharing and adaptation of covered documentation for any
-purpose, provided that you give appropriate credit, link to the license, and
-indicate whether you made changes. You must not imply that Oink, PGSTY, or an
-upstream project endorses the adaptation.
+[Hugo](https://gohugo.io/) is the build platform, and Go resolves modules when
+the theme is installed as a Hugo Module. Both are prerequisites, and the theme
+redistributes neither binary.
 
-A concise attribution can read:
+Naming these projects describes lineage, dependency or inspiration and
+**implies no endorsement by them**; project and product names belong to their
+respective holders.
 
-> Adapted from the Oink documentation by PGSTY contributors, licensed under
-> [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Changes were made.
+## Reusing this documentation {#reusing-the-docs}
 
-If a page includes separately attributed media or imported text, preserve that
-material's attribution and license as well. Removing a footer does not remove
-the obligation to provide attribution elsewhere.
+CC BY 4.0 permits sharing and adaptation for any purpose, provided you give
+attribution, link to the licence, state whether you made changes, and do not
+imply that OINK, PGSTY or any upstream project endorses your adaptation. A
+sufficient attribution reads:
+
+> Adapted from the OINK documentation by PGSTY contributors, licensed under
+> [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), with modifications.
+
+Images or quotations that carry their own attribution on a page keep their own
+credit and licence; removing the footer does not discharge the attribution
+obligation.
 
 ## Reusing the theme {#reusing-the-theme}
 
-Apache-2.0 permits use, modification, and distribution of the covered theme
-source and compiled output, subject to its terms. In particular, preserve the
-license, applicable copyright and attribution notices, and the contents of
-`NOTICE` when the license requires them; mark modified files when distributing
-modified source.
+Apache-2.0 permits using, modifying and distributing the theme source and its
+build output under its terms, provided you keep the licence, copyright and
+attribution notices, keep the contents of `NOTICE`, and state which files you
+changed when distributing modified source. A theme distribution should include
+`LICENSE`, `NOTICE`, `VENDOR.json`, and every third-party licence file the
+manifest references.
 
-Theme distributions should include `LICENSE`, `NOTICE`, `VENDOR.json`, and the
-third-party license files referenced by the manifest. Apache-2.0 does not grant
-permission to use project trademarks, and it does not turn third-party assets
+Apache-2.0 grants no trademark rights, and it does not turn third-party assets
 into Apache-licensed works.
 
-For a source contribution or redistribution review, start with the
-[contribution guidelines](../contributing/) and the actual license and notice
-files linked below.
+## Related {#related}
 
-[Docsy]: https://www.docsy.dev/
-[Fumadocs]: https://www.fumadocs.dev/
-[Hugo]: https://gohugo.io/
-[`LICENSE`]: https://github.com/pgsty/oink/blob/main/LICENSE
-[`NOTICE`]: https://github.com/pgsty/oink/blob/main/NOTICE
-[`VENDOR.json`]: https://github.com/pgsty/oink/blob/main/VENDOR.json
-[site-cc-by]:
-  https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE-CC-BY-4.0
-[site-license]: https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE
-[site-notice]: https://github.com/pgsty/oink.pgsty.com/blob/main/NOTICE
-[Nextra]: https://nextra.site/
-[Hextra]: https://imfing.github.io/hextra/
-[Mintlify]: https://mintlify.com/
+- [What is OINK](/docs/about/) — what the project is and where it came from
+- [Highlights](/docs/about/features/) — what local-first means in practice
+- [Configuration](/docs/customize/config/) — which features bring in an external service
+- [Brand and appearance](/docs/customize/brand/) — changing fonts and icons

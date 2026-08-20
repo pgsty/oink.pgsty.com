@@ -18,12 +18,6 @@
     "skip": false
   },
   {
-    "path": "blog/docsy/index.md",
-    "kind": "nested section",
-    "covers": ["description", "!body", "children"],
-    "skip": false
-  },
-  {
     "path": "blog/oink/index.md",
     "kind": "nested section",
     "covers": ["description", "!body", "children"],
@@ -42,21 +36,15 @@
     "skip": false
   },
   {
-    "path": "docs/content/index.md",
+    "path": "docs/write/index.md",
     "kind": "section",
     "covers": ["description", "!body", "children"],
     "skip": false
   },
   {
-    "path": "docs/tutorial/index.md",
+    "path": "docs/start/index.md",
     "kind": "section",
     "covers": ["description", "body", "children"],
-    "skip": false
-  },
-  {
-    "path": "blog/docsy/hello/index.md",
-    "kind": "page",
-    "covers": ["description", "body", "!children"],
     "skip": false
   },
   {

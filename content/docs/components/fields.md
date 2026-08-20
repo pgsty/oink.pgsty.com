@@ -1,156 +1,261 @@
 ---
-title: Fields and Field
+title: Fields
 linkTitle: Fields
-description:
-  Describe configuration, parameters, properties, and response fields with
-  responsive semantic HTML.
-weight: 40
+description: A plain table plus `{.fields}` documents configuration keys, command flags and API fields — name, type, default and description each in place, readable on a narrow screen, every entry individually linkable.
+weight: 60
+search_keywords: [Fields, field, configuration key, parameter, API field, meta, type, required, default, definition list, anchor]
 ---
 
-Fields documents named values and their metadata as a responsive definition
-list, so long names and descriptions remain usable on narrow screens. It has two
-forms: an ordinary Markdown table followed by `{.fields}`, and the `fields` /
-`field` shortcode pair for typed metadata and multi-paragraph descriptions.
+Fields render "a list of named values with metadata and a description" as a
+responsive definition list: the name gets its own line, type / required /
+default sit beside it as small chips, the description starts on the next line,
+and every entry carries its own anchor. Use it for configuration keys, command
+flags and API fields. When readers need to compare many rows across the same
+columns, keep a plain table; when the content is a sequence of actions, use
+steps.
 
-## When to use {#when-to-use}
+There are two spellings: a plain table plus `{.fields}` (the default choice),
+and the `fields`/`field` shortcode, for when a description needs several
+paragraphs, a list or a code block. Both render the same entries.
 
-Fields works for configuration keys, command or API parameters, object
-properties, and response members. Use a regular Markdown table when readers must
-compare many rows across the same columns. Use prose when the entries are steps
-rather than definitions.
+## Shortest form {#minimal}
 
-## Table form {#table-form}
+A pipe table with at least two columns and `{.fields}` on the next line. The
+first column is the name, the last is the description, and every column in
+between is metadata labelled with its own header text.
 
-Write a pipe table and put `{.fields}` on the line after it. The **first
-column** is the field name, the **last column** is the description, and every
-column in between is metadata labelled by its header — in any language, no fixed
-vocabulary:
-
-<!-- prettier-ignore-start -->
-
-```markdown
-| Parameter                                | Type    | Default | Description                              |
-| ---------------------------------------- | ------- | ------- | ---------------------------------------- |
-| `offlineSearch`                          | boolean | `false` | Builds a **local** search index          |
-| `offlineSearchMaxResults`                | integer | `10`    | Limits the number of visible results     |
-| `searchPlaceholder`                      | string  |         | Optional placeholder; empty cells vanish |
-{.fields caption="Search configuration"}
+```markdown {title="Source"}
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `offline_search` | boolean | `false` | Build the local search index and enable the command palette |
+| `offline_search_max_results` | integer | `10` | Maximum number of search results |
+| `page_width` | string | `normal` | Reading column width: `narrow` `normal` `wide` |
+{.fields}
 ```
 
-<!-- prettier-ignore-end -->
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `offline_search` | boolean | `false` | Build the local search index and enable the command palette |
+| `offline_search_max_results` | integer | `10` | Maximum number of search results |
+| `page_width` | string | `normal` | Reading column width: `narrow` `normal` `wide` |
+{.fields}
 
-<!-- prettier-ignore-start -->
+Metadata here shows as "Header: value". The theme infers nothing from the header
+— `Type` is only a label. The next section turns those into standard chips.
+Cells accept inline Markdown (code, emphasis, links) and empty middle cells are
+omitted.
 
-| Parameter                  | Type    | Default | Description                              |
-| -------------------------- | ------- | ------- | ---------------------------------------- |
-| `offlineSearch`            | boolean | `false` | Builds a **local** search index          |
-| `offlineSearchMaxResults`  | integer | `10`    | Limits the number of visible results     |
-| `searchPlaceholder`        | string  |         | Optional placeholder; empty cells vanish |
-{.fields caption="Search configuration"}
+## Semantic columns with `meta=` {#meta}
 
-<!-- prettier-ignore-end -->
+`meta` says, in order, what each middle column means: `type`, `required`,
+`default`, or `-` to keep the header as a plain label. With it, the table form
+renders the same chips as the shortcode form.
 
-Cells accept inline Markdown (links, code, emphasis); the first cell must be
-non-empty and unique. `caption` becomes the visible label. On GitHub the source
-is still a readable table, and OINK's Markdown output keeps it as one. Use the
-shortcode form when a description needs several paragraphs, lists, or fences.
+```markdown {title="Source"}
+| Parameter | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `baseURL` | string | yes | | Site address, subpath included |
+| `title` | string | yes | | Site name, shown in the navbar and the tab |
+| `defaultContentLanguage` | string | | `en` | Default language; decides which language unprefixed paths belong to |
+{.fields meta="type required default"}
+```
 
-## Shortcode form {#quick-start}
+| Parameter | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `baseURL` | string | yes | | Site address, subpath included |
+| `title` | string | yes | | Site name, shown in the navbar and the tab |
+| `defaultContentLanguage` | string | | `en` | Default language; decides which language unprefixed paths belong to |
+{.fields meta="type required default"}
 
-### Source {#source}
+The rules:
 
-```go-html-template
-{{</* fields label="Search configuration" */>}}
-  {{</* field name="offlineSearch" type="boolean" required=true default=true */>}}
-  Builds a **local** search index and command palette.
-  {{</* /field */>}}
+- `meta` must name a role for every middle column — exactly the column count
+  minus two. Too many or too few fails the build.
+- A `required` column is "non-empty means true": "yes", "是" or "✔" all read the
+  same, and the rendered chip is the untranslated `required`. An empty cell
+  shows nothing.
+- `type` and `default` cells with no inline markup of their own are wrapped in
+  code formatting, matching the shortcode form.
+- The three semantic chips always display in the order `type`, `required`,
+  `default`, whatever order the columns are in; `-` columns follow, in column
+  order.
 
-  {{</* field name="offlineSearchMaxResults" type="integer" default=10 */>}}
-  Limits the number of visible results.
-  {{</* /field */>}}
+`-` mixes with semantic roles, which is how you keep one custom label:
+
+```markdown {title="Source"}
+| Environment variable | Type | Scope | Description |
+| --- | --- | --- | --- |
+| `HUGO_MODULE_WORKSPACE` | string | build | Points at `go.work` so the theme resolves from a local checkout |
+| `HUGO_ENV` | string | build | Set to `production` to enable minification and fingerprinting |
+{.fields meta="type -"}
+```
+
+| Environment variable | Type | Scope | Description |
+| --- | --- | --- | --- |
+| `HUGO_MODULE_WORKSPACE` | string | build | Points at `go.work` so the theme resolves from a local checkout |
+| `HUGO_ENV` | string | build | Set to `production` to enable minification and fingerprinting |
+{.fields meta="type -"}
+
+## Labels and container IDs {#caption-id}
+
+`caption` gives the whole list a visible label, which is also its accessible
+name; `id` names the outer container so it can be linked to or styled.
+
+```markdown {title="Source"}
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `enable` | boolean | `false` | Turn image zoom on |
+| `selector` | string | `.td-content` | Root selector scanned for candidate images |
+{.fields caption="params.ui.image_zoom" id="zoom-params" meta="type default"}
+```
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `enable` | boolean | `false` | Turn image zoom on |
+| `selector` | string | `.td-content` | Root selector scanned for candidate images |
+{.fields caption="params.ui.image_zoom" id="zoom-params" meta="type default"}
+
+## Every entry is linkable {#anchors}
+
+Each entry gets an anchor of the form `field-<name>`, and a self-link icon
+appears beside the name on hover. `page_width` in the first table above is
+[#field-page_width](#field-page_width) — a link you can send on its own when
+answering a question.
+
+Duplicate names on one page get `-2`, `-3` suffixes, the same rule Goldmark uses
+for duplicate headings. Anchors are generated in HTML only: print and RSS
+assemble many pages into one document, where in-page anchors would collide.
+
+## The shortcode form {#shortcode}
+
+When the description needs several paragraphs, a list or a code block, a table
+cell cannot hold it. Use `fields`/`field`:
+
+````markdown {title="Source"}
+{{</* fields label="Common pig flags" */>}}
+{{</* field name="--config" type="path" required=true */>}}
+Path to the configuration file. Relative paths resolve against the working
+directory.
+
+When `PIG_CONFIG` is also set, the command-line flag wins.
+{{</* /field */>}}
+{{</* field name="--log-level" type="string" default="info" */>}}
+Log level, from low to high:
+
+- `debug`: print every remote call
+- `info`: the default
+- `error`: output only on failure
+{{</* /field */>}}
+{{</* field name="--dry-run" type="boolean" default=false */>}}
+Print what would happen and change nothing:
+
+```bash
+pig ext install pg_duckdb --dry-run
+```
+{{</* /field */>}}
 {{</* /fields */>}}
+````
+
+{{< fields label="Common pig flags" >}}
+{{< field name="--config" type="path" required=true >}}
+Path to the configuration file. Relative paths resolve against the working
+directory.
+
+When `PIG_CONFIG` is also set, the command-line flag wins.
+{{< /field >}}
+{{< field name="--log-level" type="string" default="info" >}}
+Log level, from low to high:
+
+- `debug`: print every remote call
+- `info`: the default
+- `error`: output only on failure
+{{< /field >}}
+{{< field name="--dry-run" type="boolean" default=false >}}
+Print what would happen and change nothing:
+
+```bash
+pig ext install pg_duckdb --dry-run
 ```
-
-### Rendered result {#rendered-result}
-
-<!-- prettier-ignore-start -->
-
-{{< fields label="Search configuration" >}}
-  {{< field name="offlineSearch" type="boolean" required=true default=true >}}
-  Builds a **local** search index and command palette.
-  {{< /field >}}
-  {{< field name="offlineSearchMaxResults" type="integer" default=10 >}}
-  Limits the number of visible results while retaining keyboard navigation.
-  {{< /field >}}
-  {{< field name="searchPlaceholder" type="string" default="" >}}
-  Sets optional placeholder text. The empty-string default remains visible.
-  {{< /field >}}
-  {{< field name="theme.components.media.previewMaximumWidthInCharacters" type="string" default="auto" >}}
-  This deliberately long field name demonstrates wrapping without widening the page.
-  {{< /field >}}
+{{< /field >}}
 {{< /fields >}}
 
-<!-- prettier-ignore-end -->
+`required=true` and `default=false` are booleans and take no quotes. `default`
+accepts any scalar: `default=0` and `default=""` both display faithfully (the
+empty string shows as `""`), and omitting `default` omits the chip. Every
+`field` needs a non-empty body and must be a direct child of `fields`.
 
-Descriptions accept Markdown, including links, emphasis, inline code, and lists.
-Keep each description self-contained because Markdown output presents each one
-beneath its metadata.
+## Which form to use {#which}
 
-## Fields parameters {#fields-parameters}
+| Situation | Use |
+| --- | --- |
+| One-sentence descriptions that fit in a table cell | table + `{.fields}` |
+| Descriptions with paragraphs, lists or code blocks | the `fields`/`field` shortcode |
+| Readers comparing many rows across the same columns | a plain table, not a field list |
+| Content that is a sequence of actions | [Steps](/docs/components/steps/) |
 
-<!-- prettier-ignore-start -->
+The table form stays a readable table on GitHub, and OINK's Markdown output
+keeps it as a table. That is why it is the default.
 
-{{< fields label="fields parameters" >}}
-  {{< field name="label" type="string" >}}
-  A nonempty visible label associated with the complete definition list.
-  {{< /field >}}
-{{< /fields >}}
+## Output {#outputs}
 
-<!-- prettier-ignore-end -->
+| Output | Shape |
+| --- | --- |
+| HTML | `<div class="td-fields">` around a semantic `<dl>`; entries carry `#field-<name>` anchors and self-links |
+| Print | The complete definition list, without entry anchors |
+| Markdown | The table form keeps the source table; the shortcode form emits a bulleted list of "`name` — type; required; default: value" plus the indented description |
+| RSS | The complete static `<dl>`, without entry anchors |
 
-The container must have at least one direct `field` child. Text or another
-shortcode directly inside `fields` stops the build.
+No script is loaded.
 
-## Field parameters {#field-parameters}
+## Parameter reference {#reference}
 
-<!-- prettier-ignore-start -->
+The table attribute line, on the row below the table:
 
-{{< fields label="field parameters" >}}
-  {{< field name="name" type="string" required=true >}}
-  A nonempty string identifying the field.
-  {{< /field >}}
-  {{< field name="type" type="string" >}}
-  A nonempty type label such as `boolean`, `string[]`, or `duration`.
-  {{< /field >}}
-  {{< field name="required" type="boolean" default=false >}}
-  When true, adds the literal `required` marker. The marker is untranslated API vocabulary.
-  {{< /field >}}
-  {{< field name="default" type="scalar" >}}
-  A string, boolean, integer, or floating-point value. `false`, `0`, and `""` are preserved.
-  {{< /field >}}
-{{< /fields >}}
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `.fields` | marker | none | Required; renders the table as a field list |
+| `meta` | role list | none | Space-separated `type` `required` `default` `-`; one per middle column; semantic roles cannot repeat |
+| `caption` | plain text | none | Visible label and the list's accessible name |
+| `id` | identifier | none | ID of the outer container |
+| `class` | class list | none | Passed through for site CSS |
+| `data-*` / `aria-*` | string | none | Passed through |
+{.fields meta="type default"}
 
-<!-- prettier-ignore-end -->
+The `fields` shortcode:
 
-Every `field` also requires a nonempty body. It must be a direct child of
-`fields`. Parameter names and types are validated at build time, and unknown
-parameters are errors.
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `label` | non-empty string | no | Visible label; the same thing the table's `caption` does |
+| `id` | identifier | no | Container ID; no whitespace, quotes, `<`, `>` or `&` |
+| `class` / `data-*` / `aria-*` | string | no | The same policy as the table attribute line |
+{.fields meta="type required"}
 
-## Semantics and fallback {#semantics-and-fallback}
+The `field` shortcode:
 
-Both forms render the same `dl`, `dt`, and `dd` structure. Each entry stacks a
-header row — the field name followed by its metadata chips — above the
-description, and hairline dividers separate entries. In the shortcode form the
-chips are `type`, `required`, and `default` (labels that stay in English in
-every locale); in the table form each chip is `header: value`. The optional
-label names the definition list for assistive technology. Markdown output keeps
-the source table, or emits an indented bullet list with code-formatted names,
-types, and defaults for the shortcode form; print and RSS retain every
-definition. No JavaScript is loaded.
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `name` | non-empty string | yes | The field name |
+| `type` | non-empty string | no | Type label such as `boolean`, `string[]`, `duration` |
+| `required` | boolean | no | `true` shows the untranslated `required` chip; defaults to `false` |
+| `default` | scalar | no | String / boolean / integer / float; `false`, `0` and `""` all display |
+{.fields meta="type required"}
 
-## Deliberate limits {#deliberate-limits}
+## Limits {#limits}
 
-Version one does not implement `kind`, `deprecated`, `since`, `location`, or
-per-field links. It also does not parse TypeScript or an API schema inside Hugo.
-An external generator may emit these shortcodes later, keeping compiler and
-schema runtimes outside the theme while preserving this output contract.
+- The first column must be non-empty and unique within one table; a duplicate or
+  an empty name fails the build.
+- `.fields` cannot combine with `.matrix`, `.full-width` or `num`, and `meta`
+  cannot appear on a table without `.fields`.
+- Block content does not fit in a table cell: paragraphs, lists and fences need
+  the shortcode form.
+- `required` and `default` are untranslated API vocabulary and stay in English
+  in every language. They are contract words, not interface copy.
+- No `kind`, `since`, `deprecated`, `location`, per-field links or nested
+  structures, and nothing parses TypeScript or an OpenAPI schema at build time.
+
+## Related {#related}
+
+- [Tables](/docs/components/table/) — the rest of the attribute line and the exclusion rules
+- [Configuration](/docs/customize/config/) — the full site parameter table, itself a field list
+- [Front matter](/docs/write/frontmatter/) — the full front matter table
+- [Steps](/docs/components/steps/) — ordered actions do not belong in a field list

@@ -1,137 +1,221 @@
 ---
-title: Fields 与 Field
-linkTitle: Fields
-description: 使用响应式语义 HTML 描述配置、参数、属性与响应字段。
-weight: 40
+title: 参数表
+linkTitle: 参数表
+description: 用一张普通表格加 `{.fields}` 记录配置项、命令参数与 API 字段：名称、类型、默认值、说明各就各位，窄屏不挤，每条都能单独链接。
+weight: 60
+search_keywords: [参数表, Fields, field, 配置项, 参数, API 字段, meta, type, required, default, 定义列表, 锚点]
 ---
 
-Fields 用响应式定义列表记录具名值及其元数据，长名称和长描述在窄屏上仍然可用。它有两种形态：普通 Markdown 表格后跟
-`{.fields}`，以及提供强类型元数据与多段描述的 `fields`/`field` 短代码对。
+参数表（Fields）把「一串具名值 + 元数据 + 说明」渲染成响应式定义列表：名称独占一行，类型、是否必填、默认值是名称旁边的小字，说明另起一行，每一条自带锚点。用于配置项、命令参数与 API 字段。要按同一批列横向比较很多行时用普通表格，内容是操作顺序时用步骤。
 
-## 适用场景 {#when-to-use}
+写法有两种：普通表格加 `{.fields}`（默认选它），以及 `fields`/`field` shortcode（说明需要多个段落、列表或代码块时才用）。两种形态渲染出相同的条目。
 
-Fields 适合配置键、命令或 API 参数、对象属性与响应字段。如果读者需要按相同列横向比较大量条目，请使用普通 Markdown 表格；如果条目表达的是步骤而不是定义，请使用正文。
+## 最简例子 {#minimal}
 
-## 表格形态 {#table-form}
+一张至少两列的管道表格，下一行写 `{.fields}`。第一列是名称，最后一列是说明，中间每一列都是元数据，标签就是表头文字本身。
 
-写一张 pipe 表格，并在下一行加上 `{.fields}`。**第一列** 是字段名，**最后一列**
-是说明，中间的每一列都是以表头为标签的元数据——任何语言都可以，没有固定词汇表：
-
-<!-- prettier-ignore-start -->
-
-```markdown
-| 参数                         | 类型    | 默认值  | 说明                           |
-| ---------------------------- | ------- | ------- | ------------------------------ |
-| `offlineSearch`              | boolean | `false` | 构建 **本地** 搜索索引         |
-| `offlineSearchMaxResults`    | integer | `10`    | 限制可见结果数量               |
-| `searchPlaceholder`          | string  |         | 可选占位文字；空单元格会被省略 |
-{.fields caption="搜索配置"}
+```markdown {title="源码"}
+| 参数 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `offline_search` | boolean | `false` | 构建本地搜索索引并启用命令面板 |
+| `offline_search_max_results` | integer | `10` | 搜索结果条数上限 |
+| `page_width` | string | `normal` | 正文栏宽度，可选 `narrow` `normal` `wide` |
+{.fields}
 ```
 
-<!-- prettier-ignore-end -->
+| 参数 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `offline_search` | boolean | `false` | 构建本地搜索索引并启用命令面板 |
+| `offline_search_max_results` | integer | `10` | 搜索结果条数上限 |
+| `page_width` | string | `normal` | 正文栏宽度，可选 `narrow` `normal` `wide` |
+{.fields}
 
-<!-- prettier-ignore-start -->
+这里的元数据显示成「表头: 值」。主题不推断表头的含义，`类型` 只是一个标签；要让它变成标准芯片见下一节。单元格接受行内 Markdown（代码、强调、链接），空的中间单元格省略。
 
-| 参数                       | 类型    | 默认值  | 说明                                   |
-| -------------------------- | ------- | ------- | -------------------------------------- |
-| `offlineSearch`            | boolean | `false` | 构建 **本地** 搜索索引                 |
-| `offlineSearchMaxResults`  | integer | `10`    | 限制可见结果数量                       |
-| `searchPlaceholder`        | string  |         | 可选占位文字；空单元格会被省略         |
-{.fields caption="搜索配置"}
+## 语义列 `meta=` {#meta}
 
-<!-- prettier-ignore-end -->
+`meta` 按顺序说明每一个中间列扮演什么角色：`type`（类型）、`required`（必填）、`default`（默认值），或者 `-`（保留表头当标签）。有了它，表格形态渲染出的芯片与 shortcode 形态一致。
 
-单元格接受行内 Markdown（链接、代码、强调）；第一个单元格必须非空且唯一。`caption`
-成为可见标签。在 GitHub 上源码仍然是一张可读的表格，OINK 的 Markdown 输出也保持为表格。描述需要多个段落、列表或围栏时，请使用短代码形态。
+```markdown {title="源码"}
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+| --- | --- | --- | --- | --- |
+| `baseURL` | string | 是 | | 站点地址，含子路径 |
+| `title` | string | 是 | | 站点名，出现在顶栏与页签 |
+| `defaultContentLanguage` | string | | `en` | 默认语言，决定无前缀路径属于哪种语言 |
+{.fields meta="type required default"}
+```
 
-## 短代码形态 {#quick-start}
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+| --- | --- | --- | --- | --- |
+| `baseURL` | string | 是 | | 站点地址，含子路径 |
+| `title` | string | 是 | | 站点名，出现在顶栏与页签 |
+| `defaultContentLanguage` | string | | `en` | 默认语言，决定无前缀路径属于哪种语言 |
+{.fields meta="type required default"}
 
-### 源码 {#source}
+规则：
 
-```go-html-template
-{{</* fields label="搜索配置" */>}}
-  {{</* field name="offlineSearch" type="boolean" required=true default=true */>}}
-  构建 **本地** 搜索索引与命令面板。
-  {{</* /field */>}}
+- `meta` 必须为每一个中间列写一个角色，个数等于总列数减二；写多写少都构建失败。
+- `required` 列是「非空即真」：单元格里写「是」「yes」「✔」都一样，渲染出来的是不翻译的 `required` 芯片；留空就不显示。
+- `type` 与 `default` 单元格如果本身没有行内标记，会自动套上代码格式，与 shortcode 形态对齐。
+- 三种语义芯片按 `type`、`required`、`default` 的顺序显示，与列的顺序无关；`-` 列跟在后面，按列顺序排。
 
-  {{</* field name="offlineSearchMaxResults" type="integer" default=10 */>}}
-  限制可见结果数量。
-  {{</* /field */>}}
+`-` 可以和语义角色混用，用来保留一列自定义标签：
+
+```markdown {title="源码"}
+| 环境变量 | 类型 | 作用域 | 说明 |
+| --- | --- | --- | --- |
+| `HUGO_MODULE_WORKSPACE` | string | 构建 | 指向 `go.work`，让主题从本地 checkout 解析 |
+| `HUGO_ENV` | string | 构建 | 设为 `production` 时启用压缩与指纹 |
+{.fields meta="type -"}
+```
+
+| 环境变量 | 类型 | 作用域 | 说明 |
+| --- | --- | --- | --- |
+| `HUGO_MODULE_WORKSPACE` | string | 构建 | 指向 `go.work`，让主题从本地 checkout 解析 |
+| `HUGO_ENV` | string | 构建 | 设为 `production` 时启用压缩与指纹 |
+{.fields meta="type -"}
+
+## 标签与容器 ID {#caption-id}
+
+`caption` 给整张表加一个可见标签（同时是无障碍名称），`id` 命名外层容器，方便从别处链接过来或写站点 CSS。
+
+```markdown {title="源码"}
+| 参数 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `enable` | boolean | `false` | 打开图片缩放 |
+| `selector` | string | `.td-content` | 扫描候选图片的根选择器 |
+{.fields caption="params.ui.image_zoom" id="zoom-params" meta="type default"}
+```
+
+| 参数 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `enable` | boolean | `false` | 打开图片缩放 |
+| `selector` | string | `.td-content` | 扫描候选图片的根选择器 |
+{.fields caption="params.ui.image_zoom" id="zoom-params" meta="type default"}
+
+## 每一条都能单独链接 {#anchors}
+
+每个条目获得一个 `field-<名称>` 形式的锚点，鼠标移上去时名称右边出现自链接图标。上面第一张表里的 `page_width` 就是 [#field-page_width](#field-page_width)，回答问题时可以把这一行的链接单独发出去。
+
+同一页里重名的字段按 `-2`、`-3` 顺延，规则与 Goldmark 处理重名标题一致。锚点只在 HTML 里生成：打印和 RSS 会把很多页拼成一个文档，页内锚点在那里会冲突。
+
+## shortcode 形态 {#shortcode}
+
+说明需要多个段落、列表或代码块时，表格单元格装不下，改用 `fields`/`field`：
+
+````markdown {title="源码"}
+{{</* fields label="pig 命令常用参数" */>}}
+{{</* field name="--config" type="path" required=true */>}}
+配置文件路径。相对路径按当前工作目录解析。
+
+如果同时设置了 `PIG_CONFIG` 环境变量，命令行参数优先。
+{{</* /field */>}}
+{{</* field name="--log-level" type="string" default="info" */>}}
+日志级别，从低到高：
+
+- `debug`：打印每一次远程调用
+- `info`：默认值
+- `error`：只在失败时输出
+{{</* /field */>}}
+{{</* field name="--dry-run" type="boolean" default=false */>}}
+只打印将要执行的动作，不改任何东西：
+
+```bash
+pig ext install pg_duckdb --dry-run
+```
+{{</* /field */>}}
 {{</* /fields */>}}
+````
+
+{{< fields label="pig 命令常用参数" >}}
+{{< field name="--config" type="path" required=true >}}
+配置文件路径。相对路径按当前工作目录解析。
+
+如果同时设置了 `PIG_CONFIG` 环境变量，命令行参数优先。
+{{< /field >}}
+{{< field name="--log-level" type="string" default="info" >}}
+日志级别，从低到高：
+
+- `debug`：打印每一次远程调用
+- `info`：默认值
+- `error`：只在失败时输出
+{{< /field >}}
+{{< field name="--dry-run" type="boolean" default=false >}}
+只打印将要执行的动作，不改任何东西：
+
+```bash
+pig ext install pg_duckdb --dry-run
 ```
-
-### 渲染结果 {#rendered-result}
-
-<!-- prettier-ignore-start -->
-
-{{< fields label="搜索配置" >}}
-  {{< field name="offlineSearch" type="boolean" required=true default=true >}}
-  构建 **本地** 搜索索引与命令面板。
-  {{< /field >}}
-  {{< field name="offlineSearchMaxResults" type="integer" default=10 >}}
-  限制可见结果数量，同时保留键盘导航能力。
-  {{< /field >}}
-  {{< field name="searchPlaceholder" type="string" default="" >}}
-  设置可选占位文字。空字符串默认值仍然会明确显示。
-  {{< /field >}}
-  {{< field name="theme.components.media.previewMaximumWidthInCharacters" type="string" default="auto" >}}
-  这个刻意加长的字段名用于演示正常换行，而不会撑宽页面。
-  {{< /field >}}
+{{< /field >}}
 {{< /fields >}}
 
-<!-- prettier-ignore-end -->
+`required=true` 与 `default=false` 是布尔值，不加引号。`default` 接受任何标量：`default=0`、`default=""` 都会如实显示（空字符串显示成 `""`），不写 `default` 就不显示这一项。每个 `field` 必须有非空正文，并且必须是 `fields` 的直接子项。
 
-描述可以使用 Markdown，包括链接、强调、行内代码与列表。每段描述应保持独立完整，因为 Markdown 输出会把它放在对应元数据下方。
+## 两种形态的选择 {#which}
+| 情况 | 用法 |
+| --- | --- |
+| 每条说明一句话，能放进表格单元格 | 表格 + `{.fields}` |
+| 说明要分段、带列表或代码块 | `fields`/`field` shortcode |
+| 读者需要按同一批列横向比较很多行 | 用普通表格，不转成参数表 |
+| 内容是操作顺序 | 用[步骤](/zh/docs/components/steps/) |
 
-## Fields 参数 {#fields-parameters}
+表格形态在 GitHub 上仍然是一张可读的表，OINK 的 Markdown 输出也保持表格原样，这是默认选它的理由。
 
-<!-- prettier-ignore-start -->
+## 输出形态 {#outputs}
 
-{{< fields label="fields 参数" >}}
-  {{< field name="label" type="string" >}}
-  与完整定义列表关联的非空可见标签。
-  {{< /field >}}
-{{< /fields >}}
+| 输出 | 呈现 |
+| --- | --- |
+| HTML | `<div class="td-fields">` + 语义 `<dl>`；条目带 `#field-<名称>` 锚点与自链接 |
+| 打印 | 完整定义列表，不带条目锚点 |
+| Markdown | 表格形态保留源码表格；shortcode 形态输出「`名称` — 类型；required；default: 值」加缩进说明的项目符号列表 |
+| RSS | 完整静态 `<dl>`，不带条目锚点 |
 
-<!-- prettier-ignore-end -->
+不加载任何脚本。
 
-容器至少要有一个直接 `field` 子项。直接放在 `fields`
-中的普通文字或其他短代码会让构建停止。
+## 参数参考 {#reference}
 
-## Field 参数 {#field-parameters}
+表格属性行（写在表格下一行）：
 
-<!-- prettier-ignore-start -->
+| 参数 | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `.fields` | 标记 | 无 | 必需；把表格渲染成参数表 |
+| `meta` | 角色列表 | 无 | 空格分隔，取值 `type` `required` `default` `-`；个数等于中间列数；语义角色不可重复 |
+| `caption` | 纯文本 | 无 | 可见标签，同时是列表的无障碍名称 |
+| `id` | 标识符 | 无 | 外层容器的 ID |
+| `class` | class 列表 | 无 | 透传给站点 CSS |
+| `data-*` / `aria-*` | 字符串 | 无 | 透传 |
+{.fields meta="type default"}
 
-{{< fields label="field 参数" >}}
-  {{< field name="name" type="string" required=true >}}
-  标识字段的非空字符串。
-  {{< /field >}}
-  {{< field name="type" type="string" >}}
-  非空类型标签，例如 `boolean`、`string[]` 或 `duration`。
-  {{< /field >}}
-  {{< field name="required" type="boolean" default=false >}}
-  为 true 时添加字面量 `required` 标记，该标记不做本地化。
-  {{< /field >}}
-  {{< field name="default" type="scalar" >}}
-  字符串、布尔值、整数或浮点数；`false`、`0` 与 `""` 都会保留。
-  {{< /field >}}
-{{< /fields >}}
+`fields` shortcode：
 
-<!-- prettier-ignore-end -->
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `label` | 非空字符串 | 否 | 可见标签，作用同表格的 `caption` |
+| `id` | 标识符 | 否 | 外层容器 ID；不能含空白、引号、`<`、`>`、`&` |
+| `class` / `data-*` / `aria-*` | 字符串 | 否 | 与表格属性行同一套策略 |
+{.fields meta="type required"}
 
-每个 `field` 还必须包含非空正文，并且必须是 `fields`
-的直接子项。参数名称与类型在构建时校验，未知参数会被视为错误。
+`field` shortcode：
 
-## 语义与回退 {#semantics-and-fallback}
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `name` | 非空字符串 | 是 | 字段名 |
+| `type` | 非空字符串 | 否 | 类型标签，如 `boolean` `string[]` `duration` |
+| `required` | 布尔 | 否 | `true` 时显示不翻译的 `required` 芯片，默认 `false` |
+| `default` | 标量 | 否 | 字符串 / 布尔 / 整数 / 浮点；`false`、`0`、`""` 都会显示 |
+{.fields meta="type required"}
 
-两种形态渲染同样的 `dl`、`dt`、`dd`
-结构。每个条目把标题行——字段名及其元数据小标签——叠放在描述之上，条目之间用细线分隔。短代码形态的小标签是
-`type`、`required` 与
-`default`（在所有语言环境中都保持英文）；表格形态的每个小标签是
-`表头: 值`。可选的标签为辅助技术命名整个定义列表。Markdown 输出保留源码表格，或为短代码形态输出带代码格式名称、类型与默认值的缩进项目符号列表；打印与 RSS 保留全部定义。不加载 JavaScript。
+## 限制与常见问题 {#limits}
 
-## 有意保留的边界 {#deliberate-limits}
+- 第一列必须非空，且在同一张表内唯一：重名或空名构建失败。
+- `.fields` 不能与 `.matrix`、`.full-width`、`num` 组合，`meta` 不能用在没有 `.fields` 的表上。
+- 表格单元格里放不下块内容：需要段落、列表、围栏就换 shortcode 形态。
+- `required` 与 `default` 是不翻译的 API 词汇，在所有语言下都显示英文，它们是契约词，不是界面文案。
+- 暂不支持 `kind`、`since`、`deprecated`、`location`、字段级链接与嵌套结构，也不会在构建时解析 TypeScript 或 OpenAPI schema。
 
-第一版不实现 `kind`、`deprecated`、`since`、`location`
-或字段级链接，也不会在 Hugo 内解析 TypeScript 或 API
-schema。将来可以由外部生成器输出这些短代码，把编译器与 schema 运行时留在主题之外，同时保持当前输出契约。
+## 相关 {#related}
+
+- [表格](/zh/docs/components/table/) — 属性行的其它取值与互斥规则
+- [配置总览](/zh/docs/customize/config/) — 站点参数全表就是用参数表写的
+- [页面参数](/zh/docs/write/frontmatter/) — front matter 全表
+- [步骤](/zh/docs/components/steps/) — 顺序动作不要写成参数表

@@ -1,105 +1,346 @@
 ---
-title: Apache ECharts
+title: ECharts
 linkTitle: ECharts
-description: 用 echarts 围栏中的结构化 JSON 或 YAML 创建响应式、本地优先图表。
-weight: 100
+description: 在 `echarts` 围栏里用 YAML 或 JSON 写图表选项，Hugo 构建期校验，浏览器用本地 ECharts 画出跟随深浅色的统计图。
+weight: 150
+search_keywords: [ECharts, 图表, 统计图, 柱状图, 折线图, 饼图, chart, bar, line, pie, height, theme, OinkEchartsFunctions]
 ---
 
-`echarts` 围栏代码块使用 OINK 随主题分发的固定版本 Apache
-ECharts 运行时渲染选项对象。围栏正文是 JSON 或 YAML——数据而不是代码——因此在 GitHub 和任何 Markdown 阅读器里它仍是一段可读的代码块。Hugo 在构建阶段解析选项，把结果序列化到页面中，并且只在实际使用该围栏的页面加载 ECharts。
+`echarts` 围栏的正文是一段 YAML 或 JSON 的 ECharts 选项对象，不是代码。适用于需要坐标轴、序列与图例的定量图表；只表达关系与流程时用 [Mermaid](/zh/docs/components/mermaid/)，只表达顺序与层级时用 [Infographic](/zh/docs/components/infographic/)。Hugo 在构建期解析选项，解析失败则构建失败；浏览器用随主题分发的 ECharts 绘图，只有用到它的页面加载运行时。
 
-当定量图表需要精确控制坐标轴、视觉编码、提示或序列时，请使用 ECharts。图表旁边仍要提供文字摘要，不能让结论依赖颜色、指针交互或 JavaScript。
+## 最简例子 {#minimal}
 
-## 快速开始 {#quick-start}
+一个柱状图只需要三段：`xAxis`、`yAxis`、`series`。下面是本站文档六个栏目各有多少页。
 
-````markdown
-```echarts {height="300px"}
+````markdown {title="源码"}
+```echarts {height="320px"}
+tooltip:
+  trigger: axis
 xAxis:
   type: category
-  data: [草稿, 评审, 发布]
+  data: [简介, 快速上手, 创作内容, 组件, 定制站点, 维护管理]
 yAxis:
   type: value
+  name: 页数
 series:
-  - type: bar
-    data: [12, 9, 4]
+  - name: 页数
+    type: bar
+    data: [4, 3, 8, 22, 15, 7]
 ```
 ````
 
-示例展示了 12 篇草稿页面、9 篇评审中的页面和 4 篇待发布页面。
-
-<!-- prettier-ignore-start -->
-
-```echarts {height="300px"}
+```echarts {height="320px"}
+tooltip:
+  trigger: axis
 xAxis:
   type: category
-  data: [草稿, 评审, 发布]
+  data: [简介, 快速上手, 创作内容, 组件, 定制站点, 维护管理]
+yAxis:
+  type: value
+  name: 页数
+series:
+  - name: 页数
+    type: bar
+    data: [4, 3, 8, 22, 15, 7]
+```
+
+两种格式都接受，YAML 不需要引号与逗号，写起来更短。缩进写错、正文解析成数组而不是映射，构建在这一行失败，不会输出一张空白图。
+
+## 多序列折线 {#line}
+
+`series` 是数组，多一项就是多一条线；`legend` 让读者单独隐藏其中一条。下面是 PostgreSQL 各大版本的发布年份，以及按社区五年支持策略推算的终止年份。
+
+````markdown {title="源码"}
+```echarts {height="360px"}
+tooltip:
+  trigger: axis
+legend:
+  data: [发布年份, 支持终止]
+grid:
+  left: 56
+  right: 24
+  top: 48
+  bottom: 40
+xAxis:
+  type: category
+  name: 大版本
+  data: ["9.6", "10", "11", "12", "13", "14", "15", "16", "17", "18"]
+yAxis:
+  type: value
+  min: 2015
+  max: 2031
+  name: 年份
+series:
+  - name: 发布年份
+    type: line
+    smooth: false
+    data: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+  - name: 支持终止
+    type: line
+    lineStyle:
+      type: dashed
+    data: [2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030]
+```
+````
+
+```echarts {height="360px"}
+tooltip:
+  trigger: axis
+legend:
+  data: [发布年份, 支持终止]
+grid:
+  left: 56
+  right: 24
+  top: 48
+  bottom: 40
+xAxis:
+  type: category
+  name: 大版本
+  data: ["9.6", "10", "11", "12", "13", "14", "15", "16", "17", "18"]
+yAxis:
+  type: value
+  min: 2015
+  max: 2031
+  name: 年份
+series:
+  - name: 发布年份
+    type: line
+    smooth: false
+    data: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+  - name: 支持终止
+    type: line
+    lineStyle:
+      type: dashed
+    data: [2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030]
+```
+
+版本号要加引号：YAML 里不带引号的 `10` 是数字，`9.6` 也是；作为分类轴的标签它们必须是字符串。
+
+## 饼图与环形图 {#pie}
+
+`radius` 给两个值就是环形图。下面是 OINK 的 29 个 shortcode 按用途的构成。
+
+````markdown {title="源码"}
+```echarts {height="340px"}
+tooltip:
+  trigger: item
+  formatter: "{b}：{c} 个（{d}%）"
+legend:
+  bottom: 0
+series:
+  - type: pie
+    radius: [42%, 70%]
+    itemStyle:
+      borderRadius: 6
+      borderWidth: 2
+    label:
+      formatter: "{b} {c}"
+    data:
+      - { value: 14, name: 核心组件 }
+      - { value: 10, name: Book 编号与索引 }
+      - { value: 3, name: 发布与下载 }
+      - { value: 2, name: OpenAPI }
+```
+````
+
+```echarts {height="340px"}
+tooltip:
+  trigger: item
+  formatter: "{b}：{c} 个（{d}%）"
+legend:
+  bottom: 0
+series:
+  - type: pie
+    radius: [42%, 70%]
+    itemStyle:
+      borderRadius: 6
+      borderWidth: 2
+    label:
+      formatter: "{b} {c}"
+    data:
+      - { value: 14, name: 核心组件 }
+      - { value: 10, name: Book 编号与索引 }
+      - { value: 3, name: 发布与下载 }
+      - { value: 2, name: OpenAPI }
+```
+
+`{b}` `{c}` `{d}` 是 ECharts 的模板占位符（名称 / 数值 / 百分比），写在字符串里即可，不需要函数。
+
+## 高度与通栏 {#size}
+
+`height` 默认 `400px`，接受 `px rem em vh vw %`；`full=true` 去掉正文的宽度限制，让图铺满内容区。适用于数据点多、标签长的图。
+
+````markdown {title="源码"}
+```echarts {height="260px" full=true}
+tooltip:
+  trigger: axis
+grid:
+  left: 40
+  right: 16
+  top: 24
+  bottom: 32
+xAxis:
+  type: category
+  data: [i18n, 分类法, 字体令牌, 内容契约, 导航, 运行时, 侧栏图标, 搜索, 动作, 命令面板, 双语文档, 阅读, 发布物, 下载, Landing, Book, 迁移, 键盘, 页尾, 输出, 金样本]
+yAxis:
+  type: value
+  name: 脚本数
+series:
+  - type: bar
+    data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+```
+````
+
+```echarts {height="260px" full=true}
+tooltip:
+  trigger: axis
+grid:
+  left: 40
+  right: 16
+  top: 24
+  bottom: 32
+xAxis:
+  type: category
+  data: [i18n, 分类法, 字体令牌, 内容契约, 导航, 运行时, 侧栏图标, 搜索, 动作, 命令面板, 双语文档, 阅读, 发布物, 下载, Landing, Book, 迁移, 键盘, 页尾, 输出, 金样本]
+yAxis:
+  type: value
+  name: 脚本数
+series:
+  - type: bar
+    data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+```
+
+无效的高度（`360`、`36pt`）会让构建失败，不会退回默认值。
+
+## 深浅色 {#theme}
+
+不写 `theme` 时，图按读者当前的配色模式初始化；切换配色时图原地重绘，不刷新页面。容器尺寸变化时自动 resize。把本页切到深色，上面每张图的底色与文字随之改变。
+
+写定 `theme` 则固定配色，两种模式下都是同一套：
+
+````markdown {title="源码"}
+```echarts {height="240px" theme="dark"}
+xAxis:
+  type: category
+  data: [HTML, 打印, Markdown, RSS]
 yAxis:
   type: value
 series:
   - type: bar
-    data: [12, 9, 4]
+    data: [1, 1, 1, 1]
+```
+````
+
+```echarts {height="240px" theme="dark"}
+xAxis:
+  type: category
+  data: [HTML, 打印, Markdown, RSS]
+yAxis:
+  type: value
+series:
+  - type: bar
+    data: [1, 1, 1, 1]
 ```
 
-<!-- prettier-ignore-end -->
+运行时内置的只有 `dark`；其它 ECharts 主题要先用 `echarts.registerTheme()` 注册才能在这里引用。没有品牌要求时不写 `theme`，让图跟随站点配色。
 
-## OINK 如何加载图表 {#how-oink-loads-a-chart}
+## 回调：`$fn:` {#callbacks}
 
-渲染钩子会创建唯一的图表容器，并把解析后的选项保存到 `application/json`
-元素中。即使同一页包含多个图表，页面也只会加入一次本地 ECharts 运行时与 OINK 初始化脚本。
+围栏是数据，不能带 JavaScript。某个选项需要函数时（提示框格式化、数据驱动的颜色），在选项里写字符串 `"$fn:名字"`，再把这个名字注册到 `window.OinkEchartsFunctions`：
 
-未设置 `theme`
-时，OINK 会按照站点当前配色模式初始化图表，并在读者切换模式时重新绘制。`ResizeObserver`
-会让图表随容器缩放。显式指定 ECharts 主题后，该图表不再自动跟随站点配色模式。
-
-## 围栏属性 {#shortcode-parameters}
-
-| 属性     | 默认值  | 行为                                                      |
-| -------- | ------- | --------------------------------------------------------- |
-| `height` | `400px` | 接受非负数字与 `px`、`rem`、`em`、`vh`、`vw` 或 `%` 单位  |
-| `theme`  | 未设置  | 使用指定的 ECharts 主题；未设置时跟随站点的深色或浅色模式 |
-| `full`   | `false` | 设为 `true` 后移除 OINK 的常规正文宽度限制                |
-
-无效高度、未知属性，以及无法解析成 ECharts 选项映射的正文都会让 Hugo 构建失败，而不是静默生成空白图表。
-
-## 回调与可信代码 {#choose-a-guide}
-
-围栏只接受声明式配置，不能携带 JavaScript。当某个 ECharts选项需要函数时——例如提示格式化器或数据驱动的颜色——在选项里写字符串
-`"$fn:name"`，并在页面级 `<script>` 块或站点资源中把 `name` 注册到
-`window.tdEchartsFunctions`。未注册的名称会被忽略并在控制台给出警告：
-
-````markdown
+````markdown {title="源码"}
 <script>
-window.tdEchartsFunctions = window.tdEchartsFunctions || {};
-window.tdEchartsFunctions.bytesFormatter = (params) => `${params.value} MB`;
+  window.OinkEchartsFunctions = window.OinkEchartsFunctions || {};
+  window.OinkEchartsFunctions.pageShare = function (params) {
+    var p = params[0];
+    return p.name + '：' + p.value + ' 页，占全站 ' + Math.round((p.value / 59) * 100) + '%';
+  };
 </script>
 
-```echarts {height="240px"}
+```echarts {height="300px"}
 tooltip:
-  formatter: "$fn:bytesFormatter"
+  trigger: axis
+  formatter: "$fn:pageShare"
+xAxis:
+  type: category
+  data: [简介, 快速上手, 创作内容, 组件, 定制站点, 维护管理]
+yAxis:
+  type: value
 series:
   - type: bar
-    data: [3, 5, 8]
+    data: [4, 3, 8, 22, 15, 7]
 ```
 ````
 
-请先使用声明式 JSON 或 YAML；只有 ECharts 选项无法用数据表达时，才添加 JavaScript 回调，并把这段脚本当作经过评审的站点代码对待。
+<script>
+  window.OinkEchartsFunctions = window.OinkEchartsFunctions || {};
+  window.OinkEchartsFunctions.pageShare = function (params) {
+    var p = params[0];
+    return p.name + '：' + p.value + ' 页，占全站 ' + Math.round((p.value / 59) * 100) + '%';
+  };
+</script>
 
-## 创作检查清单 {#authoring-checklist}
+```echarts {height="300px"}
+tooltip:
+  trigger: axis
+  formatter: "$fn:pageShare"
+xAxis:
+  type: category
+  data: [简介, 快速上手, 创作内容, 组件, 定制站点, 维护管理]
+yAxis:
+  type: value
+series:
+  - type: bar
+    data: [4, 3, 8, 22, 15, 7]
+```
 
-- 在正文中说明图表的结论与数据范围。
-- 明确标注坐标轴、单位、序列和时间范围。
-- 不要把颜色作为区分重要数值的唯一方式。
-- 保证图例和提示在两种站点配色模式下都可读。
-- 在窄屏和长翻译标签下测试图表。
-- 多个序列共用同一批记录时优先使用共享 `dataset`。
-- 非示意性数据要记录来源与观察日期。
-- 动画无助于理解时不要使用，自定义效果要尊重减少动态偏好。
+鼠标悬停在任意一根柱子上，提示框里是该函数拼出的句子。名字未注册时该选项解析为 `undefined`，图按未设置该项绘制，构建与运行都不报错。脚本与围栏放在同一页的相邻位置，便于一起改动。
 
-## 延伸参考 {#further-reference}
+这段脚本属于站点代码，按代码审查对待。字符串模板（`{b}` `{c}` `{d}`）能表达的格式不写成函数。
 
-OINK 负责记录包装层与交付行为，完整选项 Schema 则以 Apache
-ECharts 为准。图表专用配置请查阅
-[ECharts 概念手册](https://echarts.apache.org/handbook/zh/concepts/chart-size/)、
-[数据集指南](https://echarts.apache.org/handbook/zh/concepts/dataset/)与
-[选项参考](https://echarts.apache.org/zh/option.html)。主题发行版随附的准确运行时版本与许可证记录在
-`VENDOR.json` 中。
+## 数据位置 {#data}
+围栏正文是字面量。Hugo 不在其中展开 shortcode、front matter 变量或 `data/` 目录里的文件，数字写在围栏里。代价是数据不能共享，收益是图表源码与数据一起进入 Git，diff 能看出改动了哪个数值。
+
+数据经常变动（版本矩阵、发布物清单）时不做成图：改用[表格](/zh/docs/components/table/)，或[发布与下载页](/zh/docs/write/releases/)中由 `data/` 驱动的组件。
+
+## 输出形态 {#outputs}
+
+| 输出 | 呈现 |
+| --- | --- |
+| HTML | `<div class="td-echarts">` 里一个画布容器加一段 `application/json` 选项，本地 ECharts 画图 |
+| 打印 | 不画图，输出 `<pre class="td-echarts-source">` 包着的围栏源码 |
+| Markdown | 原样保留 `echarts` 围栏与选项源码 |
+| RSS | 与打印相同，只有源码 |
+
+图上的结论要在正文里写一遍：打印与 RSS 输出里没有图。
+
+## 参数参考 {#reference}
+
+围栏属性行（```` ```echarts {…} ````）：
+
+| 参数 | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `height` | CSS 长度 | `400px` | 只接受非负数字加 `px` `rem` `em` `vh` `vw` `%`；其它写法构建失败 |
+| `theme` | string | 未设置 | 固定使用某个 ECharts 主题，从此不再跟随站点配色；内置只有 `dark` |
+| `full` | bool | `false` | `true` 去掉正文宽度限制，图铺满内容区 |
+| `class` | 空格分隔的 class | — | 透传给容器，交给站点 CSS |
+{.fields meta="type default"}
+
+`style`、`on*` 与其它未知属性都会让构建失败。围栏正文必须能解析成一个 YAML/JSON 映射，解析失败或解析成数组同样失败。选项键本身是 ECharts 的，以[官方选项手册](https://echarts.apache.org/zh/option.html)为准。
+
+没有站点级参数：ECharts 不需要在 `hugo.yml` 里开关，用到时才加载。
+
+## 限制与常见问题 {#limits}
+
+- 围栏里不能写 JavaScript：需要函数时通过 `$fn:` 桥接，未注册的名字解析为 `undefined`，没有报错。
+- 围栏不读外部数据：`data/` 目录、front matter 与 shortcode 都引用不到，数字写在围栏里。
+- 打印与 RSS 里只有源码，结论要写进正文。
+- YAML 的类型转换：分类轴上的 `10`、`9.6`、`on`、`yes` 会被解析成数字或布尔值，需要引号。
+- 颜色不是唯一的区分手段：多序列图同时区分线型或标记形状，两种配色模式下都要检查图例对比度。
+
+## 相关 {#related}
+
+- [Infographic](/zh/docs/components/infographic/) — 表达结构与顺序的信息图，不是统计图
+- [表格](/zh/docs/components/table/) — 数据少、需要精确读数时用表格
+- [Mermaid](/zh/docs/components/mermaid/) — 关系图与流程图
+- [代码块](/zh/docs/components/code/) — 围栏属性行的通用规则

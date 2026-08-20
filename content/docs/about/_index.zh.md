@@ -1,52 +1,64 @@
 ---
-title: 关于 Oink
-description: 了解 Oink 的示例、设计原则、架构与开源模式。
-type: docs
-aliases: [/about/, /docs/oink/]
-weight: 90
+title: OINK 是什么
+linkTitle: 简介
+description: 一款只需 Hugo Extended 的技术文档主题，从 Docsy 演化而来，组件写在 Markdown 里，资源随主题分发，十三个生产站点在用。
+weight: 10
 icon: fa-solid fa-circle-info
+search_keywords: [OINK, Hugo 主题, Docsy, 技术文档, 文档站, 本地优先, Markdown 原生, Hugo theme]
 cascade:
-  categories: [关于]
+  categories: [简介]
+aliases:
+  - /docs/about/contributing/
 ---
 
-OINK 把 Markdown、配置与本地资源转换成完整的技术文档站。站点取得主题源码并安装 Hugo
-Extended 后，无需维护前端工具链，即可构建文档、博客、多语言导航、本地搜索、图表、API 参考与可复用内容组件。
+OINK 是一款独立的 [Hugo](https://gohugo.io/) 主题，用于搭建中大型技术文档站。它从 [Docsy](https://github.com/google/docsy) 演化而来：保留 Docsy 的内容模型与多语言行为，替换外壳、导航、搜索与内容组件。
 
-## Oink 提供什么 {#what-oink-provides}
+消费站点的构建依赖只有一个 Hugo Extended 二进制，不需要 Node.js、npm 或 PostCSS，也不请求 CDN。Bootstrap、Font Awesome、字体、本地搜索、图表与 API 文档运行时都提交在主题仓库里，只在页面用到时下发。
 
-| 能力               | 主题契约                                                   |
-| ------------------ | ---------------------------------------------------------- |
-| 文档与博客布局     | 响应式导航、面包屑导航、目录、页面元数据、反馈、打印与索引 |
-| 多语言行为         | 译文路由、语言元数据、稳定锚点与分语言本地搜索             |
-| 本地优先浏览器功能 | 固定版本的样式、字体、搜索、图表、API 参考、录像与信息图   |
-| 内容组件           | 标签页、折叠块、步骤、卡片、轮播、图表、终端录像与参数替换 |
-| 可复现交付         | 仅依赖 Hugo 的消费端构建、固定资源、vendor 清单与回归样例  |
+组件不是另一套模板语言：`> [!NOTE]` 是提示块，表格加一行 `{.fields}` 是参数表，图片下面加 `{caption=}` 就有图注。当前有[十三个生产站点](/zh/docs/about/showcase/)在用它，本站是其中之一。
 
-OINK 把 Docsy 成熟的 Hugo 内容模型演化为独立主题，以 Hugo 作为构建平台，并从 Fumadocs 汲取设计灵感。[开源许可](license/)页面分别说明上游传承、设计致敬、依赖与许可证，避免混淆这些关系。
+![OINK 把 Markdown 内容、配置与本地资源汇成一个静态文档站](/images/hero-light.webp)
+{width="900" height="600" caption="一次 Hugo 构建，产出可直接托管的静态站点"}
 
-## 了解这个项目 {#explore-the-project}
+## 主题的职责 {#what-oink-provides}
+- 文档与博客外壳：导航、侧栏树、目录、面包屑、翻页、深色模式、打印视图与无障碍交互。
+- 多语言框架：译文路由、缺译回退、语言权重、RTL，以及 32 个界面语言包。
+- 本地运行时：Mermaid、KaTeX、Markmap、Swagger UI、Redoc、Asciinema、ECharts、Infographic 与本地全文检索。
+- 内容组件：提示块、标签页、步骤、卡片、参数表、文件树、画廊、徽章、按键等，多数有 Markdown 原生形态。
+- 内容类型：普通文档之外，还内置书籍编号与交叉引用、发布与下载页、数据驱动的 Landing 首页、OpenAPI 文档页。
 
-About 章节按照从评估到维护的顺序组织：
+主题不负责源码托管与部署：站点可以放在 GitHub、GitLab 或私有 Git 上，Hugo 生成的静态文件可用任何托管平台发布。站点自己的内容、品牌与业务组件仍归站点管理，主题只提供通用外壳与可复用组件。
 
-1. [示例站点](examples/)介绍完整双语项目站、主题自带的小型示例，以及创建最小消费站点的指南。
-2. [本地优先](local-first/)定义哪些构建与浏览器能力无需隐藏的网络访问。
-3. [架构](architecture/)解释仓库、构建、页面外壳、运行时与扩展边界。
-4. [贡献指南](contributing/)说明如何修改主题与双语文档。
-5. [开源许可](license/)说明项目渊源、依赖、致谢，以及站点与主题各自适用的许可证。
+## 适用范围 {#is-oink-for-me}
+| 这些情况适合 | 这些情况不适合 |
+| --- | --- |
+| 页面多、内容类型杂：文档、博客、书、发布页与 API 参考共处一个站点 | 只有一两页内容、不需要结构化导航；README 或更轻的 Hugo 主题更简单 |
+| 需要完整的多语言，而不是给英文站挂一个翻译入口 | 站点主体是应用界面而不是文档：可以用 OINK 承载文档部分，业务组件留在站点层 |
+| 对可复现构建与网络隔离有要求，构建机不能出网 | 需要在正文里写交互组件（React / MDX） |
+| 多个站点共享同一套外壳，不必复制布局与 shortcode | 想用一个开关换成另一套视觉：主题没有品牌开关，改外观要走 CSS token 与 partial 覆盖 |
+| 团队没有前端，也不维护 Node 工具链 | 需要主题内置内容管理后台或所见即所得编辑器 |
 
-## 仓库边界 {#repository-boundaries}
+## 与其它文档方案的差别 {#comparison}
 
-公开 Hugo Module 位于
-[`github.com/pgsty/oink`](https://github.com/pgsty/oink)。文档、示例与回归测试位于独立的
-[`github.com/pgsty/oink.pgsty.com`](https://github.com/pgsty/oink.pgsty.com)
-仓库。生产消费站点应固定已发布标签或不可变 commit。
+下表只列结构性差别，且只写能从各项目自身文档与仓库确认的部分。各项目的版本会变动，选型前以其当前文档为准。
 
-站点自有的内容、品牌、配置与业务组件仍由站点控制。通用布局、可复用组件、本地浏览器运行时与翻译资源则属于主题。
+| 维度 | OINK | Docsy | Hextra | Docusaurus |
+| --- | --- | --- | --- | --- |
+| 构建工具 | Hugo Extended，单个二进制 | Hugo Extended + Node/npm | Hugo | Node.js 工具链 |
+| 消费站点要不要 npm | 不要 | 要：Bootstrap 与 Font Awesome 从 `node_modules/` 挂载 | 不要 | 要 |
+| 前端资源从哪来 | 全部提交在主题仓库，`VENDOR.json` 记录版本、来源、许可与校验值 | 每页无条件加载 CDN 上的 jQuery；Mermaid、KaTeX 等还会在构建期请求 CDN | 预编译产物提交在仓库 | npm 依赖 |
+| 组件写法 | Markdown 原生属性与围栏为主，29 个 shortcode 兜底 | shortcode（19 个） | shortcode（29 个）为主，提示块有 `> [!NOTE]` 原生形态 | MDX（React 组件） |
+| 多语言 | Hugo 多语言 + 32 个界面语言包 | Hugo 多语言（OINK 的语言包由此继承） | Hugo 多语言 + 21 个界面语言包 | 内置 i18n 框架 |
+| 书籍编号与交叉引用 / 发布下载页 / 数据驱动落地页 | 主题内置 | 无 | 无 | 需自建或找插件 |
 
-## 从这里开始 {#start-here}
+两点补充。每页 Markdown 输出与 `llms.txt` 不是 OINK 独有的能力，Docsy 与 Hextra 也有，三者都要站点在 `outputs` 里显式打开。表格最后一行的三项只有 OINK 内置，它们来自 PGSTY 自己的生产站点，不是通用文档站的必需品。主题的交互功能默认关闭，搜索、缩放、评论与反馈都要站点显式打开。
 
-- [安装 Oink](/zh/docs/tutorial/install/)，或[创建双语站点](/zh/docs/tutorial/create-site/)；
-- 阅读[内容创作指南](/zh/docs/content/)与[高级特性](/zh/docs/advanced/)；
-- 阅读[实现日志](/zh/blog/oink/oink-implementation-diary/)，了解设计决策与验证证据。
+OINK 不是叠在 Docsy 上的皮肤，而是 fork 之后独立演化的主题。Docsy 的源码历史、Apache-2.0 义务与署名完整保留，细节见[开源许可与致谢](/zh/docs/about/license/)。
 
-本地构建成功，只能证明某份源码在某个本地环境中能够渲染；它不能证明主题标签已经公开，也不能证明线上站点包含同一 commit。
+## 入口 {#start-here}
+- [十分钟上手](/zh/docs/start/) — 安装 Hugo、克隆本站、替换站点信息、发布到 GitHub Pages。
+- [组件总览](/zh/docs/components/) — 一个组件一页，先源码后效果。
+- [示例站点](/zh/docs/about/showcase/) — 十三个生产站点，各自用了 OINK 的哪部分。
+{.cards}
+
+[亮点特性](/zh/docs/about/features/)按能力逐条列出主题提供的东西，每条链接到讲它的指南页。
