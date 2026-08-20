@@ -5,13 +5,13 @@ description: Repository assembly, configuration, diagnostics, output, performanc
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK architecture, repository boundary, runtime, output formats, security, accessibility, performance]
-contract_status: development-snapshot
+contract_status: released-v0.6.0
 ---
 
-> [!IMPORTANT] Development snapshot
-> This is the maintainer contract tracked on OINK `main` for the 0.6.0 draft,
-> not the v0.5.1 user manual. This page is the canonical English source; its
-> Chinese peer is maintained beside it in `content/docs/design/`.
+> [!IMPORTANT] OINK 0.6.0 contract
+> This is the architecture contract released with OINK 0.6.0. This page is the
+> canonical English source; its Chinese peer is maintained beside it in
+> `content/docs/design/`.
 
 ## Repository and assembly {#repository-and-assembly}
 

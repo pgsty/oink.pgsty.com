@@ -96,7 +96,7 @@ cannot be passed through; when you need them, write the content as an ordinary
 
 A fragment is page-level Markdown rendered in the current page's context:
 callouts, tables, lists, images, steps and shortcodes all work. The last line of
-the fragment above — "The current release is v0.5.1" — is its
+the fragment above — "The current release is v0.6.0" — is its
 `{{</* param version */>}}` expanded on this page.
 
 When two pages include one fragment, each renders it separately and each
