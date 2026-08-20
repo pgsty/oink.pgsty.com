@@ -7,6 +7,15 @@ const zhDocsPath = "/zh/docs/customize/config/";
 async function openPalette(page, path = docsPath, viewport = null) {
   if (viewport) await page.setViewportSize(viewport);
   await page.goto(path, { waitUntil: "domcontentloaded" });
+  // An auto-hidden navbar reveals on hover: park the pointer on its band
+  // first so the wake strip cannot swallow the opener's preflight hit
+  // check. Drawer widths render the band as display: contents (no box).
+  const autohide = page.locator("[data-td-navbar-autohide]");
+  const band = (await autohide.count()) ? await autohide.boundingBox() : null;
+  if (band) {
+    await page.mouse.move(band.x + band.width / 2, band.y + 8);
+    await page.waitForTimeout(250);
+  }
   await page.locator("[data-td-shell-search-open]:visible").first().click();
   const dialog = page.locator("#td-shell-search");
   const input = dialog.locator(".td-shell-search__input");

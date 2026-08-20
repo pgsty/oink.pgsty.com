@@ -224,38 +224,31 @@ test('homepage n, j, and k jump between landing sections while h hides page chro
   await expect(page.locator('[data-td-shell-footer]')).toBeHidden();
 });
 
-test('docs hide the global navbar while blog articles keep it', async ({
+test('docs and blog articles carry the auto-hidden navbar without a subnav', async ({
   page,
 }) => {
-  await page.goto('/docs/customize/config/', {
-    waitUntil: 'domcontentloaded',
-  });
-  await expect(page.locator('[data-td-header]')).toHaveCount(0);
-  await expect(page.locator('.td-shell-subnav')).toHaveCount(1);
-  await expect(page.locator('.td-shell-footline')).toHaveCount(1);
-  await expect(page.locator('#td-site-footer')).toHaveCount(0);
-
-  await page.goto('/blog/release/0.4.0/', {
-    waitUntil: 'domcontentloaded',
-  });
-  await expect(page.locator('[data-td-header]')).toHaveCount(1);
-  await expect(page.locator('.td-shell-subnav')).toHaveCount(0);
-  await expect(page.locator('.td-shell-footline')).toHaveCount(1);
-  await expect(page.locator('#td-site-footer')).toHaveCount(0);
+  for (const path of ['/docs/customize/config/', '/blog/release/0.4.0/']) {
+    await page.goto(path, { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('[data-td-header]')).toHaveCount(1);
+    await expect(page.locator('[data-td-navbar-autohide]')).toHaveCount(1);
+    await expect(page.locator('.td-shell-subnav')).toHaveCount(0);
+    await expect(page.locator('.td-shell-footline')).toHaveCount(1);
+    await expect(page.locator('#td-site-footer')).toHaveCount(0);
+  }
 });
 
-test('the narrowest tier forces the navbar-off mobile bar to stay visible', async ({
+test('the narrowest tier keeps the navbar visible even in zen', async ({
   page,
 }) => {
   await openDocs(page, { width: 479, height: 844 });
-  const header = page.locator('.td-shell-subnav');
-  await expect(page.locator('[data-td-header]')).toHaveCount(0);
+  const header = page.locator('.td-site-header');
+  await expect(page.locator('.td-shell-subnav')).toHaveCount(0);
   await expect(header).toBeVisible();
   await expect(header).toHaveCSS('position', 'sticky');
 
   const [bar, menu] = await Promise.all([
     header.boundingBox(),
-    header.locator('.td-shell-subnav__menu').boundingBox(),
+    header.locator('.td-nav-menu-zone').boundingBox(),
   ]);
   expect(bar).not.toBeNull();
   expect(menu).not.toBeNull();
@@ -263,10 +256,12 @@ test('the narrowest tier forces the navbar-off mobile bar to stay visible', asyn
     Math.abs(menu.x + menu.width / 2 - (bar.x + bar.width / 2)),
   ).toBeLessThanOrEqual(1);
 
+  // The drawer-width tier is the final authority: a persisted keyboard zen
+  // state must not remove the only always-visible navigation surface.
   await page.evaluate(() => sessionStorage.setItem('td-kbd-zen', '1'));
   await page.reload({ waitUntil: 'domcontentloaded' });
   await expect(page.locator('html')).toHaveAttribute('data-td-kbd-zen', '');
-  await expect(page.locator('.td-shell-subnav')).toBeVisible();
+  await expect(header).toBeVisible();
 });
 
 test('collapsed rail restore buttons align with the article topline', async ({

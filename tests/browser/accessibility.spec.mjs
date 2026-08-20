@@ -109,6 +109,15 @@ test.describe('WCAG AA contract', () => {
         failures.push(`${path}: HTTP ${response?.status() || 'no response'}`);
         continue;
       }
+      // The markmap runtime fades labels in through a d3 transition; scanning
+      // mid-fade reads a blended foreground and reports phantom contrast
+      // failures. Wait for the rendered tree, then let the fade finish.
+      if (await page.locator('.language-markmap').count()) {
+        await page
+          .waitForSelector('svg foreignObject', { timeout: 5000 })
+          .catch(() => {});
+        await page.waitForTimeout(800);
+      }
       const { violations } = await scan(page);
       if (violations.length) {
         failures.push(`${path}\n${describeViolations(path, violations)}`);

@@ -22,11 +22,19 @@ for (const width of widths) {
     const subnav = page.locator('.td-shell-subnav');
     const utilityDock = page.locator('.td-shell-footline__right');
 
-    await expect(page.locator('.td-site-header')).toHaveCount(0);
+    // Content pages carry the auto-hidden navbar: its sticky band keeps the
+    // slot at fine-pointer widths while the bar itself rests fully faded,
+    // and drawer widths keep the ordinary visible navbar.
+    const header = page.locator('.td-site-header');
+    await expect(page.locator('[data-td-navbar-autohide]')).toHaveCount(1);
+    await expect(header).toHaveCount(1);
+    await expect(header).toHaveCSS('opacity', width < 768 ? '1' : '0');
     await expect(page.locator('.td-shell-sidebar__footer')).toHaveCount(0);
+    // Navbar-on pages never render the phone subnav; the navbar itself
+    // carries the drawer opener below md.
+    await expect(subnav).toHaveCount(0);
 
     if (width < 768) {
-      await expect(subnav).toBeVisible();
       await page.locator('[data-td-shell-drawer-open]:visible').click();
       await expect(page.locator('html')).toHaveAttribute(
         'data-td-shell-drawer',
@@ -40,11 +48,9 @@ for (const width of widths) {
         'open',
       );
     } else if (width < 1200) {
-      await expect(subnav).toBeHidden();
       await expect(page.locator('.td-shell-sidebar__panel')).toBeVisible();
       await expect(toc).toBeHidden();
     } else {
-      await expect(subnav).toBeHidden();
       await expect(toc).toBeVisible();
       await expect(toc.locator('.td-shell-toc__actions')).toHaveCount(0);
       await expect(
@@ -272,15 +278,21 @@ test('desktop and mobile search actions immediately precede their navigation con
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload({ waitUntil: 'domcontentloaded' });
-  const mobileSearch = page.locator(
-    '.td-shell-subnav__actions > [data-td-shell-search-open]',
+  // Navbar-on pages have no phone subnav: the navbar's search box leads the
+  // end edge and the shell drawer opener sits immediately after it.
+  const mobileSearch = page.locator('.td-nav-util-zone > .td-nav-search-box');
+  const drawerOpen = page.locator(
+    '.td-nav-util-zone > [data-td-shell-drawer-open]',
   );
   await expect(mobileSearch).toBeVisible();
-  expect(
-    await mobileSearch.evaluate((button) =>
-      button.nextElementSibling?.matches('[data-td-shell-drawer-open]'),
-    ),
-  ).toBe(true);
+  await expect(drawerOpen).toBeVisible();
+  const [searchBox, openBox] = await Promise.all([
+    mobileSearch.boundingBox(),
+    drawerOpen.boundingBox(),
+  ]);
+  expect(searchBox).not.toBeNull();
+  expect(openBox).not.toBeNull();
+  expect(openBox.x).toBeGreaterThan(searchBox.x + searchBox.width - 1);
   await mobileSearch.click();
   await expect(page.locator('#td-shell-search')).toBeVisible();
 });
@@ -546,7 +558,11 @@ for (const [locale, path, query] of [
     await page.setViewportSize({ width: 820, height: 900 });
     await openCleanPage(page, path);
 
-    await page.locator('[data-td-shell-search-open]:visible').first().click();
+    // Target the sidebar's opener: the auto-hidden navbar also carries one,
+    // and its resting band would swallow a blind first-visible click.
+    await page
+      .locator('.td-shell-sidebar__brand-row > [data-td-shell-search-open]')
+      .click();
     const input = page.locator('.td-shell-search__input');
     await expect(input).toHaveAttribute('role', 'combobox');
     await expect(input).toHaveAttribute('aria-expanded', 'true');
