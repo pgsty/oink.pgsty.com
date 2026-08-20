@@ -3,7 +3,7 @@ title: PIG
 description: A compact bilingual product manual with a data-driven home page and an active companion blog.
 weight: 100
 search_keywords: [pig.pgsty.com, PIG, package manager, compact documentation]
-tags: [Documentation, Bilingual, Product]
+tags: [Docs, Bilingual, Product]
 ---
 
 [pig.pgsty.com](https://pig.pgsty.com/) documents PIG, the PostgreSQL extension
@@ -20,4 +20,4 @@ explanations. The home page is assembled from `data/home`.
 Choose this pattern when the reference manual is small and stable but product
 news, tutorials, and release context need room to grow.
 
-→ [Documentation structure](/docs/start/anatomy/) · [All OINK cases](/case/)
+→ [Docs structure](/docs/start/anatomy/) · [All OINK cases](/case/)

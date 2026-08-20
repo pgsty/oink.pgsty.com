@@ -3,7 +3,7 @@ title: pgsql.cc
 description: An aggregate PostgreSQL operations library with independently evolving English and Chinese coverage.
 weight: 40
 search_keywords: [pgsql.cc, PostgreSQL operations, aggregate documentation, partial translation]
-tags: [Documentation, Multilingual, Aggregation]
+tags: [Docs, Multilingual, Aggregation]
 ---
 
 [pgsql.cc](https://pgsql.cc/) brings the operating manuals for Patroni, HAProxy,

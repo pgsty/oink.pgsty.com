@@ -3,7 +3,7 @@ title: SOW
 description: Bilingual repository-manager documentation with a release-data-powered download surface.
 weight: 90
 search_keywords: [sow.pgsty.com, SOW, APT, YUM, download page]
-tags: [Documentation, Bilingual, Downloads]
+tags: [Docs, Bilingual, Downloads]
 ---
 
 [sow.pgsty.com](https://sow.pgsty.com/) documents SOW, an APT and YUM repository

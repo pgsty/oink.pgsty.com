@@ -3,7 +3,7 @@ title: SILO
 description: A large bilingual migration whose generated navigation preserves the structure of hundreds of upstream pages.
 weight: 80
 search_keywords: [silo.pgsty.com, SILO, migration, generated navigation, S3]
-tags: [Documentation, Bilingual, Migration]
+tags: [Docs, Bilingual, Migration]
 ---
 
 [silo.pgsty.com](https://silo.pgsty.com/) documents SILO, an S3-compatible

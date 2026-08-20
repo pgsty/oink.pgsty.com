@@ -3,7 +3,7 @@ title: pgsty.pro
 description: A bilingual Pigsty v5 documentation and release archive built around reusable release cards.
 weight: 110
 search_keywords: [pgsty.pro, Pigsty v5, release archive, release card]
-tags: [Documentation, Bilingual, Releases]
+tags: [Docs, Bilingual, Releases]
 ---
 
 [pgsty.pro](https://pgsty.pro/) documents Pigsty v5 in English and Chinese. The

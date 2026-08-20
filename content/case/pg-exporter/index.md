@@ -3,7 +3,7 @@ title: PG Exporter
 description: A bilingual metrics manual combining generated navigation, structured catalogues, and system typography.
 weight: 70
 search_keywords: [exp.pgsty.com, PG Exporter, metrics catalogue, system typography]
-tags: [Documentation, Bilingual, Data driven]
+tags: [Docs, Bilingual, Data driven]
 ---
 
 [exp.pgsty.com](https://exp.pgsty.com/) documents PG Exporter, a Prometheus

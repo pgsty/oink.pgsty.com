@@ -3,7 +3,7 @@ title: pigsty.cc
 description: A Chinese-first Pigsty site that keeps a very large translation corpus independent from its English peer.
 weight: 120
 search_keywords: [pigsty.cc, Chinese documentation, separate language sites, alt site]
-tags: [Documentation, Chinese, Large site]
+tags: [Docs, Chinese, Large site]
 ---
 
 [pigsty.cc](https://pigsty.cc/) publishes Pigsty in Simplified Chinese. The case
