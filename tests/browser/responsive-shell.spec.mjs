@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const docPath = '/docs/configure/overview/';
+const docPath = '/docs/customize/config/';
 const widths = [360, 768, 820, 1024, 1200, 1440];
 
 async function openCleanPage(page, path = docPath) {
@@ -20,9 +20,10 @@ for (const width of widths) {
     const context = page.locator('[data-td-page-context]');
     const toc = page.locator('.td-shell-toc__panel');
     const subnav = page.locator('.td-shell-subnav');
-    const utilityDock = page.locator('.td-shell-sidebar__footer');
+    const utilityDock = page.locator('.td-shell-footline__right');
 
-    await expect(page.locator('.landing-header')).toHaveCount(0);
+    await expect(page.locator('.td-site-header')).toHaveCount(0);
+    await expect(page.locator('.td-shell-sidebar__footer')).toHaveCount(0);
 
     if (width < 768) {
       await expect(subnav).toBeVisible();
@@ -33,10 +34,6 @@ for (const width of widths) {
       );
       await expect(page.locator('.td-shell-sidebar__panel')).toBeInViewport();
       await expect(toc).toBeHidden();
-      await expect(utilityDock.locator('.td-language-selector')).toBeVisible();
-      await expect(utilityDock.locator('.td-shell-keyboard')).toBeVisible();
-      await expect(utilityDock.locator('[data-td-theme-toggle]')).toBeVisible();
-      await expect(utilityDock.locator('a[aria-label="GitHub"]')).toBeVisible();
       await page.locator('button[data-td-shell-drawer-close]:visible').click();
       await expect(page.locator('html')).not.toHaveAttribute(
         'data-td-shell-drawer',
@@ -49,14 +46,29 @@ for (const width of widths) {
     } else {
       await expect(subnav).toBeHidden();
       await expect(toc).toBeVisible();
+      await expect(toc.locator('.td-shell-toc__actions')).toHaveCount(0);
+      await expect(
+        toc.locator(
+          '.td-language-selector, [data-td-theme-toggle], a[aria-label="GitHub"]',
+        ),
+      ).toHaveCount(0);
+
+      const [breadcrumbBox, tocHeadingBox] = await Promise.all([
+        page.locator('.td-breadcrumbs').boundingBox(),
+        toc.locator('.td-shell-aside-group--toc').boundingBox(),
+      ]);
+      expect(breadcrumbBox).not.toBeNull();
+      expect(tocHeadingBox).not.toBeNull();
+      expect(Math.abs(breadcrumbBox.y - tocHeadingBox.y)).toBeLessThanOrEqual(
+        1,
+      );
     }
 
-    if (width >= 768) {
-      await expect(utilityDock.locator('.td-language-selector')).toBeVisible();
-      await expect(utilityDock.locator('.td-shell-keyboard')).toBeVisible();
-      await expect(utilityDock.locator('[data-td-theme-toggle]')).toBeVisible();
-      await expect(utilityDock.locator('a[aria-label="GitHub"]')).toBeVisible();
-    }
+    await expect(utilityDock.locator('.td-version-menu--icon-only')).toBeVisible();
+    await expect(utilityDock.locator('.td-language-selector')).toBeVisible();
+    await expect(utilityDock.locator('.td-shell-keyboard')).toBeVisible();
+    await expect(utilityDock.locator('[data-td-theme-toggle]')).toBeVisible();
+    await expect(utilityDock.locator('a[aria-label="GitHub"]')).toHaveCount(0);
 
     const actionsToggle = page.locator('[data-td-page-actions-toggle]:visible');
     await expect(actionsToggle).toBeVisible();
@@ -68,11 +80,37 @@ for (const width of widths) {
   });
 }
 
-for (const [locale, path, docsLabel, docsHref, blogHref] of [
-  ['en', docPath, 'Docs', '/docs/', '/blog/'],
-  ['zh', '/zh/docs/configure/overview/', '文档', '/zh/docs/', '/zh/blog/'],
+for (const [locale, path, labels] of [
+  ['en', '/', ['Docs', 'Book', 'Case', 'Blog']],
+  ['zh', '/zh/', ['文档', '教程', '案例', '博客']],
 ]) {
-  test(`${locale} root switcher keeps the active docs and blog roots`, async ({
+  test(`${locale} homepage navbar contains the four content roots`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await openCleanPage(page, path);
+
+    const roots = page.locator(
+      '.td-nav-menu-zone > .td-nav-menu > .td-nav-menu__parent-link, .td-nav-menu-zone > .nav-link',
+    );
+    await expect(roots).toHaveText(labels);
+    // The homepage keeps one visible link tree at every width; only explicit
+    // non-home Landing layouts render the separate drawer entry.
+    await expect(page.locator('[data-td-landing-menu-toggle]')).toHaveCount(0);
+    await expect(page.locator('[data-td-landing-menu]')).toHaveCount(0);
+  });
+}
+
+for (const [locale, path, docsLabel, rootHrefs] of [
+  ['en', docPath, 'Docs', ['/docs/', '/book/', '/case/', '/blog/']],
+  [
+    'zh',
+    '/zh/docs/customize/config/',
+    '文档',
+    ['/zh/docs/', '/zh/book/', '/zh/case/', '/zh/blog/'],
+  ],
+]) {
+  test(`${locale} root switcher keeps all content roots`, async ({
     page,
   }) => {
     await page.setViewportSize({ width: 820, height: 900 });
@@ -84,11 +122,13 @@ for (const [locale, path, docsLabel, docsHref, blogHref] of [
     await trigger.click();
     await expect(trigger).toHaveAttribute('aria-expanded', 'true');
     await expect(
-      page.locator(`.td-shell-root__item[href="${docsHref}"]`),
+      page.locator(`.td-shell-root__item[href="${rootHrefs[0]}"]`),
     ).toHaveClass(/is-active/);
-    await expect(
-      page.locator(`.td-shell-root__item[href="${blogHref}"]`),
-    ).toHaveCount(1);
+    for (const href of rootHrefs) {
+      await expect(
+        page.locator(`.td-shell-root__item[href="${href}"]`),
+      ).toHaveCount(1);
+    }
   });
 }
 
@@ -101,7 +141,7 @@ test('desktop navbar opens a parent panel on focus without replacing its link', 
   const menu = page.locator('[data-td-navbar-menu]').filter({
     has: page.locator('[data-td-navbar-label="Docs"]'),
   });
-  const parent = menu.locator('.nav-menu__parent-link');
+  const parent = menu.locator('.td-nav-menu__parent-link');
   const panel = menu.locator('[data-td-navbar-panel]');
   await expect(parent).toHaveAttribute('href', '/docs/');
   await expect(parent).toHaveAttribute('aria-expanded', 'false');
@@ -118,61 +158,74 @@ test('desktop navbar opens a parent panel on focus without replacing its link', 
   await expect(panel.locator('a').first()).toBeFocused();
   await expect(
     panel.locator('.td-navbar-entry__description').first(),
-  ).toHaveText(/first documentation site/);
+  ).toHaveText(/What OINK is, highlights, showcase/);
 
   await page.keyboard.press('Escape');
   await expect(panel).toBeHidden();
   await expect(parent).toBeFocused();
 
-  const github = page.locator('.nav-github[aria-label="GitHub"]');
+  const github = page.locator('.td-nav-github[aria-label="GitHub"]');
   await expect(github).toHaveAttribute('href', 'https://github.com/pgsty/oink');
   await expect(github).toHaveAttribute('target', '_blank');
   await expect(github).toHaveAttribute('rel', 'noopener noreferrer');
 });
 
-test('compact navbar keeps the same named root links without a second menu', async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await openCleanPage(page, '/');
-  await expect(page.locator('[data-mobile-menu]')).toHaveCount(0);
-  await expect(page.locator('[data-menu-toggle]')).toHaveCount(0);
+for (const [locale, path, roots] of [
+  [
+    'en',
+    '/',
+    [
+      ['Docs', '/docs/'],
+      ['Book', '/book/'],
+      ['Case', '/case/'],
+      ['Blog', '/blog/'],
+    ],
+  ],
+  [
+    'zh',
+    '/zh/',
+    [
+      ['文档', '/zh/docs/'],
+      ['教程', '/zh/book/'],
+      ['案例', '/zh/case/'],
+      ['博客', '/zh/blog/'],
+    ],
+  ],
+]) {
+  test(`${locale} phone navbar keeps its centered link tree`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await openCleanPage(page, path);
 
-  for (const [label, href] of [
-    ['Docs', '/docs/'],
-    ['Blog', '/blog/'],
-  ]) {
-    const link = page
-      .locator(
-        `[data-td-navbar-region="desktop"][data-td-navbar-label="${label}"]`,
-      )
-      .first();
-    await expect(link).toBeVisible();
-    await expect(link).toHaveAttribute('aria-label', label);
-    await expect(link).toHaveAttribute('href', href);
-  }
-  await expect(page.locator('[data-td-navbar-region="mobile"]')).toHaveCount(0);
-  await expect(
-    page.locator('[data-td-shell-search-open]:visible'),
-  ).toBeVisible();
-  await expect(
-    page.locator('.nav-util-zone [data-td-theme-toggle]'),
-  ).toBeHidden();
-  await expect(
-    page.locator('.nav-util-zone [hreflang="zh-CN"]').first(),
-  ).toBeHidden();
-  await expect(page.locator('.nav-util-zone .nav-github')).toBeHidden();
+    const menuZone = page.locator('.td-nav-menu-zone');
+    const search = page.locator('.td-nav-util-zone > .td-nav-search-box');
+    await expect(menuZone).toBeVisible();
+    await expect(search).toBeVisible();
+    // No drawer on the homepage: the link tree itself stays reachable as
+    // icon-only entries between the brand and the end-edge search action.
+    await expect(page.locator('[data-td-landing-menu-toggle]')).toHaveCount(0);
+    await expect(page.locator('[data-td-landing-menu]')).toHaveCount(0);
 
-  const [bar, menu] = await Promise.all([
-    page.locator('.landing-nav').boundingBox(),
-    page.locator('.nav-menu-zone').boundingBox(),
-  ]);
-  expect(bar).not.toBeNull();
-  expect(menu).not.toBeNull();
-  expect(
-    Math.abs(menu.x + menu.width / 2 - (bar.x + bar.width / 2)),
-  ).toBeLessThanOrEqual(1);
-});
+    for (const [label, href] of roots) {
+      const link = page.locator(
+        `.td-nav-menu-zone > .td-nav-menu > .td-nav-menu__parent-link[href="${href}"], ` +
+          `.td-nav-menu-zone > .nav-link[href="${href}"]`,
+      );
+      await expect(link).toBeVisible();
+      await expect(link).toHaveAttribute('aria-label', label);
+      await expect(link.locator('.td-navbar-entry__label')).toBeHidden();
+    }
+
+    const [searchBox, zoneBox] = await Promise.all([
+      search.boundingBox(),
+      menuZone.boundingBox(),
+    ]);
+    expect(searchBox).not.toBeNull();
+    expect(zoneBox).not.toBeNull();
+    expect(searchBox.x).toBeGreaterThan(zoneBox.x + zoneBox.width - 1);
+  });
+}
 
 test('desktop and mobile search actions immediately precede their navigation controls', async ({
   page,
@@ -208,32 +261,138 @@ test('desktop and mobile search actions immediately precede their navigation con
   await expect(page.locator('#td-shell-search')).toBeVisible();
 });
 
-test('shortcut help uses KBD keycaps on desktop and in the mobile drawer', async ({
+for (const [locale, path] of [
+  ['en', docPath],
+  ['zh', '/zh/docs/customize/config/'],
+]) {
+  for (const theme of ['light', 'dark']) {
+    test(`${locale} ${theme} shortcut help stays compact on desktop and phone`, async ({
+      page,
+    }) => {
+      await page.addInitScript((colorTheme) => {
+        localStorage.setItem('td-color-theme', colorTheme);
+      }, theme);
+
+      for (const width of [1280, 360]) {
+        await page.setViewportSize({ width, height: 900 });
+        await openCleanPage(page, path);
+        await expect(page.locator('html')).toHaveAttribute('data-bs-theme', theme);
+
+        const trigger = page.locator('.td-shell-keyboard__trigger');
+        const help = page.locator('.td-shell-keyboard-help');
+        await trigger.scrollIntoViewIfNeeded();
+        if (width >= 768) await trigger.hover();
+        else await trigger.click();
+        await expect(help).toBeVisible();
+        await expect(help.locator('.td-kbd-sequence kbd')).not.toHaveCount(0);
+        await expect(help.locator('pre, code')).toHaveCount(0);
+
+        const box = await help.boundingBox();
+        expect(box).not.toBeNull();
+        expect(box.width).toBeLessThanOrEqual(336.5);
+        expect(box.x).toBeGreaterThanOrEqual(0);
+        expect(box.x + box.width).toBeLessThanOrEqual(width + 0.5);
+        expect(
+          await page.evaluate(() => document.documentElement.scrollWidth),
+        ).toBeLessThanOrEqual(width);
+        if (width === 360) {
+          const dockBox = await page
+            .locator('.td-shell-footline__right')
+            .boundingBox();
+          expect(dockBox).not.toBeNull();
+          expect(
+            Math.abs(dockBox.x + dockBox.width - (width - 16)),
+          ).toBeLessThanOrEqual(1);
+        }
+      }
+    });
+  }
+}
+
+test('bottom bar utilities keep their order and open upward', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await openCleanPage(page, '/');
+
+  const dock = page.locator('.td-shell-footline__right');
+  await dock.scrollIntoViewIfNeeded();
+  await expect(page.locator('.td-shell-sidebar__footer')).toHaveCount(0);
+  await expect(dock.locator('a[aria-label="GitHub"]')).toHaveCount(0);
+  await expect(dock.locator('.td-version-menu__title-text')).toHaveCount(0);
+
+  expect(
+    await dock.evaluate((element) =>
+      Array.from(element.children).map((child) => {
+        if (child.classList.contains('td-shell-footline__version')) return 'version';
+        if (child.classList.contains('td-language-selector')) return 'language';
+        if (child.classList.contains('td-shell-footline__theme')) return 'theme';
+        if (child.classList.contains('td-shell-keyboard')) return 'help';
+        if (child.classList.contains('td-shell-footline__toggle')) return 'collapse';
+        return 'unknown';
+      }),
+    ),
+  ).toEqual(['version', 'language', 'theme', 'help', 'collapse']);
+
+  for (const [triggerSelector, menuSelector] of [
+    ['.td-version-menu__title', '.td-version-menu .dropdown-menu'],
+    ['.td-language-selector__trigger', '.td-language-selector > ul'],
+    ['[data-td-theme-toggle]', '.td-shell-footline__theme .td-nav-hover-menu__pop'],
+    ['.td-shell-keyboard__trigger', '.td-shell-keyboard-help'],
+  ]) {
+    const trigger = dock.locator(triggerSelector);
+    const menu = dock.locator(menuSelector);
+    await trigger.hover();
+    await expect(menu).toBeVisible();
+    const [triggerBox, menuBox] = await Promise.all([
+      trigger.boundingBox(),
+      menu.boundingBox(),
+    ]);
+    expect(triggerBox).not.toBeNull();
+    expect(menuBox).not.toBeNull();
+    expect(menuBox.y + menuBox.height).toBeLessThanOrEqual(triggerBox.y + 1);
+  }
+});
+
+test('page-end feedback and metadata use the compact prose presentation', async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 1280, height: 900 });
-  await openCleanPage(page);
-  const trigger = page.locator('.td-shell-keyboard__trigger');
-  const help = page.locator('.td-shell-keyboard-help');
-  await trigger.hover();
-  await expect(help).toBeVisible();
-  await expect(help.locator('.td-kbd-sequence kbd')).not.toHaveCount(0);
-  await expect(help.locator('pre, code')).toHaveCount(0);
-  expect(
-    await trigger.evaluate((button) =>
-      button
-        .closest('.td-shell-keyboard')
-        ?.nextElementSibling?.classList.contains('td-shell-sidebar__theme'),
-    ),
-  ).toBe(true);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  // The docs cascade sets feedback: false; this page opts back in.
+  await openCleanPage(page, '/docs/customize/repository/');
 
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.reload({ waitUntil: 'domcontentloaded' });
-  await page.locator('[data-td-shell-drawer-open]:visible').click();
-  await page
-    .locator('.td-shell-keyboard__trigger')
-    .evaluate((button) => button.click());
-  await expect(page.locator('.td-shell-keyboard-help')).toBeVisible();
+  const feedback = page.locator('.td-feedback');
+  await expect(feedback.locator('.td-feedback__choice')).toHaveText([
+    'Yes',
+    'No',
+  ]);
+  await expect(feedback).toHaveCSS('border-bottom-style', 'none');
+  await expect(feedback.locator('.td-feedback__prompt')).toHaveCSS(
+    'flex-wrap',
+    'nowrap',
+  );
+  await expect(feedback.locator('.td-feedback__question')).toHaveCSS(
+    'margin-top',
+    '0px',
+  );
+  await expect(feedback.locator('.td-feedback__question')).toHaveCSS(
+    'border-bottom-style',
+    'none',
+  );
+
+  // Annotation omits its wrapper when there is no fact to report. Probe it on
+  // a tracked page with Git metadata instead of coupling this test to whether
+  // the newly migrated repository guide has already been committed.
+  await openCleanPage(page, '/docs/components/badge/');
+  const proseFont = await page
+    .locator('.td-content')
+    .evaluate((element) => getComputedStyle(element).fontFamily);
+  await expect(page.locator('.td-page-annotation')).toHaveCSS(
+    'font-family',
+    proseFont,
+  );
+  await expect(page.locator('.td-pager__summary')).toHaveCount(0);
+  for (const link of await page.locator('.td-pager__link').all()) {
+    await expect(link).toHaveCSS('font-family', proseFont);
+  }
 });
 
 test('page actions are complete and keyboard operable', async ({ page }) => {
@@ -311,7 +470,7 @@ test('page actions are complete and keyboard operable', async ({ page }) => {
 
 test('page actions localize AI labels and prompts', async ({ page }) => {
   await page.setViewportSize({ width: 820, height: 900 });
-  await openCleanPage(page, '/zh/docs/configure/overview/');
+  await openCleanPage(page, '/zh/docs/customize/config/');
 
   const actionsToggle = page.locator('[data-td-page-actions-toggle]:visible');
   await actionsToggle.click();
@@ -355,7 +514,7 @@ test('sidebar sections use a semantic keyboard toggle', async ({ page }) => {
 
 for (const [locale, path, query] of [
   ['en', docPath, 'OINK'],
-  ['zh', '/zh/docs/configure/overview/', '配置'],
+  ['zh', '/zh/docs/customize/config/', '配置'],
 ]) {
   test(`${locale} search exposes listbox state and keeps the page result cap`, async ({
     page,
@@ -401,7 +560,7 @@ for (const [locale, path, query] of [
 
 test('print media produces a clean document surface', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await openCleanPage(page, '/docs/about/local-first/');
+  await openCleanPage(page, '/docs/components/code/');
   await page.emulateMedia({ media: 'print' });
 
   await expect(page.locator('[data-td-page-context]')).toBeHidden();

@@ -4,12 +4,7 @@ description:
   A strict SHA-256 table with individual and whole-list copy controls.
 weight: 30
 outputs: [HTML, markdown]
-release:
-  product: oink
-  version: 0.4.0
-  repo: pgsty/oink
-  date: 2026-08-14
-  prev: 0.3.0
+release_url: https://github.com/pgsty/oink/releases/tag/v0.4.0
 ---
 
 {{< release-assets group="auto" >}}

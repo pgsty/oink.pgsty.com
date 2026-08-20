@@ -17,7 +17,7 @@ const siteDir = fileURLToPath(new URL('../../', import.meta.url));
 const publicDir = path.join(siteDir, 'public');
 const moduleWorkspace = path.join(siteDir, 'go.work');
 
-function runHugo(contentDir, destination) {
+function runHugo(contentDir, destination, { panicOnWarning = false } = {}) {
   const overlayConfig = path.join(
     path.dirname(contentDir),
     'content-mount.yml',
@@ -31,22 +31,24 @@ function runHugo(contentDir, destination) {
       sites: { matrix: { languages: [en, zh] } }
 `,
   );
+  const args = [
+    '--source',
+    siteDir,
+    '--config',
+    `${path.join(siteDir, 'hugo.yml')},${overlayConfig}`,
+    '--destination',
+    destination,
+    '--baseURL',
+    'http://localhost',
+    '--cleanDestinationDir',
+    '--logLevel',
+    'warn',
+    '--noBuildLock',
+  ];
+  if (panicOnWarning) args.push('--panicOnWarning');
   return spawnSync(
     'hugo',
-    [
-      '--source',
-      siteDir,
-      '--config',
-      `${path.join(siteDir, 'hugo.yml')},${overlayConfig}`,
-      '--destination',
-      destination,
-      '--baseURL',
-      'http://localhost',
-      '--cleanDestinationDir',
-      '--logLevel',
-      'warn',
-      '--noBuildLock',
-    ],
+    args,
     {
       cwd: siteDir,
       encoding: 'utf8',
@@ -61,63 +63,29 @@ function runHugo(contentDir, destination) {
 }
 
 test('bilingual component docs publish semantic HTML and Markdown fallbacks', () => {
-  for (const fixture of [
-    {
-      prefix: '',
-      heading: 'Everyday writing',
-      entry: 'Page bundles and templates',
-      caption: 'A global image resource with known intrinsic dimensions.',
-      linkedAlt: 'Linked OINK image remains a link',
-    },
-    {
-      prefix: 'zh',
-      heading: '日常写作',
-      entry: '页面包与模板',
-      caption: '具有已知固有尺寸的全局图片资源。',
-      linkedAlt: '带链接的 OINK 图片仍然保持链接',
-    },
-  ]) {
-    const root = path.join(publicDir, fixture.prefix);
+  // The docs tree is content/docs (formerly docs2). The English tree is a
+  // placeholder copy of the Chinese pages until translation lands, so the
+  // fixture asserts structure and shared strings rather than per-language prose.
+  for (const prefix of ['', 'zh']) {
+    const root = path.join(publicDir, prefix);
     const components = path.join(root, 'docs', 'components');
-    const overview = readFileSync(path.join(components, 'index.html'), 'utf8');
-    const badgeHTML = readFileSync(
-      path.join(components, 'badge', 'index.html'),
-      'utf8',
-    );
-    const kbdHTML = readFileSync(
-      path.join(components, 'kbd', 'index.html'),
-      'utf8',
-    );
-    const fieldsHTML = readFileSync(
-      path.join(components, 'fields', 'index.html'),
-      'utf8',
-    );
-    const fileTreeHTML = readFileSync(
-      path.join(components, 'filetree', 'index.html'),
-      'utf8',
-    );
-    const imageZoomHTML = readFileSync(
-      path.join(components, 'image-zoom', 'index.html'),
-      'utf8',
-    );
-    const galleryHTML = readFileSync(
-      path.join(components, 'gallery', 'index.html'),
-      'utf8',
-    );
+    const read = (...parts) => readFileSync(path.join(components, ...parts), 'utf8');
+    const overview = read('index.html');
+    const badgeHTML = read('badge', 'index.html');
+    const kbdHTML = read('kbd', 'index.html');
+    const fieldsHTML = read('fields', 'index.html');
+    const fileTreeHTML = read('filetree', 'index.html');
+    const imageHTML = read('image', 'index.html');
+    const galleryHTML = read('gallery', 'index.html');
     const print = readFileSync(
       path.join(root, '_print', 'docs', 'index.html'),
       'utf8',
     );
 
-    assert.match(overview, new RegExp(`<h2 id="everyday">${fixture.heading}`));
-    for (const pageName of [
-      'badge',
-      'kbd',
-      'fields',
-      'filetree',
-      'image-zoom',
-      'gallery',
-    ]) {
+    // Overview: the two-forms rule, the cheat sheet, and one link per component.
+    assert.match(overview, /<h2 id="two-forms">/);
+    assert.match(overview, /<h2 id="cheatsheet">/);
+    for (const pageName of ['callout', 'image', 'code', 'tabs', 'table', 'fields', 'steps', 'cards', 'filetree', 'gallery', 'badge', 'kbd']) {
       assert.match(
         overview,
         new RegExp(`href="/(?:zh/)?docs/components/${pageName}/"`),
@@ -127,93 +95,64 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
     assert.match(kbdHTML, /<span class="td-kbd-sequence"><kbd>Ctrl<\/kbd>/);
     assert.match(fieldsHTML, /<dl class="td-fields__list"/);
     // FileTree is the ```filetree fence: a td-filetree panel with a title bar,
-    // native <details> directories, an aligned comment column and no tree role.
+    // native <details> directories (open by default, {open=false} closed) and
+    // a comment-less plain variant; no tree role and no legacy list marker.
     assert.doesNotMatch(fileTreeHTML, /role="tree"|<ul class="filetree">/);
-    const fileTree = fileTreeHTML.match(
-      /<div class="td-filetree" style="--td-filetree-name-col:[\s\S]*?<\/ul><\/div><\/div>/,
-    )?.[0];
-    assert.ok(fileTree, 'FileTree lost its panel');
-    assert.match(fileTree, /<p class="td-filetree__title" id="td-filetree-/);
-    assert.match(fileTree, /<details class="td-filetree__details" open><summary class="td-filetree__summary">/);
-    assert.match(fileTree, /<details class="td-filetree__details"><summary/); // {open=false}
-    assert.ok(
-      fileTree.includes(
-        `<span class="td-filetree__hash" aria-hidden="true">#</span><span class="td-filetree__comment-text">${fixture.entry}</span>`,
-      ),
-    );
-    assert.match(fileTree, /<span class="td-filetree__name" title="content\/">content\/<\/span>/);
-    assert.match(fileTree, /<i class="fa-brands fa-markdown td-filetree__glyph"><\/i>/);
-    assert.match(fileTree, /<i class="fa-solid fa-scale-balanced td-filetree__glyph"><\/i>/); // LICENSE
-    assert.equal((fileTree.match(/<details/g) || []).length, 4);
-    assert.equal((fileTree.match(/<ul/g) || []).length, (fileTree.match(/<\/ul>/g) || []).length);
-    // The tree-output example and the plain (comment-less) variant render too.
-    assert.match(fileTreeHTML, /<span class="td-filetree__name" title="\.">\.<\/span>/);
+    assert.match(fileTreeHTML, /<p class="td-filetree__title" id="td-filetree-/);
+    assert.match(fileTreeHTML, /<details class="td-filetree__details" open><summary class="td-filetree__summary">/);
+    assert.match(fileTreeHTML, /<details class="td-filetree__details"><summary/);
     assert.match(fileTreeHTML, /td-filetree td-filetree--plain/);
-    // Gallery is a data fence rendered by the theme, so the grid, the per-item
-    // attributes and the Zoom markers are all theme-generated markup.
+    assert.match(fileTreeHTML, /<span class="td-filetree__hash" aria-hidden="true">#<\/span><span class="td-filetree__comment-text">/);
+    assert.match(fileTreeHTML, /<span class="td-filetree__name" title="content\/">content\/<\/span>/);
+    // Gallery is a data fence rendered by the theme: grid, per-item image, one
+    // shared Zoom dialog per page.
     assert.match(galleryHTML, /<ul class="td-gallery/);
     assert.doesNotMatch(galleryHTML, /<ul class="gallery"/);
-    const galleryList = galleryHTML.match(
-      /<ul class="td-gallery[^"]*">[\s\S]*?<\/ul>/,
-    )?.[0];
-    assert.ok(galleryList, 'Gallery lost its grid');
-    assert.equal(
-      (galleryList.match(/<li class="td-gallery__item"/g) || []).length,
-      3,
-    );
-    assert.equal(
-      (galleryList.match(/class="td-gallery__image"/g) || []).length,
-      3,
-    );
-    assert.ok(galleryList.includes(fixture.caption));
-    // Markdown images render through the image hook: figures with captions.
+    const galleryLists = galleryHTML.match(/<ul class="td-gallery[^"]*">[\s\S]*?<\/ul>/g) || [];
+    assert.ok(galleryLists.length >= 3, 'Gallery page lost its grids');
+    for (const list of galleryLists) {
+      const items = (list.match(/<li class="td-gallery__item"/g) || []).length;
+      assert.ok(items >= 1);
+      assert.equal((list.match(/class="td-gallery__image"/g) || []).length, items);
+    }
+    assert.equal((galleryHTML.match(/data-td-image-zoom-dialog/g) || []).length, 1);
+    // Markdown images render through the image hook: figures with captions,
+    // processed images as ordinary figures whose Zoom marker carries the
+    // full-size original, and linked images that stay links.
     assert.match(
-      imageZoomHTML,
+      imageHTML,
       /<figure class="td-figure"[\s\S]*?<figcaption>[\s\S]*?<\/figcaption>/,
     );
-    // A processed image is an ordinary figure now: the `image` shortcode and
-    // its `td-figure--processed` class are gone, and the Zoom marker carries
-    // the full-size original so the dialog never shows the derivative.
-    assert.doesNotMatch(imageZoomHTML, /td-figure--processed/);
-    assert.match(imageZoomHTML, /data-td-image-zoom="[^"]+\.webp"/);
-    assert.equal(
-      (imageZoomHTML.match(/data-td-image-zoom-dialog/g) || []).length,
-      1,
-    );
-    assert.equal(
-      (galleryHTML.match(/data-td-image-zoom-dialog/g) || []).length,
-      1,
-    );
+    assert.doesNotMatch(imageHTML, /td-figure--processed/);
+    assert.match(imageHTML, /data-td-image-zoom="[^"]+\.webp"/);
+    assert.equal((imageHTML.match(/data-td-image-zoom-dialog/g) || []).length, 1);
     assert.match(
-      imageZoomHTML,
-      new RegExp(
-        `<a href="/(?:zh/)?docs/">\\s*<img[^>]+alt="${fixture.linkedAlt}"`,
-      ),
+      imageHTML,
+      /<a href="\/(?:zh\/)?docs\/about\/features\/">\s*<img[^>]+alt="[^"]+"/,
     );
 
     const markdownByPage = Object.fromEntries(
-      ['badge', 'kbd', 'fields', 'filetree', 'image-zoom', 'gallery'].map(
-        (name) => [
-          name,
-          readFileSync(path.join(components, name, 'index.md'), 'utf8'),
-        ],
-      ),
+      ['badge', 'kbd', 'fields', 'filetree', 'image', 'gallery'].map((name) => [
+        name,
+        read(name, 'index.md'),
+      ]),
     );
     assert.match(markdownByPage.badge, /\*\*Beta\*\*/);
     assert.match(markdownByPage.kbd, /Ctrl \+ K/);
-    assert.match(markdownByPage.fields, /- `offlineSearch` — `boolean`/);
-    // Native list forms and the filetree fence stay source Markdown.
-    assert.ok(markdownByPage.filetree.includes(`# ${fixture.entry}`));
+    // The table form of Fields stays a Markdown table with its marker line.
+    assert.match(markdownByPage.fields, /^\| `offline_search` \| boolean/m);
+    assert.match(markdownByPage.fields, /^\{\.fields/m);
+    // Native list forms and the filetree / gallery fences stay source Markdown.
     assert.match(markdownByPage.filetree, /^```filetree \{title="[^"]+"\}$/m);
     assert.doesNotMatch(markdownByPage.filetree, /^\{\.filetree\}$/m);
     assert.match(markdownByPage.gallery, /^```gallery$/m);
     assert.doesNotMatch(markdownByPage.gallery, /^\{\.gallery\}$/m);
-    assert.ok(markdownByPage.gallery.includes(fixture.caption));
     for (const markdown of Object.values(markdownByPage)) {
       assert.doesNotMatch(
-        markdown,
-        // Rendered component markup, not the class names themselves: a guide
-        // may legitimately name `td-gallery` in prose.
+        // Rendered component markup, not the class names themselves: the
+        // output-format tables quote `class="td-…"` inside inline code, so
+        // code spans are stripped before the check.
+        markdown.replace(/`[^`\n]*`/g, ''),
         /class="td-(?:badge|kbd-sequence|fields|filetree|gallery|image-zoom)|<ul class=/,
       );
     }
@@ -229,7 +168,6 @@ test('bilingual component docs publish semantic HTML and Markdown fallbacks', ()
       /data-td-image-zoom|data-zoom-src|data-no-zoom/,
     );
     assert.doesNotMatch(print, /<dialog class="td-image-zoom/);
-    assert.match(print, new RegExp(fixture.caption.replaceAll('.', '\\.')));
   }
 });
 
@@ -250,10 +188,7 @@ test('isolated primitives keep static Markdown, print, and RSS representations',
       `---
 title: Primitive item
 date: 2020-08-12
-params:
-  ui:
-    image_zoom:
-      enable: true
+image_zoom: true
 ---
 
 Status {{< badge text="Probe badge" tone="warning" >}}.
@@ -353,7 +288,7 @@ Content after the explicit feed summary boundary.
   }
 });
 
-test('invalid primitive parameters fail with their source position', () => {
+test('invalid primitive parameters warn, fall back, and remain strict-build failures', () => {
   const fixtureDir = mkdtempSync(
     path.join(tmpdir(), 'oink-primitives-invalid-'),
   );
@@ -371,9 +306,21 @@ test('invalid primitive parameters fail with their source position', () => {
 
     const result = runHugo(contentDir, destination);
     const output = `${result.stdout}${result.stderr}`;
-    assert.notEqual(result.status, 0, 'Invalid primitive unexpectedly built');
+    assert.equal(result.status, 0, `Invalid primitive stopped the preview build:\n${output}`);
     assert.match(output, /tone must be one of/);
     assert.match(output, /content\/docs\/invalid\.md:\d+:/);
+    assert.match(
+      readFileSync(path.join(destination, 'docs', 'invalid', 'index.html'), 'utf8'),
+      /class="td-badge td-badge--neutral">Bad<\/span>/,
+    );
+
+    const strict = runHugo(contentDir, `${destination}-strict`, {
+      panicOnWarning: true,
+    });
+    const strictOutput = `${strict.stdout}${strict.stderr}`;
+    assert.notEqual(strict.status, 0, 'Invalid primitive survived --panicOnWarning');
+    assert.match(strictOutput, /tone must be one of/);
+    assert.match(strictOutput, /content\/docs\/invalid\.md:\d+:/);
   } finally {
     rmSync(fixtureDir, { recursive: true, force: true });
   }

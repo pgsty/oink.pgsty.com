@@ -1,9 +1,9 @@
 ---
 title: No left sidebar
 type: docs
-excludeSearch: true
+search_exclude: true
 params:
-  body_class: td-no-left-sidebar
+  sidebar_enabled: false
 ---
 
 This page uses the `docs` layout without code or tabs.

@@ -6,7 +6,7 @@ weight: 90
 cascade:
   type: docs
   params:
-    hide_feedback: true
+    feedback: false
 ---
 
 These pages exist only in the Playwright server configuration.

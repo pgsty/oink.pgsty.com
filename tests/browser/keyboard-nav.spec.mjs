@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const docsPath = '/docs/configure/overview/';
+const docsPath = '/docs/customize/config/';
 
 async function openDocs(page, viewport = { width: 1280, height: 600 }) {
   await page.setViewportSize(viewport);
@@ -199,13 +199,13 @@ test('homepage n, j, and k jump between landing sections while h hides page chro
   await page.goto('/', { waitUntil: 'domcontentloaded' });
 
   const sections = page.locator('[data-td-landing] > section[id]');
-  await expect(sections).toHaveCount(5);
+  await expect(sections).toHaveCount(7);
   expect(await sections.nth(0).getAttribute('id')).toBe('hero');
-  expect(await sections.nth(1).getAttribute('id')).toBe('release');
+  expect(await sections.nth(1).getAttribute('id')).toBe('capabilities');
 
   await page.keyboard.press('j');
   await page.waitForTimeout(180);
-  expect(await page.evaluate(() => location.hash)).toBe('#release');
+  expect(await page.evaluate(() => location.hash)).toBe('#capabilities');
   expect(await page.evaluate(() => scrollY)).toBeGreaterThan(100);
 
   await page.keyboard.press('k');
@@ -215,25 +215,33 @@ test('homepage n, j, and k jump between landing sections while h hides page chro
 
   await page.keyboard.press('n');
   await page.waitForTimeout(180);
-  expect(await page.evaluate(() => location.hash)).toBe('#release');
+  expect(await page.evaluate(() => location.hash)).toBe('#capabilities');
   expect(await page.evaluate(() => scrollY)).toBeGreaterThan(100);
 
   await page.keyboard.press('h');
   await expect(page.locator('html')).toHaveAttribute('data-td-kbd-zen', '');
-  await expect(page.locator('.landing-header')).toBeHidden();
+  await expect(page.locator('[data-td-header]')).toBeHidden();
   await expect(page.locator('[data-td-shell-footer]')).toBeHidden();
 });
 
-test('docs and blog cascades disable desktop navbars and keep slim footers', async ({
+test('docs hide the global navbar while blog articles keep it', async ({
   page,
 }) => {
-  for (const path of ['/docs/configure/overview/', '/blog/release/0.4.0/']) {
-    await page.goto(path, { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('.landing-header')).toHaveCount(0);
-    await expect(page.locator('.td-shell-subnav')).toHaveCount(1);
-    await expect(page.locator('.td-shell-footline')).toHaveCount(1);
-    await expect(page.locator('#td-site-footer')).toHaveCount(0);
-  }
+  await page.goto('/docs/customize/config/', {
+    waitUntil: 'domcontentloaded',
+  });
+  await expect(page.locator('[data-td-header]')).toHaveCount(0);
+  await expect(page.locator('.td-shell-subnav')).toHaveCount(1);
+  await expect(page.locator('.td-shell-footline')).toHaveCount(1);
+  await expect(page.locator('#td-site-footer')).toHaveCount(0);
+
+  await page.goto('/blog/release/0.4.0/', {
+    waitUntil: 'domcontentloaded',
+  });
+  await expect(page.locator('[data-td-header]')).toHaveCount(1);
+  await expect(page.locator('.td-shell-subnav')).toHaveCount(0);
+  await expect(page.locator('.td-shell-footline')).toHaveCount(1);
+  await expect(page.locator('#td-site-footer')).toHaveCount(0);
 });
 
 test('the narrowest tier forces the navbar-off mobile bar to stay visible', async ({
@@ -241,7 +249,7 @@ test('the narrowest tier forces the navbar-off mobile bar to stay visible', asyn
 }) => {
   await openDocs(page, { width: 479, height: 844 });
   const header = page.locator('.td-shell-subnav');
-  await expect(page.locator('.landing-header')).toHaveCount(0);
+  await expect(page.locator('[data-td-header]')).toHaveCount(0);
   await expect(header).toBeVisible();
   await expect(header).toHaveCSS('position', 'sticky');
 

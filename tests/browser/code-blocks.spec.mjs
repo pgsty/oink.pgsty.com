@@ -34,12 +34,17 @@ test.describe('Enhanced code blocks', () => {
       .toBeLessThanOrEqual(36);
 
     await expect(page.locator('#copy-disabled')).toHaveAttribute(
-      'data-language',
+      'data-td-language',
       'sh',
     );
-    await expect(page.locator('#copy-disabled .td-code__language')).toHaveText(
-      'BASH',
+    // The lexer name is data, not UI: no language label is rendered, and a
+    // copy=false block carries no utility cluster at all.
+    await expect(page.locator('#copy-disabled .td-code__language')).toHaveCount(
+      0,
     );
+    await expect(
+      page.locator('#copy-disabled .td-code__utilities'),
+    ).toHaveCount(0);
 
     await page.locator('#numbered-inline [data-td-code-copy]').click();
     await expect
@@ -91,7 +96,7 @@ test.describe('Enhanced code blocks', () => {
 
     const button = page.locator('#session-no-prompt [data-td-code-copy]');
     await button.click();
-    await expect(button).toHaveAttribute('data-state', 'error');
+    await expect(button).toHaveAttribute('data-td-state', 'error');
     await expect(
       page.locator('#session-no-prompt [data-td-code-status]'),
     ).toHaveText('Copy failed');
@@ -426,48 +431,41 @@ test.describe('Tab set state', () => {
 test('the EN and ZH guide pair every authoring example with a rendered result', async ({
   page,
 }) => {
-  for (const [path, authoring, rendered] of [
-    ['/docs/components/code-blocks/', 'Authoring', 'Rendered result'],
-    ['/zh/docs/components/code-blocks/', '作者写法', '实际效果'],
+  // The guides show the markup in a fence titled "Source" / "源码" and put the
+  // live rendering immediately after it. Every source fence must be followed by
+  // something rendered before the next source fence begins.
+  for (const [path, sourceLabel] of [
+    ['/docs/components/code/', 'Source'],
+    ['/zh/docs/components/code/', '源码'],
   ]) {
     await page.goto(path, { waitUntil: 'domcontentloaded' });
-    const pairs = await page.locator('article').evaluate(
-      (article, labels) => {
-        const labelParagraphs = [...article.querySelectorAll('p')].filter(
-          (paragraph) =>
-            paragraph.children.length === 1 &&
-            paragraph.firstElementChild?.tagName === 'STRONG',
-        );
-        const authors = labelParagraphs.filter(
-          (paragraph) => paragraph.textContent.trim() === labels.authoring,
-        );
-        const results = labelParagraphs.filter(
-          (paragraph) => paragraph.textContent.trim() === labels.rendered,
-        );
-        const hasComponentBeforeNextLabel = (start) => {
-          for (
-            let node = start.nextElementSibling;
-            node;
-            node = node.nextElementSibling
-          ) {
-            if (labelParagraphs.includes(node)) return false;
-            if (node.matches('.td-code, .td-tabs, .td-tab-block')) return true;
-          }
-          return false;
-        };
-        return {
-          authorCount: authors.length,
-          resultCount: results.length,
-          authorSources: authors.every(hasComponentBeforeNextLabel),
-          renderedOutputs: results.every(hasComponentBeforeNextLabel),
-        };
-      },
-      { authoring, rendered },
-    );
-    expect(pairs.authorCount).toBeGreaterThanOrEqual(8);
-    expect(pairs.resultCount).toBe(pairs.authorCount);
-    expect(pairs.authorSources).toBe(true);
-    expect(pairs.renderedOutputs).toBe(true);
+    const pairs = await page.locator('article').evaluate((article, label) => {
+      const isSource = (node) =>
+        node.matches?.('.td-code') &&
+        node.querySelector('.td-code__filename')?.textContent.trim() === label;
+      const blocks = [...article.querySelectorAll('.td-code, .td-tabs')];
+      const sources = blocks.filter(isSource);
+      const followedByRendering = (start) => {
+        for (
+          let node = start.nextElementSibling;
+          node;
+          node = node.nextElementSibling
+        ) {
+          if (isSource(node)) return false;
+          if (node.matches('.td-code, .td-tabs, .td-tab-block, table, figure'))
+            return true;
+          if (node.querySelector?.('.td-code, .td-tabs, .td-tab-block'))
+            return true;
+        }
+        return false;
+      };
+      return {
+        sourceCount: sources.length,
+        allPaired: sources.every(followedByRendering),
+      };
+    }, sourceLabel);
+    expect(pairs.sourceCount).toBeGreaterThanOrEqual(8);
+    expect(pairs.allPaired).toBe(true);
   }
 });
 
@@ -479,8 +477,8 @@ test('code guide surfaces meet WCAG AA in both color themes', async ({
   await page.route('https://giscus.app/**', (route) => route.abort());
 
   for (const path of [
-    '/docs/components/code-blocks/',
-    '/zh/docs/components/code-blocks/',
+    '/docs/components/code/',
+    '/zh/docs/components/code/',
     codeFixture,
   ]) {
     for (const theme of ['light', 'dark']) {

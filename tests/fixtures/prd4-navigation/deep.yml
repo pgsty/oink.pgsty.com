@@ -11,7 +11,7 @@ languages:
         - identifier: docs-tutorial
           parent: docs
           name: Tutorials
-          pageRef: /docs/tutorial
+          pageRef: /docs/start
           weight: 10
           params:
             icon: fa-solid fa-route
@@ -19,7 +19,7 @@ languages:
         - identifier: docs-advanced
           parent: docs-tutorial
           name: Advanced setup
-          pageRef: /docs/advanced
+          pageRef: /docs/customize
           weight: 10
           params:
             icon: fa-solid fa-gears
@@ -34,7 +34,7 @@ languages:
         - identifier: docs-tutorial
           parent: docs
           name: 教程
-          pageRef: /docs/tutorial
+          pageRef: /docs/start
           weight: 10
           params:
             icon: fa-solid fa-route
@@ -42,7 +42,7 @@ languages:
         - identifier: docs-advanced
           parent: docs-tutorial
           name: 高级配置
-          pageRef: /docs/advanced
+          pageRef: /docs/customize
           weight: 10
           params:
             icon: fa-solid fa-gears

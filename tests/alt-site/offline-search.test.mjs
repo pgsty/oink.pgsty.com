@@ -36,7 +36,7 @@ function entryBySuffix(entries, suffix) {
   return matches[0];
 }
 
-// Build the site in a non-production environment -- `params.offlineSearch` is
+// Build the site in a non-production environment -- `params.offline_search` is
 // on in `hugo.yml`, and a non-production build leaves the index filenames
 // un-fingerprinted -- then validate the generated language-specific indexes.
 // This guards the page collection used by
@@ -115,23 +115,32 @@ for (const [deployment, baseURL, prefix] of [
         `${language} gzip index exceeds budget`,
       );
 
-      const config = entryBySuffix(entries, '/docs/configure/overview/');
-      const tutorial = entryBySuffix(entries, '/docs/tutorial/install/');
+      const config = entryBySuffix(entries, '/docs/customize/config/');
+      const tutorial = entryBySuffix(entries, '/docs/start/from-scratch/');
       const blog = entryBySuffix(entries, '/blog/oink/oink-announcement/');
       assert.equal(config.boost, 1.6);
       assert.equal(tutorial.boost, 1.35);
       assert.equal(blog.boost, 0.9);
+      // Each language carries its own search_keywords: a reader searching in
+      // Chinese matches the Chinese terms, and the shared configuration key
+      // names appear in both.
       assert.deepEqual(
         config.keywords,
         language === 'zh'
-          ? ['配置', '设置', '参数', 'YAML']
-          : ['config', 'settings', 'params', 'yaml'],
+          ? [
+              '配置', '参数', '站点配置', 'hugo.yml', 'params', 'params.ui',
+              'configuration', 'config', '默认值', 'default',
+            ]
+          : [
+              'configuration', 'hugo.yml', 'parameters', 'params.ui',
+              'defaults', 'site settings', 'reference',
+            ],
       );
       assert.deepEqual(
         config.breadcrumb,
         language === 'zh'
-          ? ['文档', '站点配置', '配置']
-          : ['Docs', 'Site configuration', 'Configuration'],
+          ? ['文档', '定制站点', '配置总览']
+          : ['Docs', 'Customization', 'Configuration'],
       );
       assert.deepEqual([config.root, blog.root], ['docs', 'blog']);
       assert.ok(

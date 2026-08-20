@@ -74,15 +74,24 @@ for (const [deployment, baseURL, prefix] of [
 ]) {
   test(`nested navigation resolves EN/ZH under ${deployment} deployment`, () => {
     const { outDir, output } = build(deployment, { baseURL });
-    assert.doesNotMatch(output, /supports one interactive child level/);
+    assert.doesNotMatch(output, /only one interactive child level is supported/);
 
-    for (const route of ['/docs', '/blog', '/zh/docs', '/zh/blog']) {
+    for (const route of [
+      '/docs',
+      '/book',
+      '/case',
+      '/blog',
+      '/zh/docs',
+      '/zh/book',
+      '/zh/case',
+      '/zh/blog',
+    ]) {
       documentAt(outDir, route);
     }
 
     for (const [languagePath, labels, panelCount] of [
-      ['', ['Docs', 'Get started', 'Blog', 'Tags'], 3],
-      ['/zh', ['文档', '快速上手', '博客', '标签'], 4],
+      ['', ['Docs', 'Get started', 'Book', 'Case', 'Blog'], 2],
+      ['/zh', ['文档', '快速上手', '教程', '案例', '博客'], 2],
     ]) {
       const home = documentAt(outDir, languagePath || '/');
       const desktop = navbarEntries(home);
@@ -92,6 +101,12 @@ for (const [deployment, baseURL, prefix] of [
           label,
         );
       }
+      assert.deepEqual(
+        desktop
+          .filter((entry) => entry.level === 0)
+          .map((entry) => entry.label),
+        [labels[0], labels[2], labels[3], labels[4]],
+      );
       // The compact breakpoint reuses these semantic links as icons; it does
       // not render a second mobile navigation tree.
       assert.deepEqual(navbarEntries(home, 'mobile'), []);
@@ -101,7 +116,7 @@ for (const [deployment, baseURL, prefix] of [
         0,
       );
 
-      // Nested parents and the generated Tags cloud each own one panel.
+      // Docs and Blog own nested panels; Book and Case are direct roots.
       const controls = [...home.querySelectorAll('[aria-controls]')].filter(
         (control) =>
           control.getAttribute('aria-controls')?.startsWith('td-navbar-'),
@@ -110,7 +125,9 @@ for (const [deployment, baseURL, prefix] of [
       assert.ok(
         controls.every(
           (control) =>
-            control.matches('a.nav-menu__parent-link') &&
+            control.matches(
+              '[data-td-navbar-menu] > a.td-nav-menu__parent-link[data-td-navbar-region="desktop"][data-td-navbar-level="0"]',
+            ) &&
             control.getAttribute('aria-expanded') === 'false',
         ),
       );
@@ -137,7 +154,7 @@ for (const [deployment, baseURL, prefix] of [
     );
     assert.equal(
       englishHome.find((entry) => entry.label === 'Get started').href,
-      `${prefix}/docs/tutorial/`,
+      `${prefix}/docs/start/`,
     );
     const chineseHome = navbarEntries(documentAt(outDir, '/zh'));
     assert.equal(
@@ -146,8 +163,26 @@ for (const [deployment, baseURL, prefix] of [
     );
 
     for (const [route, current, roots] of [
-      ['/docs', 'Docs', ['Blog', 'Docs']],
-      ['/zh/docs', '文档', ['博客', '文档']],
+      [
+        '/docs',
+        'Docs',
+        [
+          { href: `${prefix}/book/`, title: 'Book' },
+          { href: `${prefix}/case/`, title: 'Cases' },
+          { href: `${prefix}/blog/`, title: 'Blog' },
+          { href: `${prefix}/docs/`, title: 'Docs' },
+        ],
+      ],
+      [
+        '/zh/docs',
+        '文档',
+        [
+          { href: `${prefix}/zh/book/`, title: '教程' },
+          { href: `${prefix}/zh/case/`, title: '案例' },
+          { href: `${prefix}/zh/blog/`, title: '博客' },
+          { href: `${prefix}/zh/docs/`, title: '文档' },
+        ],
+      ],
     ]) {
       const page = documentAt(outDir, route);
       assert.equal(
@@ -155,18 +190,23 @@ for (const [deployment, baseURL, prefix] of [
         current,
       );
       assert.deepEqual(
-        [...page.querySelectorAll('.td-shell-root__item-title')]
-          .map((node) => node.textContent.trim())
-          .sort(),
-        roots.sort(),
+        [...page.querySelectorAll('.td-shell-root__item')]
+          .map((node) => ({
+            href: node.getAttribute('href'),
+            title: node
+              .querySelector('.td-shell-root__item-title')
+              ?.textContent.trim(),
+          }))
+          .sort((left, right) => left.href.localeCompare(right.href)),
+        roots.sort((left, right) => left.href.localeCompare(right.href)),
       );
     }
 
     for (const route of ['/docs', '/blog', '/zh/docs', '/zh/blog']) {
       assert.equal(
         documentAt(outDir, route)
-          .querySelector('[data-sidebar-icon-policy]')
-          ?.getAttribute('data-sidebar-icon-policy'),
+          .querySelector('[data-td-sidebar-icon-policy]')
+          ?.getAttribute('data-td-sidebar-icon-policy'),
         'groups',
         `${route} sidebar policy`,
       );
@@ -179,7 +219,7 @@ test('flat legacy fixture emits links without disclosure controls', () => {
     baseURL: 'https://example.test/preview/',
     fixture: 'flat.yml',
   });
-  assert.doesNotMatch(output, /supports one interactive child level/);
+  assert.doesNotMatch(output, /only one interactive child level is supported/);
   const home = documentAt(outDir, '/');
   assert.deepEqual(navbarEntries(home, 'mobile'), []);
   assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 0);
@@ -214,7 +254,7 @@ test('deep fixture warns and degrades to a static group', () => {
     baseURL: 'https://example.test/preview/',
     fixture: 'deep.yml',
   });
-  assert.match(output, /supports one interactive child level/);
+  assert.match(output, /only one interactive child level is supported/);
   const home = documentAt(outDir, '/');
   assert.deepEqual(navbarEntries(home, 'mobile'), []);
   assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 0);
@@ -222,7 +262,9 @@ test('deep fixture warns and degrades to a static group', () => {
     home.querySelectorAll('[data-td-navbar-accordion-toggle]').length,
     0,
   );
-  const parent = home.querySelector('.nav-menu__parent-link');
+  const parent = home.querySelector(
+    '[data-td-navbar-menu] > .td-nav-menu__parent-link[data-td-navbar-region="desktop"]',
+  );
   assert.equal(parent?.getAttribute('aria-expanded'), 'false');
   assert.equal(
     parent?.getAttribute('aria-controls'),

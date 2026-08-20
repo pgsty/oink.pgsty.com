@@ -50,17 +50,30 @@ function html(outDir, relative) {
   return readFileSync(path, 'utf8');
 }
 
-function mainBundle(outDir, pageHTML) {
+function mainBundle(outDir, pageHTML, required = true) {
   const source = [...pageHTML.matchAll(/<script\b[^>]+src="([^"]+)"/g)]
     .map((match) => match[1])
-    .find((value) => /\/js\/main-[^/]+\.js$/.test(value));
-  assert.ok(source, 'Page has no main bundle');
+    .find((value) => /\/js\/page-[^/]+\.js$/.test(value));
+  if (!source) {
+    assert.equal(required, false, 'Page has no main bundle');
+    return '';
+  }
+  return html(outDir, source.replace('/preview/', ''));
+}
+
+function sharedBundle(outDir, pageHTML, name) {
+  const source = [...pageHTML.matchAll(/<script\b[^>]+src="([^"]+)"/g)]
+    .map((match) => match[1])
+    .find((value) =>
+      new RegExp(`/js/${name}(?:-[^/]+)?\\.js$`).test(value),
+    );
+  assert.ok(source, `Page has no ${name} bundle`);
   return html(outDir, source.replace('/preview/', ''));
 }
 
 function manifest(pageHTML) {
   const match = pageHTML.match(
-    /<script type="application\/json" id="oink-action-manifest">(.*?)<\/script>/s,
+    /<script type="application\/json" id="td-action-manifest">(.*?)<\/script>/s,
   );
   assert.ok(match, 'Page has no action manifest');
   return JSON.parse(match[1]);
@@ -69,8 +82,8 @@ function manifest(pageHTML) {
 test('subpath manifests localize safe commands and preserve action URLs', () => {
   const outDir = build('manifest');
   for (const [relative, language, titles] of [
-    ['docs/configure/overview/index.html', 'en', ['OINK issues']],
-    ['zh/docs/configure/overview/index.html', 'zh', ['OINK 问题反馈']],
+    ['docs/customize/config/index.html', 'en', ['OINK issues']],
+    ['zh/docs/customize/config/index.html', 'zh', ['OINK 问题反馈']],
   ]) {
     const page = html(outDir, relative);
     const data = manifest(page);
@@ -99,8 +112,8 @@ test('subpath manifests localize safe commands and preserve action URLs', () => 
       data.quickLinks.every((link) => link.url.startsWith('/preview/')),
     );
     for (const [id, suffix] of [
-      ['copy_markdown', '/docs/configure/overview/index.md'],
-      ['view_markdown', '/docs/configure/overview/index.md'],
+      ['copy_markdown', '/docs/customize/config/index.md'],
+      ['view_markdown', '/docs/customize/config/index.md'],
     ]) {
       const action = data.actions.find((candidate) => candidate.id === id);
       const languagePrefix = language === 'zh' ? '/preview/zh' : '/preview';
@@ -110,6 +123,7 @@ test('subpath manifests localize safe commands and preserve action URLs', () => 
       data.actions.map((action) => action.id),
       [
         'copy_markdown',
+        'copy_link',
         'open_chatgpt',
         'open_claude',
         'view_markdown',
@@ -135,21 +149,22 @@ test('search-disabled pages omit the Palette runtime but retain page actions', (
     'hugo.yml,tests/fixtures/prd4-palette/search-disabled.yml',
   ]);
   for (const relative of [
-    'docs/configure/overview/index.html',
-    'zh/docs/configure/overview/index.html',
+    'docs/customize/config/index.html',
+    'zh/docs/customize/config/index.html',
   ]) {
     const page = html(outDir, relative);
     assert.doesNotMatch(page, /id="td-shell-search"/);
     assert.doesNotMatch(page, /data-td-shell-search-open/);
     assert.doesNotMatch(page, /data-index-src=/);
-    assert.match(page, /id="oink-action-manifest"/);
-    assert.match(page, /data-oink-action="copy_markdown"/);
+    assert.match(page, /id="td-action-manifest"/);
+    assert.match(page, /data-td-action="copy_markdown"/);
     const bundle = mainBundle(outDir, page);
+    const actions = sharedBundle(outDir, page, 'actions');
     // keyboard-nav.js may reference the palette global as a consumer; only
     // the controller's own definition is barred on search-off pages.
     assert.doesNotMatch(bundle, /OinkCommandPalette\s*=|td-shell-search/);
-    assert.match(bundle, /OinkActionRegistry/);
-    assert.match(bundle, /data-oink-action/);
+    assert.match(actions, /OinkActionRegistry/);
+    assert.match(actions, /data-td-action/);
   }
   assert.equal(existsSync(join(outDir, 'offline-search-index.en.json')), false);
   assert.equal(existsSync(join(outDir, 'offline-search-index.zh.json')), false);
@@ -158,15 +173,15 @@ test('search-disabled pages omit the Palette runtime but retain page actions', (
 test('print output omits all Palette and local-index runtime', () => {
   const outDir = build('print');
   for (const relative of [
-    '_print/docs/content/index.html',
-    'zh/_print/docs/content/index.html',
+    '_print/docs/write/index.html',
+    'zh/_print/docs/write/index.html',
   ]) {
     const page = html(outDir, relative);
     assert.doesNotMatch(page, /id="td-shell-search"/);
     assert.doesNotMatch(page, /data-td-shell-search-open/);
     assert.doesNotMatch(page, /data-index-src=/);
     assert.doesNotMatch(page, /lunr(?:\.min)?\.js/);
-    const bundle = mainBundle(outDir, page);
+    const bundle = mainBundle(outDir, page, false);
     assert.doesNotMatch(bundle, /OinkCommandPalette|OinkPaletteModel/);
     assert.doesNotMatch(bundle, /OinkSearchEngine|td-shell-search/);
   }

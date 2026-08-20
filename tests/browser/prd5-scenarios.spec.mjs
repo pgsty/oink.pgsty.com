@@ -48,7 +48,7 @@ test('Release asset controls copy exact sha256sum lines', async ({
     .toBe(
       '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef  oink-0.4.0-linux-amd64.tar.gz\n',
     );
-  await expect(firstCopy).toHaveAttribute('data-state', 'success');
+  await expect(firstCopy).toHaveAttribute('data-td-state', 'success');
 
   const copyAll = page.locator('[data-td-asset-copy-all]');
   await copyAll.click();
@@ -58,7 +58,7 @@ test('Release asset controls copy exact sha256sum lines', async ({
       '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef  oink-0.4.0-linux-amd64.tar.gz\n' +
         'fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210 *oink-0.4.0-darwin-arm64.tar.gz\n',
     );
-  await expect(copyAll).toHaveAttribute('data-state', 'success');
+  await expect(copyAll).toHaveAttribute('data-td-state', 'success');
 });
 
 test('CSS marquee pauses by focus or choice and isolates its duplicate track', async ({
@@ -68,9 +68,9 @@ test('CSS marquee pauses by focus or choice and isolates its duplicate track', a
   await page.goto(landingPath, { waitUntil: 'domcontentloaded' });
 
   const marquee = page.locator('[data-td-marquee]');
-  const track = marquee.locator('.oink-marquee__track');
+  const track = marquee.locator('.td-landing-marquee__track');
   const pause = marquee.locator('[data-td-marquee-pause]');
-  const duplicate = marquee.locator('.oink-marquee__group[aria-hidden="true"]');
+  const duplicate = marquee.locator('.td-landing-marquee__group[aria-hidden="true"]');
   await expect(duplicate).toHaveAttribute('inert', '');
   await expect(duplicate.locator('a')).toHaveCount(3);
   await expect(pause).toHaveAccessibleName('Pause motion');
@@ -86,7 +86,7 @@ test('CSS marquee pauses by focus or choice and isolates its duplicate track', a
       track.evaluate((node) => getComputedStyle(node).animationPlayState),
     )
     .toBe('paused');
-  await page.locator('.oink-hero__actions a').focus();
+  await page.locator('.td-landing-hero__actions a').focus();
   await expect
     .poll(() =>
       track.evaluate((node) => getComputedStyle(node).animationPlayState),
@@ -95,7 +95,7 @@ test('CSS marquee pauses by focus or choice and isolates its duplicate track', a
 
   await pause.focus();
   await pause.press('Space');
-  await page.locator('.oink-hero__actions a').focus();
+  await page.locator('.td-landing-hero__actions a').focus();
   await expect(pause).toBeChecked();
   await expect
     .poll(() =>
@@ -112,11 +112,13 @@ test('Landing page opens the shared Command Palette without article rails', asyn
   await expect(page.locator('[data-td-landing]')).toBeVisible();
   await expect(page.locator('#td-section-nav')).toHaveCount(0);
 
-  // This fixture enables navbar auto-hide. Reveal the real pointer target
-  // before exercising its Search button instead of bypassing the interaction.
-  await page
-    .locator('[data-td-navbar-autohide]')
-    .hover({ position: { x: 640, y: 8 } });
+  // Reveal the real pointer target when this fixture enables navbar auto-hide.
+  // With a persistent landing navbar there is no reveal interaction to perform.
+  const autohide = page.locator('[data-td-navbar-autohide]');
+  if (await autohide.count()) {
+    await autohide.hover({ position: { x: 640, y: 8 } });
+  }
+  await expect(page.locator('[data-td-header]')).toBeVisible();
   const opener = page.locator('[data-td-shell-search-open]:visible').first();
   await expect(opener).toBeInViewport();
   await opener.click();

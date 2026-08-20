@@ -1,34 +1,23 @@
 import { expect, test } from '@playwright/test';
 
 const blogPath = '/zh/blog/';
-const blogSections = ['release', 'oink', 'docsy'];
+const blogSections = ['release', 'oink'];
 const blogArticles = {
-  release: ['0.4.0', '0.3.0', '0.2.0', '0.1.0'],
-  oink: ['oink-announcement', 'oink-implementation-diary'],
-  docsy: [
-    '0.16.0',
-    'hugo-0.158.0+',
-    '0.15.0',
-    '0.14.0',
-    'hugo-0.152.0+',
-    '0.13.0',
-    '0.12.0',
-    'year-in-review',
-    '0.10.0',
-    '0.9.0',
-    'priorities-for-2024',
-    '0.7.x',
-    'bootstrap-5-migration',
-    'hello',
+  release: ['0.6.0', '0.5.0', '0.4.0', '0.3.0', '0.2.0', '0.1.0'],
+  oink: [
+    'immersive-reading',
+    'oink-announcement',
+    'oink-implementation-diary',
   ],
 };
 
-async function openCleanBlog(page, width) {
+async function openCleanBlog(page, width, path = blogPath) {
   await page.setViewportSize({ width, height: 900 });
   await page.addInitScript(() => {
     localStorage.removeItem('td-shell-toc-collapsed');
+    localStorage.removeItem('td-blog-index');
   });
-  await page.goto(blogPath, { waitUntil: 'domcontentloaded' });
+  await page.goto(path, { waitUntil: 'domcontentloaded' });
 }
 
 test('RSS stays in page actions when the right rail is collapsed', async ({
@@ -60,13 +49,25 @@ test('RSS stays in page actions when the right rail is collapsed', async ({
 test('blog metadata links to the post section without changing resting color', async ({
   page,
 }) => {
-  await openCleanBlog(page, 1024);
+  await openCleanBlog(page, 1024, '/blog/');
+
+  // The migrated Blog defaults to cards; section metadata belongs to its
+  // richer list form. Cycle cards -> table -> list through the public control.
+  const indexToggle = page.locator('[data-td-blog-index-toggle]');
+  await indexToggle.click();
+  await indexToggle.click();
+  await expect(page.locator('html')).toHaveAttribute(
+    'data-td-blog-index',
+    'list',
+  );
 
   const sectionLink = page
-    .locator('.td-blog-posts-list__section-link[href="/zh/blog/oink/"]')
+    .locator(
+      '[data-td-blog-form="list"] .td-blog-meta__section[href="/blog/release/"]',
+    )
     .first();
-  await expect(sectionLink).toHaveText('Oink');
-  await expect(sectionLink).toHaveAttribute('href', '/zh/blog/oink/');
+  await expect(sectionLink).toHaveText('Releases');
+  await expect(sectionLink).toHaveAttribute('href', '/blog/release/');
 
   const restingColor = await sectionLink.evaluate(
     (element) => getComputedStyle(element.parentElement).color,
@@ -81,7 +82,7 @@ test('blog metadata links to the post section without changing resting color', a
     .not.toBe(restingColor);
 
   await sectionLink.click();
-  await expect(page).toHaveURL(/\/zh\/blog\/oink\/$/);
+  await expect(page).toHaveURL(/\/blog\/release\/$/);
 });
 
 test('blog sidebar keeps bilingual sections and posts in the configured order', async ({

@@ -9,7 +9,6 @@ const blogDir = path.join(siteDir, 'content', 'blog');
 const sectionMetadata = {
   release: { weight: '10', tags: '[Oink, Release]' },
   oink: { weight: '20', tags: '[Oink]' },
-  docsy: { weight: '30', tags: '[Docsy, Release]' },
 };
 
 function frontMatter(file) {

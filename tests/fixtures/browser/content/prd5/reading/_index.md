@@ -7,7 +7,7 @@ sidebar_root_for: self
 cascade:
   type: docs
   params:
-    hide_feedback: true
+    feedback: false
 ---
 
 The three leaves below provide a deterministic reading sequence.

@@ -5,9 +5,10 @@ const badgePath = `${componentsPath}badge/`;
 const kbdPath = `${componentsPath}kbd/`;
 const fieldsPath = `${componentsPath}fields/`;
 const fileTreePath = `${componentsPath}filetree/`;
-const imageZoomPath = `${componentsPath}image-zoom/`;
+const imageZoomPath = `${componentsPath}image/`;
 const galleryPath = `${componentsPath}gallery/`;
-const layoutPath = `${componentsPath}layout/`;
+const layoutPath = `${componentsPath}callout/`;
+const asciinemaPath = `${componentsPath}asciinema/`;
 
 async function gridColumnCount(grid) {
   return grid.evaluate(
@@ -27,7 +28,9 @@ test.describe('Everyday content primitive guides', () => {
     await page.locator('[data-td-image-zoom-close]').click();
 
     await page.goto(galleryPath, { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('ul.td-gallery > li')).toHaveCount(3);
+    const firstGallery = page.locator('ul.td-gallery').first();
+    await expect(firstGallery.locator('> li')).toHaveCount(2);
+    await expect(firstGallery.locator('> li img')).toHaveCount(2);
 
     expect(errors).toEqual([]);
   });
@@ -51,16 +54,16 @@ test.describe('Everyday content primitive guides', () => {
 
     await page.goto(badgePath, { waitUntil: 'domcontentloaded' });
     const badges = page.locator('#td-main-content .td-badge');
-    await expect(badges).toHaveCount(6);
+    await expect(badges.first()).toBeVisible();
     await expect(badges.filter({ hasText: 'Beta' })).toHaveClass(
       /td-badge--warning/,
     );
     await expect(badges.filter({ hasText: 'Deprecated' })).toHaveClass(
       /td-badge--danger/,
     );
-    await expect(badges.filter({ hasText: 'v0.3' })).toHaveAttribute(
+    await expect(badges.filter({ hasText: 'v0.5' }).first()).toHaveAttribute(
       'href',
-      '/blog/release/',
+      '/blog/',
     );
 
     await page.goto(kbdPath, { waitUntil: 'domcontentloaded' });
@@ -72,38 +75,52 @@ test.describe('Everyday content primitive guides', () => {
     await expect(keySequence.locator('kbd').nth(1)).toHaveText('K');
 
     await page.goto(fieldsPath, { waitUntil: 'domcontentloaded' });
-    // The table form (`{.fields}`) and the shortcode form both render the
-    // same definition-list markup under the same label.
-    const fields = page.locator('.td-fields').filter({
-      has: page.getByText('Search configuration', { exact: true }),
+    // The table form (`{.fields}`) and the shortcode form both render the same
+    // definition-list markup: a labelled container holding a <dl>, never a
+    // surviving <table>. Only the shortcode form carries block-level bodies.
+    const tableFields = page.locator('.td-fields').filter({
+      has: page.getByText('params.ui.image_zoom', { exact: true }),
     });
-    await expect(fields).toHaveCount(2);
-    await expect(fields.locator('dl')).toHaveCount(2);
-    await expect(fields.locator('table')).toHaveCount(0);
-    const shortcodeFields = fields.last();
-    await expect(shortcodeFields.locator('dt')).toHaveCount(4);
-    await expect(shortcodeFields.locator('dd')).toHaveCount(4);
-    await expect(shortcodeFields).toContainText(
-      'theme.components.media.previewMaximumWidthInCharacters',
-    );
+    await expect(tableFields).toHaveCount(1);
+    await expect(tableFields.locator('dl')).toHaveCount(1);
+    await expect(tableFields.locator('table')).toHaveCount(0);
+    await expect(tableFields).toHaveAttribute('id', 'zoom-params');
+
+    const shortcodeFields = page.locator('.td-fields').filter({
+      has: page.getByText('Common pig flags', { exact: true }),
+    });
+    await expect(shortcodeFields).toHaveCount(1);
+    await expect(shortcodeFields.locator('dl')).toHaveCount(1);
+    await expect(shortcodeFields.locator('table')).toHaveCount(0);
+    await expect(shortcodeFields.locator('dt')).toHaveCount(3);
+    await expect(shortcodeFields.locator('dd')).toHaveCount(3);
+    // A field body is block-level Markdown: this one holds a code block.
+    await expect(shortcodeFields.locator('dd pre').first()).toBeVisible();
 
     await page.goto(fileTreePath, { waitUntil: 'domcontentloaded' });
     // FileTree is the ```filetree fence: a panel with a title bar, native
     // <details> directories, an aligned comment column, no tree role, no JS.
-    const fileTree = page.locator('#td-main-content .td-filetree').first();
+    const fileTree = page
+      .locator('#td-main-content .td-filetree')
+      .filter({ hasText: 'the content directory' })
+      .first();
     await expect(fileTree).toBeVisible();
     await expect(fileTree.locator('[role="tree"]')).toHaveCount(0);
     await expect(fileTree.locator('.td-filetree__title')).toHaveText(
-      /Repository structure|仓库结构/,
+      'the content directory',
     );
-    await expect(fileTree.locator('details')).toHaveCount(4);
+    await expect(fileTree.locator('details')).toHaveCount(5);
     await expect(fileTree.locator('details[open]')).toHaveCount(3);
-    await expect(fileTree).toContainText('Section landing page');
-    const collapsed = fileTree.locator('details').nth(3); // blog/ {open=false}
-    await expect(collapsed).toContainText('blog/');
+    await expect(fileTree).toContainText('the documentation tree');
+    // components/ carries {open=false}. Pin it by position: a `:not([open])`
+    // locator would re-resolve to the next closed directory after the click.
+    const collapsed = fileTree.locator('details').nth(2);
+    await expect(collapsed).toContainText('components/');
     await expect(collapsed).not.toHaveAttribute('open', '');
     await expect(collapsed.locator('ul')).toBeHidden();
-    await collapsed.locator('> summary').click();
+    // The comment-column splitter sits over the middle of the row, so click the
+    // name side rather than the summary's centre.
+    await collapsed.locator('> summary').click({ position: { x: 24, y: 12 } });
     await expect(collapsed).toHaveAttribute('open', '');
     await expect(collapsed.locator('ul')).toBeVisible();
     // Comment column starts at the same x on every row.
@@ -116,7 +133,11 @@ test.describe('Everyday content primitive guides', () => {
       );
     expect(new Set(commentLefts).size).toBe(1);
     // Long names truncate inside the name column instead of overflowing.
-    const longName = fileTree
+    const truncationTree = page
+      .locator('#td-main-content .td-filetree')
+      .filter({ hasText: 'truncation in both columns' })
+      .first();
+    const longName = truncationTree
       .locator('.td-filetree__name', {
         hasText: 'a-deliberately-long-runbook-filename',
       })
@@ -142,14 +163,18 @@ test.describe('Everyday content primitive guides', () => {
 
     await page.goto(galleryPath, { waitUntil: 'domcontentloaded' });
     const gallery = page.locator('#td-main-content ul.td-gallery').first();
-    await expect(gallery.locator(':scope > li')).toHaveCount(3);
-    await expect(gallery.locator('img')).toHaveCount(3);
+    await expect(gallery.locator(':scope > li')).toHaveCount(2);
+    await expect(gallery.locator('img')).toHaveCount(2);
     await expect(gallery.locator('img').first()).toHaveAttribute(
       'alt',
-      'OINK documentation overview',
+      "OINK's default documentation shell",
     );
-    await expect(gallery).toContainText(
-      'A global image resource with known intrinsic dimensions.',
+    // The shortest-form gallery carries no descriptions; the next one does.
+    const describedGallery = page
+      .locator('#td-main-content ul.td-gallery')
+      .nth(1);
+    await expect(describedGallery).toContainText(
+      'The default shell: sidebar, article, table of contents',
     );
   });
 
@@ -245,8 +270,10 @@ test.describe('Everyday content primitive guides', () => {
     await trigger.click();
     await expect.poll(() => dialog.evaluate((node) => node.open)).toBe(true);
     await expect(close).toBeFocused();
-    await expect(preview).toHaveAttribute('src', /\/images\/feedback\.png$/);
-    await expect(caption).toHaveText('The feedback controls under an article');
+    await expect(preview).toHaveAttribute('src', /release-note\.webp$/);
+    await expect(caption).toHaveText(
+      "The release card is generated from data/download and the page's release record",
+    );
     await page.keyboard.press('Escape');
     await expect.poll(() => dialog.evaluate((node) => node.open)).toBe(false);
     await expect(trigger).toBeFocused();
@@ -270,10 +297,10 @@ test.describe('Everyday content primitive guides', () => {
     request,
   }) => {
     await page.goto(imageZoomPath, { waitUntil: 'domcontentloaded' });
-    const linkedImage = page.getByAltText('Linked OINK image remains a link');
+    const linkedImage = page.getByAltText('Go to the highlights page');
     await expect(linkedImage.locator('xpath=..')).toHaveAttribute(
       'href',
-      '/docs/',
+      '/docs/about/features/',
     );
     await expect(linkedImage.locator('xpath=ancestor::button')).toHaveCount(0);
     await expect(linkedImage).not.toHaveAttribute(
@@ -282,19 +309,19 @@ test.describe('Everyday content primitive guides', () => {
     );
 
     const componentBundleURL = await page
-      .locator('script[src*="/js/main-"]')
+      .locator('script[src*="/js/page-"]')
       .getAttribute('src');
     const componentBundle = await (
       await request.get(componentBundleURL)
     ).text();
     expect(componentBundle).toContain('data-td-image-zoom-dialog');
 
-    await page.goto('/docs/configure/overview/', {
+    await page.goto('/docs/customize/config/', {
       waitUntil: 'domcontentloaded',
     });
     await expect(page.locator('[data-td-image-zoom-dialog]')).toHaveCount(0);
     const plainBundleURL = await page
-      .locator('script[src*="/js/main-"]')
+      .locator('script[src*="/js/page-"]')
       .getAttribute('src');
     const plainBundle = await (await request.get(plainBundleURL)).text();
     expect(plainBundle).not.toContain('data-td-image-zoom-dialog');
@@ -306,19 +333,14 @@ test.describe('Everyday content primitive guides', () => {
     try {
       await page.goto(galleryPath, { waitUntil: 'domcontentloaded' });
       await expect(page.locator('.td-image-zoom__trigger')).toHaveCount(0);
+      const firstList = page.locator('#td-main-content ul.td-gallery').first();
+      await expect(firstList.locator('> li')).toHaveCount(2);
+      await expect(firstList.locator('img')).toHaveCount(2);
+      await expect(firstList.locator('> li').first()).toBeVisible();
       await expect(
-        page.locator('#td-main-content ul.td-gallery > li'),
-      ).toHaveCount(3);
-      await expect(page.locator('#td-main-content ul.td-gallery img')).toHaveCount(
-        3,
-      );
-      await expect(
-        page.locator('#td-main-content ul.td-gallery > li').first(),
-      ).toBeVisible();
-      await expect(
-        page.locator('#td-main-content ul.td-gallery > li').first(),
+        page.locator('#td-main-content ul.td-gallery').nth(1),
       ).toContainText(
-        'A global image resource with known intrinsic dimensions.',
+        'The default shell: sidebar, article, table of contents',
       );
     } finally {
       await context.close();
@@ -336,8 +358,8 @@ test.describe('Everyday content primitive guides', () => {
     });
     await page.goto(imageZoomPath, { waitUntil: 'domcontentloaded' });
     await expect(page.locator('.td-image-zoom__trigger')).toHaveCount(0);
-    await expect(page.locator('.td-figure img')).toHaveCount(2);
-    await expect(page.locator('.td-figure figcaption')).toHaveCount(2);
+    await expect(page.locator('.td-figure img')).toHaveCount(6);
+    await expect(page.locator('.td-figure figcaption')).toHaveCount(6);
   });
 
   test('folded callouts keep a balanced summary row', async ({ page }) => {
@@ -345,7 +367,7 @@ test.describe('Everyday content primitive guides', () => {
     const folded = page.locator(
       '#td-main-content details.td-callout--collapsible:not([open])',
     );
-    await expect(folded).toHaveCount(2);
+    await expect(folded).toHaveCount(3);
 
     // The <summary> shares the td-callout__title class with the static title
     // element; the print-only title padding must not leak onto it and squash
@@ -372,7 +394,7 @@ test.describe('Everyday content primitive guides', () => {
     const rowHeight = (element) => element.getBoundingClientRect().height;
     const closedHeight = await summary.evaluate(rowHeight);
     await summary.click();
-    await expect(folded).toHaveCount(1);
+    await expect(folded).toHaveCount(2);
     expect(await summary.evaluate(rowHeight)).toBeCloseTo(closedHeight, 1);
   });
 });
@@ -398,7 +420,7 @@ test('Asciinema waits for its web font before measuring terminal cells', async (
     },
   );
 
-  await page.goto(layoutPath, {
+  await page.goto(asciinemaPath, {
     waitUntil: 'domcontentloaded',
   });
   await fontRequested;
@@ -407,7 +429,8 @@ test('Asciinema waits for its web font before measuring terminal cells', async (
   await expect(player).toHaveCount(0);
 
   releaseFont();
-  await expect(player).toHaveCount(1);
+  // The guide embeds several recordings; none may mount before the font lands.
+  await expect(player.first()).toBeAttached();
   await expect
     .poll(() =>
       page.evaluate(() => document.fonts.check('15px "IBM Plex Mono"')),

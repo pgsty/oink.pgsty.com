@@ -14,7 +14,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 const siteDir = fileURLToPath(new URL('../../', import.meta.url));
-const sections = ['docsy', 'oink', 'release', 'rss-probe'];
+const sections = ['oink', 'release', 'rss-probe'];
 const moduleWorkspace = path.join(siteDir, 'go.work');
 
 function itemLinks(file) {

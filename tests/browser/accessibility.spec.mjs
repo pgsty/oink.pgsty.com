@@ -4,8 +4,8 @@ import { expect, test } from '@playwright/test';
 const wcagTags = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
 const widths = [360, 768, 820, 1024, 1200, 1440];
 const locales = [
-  ['en', '/docs/configure/overview/'],
-  ['zh', '/zh/docs/configure/overview/'],
+  ['en', '/docs/customize/config/'],
+  ['zh', '/zh/docs/customize/config/'],
 ];
 const themes = ['light', 'dark'];
 const requestedPaths = (process.env.A11Y_PATHS || '')
@@ -72,9 +72,18 @@ function describeViolations(path, violations) {
     .join(`\n  page: ${path}\n`);
 }
 
+// Swagger UI and Redoc render their own DOM from the vendored upstream
+// distribution. Their markup carries WCAG AA violations this site cannot fix
+// without forking them (Redoc: colour contrast in operation descriptions;
+// Swagger UI: an unnamed server select and a scrollable version stamp), so they
+// are scoped out for the same reason as the Giscus widget above: the contract
+// covers surfaces maintained by this site.
+const thirdPartyWidgets = ['.td-redoc', '.td-swagger-ui'];
+
 async function scan(page, include) {
   const builder = new AxeBuilder({ page }).withTags(wcagTags);
   if (include) builder.include(include);
+  for (const selector of thirdPartyWidgets) builder.exclude(selector);
   return builder.analyze();
 }
 
@@ -144,13 +153,13 @@ test.describe('WCAG AA contract', () => {
   for (const { locale, path, theme, viewport } of [
     {
       locale: 'en',
-      path: '/docs/components/image-zoom/',
+      path: '/docs/components/image/',
       theme: 'light',
       viewport: { width: 1200, height: 900 },
     },
     {
       locale: 'zh',
-      path: '/zh/docs/components/image-zoom/',
+      path: '/zh/docs/components/image/',
       theme: 'dark',
       viewport: { width: 390, height: 844 },
     },
@@ -183,14 +192,14 @@ test.describe('WCAG AA contract', () => {
       path: '/',
       viewport: { width: 1280, height: 900 },
       open: async (page) => {
-        const parent = page.locator('.nav-menu__parent-link').first();
+        const parent = page.locator('.td-nav-menu__parent-link').first();
         await parent.focus();
         await expect(parent).toHaveAttribute('aria-expanded', 'true');
       },
     },
     {
       label: 'compact shell drawer',
-      path: '/docs/configure/overview/',
+      path: '/docs/customize/config/',
       viewport: { width: 390, height: 844 },
       open: async (page) => {
         await page.locator('[data-td-shell-drawer-open]:visible').click();
