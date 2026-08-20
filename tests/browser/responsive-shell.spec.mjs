@@ -94,10 +94,10 @@ for (const [locale, path, labels] of [
       '.td-nav-menu-zone > .td-nav-menu > .td-nav-menu__parent-link, .td-nav-menu-zone > .nav-link',
     );
     await expect(roots).toHaveText(labels);
-    // The homepage keeps one visible link tree at every width; only explicit
-    // non-home Landing layouts render the separate drawer entry.
-    await expect(page.locator('[data-td-landing-menu-toggle]')).toHaveCount(0);
-    await expect(page.locator('[data-td-landing-menu]')).toHaveCount(0);
+    // The drawer entry renders for Home and Landing but stays hidden until
+    // the below-md tier; the link tree itself is the visible navigation.
+    await expect(page.locator('[data-td-landing-menu-toggle]')).toBeHidden();
+    await expect(page.locator('[data-td-landing-menu]')).toBeHidden();
   });
 }
 
@@ -192,7 +192,7 @@ for (const [locale, path, roots] of [
     ],
   ],
 ]) {
-  test(`${locale} phone navbar keeps its centered link tree`, async ({
+  test(`${locale} phone navbar pairs the centered tree with its drawer entry`, async ({
     page,
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
@@ -200,12 +200,12 @@ for (const [locale, path, roots] of [
 
     const menuZone = page.locator('.td-nav-menu-zone');
     const search = page.locator('.td-nav-util-zone > .td-nav-search-box');
+    const toggle = page.locator('[data-td-landing-menu-toggle]');
+    const drawer = page.locator('[data-td-landing-menu]');
     await expect(menuZone).toBeVisible();
     await expect(search).toBeVisible();
-    // No drawer on the homepage: the link tree itself stays reachable as
-    // icon-only entries between the brand and the end-edge search action.
-    await expect(page.locator('[data-td-landing-menu-toggle]')).toHaveCount(0);
-    await expect(page.locator('[data-td-landing-menu]')).toHaveCount(0);
+    await expect(toggle).toBeVisible();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
     for (const [label, href] of roots) {
       const link = page.locator(
@@ -217,13 +217,38 @@ for (const [locale, path, roots] of [
       await expect(link.locator('.td-navbar-entry__label')).toBeHidden();
     }
 
-    const [searchBox, zoneBox] = await Promise.all([
+    // Search leads the two-control end edge; the drawer entry sits outermost.
+    const [searchBox, toggleBox, zoneBox] = await Promise.all([
       search.boundingBox(),
+      toggle.boundingBox(),
       menuZone.boundingBox(),
     ]);
     expect(searchBox).not.toBeNull();
+    expect(toggleBox).not.toBeNull();
     expect(zoneBox).not.toBeNull();
     expect(searchBox.x).toBeGreaterThan(zoneBox.x + zoneBox.width - 1);
+    expect(toggleBox.x).toBeGreaterThan(searchBox.x);
+
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    await expect(drawer).toBeVisible();
+    for (const [label, href] of roots) {
+      const link = drawer.locator(`a.td-site-nav__menu-link[href="${href}"]`);
+      await expect(link).toBeVisible();
+      await expect(link).toContainText(label);
+    }
+    await page.keyboard.press('Escape');
+    await expect(drawer).toBeHidden();
+    await expect(toggle).toBeFocused();
+
+    // The pad tier keeps the centered tree and the full utility cluster with
+    // no menu button.
+    await page.setViewportSize({ width: 820, height: 900 });
+    await expect(toggle).toBeHidden();
+    await expect(menuZone).toBeVisible();
+    await expect(
+      page.locator('.td-nav-util-zone > .td-nav-theme-menu'),
+    ).toBeVisible();
   });
 }
 

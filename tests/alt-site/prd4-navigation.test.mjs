@@ -107,9 +107,14 @@ for (const [deployment, baseURL, prefix] of [
           .map((entry) => entry.label),
         [labels[0], labels[2], labels[3], labels[4]],
       );
-      // The compact breakpoint reuses these semantic links as icons; it does
-      // not render a second mobile navigation tree.
-      assert.deepEqual(navbarEntries(home, 'mobile'), []);
+      // The below-md drawer projects the same top-level menu authority; the
+      // centered icon links stay the visible tree at every width.
+      assert.deepEqual(
+        navbarEntries(home, 'mobile')
+          .filter((entry) => entry.level === 0)
+          .map((entry) => entry.label),
+        [labels[0], labels[2], labels[3], labels[4]],
+      );
       assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 0);
       assert.equal(
         home.querySelectorAll('[data-td-navbar-accordion-toggle]').length,
@@ -221,7 +226,26 @@ test('flat legacy fixture emits links without disclosure controls', () => {
   });
   assert.doesNotMatch(output, /only one interactive child level is supported/);
   const home = documentAt(outDir, '/');
-  assert.deepEqual(navbarEntries(home, 'mobile'), []);
+  assert.deepEqual(
+    navbarEntries(home, 'mobile').map(({ label, href, level, target, rel }) => ({
+      label,
+      href,
+      level,
+      target,
+      rel,
+    })),
+    [
+      { label: 'Docs', href: '/preview/docs/', level: 0, target: '', rel: '' },
+      { label: 'Blog', href: '/preview/blog/', level: 0, target: '', rel: '' },
+      {
+        label: 'Issues',
+        href: 'https://github.com/pgsty/oink/issues',
+        level: 0,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      },
+    ],
+  );
   assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 0);
   assert.equal(
     home.querySelectorAll('[data-td-navbar-accordion-toggle]').length,
@@ -256,7 +280,7 @@ test('deep fixture warns and degrades to a static group', () => {
   });
   assert.match(output, /only one interactive child level is supported/);
   const home = documentAt(outDir, '/');
-  assert.deepEqual(navbarEntries(home, 'mobile'), []);
+  assert.ok(navbarEntries(home, 'mobile').length > 0);
   assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 0);
   assert.equal(
     home.querySelectorAll('[data-td-navbar-accordion-toggle]').length,
@@ -270,7 +294,7 @@ test('deep fixture warns and degrades to a static group', () => {
     parent?.getAttribute('aria-controls'),
     home.querySelector('[data-td-navbar-panel]')?.id,
   );
-  assert.equal(home.querySelectorAll('[data-td-navbar-group]').length, 1);
+  assert.equal(home.querySelectorAll('[data-td-navbar-group]').length, 2);
 
   const desktop = navbarEntries(home);
   const tutorial = desktop.find((entry) => entry.label === 'Tutorials');
