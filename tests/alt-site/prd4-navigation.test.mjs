@@ -146,7 +146,9 @@ for (const [deployment, baseURL, prefix] of [
 
       const tutorial = desktop.find((entry) => entry.label === labels[1]);
       assert.equal(tutorial.level, 1);
-      assert.ok(tutorial.description.length > 10);
+      // Menu descriptions are configuration data only; panels render rows of
+      // one icon and one title.
+      assert.equal(tutorial.description, '');
       // External-link behavior is asserted by the flat fixture, which still
       // configures a labelled external entry. The live site only has the
       // icon-only GitHub link, which is not a labelled navbar entry.

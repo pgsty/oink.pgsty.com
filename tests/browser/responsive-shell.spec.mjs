@@ -156,9 +156,8 @@ test('desktop navbar opens a parent panel on focus without replacing its link', 
   await expect(panel).toBeVisible();
   await parent.press('ArrowDown');
   await expect(panel.locator('a').first()).toBeFocused();
-  await expect(
-    panel.locator('.td-navbar-entry__description').first(),
-  ).toHaveText(/What OINK is, highlights, showcase/);
+  // One icon and one title per row; the retired description never renders.
+  await expect(panel.locator('.td-navbar-entry__description')).toHaveCount(0);
 
   await page.keyboard.press('Escape');
   await expect(panel).toBeHidden();
