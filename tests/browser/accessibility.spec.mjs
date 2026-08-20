@@ -87,6 +87,30 @@ async function scan(page, include) {
   return builder.analyze();
 }
 
+async function waitForStableMarkmaps(page) {
+  if (!(await page.locator('.language-markmap, .markmap').count())) return;
+
+  await page.waitForFunction(
+    () => {
+      const sourceBlocks = document.querySelectorAll('.language-markmap');
+      const maps = [...document.querySelectorAll('.markmap')];
+      const labels = [...document.querySelectorAll('.markmap svg foreignObject')];
+
+      return (
+        sourceBlocks.length === 0 &&
+        maps.length > 0 &&
+        maps.every((map) => map.querySelector('svg foreignObject')) &&
+        labels.length > 0 &&
+        labels.every(
+          (label) => Number.parseFloat(getComputedStyle(label).opacity) >= 0.999,
+        )
+      );
+    },
+    undefined,
+    { timeout: 10_000 },
+  );
+}
+
 test.describe('WCAG AA contract', () => {
   test.beforeEach(async ({ page }) => {
     // Giscus owns its cross-origin widget DOM. Keep the OINK accessibility
@@ -109,15 +133,10 @@ test.describe('WCAG AA contract', () => {
         failures.push(`${path}: HTTP ${response?.status() || 'no response'}`);
         continue;
       }
-      // The markmap runtime fades labels in through a d3 transition; scanning
-      // mid-fade reads a blended foreground and reports phantom contrast
-      // failures. Wait for the rendered tree, then let the fade finish.
-      if (await page.locator('.language-markmap').count()) {
-        await page
-          .waitForSelector('svg foreignObject', { timeout: 5000 })
-          .catch(() => {});
-        await page.waitForTimeout(800);
-      }
+      // Markmap replaces every source block asynchronously and fades each SVG
+      // label through a d3 transition. On slower CI workers, a fixed delay can
+      // scan later maps mid-fade and report phantom contrast failures.
+      await waitForStableMarkmaps(page);
       const { violations } = await scan(page);
       if (violations.length) {
         failures.push(`${path}\n${describeViolations(path, violations)}`);
