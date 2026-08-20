@@ -6,7 +6,7 @@ search_keywords: [OINK cases, showcase, production sites, Pigsty, Hugo examples]
 weight: 40
 type: blog
 icon: fa-solid fa-layer-group
-images: [/images/case.svg]
+images: [/images/oink.webp]
 sidebar_enabled: false
 sidebar_root_link_self: true
 navbar_enabled: true
