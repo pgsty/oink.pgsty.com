@@ -234,8 +234,10 @@ Docs/Book pager follows sidebar preorder; Blog uses weight then reverse date;
 Every rendered footer style keeps an icon-only utility dock at the end of its
 bottom line: version, language, theme, then keyboard help. Its menus open upward;
 the version trigger never exposes the current branch or release label. The fat
-footer's collapse chevron follows the dock. These global controls do not render
-in the sidebar footer, and `footer_style: none` removes the whole bottom line.
+footer's collapse chevron follows the dock. Below `lg` the bottom line gives up
+its copyright/center/dock columns and stacks them as three centered full-width
+rows, the dock last. These global controls do not render in the sidebar footer,
+and `footer_style: none` removes the whole bottom line.
 
 There is no archive shell, arbitrary-depth flyout, second navigation authority,
 query upload, or browser compatibility shim for removed config. Feedback emits
