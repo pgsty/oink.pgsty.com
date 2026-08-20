@@ -1,0 +1,155 @@
+sections:
+  - type: hero
+    data:
+      align: center
+      eyebrow: OINK 0.5.0 · Documentation framework
+      title_lines:
+        - Markdown is enough.
+      title_size: 5.4rem
+      lead: One binary. One Markdown source. A complete documentation site.
+      actions:
+        - label: Get started
+          url: docs/start/
+          icon: fa-solid fa-arrow-right
+          style: primary
+        - label: See the components
+          url: docs/components/
+          style: ghost
+      note: The page you are reading was built with it.
+
+  - type: code-plate
+    key: home-preview
+    data:
+      eyebrow: Components
+      title: What you write is what you get.
+      desc: Callouts, steps, tabs — plain Markdown plus one attribute line, still readable on GitHub.
+      aria_label: Markdown source example
+      lang: markdown
+      code: |
+        > [!TIP] Only Markdown
+        > Callouts, steps, and tabs are ordinary syntax.
+
+        1. Write Markdown
+        2. Run `hugo`
+        3. Deploy `public/`
+        {.steps}
+
+        ```bash {tab="macOS"}
+        brew install hugo
+        ```
+
+        ```bash {tab="Linux"}
+        apt install hugo
+        ```
+
+  - type: metrics
+    key: home-metrics
+    data:
+      animate: true
+      items:
+        - { value: 0, label: npm dependencies }
+        - { value: 0, label: CDN requests }
+        - { value: 32, label: UI languages }
+        - { value: 11, label: sites in production }
+
+  - type: capabilities
+    key: home-why
+    data:
+      eyebrow: Why
+      title: Fewer dependencies. More certainty.
+      items:
+        - ref: 01
+          title: One binary
+          url: docs/about/features/
+          motto: No Node, no npm, no CDN
+          value: The full site builds with no network. Development, CI, and production take one path.
+          visual:
+            type: code
+            aria_label: Build example
+            title: build.sh
+            lines:
+              - { class: c, prefix: '$ ', text: 'hugo --gc --minify' }
+              - { class: ok, prefix: '✓ ', text: assets bundled locally }
+              - { class: ok, prefix: '✓ ', text: multilingual routes generated }
+              - { class: ok, prefix: '✓ ', text: public/ ready to deploy }
+        - ref: 02
+          title: One source, four outputs
+          url: docs/customize/agents/
+          motto: HTML · Print · Markdown · llms.txt
+          value: The same page for readers, search engines, and AI. Every component has a defined shape in all four.
+          visual:
+            type: components
+            aria_label: Four output formats
+            columns: 2
+            items:
+              - { icon: fa-solid fa-globe, title: HTML, detail: interactive shell }
+              - { icon: fa-solid fa-print, title: Print, detail: whole-book export }
+              - { icon: fa-brands fa-markdown, title: Markdown, detail: source-level output }
+              - { icon: fa-solid fa-robot, title: llms.txt, detail: agent index }
+        - ref: 03
+          title: A complete shell
+          url: docs/customize/keyboard/
+          motto: Search · ⌘K · languages · versions · keyboard
+          value: Large sites stay navigable. Reader choices are stored locally and sent nowhere.
+          visual:
+            type: shell
+            brand: OINK
+            search: Search or run a command
+            shortcut: ⌘ K
+            section: Docs
+            section_icon: fa-solid fa-book
+            items:
+              - { label: Get started, active: true }
+              - { label: Authoring }
+              - { label: Components }
+              - { label: Customization }
+            eyebrow: Engineering docs / long haul
+            title_lines: [Large sites, stay navigable.]
+            rules: ['88%', '72%', '55%']
+
+  - type: cards
+    key: home-complete
+    data:
+      eyebrow: Complete
+      title: Nothing missing.
+      columns: 3
+      items:
+        - { title: Full-text search, icon: fa-solid fa-magnifying-glass, desc: "Local index, CJK aware, one keystroke away.", url: docs/customize/search/ }
+        - { title: Languages, icon: fa-solid fa-language, desc: "32 UI locales; content paired page by page.", url: docs/customize/i18n/ }
+        - { title: Versions, icon: fa-solid fa-code-branch, desc: "Version menu and archive banner.", url: docs/customize/versions/ }
+        - { title: Book mode, icon: fa-solid fa-book, desc: "Numbered figures and equations, cross-references, whole-book print.", url: docs/write/book/ }
+        - { title: Blog and RSS, icon: fa-solid fa-rss, desc: "Timeline, taxonomies, feeds.", url: docs/write/blog/ }
+        - { title: OpenAPI, icon: fa-solid fa-plug, desc: "Swagger UI and ReDoc, rendered locally.", url: docs/write/openapi/ }
+
+  - type: logo-wall
+    key: home-sites
+    data:
+      eyebrow: Production
+      title: Already in use.
+      layout: grid
+      items:
+        - { title: Pigsty, icon: fa-solid fa-database, url: 'https://pigsty.io/' }
+        - { title: Pigsty (zh), icon: fa-solid fa-database, url: 'https://pigsty.cc/' }
+        - { title: PIG, icon: fa-solid fa-box, url: 'https://pig.pgsty.com/' }
+        - { title: SILO, icon: fa-solid fa-hard-drive, url: 'https://silo.pgsty.com/' }
+        - { title: PG Exporter, icon: fa-solid fa-chart-line, url: 'https://exp.pgsty.com/' }
+        - { title: pgsql.cc, icon: fa-solid fa-server, url: 'https://pgsql.cc/' }
+        - { title: PGSTY, icon: fa-solid fa-building, url: 'https://pgsty.com/' }
+        - { title: OINK, icon: fa-solid fa-book, url: 'https://oink.pgsty.com/' }
+
+  - type: command-box
+    key: home-install
+    data:
+      eyebrow: Install
+      code: hugo mod get github.com/pgsty/oink
+      lang: bash
+      note: Hugo Extended ≥ 0.160.1. No package.json, no node_modules.
+
+  - type: cta
+    key: home-cta
+    data:
+      title: Start here.
+      text: Clone this site, change three settings, and let hugo do the rest.
+      label: Get started
+      url: docs/start/
+      style: primary

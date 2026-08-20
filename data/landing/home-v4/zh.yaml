@@ -1,0 +1,563 @@
+# OINK 首页第四版（只有站点数据，不改主题）。
+#
+# 下面每个分区都是 OINK 0.5.0 自带的 landing 分区（hero、metrics、
+# capabilities、cards、logo-wall、steps、code-plate、pricing-compare、
+# bar-chart、case-study、timeline、principles、faq、cta），全部由本文件驱动。
+# 所有数字与说法都取自本站文档（docs/about/、docs/about/features/、
+# docs/about/showcase/），读者可以逐条核对。
+#
+# 叙事顺序：承诺 → 证据 → 四个理由 → 里面有什么 → 横向对比 →
+# 谁在用 → 怎么开始 → 原则 → 常见问题 → 行动号召。
+
+sections:
+  - hero
+  - { type: metrics,         key: facts }
+  - { type: capabilities,    key: why }
+  - { type: cards,           key: content_types }
+  - { type: logo-wall,       key: components }
+  - { type: steps,           key: start }
+  - { type: code-plate,      key: config }
+  - { type: pricing-compare, key: compare }
+  - { type: bar-chart,       key: scale }
+  - { type: logo-wall,       key: production }
+  - { type: case-study,      key: migration }
+  - { type: timeline,        key: releases }
+  - { type: principles,      key: principles }
+  - { type: faq,             key: faq }
+  - { type: cta,             key: cta }
+
+# ---------------------------------------------------------------- hero ------
+hero:
+  eyebrow: OINK 0.5.0 · Open · Indexed · Navigable · Knowledge
+  title_lines:
+    - 技术文档站，
+    - 只需要一个 Hugo。
+  title_size: 4.4rem
+  lead: >-
+    OINK 把一棵 Markdown 目录树变成完整的文档系统：文档、博客、书籍、发布页与
+    API 参考，内置本地全文检索、32 种界面语言、多版本、打印视图与面向 AI
+    助手的输出。构建依赖只有 Hugo Extended——没有 Node.js、没有 npm、
+    没有 CDN，构建期不需要联网。
+  note: >-
+    这一页本身就是一份 YAML 文件，由主题自带的 landing 分区渲染，
+    没有为它写过任何模板。
+  note_icon: fa-solid fa-file-code
+  image:
+    light: images/hero-light.webp
+    dark: images/hero-dark.webp
+    alt: Markdown 内容、配置与随主题分发的资源经过一次 Hugo 构建汇成静态文档站
+  actions:
+    - label: 十分钟上手
+      url: docs/start/
+      icon: fa-solid fa-rocket
+      style: primary
+    - label: 组件总览
+      url: docs/components/
+      icon: fa-solid fa-cubes
+      style: ghost
+    - label: GitHub
+      url: https://github.com/pgsty/oink
+      icon: fa-brands fa-github
+      style: ghost
+      external: true
+  detail:
+    label: 0.5.0 有什么变化 —— 组件 API v5 与收敛后的配置
+    url: blog/release/0.5.0/
+    icon: fa-solid fa-newspaper
+
+# ------------------------------------------------------------- metrics ------
+facts:
+  eyebrow: 用数字说话
+  title: 先看事实，再谈形容词
+  text: >-
+    每个数字都链接到讲它的页面。本站同时是主题的回归测试站：你在这里读到的，
+    就是主题实际交付的。
+  animate: true
+  columns: 6
+  link_label: 详情
+  items:
+    - value: 1
+      label: 个构建依赖
+      desc: Hugo Extended ≥ 0.160.1
+      url: docs/start/
+    - value: 0
+      label: 个 npm 包
+      desc: 无 PostCSS、无打包器、无 CDN
+      url: docs/about/features/
+    - value: 32
+      label: 种界面语言
+      desc: en · zh-cn · zh-tw 经人工审校
+      url: docs/customize/i18n/
+    - value: 4
+      label: 种页面输出
+      desc: HTML · 打印 · Markdown · llms.txt
+      url: docs/customize/agents/
+    - value: 11
+      label: 个生产站点
+      desc: 从两页到一千五百页
+      url: docs/about/showcase/
+    - value: 28
+      label: 个随主题分发的运行时
+      desc: 版本、许可证与 SHA-256 记在 VENDOR.json
+      url: docs/about/license/
+
+# -------------------------------------------------------- capabilities ------
+why:
+  eyebrow: 为什么是 OINK
+  title: 四件普通 Hugo 主题通常给不了你的事
+  text: >-
+    多数文档主题只是一层皮。OINK 是一套文档<em>系统</em>：写作模型、阅读外壳、
+    输出矩阵与交付方式一起设计，每一项都能在本站验证。
+  items:
+    - ref: 01 / MARKDOWN 原生
+      title: 组件写在 Markdown 里，而不是另一套模板语言
+      url: docs/components/
+      motto: 在 GitHub 上可读，在站点上完整。
+      bullets:
+        - >-
+          [提示块](docs/components/callout/)是 `> [!NOTE]` 块引用，
+          [步骤](docs/components/steps/)与[卡片](docs/components/cards/)是列表加
+          `{.steps}` / `{.cards}`，[参数表](docs/components/fields/)是表格加一行
+          `{.fields}`，[图注](docs/components/image/)是图片下面一行 `{caption="…"}`。
+        - >-
+          [标签页](docs/components/tabs/)是几个相邻围栏各带一个 `{tab="…"}`；
+          [文件树](docs/components/filetree/)、[画廊](docs/components/gallery/)、
+          [Mermaid](docs/components/mermaid/) 与 [ECharts](docs/components/echarts/)
+          是以语言命名的数据围栏。
+        - >-
+          29 个 shortcode 覆盖原生形态表达不了的场景，而且每一个都在构建期校验参数：
+          写错一个键名是构建错误，不是页面上悄悄缺一块。
+      value: >-
+        内容离开主题也活得下去：在 GitHub 或任何 Markdown 阅读器里，它退化为块引用、
+        表格、列表与代码块。什么都不丢，也不被锁定。
+      visual:
+        type: code
+        title: guide.md
+        aria_label: 含提示块、步骤列表与标签页的 Markdown 源码
+        lines:
+          - { class: k,  prefix: '> ', text: '[!TIP] 只需一行属性' }
+          - { class: c,  prefix: '> ', text: '提示块、步骤与标签页仍然是普通 Markdown。' }
+          - { text: '' }
+          - { class: p,  prefix: '1. ', text: '写 Markdown' }
+          - { class: p,  prefix: '2. ', text: '运行 hugo' }
+          - { class: p,  prefix: '3. ', text: '部署 public/' }
+          - { class: k,  text: '{.steps}' }
+          - { text: '' }
+          - { class: s,  text: '```bash {tab="macOS"}' }
+          - { text: 'brew install hugo' }
+          - { class: s,  text: '```' }
+          - { class: s,  text: '```bash {tab="Linux"}' }
+          - { text: 'apt install hugo' }
+          - { class: s,  text: '```' }
+    - ref: 02 / 只要 HUGO · 本地优先
+      title: 一个二进制构建一切，而且离线
+      url: docs/about/features/
+      motto: 没有 Node，没有 npm，没有 CDN；宁可构建失败，也不偷偷连出去。
+      bullets:
+        - >-
+          消费站点的构建依赖只有 [Hugo Extended 0.160.1 或更新版本](docs/start/)。
+          SCSS 由 Hugo 内置编译，没有 PostCSS、没有 webpack、没有构建期下载。
+        - >-
+          Bootstrap、Font Awesome、四款字体、Lunr、Mermaid、KaTeX、Markmap、
+          Swagger UI、Redoc、Asciinema、ECharts——[28 个运行时](docs/about/license/)
+          全部提交在主题仓库，`VENDOR.json` 逐项记录版本、来源、许可证与 SHA-256，
+          并且只在用到它的页面下发。
+        - >-
+          凡是可能引起网络请求的功能——PlantUML 服务器、draw.io 服务器、
+          Algolia 密钥——站点不显式配置就构建失败。没有任何东西会自作主张连出去。
+      value: >-
+        从笔记本到 CI 再到生产，只有一条确定性的路径。不能出网的构建机是被支持的场景，
+        不是边缘情况。
+      visual:
+        type: code
+        title: ci.log
+        aria_label: 消费站点的构建日志
+        lines:
+          - { class: p,  prefix: '$ ', text: 'hugo --gc --minify' }
+          - { class: ok, prefix: '✓ ', text: '0 个 npm 包，构建期 0 次网络请求' }
+          - { class: ok, prefix: '✓ ', text: '28 个随主题分发的运行时校验通过（VENDOR.json）' }
+          - { class: ok, prefix: '✓ ', text: '2 种语言 · 每种语言一份检索索引' }
+          - { class: ok, prefix: '✓ ', text: 'HTML · 打印 · Markdown · llms.txt' }
+          - { class: c,  prefix: '# ', text: 'public/ 已就绪——放到任何地方托管' }
+    - ref: 03 / 面向大站的阅读外壳
+      title: 一千五百页也撑得住的导航
+      url: docs/customize/navigation/
+      motto: 侧栏树、页内目录、⌘K 命令面板、键盘、检索——文档、博客、书籍共用一套外壳
+      bullets:
+        - >-
+          [本地全文检索](docs/customize/search/)：拉丁文字用 Lunr，中日韩文本用子串回退，
+          查询内容不离开浏览器。页面可以用 `search_boost` 调权重、`search_keywords`
+          补同义词。
+        - >-
+          [命令面板](docs/customize/panel/)——`⌘K` 打开，`/` 进入搜索，`\` 进入命令——
+          加上[单键导航](docs/customize/keyboard/)：`w s a d` 在树上移动，`q e`
+          上下篇，`j k` 沿目录跳转，`t` 切主题，`l` 切语言。
+        - >-
+          [32 种界面语言](docs/customize/i18n/)、缺译回退与 RTL，
+          带归档横幅的[版本菜单](docs/customize/versions/)，深色模式、面包屑、翻页、
+          打印视图——全部是外壳的一部分，没有一样是插件。
+      value: >-
+        读者的偏好——主题、语言、侧栏宽度、面板历史——存在浏览器里，不发往任何地方。
+      visual:
+        type: shell
+        brand: OINK
+        search: 搜索或运行命令
+        shortcut: ⌘ K
+        section: 文档
+        section_icon: fa-solid fa-book
+        items:
+          - { label: 简介 }
+          - { label: 十分钟上手, active: true }
+          - { label: 写作 }
+          - { label: 组件 }
+          - { label: 定制 }
+          - { label: 运维 }
+        eyebrow: 技术文档 / 长期维护
+        title_lines: [站点再大，, 也能走得动。]
+        rules: ['88%', '72%', '55%']
+    - ref: 04 / 一份内容 · 四种输出
+      title: 同一页面，同时面向读者、纸张、搜索引擎与 AI
+      url: docs/customize/agents/
+      motto: HTML · 打印 · Markdown · llms.txt——每个组件在四种输出下都有确定的形态
+      bullets:
+        - >-
+          交互式 HTML 给读者；[打印视图](docs/customize/print/)按栏目或整本书生成，
+          去掉控件、展开折叠块。
+        - >-
+          每个页面旁边多一份 `index.md`，`<head>` 里用 `rel="alternate"` 指过去；
+          站点根目录再生成一份 [`llms.txt`](docs/customize/agents/) 清单——同样的内容，
+          换成 AI 助手最好读的形式。
+        - >-
+          用哪几种输出由站点在 `outputs` 里决定，主题从不替站点决定；
+          「在 ChatGPT / Claude 中打开」默认关闭，因为它会把当前 URL 交给第三方。
+      value: >-
+        写一次，同时交付给浏览器、PDF、Markdown 阅读器与 AI 助手——一次构建，
+        没有第二套工具链。
+      visual:
+        type: components
+        aria_label: 四种输出格式
+        columns: 2
+        items:
+          - { icon: fa-solid fa-globe,       title: HTML,      detail: 交互式阅读外壳 }
+          - { icon: fa-solid fa-print,       title: 打印,      detail: 按栏目或整本书, url: docs/customize/print/ }
+          - { icon: fa-brands fa-markdown,   title: Markdown,  detail: 每页旁边一份 index.md, url: docs/customize/agents/ }
+          - { icon: fa-solid fa-robot,       title: llms.txt,  detail: 给 AI 助手的站点清单, url: docs/customize/agents/ }
+
+# --------------------------------------------------------------- cards ------
+content_types:
+  eyebrow: 不止文档
+  title: 六类内容，一套主题
+  text: >-
+    文档站很少只有文档。那些通常需要第二个工具的内容形态在这里是内置的，
+    并且共用同一个外壳、同一份检索索引、同一组语言与同样的四种输出。
+  columns: 3
+  link_label: 阅读指南
+  items:
+    - title: 文档
+      meta: 阅读外壳
+      icon: fa-solid fa-book
+      desc: >-
+        侧栏树来自内容目录或显式的 `data/docs_nav.json`，页内目录、面包屑、翻页、
+        编辑与历史链接、反馈与评论——其它一切内容类型复用的就是这套文档外壳。
+      url: docs/write/pages/
+    - title: 博客与 RSS
+      meta: 更新
+      icon: fa-solid fa-rss
+      desc: >-
+        按时间排列的文章、按数量排序的标签面板、按语言分别生成的订阅源，
+        以及读起来像发布说明的发布说明。
+      url: docs/write/blog/
+    - title: 书籍
+      meta: 长篇
+      icon: fa-solid fa-book-open
+      desc: >-
+        章节编号，图 / 表 / 式 / 例用 `{#id num=}` 编号、用 `xref` 交叉引用，
+        自动生成目录与图表清单，整本书可打印。
+      url: docs/write/book/
+    - title: 发布与下载
+      meta: 发布
+      icon: fa-solid fa-download
+      desc: >-
+        `data/download/*.yaml` 生成发布卡片、资产表与校验和。发布状态——待发布、
+        已发布、已归档——是数据，不是一套复制粘贴的仪式。
+      url: docs/write/releases/
+    - title: Landing 页
+      meta: 展示
+      icon: fa-solid fa-layer-group
+      desc: >-
+        `data/home/<lang>.yaml` 用二十一种服务端渲染的分区拼装首页；任何页面加上
+        `layout: landing` 也一样。你正在读的这一页就是其中之一。
+      url: docs/customize/home/
+    - title: API 参考
+      meta: OpenAPI
+      icon: fa-solid fa-plug
+      desc: >-
+        Swagger UI 与 Redoc 都是本地运行时。规范文件放在仓库里，与正文并排渲染，
+        和站点其它部分一样可以离线工作。
+      url: docs/write/openapi/
+
+# ----------------------------------------------------------- logo-wall ------
+components:
+  eyebrow: 组件
+  title: 面向工程内容的组件，只在用到的页面加载
+  text: >-
+    每个组件都有自己的一页——先源码后效果——并且在 HTML、打印、Markdown 与 RSS
+    下都有确定的形态。图表与图示运行时随主题分发、按页面挂载：没有图表的页面
+    永远不会下载图表库。
+  layout: grid
+  columns: 4
+  items:
+    - { title: 提示块,       icon: fa-solid fa-circle-info,          desc: '`> [!NOTE]` · 十种类型',     url: docs/components/callout/ }
+    - { title: 标签页,       icon: fa-solid fa-folder,               desc: '围栏加 `{tab=}`',            url: docs/components/tabs/ }
+    - { title: 步骤,         icon: fa-solid fa-list-ol,              desc: '列表加 `{.steps}`',          url: docs/components/steps/ }
+    - { title: 卡片,         icon: fa-solid fa-table-cells-large,    desc: '列表加 `{.cards}`',          url: docs/components/cards/ }
+    - { title: 参数表,       icon: fa-solid fa-table-list,           desc: '表格加 `{.fields}`',         url: docs/components/fields/ }
+    - { title: 代码块,       icon: fa-solid fa-code,                 desc: 'Chroma · 行号 · 复制 · 折叠', url: docs/components/code/ }
+    - { title: 文件树,       icon: fa-solid fa-folder-tree,          desc: '`filetree` 数据围栏',        url: docs/components/filetree/ }
+    - { title: 画廊,         icon: fa-solid fa-images,               desc: '`gallery` 数据围栏',         url: docs/components/gallery/ }
+    - { title: 表格,         icon: fa-solid fa-table,                desc: '图注 · 编号 · 矩阵',         url: docs/components/table/ }
+    - { title: Mermaid,      icon: fa-solid fa-diagram-project,      desc: '本地图示运行时',             url: docs/components/mermaid/ }
+    - { title: 数学公式,     icon: fa-solid fa-square-root-variable, desc: 'KaTeX 构建期渲染',           url: docs/components/math/ }
+    - { title: Markmap,      icon: fa-solid fa-sitemap,              desc: '标题生成思维导图',           url: docs/components/markmap/ }
+    - { title: ECharts,      icon: fa-solid fa-chart-line,           desc: '`echarts` 数据围栏',         url: docs/components/echarts/ }
+    - { title: 信息图,       icon: fa-solid fa-chart-pie,            desc: '声明式数据围栏',             url: docs/components/infographic/ }
+    - { title: Asciinema,    icon: fa-solid fa-terminal,             desc: '终端录像，本地播放',         url: docs/components/asciinema/ }
+    - { title: OpenAPI,      icon: fa-solid fa-plug,                 desc: 'Swagger UI · Redoc',         url: docs/write/openapi/ }
+
+# --------------------------------------------------------------- steps ------
+start:
+  eyebrow: 开始
+  title: 三步得到一个双语文档站
+  text: >-
+    你不必从空目录开始。克隆你正在读的这个站点——它是主题的回归站，
+    每个组件与每种页面类型都已经在里面——然后删掉不需要的部分。
+  items:
+    - title: 克隆本站并预览
+      icon: fa-solid fa-code-branch
+      desc: >-
+        需要 Git、Go 与 Hugo Extended ≥ 0.160.1，不需要 Node.js。预览带实时重载，
+        本地检索索引按需生成。
+      cmd: { code: 'git clone https://github.com/pgsty/oink.pgsty.com my-docs && cd my-docs && hugo server' }
+    - title: 换成你自己的
+      icon: fa-solid fa-pen-nib
+      desc: >-
+        改掉 `hugo.yml` 里的 `baseURL`、`title` 与 `github_repo`，替换 `content/`
+        下的页面，保留需要的语言。按[上手指南](docs/start/)的说法，十分钟。
+      cmd: { code: 'hugo mod get github.com/pgsty/oink@v0.5.0' }
+    - title: 构建并发布 `public/`
+      icon: fa-solid fa-cloud-arrow-up
+      desc: >-
+        一条命令生成整个站点。静态产物可以放到 GitHub Pages、对象存储或普通
+        Web 服务器——[部署指南](docs/admin/deploy/)分别讲了怎么做。
+      cmd: { code: 'hugo --gc --minify' }
+
+# ---------------------------------------------------------- code-plate ------
+config:
+  eyebrow: 配置
+  title: hugo.yaml —— 全部构建配置
+  text: >-
+    引入模块，选择输出，打开你要的功能。交互功能默认关闭、站点显式开启；
+    被重命名或移除的键会让构建失败并给出新名字——版本之间没有静默漂移。
+  aria_label: 一个 OINK 站点最小的 hugo.yaml
+  lang: yaml
+  code: |
+    module:
+      imports:
+        - path: github.com/pgsty/oink        # 在 go.mod 里固定版本，没有 node_modules
+
+    outputs:                                 # 由站点选择，主题从不替站点决定
+      home:    [HTML, RSS, markdown, LLMS]
+      page:    [HTML, markdown]
+      section: [HTML, RSS, print, markdown]
+
+    params:
+      offline_search: true                   # 每种语言一份 Lunr 索引，由 Hugo 生成
+      ui:
+        dark_mode: true
+        image_zoom: true
+        keyboard_nav: true                   # w s a d · q e · j k · t · l
+
+# ----------------------------------------------------- pricing-compare ------
+compare:
+  eyebrow: 横向看
+  title: 与其它文档方案的差别
+  text: >-
+    只列结构性差别，且只写能从各项目自身文档与仓库确认的部分。各项目的版本会变动，
+    选型前以其当前文档为准；细节与补充说明见[简介页](docs/about/)。
+  feature_label: 维度
+  tiers: [OINK, Docsy, Hextra, Docusaurus]
+  groups:
+    - name: 构建与交付
+      rows:
+        - { name: 构建工具,                cells: ['Hugo Extended，单个二进制', 'Hugo Extended + Node / npm', 'Hugo', 'Node.js 工具链'] }
+        - { name: 消费站点要不要 npm,      cells: [N, Y, N, Y] }
+        - { name: 前端资源从哪来,          cells: ['全部提交在主题仓库，VENDOR.json 可审计', 'node_modules 与 CDN', '预编译产物提交在仓库', 'npm 依赖'] }
+        - { name: 不联网也能构建,          cells: [Y, N, Y, N] }
+    - name: 写作
+      rows:
+        - { name: 组件写法,                cells: ['Markdown 原生形态为主，29 个 shortcode 兜底', 'shortcode（19 个）', 'shortcode（29 个），提示块有原生形态', 'MDX（React 组件）'] }
+        - { name: 书籍编号与交叉引用,      cells: [Y, N, N, '需插件或自建'] }
+        - { name: 发布与下载页,            cells: [Y, N, N, '需插件或自建'] }
+        - { name: 数据驱动的落地页,        cells: [Y, N, N, '自写 React 页面'] }
+    - name: 覆盖面
+      rows:
+        - { name: 多语言,                  cells: ['Hugo 多语言 + 32 个界面语言包', 'Hugo 多语言', 'Hugo 多语言 + 21 个界面语言包', '内置 i18n 框架'] }
+        - { name: Markdown 输出与 llms.txt, cells: [Y, Y, Y, '需插件'] }
+
+# ----------------------------------------------------------- bar-chart ------
+scale:
+  eyebrow: 规模
+  title: 它已经承载的体量
+  text: >-
+    各生产站点的 Markdown 文件数，见[示例站点](docs/about/showcase/)页。
+    最大的与最小的用的是同一个主题，同样以 Hugo Module 固定版本。
+  unit: 个文件
+  items:
+    - { label: 'pigsty.cc —— Pigsty 中文文档',        value: 1490, note: '文档树、三百多篇博客、价格 Landing 页' }
+    - { label: 'pigsty.io —— Pigsty 英文文档',        value: 1400, note: '文档树、两百多篇博客、扩展目录、顶栏版本菜单' }
+    - { label: 'pgsty.pro —— Pigsty v5.0，双语',      value: 930,  note: '中英各四百多页、一百三十多篇博客、128 张发布卡片' }
+    - { label: 'silo.pgsty.com —— SILO，双语',        value: 894,  note: '中英各 447 页，从其它文档系统整站迁移' }
+    - { label: 'pgsql.cc —— PostgreSQL 周边组件文档', value: 303,  note: '六棵上游文档子树，先发英文、中文逐步补齐' }
+    - { label: 'capslock.vonng.com —— 最小的一个',    value: 4,    note: '中英各两页：一个首页加一个配置生成器' }
+
+# ----------------------------------------------------------- logo-wall ------
+production:
+  eyebrow: 生产环境
+  title: 十一个站点，一套主题
+  text: >-
+    纯英文站、纯中文站与同站双语站；文档树、公司官网、价格页与两页的项目站。
+    它们全部通过 Hugo Module 固定主题版本，全部启用了本地全文检索。
+  layout: grid
+  columns: 4
+  items:
+    - { title: pigsty.io,          icon: fa-solid fa-database,      desc: 'Pigsty 文档 · 英文',    url: 'https://pigsty.io/',          external: true }
+    - { title: pigsty.cc,          icon: fa-solid fa-database,      desc: 'Pigsty 文档 · 中文',    url: 'https://pigsty.cc/',          external: true }
+    - { title: pgsty.pro,          icon: fa-solid fa-gem,           desc: 'Pigsty v5.0 · 双语',   url: 'https://pgsty.pro/',          external: true }
+    - { title: pig.pgsty.com,      icon: fa-solid fa-box,           desc: '扩展包管理器',          url: 'https://pig.pgsty.com/',      external: true }
+    - { title: sow.pgsty.com,      icon: fa-solid fa-boxes-stacked, desc: 'APT / YUM 仓库',        url: 'https://sow.pgsty.com/',      external: true }
+    - { title: silo.pgsty.com,     icon: fa-solid fa-hard-drive,    desc: 'S3 对象存储',           url: 'https://silo.pgsty.com/',     external: true }
+    - { title: exp.pgsty.com,      icon: fa-solid fa-chart-line,    desc: 'PG Exporter 指标',      url: 'https://exp.pgsty.com/',      external: true }
+    - { title: pgsql.cc,           icon: fa-solid fa-server,        desc: 'PostgreSQL 周边生态',   url: 'https://pgsql.cc/',           external: true }
+    - { title: pgsty.com,          icon: fa-solid fa-building,      desc: '公司官网',              url: 'https://pgsty.com/',          external: true }
+    - { title: capslock.vonng.com, icon: fa-solid fa-keyboard,      desc: '两页的项目站',          url: 'https://capslock.vonng.com/', external: true }
+    - { title: oink.pgsty.com,     icon: fa-solid fa-book,          desc: '本站 · 回归测试站',     url: docs/ }
+
+# ---------------------------------------------------------- case-study ------
+migration:
+  eyebrow: 迁移
+  title: 把一个大站搬进来，而不是重写它
+  text: >-
+    SILO 的文档来自另一套文档系统。它的侧栏不是手工维护的：`data/docs_nav.json`
+    由迁移清单生成，直接驱动侧栏树。
+  stats:
+    - { value: 387,   label: 上游页面纳入清单 }
+    - { value: 894,   label: 页上线，两种语言 }
+    - { value: 1,     label: 份 JSON 驱动侧栏 }
+  quote: >-
+    silo.pgsty.com 是其中最大的迁移案例：`data/docs_nav.json` 由 387 页上游文档的
+    迁移清单生成，作为侧栏树的输入。它还启用了 `module` 分类法，并有下载页。
+  source: OINK 示例站点 —— silo.pgsty.com
+  url: /zh/docs/about/showcase/#silo-pgsty-com
+
+# ------------------------------------------------------------ timeline ------
+releases:
+  eyebrow: 轨迹
+  title: 从 Docsy 分叉到组件 API v5
+  text: >-
+    OINK 从 Docsy 分叉而来，之后独立演化。每个版本都有发布说明，
+    每次迁移都是一段先报告、再改写的脚本。
+  items:
+    - date: 2026-08-08
+      title: 0.1.0 —— 稳定的本地优先基础
+      desc: 保留 Docsy 的内容模型；替换外壳、导航、检索与交付方式。所有资源随主题分发。
+      url: /zh/blog/release/0.1.0/   # timeline 原样输出 href，因此写绝对路径
+    - date: 2026-08-10
+      title: 0.2.0 —— 更丰富的内容与更精致的呈现
+      desc: 增强代码块，图示与图表成为本地运行时，第一批 Markdown 原生组件形态。
+      url: /zh/blog/release/0.2.0/
+    - date: 2026-08-12
+      title: 0.3.0 —— 写作、导航与更轻的页面
+      desc: 命令面板、键盘导航与页面动作；按页面下发、更小的 JavaScript。
+      url: /zh/blog/release/0.3.0/
+    - date: 2026-08-14
+      title: 0.4.0 —— 面向完整发布流程的场景组件
+      desc: 书籍、发布与下载、Landing 页与顺序阅读一并发布，附迁移脚本。
+      url: /zh/blog/release/0.4.0/
+    - date: 2026-08-18
+      title: 0.5.0 —— 组件 API v5 与收敛后的配置
+      desc: 每个内容原语都有原生形态，一套属性策略，一个命名空间，旧键让构建失败并给出新名字。
+      url: /zh/blog/release/0.5.0/
+
+# ---------------------------------------------------------- principles ------
+principles:
+  eyebrow: 原则
+  title: 版本更迭中不变的事
+  columns: 4
+  items:
+    - icon: fa-solid fa-plug-circle-xmark
+      title: 本地优先，宁可失败
+      desc: >-
+        浏览器需要的一切随主题分发。可能需要联网的功能，站点不显式配置就构建失败。
+    - icon: fa-brands fa-markdown
+      title: Markdown 是唯一事实来源
+      desc: >-
+        组件先有 Markdown 原生形态，再有 shortcode，所以有没有主题内容都能正确阅读。
+    - icon: fa-solid fa-sliders
+      title: 由站点决定
+      desc: >-
+        输出、检索、评论、缩放与 AI 助手链接都要站点主动打开。站点拥有自己的内容、
+        品牌与业务组件，主题只负责外壳。
+    - icon: fa-solid fa-triangle-exclamation
+      title: 显式胜过静默
+      desc: >-
+        改名的键与移除的 shortcode 会让构建失败并给出替代写法。迁移是先报告、
+        再改写的脚本。
+
+# ----------------------------------------------------------------- faq ------
+faq:
+  eyebrow: 选型之前
+  title: 值得先问的几个问题
+  items:
+    - question: 哪里需要 Node.js、npm 或打包器吗？
+      answer: >-
+        不需要。消费站点的构建依赖是 Hugo Extended（0.160.1 或更新版本）。
+        Go 只用一次，用来把主题解析为 Hugo Module；离线归档或 Git submodule
+        方式则连 Go 也不需要。界面交互仍在浏览器里执行 JavaScript——检索、面板、
+        图表、标签页——但这些脚本随主题分发，只挂在用到它们的页面上。
+      open: true
+    - question: 我有一个 Docsy 站，迁移有多难？
+      answer: >-
+        OINK 保留了 Docsy 的内容模型与多语言行为，内容与 front matter 大多可以直接沿用；
+        替换的是外壳、导航、检索与组件。改名的键会让构建失败并给出新名字，
+        `scripts/migrations/oink06.py` 在改写之前先报告它会改什么。见[升级与迁移](docs/admin/upgrade/)。
+    - question: OINK 只适合大型文档树吗？
+      answer: >-
+        不是。[示例站点](docs/about/showcase/)里既有两页的项目站，也有一千五百个文件的
+        发行版手册，还有一个只用 OINK 做落地页的公司站。外壳向下缩放和向上扩展一样自然。
+    - question: 中文与其它非拉丁文字的内容怎么处理？
+      answer: >-
+        本地检索对拉丁文字用 Lunr、对中日韩文本用子串回退，中文与日文页面无需托管服务
+        也能搜索。英语、简体中文（`zh-cn`、`zh`）与繁体中文（`zh-tw`）的界面文案经过人工审校，
+        另外 29 种语言共用同一套 key。支持 RTL 布局。
+    - question: AI 助手与爬虫拿到的是什么？
+      answer: >-
+        `outputs` 里加上 `markdown`，每个页面就有一份 `index.md`，由 `rel="alternate"`
+        指过去；`LLMS` 输出格式在站点根目录写出 `llms.txt`——本站的在 `/zh/llms.txt`。
+        「在 ChatGPT / Claude 中打开」这类页面动作存在，但默认关闭，因为它会把读者的
+        URL 交给第三方。
+    - question: 许可证是什么？和 Docsy 是什么关系？
+      answer: >-
+        Apache License 2.0。OINK 是 Docsy 的分叉并独立演化；Docsy 的源码历史、署名与
+        Apache-2.0 义务完整保留，每个随主题分发的运行时都在 `VENDOR.json` 里连同许可证列出。
+        见[开源许可与致谢](docs/about/license/)。
+
+# ----------------------------------------------------------------- cta ------
+cta:
+  title: 从你正在读的这个站点开始。
+  desc: >-
+    克隆它，改三处设置，剩下的交给 Hugo——十分钟得到一个双语、可检索、可打印、
+    对 AI 助手友好的文档站。
+  actions:
+    - { label: 十分钟上手,        url: docs/start/,                       icon: fa-solid fa-rocket,    style: primary }
+    - { label: 在 GitHub 上加星,  url: 'https://github.com/pgsty/oink',   icon: fa-brands fa-github,   style: ghost, external: true }
+    - { label: 0.5.0 有什么新变化, url: blog/release/0.5.0/,              icon: fa-solid fa-newspaper, style: ghost }

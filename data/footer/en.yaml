@@ -1,0 +1,39 @@
+# Fat footer data. The four columns follow the documentation's six sections, so
+# every link is a page that exists rather than an alias to a retired path.
+brand:
+  name: PGSTY OINK
+  tagline: '**O**pen **I**ndexed，**N**avigable **K**nowledge'
+  slogan: A local-first, Hugo theme for engineering documentation
+columns:
+  - title: Product
+    links:
+      - { label: What is OINK, url: docs/about/ }
+      - { label: Highlights, url: docs/about/features/ }
+      - { label: Showcase, url: docs/about/showcase/ }
+      - { label: License and acknowledgements, url: docs/about/license/ }
+  - title: Documentation
+    links:
+      - { label: Get started, url: docs/start/ }
+      - { label: Authoring, url: docs/write/ }
+      - { label: Components, url: docs/components/ }
+      - { label: Customization, url: docs/customize/ }
+  - title: Operations
+    links:
+      - { label: Local preview, url: docs/admin/preview/ }
+      - { label: Deploy, url: docs/admin/deploy/ }
+      - { label: Upgrade, url: docs/admin/upgrade/ }
+      - { label: Configuration, url: docs/customize/config/ }
+  - title: Community
+    links:
+      - { label: Blog, url: blog/ }
+      - { label: Releases, url: blog/release/ }
+      - {
+          label: GitHub,
+          url: 'https://github.com/pgsty/oink',
+          external: true,
+        }
+      - {
+          label: Docsy discussions,
+          url: 'https://github.com/google/docsy/discussions',
+          external: true,
+        }

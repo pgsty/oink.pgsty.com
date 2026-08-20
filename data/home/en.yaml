@@ -1,13 +1,18 @@
 sections:
   - hero
-  - type: cards
-    key: release
   - capabilities
-  - principles
+  - type: cards
+    key: content_types
+  - type: logo-wall
+    key: components
+  - type: logo-wall
+    key: cases
+  - type: faq
+    key: faq
   - cta
 
 hero:
-  eyebrow: OINK 0.4.0 · Local-first · Hugo-only
+  eyebrow: OINK 0.5 · Local-first · Hugo-only
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -18,52 +23,15 @@ hero:
     dark: images/hero-dark.webp
     alt: OINK engineering documentation illustration
   actions:
-    - label: What's new in 0.4.0
-      url: blog/release/0.4.0/
+    - label: What's new in 0.5
+      url: blog/release/0.5.0/
       icon: fa-solid fa-book-open
       style: primary
     - label: Get started
-      url: docs/tutorial/
+      url: docs/start/
       icon: fa-solid fa-arrow-right
       style: ghost
 
-release:
-  eyebrow: OINK 0.4.0
-  title: Read in sequence. Publish releases. Build landing pages and books.
-  text:
-    OINK 0.4.0 consolidates the complete Scenario Components system while
-    preserving the same local-first, Hugo-only delivery model.
-  columns: 4
-  link_label: Explore
-  items:
-    - title: Reading and release flows
-      meta: Publishing
-      icon: fa-solid fa-arrow-right-arrow-left
-      desc:
-        Tree-order pagers, local math, release cards, checksum assets, and
-        validated download channels turn source facts into reliable releases.
-      url: docs/scenarios/
-    - title: Reusable landing pages
-      meta: Presentation
-      icon: fa-solid fa-layer-group
-      desc:
-        Any page can compose 21 server-rendered sections from local,
-        language-aware data without adding a frontend build pipeline.
-      url: docs/scenarios/landing/
-    - title: Books with stable references
-      meta: Long-form
-      icon: fa-solid fa-book-open
-      desc:
-        Numbered figures, tables, equations, cross-references, indexes, and
-        whole-book print output share one validated authoring model.
-      url: docs/scenarios/book/
-    - title: A keyboard-first shell
-      meta: Navigation
-      icon: fa-solid fa-keyboard
-      desc:
-        Single-key reading controls, a universal navbar, shared page actions,
-        and configurable footers keep large sites fast to traverse.
-      url: docs/advanced/keyboard/
 capabilities:
   eyebrow: Why OINK
   title: Docs. Engineered.
@@ -72,17 +40,17 @@ capabilities:
   items:
     - ref: 01 / ENGINEERING FIRST
       title: Built for Engineers
-      url: docs/tutorial/
+      url: docs/start/
       motto: Ship docs, not build pipelines
       bullets:
-        - '[Production-ready](docs/deploy/) from day one'
-        - '[Full-text search](docs/advanced/search/#enable-local-search),
-          [i18n](docs/configure/language/#configure-languages), and
-          [versioning](docs/configure/versioning/#adding-a-version-drop-down-menu)
+        - '[Production-ready](docs/admin/deploy/) from day one'
+        - '[Full-text search](docs/customize/search/),
+          [i18n](docs/customize/i18n/), and
+          [versioning](docs/customize/versions/)
           built in'
-        - '[RSS](docs/content/writing/#rss-feeds),
-          [SEO](docs/advanced/analytics/#search-engine-optimization-metadata),
-          and [Google Analytics](docs/advanced/analytics/#adding-analytics)
+        - '[RSS](docs/write/blog/),
+          [SEO](docs/admin/analytics/),
+          and [Google Analytics](docs/admin/analytics/)
           ready'
       value: Focus on documentation, not site plumbing.
       visual:
@@ -102,14 +70,14 @@ capabilities:
         rules: ['88%', '72%', '55%']
     - ref: 02 / CLEAN BY DESIGN
       title: Clean. Complete.
-      url: docs/appearance/styling/
+      url: docs/customize/brand/
       motto: Modern design. Proven foundation.
       bullets:
         - 'User Experience inspired by [Fumadocs](https://fumadocs.dev/) &
           [Hextra](https://imfing.github.io/hextra/)'
         - 'The powerful [Hugo](https://gohugo.io/)
           [Docsy](https://www.docsy.dev/) documentation feature set'
-        - '[Look and feel](docs/appearance/styling/) tuned for open source and
+        - '[Look and feel](docs/customize/brand/) tuned for open source and
           engineering teams'
       value: Quiet interface. Serious capability.
       visual:
@@ -137,14 +105,14 @@ capabilities:
             }
     - ref: 03 / LOCAL FIRST
       title: Hugo. Nothing Else.
-      url: docs/about/local-first/
+      url: docs/about/features/
       motto: Everything ships with the theme
       bullets:
         - 'One [**hugo**](https://gohugo.io/) command builds everything'
         - '[No **npm install**. No
-          PostCSS.](docs/about/local-first/#what-local-first-covers)'
-        - '[All assets local](docs/about/local-first/#what-local-first-covers).
-          [Fully offline.](docs/about/local-first/#obtain-an-offline-archive)'
+          PostCSS.](docs/about/features/)'
+        - '[All assets local](docs/about/features/).
+          [Fully offline.](docs/start/from-scratch/)'
       value: One deterministic path from laptop to production.
       visual:
         type: code
@@ -165,11 +133,11 @@ capabilities:
       url: docs/components/
       motto: First-class components, loaded per page
       bullets:
-        - '[Code Groups](docs/components/code-blocks/#code-groups),
+        - '[Code Groups](docs/components/tabs/),
           [FileTree](docs/components/filetree/), and
           [Fields](docs/components/fields/) for everyday technical writing'
         - '[Gallery](docs/components/gallery/), [Image
-          Zoom](docs/components/image-zoom/), and diagrams for visual
+          Zoom](docs/components/image/), and diagrams for visual
           explanations'
         - 'Every [component](docs/components/) has semantic Markdown and print
           output, with JavaScript loaded only when interaction needs it'
@@ -183,7 +151,7 @@ capabilities:
           - {
               icon: fa-solid fa-code,
               title: Code Groups,
-              url: docs/components/code-blocks/#code-groups,
+              url: docs/components/tabs/,
             }
           - {
               icon: fa-solid fa-tags,
@@ -208,7 +176,7 @@ capabilities:
           - {
               icon: fa-solid fa-magnifying-glass-plus,
               title: Image Zoom,
-              url: docs/components/image-zoom/,
+              url: docs/components/image/,
             }
           - {
               icon: fa-solid fa-images,
@@ -223,12 +191,12 @@ capabilities:
           - {
               icon: fa-solid fa-diagram-project,
               title: Diagrams,
-              url: docs/components/diagrams/,
+              url: docs/components/mermaid/,
             }
           - {
               icon: fa-solid fa-terminal,
               title: Asciinema,
-              url: docs/components/layout/,
+              url: docs/components/asciinema/,
             }
           - {
               icon: fa-solid fa-chart-simple,
@@ -238,72 +206,165 @@ capabilities:
           - {
               icon: fa-solid fa-file-code,
               title: API Docs,
-              url: docs/components/layout/,
+              url: docs/write/openapi/,
             }
 
-principles:
-  eyebrow: Theme principles
-  title: Built to Last.
+content_types:
+  eyebrow: Beyond docs
+  title: Six kinds of content, one shell
+  text:
+    Documentation sites rarely stay documentation-only. The shapes that
+    normally need a second tool share this one's shell, search and outputs.
+  columns: 3
+  link_label: Read the guide
   items:
-    - icon: fa-solid fa-layer-group
-      title: Own the Brand
-      text: OINK customizes Docsy directly—no add-on skin.
-    - icon: fa-solid fa-sliders
-      title: Configure Everything
-      text: Brand, navigation, homepage, footer, and components are data-driven.
-    - icon: fa-solid fa-code-branch
-      title: Track Upstream
-      text: Keep Docsy's strengths and take upstream fixes cleanly.
+    - title: Documentation
+      meta: The shell
+      icon: fa-solid fa-book
+      desc:
+        Sidebar tree, page outline, breadcrumbs, pager, edit and history
+        links — the shell every other content type reuses.
+      url: docs/write/pages/
+    - title: Blog and RSS
+      meta: Updates
+      icon: fa-solid fa-rss
+      desc:
+        Dated posts, count-sorted tag panels, and a separate feed for each
+        language.
+      url: docs/write/blog/
+    - title: Books
+      meta: Long-form
+      icon: fa-solid fa-book-open
+      desc:
+        Chapter numbers, `{#id num=}` figures and equations, `xref`
+        cross-references, and whole-book print.
+      url: docs/write/book/
+    - title: Releases and downloads
+      meta: Publishing
+      icon: fa-solid fa-download
+      desc:
+        One `data/download/*.yaml` becomes release cards, asset tables and
+        checksums. Publication state is data.
+      url: docs/write/releases/
+    - title: Landing pages
+      meta: Presentation
+      icon: fa-solid fa-layer-group
+      desc:
+        Twenty-two server-rendered sections compose a page. The one you are
+        reading is one of them.
+      url: docs/customize/home/
+    - title: API references
+      meta: OpenAPI
+      icon: fa-solid fa-plug
+      desc:
+        Swagger UI and Redoc as local runtimes. Keep the spec in the
+        repository; it works offline.
+      url: docs/write/openapi/
+
+components:
+  eyebrow: Component reference
+  title: Twenty-one components, loaded on demand
+  text:
+    Each component has its own page and a defined shape in HTML, print, Markdown
+    and RSS. Interactive runtimes ship only on pages that use them.
+  layout: grid
+  columns: 3
+  # Ordered by distinctiveness: the ones you rarely find elsewhere first,
+  # then the ones you reach for every day.
+  items:
+    - { title: ECharts,     icon: fa-solid fa-chart-line,           desc: '`echarts` data fence',           url: docs/components/echarts/ }
+    - { title: Infographic, icon: fa-solid fa-chart-pie,            desc: 'declarative data fence',         url: docs/components/infographic/ }
+    - { title: Markmap,     icon: fa-solid fa-sitemap,              desc: 'mind maps from headings',        url: docs/components/markmap/ }
+    - { title: Asciinema,   icon: fa-solid fa-terminal,             desc: 'terminal casts, local player',   url: docs/components/asciinema/ }
+    - { title: PlantUML,    icon: fa-solid fa-project-diagram,      desc: 'UML through your own server',    url: docs/components/plantuml/ }
+    - { title: Draw.io,     icon: fa-solid fa-pen-ruler,            desc: 'diagrams that stay editable',    url: docs/components/drawio/ }
+    - { title: Mermaid,     icon: fa-solid fa-diagram-project,      desc: 'local diagram runtime',          url: docs/components/mermaid/ }
+    - { title: Math,        icon: fa-solid fa-square-root-variable, desc: 'KaTeX at build time',            url: docs/components/math/ }
+    - { title: File trees,  icon: fa-solid fa-folder-tree,          desc: '`filetree` data fence',          url: docs/components/filetree/ }
+    - { title: Galleries,   icon: fa-solid fa-images,               desc: '`gallery` data fence',           url: docs/components/gallery/ }
+    - { title: Code blocks, icon: fa-solid fa-code,                 desc: 'Chroma · lines · copy · fold',   url: docs/components/code/ }
+    - { title: Images,      icon: fa-solid fa-image,                desc: 'captions · sizing · zoom',        url: docs/components/image/ }
+    - { title: Tables,      icon: fa-solid fa-table,                desc: 'captions · numbers · matrix',     url: docs/components/table/ }
+    - { title: Fields,      icon: fa-solid fa-table-list,           desc: 'a table plus `{.fields}`',       url: docs/components/fields/ }
+    - { title: Callouts,    icon: fa-solid fa-circle-info,          desc: '`> [!NOTE]` · 10 types',         url: docs/components/callout/ }
+    - { title: Tabs,        icon: fa-solid fa-folder,               desc: 'fences with `{tab=}`',           url: docs/components/tabs/ }
+    - { title: Steps,       icon: fa-solid fa-list-ol,              desc: 'a list plus `{.steps}`',         url: docs/components/steps/ }
+    - { title: Cards,       icon: fa-solid fa-table-cells-large,    desc: 'a list plus `{.cards}`',         url: docs/components/cards/ }
+    - { title: Badges,      icon: fa-solid fa-tag,                  desc: 'inline status, five tones',      url: docs/components/badge/ }
+    - { title: Keys,        icon: fa-solid fa-keyboard,             desc: 'key names and chords',           url: docs/components/kbd/ }
+    - { title: Include,     icon: fa-solid fa-file-import,          desc: 'files, params, build notes',     url: docs/components/include/ }
+
+cases:
+  eyebrow: Cases
+  title: Twelve production sites, one theme
+  text:
+    English, Chinese and bilingual; distribution manuals, product docs, two
+    books, a company page, and a two-page tool. The [Case library](case/) adds
+    this documentation site itself as a thirteenth, self-referential case.
+  layout: grid
+  columns: 3
+  items:
+    - { title: pigsty.io,          icon: fa-solid fa-database,      desc: 'large English distribution docs',  url: case/pigsty-io/ }
+    - { title: pigsty.cc,          icon: fa-solid fa-database,      desc: 'Chinese-first documentation estate', url: case/pigsty-cc/ }
+    - { title: pgsty.pro,          icon: fa-solid fa-gem,           desc: 'bilingual release archive',        url: case/pgsty-pro/ }
+    - { title: pig.pgsty.com,      icon: fa-solid fa-box,           desc: 'compact extension-manager manual', url: case/pig/ }
+    - { title: sow.pgsty.com,      icon: fa-solid fa-boxes-stacked, desc: 'repository docs and downloads',    url: case/sow/ }
+    - { title: silo.pgsty.com,     icon: fa-solid fa-hard-drive,    desc: 'bilingual upstream-doc migration', url: case/silo/ }
+    - { title: exp.pgsty.com,      icon: fa-solid fa-chart-line,    desc: 'generated metrics catalogue',      url: case/pg-exporter/ }
+    - { title: ddia.vonng.com,     icon: fa-solid fa-book-open,     desc: 'Book · numbered figures and xrefs', url: case/ddia/ }
+    - { title: tpme.vonng.com,     icon: fa-solid fa-book-open,     desc: 'focused bilingual Book',           url: case/tpme/ }
+    - { title: pgsql.cc,           icon: fa-solid fa-server,        desc: 'PostgreSQL operations library',    url: case/pgsql-cc/ }
+    - { title: pgsty.com,          icon: fa-solid fa-building,      desc: 'landing-first company site',       url: case/pgsty-com/ }
+    - { title: capslock.vonng.com, icon: fa-solid fa-keyboard,      desc: 'two-page site with a custom tool',  url: case/capslock/ }
+
+faq:
+  eyebrow: Before you commit
+  title: Questions worth asking first
+  items:
+    - question: Do I need Node.js, npm or a bundler anywhere?
+      answer: >-
+        No. The build dependency is Hugo Extended (0.160.1 or newer). Go is used
+        once, to resolve the theme as a Hugo module; an offline archive or a Git
+        submodule works without it. Interactive features still run JavaScript,
+        but those scripts ship with the theme and attach only to the pages that
+        use them.
+      open: true
+    - question: I have a Docsy site. How hard is the move?
+      answer: >-
+        Content and front matter mostly carry over; the shell, navigation,
+        search and components are replaced. Renamed keys fail the build with the
+        new name, and `bin/migrations/oink06.py` reports what it would
+        rewrite before it writes anything. Read [Upgrade and
+        migration](docs/admin/upgrade/).
+    - question: Is OINK only for large documentation trees?
+      answer: >-
+        No. The [example sites](docs/about/showcase/) run from a two-page project
+        site to a fifteen-hundred-file distribution manual, and one uses OINK for
+        landing pages alone. The shell scales down as well as up.
+    - question: How does it handle Chinese and other non-Latin content?
+      answer: >-
+        Local search uses Lunr for Latin scripts and a substring fallback for
+        CJK, so those pages are searchable without a hosted service. English,
+        Simplified Chinese (`zh-cn`, `zh`) and Traditional Chinese (`zh-tw`)
+        interface text is human-reviewed; 28 more locales share the same key
+        schema. RTL layouts are supported.
+    - question: What do AI assistants and crawlers get?
+      answer: >-
+        With `markdown` in `outputs`, every page has an `index.md` sibling
+        announced by `rel="alternate"`, and the `LLMS` format writes a
+        site-level `llms.txt`. The "open in ChatGPT / Claude" page actions exist
+        but are off by default, because they hand the reader's URL to a third
+        party.
+    - question: What is the license, and where does Docsy stand?
+      answer: >-
+        Apache License 2.0. OINK is a fork of Docsy that evolved independently;
+        Docsy's history, attribution and Apache-2.0 obligations are preserved,
+        and every vendored runtime is listed with its license in `VENDOR.json`.
+        See [License and acknowledgements](docs/about/license/).
 
 cta:
   title: Start with OINK.
   text: Copy the starter. Replace the content. Build with Hugo.
   label: Get started
-  url: docs/tutorial/
+  url: docs/start/
   style: primary
-
-footer:
-  brand:
-    name: PGSTY OINK
-    tagline: '**O**pen **I**ndexed，**N**avigable **K**nowledge'
-    slogan: A local-first, Hugo theme for engineering documentation
-  columns:
-    - title: Product
-      links:
-        - { label: OINK overview, url: docs/about/ }
-        - { label: Local-first design, url: docs/about/local-first/ }
-        - { label: Architecture, url: docs/about/architecture/ }
-        - { label: Configuration, url: docs/configure/overview/ }
-    - title: Resources
-      links:
-        - { label: Documentation, url: docs/ }
-        - { label: Get started, url: docs/tutorial/ }
-        - { label: Components, url: docs/components/ }
-        - { label: Examples, url: docs/about/examples/ }
-    - title: Community
-      links:
-        - { label: Blog, url: blog/ }
-        - { label: Contributing, url: docs/about/contributing/ }
-        - {
-            label: GitHub,
-            url: 'https://github.com/pgsty/oink',
-            external: true,
-          }
-        - {
-            label: Docsy discussions,
-            url: 'https://github.com/google/docsy/discussions',
-            external: true,
-          }
-    - title: About
-      links:
-        - { label: About OINK, url: docs/about/ }
-        - { label: Releases, url: blog/release/ }
-        - {
-            label: License,
-            url: 'https://github.com/pgsty/oink/blob/main/LICENSE',
-            external: true,
-          }
-        - {
-            label: Upstream projects,
-            url: docs/about/license/#projects-oink-acknowledges,
-          }

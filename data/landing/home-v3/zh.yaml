@@ -1,0 +1,155 @@
+sections:
+  - type: hero
+    data:
+      align: center
+      eyebrow: OINK 0.5.0 · 工程文档框架
+      title_lines:
+        - Markdown 就够了。
+      title_size: 5.4rem
+      lead: 一个二进制，一份 Markdown，一座完整的文档站。
+      actions:
+        - label: 开始使用
+          url: docs/start/
+          icon: fa-solid fa-arrow-right
+          style: primary
+        - label: 看看组件
+          url: docs/components/
+          style: ghost
+      note: 你正在读的这一页，就是它构建的。
+
+  - type: code-plate
+    key: home-preview
+    data:
+      eyebrow: 组件
+      title: 所写即所得。
+      desc: 提示块、步骤、标签页：普通 Markdown 加一行属性，在 GitHub 上照样能读。
+      aria_label: Markdown 源码示例
+      lang: markdown
+      code: |
+        > [!TIP] 只用 Markdown
+        > 提示块、步骤、标签页，都是普通语法。
+
+        1. 写 Markdown
+        2. 运行 `hugo`
+        3. 部署 `public/`
+        {.steps}
+
+        ```bash {tab="macOS"}
+        brew install hugo
+        ```
+
+        ```bash {tab="Linux"}
+        apt install hugo
+        ```
+
+  - type: metrics
+    key: home-metrics
+    data:
+      animate: true
+      items:
+        - { value: 0, label: npm 依赖 }
+        - { value: 0, label: CDN 请求 }
+        - { value: 32, label: 种界面语言 }
+        - { value: 11, label: 个生产站点 }
+
+  - type: capabilities
+    key: home-why
+    data:
+      eyebrow: 为什么
+      title: 少一些依赖，多一份确定。
+      items:
+        - ref: 01
+          title: 一个二进制
+          url: docs/about/features/
+          motto: 不装 Node，不跑 npm，不连 CDN
+          value: 断网也能构建出完整站点。开发、CI 与生产走同一条路。
+          visual:
+            type: code
+            aria_label: 构建示例
+            title: build.sh
+            lines:
+              - { class: c, prefix: '$ ', text: 'hugo --gc --minify' }
+              - { class: ok, prefix: '✓ ', text: 资源已本地打包 }
+              - { class: ok, prefix: '✓ ', text: 多语言路由已生成 }
+              - { class: ok, prefix: '✓ ', text: public/ 可以部署 }
+        - ref: 02
+          title: 一份内容，四种输出
+          url: docs/customize/agents/
+          motto: HTML · 打印 · Markdown · llms.txt
+          value: 同一页给人读，也给搜索引擎和 AI 读。每个组件在四种输出下都有确定形态。
+          visual:
+            type: components
+            aria_label: 四种输出形态
+            columns: 2
+            items:
+              - { icon: fa-solid fa-globe, title: HTML, detail: 交互外壳 }
+              - { icon: fa-solid fa-print, title: 打印, detail: 整本可印 }
+              - { icon: fa-brands fa-markdown, title: Markdown, detail: 源码级输出 }
+              - { icon: fa-solid fa-robot, title: llms.txt, detail: Agent 索引 }
+        - ref: 03
+          title: 完整的外壳
+          url: docs/customize/keyboard/
+          motto: 检索 · ⌘K · 多语言 · 多版本 · 键盘导航
+          value: 大站也能快速穿行。读者的选择记在本地，不发往任何地方。
+          visual:
+            type: shell
+            brand: OINK
+            search: 搜索内容或执行命令
+            shortcut: ⌘ K
+            section: 文档
+            section_icon: fa-solid fa-book
+            items:
+              - { label: 快速上手, active: true }
+              - { label: 创作内容 }
+              - { label: 组件 }
+              - { label: 定制站点 }
+            eyebrow: 工程文档 / 长期维护
+            title_lines: [大站也能, 快速穿行。]
+            rules: ['88%', '72%', '55%']
+
+  - type: cards
+    key: home-complete
+    data:
+      eyebrow: 完整
+      title: 该有的都有。
+      columns: 3
+      items:
+        - { title: 全文检索, icon: fa-solid fa-magnifying-glass, desc: 本地索引，中文可搜，⌘K 直达。, url: docs/customize/search/ }
+        - { title: 多语言, icon: fa-solid fa-language, desc: 32 种界面语言，内容逐页对等。, url: docs/customize/i18n/ }
+        - { title: 多版本, icon: fa-solid fa-code-branch, desc: 版本菜单与归档横幅。, url: docs/customize/versions/ }
+        - { title: 书籍模式, icon: fa-solid fa-book, desc: 编号图表公式，交叉引用，整本打印。, url: docs/write/book/ }
+        - { title: 博客与 RSS, icon: fa-solid fa-rss, desc: 时间线、分类法、订阅源。, url: docs/write/blog/ }
+        - { title: OpenAPI, icon: fa-solid fa-plug, desc: Swagger UI 与 ReDoc，本地渲染。, url: docs/write/openapi/ }
+
+  - type: logo-wall
+    key: home-sites
+    data:
+      eyebrow: 生产环境
+      title: 已经在用。
+      layout: grid
+      items:
+        - { title: Pigsty, icon: fa-solid fa-database, url: 'https://pigsty.io/' }
+        - { title: Pigsty 中文站, icon: fa-solid fa-database, url: 'https://pigsty.cc/' }
+        - { title: PIG, icon: fa-solid fa-box, url: 'https://pig.pgsty.com/' }
+        - { title: SILO, icon: fa-solid fa-hard-drive, url: 'https://silo.pgsty.com/' }
+        - { title: PG Exporter, icon: fa-solid fa-chart-line, url: 'https://exp.pgsty.com/' }
+        - { title: pgsql.cc, icon: fa-solid fa-server, url: 'https://pgsql.cc/' }
+        - { title: PGSTY, icon: fa-solid fa-building, url: 'https://pgsty.com/' }
+        - { title: OINK, icon: fa-solid fa-book, url: 'https://oink.pgsty.com/' }
+
+  - type: command-box
+    key: home-install
+    data:
+      eyebrow: 安装
+      code: hugo mod get github.com/pgsty/oink
+      lang: bash
+      note: 基于 Hugo Extended ≥ 0.160.1。没有 package.json，没有 node_modules。
+
+  - type: cta
+    key: home-cta
+    data:
+      title: 从这里开始。
+      text: 克隆这个站点，改三处配置，剩下的交给 hugo。
+      label: 开始使用
+      url: docs/start/
+      style: primary

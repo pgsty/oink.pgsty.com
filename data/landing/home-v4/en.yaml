@@ -1,0 +1,611 @@
+# OINK homepage, iteration 4 (site data only — no theme changes).
+#
+# Every section below is a stock OINK 0.5.0 landing section (hero, metrics,
+# capabilities, cards, logo-wall, steps, code-plate, pricing-compare,
+# bar-chart, case-study, timeline, principles, faq, cta) driven by this
+# file. Every number and claim is taken from the docs of this site
+# (docs/about/, docs/about/features/, docs/about/showcase/) so the page
+# stays honest and can be verified by the reader.
+#
+# Narrative: promise → proof → the four reasons → what is inside →
+# how it compares → who runs it → how to start → principles → FAQ → CTA.
+
+sections:
+  - hero
+  - { type: metrics,         key: facts }
+  - { type: capabilities,    key: why }
+  - { type: cards,           key: content_types }
+  - { type: logo-wall,       key: components }
+  - { type: steps,           key: start }
+  - { type: code-plate,      key: config }
+  - { type: pricing-compare, key: compare }
+  - { type: bar-chart,       key: scale }
+  - { type: logo-wall,       key: production }
+  - { type: case-study,      key: migration }
+  - { type: timeline,        key: releases }
+  - { type: principles,      key: principles }
+  - { type: faq,             key: faq }
+  - { type: cta,             key: cta }
+
+# ---------------------------------------------------------------- hero ------
+hero:
+  eyebrow: OINK 0.5.0 · Open · Indexed · Navigable · Knowledge
+  title_lines:
+    - Engineering documentation,
+    - built with nothing but Hugo.
+  title_size: 4.4rem
+  lead: >-
+    OINK turns a tree of Markdown into a complete documentation system —
+    docs, blog, books, release pages and API references — with local
+    full-text search, 32 UI languages, versioning, print and agent-readable
+    output built in. The only build dependency is Hugo Extended: no Node.js,
+    no npm, no CDN, and no network access at build time.
+  note: >-
+    This page is one YAML file rendered by the theme's stock landing
+    sections. No template was written for it.
+  note_icon: fa-solid fa-file-code
+  image:
+    light: images/hero-light.webp
+    dark: images/hero-dark.webp
+    alt: Markdown content, configuration and vendored assets flowing through one Hugo build into a static documentation site
+  actions:
+    - label: Get started
+      url: docs/start/
+      icon: fa-solid fa-rocket
+      style: primary
+    - label: Browse the components
+      url: docs/components/
+      icon: fa-solid fa-cubes
+      style: ghost
+    - label: GitHub
+      url: https://github.com/pgsty/oink
+      icon: fa-brands fa-github
+      style: ghost
+      external: true
+  detail:
+    label: What changed in 0.5.0 — component API v5 and the converged configuration
+    url: blog/release/0.5.0/
+    icon: fa-solid fa-newspaper
+
+# ------------------------------------------------------------- metrics ------
+facts:
+  eyebrow: In numbers
+  title: Facts first, adjectives later
+  text: >-
+    Each figure links to the page that backs it. The whole site is the
+    theme's own regression suite, so what you read here is what it ships.
+  animate: true
+  columns: 6
+  link_label: Details
+  items:
+    - value: 1
+      label: build dependency
+      desc: Hugo Extended ≥ 0.160.1
+      url: docs/start/
+    - value: 0
+      label: npm packages
+      desc: no PostCSS, no bundler, no CDN
+      url: docs/about/features/
+    - value: 32
+      label: UI languages
+      desc: en · zh-cn · zh-tw reviewed
+      url: docs/customize/i18n/
+    - value: 4
+      label: outputs per page
+      desc: HTML · print · Markdown · llms.txt
+      url: docs/customize/agents/
+    - value: 11
+      label: production sites
+      desc: two pages to fifteen hundred
+      url: docs/about/showcase/
+    - value: 28
+      label: vendored runtimes
+      desc: version, license, SHA-256 in VENDOR.json
+      url: docs/about/license/
+
+# -------------------------------------------------------- capabilities ------
+why:
+  eyebrow: Why OINK
+  title: Four things a Hugo theme does not usually give you
+  text: >-
+    Most documentation themes are a skin. OINK is a documentation
+    <em>system</em>: authoring model, reading shell, output matrix and
+    delivery model are designed together, and each is verifiable in this site.
+  items:
+    - ref: 01 / MARKDOWN NATIVE
+      title: Components are Markdown, not a template language
+      url: docs/components/
+      motto: Readable on GitHub. Complete on the site.
+      bullets:
+        - >-
+          [Callouts](docs/components/callout/) are `> [!NOTE]` blockquotes,
+          [steps](docs/components/steps/) and [cards](docs/components/cards/)
+          are lists with `{.steps}` / `{.cards}`, a [parameter table](docs/components/fields/)
+          is a table plus `{.fields}`, a [figure](docs/components/image/) is
+          an image plus `{caption="…"}`.
+        - >-
+          [Tabs](docs/components/tabs/) are adjacent fences with `{tab="…"}`;
+          [file trees](docs/components/filetree/), [galleries](docs/components/gallery/),
+          [Mermaid](docs/components/mermaid/) and [ECharts](docs/components/echarts/)
+          are data fences named by language.
+        - >-
+          29 shortcodes cover what a block cannot express — and every one
+          validates its parameters at build time, so a typo is a build error,
+          not a silent gap in the page.
+      value: >-
+        Your content survives outside the theme: on GitHub or in any Markdown
+        reader it degrades to blockquotes, tables, lists and code blocks.
+        Nothing is lost, and nothing is locked in.
+      visual:
+        type: code
+        title: guide.md
+        aria_label: Markdown source with a callout, a step list and tabs
+        lines:
+          - { class: k,  prefix: '> ', text: '[!TIP] One attribute line' }
+          - { class: c,  prefix: '> ', text: 'Callouts, steps and tabs stay plain Markdown.' }
+          - { text: '' }
+          - { class: p,  prefix: '1. ', text: 'Write Markdown' }
+          - { class: p,  prefix: '2. ', text: 'Run hugo' }
+          - { class: p,  prefix: '3. ', text: 'Deploy public/' }
+          - { class: k,  text: '{.steps}' }
+          - { text: '' }
+          - { class: s,  text: '```bash {tab="macOS"}' }
+          - { text: 'brew install hugo' }
+          - { class: s,  text: '```' }
+          - { class: s,  text: '```bash {tab="Linux"}' }
+          - { text: 'apt install hugo' }
+          - { class: s,  text: '```' }
+    - ref: 02 / HUGO ONLY · LOCAL FIRST
+      title: One binary builds everything — offline
+      url: docs/about/features/
+      motto: No Node. No npm. No CDN. It fails closed rather than phoning home.
+      bullets:
+        - >-
+          The consumer site's build dependency is [Hugo Extended 0.160.1 or
+          newer](docs/start/). SCSS compiles inside Hugo; there is no PostCSS,
+          webpack or build-time download.
+        - >-
+          Bootstrap, Font Awesome, four typefaces, Lunr, Mermaid, KaTeX,
+          Markmap, Swagger UI, Redoc, Asciinema, ECharts — [28 vendored
+          runtimes](docs/about/license/), each recorded in `VENDOR.json` with
+          version, source, license and SHA-256, and each loaded only on pages
+          that use it.
+        - >-
+          Anything that would need the network — a PlantUML server, a
+          draw.io server, Algolia keys — fails the build unless the site
+          configured it explicitly. Nothing connects out on its own.
+      value: >-
+        One deterministic path from a laptop to CI to production. An
+        air-gapped build machine is a supported case, not an edge case.
+      visual:
+        type: code
+        title: ci.log
+        aria_label: Build log of a consumer site
+        lines:
+          - { class: p,  prefix: '$ ', text: 'hugo --gc --minify' }
+          - { class: ok, prefix: '✓ ', text: '0 npm packages, 0 build-time requests' }
+          - { class: ok, prefix: '✓ ', text: '28 vendored runtimes verified (VENDOR.json)' }
+          - { class: ok, prefix: '✓ ', text: '2 languages · search index per language' }
+          - { class: ok, prefix: '✓ ', text: 'HTML · print · Markdown · llms.txt' }
+          - { class: c,  prefix: '# ', text: 'public/ is ready — host it anywhere' }
+    - ref: 03 / A SHELL FOR LARGE SITES
+      title: Navigation that holds up at fifteen hundred pages
+      url: docs/customize/navigation/
+      motto: Sidebar tree, outline, ⌘K palette, keyboard, search — one shell for docs, blog and books
+      bullets:
+        - >-
+          [Local full-text search](docs/customize/search/): Lunr for Latin
+          scripts, a substring fallback for CJK; the query never leaves the
+          browser. Pages can add `search_boost` and `search_keywords`.
+        - >-
+          A [command palette](docs/customize/panel/) — `⌘K`, `/` for search,
+          `\` for commands — and [single-key navigation](docs/customize/keyboard/):
+          `w s a d` on the tree, `q e` for previous/next, `j k` along the
+          outline, `t` theme, `l` language.
+        - >-
+          [32 UI languages](docs/customize/i18n/) with translated-page fallback
+          and RTL, a [version menu](docs/customize/versions/) with archive
+          banners, dark mode, breadcrumbs, pager, print view — all part of the
+          shell, none of it a plugin.
+      value: >-
+        Reader preferences — theme, language, sidebar width, palette history —
+        are stored in the browser and sent nowhere.
+      visual:
+        type: shell
+        brand: OINK
+        search: Search or run a command
+        shortcut: ⌘ K
+        section: Docs
+        section_icon: fa-solid fa-book
+        items:
+          - { label: Introduction }
+          - { label: Get started, active: true }
+          - { label: Authoring }
+          - { label: Components }
+          - { label: Customization }
+          - { label: Administration }
+        eyebrow: ENGINEERING DOCS / LONG HAUL
+        title_lines: [Large sites, stay navigable.]
+        rules: ['88%', '72%', '55%']
+    - ref: 04 / ONE SOURCE · FOUR OUTPUTS
+      title: The same page for readers, paper, search engines and AI
+      url: docs/customize/agents/
+      motto: HTML · Print · Markdown · llms.txt — every component has a defined shape in each
+      bullets:
+        - >-
+          Interactive HTML for readers, and a [print view](docs/customize/print/)
+          per section or whole book with controls removed and folds expanded.
+        - >-
+          An `index.md` beside every page, announced with `rel="alternate"` in
+          `<head>`, plus a site-level [`llms.txt`](docs/customize/agents/)
+          index — the same content, in the form assistants read best.
+        - >-
+          The site chooses in `outputs`; the theme never decides for it. The
+          "open in ChatGPT / Claude" actions stay off until a site opts in,
+          because they hand the current URL to a third party.
+      value: >-
+        Write once. Ship to a browser, a PDF, a Markdown reader and an agent —
+        from one build, with no second toolchain.
+      visual:
+        type: components
+        aria_label: The four output formats
+        columns: 2
+        items:
+          - { icon: fa-solid fa-globe,       title: HTML,      detail: interactive shell }
+          - { icon: fa-solid fa-print,       title: Print,     detail: section or whole book, url: docs/customize/print/ }
+          - { icon: fa-brands fa-markdown,   title: Markdown,  detail: index.md beside every page, url: docs/customize/agents/ }
+          - { icon: fa-solid fa-robot,       title: llms.txt,  detail: site index for assistants, url: docs/customize/agents/ }
+
+# --------------------------------------------------------------- cards ------
+content_types:
+  eyebrow: Beyond docs
+  title: Six kinds of content, one theme
+  text: >-
+    Documentation sites rarely stay documentation-only. The shapes that
+    normally need a second tool are built in and share the shell, the search
+    index, the languages and the four outputs.
+  columns: 3
+  link_label: Read the guide
+  items:
+    - title: Documentation
+      meta: The shell
+      icon: fa-solid fa-book
+      desc: >-
+        Sidebar tree from the content directory or an explicit
+        `data/docs_nav.json`, per-page outline, breadcrumbs, pager, edit and
+        history links, feedback and comments — the docs shell that everything
+        else reuses.
+      url: docs/write/pages/
+    - title: Blog and RSS
+      meta: Updates
+      icon: fa-solid fa-rss
+      desc: >-
+        Dated posts in a timeline, taxonomies with count-sorted tag panels,
+        per-language feeds, and release notes that read like release notes.
+      url: docs/write/blog/
+    - title: Books
+      meta: Long-form
+      icon: fa-solid fa-book-open
+      desc: >-
+        Chapter numbers, figures / tables / equations / examples numbered with
+        `{#id num=}`, `xref` cross-references, generated tables of contents
+        and figure lists, and a whole-book print output.
+      url: docs/write/book/
+    - title: Releases and downloads
+      meta: Publishing
+      icon: fa-solid fa-download
+      desc: >-
+        `data/download/*.yaml` becomes release cards, asset tables and
+        checksums. Publication state is data — pending, published, archived —
+        not a copy-paste ritual.
+      url: docs/write/releases/
+    - title: Landing pages
+      meta: Presentation
+      icon: fa-solid fa-layer-group
+      desc: >-
+        `data/home/<lang>.yaml` composes the homepage from twenty-one
+        server-rendered sections; any page with `layout: landing` does the
+        same. This page is one of them.
+      url: docs/customize/home/
+    - title: API references
+      meta: OpenAPI
+      icon: fa-solid fa-plug
+      desc: >-
+        Swagger UI and Redoc as local runtimes. Keep the specification in the
+        repository, render it beside the prose, and it works offline like the
+        rest of the site.
+      url: docs/write/openapi/
+
+# ----------------------------------------------------------- logo-wall ------
+components:
+  eyebrow: Components
+  title: Engineering-native content, loaded only where it is used
+  text: >-
+    Every component has a page of its own — source first, result second —
+    and a defined shape in HTML, print, Markdown and RSS. Diagram and chart
+    runtimes are vendored and attached per page, so a page without a chart
+    never downloads the chart library.
+  layout: grid
+  columns: 4
+  items:
+    - { title: Callouts,      icon: fa-solid fa-circle-info,          desc: '`> [!NOTE]` · 10 types',      url: docs/components/callout/ }
+    - { title: Tabs,          icon: fa-solid fa-folder,               desc: 'fences with `{tab=}`',        url: docs/components/tabs/ }
+    - { title: Steps,         icon: fa-solid fa-list-ol,              desc: 'a list plus `{.steps}`',      url: docs/components/steps/ }
+    - { title: Cards,         icon: fa-solid fa-table-cells-large,    desc: 'a list plus `{.cards}`',      url: docs/components/cards/ }
+    - { title: Fields,        icon: fa-solid fa-table-list,           desc: 'a table plus `{.fields}`',    url: docs/components/fields/ }
+    - { title: Code blocks,   icon: fa-solid fa-code,                 desc: 'Chroma · lines · copy · fold', url: docs/components/code/ }
+    - { title: File trees,    icon: fa-solid fa-folder-tree,          desc: '`filetree` data fence',       url: docs/components/filetree/ }
+    - { title: Galleries,     icon: fa-solid fa-images,               desc: '`gallery` data fence',        url: docs/components/gallery/ }
+    - { title: Tables,        icon: fa-solid fa-table,                desc: 'captions · numbers · matrix', url: docs/components/table/ }
+    - { title: Mermaid,       icon: fa-solid fa-diagram-project,      desc: 'local diagram runtime',       url: docs/components/mermaid/ }
+    - { title: Math,          icon: fa-solid fa-square-root-variable, desc: 'KaTeX at build time',         url: docs/components/math/ }
+    - { title: Markmap,       icon: fa-solid fa-sitemap,              desc: 'mind maps from headings',     url: docs/components/markmap/ }
+    - { title: ECharts,       icon: fa-solid fa-chart-line,           desc: '`echarts` data fence',        url: docs/components/echarts/ }
+    - { title: Infographic,   icon: fa-solid fa-chart-pie,            desc: 'declarative data fence',      url: docs/components/infographic/ }
+    - { title: Asciinema,     icon: fa-solid fa-terminal,             desc: 'terminal casts, local player', url: docs/components/asciinema/ }
+    - { title: OpenAPI,       icon: fa-solid fa-plug,                 desc: 'Swagger UI · Redoc',          url: docs/write/openapi/ }
+
+# --------------------------------------------------------------- steps ------
+start:
+  eyebrow: Get started
+  title: A bilingual documentation site in three steps
+  text: >-
+    You do not start from an empty directory. You clone the site you are
+    reading — it is the theme's regression site, so every component and page
+    type is already in it — and delete what you do not need.
+  items:
+    - title: Clone this site and preview it
+      icon: fa-solid fa-code-branch
+      desc: >-
+        Requires Git, Go and Hugo Extended ≥ 0.160.1 — no Node.js. The
+        preview runs with live reload; the local search index is built on
+        demand.
+      cmd: { code: 'git clone https://github.com/pgsty/oink.pgsty.com my-docs && cd my-docs && hugo server' }
+    - title: Make it yours
+      icon: fa-solid fa-pen-nib
+      desc: >-
+        Change `baseURL`, `title` and `github_repo` in `hugo.yml`, replace the
+        pages under `content/`, keep the languages you need. Ten minutes,
+        according to the [walkthrough](docs/start/).
+      cmd: { code: 'hugo mod get github.com/pgsty/oink@v0.5.0' }
+    - title: Build and ship `public/`
+      icon: fa-solid fa-cloud-arrow-up
+      desc: >-
+        One command produces the whole site. Host the static output on GitHub
+        Pages, an object store or a plain web server — the [deployment
+        guide](docs/admin/deploy/) covers each.
+      cmd: { code: 'hugo --gc --minify' }
+
+# ---------------------------------------------------------- code-plate ------
+config:
+  eyebrow: Configuration
+  title: hugo.yaml — the whole build configuration
+  text: >-
+    Import the module, choose the outputs, switch on the features you want.
+    Interactive features are off until a site asks for them, and every
+    renamed or removed key fails the build with its replacement named — no
+    silent drift between versions.
+  aria_label: Minimal hugo.yaml for an OINK site
+  lang: yaml
+  code: |
+    module:
+      imports:
+        - path: github.com/pgsty/oink        # pinned in go.mod, no node_modules
+
+    outputs:                                 # the site chooses; the theme never does
+      home:    [HTML, RSS, markdown, LLMS]
+      page:    [HTML, markdown]
+      section: [HTML, RSS, print, markdown]
+
+    params:
+      offline_search: true                   # Lunr index per language, built by Hugo
+      ui:
+        dark_mode: true
+        image_zoom: true
+        keyboard_nav: true                   # w s a d · q e · j k · t · l
+
+# ----------------------------------------------------- pricing-compare ------
+compare:
+  eyebrow: In context
+  title: How it compares
+  text: >-
+    Structural differences only, taken from each project's own documentation
+    and repository. Versions move; check the current docs before choosing.
+    Details and caveats are on the [introduction page](docs/about/).
+  feature_label: Dimension
+  tiers: [OINK, Docsy, Hextra, Docusaurus]
+  groups:
+    - name: Build and delivery
+      rows:
+        - { name: Build toolchain,             cells: ['Hugo Extended, one binary', 'Hugo Extended + Node / npm', 'Hugo', 'Node.js toolchain'] }
+        - { name: npm required by the site,    cells: [N, Y, N, Y] }
+        - { name: Where frontend assets come from, cells: ['Vendored in the theme, audited in VENDOR.json', 'node_modules and CDN', 'Prebuilt output in the repo', 'npm dependencies'] }
+        - { name: Builds without network access, cells: [Y, N, Y, N] }
+    - name: Authoring
+      rows:
+        - { name: Component syntax,            cells: ['Markdown-native forms, 29 shortcodes as full forms', '19 shortcodes', '29 shortcodes, native callouts', 'MDX (React components)'] }
+        - { name: Book numbering and cross-references, cells: [Y, N, N, 'Plugins or custom code'] }
+        - { name: Release and download pages,  cells: [Y, N, N, 'Plugins or custom code'] }
+        - { name: Data-driven landing pages,   cells: [Y, N, N, 'Custom React pages'] }
+    - name: Reach
+      rows:
+        - { name: Multilingual sites,          cells: ['Hugo i18n + 32 UI locales', 'Hugo i18n', 'Hugo i18n + 21 UI locales', 'Built-in i18n framework'] }
+        - { name: Markdown output and llms.txt, cells: [Y, Y, Y, 'Plugins'] }
+
+# ----------------------------------------------------------- bar-chart ------
+scale:
+  eyebrow: Scale
+  title: Sizes it already carries
+  text: >-
+    Markdown files per production site, as documented on the
+    [showcase page](docs/about/showcase/). The largest and the smallest run
+    the same theme, pinned as a Hugo module.
+  unit: files
+  items:
+    - { label: 'pigsty.cc — Pigsty docs, Chinese',      value: 1490, note: 'docs tree, 300+ blog posts, price landing page' }
+    - { label: 'pigsty.io — Pigsty docs, English',      value: 1400, note: 'docs tree, 200+ blog posts, extension catalogue, version menu' }
+    - { label: 'pgsty.pro — Pigsty v5.0, bilingual',    value: 930,  note: '400+ pages per language, 130+ posts, 128 release cards' }
+    - { label: 'silo.pgsty.com — SILO, bilingual',      value: 894,  note: '447 pages per language, migrated from another docs system' }
+    - { label: 'pgsql.cc — PostgreSQL ecosystem docs',  value: 303,  note: 'six upstream doc trees, English first, Chinese in progress' }
+    - { label: 'capslock.vonng.com — the smallest',     value: 4,    note: 'two pages per language: a landing page and a configurator' }
+
+# ----------------------------------------------------------- logo-wall ------
+production:
+  eyebrow: In production
+  title: Eleven sites, one theme
+  text: >-
+    Pure English, pure Chinese and bilingual sites; documentation trees,
+    company pages, price pages and two-page project sites. All of them pin
+    OINK as a Hugo module and all of them run local full-text search.
+  layout: grid
+  columns: 4
+  items:
+    - { title: pigsty.io,          icon: fa-solid fa-database,      desc: 'Pigsty docs · English',      url: 'https://pigsty.io/',          external: true }
+    - { title: pigsty.cc,          icon: fa-solid fa-database,      desc: 'Pigsty docs · Chinese',      url: 'https://pigsty.cc/',          external: true }
+    - { title: pgsty.pro,          icon: fa-solid fa-gem,           desc: 'Pigsty v5.0 · bilingual',    url: 'https://pgsty.pro/',          external: true }
+    - { title: pig.pgsty.com,      icon: fa-solid fa-box,           desc: 'extension manager',          url: 'https://pig.pgsty.com/',      external: true }
+    - { title: sow.pgsty.com,      icon: fa-solid fa-boxes-stacked, desc: 'APT / YUM repositories',     url: 'https://sow.pgsty.com/',      external: true }
+    - { title: silo.pgsty.com,     icon: fa-solid fa-hard-drive,    desc: 'S3 object storage',          url: 'https://silo.pgsty.com/',     external: true }
+    - { title: exp.pgsty.com,      icon: fa-solid fa-chart-line,    desc: 'PG Exporter metrics',        url: 'https://exp.pgsty.com/',      external: true }
+    - { title: pgsql.cc,           icon: fa-solid fa-server,        desc: 'PostgreSQL ecosystem',       url: 'https://pgsql.cc/',           external: true }
+    - { title: pgsty.com,          icon: fa-solid fa-building,      desc: 'company site',               url: 'https://pgsty.com/',          external: true }
+    - { title: capslock.vonng.com, icon: fa-solid fa-keyboard,      desc: 'two-page project site',      url: 'https://capslock.vonng.com/', external: true }
+    - { title: oink.pgsty.com,     icon: fa-solid fa-book,          desc: 'this site · regression suite', url: docs/ }
+
+# ---------------------------------------------------------- case-study ------
+migration:
+  eyebrow: Migration
+  title: Moving a large site in, without rewriting it
+  text: >-
+    SILO's documentation came from another documentation system. Its
+    sidebar is not hand-maintained: `data/docs_nav.json` was generated from
+    the migration inventory and drives the tree directly.
+  stats:
+    - { value: 387,   label: upstream pages inventoried }
+    - { value: 894,   label: pages live, two languages }
+    - { value: 1,     label: JSON file drives the sidebar }
+  quote: >-
+    silo.pgsty.com is the largest migration case: `data/docs_nav.json` was
+    generated from the migration inventory of 387 upstream pages and serves
+    as the input of the sidebar tree. It also enables a `module` taxonomy and
+    ships a download page.
+  source: OINK showcase — silo.pgsty.com
+  url: /docs/about/showcase/#silo-pgsty-com
+
+# ------------------------------------------------------------ timeline ------
+releases:
+  eyebrow: Trajectory
+  title: From a Docsy fork to component API v5
+  text: >-
+    OINK started as a fork of Docsy and evolved into an independent theme.
+    Each release is documented, and each migration is a script that reports
+    before it rewrites.
+  items:
+    - date: 2026-08-08
+      title: 0.1.0 — A stable local-first foundation
+      desc: The Docsy content model kept; the shell, navigation, search and delivery model replaced. Every asset vendored.
+      url: /blog/release/0.1.0/   # timeline emits href verbatim, so this stays absolute
+    - date: 2026-08-10
+      title: 0.2.0 — Richer content and sharper presentation
+      desc: Enhanced code blocks, diagrams and charts as local runtimes, and the first Markdown-native component forms.
+      url: /blog/release/0.2.0/
+    - date: 2026-08-12
+      title: 0.3.0 — Authoring, navigation, and a lighter page
+      desc: The command palette, keyboard navigation and page actions; a smaller, per-page JavaScript payload.
+      url: /blog/release/0.3.0/
+    - date: 2026-08-14
+      title: 0.4.0 — Scenario components for complete publishing workflows
+      desc: Books, releases and downloads, landing pages and reading flows in one release, with migration scripts.
+      url: /blog/release/0.4.0/
+    - date: 2026-08-18
+      title: 0.5.0 — Component API v5 and the converged configuration
+      desc: Native forms for every primitive, one attribute policy, one naming namespace, and legacy keys that fail the build with their replacement named.
+      url: /blog/release/0.5.0/
+
+# ---------------------------------------------------------- principles ------
+principles:
+  eyebrow: Principles
+  title: What stays true from release to release
+  columns: 4
+  items:
+    - icon: fa-solid fa-plug-circle-xmark
+      title: Local first, fail closed
+      desc: >-
+        Everything a browser needs ships with the theme. A feature that would
+        need the network fails the build unless the site configured it.
+    - icon: fa-brands fa-markdown
+      title: Markdown is the source of truth
+      desc: >-
+        Components have native Markdown forms first and shortcodes second, so
+        content reads correctly with or without the theme.
+    - icon: fa-solid fa-sliders
+      title: The site decides
+      desc: >-
+        Outputs, search, comments, zoom and assistant links are opt-in. The
+        site owns its content, brand and business components; the theme owns
+        the shell.
+    - icon: fa-solid fa-triangle-exclamation
+      title: Explicit over silent
+      desc: >-
+        Renamed keys and removed shortcodes fail the build and name their
+        replacement. Migrations are scripts that report before they rewrite.
+
+# ----------------------------------------------------------------- faq ------
+faq:
+  eyebrow: Before you commit
+  title: Questions worth asking first
+  items:
+    - question: Do I need Node.js, npm or a bundler anywhere?
+      answer: >-
+        No. The consumer site's build dependency is Hugo Extended (0.160.1 or
+        newer). Go is used once, to resolve the theme as a Hugo module; an
+        offline archive or a Git submodule works without it. Interactive
+        features still run JavaScript in the browser — search, the palette,
+        charts, tabs — but those scripts are shipped with the theme and
+        attached only to the pages that use them.
+      open: true
+    - question: I have a Docsy site. How hard is the move?
+      answer: >-
+        OINK keeps Docsy's content model and multilingual behaviour, so
+        content and front matter mostly carry over; the shell, navigation,
+        search and components are replaced. Renamed keys fail the build with
+        the new name, and `scripts/migrations/oink06.py` reports what it would
+        rewrite before it writes anything. Read [Upgrade and
+        migration](docs/admin/upgrade/).
+    - question: Is OINK only for large documentation trees?
+      answer: >-
+        No. The [showcase](docs/about/showcase/) runs from a two-page project
+        site to a fifteen-hundred-file distribution manual, and one site uses
+        OINK for landing pages alone. The shell scales down as well as up.
+    - question: How does it handle Chinese and other non-Latin content?
+      answer: >-
+        Local search uses Lunr for Latin scripts and a substring fallback for
+        CJK, so Chinese and Japanese pages are searchable without a hosted
+        service. English, Simplified Chinese (`zh-cn`, `zh`) and Traditional
+        Chinese (`zh-tw`) interface text is human-reviewed; 29 more locales
+        share the same key schema. RTL layouts are supported.
+    - question: What do AI assistants and crawlers get?
+      answer: >-
+        With `markdown` in `outputs`, every page has an `index.md` sibling
+        announced by `rel="alternate"`, and the `LLMS` format writes a
+        site-level `llms.txt` — this site's is at `/llms.txt`. The "open in
+        ChatGPT / Claude" page actions exist but are off by default, because
+        they hand the reader's URL to a third party.
+    - question: What is the license, and where does Docsy stand?
+      answer: >-
+        Apache License 2.0. OINK is a fork of Docsy that evolved
+        independently; Docsy's history, attribution and Apache-2.0
+        obligations are preserved, and every vendored runtime is listed with
+        its license in `VENDOR.json`. See [License and
+        attribution](docs/about/license/).
+
+# ----------------------------------------------------------------- cta ------
+cta:
+  title: Start from the site you are reading.
+  desc: >-
+    Clone it, change three settings, and let Hugo do the rest — a bilingual,
+    searchable, printable, agent-readable documentation site in ten minutes.
+  actions:
+    - { label: Get started,        url: docs/start/,                       icon: fa-solid fa-rocket,   style: primary }
+    - { label: Star on GitHub,     url: 'https://github.com/pgsty/oink',   icon: fa-brands fa-github,  style: ghost, external: true }
+    - { label: What's new in 0.5.0, url: blog/release/0.5.0/,              icon: fa-solid fa-newspaper, style: ghost }

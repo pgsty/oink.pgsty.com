@@ -1,0 +1,118 @@
+openapi: 3.0.3
+info:
+  title: Demo Cluster API
+  version: 1.0.0
+  description: |
+    仅用于 OINK 文档站演示 `swaggerui` 与 `redoc` 两个 shortcode 的示例规范。
+    这不是任何真实服务的接口契约，也没有可用的服务端。
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://api.example.org/v1
+    description: 示例服务器（不可访问）
+tags:
+  - name: clusters
+    description: PostgreSQL 集群
+paths:
+  /clusters:
+    get:
+      tags: [clusters]
+      summary: 列出集群
+      operationId: listClusters
+      parameters:
+        - name: limit
+          in: query
+          description: 单页返回的集群数量上限
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: 集群列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cluster'
+    post:
+      tags: [clusters]
+      summary: 创建集群
+      operationId: createCluster
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClusterCreate'
+      responses:
+        '201':
+          description: 集群已创建
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cluster'
+        '409':
+          description: 同名集群已存在
+  /clusters/{name}:
+    get:
+      tags: [clusters]
+      summary: 读取单个集群
+      operationId: getCluster
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: 集群名
+          schema:
+            type: string
+            pattern: '^[a-z][a-z0-9-]*$'
+      responses:
+        '200':
+          description: 集群详情
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cluster'
+        '404':
+          description: 集群不存在
+components:
+  schemas:
+    Cluster:
+      type: object
+      required: [name, version, instances]
+      properties:
+        name:
+          type: string
+          description: 集群名
+          example: pg-meta
+        version:
+          type: integer
+          description: PostgreSQL 主版本号
+          example: 18
+        instances:
+          type: integer
+          description: 实例数量
+          example: 3
+        primary:
+          type: string
+          description: 当前主库实例名
+          example: pg-meta-1
+    ClusterCreate:
+      type: object
+      required: [name, version]
+      properties:
+        name:
+          type: string
+          pattern: '^[a-z][a-z0-9-]*$'
+          example: pg-test
+        version:
+          type: integer
+          default: 18
+        instances:
+          type: integer
+          default: 1
