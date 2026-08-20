@@ -8,12 +8,9 @@ weight: 30
 book_kind: book
 sidebar_root_for: self
 sidebar_root_link_self: true
-navbar_enabled: true
-navbar_autohide: true
 outputs: [HTML, print, markdown]
 cascade:
   type: book
-  navbar_enabled: false
   footer_style: slim
   comments: false
   feedback: false

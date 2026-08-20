@@ -6,7 +6,6 @@ type: blog
 icon: fa-solid fa-blog
 sidebar_root_for: self
 sidebar_root_link_self: true
-navbar_enabled: false
 footer_style: slim
 comments: true
 blog_index: cards
@@ -14,7 +13,6 @@ images: [/images/oink.webp]
 cascade:
   type: blog
   images: [/images/oink.webp]
-  #navbar_enabled: false
   footer_style: slim
   comments: true
   reading_time: true

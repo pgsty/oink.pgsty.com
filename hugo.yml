@@ -147,8 +147,6 @@ languages:
           name: Blog
           pageRef: /blog
           weight: 50
-          params:
-            columns: 1
         - identifier: blog-oink
           parent: blog
           name: OINK engineering
@@ -271,8 +269,6 @@ languages:
           name: 博客
           pageRef: /blog
           weight: 50
-          params:
-            columns: 1
         - identifier: blog-oink
           parent: blog
           name: OINK 工程实践

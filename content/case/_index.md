@@ -9,7 +9,6 @@ icon: fa-solid fa-layer-group
 images: [/images/oink.webp]
 sidebar_enabled: false
 sidebar_root_link_self: true
-navbar_enabled: true
 blog_index: cards
 blog_index_toggle: true
 blog_index_columns: 3
@@ -25,7 +24,6 @@ cascade:
   featured_image: hero
   toc_style: flow
   toc_taxonomies: false
-  navbar_enabled: false
   footer_style: slim
   comments: false
   reading_time: false

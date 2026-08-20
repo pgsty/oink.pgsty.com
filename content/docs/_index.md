@@ -16,11 +16,8 @@ icon: fa-solid fa-book
 sidebar_expanded: true
 sidebar_root_for: self
 sidebar_root_link_self: true
-navbar_enabled: true
-navbar_autohide: true
 cascade:
   type: docs
-  navbar_enabled: false
   footer_style: slim
   comments: true
   feedback: false
