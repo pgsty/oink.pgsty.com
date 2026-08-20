@@ -28,7 +28,13 @@ interactive; deeper levels warn and flatten beneath linked group headings.
 External links use `target="_blank" rel="noopener noreferrer"`; internal links
 remain language- and subpath-aware.
 
-Navbar desktop and drawer views project one tree. Language links target the
+Navbar desktop and drawer views project one tree. The link tree stays
+true-centered at every width: text links from lg, icon links below. Between lg
+and md the end edge keeps search, version, language, theme, and GitHub with no
+menu button. Below md those utilities move to the footline dock, and Home or
+explicit Landing pages add one drawer entry beside search that opens the full
+labelled tree; no other width or surface renders a drawer entry. Language
+links target the
 page translation or that language's home, stay relative when languages share a
 host/base path, and become absolute only for language-specific `baseURL`s;
 `hreflang` stays absolute. `navbar_autohide` applies to fine pointers from
