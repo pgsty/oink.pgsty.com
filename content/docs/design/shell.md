@@ -28,7 +28,11 @@ interactive; deeper levels warn and flatten beneath linked group headings.
 External links use `target="_blank" rel="noopener noreferrer"`; internal links
 remain language- and subpath-aware.
 
-Navbar desktop and drawer views project one tree. The link tree stays
+Navbar desktop and drawer views project one tree, and every dropdown panel is
+one moderate column of icon-and-title rows — the mega panel and its `columns`
+menu parameter are retired, and a configured `columns` warns while keeping the
+single column. Menu descriptions are configuration data only. The link tree
+stays
 true-centered at every width: text links from lg, icon links below. Between lg
 and md the end edge keeps search, version, language, theme, and GitHub with no
 menu button. Below md those utilities move to the footline dock, and Home or

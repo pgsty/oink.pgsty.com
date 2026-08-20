@@ -79,8 +79,6 @@ languages:
           name: Docs
           pageRef: /docs
           weight: 20
-          params:
-            columns: 2
         - identifier: docs-about
           parent: docs
           name: Introduction
@@ -205,8 +203,6 @@ languages:
           name: 文档
           pageRef: /docs
           weight: 20
-          params:
-            columns: 2
         - identifier: docs-about
           parent: docs
           name: 简介

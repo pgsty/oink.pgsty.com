@@ -95,13 +95,15 @@ menus:
       weight: 20
       params:
         icon: fa-solid fa-cubes
-        description: How to write callouts, code blocks, tables and diagrams
 ```
 
-- A child's `params.description` appears under its title, so a reader can judge what the entry is for.
+- Every entry is one icon and one title on its own row, in one
+  moderate-width column. A child's `params.description` is configuration
+  data only; the panel never renders it.
 - **The parent is itself an ordinary link**: hovering or focusing it expands the panel, and clicking or pressing Enter goes to the parent page. There is no separate expand arrow, and a touch reader lands on the parent page, whose body lists the same links.
 - Keyboard: the down arrow expands and focuses the first item, {{< kbd "Esc" >}} closes and returns focus to the link, and clicking outside closes it.
-- The panel can be split into columns with `params.columns` (1–4) on the parent; out of range fails the build.
+- The 0.5 `params.columns` parameter is retired: setting it emits a build
+  warning and the panel keeps its single column.
 - A third level warns at build time and degrades to a static group heading; it does **not** produce a third-level flyout. Put deeper levels in the sidebar.
 
 ### Menu icons {#menu-icons}
