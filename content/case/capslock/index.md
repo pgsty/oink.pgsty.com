@@ -1,12 +1,14 @@
 ---
 title: Capslock
 description: A two-page bilingual project site whose second page is a data-driven interactive configurator.
-weight: 20
-search_keywords: [capslock.vonng.com, Capslock, configurator, small site]
+weight: 60
+date: 2026-08-10
+manual_link: https://caps.vonng.com/
+search_keywords: [caps.vonng.com, Capslock, configurator, small site]
 tags: [Tool, Bilingual, Small site]
 ---
 
-[capslock.vonng.com](https://capslock.vonng.com/) is a two-page-per-language
+[caps.vonng.com](https://caps.vonng.com/) is a two-page-per-language
 site for the Capslock keyboard enhancement: a home page and an interactive
 configuration generator. The generator reads `data/capslock-v3.json` and uses
 a custom `customizer` shell type alongside the regular documentation shell.

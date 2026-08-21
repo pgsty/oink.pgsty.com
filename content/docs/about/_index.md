@@ -1,7 +1,7 @@
 ---
 title: What is OINK
 linkTitle: Introduction
-description: A documentation theme that needs nothing but Hugo Extended. Evolved from Docsy, its components are written in Markdown, its assets ship with the theme, and thirteen production sites run on it.
+description: A documentation theme that needs nothing but Hugo Extended. Evolved from Docsy, its components are written in Markdown, its assets ship with the theme, and fourteen production sites run on it.
 weight: 10
 icon: fa-solid fa-circle-info
 search_keywords: [OINK, Hugo theme, Docsy, technical documentation, documentation site, local-first, Markdown native]
@@ -24,7 +24,7 @@ committed to the theme repository and shipped only to the pages that use them.
 
 Components are not a second template language: `> [!NOTE]` is a callout, a table
 with a `{.fields}` line is a parameter list, and an image followed by
-`{caption=}` has a caption. [Thirteen production sites](/docs/about/showcase/)
+`{caption=}` has a caption. [Fourteen production sites](/docs/about/showcase/)
 run on it today, this one among them.
 
 ![OINK turns Markdown content, configuration and local assets into one static documentation site](/images/hero-light.webp)
@@ -81,7 +81,7 @@ attribution are kept intact; the details are in
 ## Start here {#start-here}
 - [Quick start](/docs/start/) — install Hugo, clone this site, replace the site details, publish to GitHub Pages.
 - [Components](/docs/components/) — one page per component, source first and rendered result after.
-- [Showcase](/docs/about/showcase/) — thirteen production sites and which part of OINK each one uses.
+- [Showcase](/docs/about/showcase/) — fourteen production sites and which part of OINK each one uses.
 {.cards}
 
 [Highlights](/docs/about/features/) lists what the theme provides capability by

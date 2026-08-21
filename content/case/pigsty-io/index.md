@@ -1,7 +1,9 @@
 ---
 title: pigsty.io
 description: A large English documentation, blog, extension-catalogue, and pricing site for the Pigsty distribution.
-weight: 130
+weight: 30
+date: 2026-08-13
+manual_link: https://pigsty.io/
 search_keywords: [pigsty.io, large documentation, extension catalogue, pricing landing]
 tags: [Docs, English, Large site]
 ---

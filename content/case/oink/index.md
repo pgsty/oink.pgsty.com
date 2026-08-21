@@ -2,7 +2,9 @@
 title: oink.pgsty.com
 linkTitle: OINK Docs
 description: OINK's public manual, design reference, component gallery, and regression site in one repository.
-weight: 10
+weight: 50
+date: 2026-08-11
+manual_link: https://oink.pgsty.com/
 search_keywords: [oink.pgsty.com, OINK docs, regression site, component gallery]
 tags: [Docs, Reference, Testing]
 ---

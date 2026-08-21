@@ -296,26 +296,31 @@ components:
 
 cases:
   eyebrow: Cases
-  title: Twelve production sites, one theme
+  title: Fifteen sites, one family
   text:
-    English, Chinese and bilingual; distribution manuals, product docs, two
-    books, a company page, and a two-page tool. The [Case library](case/) adds
-    this documentation site itself as a thirteenth, self-referential case.
+    English, Chinese and bilingual; distribution manuals, product docs, three
+    books, a company page, a two-page tool — and one extension catalogue that
+    deliberately is not a Hugo site at all. Every card opens the live site; the
+    [Case library](case/) explains the content model behind each one.
   layout: grid
   columns: 3
+  link_label: Visit
   items:
-    - { title: pigsty.io,          icon: fa-solid fa-database,      desc: 'large English distribution docs',  url: case/pigsty-io/ }
-    - { title: pigsty.cc,          icon: fa-solid fa-database,      desc: 'Chinese-first documentation estate', url: case/pigsty-cc/ }
-    - { title: pgsty.pro,          icon: fa-solid fa-gem,           desc: 'bilingual release archive',        url: case/pgsty-pro/ }
-    - { title: pig.pgsty.com,      icon: fa-solid fa-box,           desc: 'compact extension-manager manual', url: case/pig/ }
-    - { title: sow.pgsty.com,      icon: fa-solid fa-boxes-stacked, desc: 'repository docs and downloads',    url: case/sow/ }
-    - { title: silo.pgsty.com,     icon: fa-solid fa-hard-drive,    desc: 'bilingual upstream-doc migration', url: case/silo/ }
-    - { title: exp.pgsty.com,      icon: fa-solid fa-chart-line,    desc: 'generated metrics catalogue',      url: case/pg-exporter/ }
-    - { title: ddia.vonng.com,     icon: fa-solid fa-book-open,     desc: 'Book · numbered figures and xrefs', url: case/ddia/ }
-    - { title: tpme.vonng.com,     icon: fa-solid fa-book-open,     desc: 'focused bilingual Book',           url: case/tpme/ }
-    - { title: pgsql.cc,           icon: fa-solid fa-server,        desc: 'PostgreSQL operations library',    url: case/pgsql-cc/ }
-    - { title: pgsty.com,          icon: fa-solid fa-building,      desc: 'landing-first company site',       url: case/pgsty-com/ }
-    - { title: capslock.vonng.com, icon: fa-solid fa-keyboard,      desc: 'two-page site with a custom tool',  url: case/capslock/ }
+    - { title: pgsty.com,          icon: fa-solid fa-building,      desc: 'landing-first company site',        url: 'https://pgsty.com/',       external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: pigsty.cc,          icon: fa-solid fa-database,      desc: 'Chinese-first documentation estate', url: 'https://pigsty.cc/',      external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: pigsty.io,          icon: fa-solid fa-database,      desc: 'large English distribution docs',   url: 'https://pigsty.io/',       external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: silo.pgsty.com,     icon: fa-solid fa-hard-drive,    desc: 'bilingual upstream-doc migration',  url: 'https://silo.pgsty.com/',  external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: oink.pgsty.com,     icon: fa-solid fa-book,          desc: 'the theme manual and regression site', url: 'https://oink.pgsty.com/', external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: caps.vonng.com,     icon: fa-solid fa-keyboard,      desc: 'small site with a custom tool',     url: 'https://caps.vonng.com/',  external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: pig.pgsty.com,      icon: fa-solid fa-box,           desc: 'compact extension-manager manual',  url: 'https://pig.pgsty.com/',   external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: sow.pgsty.com,      icon: fa-solid fa-boxes-stacked, desc: 'repository docs and downloads',     url: 'https://sow.pgsty.com/',   external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: exp.pgsty.com,      icon: fa-solid fa-chart-line,    desc: 'generated metrics catalogue',       url: 'https://exp.pgsty.com/',   external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: ddia.vonng.com,     icon: fa-solid fa-book-open,     desc: 'Book · numbered figures and xrefs', url: 'https://ddia.vonng.com/',  external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: tpme.vonng.com,     icon: fa-solid fa-book-open,     desc: 'focused bilingual Book',            url: 'https://tpme.vonng.com/',  external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: pgint.vonng.com,    icon: fa-solid fa-book-open,     desc: 'single-language Chinese Book',      url: 'https://pgint.vonng.com/', external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: pgsql.cc,           icon: fa-solid fa-server,        desc: 'PostgreSQL operations library',     url: 'https://pgsql.cc/',        external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: pgsty.pro,          icon: fa-solid fa-gem,           desc: 'bilingual release archive',         url: 'https://pgsty.pro/',       external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: pgext.cloud,        icon: fa-solid fa-puzzle-piece,  desc: 'extension catalogue · not a Hugo site', url: 'https://pgext.cloud/', external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
 
 faq:
   eyebrow: Before you commit

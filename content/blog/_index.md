@@ -9,9 +9,13 @@ sidebar_root_link_self: true
 footer_style: slim
 comments: true
 blog_index: cards
+# The Book/Blog reading shells keep the title bar pinned: long-form reading
+# should not make the navbar appear and disappear under the pointer.
+navbar_autohide: false
 images: [/images/oink.webp]
 cascade:
   type: blog
+  navbar_autohide: false
   images: [/images/oink.webp]
   footer_style: slim
   comments: true

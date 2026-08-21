@@ -418,7 +418,7 @@ scale:
     - { label: 'pgsty.pro —— Pigsty v5.0，双语',      value: 930,  note: '中英各四百多页、一百三十多篇博客、128 张发布卡片' }
     - { label: 'silo.pgsty.com —— SILO，双语',        value: 894,  note: '中英各 447 页，从其它文档系统整站迁移' }
     - { label: 'pgsql.cc —— PostgreSQL 周边组件文档', value: 303,  note: '六棵上游文档子树，先发英文、中文逐步补齐' }
-    - { label: 'capslock.vonng.com —— 最小的一个',    value: 4,    note: '中英各两页：一个首页加一个配置生成器' }
+    - { label: 'caps.vonng.com —— 最小的一个',    value: 4,    note: '中英各两页：一个首页加一个配置生成器' }
 
 # ----------------------------------------------------------- logo-wall ------
 production:
@@ -439,7 +439,7 @@ production:
     - { title: exp.pgsty.com,      icon: fa-solid fa-chart-line,    desc: 'PG Exporter 指标',      url: 'https://exp.pgsty.com/',      external: true }
     - { title: pgsql.cc,           icon: fa-solid fa-server,        desc: 'PostgreSQL 周边生态',   url: 'https://pgsql.cc/',           external: true }
     - { title: pgsty.com,          icon: fa-solid fa-building,      desc: '公司官网',              url: 'https://pgsty.com/',          external: true }
-    - { title: capslock.vonng.com, icon: fa-solid fa-keyboard,      desc: '两页的项目站',          url: 'https://capslock.vonng.com/', external: true }
+    - { title: caps.vonng.com, icon: fa-solid fa-keyboard,      desc: '两页的项目站',          url: 'https://caps.vonng.com/', external: true }
     - { title: oink.pgsty.com,     icon: fa-solid fa-book,          desc: '本站 · 回归测试站',     url: docs/ }
 
 # ---------------------------------------------------------- case-study ------

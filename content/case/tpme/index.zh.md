@@ -2,7 +2,9 @@
 title: The Product-Minded Engineer
 linkTitle: TPME
 description: 只使用 OINK 书籍外壳的聚焦型双语书站。
-weight: 50
+weight: 110
+date: 2026-08-05
+manual_link: https://tpme.vonng.com/
 search_keywords: [tpme.vonng.com, Product-Minded Engineer, 双语书籍, 书籍外壳]
 tags: [书籍, 双语, 出版]
 ---

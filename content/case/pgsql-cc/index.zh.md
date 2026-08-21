@@ -1,7 +1,9 @@
 ---
 title: pgsql.cc
 description: PostgreSQL 运维文档汇编站，中英文覆盖范围可以独立演进。
-weight: 40
+weight: 130
+date: 2026-08-03
+manual_link: https://pgsql.cc/
 search_keywords: [pgsql.cc, PostgreSQL 运维, 汇编文档, 部分翻译]
 tags: [文档, 多语言, 汇编]
 ---

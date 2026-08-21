@@ -7,12 +7,12 @@
 - [Home page](http://localhost/index.md)
 - [Docs](http://localhost/docs/index.md): OINK is a documentation theme that needs nothing but Hugo Extended — components are written in Markdown, assets ship with the theme, both languages work out of the box, and one source produces four outputs.
 - [Book](http://localhost/book/index.md): A practical tutorial for creating clear, beautiful, and maintainable technical content with OINK.
-- [Case](http://localhost/case/index.md): Thirteen real sites show how OINK scales from a two-page utility to a multilingual documentation estate and a complete book.
+- [Case](http://localhost/case/index.md): Fifteen real sites show how OINK scales from a two-page utility to a multilingual documentation estate and three books.
 - [Blog](http://localhost/blog/index.md): OINK engineering stories, immersive guides, and release notes
 
 ## Documentation index
 
-- [Introduction](http://localhost/docs/about/index.md): A documentation theme that needs nothing but Hugo Extended. Evolved from Docsy, its components are written in Markdown, its assets ship with the theme, and thirteen production sites run on it.
+- [Introduction](http://localhost/docs/about/index.md): A documentation theme that needs nothing but Hugo Extended. Evolved from Docsy, its components are written in Markdown, its assets ship with the theme, and fourteen production sites run on it.
   - [Highlights](http://localhost/docs/about/features/index.md): What separates OINK from an ordinary Hugo theme, one item at a time, each linking to the guide that covers it.
   - [Cases](http://localhost/docs/about/showcase/index.md): Find the OINK production case closest to your documentation, book, landing page, or interactive tool.
   - [License](http://localhost/docs/about/license/index.md): Which licence applies to which layer — Apache-2.0 for the theme, CC BY 4.0 for the documentation, and their own terms for every third-party runtime shipped with the theme.

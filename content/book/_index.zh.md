@@ -9,8 +9,12 @@ book_kind: book
 sidebar_root_for: self
 sidebar_root_link_self: true
 outputs: [HTML, print, markdown]
+# The Book/Blog reading shells keep the title bar pinned: long-form reading
+# should not make the navbar appear and disappear under the pointer.
+navbar_autohide: false
 cascade:
   type: book
+  navbar_autohide: false
   footer_style: slim
   comments: false
   feedback: false

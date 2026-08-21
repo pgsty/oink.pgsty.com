@@ -1,7 +1,9 @@
 ---
 title: PIG
 description: A compact bilingual product manual with a data-driven home page and an active companion blog.
-weight: 100
+weight: 70
+date: 2026-08-09
+manual_link: https://pig.pgsty.com/
 search_keywords: [pig.pgsty.com, PIG, package manager, compact documentation]
 tags: [Docs, Bilingual, Product]
 ---

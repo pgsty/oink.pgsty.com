@@ -1,7 +1,9 @@
 ---
 title: pgsty.com
 description: A small bilingual corporate site that uses OINK primarily as a landing-page system.
-weight: 30
+weight: 10
+date: 2026-08-15
+manual_link: https://pgsty.com/
 search_keywords: [pgsty.com, corporate site, landing page, bilingual]
 tags: [Landing, Bilingual, Corporate]
 ---

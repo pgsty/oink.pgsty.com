@@ -1,7 +1,9 @@
 ---
 title: pgsql.cc
 description: An aggregate PostgreSQL operations library with independently evolving English and Chinese coverage.
-weight: 40
+weight: 130
+date: 2026-08-03
+manual_link: https://pgsql.cc/
 search_keywords: [pgsql.cc, PostgreSQL operations, aggregate documentation, partial translation]
 tags: [Docs, Multilingual, Aggregation]
 ---

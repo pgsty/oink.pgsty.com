@@ -1,7 +1,9 @@
 ---
 title: SOW
 description: Bilingual repository-manager documentation with a release-data-powered download surface.
-weight: 90
+weight: 80
+date: 2026-08-08
+manual_link: https://sow.pgsty.com/
 search_keywords: [sow.pgsty.com, SOW, APT, YUM, download page]
 tags: [Docs, Bilingual, Downloads]
 ---

@@ -1,7 +1,7 @@
 ---
 title: OINK Cases
 linkTitle: Cases
-description: Thirteen real sites show how OINK scales from a two-page utility to a multilingual documentation estate and a complete book.
+description: Fifteen real sites show how OINK scales from a two-page utility to a multilingual documentation estate and three books.
 search_keywords: [OINK cases, showcase, production sites, Pigsty, Hugo examples]
 weight: 40
 type: blog
@@ -35,10 +35,12 @@ cascade:
 ---
 
 OINK is used by large distribution manuals, focused product documentation,
-books, corporate landing pages, and tiny interactive tools. These thirteen
-cases describe the content model and theme capabilities behind each site—not
-just how its home page looks.
+books, corporate landing pages, and tiny interactive tools. These fifteen cases
+describe the content model and theme capabilities behind each site—not just how
+its home page looks. One of them, [pgext.cloud](/case/pgext-cloud/), is here as
+the boundary: it is a bespoke data application rather than an OINK site.
 
-Start with the case closest to your project, then follow its links into the
-relevant OINK documentation. Each entry is a page bundle and inherits the Case
-visual until it receives a site-specific featured image of its own.
+Every card below opens the live site in a new tab. To read the case behind a
+site instead, follow the links in this page or search for it by name. Each entry
+is a page bundle and inherits the Case visual until it receives a site-specific
+featured image of its own.

@@ -8,9 +8,10 @@ aliases:
   - /docs/about/examples/
 ---
 
-正式的 [Case 案例库](/zh/case/) 把十三个 OINK 生产站点整理成可复用的实现
-模式。首页完整展示十二个外部站点；案例库再把本站本身作为第十三个自举案例，
-并为每个站点提供独立说明页。
+正式的 [Case 案例库](/zh/case/) 把十五个生产站点整理成可复用的实现模式，
+首页展示的也是同样这十五个。其中十四个使用 OINK，本站本身也作为自举案例
+列入；[pgext.cloud](/zh/case/pgext-cloud/) 则作为边界案例保留，因为它刻意
+不使用 OINK。
 
 当你已经知道自己要搭建哪类站点时，可以从这里开始：先通过案例了解架构与
 取舍，再沿页面链接进入具体配置文档。案例中的数量描述对应盘点时的快照，
@@ -60,6 +61,10 @@ aliases:
 
 只需要 OINK Book 外壳的聚焦型双语出版物。
 
+### [《PG 技术内幕》](/zh/case/pg-internal/) {#pgint-vonng-com}
+
+已完稿的中文译本，刻意做成单语 Book：没有文档树，也没有可切换的第二语言。
+
 ## 汇编、落地页与自定义站点 {#other-sites}
 
 ### [pgsql.cc](/zh/case/pgsql-cc/) {#pgsql-cc}
@@ -70,7 +75,7 @@ aliases:
 
 小型双语公司站，展示 OINK 也可以主要作为数据驱动的落地页系统。
 
-### [Capslock](/zh/case/capslock/) {#capslock-vonng-com}
+### [Capslock](/zh/case/capslock/) {#caps-vonng-com}
 
 每种语言只有两页，其中自定义外壳承载数据驱动交互配置生成器。
 
@@ -79,14 +84,22 @@ aliases:
 完整参考站：公开文档、实时组件示例、设计契约、多种内容外壳与回归覆盖都在
 同一个仓库中。
 
+### [pgext.cloud](/zh/case/pgext-cloud/) {#pgext-cloud}
+
+不是 OINK 站点：专门定制的单页扩展目录，收在案例库里，用来标出可查询数据集
+超出文档主题适用范围的那条边界。
+
 ## 如何选择起点 {#choosing-a-starting-point}
 
 - 常规产品手册：从 [PIG](/zh/case/pig/) 或 [SOW](/zh/case/sow/) 开始。
 - 大型迁移：对比 [SILO](/zh/case/silo/) 与 [pgsql.cc](/zh/case/pgsql-cc/)。
-- 书籍：对比精简的 [TPME](/zh/case/tpme/) 与更复杂的 [DDIA](/zh/case/ddia/)。
+- 书籍：对比精简的 [TPME](/zh/case/tpme/) 与更复杂的 [DDIA](/zh/case/ddia/)，
+  单语场景可参考 [《PG 技术内幕》](/zh/case/pg-internal/)。
 - 落地页或交互站：参考 [pgsty.com](/zh/case/pgsty-com/) 或
   [Capslock](/zh/case/capslock/)。
 - 最完整的参考实现：使用 [OINK Docs](/zh/case/oink/)。
+- 如果读者是来查询数据集而不是来阅读的，看看
+  [pgext.cloud](/zh/case/pgext-cloud/) 为什么不是 Hugo 站点。
 
 主题仓库的 `tests/site/` 是内部 CI 夹具，而不是起步模板；其中页面的职责是
 触发渲染行为。上面的生产案例更适合作为架构与设计参考。

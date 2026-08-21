@@ -1,7 +1,9 @@
 ---
 title: pgsty.pro
 description: 围绕可复用发布卡片构建的 Pigsty v5 双语文档与版本档案站。
-weight: 110
+weight: 140
+date: 2026-08-02
+manual_link: https://pgsty.pro/
 search_keywords: [pgsty.pro, Pigsty v5, 发布档案, release-card]
 tags: [文档, 双语, 发布]
 ---

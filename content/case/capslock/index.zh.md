@@ -1,12 +1,14 @@
 ---
 title: Capslock
 description: 每种语言只有两页，其中一页是数据驱动交互配置器的双语项目站。
-weight: 20
-search_keywords: [capslock.vonng.com, Capslock, 配置器, 小型站点]
+weight: 60
+date: 2026-08-10
+manual_link: https://caps.vonng.com/
+search_keywords: [caps.vonng.com, Capslock, 配置器, 小型站点]
 tags: [工具, 双语, 小型站点]
 ---
 
-[capslock.vonng.com](https://capslock.vonng.com/) 是 Capslock 键盘增强方案的
+[caps.vonng.com](https://caps.vonng.com/) 是 Capslock 键盘增强方案的
 小站，每种语言只有两个页面：首页与交互式配置生成器。生成器读取
 `data/capslock-v3.json`，并在常规文档外壳之外使用自定义 `customizer` 外壳。
 

@@ -447,7 +447,7 @@ scale:
     - { label: 'pgsty.pro — Pigsty v5.0, bilingual',    value: 930,  note: '400+ pages per language, 130+ posts, 128 release cards' }
     - { label: 'silo.pgsty.com — SILO, bilingual',      value: 894,  note: '447 pages per language, migrated from another docs system' }
     - { label: 'pgsql.cc — PostgreSQL ecosystem docs',  value: 303,  note: 'six upstream doc trees, English first, Chinese in progress' }
-    - { label: 'capslock.vonng.com — the smallest',     value: 4,    note: 'two pages per language: a landing page and a configurator' }
+    - { label: 'caps.vonng.com — the smallest',     value: 4,    note: 'two pages per language: a landing page and a configurator' }
 
 # ----------------------------------------------------------- logo-wall ------
 production:
@@ -469,7 +469,7 @@ production:
     - { title: exp.pgsty.com,      icon: fa-solid fa-chart-line,    desc: 'PG Exporter metrics',        url: 'https://exp.pgsty.com/',      external: true }
     - { title: pgsql.cc,           icon: fa-solid fa-server,        desc: 'PostgreSQL ecosystem',       url: 'https://pgsql.cc/',           external: true }
     - { title: pgsty.com,          icon: fa-solid fa-building,      desc: 'company site',               url: 'https://pgsty.com/',          external: true }
-    - { title: capslock.vonng.com, icon: fa-solid fa-keyboard,      desc: 'two-page project site',      url: 'https://capslock.vonng.com/', external: true }
+    - { title: caps.vonng.com, icon: fa-solid fa-keyboard,      desc: 'two-page project site',      url: 'https://caps.vonng.com/', external: true }
     - { title: oink.pgsty.com,     icon: fa-solid fa-book,          desc: 'this site · regression suite', url: docs/ }
 
 # ---------------------------------------------------------- case-study ------

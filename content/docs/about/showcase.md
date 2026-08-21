@@ -8,10 +8,11 @@ aliases:
   - /docs/about/examples/
 ---
 
-The canonical [Case library](/case/) turns thirteen production OINK sites into
-short, reusable implementation patterns. The home page mirrors all twelve
-external deployments; the library adds this documentation site itself as a
-thirteenth, self-referential case and gives every site a focused page.
+The canonical [Case library](/case/) turns fifteen production sites into short,
+reusable implementation patterns, and the home page mirrors the same fifteen.
+Fourteen of them run OINK, including this documentation site itself as a
+self-referential case; [pgext.cloud](/case/pgext-cloud/) is carried as the
+boundary case, because it deliberately is not one.
 
 Use this guide when you know the shape of the site you want to build. Follow a
 case for its architecture and trade-offs, then use the linked documentation for
@@ -68,6 +69,11 @@ figures, cross-references, chapter navigation, and indexes.
 
 A focused bilingual publication that needs only OINK's Book shell.
 
+### [PG Internal](/case/pg-internal/) {#pgint-vonng-com}
+
+A finished Chinese translation published as a deliberately single-language Book,
+with no documentation tree and nothing to switch languages to.
+
 ## Aggregate, landing, and custom sites {#other-sites}
 
 ### [pgsql.cc](/case/pgsql-cc/) {#pgsql-cc}
@@ -80,7 +86,7 @@ translated language trees share one search and visual system.
 A small bilingual corporate site showing that OINK can primarily be a
 data-driven landing-page system.
 
-### [Capslock](/case/capslock/) {#capslock-vonng-com}
+### [Capslock](/case/capslock/) {#caps-vonng-com}
 
 A two-page-per-language project whose custom shell hosts an interactive,
 data-driven configuration generator.
@@ -90,6 +96,11 @@ data-driven configuration generator.
 The full reference site: public documentation, live component examples, design
 contracts, multiple content shells, and regression coverage in one repository.
 
+### [pgext.cloud](/case/pgext-cloud/) {#pgext-cloud}
+
+Not an OINK site: a bespoke single-page extension catalogue, kept in the library
+to mark where a queryable dataset outgrows a documentation theme.
+
 ## Choosing a starting point {#choosing-a-starting-point}
 
 - For a conventional product manual, begin with [PIG](/case/pig/) or
@@ -97,10 +108,13 @@ contracts, multiple content shells, and regression coverage in one repository.
 - For a large migration, compare [SILO](/case/silo/) and
   [pgsql.cc](/case/pgsql-cc/).
 - For a book, compare [TPME](/case/tpme/) with the more elaborate
-  [DDIA](/case/ddia/) implementation.
+  [DDIA](/case/ddia/) implementation, or [PG Internal](/case/pg-internal/) for a
+  single-language one.
 - For a landing or interactive site, start with [pgsty.com](/case/pgsty-com/)
   or [Capslock](/case/capslock/).
 - For the broadest reference, use [OINK Docs](/case/oink/).
+- If readers arrive to query a dataset rather than to read, see why
+  [pgext.cloud](/case/pgext-cloud/) is not a Hugo site.
 
 The theme repository's `tests/site/` is an internal CI fixture, not a starter
 template. Its pages exist to exercise rendering behavior; the production cases

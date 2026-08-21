@@ -1,7 +1,9 @@
 ---
 title: PG Exporter
 description: 把生成导航、结构化指标目录与系统字体结合起来的双语文档站。
-weight: 70
+weight: 90
+date: 2026-08-07
+manual_link: https://exp.pgsty.com/
 search_keywords: [exp.pgsty.com, PG Exporter, 指标目录, 系统字体]
 tags: [文档, 双语, 数据驱动]
 ---

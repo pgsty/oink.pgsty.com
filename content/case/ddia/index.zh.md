@@ -2,7 +2,9 @@
 title: 设计数据密集型应用
 linkTitle: DDIA
 description: 多语言书籍站，也是 OINK 编号、交叉引用与索引能力的主要试验场。
-weight: 60
+weight: 100
+date: 2026-08-06
+manual_link: https://ddia.vonng.com/
 search_keywords: [ddia.vonng.com, DDIA, 书籍, 交叉引用, 图表编号]
 tags: [书籍, 多语言, 出版]
 ---

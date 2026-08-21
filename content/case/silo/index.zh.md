@@ -1,7 +1,9 @@
 ---
 title: SILO
 description: 大型双语迁移站，用生成式导航保留数百页上游文档的信息结构。
-weight: 80
+weight: 40
+date: 2026-08-12
+manual_link: https://silo.pgsty.com/
 search_keywords: [silo.pgsty.com, SILO, 文档迁移, 生成导航, S3]
 tags: [文档, 双语, 迁移]
 ---

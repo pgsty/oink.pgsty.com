@@ -268,23 +268,27 @@ components:
 
 cases:
   eyebrow: 案例
-  title: 十二个生产站点，同一套主题
-  text: 英文站、中文站与双语站；发行版手册、产品文档、两本书、公司主页和两页工具站。完整的[案例库](case/)还把本站本身作为第十三个自举案例收录其中。
+  title: 十五个站点，同一家族
+  text: 英文站、中文站与双语站；发行版手册、产品文档、三本书、公司主页、两页工具站——还有一个刻意不用 Hugo 的扩展目录。每张卡片直接打开线上站点；完整的[案例库](case/)说明每个站点背后的内容模型。
   layout: grid
   columns: 3
+  link_label: 访问
   items:
-    - { title: pigsty.io,          icon: fa-solid fa-database,      desc: '大型英文发行版文档',         url: case/pigsty-io/ }
-    - { title: pigsty.cc,          icon: fa-solid fa-database,      desc: '中文优先的大型文档站',       url: case/pigsty-cc/ }
-    - { title: pgsty.pro,          icon: fa-solid fa-gem,           desc: '双语发布档案',               url: case/pgsty-pro/ }
-    - { title: pig.pgsty.com,      icon: fa-solid fa-box,           desc: '紧凑的扩展管理器手册',       url: case/pig/ }
-    - { title: sow.pgsty.com,      icon: fa-solid fa-boxes-stacked, desc: '仓库文档与下载界面',         url: case/sow/ }
-    - { title: silo.pgsty.com,     icon: fa-solid fa-hard-drive,    desc: '大型双语上游文档迁移',       url: case/silo/ }
-    - { title: exp.pgsty.com,      icon: fa-solid fa-chart-line,    desc: '生成式指标目录',             url: case/pg-exporter/ }
-    - { title: ddia.vonng.com,     icon: fa-solid fa-book-open,     desc: '书籍 · 编号图表与交叉引用',  url: case/ddia/ }
-    - { title: tpme.vonng.com,     icon: fa-solid fa-book-open,     desc: '聚焦型双语书籍',             url: case/tpme/ }
-    - { title: pgsql.cc,           icon: fa-solid fa-server,        desc: 'PostgreSQL 运维文库',        url: case/pgsql-cc/ }
-    - { title: pgsty.com,          icon: fa-solid fa-building,      desc: '以 Landing 为主的公司站',    url: case/pgsty-com/ }
-    - { title: capslock.vonng.com, icon: fa-solid fa-keyboard,      desc: '两页站点与定制工具页',       url: case/capslock/ }
+    - { title: pgsty.com,          icon: fa-solid fa-building,      desc: '以 Landing 为主的公司站',    url: 'https://pgsty.com/',       external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: pigsty.cc,          icon: fa-solid fa-database,      desc: '中文优先的大型文档站',       url: 'https://pigsty.cc/',       external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: pigsty.io,          icon: fa-solid fa-database,      desc: '大型英文发行版文档',         url: 'https://pigsty.io/',       external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: silo.pgsty.com,     icon: fa-solid fa-hard-drive,    desc: '大型双语上游文档迁移',       url: 'https://silo.pgsty.com/',  external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: oink.pgsty.com,     icon: fa-solid fa-book,          desc: '主题手册与回归站',           url: 'https://oink.pgsty.com/',  external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: caps.vonng.com,     icon: fa-solid fa-keyboard,      desc: '小型站点与定制工具页',       url: 'https://caps.vonng.com/',  external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: pig.pgsty.com,      icon: fa-solid fa-box,           desc: '紧凑的扩展管理器手册',       url: 'https://pig.pgsty.com/',   external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: sow.pgsty.com,      icon: fa-solid fa-boxes-stacked, desc: '仓库文档与下载界面',         url: 'https://sow.pgsty.com/',   external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: exp.pgsty.com,      icon: fa-solid fa-chart-line,    desc: '生成式指标目录',             url: 'https://exp.pgsty.com/',   external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: ddia.vonng.com,     icon: fa-solid fa-book-open,     desc: '书籍 · 编号图表与交叉引用',  url: 'https://ddia.vonng.com/',  external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: tpme.vonng.com,     icon: fa-solid fa-book-open,     desc: '聚焦型双语书籍',             url: 'https://tpme.vonng.com/',  external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: pgint.vonng.com,    icon: fa-solid fa-book-open,     desc: '单语中文书籍站',             url: 'https://pgint.vonng.com/', external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: pgsql.cc,           icon: fa-solid fa-server,        desc: 'PostgreSQL 运维文库',        url: 'https://pgsql.cc/',        external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: pgsty.pro,          icon: fa-solid fa-gem,           desc: '双语发布档案',               url: 'https://pgsty.pro/',       external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
+    - { title: pgext.cloud,        icon: fa-solid fa-puzzle-piece,  desc: '扩展目录 · 刻意不用 Hugo',   url: 'https://pgext.cloud/',     external: true, link_icon: 'fa-solid fa-arrow-up-right-from-square' }
 
 faq:
   eyebrow: 选型之前

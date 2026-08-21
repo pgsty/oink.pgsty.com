@@ -224,13 +224,21 @@ test('homepage n, j, and k jump between landing sections while h hides page chro
   await expect(page.locator('[data-td-shell-footer]')).toBeHidden();
 });
 
-test('docs and blog articles carry the auto-hidden navbar without a subnav', async ({
+test('content articles carry one navbar without a subnav, autohidden only in Docs', async ({
   page,
 }) => {
-  for (const path of ['/docs/customize/config/', '/blog/release/0.4.0/']) {
+  // Docs auto-hides the navbar; the Book and Blog reading shells pin it, so
+  // long-form reading never makes the bar appear and disappear under the
+  // pointer. Both still render exactly one header and no subnav.
+  const cases = [
+    { path: '/docs/customize/config/', autohide: 1 },
+    { path: '/blog/release/0.4.0/', autohide: 0 },
+    { path: '/book/01-start/', autohide: 0 },
+  ];
+  for (const { path, autohide } of cases) {
     await page.goto(path, { waitUntil: 'domcontentloaded' });
     await expect(page.locator('[data-td-header]')).toHaveCount(1);
-    await expect(page.locator('[data-td-navbar-autohide]')).toHaveCount(1);
+    await expect(page.locator('[data-td-navbar-autohide]')).toHaveCount(autohide);
     await expect(page.locator('.td-shell-subnav')).toHaveCount(0);
     await expect(page.locator('.td-shell-footline')).toHaveCount(1);
     await expect(page.locator('#td-site-footer')).toHaveCount(0);

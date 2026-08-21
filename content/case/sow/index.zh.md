@@ -1,7 +1,9 @@
 ---
 title: SOW
 description: 双语仓库管理器文档，以发布数据驱动独立下载界面。
-weight: 90
+weight: 80
+date: 2026-08-08
+manual_link: https://sow.pgsty.com/
 search_keywords: [sow.pgsty.com, SOW, APT, YUM, 下载页]
 tags: [文档, 双语, 下载]
 ---

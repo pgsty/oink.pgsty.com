@@ -1,7 +1,9 @@
 ---
 title: pigsty.cc
 description: 中文优先的 Pigsty 主站，把超大翻译语料与英文站分开维护和发布。
-weight: 120
+weight: 20
+date: 2026-08-14
+manual_link: https://pigsty.cc/
 search_keywords: [pigsty.cc, 中文文档, 双站点, 语言切换]
 tags: [文档, 中文, 大型站点]
 ---

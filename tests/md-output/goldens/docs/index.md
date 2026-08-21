@@ -49,7 +49,7 @@ or maintain the contracts and design records behind it.
 
 Section pages:
 
-- [What is OINK](/docs/about/): A documentation theme that needs nothing but Hugo Extended. Evolved from Docsy, its components are written in Markdown, its assets ship with the theme, and thirteen production sites run on it.
+- [What is OINK](/docs/about/): A documentation theme that needs nothing but Hugo Extended. Evolved from Docsy, its components are written in Markdown, its assets ship with the theme, and fourteen production sites run on it.
 - [Quick start](/docs/start/): Clone the OINK documentation site, preview it locally, replace the site details, and deploy to GitHub Pages.
 - [Authoring](/docs/write/): Writing documentation pages, blog posts, books, release pages and API references — what a page looks like, and how content is organized.
 - [Components](/docs/components/): Every component available for writing, one page each, examples from the simplest upwards, with the parameter table at the end.

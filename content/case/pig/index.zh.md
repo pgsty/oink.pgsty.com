@@ -1,7 +1,9 @@
 ---
 title: PIG
 description: 紧凑的双语产品手册，配有数据驱动首页与持续更新的博客。
-weight: 100
+weight: 70
+date: 2026-08-09
+manual_link: https://pig.pgsty.com/
 search_keywords: [pig.pgsty.com, PIG, 包管理器, 小型文档]
 tags: [文档, 双语, 产品]
 ---
