@@ -43,9 +43,12 @@ page translation or that language's home, stay relative when languages share a
 host/base path, and become absolute only for language-specific `baseURL`s;
 `hreflang` stays absolute. `navbar_autohide` applies to fine pointers from
 768px, never touch or drawer widths, and the hidden bar keeps its slot: the
-layout reserves the navbar band in both states, revealing fades the bar in
-place without covering resting content, and hero pages ignore the policy in
-favour of their overlay bar.
+layout reserves the navbar band in both states, a pinned bar occupies exactly
+that band with its rule inside it, revealing fades the bar in place without
+covering resting content, and hero pages ignore the policy in favour of their
+overlay bar. The home page owns the same soft boundary a hero page does: its
+navbar carries no bottom rule and no scrolled shadow, resolving into a short
+wash below the bar instead.
 
 Sidebar and pager share root and order. `manual_link`, `build.render: link`,
 dividers, hidden nodes, and placeholders retain their documented semantics.

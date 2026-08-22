@@ -22,13 +22,12 @@ for (const width of widths) {
     const subnav = page.locator('.td-shell-subnav');
     const utilityDock = page.locator('.td-shell-footline__right');
 
-    // Content pages carry the auto-hidden navbar: its sticky band keeps the
-    // slot at fine-pointer widths while the bar itself rests fully faded,
-    // and drawer widths keep the ordinary visible navbar.
+    // Docs pins its navbar: no auto-hide band, and one visible bar at every
+    // width. Auto-hide keeps its own coverage on the taxonomy surfaces below.
     const header = page.locator('.td-site-header');
-    await expect(page.locator('[data-td-navbar-autohide]')).toHaveCount(1);
+    await expect(page.locator('[data-td-navbar-autohide]')).toHaveCount(0);
     await expect(header).toHaveCount(1);
-    await expect(header).toHaveCSS('opacity', width < 768 ? '1' : '0');
+    await expect(header).toHaveCSS('opacity', '1');
     await expect(page.locator('.td-shell-sidebar__footer')).toHaveCount(0);
     // Navbar-on pages never render the phone subnav; the navbar itself
     // carries the drawer opener below md.
@@ -85,6 +84,34 @@ for (const width of widths) {
     await expect(context.locator('[data-td-page-actions-menu]')).toBeVisible();
   });
 }
+
+// The taxonomy surfaces are the site's remaining `navbar_autohide` opt-in, so
+// the policy keeps live coverage now that Docs, Book and Blog all pin the bar.
+test('an auto-hiding surface rests faded and reveals under the pointer', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await openCleanPage(page, '/categories/');
+
+  const band = page.locator('[data-td-navbar-autohide]');
+  const header = page.locator('.td-site-header');
+  await expect(band).toHaveCount(1);
+  await expect(header).toHaveCSS('opacity', '0');
+
+  await band.hover({ position: { x: 640, y: 8 } });
+  await expect(header).toHaveCSS('opacity', '1');
+});
+
+// Below md the drawer tier is the final authority: no pointer can reveal a
+// hidden bar there, so the same surface keeps the ordinary visible navbar.
+test('an auto-hiding surface keeps a visible navbar at drawer widths', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 900 });
+  await openCleanPage(page, '/categories/');
+
+  await expect(page.locator('.td-site-header')).toHaveCSS('opacity', '1');
+});
 
 for (const [locale, path, labels] of [
   ['en', '/', ['Docs', 'Book', 'Case', 'Blog']],

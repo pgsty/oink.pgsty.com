@@ -224,14 +224,15 @@ test('homepage n, j, and k jump between landing sections while h hides page chro
   await expect(page.locator('[data-td-shell-footer]')).toBeHidden();
 });
 
-test('content articles carry one navbar without a subnav, autohidden only in Docs', async ({
+test('content articles carry one pinned navbar without a subnav', async ({
   page,
 }) => {
-  // Docs auto-hides the navbar; the Book and Blog reading shells pin it, so
-  // long-form reading never makes the bar appear and disappear under the
-  // pointer. Both still render exactly one header and no subnav.
+  // Docs, Book and Blog all pin the title bar: reading and reference alike
+  // never make the bar appear and disappear under the pointer. Each still
+  // renders exactly one header and no subnav. Auto-hide stays a live policy —
+  // the taxonomy surfaces below still opt into it.
   const cases = [
-    { path: '/docs/customize/config/', autohide: 1 },
+    { path: '/docs/customize/config/', autohide: 0 },
     { path: '/blog/release/0.4.0/', autohide: 0 },
     { path: '/book/01-start/', autohide: 0 },
   ];

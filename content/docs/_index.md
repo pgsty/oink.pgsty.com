@@ -16,8 +16,12 @@ icon: fa-solid fa-book
 sidebar_expanded: true
 sidebar_root_for: self
 sidebar_root_link_self: true
+# Docs pins the title bar: a reference tree is read by jumping between pages,
+# so the global menu has to stay where the pointer left it.
+navbar_autohide: false
 cascade:
   type: docs
+  navbar_autohide: false
   footer_style: slim
   comments: true
   feedback: false
