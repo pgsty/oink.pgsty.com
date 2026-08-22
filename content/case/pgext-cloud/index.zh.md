@@ -1,27 +1,22 @@
 ---
-title: pgext.cloud
-description: PostgreSQL 扩展目录——这一家子里唯一不用 OINK、而是专门定制的数据应用。
+title: ext.pgsty.com
+description: >-
+  PGEXT: the PostgreSQL extension catalog. 2,241 extensions indexed and 576 packaged, searchable across 16 Linux platforms and 5 major versions.
+images: [featured.webp]
 weight: 150
 date: 2026-08-01
-manual_link: https://pgext.cloud/
-search_keywords: [pgext.cloud, PostgreSQL 扩展目录, 数据应用, 边界案例]
-tags: [目录, 数据驱动, 非 OINK]
+manual_link: https://ext.pgsty.com/
+search_keywords: [ext.pgsty.com, PostgreSQL 扩展目录, 数据应用, 扩展catalog]
+tags: [目录, 数据驱动]
 ---
-
-[pgext.cloud](https://pgext.cloud/) 是 PostgreSQL 扩展目录：可以检索扩展、
-包家族、依赖关系，以及每个扩展在哪些 PostgreSQL 版本与操作系统组合上可用。
-它是本案例库的边界案例——因为它并不使用 OINK。这份目录是手写的单页应用，
-以静态文件分发，在扩展数据集之上自带查询界面。
+[ext.pgsty.com](https://ext.pgsty.com/) 是 PostgreSQL 扩展目录：可以按扩展、
+包family、依赖，以及每个扩展可用的 PostgreSQL 与操作系统组合进行检索。目录收录
+2,241 个扩展，其中 576 个已打包，覆盖 16 个 Linux 平台与 5 个 PG 大版本。
 
 ## 它展示了什么 {#what-it-demonstrates}
 
-- 文档主题的适用边界在哪里。这里的主体是一个可查询的数据集，而不是页面树；
-  逐页导航、侧边栏与阅读外壳只会碍事。
-- 与 [PG Exporter](/zh/case/pg-exporter/) 和 [pigsty.io](/zh/case/pigsty-io/)
-  正好相反：那两个站点的结构化目录之所以留在 OINK 站内，是因为周围有大量
-  叙述性正文。
-
-读者是来阅读的，就用 OINK；读者是来查询的，就该做一个专门的应用。两者可以
-在同一个项目里并存并互相链接——这里正是如此。
+- 把可检索的数据集作为站点的主要对象呈现，同时让阅读壳退到一边。
+- 目录与正文共处一个 OINK 站点，这与 [PG Exporter](/zh/case/pg-exporter/) 和
+  [pigsty.io](/zh/case/pigsty-io/) 安放结构化数据的方式一致。
 
 → [PG Exporter 案例](/zh/case/pg-exporter/) · [pigsty.io 案例](/zh/case/pigsty-io/) · [全部 OINK 案例](/zh/case/)

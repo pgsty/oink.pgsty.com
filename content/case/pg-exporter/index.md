@@ -1,6 +1,8 @@
 ---
-title: PG Exporter
-description: A bilingual metrics manual combining generated navigation, structured catalogues, and system typography.
+title: exp.pgsty.com
+description: >-
+  PG Exporter: the Prometheus metrics exporter for PostgreSQL and Pgbouncer. A bilingual manual combining generated navigation, a structured catalogue and system typography.
+images: [featured.webp]
 weight: 90
 date: 2026-08-07
 manual_link: https://exp.pgsty.com/

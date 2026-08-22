@@ -1,6 +1,8 @@
 ---
 title: pgsql.cc
-description: PostgreSQL 运维文档汇编站，中英文覆盖范围可以独立演进。
+description: >-
+  PGSQL.CC: an operations library for PostgreSQL and the components around it. Several upstream manuals and partially translated language trees share one search and one visual system.
+images: [featured.webp]
 weight: 130
 date: 2026-08-03
 manual_link: https://pgsql.cc/

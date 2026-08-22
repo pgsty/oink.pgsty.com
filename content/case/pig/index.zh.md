@@ -1,6 +1,8 @@
 ---
-title: PIG
-description: 紧凑的双语产品手册，配有数据驱动首页与持续更新的博客。
+title: pig.pgsty.com
+description: >-
+  PIG: the package manager that installs any PostgreSQL extension. A compact bilingual product manual with a data-driven home page and an active companion blog.
+images: [featured.webp]
 weight: 70
 date: 2026-08-09
 manual_link: https://pig.pgsty.com/

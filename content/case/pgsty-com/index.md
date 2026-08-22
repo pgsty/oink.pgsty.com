@@ -1,6 +1,8 @@
 ---
 title: pgsty.com
-description: A small bilingual corporate site that uses OINK primarily as a landing-page system.
+description: >-
+  PGSTY: the company behind Pigsty. A small bilingual corporate site that uses OINK primarily as a data-driven landing-page system.
+images: [featured.webp]
 weight: 10
 date: 2026-08-15
 manual_link: https://pgsty.com/

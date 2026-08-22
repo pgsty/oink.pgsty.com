@@ -1,6 +1,8 @@
 ---
 title: pgsty.pro
-description: A bilingual Pigsty v5 documentation and release archive built around reusable release cards.
+description: >-
+  PIGSTY PRO: the enterprise edition of Pigsty. A bilingual documentation and release archive built around reusable, structured release records.
+images: [featured.webp]
 weight: 140
 date: 2026-08-02
 manual_link: https://pgsty.pro/

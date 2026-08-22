@@ -1,6 +1,8 @@
 ---
 title: pigsty.cc
-description: 中文优先的 Pigsty 主站，把超大翻译语料与英文站分开维护和发布。
+description: >-
+  PIGSTY: the Chinese home of the open-source PostgreSQL distribution. Deployed as an independent single-language site so a very large translation corpus evolves on its own.
+images: [featured.webp]
 weight: 20
 date: 2026-08-14
 manual_link: https://pigsty.cc/

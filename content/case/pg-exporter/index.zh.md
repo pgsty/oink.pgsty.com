@@ -1,6 +1,8 @@
 ---
-title: PG Exporter
-description: 把生成导航、结构化指标目录与系统字体结合起来的双语文档站。
+title: exp.pgsty.com
+description: >-
+  PG Exporter: the Prometheus metrics exporter for PostgreSQL and Pgbouncer. A bilingual manual combining generated navigation, a structured catalogue and system typography.
+images: [featured.webp]
 weight: 90
 date: 2026-08-07
 manual_link: https://exp.pgsty.com/

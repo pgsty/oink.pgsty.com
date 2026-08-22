@@ -1,7 +1,9 @@
 ---
-title: Designing Data-Intensive Applications
+title: ddia.vonng.com
 linkTitle: DDIA
-description: A multilingual book site and the largest proving ground for OINK numbering, cross-references, and indexes.
+description: >-
+  DDIA: the Chinese edition of Designing Data-Intensive Applications. A multilingual book site and the largest proving ground for OINK numbering, cross-references and indexes.
+images: [featured.webp]
 weight: 100
 date: 2026-08-06
 manual_link: https://ddia.vonng.com/

@@ -1,6 +1,8 @@
 ---
-title: Capslock
-description: 每种语言只有两页，其中一页是数据驱动交互配置器的双语项目站。
+title: caps.vonng.com
+description: >-
+  CapsLock: turn the most useless key on the keyboard into a fifth modifier. A two-page project site whose second page is a data-driven interactive configurator.
+images: [featured.webp]
 weight: 60
 date: 2026-08-10
 manual_link: https://caps.vonng.com/

@@ -1,6 +1,8 @@
 ---
-title: SILO
-description: 大型双语迁移站，用生成式导航保留数百页上游文档的信息结构。
+title: silo.pgsty.com
+description: >-
+  SILO: the community-maintained MinIO fork for S3-compatible object storage. A large bilingual migration whose checked manifest generates the documentation navigation.
+images: [featured.webp]
 weight: 40
 date: 2026-08-12
 manual_link: https://silo.pgsty.com/

@@ -34,3 +34,134 @@ ul.td-checkbox-list {
     }
   }
 }
+
+// The theme frames a blog card's thumbnail with `aspect-ratio: 16 / 9`, but
+// `shell/blog-card.html` also emits width/height attributes on the processed
+// image. Those are presentational hints, and a definite height makes the
+// browser ignore `aspect-ratio` entirely — the card renders 305x360 and
+// crops the picture sideways. Releasing the height restores the frame.
+//
+// Only visible once a card carries a raster image: an SVG placeholder takes
+// the branch that emits no dimensions. Worth fixing in the theme itself.
+.td-blog-card__image {
+  height: auto;
+}
+
+// -- Case cards ------------------------------------------------------------
+//
+// The case grid is scoped by `body_class: td-case` on content/case/_index.md.
+.td-case {
+  // Every card is a site screenshot; a publication date says nothing about the
+  // site and the meta line carries nothing else here (section and reading time
+  // are already off), so the whole line goes.
+  .td-blog-card .td-blog-meta {
+    display: none;
+  }
+
+  // The screenshots are captured with a drop shadow and therefore carry
+  // transparent edges. The theme tints the image well with --bs-secondary-bg,
+  // which then reads as a grey band against the card body; matching the card's
+  // own ground makes the frame disappear.
+  .td-blog-card__image {
+    background: var(--td-brand-elev, var(--bs-tertiary-bg));
+  }
+}
+
+// The same transparent edges sit behind the case page's full-bleed Hero.
+.td-blog.td-page .td-featured-hero {
+  background: var(--bs-body-bg);
+}
+
+// -- Home: the compact case grid -------------------------------------------
+//
+// Fifteen small cards mirroring the Case library: a screenshot, the site's
+// domain, one line. The whole card opens the live site. Rendered by
+// layouts/_partials/landing/sections/case-cards.html.
+.td-case-mini {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--td-columns, 3), minmax(0, 1fr));
+    gap: 16px;
+
+    @media (max-width: 991.98px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (max-width: 575.98px) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--td-line);
+    border-radius: var(--td-radius-md, 12px);
+    background: var(--td-paper);
+    color: inherit;
+    text-decoration: none;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--td-copper-dim, var(--td-brand-copper-dim));
+      box-shadow: var(--td-shadow);
+      transform: translateY(-3px);
+
+      .td-case-mini__title {
+        color: var(--bs-link-color);
+      }
+    }
+  }
+
+  &__media {
+    display: block;
+    // The screenshots carry transparent edges, so the well matches the card.
+    background: var(--td-paper);
+    border-block-end: 1px solid var(--td-line);
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 14px 16px 16px;
+  }
+
+  &__title {
+    color: var(--td-ink);
+    font-family: var(--td-meta-font-family);
+    font-size: 0.95rem;
+    font-weight: 700;
+    transition: color 180ms ease;
+  }
+
+  &__desc {
+    color: var(--td-silk, var(--bs-secondary-color));
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .td-case-mini__card {
+    transition: none;
+  }
+
+  .td-case-mini__card:hover,
+  .td-case-mini__card:focus-visible {
+    transform: none;
+  }
+}

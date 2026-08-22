@@ -1,6 +1,8 @@
 ---
 title: pigsty.io
-description: Pigsty 发行版的大型英文站，统一承载文档、博客、扩展目录与价格落地页。
+description: >-
+  PIGSTY: the English home of the open-source PostgreSQL distribution. A large site combining a distribution manual, editorial blog, extension catalogue and pricing landing pages.
+images: [featured.webp]
 weight: 30
 date: 2026-08-13
 manual_link: https://pigsty.io/

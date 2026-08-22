@@ -1,6 +1,8 @@
 ---
 title: pgsty.pro
-description: 围绕可复用发布卡片构建的 Pigsty v5 双语文档与版本档案站。
+description: >-
+  PIGSTY PRO: the enterprise edition of Pigsty. A bilingual documentation and release archive built around reusable, structured release records.
+images: [featured.webp]
 weight: 140
 date: 2026-08-02
 manual_link: https://pgsty.pro/

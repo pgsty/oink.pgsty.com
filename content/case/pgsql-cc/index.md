@@ -1,6 +1,8 @@
 ---
 title: pgsql.cc
-description: An aggregate PostgreSQL operations library with independently evolving English and Chinese coverage.
+description: >-
+  PGSQL.CC: an operations library for PostgreSQL and the components around it. Several upstream manuals and partially translated language trees share one search and one visual system.
+images: [featured.webp]
 weight: 130
 date: 2026-08-03
 manual_link: https://pgsql.cc/

@@ -1,7 +1,9 @@
 ---
-title: The Product-Minded Engineer
+title: tpme.vonng.com
 linkTitle: TPME
-description: A focused bilingual book that uses only OINK's book shell.
+description: >-
+  TPME: the Chinese edition of The Product-Minded Engineer. A focused bilingual publication that needs only OINK's Book shell.
+images: [featured.webp]
 weight: 110
 date: 2026-08-05
 manual_link: https://tpme.vonng.com/

@@ -9,9 +9,7 @@ aliases:
 ---
 
 正式的 [Case 案例库](/zh/case/) 把十五个生产站点整理成可复用的实现模式，
-首页展示的也是同样这十五个。其中十四个使用 OINK，本站本身也作为自举案例
-列入；[pgext.cloud](/zh/case/pgext-cloud/) 则作为边界案例保留，因为它刻意
-不使用 OINK。
+首页展示的也是同样这十五个。它们全都使用 OINK，本站本身也作为自举案例列入。
 
 当你已经知道自己要搭建哪类站点时，可以从这里开始：先通过案例了解架构与
 取舍，再沿页面链接进入具体配置文档。案例中的数量描述对应盘点时的快照，
@@ -86,8 +84,8 @@ aliases:
 
 ### [pgext.cloud](/zh/case/pgext-cloud/) {#pgext-cloud}
 
-不是 OINK 站点：专门定制的单页扩展目录，收在案例库里，用来标出可查询数据集
-超出文档主题适用范围的那条边界。
+PostgreSQL 扩展目录：把可检索的数据集作为站点主体呈现，收录 2,241 个扩展、
+576 个已打包版本，覆盖 16 个 Linux 平台。
 
 ## 如何选择起点 {#choosing-a-starting-point}
 
@@ -99,7 +97,7 @@ aliases:
   [Capslock](/zh/case/capslock/)。
 - 最完整的参考实现：使用 [OINK Docs](/zh/case/oink/)。
 - 如果读者是来查询数据集而不是来阅读的，看看
-  [pgext.cloud](/zh/case/pgext-cloud/) 为什么不是 Hugo 站点。
+  [ext.pgsty.com](/zh/case/pgext-cloud/) 如何把数据集作为站点主体呈现。
 
 主题仓库的 `tests/site/` 是内部 CI 夹具，而不是起步模板；其中页面的职责是
 触发渲染行为。上面的生产案例更适合作为架构与设计参考。

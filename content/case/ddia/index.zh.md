@@ -1,7 +1,9 @@
 ---
-title: 设计数据密集型应用
+title: ddia.vonng.com
 linkTitle: DDIA
-description: 多语言书籍站，也是 OINK 编号、交叉引用与索引能力的主要试验场。
+description: >-
+  DDIA: the Chinese edition of Designing Data-Intensive Applications. A multilingual book site and the largest proving ground for OINK numbering, cross-references and indexes.
+images: [featured.webp]
 weight: 100
 date: 2026-08-06
 manual_link: https://ddia.vonng.com/

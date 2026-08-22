@@ -1,0 +1,41 @@
+{{- /* The home page's compact mirror of the Case library.
+
+       - type: cards
+         key: cases
+         partial: landing/sections/case-cards.html
+
+     The cases are read from content/case/ in the order that section lists
+     them, so the home page cannot drift from the library: title, screenshot
+     and live URL all come from the case page itself, and the one-line blurb
+     is the first sentence of its description.
+
+     Data keys: eyebrow / title / text / columns. */ -}}
+{{- $page := .page -}}
+{{- $data := .data -}}
+{{- $id := .id -}}
+{{- $section := $page.Site.GetPage "/case" -}}
+<section id="{{ $id }}" class="td-landing-section td-case-mini{{ with $data.class }} {{ . }}{{ end }}"{{ with $data.title }} aria-labelledby="{{ $id }}-title"{{ end }}>
+  <div class="td-site-container">
+    {{- partial "landing/heading.html" (dict "page" $page "data" $data "id" $id) }}
+    {{- with $section }}
+    <div class="td-case-mini__grid" style="--td-columns: {{ $data.columns | default 3 }}">
+      {{- range .Pages.ByDate.Reverse }}
+      {{- $url := .Params.manual_link | default .RelPermalink -}}
+      {{- $blurb := "" -}}
+      {{- with .Description }}{{ $blurb = printf "%s." (index (split . ". ") 0) }}{{ end -}}
+      {{- $found := partialCached "featured-image-resolve.html" . .RelPermalink -}}
+      <a class="td-case-mini__card" href="{{ $url }}"{{ if hasPrefix $url "http" }} target="_blank" rel="noopener noreferrer"{{ end }}>
+        {{- with $found.resource }}
+        {{- $img := cond (reflect.IsImageResourceProcessable .) (.Fill "600x338 Center") . }}
+        <span class="td-case-mini__media"><img src="{{ $img.RelPermalink }}" alt="" loading="lazy" decoding="async"></span>
+        {{- end }}
+        <span class="td-case-mini__body">
+          <span class="td-case-mini__title">{{ .Title }}</span>
+          {{- with $blurb }}<span class="td-case-mini__desc">{{ . }}</span>{{ end }}
+        </span>
+      </a>
+      {{- end }}
+    </div>
+    {{- end }}
+  </div>
+</section>

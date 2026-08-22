@@ -1,6 +1,8 @@
 ---
-title: SILO
-description: A large bilingual migration whose generated navigation preserves the structure of hundreds of upstream pages.
+title: silo.pgsty.com
+description: >-
+  SILO: the community-maintained MinIO fork for S3-compatible object storage. A large bilingual migration whose checked manifest generates the documentation navigation.
+images: [featured.webp]
 weight: 40
 date: 2026-08-12
 manual_link: https://silo.pgsty.com/

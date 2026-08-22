@@ -1,31 +1,26 @@
 ---
-title: pgext.cloud
-description: The PostgreSQL Extension Catalog — the one site in this family that is a bespoke data application rather than an OINK site.
+title: ext.pgsty.com
+description: >-
+  PGEXT: the PostgreSQL extension catalog. 2,241 extensions indexed and 576 packaged, searchable across 16 Linux platforms and 5 major versions.
+images: [featured.webp]
 weight: 150
 date: 2026-08-01
-manual_link: https://pgext.cloud/
-search_keywords: [pgext.cloud, PostgreSQL extension catalog, data application, boundary case]
-tags: [Catalogue, Data driven, Not OINK]
+manual_link: https://ext.pgsty.com/
+search_keywords: [ext.pgsty.com, pgext.cloud, PostgreSQL extension catalog, data application]
+tags: [Catalogue, Data driven]
 ---
-
-[pgext.cloud](https://pgext.cloud/) is the PostgreSQL Extension Catalog: search
-across extensions, package families, dependencies, and the exact PostgreSQL and
-operating-system combinations each one is available for. It is the boundary case
-in this library, because it does not run OINK. The catalogue is a hand-written
-single-page application served as static files, with its own query interface
-over the extension dataset.
+[ext.pgsty.com](https://ext.pgsty.com/) is the PostgreSQL Extension Catalog:
+search across extensions, package families, dependencies, and the exact
+PostgreSQL and operating-system combinations each one is available for. The
+catalogue indexes 2,241 extensions, 576 of them packaged, across 16 Linux
+platforms and 5 major PostgreSQL versions.
 
 ## What it demonstrates {#what-it-demonstrates}
 
-- Where a documentation theme stops being the right tool. The primary object
-  here is a queryable dataset, not a tree of pages, so page-per-topic
-  navigation, a sidebar, and a reading shell would all be in the way.
-- The counter-example to [PG Exporter](/case/pg-exporter/) and
-  [pigsty.io](/case/pigsty-io/), where structured catalogues live *inside* an
-  OINK site because prose surrounds them.
-
-Use OINK when readers arrive to read; reach for a purpose-built application when
-they arrive to query. The two can sit side by side in one project and link to
-each other, as they do here.
+- A queryable dataset presented as the primary object of a site, with the
+  reading shell kept out of its way.
+- A catalogue and its prose living in one OINK site, the same arrangement
+  [PG Exporter](/case/pg-exporter/) and [pigsty.io](/case/pigsty-io/) use for
+  their own structured data.
 
 → [PG Exporter case](/case/pg-exporter/) · [pigsty.io case](/case/pigsty-io/) · [All OINK cases](/case/)

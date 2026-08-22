@@ -10,9 +10,8 @@ aliases:
 
 The canonical [Case library](/case/) turns fifteen production sites into short,
 reusable implementation patterns, and the home page mirrors the same fifteen.
-Fourteen of them run OINK, including this documentation site itself as a
-self-referential case; [pgext.cloud](/case/pgext-cloud/) is carried as the
-boundary case, because it deliberately is not one.
+All of them run OINK, including this documentation site itself as a
+self-referential case.
 
 Use this guide when you know the shape of the site you want to build. Follow a
 case for its architecture and trade-offs, then use the linked documentation for
@@ -98,8 +97,8 @@ contracts, multiple content shells, and regression coverage in one repository.
 
 ### [pgext.cloud](/case/pgext-cloud/) {#pgext-cloud}
 
-Not an OINK site: a bespoke single-page extension catalogue, kept in the library
-to mark where a queryable dataset outgrows a documentation theme.
+The PostgreSQL extension catalog: a queryable dataset as the primary object of
+a site, indexing 2,241 extensions and 576 packaged builds across 16 platforms.
 
 ## Choosing a starting point {#choosing-a-starting-point}
 
@@ -113,8 +112,8 @@ to mark where a queryable dataset outgrows a documentation theme.
 - For a landing or interactive site, start with [pgsty.com](/case/pgsty-com/)
   or [Capslock](/case/capslock/).
 - For the broadest reference, use [OINK Docs](/case/oink/).
-- If readers arrive to query a dataset rather than to read, see why
-  [pgext.cloud](/case/pgext-cloud/) is not a Hugo site.
+- For a queryable dataset presented as the primary object of a site, see
+  [ext.pgsty.com](/case/pgext-cloud/).
 
 The theme repository's `tests/site/` is an internal CI fixture, not a starter
 template. Its pages exist to exercise rendering behavior; the production cases
