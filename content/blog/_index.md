@@ -13,7 +13,8 @@ blog_index: cards
 # should not make the navbar appear and disappear under the pointer.
 navbar_autohide: false
 images: [/images/oink.webp]
-# Sample section identity: the Blog reads in violet.
+# Section identity: the Blog reads in violet. The dark half is named:
+# the derived violet lands at 4.48 against the 13% dark wash.
 theme_color: '#6d28d9'
 theme_color_dark: '#a78bfa'
 cascade:

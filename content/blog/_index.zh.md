@@ -13,7 +13,7 @@ blog_index: cards
 # should not make the navbar appear and disappear under the pointer.
 navbar_autohide: false
 images: [/images/oink.webp]
-# 分区身份示例：博客用紫色。
+# 分区身份：博客用紫色。暗色显式指定：派生出的紫在 13% 暗色淡铺上只有 4.48。
 theme_color: '#6d28d9'
 theme_color_dark: '#a78bfa'
 cascade:

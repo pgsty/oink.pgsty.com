@@ -12,10 +12,13 @@ outputs: [HTML, print, markdown]
 # The Book/Blog reading shells keep the title bar pinned: long-form reading
 # should not make the navbar appear and disappear under the pointer.
 navbar_autohide: false
-# 分区身份示例：教程用青色，读者随时知道自己在四个根的哪一个。文档保持品牌藏青。
-theme_color: '#115e59'
+# 分区身份：教程用橙色。亮色比 orange-700 深一档 —— 外壳会把主题色画在它
+# 自己 10% 的淡铺上，原色在那儿过不了 AA；暗色显式指定，避免派生成褐色。
+theme_color: '#ae380b'
+theme_color_dark: '#fb923c'
 cascade:
-  theme_color: '#115e59'
+  theme_color: '#ae380b'
+  theme_color_dark: '#fb923c'
   type: book
   navbar_autohide: false
   footer_style: slim

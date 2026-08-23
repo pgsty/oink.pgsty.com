@@ -12,11 +12,15 @@ outputs: [HTML, print, markdown]
 # The Book/Blog reading shells keep the title bar pinned: long-form reading
 # should not make the navbar appear and disappear under the pointer.
 navbar_autohide: false
-# Sample section identity: the Book reads in teal, so a reader always
-# knows which of the four roots they are in. Docs keeps the brand navy.
-theme_color: '#115e59'
+# Section identity: the Book reads in orange. The light half is one
+# step darker than orange-700, which fails AA where the shell paints
+# the accent on a 10% wash of itself; the dark half is named rather
+# than derived so it stays orange instead of drifting to brown.
+theme_color: '#ae380b'
+theme_color_dark: '#fb923c'
 cascade:
-  theme_color: '#115e59'
+  theme_color: '#ae380b'
+  theme_color_dark: '#fb923c'
   type: book
   navbar_autohide: false
   footer_style: slim
