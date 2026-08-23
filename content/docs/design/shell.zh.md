@@ -5,11 +5,11 @@ description: 导航权威、沉浸式博客、搜索、操作、分类法、索�
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK 外壳, 导航契约, 搜索, 操作, 博客展示, 作者, 系列, 翻页]
-contract_status: released-v0.6.0
+contract_status: released-v0.6.1
 ---
 
-> [!IMPORTANT] OINK 0.6.0 契约
-> 这是随 OINK 0.6.0 正式发布的外壳与导航契约。本页是权威中文源文件，
+> [!IMPORTANT] OINK 0.6.1 契约
+> 这是随 OINK 0.6.1 正式发布的外壳与导航契约。本页是权威中文源文件，
 > 与英文版本一同维护在 `content/docs/design/`。
 
 ## 权威来源与导航 {#authorities-and-navigation}
@@ -192,7 +192,8 @@ Pinterest 图片来自共享特色图片解析器。ChatGPT 与 Claude 接收构
 行列表。
 
 `params.ui.blog_index_toggle` 为当前分页切片渲染三种形态，并允许读者循环切换。
-配置值控制首次绘制，本地存储可以覆盖它，隐藏形态不加载图片。Front matter 或
+配置值控制首次绘制，隐藏形态不加载图片。读者存储的选择只作用于发布了全部三种
+形态的索引：切换器关闭的分区只发布一种形态，并始终显示它。Front matter 或
 cascade 可为每个分区覆盖站点模式。没有切换器的 table 仍是完整且不分页的归档。
 
 `params.logo` 始终是品牌标志；`params.wordmark` 或站点标题是紧凑宽度下隐藏的

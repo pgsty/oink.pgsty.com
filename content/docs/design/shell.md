@@ -5,11 +5,11 @@ description: Navigation authorities, immersive blog presentation, search, action
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK shell, navigation contract, search, actions, blog presentation, authors, series, pager]
-contract_status: released-v0.6.0
+contract_status: released-v0.6.1
 ---
 
-> [!IMPORTANT] OINK 0.6.0 contract
-> This is the shell and navigation contract released with OINK 0.6.0. This
+> [!IMPORTANT] OINK 0.6.1 contract
+> This is the shell and navigation contract released with OINK 0.6.1. This
 > page is the canonical English source; its Chinese peer is maintained beside
 > it in `content/docs/design/`.
 
@@ -230,10 +230,12 @@ image, localized date/author/section metadata, tags, and a three-line summary.
 Term and taxonomy pages stay row lists.
 
 `params.ui.blog_index_toggle` renders all three forms for the current paginator
-slice and lets readers cycle them. The configured form controls first paint,
-local storage may override it, and hidden forms load no images. A front-matter
-value or cascade overrides the site mode per section. A table published without
-the toggle remains a complete, unpaginated archive.
+slice and lets readers cycle them. The configured form controls first paint and
+hidden forms load no images. A reader's stored choice is scoped to indexes that
+publish all three forms: a section whose toggle is off publishes one form and
+always shows it. A front-matter value or cascade overrides the site mode per
+section. A table published without the toggle remains a complete, unpaginated
+archive.
 
 `params.logo` is always the brand mark; `params.wordmark`, or the site title, is
 the text half hidden at compact widths. Docs, Book, Blog, and Swagger share one

@@ -299,9 +299,9 @@ params:
   # version menu) and is not always a git ref. Content that needs a resolvable
   # release ref -- install commands, for example -- uses `tdVersion.latest`.
   tdVersion:
-    latest: &tdLatestVers v0.6.0
-  version: v0.6.0
-  version_menu: v0.6.0
+    latest: &tdLatestVers v0.6.1
+  version: v0.6.1
+  version_menu: v0.6.1
   version_menu_pagelinks: false
   # Populate to enable the navbar version menu, for example:
   versions: # []
