@@ -12,12 +12,10 @@ outputs: [HTML, print, markdown]
 # The Book/Blog reading shells keep the title bar pinned: long-form reading
 # should not make the navbar appear and disappear under the pointer.
 navbar_autohide: false
-# 分区身份：教程用橙色。亮色比 orange-700 深一档 —— 外壳会把主题色画在它
-# 自己 10% 的淡铺上，原色在那儿过不了 AA；暗色显式指定，避免派生成褐色。
-theme_color: '#ae380b'
-theme_color_dark: '#fb923c'
+# 分区身份：教程用橙色。亮色在交互徽章把它同时用作文字与淡铺时仍可读；暗色显式
+# 指定，避免派生结果偏离期望的橙色色相。
 cascade:
-  theme_color: '#ae380b'
+  theme_color: '#9a3412'
   theme_color_dark: '#fb923c'
   type: book
   navbar_autohide: false
@@ -57,4 +55,3 @@ cascade:
 
 第一次建站时，请按顺序阅读第 1–3 章；开始打磨对外呈现与发布流程后，
 再回到第 4–6 章。附录则汇总全书使用的 front matter 模式，便于直接复用。
-

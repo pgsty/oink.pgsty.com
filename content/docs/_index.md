@@ -19,7 +19,12 @@ sidebar_root_link_self: true
 # Docs pins the title bar: a reference tree is read by jumping between pages,
 # so the global menu has to stay where the pointer left it.
 navbar_autohide: false
+# Section identity: Docs keeps the brand blue, and names it rather than
+# inheriting it silently so the sidebar root switcher can draw all four
+# marks in their own color instead of leaving one of them uncolored.
 cascade:
+  theme_color: '#245f94'
+  theme_color_dark: '#5da2dd'
   type: docs
   navbar_autohide: false
   footer_style: slim

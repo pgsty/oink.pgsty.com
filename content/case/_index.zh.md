@@ -22,8 +22,6 @@ footer_style: slim
 comments: false
 share: [copy]
 # 分区身份：案例用中性深灰。
-theme_color: '#3f3f46'
-theme_color_dark: '#a1a1aa'
 cascade:
   theme_color: '#3f3f46'
   theme_color_dark: '#a1a1aa'

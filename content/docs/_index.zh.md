@@ -10,7 +10,11 @@ sidebar_root_for: self
 sidebar_root_link_self: true
 # 文档区固定顶栏：参考树是靠页面间跳转来读的，全局菜单必须停在指针离开时的位置。
 navbar_autohide: false
+# 分区身份：文档保持品牌蓝，但显式写出而不是隐式继承 —— 这样侧栏根切换器里
+# 四个分区的图标都有自己的颜色，不会有一个空着。
 cascade:
+  theme_color: '#245f94'
+  theme_color_dark: '#5da2dd'
   type: docs
   navbar_autohide: false
   footer_style: slim

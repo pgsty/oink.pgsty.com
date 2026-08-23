@@ -12,14 +12,11 @@ outputs: [HTML, print, markdown]
 # The Book/Blog reading shells keep the title bar pinned: long-form reading
 # should not make the navbar appear and disappear under the pointer.
 navbar_autohide: false
-# Section identity: the Book reads in orange. The light half is one
-# step darker than orange-700, which fails AA where the shell paints
-# the accent on a 10% wash of itself; the dark half is named rather
-# than derived so it stays orange instead of drifting to brown.
-theme_color: '#ae380b'
-theme_color_dark: '#fb923c'
+# Section identity: the Book reads in orange. The light half stays readable
+# where interactive badges reuse it as ink over a faint wash; the dark half is
+# named rather than derived so it stays orange instead of drifting in hue.
 cascade:
-  theme_color: '#ae380b'
+  theme_color: '#9a3412'
   theme_color_dark: '#fb923c'
   type: book
   navbar_autohide: false
@@ -62,4 +59,3 @@ show the Book draft state while their full walkthroughs are being written.
 Read chapters 1–3 in order when starting a site. Return to chapters 4–6 when
 you are shaping the public presentation and preparing a release. The appendix
 is a copy-and-adapt reference for the front matter patterns used throughout.
-

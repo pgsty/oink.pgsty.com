@@ -21,8 +21,6 @@ footer_style: slim
 comments: false
 share: [copy]
 # Section identity: Cases read in a neutral dark grey.
-theme_color: '#3f3f46'
-theme_color_dark: '#a1a1aa'
 cascade:
   theme_color: '#3f3f46'
   theme_color_dark: '#a1a1aa'
