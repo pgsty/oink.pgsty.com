@@ -116,3 +116,46 @@ test('blog sidebar keeps bilingual sections and posts in the configured order', 
     }
   }
 });
+
+test('series member targets mirror their leading indent in RTL', async ({
+  page,
+}) => {
+  await openCleanBlog(page, 360, '/blog/release/0.6.0/');
+
+  const strip = page.locator('.td-series-strip');
+  const summary = strip.locator('.td-series-strip__summary');
+  await expect(strip).toBeVisible();
+  await summary.click();
+
+  const firstMember = strip.locator('.td-series-strip__link').first();
+  await expect(firstMember).toBeVisible();
+
+  const measure = () =>
+    firstMember.evaluate((element) => {
+      const style = getComputedStyle(element);
+      const link = element.getBoundingClientRect();
+      const bar = element.closest('.td-series-strip').getBoundingClientRect();
+      return {
+        paddingInlineStart: Number.parseFloat(style.paddingInlineStart),
+        paddingInlineEnd: Number.parseFloat(style.paddingInlineEnd),
+        paddingLeft: Number.parseFloat(style.paddingLeft),
+        paddingRight: Number.parseFloat(style.paddingRight),
+        insideBar: link.left >= bar.left - 1 && link.right <= bar.right + 1,
+      };
+    });
+
+  const ltr = await measure();
+  expect(ltr.paddingInlineStart).toBeGreaterThan(ltr.paddingInlineEnd);
+  expect(ltr.paddingLeft).toBeGreaterThan(ltr.paddingRight);
+  expect(ltr.insideBar).toBe(true);
+
+  await page.locator('html').evaluate((element) => {
+    element.dir = 'rtl';
+  });
+
+  const rtl = await measure();
+  expect(rtl.paddingInlineStart).toBe(ltr.paddingInlineStart);
+  expect(rtl.paddingInlineEnd).toBe(ltr.paddingInlineEnd);
+  expect(rtl.paddingRight).toBeGreaterThan(rtl.paddingLeft);
+  expect(rtl.insideBar).toBe(true);
+});
