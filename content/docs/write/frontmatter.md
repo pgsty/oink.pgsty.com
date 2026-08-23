@@ -106,6 +106,8 @@ The guide is [Organizing content](/docs/write/organize/).
 | `pager` | boolean | decided by `params.ui.pager_types` | `false` turns off previous / next for this page. A non-boolean warns and is ignored |
 | `navbar_enabled` | boolean | site value (`true`) | Whether this page renders the navbar |
 | `navbar_autohide` | boolean | site value (`false`) | The navbar hides itself on pointer devices |
+| `theme_color` | string | site value | `#rgb`/`#rrggbb` hex tinting this page's accent grounds. On a section root's `cascade` it gives the whole section an identity — see [Brand and appearance](/docs/customize/brand/#theme-color) |
+| `theme_color_dark` | string | derived | The dark half of the accent. A page overriding `theme_color` under a cascade that also sets this key inherits that dark value, so override both |
 | `page_context_menu` | boolean | site value (`true`) | The page action menu on the title row (copy Markdown, edit this page, print, …) |
 | `page_context_menu.assistant_links` | boolean | site value (`false`) | The ChatGPT / Claude handover items, written `page_context_menu: { assistant_links: false }`. A page may only narrow the site policy, never enable it alone |
 {.fields meta="type default"}

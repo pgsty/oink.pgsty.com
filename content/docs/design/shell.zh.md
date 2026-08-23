@@ -153,8 +153,9 @@ Pinterest 图片来自共享特色图片解析器。ChatGPT 与 Claude 接收构
 引出正文。信息行 `article-info.html` 始终包含日期；启用 `reading_time` 后再增加
 字数与分钟数。Front matter 的 `upstream_link` 与注记使用同一个页面级事实，
 并在共享 URL 策略保护下增加本地化的原文链接。术语行只是裸徽章组，分类法名称
-位于分组标签中，不显示前缀。术语徽章是品牌色实底、文字从底色中镂空的小片，
-前置该分类法的 term 图标。图标词汇表由 `taxonomy-icon.html` 独家拥有——每个
+位于分组标签中，不显示前缀。术语徽章静止时是浅中性底与弱化文字，前置该分类法的
+term 图标；可点击徽章在 hover 或 focus 时才取得当前分区的强调色淡铺、边框与文字。
+图标词汇表由 `taxonomy-icon.html` 独家拥有——每个
 分类法配一对图标：整体分类法一枚、单个术语一枚（`folder-open`/`folder`、
 `tags`/`tag`、`cubes`/`cube`、`users`/`user-pen`、series 用
 `book-bookmark`/`book`，其余用 `shapes`）；`params.ui.taxonomy_icons` 可覆盖：
@@ -176,9 +177,10 @@ Pinterest 图片来自共享特色图片解析器。ChatGPT 与 Claude 接收构
 参数、数据文件、封面模型或运行时。页面使用 `series: [name]` 与可选的
 `series_weight`。`series-pages.html` 先按 weight 排有权重成员，再按日期升序排
 无权重成员，并用 `Path` 打破平局；系列条与 term 页面共享该顺序。第一个命名系列
-得到一条 HTML/Print 系列条：默认收起的一行显示系列名和第 M/N 篇，展开后按阅读
-顺序一行一篇，打印时默认展开。单篇系列与非 HTML 输出省略它。编号、交叉引用与
-聚合输出仍属于 Book。
+得到一条 HTML/Print 系列条。summary 拥有整行与末端箭头；系列名仍是它的兄弟链接，
+覆盖在一份隐藏的等宽占位文字上，避免 summary 内出现嵌套交互控件。展开后按阅读
+顺序显示整行可点击的成员链接，序号也属于点击目标；打印时显示同一份展开列表。
+单篇系列与非 HTML 输出省略它。编号、交叉引用与聚合输出仍属于 Book。
 
 默认文章分类法徽章会排除保留的 `authors` 与 `series`，因为专属界面已经展示
 它们。显式设置 `params.taxonomy.page_header` 可以恢复任意一项。

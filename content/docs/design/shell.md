@@ -180,8 +180,9 @@ strip; the description leads the body below them. The info line
 the word count and the minutes. Front matter `upstream_link`—the same per-page
 fact the annotation attributes—adds a localized link to the original, gated by
 the shared URL policy. Term rows are bare badge runs whose taxonomy name lives
-on the group label, not as a visible prefix. A term badge is a solid brand chip
-with its label knocked out of the fill, led by the taxonomy's term glyph.
+on the group label, not as a visible prefix. At rest a term badge is a pale
+neutral chip with muted ink, led by the taxonomy's term glyph; a linked badge
+picks up the current section's accent wash, border, and ink on hover or focus.
 `taxonomy-icon.html` owns the vocabulary—each taxonomy pairs a whole-taxonomy
 glyph with a term glyph (`folder-open`/`folder`, `tags`/`tag`, `cubes`/`cube`,
 `users`/`user-pen`, `book-bookmark`/`book` for series, generic `shapes`)—and
@@ -211,10 +212,13 @@ introduction; no parameter, data file, cover model, or runtime is added. A page
 uses `series: [name]` and optional `series_weight`. `series-pages.html` orders
 weighted members first by weight, then unweighted members by ascending date,
 with `Path` tie-breaks; strip and term page share it. The first named series gets
-one HTML/print strip: a closed disclosure line—series name, part M of N—that
-expands, and prints expanded, to the reading order, one member per line;
-singleton series and non-HTML outputs omit it. Numbering, cross-references, and
-aggregate output remain Book concerns.
+one HTML/print strip. Its summary owns the full bar and trailing caret, while
+the series name remains a sibling link laid over a hidden width reservation so
+the summary never contains a nested interactive control. Opening the bar shows
+the reading order as full-width member links whose ordinals are part of the
+target; print shows the same list expanded. Singleton series and non-HTML
+outputs omit it. Numbering, cross-references, and aggregate output remain Book
+concerns.
 
 The default article taxonomy chips omit reserved `authors` and `series` because
 their dedicated surfaces already carry them. Explicit

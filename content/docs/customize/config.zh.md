@@ -50,6 +50,8 @@ params:
 - **主题默认保守，只写要改的键**。交互功能（本地搜索、图片缩放、评论、反馈、深浅色菜单）默认关闭，主题不替站点做策略决定。从一份「完整配置」逐条删减，比按需添加更容易留下用不上的键。
 - **没有主题总开关**。不存在 `oink.enabled`，也没有 `params.oink.*` 命名空间，更没有在「Docsy 外壳」与「OINK 外壳」之间切换的选项。这一页查不到的开关即不存在。
 - **非法值告警并回退到文档里写明的默认值**。`params.ui.typography: solarized` 报 `invalid params.ui.typography "solarized" (allowed: technical | system) -- using "technical"`，站点照常构建；`footer_style: thin`、`page_width: huge`、`section_index: grid` 同理。一个笔误因此只降级一个设置，而不是让 `hugo server` 下每个 URL 都返回 HTTP 500。它也不会因此静悄悄上线：所有发布关卡都带 `--panicOnWarning` 构建，那条警告在那里仍然是硬失败。
+- **有一条警告保留取值而不是丢弃它**。主题读出的 `theme_color` 若在它自己的画布上低于 AA 正文对比度（4.5:1），颜色照常生效 —— 自定义画布或品牌强制色是作者的决定 —— 但会说出来，并打印可以让它闭嘴的 `ignoreLogs` id。把它当建议而不是拒绝：要么换个更深的颜色，要么加一行配置，在你做出选择之前发布关卡会一直卡住构建。只有解析不出来的十六进制才会被真正丢弃，那种情况和其他非法值一样回退到默认配色。
+
 - **仍有少数情况会中断构建**，它们都属于「继续构建就会发布出错误内容」而非「发布出朴素内容」。需要外部端点的功能——PlantUML、Draw.io、Algolia——缺少端点时报错，因为主题不会代为连接公共服务；残缺的上游署名报错，因为半条声明读起来和完整的一模一样。`params.offline_search_index`、`release` 事实，以及解析不到目标的内容引用同理。
 
 ## 页面级覆盖优先级 {#overrides}
@@ -144,6 +146,8 @@ Hugo 原生顶层键：
 | `params.copyright` | string 或 map | | 字符串按 Markdown 渲染；map 接受 `authors` `from_year` `to_year`（`present` 表示今年） |
 | `params.footer_center_info` | string | Powered by [Oink](https://oink.pgsty.com) | 页脚中间的行内 Markdown，设为空字符串即隐藏 |
 | `params.author` | string 或 map | | RSS 的作者；map 接受 `name` 与 `email` |
+| `params.ui.theme_color` | 字符串 | | `#rgb`/`#rrggbb` 十六进制色，为外壳的强调底着色；链接与行内代码不受影响 —— 见[品牌外观](/zh/docs/customize/brand/#theme-color) |
+| `params.ui.theme_color_dark` | 字符串 | 派生 | 强调色的暗色一半；省略时从 `theme_color` 提亮派生，直到在暗色画布上达到 AA |
 {.fields meta="type default"}
 
 favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favicon.svg` `favicon-NxN.png` `apple-touch-icon.png` `apple-touch-icon-NxN.png`），见[品牌外观](/zh/docs/customize/brand/#favicon)。
@@ -441,6 +445,9 @@ hugo --printPathWarnings --panicOnWarning
 | `params.drawio.enable requires an explicit params.drawio.drawio_server` | 开了 Draw.io 却没给服务地址 |
 | `params.search.algolia requires explicit appId, apiKey, and indexName` | Algolia 三项必须齐全 |
 | `params.ui.image_zoom must be a boolean` | 写成了字符串 `"true"` |
+| `theme_color … is not a #rgb or #rrggbb hex color` | 值不是十六进制颜色，保留默认配色 |
+| `theme_color … reads at about N:1 against the theme's … canvas` | 建议性告警：颜色照常生效，消息里带着让它闭嘴的 id |
+| `theme_color_dark … has no theme_color to pair with` | 只设了暗色一半而没有有效的 `theme_color`；该值被忽略，两种模式都保留默认配色 |
 | `command … must define exactly one of url or action` | 自定义命令同时给了 `url` 和 `action`，或两个都没给 |
 | `invalid params.ui.sidebar_icon_policy …; using all` | 只是警告，但取值拼错了 |
 

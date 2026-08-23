@@ -57,6 +57,8 @@ params:
 - **The theme's defaults are conservative; write only the keys you change.** Interactive features (local search, image zoom, comments, feedback, the light/dark menu) are off by default, because the theme does not make policy for a site. Trimming a "complete configuration" leaves behind keys you never needed more readily than adding them as you go.
 - **There is no theme master switch.** There is no `oink.enabled`, no `params.oink.*` namespace, and no option that swaps between a "Docsy shell" and an "OINK shell". A switch you cannot find on this page does not exist.
 - **An invalid value warns and falls back to the documented default.** `params.ui.typography: solarized` reports `invalid params.ui.typography "solarized" (allowed: technical | system) -- using "technical"` and the site still builds; `footer_style: thin`, `page_width: huge` and `section_index: grid` behave the same way. One typo therefore degrades one setting instead of serving HTTP 500 on every URL under `hugo server`. It cannot ship silently either: every publishing gate builds with `--panicOnWarning`, which turns the warning back into a hard failure.
+- **One warning keeps the value instead of dropping it.** A `theme_color` the theme reads as below AA body text (4.5:1) against its own canvas still ships — a custom canvas or a brand mandate is the author's call — but says so, and prints the `ignoreLogs` id that silences it. Treat it as advice, not a rejection: the fix is either a darker color or one line of configuration, and the publishing gate stops the build until you choose. Only an unparseable hex is dropped outright, and that one falls back to the default palette like every other invalid value.
+
 - **A few things still stop the build**, and they are the ones where carrying on would publish something wrong rather than merely plain. A feature needing an external endpoint — PlantUML, Draw.io, Algolia — errors when the endpoint is missing, because the theme never connects to a public service on your behalf. An incomplete upstream attribution errors, because a partial notice reads exactly like a complete one. `params.offline_search_index`, the `release` facts and unresolvable content references do the same.
 
 ## Page-level override precedence {#overrides}
@@ -161,6 +163,8 @@ Theme parameters:
 | `params.copyright` | string or map | | A string renders as Markdown; a map takes `authors`, `from_year` and `to_year` (`present` means this year) |
 | `params.footer_center_info` | string | Powered by [Oink](https://oink.pgsty.com) | Inline Markdown in the centre of the footer; an empty string hides it |
 | `params.author` | string or map | | The RSS author; a map takes `name` and `email` |
+| `params.ui.theme_color` | string | | `#rgb`/`#rrggbb` hex tinting the shell's accent grounds; links and inline code are unaffected — see [Brand and appearance](/docs/customize/brand/#theme-color) |
+| `params.ui.theme_color_dark` | string | derived | The dark half of the accent; omitted, it is derived from `theme_color` until it clears AA on the dark canvas |
 {.fields meta="type default"}
 
 There is no favicon parameter: the theme scans `static/` for conventional names
@@ -487,6 +491,9 @@ Common errors and what they mean:
 | `params.drawio.enable requires an explicit params.drawio.drawio_server` | Draw.io enabled with no server address |
 | `params.search.algolia requires explicit appId, apiKey, and indexName` | All three Algolia values are required |
 | `params.ui.image_zoom must be a boolean` | Written as the string `"true"` |
+| `theme_color … is not a #rgb or #rrggbb hex color` | The value is not a hex color; the default palette is kept |
+| `theme_color … reads at about N:1 against the theme's … canvas` | Advisory: the color ships, and the message prints the id that silences it |
+| `theme_color_dark … has no theme_color to pair with` | The dark half was set without a valid `theme_color`; it is ignored and the default palette is kept in both modes |
 | `command … must define exactly one of url or action` | A custom command gave both `url` and `action`, or neither |
 | `invalid params.ui.sidebar_icon_policy …; using all` | Only a warning, but the value is misspelled |
 

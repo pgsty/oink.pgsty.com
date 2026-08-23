@@ -139,6 +139,69 @@ The brand properties available are `--td-brand-elev` (overlay ground),
 `--td-brand-mark-from` / `--td-brand-mark-to` / `--td-brand-mark-gradient` (the
 brand gradient).
 
+## Section theme colour {#theme-color}
+
+The brand palette above sets the colour of the whole site. `theme_color` is the
+smaller instrument beside it: one hex that tints the **accent grounds** of the
+shell, so a reader can tell which part of the site they are standing in without
+being told.
+
+```yaml {title="hugo.yml"}
+params:
+  ui:
+    theme_color: '#6d28d9'
+    theme_color_dark: '#a78bfa' # optional
+```
+
+It is more useful per section than site-wide. Written into a section root's
+`cascade`, it gives that whole section an identity — a navy Docs beside a
+violet Blog and an orange Book — while the site default stays the brand colour:
+
+```yaml {title="content/blog/_index.md"}
+cascade:
+  theme_color: '#6d28d9'
+  theme_color_dark: '#a78bfa'
+```
+
+Hugo resolves these cascade values on the section page as well as its
+descendants, so the pair is declared once. The same resolved pair drives the
+page's accent and that section's mark in the root switcher.
+
+**What it touches:** the selected sidebar row, hover washes, the outline pill
+and its travelling rail and dot, tag and chip hovers, text selection, focus
+rings, and each root's mark in the sidebar switcher.
+
+**What it deliberately does not touch:** prose links, external URLs, and
+inline code. Those are reading conventions, not brand surfaces — a page dense
+in identifiers should read as code and prose in every section, and a link
+should look like a link wherever it is. This is why the accent is its own
+custom property rather than a repaint of Bootstrap's link colour.
+
+The dark half is optional. Left out, it is derived by lightening the light
+colour toward white until it clears AA body text on the dark canvas, so a
+single-colour author cannot produce an unreadable dark palette. Name it
+yourself when the derived value no longer matches the brand hue you want.
+The light colour is the key: `theme_color_dark` on its own, or beside an
+invalid `theme_color`, colours nothing in either mode — the theme warns and
+keeps the default palette rather than tint dark mode alone.
+
+> [!CAUTION] Contrast is checked, not enforced
+> The theme reads your colour against its own canvases and warns when it falls
+> below AA body text (4.5:1). The colour still ships: a custom canvas or a
+> brand mandate is your call. The warning carries an `ignoreLogs` id that
+> silences it, and because publishing builds with `--panicOnWarning`, the gate
+> stops until you either darken the colour or silence the check.
+>
+> The check reads the colour against the page canvas. Some interactive
+> surfaces reuse it as both ink and a translucent wash — a linked solid badge,
+> for example, uses accent ink over a 12% accent wash — and that pairing is
+> tighter than the canvas check. If a colour only just passes, inspect those
+> surfaces and go one step darker when needed.
+
+Hugo merges params by key, so a page overriding `theme_color` inside a section
+whose cascade also sets `theme_color_dark` inherits that dark value. Override
+both, or neither.
+
 ## Light and dark mode {#dark-mode}
 
 The theme does **not** show a light/dark control by default. To enable it:

@@ -145,6 +145,26 @@ Font roles are `ui`, `body`, `heading`, `code`, `display`, `metadata`, and
 or `system`; both compile into one stylesheet with no runtime. Legacy
 Bootstrap/Docsy Sass variables continue to seed these roles.
 
+The accent family splits by role. Accent *text* -- links, external URLs, inline
+code -- follows the Bootstrap link family and `--bs-code-color`, which a theme
+color never redeclares; inline code is a fixed crimson pair so a page dense in
+identifiers reads as code and prose rather than code and links. Accent
+*grounds* -- selected rows, hover washes, the outline pill, rail and dot, chip
+hovers, selection, focus rings -- follow `--td-accent`, `--td-accent-rgb` and
+`--td-accent-hover`, which default to the link family and are the only
+properties `params.ui.theme_color` emits. `theme_color` and `theme_color_dark`
+take `#rgb`/`#rrggbb`; front matter and section cascades override the site
+value. An unconfigured site emits nothing. An unparseable value warns and keeps
+the default palette. A resolved color below 4.5:1 against the theme's own
+canvas warns with a suppressible id and still ships: the check is advisory, and
+only a parse failure drops a color. The light color is the key: a
+`theme_color_dark` with no valid `theme_color` warns and is ignored, so a page
+is colored in both modes or in neither. An omitted dark half lightens toward
+white in 4% steps until it clears 4.5:1 on the dark canvas. Every emitted byte is
+formatted from parsed integer channels, never from author text. One resolver
+answers "what color is this page" for the head block and the sidebar root
+switcher alike.
+
 ## Release states {#release-states}
 
 Source complete, locally validated, committed, tagged, pushed, pinned by a
