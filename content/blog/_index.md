@@ -13,7 +13,12 @@ blog_index: cards
 # should not make the navbar appear and disappear under the pointer.
 navbar_autohide: false
 images: [/images/oink.webp]
+# Sample section identity: the Blog reads in violet.
+theme_color: '#6d28d9'
+theme_color_dark: '#a78bfa'
 cascade:
+  theme_color: '#6d28d9'
+  theme_color_dark: '#a78bfa'
   type: blog
   navbar_autohide: false
   images: [/images/oink.webp]

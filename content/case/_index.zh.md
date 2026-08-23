@@ -21,7 +21,10 @@ toc_taxonomies: false
 footer_style: slim
 comments: false
 share: [copy]
+# 分区身份示例：案例用琥珀色。
+theme_color: '#92400e'
 cascade:
+  theme_color: '#92400e'
   type: blog
   images: [/images/case.svg]
   featured_image: hero

@@ -20,7 +20,10 @@ toc_taxonomies: false
 footer_style: slim
 comments: false
 share: [copy]
+# Sample section identity: Cases read in amber.
+theme_color: '#92400e'
 cascade:
+  theme_color: '#92400e'
   type: blog
   images: [/images/case.svg]
   featured_image: hero
