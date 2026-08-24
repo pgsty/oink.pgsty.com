@@ -469,6 +469,31 @@ Version parameters:
 | `module.hugoVersion.extended` | boolean | true | Hugo Extended is required (SCSS has to be compiled) |
 {.fields meta="type default"}
 
+## Editor completion via generated schemas {#editor-schema}
+
+The theme ships two generated JSON Schemas under its `schema/` directory:
+`site-params.schema.json` for a site's `hugo.yaml` and
+`front-matter.schema.json` for page front matter. They are projections of the
+theme's own `hugo.yaml` defaults (with the comment documentation as hover
+text) and its parameter-scan registry; the theme's CI regenerates them and
+fails on drift, so they can never disagree with the theme you have pinned.
+
+With the VS Code YAML extension, map the site schema in your settings:
+
+```json {title=".vscode/settings.json"}
+{
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/pgsty/oink/main/schema/site-params.schema.json": "hugo.yaml"
+  }
+}
+```
+
+Pin the URL to your release tag instead of `main` to match your `go.mod` pin.
+Front matter completion depends on your Markdown tooling; point it at
+`front-matter.schema.json` the same way. The front-matter schema deliberately
+omits type constraints, because keys like `share` and `theme_color` accept a
+bare-boolean opt-out beside their ordinary type.
+
 ## Verifying a configuration change {#verify}
 
 Run a strict build after changing configuration:

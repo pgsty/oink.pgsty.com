@@ -106,7 +106,9 @@ HTML 在 JavaScript 运行前暴露所有面板，打印输出展开面板，Mar
 ### 图片、画廊、FileTree 与围栏 {#images-gallery-filetree-and-fences}
 
 Markdown 图片钩子是普通图片 API。行内图片保持行内；块图片带 `caption` 或 `num`
-时变为 figure。允许的图片属性包括 `id`、`num`、`caption`、`width`、`height`、
+时变为 figure。图片处理只属于这一原生形态：完整 `fig` 源形态是编号容器，其参数表
+刻意不含 `command`/`options`，需要处理的编号图片写成带 `num` 的原生块图片。
+允许的图片属性包括 `id`、`num`、`caption`、`width`、`height`、
 `link`、`command` 与 `options`，以及共享安全属性。`command` 与 `options` 必须同时
 出现，并对可处理的本地资源调用 Hugo `Fit`、`Resize`、`Fill` 或 `Crop`。普通
 链接图片使用 Markdown 语法，因此 `link` 属性要求同时有 caption 或编号。链接

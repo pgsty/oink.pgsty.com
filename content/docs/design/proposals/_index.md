@@ -25,8 +25,9 @@ or the documentation repository.
 | Proposal                                                                 | Current boundary                                                                                                     |
 | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
 | [Backlinks and knowledge graph](/docs/design/proposals/knowledge-graph/) | Draft; no graph or backlink implementation exists                                                                    |
-| [Media convergence](/docs/design/proposals/media-convergence/)           | Draft; records only the remaining cross-surface convergence after the shared content resolver and Zoom marker landed |
+| [Media convergence](/docs/design/proposals/media-convergence/)           | Partially implemented; the media-result contract and Landing resource metadata shipped, M3 resolved for native-image processing, retirement (M4) open |
 | [Bulk agent indexes](/docs/design/proposals/agent-indexes/)              | Draft; per-page Markdown and `llms.txt` already exist, while bulk text and navigation JSON do not                    |
+| [Generated configuration schema](/docs/design/proposals/config-schema/)  | Implemented; editor schemas projected from `hugo.yaml` and the parameter scan, with a CI drift gate                  |
 | [Book publication pipeline](/docs/design/proposals/book-publication/)    | Draft; manifest plus generic EPUB/PDF tooling are implemented, while consumer migration and release remain open        |
 
 ## Where a new PRD goes {#where-a-new-prd-goes}

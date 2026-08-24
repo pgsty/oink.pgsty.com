@@ -22,8 +22,9 @@ design_status: active
 | 提案                                                             | 当前边界                                                               |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | [反向链接与知识图谱](/zh/docs/design/proposals/knowledge-graph/) | 草案；当前没有 graph 或 backlink 实现                                  |
-| [媒体收敛](/zh/docs/design/proposals/media-convergence/)         | 草案；共享正文 resolver 与 Zoom marker 已落地，只记录剩余跨表面收敛    |
+| [媒体收敛](/zh/docs/design/proposals/media-convergence/)         | 部分已实现；media-result 契约与 Landing 资源元数据已交付，M3 决议为原生图片处理，退役（M4）保持开放 |
 | [Agent 批量索引](/zh/docs/design/proposals/agent-indexes/)       | 草案；每页 Markdown 与 `llms.txt` 已存在，全文合集与导航 JSON 尚不存在 |
+| [生成式配置 Schema](/zh/docs/design/proposals/config-schema/) | 已实现；由 `hugo.yaml` 与参数扫描投影的编辑器 Schema，带 CI 漂移门禁 |
 | [Book 出版链路](/zh/docs/design/proposals/book-publication/)     | 草案；manifest 与通用 EPUB/PDF 工具已实现，消费站迁移与发布仍待完成   |
 
 ## 新 PRD 放在哪里 {#where-a-new-prd-goes}

@@ -14,15 +14,17 @@ search_keywords:
     featured image,
   ]
 design_kind: proposal
-design_status: draft
+design_status: partially-implemented
 proposal_date: 2026-08-20
 ---
 
-> [!WARNING] Draft PRD — remaining work only
-> OINK already has a shared content-image resolver, one Zoom marker, processed
-> Markdown images, numbered figures, and safe Landing URL handling. This page
-> proposes only the unresolved convergence; it must not be read as a list of
-> missing current features.
+> [!IMPORTANT] Partially implemented
+> M1 (the shared media-result contract) and M2 (Landing resource metadata)
+> are implemented on the theme's main branch, and M3 is resolved as option 2:
+> processing stays exclusively on native Markdown images, and the full `fig`
+> source form remains a container whose parameter list deliberately excludes
+> `command`/`options`. M4 (compatibility retirement) stays open pending a
+> consumer inventory. The sections below are the original design record.
 
 ## Current baseline {#current-baseline}
 

@@ -6,13 +6,15 @@ weight: 20
 icon: fa-solid fa-images
 search_keywords: [图片 resolver, figure, 图片处理, zoom, landing 媒体, 代表图片]
 design_kind: proposal
-design_status: draft
+design_status: partially-implemented
 proposal_date: 2026-08-20
 ---
 
-> [!WARNING] PRD 草案，只记录剩余工作
-> OINK 已经具备共享正文图片 resolver、单一 Zoom marker、可处理的 Markdown 图片、编号 figure
-> 与安全的 Landing URL 处理。本页只提议尚未解决的收敛问题，不能把它读成“当前缺失功能清单”。
+> [!IMPORTANT] 部分已实现
+> M1（共享 media-result 契约）与 M2（Landing 资源元数据）已在主题 main 分支实现；
+> M3 已决议为方案 2：图片处理只属于原生 Markdown 图片形态，完整 `fig` 源形态保持
+> 容器语义，其参数表刻意不含 `command`/`options`。M4（兼容退役）在完成消费方盘点
+> 之前保持开放。以下各节为原始设计记录。
 
 ## 当前基线 {#current-baseline}
 

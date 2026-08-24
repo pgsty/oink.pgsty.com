@@ -424,6 +424,29 @@ outputs:
 | `module.hugoVersion.extended` | boolean | true | 必须是 Hugo Extended（要编译 SCSS） |
 {.fields meta="type default"}
 
+## 通过生成式 Schema 获得编辑器补全 {#editor-schema}
+
+主题在其 `schema/` 目录下携带两个生成的 JSON Schema：校验站点 `hugo.yaml` 的
+`site-params.schema.json` 与校验页面 front matter 的
+`front-matter.schema.json`。它们是主题自身 `hugo.yaml` 默认值（注释即悬浮文档）
+与参数扫描注册表的投影；主题 CI 会重新生成并在漂移时失败，因此它们永远不会与你
+pin 的主题版本相左。
+
+配合 VS Code YAML 扩展，在设置中映射站点 Schema：
+
+```json {title=".vscode/settings.json"}
+{
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/pgsty/oink/main/schema/site-params.schema.json": "hugo.yaml"
+  }
+}
+```
+
+把 URL 里的 `main` 换成你的发布 tag，与 `go.mod` 的 pin 保持一致。front matter
+补全取决于你的 Markdown 工具链，用同样方式指向 `front-matter.schema.json` 即可。
+front-matter Schema 刻意不带类型约束，因为 `share`、`theme_color` 这类键在常规
+类型之外还接受裸布尔退出。
+
 ## 验证配置变更 {#verify}
 
 改完配置跑一次严格构建：

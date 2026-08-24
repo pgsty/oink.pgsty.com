@@ -117,7 +117,10 @@ are also mutually exclusive.
 ### Images, Gallery, FileTree, and fences {#images-gallery-filetree-and-fences}
 
 The Markdown image hook is the ordinary image API. Inline images stay inline;
-block images become figures with `caption` or `num`. Allowed image attributes
+block images become figures with `caption` or `num`. Image processing belongs
+to this native form alone: the full `fig` source form is a numbered container
+whose parameter list deliberately excludes `command`/`options`, so a processed
+numbered image is written as a native block image with `num`. Allowed image attributes
 are `id`, `num`, `caption`, `width`, `height`, `link`, `command`, and `options`
 plus shared safe attributes. `command` and `options` appear together and use
 Hugo `Fit`, `Resize`, `Fill`, or `Crop` on processable local resources. A plain
