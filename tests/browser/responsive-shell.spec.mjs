@@ -413,6 +413,9 @@ test('bottom bar utilities keep their order and open upward', async ({ page }) =
     expect(menuBox).not.toBeNull();
     expect(menuBox.y + menuBox.height).toBeLessThanOrEqual(triggerBox.y + 1);
   }
+
+  await page.setViewportSize({ width: 820, height: 900 });
+  await expect(dock).toHaveCSS('justify-content', 'center');
 });
 
 test('page-end feedback and metadata use the compact prose presentation', async ({
@@ -427,6 +430,7 @@ test('page-end feedback and metadata use the compact prose presentation', async 
     'Yes',
     'No',
   ]);
+  await expect(feedback).toHaveCSS('border-top-style', 'solid');
   await expect(feedback).toHaveCSS('border-bottom-style', 'none');
   await expect(feedback.locator('.td-feedback__prompt')).toHaveCSS(
     'flex-wrap',
@@ -453,9 +457,45 @@ test('page-end feedback and metadata use the compact prose presentation', async 
     proseFont,
   );
   await expect(page.locator('.td-pager__summary')).toHaveCount(0);
-  for (const link of await page.locator('.td-pager__link').all()) {
+  const pager = page.locator('.td-pager');
+  const pagerBox = await pager.boundingBox();
+  expect(pagerBox).not.toBeNull();
+  for (const link of await pager.locator('.td-pager__link').all()) {
     await expect(link).toHaveCSS('font-family', proseFont);
+    const title = link.locator('.td-pager__title');
+    await expect(title).toHaveCSS('text-overflow', 'ellipsis');
+    await expect(title).toHaveCSS('white-space', 'nowrap');
+    const linkBox = await link.boundingBox();
+    expect(linkBox).not.toBeNull();
+    expect(linkBox.width).toBeLessThanOrEqual(pagerBox.width / 2 + 1);
   }
+
+  const previous = pager.locator('.td-pager__link--prev');
+  if (await previous.count()) {
+    const box = await previous.boundingBox();
+    expect(box).not.toBeNull();
+    expect(Math.abs(box.x - pagerBox.x)).toBeLessThanOrEqual(1);
+  }
+  const next = pager.locator('.td-pager__link--next');
+  if (await next.count()) {
+    const box = await next.boundingBox();
+    expect(box).not.toBeNull();
+    expect(
+      Math.abs(box.x + box.width - (pagerBox.x + pagerBox.width)),
+    ).toBeLessThanOrEqual(1);
+  }
+
+  const [toplineBox, actionsBox] = await Promise.all([
+    page.locator('.td-shell-topline').boundingBox(),
+    page.locator('[data-td-page-actions-toggle]:visible').boundingBox(),
+  ]);
+  expect(toplineBox).not.toBeNull();
+  expect(actionsBox).not.toBeNull();
+  expect(toplineBox.height).toBeGreaterThanOrEqual(actionsBox.height);
+  expect(actionsBox.y).toBeGreaterThanOrEqual(toplineBox.y - 1);
+  expect(actionsBox.y + actionsBox.height).toBeLessThanOrEqual(
+    toplineBox.y + toplineBox.height + 1,
+  );
 });
 
 test('page actions are complete and keyboard operable', async ({ page }) => {
@@ -650,4 +690,34 @@ test('print media produces a clean document surface', async ({ page }) => {
     'break-after',
     'avoid-page',
   );
+});
+
+test('print gives numbered equations the full paper width', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openCleanPage(page, '/docs/components/math/');
+  await page.emulateMedia({ media: 'print' });
+
+  const equation = page.locator('.td-book-figure--eq').last();
+  const body = equation.locator('.td-book-equation__body');
+  const caption = equation.locator('figcaption');
+  await expect(equation).toBeVisible();
+  await expect(caption).toHaveCSS('white-space', 'normal');
+
+  const metrics = await equation.evaluate((node) => {
+    const body = node.querySelector('.td-book-equation__body');
+    const caption = node.querySelector('figcaption');
+    const figureBox = node.getBoundingClientRect();
+    const bodyBox = body.getBoundingClientRect();
+    const captionBox = caption.getBoundingClientRect();
+    return {
+      columns: getComputedStyle(node).gridTemplateColumns.split(' ').length,
+      figureWidth: figureBox.width,
+      bodyWidth: bodyBox.width,
+      bodyBottom: bodyBox.bottom,
+      captionTop: captionBox.top,
+    };
+  });
+  expect(metrics.columns).toBe(1);
+  expect(metrics.bodyWidth).toBeGreaterThanOrEqual(metrics.figureWidth - 1);
+  expect(metrics.captionTop).toBeGreaterThanOrEqual(metrics.bodyBottom - 1);
 });

@@ -159,3 +159,58 @@ test('series member targets mirror their leading indent in RTL', async ({
   expect(rtl.paddingRight).toBeGreaterThan(rtl.paddingLeft);
   expect(rtl.insideBar).toBe(true);
 });
+
+test('blog cards keep a 16:9 image and a reserved three-line summary', async ({
+  page,
+}) => {
+  await openCleanBlog(page, 1280, '/blog/');
+
+  const card = page.locator('.td-blog-card').filter({
+    has: page.locator('.td-blog-card__image'),
+  }).filter({
+    has: page.locator('.td-blog-card__summary'),
+  }).first();
+  const image = card.locator('.td-blog-card__image');
+  const summary = card.locator('.td-blog-card__summary');
+  await expect(card).toBeVisible();
+  await expect(image).toHaveCSS('object-fit', 'cover');
+
+  const imageBox = await image.boundingBox();
+  expect(imageBox).not.toBeNull();
+  expect(imageBox.width / imageBox.height).toBeCloseTo(16 / 9, 2);
+
+  const summaryMetrics = await summary.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      clamp: style.webkitLineClamp,
+      lineHeight: Number.parseFloat(style.lineHeight),
+      minBlockSize: Number.parseFloat(style.minBlockSize),
+      overflow: style.overflow,
+      overflowWrap: style.overflowWrap,
+    };
+  });
+  expect(summaryMetrics.clamp).toBe('3');
+  expect(summaryMetrics.overflow).toBe('hidden');
+  expect(summaryMetrics.overflowWrap).toBe('anywhere');
+  expect(summaryMetrics.minBlockSize).toBeGreaterThanOrEqual(
+    summaryMetrics.lineHeight * 3 - 1,
+  );
+});
+
+test('share controls are centered full-size touch targets', async ({ page }) => {
+  await openCleanBlog(page, 1280, '/blog/release/0.6.0/');
+
+  const share = page.locator('.td-share');
+  const controls = share.locator('.td-share__item');
+  await expect(share).toBeVisible();
+  await expect(share).toHaveCSS('justify-content', 'center');
+  await expect(share).toHaveCSS('border-top-style', 'none');
+  await expect(controls).toHaveCount(7);
+
+  for (const control of await controls.all()) {
+    const box = await control.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box.width).toBeGreaterThanOrEqual(44);
+    expect(box.height).toBeGreaterThanOrEqual(44);
+  }
+});

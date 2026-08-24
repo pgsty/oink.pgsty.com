@@ -51,14 +51,16 @@ function html(outDir, relative) {
 }
 
 function mainBundle(outDir, pageHTML, required = true) {
-  const source = [...pageHTML.matchAll(/<script\b[^>]+src="([^"]+)"/g)]
+  const sources = [...pageHTML.matchAll(/<script\b[^>]+src="([^"]+)"/g)]
     .map((match) => match[1])
-    .find((value) => /\/js\/page-[^/]+\.js$/.test(value));
-  if (!source) {
-    assert.equal(required, false, 'Page has no main bundle');
+    .filter((value) => /\/js\/chunks\/[^/]+\.js$/.test(value));
+  if (sources.length === 0) {
+    assert.equal(required, false, 'Page has no runtime chunks');
     return '';
   }
-  return html(outDir, source.replace('/preview/', ''));
+  return sources
+    .map((source) => html(outDir, source.replace('/preview/', '')))
+    .join('\n');
 }
 
 function sharedBundle(outDir, pageHTML, name) {

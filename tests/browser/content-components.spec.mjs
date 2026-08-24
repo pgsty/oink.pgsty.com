@@ -308,23 +308,21 @@ test.describe('Everyday content primitive guides', () => {
       '',
     );
 
-    const componentBundleURL = await page
-      .locator('script[src*="/js/page-"]')
+    const zoomChunkURL = await page
+      .locator('script[src*="/js/chunks/image-zoom."]')
       .getAttribute('src');
-    const componentBundle = await (
-      await request.get(componentBundleURL)
+    const zoomChunk = await (
+      await request.get(zoomChunkURL)
     ).text();
-    expect(componentBundle).toContain('data-td-image-zoom-dialog');
+    expect(zoomChunk).toContain('data-td-image-zoom-dialog');
 
     await page.goto('/docs/customize/config/', {
       waitUntil: 'domcontentloaded',
     });
     await expect(page.locator('[data-td-image-zoom-dialog]')).toHaveCount(0);
-    const plainBundleURL = await page
-      .locator('script[src*="/js/page-"]')
-      .getAttribute('src');
-    const plainBundle = await (await request.get(plainBundleURL)).text();
-    expect(plainBundle).not.toContain('data-td-image-zoom-dialog');
+    await expect(
+      page.locator('script[src*="/js/chunks/image-zoom."]'),
+    ).toHaveCount(0);
   });
 
   test('content remains complete without JavaScript', async ({ browser }) => {
