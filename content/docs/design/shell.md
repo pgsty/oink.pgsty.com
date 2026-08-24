@@ -213,13 +213,23 @@ introduction; no parameter, data file, cover model, or runtime is added. A page
 uses `series: [name]` and optional `series_weight`. `series-pages.html` orders
 weighted members first by weight, then unweighted members by ascending date,
 with `Path` tie-breaks; strip and term page share it. The first named series gets
-one HTML/print strip. Its summary owns the full bar and trailing caret, while
-the series name remains a sibling link laid over a hidden width reservation so
-the summary never contains a nested interactive control. Opening the bar shows
-the reading order as full-width member links whose ordinals are part of the
-target; print shows the same list expanded. Singleton series and non-HTML
-outputs omit it. Numbering, cross-references, and aggregate output remain Book
-concerns.
+one HTML/print strip. The panel is translucent over a blur rather than an opaque
+card, because a `hero` article paints its featured image behind this band and an
+opaque ground would punch a hole through the picture; on a plain article the tint
+resolves to the page's own ground, so one treatment serves both. Its summary owns
+the full bar and trailing caret, while the series name -- its taxonomy icon
+included -- remains a sibling link laid over a hidden width reservation so the
+summary never contains a nested interactive control. Opening the bar rules a
+hairline under it and places the reading order in one adaptive grid on the same
+surface, preserving DOM order. Every member link owns its ordinal, set at the end
+of a fixed square track so the titles hold one edge at any list length; equal
+cells stay one column when narrow and add columns only while each title retains a
+readable measure, so a desktop panel uses its width without stretching one
+selected row across it. Hover and the reader's own place borrow the two grounds
+sidebar navigation already uses for those states, and the current member adds a
+filled ordinal and a heavier title, so the cue is never colour alone. Print shows the same list expanded in one column. Singleton
+series and non-HTML outputs omit it. Numbering, cross-references, and aggregate
+output remain Book concerns.
 
 The default article taxonomy chips omit reserved `authors` and `series` because
 their dedicated surfaces already carry them. Explicit

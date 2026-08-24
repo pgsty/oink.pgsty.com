@@ -130,34 +130,57 @@ test('series member targets mirror their leading indent in RTL', async ({
   const firstMember = strip.locator('.td-series-strip__link').first();
   await expect(firstMember).toBeVisible();
 
+  // The indent is the ordinal's own grid track, not padding: the row opens a
+  // fixed gap on its leading side, the title fills what is left, and the row
+  // closes on plain padding. Measuring the title against its row therefore
+  // measures the indent itself, in whichever direction the page runs.
   const measure = () =>
     firstMember.evaluate((element) => {
-      const style = getComputedStyle(element);
+      const rtl = getComputedStyle(element).direction === 'rtl';
       const link = element.getBoundingClientRect();
+      const title = element
+        .querySelector('.td-series-strip__title')
+        .getBoundingClientRect();
       const bar = element.closest('.td-series-strip').getBoundingClientRect();
+      const leading = rtl ? link.right - title.right : title.left - link.left;
+      const trailing = rtl ? title.left - link.left : link.right - title.right;
       return {
-        paddingInlineStart: Number.parseFloat(style.paddingInlineStart),
-        paddingInlineEnd: Number.parseFloat(style.paddingInlineEnd),
-        paddingLeft: Number.parseFloat(style.paddingLeft),
-        paddingRight: Number.parseFloat(style.paddingRight),
+        leading,
+        trailing,
         insideBar: link.left >= bar.left - 1 && link.right <= bar.right + 1,
       };
     });
 
+  // Every member shares one ordinal track, so the titles keep a single edge
+  // however many digits the ordinals grow to.
+  const titleEdges = () =>
+    strip.evaluate((element) => {
+      const rtl = getComputedStyle(element).direction === 'rtl';
+      return [...element.querySelectorAll('.td-series-strip__link')].map(
+        (link) => {
+          const row = link.getBoundingClientRect();
+          const title = link
+            .querySelector('.td-series-strip__title')
+            .getBoundingClientRect();
+          return Math.round(rtl ? row.right - title.right : title.left - row.left);
+        },
+      );
+    });
+
   const ltr = await measure();
-  expect(ltr.paddingInlineStart).toBeGreaterThan(ltr.paddingInlineEnd);
-  expect(ltr.paddingLeft).toBeGreaterThan(ltr.paddingRight);
+  expect(ltr.leading).toBeGreaterThan(ltr.trailing);
   expect(ltr.insideBar).toBe(true);
+  expect(new Set(await titleEdges()).size).toBe(1);
 
   await page.locator('html').evaluate((element) => {
     element.dir = 'rtl';
   });
 
   const rtl = await measure();
-  expect(rtl.paddingInlineStart).toBe(ltr.paddingInlineStart);
-  expect(rtl.paddingInlineEnd).toBe(ltr.paddingInlineEnd);
-  expect(rtl.paddingRight).toBeGreaterThan(rtl.paddingLeft);
+  expect(rtl.leading).toBeCloseTo(ltr.leading, 1);
+  expect(rtl.trailing).toBeCloseTo(ltr.trailing, 1);
   expect(rtl.insideBar).toBe(true);
+  expect(new Set(await titleEdges()).size).toBe(1);
 });
 
 test('blog cards keep a 16:9 image and a reserved three-line summary', async ({
