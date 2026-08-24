@@ -190,22 +190,44 @@ params:
 - `technical`（默认）：界面与正文用随主题分发的 Inter（可变字重，拉丁 / 西里尔 / 希腊 / 越南语子集，中文与 emoji 落到平台字体），标题装饰用 Chakra Petch，代码用 IBM Plex Mono。字体文件都是本地的，不请求 Google Fonts。
 - `system`：界面、展示、元数据、打印与等宽角色全部回到平台字体栈，浏览器不请求品牌字体。字体文件仍随主题分发，只是不被引用。
 
-非法取值让构建失败（`invalid params.ui.typography`）。选中的值写入 `<html data-td-typography="…">`，可在浏览器中确认。
+非法取值告警并回落到 `technical`，普通 `hugo server` 照常可用；发布门禁开着 `--panicOnWarning`，这类告警在那里才是硬失败。选中的值写入 `<html data-td-typography="…">`，可在浏览器中确认。
 
 ### 自定义字体 {#custom-fonts}
 字体角色是七个 CSS 自定义属性，覆盖它们即可，不必查找组件选择器：
 
-| 属性 | 用在哪 |
-| --- | --- |
-| `--td-ui-font-family` | 导航、控件与界面文字 |
-| `--td-body-font-family` | 正文与博客 |
-| `--td-heading-font-family` | 正文标题 |
-| `--td-code-font-family` | 代码与终端 |
-| `--td-display-font-family` | 字标与展示型大标题 |
-| `--td-meta-font-family` | 技术标签与元数据 |
-| `--td-print-font-family` | 打印正文 |
+| 属性 | 配置键 | 用在哪 |
+| --- | --- | --- |
+| `--td-ui-font-family` | `ui` | 导航、控件与界面文字 |
+| `--td-body-font-family` | `body` | 正文与博客 |
+| `--td-heading-font-family` | `heading` | 正文标题 |
+| `--td-code-font-family` | `code` | 代码与终端 |
+| `--td-display-font-family` | `display` | 字标与展示型大标题 |
+| `--td-meta-font-family` | `meta` | 技术标签与元数据 |
+| `--td-print-font-family` | `print` | 打印正文 |
 
-把 `.woff2` 放进站点 `static/webfonts/`，在项目样式里声明字面，再改写角色：
+`ui` 是主字体：`body` 经它解析，`heading` 又经 `body` 解析，所以只写 `ui` 一行，界面、正文与标题一起换掉。
+
+#### 在配置里换 {#fonts-in-config}
+只是想换一套字体族，不必碰 SCSS，写 `params.ui.fonts` 即可：
+
+```yaml {title="hugo.yml"}
+params:
+  ui:
+    fonts:
+      # 主字体：界面、正文、标题一起跟着走
+      ui: "'Source Han Sans SC', 'PingFang SC', sans-serif"
+      # 等宽要带中文兜底，否则中英混排的代码块会对不齐
+      code: "'Sarasa Mono SC', 'Noto Sans Mono CJK SC', monospace"
+```
+
+这里写的是字体族名，不是字体文件。主题不会因为这个键去下载或加载任何字体：所写的族必须是读者机器上已有的，或者站点自己在样式表里 `@font-face` 声明过的。所以每个列表都要以通用族（`sans-serif`、`monospace`、`serif`）收尾——读者没有你写的字体时，落到那里。
+
+取值只放行纯粹的字体族语法：带引号的名字、裸标识符、允许前导连字符（`-apple-system`），以及任何文字系统写成的名字（`苹方` 合法）。分号、花括号、括号、`url()`、尖括号一律不过关。未知角色或不合法取值只告警并单独丢弃，同一份 map 里其余的行照常生效。什么都不设时，`<head>` 里连这个 `style` 元素都不会出现。
+
+该块在样式表之后输出，这正是作者字体能在同等优先级下压过 `typography` 预设的原因。
+
+#### 在样式表里换 {#fonts-in-css}
+要自带字体文件，或者只给某一类内容换字体，仍然走样式表。把 `.woff2` 放进站点 `static/webfonts/`，在项目样式里声明字面，再改写角色：
 
 ```scss {title="assets/scss/_styles_project.scss"}
 @font-face {
@@ -255,7 +277,7 @@ body.td-blog {
 
 Docsy 的三个 Google Fonts 变量 `$td-enable-google-fonts`、`$td-google-font-name` 与 `$td-web-font-path` 主题已不再读取。它们留在 `_variables_project.scss` 里不影响构建，也不产生任何效果：随主题分发的是 Inter、Chakra Petch 与 IBM Plex Mono，两档预设都不向 Google Fonts 发请求。打印角色 `--td-print-font-family` 跟随正文角色，主题不为纸张单独提供字体。
 
-YAML 里不接受远程字体 URL，也不接受任意 CSS：字体文件与样式都必须是可审查的本地输入。
+YAML 里只接受字体族名。远程字体 URL 与任意 CSS 都不接受：字体文件与样式必须是可审查的本地输入，一次普通构建不会因为字体发出任何网络请求。
 
 ## 页宽 {#page-width}
 

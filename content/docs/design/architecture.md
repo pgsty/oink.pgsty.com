@@ -176,10 +176,23 @@ and narrow viewports. Theme-owned decorative icons carry `aria-hidden`; pages
 with task lists or raw authored Font Awesome elements alone load the authored
 accessibility repair.
 
-Font roles are `ui`, `body`, `heading`, `code`, `display`, `metadata`, and
-`print`, exposed as `--td-*-font-family`. `params.ui.typography` is `technical`
-or `system`; both compile into one stylesheet with no runtime. Legacy
+Font roles are `ui`, `body`, `heading`, `code`, `display`, `meta`, and
+`print`, exposed as `--td-*-font-family`. `ui` is the main face: `body`
+resolves through it, and `heading` through `body`, so one assignment moves
+chrome, prose, and headings together. `params.ui.typography` is `technical` or
+`system`; both compile into one stylesheet with no runtime. Legacy
 Bootstrap/Docsy Sass variables continue to seed these roles.
+
+`params.ui.fonts` reaches the same roles from configuration, for a site that
+would rather not mount SCSS or add a stylesheet. It names faces and never
+loads them: a family must be one the reader has or one the site declared in an
+`@font-face` of its own, which keeps the key outside the network contract.
+Values are gated to plain font family syntax and the emitted `:root` block is
+rebuilt from the matched parts; an unknown role or an unsafe value warns and is
+dropped alone. The block renders after the stylesheet, which is what lets an
+authored face outrank the preset at equal specificity. A shell reads in the
+site's faces and owns none of its own: a Book sets its numbers and captions in
+the prose face, not in a technical one.
 
 The accent family splits by role. Accent *text* -- links, external URLs, inline
 code -- follows the Bootstrap link family and `--bs-code-color`, which a theme

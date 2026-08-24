@@ -147,10 +147,19 @@ Chrome/Chromium 二进制，输出带 CSS 页码的 A4 页面。两种工具都�
 减少动画、超长 token 与窄视口。主题拥有的装饰图标带 `aria-hidden`；只有包含
 任务列表或原始 Font Awesome 元素的页面才加载作者内容无障碍修复。
 
-字体角色为 `ui`、`body`、`heading`、`code`、`display`、`metadata` 与 `print`，
-通过 `--td-*-font-family` 暴露。`params.ui.typography` 可取 `technical` 或
-`system`；两者编译到同一份样式表，不加载运行时。旧 Bootstrap/Docsy Sass
-变量继续为这些角色提供初值。
+字体角色为 `ui`、`body`、`heading`、`code`、`display`、`meta` 与 `print`，
+通过 `--td-*-font-family` 暴露。`ui` 是主字体：`body` 经它解析，`heading` 又经
+`body` 解析，因此赋一次值即同时移动界面、正文与标题。`params.ui.typography`
+可取 `technical` 或 `system`；两者编译到同一份样式表，不加载运行时。旧
+Bootstrap/Docsy Sass 变量继续为这些角色提供初值。
+
+`params.ui.fonts` 让配置层触达同一组角色，供不愿挂载 SCSS 或新增样式表的站点
+使用。它只写字体族名，绝不加载字体文件：所写字体族必须是读者已有的，或站点
+自己用 `@font-face` 声明过的，这也让该键留在网络契约之外。取值只放行纯粹的
+字体族语法，输出的 `:root` 块由匹配到的片段重新拼装；未知角色或不安全取值只
+告警并单独丢弃。该块在样式表之后渲染，正是这一点让作者字体在同等优先级下压
+过预设。外壳读站点的字体，不自带字体：Book 的编号与题注用正文字体，而非某种
+技术字体。
 
 强调色按角色拆开。**强调文字**（链接、外链、行内代码）跟随 Bootstrap 链接
 族与 `--bs-code-color`，主题色永不重声明它们；行内代码是固定的胭脂红明暗对，

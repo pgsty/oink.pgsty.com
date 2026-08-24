@@ -243,26 +243,62 @@ params:
 - `technical` (the default): interface and body text use the bundled Inter (variable weight, with Latin / Cyrillic / Greek / Vietnamese subsets, while Chinese and emoji fall through to platform fonts), display headings use Chakra Petch, and code uses IBM Plex Mono. All font files are local, and Google Fonts is never requested.
 - `system`: the interface, display, metadata, print and monospace roles all fall back to the platform stack, and the browser requests no brand font. The font files still ship with the theme; they are simply not referenced.
 
-An invalid value fails the build (`invalid params.ui.typography`). The chosen
-value is written to `<html data-td-typography="…">` and can be confirmed in the
-browser.
+An invalid value warns and falls back to `technical`, so an ordinary
+`hugo server` stays usable; publishing gates run `--panicOnWarning`, which is
+where that warning becomes a hard failure. The chosen value is written to
+`<html data-td-typography="…">` and can be confirmed in the browser.
 
 ### Custom fonts {#custom-fonts}
 The font roles are seven CSS custom properties. Override them rather than
 hunting for component selectors:
 
-| Property | Where it is used |
-| --- | --- |
-| `--td-ui-font-family` | Navigation, controls and interface text |
-| `--td-body-font-family` | Body text and blog posts |
-| `--td-heading-font-family` | Headings in the body |
-| `--td-code-font-family` | Code and terminals |
-| `--td-display-font-family` | Wordmark and display headings |
-| `--td-meta-font-family` | Technical labels and metadata |
-| `--td-print-font-family` | Print body text |
+| Property | Config key | Where it is used |
+| --- | --- | --- |
+| `--td-ui-font-family` | `ui` | Navigation, controls and interface text |
+| `--td-body-font-family` | `body` | Body text and blog posts |
+| `--td-heading-font-family` | `heading` | Headings in the body |
+| `--td-code-font-family` | `code` | Code and terminals |
+| `--td-display-font-family` | `display` | Wordmark and display headings |
+| `--td-meta-font-family` | `meta` | Technical labels and metadata |
+| `--td-print-font-family` | `print` | Print body text |
 
-Put the `.woff2` in the site's `static/webfonts/`, declare the face in the
-project stylesheet, then rewrite the roles:
+`ui` is the main face: `body` resolves through it and `heading` through `body`,
+so a single line moves the interface, the prose and the headings together.
+
+#### From configuration {#fonts-in-config}
+To swap font families and nothing else, skip SCSS and write
+`params.ui.fonts`:
+
+```yaml {title="hugo.yml"}
+params:
+  ui:
+    fonts:
+      # The main face: interface, body and headings follow it
+      ui: "'Source Han Sans SC', 'PingFang SC', sans-serif"
+      # Monospace needs a CJK fallback, or mixed code blocks stop aligning
+      code: "'Sarasa Mono SC', 'Noto Sans Mono CJK SC', monospace"
+```
+
+These are **family names, not font files**. The theme never downloads or loads
+a font because of this key: a family here must be one the reader already has,
+or one the site declared in an `@font-face` of its own. End every list with a
+generic family (`sans-serif`, `monospace`, `serif`) — that is where a reader
+without your face lands.
+
+Values are gated to plain font family syntax: quoted names, bare identifiers,
+a leading hyphen (`-apple-system`), and names spelled in any script (`苹方` is
+a family name). Semicolons, braces, parentheses, `url()` and angle brackets do
+not pass. An unknown role or an unsafe value warns and is dropped **on its
+own**; the rest of the map still ships. A site that sets nothing gets no style
+element in `<head>` at all.
+
+The block renders after the stylesheet, which is what lets an authored face
+outrank the `typography` preset at equal specificity.
+
+#### From a stylesheet {#fonts-in-css}
+To ship a font file of your own, or to change the face for one kind of content
+only, use a stylesheet. Put the `.woff2` in the site's `static/webfonts/`,
+declare the face in the project stylesheet, then rewrite the roles:
 
 ```scss {title="assets/scss/_styles_project.scss"}
 @font-face {
@@ -321,8 +357,9 @@ neither preset requests anything from Google Fonts. The print role
 `--td-print-font-family` follows the body role, and the theme ships no separate
 font for paper.
 
-YAML accepts neither a remote font URL nor arbitrary CSS: font files and styles
-must both be auditable local inputs.
+YAML accepts font family names only — neither a remote font URL nor arbitrary
+CSS. Font files and styles must both be auditable local inputs, and an ordinary
+build makes no network request for a font.
 
 ## Page width {#page-width}
 
