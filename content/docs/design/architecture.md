@@ -29,6 +29,14 @@ not dead-code candidates; `VENDOR.json` and `bin/check-vendor.py` pin their
 integrity. OINK ships the complete supported Font Awesome distribution because
 consumer-authored content may use icons that theme templates do not.
 
+The official compiled Font Awesome CSS is one stable, fingerprinted vendor
+stylesheet loaded before the fingerprinted `main.css` produced from theme and
+consumer SCSS. A site-style edit therefore does not invalidate the icon
+distribution, while ordinary cascade order still lets the site override it.
+Capability styles such as KaTeX, DocSearch, Swagger, and Asciinema remain
+separate and load only when used. Fingerprints make immutable URLs possible;
+the deployment host, not the Hugo theme, owns their HTTP cache headers.
+
 Hugo types `docs`, `book`, `blog`, and `swagger` select the reading shells;
 `params.ui.shell_types` may add types. Landing is `layout: landing`. There is no
 `article` type or second blog shell: immersive pages are a blog presentation
@@ -102,12 +110,35 @@ Every base template sets `Page.Store.tdOutputFormat`:
 | Print | Expanded content; no shell navigation, search, or zoom runtime; the shared action layer supports explicit print controls |
 | Markdown / LLMS | Source-shaped Markdown without `td-` component markup |
 | RSS | Safe static summary or explicit omission |
+| BookManifest | Opt-in ordered JSON handoff for a publication packager; never presented as an EPUB or PDF |
 
 Consumers opt into custom outputs; OINK does not force expensive Book
-aggregates. HTML gets the shared action and core layers plus a feature bundle
-keyed by actual page capabilities and language. Print keeps the action layer and
-only runtimes required by rendered print features. Large third-party UMD files
-stay separate; unused feature runtimes stay absent.
+aggregates. HTML gets the shared action and core layers plus stable first-party
+capability chunks selected by the page flags. Templated capabilities publish at
+most one chunk per language; flags choose script tags and never create a new
+combination bundle. Print keeps the action layer and only runtimes required by
+rendered print features. Large third-party UMD files stay separate; unused
+feature runtimes stay absent.
+
+`BookManifest` is disabled unless a Book root explicitly lists it in `outputs`.
+It references that Book's existing per-page Markdown and records derived page
+order, headings, numbered targets, and xrefs. It contains no publication
+metadata guessed by the theme and is not a distributable ebook.
+
+The theme repository ships `bin/book-epub.py` and `bin/book-pdf.py` as explicit
+publication steps, with `bin/check-book-epub.py` and `bin/check-book-pdf.py` as
+their artifact gates. The EPUB packager combines `BookManifest` with the same
+whole-Book Print HTML and accepts consumer metadata separately. The PDF runner
+serves that Print output only on a temporary loopback address, invokes an
+explicit Chrome/Chromium binary behind a `script-src 'none'` Content Security
+Policy, and emits A4 pages with CSS page numbers.
+Both tools refuse missing or out-of-tree resources; network resources and
+output replacement each require a separate explicit flag. The network opt-in
+allows passive HTTP(S) media only; remote scripts and local-file schemes remain
+invalid. Relative assets in the EPUB metadata file resolve from that file's
+directory, not from the caller's working directory. No publication work runs
+during an ordinary Hugo build, and PDF remains Print-derived rather than
+another template output.
 
 Performance rules:
 
@@ -117,6 +148,9 @@ Performance rules:
 - emit correct markup instead of scanning the DOM to repair it;
 - group browser work by resource URL, not DOM instance;
 - keep ordinary outputs opt-in when their aggregate cost is material;
+- emit no Speculation Rules by default: a named production consumer must first
+  measure `Sec-Purpose: prefetch` requests, useful navigations, transferred
+  bytes, and CSP impact with a reversible `moderate` experiment;
 - validate reachable author input, not hypothetical internal states.
 
 `bin/measure-baseline.py` measures build time, output weight, bundle count, and

@@ -24,6 +24,7 @@ design_status: active
 | [反向链接与知识图谱](/zh/docs/design/proposals/knowledge-graph/) | 草案；当前没有 graph 或 backlink 实现                                  |
 | [媒体收敛](/zh/docs/design/proposals/media-convergence/)         | 草案；共享正文 resolver 与 Zoom marker 已落地，只记录剩余跨表面收敛    |
 | [Agent 批量索引](/zh/docs/design/proposals/agent-indexes/)       | 草案；每页 Markdown 与 `llms.txt` 已存在，全文合集与导航 JSON 尚不存在 |
+| [Book 出版链路](/zh/docs/design/proposals/book-publication/)     | 草案；manifest 与通用 EPUB/PDF 工具已实现，消费站迁移与发布仍待完成   |
 
 ## 新 PRD 放在哪里 {#where-a-new-prd-goes}
 

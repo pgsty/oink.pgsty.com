@@ -25,6 +25,12 @@ Hugo Extended 负责编译 SCSS 与模板。浏览器运行时与第三方资源
 `VENDOR.json` 与 `bin/check-vendor.py` 固定其完整性。OINK 发布完整的受支持
 Font Awesome 发行包，因为用户编写的内容可能使用主题模板本身没有引用的图标。
 
+Font Awesome 官方编译 CSS 作为一份稳定、带指纹的 vendor 样式表发布，并排在由
+主题与消费站 SCSS 编译出的指纹 `main.css` 之前。站点样式的普通修改不会再让图标
+发行包失效，同时常规层叠顺序仍允许站点覆盖它。KaTeX、DocSearch、Swagger 与
+Asciinema 等能力样式继续保持独立，只在实际使用时加载。内容指纹使不可变 URL 成为
+可能；HTTP 缓存响应头属于部署宿主，而不是 Hugo 主题的职责。
+
 Hugo 类型 `docs`、`book`、`blog` 与 `swagger` 选择阅读外壳；
 `params.ui.shell_types` 可以增加类型。落地页使用 `layout: landing`。OINK 没有
 `article` 类型或第二套博客外壳；沉浸式页面只是[外壳契约](/zh/docs/design/shell/)
@@ -90,11 +96,27 @@ front matter 覆盖。`banner` 在单页标题上方渲染图片，`wash` 用图
 | Print | 展开的内容；不含外壳导航、搜索或图片缩放运行时；共享操作层仍支持明确的打印控制 |
 | Markdown / LLMS | 保持源 Markdown 形态，不含 `td-` 组件标记 |
 | RSS | 安全的静态摘要，或明确省略 |
+| BookManifest | 选择启用、供出版打包器消费的有序 JSON 交接；绝不冒充 EPUB 或 PDF |
 
 站点自行选择是否启用自定义输出；OINK 不会强制生成昂贵的整书聚合。HTML 加载
-共享操作层、核心层，以及按页面实际能力和语言生成的功能 bundle。Print 保留
-操作层，并且只加载渲染打印功能所需的运行时。大型第三方 UMD 文件保持独立；
-未使用的功能运行时不会出现。
+共享操作层、核心层，以及由页面 flag 选择的稳定第一方能力分片。需要模板化的能力
+每种语言至多发布一份；flag 只决定引用哪些 script tag，绝不再生成新的组合 bundle。
+Print 保留操作层，并且只加载渲染打印功能所需的运行时。大型第三方 UMD 文件保持
+独立；未使用的功能运行时不会出现。
+
+只有 Book 根在 `outputs` 中明确列出 `BookManifest` 时才会生成它。它引用该 Book
+既有的逐页 Markdown，并记录派生出的页面顺序、标题、编号目标与 xref；主题不会在
+其中猜测出版元数据，它也不是可分发的电子书。
+
+主题仓库提供 `bin/book-epub.py` 与 `bin/book-pdf.py` 作为显式出版步骤，并用
+`bin/check-book-epub.py` 与 `bin/check-book-pdf.py` 承担产物门禁。EPUB 打包器组合
+`BookManifest` 与同一份整书 Print HTML，消费站另行传入出版 metadata；PDF runner
+只在临时回环地址提供该 Print 产物，通过 `script-src 'none'` 内容安全策略调用显式指定的
+Chrome/Chromium 二进制，输出带 CSS 页码的 A4 页面。两种工具都会拒绝缺失资源或越出构建树的资源；网络资源
+与覆盖已有输出分别需要独立的显式开关。网络 opt-in 只允许被动 HTTP(S) 媒体，远程脚本与
+本地文件协议仍属非法。EPUB metadata 文件中的相对资源以该文件所在目录为基准，不依赖
+调用者的工作目录。普通 Hugo 构建不会执行出版工作；PDF 仍从 Print 派生，而不是另一种
+模板输出。
 
 性能规则如下：
 
@@ -104,6 +126,8 @@ front matter 覆盖。`banner` 在单页标题上方渲染图片，`wash` 用图
 - 直接输出正确标记，不要扫描 DOM 后再修复；
 - 浏览器工作按资源 URL 分组，而不是按 DOM 实例重复；
 - 成本显著的普通输出应保持选择启用；
+- 默认不输出 Speculation Rules：必须先由一个明确的生产消费站用可回滚的 `moderate`
+  实验测量 `Sec-Purpose: prefetch` 请求、实际命中导航、传输字节与 CSP 影响；
 - 校验确实可达的作者输入，不校验假想的内部状态。
 
 `bin/measure-baseline.py` 测量构建时间、输出体积、bundle 数量与 shortcode

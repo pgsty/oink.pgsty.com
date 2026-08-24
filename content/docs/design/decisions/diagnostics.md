@@ -71,8 +71,13 @@ This also separates editing from publication cleanly:
 - Checkers must test the rejected output directly. A URL security test, for
   example, asserts that the unsafe URL is absent instead of treating any build
   failure as sufficient proof.
-- The source-level parameter checker protects the invariant that theme layouts
-  contain no `errorf` calls.
+- Rendered markup owns DOM, attribute, ordering, and emitted-token assertions;
+  the browser suite owns computed color, size, spacing, breakpoint, and
+  interaction results. A checker does not freeze a Sass spelling when the
+  public result can be observed directly.
+- Source-level checks remain for forbidden constructs such as `errorf` and for
+  narrow topology invariants that output cannot prove, such as one authority,
+  one resolver, or an intentionally restricted caller set.
 
 ## Verification {#verification}
 

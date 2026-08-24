@@ -83,6 +83,7 @@
   - [Agent indexes](http://localhost/docs/design/proposals/agent-indexes/index.md): A draft for optional llms-full text bundles and a stable navigation JSON derived from OINK's existing Markdown output and navigation authority.
   - [Markdown-first authoring](http://localhost/docs/design/decisions/authoring/index.md): Native Markdown carries common semantics; shortcodes fill real capability gaps, and content models extend shared shells instead of forking them.
   - [Shell and navigation](http://localhost/docs/design/shell/index.md): Navigation authorities, immersive blog presentation, search, actions, taxonomies, indexes, and page-end composition.
+  - [Book publication](http://localhost/docs/design/proposals/book-publication/index.md): Move Book semantic lowering and generic EPUB/PDF packaging into OINK without taking publication facts away from consumers.
   - [Landing pages](http://localhost/docs/design/landing/index.md): The maintainer contract for landing data, the built-in section registry, language resolution, runtime, accessibility, and outputs.
   - [Migration boundary](http://localhost/docs/design/migration/index.md): The supported source, configuration, and validation boundaries for migration from OINK 0.4 through OINK 0.6.0.
 
