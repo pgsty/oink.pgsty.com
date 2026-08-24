@@ -9,11 +9,15 @@ checks:
   - llms-txt-size
   - llms-txt-links-resolve
   - llms-txt-links-markdown
-  - llms-txt-directive
+  - llms-txt-directive-html
+  - llms-txt-directive-md
 
   # --- Markdown Availability ---
   - markdown-url-support
-  - content-negotiation
+  # content-negotiation: the site is static hosting; no server honors
+  # Accept: text/markdown, so 0.20.x fails this everywhere. .md URLs and the
+  # llms.txt directive remain the supported markdown access paths.
+  # - content-negotiation
 
   # --- Page Size and Truncation Risk ---
   - rendering-strategy
@@ -31,7 +35,6 @@ checks:
   - redirect-behavior
 
   # --- Observability and Content Health ---
-  # - llms-txt-freshness
   # - markdown-content-parity
   - cache-header-hygiene
 
@@ -39,12 +42,12 @@ checks:
   - auth-gate-detection
   - auth-alternative-access
 
-# options:
-#   maxLinksToTest: 50
-#   samplingStrategy: random # random | deterministic | none
-#   maxConcurrency: 3
-#   requestDelay: 200
-#   requestTimeout: 30000
-#   thresholds:
-#     pass: 50000
-#     fail: 100000
+options:
+  samplingStrategy: deterministic # random | deterministic | curated | none
+  # maxLinksToTest: 50
+  # maxConcurrency: 3
+  # requestDelay: 200
+  # requestTimeout: 30000
+  # thresholds:
+  #   pass: 50000
+  #   fail: 100000

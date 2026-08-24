@@ -44,3 +44,12 @@ jobs:
         run: go mod download github.com/pgsty/oink
       - run: npm ci --ignore-scripts
       - run: npm test
+      # afdocs only fetches the served site (deterministic page sample via
+      # agent-docs.config.yml), so the scorecard runs offline against the same
+      # dev server the local check:afdocs:dev script targets.
+      - name: Agent docs scorecard
+        run: |
+          npm run _serve -- --disableLiveReload --watch=false &
+          timeout 120 bash -c \
+            'until curl -sfo /dev/null http://localhost:1313/; do sleep 1; done'
+          npm run -s _check:afdocs -- http://localhost:1313

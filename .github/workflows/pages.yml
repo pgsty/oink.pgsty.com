@@ -25,6 +25,63 @@ env:
     ${{ github.workspace }}/.hugo_cache/modules/filecache/modules/pkg/mod
 
 jobs:
+  # Deployment is gated on the same quality suites the standalone workflows
+  # run: a deploy that succeeds is a deploy whose gates passed, not one that
+  # merely built. These jobs are self-contained on purpose -- no cross-workflow
+  # status reading, so the guarantee holds even on workflow_dispatch.
+  site-tests:
+    name: Gate on site checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v7
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - name: Install Hugo Extended
+        run: |
+          curl --fail --location --silent --show-error \
+            --output "${RUNNER_TEMP}/hugo.deb" \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i "${RUNNER_TEMP}/hugo.deb"
+      - name: Download Hugo module
+        run: go mod download github.com/pgsty/oink
+      - run: npm ci --ignore-scripts
+      - run: npm test
+
+  browser-tests:
+    name: Gate on browser quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v7
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - name: Install Hugo Extended
+        run: |
+          curl --fail --location --silent --show-error \
+            --output "${RUNNER_TEMP}/hugo.deb" \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i "${RUNNER_TEMP}/hugo.deb"
+      - name: Download Hugo module
+        run: go mod download github.com/pgsty/oink
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+
   build:
     name: Build Pages artifact
     runs-on: ubuntu-latest
@@ -78,7 +135,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build, site-tests, browser-tests]
     steps:
       - name: Deploy
         id: deployment

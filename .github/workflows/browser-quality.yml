@@ -38,6 +38,12 @@ jobs:
           - name: Enhanced code blocks
             target: test:code-blocks
             artifact: code-blocks
+          - name: Keyboard navigation
+            target: test:keyboard-nav
+            artifact: keyboard-nav
+          - name: PRD5 scenarios
+            target: test:prd5
+            artifact: prd5
     steps:
       - uses: actions/checkout@v7
         with:
