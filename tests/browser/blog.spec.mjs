@@ -214,3 +214,29 @@ test('share controls are centered full-size touch targets', async ({ page }) => 
     expect(box.height).toBeGreaterThanOrEqual(44);
   }
 });
+
+test('a banner heading takes the full phone measure in both languages', async ({
+  page,
+}) => {
+  // The floating actions button parks on the banner artwork, so the heading
+  // below it must not reserve clearance for it: at 390px the Chinese title
+  // once shrank to ~278px and wrapped one orphaned character per line.
+  for (const path of [
+    '/zh/blog/oink/oink-implementation-diary/',
+    '/blog/oink/oink-implementation-diary/',
+  ]) {
+    for (const width of [360, 390]) {
+      await openCleanBlog(page, width, path);
+      const heading = page.locator('.td-featured-banner + .td-page-heading');
+      await expect(heading).toBeVisible();
+      await expect(heading).toHaveCSS('padding-inline-end', '0px');
+      const [headingBox, contentBox] = await Promise.all([
+        heading.boundingBox(),
+        page.locator('.td-content').boundingBox(),
+      ]);
+      expect(headingBox).not.toBeNull();
+      expect(contentBox).not.toBeNull();
+      expect(headingBox.width).toBeGreaterThanOrEqual(contentBox.width - 1);
+    }
+  }
+});
