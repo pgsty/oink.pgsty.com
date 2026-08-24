@@ -5,11 +5,12 @@ description: 导航权威、沉浸式博客、搜索、操作、分类法、索�
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK 外壳, 导航契约, 搜索, 操作, 博客展示, 作者, 系列, 翻页]
-contract_status: released-v0.6.1
+contract_status: unreleased-draft
 ---
 
-> [!IMPORTANT] OINK 0.6.1 契约
-> 这是随 OINK 0.6.1 正式发布的外壳与导航契约。本页是权威中文源文件，
+> [!IMPORTANT] 未发布的草案契约
+> 本页描述当前 main 分支上已实现、尚未发布的下一个 OINK 版本的外壳与导航契约；
+> 该版本正式打 tag 后，本页即成为其发布契约。本页是权威中文源文件，
 > 与英文版本一同维护在 `content/docs/design/`。
 
 ## 权威来源与导航 {#authorities-and-navigation}

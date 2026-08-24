@@ -87,7 +87,7 @@ cascade:
 | `navbar_enabled` | 布尔 | 站点值（`true`） | 这一页是否渲染顶栏 |
 | `navbar_autohide` | 布尔 | 站点值（`false`） | 顶栏在指针设备上自动隐藏 |
 | `theme_color` | 字符串 | 站点值 | `#rgb`/`#rrggbb` 十六进制色，为本页的强调底着色。写在分区根的 `cascade` 里就给整个分区一个身份 —— 见[品牌外观](/zh/docs/customize/brand/#theme-color) |
-| `theme_color_dark` | 字符串 | 派生 | 强调色的暗色一半。若上层 cascade 同时设了这个键，只覆盖 `theme_color` 的页面会继承那个暗色，所以要两个一起写 |
+| `theme_color_dark` | 字符串 | 派生 | 强调色的暗色一半。若上层 cascade 同时设了这个键，只覆盖 `theme_color` 的页面会继承那个暗色，所以要两个一起写。`theme_color: false` 可让页面整体退出继承的栏目色 |
 | `page_context_menu` | 布尔 | 站点值（`true`） | 标题行的页面操作菜单（复制 Markdown、编辑本页、打印……） |
 | `page_context_menu.assistant_links` | 布尔 | 站点值（`false`） | ChatGPT / Claude 交接项，写成 `page_context_menu: { assistant_links: false }`。页面只能收窄站点策略，不能单独开启 |
 {.fields meta="type default"}

@@ -185,6 +185,11 @@ The light colour is the key: `theme_color_dark` on its own, or beside an
 invalid `theme_color`, colours nothing in either mode — the theme warns and
 keeps the default palette rather than tint dark mode alone.
 
+A page inside a coloured section can decline the colour with the theme's
+bare-boolean idiom: `theme_color: false` in front matter opts that page out —
+inherited dark half included — and reverts to the default palette without a
+warning. Any other non-hex value (a number, `true`, a named colour) warns.
+
 > [!CAUTION] Contrast is checked, not enforced
 > The theme reads your colour against its own canvases and warns when it falls
 > below AA body text (4.5:1). The colour still ships: a custom canvas or a
