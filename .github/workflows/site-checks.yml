@@ -44,6 +44,22 @@ jobs:
         run: go mod download github.com/pgsty/oink
       - run: npm ci --ignore-scripts
       - run: npm test
+      # Both steps below used to live in the GitHub Pages deploy workflow,
+      # which was the site's second, unused publication target -- Cloudflare
+      # Pages serves oink.pgsty.com. Deleting that workflow would have taken
+      # its only two unique gates with it, so they moved here.
+      #
+      # The pin gate: go.mod and the version the site advertises in hugo.yml
+      # must name the same release, or a bump lands half-applied.
+      - name: Verify advertised and pinned release match
+        run: node scripts/check-release-pin.mjs
+      # The production build: `npm test` builds with `-e dev`, so this is the
+      # only place a production-environment build has to survive
+      # --panicOnWarning.
+      - name: Build as production, strictly
+        run: |
+          hugo --cleanDestinationDir --gc --minify --environment production \
+            --printPathWarnings --panicOnWarning
       # afdocs only fetches the served site (deterministic page sample via
       # agent-docs.config.yml), so the scorecard runs offline against the same
       # dev server the local check:afdocs:dev script targets.
