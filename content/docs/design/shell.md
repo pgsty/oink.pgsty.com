@@ -5,14 +5,13 @@ description: Navigation authorities, immersive blog presentation, search, action
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK shell, navigation contract, search, actions, blog presentation, authors, series, pager]
-contract_status: unreleased-draft
+contract_status: released-v0.7.0
 ---
 
-> [!IMPORTANT] Unreleased draft contract
-> This page describes the shell and navigation of the next OINK release as
-> implemented on the current main branch; it becomes the released contract
-> when that version is cut and tagged. This page is the canonical English
-> source; its Chinese peer is maintained beside it in `content/docs/design/`.
+> [!IMPORTANT] OINK 0.7.0 contract
+> This is the shell and navigation contract released with OINK 0.7.0. This
+> page is the canonical English source; its Chinese peer is maintained beside
+> it in `content/docs/design/`.
 
 ## Authorities and navigation {#authorities-and-navigation}
 

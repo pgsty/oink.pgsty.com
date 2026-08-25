@@ -15,13 +15,13 @@ search_keywords:
     proposal,
     PRD,
   ]
-contract_status: released-v0.6.0
+contract_status: released-v0.7.0
 cascade:
   categories: [Design]
 ---
 
-> [!IMPORTANT] OINK 0.6.0 contract
-> This section publishes the maintainer contracts released with OINK 0.6.0,
+> [!IMPORTANT] OINK 0.7.0 contract
+> This section publishes the maintainer contracts released with OINK 0.7.0,
 > with Hugo Extended 0.160.1 as the compatibility floor. The canonical
 > bilingual sources live in this repository under `content/docs/design/`.
 

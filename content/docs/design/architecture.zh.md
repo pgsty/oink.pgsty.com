@@ -5,12 +5,11 @@ description: 仓库装配、配置、诊断、输出、性能、安全、CSS、�
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK 架构, 仓库边界, 运行时, 输出格式, 安全, 无障碍, 性能]
-contract_status: unreleased-draft
+contract_status: released-v0.7.0
 ---
 
-> [!IMPORTANT] 未发布的草案契约
-> 本页描述当前 main 分支上已实现、尚未发布的下一个 OINK 版本的架构契约；
-> 该版本正式打 tag 后，本页即成为其发布契约。本页是权威中文源文件，与英文版本
+> [!IMPORTANT] OINK 0.7.0 契约
+> 这是随 OINK 0.7.0 正式发布的架构契约。本页是权威中文源文件，与英文版本
 > 一同维护在 `content/docs/design/`。
 
 ## 仓库与装配 {#repository-and-assembly}
@@ -164,9 +163,12 @@ Bootstrap/Docsy Sass 变量继续为这些角色提供初值。
 强调色按角色拆开。**强调文字**（链接、外链、行内代码）跟随 Bootstrap 链接
 族与 `--bs-code-color`，主题色永不重声明它们；行内代码是固定的胭脂红明暗对，
 使一页密集的标识符读成「代码与正文」而非「代码与链接」。**强调底**（选中行、
-hover 淡铺、目录药丸与轨道光点、徽章 hover、文本选中、焦点环）跟随
+指针划过导航行时那层更灰的底、hover 淡铺、目录药丸与轨道光点、徽章 hover、
+卡片 hover 时的外边、分享按钮 hover 时的实心底、文本选中、焦点环）跟随
 `--td-accent`、`--td-accent-rgb` 与 `--td-accent-hover`，它们默认取链接族，也是
-`params.ui.theme_color` 唯一注入的属性。`theme_color` 与 `theme_color_dark`
+`params.ui.theme_color` 唯一注入的属性。属于外壳而非正文的文字同样跟随它们：
+视口正停在其上的目录锚点、以及指针或键盘焦点落在其上的 Book 章节小标题，
+按分区颜色点亮，而不是链接蓝。`theme_color` 与 `theme_color_dark`
 取 `#rgb`/`#rrggbb`；front matter 与分区 cascade 覆盖站点值。未配置的站点不注入
 任何内容。解析失败的值告警并保留默认配色。解析成功但在主题自身画布上低于 4.5:1
 的颜色，带可抑制 id 告警并照常生效：该检查是建议性的，只有解析失败才丢弃颜色。

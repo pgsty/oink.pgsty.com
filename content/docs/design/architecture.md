@@ -5,13 +5,11 @@ description: Repository assembly, configuration, diagnostics, output, performanc
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK architecture, repository boundary, runtime, output formats, security, accessibility, performance]
-contract_status: unreleased-draft
+contract_status: released-v0.7.0
 ---
 
-> [!IMPORTANT] Unreleased draft contract
-> This page describes the next OINK release as implemented on the current
-> main branch; it becomes the released contract when that version is cut and
-> tagged. This page is the
+> [!IMPORTANT] OINK 0.7.0 contract
+> This is the architecture contract released with OINK 0.7.0. This page is the
 > canonical English source; its Chinese peer is maintained beside it in
 > `content/docs/design/`.
 
@@ -198,13 +196,17 @@ The accent family splits by role. Accent *text* -- links, external URLs, inline
 code -- follows the Bootstrap link family and `--bs-code-color`, which a theme
 color never redeclares; inline code is a fixed crimson pair so a page dense in
 identifiers reads as code and prose rather than code and links. Accent
-*grounds* -- selected rows, hover washes, the outline pill, rail and dot, chip
-hovers, selection, focus rings -- follow `--td-accent`, `--td-accent-rgb` and
-`--td-accent-hover`, which default to the link family and are the only
-properties `params.ui.theme_color` emits. `theme_color` and `theme_color_dark`
-take `#rgb`/`#rrggbb`; front matter and section cascades override the site
-value. An unconfigured site emits nothing. An unparseable value warns and keeps
-the default palette. A resolved color below 4.5:1 against the theme's own
+*grounds* -- selected rows, the greyed ground a navigation row takes under the
+pointer, hover washes, the outline pill, rail and dot, chip hovers, a card's
+hovered edge, a share button's hover fill, selection, focus rings -- follow
+`--td-accent`, `--td-accent-rgb` and `--td-accent-hover`, which default to the
+link family and are the only properties `params.ui.theme_color` emits. Ink that
+belongs to the shell rather than to the prose follows them too: the outline
+anchors the viewport is standing over, and a Book chapter's headings under the
+pointer or keyboard focus, light in the section's color, not in the link blue.
+`theme_color` and `theme_color_dark` take `#rgb`/`#rrggbb`; front matter and
+section cascades override the site value. An unconfigured site emits nothing.
+An unparseable value warns and keeps the default palette. A resolved color below 4.5:1 against the theme's own
 canvas warns with a suppressible id and still ships: the check is advisory, and
 only a parse failure drops a color. The light color is the key: a
 `theme_color_dark` with no valid `theme_color` warns and is ignored, so a page

@@ -52,7 +52,7 @@ sequenceDiagram
   participant CDN as Static hosting
   participant JS as Page script bundle
   Reader->>CDN: GET /docs/components/mermaid/
-  CDN-->>Reader: HTML (containing <pre class="mermaid">)
+  CDN-->>Reader: HTML (a figure plus the fence source)
   Reader->>CDN: GET this page's bundle
   CDN-->>Reader: mermaid.min.js
   JS->>JS: render the fence source into SVG
@@ -67,7 +67,7 @@ sequenceDiagram
   participant CDN as Static hosting
   participant JS as Page script bundle
   Reader->>CDN: GET /docs/components/mermaid/
-  CDN-->>Reader: HTML (containing <pre class="mermaid">)
+  CDN-->>Reader: HTML (a figure plus the fence source)
   Reader->>CDN: GET this page's bundle
   CDN-->>Reader: mermaid.min.js
   JS->>JS: render the fence source into SVG
@@ -271,11 +271,9 @@ flowchart TD
 
 The theme reads the current colour scheme when the page initializes: in dark
 mode it uses Mermaid's `dark` theme, in light mode the theme the site
-configured. Mermaid cannot be re-initialized, so switching the colour scheme
-**reloads the whole page** and the diagrams come back in the new colours.
-
-For that reason, keep Mermaid diagrams off pages that must preserve input
-state — a page with a form, for instance.
+configured. Switching the colour scheme redraws the diagrams in place — the
+page is not reloaded, and each diagram holds its height while it is redrawn,
+so nothing on the page moves under you.
 
 Site-wide defaults go in `hugo.yml` with lowercase keys; the theme matches them
 back to Mermaid's own casing:
@@ -344,16 +342,16 @@ Each step inside `{{%/* steps */%}}` is page-level Markdown and can hold a
 
 | Output | Shape |
 | --- | --- |
-| HTML | `<pre class="mermaid">` plus the local Mermaid runtime; the browser draws the SVG |
-| Print | Same as HTML: the print view loads the runtime too, so the diagrams are drawn |
+| HTML | A `figure` holding an empty stage and the fence source as JSON; the page's Mermaid runtime draws the SVG into it |
+| Print | The source inside `<pre class="td-mermaid-source">`, static — no runtime runs there |
 | Markdown | The `mermaid` fence and its source, kept as written |
-| RSS | The diagram source inside `<pre class="mermaid">` — subscribers see text |
+| RSS | The source inside `<pre class="td-mermaid-source">` — subscribers see text |
 
 ## Parameter reference {#reference}
 
 Fence attributes: none. A `mermaid` fence reads no attribute line; writing
 `{height=…}` or `{class=…}` neither works nor errors. Size follows the diagram
-itself and the container width.
+itself and the container width, and the diagram is centred in it.
 
 Site parameters (`hugo.yml`):
 
@@ -366,25 +364,36 @@ Site parameters (`hugo.yml`):
 Per-diagram configuration goes in the YAML header at the top of the fence body
 (`title`, `config`). That is Mermaid syntax, not a theme parameter.
 
+## Enlarging a diagram {#zoom}
+
+A diagram is centred in the column, and Mermaid scales anything wider than the
+column down to fit — a wide sequence diagram can land near a third of its own
+size on a phone. Hovering a diagram (or reaching it with the keyboard) reveals
+a control in its corner that opens the diagram on its own: rendered again at
+full size, panned by dragging, zoomed with the wheel, a pinch, or the `+` and
+`-` keys, and reset with `0`. `Esc` closes it. A diagram that would have to
+shrink past half size to fit opens at 1:1 at its starting corner instead of as
+a thumbnail, and zooming back out always reaches the whole diagram however
+large it is. Nothing is downloaded for this and there is no switch to set: the
+viewer ships with the fence.
+
 ## Limits {#limits}
 
-- Switching colour scheme reloads the page: Mermaid cannot be re-initialized,
-  and the theme chose correct rendering over avoiding the reload.
-- Diagrams cannot be numbered or zoomed: Mermaid emits inline SVG, not an
-  `<img>`, so `{#id num=}` numbering and image zoom do not apply. Export to an
-  image when you need a number and use the [image](/docs/components/image/)
-  numbering.
+- Diagrams cannot be numbered: Mermaid emits inline SVG, not an `<img>`, so
+  `{#id num=}` numbering does not apply. Export to an image when you need a
+  number and use the [image](/docs/components/image/) numbering.
 - Fence attributes do nothing: control width inside the diagram (flowchart
-  direction, class-diagram layout) or with CSS.
+  direction, class-diagram layout) or with CSS. There is no alignment
+  attribute — a diagram is always centred.
 - Syntax errors show up only in the browser: Hugo does not parse Mermaid, so a
-  broken diagram renders Mermaid's error box while the build still passes. Check
-  in a browser before publishing.
-- RSS subscribers see the source only: put the conclusion in the prose, not only
-  in the picture.
+  broken diagram renders an alert carrying the parse error and its own source,
+  while the build still passes. Check in a browser before publishing.
+- RSS, Markdown and Print carry the source, not the picture: put the conclusion
+  in the prose, not only in the diagram.
 
 ## Related {#related}
 
 - [PlantUML](/docs/components/plantuml/) — more complete UML, at the price of a rendering server
 - [Markmap](/docs/components/markmap/) — outline-shaped hierarchies
 - [ECharts](/docs/components/echarts/) — charts with numbers in them
-- [Images](/docs/components/image/) — hand-drawn SVG, numbering and zoom
+- [Images](/docs/components/image/) — hand-drawn SVG and numbering
