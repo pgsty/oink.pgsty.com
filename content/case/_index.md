@@ -1,6 +1,6 @@
 ---
-title: OINK Cases
-linkTitle: Cases
+title: OINK Case
+linkTitle: Case
 description: Fifteen real sites show how OINK scales from a two-page utility to a multilingual documentation estate and three books.
 search_keywords: [OINK cases, showcase, production sites, Pigsty, Hugo examples]
 weight: 40

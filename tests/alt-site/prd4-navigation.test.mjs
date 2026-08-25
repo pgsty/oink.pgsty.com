@@ -175,7 +175,7 @@ for (const [deployment, baseURL, prefix] of [
         'Docs',
         [
           { href: `${prefix}/book/`, title: 'Book' },
-          { href: `${prefix}/case/`, title: 'Cases' },
+          { href: `${prefix}/case/`, title: 'Case' },
           { href: `${prefix}/blog/`, title: 'Blog' },
           { href: `${prefix}/docs/`, title: 'Docs' },
         ],
