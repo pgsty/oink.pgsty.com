@@ -44,6 +44,9 @@ jobs:
           - name: PRD5 scenarios
             target: test:prd5
             artifact: prd5
+          - name: Section theme colour
+            target: test:theme-color
+            artifact: theme-color
     steps:
       - uses: actions/checkout@v7
         with:
