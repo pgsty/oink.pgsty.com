@@ -121,9 +121,11 @@ test('rejects disagreement between the advertised current and latest versions', 
   );
 });
 
-test('Pages resolves a public pin without a workspace and fails on warnings', () => {
+test('CI resolves a public pin without a workspace and fails on warnings', () => {
+  // These steps lived in the GitHub Pages deploy workflow until that second,
+  // unused publication target was removed -- Cloudflare Pages serves the site.
   const workflow = readFileSync(
-    new URL('../../.github/workflows/pages.yml', import.meta.url),
+    new URL('../../.github/workflows/site-checks.yml', import.meta.url),
     'utf8',
   );
   assert.match(workflow, /^  GOWORK: off$/m);
@@ -136,6 +138,6 @@ test('Pages resolves a public pin without a workspace and fails on warnings', ()
       workflow.indexOf('node scripts/check-release-pin.mjs') &&
       workflow.indexOf('node scripts/check-release-pin.mjs') <
         workflow.indexOf('hugo --cleanDestinationDir'),
-    'Pages must resolve the public module and verify its pin before building',
+    'CI must resolve the public module and verify its pin before building',
   );
 });

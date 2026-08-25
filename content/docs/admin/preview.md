@@ -104,7 +104,7 @@ WARNING and moves on. CI logs are rarely read line by line, so those reach
 production. Putting this switch in the build command makes zero warnings the
 condition for a passing build.
 
-This site's CI build step (`.github/workflows/pages.yml`) is
+This site's CI build step (`.github/workflows/site-checks.yml`) is
 `hugo --cleanDestinationDir --gc --minify --environment production
 --printPathWarnings --panicOnWarning`, so any warning stops the deployment at
 the build stage.

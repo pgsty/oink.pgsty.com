@@ -12,6 +12,10 @@ env:
   GO_VERSION: 1.26.6
   HUGO_VERSION: 0.164.0
   NODE_VERSION: 24
+  # Resolve the published pin, never a workspace or filesystem replace: the
+  # gate is only meaningful if CI builds against the module a reader would get.
+  GOWORK: off
+  HUGO_MODULE_WORKSPACE: off
   HUGO_CACHEDIR: ${{ github.workspace }}/.hugo_cache
   GOMODCACHE:
     ${{ github.workspace }}/.hugo_cache/modules/filecache/modules/pkg/mod

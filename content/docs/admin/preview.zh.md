@@ -85,7 +85,7 @@ hugo --gc --minify --printPathWarnings --panicOnWarning
 
 `--panicOnWarning` 需要单独说明。OINK 的多数降级路径是告警而不是报错：giscus 必填键缺失、`params.comments.type` 取了不支持的值、Hugo 弃用的配置键，都只打一条 WARNING 然后跳过。CI 日志通常无人逐行阅读，这些问题会带到线上。把这个开关写进构建命令，等于要求零告警才算构建通过。
 
-本站 CI 的构建步骤（`.github/workflows/pages.yml`）是 `hugo --cleanDestinationDir --gc --minify --environment production --printPathWarnings --panicOnWarning`，任何一条告警都会让部署停在构建阶段。
+本站 CI 的构建步骤（`.github/workflows/site-checks.yml`）是 `hugo --cleanDestinationDir --gc --minify --environment production --printPathWarnings --panicOnWarning`，任何一条告警都会让部署停在构建阶段。
 
 ### baseURL 与构建环境 {#baseurl-and-environment}
 
