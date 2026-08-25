@@ -146,7 +146,7 @@ Hugo 原生顶层键：
 | `params.copyright` | string 或 map | | 字符串按 Markdown 渲染；map 接受 `authors` `from_year` `to_year`（`present` 表示今年） |
 | `params.footer_center_info` | string | Powered by [Oink](https://oink.pgsty.com) | 页脚中间的行内 Markdown，设为空字符串即隐藏 |
 | `params.author` | string 或 map | | RSS 的作者；map 接受 `name` 与 `email` |
-| `params.ui.theme_color` | 字符串 | | `#rgb`/`#rrggbb` 十六进制色，为外壳的强调底着色；链接与行内代码不受影响 —— 见[品牌外观](/zh/docs/customize/brand/#theme-color) |
+| `params.ui.theme_color` | 字符串 | | `#rgb`/`#rrggbb` 十六进制色，为外壳的强调底着色；正文链接与行内代码不受影响 —— 见[品牌外观](/zh/docs/customize/brand/#theme-color) |
 | `params.ui.theme_color_dark` | 字符串 | 派生 | 强调色的暗色一半；省略时从 `theme_color` 提亮派生，直到在暗色画布上达到 AA |
 {.fields meta="type default"}
 

@@ -163,7 +163,7 @@ Theme parameters:
 | `params.copyright` | string or map | | A string renders as Markdown; a map takes `authors`, `from_year` and `to_year` (`present` means this year) |
 | `params.footer_center_info` | string | Powered by [Oink](https://oink.pgsty.com) | Inline Markdown in the centre of the footer; an empty string hides it |
 | `params.author` | string or map | | The RSS author; a map takes `name` and `email` |
-| `params.ui.theme_color` | string | | `#rgb`/`#rrggbb` hex tinting the shell's accent grounds; links and inline code are unaffected — see [Brand and appearance](/docs/customize/brand/#theme-color) |
+| `params.ui.theme_color` | string | | `#rgb`/`#rrggbb` hex tinting the shell's accent grounds; prose links and inline code are unaffected — see [Brand and appearance](/docs/customize/brand/#theme-color) |
 | `params.ui.theme_color_dark` | string | derived | The dark half of the accent; omitted, it is derived from `theme_color` until it clears AA on the dark canvas |
 {.fields meta="type default"}
 

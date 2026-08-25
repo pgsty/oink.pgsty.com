@@ -167,9 +167,11 @@ Hugo resolves these cascade values on the section page as well as its
 descendants, so the pair is declared once. The same resolved pair drives the
 page's accent and that section's mark in the root switcher.
 
-**What it touches:** the selected sidebar row, hover washes, the outline pill
-and its travelling rail and dot, tag and chip hovers, text selection, focus
-rings, and each root's mark in the sidebar switcher.
+**What it touches:** the selected sidebar row and the greyed ground its
+neighbours take under the pointer, hover washes, the outline pill and its
+travelling rail and dot, a Book chapter's headings under the pointer, tag and
+chip hovers, a content card's hovered edge, a share button's hover fill, text
+selection, focus rings, and each root's mark in the sidebar switcher.
 
 **What it deliberately does not touch:** prose links, external URLs, and
 inline code. Those are reading conventions, not brand surfaces — a page dense
