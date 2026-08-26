@@ -379,7 +379,9 @@ Inside the aggregate, the IDs of numbered components are preserved byte for
 byte. Markdown heading IDs within a page are prefixed with their source page to
 avoid collisions when several chapters share an anchor such as `summary`, and
 the generated heading links are rewritten to match. The output is
-print-oriented HTML; PDF and EPUB are the site's own business.
+print-oriented HTML. An opt-in `BookManifest` output records that same reading
+order as JSON, and the theme ships `bin/book-epub.py` and `bin/book-pdf.py`,
+which turn the manifest and the print HTML into EPUB and PDF.
 
 The switches themselves, and per-chapter print, are covered in
 [Print](/docs/customize/print/).
@@ -508,7 +510,7 @@ parameters.
 - `book_kind` and `book_part` are metadata keys the contract acknowledges but the current templates do not render. The ones with a visible effect are `book_number` and `book_status`.
 - The index shortcodes trigger descendant content rendering, which noticeably lengthens the build on a very large tree. The same reason is why whole-book `print` has to be requested explicitly.
 - A footnote reference cannot appear in a shortcode body; the build fails and names the native form to use instead — see [Numbering: the shortcode form](#numbering-shortcodes).
-- The theme stops at print HTML: pagination, font embedding, index compilation and PDF / EPUB packaging are outside the contract.
+- Packaging is opt-in and runs outside the build. `BookManifest` plus `bin/book-epub.py` / `bin/book-pdf.py` produce EPUB and PDF, but no Hugo build emits either file on its own, and typeset pagination, font embedding and index compilation remain outside the contract.
 
 ## Related {#related}
 

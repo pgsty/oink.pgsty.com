@@ -7,7 +7,10 @@ search_keywords: [page parameters, front matter, cascade, page override, paramet
 ---
 
 This page is the complete table of page-level parameters, listing only the keys
-the OINK theme reads. Hugo's own front matter fields (`slug`, `url`, `build`,
+the OINK theme reads. Keys the theme reads solely to warn that they were
+renamed or removed are not listed here — they are in
+[Migration](/docs/design/migration/), and they are also kept out of the
+generated editor schema. Hugo's own front matter fields (`slug`, `url`, `build`,
 `sitemap`, `expiryDate` and the rest) work as usual; their meaning is in the
 [Hugo documentation](https://gohugo.io/content-management/front-matter/). Site
 parameters (`params.*` in `hugo.yml`) are in
@@ -56,11 +59,12 @@ URL under `hugo server`. It still never ships: every publishing gate builds with
 `--panicOnWarning`, which turns that warning back into a hard failure where it
 counts.
 
-A few keys do stop the build, and their rows say so. They are the ones where
-carrying on would publish something wrong rather than merely plain: an
-incomplete upstream attribution (a partial notice reads exactly like a complete
-one), `translation_notice`, the `release` facts, landing `sections`, and any
-reference that cannot resolve.
+No front matter key stops the build; the theme's templates never raise an
+error. Where carrying on would publish something wrong rather than merely
+plain — an incomplete upstream attribution, for instance, because a partial
+notice reads exactly like a complete one — the warning is followed by omitting
+that block entirely rather than by a fallback. The one thing here that does
+stop a build belongs to Hugo, not the theme: a reference that cannot resolve.
 
 ## Basics {#basic}
 
@@ -91,7 +95,7 @@ The guide is [Organizing content](/docs/write/organize/).
 | `sidebar_divider` | boolean | `false` | The row renders as a sidebar group heading: not a link, and not in the pager sequence |
 | `sidebar_expanded` | boolean | `true` for blog sections, `false` otherwise | This section is expanded by default in the sidebar |
 | `sidebar_root_for` | `self` / `children` | — | Makes this section a sidebar tree root; `self` includes the section index, `children` covers descendants only. Any other value warns and is ignored |
-| `sidebar_root_link_self` | boolean | `true` | The root row links to itself; `false` links to the parent section instead. A non-boolean fails the build |
+| `sidebar_root_link_self` | boolean | `true` | The root row links to itself; `false` links to the parent section instead. A non-boolean warns and uses `true` |
 | `sidebar_root_menu` | boolean | `true` | Whether a top-level section appears in the root switcher |
 | `toc_root` | boolean | `false` | When the sidebar root is the site home, excludes this whole top-level section from the tree and the pager sequence |
 | `manual_link` | URL | — | The sidebar and section index row points elsewhere |
@@ -176,22 +180,22 @@ matter, so the most specific declaration wins.
 
 `upstream_link` is read from front matter only (a cascade counts, site
 parameters do not) — a site-wide value would make every page claim the same
-source. Any companion key without `upstream_link` fails the build.
+source. A companion key without `upstream_link` warns and the attribution is omitted.
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
 | `upstream_link` | URL | — | The address of the material this page is derived from. An empty string opts out of an inherited cascade value |
 | `upstream_name` | string | — | The upstream work, as the attribution names it. Required once `upstream_link` is set |
 | `upstream_copyright` | string | — | The copyright notice, retained as upstream wrote it. Required |
-| `upstream_license` | SPDX identifier | — | Must be found in `data/licenses`, or the build fails. Required |
+| `upstream_license` | SPDX identifier | — | Must be found in `data/licenses`, or it warns and the attribution is omitted. Required |
 | `upstream_notice` | site path or URL | — | The page carrying the full notice (licence text, warranty disclaimer, upstream NOTICE, snapshot pin). Required |
 | `upstream_ref` | string | — | The tag or commit the snapshot pins, shown in parentheses after the work |
-| `upstream_source` | string | site parameter | The entry name in `data/upstreams`, for upstream facts shared by many pages; a missing entry fails the build |
-| `upstream_modified` | boolean | `false` | Adds a "modified downstream" line; carries a "view history" link when the site has repository information. A non-boolean fails the build |
+| `upstream_source` | string | site parameter | The entry name in `data/upstreams`, for upstream facts shared by many pages; a missing entry warns and the attribution is omitted |
+| `upstream_modified` | boolean | `false` | Changes the credit verb to say the work was adapted, and adds a "view history" link to that same sentence when the site has repository information — one line, not two. A non-boolean warns and the page is treated as unmodified |
 {.fields meta="type default"}
 
 Missing any one of the four required keys (`upstream_name`,
-`upstream_copyright`, `upstream_license`, `upstream_notice`) fails the build: a
+`upstream_copyright`, `upstream_license`, `upstream_notice`) warns and omits the attribution: a
 partial attribution is worse than an obvious omission. The theme ships an SPDX
 table at `data/licenses.yaml`, and a site adds to or overrides it with a file of
 the same name.
@@ -215,7 +219,7 @@ The guide is [Blog posts](/docs/write/blog/).
 | `series_weight` | integer | — | Place in the series. Weighted members come first in ascending order, the rest follow by ascending date |
 | `tags` | string array | — | Tags — see [Taxonomies](/docs/customize/taxonomy/) |
 | `categories` | string array | — | Categories, likewise |
-| `images` | string array | — | The first entry becomes the post's featured image and share card; put it in a section `_index.md` cascade for a section-wide default, and `images: []` means no featured image |
+| `images` | string array | — | The first entry becomes the post's featured image and share card; put it in a section `_index.md` cascade for a section-wide default. `images: []` opts the page out of an inherited cascade value; it does not suppress an image the page bundle already supplies under a `featured`, `cover` or `thumbnail` name |
 | `featured_image` | `none` / `banner` / `wash` | site value (`none`) | How this article renders its own featured image. An invalid value warns and falls back |
 | `blog_index` | `list` / `cards` | site value (`list`) | Written on a blog root, the list form for that section. An invalid value warns and falls back |
 | `share` | string array or `false` | site `params.ui.share` (empty) | The page-end share targets, replacing any inherited list; `false` opts this page out — see [Share](/docs/write/blog/#share). An unknown target warns and is dropped |
@@ -243,7 +247,7 @@ The guide is [Home and landing pages](/docs/customize/home/). Any page with
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
 | `landing` | string | — | Data is taken from `data/landing/<key>/<language>.yaml` |
-| `sections` | array | — | Section definitions inlined in front matter, taking precedence over `landing`. Anything but an array fails the build |
+| `sections` | array | — | Section definitions inlined in front matter, taking precedence over `landing`. Anything but an array warns and no sections render |
 {.fields meta="type default"}
 
 ## Release pages {#releases}
@@ -254,9 +258,7 @@ newest first.
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `release` | string or map | — | The release facts. The string form is `https://github.com/<owner>/<repo>/releases/tag/<tag>`; the map form takes `product`, `version`, `repo`, `tag`, `date`, `prev` and `checksums`, of which `version` and `repo` are required, and an unknown key or a wrong type fails the build |
-| `release_products` | string or string array | — | Restricts the release list to these products. An invalid filter fails the build |
-| `release_group_by_product` | boolean | `false` | Groups by product; with it on, every selected post must set `release.product` |
+| `release_url` | string | — | One GitHub release URL, `https://github.com/<owner>/<repo>/releases/tag/<tag>`. The theme derives the project, tag, date and asset list from it. Anything else warns and the release block is skipped |
 {.fields meta="type default"}
 
 ## Related {#related}

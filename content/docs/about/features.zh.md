@@ -28,9 +28,9 @@ aliases:
 
 ## 本地优先 {#local-first}
 
-浏览器需要的资源全部提交在主题仓库里：Bootstrap、Font Awesome、四款字体、Lunr、Mermaid、KaTeX、Markmap、Swagger UI、Redoc、Asciinema、ECharts、Infographic。`VENDOR.json` 逐项记录 28 个依赖的版本、来源、许可证文件与 SHA-256 校验值，更新某个运行时要同时更新产物、许可证与校验值。
+浏览器需要的资源全部提交在主题仓库里：Bootstrap、Font Awesome、四款字体、Lunr、Mermaid、KaTeX、Markmap、Swagger UI、Redoc、Asciinema、ECharts、Infographic。`VENDOR.json` 逐项记录 26 个依赖的版本、来源、许可证文件与 SHA-256 校验值，更新某个运行时要同时更新产物、许可证与校验值。
 
-对可能引起网络请求的功能，主题让构建失败而不是静默连出去：PlantUML 缺 `params.plantuml.svg_image_url`、Diagrams.net 缺 `params.drawio.drawio_server`、Algolia 缺 `appId` / `apiKey` / `indexName`，构建都会报错。
+对可能引起网络请求的功能，主题让它保持关闭而不是静默连出去：PlantUML 缺 `params.plantuml.svg_image_url`、Diagrams.net 缺 `params.drawio.drawio_server`、Algolia 缺 `appId` / `apiKey` / `indexName`，都会告警并保持禁用；带 `--panicOnWarning` 的发布关卡会把这条告警变成失败。
 
 本地优先不覆盖作者自己添加的内容。以下都是显式的网络选择：外部链接、远程图片与视频、iframe、远程 API 规范；Algolia、Google 自定义搜索这类托管搜索；分析、评论与其它 SaaS 集成；作者主动配置远程渲染器的 PlantUML 与 Diagrams.net。用到它们的页面仍然是有效页面，但站点不应再宣称这些页面可以完全离线使用。
 

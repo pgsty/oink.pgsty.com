@@ -13,9 +13,9 @@ affected_contracts: [architecture, authoring, Book, outputs]
 ---
 
 > [!WARNING] 已实现出版工具的提案草案
-> 当前检出版本已经包含选择启用的 `BookManifest`、通用 EPUB/PDF runner 与产物校验，
-> 但不会自动发布两种文件，消费站迁移也尚未被接受。在这项工作发布前，已发布契约仍是
-> HTML、Print、Markdown/LLMS 与 RSS。
+> 选择启用的 `BookManifest`、通用 EPUB/PDF runner 与产物校验都已随版本发布，
+> 其规范性描述在[架构](/zh/docs/design/architecture/)。没有任何一次构建会自己产出这两种文件。
+> 本提案仍然未决、且只在本提案未决的，是消费站迁移。
 
 ## 背景与证据 {#context-and-evidence}
 

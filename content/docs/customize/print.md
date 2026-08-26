@@ -122,6 +122,7 @@ expanded**.
 | [Math](/docs/components/math/) | Statically rendered KaTeX / MathML |
 | [Mermaid](/docs/components/mermaid/) · [Markmap](/docs/components/markmap/) · [PlantUML](/docs/components/plantuml/) | Still rendered as diagrams: the print view is an HTML page, and these runtimes load as usual |
 | [ECharts](/docs/components/echarts/) · [Infographic](/docs/components/infographic/) | Degrade to the fence source block; no chart is drawn |
+| [Asciinema](/docs/components/asciinema/) · [OpenAPI](/docs/write/openapi/) | A labelled static link showing the recording or specification address; none of the three runtimes loads |
 | Cards / steps / badges / keys | Static, with content unchanged |
 
 The page shell never reaches paper: sidebar, outline, navbar, the page action

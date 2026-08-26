@@ -291,7 +291,7 @@ params:
 
 书根有了 `print` 输出后，按可见的阅读顺序生成封面、本地目录、根页面正文与每个后代章节，全部装在一个 HTML 文档里。`no_print: true` 的页面、纯链接节点、分隔行与隐藏占位不会成为章节。
 
-聚合文档里，编号组件的 ID 逐字节保留。页面内的 Markdown 标题 ID 会加上来源页面前缀，避免多章共有 `summary` 这类锚点时冲突，生成的标题链接同步改写。产物是面向打印的 HTML，PDF 与 EPUB 由站点自行处理。
+聚合文档里，编号组件的 ID 逐字节保留。页面内的 Markdown 标题 ID 会加上来源页面前缀，避免多章共有 `summary` 这类锚点时冲突，生成的标题链接同步改写。产物是面向打印的 HTML。可选的 `BookManifest` 输出会把同一份阅读顺序记成 JSON，主题另外提供 `bin/book-epub.py` 与 `bin/book-pdf.py`，把清单与打印 HTML 打包成 EPUB 和 PDF。
 
 具体开关与整章打印见[打印支持](/zh/docs/customize/print/)。
 
@@ -396,7 +396,7 @@ python3 ~/pgsty/oink/bin/check-book.py --site-public public
 - `book_kind` 与 `book_part` 是契约认可的元数据键，当前主题模板不渲染它们；有视觉效果的是 `book_number` 与 `book_status`。
 - 索引 shortcode 会触发后代内容渲染，在超大树上明显拉长构建时间。整本 `print` 需要显式开启也是同一原因。
 - shortcode 的正文里不能出现脚注引用，构建失败并指出改用原生形态；见上文[编号：shortcode 形态](#numbering-shortcodes)。
-- 主题只到打印 HTML 为止：分页、字体嵌入、索引编制、PDF / EPUB 打包都在契约之外。
+- 打包是可选的，且在构建之外运行。`BookManifest` 加上 `bin/book-epub.py` / `bin/book-pdf.py` 可以产出 EPUB 与 PDF，但没有任何一次 Hugo 构建会自己生成这两个文件；专业排版的分页、字体嵌入与索引编制仍在契约之外。
 
 ## 相关 {#related}
 

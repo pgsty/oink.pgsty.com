@@ -52,7 +52,7 @@ params:
 - **非法值告警并回退到文档里写明的默认值**。`params.ui.typography: solarized` 报 `invalid params.ui.typography "solarized" (allowed: technical | system) -- using "technical"`，站点照常构建；`footer_style: thin`、`page_width: huge`、`section_index: grid` 同理。一个笔误因此只降级一个设置，而不是让 `hugo server` 下每个 URL 都返回 HTTP 500。它也不会因此静悄悄上线：所有发布关卡都带 `--panicOnWarning` 构建，那条警告在那里仍然是硬失败。
 - **有一条警告保留取值而不是丢弃它**。主题读出的 `theme_color` 若在它自己的画布上低于 AA 正文对比度（4.5:1），颜色照常生效 —— 自定义画布或品牌强制色是作者的决定 —— 但会说出来，并打印可以让它闭嘴的 `ignoreLogs` id。把它当建议而不是拒绝：要么换个更深的颜色，要么加一行配置，在你做出选择之前发布关卡会一直卡住构建。只有解析不出来的十六进制才会被真正丢弃，那种情况和其他非法值一样回退到默认配色。
 
-- **仍有少数情况会中断构建**，它们都属于「继续构建就会发布出错误内容」而非「发布出朴素内容」。需要外部端点的功能——PlantUML、Draw.io、Algolia——缺少端点时报错，因为主题不会代为连接公共服务；残缺的上游署名报错，因为半条声明读起来和完整的一模一样。`params.offline_search_index`、`release` 事实，以及解析不到目标的内容引用同理。
+- **主题自身从不中断构建**。它的模板里没有任何 `errorf`：每个非法值都走上面的告警并回退。需要外部端点的功能——PlantUML、Draw.io、Algolia——缺少端点时告警并保持关闭，因为主题不会代为连接公共服务；残缺的上游署名告警并略去整条声明，因为半条读起来和完整的一模一样。真正会中断构建的来自 Hugo 而非主题：解析不到目标的内容引用，以及低于 `module.hugoVersion.min` 的 Hugo 版本。
 
 ## 页面级覆盖优先级 {#overrides}
 
@@ -171,13 +171,17 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 
 ## 博客 {#blog}
 
-三个键决定博客栏目的样子。它们作用于 `params.ui.blog_section` 指定的栏目，每一个都能通过博客根目录的 front matter 或 `cascade` 按栏目覆盖。
+七个键决定博客栏目的样子。它们作用于 `params.ui.blog_section` 指定的栏目，每一个都能通过博客根目录的 front matter 或 `cascade` 按栏目覆盖。
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `params.ui.featured_image` | enum | none | 文章正文里怎么渲染自己的题图：`none` 不渲染，`banner` 在标题上方框出一张 16:9 的图，`wash` 把它铺在文章头部背后、只留十分之一的不透明度。用的就是这一页在卡片与 `og:image` 里已经在用的那张图，两处不会打架。没有题图的文章在两种模式下都不渲染任何东西 |
-| `params.ui.blog_index` | enum | list | 博客栏目列表页的形态：`list` 是行列表，`cards` 是内容卡片网格，卡片带 16:9 题图、日期与栏目行，以及三行摘要。按年分组、分页与 `manual_link` 在两种形态下行为一致 |
+| `params.ui.featured_image` | enum | none | 文章正文里怎么渲染自己的题图：`none` 不渲染，`banner` 在标题上方框出一张 16:9 的图，`wash` 把它铺在文章头部背后、只留十分之一的不透明度，`hero` 把它作为外壳自己的通栏背景铺开并把开头下移——单页与栏目列表页都一样。用的就是这一页在卡片与 `og:image` 里已经在用的那张图，两处不会打架。没有题图的文章在任何模式下都不渲染任何东西 |
+| `params.ui.blog_index` | enum | list | 博客栏目列表页的形态：`list` 是行列表，`cards` 是内容卡片网格，卡片带 16:9 题图、日期与栏目行，以及三行摘要，`table` 是每篇一行的紧凑表格——整个栏目一次列全，不按年分组，也不分页。按年分组、分页与 `manual_link` 在 `list` 与 `cards` 下行为一致 |
 | `params.ui.blog_index_columns` | integer | 3 | `blog_index: cards` 时的列数；md 到 xl 之间恒为两列，md 以下一列，不受此值影响 |
+| `params.ui.blog_index_size` | integer | 12 | `list` 与 `cards` 索引每页的文章数；`table` 形态总是列全。12 能被 2、3、4 整除，卡片行不会缺角 |
+| `params.ui.blog_index_toggle` | boolean | false | 让读者从索引工具栏在列表、卡片、表格之间切换。默认关闭，因为它会把三种形态都放进文档——隐藏的那些不加载图片，但标记是真实存在的 |
+| `params.ui.toc_style` | enum | fixed | 右栏的呈现方式：`fixed` 是钉在视口上的面板，`flow` 是跟随内容流、从文章开头处开始、滚动后才钉住的宽面板 |
+| `params.ui.toc_taxonomies` | boolean | true | 右栏的分类词云。既没有目录也没有词云的右栏不会渲染任何东西 |
 {.fields meta="type default"}
 
 作者与系列是 taxonomy 而不是参数，见[分类法](/zh/docs/customize/taxonomy/#authors)与[写博客](/zh/docs/write/blog/)。
@@ -255,13 +259,13 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 | --- | --- | --- | --- |
 | `params.offline_search` | boolean | false | 生成每语言一份本地索引并启用命令面板，见[全文检索](/docs/customize/search/) |
 | `params.offline_search_on_serve` | boolean | true | `hugo server` 预览时也构建索引，预览行为与线上一致；站点极大时设 `false` 跳过以加快本地重建 |
-| `params.offline_search_index` | enum | content | 索引范围，逐级累加：`title` `heading` `summary` `content`。非法值构建失败 |
+| `params.offline_search_index` | enum | content | 索引范围，逐级累加：`title` `heading` `summary` `content`。非法值告警并使用 `content` |
 | `params.offline_search_summary_length` | integer | 70 | `summary` 档摘录截断的字数 |
 | `params.offline_search_max_results` | integer | 10 | 结果条数上限，同时约束 Lunr 与中文子串兜底 |
 | `params.ui.landing_search` | boolean | true | `layout: landing` 页面是否保留搜索入口 |
 | `params.ui.command_palette.commands` | list | [] | 自定义命令，每条二选一：`url` 或内置 `action`；见[命令面板](/zh/docs/customize/panel/#custom-commands) |
 | `params.gcs_engine_id` | string | | Google 可编程搜索引擎 ID，启用后引入外部服务 |
-| `params.search.algolia` | map | | Algolia DocSearch，必须显式给出 `appId` `apiKey` `indexName`，缺一构建失败 |
+| `params.search.algolia` | map | | Algolia DocSearch，必须显式给出 `appId` `apiKey` `indexName`，缺一则告警并保持 DocSearch 关闭 |
 {.fields meta="type default"}
 
 自定义命令的每条记录只接受 `id` `title` `description` `icon` `keywords` `url` `action` 七个键；`id` 必须匹配 `^[a-z][a-z0-9_-]*$`，且不能与内置动作 ID 重名。分语言的标题写在 `languages.<lang>.params.ui.command_palette.commands`。
@@ -339,17 +343,17 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 
 ## 内容运行时 {#runtimes}
 
-Mermaid、KaTeX、ECharts、Infographic、Asciinema、Swagger UI 与 Redoc 按内容自动检测，页面用到才加载，没有站点开关。需要开关或外部端点的只有这几个：
+Mermaid、KaTeX、ECharts、Infographic、Asciinema、Swagger UI 与 Redoc 按内容自动检测，只有用到它们的页面、且只在该页的 HTML 输出里加载，没有站点开关。需要开关或外部端点的只有这几个：
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `params.markmap` | boolean | false | 站点级启用思维导图围栏，见[思维导图](/docs/components/markmap/) |
 | `params.mermaid` | map | | 透传给 `mermaid.initialize()` 的配置；键名全小写，深色模式自动覆盖 `theme` |
 | `params.plantuml.enable` | boolean | false | 启用 PlantUML 围栏，见 [PlantUML](/zh/docs/components/plantuml/) |
-| `params.plantuml.svg_image_url` | string | | PlantUML 服务的 SVG 端点，启用时必填，缺失构建失败 |
+| `params.plantuml.svg_image_url` | string | | PlantUML 服务的 SVG 端点，启用时必填，缺失则告警并保持 PlantUML 关闭 |
 | `params.plantuml.svg` | boolean | | 用内联 SVG 而不是 `<img>` 渲染 |
 | `params.drawio.enable` | boolean | false | 启用 `.drawio.svg` 图片的编辑按钮，见 [Draw.io](/zh/docs/components/drawio/) |
-| `params.drawio.drawio_server` | string | | Draw.io 编辑器地址，启用时必填，缺失构建失败 |
+| `params.drawio.drawio_server` | string | | Draw.io 编辑器地址，启用时必填，缺失则告警并保持 Diagrams.net 关闭 |
 | `params.highlight_classes` | boolean | true | 代码高亮输出 Chroma class；设 `false` 回到 Hugo 的行内样式 |
 | `params.ui.code_copy` | boolean | true | 代码块的复制按钮；设为 `false` 全局去掉，围栏上的 `copy=` 仍然优先 |
 {.fields meta="type default"}
@@ -409,8 +413,8 @@ outputs:
 | `params.versions` | list | | 版本条目：`version` `url` `kind`，`name: '---'` 是分隔线 |
 | `params.archived_version` | boolean | | 顶部显示「这是归档版本」横幅 |
 | `params.url_latest_version` | string | | 归档横幅里指向最新版的链接 |
-| `params.time_format_blog` | string | Monday, January 02, 2006 | 博客日期格式，按语言覆盖 |
-| `params.time_format_default` | string | January 2, 2006 | 其它日期格式，按语言覆盖 |
+| `params.time_format_blog` | string | 2006-01-02 | 博客日期格式，按语言覆盖 |
+| `params.time_format_default` | string | 2006-01-02 | 其它日期格式，按语言覆盖 |
 {.fields meta="type default"}
 
 ## 其它 {#misc}

@@ -100,6 +100,7 @@ no_print: true
 | [公式](/zh/docs/components/math/) | 静态渲染的 KaTeX / MathML |
 | [Mermaid](/zh/docs/components/mermaid/) · [Markmap](/zh/docs/components/markmap/) · [PlantUML](/zh/docs/components/plantuml/) | 照常渲染成图：打印视图仍是一张 HTML 页，这几个运行时照常加载 |
 | [ECharts](/zh/docs/components/echarts/) · [Infographic](/zh/docs/components/infographic/) | 降级成围栏源码块，不渲染图表 |
+| [Asciinema](/zh/docs/components/asciinema/) · [OpenAPI](/zh/docs/write/openapi/) | 一行带标题的静态链接，录像或规范地址可见；三套运行时都不加载 |
 | 卡片 / 步骤 / 徽章 / 按键 | 静态呈现，内容不变 |
 
 页面外壳不进纸：侧栏、目录、顶栏、页面操作菜单、反馈组件、标题旁的锚点链接、行内复制按钮。

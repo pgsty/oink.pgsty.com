@@ -6,7 +6,7 @@ weight: 30
 search_keywords: [页面参数, front matter, 前置元数据, page parameters, cascade, 页面级覆盖, 参数表]
 ---
 
-本页是页面级参数的全表，只列 OINK 主题会读取的键。Hugo 自身的 front matter 字段（`slug`、`url`、`build`、`sitemap`、`expiryDate` 等）照常可用，语义见 [Hugo 文档](https://gohugo.io/content-management/front-matter/)。站点级参数（`hugo.yml` 里的 `params.*`）见[配置总览](/zh/docs/customize/config/)。
+本页是页面级参数的全表，只列 OINK 主题会读取的键。主题仅为提示「已重命名或已移除」而读取的旧键不在此列——它们在[迁移](/zh/docs/design/migration/)里，也不会出现在生成的编辑器 Schema 中。Hugo 自身的 front matter 字段（`slug`、`url`、`build`、`sitemap`、`expiryDate` 等）照常可用，语义见 [Hugo 文档](https://gohugo.io/content-management/front-matter/)。站点级参数（`hugo.yml` 里的 `params.*`）见[配置总览](/zh/docs/customize/config/)。
 
 ## 表格说明 {#how-to-read}
 优先级从高到低：
@@ -40,7 +40,7 @@ cascade:
 
 非法值不会中断构建。主题会发一条警告，指出键名、收到的值以及实际用了哪个回退值，然后按表里的默认值把这一页渲染出来——一个笔误只降级一个设置，而不是让 `hugo server` 下每个 URL 都返回 HTTP 500。它也不会因此混进线上：所有发布关卡都带 `--panicOnWarning` 构建，那条警告在真正要紧的地方仍然是硬失败。
 
-少数几个键确实会中断构建，表里会写明。它们是那种「继续构建就会发布出错误内容」而不只是「发布出朴素内容」的情形：残缺的上游署名（半条声明读起来和完整的一模一样）、`translation_notice`、`release` 事实、落地页的 `sections`，以及任何解析不到目标的引用。
+没有任何 front matter 键会中断构建；主题的模板从不报错。当继续构建会发布出错误内容而不只是朴素内容时——比如残缺的上游署名，半条声明读起来和完整的一模一样——警告之后是整块略去，而不是回退。这里唯一会中断构建的属于 Hugo 而不是主题：解析不到目标的引用。
 
 ## 基本 {#basic}
 
@@ -71,7 +71,7 @@ cascade:
 | `sidebar_divider` | 布尔 | `false` | 这一行渲染成侧栏分组标题：不是链接，也不进翻页序列 |
 | `sidebar_expanded` | 布尔 | blog 栏目 `true`，其余 `false` | 这个栏目在侧栏里默认展开 |
 | `sidebar_root_for` | `self` / `children` | — | 让这个栏目成为侧栏树的根；`self` 连同栏目首页，`children` 只管后代。其它取值告警并忽略 |
-| `sidebar_root_link_self` | 布尔 | `true` | 根那一行链接自身；`false` 改为链接父栏目。非布尔构建失败 |
+| `sidebar_root_link_self` | 布尔 | `true` | 根那一行链接自身；`false` 改为链接父栏目。非布尔值告警并使用 `true` |
 | `sidebar_root_menu` | 布尔 | `true` | 顶层栏目是否出现在根切换器里 |
 | `toc_root` | 布尔 | `false` | 侧栏根是站点首页时，把这个顶层栏目整个排除在树与翻页序列之外 |
 | `manual_link` | URL | — | 侧栏与栏目索引里这一行指向别处 |
@@ -147,21 +147,21 @@ cascade:
 
 页面改写自别处的材料时，用 `upstream_link` 声明来源，页尾出处行会给出作品、版权人、许可证与完整声明的链接。这一族键的解析顺序是站点参数 → `data/upstreams` 中由 `upstream_source` 指名的条目 → 本页 front matter，最具体的声明胜出。
 
-`upstream_link` 只从 front matter 读取（cascade 有效，站点参数无效）——站点级的值会让每一页都声称同一个来源。没有 `upstream_link` 却写了任何一个同族键，构建失败。
+`upstream_link` 只从 front matter 读取（cascade 有效，站点参数无效）——站点级的值会让每一页都声称同一个来源。没有 `upstream_link` 却写了任何一个同族键，告警并略去署名。
 
 | 键 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
 | `upstream_link` | URL | — | 本页据以改写的材料地址。写空串退出 cascade 继承来的值 |
 | `upstream_name` | 字符串 | — | 上游作品名，按上游自己的写法。设了 `upstream_link` 即必填 |
 | `upstream_copyright` | 字符串 | — | 版权声明，保留上游原文。必填 |
-| `upstream_license` | SPDX 标识 | — | 必须能在 `data/licenses` 中查到，否则构建失败。必填 |
+| `upstream_license` | SPDX 标识 | — | 必须能在 `data/licenses` 中查到，否则告警并略去署名。必填 |
 | `upstream_notice` | 站内路径或 URL | — | 承载完整声明（许可证全文、免责声明、上游 NOTICE、快照版本）的页面。必填 |
 | `upstream_ref` | 字符串 | — | 快照对应的 tag 或 commit，显示在作品名后的括号里 |
-| `upstream_source` | 字符串 | 站点参数 | `data/upstreams` 中的条目名，用于集中声明多页共用的上游事实；条目不存在构建失败 |
-| `upstream_modified` | 布尔 | `false` | 页尾追加一条「本地已修改」；站点配了仓库信息时带「查看历史」链接。非布尔构建失败 |
+| `upstream_source` | 字符串 | 站点参数 | `data/upstreams` 中的条目名，用于集中声明多页共用的上游事实；条目不存在时告警并略去署名 |
+| `upstream_modified` | 布尔 | `false` | 把署名动词改成「改编自」，站点配了仓库信息时在同一句里带上「查看历史」链接——是一句话，不是多加一行。非布尔值告警并按未修改处理 |
 {.fields meta="type default"}
 
-四个必填键（`upstream_name`、`upstream_copyright`、`upstream_license`、`upstream_notice`）缺一即构建失败：残缺的署名比明显的缺失更糟。主题自带一份 SPDX 表 `data/licenses.yaml`，站点用同名文件补充或覆盖条目。
+四个必填键（`upstream_name`、`upstream_copyright`、`upstream_license`、`upstream_notice`）缺一即告警并略去整条署名：残缺的署名比明显的缺失更糟。主题自带一份 SPDX 表 `data/licenses.yaml`，站点用同名文件补充或覆盖条目。
 
 ## 图片缩放 {#image-zoom}
 
@@ -182,7 +182,7 @@ cascade:
 | `series_weight` | 整数 | — | 在系列中的位置。带权重的成员按升序排在前，其余按日期升序跟在后 |
 | `tags` | 字符串数组 | — | 标签，见[分类体系](/zh/docs/customize/taxonomy/) |
 | `categories` | 字符串数组 | — | 分类，同上 |
-| `images` | 字符串数组 | — | 第一项作为文章封面与分享卡片；写进栏目 `_index.md` 的 `cascade` 即为栏目级默认，`images: []` 表示不要封面 |
+| `images` | 字符串数组 | — | 第一项作为文章封面与分享卡片；写进栏目 `_index.md` 的 `cascade` 即为栏目级默认。`images: []` 让这一页不继承 cascade 里的值，但不会屏蔽页面 bundle 里已有的 `featured`、`cover` 或 `thumbnail` 图片 |
 | `featured_image` | `none` / `banner` / `wash` | 站点值（`none`） | 本文正文里怎么渲染自己的题图。非法值告警并回退 |
 | `blog_index` | `list` / `cards` | 站点值（`list`） | 写在博客根目录上，决定该栏目列表页的形态。非法值告警并回退 |
 | `share` | 字符串数组或 `false` | 站点 `params.ui.share`（空） | 页尾分享目标，整体替换继承来的列表；`false` 让本页退出，见[分享](/zh/docs/write/blog/#share)。未知目标告警并丢弃 |
@@ -208,7 +208,7 @@ cascade:
 | 键 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
 | `landing` | 字符串 | — | 数据取自 `data/landing/<key>/<语言>.yaml` |
-| `sections` | 数组 | — | 在 front matter 里内联分区定义，优先于 `landing`。不是数组时构建失败 |
+| `sections` | 数组 | — | 在 front matter 里内联分区定义，优先于 `landing`。不是数组时告警，不渲染任何分区 |
 {.fields meta="type default"}
 
 ## 发布页 {#releases}
@@ -217,9 +217,7 @@ cascade:
 
 | 键 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `release` | 字符串或映射 | — | 发布事实。字符串形态是 `https://github.com/<owner>/<repo>/releases/tag/<tag>`；映射形态的键是 `product` `version` `repo` `tag` `date` `prev` `checksums`，`version` 与 `repo` 必填，未知键或类型不符构建失败 |
-| `release_products` | 字符串或字符串数组 | — | 发布列表只保留这些产品。非法过滤条件构建失败 |
-| `release_group_by_product` | 布尔 | `false` | 按产品分组；开启后每一篇被选中的文章都必须写 `release.product` |
+| `release_url` | 字符串 | — | 一个 GitHub 发布地址，`https://github.com/<owner>/<repo>/releases/tag/<tag>`。主题从中解析出项目、标签、日期与资产列表。其它写法告警并跳过发布区块 |
 {.fields meta="type default"}
 
 ## 相关 {#related}

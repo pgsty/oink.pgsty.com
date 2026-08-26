@@ -9,7 +9,9 @@ search_keywords: [API, OpenAPI, Swagger, Swagger UI, Redoc, swagger, spec, speci
 An API reference page is one OpenAPI specification plus one shortcode. The
 Swagger UI and Redoc runtimes ship with the theme (versions 5.32.13 and 2.5.3
 respectively, per the repository's `VENDOR.json`), load only on a page that uses
-them, and reach no external service at build time or in the browser.
+them in its HTML output, and reach no external service at build time or in the
+browser. Swagger UI's online validator is pinned off (`validatorUrl: null`), so
+a published API page never sends its specification address anywhere.
 
 Three steps: put the specification file under `static/`, create a page with the
 shortcode, and change the page `type` to `swagger` if it needs the dedicated
@@ -38,7 +40,9 @@ so the browser gets a 404.
 A remote specification (starting `https://…`) is accepted by both shortcodes,
 but that is a network dependency, and it exposes the reader's metadata to that
 host. Intranet deployments and sites with a CSP should use a same-origin
-specification.
+specification. Only `http` and `https` are accepted: any other scheme, a
+protocol-relative `//host`, or an empty value warns and the shortcode renders
+nothing.
 
 The examples below use the real `/openapi/docs-demo.yaml`, a demonstration
 cluster-management API with no reachable server behind it.
@@ -53,20 +57,24 @@ resolves correctly:
 {{</* swagger src="/openapi/docs-demo.yaml" */>}}
 ```
 
-It renders a container with `class="td-swagger-ui"` and initializes it in place.
-The container ID is derived from the page address and the shortcode's ordinal
-(`td-swagger-<hash>-<n>`), so one page can hold several.
+It renders a container with `class="td-swagger-ui"` carrying the specification
+address in `data-td-spec-url`; a single cacheable `js/chunks/swagger-init.js`
+mounts every container on the page. The container ID is derived from the page
+address and the shortcode's ordinal (`td-swagger-<hash>-<n>`), so one page can
+hold several.
 
 This page shows the source without rendering Swagger UI: the markup it generates
-carries three axe WCAG AA violations (the server dropdown has no accessible
-name, and the version stamp is a scrollable region without keyboard access), and
-this site's accessibility gate requires zero violations per page. The Redoc
-below is really rendered.
+carries axe WCAG AA violations (the server dropdown has no accessible name, and
+the version stamp is a scrollable region without keyboard access), and this
+site's accessibility gate requires zero violations per page. The Redoc below is
+really rendered — but be aware that both widgets are scoped out of that gate,
+because Redoc's operation descriptions have their own colour-contrast defect.
+Neither is a fully accessible interface; see [Limits](#limits).
 
 ## Redoc {#redoc}
 
 `redoc` takes exactly one positional parameter, the specification path. A
-second parameter fails the build.
+second parameter warns and the shortcode renders nothing.
 
 ```markdown {title="Source"}
 {{</* redoc "openapi/docs-demo.yaml" */>}}
@@ -115,21 +123,22 @@ Shells and page width are covered fully in
 
 | Output | What appears |
 | --- | --- |
-| HTML | The full interactive Swagger UI / Redoc; the runtime loads on demand from local files, with no CDN |
-| Print | An empty container only: both interfaces are built by JavaScript in the browser, so print output has no content |
-| Markdown | The container `<div>` / `<redoc>` and the initialization script as they stand; it does not degrade into an endpoint list |
-| RSS | As Markdown |
+| HTML | The full interactive Swagger UI / Redoc; the runtime loads on demand from local files, with no CDN, and only in this output |
+| Print | A labelled static link showing the specification's address; neither runtime loads |
+| Markdown | A plain Markdown link, `[OpenAPI specification](/openapi/example.yaml)`; it does not degrade into an endpoint list |
+| RSS | The same plain link |
 
-An API reference has content in HTML only. To put endpoint information into
-print or agent output as well, describe the key endpoints in prose on the same
-page; body text outside the shortcode survives intact in all four outputs.
+Outside HTML an API reference is a pointer, not a reference. To put endpoint
+information into print or agent output as well, describe the key endpoints in
+prose on the same page; body text outside the shortcode survives intact in all
+four outputs.
 
 ## Limits {#limits}
 
 - Both components derive their container ID from the page address and the shortcode's ordinal, so several on one page never collide.
-- The two can coexist on one page, but the page becomes long and loads both runtimes. Pick one for a production site.
-- Swagger UI's markup has axe WCAG AA violations (`select-name`, `scrollable-region-focusable`). They come from the upstream distribution and the theme does not rewrite them. A site with a zero-violation accessibility gate excludes such pages, or uses Redoc instead.
-- `redoc` accepts no attribute parameter: a second positional argument fails the build.
+- The two can coexist on one page, but the page becomes long and its HTML output loads both runtimes. Pick one for a production site.
+- Neither interface is fully accessible, and both come from upstream distributions the theme does not rewrite. Swagger UI's markup has axe WCAG AA violations (`select-name`, `scrollable-region-focusable`); Redoc's operation descriptions fail AA colour contrast. This site excludes `.td-swagger-ui` and `.td-redoc` from its zero-violation gate for that reason — a site with such a gate has to do the same, and should say so rather than assume either widget passes.
+- `redoc` accepts no attribute parameter: a second positional argument warns and the shortcode renders nothing.
 - A `redoc` path must not start with `/`, or the URL gains a doubled slash.
 - The specification must be fetchable by the browser: put it in `static/` and confirm the file exists under `public/` after a build.
 - There is no mock server: Swagger UI's "Try it out" makes a real request to whatever `servers` names, and the address in the sample specification is not reachable.
@@ -145,5 +154,5 @@ page; body text outside the shortcode survives intact in all four outputs.
 
 - [Writing pages](/docs/write/pages/) — page front matter and body basics
 - [Layouts and page types](/docs/customize/layout/) — `shell_types`, page width and the sidebar
-- [AI-agent support](/docs/customize/agents/) — why a component that exists only in HTML needs prose beside it
+- [AI-agent support](/docs/customize/agents/) — why a component that is interactive only in HTML needs prose beside it
 - [Code Blocks](/docs/components/code/) — the lighter alternative of request / response examples instead of a whole UI

@@ -12,7 +12,8 @@ be selected and copied, and the near-two-minute install excerpt on this page is
 about 110 KB. Graphical interfaces belong in screenshots or video — this
 component plays terminal recordings only. The player and its styles ship with
 the theme, nothing is downloaded at build time, no CDN is contacted at runtime,
-and only a page that uses it loads the runtime.
+and the runtime loads only on a page that uses it, and only in its HTML
+output.
 
 ## Shortest form {#minimal}
 
@@ -161,14 +162,15 @@ check it locally with `asciinema play install.cast`.
 
 | Output | Shape |
 | --- | --- |
-| HTML | A `<div class="td-asciinema">` window frame plus the player; the player CSS/JS and the init script load on demand, once per page |
-| Print | As HTML — the print output loads the player too; on paper you get whichever frame was showing |
-| Markdown | The same container HTML plus a JSON configuration block; the only readable text is the window title |
-| RSS | The same static markup; readers do not run scripts, so an empty window frame is all that is left |
+| HTML | A `<div class="td-asciinema">` window frame plus the player; the player CSS/JS and the runtime load on demand, once per page, and only in this output |
+| Print | A labelled static link showing the recording's address; no player, no runtime |
+| Markdown | A plain Markdown link, `[title](/images/install.cast)` — no component markup, no configuration block |
+| RSS | The same plain link |
 
 A recording must never be the only source of information. Write the key commands
 and the key output beside it in text or a code block: offline readers, whatever
-consumes `llms.txt`, and anyone printing the page see only that text.
+consumes `llms.txt`, and anyone printing the page get the link and your prose,
+not the terminal session.
 
 ## Parameter reference {#reference}
 
@@ -177,7 +179,7 @@ consumes `llms.txt`, and anyone printing the page see only that text.
 | `file` | path (required) | — | Named, or the first positional parameter; looked up as a global resource first, then as a site-root path; a full URL with a scheme is passed through unchanged |
 | `title` | plain text | the value of `file` | The window title |
 | `theme` | enum | `auto` | `auto` follows the site's colour scheme; or `td-light` `td-dark` `asciinema` `dracula` `gruvbox-dark` `monokai` `nord` `seti` `solarized-dark` `solarized-light` `tango` |
-| `fit` | enum | `width` | `width` `height` `both` `none`; anything else fails the build |
+| `fit` | enum | `width` | `width` `height` `both` `none`; anything else warns and uses `width` |
 | `cols` / `rows` | integer | from the `.cast` header | Override the terminal size; smaller than the recording clips it |
 | `speed` | number | `1` | Playback rate |
 | `startAt` | number (seconds) | `0` | Where playback starts |
@@ -191,23 +193,27 @@ consumes `llms.txt`, and anyone printing the page see only that text.
 {.fields meta="type default"}
 
 The boolean-ish parameters compare against the text `true`: `loop="true"` and
-`loop=true` both enable, anything else disables. `fit` is validated by the theme
-and an illegal value errors with the parameter name. Numeric parameters
-(`speed`, `cols`, `rows`, `startAt`, `idleTimeLimit`) fail conversion — and the
-build — when they are not numbers.
+`loop=true` both enable, anything else disables. Everything else warns and
+carries on: an illegal `fit` uses `width`, a non-numeric `speed` uses `1`, a
+non-numeric `startAt` uses `0`, and a `cols`, `rows`, `idleTimeLimit` or marker
+time that is not a number is ignored. None of them stops an ordinary build,
+and every one of them fails a publishing gate built with `--panicOnWarning`.
 
 ## Limits {#limits}
 
 - `markers` labels are lost: the theme flattens the `time:label` list into a
   one-dimensional array, and the player accepts only pairs, so the timeline ends
-  up with unlabelled markers. When you need chapters, write a list beside the
-  recording.
-- The player needs JavaScript: with scripts disabled, and in Markdown and RSS
-  output, only an empty window remains — see [Output](#outputs).
+  up with unlabelled markers. A marker whose time is not a number warns and is
+  skipped. When you need chapters, write a list beside the recording.
+- The player needs JavaScript: with scripts disabled in the browser, only the
+  window frame remains. Print, Markdown and RSS carry a link instead — see
+  [Output](#outputs).
 - Recordings are not searchable: the site index covers page text, so a command
   that only appears in a recording cannot be found.
-- Do not reference a remote `.cast`: a `file` with a scheme is passed to the
-  player unchanged, and the page then depends on someone else's site.
+- Do not reference a remote `.cast`: `http` and `https` addresses are accepted,
+  and the page then depends on someone else's site. Any other scheme, a
+  protocol-relative `//host`, or an empty value warns and the component renders
+  nothing.
 - Keep each clip short: few people finish a recording longer than five or six
   minutes. Split a long procedure into several short ones, each with its own
   text.

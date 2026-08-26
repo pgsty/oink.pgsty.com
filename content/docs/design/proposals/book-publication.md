@@ -13,10 +13,10 @@ affected_contracts: [architecture, authoring, Book, outputs]
 ---
 
 > [!WARNING] Draft proposal with implemented publication tooling
-> This checkout now contains the opt-in `BookManifest`, generic EPUB and PDF
-> runners, and artifact validation. It does not publish either file
-> automatically, and consumer migration remains unaccepted. The released
-> contract stays HTML, Print, Markdown/LLMS, and RSS until this work is released.
+> The opt-in `BookManifest`, the generic EPUB and PDF runners and their artifact
+> validation are released, and the normative account of them is in
+> [Architecture](/docs/design/architecture/). No build publishes either file on
+> its own. What remains open here, and only here, is consumer migration.
 
 ## Context and evidence {#context-and-evidence}
 

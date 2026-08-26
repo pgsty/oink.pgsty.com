@@ -47,13 +47,14 @@ delivered per page according to what that page actually uses.
 Everything the browser needs is committed to the theme repository: Bootstrap,
 Font Awesome, four fonts, Lunr, Mermaid, KaTeX, Markmap, Swagger UI, Redoc,
 Asciinema, ECharts, Infographic. `VENDOR.json` records the version, source,
-licence file and SHA-256 checksum of each of the 28 dependencies; updating a
+licence file and SHA-256 checksum of each of the 26 dependencies; updating a
 runtime means updating artifact, licence and checksum together.
 
-Where a feature could cause a network request, the theme fails the build rather
+Where a feature could cause a network request, the theme leaves it off rather
 than reaching out silently: PlantUML without `params.plantuml.svg_image_url`,
 Diagrams.net without `params.drawio.drawio_server`, and Algolia without
-`appId` / `apiKey` / `indexName` all stop the build.
+`appId` / `apiKey` / `indexName` each warn and stay disabled, and a publishing
+gate built with `--panicOnWarning` turns that warning into a failure.
 
 Local-first does not extend to what an author adds. All of these are explicit
 network choices: external links, remote images and video, iframes, remote API

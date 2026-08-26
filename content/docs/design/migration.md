@@ -1,15 +1,15 @@
 ---
 title: OINK migration boundary
 linkTitle: Migration boundary
-description: The supported source, configuration, and validation boundaries for migration from OINK 0.4 through OINK 0.7.0.
+description: The supported source, configuration, and validation boundaries for migration from OINK 0.4 through OINK 0.7.1.
 weight: 50
 icon: fa-solid fa-code-compare
 search_keywords: [OINK migration contract, 0.4 migration, 0.5 migration, configuration rename, migration toolkit]
-contract_status: released-v0.7.0
+contract_status: released-v0.7.1
 ---
 
-> [!IMPORTANT] OINK 0.7.0 contract
-> This is the migration contract released with OINK 0.7.0. This page is the
+> [!IMPORTANT] OINK 0.7.1 contract
+> This is the migration contract released with OINK 0.7.1. This page is the
 > canonical English source; its Chinese peer is maintained beside it in
 > `content/docs/design/`.
 

@@ -5,11 +5,11 @@ description: The maintainer contract for landing data, the built-in section regi
 weight: 40
 icon: fa-solid fa-panorama
 search_keywords: [OINK landing contract, landing sections, homepage data, progressive enhancement, landing outputs]
-contract_status: released-v0.7.0
+contract_status: released-v0.7.1
 ---
 
-> [!IMPORTANT] OINK 0.7.0 contract
-> This is the landing-page contract released with OINK 0.7.0. This page is the
+> [!IMPORTANT] OINK 0.7.1 contract
+> This is the landing-page contract released with OINK 0.7.1. This page is the
 > canonical English source; its Chinese peer is maintained beside it in
 > `content/docs/design/`.
 
@@ -76,7 +76,8 @@ without JavaScript.
 Marquee duplication is CSS-only; the duplicate is `aria-hidden` and `inert`,
 and a localized checkbox persists pause without JS. Reduced motion disables
 motion, forced colors preserves controls, and theme images follow the shared
-theme event. Navbar mega-menu columns accept 1–4. The compact menu uses real
+theme event. The navbar mega panel and its `columns` parameter are retired: a
+menu that still sets `columns` warns and keeps the single column. The compact menu uses real
 links/buttons, traps no focus, and does not duplicate the desktop tree.
 
 ## Outputs and compatibility {#outputs-and-compatibility}

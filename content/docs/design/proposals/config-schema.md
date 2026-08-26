@@ -35,7 +35,7 @@ authorities produce.
 | File | Validates | Content |
 | --- | --- | --- |
 | `site-params.schema.json` | A site's `hugo.yaml` | The `params` tree: types and defaults from the theme's own `hugo.yaml`, descriptions from its comment blocks, kept maps typed as `boolean` or `object` for the bare-boolean shorthand, plus scan-discovered keys that carry no declared default |
-| `front-matter.schema.json` | Page front matter | Every front matter key the templates read, with descriptions inherited from the matching site key |
+| `front-matter.schema.json` | Page front matter | Every front matter key the templates read as authoring surface, with descriptions inherited from the matching site key. Keys read only to warn that they were renamed or removed are excluded by name, as is the navbar menu-entry `columns` the read-point scan cannot distinguish from front matter |
 
 Two deliberate restraints:
 

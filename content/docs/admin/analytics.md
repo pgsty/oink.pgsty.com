@@ -143,7 +143,7 @@ To give a shared link an image, set `images` in front matter:
 
 ```yaml {title="any page"}
 ---
-title: OINK v0.7.0 released
+title: OINK v0.7.1 released
 images: [/images/releasenote.webp]
 ---
 ```

@@ -59,7 +59,7 @@ params:
 - **An invalid value warns and falls back to the documented default.** `params.ui.typography: solarized` reports `invalid params.ui.typography "solarized" (allowed: technical | system) -- using "technical"` and the site still builds; `footer_style: thin`, `page_width: huge` and `section_index: grid` behave the same way. One typo therefore degrades one setting instead of serving HTTP 500 on every URL under `hugo server`. It cannot ship silently either: every publishing gate builds with `--panicOnWarning`, which turns the warning back into a hard failure.
 - **One warning keeps the value instead of dropping it.** A `theme_color` the theme reads as below AA body text (4.5:1) against its own canvas still ships — a custom canvas or a brand mandate is the author's call — but says so, and prints the `ignoreLogs` id that silences it. Treat it as advice, not a rejection: the fix is either a darker color or one line of configuration, and the publishing gate stops the build until you choose. Only an unparseable hex is dropped outright, and that one falls back to the default palette like every other invalid value.
 
-- **A few things still stop the build**, and they are the ones where carrying on would publish something wrong rather than merely plain. A feature needing an external endpoint — PlantUML, Draw.io, Algolia — errors when the endpoint is missing, because the theme never connects to a public service on your behalf. An incomplete upstream attribution errors, because a partial notice reads exactly like a complete one. `params.offline_search_index`, the `release` facts and unresolvable content references do the same.
+- **The theme itself never stops the build.** Its templates contain no `errorf` at all: every invalid value takes the warn-and-fall-back path above. A feature needing an external endpoint — PlantUML, Draw.io, Algolia — warns and stays off when the endpoint is missing, because the theme never connects to a public service on your behalf. An incomplete upstream attribution warns and omits the whole notice, because a partial one reads exactly like a complete one. What does stop a build comes from Hugo rather than the theme: a content reference that resolves to nothing, and a Hugo older than `module.hugoVersion.min`.
 
 ## Page-level override precedence {#overrides}
 
@@ -192,15 +192,19 @@ directory, with a cascade giving it `type: docs`.
 
 ## Blog {#blog}
 
-Three keys shape a blog section. They apply to the section named by
+Seven keys shape a blog section. They apply to the section named by
 `params.ui.blog_section`, and each can be overridden per section through front
 matter or a `cascade` on the blog root.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.featured_image` | enum | none | How an article renders its own featured image: `none` renders nothing, `banner` frames it above the title in a 16:9 figure, `wash` lays it behind the article header at a tenth of its opacity. The image is whichever one the page already shares in its card and `og:image`, so the two cannot disagree. An article with no image renders nothing in either mode |
-| `params.ui.blog_index` | enum | list | The blog section's list page: `list` is the row list, `cards` a grid of content cards with a 16:9 lead image, the date and section line, and a three-line summary. Year grouping, pagination and `manual_link` behave the same in both |
+| `params.ui.featured_image` | enum | none | How an article renders its own featured image: `none` renders nothing, `banner` frames it above the title in a 16:9 figure, `wash` lays it behind the article header at a tenth of its opacity, `hero` paints it as the shell's own full-bleed backdrop and moves the opening down — on single pages and section indexes alike. The image is whichever one the page already shares in its card and `og:image`, so the two cannot disagree. An article with no image renders nothing in any mode |
+| `params.ui.blog_index` | enum | list | The blog section's list page: `list` is the row list, `cards` a grid of content cards with a 16:9 lead image, the date and section line, and a three-line summary, `table` one compact row per post — the whole section at once, with no year groups and no pagination. Year grouping, pagination and `manual_link` behave the same in `list` and `cards` |
 | `params.ui.blog_index_columns` | integer | 3 | Column count when `blog_index: cards`; two between the md and xl breakpoints, one below md, whatever this says |
+| `params.ui.blog_index_size` | integer | 12 | Posts per page on a `list` or `cards` index; the `table` form always shows everything. Twelve divides by two, three and four, so no card row is left short |
+| `params.ui.blog_index_toggle` | boolean | false | Lets a reader cycle the index through list, cards and table from the index toolbar. Off by default, because it puts all three forms in the document — the hidden ones load no images, but their markup is real |
+| `params.ui.toc_style` | enum | fixed | The right rail's presentation: `fixed` is a panel pinned to the viewport, `flow` a wider panel in the content flow that starts where the article starts and pins only on scroll |
+| `params.ui.toc_taxonomies` | boolean | true | Taxonomy term clouds on the right rail. A rail left with neither a table of contents nor clouds renders nothing at all |
 {.fields meta="type default"}
 
 Article authorship and series are taxonomies rather than parameters — see
@@ -289,13 +293,13 @@ on (the navbar magnifier, {{< kbd "Cmd/Ctrl" "K" >}}, `/`, `\`).
 | --- | --- | --- | --- |
 | `params.offline_search` | boolean | false | Generates one local index per language and enables the command palette — see [Search](/docs/customize/search/) |
 | `params.offline_search_on_serve` | boolean | true | Builds the index under `hugo server` too, so the preview behaves like production; set `false` on a very large site to speed up local rebuilds |
-| `params.offline_search_index` | enum | content | Index scope, cumulative: `title`, `heading`, `summary`, `content`. An invalid value fails the build |
+| `params.offline_search_index` | enum | content | Index scope, cumulative: `title`, `heading`, `summary`, `content`. An invalid value warns and uses `content` |
 | `params.offline_search_summary_length` | integer | 70 | Word cut-off for the `summary` scope's excerpt |
 | `params.offline_search_max_results` | integer | 10 | Result cap, bounding both Lunr and the CJK substring fallback |
 | `params.ui.landing_search` | boolean | true | Whether a `layout: landing` page keeps a search entry point |
 | `params.ui.command_palette.commands` | list | [] | Custom commands, each with either `url` or a built-in `action` — see [Command palette](/docs/customize/panel/#custom-commands) |
 | `params.gcs_engine_id` | string | | A Google Programmable Search engine ID; enabling it brings in an external service |
-| `params.search.algolia` | map | | Algolia DocSearch; `appId`, `apiKey` and `indexName` must all be given explicitly or the build fails |
+| `params.search.algolia` | map | | Algolia DocSearch; `appId`, `apiKey` and `indexName` must all be given explicitly, or it warns and DocSearch stays off |
 {.fields meta="type default"}
 
 A custom command record accepts seven keys only — `id`, `title`, `description`,
@@ -379,7 +383,8 @@ unrendered: no error, and nothing appears.
 ## Content runtimes {#runtimes}
 
 Mermaid, KaTeX, ECharts, Infographic, Asciinema, Swagger UI and Redoc are
-detected from the content and load only where a page uses them; they have no
+detected from the content and load only where a page uses them, and only in
+that page's HTML output; they have no
 site switch. Only these need a switch or an external endpoint:
 
 | Parameter | Type | Default | Description |
@@ -387,10 +392,10 @@ site switch. Only these need a switch or an external endpoint:
 | `params.markmap` | boolean | false | Enables the mind map fence site-wide — see [Markmap](/docs/components/markmap/) |
 | `params.mermaid` | map | | Configuration passed to `mermaid.initialize()`; keys are lowercase, and dark mode overrides `theme` automatically |
 | `params.plantuml.enable` | boolean | false | Enables the PlantUML fence — see [PlantUML](/docs/components/plantuml/) |
-| `params.plantuml.svg_image_url` | string | | The PlantUML service's SVG endpoint; required when enabled, and its absence fails the build |
+| `params.plantuml.svg_image_url` | string | | The PlantUML service's SVG endpoint; required when enabled, and its absence warns and leaves PlantUML off |
 | `params.plantuml.svg` | boolean | | Renders inline SVG instead of an `<img>` |
 | `params.drawio.enable` | boolean | false | Enables the edit button on `.drawio.svg` images — see [Draw.io](/docs/components/drawio/) |
-| `params.drawio.drawio_server` | string | | The Draw.io editor address; required when enabled, and its absence fails the build |
+| `params.drawio.drawio_server` | string | | The Draw.io editor address; required when enabled, and its absence warns and leaves Diagrams.net off |
 | `params.highlight_classes` | boolean | true | Emits Chroma classes for highlighting; `false` returns to Hugo's inline styles |
 | `params.ui.code_copy` | boolean | true | The copy button on code blocks; `false` removes it globally, and a fence's own `copy=` still wins |
 {.fields meta="type default"}
@@ -454,8 +459,8 @@ Version parameters:
 | `params.versions` | list | | Version entries: `version`, `url`, `kind`; `name: '---'` is a divider |
 | `params.archived_version` | boolean | | Shows the "this is an archived version" banner at the top |
 | `params.url_latest_version` | string | | The link to the current version inside that banner |
-| `params.time_format_blog` | string | Monday, January 02, 2006 | Blog date format, overridable per language |
-| `params.time_format_default` | string | January 2, 2006 | All other date formats, overridable per language |
+| `params.time_format_blog` | string | 2006-01-02 | Blog date format, overridable per language |
+| `params.time_format_default` | string | 2006-01-02 | All other date formats, overridable per language |
 {.fields meta="type default"}
 
 ## Miscellaneous {#misc}

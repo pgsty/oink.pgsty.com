@@ -5,11 +5,11 @@ description: 落地页数据、内置区块注册表、语言解析、运行时�
 weight: 40
 icon: fa-solid fa-panorama
 search_keywords: [OINK 落地页契约, 落地页区块, 首页数据, 渐进增强, 落地页输出]
-contract_status: released-v0.7.0
+contract_status: released-v0.7.1
 ---
 
-> [!IMPORTANT] OINK 0.7.0 契约
-> 这是随 OINK 0.7.0 正式发布的落地页契约。本页是权威中文源文件，与英文版本
+> [!IMPORTANT] OINK 0.7.1 契约
+> 这是随 OINK 0.7.1 正式发布的落地页契约。本页是权威中文源文件，与英文版本
 > 一同维护在 `content/docs/design/`。
 
 共享规则见[架构契约](/zh/docs/design/architecture/)与
@@ -69,7 +69,7 @@ i18n。
 
 跑马灯只用 CSS 复制；副本带 `aria-hidden` 与 `inert`，本地化复选框无需
 JavaScript 也能持久保存暂停状态。减少动画会停用动画，强制颜色保留控件，主题
-图片响应共享主题事件。顶部导航栏 mega menu 接受 1–4 列。紧凑菜单使用真实链接
+图片响应共享主题事件。顶部导航栏的 mega 面板与其 `columns` 参数已退役：仍然配置 `columns` 的菜单会告警并保持单列。紧凑菜单使用真实链接
 与按钮，不捕获焦点，也不复制桌面导航树。
 
 ## 输出与兼容性 {#outputs-and-compatibility}

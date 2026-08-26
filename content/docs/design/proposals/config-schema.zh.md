@@ -31,7 +31,7 @@ JSON Schema 能给编辑器补全与悬浮文档，风险在于 Schema 悄悄变
 | 文件 | 校验对象 | 内容 |
 | --- | --- | --- |
 | `site-params.schema.json` | 站点的 `hugo.yaml` | `params` 树：类型与默认值取自主题自己的 `hugo.yaml`，描述取自其注释块；保留的 map 类型为 `boolean` 或 `object` 以承载裸布尔简写；扫描发现但无声明默认值的键一并列出 |
-| `front-matter.schema.json` | 页面 front matter | 模板读取的全部 front matter 键，描述继承自对应站点键 |
+| `front-matter.schema.json` | 页面 front matter | 模板作为创作面读取的全部 front matter 键，描述继承自对应站点键。仅为提示「已重命名或已移除」而读取的键按名排除，导航菜单条目的 `columns`（读点扫描无法与 front matter 区分）同样排除 |
 
 两个刻意的克制：
 

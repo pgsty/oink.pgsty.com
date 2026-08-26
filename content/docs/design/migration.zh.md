@@ -1,15 +1,15 @@
 ---
 title: OINK 迁移边界
 linkTitle: 迁移边界
-description: 从 OINK 0.4 到 OINK 0.7.0 所支持的源码、配置与验证迁移边界。
+description: 从 OINK 0.4 到 OINK 0.7.1 所支持的源码、配置与验证迁移边界。
 weight: 50
 icon: fa-solid fa-code-compare
 search_keywords: [OINK 迁移契约, 0.4 迁移, 0.5 迁移, 配置重命名, 迁移工具]
-contract_status: released-v0.7.0
+contract_status: released-v0.7.1
 ---
 
-> [!IMPORTANT] OINK 0.7.0 契约
-> 这是随 OINK 0.7.0 正式发布的迁移契约。本页是权威中文源文件，与英文版本
+> [!IMPORTANT] OINK 0.7.1 契约
+> 这是随 OINK 0.7.1 正式发布的迁移契约。本页是权威中文源文件，与英文版本
 > 一同维护在 `content/docs/design/`。
 
 这是源码与配置指南，不是版本发布流水账。本地源码、提交、标签、推送、消费站点
