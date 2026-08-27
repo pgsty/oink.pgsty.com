@@ -217,7 +217,7 @@ inside the fence.
 
 ---
 
-Linked from:
+Backlinks:
 
 - [Cards](/docs/components/cards/)
 - [FileTree](/docs/components/filetree/)

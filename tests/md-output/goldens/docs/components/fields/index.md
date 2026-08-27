@@ -266,7 +266,7 @@ The `field` shortcode:
 
 ---
 
-Linked from:
+Backlinks:
 
 - [Cards](/docs/components/cards/)
 - [Tables](/docs/components/table/)

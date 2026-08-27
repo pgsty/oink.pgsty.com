@@ -272,14 +272,15 @@ Hide the outline on one page with the front matter `notoc: true` — see
 ## Pager and page end {#page-end}
 
 The page-end components are in a fixed order — share → feedback → page
-information → backlinks → pager → comments — and each has its own switch.
+information → pager → comments — and each has its own switch; backlinks sit in
+the right rail beside the table of contents.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `params.ui.share` | list | [] | Page-end share targets, in the order given, from `x` `bluesky` `mastodon` `facebook` `linkedin` `reddit` `hackernews` `telegram` `whatsapp` `line` `pinterest` `weibo` `chatgpt` `claude` `email` `copy`. Empty means no bar. Every target is a plain intent link — no SDK, no iframe, no third-party script, no share counts — see [Writing a blog](/docs/write/blog/#share). An unknown target warns and is dropped |
 | `params.ui.pager_types` | list | [docs, book, blog] | Which types show previous / next; a page opts out with the front matter `pager: false`. An unknown type warns and is dropped |
 | `params.ui.annotation` | boolean | true | The "last modified" and provenance block at the end of the body; the upstream attribution line is driven by the page's `upstream_link` family — see [Page parameters](/docs/write/frontmatter/#upstream) |
-| `params.ui.backlinks` | boolean | false | Lists the pages that link to this one, between the page information and the pager, derived at build time from ordinary links — see [Navigation and menus](/docs/customize/navigation/#backlinks) |
+| `params.ui.backlinks` | boolean | false | Lists the pages that link to this one as a "Backlinks" group in the right rail beside the table of contents, derived at build time from ordinary links — see [Navigation and menus](/docs/customize/navigation/#backlinks) |
 | `params.ui.translation_notice` | language code or false | false | The language code of the authoritative version, so a translated page shows a line pointing back at it; a page opts out with `translation_notice: false` |
 | `params.ui.reading_time` | boolean | false | Shows a reading time under the page title |
 | `params.ui.book_draft_banner` | boolean | false | Adds a banner at the top of a draft Book page |

@@ -83,15 +83,16 @@ instead of hidden behind a claim of a complete semantic graph.
 
 ## Backlink output {#backlink-output}
 
-G1 renders a short, ordered list in the page-end composition, after the page
-annotation and before the pager: the reader sees where the page came from, then
-what points at it, then moves on. The switch is the site key
-`params.ui.backlinks` (bare boolean, default off); a page overrides it with the
-prefix-free front matter key `backlinks`, and a section can cascade it. Order
-is deterministic: the stable page path — language-independent, naturally
-grouped with navigation, and needing no second ordering authority. The block
-uses ordinary links and headings, has no disclosure-only content, and is
-omitted when there are no inbound pages.
+G1 renders an aside group in the right rail, a sibling of the table of contents
+and the taxonomy clouds: what is on this page beside what points at this page.
+The group is expanded by default and shows the first eight entries; the rest
+fold behind a native disclosure so a heavily referenced page cannot swallow the
+rail. The switch is the site key `params.ui.backlinks` (bare boolean, default
+off); a page overrides it with the prefix-free front matter key `backlinks`,
+and a section can cascade it. Order is deterministic: the stable page path —
+language-independent, naturally grouped with navigation, and needing no second
+ordering authority. The group uses ordinary links and is omitted when there are
+no inbound pages.
 
 Unresolvable derived edges are dropped silently and recorded as a known gap:
 G1 is a local navigation enhancement, not a link checker, and having it report
@@ -158,3 +159,8 @@ G2/G3:
   multi-level sort would be a second navigation authority. Unresolvable edges
   drop silently and are recorded as a known gap, never warned. G2/G3 and the
   graph data output keep waiting for production evidence.
+- 2026-08-27: Design review moved the block from the page end to the right
+  rail. Backlinks are page metadata and pair with the table of contents, while
+  the page end is the reader's completion zone — share, feedback, provenance,
+  pager, comments. The rail group also adds the eight-entry cap, with the rest
+  behind a native disclosure.

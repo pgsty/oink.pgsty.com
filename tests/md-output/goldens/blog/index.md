@@ -15,6 +15,6 @@ Section pages:
 
 ---
 
-Linked from:
+Backlinks:
 
 - [Upgrade](/docs/admin/upgrade/)

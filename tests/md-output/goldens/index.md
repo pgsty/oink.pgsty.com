@@ -18,6 +18,6 @@ Section pages:
 
 ---
 
-Linked from:
+Backlinks:
 
 - [AI-agent support](/docs/customize/agents/)

@@ -122,10 +122,11 @@ footer's bottom bar opens the cheatsheet.
 
 ## Backlinks {#backlinks}
 
-Turn on `params.ui.backlinks` and every page ends with the pages that link to
-it — derived at build time from the ordinary links you already write, with no
-new syntax and no JavaScript. This site enables it site-wide: scroll to the end
-of this page to see it, and the more a page is referenced, the longer its list.
+Turn on `params.ui.backlinks` and every page lists the pages that link to it —
+derived at build time from the ordinary links you already write, with no new
+syntax and no JavaScript. This site enables it site-wide: look at the "Linked
+from" group in this page's right rail, and the more a page is referenced, the
+longer its list — past eight entries it folds.
 
 → [Backlinks](/docs/customize/navigation/#backlinks)
 
@@ -178,7 +179,7 @@ This site has most of the above enabled. Four checks:
 1. Press `Cmd/Ctrl + K` on any page and type `postgres` to see local search results; press `\` for command-only mode.
 2. Append `index.md` to the current page address to get this page's Markdown version.
 3. Open <https://oink.pgsty.com/llms.txt>, the site inventory written for AI assistants; it leads to the docs section's `llms-full.txt` and to `navigation.json`.
-4. Scroll to the end of this page: "Linked from" lists the pages that link here.
+4. Look at this page's right rail: "Backlinks" lists the pages that link here.
 
 ## Related {#related}
 

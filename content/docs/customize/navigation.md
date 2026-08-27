@@ -366,15 +366,17 @@ reading sequence.
 Paging applies to HTML output only. Print, Markdown and RSS have neither the
 links nor the two `rel` relationships.
 
-The pager is the fourth of the five page-end components (feedback → annotation →
-backlinks → pager → comments), in a fixed order with five independent switches.
+The pager is the third of the four page-end components (feedback → annotation →
+pager → comments), in a fixed order with four independent switches.
 
 ## Backlinks {#backlinks}
 
-A page can end with the list of pages that link to it, under a "Linked from"
-heading, between the page annotation and the pager. A reader who arrived from
-search sees which pages consider this one worth pointing at, and where it sits
-in the rest of the site. It is off until a site asks for it:
+The pages that link to a page can be listed in the right rail, as a "Linked
+from" group with a link icon below the table of contents and above the taxonomy
+clouds, expanded by default; below the `xl` breakpoint it moves into the sidebar
+drawer with the table of contents. A reader who arrived from search sees which
+pages consider this one worth pointing at, and where it sits in the rest of the
+site. It is off until a site asks for it:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -404,6 +406,11 @@ an English one. Entries are sorted by stable page path, so the same content
 builds the same order every time, and the block is absent entirely — no heading,
 no empty container — when nothing links in.
 
+The first eight entries are visible and the rest fold behind a native "Show N
+more" disclosure, so a heavily referenced page cannot swallow the rail; no
+JavaScript is involved. Each entry carries its source page's description, shown
+on hover.
+
 Reading the source has a known limit: a URL inside a custom shortcode's
 parameters, or a raw `<a href>`, does not become an edge, and a destination that
 cannot be resolved is dropped without a warning. This is a navigation
@@ -412,13 +419,12 @@ enhancement, not a link checker; keep using a link checker for broken links.
 A non-boolean value warns, falls back to off and fails a build run with
 `--panicOnWarning`, while `hugo server` keeps working.
 
-The page's Markdown output carries the same list, introduced by "Linked from:".
-RSS omits it, and the `print` output format omits it with the rest of the page
-end.
+The page's Markdown output carries the same list, introduced by "Backlinks:".
+RSS omits it, and the `print` output format omits it with the rest of the rail.
 
-This site enables it site-wide: scroll to the end of this page for the real
+This site enables it site-wide: look at this page's right rail for the real
 thing, and the most-referenced page — [Configuration](/docs/customize/config/) —
-lists more than forty inbound links.
+lists more than forty inbound links, most of them folded behind the disclosure.
 
 ## The footer {#footer}
 

@@ -161,19 +161,18 @@ draft: true
 {.steps}
 
 ## 页尾的自动内容 {#page-end}
-页面末尾的五块内容由主题按固定顺序生成，不必在正文里写：
+页面末尾的四块内容由主题按固定顺序生成，不必在正文里写：
 
 | 位置 | 是什么 | 默认 | 怎么改 |
 | --- | --- | --- | --- |
 | 1 | 反馈：「这页有帮助吗」两个按钮 | 关 | [仓库与页面信息](/zh/docs/customize/repository/) |
 | 2 | 最后修改：时间加最近一次提交的标题，链到 GitHub | 有 Git 信息时开 | [仓库与页面信息](/zh/docs/customize/repository/) |
-| 3 | 反向链接：链接到本页的页面 | 关 | [导航与菜单](/zh/docs/customize/navigation/#backlinks) |
-| 4 | 翻页器：上一页 / 下一页，顺序与侧栏树一致 | docs / book / blog 开 | [导航与菜单](/zh/docs/customize/navigation/) |
-| 5 | 评论：giscus | 配置完整且开启时 | [启用评论](/zh/docs/admin/comments/) |
+| 3 | 翻页器：上一页 / 下一页，顺序与侧栏树一致 | docs / book / blog 开 | [导航与菜单](/zh/docs/customize/navigation/) |
+| 4 | 评论：giscus | 配置完整且开启时 | [启用评论](/zh/docs/admin/comments/) |
 
 标题旁边的操作菜单（复制 Markdown、编辑本页、查看历史、提 issue、打印）也是自动的，同样在[仓库与页面信息](/zh/docs/customize/repository/)里配置。
 
-单页关闭其中某一块用 front matter：`feedback: false`、`annotation: false`、`backlinks: false`、`pager: false`、`comments: false`。键的含义见[页面参数](/zh/docs/write/frontmatter/)。
+单页关闭其中某一块用 front matter：`feedback: false`、`annotation: false`、`pager: false`、`comments: false`。键的含义见[页面参数](/zh/docs/write/frontmatter/)。
 
 ## 验证 {#verify}
 

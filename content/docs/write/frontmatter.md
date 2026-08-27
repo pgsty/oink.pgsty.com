@@ -159,7 +159,7 @@ The guides are [AI-agent support](/docs/customize/agents/) (`.md` and
 
 ## Page end: comments, feedback and provenance {#page-end}
 
-The order is fixed as feedback → provenance → backlinks → pager → comments; see
+The order is fixed as feedback → provenance → pager → comments; see
 [Writing pages](/docs/write/pages/#page-end).
 
 | Key | Type | Default | Description |
@@ -167,7 +167,7 @@ The order is fixed as feedback → provenance → backlinks → pager → commen
 | `comments` | boolean | site `params.comments.enable` (`false`) | Whether this page shows the giscus comment section — see [Comments](/docs/admin/comments/) |
 | `feedback` | boolean or map | site `params.ui.feedback` (off) | The map form takes `enable` and `reasons`. Anything else warns and falls back |
 | `annotation` | boolean | site `params.ui.annotation` (on) | The "last modified / provenance" block at the page end. Only a boolean is accepted; anything else warns and falls back |
-| `backlinks` | boolean | site `params.ui.backlinks` (off) | Whether the page ends with the list of pages that link to it, between the provenance block and the pager; a section can cascade it. Only a boolean is accepted; anything else warns and falls back — see [Navigation and menus](/docs/customize/navigation/#backlinks) |
+| `backlinks` | boolean | site `params.ui.backlinks` (off) | Whether the right rail shows the "Backlinks" group beside the table of contents; a section can cascade it. Only a boolean is accepted; anything else warns and falls back — see [Navigation and menus](/docs/customize/navigation/#backlinks) |
 | `translation_notice` | language code or `false` | site `params.ui.translation_notice` (off) | The language code of the authoritative version, so a translation can say so and link back; write `false` on a page authored natively in this language |
 {.fields meta="type default"}
 

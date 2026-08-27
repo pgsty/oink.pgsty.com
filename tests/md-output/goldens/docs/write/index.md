@@ -67,7 +67,7 @@ Section pages:
 
 ---
 
-Linked from:
+Backlinks:
 
 - [Cards](/docs/components/cards/)
 - [Customization](/docs/customize/)

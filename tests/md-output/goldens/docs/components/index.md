@@ -139,7 +139,7 @@ Section pages:
 
 ---
 
-Linked from:
+Backlinks:
 
 - [Introducing OINK](/blog/oink/oink-announcement/)
 - [Oink v0.2.0](/blog/release/0.2.0/)

@@ -253,8 +253,7 @@ archive.
 
 `params.logo` is always the brand mark; `params.wordmark`, or the site title, is
 the text half hidden at compact widths. Docs, Book, Blog, and Swagger share one
-shell model. Page-end order is Share, Feedback, Annotation, Backlinks, Pager,
-Comments.
+shell model. Page-end order is Share, Feedback, Annotation, Pager, Comments.
 Docs/Book pager follows sidebar preorder; Blog uses weight then reverse date;
 `pager: false` opts out. Static outputs omit pager UI.
 

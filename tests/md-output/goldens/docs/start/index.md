@@ -313,7 +313,7 @@ Section pages:
 
 ---
 
-Linked from:
+Backlinks:
 
 - [Start with a working site](/book/01-start/)
 - [Docs](/docs/)
