@@ -226,7 +226,7 @@ pig ext install pg_duckdb --dry-run
 
 ---
 
-反向链接：
+反链：
 
 - [卡片](/zh/docs/components/cards/)
 - [表格](/zh/docs/components/table/)

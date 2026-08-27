@@ -108,7 +108,7 @@ markup:
 
 ---
 
-反向链接：
+反链：
 
 - [OINK 实现预览](/zh/blog/oink/oink-announcement/)
 - [Oink v0.2.0](/zh/blog/release/0.2.0/)

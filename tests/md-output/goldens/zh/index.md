@@ -18,6 +18,6 @@ LLMS 索引： [llms.txt](/zh/llms.txt)
 
 ---
 
-反向链接：
+反链：
 
 - [Agent 支持](/zh/docs/customize/agents/)

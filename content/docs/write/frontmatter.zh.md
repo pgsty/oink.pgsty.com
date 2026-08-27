@@ -140,7 +140,7 @@ cascade:
 | `comments` | 布尔 | 站点 `params.comments.enable`（`false`） | 本页是否显示 giscus 评论区，见[启用评论](/zh/docs/admin/comments/) |
 | `feedback` | 布尔或映射 | 站点 `params.ui.feedback`（关） | 映射形态支持 `enable` 与 `reasons`。其它写法告警并回退 |
 | `annotation` | 布尔 | 站点 `params.ui.annotation`（开） | 页尾的「最后修改 / 出处」区块。只接受布尔，其它写法告警并回退 |
-| `backlinks` | 布尔 | 站点 `params.ui.backlinks`（关） | 右栏目录旁是否显示「反向链接」组，列出链接到本页的页面，分区可以 cascade。只接受布尔，其它写法告警并回退，见[导航与菜单](/zh/docs/customize/navigation/#backlinks) |
+| `backlinks` | 布尔 | 站点 `params.ui.backlinks`（关） | 右栏目录旁是否显示「反链」组，列出链接到本页的页面，分区可以 cascade。只接受布尔，其它写法告警并回退，见[导航与菜单](/zh/docs/customize/navigation/#backlinks) |
 | `translation_notice` | 语言代码或 `false` | 站点 `params.ui.translation_notice`（关） | 权威版本的语言代码，译文据此显示一条指回原文的说明；本页即以本语言原创时写 `false` |
 {.fields meta="type default"}
 

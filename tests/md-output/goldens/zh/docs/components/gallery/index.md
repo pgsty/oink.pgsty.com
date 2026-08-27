@@ -179,7 +179,7 @@ image_zoom: true
 
 ---
 
-反向链接：
+反链：
 
 - [卡片](/zh/docs/components/cards/)
 - [文件树](/zh/docs/components/filetree/)

@@ -70,7 +70,7 @@ aliases:
 
 ## 反向链接 {#backlinks}
 
-打开 `params.ui.backlinks` 后，每一页都会列出有哪些页面链接到它——构建时从你本来就写的普通链接派生，没有新语法，也没有 JavaScript。本站全站开启：看本页右栏的「反向链接」组，越常被引用的页面列表越长，超过八条会折叠。
+打开 `params.ui.backlinks` 后，每一页都会列出有哪些页面链接到它——构建时从你本来就写的普通链接派生，没有新语法，也没有 JavaScript。本站全站开启：看本页右栏的「反链」组，越常被引用的页面列表越长，超过八条会折叠。
 
 → [反向链接](/zh/docs/customize/navigation/#backlinks)
 
@@ -107,7 +107,7 @@ aliases:
 1. 在任意页面按 `Cmd/Ctrl + K`，输入 `postgres` 查看本地搜索结果；按 `\` 进入纯命令态。
 2. 在当前页面地址后加 `index.md`，得到这一页的 Markdown 版本。
 3. 打开 <https://oink.pgsty.com/zh/llms.txt>，那是给 AI 助手的站点清单；顺着它能找到整个文档栏目的 `llms-full.txt` 与 `navigation.json`。
-4. 看本页右栏的「反向链接」组，它列出链接到本页的页面。
+4. 看本页右栏的「反链」组，它列出链接到本页的页面。
 
 ## 相关 {#related}
 
