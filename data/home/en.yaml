@@ -18,7 +18,7 @@ hero:
     - words:
         - { text: PGSTY OINK }
   # prettier-ignore
-  lead: Docsy features and Fumadocs design,<br>a Hugo theme for engineering docs.
+  lead: Markdown in. Modern docs out.<br>Knowledge Publishing Framework
   image:
     light: images/hero-light.webp
     dark: images/hero-dark.webp
@@ -37,7 +37,7 @@ capabilities:
   eyebrow: Why OINK
   title: Docs. Engineered.
   # prettier-ignore
-  text: From deployment, search, and version management to rich content, OINK stays clean and local-first, loading only the capabilities each page needs.
+  text: Everything engineering docs need — built in, kept local, and loaded on demand.
   items:
     - ref: 01 / ENGINEERING FIRST
       title: Built for Engineers

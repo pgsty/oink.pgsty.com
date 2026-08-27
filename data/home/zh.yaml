@@ -18,7 +18,7 @@ hero:
     - words:
         - { text: PGSTY OINK }
   # prettier-ignore
-  lead: 继承 Docsy 的功能与 Fumadocs 的设计，<br>提供开箱即用，本地优先的工程文档体验
+  lead: Markdown 输入，现代文档输出。<br>知识发布框架
   image:
     light: images/hero-light.webp
     dark: images/hero-dark.webp
@@ -37,7 +37,7 @@ capabilities:
   eyebrow: 价值主张
   title: 工程文档所需的能力，开箱即用
   # prettier-ignore
-  text: 部署、检索，多语言，多版本管理，简洁素雅、本地优先，按需加载所需能力。
+  text: 工程文档所需的一切——内置、本地、按需加载。
   items:
     - ref: 01 / 工程文档
       title: 为工程师与文档站设计
