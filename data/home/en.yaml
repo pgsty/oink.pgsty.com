@@ -13,7 +13,7 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 0.7 · Local-first · Hugo-only
+  eyebrow: OINK 0.8 · Local-first · Hugo-only
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -24,8 +24,8 @@ hero:
     dark: images/hero-dark.webp
     alt: OINK engineering documentation illustration
   actions:
-    - label: What's new in 0.7
-      url: blog/release/0.7.0/
+    - label: What's new in 0.8
+      url: blog/release/0.8.0/
       icon: fa-solid fa-book-open
       style: primary
     - label: Get started

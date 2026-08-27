@@ -13,7 +13,7 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 0.7 · 本地优先 · 仅依赖 Hugo
+  eyebrow: OINK 0.8 · 本地优先 · 仅依赖 Hugo
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -24,8 +24,8 @@ hero:
     dark: images/hero-dark.webp
     alt: OINK 工程文档插图
   actions:
-    - label: 查看 0.7 新特性
-      url: blog/release/0.7.0/
+    - label: 查看 0.8 新特性
+      url: blog/release/0.8.0/
       icon: fa-solid fa-book-open
       style: primary
     - label: 开始使用
