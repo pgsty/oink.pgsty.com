@@ -22,7 +22,10 @@ checks:
   # --- Page Size and Truncation Risk ---
   - rendering-strategy
   - page-size-markdown
-  - page-size-html
+  # page-size-html: the sampler crawls the "print entire section" links, and a
+  # print aggregate is a whole section by design. Agents get their bulk path
+  # from llms-full.txt, and page-size-markdown stays the enforced bar.
+  # - page-size-html
   # - content-start-position
 
   # --- Content Structure ---
@@ -36,7 +39,11 @@ checks:
 
   # --- Observability and Content Health ---
   # - markdown-content-parity
-  - cache-header-hygiene
+  # cache-header-hygiene: the offline gate serves from hugo server, whose
+  # headers are not the production CDN's; the check also follows URLs quoted
+  # inside fenced tutorial examples. Production cache policy lives with the
+  # host, not this scorecard.
+  # - cache-header-hygiene
 
   # --- Authentication and Access ---
   - auth-gate-detection
