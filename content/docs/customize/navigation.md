@@ -366,8 +366,55 @@ reading sequence.
 Paging applies to HTML output only. Print, Markdown and RSS have neither the
 links nor the two `rel` relationships.
 
-The pager is the third of the four page-end components (feedback → annotation →
-pager → comments), in a fixed order with four independent switches.
+The pager is the fourth of the five page-end components (feedback → annotation →
+backlinks → pager → comments), in a fixed order with five independent switches.
+
+## Backlinks {#backlinks}
+
+A page can end with the list of pages that link to it, under a "Linked from"
+heading, between the page annotation and the pager. A reader who arrived from
+search sees which pages consider this one worth pointing at, and where it sits
+in the rest of the site. It is off until a site asks for it:
+
+```yaml {title="hugo.yml"}
+params:
+  ui:
+    backlinks: true
+```
+
+A page overrides it in front matter, and a section cascades it to everything
+below:
+
+```yaml {title="content/docs/_index.md"}
+---
+title: Docs
+cascade:
+  backlinks: true
+---
+```
+
+The index is derived at build time from what authors already write: an ordinary
+Markdown link, or a `ref` / `relref` shortcode, in the page source. There is no
+new syntax to learn, nothing to migrate, and no JavaScript — the list is in the
+HTML. Fenced and inline code are stripped before scanning, several links to one
+target merge into a single entry, and self links, external links, `mailto:` and
+same-page anchors never count. A fragment is dropped when identifying the target
+page, and each language has its own graph, so a Chinese page never appears under
+an English one. Entries are sorted by stable page path, so the same content
+builds the same order every time, and the block is absent entirely — no heading,
+no empty container — when nothing links in.
+
+Reading the source has a known limit: a URL inside a custom shortcode's
+parameters, or a raw `<a href>`, does not become an edge, and a destination that
+cannot be resolved is dropped without a warning. This is a navigation
+enhancement, not a link checker; keep using a link checker for broken links.
+
+A non-boolean value warns, falls back to off and fails a build run with
+`--panicOnWarning`, while `hugo server` keeps working.
+
+The page's Markdown output carries the same list, introduced by "Linked from:".
+RSS omits it, and the `print` output format omits it with the rest of the page
+end.
 
 ## The footer {#footer}
 
@@ -426,6 +473,7 @@ After changing navigation, check each of these:
 - Below `md`: Home and Landing navbars keep search and the drawer button on the right; version, language, theme and keyboard help stay in the persistent footer bottom bar;
 - The switcher at the top of the sidebar lists every top-level section, with the current one marked;
 - On any documentation page, {{< kbd "E" >}} / {{< kbd "Q" >}} page in sidebar order, and the page source has matching `rel="prev"` / `rel="next"`;
+- With backlinks on, `grep td-backlinks public/<a page that is linked to>/index.html` finds the block, and a page nothing links to has no such markup at all;
 - Open the page action menu and confirm what should be there is, and what should not is not (for example "open a project issue" with no `github_project_repo` configured).
 
 ## Related {#related}

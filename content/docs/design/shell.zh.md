@@ -207,7 +207,7 @@ cascade 可为每个分区覆盖站点模式。没有切换器的 table 仍是�
 
 `params.logo` 始终是品牌标志；`params.wordmark` 或站点标题是紧凑宽度下隐藏的
 文字部分。Docs、Book、Blog 与 Swagger 共享一个外壳模型。页尾顺序为分享、反馈、
-注记、翻页、评论。Docs/Book 翻页遵循侧栏前序遍历；Blog 按 weight 后接日期倒序；
+注记、反向链接、翻页、评论。Docs/Book 翻页遵循侧栏前序遍历；Blog 按 weight 后接日期倒序；
 `pager: false` 退出。静态输出省略翻页 UI。
 
 每一种实际渲染的页脚形态，都会在最底层栏右侧保留纯图标工具组，顺序为版本、

@@ -239,13 +239,14 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 
 ## 翻页与页尾 {#page-end}
 
-页尾组件顺序固定为分享 → 反馈 → 页面信息 → 翻页 → 评论，五者独立开关。
+页尾组件顺序固定为分享 → 反馈 → 页面信息 → 反向链接 → 翻页 → 评论，六者独立开关。
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `params.ui.share` | list | [] | 页尾分享目标，按给定顺序渲染，取值来自 `x` `bluesky` `mastodon` `facebook` `linkedin` `reddit` `hackernews` `telegram` `whatsapp` `line` `pinterest` `weibo` `chatgpt` `claude` `email` `copy`。为空则不出现分享栏。每一项都是纯粹的 intent 链接——没有 SDK、没有 iframe、没有第三方脚本、没有分享计数，见[写博客](/zh/docs/write/blog/#share)。未知目标告警并丢弃 |
 | `params.ui.pager_types` | list | [docs, book, blog] | 哪些 type 显示上一页/下一页；单页用 front matter `pager: false` 退出。未知 type 告警并丢弃 |
 | `params.ui.annotation` | boolean | true | 正文末尾的「最后修改」与出处区块；上游署名由页面的 `upstream_link` 一族键驱动，见[页面参数](/zh/docs/write/frontmatter/#upstream) |
+| `params.ui.backlinks` | boolean | false | 在页面信息与翻页器之间列出链接到本页的页面，构建时从普通链接派生，见[导航与菜单](/zh/docs/customize/navigation/#backlinks) |
 | `params.ui.translation_notice` | 语言代码或 false | false | 权威版本的语言代码，译文页据此显示一条指回原文的说明；页面写 `translation_notice: false` 退出 |
 | `params.ui.reading_time` | boolean | false | 页面标题下显示阅读时长 |
 | `params.ui.book_draft_banner` | boolean | false | Book 草稿页开头额外加一条横幅 |

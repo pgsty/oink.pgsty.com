@@ -24,7 +24,7 @@ or the documentation repository.
 
 | Proposal                                                                 | Current boundary                                                                                                     |
 | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| [Backlinks and knowledge graph](/docs/design/proposals/knowledge-graph/) | Draft; no graph or backlink implementation exists                                                                    |
+| [Backlinks and knowledge graph](/docs/design/proposals/knowledge-graph/) | G1 (static backlinks) is accepted, implemented on the theme's main branch, and ships with OINK 0.8.0; the local and global graphs (G2/G3) remain draft |
 | [Media convergence](/docs/design/proposals/media-convergence/)           | Partially implemented; the media-result contract and Landing resource metadata shipped, M3 resolved for native-image processing, retirement (M4) open |
 | [Bulk agent indexes](/docs/design/proposals/agent-indexes/)              | Accepted (2026-08-27); both outputs are implemented on the theme's main branch and ship with OINK 0.8.0, after which this proposal retires |
 | [Book publication pipeline](/docs/design/proposals/book-publication/)    | Manifest and EPUB/PDF tooling are released — see [Architecture](/docs/design/architecture/); only consumer migration is still open here |

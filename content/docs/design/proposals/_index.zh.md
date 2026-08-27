@@ -21,7 +21,7 @@ design_status: active
 
 | 提案                                                             | 当前边界                                                               |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [反向链接与知识图谱](/zh/docs/design/proposals/knowledge-graph/) | 草案；当前没有 graph 或 backlink 实现                                  |
+| [反向链接与知识图谱](/zh/docs/design/proposals/knowledge-graph/) | G1（静态反向链接）已接受，已在主题 main 分支实现，随 OINK 0.8.0 发布；局部与全站图谱（G2/G3）保持草案 |
 | [媒体收敛](/zh/docs/design/proposals/media-convergence/)         | 部分已实现；media-result 契约与 Landing 资源元数据已交付，M3 决议为原生图片处理，退役（M4）保持开放 |
 | [Agent 批量索引](/zh/docs/design/proposals/agent-indexes/)       | 已接受（2026-08-27）；两类输出都已在主题 main 分支实现，随 OINK 0.8.0 发布，之后本提案退役 |
 | [Book 出版链路](/zh/docs/design/proposals/book-publication/)     | manifest 与 EPUB/PDF 工具已随版本发布，见[架构](/zh/docs/design/architecture/)；本页只剩消费站迁移未决 |
