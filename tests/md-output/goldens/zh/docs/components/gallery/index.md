@@ -176,3 +176,12 @@ image_zoom: true
 - [卡片](/zh/docs/components/cards/) — 带图片的链接网格
 - [标签页](/zh/docs/components/tabs/) — 按平台 / 主题并列多组图
 - [文件树](/zh/docs/components/filetree/) — 行语法与画廊同源
+
+---
+
+反向链接：
+
+- [卡片](/zh/docs/components/cards/)
+- [文件树](/zh/docs/components/filetree/)
+- [图片](/zh/docs/components/image/)
+- [打印支持](/zh/docs/customize/print/)

@@ -64,3 +64,10 @@ Section pages:
 - [Books](/docs/write/book/): Turn a directory tree into a book with `type: book`: chapter numbering, numbered figures and tables, cross-references, generated indexes and whole-book print.
 - [Releases and downloads](/docs/write/releases/): Record versions, tags, archive links, checksums and install commands as local facts, then let release cards, asset tables, download blocks and index pages derive from that one record.
 - [API reference pages](/docs/write/openapi/): Put an OpenAPI specification on the site and render it as a browsable API reference with the bundled Swagger UI or Redoc, without touching a CDN.
+
+---
+
+Linked from:
+
+- [Cards](/docs/components/cards/)
+- [Customization](/docs/customize/)

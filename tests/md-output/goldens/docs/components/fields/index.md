@@ -263,3 +263,13 @@ The `field` shortcode:
 - [Configuration](/docs/customize/config/) — the full site parameter table, itself a field list
 - [Front matter](/docs/write/frontmatter/) — the full front matter table
 - [Steps](/docs/components/steps/) — ordered actions do not belong in a field list
+
+---
+
+Linked from:
+
+- [Cards](/docs/components/cards/)
+- [Tables](/docs/components/table/)
+- [AI-agent support](/docs/customize/agents/)
+- [Print](/docs/customize/print/)
+- [Writing pages](/docs/write/pages/)

@@ -20,7 +20,9 @@ server:
         Access-Control-Allow-Origin: '*'
 
 outputs:
-  home: [HTML, markdown, LLMS]
+  # NAVJSON publishes navigation.json per language — the live demonstration
+  # the agents guide links to.
+  home: [HTML, markdown, LLMS, NAVJSON]
   page: [HTML, markdown]
   section: [HTML, RSS, print, markdown]
 
@@ -348,6 +350,9 @@ params:
       loading: lazy
   ui:
     typography: technical
+    # Site-wide backlinks: every page lists the pages that link to it, so the
+    # documentation demonstrates the 0.8.0 feature it describes.
+    backlinks: true
     # The blog index toolbar gets the form cycle (list, cards, table) beside
     # its feed button, on the root and on every child section index.
     blog_index_toggle: true

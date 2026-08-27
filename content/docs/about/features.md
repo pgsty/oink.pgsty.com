@@ -120,6 +120,15 @@ footer's bottom bar opens the cheatsheet.
 
 → [Keyboard navigation](/docs/customize/keyboard/)
 
+## Backlinks {#backlinks}
+
+Turn on `params.ui.backlinks` and every page ends with the pages that link to
+it — derived at build time from the ordinary links you already write, with no
+new syntax and no JavaScript. This site enables it site-wide: scroll to the end
+of this page to see it, and the more a page is referenced, the longer its list.
+
+→ [Backlinks](/docs/customize/navigation/#backlinks)
+
 ## Four content types beyond documentation {#content-types}
 
 The theme also has four kinds of page that need extra structure:
@@ -139,6 +148,13 @@ Markdown" and "View source". The `LLMS` output format writes an `llms.txt`
 inventory at the site root (this site's is
 <https://oink.pgsty.com/llms.txt>).
 
+0.8.0 adds two more: a section that enables `LLMSFULL` becomes one
+`llms-full.txt` an agent fetches in a single request, and a site that enables
+`NAVJSON` publishes `navigation.json` per language — the sidebar's tree
+readable as data. Both are live on this site:
+<https://oink.pgsty.com/docs/llms-full.txt> and
+<https://oink.pgsty.com/navigation.json> are the real artifacts.
+
 "Open in ChatGPT / Claude" is off by default: clicking it hands the current URL
 to a third party, so the site must turn on
 `params.ui.page_context_menu.assistant_links` explicitly.
@@ -157,11 +173,12 @@ is needed at runtime.
 
 ## See for yourself {#verify}
 
-This site has most of the above enabled. Three checks:
+This site has most of the above enabled. Four checks:
 
 1. Press `Cmd/Ctrl + K` on any page and type `postgres` to see local search results; press `\` for command-only mode.
 2. Append `index.md` to the current page address to get this page's Markdown version.
-3. Open <https://oink.pgsty.com/llms.txt>, the site inventory written for AI assistants.
+3. Open <https://oink.pgsty.com/llms.txt>, the site inventory written for AI assistants; it leads to the docs section's `llms-full.txt` and to `navigation.json`.
+4. Scroll to the end of this page: "Linked from" lists the pages that link here.
 
 ## Related {#related}
 

@@ -68,6 +68,12 @@ aliases:
 
 → [键盘导航](/zh/docs/customize/keyboard/)
 
+## 反向链接 {#backlinks}
+
+打开 `params.ui.backlinks` 后，每一页末尾列出有哪些页面链接到它——构建时从你本来就写的普通链接派生，没有新语法，也没有 JavaScript。本站全站开启：翻到本页末尾就能看到，越常被引用的页面列表越长。
+
+→ [反向链接](/zh/docs/customize/navigation/#backlinks)
+
 ## 文档之外的四种内容 {#content-types}
 
 主题还内置四类需要额外结构的页面：
@@ -82,6 +88,8 @@ aliases:
 ## 面向 AI 助手的输出 {#agent-output}
 `outputs` 里加上 `markdown`，每个页面就多一份 `.md`，HTML 的 `<head>` 里带 `rel="alternate"` 指过去，页面动作里也多出「复制 Markdown」与「查看源码」。`LLMS` 输出格式在站点根目录生成 `llms.txt` 内容清单（本站是 <https://oink.pgsty.com/zh/llms.txt>）。
 
+0.8.0 再加两种：栏目开启 `LLMSFULL` 后整个栏目拼成一份 `llms-full.txt`，agent 一次抓完；站点开启 `NAVJSON` 后每种语言发布一份 `navigation.json`，侧栏那棵树直接当数据读。两者都在本站开着：<https://oink.pgsty.com/zh/docs/llms-full.txt> 与 <https://oink.pgsty.com/zh/navigation.json> 就是真实产物。
+
 「在 ChatGPT / Claude 中打开」默认关闭：读者点击时会把当前 URL 交给第三方，需要站点显式打开 `params.ui.page_context_menu.assistant_links`。
 
 → [Agent 支持](/zh/docs/customize/agents/)
@@ -94,11 +102,12 @@ aliases:
 
 ## 自己验证 {#verify}
 
-本站启用了上面多数特性，三条自查：
+本站启用了上面多数特性，四条自查：
 
 1. 在任意页面按 `Cmd/Ctrl + K`，输入 `postgres` 查看本地搜索结果；按 `\` 进入纯命令态。
 2. 在当前页面地址后加 `index.md`，得到这一页的 Markdown 版本。
-3. 打开 <https://oink.pgsty.com/zh/llms.txt>，那是给 AI 助手的站点清单。
+3. 打开 <https://oink.pgsty.com/zh/llms.txt>，那是给 AI 助手的站点清单；顺着它能找到整个文档栏目的 `llms-full.txt` 与 `navigation.json`。
+4. 翻到本页末尾，「反向链接」列出链接到本页的页面。
 
 ## 相关 {#related}
 

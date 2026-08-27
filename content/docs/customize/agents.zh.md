@@ -164,6 +164,8 @@ Source: https://oink.pgsty.com/zh/docs/customize/agents/index.md
 
 只要有栏目开了全文包，`llms.txt` 就会多出一段 `## Full-text bundles`，列出本语言的全部全文包：发现入口仍在 agent 本来就会抓的那个文件里。
 
+本站的文档栏目已经开启：<https://oink.pgsty.com/zh/docs/llms-full.txt> 是全部中文文档，一次抓取。
+
 ## 导航 JSON {#navigation-json}
 
 侧栏是站点的目录，读得懂它的 agent 可以先规划路线再抓正文。`NAVJSON` 输出把它变成数据：每种语言一份 `navigation.json`，放在语言根目录下。和全文包一样，它是 OINK 0.8.0 新增、默认关闭，由站点在首页打开：
@@ -222,6 +224,8 @@ outputs:
 占位条目保持侧栏里的样子：`manual_link` 是 `external` 节点，URL 照作者写的原样带出；`manual_link_relref` 是 `link` 节点，引用已经解析好。两者都没有页面身份，因此既没有 `id` 也没有 `markdown`。侧栏分隔线与 Hugo 从不渲染的页面会被略去，它们的子节点留在原位。
 
 契约带版本：`schemaVersion` 是 `1`，JSON Schema 随主题仓库发布，见 [`schema/nav.v1.schema.json`](https://github.com/pgsty/oink/blob/main/schema/nav.v1.schema.json)——要消费这个文件就拿它做校验。站点发布了它时，`llms.txt` 的站点索引里会列出本语言的 `navigation.json`。
+
+本站已开启：<https://oink.pgsty.com/zh/navigation.json> 就是这棵树的实例。
 
 ## 页面上的 Agent 动作 {#page-actions}
 

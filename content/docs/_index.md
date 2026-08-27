@@ -1,4 +1,7 @@
 ---
+# LLMSFULL publishes the whole section as llms-full.txt per language; front
+# matter outputs replace the site list, so the ordinary formats repeat here.
+outputs: [HTML, RSS, print, markdown, LLMSFULL]
 title: OINK Documentation
 linkTitle: Docs
 description: OINK is a documentation theme that needs nothing but Hugo Extended — components are written in Markdown, assets ship with the theme, both languages work out of the box, and one source produces four outputs.

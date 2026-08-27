@@ -15,3 +15,9 @@ LLMS 索引： [llms.txt](/zh/llms.txt)
 - [Search Results](/zh/search/)
 - [博客](/zh/blog/): OINK 工程实践、沉浸式阅读指南与发布注记
 - [OINK 文档](/zh/docs/): OINK 是一款只需 Hugo Extended 的技术文档主题：组件写在 Markdown 里，资源随主题分发，双语开箱可用，一份内容产出四种输出。
+
+---
+
+反向链接：
+
+- [Agent 支持](/zh/docs/customize/agents/)

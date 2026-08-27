@@ -416,6 +416,10 @@ The page's Markdown output carries the same list, introduced by "Linked from:".
 RSS omits it, and the `print` output format omits it with the rest of the page
 end.
 
+This site enables it site-wide: scroll to the end of this page for the real
+thing, and the most-referenced page — [Configuration](/docs/customize/config/) —
+lists more than forty inbound links.
+
 ## The footer {#footer}
 
 The footer's shape comes from `params.ui.footer_style` (`fat` / `slim` / `none`

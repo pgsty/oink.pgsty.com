@@ -105,3 +105,23 @@ markup:
 - [按键](/zh/docs/components/kbd/): 用 `kbd` 写快捷键：一个 shortcode 接一串按键名，输出语义化的按键序列，打印与 Markdown 输出里同样可读。
 - [引用](/zh/docs/components/include/): 用 include 插入外部文件，用 param 插入站点参数，用 comment 写不会出现在任何输出里的注释。
 - [Asciinema](/zh/docs/components/asciinema/): 把 .cast 终端录像放进页面：文字仍然是可选中的文字，播放器随主题分发，不连 CDN。
+
+---
+
+反向链接：
+
+- [OINK 实现预览](/zh/blog/oink/oink-announcement/)
+- [Oink v0.2.0](/zh/blog/release/0.2.0/)
+- [Oink v0.3.0](/zh/blog/release/0.3.0/)
+- [组合页面](/zh/book/03-compose/)
+- [OINK 文档](/zh/case/oink/)
+- [文档](/zh/docs/)
+- [简介](/zh/docs/about/)
+- [亮点特性](/zh/docs/about/features/)
+- [版本升级](/zh/docs/admin/upgrade/)
+- [组件](/zh/docs/design/components/)
+- [快速上手](/zh/docs/start/)
+- [创作内容](/zh/docs/write/)
+- [博客与文章](/zh/docs/write/blog/)
+- [书籍出版](/zh/docs/write/book/)
+- [编写页面](/zh/docs/write/pages/)

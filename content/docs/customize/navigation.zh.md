@@ -313,6 +313,8 @@ cascade:
 
 页面的 Markdown 输出带同一份列表，前缀是「反向链接：」。RSS 省略它，`print` 输出格式连同整个页尾一起省略。
 
+本站全站开启了它：翻到本页末尾就能看到实际效果；被引用最多的[配置总览](/zh/docs/customize/config/)一页，列出了四十多个入链。
+
 ## 页脚 {#footer}
 
 页脚形态由 `params.ui.footer_style` 决定（`fat` / `slim` / `none`，见[品牌外观](/zh/docs/customize/brand/#footer)）。`fat` 的多列链接网格读 `data/footer/<语言>.yaml`。它不是菜单，主题没有 `menus.footer`：

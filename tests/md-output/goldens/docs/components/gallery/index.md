@@ -214,3 +214,12 @@ inside the fence.
 - [Cards](/docs/components/cards/) — a grid of links with images
 - [Tabs](/docs/components/tabs/) — one gallery per platform or theme
 - [File trees](/docs/components/filetree/) — the same line syntax family
+
+---
+
+Linked from:
+
+- [Cards](/docs/components/cards/)
+- [FileTree](/docs/components/filetree/)
+- [Images](/docs/components/image/)
+- [Print](/docs/customize/print/)

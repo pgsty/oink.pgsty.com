@@ -5,6 +5,7 @@
 ## Site index
 
 - [Home page](http://localhost/index.md)
+- [navigation.json](http://localhost/navigation.json)
 - [Docs](http://localhost/docs/index.md): OINK is a documentation theme that needs nothing but Hugo Extended — components are written in Markdown, assets ship with the theme, both languages work out of the box, and one source produces four outputs.
 - [Book](http://localhost/book/index.md): A practical tutorial for creating clear, beautiful, and maintainable technical content with OINK.
 - [Case](http://localhost/case/index.md): Fifteen real sites show how OINK scales from a two-page utility to a multilingual documentation estate and three books.
@@ -88,6 +89,10 @@
   - [Config schema](http://localhost/docs/design/decisions/config-schema/index.md): The editor schemas are projected from the existing configuration authorities; a CI drift gate keeps them from ever becoming a third one.
   - [Landing pages](http://localhost/docs/design/landing/index.md): The maintainer contract for landing data, the built-in section registry, language resolution, runtime, accessibility, and outputs.
   - [Migration boundary](http://localhost/docs/design/migration/index.md): The supported source, configuration, and validation boundaries for migration from OINK 0.4 through OINK 0.7.1.
+
+## Full-text bundles
+
+- [Docs](http://localhost/docs/llms-full.txt)
 
 ## Site locales
 

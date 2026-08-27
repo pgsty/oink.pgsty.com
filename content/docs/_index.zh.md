@@ -1,4 +1,7 @@
 ---
+# LLMSFULL 为本栏目每种语言发布一份 llms-full.txt；front matter 的 outputs
+# 整体覆盖站点列表，所以这里重复常规格式。
+outputs: [HTML, RSS, print, markdown, LLMSFULL]
 title: OINK 文档
 linkTitle: 文档
 description: OINK 是一款只需 Hugo Extended 的技术文档主题：组件写在 Markdown 里，资源随主题分发，双语开箱可用，一份内容产出四种输出。

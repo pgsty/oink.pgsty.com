@@ -214,6 +214,10 @@ Where at least one section has a bundle, `llms.txt` grows a `## Full-text
 bundles` list of this language's bundles: discovery stays in the file an agent
 already fetches.
 
+This site's docs section has it enabled:
+<https://oink.pgsty.com/docs/llms-full.txt> is the entire English
+documentation in one fetch.
+
 ## Navigation JSON {#navigation-json}
 
 The sidebar is the site's table of contents, and an agent that can read it plans
@@ -290,6 +294,9 @@ the theme repository as
 [`schema/nav.v1.schema.json`](https://github.com/pgsty/oink/blob/main/schema/nav.v1.schema.json)
 — validate against it if you consume the file. Where the site publishes it,
 `llms.txt` lists `navigation.json` for its own language in the site index.
+
+This site has it enabled: <https://oink.pgsty.com/navigation.json> is a live
+instance of the tree.
 
 ## Agent actions on the page {#page-actions}
 

@@ -223,3 +223,13 @@ pig ext install pg_duckdb --dry-run
 - [配置总览](/zh/docs/customize/config/) — 站点参数全表就是用参数表写的
 - [页面参数](/zh/docs/write/frontmatter/) — front matter 全表
 - [步骤](/zh/docs/components/steps/) — 顺序动作不要写成参数表
+
+---
+
+反向链接：
+
+- [卡片](/zh/docs/components/cards/)
+- [表格](/zh/docs/components/table/)
+- [Agent 支持](/zh/docs/customize/agents/)
+- [打印支持](/zh/docs/customize/print/)
+- [编写页面](/zh/docs/write/pages/)

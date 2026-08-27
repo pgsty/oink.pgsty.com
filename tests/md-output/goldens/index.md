@@ -15,3 +15,9 @@ Section pages:
 - [Blog](/blog/): OINK engineering stories, immersive guides, and release notes
 - [OINK Documentation](/docs/): OINK is a documentation theme that needs nothing but Hugo Extended — components are written in Markdown, assets ship with the theme, both languages work out of the box, and one source produces four outputs.
 - [Search Results](/search/)
+
+---
+
+Linked from:
+
+- [AI-agent support](/docs/customize/agents/)

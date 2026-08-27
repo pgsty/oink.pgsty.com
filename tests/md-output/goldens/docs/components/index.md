@@ -136,3 +136,23 @@ Section pages:
 - [Kbd](/docs/components/kbd/): Write shortcuts with `kbd` — one shortcode, a list of key names, a semantic key sequence that stays readable in print and in Markdown output.
 - [Includes](/docs/components/include/): Pull an external file in with include, print a site parameter with param, and write a note that reaches no output at all with comment.
 - [Asciinema](/docs/components/asciinema/): Put a .cast terminal recording on the page — the text stays selectable text, and the player ships with the theme rather than coming from a CDN.
+
+---
+
+Linked from:
+
+- [Introducing OINK](/blog/oink/oink-announcement/)
+- [Oink v0.2.0](/blog/release/0.2.0/)
+- [Oink v0.3.0](/blog/release/0.3.0/)
+- [Compose the page](/book/03-compose/)
+- [OINK Docs](/case/oink/)
+- [Docs](/docs/)
+- [Introduction](/docs/about/)
+- [Highlights](/docs/about/features/)
+- [Upgrade](/docs/admin/upgrade/)
+- [Components](/docs/design/components/)
+- [Get started](/docs/start/)
+- [Authoring](/docs/write/)
+- [Blog posts](/docs/write/blog/)
+- [Books](/docs/write/book/)
+- [Writing pages](/docs/write/pages/)

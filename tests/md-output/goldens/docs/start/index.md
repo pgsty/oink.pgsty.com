@@ -310,3 +310,18 @@ Section pages:
 
 - [Repository tour](/docs/start/anatomy/): What every cloned directory is — what must stay, what to replace with your own details, and what belongs to the documentation site and can go entirely.
 - [From scratch and other install methods](/docs/start/from-scratch/): Build a minimal OINK site in an empty directory, and weigh the four install methods — Module, submodule, offline archive, pinned clone.
+
+---
+
+Linked from:
+
+- [Start with a working site](/book/01-start/)
+- [Docs](/docs/)
+- [Introduction](/docs/about/)
+- [Highlights](/docs/about/features/)
+- [Cases](/docs/about/showcase/)
+- [Cards](/docs/components/cards/)
+- [Brand and appearance](/docs/customize/brand/)
+- [Repository tour](/docs/start/anatomy/)
+- [From scratch](/docs/start/from-scratch/)
+- [Writing pages](/docs/write/pages/)
