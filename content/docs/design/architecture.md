@@ -109,7 +109,9 @@ Every base template sets `Page.Store.tdOutputFormat`:
 | HTML | Complete semantic content; local runtime only for used capabilities |
 | Print | Expanded content; no shell navigation, search, or zoom runtime; the shared action layer supports explicit print controls |
 | Markdown / LLMS | Source-shaped Markdown without `td-` component markup |
+| LLMSFULL | Opt-in per top-level section: one `llms-full.txt` per enabled section per language, that same Markdown concatenated in reading order |
 | RSS | Safe static summary or explicit omission |
+| NAVJSON | Opt-in per site: one `navigation.json` per language, serializing the navigation authority the sidebar and pager already read |
 | BookManifest | Opt-in ordered JSON handoff for a publication packager; never presented as an EPUB or PDF |
 
 Consumers opt into custom outputs; OINK does not force expensive Book
@@ -119,6 +121,23 @@ most one chunk per language; flags choose script tags and never create a new
 combination bundle. Print keeps the action layer and only runtimes required by
 rendered print features. Large third-party UMD files stay separate; unused
 feature runtimes stay absent.
+
+`LLMSFULL` is enabled by a top-level section listing it in its `_index` front
+matter `outputs`; the theme never adds it to a site's output set. One shared
+renderer produces the per-page Markdown and the bundle, so a bundle is that same
+semantic Markdown -- no `td-` component markup -- concatenated in the sidebar and
+pager reading order. Enabling it below the top level warns and emits nothing, so
+an ordinary build stays usable while `--panicOnWarning` blocks publication.
+
+`NAVJSON` is enabled by the site's `outputs.home` and publishes one
+`navigation.json` per language at the language root. It serializes the same
+authority chain the sidebar and pager read: an explicit `data/docs_nav.json`
+tree when present, the weighted content tree otherwise. Array order is the
+contract and `weight` is never serialized, and the output is `notAlternative`.
+`schema/nav.v1.schema.json` versions the format as a hand-authored contract
+artifact, edited with its templates and checker rather than by the generated
+configuration schemas' drift gate. Both outputs default off, so a site that
+enables neither builds byte-identically; `bin/check-agent-indexes.py` owns them.
 
 `BookManifest` is disabled unless a Book root explicitly lists it in `outputs`.
 It references that Book's existing per-page Markdown and records derived page

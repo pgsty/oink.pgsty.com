@@ -10,12 +10,15 @@ design_status: accepted
 proposal_date: 2026-08-20
 ---
 
-> [!IMPORTANT] Accepted and scheduled for implementation
-> Accepted on 2026-08-27 after resolving every open decision. The scope is two
-> optional outputs: per-top-level-section `llms-full.txt` bundles and a
-> navigation JSON at the language root. OINK already ships per-page Markdown,
-> the in-language `llms.txt`, the HTML discovery link, and Copy Markdown; this
-> page covers only the two remaining outputs.
+> [!IMPORTANT] Implemented; ships with OINK 0.8.0
+> Accepted on 2026-08-27 after resolving every open decision. Both outputs --
+> the per-top-level-section `LLMSFULL` bundles and the `NAVJSON` navigation
+> tree at the language root -- are implemented on the theme's `main` branch and
+> ship with OINK 0.8.0, after which this proposal retires; released behaviour is
+> owned by the
+> [Architecture contract](/docs/design/architecture/#outputs-and-runtime).
+> OINK already shipped per-page Markdown, the in-language `llms.txt`, the HTML
+> discovery link, and Copy Markdown; this page covers only the two new outputs.
 
 ## Current baseline {#current-baseline}
 

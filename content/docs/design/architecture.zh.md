@@ -95,7 +95,9 @@ front matter 覆盖。`banner` 在单页标题上方渲染图片，`wash` 用图
 | HTML | 完整的语义内容；只为实际用到的能力加载本地运行时 |
 | Print | 展开的内容；不含外壳导航、搜索或图片缩放运行时；共享操作层仍支持明确的打印控制 |
 | Markdown / LLMS | 保持源 Markdown 形态，不含 `td-` 组件标记 |
+| LLMSFULL | 按顶层 section 选择启用：每个启用 section、每种语言一份 `llms-full.txt`，按阅读顺序拼接同一份 Markdown |
 | RSS | 安全的静态摘要，或明确省略 |
+| NAVJSON | 按站点选择启用：每种语言一份 `navigation.json`，序列化侧栏与 pager 已经在读的导航权威 |
 | BookManifest | 选择启用、供出版打包器消费的有序 JSON 交接；绝不冒充 EPUB 或 PDF |
 
 站点自行选择是否启用自定义输出；OINK 不会强制生成昂贵的整书聚合。HTML 加载
@@ -103,6 +105,18 @@ front matter 覆盖。`banner` 在单页标题上方渲染图片，`wash` 用图
 每种语言至多发布一份；flag 只决定引用哪些 script tag，绝不再生成新的组合 bundle。
 Print 保留操作层，并且只加载渲染打印功能所需的运行时。大型第三方 UMD 文件保持
 独立；未使用的功能运行时不会出现。
+
+顶层 section 在自己 `_index` front matter 的 `outputs` 中列出 `LLMSFULL` 才会启用它，
+主题绝不替站点把它加进输出集合。逐页 Markdown 与全文包由同一个渲染器产出，因此全文包
+就是那份语义 Markdown（同样不含 `td-` 组件标记）按侧栏与 pager 的阅读顺序拼接。在顶层
+之下启用会告警且不产出任何文件，普通构建仍然可用，而 `--panicOnWarning` 会拦住发布。
+
+站点在 `outputs.home` 中启用 `NAVJSON`，为每种语言在语言根下发布一份 `navigation.json`。
+它序列化侧栏与 pager 所读的同一条权威链：存在显式 `data/docs_nav.json` 树时用它，否则用
+带 weight 的内容树。数组顺序就是契约，`weight` 绝不序列化，该输出标记为 `notAlternative`。
+`schema/nav.v1.schema.json` 为该格式提供版本，它是手写的契约产物，随模板与检查器一同修改，
+不受生成式配置 Schema 漂移门禁管辖。两种输出默认关闭，都不启用的站点构建结果逐字节不变；
+`bin/check-agent-indexes.py` 是它们的归属检查器。
 
 只有 Book 根在 `outputs` 中明确列出 `BookManifest` 时才会生成它。它引用该 Book
 既有的逐页 Markdown，并记录派生出的页面顺序、标题、编号目标与 xref；主题不会在

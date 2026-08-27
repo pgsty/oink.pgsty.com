@@ -10,10 +10,12 @@ design_status: accepted
 proposal_date: 2026-08-20
 ---
 
-> [!IMPORTANT] 已接受，排入实现
-> 2026-08-27 决议全部待决问题后接受本提案。范围是两类可选输出：按顶层 section
-> 分包的 `llms-full.txt` 与语言根下的导航 JSON。OINK 已经支持每页 Markdown、
-> 语言内 `llms.txt`、HTML discovery link 与 Copy Markdown；本页只覆盖剩余两类。
+> [!IMPORTANT] 已实现，随 OINK 0.8.0 发布
+> 2026-08-27 决议全部待决问题后接受本提案。两类输出——按顶层 section 分包的
+> `LLMSFULL` 与语言根下的 `NAVJSON` 导航树——都已在主题 `main` 分支实现，随 OINK
+> 0.8.0 发布，之后本提案退役；发布后的行为由[架构契约](/zh/docs/design/architecture/#outputs-and-runtime)
+> 承担。OINK 已经支持每页 Markdown、语言内 `llms.txt`、HTML discovery link 与
+> Copy Markdown；本页只覆盖新增的两类。
 
 ## 当前基线 {#current-baseline}
 

@@ -13,6 +13,10 @@ search_keywords:
     copy Markdown,
     llmstxt,
     outputs,
+    llms-full.txt,
+    LLMSFULL,
+    navigation.json,
+    NAVJSON,
   ]
 aliases:
   - /docs/advanced/agent-support/
@@ -25,7 +29,9 @@ as Markdown" button on the page. All three are build-time artifacts, with no
 runtime service and no content negotiation.
 
 All three have to be declared by the site under `outputs`; the theme does not
-turn them on.
+turn them on. Two further artifacts, equally opt-in, serve an agent that wants
+more than one page at a time: a full-text bundle per section and a navigation
+tree per language.
 
 ## A `.md` per page {#markdown-output}
 
@@ -146,6 +152,145 @@ this site's content.
 The way to improve `llms.txt` is through the main menu and each section index's
 `description`, not through this template.
 
+## Full-text bundle {#full-text-bundle}
+
+One `.md` per page suits an agent that already knows which page it wants; an
+agent that wants the whole manual has to crawl it page by page. The `LLMSFULL`
+output collapses that into one file per top-level section: `llms-full.txt`,
+holding every page of the section in reading order. It is new in OINK 0.8.0 and
+stays off until a section asks for it.
+
+The switch is the section index's own front matter rather than the site
+configuration:
+
+```yaml {title="content/docs/_index.md"}
+---
+title: Docs
+outputs: [HTML, print, RSS, markdown, LLMSFULL]
+---
+```
+
+Front matter `outputs` replaces the site-level list for that page, so write back
+the formats the section already had: omitting `markdown` or `print` here costs
+the section index those outputs. Front matter is per language, so a bilingual
+site repeats the line in `_index.zh.md` to get the Chinese bundle.
+
+The result is one file per language at the section root — `/docs/llms-full.txt`
+and `/zh/docs/llms-full.txt`. The order is the reading order the sidebar and the
+pager present: the explicit `data/docs_nav.json` tree where a `docs` or `book`
+section declares one, the weighted content tree otherwise. Pages held out of the
+sidebar (`toc_hide`) stay out of the bundle too.
+
+Each page is introduced by a separator carrying its source URL, and the body
+that follows is byte-identical to that page's own `.md`:
+
+```text {title="/docs/llms-full.txt (excerpt)"}
+================
+Source: https://oink.pgsty.com/docs/customize/print/index.md
+================
+
+# Print
+
+> A single page goes to the browser's Cmd/Ctrl+P; a whole section becomes one continuous document through the print output format.
+…
+
+================
+Source: https://oink.pgsty.com/docs/customize/agents/index.md
+================
+
+# AI-agent support
+…
+```
+
+`Source:` points at the page's Markdown output, falling back to its HTML URL
+where the page publishes no `.md`.
+
+Only a top-level section can carry a bundle. Listing `LLMSFULL` further down the
+tree warns — "LLMSFULL output requires a top-level section" — and emits nothing,
+so `hugo server` keeps working while a publishing build with `--panicOnWarning`
+stops there.
+
+Where at least one section has a bundle, `llms.txt` grows a `## Full-text
+bundles` list of this language's bundles: discovery stays in the file an agent
+already fetches.
+
+## Navigation JSON {#navigation-json}
+
+The sidebar is the site's table of contents, and an agent that can read it plans
+a route before fetching anything. The `NAVJSON` output publishes it as data:
+`navigation.json`, one file per language at the language root. Like the bundle
+it is new in OINK 0.8.0 and off by default; the site turns it on for the home
+page:
+
+```yaml {title="hugo.yml"}
+outputs:
+  home: [HTML, markdown, LLMS, NAVJSON]
+```
+
+That yields `/navigation.json` and `/zh/navigation.json`. The tree is the one
+the sidebar and the pager already read — the explicit `data/docs_nav.json` tree
+where a `docs` or `book` section declares one, the weighted content tree
+everywhere else:
+
+```json {title="/navigation.json (excerpt)"}
+{
+  "baseURL": "https://oink.pgsty.com/",
+  "language": "en",
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "description": "Give every page a .md twin, the site root an llms.txt…",
+            "id": "/docs/customize/agents/",
+            "kind": "page",
+            "markdown": "https://oink.pgsty.com/docs/customize/agents/index.md",
+            "title": "AI-agent support",
+            "url": "https://oink.pgsty.com/docs/customize/agents/"
+          }
+        ],
+        "id": "/docs/",
+        "kind": "section",
+        "title": "Docs",
+        "url": "https://oink.pgsty.com/docs/"
+      }
+    ],
+    "id": "/",
+    "kind": "home",
+    "title": "OINK",
+    "url": "https://oink.pgsty.com/"
+  },
+  "schemaVersion": 1
+}
+```
+
+| Key | What it holds |
+| --- | --- |
+| `id` | The page's path with the language prefix removed, so the same page carries the same `id` in every language |
+| `url` | The absolute URL of this language's HTML page |
+| `markdown` | The absolute URL of the page's `.md`, present only where the page publishes one |
+| `title` | The navigation title (`linkTitle`, falling back to `title`) |
+| `description` | The page's `description`, where it has one |
+| `kind` | `home`, `section` or `page` for real pages; `external` or `link` for placeholders |
+| `children` | The ordered children, where the node has any |
+
+Array order is the contract, and `weight` is never serialized: the ordering has
+already been applied, and a consumer re-sorting the array would disagree with
+the sidebar the array came from.
+
+Placeholder rows keep the shape the sidebar gives them: a `manual_link` entry
+becomes a node of kind `external` carrying the URL as authored, a
+`manual_link_relref` entry becomes kind `link` with the reference resolved.
+Neither has page identity, so neither carries an `id` or a `markdown` URL.
+Sidebar dividers and pages Hugo never renders drop out, while their children
+stay in place.
+
+The contract is versioned: `schemaVersion` is `1`, and the JSON Schema ships in
+the theme repository as
+[`schema/nav.v1.schema.json`](https://github.com/pgsty/oink/blob/main/schema/nav.v1.schema.json)
+— validate against it if you consume the file. Where the site publishes it,
+`llms.txt` lists `navigation.json` for its own language in the site index.
+
 ## Agent actions on the page {#page-actions}
 
 Four entries in the action menu at the right of the breadcrumb row relate to
@@ -211,10 +356,11 @@ outputs: [HTML, RSS, print]
 
 ## Customizing the output {#customize-output}
 
-The theme renders Markdown output with `layouts/all.md` and generates
-`llms.txt` with `layouts/index.llms.txt`. A site replaces either wholesale by
-placing a file of the same name under its own `layouts/`, but **consider a
-narrower approach first**:
+The theme renders Markdown output with `layouts/all.md`, generates `llms.txt`
+with `layouts/index.llms.txt`, and owns the two opt-in formats in
+`layouts/list.llmsfull.txt` and `layouts/index.navjson.json`. A site replaces
+any of them wholesale by placing a file of the same name under its own
+`layouts/`, but **consider a narrower approach first**:
 
 - **Per content type**: a typed path such as `layouts/blog/single.md` or `layouts/docs/list.md` affects only that kind of content, which is how the theme's own print templates are specialized (`layouts/blog/single.print.html`). Check the [template lookup order](https://gohugo.io/templates/lookup-order/) for your combination.
 - **Per shortcode**: a site's own shortcode can have an [output-format-specific template](https://gohugo.io/templates/shortcode/) giving it a more machine-readable form in Markdown output.
@@ -222,12 +368,16 @@ narrower approach first**:
 
 The content of `llms.txt` follows the site's structure, so before changing the
 template, confirm the problem is not in the main menu or a `description`.
+Replacing `index.navjson.json` also takes over the `nav.v1` contract: whatever
+you emit still has to satisfy `schema/nav.v1.schema.json` for a consumer that
+validates.
 
 ## Verify {#verify}
 
 ```bash
 hugo -d public
 ls public/llms.txt public/docs/customize/agents/index.md
+ls public/docs/llms-full.txt public/navigation.json   # where you opted in
 ```
 
 With `curl`, against production or a local preview:
@@ -239,18 +389,25 @@ $ curl -s http://localhost:1313/docs/customize/agents/index.md | head -5
 > Give every page a `.md` twin, the site root an `llms.txt`, and the reader a way to hand the current page to ChatGPT or Claude.
 
 $ curl -sI http://localhost:1313/llms.txt | head -3
+
+$ curl -s http://localhost:1313/docs/llms-full.txt | head -3
+================
+Source: http://localhost:1313/docs/index.md
+================
 ```
 
-Then check three things:
+Then check four things:
 
 - Any page's HTML `<head>` has `rel="alternate" type="text/markdown"`;
 - Clicking the copy button at the right of the breadcrumb row and pasting yields Markdown rather than HTML;
-- `llms.txt` contains no off-site links.
+- `llms.txt` contains no off-site links;
+- Where you enabled them: every page in `llms-full.txt` opens with a `Source:` line, and the same page carries the same `id` in each language's `navigation.json`.
 
 ## Limits {#limits}
 
-- The machine-readable surface the theme produces is exactly two things: a `.md` per page and `llms.txt`. There is no `nav.json` and no other structured index interface; the sitemap is still Hugo's own `sitemap.xml`.
-- The `LLMS` output format is declared as a non-alternative format, so `llms.txt` never appears in the `<head>` alternate links and has no page action. It is discovered by its conventional root path.
+- The machine-readable surface the theme produces is four build-time files: a `.md` per page, `llms.txt`, and — where you opt in — `llms-full.txt` per top-level section and `navigation.json` per language. The sitemap is still Hugo's own `sitemap.xml`.
+- A bundle belongs to a top-level section. There is no whole-site `llms-full.txt`: an agent that wants everything reads one bundle per section, listed in `llms.txt`.
+- `LLMS`, `LLMSFULL` and `NAVJSON` are all declared as non-alternative formats, so none of them appears in the `<head>` alternate links or gains a page action. They are discovered by their conventional paths and by the entries `llms.txt` carries for them.
 - Server-side content negotiation (one URL returning Markdown for `Accept: text/markdown`) is outside the theme's scope and belongs to the hosting layer.
 - Markdown output follows the **source** path: content generated only in the browser by JavaScript (a runtime-drawn chart) appears in the `.md` as fence source, not as a diagram.
 
