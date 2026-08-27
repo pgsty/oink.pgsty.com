@@ -37,7 +37,7 @@ A production site pins a release tag or an immutable commit, follows no branch,
 and does not use `@latest`:
 
 ```bash {title="Terminal"}
-hugo mod get github.com/pgsty/oink@v0.7.1   # the tag from the release notes
+hugo mod get github.com/pgsty/oink@v0.8.0   # the tag from the release notes
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -51,7 +51,7 @@ module github.com/pgsty/oink.pgsty.com
 
 go 1.26.6
 
-require github.com/pgsty/oink v0.7.1
+require github.com/pgsty/oink v0.8.0
 ```
 
 > [!DANGER] A local module replacement overrides that pin

@@ -114,7 +114,7 @@ canonical 由 `baseURL` 拼出。`baseURL` 配错时 canonical 会把搜索引�
 
 ```yaml {title="任意页面"}
 ---
-title: OINK v0.7.1 发布
+title: OINK v0.8.0 发布
 images: [/images/releasenote.webp]
 ---
 ```

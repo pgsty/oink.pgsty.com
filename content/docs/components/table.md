@@ -59,7 +59,7 @@ number the table.
 ```markdown {title="Source"}
 | Item | Value |
 | --- | --- |
-| Theme version | v0.7.1 |
+| Theme version | v0.8.0 |
 | Hugo floor | 0.160.1 Extended |
 | Licence | Apache-2.0 |
 {caption="Theme facts this site currently builds against"}
@@ -67,7 +67,7 @@ number the table.
 
 | Item | Value |
 | --- | --- |
-| Theme version | v0.7.1 |
+| Theme version | v0.8.0 |
 | Hugo floor | 0.160.1 Extended |
 | Licence | Apache-2.0 |
 {caption="Theme facts this site currently builds against"}

@@ -5,11 +5,11 @@ description: Repository assembly, configuration, diagnostics, output, performanc
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK architecture, repository boundary, runtime, output formats, security, accessibility, performance]
-contract_status: released-v0.7.1
+contract_status: released-v0.8.0
 ---
 
-> [!IMPORTANT] OINK 0.7.1 contract
-> This is the architecture contract released with OINK 0.7.1. This page is the
+> [!IMPORTANT] OINK 0.8.0 contract
+> This is the architecture contract released with OINK 0.8.0. This page is the
 > canonical English source; its Chinese peer is maintained beside it in
 > `content/docs/design/`.
 

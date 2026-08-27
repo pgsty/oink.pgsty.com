@@ -12,7 +12,7 @@ OINK is a Hugo theme for technical documentation. Components are part of the
 Markdown syntax rather than a second template language; the fonts, icons,
 search and diagram runtimes the browser needs ship with the theme; the only
 build dependency is one Hugo Extended binary, with no Node.js and no CDN
-request. The current release is v0.7.1.
+request. The current release is v0.8.0.
 
 ## Five ways in {#five-entries}
 
