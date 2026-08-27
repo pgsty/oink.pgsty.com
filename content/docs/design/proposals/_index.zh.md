@@ -24,8 +24,10 @@ design_status: active
 | [反向链接与知识图谱](/zh/docs/design/proposals/knowledge-graph/) | 草案；当前没有 graph 或 backlink 实现                                  |
 | [媒体收敛](/zh/docs/design/proposals/media-convergence/)         | 部分已实现；media-result 契约与 Landing 资源元数据已交付，M3 决议为原生图片处理，退役（M4）保持开放 |
 | [Agent 批量索引](/zh/docs/design/proposals/agent-indexes/)       | 草案；每页 Markdown 与 `llms.txt` 已存在，全文合集与导航 JSON 尚不存在 |
-| [生成式配置 Schema](/zh/docs/design/proposals/config-schema/) | 已实现并发布；行为记录在[配置总览](/zh/docs/customize/config/#editor-schema)，本页只保留设计理由 |
 | [Book 出版链路](/zh/docs/design/proposals/book-publication/)     | manifest 与 EPUB/PDF 工具已随版本发布，见[架构](/zh/docs/design/architecture/)；本页只剩消费站迁移未决 |
+
+生成式配置 Schema 提案已按生命周期退役：行为的规范位置是[配置总览](/zh/docs/customize/config/#editor-schema)，
+长期理由进入[生成式配置 Schema 决策](/zh/docs/design/decisions/config-schema/)，草案原文由 Git 历史保存。
 
 ## 新 PRD 放在哪里 {#where-a-new-prd-goes}
 

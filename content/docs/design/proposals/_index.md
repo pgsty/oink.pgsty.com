@@ -27,8 +27,14 @@ or the documentation repository.
 | [Backlinks and knowledge graph](/docs/design/proposals/knowledge-graph/) | Draft; no graph or backlink implementation exists                                                                    |
 | [Media convergence](/docs/design/proposals/media-convergence/)           | Partially implemented; the media-result contract and Landing resource metadata shipped, M3 resolved for native-image processing, retirement (M4) open |
 | [Bulk agent indexes](/docs/design/proposals/agent-indexes/)              | Draft; per-page Markdown and `llms.txt` already exist, while bulk text and navigation JSON do not                    |
-| [Generated configuration schema](/docs/design/proposals/config-schema/)  | Implemented and released; the behaviour is documented in [Configuration](/docs/customize/config/#editor-schema), and this page is kept only for the rationale |
 | [Book publication pipeline](/docs/design/proposals/book-publication/)    | Manifest and EPUB/PDF tooling are released — see [Architecture](/docs/design/architecture/); only consumer migration is still open here |
+
+The generated-configuration-schema proposal has been retired through the
+lifecycle: the behaviour is documented normatively in
+[Configuration](/docs/customize/config/#editor-schema), the long-lived
+rationale moved to the
+[generated configuration schema decision](/docs/design/decisions/config-schema/),
+and the draft text is preserved by Git history.
 
 ## Where a new PRD goes {#where-a-new-prd-goes}
 

@@ -27,6 +27,7 @@ bilingual, versioned site as the contracts it supports.
 | [Warnings and safe fallbacks](/docs/design/decisions/diagnostics/) | Why ordinary preview survives invalid input while publication remains strict                             |
 | [Configuration model](/docs/design/decisions/configuration/)       | Where configuration belongs, how pages override it, and why OINK has no parallel configuration namespace |
 | [Markdown-first authoring](/docs/design/decisions/authoring/)      | Why native Markdown is preferred and Docs, Blog, Book, and Landing extend shared systems                 |
+| [Generated configuration schema](/docs/design/decisions/config-schema/) | Why the editor schemas are a generated projection, and how the drift gate keeps a third configuration authority from appearing |
 
 ## Record format {#record-format}
 

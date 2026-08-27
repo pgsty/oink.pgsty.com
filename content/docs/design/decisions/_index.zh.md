@@ -25,6 +25,7 @@ OINK 过去把评审、PRD 与执行记录放在本地 `plan/` 目录中。这�
 | [警告与安全回退](/zh/docs/design/decisions/diagnostics/)  | 为什么普通预览能容忍错误输入，而发布仍保持严格                               |
 | [配置模型](/zh/docs/design/decisions/configuration/)      | 配置放在哪里、页面如何覆盖，以及 OINK 为什么不另造配置命名空间               |
 | [Markdown 优先创作](/zh/docs/design/decisions/authoring/) | 为什么优先使用原生 Markdown，以及 Docs、Blog、Book、Landing 如何延长共享系统 |
+| [生成式配置 Schema](/zh/docs/design/decisions/config-schema/) | 为什么编辑器 Schema 是生成的投影，以及漂移门禁如何阻止第三个配置权威出现 |
 
 ## 记录格式 {#record-format}
 
