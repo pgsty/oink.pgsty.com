@@ -533,19 +533,19 @@ A configuration change also needs at least three checks: one page in each
 language, a page with no translation to see the fallback, and the links under
 the production `baseURL` (easy to miss on a subpath deployment).
 
-The theme's declared Hugo floor is `0.160.1`, and the currently verified version
-is `0.164.0`. Building against both after a configuration change catches
-anything that only works on the newer one:
+The theme's declared Hugo floor is `0.160.1`. OINK's continuous test toolchain
+is pinned to Hugo Extended `0.165.0`; configuration changes are tested once
+with that pinned version instead of against a version matrix:
 
 ```bash
-# the floor binary
-/path/to/hugo-0.160.1 --printPathWarnings --panicOnWarning
-# the currently verified version
+# require v0.165.0+extended in this output
+hugo version
 hugo --printPathWarnings --panicOnWarning
 ```
 
 The floor is declared in the theme's `hugo.yaml` and `theme.toml`, and a site's
-own `module.hugoVersion.min` should agree with it.
+own `module.hugoVersion.min` should agree with it. It remains a consumer
+compatibility declaration, not a second routine CI test leg.
 
 ## Related {#related}
 

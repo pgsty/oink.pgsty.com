@@ -481,16 +481,18 @@ hugo --printPathWarnings --panicOnWarning
 
 配置改动还要至少验证三件事：每种语言各一页、缺译页的回退、生产 `baseURL` 下的链接（子路径部署容易漏）。
 
-主题声明的 Hugo 下限是 `0.160.1`，当前验证版本是 `0.164.0`。改动配置后按这两个版本各构建一次，可以及早发现只在新版本可用的特性：
+主题声明的 Hugo 下限是 `0.160.1`。OINK 的持续测试工具链固定为 Hugo Extended
+`0.165.0`；配置改动只使用这个固定版本测试一次，不再运行版本矩阵：
 
 ```bash
-# 下限版本的二进制
-/path/to/hugo-0.160.1 --printPathWarnings --panicOnWarning
-# 当前验证版本
+# 输出必须包含 v0.165.0+extended
+hugo version
 hugo --printPathWarnings --panicOnWarning
 ```
 
-下限版本写在主题的 `hugo.yaml` 与 `theme.toml` 里，站点自己的 `module.hugoVersion.min` 应与它一致。
+下限版本写在主题的 `hugo.yaml` 与 `theme.toml` 里，站点自己的
+`module.hugoVersion.min` 应与它一致。它仍是消费站兼容性声明，不再是第二个常规 CI
+测试项。
 
 ## 相关 {#related}
 

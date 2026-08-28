@@ -175,7 +175,7 @@ DOM 改写。
 ## 验收标准 {#acceptance-criteria}
 
 - 默认站点不发布新聚合文件，也没有显著构建成本。
-- Hugo 0.160.1 与当前受支持 Hugo 都能在 warning 即失败模式下构建 opt-in 夹具。
+- 固定的 Hugo Extended 0.165.0 工具链能在 warning 即失败模式下构建 opt-in 夹具。
 - 现有 HTML、Print、Markdown、RSS、导航、搜索与浏览器测试全部通过。
 - DDIA pilot 保留 23 章以及全部 106 图、3 表、22 示例与内部链接；这些都作为带类型的
   语义目标存在，未解析目标为零。

@@ -109,8 +109,8 @@ as shown in the [component contract](/docs/design/components/). Enable
 passthrough explicitly for `\(...\)`, `\[...\]`, or `$$...$$`; Hugo does not
 merge theme markup config.
 
-Run the smallest source and output checks for the changed contract, both
-supported Hugo versions, JS tests when runtime changes, and strict root and
-subpath builds. For maintained sites, inspect representative EN/ZH Docs and
-Blog routes at desktop and narrow widths, then record pin, deployment, and
-hosted parity separately.
+Run the smallest source and output checks for the changed contract with the
+pinned Hugo Extended 0.165.0 toolchain, JS tests when runtime changes, and
+strict root and subpath builds. For maintained sites, inspect representative
+EN/ZH Docs and Blog routes at desktop and narrow widths, then record pin,
+deployment, and hosted parity separately.

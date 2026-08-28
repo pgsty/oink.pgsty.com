@@ -206,7 +206,7 @@ rewrites.
 ## Acceptance criteria {#acceptance-criteria}
 
 - Default sites publish no new aggregate file and incur no material build cost.
-- Hugo 0.160.1 and the current supported Hugo build the opt-in fixture with
+- The pinned Hugo Extended 0.165.0 toolchain builds the opt-in fixture with
   warnings fatal.
 - Existing HTML, Print, Markdown, RSS, navigation, search, and browser tests pass.
 - The DDIA pilot retains 23 chapters and all 106 figures, 3 tables, 22 examples,

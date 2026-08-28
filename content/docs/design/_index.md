@@ -22,8 +22,10 @@ cascade:
 
 > [!IMPORTANT] OINK 0.8.0 contract
 > This section publishes the maintainer contracts released with OINK 0.8.0,
-> with Hugo Extended 0.160.1 as the compatibility floor. The canonical
-> bilingual sources live in this repository under `content/docs/design/`.
+> with Hugo Extended 0.160.1 as the compatibility floor. Continuous tests use
+> one pinned Hugo Extended toolchain, currently 0.165.0; the floor is not a
+> second matrix leg. The canonical bilingual sources live in this repository
+> under `content/docs/design/`.
 
 This section is the durable design record for OINK. It complements the
 task-oriented guides elsewhere on the site: use those guides to build a site,

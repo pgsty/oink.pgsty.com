@@ -10,7 +10,7 @@ permissions:
 
 env:
   GO_VERSION: 1.27.0
-  HUGO_VERSION: 0.164.0
+  HUGO_VERSION: 0.165.0
   NODE_VERSION: 24
   # Resolve the published pin, never a workspace or filesystem replace: the
   # gate is only meaningful if CI builds against the module a reader would get.

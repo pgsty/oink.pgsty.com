@@ -69,7 +69,7 @@ title: RSS automatic summary
 date: 2020-08-07
 ---
 
-RSS_AUTO_SUMMARY_MUST_APPEAR {{< badge text="Automatic badge" tone="success" >}} followed by enough ordinary words to exceed the configured summary target without requiring the next paragraph. This sentence deliberately continues with stable filler words for the feed regression test across both supported Hugo versions: alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima mike november oscar papa quebec romeo sierra tango uniform victor whiskey xray yankee zulu amber birch cedar dogwood elm fir ginkgo hazel ivy juniper koa linden maple nutmeg oak pine quince redwood spruce teak umber violet willow yew zephyr. These words keep the automatic summary boundary inside the first paragraph without relying on the full article body.
+RSS_AUTO_SUMMARY_MUST_APPEAR {{< badge text="Automatic badge" tone="success" >}} followed by enough ordinary words to exceed the configured summary target without requiring the next paragraph. This sentence deliberately continues with stable filler words for the feed regression test under the pinned Hugo toolchain: alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima mike november oscar papa quebec romeo sierra tango uniform victor whiskey xray yankee zulu amber birch cedar dogwood elm fir ginkgo hazel ivy juniper koa linden maple nutmeg oak pine quince redwood spruce teak umber violet willow yew zephyr. These words keep the automatic summary boundary inside the first paragraph without relying on the full article body.
 
 RSS_AUTO_SUMMARY_MUST_NOT_INCLUDE appears only after the first long paragraph.
 `,
