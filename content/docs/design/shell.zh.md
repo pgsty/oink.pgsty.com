@@ -46,10 +46,6 @@ lg 以上是文字链接，之下收缩为图标链接。lg 与 md 之间，右�
 `groups` 或 `none`；图标是一对 Font Awesome class。无效策略遵循共享的警告与
 回退契约。
 
-在 Book 目录树中，`book_number` 是不可拆分、右对齐的独立列。
-`sidebar_item_overflow: wrap` 只允许后面的标题换行，绝不能拆开编号；编号宽于
-默认列时，该列随内容扩宽。
-
 ## 沉浸式博客展示 {#immersive-blog-presentation}
 
 OINK 没有 article 类型或第二套外壳。沉浸式阅读由普通博客外壳上的四个独立键

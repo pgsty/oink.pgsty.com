@@ -56,10 +56,6 @@ dividers, hidden nodes, and placeholders retain their documented semantics.
 Font Awesome class pair. Invalid policies follow the shared warning/fallback
 contract.
 
-In Book trees, `book_number` is an atomic, right-aligned column.
-`sidebar_item_overflow: wrap` wraps only the following title: it never splits
-the number, and a number wider than the default column expands that column.
-
 ## Immersive blog presentation {#immersive-blog-presentation}
 
 There is no article type or second shell. Immersive reading is four independent

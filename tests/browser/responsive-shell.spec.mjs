@@ -665,43 +665,6 @@ for (const [locale, path, query] of [
   });
 }
 
-test('Book sidebar numbers stay atomic when navigation titles wrap', async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1280, height: 900 });
-  await openCleanPage(page, '/book/01-start/');
-  await page.locator('body').evaluate((body) => {
-    body.classList.add('td-shell-layout--nav-wrap');
-  });
-
-  const number = page.locator(
-    'a[href="/book/01-start/"] > .td-book-number',
-  );
-  await number.evaluate((node) => {
-    node.textContent = '11.1';
-  });
-  await expect(number).toHaveCSS('white-space', 'nowrap');
-  await expect(number).toHaveCSS('overflow-wrap', 'normal');
-  await expect(number).toHaveCSS('flex-basis', 'auto');
-
-  const metrics = await number.evaluate((node) => {
-    const range = document.createRange();
-    range.selectNodeContents(node);
-    const textRects = [...range.getClientRects()];
-    const numberBox = node.getBoundingClientRect();
-    const titleBox = node.nextElementSibling.getBoundingClientRect();
-    return {
-      lineCount: new Set(textRects.map((rect) => Math.round(rect.y))).size,
-      numberWidth: numberBox.width,
-      textWidth: textRects[0]?.width || 0,
-      gap: titleBox.left - numberBox.right,
-    };
-  });
-  expect(metrics.lineCount).toBe(1);
-  expect(metrics.numberWidth).toBeGreaterThanOrEqual(metrics.textWidth);
-  expect(metrics.gap).toBeGreaterThanOrEqual(7);
-});
-
 test('print media produces a clean document surface', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openCleanPage(page, '/docs/components/code/');
