@@ -5,11 +5,11 @@ description: 仓库装配、配置、诊断、输出、性能、安全、CSS、�
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK 架构, 仓库边界, 运行时, 输出格式, 安全, 无障碍, 性能]
-contract_status: released-v0.8.1
+contract_status: released-v1.0.0
 ---
 
-> [!IMPORTANT] OINK 0.8.1 契约
-> 这是随 OINK 0.8.1 正式发布的架构契约。本页是权威中文源文件，与英文版本
+> [!IMPORTANT] OINK 1.0.0 契约
+> 这是随 OINK 1.0.0 正式发布的架构契约。本页是权威中文源文件，与英文版本
 > 一同维护在 `content/docs/design/`。
 
 ## 仓库与装配 {#repository-and-assembly}

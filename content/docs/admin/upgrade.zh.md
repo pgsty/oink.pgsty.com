@@ -31,7 +31,7 @@ aliases:
 生产站点固定发布标签或不可变 commit，不跟随分支，也不用 `@latest`：
 
 ```bash {title="终端"}
-hugo mod get github.com/pgsty/oink@v0.8.1   # 换成发布注记里的标签
+hugo mod get github.com/pgsty/oink@v1.0.0   # 换成发布注记里的标签
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -43,7 +43,7 @@ module github.com/pgsty/oink.pgsty.com
 
 go 1.27.0
 
-require github.com/pgsty/oink v0.8.1
+require github.com/pgsty/oink v1.0.0
 ```
 
 > [!DANGER] 本地模块替换会盖掉这个固定版本

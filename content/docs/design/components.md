@@ -5,11 +5,11 @@ description: The maintainer contract for OINK authoring primitives, validation, 
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK component contract, shortcode API, Markdown components, Book, release, validation]
-contract_status: released-v0.8.1
+contract_status: released-v1.0.0
 ---
 
-> [!IMPORTANT] OINK 0.8.1 contract
-> This is the component contract released with OINK 0.8.1. This page is the
+> [!IMPORTANT] OINK 1.0.0 contract
+> This is the component contract released with OINK 1.0.0. This page is the
 > canonical English source; its Chinese peer is maintained beside it in
 > `content/docs/design/`.
 

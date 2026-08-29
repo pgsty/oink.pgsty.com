@@ -89,7 +89,7 @@
   - [Book publication](http://localhost/docs/design/proposals/book-publication/index.md): Move Book semantic lowering and generic EPUB/PDF packaging into OINK without taking publication facts away from consumers.
   - [Config schema](http://localhost/docs/design/decisions/config-schema/index.md): The editor schemas are projected from the existing configuration authorities; a CI drift gate keeps them from ever becoming a third one.
   - [Landing pages](http://localhost/docs/design/landing/index.md): The maintainer contract for landing data, the built-in section registry, language resolution, runtime, accessibility, and outputs.
-  - [Migration boundary](http://localhost/docs/design/migration/index.md): The supported source, configuration, and validation boundaries for migration from OINK 0.4 through OINK 0.8.1.
+  - [Migration boundary](http://localhost/docs/design/migration/index.md): The supported source, configuration, and validation boundaries for migration from OINK 0.4 through OINK 1.0.0.
 
 ## Full-text bundles
 

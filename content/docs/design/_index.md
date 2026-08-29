@@ -15,13 +15,13 @@ search_keywords:
     proposal,
     PRD,
   ]
-contract_status: released-v0.8.1
+contract_status: released-v1.0.0
 cascade:
   categories: [Design]
 ---
 
-> [!IMPORTANT] OINK 0.8.1 contract
-> This section publishes the maintainer contracts released with OINK 0.8.1,
+> [!IMPORTANT] OINK 1.0.0 contract
+> This section publishes the maintainer contracts released with OINK 1.0.0,
 > with Hugo Extended 0.160.1 as the compatibility floor. Continuous tests use
 > one pinned Hugo Extended toolchain, currently 0.165.0; the floor is not a
 > second matrix leg. The canonical bilingual sources live in this repository
