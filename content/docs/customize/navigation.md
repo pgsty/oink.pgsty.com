@@ -87,7 +87,7 @@ menus:
       weight: 10
       params:
         icon: fa-solid fa-rocket
-        description: Install Hugo, clone this site, deploy in ten minutes
+        description: Start from OINK Starter, customize in layers, deploy
     - identifier: docs-components
       parent: docs
       name: Components

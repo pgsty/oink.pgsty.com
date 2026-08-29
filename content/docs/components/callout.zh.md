@@ -102,7 +102,7 @@ aliases:
 ````markdown {title="源码"}
 > [!TIP] 三条命令启动预览
 >
-> 1. 克隆：`git clone https://github.com/pgsty/oink.pgsty.com my-docs`
+> 1. 克隆：`git clone https://github.com/pgsty/oink-starter my-docs`
 > 2. 进入目录并预览：
 >    ```bash
 >    cd my-docs && hugo server
@@ -116,7 +116,7 @@ aliases:
 
 > [!TIP] 三条命令启动预览
 >
-> 1. 克隆：`git clone https://github.com/pgsty/oink.pgsty.com my-docs`
+> 1. 克隆：`git clone https://github.com/pgsty/oink-starter my-docs`
 > 2. 进入目录并预览：
 >    ```bash
 >    cd my-docs && hugo server
@@ -152,13 +152,13 @@ aliases:
 ````markdown {title="源码"}
 > [!DETAILS] 完整的 `hugo version` 输出
 > ```text
-> hugo v0.164.0+extended+withdeploy darwin/arm64 BuildDate=2026-07-06T16:39:30Z VendorInfo=Homebrew
+> hugo v0.165.0+extended+withdeploy darwin/arm64
 > ```
 ````
 
 > [!DETAILS] 完整的 `hugo version` 输出
 > ```text
-> hugo v0.164.0+extended+withdeploy darwin/arm64 BuildDate=2026-07-06T16:39:30Z VendorInfo=Homebrew
+> hugo v0.165.0+extended+withdeploy darwin/arm64
 > ```
 
 ## 自定义图标 {#icon}
@@ -208,7 +208,8 @@ aliases:
 
 - 正文与标题合并：经过 Prettier 等格式化工具的文件，在标题行下保留一个空的 `>` 行，否则工具会把标题并入正文。
 - 属性行被格式化工具移动：把 `{icon=…}` 这类标记行放在 `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->` 之间。
-- `style`、`onclick` 等属性导致构建失败：属性行只接受 `icon` 与 `class`（见下表）。
+- `style`、`onclick` 与不支持的属性会告警并忽略：属性行只接受 `icon` 与 `class`；
+  严格发布构建拒绝这条警告（见下表）。
 
 ## 输出形态 {#outputs}
 
@@ -240,7 +241,7 @@ aliases:
 | `class` | 空格分隔的 class | — | 原样透传给站点 CSS |
 {.fields meta="type default"}
 
-`style`、`on*` 与其它任何键都会让构建失败。
+`style`、`on*` 与其它键会告警并忽略；严格发布构建拒绝这条警告。
 
 ## 限制与常见问题 {#limits}
 

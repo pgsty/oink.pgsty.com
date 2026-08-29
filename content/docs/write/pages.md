@@ -175,9 +175,9 @@ A combined example: code fences and a callout inside steps.
    ```bash
    brew install hugo
    ```
-1. Clone the documentation site and preview it:
+1. Clone OINK Starter and preview it:
    ```bash
-   git clone https://github.com/pgsty/oink.pgsty.com my-docs
+   git clone https://github.com/pgsty/oink-starter my-docs
    cd my-docs && hugo server
    ```
    > [!TIP]
@@ -189,9 +189,9 @@ A combined example: code fences and a callout inside steps.
    ```bash
    brew install hugo
    ```
-1. Clone the documentation site and preview it:
+1. Clone OINK Starter and preview it:
    ```bash
-   git clone https://github.com/pgsty/oink.pgsty.com my-docs
+   git clone https://github.com/pgsty/oink-starter my-docs
    cd my-docs && hugo server
    ```
    > [!TIP]

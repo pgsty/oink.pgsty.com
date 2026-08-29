@@ -108,8 +108,8 @@ See [Equation 3-1](#eq-wal): multiply by the retention period for the floor on
 archive disk size.
 
 `caption` (plain text) is optional. `#id` and `caption` must appear with `num` —
-there is no half-numbered equation. A duplicate ID on one page, or one number
-pointing at two IDs, fails the build.
+there is no half-numbered equation. Incomplete or duplicate targets warn and
+drop the unusable part or keep the first; strict publishing rejects the warning.
 
 ## Cross references {#xref}
 
@@ -219,8 +219,9 @@ The `eq` shortcode:
 | Body | TeX | — | Required, non-empty |
 {.fields meta="type default"}
 
-Broken TeX — an unknown command, unbalanced braces — fails the build, and the
-error carries KaTeX's message and the source position.
+Broken TeX warns and leaves the expression as written in ordinary preview. The
+message carries KaTeX's detail and the source position; strict publishing
+rejects the warning.
 
 ## Limits {#limits}
 

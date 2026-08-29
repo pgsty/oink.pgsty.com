@@ -288,7 +288,9 @@ params:
   page_width: normal # normal | wide | full
 ```
 
-`page_width` 控制外壳整体宽度，可逐页或按分区 cascade 覆盖。Book 页另有一个 `reading_width`（`slim` / `normal` / `wide`），改的是正文阅读行宽，不是外壳。两个键取值非法都让构建失败。
+`page_width` 控制外壳整体宽度，可逐页或按分区 cascade 覆盖。Book 页另有一个
+`reading_width`（`slim` / `normal` / `wide`），改的是正文阅读行宽，不是外壳。
+两个键取值非法都会在普通预览中告警并回退；带 `--panicOnWarning` 的发布构建会失败。
 
 ## 页脚 {#footer}
 
@@ -307,7 +309,9 @@ params:
 - `slim`：只有版权行；
 - `none`：不渲染页脚。
 
-页面 front matter（含分区 cascade）可以覆盖它，本站的文档栏目用的是 `footer_style: slim`。无法识别的取值让构建失败。
+页面 front matter（含分区 cascade）可以覆盖它，本站的文档栏目用的是
+`footer_style: slim`。无法识别的取值在普通预览中告警并回退到 `fat`，严格发布构建
+拒绝这条警告。
 
 多列网格的数据在 `data/footer/<语言>.yaml`，写法见[导航与菜单](/zh/docs/customize/navigation/#footer)。配了 `fat` 但没有数据时自动降级成 `slim`，可以先开启再补内容。
 

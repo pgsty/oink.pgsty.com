@@ -5,11 +5,11 @@ description: OINK 创作原语、校验、Book、发布行为与输出降级的�
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK 组件契约, shortcode API, Markdown 组件, Book, 发布, 校验]
-contract_status: released-v0.8.0
+contract_status: released-v0.8.1
 ---
 
-> [!IMPORTANT] OINK 0.8.0 契约
-> 这是随 OINK 0.8.0 正式发布的组件契约。本页是权威中文源文件，与英文版本
+> [!IMPORTANT] OINK 0.8.1 契约
+> 这是随 OINK 0.8.1 正式发布的组件契约。本页是权威中文源文件，与英文版本
 > 一同维护在 `content/docs/design/`。
 
 教程与完整示例位于面向读者的[组件](/zh/docs/components/)专栏。本页定义这些
@@ -138,8 +138,10 @@ Markdown 图片钩子是普通图片 API。行内图片保持行内；块图片�
 中的脚注引用会警告并保持字面形式；该检查忽略代码形态的文本。
 
 `book-toc` 按 1–3 层导航顺序生成目录；四个 `book-*` 索引各自收集一种目标。
-整书打印会改写跨页链接，并给普通标题与脚注增加命名空间，同时保留显式目标 ID。
-消费站点自行选择是否启用这种潜在成本较高的输出。
+单页 Print 与普通 HTML 保持完全相同的普通标题与脚注 ID。只有多页分区
+Print 与整书 Print 会改写跨页链接，并给这些页面局部标题与脚注增加命名
+空间，避免聚合后冲突；显式目标 ID 保持不变。消费站点自行选择是否启用这些
+潜在成本较高的聚合输出。
 
 ### 发布与下载 {#release-and-download}
 

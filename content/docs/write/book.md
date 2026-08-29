@@ -169,7 +169,8 @@ use the `eq` shortcode below, which goes through local server-side KaTeX.
 A code fence with `num=` and `caption=` is a numbered example, and the default
 ID is `eg-<num>`. An `#id` written on the fence names the enclosing `<figure>` —
 the reference target — rather than the code block itself. The caption is
-required: writing only `num` or only `caption` fails the build. A numbered
+required: a lone caption is ignored and a lone number is dropped with a
+warning; strict publishing rejects the warning. A numbered
 example renders as one framed unit: the caption is the frame's header and the
 body sits inside it, and a body that is exactly one code block sits flush
 against the frame instead of drawing a second border.
@@ -257,13 +258,14 @@ pg_basebackup -h primary -U replicator -D /pg/data -Fp -Xs -P -R
 {{< /eg >}}
 
 IDs must be unique within a page, and within one kind a number maps to exactly
-one ID. A duplicate fails the build, and the error names the line that claimed
-it first.
+one ID. A duplicate warns and keeps the first registration; strict publishing
+rejects the warning, which names the line that claimed it first.
 
 > [!IMPORTANT] Footnotes cannot appear in a shortcode body
 > Hugo renders a shortcode body as its own Goldmark document, and footnotes are
 > page-level. A `[^label]` inside the body of `tbl`, `eg`, `fig`, `card`, `tab`,
-> `field` or `include` fails the build, naming the file, the line and the label.
+> `field` or `include` warns, naming the file, line, and label. Strict
+> publishing rejects the warning.
 > With the definition on the page, the reference would print literally as
 > `[^label]`; with the definition in the body, it would build a second footnote
 > list whose `fn:N` ids collide with the page's own. Neither belongs in
@@ -376,12 +378,16 @@ reading order, all inside one HTML document. Pages with `no_print: true`,
 link-only nodes, divider rows and hidden placeholders never become chapters.
 
 Inside the aggregate, the IDs of numbered components are preserved byte for
-byte. Markdown heading IDs within a page are prefixed with their source page to
-avoid collisions when several chapters share an anchor such as `summary`, and
-the generated heading links are rewritten to match. The output is
-print-oriented HTML. An opt-in `BookManifest` output records that same reading
-order as JSON, and the theme ships `bin/book-epub.py` and `bin/book-pdf.py`,
-which turn the manifest and the print HTML into EPUB and PDF.
+byte. Markdown heading and footnote IDs within a page are prefixed with their
+source page to avoid collisions when several chapters share an anchor such as
+`summary` or each start with `fn:1`; generated links are rewritten to match. A
+page rendered alone as Print keeps the same page-local IDs as ordinary HTML —
+only a multi-page section or whole-Book aggregate adds the namespace.
+
+The output is print-oriented HTML. An opt-in `BookManifest` output records that
+same reading order as JSON, and the theme ships `bin/book-epub.py` and
+`bin/book-pdf.py`, which turn the manifest and the print HTML into EPUB and
+PDF.
 
 The switches themselves, and per-chapter print, are covered in
 [Print](/docs/customize/print/).
@@ -489,7 +495,7 @@ alternative text worthy of its caption.
 | --- | --- | --- | --- |
 | `fig` `tbl` `eq` `eg` | number string | — | At most one. Supplies the localized label and derives the anchor |
 | `anchor` | ID | derived from kind and number | Required when no kind is given, together with inner link text |
-| `page` | page reference | current page | Resolved through page lookup in the current language; a missing page fails the build |
+| `page` | page reference | current page | Resolved through page lookup in the current language; a missing page warns and renders text without a link |
 {.fields meta="type default"}
 
 `book-toc`:
@@ -509,7 +515,7 @@ parameters.
 - The attribute line must touch its block, with no blank line between. An attribute line a tool like Prettier has moved fails silently, and the figure degrades to a plain image.
 - `book_kind` and `book_part` are metadata keys the contract acknowledges but the current templates do not render. The ones with a visible effect are `book_number` and `book_status`.
 - The index shortcodes trigger descendant content rendering, which noticeably lengthens the build on a very large tree. The same reason is why whole-book `print` has to be requested explicitly.
-- A footnote reference cannot appear in a shortcode body; the build fails and names the native form to use instead — see [Numbering: the shortcode form](#numbering-shortcodes).
+- A footnote reference cannot appear in a shortcode body; it warns and names the native form to use instead, and strict publishing rejects it — see [Numbering: the shortcode form](#numbering-shortcodes).
 - Packaging is opt-in and runs outside the build. `BookManifest` plus `bin/book-epub.py` / `bin/book-pdf.py` produce EPUB and PDF, but no Hugo build emits either file on its own, and typeset pagination, font embedding and index compilation remain outside the contract.
 
 ## Related {#related}

@@ -96,7 +96,7 @@ languages:
           weight: 20
           params:
             icon: fa-solid fa-rocket
-            description: Clone this site, preview, make it yours, deploy
+            description: Start from OINK Starter, customize in layers, deploy
         - identifier: docs-write
           parent: docs
           name: Authoring
@@ -218,7 +218,7 @@ languages:
           weight: 20
           params:
             icon: fa-solid fa-rocket
-            description: 克隆本站、本地预览、替换站点信息、部署上线
+            description: 从 OINK Starter 起步，分层定制并部署上线
         - identifier: docs-write
           parent: docs
           name: 创作内容
@@ -301,9 +301,9 @@ params:
   # version menu) and is not always a git ref. Content that needs a resolvable
   # release ref -- install commands, for example -- uses `tdVersion.latest`.
   tdVersion:
-    latest: &tdLatestVers v0.8.0
-  version: v0.8.0
-  version_menu: v0.8.0
+    latest: &tdLatestVers v0.8.1
+  version: v0.8.1
+  version_menu: v0.8.1
   version_menu_pagelinks: false
   # Populate to enable the navbar version menu, for example:
   versions: # []

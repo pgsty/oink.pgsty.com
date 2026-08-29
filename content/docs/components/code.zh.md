@@ -70,7 +70,8 @@ markup:
       unsafe: true
 ```
 
-`filename` 是 `title` 的历史别名，两个一起写会构建失败。
+`filename` 是 `title` 的历史别名，两个一起写时告警并使用 `filename`；严格发布构建
+拒绝这条警告。
 
 ## 行号、起始行与高亮 {#line-numbers}
 
@@ -128,7 +129,9 @@ ARTIFACT_URL=https://repo.pigsty.io/pkg/infra/v3.6.0/infra-pkg-v3.6.0.el9.x86_64
 CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 ```
 
-`wrap=true` 与表格行号不能共存：行号列与代码列是两个表格单元格，换行后会错位。写在一起构建失败，报错提示改用 `lineNos="inline"` 或去掉换行。
+`wrap=true` 与表格行号不能共存：行号列与代码列是两个表格单元格，换行后会错位。
+写在一起时告警并关闭换行，提示改用 `lineNos="inline"` 或去掉换行；严格发布构建
+拒绝这条警告。
 
 ## 折叠长代码 {#collapse}
 
@@ -193,7 +196,10 @@ $ pig ext install pg_duckdb
 INFO installing pg_duckdb
 ```
 
-要连提示符与输出一起复制就写 `copy="all"`。把 `copy="command"` 用在 `bash`、`sh` 之类普通 lexer 上会构建失败，因为它们分不出提示符、命令与输出。多行命令请在续行里写出续行提示符（通常是 `>`），否则那一行会被当成输出而排除。
+要连提示符与输出一起复制就写 `copy="all"`。把 `copy="command"` 用在 `bash`、`sh`
+之类普通 lexer 上时告警并使用 `copy="all"`，因为它们分不出提示符、命令与输出；
+严格发布构建拒绝这条警告。多行命令请在续行里写出续行提示符（通常是 `>`），否则
+那一行会被当成输出而排除。
 
 会话 lexer 的块里一行提示符都没有时，复制按钮报失败：图标转为错误状态，控制台留一条错误，剪贴板不变。它不会退化成复制全文。
 
@@ -241,7 +247,10 @@ ORDER BY n_live_tup DESC;
 
 跳到 [第 4 行](#ex-explain-4)。
 
-不写 `id` 时主题也会生成一个页面内唯一的 ID，但它依赖围栏在页面里的顺序，前面插入一个新围栏就会变。只有作者书写的 `id` 才是永久链接。ID 不能含空白与控制字符，也不能与页面上其它块的 viewport、标签、面板、标题、行锚点 ID 重复，重复即构建失败。
+不写 `id` 时主题也会生成一个页面内唯一的 ID，但它依赖围栏在页面里的顺序，前面
+插入一个新围栏就会变。只有作者书写的 `id` 才是永久链接。ID 不能含空白与控制字符，
+也不能与页面上其它块的 viewport、标签、面板、标题、行锚点 ID 重复；无效或重复 ID
+会告警，严格发布构建拒绝这条警告。
 
 ## 编号例 {#numbered}
 
@@ -265,7 +274,9 @@ WHERE n_dead_tup > n_live_tup * 0.2;
 
 参见 {{< xref eg="4-1" anchor="eg-bloat" />}}。
 
-`num` 与 `caption` 必须成对出现，只写一个会构建失败；`num` 与标签页属性 `tab` 互斥。图、表、公式的编号写法与索引见[书籍出版](/zh/docs/write/book/)。
+`num` 与 `caption` 必须成对出现。只写 caption 时忽略它，只写编号时丢弃编号并告警；
+严格发布构建拒绝这条警告。`num` 与标签页属性 `tab` 互斥。图、表、公式的编号写法与
+索引见[书籍出版](/zh/docs/write/book/)。
 
 ## 一组围栏做成标签页 {#tabs}
 
@@ -294,7 +305,8 @@ sudo apt install hugo
 - 在文档里展示 shortcode：围栏不阻止 Hugo 解析，写在代码块里的 `{{</* tabs */>}}` 仍会执行。要让它原样显示，在两侧定界符的内侧各加一对注释符号，写成 <code>&#123;&#123;&lt;/&#42; tabs &#42;/&gt;&#125;&#125;</code>，百分号形式对应 <code>&#123;&#123;%/&#42; steps &#42;/%&#125;&#125;</code>。本页每一处展示 shortcode 的地方都是这么写的。
 - 围栏里套围栏：外层用四个反引号、内层三个，本页每一段「源码」都是这么写的；内层还有围栏时外层再加一个。
 - 属性写在信息行上：围栏的属性跟在开栏那一行的语言后面，表格与图片的属性才写在块的下一行。写到下一行会变成正文里一段可见的花括号。
-- 未知属性会失败，不会被忽略，错误信息里列出允许的名字。`style`、`srcdoc` 与 `on*` 被拒绝；`data-td-code*` 前缀以及 `data-language`、`data-line-count`、`data-collapse-lines` 是主题的保留名，写上去同样构建失败。
+- 未知、不安全与主题保留属性在普通预览中告警并忽略，消息列出允许的名字；严格
+  发布构建拒绝每条此类警告。
 - 列表项里的围栏：缩进要与列表项内容对齐（`1.` 之后恒定三个空格），否则围栏会脱离列表。
 
 ## 输出形态 {#outputs}
@@ -315,7 +327,7 @@ sudo apt install hugo
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
 | `title` | 非空字符串 | 无 | 可见标题栏（通常是文件名），同时是无障碍名称 |
-| `filename` | 非空字符串 | 无 | `title` 的历史别名；两者同时出现构建失败 |
+| `filename` | 非空字符串 | 无 | `title` 的历史别名；两者同时出现时告警并使用 `filename` |
 | `copy` | `all` `command` `true` `false` | 会话 lexer 为 `command`，其余为 `all` | `true` 等价于 `all`；`command` 只允许 `console`/`shell-session` |
 | `wrap` | 布尔 | `false` | 视觉换行，不改源码；与表格行号互斥 |
 | `collapse` | 正整数 | 无 | 初始显示的最大行数；行数不足时不生效 |
@@ -330,7 +342,9 @@ sudo apt install hugo
 | `data-*` / `aria-*` / `role` | 字符串 | 无 | 透传到根元素 |
 {.fields meta="type default"}
 
-`title`、`filename` 与 `label` 已经为块生成了无障碍名称与 `role="group"`。它们中的任意一个与 `aria-label`、`aria-labelledby` 或 `role` 同时出现都会构建失败；这三个属性只在块没有标题也没有 `label` 时可以透传。
+`title`、`filename` 与 `label` 已经为块生成了无障碍名称与 `role="group"`。它们中的
+任意一个与 `aria-label`、`aria-labelledby` 或 `role` 同时出现时告警并忽略冲突属性；
+严格发布构建拒绝这条警告。这三个属性只在块没有标题也没有 `label` 时可以透传。
 
 同一行还能写 Chroma 选项，主题原样转交 Hugo：
 

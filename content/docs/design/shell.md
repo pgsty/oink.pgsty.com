@@ -5,11 +5,11 @@ description: Navigation authorities, immersive blog presentation, search, action
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK shell, navigation contract, search, actions, blog presentation, authors, series, pager]
-contract_status: released-v0.8.0
+contract_status: released-v0.8.1
 ---
 
-> [!IMPORTANT] OINK 0.8.0 contract
-> This is the shell and navigation contract released with OINK 0.8.0. This
+> [!IMPORTANT] OINK 0.8.1 contract
+> This is the shell and navigation contract released with OINK 0.8.1. This
 > page is the canonical English source; its Chinese peer is maintained beside
 > it in `content/docs/design/`.
 

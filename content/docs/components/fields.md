@@ -69,8 +69,9 @@ renders the same chips as the shortcode form.
 
 The rules:
 
-- `meta` must name a role for every middle column — exactly the column count
-  minus two. Too many or too few fails the build.
+- `meta` should name a role for every middle column — exactly the column count
+  minus two. Too many or too few warns and ignores `meta`; strict publishing
+  rejects the warning.
 - A `required` column is "non-empty means true": "yes", "是" or "✔" all read the
   same, and the rendered chip is the untranslated `required`. An empty cell
   shows nothing.
@@ -243,7 +244,7 @@ The `field` shortcode:
 ## Limits {#limits}
 
 - The first column must be non-empty and unique within one table; a duplicate or
-  an empty name fails the build.
+  empty name warns and skips that row, and strict publishing rejects the warning.
 - `.fields` cannot combine with `.matrix`, `.full-width` or `num`, and `meta`
   cannot appear on a table without `.fields`.
 - Block content does not fit in a table cell: paragraphs, lists and fences need

@@ -19,13 +19,15 @@ cascade:
 
 - 所有 shortcode 都写 `{{</* 名字 */>}}`，只有 `{{%/* steps */%}}` 用 `%` 分隔符，因为它的正文是页面级 Markdown。
 - 嵌套名字（`tab`、`card`、`field`）只在各自的父 shortcode 里有效。
-- 参数写错不会静悄悄降级，构建失败，报错带文件名与行号。
+- 作者参数写错不会静悄悄降级。普通预览会发出带源码位置的警告，并采用文档规定的
+  回退或略去不安全部分；发布构建带 `--panicOnWarning` 时，那条警告会让门禁失败。
 - 公开字符串参数（图注、标签、标题）一律是纯文本，不解析 Markdown。只有正文是 Markdown：`tab`、`card`、`field` 的正文，`include` 引入的文件，以及 Book 的 `fig`、`tbl`、`eg` 正文。
-- 页面没用到的组件不下发运行时。脚本按这一页实际用到的组件拼成一个包，打印、Markdown 与 RSS 输出不加载任何脚本。
+- 页面没用到的组件不下发运行时。HTML 只引用这一页真正需要的稳定能力分片，打印、
+  Markdown 与 RSS 不加载交互运行时。
 
 ## 站点前置配置 {#prerequisites}
 
-组件依赖三项 Goldmark 设置。克隆本站起步时它们已经配好，从零建站照抄以下片段：
+组件依赖三项 Goldmark 设置。OINK Starter 已经配好；从零建站时照抄以下片段：
 
 ```yaml {title="hugo.yml"}
 markup:

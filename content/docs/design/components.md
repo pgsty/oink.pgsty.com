@@ -5,11 +5,11 @@ description: The maintainer contract for OINK authoring primitives, validation, 
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK component contract, shortcode API, Markdown components, Book, release, validation]
-contract_status: released-v0.8.0
+contract_status: released-v0.8.1
 ---
 
-> [!IMPORTANT] OINK 0.8.0 contract
-> This is the component contract released with OINK 0.8.0. This page is the
+> [!IMPORTANT] OINK 0.8.1 contract
+> This is the component contract released with OINK 0.8.1. This page is the
 > canonical English source; its Chinese peer is maintained beside it in
 > `content/docs/design/`.
 
@@ -155,9 +155,12 @@ references in `tbl`, `eg`, `fig`, `card`, `tab`, `field`, or `include` warn and
 remain literal; code-shaped text is ignored by that check.
 
 `book-toc` follows navigation order at depth 1–3; the four `book-*` indexes
-collect one target kind each. Whole-Book print rewrites cross-page links and
-namespaces ordinary headings and footnotes while preserving explicit target
-IDs. Consumers opt into that potentially expensive output.
+collect one target kind each. Single-page Print preserves the page's ordinary
+heading and footnote IDs exactly as regular HTML renders them. Multi-page
+section Print and whole-Book Print rewrite cross-page links and namespace those
+page-local headings and footnotes to avoid aggregate collisions, while
+preserving explicit target IDs. Consumers opt into those potentially expensive
+aggregate outputs.
 
 ### Release and download {#release-and-download}
 

@@ -330,11 +330,14 @@ Which images become zoom candidates is in [Images](/docs/components/image/).
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `params.ui.typography` | enum | technical | `technical` uses the bundled Inter / Chakra Petch / IBM Plex Mono; `system` uses the platform stack only and requests no brand font. An invalid value warns and falls back |
+| `params.ui.fonts` | map | | Font-family names for the `ui`, `body`, `heading`, `code`, `display`, `meta`, and `print` roles. The theme validates names but never loads font files; every list should end in a generic family |
 | `params.page_width` | enum | normal | Overall shell width: `normal`, `wide`, `full`; overridable per page |
 | `params.reading_width` | enum | normal | Reading measure of a Book page's body: `slim`, `normal`, `wide`; it does not affect the shell |
 {.fields meta="type default"}
 
-Custom fonts and colours go through the SCSS entry points rather than YAML — see
+Use `params.ui.fonts` when the faces already exist on the reader's system or the
+site has declared them with `@font-face`. Bundling font files and changing
+lower-level typography still use the SCSS/CSS entry points — see
 [Brand and appearance](/docs/customize/brand/#fonts).
 
 ## Comments and feedback {#comments-feedback}
@@ -379,6 +382,8 @@ unrendered: no error, and nothing appears.
 | `params.github_url` | — | — | Removed; write `params.github_repo`. The migration registry that used to name the replacement is gone, so an old key is now simply an unread key |
 | `params.ui.lastmod_commit` | enum | subject | What follows "last modified": `subject` the commit subject, `hash` the short hash, `none` nothing. An invalid value warns and falls back |
 | `params.images` | string array | — | The site-level social card: fills `og:image` when a page has no image of its own. Metadata only; never rendered as a list thumbnail |
+| `params.upstream_source` | string | — | Default `data/upstreams` record name for pages that declare `upstream_link`; page front matter can override it |
+| `params.upstream_modified` | boolean | `false` | Site default for whether attributed material is adapted; a page can override it, and no attribution renders without `upstream_link` |
 | `params.default_featured` | — | — | Removed; write `params.images`, or a section `cascade` carrying `images`. As above, an old key is now simply an unread key |
 {.fields meta="type default"}
 
@@ -407,12 +412,13 @@ Mathematics needs no parameter, only the
 
 ## Output formats {#outputs}
 
-The theme declares two custom output formats and **does not enable them for a
-site**: request what you want under `outputs`.
+The theme declares its custom output formats but **does not enable them for a
+site**: request what you want under `outputs`. Expensive aggregate and
+machine-readable outputs remain explicit opt-ins.
 
 ```yaml {title="hugo.yml"}
 outputs:
-  home: [HTML, markdown, LLMS]
+  home: [HTML, markdown, LLMS, NAVJSON]
   page: [HTML, markdown]
   section: [HTML, RSS, print, markdown]
 ```
@@ -422,8 +428,16 @@ outputs:
 | `HTML` | `index.html` | The interactive form; required |
 | `markdown` | `index.md` | Each page's plain Markdown twin, which "copy Markdown" and "view source" depend on — see [AI-agent support](/docs/customize/agents/) |
 | `LLMS` | `llms.txt` | A plain-text format the theme declares, usually attached to `home` only |
+| `LLMSFULL` | `llms-full.txt` | A top-level section opt-in: the same per-page Markdown concatenated in sidebar reading order, one bundle per language |
+| `NAVJSON` | `navigation.json` | A home opt-in: the sidebar/pager navigation authority serialized once per language, validated by `schema/nav.v1.schema.json` |
 | `print` | `_print/index.html` | The whole-section print page the theme declares — see [Print](/docs/customize/print/) |
+| `BookManifest` | `book.json` | A Book-root opt-in JSON handoff for the EPUB/PDF packaging tools; it is not itself an ebook |
 | `RSS` | `index.xml` | Hugo's own; attach it to `section` so every section has a feed |
+
+`LLMSFULL` and `BookManifest` are enabled in the relevant top-level section's
+front matter rather than globally. `NAVJSON` belongs on `outputs.home`. The
+complete examples and constraints are in [AI-agent support](/docs/customize/agents/)
+and [Books](/docs/write/book/).
 
 Two parameters for print output:
 

@@ -278,15 +278,12 @@ activate, and focus stays on the tab.
 
 ## Limits {#limits}
 
-- Build failures: in the attribute form, `value` without `group`, `group` or
-  `value` without `tab`, `tab` together with the numbering attribute `num`; in
-  the shortcode form, a duplicate `value` in one set, a `tabs` with no `tab`
-  child, running text between children, or a `default` that matches no child.
-- Grouping mistakes in the attribute form do not stop the build; they leave a
-  warning in the browser console. A missing `value` drops `group` from the whole
-  set, which degrades to a locally switching tab set with no hash, sync or
-  persistence. A duplicate `value` skips the set entirely and those blocks stay
-  titled blocks.
+- Invalid grouping and composition warn during the Hugo build and take a safe
+  fallback: drop an unusable group/value/default, ignore stray content, keep
+  the later duplicate, or render no empty set. Strict publishing rejects every
+  warning, and the message names the source position.
+- In the attribute form, a run missing a usable `value` loses synchronization
+  and remains a set of local tabs; grouping never silently invents an identity.
 - Fences and tables never merge into one set. To mix prose with code, use the
   shortcode form.
 - Tabs are not a disclosure. To fold away long output use `> [!DETAILS]` (see

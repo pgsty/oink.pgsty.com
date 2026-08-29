@@ -159,8 +159,9 @@ content/docs
 3 directories, 5 files
 ```
 
-Returning to an indentation level that was never opened fails the build, and the
-error carries the line number inside the fence.
+Returning to an indentation level that was never opened warns and skips that
+line; the message carries the line number inside the fence, and strict
+publishing rejects it.
 
 ## Folding and explicit types {#dir-file}
 
@@ -319,7 +320,7 @@ Entry attributes, in the `{…}` at the end of a line:
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
-| `icon` | Font Awesome class pair | matched by name / extension | For example `fa-solid fa-lock`; a malformed value fails the build |
+| `icon` | Font Awesome class pair | matched by name / extension | For example `fa-solid fa-lock`; a malformed value warns and uses the default icon |
 | `tone` | enum | `neutral` | `neutral` `info` `success` `warning` `danger`; colours the icon only |
 | `open` | boolean | `true` | Directories only; `false` starts it closed |
 | `type` | enum | inferred | `dir` or `file`, overriding the inference |
@@ -337,9 +338,9 @@ The line syntax itself:
 | `N directories, M files` | The `tree` summary line, dropped automatically |
 {.fields}
 
-Unknown attributes, unknown values, `open` on a file, a malformed `{…}`, and
-returning to an indentation level that was never opened all fail the build with
-the line number inside the fence.
+Unknown attributes and values, `open` on a file, malformed `{…}`, and a dedent
+to an unopened level all warn and take a safe fallback or skip the bad line.
+The message names the line; strict publishing rejects the warning.
 
 ## Limits {#limits}
 

@@ -24,13 +24,13 @@ hero:
     dark: images/hero-dark.webp
     alt: OINK engineering documentation illustration
   actions:
-    - label: What's new in 0.8
-      url: blog/release/0.8.0/
-      icon: fa-solid fa-book-open
+    - label: Start with OINK Starter
+      url: docs/start/starter/
+      icon: fa-solid fa-rocket
       style: primary
-    - label: Get started
-      url: docs/start/
-      icon: fa-solid fa-arrow-right
+    - label: What's new in 0.8
+      url: blog/release/0.8.1/
+      icon: fa-solid fa-book-open
       style: ghost
 
 capabilities:
@@ -349,8 +349,8 @@ faq:
         See [License and acknowledgements](docs/about/license/).
 
 cta:
-  title: Start with OINK.
-  text: Copy the starter. Replace the content. Build with Hugo.
-  label: Get started
-  url: docs/start/
+  title: Start from a repository that already works.
+  text: Use OINK Starter, replace the identity and content, then publish with a warning-strict Hugo build.
+  label: Use OINK Starter
+  url: docs/start/starter/
   style: primary

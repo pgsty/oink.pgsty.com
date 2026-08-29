@@ -6,7 +6,12 @@ weight: 150
 search_keywords: [ECharts, 图表, 统计图, 柱状图, 折线图, 饼图, chart, bar, line, pie, height, theme, OinkEchartsFunctions]
 ---
 
-`echarts` 围栏的正文是一段 YAML 或 JSON 的 ECharts 选项对象，不是代码。适用于需要坐标轴、序列与图例的定量图表；只表达关系与流程时用 [Mermaid](/zh/docs/components/mermaid/)，只表达顺序与层级时用 [Infographic](/zh/docs/components/infographic/)。Hugo 在构建期解析选项，解析失败则构建失败；浏览器用随主题分发的 ECharts 绘图，只有用到它的页面加载运行时。
+`echarts` 围栏的正文是一段 YAML 或 JSON 的 ECharts 选项对象，不是代码。适用于需要
+坐标轴、序列与图例的定量图表；只表达关系与流程时用
+[Mermaid](/zh/docs/components/mermaid/)，只表达顺序与层级时用
+[Infographic](/zh/docs/components/infographic/)。Hugo 在构建期解析选项；无效输入在
+普通预览中告警并保留可读源码，严格发布构建拒绝这条警告。浏览器用随主题分发的
+ECharts 绘图，只有用到它的页面加载运行时。
 
 ## 最简例子 {#minimal}
 
@@ -25,7 +30,7 @@ yAxis:
 series:
   - name: 页数
     type: bar
-    data: [4, 3, 8, 22, 15, 7]
+    data: [4, 4, 8, 22, 15, 7]
 ```
 ````
 
@@ -41,7 +46,7 @@ yAxis:
 series:
   - name: 页数
     type: bar
-    data: [4, 3, 8, 22, 15, 7]
+    data: [4, 4, 8, 22, 15, 7]
 ```
 
 两种格式都接受，YAML 不需要引号与逗号，写起来更短。缩进写错、正文解析成数组而不是映射，构建在这一行失败，不会输出一张空白图。
@@ -210,7 +215,7 @@ series:
     data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ```
 
-无效的高度（`360`、`36pt`）会让构建失败，不会退回默认值。
+无效高度（`360`、`36pt`）在普通预览中告警并使用默认值；严格发布构建拒绝这条警告。
 
 ## 深浅色 {#theme}
 
@@ -253,7 +258,7 @@ series:
   window.OinkEchartsFunctions = window.OinkEchartsFunctions || {};
   window.OinkEchartsFunctions.pageShare = function (params) {
     var p = params[0];
-    return p.name + '：' + p.value + ' 页，占全站 ' + Math.round((p.value / 59) * 100) + '%';
+    return p.name + '：' + p.value + ' 页，占全站 ' + Math.round((p.value / 60) * 100) + '%';
   };
 </script>
 
@@ -268,7 +273,7 @@ yAxis:
   type: value
 series:
   - type: bar
-    data: [4, 3, 8, 22, 15, 7]
+    data: [4, 4, 8, 22, 15, 7]
 ```
 ````
 
@@ -276,7 +281,7 @@ series:
   window.OinkEchartsFunctions = window.OinkEchartsFunctions || {};
   window.OinkEchartsFunctions.pageShare = function (params) {
     var p = params[0];
-    return p.name + '：' + p.value + ' 页，占全站 ' + Math.round((p.value / 59) * 100) + '%';
+    return p.name + '：' + p.value + ' 页，占全站 ' + Math.round((p.value / 60) * 100) + '%';
   };
 </script>
 
@@ -291,7 +296,7 @@ yAxis:
   type: value
 series:
   - type: bar
-    data: [4, 3, 8, 22, 15, 7]
+    data: [4, 4, 8, 22, 15, 7]
 ```
 
 鼠标悬停在任意一根柱子上，提示框里是该函数拼出的句子。名字未注册时该选项解析为 `undefined`，图按未设置该项绘制，构建与运行都不报错。脚本与围栏放在同一页的相邻位置，便于一起改动。
@@ -320,13 +325,15 @@ series:
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `height` | CSS 长度 | `400px` | 只接受非负数字加 `px` `rem` `em` `vh` `vw` `%`；其它写法构建失败 |
+| `height` | CSS 长度 | `400px` | 只接受非负数字加 `px` `rem` `em` `vh` `vw` `%`；其它写法告警并使用默认值 |
 | `theme` | string | 未设置 | 固定使用某个 ECharts 主题，从此不再跟随站点配色；内置只有 `dark` |
 | `full` | bool | `false` | `true` 去掉正文宽度限制，图铺满内容区 |
 | `class` | 空格分隔的 class | — | 透传给容器，交给站点 CSS |
 {.fields meta="type default"}
 
-`style`、`on*` 与其它未知属性都会让构建失败。围栏正文必须能解析成一个 YAML/JSON 映射，解析失败或解析成数组同样失败。选项键本身是 ECharts 的，以[官方选项手册](https://echarts.apache.org/zh/option.html)为准。
+`style`、`on*` 与未知属性会告警并忽略。围栏正文不能解析成 YAML/JSON 映射时告警
+并渲染为源码；严格发布构建拒绝所有这些警告。选项键本身是 ECharts 的，以
+[官方选项手册](https://echarts.apache.org/zh/option.html)为准。
 
 没有站点级参数：ECharts 不需要在 `hugo.yml` 里开关，用到时才加载。
 

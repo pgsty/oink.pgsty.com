@@ -65,7 +65,8 @@ params:
 | `summary` | The above plus description and summary | Sites in the thousands of pages; this site uses it |
 | `content` | The above plus the full plain text | The default, suitable up to a few hundred pages |
 
-Any other value fails the build with `invalid params.offline_search_index`.
+Any other value warns and uses `content` during ordinary preview; a strict
+publishing build fails on `invalid params.offline_search_index`.
 
 `offline_search_summary_length` is where a result row's excerpt is cut (default
 70), and `offline_search_max_results` caps the number of results (default 10).
@@ -120,8 +121,9 @@ search_exclude: true
 ---
 ```
 
-`search_exclude` is the only spelling; `exclude_search` and `excludeSearch` fail
-the build with the new name. A page with an empty body is not indexed.
+`search_exclude` is the only spelling. The removed `exclude_search` and
+`excludeSearch` keys are not read and therefore do not protect a page; the
+migration checker reports them. A page with an empty body is not indexed.
 
 > [!WARNING] The index is a static JSON file anyone can download; it is not access control.
 > Do not put content that should stay private on the site, and do not use

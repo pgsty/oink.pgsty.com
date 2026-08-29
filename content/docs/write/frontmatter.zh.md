@@ -86,6 +86,7 @@ cascade:
 | `pager` | 布尔 | 由 `params.ui.pager_types` 决定 | `false` 关闭本页的上一页 / 下一页。非布尔告警并忽略该覆盖 |
 | `navbar_enabled` | 布尔 | 站点值（`true`） | 这一页是否渲染顶栏 |
 | `navbar_autohide` | 布尔 | 站点值（`false`） | 顶栏在指针设备上自动隐藏 |
+| `breadcrumb` | 布尔 | 按外壳决定 | 本页是否渲染面包屑；Docs/Book 默认开启，Blog 默认关闭 |
 | `theme_color` | 字符串 | 站点值 | `#rgb`/`#rrggbb` 十六进制色，为本页的强调底着色。写在分区根的 `cascade` 里就给整个分区一个身份 —— 见[品牌外观](/zh/docs/customize/brand/#theme-color) |
 | `theme_color_dark` | 字符串 | 派生 | 强调色的暗色一半。若上层 cascade 同时设了这个键，只覆盖 `theme_color` 的页面会继承那个暗色，所以要两个一起写。`theme_color: false` 可让页面整体退出继承的栏目色 |
 | `page_context_menu` | 布尔 | 站点值（`true`） | 标题行的页面操作菜单（复制 Markdown、编辑本页、打印……） |
@@ -108,6 +109,11 @@ cascade:
 | `keyboard_nav` | 布尔 | 站点值（`true`） | 单键键盘导航，见[键盘导航](/zh/docs/customize/keyboard/)。非布尔告警并回退 |
 | `lastmod_commit` | `subject` / `hash` / `none` | `subject` | 「最后修改」后面怎么显示提交。非法值告警并回退 |
 | `sidebar_expand_levels`、`sidebar_menu_compact`、`sidebar_menu_foldable`、`sidebar_item_overflow` | 同站点参数 | 站点值 | 侧栏行为也可以逐页覆盖；取值见[配置总览](/zh/docs/customize/config/) |
+| `sidebar_width_min`、`sidebar_width_max` | 正整数 | 站点值（`220` / `480`） | 本页桌面侧栏拖拽宽度的上下限；下限大于上限时告警并恢复站点值 |
+| `code_copy` | 布尔 | 站点值（`true`） | 本页代码块复制控件的默认值；围栏显式 `copy=` 仍然优先 |
+| `toc_style` | `fixed` / `flow` | 站点值（`fixed`） | 固定右栏面板，或从内容流开始的较宽右栏 |
+| `toc_taxonomies` | 布尔 | 站点值（`true`） | 分类词云是否与页面目录共同进入右栏 |
+| `taxonomy_icons` | map | 站点值 | 为本页或分区 cascade 覆盖各分类法图标 |
 {.fields meta="type default"}
 
 ## 搜索 {#search}
@@ -184,8 +190,12 @@ cascade:
 | `tags` | 字符串数组 | — | 标签，见[分类体系](/zh/docs/customize/taxonomy/) |
 | `categories` | 字符串数组 | — | 分类，同上 |
 | `images` | 字符串数组 | — | 第一项作为文章封面与分享卡片；写进栏目 `_index.md` 的 `cascade` 即为栏目级默认。`images: []` 让这一页不继承 cascade 里的值，但不会屏蔽页面 bundle 里已有的 `featured`、`cover` 或 `thumbnail` 图片 |
-| `featured_image` | `none` / `banner` / `wash` | 站点值（`none`） | 本文正文里怎么渲染自己的题图。非法值告警并回退 |
-| `blog_index` | `list` / `cards` | 站点值（`list`） | 写在博客根目录上，决定该栏目列表页的形态。非法值告警并回退 |
+| `byline` | 字符串 | — | 解析到的题图实际渲染时显示的图片署名 |
+| `featured_image` | `none` / `banner` / `wash` / `hero` | 站点值（`none`） | 本文正文里怎么渲染自己的题图；`hero` 使用沉浸式通栏外壳。非法值告警并回退 |
+| `blog_index` | `list` / `cards` / `table` | 站点值（`list`） | 写在博客根目录上，决定该栏目索引形态；`table` 不分页，列出整个栏目。非法值告警并回退 |
+| `blog_index_columns` | 正整数 | 站点值（`3`） | 宽视口下的卡片列数；中等与窄视口仍保留响应式限制 |
+| `blog_index_size` | 正整数 | 站点值（`12`） | `list` 与 `cards` 每页文章数；`table` 始终列出整个栏目 |
+| `blog_index_toggle` | 布尔 | 站点值（`false`） | 同时发布三种索引形态，让读者切换；隐藏形态不加载图片 |
 | `share` | 字符串数组或 `false` | 站点 `params.ui.share`（空） | 页尾分享目标，整体替换继承来的列表；`false` 让本页退出，见[分享](/zh/docs/write/blog/#share)。未知目标告警并丢弃 |
 | `summary` | 字符串 | — | 标签 / 分类页上文章行的摘要回退来源，`description` 优先 |
 {.fields meta="type default"}

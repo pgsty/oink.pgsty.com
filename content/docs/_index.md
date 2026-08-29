@@ -4,7 +4,7 @@
 outputs: [HTML, RSS, print, markdown, LLMSFULL]
 title: OINK Documentation
 linkTitle: Docs
-description: OINK is a documentation theme that needs nothing but Hugo Extended — components are written in Markdown, assets ship with the theme, both languages work out of the box, and one source produces four outputs.
+description: OINK is a local-first Hugo documentation framework — components stay readable in Markdown, assets ship with the theme, multilingual sites work out of the box, and one source serves readers and agents.
 search_keywords:
   [
     OINK,
@@ -44,7 +44,7 @@ request. The current release is {{% param version %}}.
 
 ## Five ways in {#five-entries}
 
-- [Quick start](/docs/start/) — install Hugo, clone this site, replace the site details, deploy.
+- [Get started](/docs/start/) — create an OINK Starter repository, establish a local baseline, customize it in layers, deploy.
 - [Components](/docs/components/) — one page per component, source first and rendered result after it.
 - [Write Beautiful Docs](/book/) — a hands-on tutorial from first preview to a maintained publication.
 - [Case studies](/case/) — production sites explained as reusable design and migration patterns.
@@ -56,7 +56,7 @@ request. The current release is {{% param version %}}.
 | What you want to do                                   | Where to go                                    |
 | ----------------------------------------------------- | ---------------------------------------------- |
 | Decide whether it fits                                | [What is OINK](/docs/about/)                   |
-| Install and preview                                   | [Quick start](/docs/start/)                    |
+| Install and preview                                   | [Get started](/docs/start/)                    |
 | Write a documentation page                            | [Writing pages](/docs/write/pages/)            |
 | Turn a directory tree into a sidebar                  | [Organizing content](/docs/write/organize/)    |
 | Look up a component's syntax                          | [Components](/docs/components/)                |

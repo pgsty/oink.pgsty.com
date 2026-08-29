@@ -32,8 +32,8 @@ hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
 | `\(…\)` `$$…$$` 原样显示 | 站点没启用 goldmark passthrough | 见[公式](/zh/docs/components/math/)；`math: true` 不是启用开关 |
 | `shortcode "tabs" must be closed or self-closed` | 有 `{{</* tabs */>}}` 没写对应的 `{{</* /tabs */>}}` | 报错里带 `文件:行:列`，去那一行补上闭合标记 |
 | `template for shortcode "tabs" not found` | 正文里写了一个不存在的 shortcode，或引用 shortcode 语法时没有转义 | 文档里讲解 shortcode 语法时必须转义：在开标记与闭标记的内侧各加一对 `/*` 与 `*/`，Hugo 才会把它当文字而不是调用。名字打错就改回正确的名字 |
-| `... attributes: unknown attribute "witdh" at ...` | 属性行里的键拼错或不被允许 | 属性行只接受该组件的允许键、`class`、`data-*`、`aria-*`；`style` 与 `on*` 一律构建失败。允许的键就写在报错括号里 |
-| `shortcode "field": unsupported parameter "colour" at ...` | shortcode 参数名不对 | **组件参数**——shortcode 参数与属性行的键——一律构建失败，不做静默降级。报错格式固定为「哪个 shortcode → 哪个参数 → 哪个文件的第几行」，照着改即可 |
+| `... attributes: unknown attribute "witdh" at ...` | 属性行里的键拼错或不被允许 | 警告列出允许键并忽略坏属性；`style` 与 `on*` 同样丢弃。`--panicOnWarning` 在发布时把它变成失败 |
+| `shortcode "field": unsupported parameter "colour" at ...` | shortcode 参数名不对 | 警告指出 shortcode、参数、文件与行号，再忽略不支持的参数或组件。普通预览保持可用，严格发布失败 |
 | `invalid params.ui.page_width "widee" (allowed: normal \| wide \| full) -- using "normal"` | **配置或 front matter 的取值**，不在允许集合里 | 配置类的错误降级而不中断，一个笔误不会让 `hugo server` 下每个 URL 都返回 500。消息里带键名、收到的值和实际用的回退值。构建加 `--panicOnWarning`，它就上不了线 |
 | 某个页面设置不生效，也没有任何提示 | 键写在了 front matter 的 `ui:` 段里 | 页面键写在 front matter 顶层，键名是站点键去掉 `ui.`。写进 `ui:` 段的键没有人读，也没有人报错，见[页面参数](/zh/docs/write/frontmatter/) |
 | 构建通过但线上少东西 | 有 WARNING 没人看 | 构建命令加 `--panicOnWarning`。非法配置取值、giscus 必填键缺失、不支持的 `comments.type`、Hugo 的弃用提示都只是告警 |

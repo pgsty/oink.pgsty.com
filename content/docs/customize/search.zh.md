@@ -55,7 +55,8 @@ params:
 | `summary` | 上面这些 + 描述与摘要 | 千页级站点；本站使用这一档 |
 | `content` | 上面这些 + 全文纯文本 | 默认值，几百页以内适用 |
 
-其它取值构建失败，报 `invalid params.offline_search_index`。
+其它取值在普通预览中告警并使用 `content`；严格发布构建因
+`invalid params.offline_search_index` 失败。
 
 `offline_search_summary_length` 是结果行里摘要的截断长度（默认 70），`offline_search_max_results` 是结果条数上限（默认 10）。这几个键的完整定义在[配置总览](/zh/docs/customize/config/)。
 
@@ -99,7 +100,8 @@ search_exclude: true
 ---
 ```
 
-`search_exclude` 是唯一写法，`exclude_search` 与 `excludeSearch` 会让构建失败并提示改名。正文为空的页面不进索引。
+`search_exclude` 是唯一写法。已移除的 `exclude_search` 与 `excludeSearch` 不再被
+读取，因此不能保护页面；迁移检查器会报告它们。正文为空的页面不进索引。
 
 > [!WARNING] 索引是任何人都能下载的静态 JSON 文件，不是访问控制。
 > 不该公开的内容不要放进站点，也不要用 `search_exclude` 保护它。

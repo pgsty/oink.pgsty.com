@@ -61,12 +61,11 @@ it from anywhere else means `baseURL` is wrong.
 
 With the source on GitHub, one Actions workflow is enough: the build runs in
 Actions and the output is published through the Pages deployment API, with no
-`gh-pages` branch to maintain.
+`gh-pages` branch to maintain. OINK Starter already includes the file below;
+copy it only when assembling a site manually.
 
-Commit the following file:
-
-```yaml {title=".github/workflows/pages.yml" lineNos="inline" collapse=30}
-name: Deploy Oink site to GitHub Pages
+```yaml {title=".github/workflows/github-pages.yaml" lineNos="inline" collapse=30}
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -79,35 +78,33 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: github-pages
   cancel-in-progress: false
 
 env:
-  GO_VERSION: 1.26.6
-  HUGO_VERSION: 0.164.0
+  HUGO_VERSION: 0.165.0
   # a workspace from a sibling checkout must never take part in a CI build
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
   HUGO_CACHEDIR: ${{ github.workspace }}/.hugo_cache
-  GOMODCACHE:
-    ${{ github.workspace }}/.hugo_cache/modules/filecache/modules/pkg/mod
 
 jobs:
   build:
     name: Build Pages artifact
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Check out source
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Set up Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@v7
         with:
-          go-version: ${{ env.GO_VERSION }}
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
 
-      - name: Set up Pages
+      - name: Configure GitHub Pages
         id: pages
         uses: actions/configure-pages@v6
 
@@ -118,10 +115,10 @@ jobs:
             "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
           sudo dpkg -i "${RUNNER_TEMP}/hugo.deb"
 
-      - name: Download Hugo module
+      - name: Download OINK
         run: go mod download github.com/pgsty/oink
 
-      - name: Build site
+      - name: Build
         run: |
           hugo --cleanDestinationDir --gc --minify --environment production \
             --printPathWarnings --panicOnWarning \
@@ -133,19 +130,19 @@ jobs:
           path: public
 
   deploy:
-    name: Deploy to GitHub Pages
+    name: Deploy
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Deploy
+      - name: Publish
         id: deployment
         uses: actions/deploy-pages@v5
 ```
 
-That is the workflow this site uses. Several pieces cannot be removed:
+That is the workflow shipped by OINK Starter. Several pieces cannot be removed:
 
 - `fetch-depth: 0` — with `enableGitInfo` on, "last modified" and contributor information need the full Git history, and a shallow clone leaves them empty.
 - `setup-go` plus `go mod download` — with the theme as a Hugo Module, Hugo needs Go to resolve it. A site installing the theme as a submodule uses `submodules: recursive` instead, and one using an offline archive commits `themes/oink/`; either way both steps go.
@@ -157,39 +154,36 @@ In the repository, set Settings → Pages → Build and deployment → Source to
 GitHub Actions, push to `main`, and watch the first run on the Actions tab.
 
 A custom domain goes in the Custom domain field on that same settings page, with
-DNS configured as prompted, after which `baseURL` in `hugo.yml` becomes that
+DNS configured as prompted, after which `baseURL` in `hugo.yaml` becomes that
 domain. Where the publishing flow needs a `CNAME` file in the output, put it at
 `static/CNAME` and Hugo copies it into `public/` unchanged.
 
 {{< /tab >}}
 {{< tab label="Cloudflare Pages" value="cloudflare" >}}
 
-Cloudflare Pages builds from a connected GitHub / GitLab repository and creates
-a preview deployment per review branch. The build happens on the platform side,
-so no workflow is needed in the repository.
+OINK Starter ships `.github/workflows/cloudflare-pages.yaml`, a Direct Upload
+workflow. The strict build stays in GitHub Actions and Wrangler uploads the
+same `public/` artifact to a Cloudflare Pages project.
 
-Import the repository under Workers & Pages and choose the production branch:
-
-| Setting | Value |
-| --- | --- |
-| Build command | `hugo --gc --minify --printPathWarnings --panicOnWarning` |
-| Build output directory | `public` |
-| `HUGO_VERSION` | `0.164.0` (or another version the theme has verified) |
-| `GO_VERSION` | Needed only for the Hugo Module method; pin a version the build image supports |
-| `SKIP_DEPENDENCY_INSTALL` | `1` |
-{.fields}
-
-Four notes:
-
-1. `HUGO_VERSION` must be set explicitly, in both the Production and Preview environments. The Cloudflare v3 build image's default Hugo is older than OINK's required `{{< param hugoMinVersion >}}`, and leaving it unpinned changes the toolchain silently when the image updates.
-1. `SKIP_DEPENDENCY_INSTALL=1` turns off the generic dependency install step. A consuming OINK site needs no Node.js, and a `package.json` present only for maintenance tooling should not be installed by the platform.
-1. Where the Hugo site is not at the repository root, set Root directory to the site directory; the output directory resolves against it.
-1. A preview deployment is not a production release. Where a preview needs the generated Pages URL as its base URL, use `hugo --gc --minify --baseURL "$CF_PAGES_URL"`, and rebuild for production with the canonical domain.
+1. Create a **Direct Upload** Pages project. By default its name matches the
+   repository; override it with repository variable `CLOUDFLARE_PROJECT_NAME`.
+1. Add repository secrets `CLOUDFLARE_ACCOUNT_ID` and
+   `CLOUDFLARE_API_TOKEN`. The token needs **Account → Cloudflare Pages → Edit**.
+1. Run **Deploy to Cloudflare Pages** manually once. Set repository variable
+   `CLOUDFLARE_PAGES_ENABLED=true` to deploy every push to `main`.
+1. The canonical URL defaults to `https://<project>.pages.dev/`. Set
+   `CLOUDFLARE_SITE_URL` when a custom domain becomes production.
 {.steps}
 
-Check the first build log: a healthy consuming OINK build is one Hugo command,
-with no npm, PostCSS or Autoprefixer step and no download of the theme's own
-browser assets.
+The workflow pins Hugo Extended 0.165.0, reads Go from `go.mod`, disables local
+module workspaces, and builds with `--panicOnWarning` before upload. It is the
+recommended reproducible path for Starter users.
+
+Cloudflare Git integration remains valid as a separate mode: configure build
+command `hugo --gc --minify --printPathWarnings --panicOnWarning`, output
+directory `public`, Hugo `0.165.0`, and Go `1.27`. Use Git integration **or**
+the Direct Upload workflow for one project, not both. A preview deployment is
+still not production proof; rebuild with its own URL and keep it unindexed.
 
 {{< /tab >}}
 {{< tab label="Others" value="other" >}}
@@ -204,7 +198,7 @@ command = "hugo --gc --minify --printPathWarnings --panicOnWarning"
 publish = "public"
 
 [build.environment]
-HUGO_VERSION = "0.164.0"
+HUGO_VERSION = "0.165.0"
 ```
 
 With the theme as a submodule, enable recursive submodule checkout; with a Hugo
@@ -326,8 +320,8 @@ be checked on the real URL.
 | robots | `<baseURL>/robots.txt` reads `Allow: /` with a `Sitemap:` line; a preview deployment should read `Disallow: /` |
 | Search index | The browser can fetch `<baseURL>/offline-search-index.<language>.json`, and site search returns results |
 | Markdown output | Appending `index.md` to any page URL returns plain text (where the site enabled `markdown` under `outputs.page`) |
-| `llms.txt` | `<baseURL>/llms.txt` and `<baseURL>/zh/llms.txt` resolve (where the site enabled `LLMS` under `outputs.home`) |
-| Both languages | Documentation, blog and home pages open in both, and switching language lands on the corresponding page rather than the home page |
+| `llms.txt` | The primary and every enabled language root publish `llms.txt` where the site enabled `LLMS` under `outputs.home` |
+| Enabled languages | Documentation, blog and home pages open in each, and switching language lands on the corresponding page rather than the home page |
 | Appearance and interaction | The light/dark toggle, the print view and representative components (callouts, tabs, code block copy) all work |
 | 404 | Visiting a path that does not exist shows the site's own 404 page |
 {.fields}
@@ -341,7 +335,7 @@ The switches for `sitemap.xml`, `robots.txt`, `.md` and `llms.txt` are in
 Rolling back a static site means republishing the last known-good commit; never
 edit files by hand in production.
 
-- GitHub Pages: find the last successful `Deploy Oink site to GitHub Pages` run in Actions and click Re-run all jobs; or `git revert` the offending commit and push again.
+- GitHub Pages: find the last successful `Deploy to GitHub Pages` run in Actions and click Re-run all jobs; or `git revert` the offending commit and push again.
 - Cloudflare Pages / Netlify / Vercel: pick the last successful deployment from the list and use the platform's Rollback / Publish deploy to make it production again.
 - A self-hosted static server: keep the previous `tar.gz` and unpack it over the top. The dated suffix in [offline packaging](#hosts) exists for exactly this.
 

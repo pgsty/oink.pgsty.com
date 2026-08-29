@@ -310,13 +310,13 @@ The fence attribute line (```` ```infographic {…} ````):
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `height` | `auto` or a CSS length | `auto` | A non-negative number plus `px` `rem` `em` `vh` `vw` `%`; anything else fails the build |
+| `height` | `auto` or a CSS length | `auto` | A non-negative number plus `px` `rem` `em` `vh` `vw` `%`; anything else warns and uses `auto` |
 | `full` | bool | `false` | `true` drops the reading-column limit |
 | `class` | space-separated classes | — | Passed through to the container |
 {.fields meta="type default"}
 
-`style`, `on*` and unknown attributes fail the build, and so does an empty DSL
-body.
+`style`, `on*`, and unknown attributes warn and are ignored. An empty DSL body
+warns and renders nothing. Strict publishing rejects all these warnings.
 
 The DSL's top-level keys (AntV's, not the theme's):
 

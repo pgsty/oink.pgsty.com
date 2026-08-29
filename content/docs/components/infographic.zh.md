@@ -291,12 +291,13 @@ data
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `height` | `auto` 或 CSS 长度 | `auto` | 非负数字加 `px` `rem` `em` `vh` `vw` `%`；其它写法构建失败 |
+| `height` | `auto` 或 CSS 长度 | `auto` | 非负数字加 `px` `rem` `em` `vh` `vw` `%`；其它写法告警并使用 `auto` |
 | `full` | bool | `false` | `true` 去掉正文宽度限制 |
 | `class` | 空格分隔的 class | — | 透传给容器 |
 {.fields meta="type default"}
 
-`style`、`on*` 与未知属性让构建失败；空的 DSL 正文也让构建失败。
+`style`、`on*` 与未知属性会告警并忽略；空 DSL 正文告警并不渲染。严格发布构建拒绝
+所有这些警告。
 
 DSL 的顶层键（属于 AntV，不是主题）：
 

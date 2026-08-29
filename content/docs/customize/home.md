@@ -112,7 +112,7 @@ cards:
 
 cta:
   title: Start from a bilingual site that already works.
-  text: Clone the documentation site, delete what you do not need, make the rest yours.
+  text: Start from OINK Starter, replace the project identity and content, then publish.
   label: Get started
   url: docs/start/
   style: primary
@@ -125,7 +125,7 @@ illustration.
 
 ```yaml {title="data/home/en.yaml"}
 hero:
-  eyebrow: OINK 0.4.0 · Local-first        # small text above the title, with a status dot
+  eyebrow: PROJECT 1.0 · Local-first       # small text above the title, with a status dot
   title_lines:                             # the large title, controlled line by line
     - words:
         - { text: PGSTY OINK }
@@ -153,7 +153,8 @@ without one it is hidden from assistive technology.
 
 `align: center` gives a text-only centred first screen: the text block widens
 and centres, the title balances its line breaks, and `note` moves below the
-buttons. It does not accept `image`, and having both fails the build.
+buttons. When an image is present too, ordinary preview warns and falls back to
+`start` so the image is preserved; a strict publishing build rejects the warning.
 
 ## The section registry {#registry}
 
@@ -359,8 +360,9 @@ language:
       - zh.yaml
 ```
 
-A non-home landing page looks for its data in this order, and fails the build
-rather than rendering an empty page when nothing is found:
+A non-home landing page looks for its data in this order. When nothing is
+found, ordinary preview warns and renders the landing shell with no sections;
+a strict publishing build rejects the warning:
 
 1. `sections` in the page's front matter;
 2. `data/landing/<key>/<exact language>.yaml`;
@@ -425,8 +427,9 @@ params:
 
 The footer is not home page data: it reads `data/footer/<language>.yaml` (or
 `data/footer.yaml` on a single-language site), and this site has one per
-language. A leftover `footer` key in `data/home/<language>.yaml` fails the build
-with a message naming the new location. How to write it is in
+language. A leftover `footer` key in `data/home/<language>.yaml` warns and is
+ignored in ordinary preview; `--panicOnWarning` rejects it while naming the new
+location. How to write it is in
 [Navigation and menus](/docs/customize/navigation/).
 
 ## Output {#outputs}

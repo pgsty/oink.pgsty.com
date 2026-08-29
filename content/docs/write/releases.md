@@ -103,8 +103,8 @@ verbatim output of a `sha*sum` command:
 Only two line shapes are accepted: `<hex><two spaces><filename>` and
 `<hex><space>*<filename>`. Blank lines and lines starting with `#` are ignored.
 The hash length decides the algorithm (MD5 / SHA-1 / SHA-256 / SHA-512), and one
-block holds one algorithm. A malformed line fails the build with its line
-number. A filename must be a single path segment. The type, operating system and
+block holds one algorithm. A malformed line warns and is skipped with its line
+number; strict publishing rejects the warning. A filename must be a single path segment. The type, operating system and
 architecture badges are inferred from the filename; they are decoration, and
 nothing shows when the inference fails.
 
@@ -185,12 +185,13 @@ channels:
 ```
 
 The record has exactly five top-level fields — `version`, `repo`, `tag`,
-`published`, `channels` — and one extra key fails the build. `version` may be
-omitted here and supplied by the site's `params.version` instead.
+`published`, `channels`. An extra key warns and skips the record; strict
+publishing rejects the warning. `version` may be omitted here and supplied by
+the site's `params.version` instead.
 
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
-| `version` | string | site `params.version` | Missing in both places fails the build |
+| `version` | string | site `params.version` | Missing in both places warns and skips the block |
 | `repo` | `owner/name` | — | Required once a pinned channel has a link or assets |
 | `tag` | string | `v{version}` | URL-safe characters only |
 | `published` | boolean | `true` | `false` means the immutable release does not exist yet |

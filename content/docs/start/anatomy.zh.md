@@ -1,165 +1,123 @@
 ---
-title: 仓库导览
+title: Starter 仓库导览
 linkTitle: 仓库导览
-description: 克隆下来的每个目录是什么：哪些必须保留、哪些替换为你的信息、哪些是文档站自用可以整个删除。
-weight: 10
-search_keywords:
-  [
-    仓库结构,
-    目录结构,
-    导览,
-    anatomy,
-    repository tour,
-    hugo.yml,
-    content,
-    static,
-    layouts,
-    data,
-    删除,
-  ]
+description: oink-starter 的文件级地图：身份、语言、首页、内容、导航、品牌、部署与固定主题分别由哪里管理。
+weight: 20
+search_keywords: [Starter 结构, 仓库导览, 目录结构, anatomy, hugo.yaml, content, data home, workflows]
 aliases:
   - /docs/about/architecture/
 ---
 
-本页逐项说明 `pgsty/oink.pgsty.com` 克隆下来的每个文件与目录：哪些必须保留、哪些替换为你自己的信息、哪些是文档站自用可以整棵删除，并给出一个安全的删除顺序。
+本页说明从 [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter)
+创建的仓库，不再介绍大得多的 `oink.pgsty.com` 文档与回归测试仓库。主题源码不会
+复制进任何一个站点：`go.mod` 以 Hugo Module 形式固定版本，Hugo 把解析结果存进
+Go 模块缓存。
 
-主题代码不在这个仓库里：它是 `go.mod` 固定的一个 Hugo Module，存放在 Go 的模块缓存中。这个仓库只有内容、配置与站点自己的少量覆盖。
+## 顶层地图 {#layout}
 
-## 顶层结构 {#layout}
-
-```filetree {title="克隆下来的 my-docs/"}
-- my-docs/
-  - hugo.yml                # 站点唯一配置：身份、语言、菜单、参数、模块导入
-  - go.mod                  # 固定主题版本
-  - go.sum                  # 主题模块的校验和
-  - content/                # 全部内容，目录结构就是侧栏结构
-    - _index.md             # 首页；_index.zh.md 是它的中文对等页
-    - search.md             # Google 自定义搜索的结果页，用不到可删
-    - docs/                 # 文档树：OINK 自己的主题文档
-    - blog/                 # 博客：工程记录与版本发布
-  - assets/                 # 要经 Hugo 处理的资源
-    - scss/                 # 站点样式覆盖，三个 partial
-    - images/               # 需要缩放裁切的图片
-    - parts/                # include shortcode 引入的 Markdown 与 YAML 片段
-  - static/                 # 原样复制到站点根，不做处理
-    - logo.svg              # 品牌组合标，没有参数指向它
-    - favicon.svg           # 浏览器标签页图标
-    - favicon.ico
-    - apple-touch-icon.png  # iOS 添加到主屏
-    - images/               # 截图与示意图
-  - layouts/                # 站点模板覆盖：只覆盖最窄的那一个
-    - _shortcodes/          # 站点自己的 shortcode
-  - data/                   # 数据驱动的页面
-    - home/                 # 首页分区：en.yaml / zh.yaml
-    - landing/              # Landing 页数据
-    - download/             # 发布与下载页数据
-  - .github/
-    - workflows/            # pages.yml 部署；另外两个是本站回归测试
-  - tests/                  # 文档站自用：Playwright、goldens、构建断言  {open=false tone=warning}
-    - browser/              # Playwright 规格
-    - hugo-build/           # 构建断言
-    - md-output/            # Markdown 输出 goldens
-    - alt-site/             # 备用配置构建
-    - favicons/
-    - release-pin/
-    - fixtures/
-  - scripts/                # 文档站自用：翻译对等与链接检查  {open=false tone=warning}
-    - check-doc-translations.mjs
-    - check-markdown-style.mjs
-    - check-rendered-links.mjs
-    - check-rendered-markdown.mjs
-    - check-release-pin.mjs
-  - Makefile                # build / serve 直接调 Hugo；dev / check 指向同级 ../oink
-  - package.json            # 测试工具链，站点构建用不到
-  - package-lock.json
-  - playwright.config.mjs
-  - agent-docs.config.yml   # Agent 文档评分工具的配置
-  - AGENTS.md               # 给编码 Agent 的仓库说明
-  - TRANSLATION.md          # 双语翻译流程
-  - CONTRIBUTING.md
-  - README.md
-  - LICENSE                 # Apache-2.0，站点代码
-  - LICENSE-CC-BY-4.0       # 内容许可
-  - NOTICE
+```filetree {title="oink-starter/"}
+- oink-starter/
+  - hugo.yaml                         # 身份、语言、输出、参数与模块导入
+  - go.mod                            # 站点模块与精确 OINK 版本
+  - go.sum                            # 模块校验和
+  - examples/
+    - hugo.single.yaml                # 仅英文的完整 profile
+    - hugo.bilingual.yaml             # 英文 + 中文的完整 profile
+  - data/
+    - home/
+      - en.yaml                       # 每种语言一份精简落地页
+      - zh.yaml
+      - fr.yaml
+  - content/
+    - _index.md                       # 各语言首页根
+    - _index.zh.md
+    - _index.fr.md
+    - docs/                           # 简介、快速上手、教程、参考
+    - blog/                           # 文章、设计记录、发布说明
+    - book/                           # 介绍 Starter 的连续教程
+  - assets/
+    - icons/logo.svg                  # 经 Hugo 处理的项目 Logo
+  - static/
+    - favicon.svg                     # 原样复制到站点根
+  - i18n/
+    - fr.yaml                         # Starter 自有法语界面覆盖
+  - .github/workflows/
+    - github-pages.yaml               # 严格构建与 GitHub Pages 部署
+    - cloudflare-pages.yaml           # 严格构建与 Cloudflare Direct Upload
+  - README.md                         # 面向仓库维护者的操作摘要
+  - LICENSE                           # 模板源码许可证
 ```
 
-上面没有列出的还有 `.gitignore`、`.gitattributes`、`.nvmrc`、`.npmrc`，以及被 `.gitignore` 排除的生成物：`public/`（构建产物）、`resources/`（Hugo 资源缓存）、`node_modules/`。后一组不进版本库。
+生成的 `public/`、`resources/`、`.hugo_build.lock` 与模块缓存是被忽略的构建状态，
+不是源码。
 
-仓库里没有 `i18n/`：界面文字（「上一页」「本页目录」这类）由主题的 32 份语言文件提供。要改其中某一句，在站点根目录建 `i18n/zh.yaml`，只写需要覆盖的键。
+## 最先修改什么 {#change-first}
 
-## 各项的处理方式 {#what-to-keep}
-| 路径 | 是什么 | fork 后怎么处理 |
+| 路径 | 职责 | 第一次操作 |
 | --- | --- | --- |
-| `hugo.yml` | 站点的唯一配置文件，没有 `config/` 目录也没有分环境覆盖 | 替换为你的信息：身份、语言、菜单、品牌 |
-| `go.mod` `go.sum` | 固定主题版本并记录校验和 | 必须保留，一起提交 |
-| `content/` | 全部内容；目录结构决定侧栏结构 | 必须保留；里面的 `docs/`、`blog/` 换成你自己的 |
-| `content/search.md` | `layout: search` 的整页搜索结果，只在配了 Google 自定义搜索（`params.gcs_engine_id`）时才有内容 | 用主题自带的本地搜索时可以删 |
-| `assets/scss/` | 站点样式覆盖（`_variables_project.scss` 等） | 要改配色字体就保留，不改可以清空 |
-| `assets/images/` | 需要 Hugo 处理（缩放、裁切）的图片 | 换成你自己的 |
-| `assets/parts/` | `include` shortcode 引入的片段 | 随引用它的页面一起替换或删除 |
-| `static/` | 原样复制到站点根 | 替换为你的：logo、favicon、截图 |
-| `layouts/_shortcodes/` | 本站自己的四个 shortcode，当前内容里已无引用 | 可删 |
-| `data/home/` | 首页分区数据（Hero、能力面板） | 改成你的；删除后首页退回普通页面 |
-| `data/landing/` `data/download/` | Landing 页与发布下载页的数据 | 用不到就删 |
-| `.github/workflows/pages.yml` | 推到 `main` 就构建并发布到 GitHub Pages | 保留，按你的仓库改 |
-| `.github/workflows/site-checks.yml` `browser-quality.yml` | 本站的回归测试流水线 | 文档站自用，可删 |
-| `tests/` `scripts/` `playwright.config.mjs` `package.json` `package-lock.json` | 本站的回归测试与检查工具链 | 文档站自用，可删 |
-| `Makefile` | 主题与站点共同开发的快捷方式（要求同级有 `../oink`） | 文档站自用，可删 |
-| `AGENTS.md` `TRANSLATION.md` `CONTRIBUTING.md` `agent-docs.config.yml` | 本站的协作约定 | 换成你自己的，或删 |
-| `README.md` `LICENSE` `LICENSE-CC-BY-4.0` `NOTICE` | 说明与许可 | 换成你自己的 |
-| `.nvmrc` `.npmrc` | Node 版本与 npm 配置 | 随 `package.json` 一起删 |
+| `hugo.yaml` | 身份、规范 URL、语言、输出、主题功能、可选集成 | 修改两个标记值；其它修改前先选择语言 profile |
+| `data/home/` | 首页承诺、卡片与行动入口 | 一种语言确认后，再重写所有已启用语言 |
+| `content/` | 全部读者可见内容 | 替换示例叶子；确认整个表面不要时才删除栏目根 |
+| `assets/icons/logo.svg` | 经处理的 Logo | 有正式图形后再替换 |
+| `static/favicon.svg` | 浏览器图标 | 与 Logo 一起评审后替换 |
+| `hugo.yaml` 中的 `params.github_*` | 编辑、历史、新建页面与 issue 链接 | 目标仓库已存在后才取消注释 |
 
-> [!NOTE] 用 OINK 建站不需要 Node.js
-> 这个仓库里的 `package.json`、`tests/`、`scripts/` 用于维护文档站本身。你的站点构建只有一条命令：`hugo --gc --minify`。
+## 哪些必须保留 {#keep}
 
-## 删除顺序 {#deletion-order}
+- `go.mod` 与 `go.sum`：两者共同固定并校验 OINK {{% param version %}}，都要提交。
+- `hugo.yaml` 中三项 Goldmark 设置：原生 Steps、Cards、Fields、图片属性与 Book
+  目标都依赖它们。
+- `outputs`：删除 `markdown`、`LLMS` 或 `print`，会有意删除对应的 Markdown、
+  Agent 索引或打印表面。
+- workflow 中的 `fetch-depth: 0`：保留 `enableGitInfo` 时，最后修改与贡献者事实需要
+  完整 Git 历史。
+- CI 中的 `GOWORK: off` 与 `HUGO_MODULE_WORKSPACE: off`：开发者本地 workspace 不得
+  替换 CI 正在验证的公开版本。
 
-顺序是先删外围、再删内容、最后清数据。每删一步构建一次，出问题时能定位到具体步骤。
+## 可选表面 {#optional}
 
-1. ### 删脚手架 {#drop-scaffolding}
+Docs、Blog 与 Book 是彼此独立的顶层表面。安全删除其中一个的顺序是：
 
-   这一批与站点渲染无关，删除后不影响任何页面。
-
-   ```bash
-   rm -rf tests scripts node_modules
-   rm -f package.json package-lock.json playwright.config.mjs .nvmrc .npmrc
-   rm -f AGENTS.md TRANSLATION.md CONTRIBUTING.md agent-docs.config.yml Makefile
-   rm -f .github/workflows/site-checks.yml .github/workflows/browser-quality.yml
-   ```
-
-   删除 `scripts/` 之后必须改 `.github/workflows/pages.yml`：把 `Set up Node.js` 与 `Verify advertised and pinned release match` 两步删掉，否则部署会在该步骤失败。
-
-1. ### 删示例内容 {#drop-example-content}
-
-   `content/docs/` 是 OINK 自己的主题文档，`content/blog/` 是它的工程博客，与你的产品无关。
-
-   ```bash
-   rm -rf content/docs
-   mkdir -p content/docs
-   rm -rf content/blog        # 不要博客的话；要的话只留一篇当模板
-   ```
-
-   同时改 `hugo.yml` 里每种语言下的 `menus.main`：那些菜单项指向 `/docs/tutorial`、`/blog/release` 这些已不存在的路径。`content/_index.md` 是首页，保留它，把正文换成你的。
-
-1. ### 清数据 {#trim-data}
-
-   `data/` 下三组数据分别供首页、Landing 页与发布页使用。首页数据保留后修改，另外两组用不到就删除。
-
-   ```bash
-   rm -rf data/landing data/download
-   ```
-
-   `data/home/en.yaml` 与 `data/home/zh.yaml` 决定首页有哪些分区，逐项含义见[首页与落地页](/zh/docs/customize/home/)。删除整个 `data/home/` 也能构建，首页退回为普通内容页。
-
-1. ### 换身份 {#swap-identity}
-
-   最后把 `hugo.yml` 里的站名、`params.productionURL`、`params.github_repo` 与品牌参数换成你的，替换 `static/` 下的 logo 与 favicon，删掉 `services.googleAnalytics`、`params.comments` 与 `params.version*` 这些 OINK 专用配置。逐条清单见[十分钟上手](/zh/docs/start/)第 3 步。
+1. 删除对应的 `content/<surface>/` 内容树；
+1. 删除首页指向它的卡片或链接；
+1. 确认其它页面不再链接它；
+1. 严格构建，并检查剩余顶部导航。
 {.steps}
 
-## 主题的位置 {#where-the-theme-is}
-主题以 Hugo Module 的形式引用，两处配置指向它：
+不要只删除某种语言的栏目根：那会形成难以区分「有意不对称」与「漏译」的语言专属导航
+和回退行为。要么在所有已启用语言中删除整个表面，要么明确记录这种不对称。
 
-```yaml {title="hugo.yml"}
+完成语言选择后，`examples/` 下两个配置 profile 可以删除，也可以作为参考保留；真正
+生效的站点配置只有根目录 `hugo.yaml`。
+
+## 内容与导航 {#content-navigation}
+
+Docs 与 Book 下的目录结构和 `weight` 共同形成侧栏与翻页顺序。顶部导航来自栏目根的
+`menus.main`。译文根重复相同的 `identifier`、`parent` 与 weight，只翻译可见标签。
+
+Starter 刻意演示 Documentation System 内容模型：
+
+- 简介回答是什么、为什么；
+- 快速上手帮助新用户得到结果；
+- 教程带领读者完成端到端任务；
+- 参考记录精确的受支持行为。
+
+可以按项目需要改名或重组，但应保留不同学习路径之间的分工，不要把所有答案混进一棵树。
+
+## 语言模型 {#languages}
+
+英文源码以 `.md` 结尾，中文和法语对页分别以 `.zh.md`、`.fr.md` 结尾。首页数据按
+`data/home/` 下的语言键分文件。根 profile 声明语言、locale、顺序与站点描述。
+
+单语与双语 profile 仍声明被禁用的语言，这是有意设计：Hugo 会把未使用后缀识别为
+译文，而不会把多个文件渲染到同一个英文 URL。只在项目配置开始前复制 profile；之后
+应手工合并。
+
+## OINK 在哪里 {#theme}
+
+两个文件建立模块边界：
+
+```yaml {title="hugo.yaml"}
 module:
   imports:
     - path: github.com/pgsty/oink
@@ -169,53 +127,56 @@ module:
 ```
 
 ```go-mod {title="go.mod"}
+module github.com/OWNER/PROJECT-DOCS
+
+go 1.27.0
+
 require github.com/pgsty/oink {{< param tdVersion.latest >}}
 ```
 
-`hugo.yml` 声明使用哪个主题，`go.mod` 固定用它的哪一版，`go.sum` 记录该版本的校验和。三个文件都要提交。主题源码不进你的仓库：Hugo 把它下载到 Go 的模块缓存，`hugo mod graph` 显示实际解析结果。
+`hugo mod graph` 显示实际解析版本。生产使用 `go.mod` 中的精确标签；本地
+`HUGO_MODULE_REPLACEMENTS` 只是开发覆盖，绝不能提交，也不能当成发布证明。
 
-升级到最新版：
+## 部署文件 {#deployment}
 
-```bash
-hugo mod get -u github.com/pgsty/oink
-```
+GitHub Pages workflow 在推送 `main` 后自动运行；仓库设置必须选择 GitHub Actions
+作为 Pages Source。Cloudflare workflow 默认手动运行，只有仓库变量
+`CLOUDFLARE_PAGES_ENABLED=true` 存在时才自动执行；所需账号 ID 与 API token 始终
+保存在仓库 secrets 中。
 
-固定到某一个版本：
+只保留实际运营的部署路径。Cloudflare Direct Upload 与 Cloudflare Git integration
+是同一个项目的两种所有权模型，不是应当同时运行的两道关卡。
 
-```bash
-hugo mod get github.com/pgsty/oink@{{< param tdVersion.latest >}}
-```
+## 安全的定制顺序 {#order}
 
-两条命令都会改写 `go.mod` 与 `go.sum`。生产站点固定到发布标签，不要跟随 `main`。升级前后检查什么、如何回滚，见[版本升级](/zh/docs/admin/upgrade/)。
+1. 证明未修改的预览可用。
+1. 修改身份并选择语言。
+1. 替换一种首页，再补齐译文。
+1. 替换内容并验证导航。
+1. 品牌与阅读功能一次只改一组。
+1. 启用完整的外部集成。
+1. 执行严格生产构建。
+1. 部署，再独立验证生产环境。
+{.steps}
 
-## 站点覆盖 {#site-overrides}
-`layouts/` 下的文件按 Hugo 的模板查找顺序盖过主题里的同名文件。本站只放了一类：
-
-- `layouts/_shortcodes/*.html`：站点自己的 shortcode。产品文档需要带业务语义的 shortcode 时也放这里。
-
-标题自链锚点由主题的 `_markup/render-heading.html` 提供，站点不需要自己建这个钩子。
-
-要改外壳（侧栏、页脚、页尾）时，覆盖最窄的那个 partial，不要整份复制 `baseof.html`：复制之后每次主题升级都要手工合并。
+仓库已经属于自己后，每层之间做一次提交。小边界能让后续回归与回滚明确归因到一个决定。
 
 ## 验证 {#verify}
 
-每删一步运行一次构建，报错能定位到刚删除的内容：
-
 ```bash
-hugo --gc --minify --printPathWarnings --panicOnWarning
+hugo mod graph | grep github.com/pgsty/oink
+hugo --cleanDestinationDir --gc --minify --environment production \
+  --printPathWarnings --panicOnWarning
+git status --short
 ```
 
-删除完成后，这几条应当成立：
-
-- 构建以 `Total in …` 结束，没有 `WARN` / `ERROR`
-- 顶栏菜单没有指向已删目录的死链
-- 标题右侧仍然有自链锚点（主题自带的标题渲染钩子，站点不需要覆盖）
-- `git status` 里没有 `public/`、`resources/`
+模块图应显示固定发布，构建没有警告或错误，Git 状态只包含源码修改而没有 `public/` 或
+缓存。之后打开所有已启用语言的根，以及代表性的 Docs、Blog、Book 路由，再进入部署。
 
 ## 相关 {#related}
 
-- [十分钟上手](/zh/docs/start/) — 克隆、改配置、部署的完整流程
-- [从零建站与其它安装方式](/zh/docs/start/from-scratch/) — 从空目录搭建，不做删减
-- [组织内容](/zh/docs/write/organize/) — `content/` 的目录结构怎么变成侧栏
-- [配置总览](/zh/docs/customize/config/) — `hugo.yml` 每个键的含义与默认值
-- [版本升级](/zh/docs/admin/upgrade/) — 升级主题模块与迁移工具
+- [使用 OINK Starter](/zh/docs/start/starter/) — 完整分层流程
+- [从零建站](/zh/docs/start/from-scratch/) — 不采用这套内容模型，只接入 OINK
+- [组织内容](/zh/docs/write/organize/) — 侧栏、翻页与菜单权威
+- [配置总览](/zh/docs/customize/config/) — 当前全部站点参数
+- [发布上线](/zh/docs/admin/deploy/) — 托管商配置与生产检查

@@ -1,7 +1,7 @@
 ---
 title: Upgrade
 linkTitle: Upgrade
-description: Move to a new theme version, convert 0.4 shortcodes to v5 syntax with the migration toolkit, migrate from Docsy, and roll back when something goes wrong.
+description: Move to a new theme version, convert 0.4 shortcodes to current native forms with the migration toolkit, migrate from Docsy, and roll back safely.
 weight: 50
 search_keywords: [upgrade, migration, version, Hugo Module, hugo mod get, oink06, Docsy, jQuery, breaking changes]
 aliases:
@@ -13,7 +13,7 @@ aliases:
 
 Upgrading OINK is changing one pinned module version and confirming the site
 still builds warning-free. Most content needs no change; where it does — 0.4
-shortcodes becoming v5's native Markdown forms — a dry-run-first migration tool
+shortcodes becoming the current native Markdown forms — a dry-run-first migration tool
 does it, so hundreds of files need not be edited by hand.
 
 An upgrade changes rendered output. Create an upgrade branch before starting,
@@ -37,7 +37,7 @@ A production site pins a release tag or an immutable commit, follows no branch,
 and does not use `@latest`:
 
 ```bash {title="Terminal"}
-hugo mod get github.com/pgsty/oink@v0.8.0   # the tag from the release notes
+hugo mod get github.com/pgsty/oink@v0.8.1   # the tag from the release notes
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -49,9 +49,9 @@ committed with the code:
 ```go {title="go.mod"}
 module github.com/pgsty/oink.pgsty.com
 
-go 1.26.6
+go 1.27.0
 
-require github.com/pgsty/oink v0.8.0
+require github.com/pgsty/oink v0.8.1
 ```
 
 > [!DANGER] A local module replacement overrides that pin
@@ -88,7 +88,7 @@ and anywhere the site customized something.
 
 ## The content migration toolkit {#migration-toolkit}
 
-A batch of 0.4 shortcodes became native Markdown forms in v5. The theme
+A batch of 0.4 shortcodes became the current native Markdown forms. The theme
 repository ships a tool for that, depending only on the Python standard library:
 
 ```bash {title="Terminal"}
@@ -125,9 +125,9 @@ python3 bin/migrations/oink06.py migrate --site ~/www/ddia --only callout,tabs -
 Rebuild afterwards (with `--panicOnWarning`) and look at the rendered pages: the
 tool guarantees correct syntax, not that the meaning is what you intended.
 
-## The 0.4 → v5 syntax map {#syntax-map}
+## The 0.4 → current syntax map {#syntax-map}
 
-| The 0.4 form | The v5 form | `--only` key |
+| The 0.4 form | The current form | `--only` key |
 | --- | --- | --- |
 | `{{%/* alert color= title= */%}}`, `{{%/* details */%}}`, `{{%/* pageinfo */%}}`, hand-written `<details><summary>` | `> [!TYPE] Title` / `> [!DETAILS]-` | `callout` |
 | `{{</* tabpane */>}}` + `{{%/* tab header= */%}}`, `{{</* code-group */>}}` + `{{</* code-tab */>}}` | Adjacent fences with `{tab= group= value=}`; tabs in running text use `{{</* tabs */>}}` + `{{</* tab */>}}` | `tabs` |
@@ -174,7 +174,7 @@ implementation take over — not rewriting the prose.
 
 1. Fonts and styling compatibility. The Docsy Sass variables in the site's `assets/scss/_variables_project.scss` still work as the seed values for the font roles, and need not be deleted to upgrade: `$td-fonts-serif`, `$font-family-sans-serif`, `$headings-font-family` and `$font-family-code` each feed their role. Docsy's Google Fonts switches `$td-enable-google-fonts`, `$td-google-font-name` and `$td-web-font-path` are no longer read by the theme; leaving them breaks nothing and does nothing, because OINK ships Inter, Chakra Petch and IBM Plex Mono and neither preset requests anything from Google Fonts. To change fonts, go through the token layer — see [Brand and appearance](/docs/customize/brand/).
 
-1. Convert the shortcodes. Docsy's `alert`, `pageinfo`, `tabpane` and `card` families all have a v5 counterpart; convert them in bulk with the [migration toolkit](#migration-toolkit) above, one `--only` class at a time.
+1. Convert the shortcodes. Docsy's `alert`, `pageinfo`, `tabpane` and `card` families all have a current counterpart; convert them in bulk with the [migration toolkit](#migration-toolkit) above, one `--only` class at a time.
 
 1. Delete one group at a time, building after each. Rehearse on a scratch copy, recording the theme commit, the Hugo version, which files were removed and how many HTML files came out; only after confirming equivalence, repeat it on the production branch.
 {.steps}
@@ -198,7 +198,7 @@ needs it, and a site that still does loads it itself:
 <script src="{{ (resources.Get "js/jquery.min.js").RelPermalink }}"></script>
 ```
 
-A home page built from Docsy's `blocks/*` fails the v5 build with
+A home page built from Docsy's `blocks/*` fails an OINK build with
 `template for shortcode "blocks/cover" not found`: the theme has no such
 shortcode family. Switch to home page sections in
 `data/home/<language>.yaml`, or give the page `layout: landing` — see
@@ -211,7 +211,7 @@ upgrade, check these first:
 
 - Sequential paging is on by default. `docs`, `book` and `blog` pages all have previous / next at the page end; documentation follows the sidebar tree and the blog follows time. A page deliberately outside any sequence opts out with `pager: false`.
 - The navbar shows on every layout. Its compact state is one row of icon navigation, with no second mobile accordion menu, so local scripts and tests that depend on the old mobile menu have to go. A whole section without a navbar uses `navbar_enabled: false` in a cascade.
-- The footer defaults to `fat` site-wide. Only `fat` / `slim` / `none` are accepted, and footer data must live in `data/footer/<language>.yaml` (or `data/footer.yaml` on a single-language site); a leftover `footer` key in `data/home` fails the build with the new location.
+- The footer defaults to `fat` site-wide. Only `fat` / `slim` / `none` are accepted, and footer data must live in `data/footer/<language>.yaml` (or `data/footer.yaml` on a single-language site); a leftover `footer` key in `data/home` warns with the new location, and strict publishing rejects it.
 - Single-key navigation is on by default: `/` opens full search and `\` command-only mode. Training material describing the old behaviour needs updating. Page actions have also moved to a split button beside the breadcrumbs.
 - The code block DOM changed. A `.td-code` wrapper now encloses the original `.highlight` (both `.highlight` and `.chroma` are kept), so a direct child selector such as `.td-content > .highlight` in site CSS becomes the descendant selector `.td-content .highlight`.
 - Two ICP footer parameters were removed: `footer_icp` and `footer_icp_url` became one string accepting inline Markdown.
@@ -288,4 +288,4 @@ is in [Deploy](/docs/admin/deploy/#rollback).
 - [Troubleshooting](/docs/admin/troubleshooting/) — reading a build error after an upgrade
 - [Local preview](/docs/admin/preview/) — clearing caches and the `go.work` workspace
 - [From scratch and other install methods](/docs/start/from-scratch/) — weighing the four install methods
-- [Components](/docs/components/) — each component's v5 form
+- [Components](/docs/components/) — each component's current form

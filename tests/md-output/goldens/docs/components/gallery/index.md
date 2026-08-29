@@ -100,8 +100,8 @@ measured.
 ![The light home page (static path)](/images/hero-light.webp) # Under static/images/…, published as is
 ```
 
-A missing page or global resource fails the build; static paths and remote URLs
-are not checked.
+An unresolved page/global resource is retained as a static path, just like an
+explicit static path; the theme does not check static or remote existence.
 
 ## Decorative images and zoom {#zoom}
 
@@ -188,10 +188,9 @@ Fence attributes:
 | `class` | class list | — | Passed through for site CSS |
 {.fields meta="type default"}
 
-There is no `columns`, `caption` or `title` attribute. A line that does not
-start with an image, trailing text outside a `#`, an empty description, an
-unknown attribute and a malformed `{…}` all fail the build with the line number
-inside the fence.
+There is no `columns`, `caption` or `title` attribute. A malformed line or
+attribute warns, drops only the invalid part or line, and names the line number
+inside the fence. Strict publishing rejects the warning.
 
 ## Limits {#limits}
 

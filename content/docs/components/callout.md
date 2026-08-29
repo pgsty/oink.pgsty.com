@@ -113,7 +113,7 @@ callouts. Every line starts with `>`, fences included.
 ````markdown {title="Source"}
 > [!TIP] Three commands to a live preview
 >
-> 1. Clone: `git clone https://github.com/pgsty/oink.pgsty.com my-docs`
+> 1. Clone: `git clone https://github.com/pgsty/oink-starter my-docs`
 > 2. Enter the directory and preview:
 >    ```bash
 >    cd my-docs && hugo server
@@ -127,7 +127,7 @@ callouts. Every line starts with `>`, fences included.
 
 > [!TIP] Three commands to a live preview
 >
-> 1. Clone: `git clone https://github.com/pgsty/oink.pgsty.com my-docs`
+> 1. Clone: `git clone https://github.com/pgsty/oink-starter my-docs`
 > 2. Enter the directory and preview:
 >    ```bash
 >    cd my-docs && hugo server
@@ -170,13 +170,13 @@ that has to be foldable.
 ````markdown {title="Source"}
 > [!DETAILS] Full `hugo version` output
 > ```text
-> hugo v0.164.0+extended+withdeploy darwin/arm64 BuildDate=2026-07-06T16:39:30Z VendorInfo=Homebrew
+> hugo v0.165.0+extended+withdeploy darwin/arm64
 > ```
 ````
 
 > [!DETAILS] Full `hugo version` output
 > ```text
-> hugo v0.164.0+extended+withdeploy darwin/arm64 BuildDate=2026-07-06T16:39:30Z VendorInfo=Homebrew
+> hugo v0.165.0+extended+withdeploy darwin/arm64
 > ```
 
 ## Custom icon {#icon}
@@ -234,8 +234,9 @@ Other things that bite:
   into the body.
 - Attribute line moved by a formatter. Wrap marker lines such as `{icon=…}` in
   `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->`.
-- `style`, `onclick` and friends fail the build: the attribute line accepts
-  `icon` and `class` only (see the table below).
+- `style`, `onclick`, and unsupported attributes warn and are ignored: the
+  attribute line accepts `icon` and `class` only. Strict publishing rejects the
+  warning (see the table below).
 
 ## Output {#outputs}
 
@@ -267,7 +268,8 @@ The attribute line `{…}`, immediately after the blockquote:
 | `class` | space-separated classes | — | Passed through verbatim for site CSS |
 {.fields meta="type default"}
 
-`style`, `on*` and any other key fail the build.
+`style`, `on*`, and other keys warn and are ignored; strict publishing rejects
+the warning.
 
 ## Limits {#limits}
 

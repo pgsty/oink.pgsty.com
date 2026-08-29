@@ -4,7 +4,7 @@
 outputs: [HTML, RSS, print, markdown, LLMSFULL]
 title: OINK 文档
 linkTitle: 文档
-description: OINK 是一款只需 Hugo Extended 的技术文档主题：组件写在 Markdown 里，资源随主题分发，双语开箱可用，一份内容产出四种输出。
+description: OINK 是一套本地优先的 Hugo 文档框架：组件在 Markdown 中仍然可读，资源随主题分发，多语言开箱可用，一份内容同时服务读者与 Agent。
 search_keywords: [OINK, Hugo 主题, 技术文档, 文档站, Hugo theme, documentation]
 type: docs
 icon: fa-solid fa-book
@@ -30,7 +30,7 @@ OINK 是一款技术文档 Hugo 主题。组件是 Markdown 语法的一部分�
 
 ## 五条入口 {#five-entries}
 
-- [十分钟上手](/zh/docs/start/) — 安装 Hugo、克隆本站、替换站点信息、部署。
+- [快速上手](/zh/docs/start/) — 创建 OINK Starter 仓库，建立本地基线，分层定制并部署。
 - [组件总览](/zh/docs/components/) — 每个组件一页，先给源码再给渲染效果。
 - [使用 OINK 创作优美的内容](/zh/book/) — 从第一次预览到持续维护发布物的实战教程。
 - [案例](/zh/case/) — 把生产站点拆解成可复用的设计与迁移模式。
@@ -42,7 +42,7 @@ OINK 是一款技术文档 Hugo 主题。组件是 Markdown 语法的一部分�
 | 你要做的事                   | 去哪                                   |
 | ---------------------------- | -------------------------------------- |
 | 判断是否适用                 | [OINK 是什么](/zh/docs/about/)         |
-| 安装并预览                   | [十分钟上手](/zh/docs/start/)          |
+| 安装并预览                   | [快速上手](/zh/docs/start/)            |
 | 写一页文档                   | [编写页面](/zh/docs/write/pages/)      |
 | 把目录树变成侧栏             | [组织内容](/zh/docs/write/organize/)   |
 | 查组件写法                   | [组件总览](/zh/docs/components/)       |

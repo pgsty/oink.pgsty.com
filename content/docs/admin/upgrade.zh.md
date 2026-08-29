@@ -1,7 +1,7 @@
 ---
 title: 版本升级
 linkTitle: 版本升级
-description: 升到新版主题、用迁移工具把 0.4 的 shortcode 改成 v5 语法、从 Docsy 迁过来，以及出问题怎么退回去。
+description: 升到新版主题、用迁移工具把 0.4 shortcode 改成当前原生形态、从 Docsy 迁移，并在出问题时安全回滚。
 weight: 50
 search_keywords: [升级, 迁移, 版本, Hugo Module, hugo mod get, oink06, Docsy, jQuery, 破坏性变更, upgrade, migration]
 aliases:
@@ -11,7 +11,9 @@ aliases:
   - /docs/upgrade/v0-4/
 ---
 
-升级 OINK 是换一个固定的模块版本，再确认站点仍能零告警构建。内容多数不用改；需要改的场景（0.4 的 shortcode 换成 v5 的 Markdown 原生形态）有一个可以干跑的迁移工具，不必手改几百个文件。
+升级 OINK 是换一个固定的模块版本，再确认站点仍能零告警构建。内容多数不用改；
+0.4 shortcode 改成当前 Markdown 原生形态时，有一套默认干跑的迁移工具，不必手改
+几百个文件。
 
 升级会改变渲染结果。先建一个升级分支再动手，回退的代价就是丢弃一个分支。
 
@@ -29,7 +31,7 @@ aliases:
 生产站点固定发布标签或不可变 commit，不跟随分支，也不用 `@latest`：
 
 ```bash {title="终端"}
-hugo mod get github.com/pgsty/oink@v0.8.0   # 换成发布注记里的标签
+hugo mod get github.com/pgsty/oink@v0.8.1   # 换成发布注记里的标签
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -39,9 +41,9 @@ hugo mod graph | grep github.com/pgsty/oink
 ```go {title="go.mod"}
 module github.com/pgsty/oink.pgsty.com
 
-go 1.26.6
+go 1.27.0
 
-require github.com/pgsty/oink v0.8.0
+require github.com/pgsty/oink v0.8.1
 ```
 
 > [!DANGER] 本地模块替换会盖掉这个固定版本
@@ -64,7 +66,8 @@ hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
 
 ## 内容迁移工具 {#migration-toolkit}
 
-0.4 的一批 shortcode 在 v5 里换成了 Markdown 原生形态。主题仓库带了一个只依赖 Python 标准库的工具做这件事：
+0.4 的一批 shortcode 已换成当前 Markdown 原生形态。主题仓库带了一个只依赖
+Python 标准库的工具做这件事：
 
 ```bash {title="终端"}
 git clone https://github.com/pgsty/oink
@@ -98,9 +101,9 @@ python3 bin/migrations/oink06.py migrate --site ~/www/ddia --only callout,tabs -
 
 改完重新构建一次（带 `--panicOnWarning`），并逐页看渲染结果：工具保证语法正确，不保证语义符合预期。
 
-## 0.4 → v5 语法映射 {#syntax-map}
+## 0.4 → 当前语法映射 {#syntax-map}
 
-| 0.4 的写法 | v5 的写法 | `--only` 键 |
+| 0.4 的写法 | 当前写法 | `--only` 键 |
 | --- | --- | --- |
 | `{{%/* alert color= title= */%}}`、`{{%/* details */%}}`、`{{%/* pageinfo */%}}`、手写 `<details><summary>` | `> [!TYPE] 标题` / `> [!DETAILS]-` | `callout` |
 | `{{</* tabpane */>}}` + `{{%/* tab header= */%}}`、`{{</* code-group */>}}` + `{{</* code-tab */>}}` | 相邻围栏加 `{tab= group= value=}`；正文型标签页用 `{{</* tabs */>}}` + `{{</* tab */>}}` | `tabs` |
@@ -138,7 +141,8 @@ OINK 是 Docsy 的硬分支：内容模型、`td-` 命名、Sass 变量、大部
 
 1. 字体与样式的兼容点。站点的 `assets/scss/_variables_project.scss` 里那些 Docsy Sass 变量仍然生效，会作为字体角色的种子值，不用为了升级把它们删掉：`$td-fonts-serif`、`$font-family-sans-serif`、`$headings-font-family`、`$font-family-code` 各自喂给对应的字体角色。Docsy 的 Google Fonts 开关 `$td-enable-google-fonts`、`$td-google-font-name` 与 `$td-web-font-path` 主题已不再读取，留在文件里不影响构建，也不产生任何效果：OINK 自带 Inter、Chakra Petch 与 IBM Plex Mono，任何预设都不向 Google Fonts 发请求。想换字体走 token 层，见[品牌外观](/zh/docs/customize/brand/)。
 
-1. 换 shortcode。Docsy 的 `alert`、`pageinfo`、`tabpane`、`card` 系列在 v5 里都有对应形态，用上面的[迁移工具](#migration-toolkit)批量转，`--only` 一类一类来。
+1. 换 shortcode。Docsy 的 `alert`、`pageinfo`、`tabpane`、`card` 系列都有当前对应
+   形态，用上面的[迁移工具](#migration-toolkit)批量转，`--only` 一类一类来。
 
 1. 一次删一组，每组构建一次。在临时副本里演练，记下主题 commit、Hugo 版本、删了哪些文件、产出多少个 HTML；确认等价之后再在生产分支上重做一遍。
 {.steps}
@@ -160,7 +164,10 @@ OINK 是 Docsy 的硬分支：内容模型、`td-` 命名、Sass 变量、大部
 <script src="{{ (resources.Get "js/jquery.min.js").RelPermalink }}"></script>
 ```
 
-用 Docsy `blocks/*` 搭的首页在 v5 构建失败，报 `template for shortcode "blocks/cover" not found`：主题没有这一组 shortcode。改用 `data/home/<语言>.yaml` 的首页分区，或给页面写 `layout: landing`，见[首页与落地页](/zh/docs/customize/home/)。
+用 Docsy `blocks/*` 搭的首页在 OINK 构建中报
+`template for shortcode "blocks/cover" not found`：主题没有这一组 shortcode。改用
+`data/home/<语言>.yaml` 的首页分区，或给页面写 `layout: landing`，见
+[首页与落地页](/zh/docs/customize/home/)。
 
 ## 从 0.4 升级的要点 {#from-0-4}
 
@@ -168,7 +175,9 @@ OINK 是 Docsy 的硬分支：内容模型、`td-` 命名、Sass 变量、大部
 
 - 顺序翻页默认开启。`docs`、`book`、`blog` 页尾都有上一页 / 下一页；文档沿侧栏树走，博客沿时间走。刻意不属于任何序列的页面用 `pager: false` 退出。
 - 顶栏在所有布局上都显示。紧凑状态只有一行图标导航，没有第二套移动端手风琴菜单，依赖旧移动菜单的本地脚本与测试要删掉。整个分区不要顶栏时用 cascade 里的 `navbar_enabled: false`。
-- 页脚默认 `fat` 且全站生效。只接受 `fat` / `slim` / `none`；页脚数据必须放在 `data/footer/<语言>.yaml`（单语言站点用 `data/footer.yaml`），`data/home` 里残留的 `footer` 键会让构建失败并提示新位置。
+- 页脚默认 `fat` 且全站生效。只接受 `fat` / `slim` / `none`；页脚数据必须放在
+  `data/footer/<语言>.yaml`（单语言站点用 `data/footer.yaml`），`data/home` 里残留的
+  `footer` 键会告警并提示新位置，严格发布构建拒绝这条警告。
 - 单键导航默认开启：`/` 打开完整搜索，`\` 只进命令模式。培训材料里描述旧行为的地方要改。页面操作也挪到了面包屑旁边的拆分按钮上。
 - 代码块的 DOM 变了。`.td-code` 外壳套在原来的 `.highlight` 外面（`.highlight` 与 `.chroma` 都保留），站点 CSS 里 `.td-content > .highlight` 这类直接子选择器要改成后代选择器 `.td-content .highlight`。
 - 两个 ICP 页脚参数被移除：`footer_icp` 与 `footer_icp_url` 换成一个支持行内 Markdown 的字符串。
@@ -236,4 +245,4 @@ hugo --gc --minify --panicOnWarning
 - [排错与检查](/zh/docs/admin/troubleshooting/) — 升级后构建报错怎么读
 - [本地预览](/zh/docs/admin/preview/) — 清缓存与 `go.work` 工作区
 - [从零建站与其它安装方式](/zh/docs/start/from-scratch/) — 四种安装方式的取舍
-- [组件总览](/zh/docs/components/) — v5 每个组件的新写法
+- [组件总览](/zh/docs/components/) — 每个组件的当前写法

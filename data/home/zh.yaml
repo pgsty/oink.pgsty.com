@@ -24,13 +24,13 @@ hero:
     dark: images/hero-dark.webp
     alt: OINK 工程文档插图
   actions:
-    - label: 查看 0.8 新特性
-      url: blog/release/0.8.0/
-      icon: fa-solid fa-book-open
+    - label: 从 OINK Starter 开始
+      url: docs/start/starter/
+      icon: fa-solid fa-rocket
       style: primary
-    - label: 开始使用
-      url: docs/start/
-      icon: fa-solid fa-arrow-right
+    - label: 查看 0.8 新特性
+      url: blog/release/0.8.1/
+      icon: fa-solid fa-book-open
       style: ghost
 
 capabilities:
@@ -311,8 +311,8 @@ faq:
         见[开源许可与致谢](docs/about/license/)。
 
 cta:
-  title: 从可运行的双语 Starter 开始。
-  text: 复制配置，替换内容，然后只用 Hugo 构建。
-  label: 开始使用
-  url: docs/start/
+  title: 从一个已经能运行的仓库开始。
+  text: 使用 OINK Starter，替换身份与内容，再通过 warning 即失败的 Hugo 构建发布。
+  label: 使用 OINK Starter
+  url: docs/start/starter/
   style: primary

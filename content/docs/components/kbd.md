@@ -19,8 +19,9 @@ Press {{</* kbd "Ctrl" "K" */>}} to open the command palette.
 
 Press {{< kbd "Ctrl" "K" >}} to open the command palette.
 
-Parameters must be quoted, one key per parameter. Fewer than one key, an empty
-string, or a named parameter all fail the build.
+Parameters must be quoted, one key per positional parameter. Missing, empty, or
+named parameters warn and render no invalid key in ordinary preview; strict
+publishing rejects the warning.
 
 ## A single key {#single}
 

@@ -2,7 +2,7 @@
 title: 从零建站与其它安装方式
 linkTitle: 从零建站
 description: 从空目录搭一个最小 OINK 站点，以及 Module / submodule / 离线归档 / 克隆四种安装方式的取舍。
-weight: 20
+weight: 30
 search_keywords:
   [
     从零建站,
@@ -23,11 +23,15 @@ aliases:
   - /docs/tutorial/configuration/
 ---
 
-本页从空目录搭建一个最小 OINK 站点：十几行 `hugo.yml` 加一条 `hugo mod get`，得到一个可预览的单语站点。代价是首页、示例内容与可参照的组件用法都要自己写。
+这是推荐路径 [OINK Starter](/zh/docs/start/starter/) 的手工替代方案。本页从空目录
+搭建一个最小 OINK 站点：一份精简 `hugo.yml` 加一条 `hugo mod get`，得到一个可预览
+的单语站点。代价是首页、示例内容、部署 workflow 与每种组件用法都要自己组装。
 
 已有 Hugo 站点时不需要脚手架：装上主题模块，再补三项 goldmark 前置配置（见[写 `hugo.yml`](#config)），正文不用重写。已有 Docsy 站点见[版本升级](/zh/docs/admin/upgrade/)。
 
 后半部分是四种安装方式的取舍：Hugo Module、Git submodule、离线归档、固定版本克隆。
+当前 v0.8.1 发布路径应使用 Go 1.27 与 Hugo Extended 0.165.0；只有刻意维护旧环境的
+既有站点才使用主题声明的较低兼容下限。
 
 ## 从空目录到第一页 {#scaffold}
 
@@ -339,8 +343,9 @@ hugo --gc --minify --printPathWarnings --panicOnWarning
 
 ## 相关 {#related}
 
-- [十分钟上手](/zh/docs/start/) — 另一条路径：克隆文档站再做删减
-- [仓库导览](/zh/docs/start/anatomy/) — 文档站的每个目录是什么
+- [快速上手](/zh/docs/start/) — 在 Starter、既有 Hugo 站点与迁移之间选择
+- [OINK Starter](/zh/docs/start/starter/) — 推荐的新站点路径
+- [Starter 仓库导览](/zh/docs/start/anatomy/) — 模板各目录的职责
 - [配置总览](/zh/docs/customize/config/) — `hugo.yml` 每个键的含义与默认值
 - [编写页面](/zh/docs/write/pages/) — 第一页之后怎么继续写
 - [版本升级](/zh/docs/admin/upgrade/) — 升级主题模块、从 Docsy 迁移

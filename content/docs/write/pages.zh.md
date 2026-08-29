@@ -137,9 +137,9 @@ draft: true
    ```bash
    brew install hugo
    ```
-1. 克隆文档站并预览：
+1. 克隆 OINK Starter 并预览：
    ```bash
-   git clone https://github.com/pgsty/oink.pgsty.com my-docs
+   git clone https://github.com/pgsty/oink-starter my-docs
    cd my-docs && hugo server
    ```
    > [!TIP]
@@ -151,9 +151,9 @@ draft: true
    ```bash
    brew install hugo
    ```
-1. 克隆文档站并预览：
+1. 克隆 OINK Starter 并预览：
    ```bash
-   git clone https://github.com/pgsty/oink.pgsty.com my-docs
+   git clone https://github.com/pgsty/oink-starter my-docs
    cd my-docs && hugo server
    ```
    > [!TIP]

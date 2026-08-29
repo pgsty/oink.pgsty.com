@@ -91,7 +91,7 @@ pair and `badge` is plain text.
 ```markdown {title="Source"}
 {{</* cards */>}}
 {{</* card title="Get started" link="/docs/start/" icon="fa-solid fa-rocket" badge="start here" */>}}
-Fork the documentation site itself and get a local preview in ten minutes.
+Use OINK Starter and establish a local preview before customizing.
 {{</* /card */>}}
 {{</* card title="Release and download pages" link="/docs/write/releases/" icon="fa-solid fa-box-open" badge="v0.5" */>}}
 A `release` fact record, an asset table and checksums — all generated locally.
@@ -104,7 +104,7 @@ Site-wide shortcuts and focus order.
 
 {{< cards >}}
 {{< card title="Get started" link="/docs/start/" icon="fa-solid fa-rocket" badge="start here" >}}
-Fork the documentation site itself and get a local preview in ten minutes.
+Use OINK Starter and establish a local preview before customizing.
 {{< /card >}}
 {{< card title="Release and download pages" link="/docs/write/releases/" icon="fa-solid fa-box-open" badge="v0.5" >}}
 A `release` fact record, an asset table and checksums — all generated locally.
@@ -114,8 +114,8 @@ Site-wide shortcuts and focus order.
 {{< /card >}}
 {{< /cards >}}
 
-An icon that is not a `fa-solid fa-xxx` style class pair fails the build rather
-than being dropped silently.
+An icon that is not one valid Font Awesome class pair warns and is dropped in
+ordinary preview; strict publishing rejects the warning.
 
 ## Markdown bodies {#markdown-body}
 
@@ -159,9 +159,10 @@ A card without `link` renders as a bold title and produces no link.
 resource in `assets/` → static path `/images/…` → remote URL. Local resources
 carry their intrinsic size so nothing shifts while loading.
 
-`image` must be paired with a source of alternative text: `image_alt="…"` for an
-informative image, or `decorative=true` for a purely decorative one. Writing
-both, or neither, fails the build.
+`image` needs one source of alternative text: `image_alt="…"` for an informative
+image or `decorative=true` for a decorative one. Writing both warns and keeps
+the alt text; writing neither warns and renders the image decorative. Strict
+publishing rejects either warning.
 
 ```markdown {title="Source"}
 {{</* cards */>}}
@@ -251,7 +252,7 @@ The native form:
 | --- | --- | --- | --- |
 | `title` | plain text | — | Required, non-empty. The card title |
 | `link` | URL | — | Site path, relative path, `http(s):`, `mailto:`; external links get `rel="noopener"` |
-| `icon` | Font Awesome class pair | — | For example `fa-solid fa-rocket`; a malformed value fails the build |
+| `icon` | Font Awesome class pair | — | For example `fa-solid fa-rocket`; a malformed value warns and is dropped |
 | `badge` | plain text | — | A small label beside the title |
 | `image` | image source | — | Page resource / global resource / static path / remote URL |
 | `image_alt` | plain text | — | With `image`, exactly one of this and `decorative` |
@@ -259,8 +260,9 @@ The native form:
 | Body | Markdown | — | The card description |
 {.fields meta="type default"}
 
-There is no `cols`, `columns`, `accent`, `desc` or `color` parameter, and any
-unknown parameter fails the build.
+There is no `cols`, `columns`, `accent`, `desc` or `color` parameter. Unknown
+parameters warn and are ignored in ordinary preview; strict publishing rejects
+the warning.
 
 ## Limits {#limits}
 
@@ -270,7 +272,7 @@ unknown parameter fails the build.
   a list item, drops the marker silently — the build succeeds and the list stays
   a list. Check that line first when the output is not a card grid.
 - A `card` lives only inside `cards`: alone, or inside another shortcode, it
-  fails the build and the error names the location.
+  warns and is skipped; strict publishing rejects the warning.
 - The column count is not configurable: the grid adapts to the container. Only
   automatic section cards take a count, through
   `params.ui.section_index_columns`.

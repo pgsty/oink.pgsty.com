@@ -373,7 +373,8 @@ params:
 `page_width` controls the overall shell width and can be overridden per page or
 per section by cascade. Book pages additionally have `reading_width` (`slim` /
 `normal` / `wide`), which changes the reading measure of the body rather than
-the shell. An invalid value in either key fails the build.
+the shell. An invalid value in either key warns and falls back during ordinary
+preview; the warning fails a publishing build with `--panicOnWarning`.
 
 ## Footer {#footer}
 
@@ -393,8 +394,9 @@ params:
 - `none`: no footer at all.
 
 Page front matter (including a section cascade) can override it; this site's
-documentation section uses `footer_style: slim`. An unrecognized value fails the
-build.
+documentation section uses `footer_style: slim`. An unrecognized value warns
+and falls back to `fat` in ordinary preview; strict publishing rejects the
+warning.
 
 The grid's data lives in `data/footer/<language>.yaml` — see
 [Navigation and menus](/docs/customize/navigation/#footer). With `fat`

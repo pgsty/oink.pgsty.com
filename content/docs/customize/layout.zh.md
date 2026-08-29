@@ -61,7 +61,8 @@ params:
     docs_sidebar_root: home # home | section
 ```
 
-取值只有这两个，其它值构建失败。
+取值只有这两个。其它值在普通预览中告警并使用 `section`，严格发布构建通过
+`--panicOnWarning` 拒绝这条警告。
 
 ### 文档挂在站点根 {#docs-at-root}
 
@@ -179,7 +180,10 @@ sidebar_enabled: false
 
 URL 在比较前去掉语言前缀，一份文件服务所有语言。
 
-这棵树同时决定翻页顺序，侧栏与上一页 / 下一页不会出现两种排序。`sections` 为空数组时构建失败（`data/docs_nav.json does not define any Docs navigation sections`），`page` 指向不存在的页面同样失败（`Docs navigation page not found`）。带 `manual_link` 的占位节点与 `sidebar_divider` 分隔行留在侧栏里，但不会成为翻页目标。
+这棵树同时决定翻页顺序，侧栏与上一页 / 下一页不会出现两种排序。`sections` 为空数组
+时告警并回退到内容树；`page` 指向不存在的页面时告警并跳过该项。严格发布构建拒绝
+任一警告。带 `manual_link` 的占位节点与 `sidebar_divider` 分隔行留在侧栏里，但不会
+成为翻页目标。
 
 适用场景是导航顺序由外部工具生成的站点，例如从 Sphinx toctree 迁移过来、需要冻结既有章节顺序的手册。顺序由 `content/` 的 `weight` 维护时不需要这个文件。
 
@@ -211,7 +215,9 @@ params:
     sidebar_headings: 3 # false | true | 2 | 3 | 4
 ```
 
-整数指定展开到第几级（2–4），`true` 等于 2（只展开 h2），`false` 关闭。取值超出范围构建失败。只对 `type: book` 的页面生效，且只在侧栏当前行下展开。
+整数指定展开到第几级（2–4），`true` 等于 2（只展开 h2），`false` 关闭。取值超出
+范围时普通预览告警并关闭标题分支，严格发布构建拒绝这条警告。只对 `type: book`
+的页面生效，且只在侧栏当前行下展开。
 
 ## 目录 TOC {#toc}
 
@@ -253,7 +259,8 @@ params:
 - `list`（默认）：每个子页一个标题 + 描述段落；
 - `cards`：网格卡片，读子页的 `title`（或 `linkTitle`）、`description` 与 `icon`。
 
-可以按分区覆盖，非法取值构建失败：
+可以按分区覆盖。非法取值在普通预览中告警并回退，发布门禁带
+`--panicOnWarning` 时拒绝这条警告：
 
 ```yaml {title="content/docs/components/_index.md"}
 ---
@@ -281,7 +288,8 @@ page_width: wide
 ---
 ```
 
-Book 页另有一个 `reading_width`（`slim` / `normal` / `wide`），改的是正文本身的阅读行宽，不动外壳。两个键取值非法都让构建失败。
+Book 页另有一个 `reading_width`（`slim` / `normal` / `wide`），改的是正文本身的
+阅读行宽，不动外壳。两个键取值非法都会在普通预览中告警并回退，严格发布时失败。
 
 ## 顶栏与页脚开关 {#chrome}
 

@@ -134,7 +134,10 @@ $$
 
 ### 例 {#example}
 
-代码围栏加 `num=` 与 `caption=` 即编号例，默认 ID 是 `eg-<num>`。围栏里写的 `#id` 命名外层 `<figure>`，即引用目标，不是代码块本身。例的题注必填：只写 `num` 或只写 `caption` 都会让构建失败。编号例渲染成一个整体：题注是框的表头，正文在框内；正文恰好是一个代码块时贴着框排，不再另画一圈边框。
+代码围栏加 `num=` 与 `caption=` 即编号例，默认 ID 是 `eg-<num>`。围栏里写的 `#id`
+命名外层 `<figure>`，即引用目标，不是代码块本身。例的题注必填：只写 caption 时
+忽略它，只写编号时丢弃编号并告警；严格发布构建拒绝这条警告。编号例渲染成一个
+整体：题注是框的表头，正文在框内；正文恰好是一个代码块时贴着框排，不再另画一圈边框。
 
 ````markdown {title="源码"}
 ```sql {num="2-1" caption="按天统计主库写入量。" #eg-2-1}
@@ -207,10 +210,15 @@ pg_basebackup -h primary -U replicator -D /pg/data -Fp -Xs -P -R
 ```
 {{< /eg >}}
 
-同一页里 ID 必须唯一，同一类里一个编号也只能对应一个 ID。重复时构建失败，报错指出先占用它的那一处在哪行。
+同一页里 ID 必须唯一，同一类里一个编号也只能对应一个 ID。重复时告警并保留第一项；
+严格发布构建拒绝这条警告，消息指出先占用它的那一处在哪行。
 
 > [!IMPORTANT] shortcode 正文里不能写脚注
-> Hugo 把 shortcode 的正文当作独立的 Goldmark 文档渲染，脚注是页面级的。`tbl`、`eg`、`fig`、`card`、`tab`、`field`、`include` 的正文里出现 `[^label]` 一律构建失败，报错给出文件、行号与标签。定义写在页面上时该引用会原样印出 `[^label]`，定义写在正文里则生成第二份脚注列表、`fn:N` 与页面自身的 ID 冲突——两种结果都不该发布。
+> Hugo 把 shortcode 的正文当作独立 Goldmark 文档渲染，脚注是页面级的。`tbl`、
+> `eg`、`fig`、`card`、`tab`、`field`、`include` 的正文里出现 `[^label]` 会告警，
+> 消息给出文件、行号与标签；严格发布构建拒绝这条警告。定义写在页面上时该引用会
+> 原样印出 `[^label]`，定义写在正文里则生成第二份脚注列表、`fn:N` 与页面自身 ID
+> 冲突——两种结果都不该发布。
 >
 > 需要脚注的表格或代码块改用原生形态：表格、图片、围栏加 `{num=… caption=…}`，内容留在页面文档里，脚注照常编号、跳转与回链。渲染出来的图表与 shortcode 形态一致，所以这通常是一行改动。代码里形似脚注的文本（列表里的 `[^0-9]` 字符类、行内代码）不受影响。
 
@@ -291,7 +299,14 @@ params:
 
 书根有了 `print` 输出后，按可见的阅读顺序生成封面、本地目录、根页面正文与每个后代章节，全部装在一个 HTML 文档里。`no_print: true` 的页面、纯链接节点、分隔行与隐藏占位不会成为章节。
 
-聚合文档里，编号组件的 ID 逐字节保留。页面内的 Markdown 标题 ID 会加上来源页面前缀，避免多章共有 `summary` 这类锚点时冲突，生成的标题链接同步改写。产物是面向打印的 HTML。可选的 `BookManifest` 输出会把同一份阅读顺序记成 JSON，主题另外提供 `bin/book-epub.py` 与 `bin/book-pdf.py`，把清单与打印 HTML 打包成 EPUB 和 PDF。
+聚合文档里，编号组件的 ID 逐字节保留。页面内的 Markdown 标题与脚注 ID
+会加上来源页面前缀，避免多章共有 `summary` 这类锚点、或都从 `fn:1` 开始时冲突；
+生成的链接同步改写。页面单独渲染为 Print 时，与普通 HTML 保持相同的页面局部
+ID——只有多页分区或整书聚合才增加命名空间。
+
+产物是面向打印的 HTML。可选的 `BookManifest` 输出会把同一份阅读顺序记成 JSON，
+主题另外提供 `bin/book-epub.py` 与 `bin/book-pdf.py`，把清单与打印 HTML 打包成
+EPUB 和 PDF。
 
 具体开关与整章打印见[打印支持](/zh/docs/customize/print/)。
 
@@ -376,7 +391,7 @@ python3 ~/pgsty/oink/bin/check-book.py --site-public public
 | --- | --- | --- | --- |
 | `fig` `tbl` `eq` `eg` | 编号字符串 | — | 至多一个。提供本地化标签并推导锚点 |
 | `anchor` | ID | 由类型与编号推导 | 无类型时必填，且必须有内部链接文字 |
-| `page` | 页面引用 | 当前页 | 走当前语言的页面查找，找不到则构建失败 |
+| `page` | 页面引用 | 当前页 | 走当前语言的页面查找，找不到时告警并渲染无链接文字 |
 {.fields meta="type default"}
 
 `book-toc`：
@@ -395,7 +410,8 @@ python3 ~/pgsty/oink/bin/check-book.py --site-public public
 - 属性行必须紧贴块，中间不能有空行。被 Prettier 之类工具移动过的属性行静默失效，图退化成普通图片。
 - `book_kind` 与 `book_part` 是契约认可的元数据键，当前主题模板不渲染它们；有视觉效果的是 `book_number` 与 `book_status`。
 - 索引 shortcode 会触发后代内容渲染，在超大树上明显拉长构建时间。整本 `print` 需要显式开启也是同一原因。
-- shortcode 的正文里不能出现脚注引用，构建失败并指出改用原生形态；见上文[编号：shortcode 形态](#numbering-shortcodes)。
+- shortcode 正文里不能出现脚注引用；出现时告警并指出改用原生形态，严格发布构建
+  拒绝这条警告，见上文[编号：shortcode 形态](#numbering-shortcodes)。
 - 打包是可选的，且在构建之外运行。`BookManifest` 加上 `bin/book-epub.py` / `bin/book-pdf.py` 可以产出 EPUB 与 PDF，但没有任何一次 Hugo 构建会自己生成这两个文件；专业排版的分页、字体嵌入与索引编制仍在契约之外。
 
 ## 相关 {#related}

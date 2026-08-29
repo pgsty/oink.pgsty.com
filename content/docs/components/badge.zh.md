@@ -36,7 +36,8 @@ search_keywords: [徽章, Badge, 状态标签, tone, Beta, 已弃用, neutral, i
 {{< badge text="实验性" tone="warning" >}}
 {{< badge text="已弃用" tone="danger" >}}
 
-不写 `tone` 时使用 `neutral`。其它取值让构建失败，报错给出源文件位置。
+不写 `tone` 时使用 `neutral`。其它取值在普通预览中告警并使用 `neutral`；警告带
+源码位置，严格发布构建会失败。
 
 ## 夹在句子里 {#inline}
 
@@ -45,13 +46,13 @@ search_keywords: [徽章, Badge, 状态标签, tone, Beta, 已弃用, neutral, i
 ```markdown {title="源码"}
 `params.ui.image_zoom` {{</* badge text="默认关闭" tone="neutral" */>}} 打开后，
 有替代文字的块级图片可以点开看大图。PlantUML {{</* badge text="需自建服务" tone="warning" */>}}
-与 Draw.io {{</* badge text="需自建服务" tone="warning" */>}} 没有配置服务端点时会让构建失败，
+与 Draw.io {{</* badge text="需自建服务" tone="warning" */>}} 没有配置服务端点时告警并保持关闭，
 而不是连接公共服务。
 ```
 
 `params.ui.image_zoom` {{< badge text="默认关闭" tone="neutral" >}} 打开后，
 有替代文字的块级图片可以点开看大图。PlantUML {{< badge text="需自建服务" tone="warning" >}}
-与 Draw.io {{< badge text="需自建服务" tone="warning" >}} 没有配置服务端点时会让构建失败，
+与 Draw.io {{< badge text="需自建服务" tone="warning" >}} 没有配置服务端点时告警并保持关闭，
 而不是连接公共服务。
 
 ## 标题旁边 {#in-headings}
@@ -95,13 +96,13 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 
 ```markdown {title="源码"}
 1. 安装 Hugo Extended {{</* badge text="≥ 0.160.1" tone="info" */>}}
-1. 克隆文档站，修改 `hugo.yml` 里的 `baseURL`
+1. 从 OINK Starter 创建站点，修改 `hugo.yaml` 里的 `baseURL`
 1. `hugo server` 预览 {{</* badge text="1313 端口" tone="neutral" */>}}
 {.steps}
 ```
 
 1. 安装 Hugo Extended {{< badge text="≥ 0.160.1" tone="info" >}}
-1. 克隆文档站，修改 `hugo.yml` 里的 `baseURL`
+1. 从 OINK Starter 创建站点，修改 `hugo.yaml` 里的 `baseURL`
 1. `hugo server` 预览 {{< badge text="1313 端口" tone="neutral" >}}
 {.steps}
 
@@ -141,7 +142,7 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 当前版本 {{< badge text="v0.5" tone="info" link="/zh/blog/" >}}，
 升级步骤见 {{< badge text="版本升级" tone="neutral" link="/zh/docs/admin/upgrade/" >}}。
 
-链接非法（协议不在白名单里）会让构建失败。
+链接非法时普通预览告警并丢弃链接，保留普通徽章；严格发布构建拒绝这条警告。
 
 ## 输出形态 {#outputs}
 
@@ -163,7 +164,9 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 | `link` | URL | — | 设置后徽章变成链接 |
 {.fields meta="type default"}
 
-只接受命名参数。没有 `icon`、`class`、`color`、`outline`、`size` 参数；写了未知参数、空 `text`、非法 `tone` 或非法链接都会让构建失败。
+只接受命名参数。没有 `icon`、`class`、`color`、`outline`、`size` 参数。无效输入
+会告警并采用安全结果：未知参数忽略，空 `text` 不渲染，非法 `tone` 回退
+`neutral`，不安全链接被丢弃。严格发布构建会拒绝每条此类警告。
 
 ## 限制与常见问题 {#limits}
 

@@ -2,7 +2,7 @@
 title: From scratch and other install methods
 linkTitle: From scratch
 description: Build a minimal OINK site in an empty directory, and weigh the four install methods — Module, submodule, offline archive, pinned clone.
-weight: 20
+weight: 30
 search_keywords:
   [
     from scratch,
@@ -21,17 +21,20 @@ aliases:
   - /docs/tutorial/configuration/
 ---
 
-This page builds a minimal OINK site in an empty directory: a dozen lines of
-`hugo.yml` plus one `hugo mod get` gives a single-language site you can preview.
-The cost is that the home page, the example content and any component usage to
-copy from are all yours to write.
+This is the manual alternative to the recommended
+[OINK Starter](/docs/start/starter/). It builds a minimal site in an empty
+directory: a small `hugo.yml` plus one `hugo mod get` gives a single-language
+site you can preview. The cost is that the home page, example content,
+deployment workflow, and every component usage are yours to assemble.
 
 An existing Hugo site needs no scaffolding: install the theme module, add the
 three Goldmark prerequisites (see [Writing `hugo.yml`](#config)), and leave the
 content alone. For an existing Docsy site, see [Upgrade](/docs/admin/upgrade/).
 
 The second half weighs four install methods: Hugo Module, Git submodule,
-offline archive, pinned clone.
+offline archive, and pinned clone. For the current v0.8.1 release path, use Go
+1.27 and Hugo Extended 0.165.0 unless an existing site deliberately targets the
+theme's lower declared compatibility floor.
 
 ## From an empty directory to the first page {#scaffold}
 
@@ -397,8 +400,9 @@ confirm:
 
 ## Related {#related}
 
-- [Quick start](/docs/start/) — the other path: clone the documentation site and trim it
-- [Repository tour](/docs/start/anatomy/) — what each directory of the documentation site is
+- [Get started](/docs/start/) — choose between Starter, an existing Hugo site, and migration
+- [OINK Starter](/docs/start/starter/) — the recommended new-site path
+- [Starter repository tour](/docs/start/anatomy/) — what each template directory owns
 - [Configuration](/docs/customize/config/) — every `hugo.yml` key and its default
 - [Writing pages](/docs/write/pages/) — how to keep writing after the first page
 - [Upgrade](/docs/admin/upgrade/) — upgrading the theme module, and migrating from Docsy

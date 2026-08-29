@@ -93,8 +93,9 @@ params:
           keywords: [bug, support, roadmap]
 ```
 
-That is the one this site uses. There are seven fields, and any other key fails
-the build:
+That is the one this site uses. There are seven fields. An unsupported key or
+invalid record warns and drops that command during ordinary preview; strict
+publishing rejects the warning:
 
 - `id` is required, starts with a lowercase letter, and holds only lowercase letters, digits, underscores and hyphens; it must not collide with a built-in action ID.
 - `title` is what the palette shows; `description` is the smaller line beneath it; `icon` is one Font Awesome class pair.

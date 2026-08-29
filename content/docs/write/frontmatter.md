@@ -110,6 +110,7 @@ The guide is [Organizing content](/docs/write/organize/).
 | `pager` | boolean | decided by `params.ui.pager_types` | `false` turns off previous / next for this page. A non-boolean warns and is ignored |
 | `navbar_enabled` | boolean | site value (`true`) | Whether this page renders the navbar |
 | `navbar_autohide` | boolean | site value (`false`) | The navbar hides itself on pointer devices |
+| `breadcrumb` | boolean | shell default | Whether this page renders breadcrumbs; Docs/Book default on and Blog defaults off |
 | `theme_color` | string | site value | `#rgb`/`#rrggbb` hex tinting this page's accent grounds. On a section root's `cascade` it gives the whole section an identity — see [Brand and appearance](/docs/customize/brand/#theme-color) |
 | `theme_color_dark` | string | derived | The dark half of the accent. A page overriding `theme_color` under a cascade that also sets this key inherits that dark value, so override both. `theme_color: false` opts the page out of an inherited section color entirely |
 | `page_context_menu` | boolean | site value (`true`) | The page action menu on the title row (copy Markdown, edit this page, print, …) |
@@ -133,6 +134,11 @@ Site-level defaults and what they do are in
 | `keyboard_nav` | boolean | site value (`true`) | Single-key keyboard navigation — see [Keyboard navigation](/docs/customize/keyboard/). A non-boolean warns and falls back |
 | `lastmod_commit` | `subject` / `hash` / `none` | `subject` | How the commit is shown after "last modified". An invalid value warns and falls back |
 | `sidebar_expand_levels`, `sidebar_menu_compact`, `sidebar_menu_foldable`, `sidebar_item_overflow` | as the site parameter | site value | Sidebar behaviour can be overridden per page too; the values are in [Configuration](/docs/customize/config/) |
+| `sidebar_width_min`, `sidebar_width_max` | positive integer | site value (`220` / `480`) | Per-page lower and upper bounds for desktop sidebar resizing; a minimum above its maximum warns and restores the site pair |
+| `code_copy` | boolean | site value (`true`) | Default copy control for code blocks on this page; an explicit fence `copy=` still wins |
+| `toc_style` | `fixed` / `flow` | site value (`fixed`) | Fixed right-rail panel or a wider rail beginning in the content flow |
+| `toc_taxonomies` | boolean | site value (`true`) | Whether taxonomy clouds join the right-rail outline |
+| `taxonomy_icons` | map | site value | Per-taxonomy icon overrides for this page or section cascade |
 {.fields meta="type default"}
 
 ## Search {#search}
@@ -221,8 +227,12 @@ The guide is [Blog posts](/docs/write/blog/).
 | `tags` | string array | — | Tags — see [Taxonomies](/docs/customize/taxonomy/) |
 | `categories` | string array | — | Categories, likewise |
 | `images` | string array | — | The first entry becomes the post's featured image and share card; put it in a section `_index.md` cascade for a section-wide default. `images: []` opts the page out of an inherited cascade value; it does not suppress an image the page bundle already supplies under a `featured`, `cover` or `thumbnail` name |
-| `featured_image` | `none` / `banner` / `wash` | site value (`none`) | How this article renders its own featured image. An invalid value warns and falls back |
-| `blog_index` | `list` / `cards` | site value (`list`) | Written on a blog root, the list form for that section. An invalid value warns and falls back |
+| `byline` | string | — | Credit shown with the resolved featured image when that image is rendered |
+| `featured_image` | `none` / `banner` / `wash` / `hero` | site value (`none`) | How this article renders its own featured image; `hero` paints the immersive full-bleed shell. An invalid value warns and falls back |
+| `blog_index` | `list` / `cards` / `table` | site value (`list`) | Written on a blog root, the index form for that section. `table` lists the whole section without pagination. An invalid value warns and falls back |
+| `blog_index_columns` | positive integer | site value (`3`) | Card columns at wide breakpoints; medium and narrow layouts retain their responsive limits |
+| `blog_index_size` | positive integer | site value (`12`) | Posts per page for `list` and `cards`; `table` always lists the whole section |
+| `blog_index_toggle` | boolean | site value (`false`) | Publishes all three index forms and lets the reader switch among them; hidden forms do not load images |
 | `share` | string array or `false` | site `params.ui.share` (empty) | The page-end share targets, replacing any inherited list; `false` opts this page out — see [Share](/docs/write/blog/#share). An unknown target warns and is dropped |
 | `summary` | string | — | Fallback excerpt for post rows on tag and category pages; `description` wins |
 {.fields meta="type default"}

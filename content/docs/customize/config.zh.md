@@ -292,11 +292,14 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `params.ui.typography` | enum | technical | `technical` 用随主题分发的 Inter / Chakra Petch / IBM Plex Mono；`system` 只用平台字体栈，不请求品牌字体。非法值告警并回退 |
+| `params.ui.fonts` | map | | 为 `ui` `body` `heading` `code` `display` `meta` `print` 七个角色指定字体族。主题校验名称但不加载字体文件；每份列表都应以通用字体族收尾 |
 | `params.page_width` | enum | normal | 外壳整体宽度：`normal` `wide` `full`，可逐页覆盖 |
 | `params.reading_width` | enum | normal | Book 页正文的阅读行宽：`slim` `normal` `wide`，不影响外壳 |
 {.fields meta="type default"}
 
-自定义字体与配色走 SCSS 入口而不是 YAML，见[品牌外观](/zh/docs/customize/brand/#fonts)。
+读者系统已有字体，或者站点已经用 `@font-face` 声明时，可以直接写
+`params.ui.fonts`。随站点分发字体文件与更底层的排版调整仍走 SCSS/CSS 入口，见
+[品牌外观](/zh/docs/customize/brand/#fonts)。
 
 ## 评论与反馈 {#comments-feedback}
 
@@ -339,6 +342,8 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 | `params.github_url` | — | — | 已移除，改写 `params.github_repo`。那份负责提示替代键名的迁移登记表已经删掉，所以旧键现在只是一个没人读的键 |
 | `params.ui.lastmod_commit` | enum | subject | 「最后修改」后面附什么：`subject` commit 标题、`hash` 短哈希、`none` 不附。非法值告警并回退 |
 | `params.images` | string 数组 | — | 站点级社交卡片：页面自己没有封面时用它填 `og:image`；只进元数据，不会渲染成列表缩略图 |
+| `params.upstream_source` | 字符串 | — | 声明了 `upstream_link` 的页面默认使用哪个 `data/upstreams` 记录；页面 front matter 可以覆盖 |
+| `params.upstream_modified` | 布尔 | `false` | 上游材料是否经过改编的站点默认值；页面可以覆盖，没有 `upstream_link` 时不渲染署名 |
 | `params.default_featured` | — | — | 已移除，改写 `params.images` 或栏目 `cascade` 里的 `images`。同上，旧键现在只是一个没人读的键 |
 {.fields meta="type default"}
 
@@ -363,11 +368,12 @@ Mermaid、KaTeX、ECharts、Infographic、Asciinema、Swagger UI 与 Redoc 按�
 
 ## 输出格式 {#outputs}
 
-主题声明了两种自定义输出格式，但 **不替站点打开**：要哪种就在 `outputs` 里写哪种。
+主题声明自定义输出格式，但 **不替站点打开**：要哪种就在 `outputs` 里写哪种。成本
+较高的聚合输出与机器可读输出始终需要显式选择。
 
 ```yaml {title="hugo.yml"}
 outputs:
-  home: [HTML, markdown, LLMS]
+  home: [HTML, markdown, LLMS, NAVJSON]
   page: [HTML, markdown]
   section: [HTML, RSS, print, markdown]
 ```
@@ -377,8 +383,15 @@ outputs:
 | `HTML` | `index.html` | 交互形态，必选 |
 | `markdown` | `index.md` | 每页的纯 Markdown 版本，页面操作里的「复制 Markdown」「查看源码」依赖它，见 [Agent 支持](/zh/docs/customize/agents/) |
 | `LLMS` | `llms.txt` | 主题声明的纯文本格式，通常只挂在 `home` |
+| `LLMSFULL` | `llms-full.txt` | 顶层栏目 opt-in：按侧栏阅读顺序拼接同一份逐页 Markdown，每种语言一份全文包 |
+| `NAVJSON` | `navigation.json` | 首页 opt-in：每种语言把侧栏 / 翻页使用的导航权威序列化一次，由 `schema/nav.v1.schema.json` 校验 |
 | `print` | `_print/index.html` | 主题声明的整分区打印页，见[打印支持](/zh/docs/customize/print/) |
+| `BookManifest` | `book.json` | Book 根 opt-in，向 EPUB/PDF 打包工具交接的 JSON；本身不是电子书 |
 | `RSS` | `index.xml` | Hugo 原生，挂在 `section` 上让每个栏目都有订阅源 |
+
+`LLMSFULL` 与 `BookManifest` 写在对应顶层栏目的 front matter `outputs` 中，
+`NAVJSON` 写在 `outputs.home`。完整示例与限制见 [Agent 支持](/zh/docs/customize/agents/)
+和[书籍出版](/zh/docs/write/book/)。
 
 打印输出的两个参数：
 

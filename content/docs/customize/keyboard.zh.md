@@ -105,7 +105,9 @@ keyboard_nav: false
 ---
 ```
 
-这个键只接受布尔值，写成 `"false"` 或其它值时构建失败，报 `params.ui.keyboard_nav must be a boolean`。完整定义见[配置总览](/zh/docs/customize/config/)。
+这个键只接受布尔值。写成 `"false"` 或其它值时，普通预览告警并使用站点默认值；
+严格发布构建因 `params.ui.keyboard_nav must be a boolean` 失败。完整定义见
+[配置总览](/zh/docs/customize/config/)。
 
 关闭后运行时不进入 JavaScript bundle，而不是加载后再判断。{{< kbd "/" >}}、反斜杠和 {{< kbd "⌘" "K" >}} 属于搜索，仍然可用；页脚折叠链接栅格的箭头不受影响。
 

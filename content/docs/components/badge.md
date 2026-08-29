@@ -40,8 +40,9 @@ These five values, and no custom colours.
 {{< badge text="Experimental" tone="warning" >}}
 {{< badge text="Deprecated" tone="danger" >}}
 
-Without `tone` the badge is `neutral`. Any other value fails the build, and the
-error names the source location.
+Without `tone` the badge is `neutral`. Any other value warns and uses `neutral`
+in ordinary preview; the warning names the source location and fails a strict
+publishing build.
 
 ## Inside a sentence {#inline}
 
@@ -50,14 +51,14 @@ A badge is an inline element that follows a name; it never takes its own line.
 ```markdown {title="Source"}
 With `params.ui.image_zoom` {{</* badge text="off by default" tone="neutral" */>}} enabled,
 block images that have alt text open full size. PlantUML {{</* badge text="needs a server" tone="warning" */>}}
-and Draw.io {{</* badge text="needs a server" tone="warning" */>}} fail the build when no endpoint is
-configured, rather than reaching for a public service.
+and Draw.io {{</* badge text="needs a server" tone="warning" */>}} warn and remain off when no
+endpoint is configured, rather than reaching for a public service.
 ```
 
 With `params.ui.image_zoom` {{< badge text="off by default" tone="neutral" >}} enabled,
 block images that have alt text open full size. PlantUML {{< badge text="needs a server" tone="warning" >}}
-and Draw.io {{< badge text="needs a server" tone="warning" >}} fail the build when no endpoint is
-configured, rather than reaching for a public service.
+and Draw.io {{< badge text="needs a server" tone="warning" >}} warn and remain off when no
+endpoint is configured, rather than reaching for a public service.
 
 ## Next to a heading {#in-headings}
 
@@ -102,13 +103,13 @@ Badges make a comparison table easier to scan than a column of "yes" and "no".
 
 ```markdown {title="Source"}
 1. Install Hugo Extended {{</* badge text="≥ 0.160.1" tone="info" */>}}
-1. Clone the documentation site and change `baseURL` in `hugo.yml`
+1. Create a site from OINK Starter and change `baseURL` in `hugo.yaml`
 1. `hugo server` to preview {{</* badge text="port 1313" tone="neutral" */>}}
 {.steps}
 ```
 
 1. Install Hugo Extended {{< badge text="≥ 0.160.1" tone="info" >}}
-1. Clone the documentation site and change `baseURL` in `hugo.yml`
+1. Create a site from OINK Starter and change `baseURL` in `hugo.yaml`
 1. `hugo server` to preview {{< badge text="port 1313" tone="neutral" >}}
 {.steps}
 
@@ -150,7 +151,8 @@ for the upgrade steps see {{</* badge text="Upgrading" tone="neutral" link="/doc
 Current version {{< badge text="v0.5" tone="info" link="/blog/" >}};
 for the upgrade steps see {{< badge text="Upgrading" tone="neutral" link="/docs/admin/upgrade/" >}}.
 
-An illegal link — a scheme outside the allowlist — fails the build.
+An illegal link warns and is dropped, leaving a plain badge in ordinary
+preview; strict publishing rejects the warning.
 
 ## Output {#outputs}
 
@@ -174,8 +176,9 @@ anything to a screen reader.
 {.fields meta="type default"}
 
 Named parameters only. There is no `icon`, `class`, `color`, `outline` or `size`
-parameter; an unknown parameter, an empty `text`, an invalid `tone` and an
-illegal link all fail the build.
+parameter. Invalid input warns and takes the safe result: unknown parameters
+are ignored, empty `text` renders nothing, bad `tone` becomes `neutral`, and an
+unsafe link is dropped. Strict publishing rejects every such warning.
 
 ## Limits {#limits}
 

@@ -159,7 +159,8 @@ of `lastmod_commit`:
 | `hash` | `commit a1b2c3d` |
 | `none` | The date only, with no commit link |
 
-Any other value fails the build with `invalid params.ui.lastmod_commit`.
+Any other value warns and uses `subject` during ordinary preview; a strict
+publishing build fails on `invalid params.ui.lastmod_commit`.
 
 Two things to watch:
 
@@ -270,8 +271,9 @@ items:
 {{</* contributors */>}}
 ```
 
-The fields: `github` is required (validated as a GitHub username, and a
-duplicate fails the build); `name` defaults to `github`; `role` is optional;
+The fields: `github` is required and validated as a GitHub username; a
+duplicate warns and skips the repeated entry, and strict publishing rejects
+the warning. `name` defaults to `github`; `role` is optional;
 `url` defaults to `https://github.com/<github>`; `avatar` is optional, and
 without it an initial placeholder block is rendered with no network request at
 all, while a value must be `http(s)://` or a site-root-relative path.

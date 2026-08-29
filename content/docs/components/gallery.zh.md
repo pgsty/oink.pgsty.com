@@ -80,7 +80,8 @@ image_zoom: true
 ![浅色首页（静态路径）](/images/hero-light.webp) # static/images/… 下的图，原样发布
 ```
 
-页面资源与全局资源找不到时构建失败；静态路径与远程 URL 不检查存在性。
+页面 / 全局资源无法解析时按静态路径保留，与显式静态路径相同；主题不检查静态路径
+与远程 URL 是否存在。
 
 ## 装饰图与缩放 {#zoom}
 
@@ -159,7 +160,8 @@ image_zoom: true
 | `class` | class 列表 | — | 透传给站点 CSS |
 {.fields meta="type default"}
 
-没有 `columns`、`caption`、`title` 属性。行首不是图片、`#` 之外的尾随文字、空说明、未知属性、格式错误的 `{…}` 都会让构建失败，报错给出围栏内的行号。
+没有 `columns`、`caption`、`title` 属性。坏行或坏属性会告警，只丢弃无效部分或该行，
+并给出围栏内行号；严格发布构建拒绝这条警告。
 
 ## 限制与常见问题 {#limits}
 

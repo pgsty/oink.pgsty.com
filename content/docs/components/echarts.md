@@ -10,7 +10,8 @@ The body of an `echarts` fence is an ECharts option object in YAML or JSON — n
 code. Use it for quantitative charts that need axes, series and a legend. For
 relationships and flows use [Mermaid](/docs/components/mermaid/); for order and
 hierarchy use [Infographic](/docs/components/infographic/). Hugo parses the
-options at build time and fails the build if they do not parse; the browser
+options at build time; invalid input warns and leaves its source readable in an
+ordinary preview, while strict publishing rejects the warning. The browser
 draws with the ECharts copy the theme ships, and only a page that uses it loads
 the runtime.
 
@@ -32,7 +33,7 @@ yAxis:
 series:
   - name: pages
     type: bar
-    data: [4, 3, 8, 22, 15, 7]
+    data: [4, 4, 8, 22, 15, 7]
 ```
 ````
 
@@ -48,12 +49,13 @@ yAxis:
 series:
   - name: pages
     type: bar
-    data: [4, 3, 8, 22, 15, 7]
+    data: [4, 4, 8, 22, 15, 7]
 ```
 
 Both formats are accepted; YAML needs no quotes or commas and is shorter to
 write. Broken indentation, or a body that parses to an array instead of a map,
-fails the build on that line rather than emitting a blank chart.
+warns on that line and renders the source instead of a blank chart. Strict
+publishing rejects the warning.
 
 ## Multiple line series {#line}
 
@@ -226,8 +228,8 @@ series:
     data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ```
 
-An invalid height (`360`, `36pt`) fails the build rather than falling back to
-the default.
+An invalid height (`360`, `36pt`) warns and uses the default in ordinary
+preview; strict publishing rejects the warning.
 
 ## Light and dark {#theme}
 
@@ -278,7 +280,7 @@ options and register that name on `window.OinkEchartsFunctions`:
   window.OinkEchartsFunctions = window.OinkEchartsFunctions || {};
   window.OinkEchartsFunctions.pageShare = function (params) {
     var p = params[0];
-    return p.name + ': ' + p.value + ' pages, ' + Math.round((p.value / 59) * 100) + '% of the site';
+    return p.name + ': ' + p.value + ' pages, ' + Math.round((p.value / 60) * 100) + '% of the site';
   };
 </script>
 
@@ -293,7 +295,7 @@ yAxis:
   type: value
 series:
   - type: bar
-    data: [4, 3, 8, 22, 15, 7]
+    data: [4, 4, 8, 22, 15, 7]
 ```
 ````
 
@@ -301,7 +303,7 @@ series:
   window.OinkEchartsFunctions = window.OinkEchartsFunctions || {};
   window.OinkEchartsFunctions.pageShare = function (params) {
     var p = params[0];
-    return p.name + ': ' + p.value + ' pages, ' + Math.round((p.value / 59) * 100) + '% of the site';
+    return p.name + ': ' + p.value + ' pages, ' + Math.round((p.value / 60) * 100) + '% of the site';
   };
 </script>
 
@@ -316,7 +318,7 @@ yAxis:
   type: value
 series:
   - type: bar
-    data: [4, 3, 8, 22, 15, 7]
+    data: [4, 4, 8, 22, 15, 7]
 ```
 
 Hover any bar and the tooltip is the sentence that function builds. An
@@ -355,15 +357,15 @@ The fence attribute line (```` ```echarts {…} ````):
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `height` | CSS length | `400px` | A non-negative number plus `px` `rem` `em` `vh` `vw` `%`; anything else fails the build |
+| `height` | CSS length | `400px` | A non-negative number plus `px` `rem` `em` `vh` `vw` `%`; anything else warns and uses the default |
 | `theme` | string | unset | Pin an ECharts theme and stop following the site's colour scheme; only `dark` is built in |
 | `full` | bool | `false` | `true` drops the reading-column limit and fills the content area |
 | `class` | space-separated classes | — | Passed through to the container for site CSS |
 {.fields meta="type default"}
 
-`style`, `on*` and any other unknown attribute fail the build. The fence body
-must parse to a YAML/JSON map; failing to parse, or parsing to an array, fails
-too. The option keys themselves are ECharts', documented in the
+`style`, `on*`, and unknown attributes warn and are ignored. A fence body that
+does not parse to a YAML/JSON map warns and renders as source. Strict publishing
+rejects all these warnings. The option keys themselves are ECharts', documented in the
 [official option manual](https://echarts.apache.org/en/option.html).
 
 There is no site-level parameter: ECharts needs no switch in `hugo.yml` and

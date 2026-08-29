@@ -83,7 +83,10 @@ layout: releases
 7b3d9e0c145a8f26d0b7e93c48156aa2f0d9c7b31e846a5029df1b6c7a3e8250 *oink-0.4.0-darwin-arm64.tar.gz
 ```
 
-只接受两种行：`<十六进制><两个空格><文件名>` 与 `<十六进制><空格>*<文件名>`。空行与以 `#` 开头的行忽略。哈希长度决定算法（MD5 / SHA-1 / SHA-256 / SHA-512），一个块里只能有一种算法。格式错误的行带着行号让构建失败。文件名必须是单个路径段。类型、操作系统与架构徽章由文件名推断，属于装饰，推断不出时不显示。
+只接受两种行：`<十六进制><两个空格><文件名>` 与 `<十六进制><空格>*<文件名>`。空行
+与以 `#` 开头的行忽略。哈希长度决定算法（MD5 / SHA-1 / SHA-256 / SHA-512），一个块
+里只能有一种算法。格式错误的行带行号告警并跳过；严格发布构建拒绝这条警告。文件名
+必须是单个路径段。类型、操作系统与架构徽章由文件名推断，属于装饰，推断不出时不显示。
 
 资产链接的基址：页面有 `release_url` front matter 时推导为 `https://github.com/<repo>/releases/download/<tag>/`；没有发布事实的页面必须显式写 `base=`。两者同时存在时报错。
 
@@ -150,11 +153,13 @@ channels:
       aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  oink-0.4.0.tar.gz
 ```
 
-记录级字段只有 `version` `repo` `tag` `published` `channels` 五个，多写一个键即构建失败。`version` 也可以不写在这里，改由站点的 `params.version` 提供。
+记录级字段只有 `version` `repo` `tag` `published` `channels` 五个。多写一个键时告警并
+跳过记录，严格发布构建拒绝这条警告。`version` 也可以不写在这里，改由站点的
+`params.version` 提供。
 
 | 字段 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `version` | 字符串 | 站点 `params.version` | 两处都没有则构建失败 |
+| `version` | 字符串 | 站点 `params.version` | 两处都没有时告警并跳过区块 |
 | `repo` | `owner/name` | — | 固定版本渠道有链接或资产时必填 |
 | `tag` | 字符串 | `v{version}` | 只允许 URL 安全字符 |
 | `published` | 布尔 | `true` | `false` 表示不可变发布还不存在 |

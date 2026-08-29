@@ -81,7 +81,8 @@ markup:
       unsafe: true
 ```
 
-`filename` is a historical alias of `title`; writing both fails the build.
+`filename` is a historical alias of `title`; writing both warns and uses
+`filename`. Strict publishing rejects the warning.
 
 ## Line numbers, start line and highlighting {#line-numbers}
 
@@ -150,8 +151,8 @@ CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 
 `wrap=true` cannot coexist with table line numbers: the number column and the
 code column are two table cells, and wrapping puts them out of step. Writing
-both fails the build, and the error suggests `lineNos="inline"` or dropping the
-wrap.
+both warns and disables wrapping, suggesting `lineNos="inline"` or dropping the
+wrap. Strict publishing rejects the warning.
 
 ## Folding long code {#collapse}
 
@@ -226,8 +227,9 @@ INFO installing pg_duckdb
 ```
 
 To copy prompts and output too, write `copy="all"`. Using `copy="command"` on an
-ordinary lexer such as `bash` or `sh` fails the build, because those cannot tell
-prompt, command and output apart. For multi-line commands, write the
+ordinary lexer such as `bash` or `sh` warns and uses `copy="all"`, because those
+cannot tell prompt, command and output apart. Strict publishing rejects the
+warning. For multi-line commands, write the
 continuation prompt (usually `>`) on the continuation lines, or they are treated
 as output and excluded.
 
@@ -291,8 +293,8 @@ Without an `id` the theme still generates one that is unique on the page, but it
 depends on where the fence sits in the page — insert another fence above it and
 the ID changes. Only an author-written `id` is a permanent link. IDs must not
 contain whitespace or control characters, and must not collide with any other
-viewport, tab, panel, title or line-anchor ID on the page; a collision fails the
-build.
+viewport, tab, panel, title or line-anchor ID on the page. Invalid or duplicate
+IDs warn, and strict publishing rejects the warning.
 
 ## Numbered examples {#numbered}
 
@@ -319,7 +321,8 @@ WHERE n_dead_tup > n_live_tup * 0.2;
 
 See {{< xref eg="4-1" anchor="eg-bloat" />}}.
 
-`num` and `caption` must appear together; one without the other fails the build.
+`num` and `caption` must appear together. A lone caption is ignored and a lone
+number is dropped with a warning; strict publishing rejects the warning.
 `num` is mutually exclusive with the tab attribute `tab`. For numbering and
 indexing figures, tables and equations, see
 [publishing books](/docs/write/book/).
@@ -363,10 +366,9 @@ in running text — are on the [Tabs](/docs/components/tabs/) page.
 - Attributes go on the info line: a fence's attributes follow the language on
   the opening line. Only tables and images take their attributes on the line
   below. Put them on the next line and you get a visible line of braces.
-- Unknown attributes fail rather than being ignored, and the error lists the
-  allowed names. `style`, `srcdoc` and `on*` are rejected; the `data-td-code*`
-  prefix plus `data-language`, `data-line-count` and `data-collapse-lines` are
-  reserved by the theme and fail the build too.
+- Unknown, unsafe, and theme-reserved attributes warn and are ignored in
+  ordinary preview; the message lists the allowed names. Strict publishing
+  rejects every such warning.
 - Fences in list items: indent them to line up with the item's content (three
   spaces after `1.`), or the fence leaves the list.
 
@@ -389,7 +391,7 @@ Inside the `{…}` after the language on the opening line, OINK's own attributes
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `title` | non-empty string | none | The visible title bar (usually a filename) and the accessible name |
-| `filename` | non-empty string | none | Historical alias of `title`; both together fail the build |
+| `filename` | non-empty string | none | Historical alias of `title`; both together warn and use `filename` |
 | `copy` | `all` `command` `true` `false` | `command` for session lexers, `all` otherwise | `true` is `all`; `command` is allowed only on `console`/`shell-session` |
 | `wrap` | boolean | `false` | Visual wrapping, source unchanged; mutually exclusive with table line numbers |
 | `collapse` | positive integer | none | Lines shown initially; ignored when the block is shorter |
@@ -406,8 +408,9 @@ Inside the `{…}` after the language on the opening line, OINK's own attributes
 
 `title`, `filename` and `label` already give the block an accessible name and
 `role="group"`. Any of them together with `aria-label`, `aria-labelledby` or
-`role` fails the build; those three attributes pass through only when the block
-has neither a title nor a `label`.
+`role` warns and ignores the conflicting attribute; strict publishing rejects
+the warning. Those three attributes pass through only when the block has
+neither a title nor a `label`.
 
 The same line also takes Chroma options, which the theme hands to Hugo unchanged:
 
@@ -425,8 +428,9 @@ The same line also takes Chroma options, which the theme hands to Hugo unchanged
 - No swapping the highlighter: there is no Shiki, no Twoslash, no
   browser-side highlighting and no runnable playground. For patches use a `diff`
   fence — Chroma's `.gi`/`.gd` are the added / removed line styles.
-- `copy="command"` recognizes session lexers only: on any other language it is a
-  build error, never a silent fallback to copying everything.
+- `copy="command"` recognizes session lexers only: on any other language it
+  warns and falls back to copying everything; strict publishing rejects the
+  warning.
 - A generated ID is not a permanent link: write `id` when you intend to share
   one.
 - `mermaid`, `math`, `chem`, `markmap`, `plantuml`, `echarts`, `infographic`,

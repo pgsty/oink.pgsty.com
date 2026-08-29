@@ -6,7 +6,11 @@ weight: 120
 search_keywords: [svg-image-url, PlantUML, UML, sequence, class, component, activity, usecase, 时序图, 类图, 组件图, 活动图, 用例图]
 ---
 
-`plantuml` 围栏里写 PlantUML 源码，浏览器把源码压缩编码后拼在一个 PlantUML 服务的 URL 后面，换回一张 SVG。适合需要完整 UML 表达力的时序图、类图、组件图、活动图与用例图。渲染依赖一个渲染服务：主题不提供默认端点，`enable: true` 却没给 `svg_image_url` 会让构建失败；没有可用服务时改用 [Mermaid](/zh/docs/components/mermaid/)。
+`plantuml` 围栏里写 PlantUML 源码，浏览器把源码压缩编码后拼在一个 PlantUML 服务的
+URL 后面，换回一张 SVG。适合需要完整 UML 表达力的时序图、类图、组件图、活动图与
+用例图。渲染依赖一个服务：主题不提供默认端点；`enable: true` 却没给
+`svg_image_url` 时，普通预览告警并保持关闭，严格发布构建拒绝这条警告。没有可用
+服务时改用 [Mermaid](/zh/docs/components/mermaid/)。
 
 > [!WARNING] 本页只给源码，不放渲染结果
 > PlantUML 要连你自己的服务，本站不假设读者有哪个端点可用。当前主题版本的 `plantuml` 围栏还会把 `<`、`>`、`&`、`"` 二次转义，带箭头或引号的源码送到端点后返回 `Syntax Error?` 图（见[限制与常见问题](#limits)）。下面每段源码本身都是正确的 PlantUML。
@@ -208,7 +212,7 @@ params:
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
 | `params.plantuml.enable` | bool | `false` | 关闭时围栏保持为代码块，不加载运行时 |
-| `params.plantuml.svg_image_url` | string | 无 | 渲染端点，编码后的源码直接拼在它后面；`enable: true` 时必填，否则构建失败 |
+| `params.plantuml.svg_image_url` | string | 无 | 渲染端点，编码后的源码直接拼在它后面；`enable: true` 时必填，否则告警并保持关闭 |
 | `params.plantuml.svg` | bool | `false` | `false` 插 `<img src>`；`true` 插 `<svg data-src>` 并额外加载外部 SVG 加载器，SVG 内容进 DOM、可被 CSS 影响 |
 {.fields meta="type default"}
 

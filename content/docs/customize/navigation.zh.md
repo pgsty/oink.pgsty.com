@@ -71,7 +71,7 @@ menus:
       weight: 10
       params:
         icon: fa-solid fa-rocket
-        description: 安装 Hugo，克隆本站，十分钟完成部署
+        description: 从 OINK Starter 起步，分层定制并部署
     - identifier: docs-components
       parent: docs
       name: 组件

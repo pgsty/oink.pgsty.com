@@ -97,7 +97,7 @@ cards:
 
 cta:
   title: 从一个能跑的双语站点开始。
-  text: 克隆文档站，删掉不要的，改成自己的。
+  text: 从 OINK Starter 起步，替换项目身份与内容，再发布上线。
   label: 开始使用
   url: docs/start/
   style: primary
@@ -109,7 +109,7 @@ Hero 是首屏，唯一一个带大标题与配图的分区。
 
 ```yaml {title="data/home/zh.yaml"}
 hero:
-  eyebrow: OINK 0.4.0 · 本地优先          # 标题上方的小字，带状态点
+  eyebrow: PROJECT 1.0 · 本地优先         # 标题上方的小字，带状态点
   title_lines:                            # 逐行控制的大标题
     - words:
         - { text: PGSTY OINK }
@@ -133,7 +133,9 @@ hero:
 
 不写 `title_lines` 时用 `title`，两者都没有时用站点标题。配图是 CSS 背景图，`alt` 有值时容器带 `role="img"`，无值时对辅助技术隐藏。
 
-`align: center` 是纯文字的居中首屏：文案块加宽居中，标题自动平衡换行，`note` 挪到按钮下方。它不接受 `image`，两者同时出现构建失败。
+`align: center` 是纯文字的居中首屏：文案块加宽居中，标题自动平衡换行，`note`
+挪到按钮下方。两者同时出现时，普通预览会告警并回退到 `start` 以保留图片；严格
+发布构建拒绝这条警告。
 
 ## 分区注册表 {#registry}
 
@@ -326,7 +328,8 @@ landing: pricing
       - zh.yaml
 ```
 
-非首页落地页按这个顺序查找数据，找不到则构建失败，不会渲染空页面：
+非首页落地页按这个顺序查找数据。全部找不到时，普通预览告警并渲染没有分区的
+Landing 外壳；严格发布构建拒绝这条警告：
 
 1. 页面 front matter 里的 `sections`；
 2. `data/landing/<key>/<精确语言>.yaml`；
@@ -380,7 +383,10 @@ params:
     alt_site: { label: English site, url: 'https://example.com/' }
 ```
 
-页脚不属于首页数据：它读 `data/footer/<语言>.yaml`（单语言站点用 `data/footer.yaml`），本站两种语言各一份。`data/home/<语言>.yaml` 里残留的 `footer` 键会让构建失败并提示新位置。写法见[导航与菜单](/zh/docs/customize/navigation/)。
+页脚不属于首页数据：它读 `data/footer/<语言>.yaml`（单语言站点用
+`data/footer.yaml`），本站两种语言各一份。`data/home/<语言>.yaml` 里残留的
+`footer` 键会在普通预览中告警并忽略，`--panicOnWarning` 会拒绝它并提示新位置。
+写法见[导航与菜单](/zh/docs/customize/navigation/)。
 
 ## 输出形态 {#outputs}
 

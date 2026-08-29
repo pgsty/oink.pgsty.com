@@ -153,8 +153,9 @@ keyboard_nav: false
 ---
 ```
 
-The key accepts a boolean only; `"false"` or any other value fails the build
-with `params.ui.keyboard_nav must be a boolean`. The full definition is in
+The key accepts a boolean only; `"false"` or any other value warns and uses the
+site default during ordinary preview. A strict publishing build fails on
+`params.ui.keyboard_nav must be a boolean`. The full definition is in
 [Configuration](/docs/customize/config/).
 
 Turned off, the runtime never enters the JavaScript bundle rather than loading

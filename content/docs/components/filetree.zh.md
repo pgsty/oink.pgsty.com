@@ -140,7 +140,8 @@ content/docs
 3 directories, 5 files
 ```
 
-退回到未打开过的缩进层级时构建失败，报错里带围栏内的行号。
+退回到未打开过的缩进层级时告警并跳过该行；消息带围栏内的行号，严格发布构建
+拒绝这条警告。
 
 ## 折叠与显式类型 {#dir-file}
 
@@ -283,7 +284,7 @@ content/docs
 
 | 属性 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `icon` | Font Awesome class 对 | 按名字 / 扩展名匹配 | 例如 `fa-solid fa-lock`；格式不符构建失败 |
+| `icon` | Font Awesome class 对 | 按名字 / 扩展名匹配 | 例如 `fa-solid fa-lock`；格式不符时告警并使用默认图标 |
 | `tone` | 枚举 | `neutral` | `neutral` `info` `success` `warning` `danger`，只给图标上色 |
 | `open` | 布尔 | `true` | 仅目录；`false` 表示初始收起 |
 | `type` | 枚举 | 自动判断 | `dir` 或 `file`，覆盖自动判断 |
@@ -301,7 +302,9 @@ content/docs
 | `N directories, M files` | `tree` 的统计行，自动丢弃 |
 {.fields}
 
-未知属性、未知取值、写在文件上的 `open`、格式错误的 `{…}`、退回到未打开过的缩进层级，都会构建失败，并给出围栏内的行号。
+未知属性、未知取值、写在文件上的 `open`、格式错误的 `{…}`、退回到未打开过的
+缩进层级，都会告警并采用安全回退或跳过坏行，消息给出围栏内行号；严格发布构建
+拒绝这些警告。
 
 ## 限制与常见问题 {#limits}
 

@@ -50,7 +50,8 @@ hugo server
 | 2 | 全局资源 `assets/` 下的文件 | `file="snippets/dsn.txt"` |
 | 3 | `content/` 下的文件：`/` 开头是内容根目录，否则相对当前页面所在目录 | `file="notes/caveat.md"`、`file="/shared/notice.md"` |
 
-三处都找不到时构建失败，不输出占位内容。路径里含 `..` 也让构建失败：引用只能在 `content/` 与 `assets/` 中取文件。
+三处都找不到，或路径里含 `..` 时，引用会告警并不输出。严格发布构建拒绝这条警告：
+引用只能在 `content/` 与 `assets/` 中取文件。
 
 引 Markdown 片段时写文件在磁盘上的真名。有一个陷阱只属于第 1 步：Hugo 把带语言后缀的页面资源（如 `notice.zh.md`）按去掉后缀的名字挂在页面上，向页面包索取 `notice.md` 拿到的是已渲染的 HTML 而不是源码，Markdown 输出里会出现 `<div class="td-code">`。`assets/` 与 `content/` 下写什么名字就取什么文件，没有这层转换。非 Markdown 文件（`.yaml`、`.sh`、`.txt`）也没有这个区别。
 
@@ -69,7 +70,7 @@ hugo server
 代码块与围栏走同一条渲染管线：高亮、行号、复制按钮都有。围栏属性（`title=`、`collapse`、`hl_lines=`）传不进来，需要它们时把文件内容写成普通[代码块](/zh/docs/components/code/)。
 
 ## 片段内容 {#snippet-content}
-片段是页面级 Markdown，在当前页面的上下文里渲染：提示块、表格、列表、图片、步骤与 shortcode 都可以用。上面那段片段结尾的「当前发布版本是 v0.8.0」，是片段里的 `{{</* param version */>}}` 在本页展开的结果。
+片段是页面级 Markdown，在当前页面的上下文里渲染：提示块、表格、列表、图片、步骤与 shortcode 都可以用。上面那段片段结尾的「当前发布版本是 v0.8.1」，是片段里的 `{{</* param version */>}}` 在本页展开的结果。
 
 一个片段被两页引用时，两页各自渲染一遍，各自生成标题锚点与代码块 ID，互不冲突。
 
@@ -88,7 +89,8 @@ hugo server
 本站发布版本 {{< param version >}}，版权起始年 {{< param copyright.from_year >}}，
 本页 front matter 里写了 `pigsty_pg_major: 18`，这里取到 {{< param pigsty_pg_major >}}。
 
-嵌套键用 `.` 连接，`copyright.from_year` 取的是 `params.copyright.from_year`。参数不存在、或者值是 map 与列表而不是标量时构建失败，不会留下空白。
+嵌套键用 `.` 连接，`copyright.from_year` 取的是 `params.copyright.from_year`。参数不存在，
+或者值是 map / 列表而不是标量时，告警并不输出；严格发布构建拒绝这条警告。
 
 ## 在命令、表格与链接里插参数 {#param-in-place}
 
@@ -163,18 +165,18 @@ Markdown 输出里片段是源码而不是 HTML，片段里的 shortcode 保持 
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `file` | 路径（必填） | — | 解析顺序见[文件放在哪](#sources)；含 `..`、文件缺失、空值都构建失败 |
-| `code` | 布尔 | `false` | `true` 时按代码块渲染；必须写成 `code=true`，带引号的 `code="true"` 是字符串，构建失败 |
-| `lang` | 字符串 | — | 代码语言；只能与 `code=true` 同用，单独出现构建失败 |
+| `file` | 路径（必填） | — | 解析顺序见[文件放在哪](#sources)；含 `..`、文件缺失、空值时告警并不输出 |
+| `code` | 布尔 | `false` | `true` 时按代码块渲染；带引号的 `code="true"` 会告警并按普通内容引入 |
+| `lang` | 字符串 | — | 代码语言；没有 `code=true` 时告警并忽略 |
 {.fields meta="type default"}
 
-其它任何参数名都会构建失败，报错里带文件名与行号。
+其它参数名会告警并忽略，消息带文件名与行号；严格发布构建拒绝这条警告。
 
 `param`（一个位置参数）：
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| 参数名 | 字符串（必填） | — | 嵌套键用 `.` 连接；先页面 front matter 后站点 `params`；缺失或非标量（map / 列表）构建失败 |
+| 参数名 | 字符串（必填） | — | 嵌套键用 `.` 连接；先页面 front matter 后站点 `params`；缺失或非标量时告警并不输出 |
 {.fields meta="type default"}
 
 `comment` 没有参数，成对使用，`{{</* comment */>}}` 与 `{{</* /comment */>}}` 之间的内容整段丢弃。

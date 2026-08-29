@@ -46,12 +46,12 @@ hugo --gc --minify --baseURL "https://example.com/docs/"
 {{< tabs group="host" default="ghpages" label="托管商" >}}
 {{< tab label="GitHub Pages" value="ghpages" >}}
 
-源码托管在 GitHub 时，一份 Actions 工作流就够：构建在 Actions 里执行，产物通过 Pages 部署 API 发布，不需要维护 `gh-pages` 分支。
+源码托管在 GitHub 时，一份 Actions 工作流就够：构建在 Actions 里执行，产物通过
+Pages 部署 API 发布，不需要维护 `gh-pages` 分支。OINK Starter 已经包含下面的文件；
+只有手工组装站点时才需要复制。
 
-把下面的文件提交到仓库：
-
-```yaml {title=".github/workflows/pages.yml" lineNos="inline" collapse=30}
-name: Deploy Oink site to GitHub Pages
+```yaml {title=".github/workflows/github-pages.yaml" lineNos="inline" collapse=30}
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -64,35 +64,33 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: github-pages
   cancel-in-progress: false
 
 env:
-  GO_VERSION: 1.26.6
-  HUGO_VERSION: 0.164.0
+  HUGO_VERSION: 0.165.0
   # 同级 checkout 的 workspace 绝不能参与 CI 构建
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
   HUGO_CACHEDIR: ${{ github.workspace }}/.hugo_cache
-  GOMODCACHE:
-    ${{ github.workspace }}/.hugo_cache/modules/filecache/modules/pkg/mod
 
 jobs:
   build:
     name: Build Pages artifact
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Check out source
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Set up Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@v7
         with:
-          go-version: ${{ env.GO_VERSION }}
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
 
-      - name: Set up Pages
+      - name: Configure GitHub Pages
         id: pages
         uses: actions/configure-pages@v6
 
@@ -103,10 +101,10 @@ jobs:
             "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
           sudo dpkg -i "${RUNNER_TEMP}/hugo.deb"
 
-      - name: Download Hugo module
+      - name: Download OINK
         run: go mod download github.com/pgsty/oink
 
-      - name: Build site
+      - name: Build
         run: |
           hugo --cleanDestinationDir --gc --minify --environment production \
             --printPathWarnings --panicOnWarning \
@@ -118,19 +116,19 @@ jobs:
           path: public
 
   deploy:
-    name: Deploy to GitHub Pages
+    name: Deploy
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Deploy
+      - name: Publish
         id: deployment
         uses: actions/deploy-pages@v5
 ```
 
-这是本站正在使用的工作流。几处不能删：
+这是 OINK Starter 内置的工作流。几处不能删：
 
 - `fetch-depth: 0` — 站点开了 `enableGitInfo` 时，「最后修改时间」和贡献者信息要读完整 Git 历史，浅克隆会让它们为空。
 - `setup-go` + `go mod download` — Hugo Module 方式引入主题时，Hugo 需要 Go 才能解析模块。用 submodule 安装主题的站点改成 `submodules: recursive`，用离线归档的站点把 `themes/oink/` 提交进仓库，这两步都可以去掉。
@@ -140,33 +138,34 @@ jobs:
 
 在仓库 Settings → Pages → Build and deployment 里把 Source 设为 GitHub Actions，推一次 `main`，在 Actions 标签页查看第一次运行。
 
-自定义域名在同一设置页的 Custom domain 里填写，并按提示配置 DNS，随后把 `hugo.yml` 里的 `baseURL` 换成这个域名。发布流程需要产物里带 `CNAME` 文件时，把它放进 `static/CNAME`，Hugo 会原样复制到 `public/`。
+自定义域名在同一设置页的 Custom domain 里填写，并按提示配置 DNS，随后把
+`hugo.yaml` 里的 `baseURL` 换成这个域名。发布流程需要产物里带 `CNAME` 文件时，
+把它放进 `static/CNAME`，Hugo 会原样复制到 `public/`。
 
 {{< /tab >}}
 {{< tab label="Cloudflare Pages" value="cloudflare" >}}
 
-Cloudflare Pages 从关联的 GitHub / GitLab 仓库构建，并为每个评审分支创建预览部署。构建在平台侧完成，仓库里不用放工作流。
+OINK Starter 内置 `.github/workflows/cloudflare-pages.yaml`，使用 Direct Upload。
+严格构建留在 GitHub Actions，Wrangler 把同一份 `public/` 产物上传到 Cloudflare
+Pages 项目。
 
-在 Workers & Pages 里导入仓库，选定生产分支：
-
-| 设置 | 值 |
-| --- | --- |
-| 构建命令 | `hugo --gc --minify --printPathWarnings --panicOnWarning` |
-| 构建输出目录 | `public` |
-| `HUGO_VERSION` | `0.164.0`（或主题验证过的其它版本） |
-| `GO_VERSION` | 仅 Hugo Module 方式需要；固定一个构建镜像支持的版本 |
-| `SKIP_DEPENDENCY_INSTALL` | `1` |
-{.fields}
-
-四点说明：
-
-1. `HUGO_VERSION` 必须显式设置，Production 与 Preview 两个环境都要设。Cloudflare v3 构建镜像的默认 Hugo 版本低于 OINK 要求的 `{{< param hugoMinVersion >}}`，不固定版本会在构建镜像更新时静默改变工具链。
-1. `SKIP_DEPENDENCY_INSTALL=1` 关掉通用依赖安装步骤。OINK 消费端不需要 Node.js，仓库里只给维护工具用的 `package.json` 不应由平台安装。
-1. Hugo 站点不在仓库根目录时，把 Root directory 设成站点目录，输出目录相对它解析。
-1. 预览部署不要当成生产发布。预览需要用自动生成的 Pages URL 作 base URL 时，构建命令改成 `hugo --gc --minify --baseURL "$CF_PAGES_URL"`，生产发布用规范域名重新构建一次。
+1. 创建一个 **Direct Upload** Pages 项目。项目名默认与仓库相同，也可用仓库变量
+   `CLOUDFLARE_PROJECT_NAME` 覆盖。
+1. 添加仓库 secrets：`CLOUDFLARE_ACCOUNT_ID` 与 `CLOUDFLARE_API_TOKEN`。token 需要
+   **Account → Cloudflare Pages → Edit** 权限。
+1. 手动运行一次 **Deploy to Cloudflare Pages**。设置仓库变量
+   `CLOUDFLARE_PAGES_ENABLED=true` 后，每次推送 `main` 才自动部署。
+1. 规范 URL 默认是 `https://<project>.pages.dev/`；自定义域名成为生产地址时设置
+   `CLOUDFLARE_SITE_URL`。
 {.steps}
 
-检查第一次构建日志：正常的 OINK 消费端构建只有一条 Hugo 命令，不会执行 npm、PostCSS、Autoprefixer，也不会下载主题自有的浏览器资源。
+workflow 固定 Hugo Extended 0.165.0，从 `go.mod` 读取 Go 版本，关闭本地模块
+workspace，并在上传前用 `--panicOnWarning` 构建。这是 Starter 用户最可复现的推荐路径。
+
+Cloudflare Git integration 仍然是另一种有效模式：构建命令设为
+`hugo --gc --minify --printPathWarnings --panicOnWarning`，输出目录 `public`，Hugo
+固定 `0.165.0`，Go 固定 `1.27`。同一个项目只用 Git integration 或 Direct Upload
+workflow 其中一种。预览部署仍不等于生产证明；它要按自己的 URL 重建并保持不收录。
 
 {{< /tab >}}
 {{< tab label="其它" value="other" >}}
@@ -179,7 +178,7 @@ command = "hugo --gc --minify --printPathWarnings --panicOnWarning"
 publish = "public"
 
 [build.environment]
-HUGO_VERSION = "0.164.0"
+HUGO_VERSION = "0.165.0"
 ```
 
 用 submodule 安装主题就打开递归 submodule 检出；用 Hugo Module 就要求构建环境有 Git 和 Go。生产与预览应使用同一个 Hugo 版本，除非预览环境本来就是用来测升级的。
@@ -270,8 +269,8 @@ hugo --gc --minify --environment staging --baseURL "$PREVIEW_URL"
 | robots | `<baseURL>/robots.txt` 是 `Allow: /` 并带 `Sitemap:` 行；预览部署应该是 `Disallow: /` |
 | 搜索索引 | 浏览器能取到 `<baseURL>/offline-search-index.<语言>.json`，站内搜索有结果 |
 | Markdown 输出 | 任一页面 URL 后面加 `index.md` 能取到纯文本（站点在 `outputs.page` 里开了 `markdown` 时） |
-| `llms.txt` | `<baseURL>/llms.txt` 与 `<baseURL>/zh/llms.txt` 可访问（站点在 `outputs.home` 里开了 `LLMS` 时） |
-| 两种语言 | 两边的文档页、博客页、首页都能打开，语言切换落到对应页面而不是首页 |
+| `llms.txt` | 站点在 `outputs.home` 里开了 `LLMS` 时，首要语言与每种已启用语言根都能访问 `llms.txt` |
+| 已启用语言 | 每种语言的文档页、博客页、首页都能打开，语言切换落到对应页面而不是首页 |
 | 外观与交互 | 深浅色切换、打印视图、代表性组件（提示块、标签页、代码块复制）正常 |
 | 404 | 访问一个不存在的路径，看到站点自己的 404 页 |
 {.fields}
@@ -282,7 +281,7 @@ hugo --gc --minify --environment staging --baseURL "$PREVIEW_URL"
 
 静态站点的回滚就是重新发布上一个已知可用的 commit，不要在生产上手工改文件。
 
-- GitHub Pages：在 Actions 里找到上一次成功的 `Deploy Oink site to GitHub Pages` 运行，点 Re-run all jobs；或者 `git revert` 出问题的提交再推一次。
+- GitHub Pages：在 Actions 里找到上一次成功的 `Deploy to GitHub Pages` 运行，点 Re-run all jobs；或者 `git revert` 出问题的提交再推一次。
 - Cloudflare Pages / Netlify / Vercel：在部署列表里选上一个成功的部署，用平台的 Rollback / Publish deploy 把它重新设为生产版本。
 - 自建静态服务器：保留上一份 `tar.gz`，解压覆盖。[离线打包](#hosts)里给产物加日期后缀就是为了这一步。
 

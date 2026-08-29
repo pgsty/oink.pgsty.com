@@ -59,7 +59,7 @@ number the table.
 ```markdown {title="Source"}
 | Item | Value |
 | --- | --- |
-| Theme version | v0.8.0 |
+| Theme version | v0.8.1 |
 | Hugo floor | 0.160.1 Extended |
 | Licence | Apache-2.0 |
 {caption="Theme facts this site currently builds against"}
@@ -67,7 +67,7 @@ number the table.
 
 | Item | Value |
 | --- | --- |
-| Theme version | v0.8.0 |
+| Theme version | v0.8.1 |
 | Hugo floor | 0.160.1 Extended |
 | Licence | Apache-2.0 |
 {caption="Theme facts this site currently builds against"}
@@ -228,7 +228,8 @@ The attribute line on the row below the table:
 | `data-*` / `aria-*` | string | none | Passed through |
 {.fields meta="type default"}
 
-`style`, `on*` and any other key fail the build.
+`style`, `on*`, and other keys warn and are ignored; strict publishing rejects
+the warning.
 
 ## Limits {#limits}
 

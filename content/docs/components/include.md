@@ -58,8 +58,8 @@ sidebar, it takes no part in translation pairing, and it has no URL.
 | 2 | A global resource under `assets/` | `file="snippets/dsn.txt"` |
 | 3 | A file under `content/`: a leading `/` is the content root, otherwise relative to the page's directory | `file="notes/caveat.md"`, `file="/shared/notice.md"` |
 
-Missing in all three, the build fails; nothing is emitted as a placeholder. A
-`..` in the path fails the build too: include reads from `content/` and
+Missing in all three, or containing `..`, the include warns and emits nothing.
+Strict publishing rejects the warning: include reads from `content/` and
 `assets/` and nowhere else.
 
 A Markdown fragment is read as source, so write the file's real name on disk.
@@ -96,7 +96,7 @@ cannot be passed through; when you need them, write the content as an ordinary
 
 A fragment is page-level Markdown rendered in the current page's context:
 callouts, tables, lists, images, steps and shortcodes all work. The last line of
-the fragment above — "The current release is v0.8.0" — is its
+the fragment above — "The current release is v0.8.1" — is its
 `{{</* param version */>}}` expanded on this page.
 
 When two pages include one fragment, each renders it separately and each
@@ -122,7 +122,8 @@ and this page's front matter says `pigsty_pg_major: 18`, which reads back as {{<
 
 Nested keys join with `.`, so `copyright.from_year` reads
 `params.copyright.from_year`. A parameter that does not exist, or whose value is
-a map or a list rather than a scalar, fails the build instead of leaving a gap.
+a map or list rather than a scalar, warns and prints nothing; strict publishing
+rejects the warning.
 
 ## Parameters inside commands, tables and links {#param-in-place}
 
@@ -206,18 +207,19 @@ a script.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `file` | path (required) | — | Resolution order in [Where the file comes from](#sources); a `..`, a missing file and an empty value all fail the build |
-| `code` | boolean | `false` | `true` renders as a code block; it must be `code=true` — a quoted `code="true"` is a string and fails |
-| `lang` | string | — | Code language; valid only with `code=true`, and fails on its own |
+| `file` | path (required) | — | Resolution order in [Where the file comes from](#sources); a `..`, missing file, or empty value warns and emits nothing |
+| `code` | boolean | `false` | `true` renders as a code block; quoted `code="true"` warns and includes ordinary content |
+| `lang` | string | — | Code language; without `code=true` it warns and is ignored |
 {.fields meta="type default"}
 
-Any other parameter name fails the build, with the file and line in the error.
+Any other parameter name warns and is ignored, with the file and line in the
+message; strict publishing rejects the warning.
 
 `param` (one positional parameter):
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| parameter name | string (required) | — | Nested keys join with `.`; page front matter first, then site `params`; missing or non-scalar (map / list) fails the build |
+| parameter name | string (required) | — | Nested keys join with `.`; page front matter first, then site `params`; missing or non-scalar values warn and print nothing |
 {.fields meta="type default"}
 
 `comment` takes no parameters. It is used in pairs, and everything between

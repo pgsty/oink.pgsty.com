@@ -75,7 +75,7 @@ search_keywords: [卡片, Cards, card, 链接卡片, 导航卡片, 栏目首页,
 ```markdown {title="源码"}
 {{</* cards */>}}
 {{</* card title="快速上手" link="/zh/docs/start/" icon="fa-solid fa-rocket" badge="从这里开始" */>}}
-Fork 文档站本身，十分钟内完成本地预览。
+使用 OINK Starter，在定制前建立本地预览基线。
 {{</* /card */>}}
 {{</* card title="发布与下载页" link="/zh/docs/write/releases/" icon="fa-solid fa-box-open" badge="v0.5" */>}}
 `release` 事实记录 + 资产表 + 校验和，全部本地生成。
@@ -88,7 +88,7 @@ Fork 文档站本身，十分钟内完成本地预览。
 
 {{< cards >}}
 {{< card title="快速上手" link="/zh/docs/start/" icon="fa-solid fa-rocket" badge="从这里开始" >}}
-Fork 文档站本身，十分钟内完成本地预览。
+使用 OINK Starter，在定制前建立本地预览基线。
 {{< /card >}}
 {{< card title="发布与下载页" link="/zh/docs/write/releases/" icon="fa-solid fa-box-open" badge="v0.5" >}}
 `release` 事实记录 + 资产表 + 校验和，全部本地生成。
@@ -98,7 +98,8 @@ Fork 文档站本身，十分钟内完成本地预览。
 {{< /card >}}
 {{< /cards >}}
 
-图标格式不符（不是 `fa-solid fa-xxx` 这样的一对 class）时构建失败，不会静默丢弃。
+图标不是一对有效的 Font Awesome class 时，普通预览告警并丢弃图标；严格发布构建
+拒绝这条警告。
 
 ## Markdown 正文 {#markdown-body}
 
@@ -136,7 +137,9 @@ Fork 文档站本身，十分钟内完成本地预览。
 
 `image` 与 `![alt](src)` 的解析顺序一致：页面资源 → 全局资源 `assets/` → 静态路径 `/images/…` → 远程 URL。本地资源带上固有尺寸，避免加载跳版。
 
-`image` 必须配一个替代文字来源：`image_alt="…"`（有信息的图）或 `decorative=true`（纯装饰）。两个都写、两个都不写都会构建失败。
+`image` 需要一个替代文字来源：`image_alt="…"`（有信息的图）或
+`decorative=true`（纯装饰）。两个都写时告警并保留 alt；两个都不写时告警并按装饰图
+渲染。严格发布构建会拒绝任一警告。
 
 ```markdown {title="源码"}
 {{</* cards */>}}
@@ -216,7 +219,7 @@ section_index: list
 | --- | --- | --- | --- |
 | `title` | 纯文本 | — | 必填，非空。卡片标题 |
 | `link` | URL | — | 站内路径、相对路径、`http(s):`、`mailto:`；外链自动加 `rel="noopener"` |
-| `icon` | Font Awesome class 对 | — | 例如 `fa-solid fa-rocket`；格式不符构建失败 |
+| `icon` | Font Awesome class 对 | — | 例如 `fa-solid fa-rocket`；格式不符时告警并丢弃 |
 | `badge` | 纯文本 | — | 标题右侧的小标签 |
 | `image` | 图片来源 | — | 页面资源 / 全局资源 / 静态路径 / 远程 URL |
 | `image_alt` | 纯文本 | — | 有 `image` 时与 `decorative` 二选一 |
@@ -224,13 +227,15 @@ section_index: list
 | 正文 | Markdown | — | 卡片描述 |
 {.fields meta="type default"}
 
-没有 `cols`、`columns`、`accent`、`desc`、`color` 参数；未知参数一律构建失败。
+没有 `cols`、`columns`、`accent`、`desc`、`color` 参数。未知参数在普通预览中告警
+并忽略；严格发布构建拒绝这条警告。
 
 ## 限制与常见问题 {#limits}
 
 - `{.cards}` 只认无序列表：有序列表加了这个标记不会变成卡片。
 - `{.cards}` 必须紧贴列表：中间空一行、或缩进进列表项，标记被静默丢弃，构建不报错，列表仍是列表。渲染结果不是卡片时先检查这一行。
-- `card` 只能待在 `cards` 里：单独使用、或放进别的 shortcode，构建失败并指出位置。
+- `card` 只能待在 `cards` 里：单独使用、或放进别的 shortcode 时告警并跳过；严格
+  发布构建拒绝这条警告。
 - 列数不可配：网格按容器宽度自适应，只有栏目首页的自动卡片能用 `params.ui.section_index_columns` 指定列数。
 - 卡片不放长文：描述超过两行时改用正文段落或[提示块](/zh/docs/components/callout/)。
 

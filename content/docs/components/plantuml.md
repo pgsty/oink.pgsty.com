@@ -10,8 +10,9 @@ A `plantuml` fence holds PlantUML source. The browser compresses and encodes it,
 appends it to the URL of a PlantUML server, and gets an SVG back. It suits
 sequence, class, component, activity and use-case diagrams that need the full
 expressiveness of UML. Rendering depends on that server: the theme ships no
-default endpoint, and `enable: true` without `svg_image_url` fails the build.
-With no server available, use [Mermaid](/docs/components/mermaid/) instead.
+default endpoint. `enable: true` without `svg_image_url` warns and leaves
+PlantUML off in ordinary preview; strict publishing rejects the warning. With
+no server available, use [Mermaid](/docs/components/mermaid/) instead.
 
 > [!WARNING] This page shows source only, not rendered diagrams
 > PlantUML has to reach a server you run, and this site assumes no endpoint on
@@ -210,9 +211,9 @@ params:
     svg: false
 ```
 
-- `enable: true` without `svg_image_url` fails the build with
+- `enable: true` without `svg_image_url` warns and stays off with
   `params.plantuml.enable requires an explicit params.plantuml.svg_image_url`.
-  The theme does not pick a public service for the site.
+  Strict publishing rejects the warning. The theme never picks a public service.
 - To self-host, the official image
   [`plantuml/plantuml-server`](https://github.com/plantuml/plantuml-server)
   works; point `svg_image_url` at its `/svg/` path and **keep the trailing
@@ -247,7 +248,7 @@ Site parameters (`hugo.yml`):
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `params.plantuml.enable` | bool | `false` | With it off, the fence stays a code block and no runtime loads |
-| `params.plantuml.svg_image_url` | string | none | The rendering endpoint; the encoded source is appended to it. Required when `enable: true`, otherwise the build fails |
+| `params.plantuml.svg_image_url` | string | none | The rendering endpoint; the encoded source is appended to it. Required when `enable: true`, otherwise PlantUML warns and stays off |
 | `params.plantuml.svg` | bool | `false` | `false` inserts `<img src>`; `true` inserts `<svg data-src>` and loads an external SVG loader, putting the SVG in the DOM where CSS can reach it |
 {.fields meta="type default"}
 

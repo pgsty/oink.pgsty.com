@@ -23,13 +23,13 @@ three spaces.
 
 ```markdown {title="Source"}
 1. Install Hugo Extended
-1. Clone the documentation site
+1. Clone OINK Starter
 1. Start the local preview
 {.steps}
 ```
 
 1. Install Hugo Extended
-1. Clone the documentation site
+1. Clone OINK Starter
 1. Start the local preview
 {.steps}
 
@@ -42,10 +42,10 @@ A list item takes any block content: paragraphs, fenced code, callouts, tables,
 nested lists, images. Indent it to the item's content column — three spaces.
 
 ````markdown {title="Source"}
-1. Clone the documentation site; it is itself a complete example of the theme.
+1. Clone OINK Starter; it is the small project template for the theme.
 
    ```bash
-   git clone https://github.com/pgsty/oink.pgsty.com my-docs
+   git clone https://github.com/pgsty/oink-starter my-docs
    cd my-docs
    ```
 
@@ -69,10 +69,10 @@ nested lists, images. Indent it to the item's content column — three spaces.
 {.steps}
 ````
 
-1. Clone the documentation site; it is itself a complete example of the theme.
+1. Clone OINK Starter; it is the small project template for the theme.
 
    ```bash
-   git clone https://github.com/pgsty/oink.pgsty.com my-docs
+   git clone https://github.com/pgsty/oink-starter my-docs
    cd my-docs
    ```
 

@@ -41,8 +41,9 @@ Sources resolve in the following order, written the same way in each case:
 
 A relative path is looked up first as a page resource and then as a global
 resource; failing both, it is emitted as a static path. The theme does not check
-whether a static path or a remote URL exists. Only an image that asks for
-processing (`command=`) fails the build when its resource cannot be found.
+whether a static path or a remote URL exists. When processing cannot resolve a
+processable resource, ordinary preview warns and leaves the image unprocessed;
+strict publishing rejects the warning.
 
 ## Inline versus block {#inline-vs-block}
 An image inside a line of text is an inline image, rendered as one `<img>` and
@@ -123,8 +124,9 @@ original.
 ![the left half of the shell](oink-shell.webp)
 {command="Fill" options="300x150 Left" caption="Fill 300x150 Left: fills the box, cropped from the left"}
 
-Static paths, remote URLs and SVG cannot be processed, and writing `command` for
-one fails the build. The options syntax (anchors, quality, format conversion, as
+Static paths, remote URLs and SVG cannot be processed. Writing `command` for
+one warns and leaves it unprocessed; strict publishing rejects the warning. The
+options syntax (anchors, quality, format conversion, as
 in `300x150 webp q80`) is in
 [Hugo image processing](https://gohugo.io/content-management/image-processing/).
 
@@ -146,8 +148,8 @@ Two forms, for different purposes:
 ![Release card](release-note.webp)
 {caption="Click the image for the releases and downloads guide" link="/docs/write/releases/"}
 
-A linked image never zooms. Writing `link=` with no caption fails the build, and
-the error points at `[![…](…)](…)` instead.
+A linked image never zooms. Writing `link=` with no caption warns and drops the
+link, pointing at `[![…](…)](…)` instead; strict publishing rejects the warning.
 
 ## Numbered figures {#numbered}
 
@@ -248,8 +250,9 @@ The attribute line `{…}` (the line immediately after a block image):
 | `data-*` / `aria-*` | string | — | Passed through |
 {.fields meta="type default"}
 
-`style`, `on*`, `alt`, `title`, `src` and any other key on the attribute line
-fail the build (alt, title and src belong to the Markdown image itself).
+`style`, `on*`, `alt`, `title`, `src`, and unsupported keys on the attribute
+line warn and are ignored; strict publishing rejects the warning. Alt, title,
+and src belong to the Markdown image itself.
 
 ## Limits {#limits}
 

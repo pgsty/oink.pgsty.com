@@ -51,7 +51,7 @@ aliases:
 ```markdown {title="源码"}
 | 条目 | 取值 |
 | --- | --- |
-| 主题版本 | v0.8.0 |
+| 主题版本 | v0.8.1 |
 | Hugo 下限 | 0.160.1 Extended |
 | 许可证 | Apache-2.0 |
 {caption="本站当前使用的主题事实"}
@@ -59,7 +59,7 @@ aliases:
 
 | 条目 | 取值 |
 | --- | --- |
-| 主题版本 | v0.8.0 |
+| 主题版本 | v0.8.1 |
 | Hugo 下限 | 0.160.1 Extended |
 | 许可证 | Apache-2.0 |
 {caption="本站当前使用的主题事实"}
@@ -205,7 +205,7 @@ aliases:
 | `data-*` / `aria-*` | 字符串 | 无 | 透传 |
 {.fields meta="type default"}
 
-`style`、`on*` 与任何其它键都会让构建失败。
+`style`、`on*` 与其它键会告警并忽略；严格发布构建拒绝这条警告。
 
 ## 限制与常见问题 {#limits}
 
