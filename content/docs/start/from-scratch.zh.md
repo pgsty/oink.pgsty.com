@@ -30,7 +30,7 @@ aliases:
 已有 Hugo 站点时不需要脚手架：装上主题模块，再补三项 goldmark 前置配置（见[写 `hugo.yml`](#config)），正文不用重写。已有 Docsy 站点见[版本升级](/zh/docs/admin/upgrade/)。
 
 后半部分是四种安装方式的取舍：Hugo Module、Git submodule、离线归档、固定版本克隆。
-当前 v0.8.1 发布路径应使用 Go 1.27 与 Hugo Extended 0.165.0；只有刻意维护旧环境的
+当前 v0.8.2 发布路径应使用 Go 1.26 与 Hugo Extended 0.165.0；只有刻意维护旧环境的
 既有站点才使用主题声明的较低兼容下限。
 
 ## 从空目录到第一页 {#scaffold}

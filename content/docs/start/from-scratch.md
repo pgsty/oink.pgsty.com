@@ -32,8 +32,8 @@ three Goldmark prerequisites (see [Writing `hugo.yml`](#config)), and leave the
 content alone. For an existing Docsy site, see [Upgrade](/docs/admin/upgrade/).
 
 The second half weighs four install methods: Hugo Module, Git submodule,
-offline archive, and pinned clone. For the current v0.8.1 release path, use Go
-1.27 and Hugo Extended 0.165.0 unless an existing site deliberately targets the
+offline archive, and pinned clone. For the current v0.8.2 release path, use Go
+1.26 and Hugo Extended 0.165.0 unless an existing site deliberately targets the
 theme's lower declared compatibility floor.
 
 ## From an empty directory to the first page {#scaffold}

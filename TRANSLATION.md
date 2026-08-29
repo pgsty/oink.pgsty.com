@@ -6,18 +6,18 @@
 
 ## 范围基线
 
-2026-08-29 的公开内容基线是 126 组中英文页面：
+2026-08-29 的公开内容基线是 127 组中英文页面：
 
 | 内容树             | 中英文页面组 |
 | ------------------ | -----------: |
 | 首页               |            1 |
 | `content/docs/`    |           81 |
-| `content/blog/`    |           16 |
+| `content/blog/`    |           17 |
 | `content/book/`    |            8 |
 | `content/case/`    |           16 |
 | `content/authors/` |            2 |
 | `content/series/`  |            2 |
-| 合计               |          126 |
+| 合计               |          127 |
 
 覆盖检查逐一核对首页以及 `docs/`、`blog/`、`book/`、`case/`、
 `authors/` 与 `series/`。`content/search.md` 是由主题 i18n 驱动的特殊搜索页面，

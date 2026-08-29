@@ -13,7 +13,7 @@ starting point for a new OINK site. It is deliberately smaller than
 repository, browser regression suite, or PGSTY-specific brand is copied into
 your project.
 
-The current template pins OINK {{% param version %}}, Go 1.27, and Hugo
+The current template pins OINK {{% param version %}}, Go 1.26, and Hugo
 Extended 0.165.0. Its default three-language, English-only, and English–Chinese
 profiles have all been built warning-strictly against that release.
 

@@ -29,7 +29,7 @@ hero:
       icon: fa-solid fa-rocket
       style: primary
     - label: What's new in 0.8
-      url: blog/release/0.8.1/
+      url: blog/release/0.8.2/
       icon: fa-solid fa-book-open
       style: ghost
 
