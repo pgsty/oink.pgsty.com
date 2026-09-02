@@ -28,19 +28,20 @@ For theme development, clone both repositories as siblings:
 └── oink.pgsty.com/
 ```
 
-The four Make targets separate published-theme checks from local-theme work:
+The five Make targets separate published-theme checks from local-theme work:
 
 ```sh
-make build  # Build production output with the version pinned in go.mod
-make check  # Test the sibling theme with the non-browser regression suite
-make dev    # Start the fastest server with the sibling theme
-make serve  # Preview the pinned theme in the production environment
+make build    # Build production output with the version pinned in go.mod
+make check    # Test the sibling theme with the non-browser regression suite
+make browser  # Run the browser regression suite with the sibling theme
+make dev      # Start the fastest server with the sibling theme
+make serve    # Preview the pinned theme in the production environment
 ```
 
 `build` and `serve` invoke Hugo directly and resolve the published version of
-`github.com/pgsty/oink` pinned in `go.mod`. `dev` and `check` set a one-command
-module replacement to `../oink`; they do not create a `go.work` file or modify
-`go.mod`. `dev` keeps Hugo's fast-render defaults and renders to memory;
+`github.com/pgsty/oink` pinned in `go.mod`. `dev`, `check`, and `browser` set a
+one-command module replacement to `../oink`; they do not create a `go.work`
+file or modify `go.mod`. `dev` keeps Hugo's fast-render defaults and renders to memory;
 `serve` uses the production environment, minifies the output, performs full
 renders after changes, and does not inject live reload. Node and npm are needed
 for the regression tests, not to build the OINK theme or site.

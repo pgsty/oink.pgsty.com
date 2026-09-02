@@ -1,4 +1,7 @@
-.PHONY: build check dev serve
+.PHONY: browser build check dev serve
+
+browser:
+	HUGO_MODULE_REPLACEMENTS='github.com/pgsty/oink -> $(abspath ../oink)' npm run test:browser
 
 build:
 	hugo --cleanDestinationDir --minify
