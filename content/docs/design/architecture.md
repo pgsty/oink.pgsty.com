@@ -114,6 +114,13 @@ Every base template sets `Page.Store.tdOutputFormat`:
 | NAVJSON | Opt-in per site: one `navigation.json` per language, serializing the navigation authority the sidebar and pager already read |
 | BookManifest | Opt-in ordered JSON handoff for a publication packager; never presented as an EPUB or PDF |
 
+Output formats run in their defined order; the mutable-format concern is not a
+cross-format race. Within Print, however, Hugo may render a Book page and
+overlapping aggregates in parallel. One per-page cached coordinator therefore
+produces the plain and Book variants in a fixed order, and each caller selects
+the form it needs. Plain Print keeps page-local heading and routed xref URLs;
+Book aggregates keep namespaced headings and in-document xrefs.
+
 Consumers opt into custom outputs; OINK does not force expensive Book
 aggregates. HTML gets the shared action and core layers plus stable first-party
 capability chunks selected by the page flags. Templated capabilities publish at
