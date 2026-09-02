@@ -46,7 +46,7 @@ proposal.
 
 | Contract                                      | Authority                                                                                            |
 | --------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| [Architecture](/docs/design/architecture/)    | Build, configuration, diagnostics, featured images, output, security, accessibility, and performance |
+| [Architecture](/docs/design/architecture/)    | Build, configuration, diagnostics, localization, featured images, output, security, accessibility, and performance |
 | [Components](/docs/design/components/)        | Component API, Book and release primitives, validation, and output degradation                       |
 | [Shell and navigation](/docs/design/shell/)   | Navigation, search, blog presentation, actions, taxonomies, and page-end composition                 |
 | [Landing pages](/docs/design/landing/)        | Landing data, the 22-section registry, runtime, accessibility, and outputs                           |

@@ -22,7 +22,7 @@ OINK 是一款独立的 [Hugo](https://gohugo.io/) 主题，用于搭建中大�
 
 ## 主题的职责 {#what-oink-provides}
 - 文档与博客外壳：导航、侧栏树、目录、面包屑、翻页、深色模式、打印视图与无障碍交互。
-- 多语言框架：译文路由、缺译回退、语言权重、RTL，以及 32 个界面语言包。
+- 多语言框架：译文路由、缺译回退、语言权重、RTL，以及 32 份完整界面语言包。
 - 本地运行时：Mermaid、KaTeX、Markmap、Swagger UI、Redoc、Asciinema、ECharts、Infographic 与本地全文检索。
 - 内容组件：提示块、标签页、步骤、卡片、参数表、文件树、画廊、徽章、按键等，多数有 Markdown 原生形态。
 - 内容类型：普通文档之外，还内置书籍编号与交叉引用、发布与下载页、数据驱动的 Landing 首页、OpenAPI 文档页。
@@ -48,7 +48,7 @@ OINK 是一款独立的 [Hugo](https://gohugo.io/) 主题，用于搭建中大�
 | 消费站点要不要 npm | 不要 | 要：Bootstrap 与 Font Awesome 从 `node_modules/` 挂载 | 不要 | 要 |
 | 前端资源从哪来 | 全部提交在主题仓库，`VENDOR.json` 记录版本、来源、许可与校验值 | 每页无条件加载 CDN 上的 jQuery；Mermaid、KaTeX 等还会在构建期请求 CDN | 预编译产物提交在仓库 | npm 依赖 |
 | 组件写法 | Markdown 原生属性与围栏为主，29 个 shortcode 兜底 | shortcode（19 个） | shortcode（29 个）为主，提示块有 `> [!NOTE]` 原生形态 | MDX（React 组件） |
-| 多语言 | Hugo 多语言 + 32 个界面语言包 | Hugo 多语言（OINK 的语言包由此继承） | Hugo 多语言 + 21 个界面语言包 | 内置 i18n 框架 |
+| 多语言 | Hugo 多语言 + 32 份完整界面语言包 | Hugo 多语言 + 31 个界面 locale 文件 | Hugo 多语言 + 21 个界面语言包 | 内置 i18n 框架 |
 | 书籍编号与交叉引用 / 发布下载页 / 数据驱动落地页 | 主题内置 | 无 | 无 | 需自建或找插件 |
 
 两点补充。每页 Markdown 输出与 `llms.txt` 不是 OINK 独有的能力，Docsy 与 Hextra 也有，三者都要站点在 `outputs` 里显式打开。表格最后一行的三项只有 OINK 内置，它们来自 PGSTY 自己的生产站点，不是通用文档站的必需品。主题的交互功能默认关闭，搜索、缩放、评论与反馈都要站点显式打开。

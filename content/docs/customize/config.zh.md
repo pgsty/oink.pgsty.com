@@ -412,7 +412,7 @@ outputs:
 | `languages.<lang>.locale` | string | | 完整 locale，用于 `<html lang>` 与 SEO |
 | `languages.<lang>.weight` | integer | | 语言顺序，也是点击语言图标时的循环顺序 |
 | `languages.<lang>.title` | string | | 该语言的站名 |
-| `languages.<lang>.languageDirection` | string | ltr | RTL 语言设为 `rtl` |
+| `languages.<lang>.direction` | string | ltr | RTL 语言设为 `rtl` |
 {.fields meta="type default"}
 
 写作侧的对等文件、锚点对齐与缺译回退见[多语言](/zh/docs/customize/i18n/)。

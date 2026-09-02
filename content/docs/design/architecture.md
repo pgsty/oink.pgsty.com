@@ -1,10 +1,10 @@
 ---
 title: Architecture contract
 linkTitle: Architecture
-description: Repository assembly, configuration, diagnostics, output, performance, security, CSS, accessibility, and release-state boundaries.
+description: Repository assembly, configuration, diagnostics, localization, output, performance, security, CSS, accessibility, and release-state boundaries.
 weight: 10
 icon: fa-solid fa-sitemap
-search_keywords: [OINK architecture, repository boundary, runtime, output formats, security, accessibility, performance]
+search_keywords: [OINK architecture, repository boundary, runtime, i18n, Docsy locales, output formats, security, accessibility, performance]
 contract_status: released-v1.0.0
 ---
 
@@ -73,6 +73,43 @@ Network-capable features are explicit and degrade closed. PlantUML requires
 requires `appId`, `apiKey`, and `indexName`; incomplete configuration warns and
 emits no request. Draw.io loads only when rendered content contains PNG or SVG
 candidates, then inspects each distinct image URL once.
+
+## Interface localization {#interface-localization}
+
+> [!NOTE] Implemented, not yet released
+> This locale expansion describes the feature branch. It is not a published
+> module capability until a later release tag resolves through the Go proxy.
+
+OINK ships native interface catalogs for the 31 locale filenames present in
+[`google/docsy@64f51c5`](https://github.com/google/docsy/tree/64f51c5bde2abd2e8a001cb31b32656f5800ca56/theme/i18n),
+plus generic `zh` as the Simplified Chinese default:
+
+```text
+ar az bg bn de en es et fa fi fr he hi hu it ja ko nl no oc pl pt-br ro ru
+sr-cyrl sr-latn sv tr uk zh-cn zh-tw
+```
+
+That is a compatibility scope, not a runtime dependency on Docsy and not a
+claim that a consumer's authored content has been translated. A new Docsy
+locale does not enter OINK automatically: it needs a complete OINK catalog and
+the same review as every existing locale.
+
+`i18n/en.yaml` owns the 192-key schema. Every one of the 32 OINK bundles has
+exactly that key set and native UI text; an English value may remain only when
+it is a reviewed product name, punctuation token, conventional abbreviation,
+or genuine word shared by the target language. There are no generated English
+fallback blocks. `zh` and `zh-cn` carry Simplified Chinese, while `zh-tw`
+carries Traditional Chinese.
+
+Runtime placeholders such as `%s`, `{count}`, and `{{ .Count }}` may move to a
+grammatically natural position but must remain byte-for-byte identical. Values
+are scalars. Catalogs contain no hidden bidirectional controls; Arabic,
+Persian, and Hebrew direction still comes from the consumer language setting
+(`direction: rtl`), not from characters injected into translations.
+`bin/check-i18n.py` enforces the locale set, schema, value shape, placeholders,
+directional controls, and the small reviewed set of English-identical terms.
+Adding a visible string therefore means translating it in every bundle in the
+same change, not running a fallback generator.
 
 ## Featured images {#featured-images}
 
