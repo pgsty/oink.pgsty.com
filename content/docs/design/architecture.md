@@ -101,6 +101,12 @@ or genuine word shared by the target language. There are no generated English
 fallback blocks. `zh` and `zh-cn` carry Simplified Chinese, while `zh-tw`
 carries Traditional Chinese.
 
+On the Hugo 0.160.x compatibility floor, a non-default generic `zh` language
+key must set the concrete `locale: zh-CN` value when the regional Chinese
+catalogs are also present. Bare `locale: zh` resolves in that configuration
+from Hugo 0.161 onward. This affects language configuration, not the
+`i18n/zh.yaml` catalog name.
+
 Runtime placeholders such as `%s`, `{count}`, and `{{ .Count }}` may move to a
 grammatically natural position but must remain byte-for-byte identical. Values
 are scalars. Catalogs contain no hidden bidirectional controls; Arabic,
