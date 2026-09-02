@@ -211,7 +211,7 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 | `params.ui.sidebar_menu_compact` | boolean | true | 只展开当前分支与邻近条目 |
 | `params.ui.sidebar_menu_foldable` | boolean | true | 允许读者展开/折叠分区 |
 | `params.ui.sidebar_menu_truncate` | integer | 2000 | 一个分区最多渲染的条目数，超出截断 |
-| `params.ui.sidebar_cache_limit` | integer | 500 | 站点页数超过它就复用共享导航标记，active 状态改由浏览器还原 |
+| `params.ui.sidebar_cache_limit` | integer | 500 | 页数达到此值后，按语言、导航根与有效设置复用可见的中性导航标记；浏览器补 active 状态 |
 | `params.ui.sidebar_width_min` | integer | 220 | 桌面端拖拽调宽的下限，像素 |
 | `params.ui.sidebar_width_max` | integer | 480 | 拖拽调宽的上限，像素 |
 | `params.ui.sidebar_item_overflow` | enum | ellipsis | `ellipsis` 长标题省略，`wrap` 换行 |

@@ -142,6 +142,11 @@ params:
 - `sidebar_width_min` / `sidebar_width_max` 是桌面端拖拽调宽的上下限（像素）。读者调整后的宽度存在浏览器本地，双击分隔条恢复默认。
 - `sidebar_item_overflow` 默认 `ellipsis`（长标题省略），中文长标题多的站点可以改 `wrap` 换行。
 
+达到 `sidebar_cache_limit` 后，有相同有效设置的页面可以共享一份中性渲染树。没有
+JavaScript 时它仍然可见且可导航；外壳运行时只补当前路径并展开其祖先。页面或
+cascade 覆盖会选择对应的缓存变体；启用 `sidebar_headings` 的 Book 页面仍使用自己
+的页面专属树。
+
 折叠状态、宽度与滚动位置保存在读者本地，按语言隔离。小于 `md` 时侧栏变成带遮罩的抽屉。
 
 单页去掉侧栏用 front matter：

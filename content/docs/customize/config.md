@@ -238,7 +238,7 @@ than from a parameter — see
 | `params.ui.sidebar_menu_compact` | boolean | true | Expands only the current branch and its neighbours |
 | `params.ui.sidebar_menu_foldable` | boolean | true | Lets the reader expand and collapse sections |
 | `params.ui.sidebar_menu_truncate` | integer | 2000 | Maximum entries rendered in one section; the rest are truncated |
-| `params.ui.sidebar_cache_limit` | integer | 500 | Above this page count the site reuses shared navigation markup, and the browser restores the active state |
+| `params.ui.sidebar_cache_limit` | integer | 500 | At this page count, reuse visible neutral navigation markup for matching language/root/effective settings; the browser adds active state |
 | `params.ui.sidebar_width_min` | integer | 220 | Lower bound in pixels for drag-resizing on the desktop |
 | `params.ui.sidebar_width_max` | integer | 480 | Upper bound in pixels for drag-resizing |
 | `params.ui.sidebar_item_overflow` | enum | ellipsis | `ellipsis` truncates a long title, `wrap` wraps it |

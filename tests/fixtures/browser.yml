@@ -4,3 +4,7 @@ module:
       target: content
     - source: tests/fixtures/browser/content
       target: content/tests
+
+params:
+  ui:
+    sidebar_cache_limit: 1

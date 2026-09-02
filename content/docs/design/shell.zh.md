@@ -44,7 +44,10 @@ lg 以上是文字链接，之下收缩为图标链接。lg 与 md 之间，右�
 侧栏与翻页共享同一个根和顺序。`manual_link`、`build.render: link`、分隔行、
 隐藏节点与占位节点保留各自已定义的语义。`sidebar_icon_policy` 可取默认的 `all`、
 `groups` 或 `none`；图标是一对 Font Awesome class。无效策略遵循共享的警告与
-回退契约。
+回退契约。达到 `sidebar_cache_limit` 后，两种 walker 只有在语言、导航根与实际
+影响输出的有效设置均相同时才复用中性标记。没有 JavaScript 时这份标记仍然可见；
+普通外壳运行时只补上 active 路径。会输出 `sidebar_headings` 的 Book 页面保持页面
+专属，并绕过共享树缓存。
 
 ## 沉浸式博客展示 {#immersive-blog-presentation}
 

@@ -54,7 +54,11 @@ Sidebar and pager share root and order. `manual_link`, `build.render: link`,
 dividers, hidden nodes, and placeholders retain their documented semantics.
 `sidebar_icon_policy` is `all` (default), `groups`, or `none`; icons are one
 Font Awesome class pair. Invalid policies follow the shared warning/fallback
-contract.
+contract. At `sidebar_cache_limit`, the two walkers may reuse neutral markup
+only for the same language, navigation root, and output-affecting effective
+settings. That markup remains visible without JavaScript; the normal shell
+runtime adds the active path. A Book page that emits `sidebar_headings` stays
+page-specific and bypasses the shared tree cache.
 
 ## Immersive blog presentation {#immersive-blog-presentation}
 

@@ -166,6 +166,12 @@ params:
 - `sidebar_width_min` / `sidebar_width_max` bound drag-resizing on the desktop, in pixels. The reader's adjusted width is kept locally, and double-clicking the divider restores the default.
 - `sidebar_item_overflow` defaults to `ellipsis` (long titles truncate); a site with many long titles can use `wrap`.
 
+At `sidebar_cache_limit`, pages with the same effective settings may share a
+neutral rendered tree. It remains visible and navigable without JavaScript;
+the shell runtime only adds the current path and opens its ancestors. Page or
+cascade overrides select the matching cached variant. A Book page with
+`sidebar_headings` enabled keeps its page-specific tree instead.
+
 Fold state, width and scroll position are stored locally per language. Below
 `md` the sidebar becomes a drawer with a backdrop.
 
