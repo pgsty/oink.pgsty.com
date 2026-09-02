@@ -138,6 +138,11 @@ All code highlighting uses Chroma. Common fence attributes include `title`,
 JSON/YAML; callbacks use `$fn:<name>` from `window.OinkEchartsFunctions`, never
 embedded script execution.
 
+Swagger and Redoc accept an HTTP(S) specification URL or a path rooted under
+`static/`; neither resolves page resources. Redoc treats leading and
+non-leading slashes equivalently and joins local paths to `baseURL`. Only HTML
+is interactive; Print, Markdown, and RSS render a static specification link.
+
 ### Book {#book}
 
 The `book` type extends the docs shell and follows the content tree or

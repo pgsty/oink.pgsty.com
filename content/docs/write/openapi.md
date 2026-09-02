@@ -31,11 +31,10 @@ and both shortcodes then receive a URL the browser can fetch:
       - openapi.md       # this page
 ```
 
-Do not put the specification beside the page. `redoc` looks for a file of that
-name in the content directory and builds a URL from it, but a `.yaml` in the
-content directory is a page resource, and Hugo publishes one only when it is
-referenced or processed. `redoc` builds a URL without referencing the resource,
-so the browser gets a 404.
+Do not put the specification beside the page. Both shortcodes treat a local
+value as a path under `static/`; neither resolves page resources. A `.yaml`
+beside a content page is a page resource, and Hugo does not publish it merely
+because its name appears in one of these shortcodes, so the browser gets a 404.
 
 A remote specification (starting `https://…`) is accepted by both shortcodes,
 but that is a network dependency, and it exposes the reader's metadata to that
@@ -82,12 +81,12 @@ second parameter warns and the shortcode renders nothing.
 
 {{< redoc "openapi/docs-demo.yaml" >}}
 
-Path resolution has three branches, in order: anything starting with `http` is
-a remote URL; a file of that name found in the content directory yields
-`baseURL + page directory + filename`; otherwise it is `baseURL + the path as
-written`. So a `redoc` path must not begin with a slash — `/openapi/…` would
-produce a doubled slash such as `https://example.com//openapi/…`. Unlike
-`swagger`, it generates an absolute URL based on `baseURL`.
+An `http` or `https` URL remains remote. Any other accepted value is a path
+under `static/`; leading and non-leading slash forms are equivalent. For
+example, `openapi/docs-demo.yaml` and `/openapi/docs-demo.yaml` both become
+`https://example.com/preview/openapi/docs-demo.yaml` when the site `baseURL` is
+`https://example.com/preview/`. Unlike `swagger`, Redoc receives this absolute
+URL based on `baseURL`.
 
 The theme pins five attributes — `hide-hostname`, `hide-logo`,
 `suppress-warnings`, `lazy-rendering`, `native-scrollbars` — and hides the
@@ -139,7 +138,7 @@ four outputs.
 - The two can coexist on one page, but the page becomes long and its HTML output loads both runtimes. Pick one for a production site.
 - Neither interface is fully accessible, and both come from upstream distributions the theme does not rewrite. Swagger UI's markup has axe WCAG AA violations (`select-name`, `scrollable-region-focusable`); Redoc's operation descriptions fail AA colour contrast. This site excludes `.td-swagger-ui` and `.td-redoc` from its zero-violation gate for that reason — a site with such a gate has to do the same, and should say so rather than assume either widget passes.
 - `redoc` accepts no attribute parameter: a second positional argument warns and the shortcode renders nothing.
-- A `redoc` path must not start with `/`, or the URL gains a doubled slash.
+- A local `redoc` path is rooted under `static/`; a leading `/` is optional, and page resources are not resolved.
 - The specification must be fetchable by the browser: put it in `static/` and confirm the file exists under `public/` after a build.
 - There is no mock server: Swagger UI's "Try it out" makes a real request to whatever `servers` names, and the address in the sample specification is not reachable.
 
