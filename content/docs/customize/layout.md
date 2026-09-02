@@ -270,19 +270,16 @@ markup:
     ordered: false
 ```
 
-The theme governs only the tracking behaviour:
+The normal shell runtime always tracks the active heading. It draws a continuous
+rail, highlights the current section, and marks the position without a separate
+switch. The reader can collapse the right column entirely, and that state is
+kept locally. Below `xl` the right column is hidden and its content moves into
+the sidebar drawer.
 
-```yaml {title="hugo.yml"}
-params:
-  ui:
-    scroll_spy: false
-```
-
-Scroll tracking is **off** by default. Set to `true`, the outline draws a
-continuous rail, highlights the current section and marks the position. The
-reader can collapse the right column entirely, and that state is kept locally.
-Below `xl` the right column is hidden and its content moves into the sidebar
-drawer.
+The old `params.ui.scroll_spy` site key and `scroll_spy` page key remain accepted
+as quiet compatibility no-ops throughout 1.x. Either boolean value produces the
+same outline and loads no extra runtime; removing the keys is reserved for a
+future breaking release.
 
 To hide the outline on one page, use the front matter `notoc: true`.
 

@@ -1,12 +1,17 @@
 ---
 title: 页面参数
 linkTitle: 页面参数
-description: front matter 全表：主题真正读取的每一个页面键，按侧栏、外壳、搜索、输出、页尾、Book、Landing、发布页分组。
+description: front matter 全表：主题读取的页面键与 1.x 兼容 no-op，按侧栏、外壳、搜索、输出、页尾、Book、Landing、发布页分组。
 weight: 30
 search_keywords: [页面参数, front matter, 前置元数据, page parameters, cascade, 页面级覆盖, 参数表]
 ---
 
-本页是页面级参数的全表，只列 OINK 主题会读取的键。主题仅为提示「已重命名或已移除」而读取的旧键不在此列——它们在[迁移](/zh/docs/design/migration/)里，也不会出现在生成的编辑器 Schema 中。Hugo 自身的 front matter 字段（`slug`、`url`、`build`、`sitemap`、`expiryDate` 等）照常可用，语义见 [Hugo 文档](https://gohugo.io/content-management/front-matter/)。站点级参数（`hugo.yml` 里的 `params.*`）见[配置总览](/zh/docs/customize/config/)。
+本页是页面级参数的全表，包含 OINK 主题会读取的键，以及 1.x 明确保留的兼容
+no-op。主题仅为提示「已重命名或已移除」而读取的旧键不在此列——它们在
+[迁移](/zh/docs/design/migration/)里，也不会出现在生成的编辑器 Schema 中。Hugo
+自身的 front matter 字段（`slug`、`url`、`build`、`sitemap`、`expiryDate` 等）
+照常可用，语义见 [Hugo 文档](https://gohugo.io/content-management/front-matter/)。
+站点级参数（`hugo.yml` 里的 `params.*`）见[配置总览](/zh/docs/customize/config/)。
 
 ## 表格说明 {#how-to-read}
 优先级从高到低：
@@ -105,7 +110,7 @@ cascade:
 | `body_class` | 字符串 | — | 追加到 `<body>` 上的 class，供站点自己的 CSS 使用 |
 | `reading_time` | 布尔 | 站点值 | 本页是否显示阅读时长；写 `false` 关掉 |
 | `sidebar_enabled` | 布尔 | `true` | 这一页是否显示左侧栏；写 `false` 关掉 |
-| `scroll_spy` | 布尔 | 站点值 | 目录的滚动跟随；写 `true` 打开 |
+| `scroll_spy` | 布尔 | 站点值 | 1.x 静默兼容 no-op；普通外壳运行时始终提供当前标题跟踪 |
 | `keyboard_nav` | 布尔 | 站点值（`true`） | 单键键盘导航，见[键盘导航](/zh/docs/customize/keyboard/)。非布尔告警并回退 |
 | `lastmod_commit` | `subject` / `hash` / `none` | `subject` | 「最后修改」后面怎么显示提交。非法值告警并回退 |
 | `sidebar_expand_levels`、`sidebar_menu_compact`、`sidebar_menu_foldable`、`sidebar_item_overflow` | 同站点参数 | 站点值 | 侧栏行为也可以逐页覆盖；取值见[配置总览](/zh/docs/customize/config/) |

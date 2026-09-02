@@ -124,7 +124,10 @@ real focus without rewriting Tab order.
 The outline derives cursor and visible-heading range from one heading model and
 the scroller's computed `scroll-padding-top`; its SVG line and dot share the
 same animated values so they cannot drift. No speculative DOM repair pass is
-allowed.
+allowed. This tracking is always owned by the normal shell runtime.
+`params.ui.scroll_spy` and the page key `scroll_spy` are quiet compatibility
+no-ops throughout 1.x, emit no separate runtime, and may be removed only in a
+future breaking release.
 
 ## Share {#share}
 
