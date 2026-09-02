@@ -180,8 +180,7 @@ Performance rules:
 - validate reachable author input, not hypothetical internal states.
 
 `bin/measure-baseline.py` measures build time, output weight, bundle count, and
-shortcode density. `bin/sites/build-all.py` builds maintained consumers in
-isolated snapshots.
+shortcode density.
 
 ## Trust, CSS, and accessibility {#trust-css-and-accessibility}
 

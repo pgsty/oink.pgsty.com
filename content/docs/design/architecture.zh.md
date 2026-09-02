@@ -150,7 +150,7 @@ Chrome/Chromium 二进制，输出带 CSS 页码的 A4 页面。两种工具都�
 - 校验确实可达的作者输入，不校验假想的内部状态。
 
 `bin/measure-baseline.py` 测量构建时间、输出体积、bundle 数量与 shortcode
-密度。`bin/sites/build-all.py` 在隔离快照中构建维护范围内的消费站点。
+密度。
 
 ## 信任边界、CSS 与无障碍 {#trust-css-and-accessibility}
 
