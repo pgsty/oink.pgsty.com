@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import {
-  existsSync,
   mkdtempSync,
   mkdirSync,
   readFileSync,
@@ -15,7 +14,6 @@ import { fileURLToPath } from 'node:url';
 
 const siteDir = fileURLToPath(new URL('../../', import.meta.url));
 const publicDir = path.join(siteDir, 'public');
-const moduleWorkspace = path.join(siteDir, 'go.work');
 
 function runHugo(contentDir, destination, { panicOnWarning = false } = {}) {
   const overlayConfig = path.join(
@@ -52,12 +50,6 @@ function runHugo(contentDir, destination, { panicOnWarning = false } = {}) {
     {
       cwd: siteDir,
       encoding: 'utf8',
-      env: {
-        ...process.env,
-        ...(existsSync(moduleWorkspace)
-          ? { HUGO_MODULE_WORKSPACE: moduleWorkspace }
-          : {}),
-      },
     },
   );
 }

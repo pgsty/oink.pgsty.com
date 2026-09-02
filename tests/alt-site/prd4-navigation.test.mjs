@@ -8,10 +8,6 @@ import { JSDOM } from 'jsdom';
 
 const siteDir = fileURLToPath(new URL('../../', import.meta.url));
 const fixtureDir = join(siteDir, 'tests', 'fixtures', 'prd4-navigation');
-const localWorkspace = join(siteDir, 'go.work');
-const moduleWorkspace =
-  process.env.HUGO_MODULE_WORKSPACE ||
-  (existsSync(localWorkspace) ? localWorkspace : undefined);
 
 function build(name, { baseURL, fixture } = {}) {
   const outDir = join(siteDir, 'tmp', `prd4-navigation-${name}`);
@@ -36,10 +32,6 @@ function build(name, { baseURL, fixture } = {}) {
   const result = spawnSync('npm', args, {
     cwd: siteDir,
     encoding: 'utf8',
-    env: {
-      ...process.env,
-      ...(moduleWorkspace ? { HUGO_MODULE_WORKSPACE: moduleWorkspace } : {}),
-    },
   });
   const output = `${result.stdout ?? ''}${result.stderr ?? ''}`;
   assert.equal(result.status, 0, `Build failed:\n${output}`);

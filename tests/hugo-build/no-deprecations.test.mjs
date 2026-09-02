@@ -1,24 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
-import {
-  existsSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  rmSync,
-} from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const siteDir = fileURLToPath(new URL('../../', import.meta.url));
 const tmpDir = join(siteDir, 'tmp');
-const moduleWorkspace = join(siteDir, 'go.work');
 
-// Build the real site to a throwaway destination under the gitignored `tmp/` so
-// this probe build never clobbers the published `public/` that `test:base`
-// produces and other tests (e.g. published-head) read.
 function buildSite() {
+  if (process.env.OINK_BUILD_LOG) {
+    return readFileSync(join(siteDir, process.env.OINK_BUILD_LOG), 'utf8');
+  }
+
   mkdirSync(tmpDir, { recursive: true });
   const destDir = mkdtempSync(join(tmpDir, 'no-deprecations-'));
   try {
@@ -26,28 +20,24 @@ function buildSite() {
       cwd: siteDir,
       shell: true,
       encoding: 'utf8',
-      env: {
-        ...process.env,
-        ...(existsSync(moduleWorkspace)
-          ? { HUGO_MODULE_WORKSPACE: moduleWorkspace }
-          : {}),
-      },
     });
     const output = `${res.stdout ?? ''}${res.stderr ?? ''}`;
-    const deprecations = output
-      .split('\n')
-      .filter((line) => /deprecated/i.test(line));
-    return { res, output, deprecations };
+    assert.equal(res.status, 0, `Build failed:\n${output}`);
+    return output;
   } finally {
     rmSync(destDir, { recursive: true, force: true });
   }
 }
 
 test('site build logs no Hugo deprecation notices', (t) => {
-  // The `_hugo` script builds with `--logLevel info`, the level at which
-  // Hugo first reports deprecated API usage.
-  const { res, output, deprecations } = buildSite();
-  assert.equal(res.status, 0, `Build failed:\n${output}`);
+  // The complete suite explicitly passes the successful `test:base` log.
+  // Focused runs build a fresh copy instead of trusting an implicit tmp file.
+  const output = buildSite();
+  assert.match(output, /Start building sites/);
+  assert.match(output, /Total in \d+ ms/);
+  const deprecations = output
+    .split('\n')
+    .filter((line) => /deprecated/i.test(line));
   assert.deepEqual(deprecations, [], 'Hugo build logged deprecation notice(s)');
   t.diagnostic(`Scanned ${output.split('\n').length} build-log lines`);
 });
