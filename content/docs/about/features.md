@@ -83,7 +83,7 @@ for it.
 Multilingual support uses Hugo's own mechanism: translation routing, a language
 picker ordered by weight, fallback for untranslated pages, RTL, and canonical
 and alternate metadata. Interface strings come in 32 language packs sharing one
-192-key schema: all 31 locale filenames supported by Docsy, plus generic `zh`.
+194-message schema: all 31 locale filenames supported by Docsy, plus generic `zh`.
 Every pack now contains native OINK interface text rather than English
 placeholder blocks; `zh` and `zh-cn` use Simplified Chinese and `zh-tw` uses
 Traditional Chinese.

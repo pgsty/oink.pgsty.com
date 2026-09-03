@@ -94,7 +94,7 @@ claim that a consumer's authored content has been translated. A new Docsy
 locale does not enter OINK automatically: it needs a complete OINK catalog and
 the same review as every existing locale.
 
-`i18n/en.yaml` owns the 192-key schema. Every one of the 32 OINK bundles has
+`i18n/en.yaml` owns the 194-message schema. Every one of the 32 OINK bundles has
 exactly that key set and native UI text; an English value may remain only when
 it is a reviewed product name, punctuation token, conventional abbreviation,
 or genuine word shared by the target language. There are no generated English
