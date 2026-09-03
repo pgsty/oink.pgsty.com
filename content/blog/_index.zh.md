@@ -9,6 +9,9 @@ sidebar_root_link_self: true
 footer_style: slim
 comments: true
 blog_index: cards
+# 栏目根页是一份文章索引而不是落点：反向链接属于它列出的那些文章，所以这一页
+# 退出站点级默认。
+backlinks: false
 # The Book/Blog reading shells keep the title bar pinned: long-form reading
 # should not make the navbar appear and disappear under the pointer.
 navbar_autohide: false

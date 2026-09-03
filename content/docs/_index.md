@@ -19,6 +19,9 @@ icon: fa-solid fa-book
 sidebar_expanded: true
 sidebar_root_for: self
 sidebar_root_link_self: true
+# The section root is a table of contents, not a destination: backlinks
+# belong on the pages it leads to, so it opts out of the site-wide default.
+backlinks: false
 # Docs pins the title bar: a reference tree is read by jumping between pages,
 # so the global menu has to stay where the pointer left it.
 navbar_autohide: false
