@@ -32,7 +32,7 @@ run on it today, this one among them.
 
 ## What the theme provides {#what-oink-provides}
 - The documentation and blog shell: navigation, sidebar tree, table of contents, breadcrumbs, pager, dark mode, print view and accessible interaction.
-- The multilingual frame: translation routing, fallback for untranslated pages, language weighting, RTL, and 32 interface language packs.
+- The multilingual frame: translation routing, fallback for untranslated pages, language weighting, RTL, and 32 complete interface catalogs.
 - Local runtimes: Mermaid, KaTeX, Markmap, Swagger UI, Redoc, Asciinema, ECharts, Infographic and local full-text search.
 - Content components: callouts, tabs, steps, cards, field lists, file trees, galleries, badges, keys and more — most with a native Markdown form.
 - Content types: beyond ordinary documentation, built-in book numbering and cross-references, release and download pages, data-driven landing pages, and OpenAPI reference pages.
@@ -63,7 +63,7 @@ check each project's current documentation before choosing.
 | Does a consuming site need npm | No | Yes: Bootstrap and Font Awesome are mounted from `node_modules/` | No | Yes |
 | Where front-end assets come from | All committed to the theme repository; `VENDOR.json` records version, source, licence and checksum | jQuery is loaded from a CDN on every page unconditionally; Mermaid, KaTeX and others also fetch from a CDN at build time | Prebuilt artifacts committed to the repository | npm dependencies |
 | How components are written | Native Markdown attributes and fences first, 29 shortcodes as the fallback | Shortcodes (19) | Shortcodes (29) first; callouts also have a `> [!NOTE]` native form | MDX (React components) |
-| Multilingual | Hugo multilingual + 32 interface language packs | Hugo multilingual (OINK's packs are inherited from it) | Hugo multilingual + 21 interface language packs | Built-in i18n framework |
+| Multilingual | Hugo multilingual + 32 complete interface catalogs | Hugo multilingual + 31 interface locale files | Hugo multilingual + 21 interface language packs | Built-in i18n framework |
 | Book numbering and cross-references / release and download pages / data-driven landing pages | Built into the theme | None | None | Build your own or find a plugin |
 
 Two qualifications. Per-page Markdown output and `llms.txt` are not unique to
