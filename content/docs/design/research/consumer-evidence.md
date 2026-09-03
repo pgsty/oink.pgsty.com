@@ -7,7 +7,7 @@ icon: fa-solid fa-chart-column
 search_keywords: [consumer survey, corpus, migration evidence, Book, DDIA, TPME]
 design_kind: research
 design_status: verified-snapshot
-last_verified: 2026-08-16
+last_verified: 2026-08-24
 ---
 
 > [!NOTE] Dated corpus snapshot
@@ -76,6 +76,18 @@ and passed rendered kind/number/anchor checks. The public migration toolkit and
 current profile boundaries are documented in
 [Writing a book](/docs/write/book/#migrate) and the
 [migration contract](/docs/design/migration/).
+
+## Publication adoption snapshot {#publication-adoption}
+
+An isolated 2026-08-24 pass exercised the released generic Book publication
+path against two consumers:
+
+| Consumer | Generic publication evidence                                                                                 | Downstream status                                                                                         |
+| -------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| DDIA     | 23 ordered pages, 131 typed targets, and 292 resolved cross-references; EPUBCheck, internal, and PDF checks passed | At this snapshot it still retained a semantic preprocessor pending independent acceptance of the new gate |
+| TPME     | 18 ordered pages, 41 typed targets, and 1,062 resolved cross-references; the same generic checks passed     | A second consumer confirmed portability; it created no upstream migration gate                            |
+
+This is downstream adoption evidence, not an open upstream design boundary.
 
 ## Limits {#limits}
 

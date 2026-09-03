@@ -67,7 +67,7 @@ pg-internal profile；它不是通用解析器。
 | `github_url` | `github_repo` |
 | `ui.no_left_sidebar` | `ui.sidebar_enabled`，取反 |
 | breadcrumb 别名 | `ui.breadcrumb` |
-| `ui.scrollSpy` | `ui.scroll_spy`，取反 |
+| `ui.scrollSpy` | 无行为替代；`ui.scroll_spy` 仅作为 1.x 静默兼容 no-op 保留 |
 | `ui.showLightDarkModeMenu` | `ui.dark_mode.show_menu` |
 | `ui.readingtime` | `ui.reading_time` |
 | `ui.ul_show` | `ui.sidebar_expand_levels` |

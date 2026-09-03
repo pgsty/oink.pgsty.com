@@ -178,6 +178,57 @@ test.describe('WCAG AA contract', () => {
     }
   }
 
+  test('cached sidebar hydrates its active path without a contrast transition', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1200, height: 900 });
+    await page.addInitScript(() => {
+      localStorage.setItem('td-color-theme', 'light');
+    });
+    await page.goto('/zh/docs/customize/config/', {
+      waitUntil: 'domcontentloaded',
+    });
+
+    const state = await page.evaluate(() => {
+      const current = document.querySelector('#m-zhdocscustomizeconfig');
+      const branch = document.querySelector('#m-zhdocscustomize-children');
+      return {
+        marker: document
+          .querySelector('#td-sidebar-menu')
+          ?.hasAttribute('data-td-sidebar-hydrate-active'),
+        active:
+          current?.classList.contains('active') &&
+          current.getAttribute('aria-current') === 'page',
+        activeRow: current
+          ?.closest('.td-shell-tree__row')
+          ?.classList.contains('td-shell-active'),
+        activePath: current
+          ?.closest('li')
+          ?.classList.contains('td-active-path'),
+        open: branch?.classList.contains('td-is-open'),
+        runningAnimations:
+          branch
+            ?.getAnimations({ subtree: true })
+            .filter((animation) => animation.playState === 'running').length ??
+          -1,
+      };
+    });
+    expect(state).toEqual({
+      marker: false,
+      active: true,
+      activeRow: true,
+      activePath: true,
+      open: true,
+      runningAnimations: 0,
+    });
+
+    const { violations } = await scan(page, '#td-sidebar-menu');
+    expect(
+      violations,
+      describeViolations('/zh/docs/customize/config/', violations),
+    ).toEqual([]);
+  });
+
   for (const { locale, path, theme, viewport } of [
     {
       locale: 'en',

@@ -54,7 +54,11 @@ Sidebar and pager share root and order. `manual_link`, `build.render: link`,
 dividers, hidden nodes, and placeholders retain their documented semantics.
 `sidebar_icon_policy` is `all` (default), `groups`, or `none`; icons are one
 Font Awesome class pair. Invalid policies follow the shared warning/fallback
-contract.
+contract. At `sidebar_cache_limit`, the two walkers may reuse neutral markup
+only for the same language, navigation root, and output-affecting effective
+settings. That markup remains visible without JavaScript; the normal shell
+runtime adds the active path. A Book page that emits `sidebar_headings` stays
+page-specific and bypasses the shared tree cache.
 
 ## Immersive blog presentation {#immersive-blog-presentation}
 
@@ -124,7 +128,10 @@ real focus without rewriting Tab order.
 The outline derives cursor and visible-heading range from one heading model and
 the scroller's computed `scroll-padding-top`; its SVG line and dot share the
 same animated values so they cannot drift. No speculative DOM repair pass is
-allowed.
+allowed. This tracking is always owned by the normal shell runtime.
+`params.ui.scroll_spy` and the page key `scroll_spy` are quiet compatibility
+no-ops throughout 1.x, emit no separate runtime, and may be removed only in a
+future breaking release.
 
 ## Share {#share}
 
@@ -189,8 +196,9 @@ glyph with a term glyph (`folder-open`/`folder`, `tags`/`tag`, `cubes`/`cube`,
 `params.ui.taxonomy_icons` overrides a pair with one string for both surfaces
 or a `taxonomy`/`term` map; unusable input warns and keeps the built-in. The
 right-rail cloud wears the whole-taxonomy glyph on its head alone: cloud chips
-and the term-archive filter chips stay text plus count, because repeating the
-glyph beside an announced taxonomy is noise. The byline carries the people
+stay text plus count, because repeating the glyph beside an announced taxonomy
+is noise. A standalone taxonomy directory card carries one term glyph; the
+byline carries the people
 alone—portrait, name, and the profile's one-line bio—with no label and no date.
 List rows, cards, and term archives share one metadata line of the same shape:
 date, one localized author-and-section phrase, then word count and minutes
@@ -241,7 +249,36 @@ are one flat run, newest first, sharing `blog_index_size` pagination—the
 metadata line's dates make year headings redundant; `table` shows the whole
 section as date/title/tag rows without pagination. Cards use the shared lead
 image, localized date/author/section metadata, tags, and a three-line summary.
-Term and taxonomy pages stay row lists.
+
+A taxonomy page (`/tags/`, `/authors/`) and its term pages share one head,
+`shell/taxonomy-head.html`. The taxonomy page opens with the whole-taxonomy
+glyph in a tinted tile, the localized name, and a count of terms. A term page
+opens with the term's title and its page count from `ui_taxonomy_pages`, using
+the current locale's CLDR plural form; where no breadcrumb is rendered, a kicker above the
+title names the taxonomy and links back to it, since an enabled trail already
+does both one line higher: a crumb standing for a generated taxonomy page
+borrows the same localized label the head renders, not Hugo's plural title.
+Under the head the taxonomy page lays its terms out as a grid of one-line
+cards, `shell/taxonomy-cards.html`, most-used first with alphabetical ties—the
+order the rail cloud already uses—filling equal columns by `auto-fill` so a
+short taxonomy never stretches two cards across the page. A card is the term
+glyph, the term, and its page count, and the whole card is the link; authors
+alone lead with the byline's small portrait through the same avatar partial.
+No card carries a description or a newest page: a term has nothing to say
+that its title and count do not, and the extra line only blurred the grid.
+There is no filter chip row and no "All" chip: the section root already lives
+in the sidebar and the navbar. Term pages stay row lists, and author profiles
+keep their own head.
+
+The rail on a taxonomy or term page leads with `shell/taxonomy-switcher.html`:
+one row per declared taxonomy—whole-taxonomy glyph, localized name, term
+count—linking to its index page, the current taxonomy on the selected ground.
+It is the way from one taxonomy's pages to another's, because cloud chips jump
+to terms and cloud heads only collapse; a site with one taxonomy renders no
+switcher. The group sits behind the same `toc_taxonomies` switch as the clouds.
+A taxonomy page scopes its clouds to the whole site (`taxonomy-root.html`
+returns no root for that kind) and omits its own cloud, whose terms are the
+cards beside it; term pages keep the section scope and the full set.
 
 `params.ui.blog_index_toggle` renders all three forms for the current paginator
 slice and lets readers cycle them. The configured form controls first paint and

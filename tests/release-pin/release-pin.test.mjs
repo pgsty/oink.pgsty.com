@@ -16,6 +16,7 @@ const scriptSource = new URL(
   '../../scripts/check-release-pin.mjs',
   import.meta.url,
 );
+const siteDir = new URL('../../', import.meta.url);
 
 function runCheck(goMod, config = null) {
   const fixture = mkdtempSync(join(tmpdir(), 'oink-release-pin-'));
@@ -139,5 +140,26 @@ test('CI resolves a public pin without a workspace and fails on warnings', () =>
       workflow.indexOf('node scripts/check-release-pin.mjs') <
         workflow.indexOf('hugo --cleanDestinationDir'),
     'CI must resolve the public module and verify its pin before building',
+  );
+});
+
+test('non-browser tests never discover a stray go.work', () => {
+  for (const relative of [
+    'tests/alt-site/offline-search.test.mjs',
+    'tests/alt-site/prd4-navigation.test.mjs',
+    'tests/alt-site/prd4-runtime.test.mjs',
+    'tests/hugo-build/blog-rss.test.mjs',
+    'tests/hugo-build/content-primitives.test.mjs',
+    'tests/hugo-build/no-deprecations.test.mjs',
+  ]) {
+    const source = readFileSync(new URL(relative, siteDir), 'utf8');
+    assert.doesNotMatch(source, /go\.work|HUGO_MODULE_WORKSPACE/, relative);
+  }
+
+  const makefile = readFileSync(new URL('Makefile', siteDir), 'utf8');
+  assert.match(
+    makefile,
+    /^check:\n\tHUGO_MODULE_REPLACEMENTS=.* npm test$/m,
+    'make check must select the sibling theme explicitly',
   );
 });

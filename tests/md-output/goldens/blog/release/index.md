@@ -10,6 +10,7 @@ LLMS index: [llms.txt](/llms.txt)
 
 Section pages:
 
+- [OINK 1.1.0 — Native locales and taxonomy directories](/blog/release/1.1.0/): OINK 1.1.0 completes the native interface for every Docsy locale, turns taxonomy roots into navigable directories, and carries the post-1.0 correctness and bounded-checker fixes without requiring a site migration.
 - [OINK 1.0.0 — Stable contracts, a supported starter, and a complete public release](/blog/release/1.0.0/): OINK 1.0.0 makes the current knowledge-publishing contracts stable and rolls up every theme change since 0.8.0: Print and Book correctness, pinned Go 1.27 and Hugo 0.165.0 release tooling, a supported Starter, and the public metadata and media needed to enter the wider Hugo ecosystem.
 - [OINK 0.8.2 — Go 1.26 module compatibility for the Hugo Themes builder](/blog/release/0.8.2/): OINK 0.8.2 lowers the Hugo Module's Go directive from 1.27 to 1.26 so GOTOOLCHAIN=local builders, including the official Hugo Themes pipeline, can import the theme without changing its Hugo floor or rendered behavior.
 - [OINK 0.8.1 — Stable Print anchors, resilient Book numbers, and release-ready packaging](/blog/release/0.8.1/): OINK 0.8.1 is a focused maintenance release: single-page Print keeps the same heading and footnote anchors as ordinary HTML, long Book titles no longer squeeze their sidebar numbers, and the project presentation now leads new sites through OINK Starter.

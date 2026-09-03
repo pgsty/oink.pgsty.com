@@ -137,6 +137,11 @@ front matter 覆盖。`banner` 在单页标题上方渲染图片，`wash` 用图
 | NAVJSON | 按站点选择启用：每种语言一份 `navigation.json`，序列化侧栏与 pager 已经在读的导航权威 |
 | BookManifest | 选择启用、供出版打包器消费的有序 JSON 交接；绝不冒充 EPUB 或 PDF |
 
+各输出格式按既定顺序执行；可变格式状态并不存在跨格式竞态。但在 Print 内，Hugo
+可能并行渲染同一 Book 页面与相互重叠的聚合。因此每页由一个缓存 coordinator 按
+固定顺序生成普通与整书两种变体，各调用方只选择自己需要的形态。普通 Print 保留
+页面局部标题与带路由的 xref URL；Book 聚合保留带命名空间的标题与文档内 xref。
+
 站点自行选择是否启用自定义输出；OINK 不会强制生成昂贵的整书聚合。HTML 加载
 共享操作层、核心层，以及由页面 flag 选择的稳定第一方能力分片。需要模板化的能力
 每种语言至多发布一份；flag 只决定引用哪些 script tag，绝不再生成新的组合 bundle。
@@ -182,7 +187,7 @@ Chrome/Chromium 二进制，输出带 CSS 页码的 A4 页面。两种工具都�
 - 校验确实可达的作者输入，不校验假想的内部状态。
 
 `bin/measure-baseline.py` 测量构建时间、输出体积、bundle 数量与 shortcode
-密度。`bin/sites/build-all.py` 在隔离快照中构建维护范围内的消费站点。
+密度。
 
 ## 信任边界、CSS 与无障碍 {#trust-css-and-accessibility}
 

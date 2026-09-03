@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import {
-  existsSync,
   mkdtempSync,
   mkdirSync,
   readFileSync,
@@ -15,7 +14,6 @@ import { fileURLToPath } from 'node:url';
 
 const siteDir = fileURLToPath(new URL('../../', import.meta.url));
 const sections = ['oink', 'release', 'rss-probe'];
-const moduleWorkspace = path.join(siteDir, 'go.work');
 
 function itemLinks(file) {
   const rss = readFileSync(file, 'utf8');
@@ -139,12 +137,6 @@ The complete article continues here.
       ],
       {
         encoding: 'utf8',
-        env: {
-          ...process.env,
-          ...(existsSync(moduleWorkspace)
-            ? { HUGO_MODULE_WORKSPACE: moduleWorkspace }
-            : {}),
-        },
       },
     );
     assert.equal(

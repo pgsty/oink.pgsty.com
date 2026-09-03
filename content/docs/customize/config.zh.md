@@ -63,7 +63,7 @@ Hugo 的 `.Param` 查找让大部分参数可以逐页覆盖，优先级从高�
 3. 站点 `params`。
 
 **写进 front matter 时要去掉 `ui.` 前缀。**
-站点上的 `params.ui.scroll_spy` 在页面里就写成 `scroll_spy`。front matter 里出现 `ui:`
+站点上的 `params.ui.reading_time` 在页面里就写成 `reading_time`。front matter 里出现 `ui:`
 块的话，里面的键没有人读，也没有人报错——某个设置看着没生效时，先对照[页面参数](/zh/docs/write/frontmatter/)核一遍键名。
 
 ```yaml {title="content/docs/wide-reference.md"}
@@ -72,7 +72,7 @@ title: 宽版参考
 page_width: wide
 navbar_enabled: false
 footer_style: slim
-scroll_spy: true
+reading_time: false
 ---
 ```
 
@@ -211,7 +211,7 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 | `params.ui.sidebar_menu_compact` | boolean | true | 只展开当前分支与邻近条目 |
 | `params.ui.sidebar_menu_foldable` | boolean | true | 允许读者展开/折叠分区 |
 | `params.ui.sidebar_menu_truncate` | integer | 2000 | 一个分区最多渲染的条目数，超出截断 |
-| `params.ui.sidebar_cache_limit` | integer | 500 | 站点页数超过它就复用共享导航标记，active 状态改由浏览器还原 |
+| `params.ui.sidebar_cache_limit` | integer | 500 | 页数达到此值后，按语言、导航根与有效设置复用可见的中性导航标记；浏览器补 active 状态 |
 | `params.ui.sidebar_width_min` | integer | 220 | 桌面端拖拽调宽的下限，像素 |
 | `params.ui.sidebar_width_max` | integer | 480 | 拖拽调宽的上限，像素 |
 | `params.ui.sidebar_item_overflow` | enum | ellipsis | `ellipsis` 长标题省略，`wrap` 换行 |
@@ -232,7 +232,7 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 | --- | --- | --- | --- |
 | `markup.tableOfContents.startLevel` | integer | 2 | Hugo 原生：收录的最高标题级别 |
 | `markup.tableOfContents.endLevel` | integer | 3 | Hugo 原生：收录的最低标题级别 |
-| `params.ui.scroll_spy` | boolean | false | 滚动位置跟踪；设为 `true` 打开活动项高亮 |
+| `params.ui.scroll_spy` | boolean | false | 1.x 静默兼容 no-op；普通外壳运行时始终跟踪当前大纲标题，此键不加载资源 |
 {.fields meta="type default"}
 
 单页隐藏大纲用 front matter `notoc: true`，见[页面参数](/zh/docs/write/frontmatter/)。

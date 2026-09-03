@@ -11,6 +11,9 @@ icon: fa-solid fa-book
 sidebar_expanded: true
 sidebar_root_for: self
 sidebar_root_link_self: true
+# 栏目根页是一份目录而不是落点：反向链接属于它指向的那些页面，所以这一页
+# 退出站点级默认。
+backlinks: false
 # 文档区固定顶栏：参考树是靠页面间跳转来读的，全局菜单必须停在指针离开时的位置。
 navbar_autohide: false
 # 分区身份：文档保持品牌蓝，但显式写出而不是隐式继承 —— 这样侧栏根切换器里

@@ -71,7 +71,7 @@ precedence first:
 3. Site `params`.
 
 **Drop the `ui.` prefix when writing it in front matter.** The site's
-`params.ui.scroll_spy` is simply `scroll_spy` on a page. A `ui:` block in front
+`params.ui.reading_time` is simply `reading_time` on a page. A `ui:` block in front
 matter is read by nobody and reported by nobody, so a setting that seems to have
 no effect is worth checking against
 [Page parameters](/docs/write/frontmatter/) first.
@@ -82,7 +82,7 @@ title: Wide reference
 page_width: wide
 navbar_enabled: false
 footer_style: slim
-scroll_spy: true
+reading_time: false
 ---
 ```
 
@@ -238,7 +238,7 @@ than from a parameter — see
 | `params.ui.sidebar_menu_compact` | boolean | true | Expands only the current branch and its neighbours |
 | `params.ui.sidebar_menu_foldable` | boolean | true | Lets the reader expand and collapse sections |
 | `params.ui.sidebar_menu_truncate` | integer | 2000 | Maximum entries rendered in one section; the rest are truncated |
-| `params.ui.sidebar_cache_limit` | integer | 500 | Above this page count the site reuses shared navigation markup, and the browser restores the active state |
+| `params.ui.sidebar_cache_limit` | integer | 500 | At this page count, reuse visible neutral navigation markup for matching language/root/effective settings; the browser adds active state |
 | `params.ui.sidebar_width_min` | integer | 220 | Lower bound in pixels for drag-resizing on the desktop |
 | `params.ui.sidebar_width_max` | integer | 480 | Upper bound in pixels for drag-resizing |
 | `params.ui.sidebar_item_overflow` | enum | ellipsis | `ellipsis` truncates a long title, `wrap` wraps it |
@@ -263,7 +263,7 @@ the tracking behaviour:
 | --- | --- | --- | --- |
 | `markup.tableOfContents.startLevel` | integer | 2 | Hugo's own: the highest heading level collected |
 | `markup.tableOfContents.endLevel` | integer | 3 | Hugo's own: the lowest heading level collected |
-| `params.ui.scroll_spy` | boolean | false | Scroll position tracking; `true` highlights the active entry |
+| `params.ui.scroll_spy` | boolean | false | Quiet 1.x compatibility no-op; the normal shell runtime always tracks the active outline heading and this key emits no asset |
 {.fields meta="type default"}
 
 Hide the outline on one page with the front matter `notoc: true` — see

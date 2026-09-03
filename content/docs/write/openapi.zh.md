@@ -23,7 +23,9 @@ search_keywords: [API, OpenAPI, Swagger, Swagger UI, Redoc, 接口文档, swagge
       - openapi.zh.md    # 这一页
 ```
 
-不要把规范文件放在页面旁边。`redoc` 会在内容目录里查找同名文件并据此拼出 URL，但内容目录里的 `.yaml` 是页面资源，Hugo 只在它被引用或处理时才发布。`redoc` 只拼 URL、不引用资源，浏览器因此得到 404。
+不要把规范文件放在页面旁边。两个 shortcode 都把本地值视为 `static/` 下的路径，
+都不解析页面资源。内容页面旁边的 `.yaml` 属于页面资源，仅在 shortcode 中写出
+它的名字并不会让 Hugo 发布它，浏览器因此会得到 404。
 
 远程规范（`https://…` 开头）两个 shortcode 都接受，但那是一项网络依赖，还会把读者的元数据暴露给那台主机。内网部署与有 CSP 的站点应当使用同源规范。只接受 `http` 与 `https`：其它 scheme、协议相对的 `//host` 或空值都会告警，shortcode 不渲染。
 
@@ -51,7 +53,11 @@ search_keywords: [API, OpenAPI, Swagger, Swagger UI, Redoc, 接口文档, swagge
 
 {{< redoc "openapi/docs-demo.yaml" >}}
 
-路径解析按顺序有三条分支：`http` 开头视为远程 URL；能在内容目录里找到同名文件时用 `baseURL + 页面目录 + 文件名`；否则用 `baseURL + 原样路径`。`redoc` 的路径因此不要以斜杠开头，`/openapi/…` 会拼出 `https://example.com//openapi/…` 这样的双斜杠。与 `swagger` 不同，它生成基于 `baseURL` 的绝对 URL。
+`http` 或 `https` URL 保持为远程地址。其它通过校验的值都是 `static/` 下的路径，
+开头有无斜杠等价。例如站点 `baseURL` 为 `https://example.com/preview/` 时，
+`openapi/docs-demo.yaml` 与 `/openapi/docs-demo.yaml` 都会变成
+`https://example.com/preview/openapi/docs-demo.yaml`。与 `swagger` 不同，Redoc
+接收的是这个基于 `baseURL` 的绝对 URL。
 
 主题固定了 `hide-hostname` `hide-logo` `suppress-warnings` `lazy-rendering` `native-scrollbars` 五个属性，并用 CSS 隐藏 Redocly 品牌图标。Redoc 的其余属性目前不开放给作者，需要它们时在站点里覆盖 `layouts/_shortcodes/redoc.html`。
 
@@ -90,7 +96,7 @@ cascade:
 - 两者可以同页共存，但页面会很长，HTML 输出也会同时加载两套运行时。正式站点选一个。
 - 两个界面都不是完全无障碍的，且都来自主题不改写的上游产物。Swagger UI 的标记有 axe WCAG AA 违规（`select-name`、`scrollable-region-focusable`）；Redoc 的接口描述文字不满足 AA 对比度。本站因此把 `.td-swagger-ui` 与 `.td-redoc` 排除在零违规门禁之外——有同类门禁的站点只能照做，并且应当明说，而不是默认其中某一个能过。
 - `redoc` 不接受额外属性参数：写第二个位置参数会告警，shortcode 不渲染。
-- `redoc` 路径不要以 `/` 开头，否则拼出双斜杠。
+- 本地 `redoc` 路径以 `static/` 为根，开头的 `/` 可有可无；它不解析页面资源。
 - 规范文件必须能被浏览器取到：放 `static/`，构建后确认 `public/` 下存在该文件。
 - 没有服务端 mock：Swagger UI 的 "Try it out" 会向 `servers` 里写的地址发起真实请求，示例规范里的地址不可访问。
 

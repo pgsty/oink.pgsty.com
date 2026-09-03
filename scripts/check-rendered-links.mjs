@@ -23,10 +23,11 @@ function relative(file) {
 
 function inScope(file) {
   const name = relative(file);
-  return (
-    name === 'index.html' ||
-    name === 'zh/index.html' ||
-    /^(?:zh\/)?(?:docs|blog|about|examples|community)\/.*\.html$/.test(name)
+  if (name.split('/').includes('_print') || /(^|\/)404\.html$/.test(name)) {
+    return false;
+  }
+  return !Array.from(documentFor(file).querySelectorAll('meta[http-equiv]')).some(
+    (meta) => meta.getAttribute('http-equiv')?.toLowerCase() === 'refresh',
   );
 }
 

@@ -59,7 +59,7 @@ Section pages:
 
 - [Writing pages](/docs/write/pages/): Creating a documentation page — where the file goes, what the front matter says, why heading anchors are written by hand, how links and images work, and what appears at the end of a page on its own.
 - [Organizing content](/docs/write/organize/): The directory structure is the sidebar tree — `_index.md` and weight, section index styles, icons and folding, hiding pages, and putting documentation at any path.
-- [Page parameters](/docs/write/frontmatter/): The full front matter table — every page key the theme actually reads, grouped by sidebar, shell, search, output, page end, Book, landing and release pages.
+- [Page parameters](/docs/write/frontmatter/): The full front matter table — active page keys and retained 1.x compatibility no-ops, grouped by sidebar, shell, search, output, page end, Book, landing and release pages.
 - [Blog posts](/docs/write/blog/): Setting up a blog section — directory conventions, a post's front matter, featured images, the year-grouped list page, and RSS.
 - [Books](/docs/write/book/): Turn a directory tree into a book with `type: book`: chapter numbering, numbered figures and tables, cross-references, generated indexes and whole-book print.
 - [Releases and downloads](/docs/write/releases/): Record versions, tags, archive links, checksums and install commands as local facts, then let release cards, asset tables, download blocks and index pages derive from that one record.

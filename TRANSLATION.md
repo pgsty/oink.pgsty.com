@@ -20,8 +20,8 @@
 | 合计               |          127 |
 
 覆盖检查逐一核对首页以及 `docs/`、`blog/`、`book/`、`case/`、
-`authors/` 与 `series/`。`content/search.md` 是由主题 i18n 驱动的特殊搜索页面，
-不要求独立的 `.zh.md` 同伴。以下命令同时检查文件覆盖率、显式锚点、中英文渲染 ID 和站内链接：
+`authors/` 与 `series/`。以下命令同时检查文件覆盖率、显式锚点、中英文渲染 ID
+和站内链接：
 
 ```bash
 make build

@@ -7,10 +7,6 @@ import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
 
 const siteDir = fileURLToPath(new URL('../../', import.meta.url));
-const localWorkspace = join(siteDir, 'go.work');
-const moduleWorkspace =
-  process.env.HUGO_MODULE_WORKSPACE ||
-  (existsSync(localWorkspace) ? localWorkspace : undefined);
 const rawBudget = 2 * 1024 * 1024;
 const gzipBudget = 512 * 1024;
 const requiredFields = [
@@ -57,12 +53,6 @@ for (const [deployment, baseURL, prefix] of [
         cwd: siteDir,
         shell: true,
         encoding: 'utf8',
-        env: {
-          ...process.env,
-          ...(moduleWorkspace
-            ? { HUGO_MODULE_WORKSPACE: moduleWorkspace }
-            : {}),
-        },
       },
     );
     const output = `${res.stdout ?? ''}${res.stderr ?? ''}`;

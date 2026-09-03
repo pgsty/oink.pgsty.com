@@ -1,13 +1,13 @@
 ---
 title: Page parameters
 linkTitle: Page parameters
-description: The full front matter table — every page key the theme actually reads, grouped by sidebar, shell, search, output, page end, Book, landing and release pages.
+description: The full front matter table — active page keys and retained 1.x compatibility no-ops, grouped by sidebar, shell, search, output, page end, Book, landing and release pages.
 weight: 30
 search_keywords: [page parameters, front matter, cascade, page override, parameter table]
 ---
 
-This page is the complete table of page-level parameters, listing only the keys
-the OINK theme reads. Keys the theme reads solely to warn that they were
+This page is the complete table of page-level parameters, listing the keys the
+OINK theme reads plus explicit 1.x compatibility no-ops. Keys the theme reads solely to warn that they were
 renamed or removed are not listed here — they are in
 [Migration](/docs/design/migration/), and they are also kept out of the
 generated editor schema. Hugo's own front matter fields (`slug`, `url`, `build`,
@@ -130,7 +130,7 @@ Site-level defaults and what they do are in
 | `body_class` | string | — | A class appended to `<body>` for the site's own CSS |
 | `reading_time` | boolean | site value | Whether this page shows a reading time; `false` hides it |
 | `sidebar_enabled` | boolean | `true` | Whether this page shows the left sidebar; `false` hides it |
-| `scroll_spy` | boolean | site value | Scroll tracking in the outline; `true` enables it |
+| `scroll_spy` | boolean | site value | Quiet 1.x compatibility no-op; active-heading tracking is always provided by the normal shell runtime |
 | `keyboard_nav` | boolean | site value (`true`) | Single-key keyboard navigation — see [Keyboard navigation](/docs/customize/keyboard/). A non-boolean warns and falls back |
 | `lastmod_commit` | `subject` / `hash` / `none` | `subject` | How the commit is shown after "last modified". An invalid value warns and falls back |
 | `sidebar_expand_levels`, `sidebar_menu_compact`, `sidebar_menu_foldable`, `sidebar_item_overflow` | as the site parameter | site value | Sidebar behaviour can be overridden per page too; the values are in [Configuration](/docs/customize/config/) |

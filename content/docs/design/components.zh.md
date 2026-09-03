@@ -123,6 +123,10 @@ Markdown 图片钩子是普通图片 API。行内图片保持行内；块图片�
 操作返回作者源文。ECharts 输入是声明式 JSON/YAML；回调使用
 `window.OinkEchartsFunctions` 中的 `$fn:<name>`，绝不执行嵌入脚本。
 
+Swagger 与 Redoc 接受 HTTP(S) 规范 URL 或以 `static/` 为根的路径，都不解析页面
+资源。Redoc 将开头有无斜杠视为等价，并把本地路径与 `baseURL` 拼接。只有 HTML
+输出可交互；Print、Markdown 与 RSS 输出静态规范链接。
+
 ### Book {#book}
 
 `book` 类型扩展 docs 外壳，并遵循内容树或 `data/docs_nav.json`。`book_number`、

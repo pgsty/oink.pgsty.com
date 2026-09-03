@@ -24,7 +24,7 @@
 - [Authoring](http://localhost/docs/write/index.md): Writing documentation pages, blog posts, books, release pages and API references — what a page looks like, and how content is organized.
   - [Writing pages](http://localhost/docs/write/pages/index.md): Creating a documentation page — where the file goes, what the front matter says, why heading anchors are written by hand, how links and images work, and what appears at the end of a page on its own.
   - [Organizing content](http://localhost/docs/write/organize/index.md): The directory structure is the sidebar tree — `_index.md` and weight, section index styles, icons and folding, hiding pages, and putting documentation at any path.
-  - [Page parameters](http://localhost/docs/write/frontmatter/index.md): The full front matter table — every page key the theme actually reads, grouped by sidebar, shell, search, output, page end, Book, landing and release pages.
+  - [Page parameters](http://localhost/docs/write/frontmatter/index.md): The full front matter table — active page keys and retained 1.x compatibility no-ops, grouped by sidebar, shell, search, output, page end, Book, landing and release pages.
   - [Blog posts](http://localhost/docs/write/blog/index.md): Setting up a blog section — directory conventions, a post's front matter, featured images, the year-grouped list page, and RSS.
   - [Books](http://localhost/docs/write/book/index.md): Turn a directory tree into a book with `type: book`: chapter numbering, numbered figures and tables, cross-references, generated indexes and whole-book print.
   - [Releases and downloads](http://localhost/docs/write/releases/index.md): Record versions, tags, archive links, checksums and install commands as local facts, then let release cards, asset tables, download blocks and index pages derive from that one record.
@@ -62,7 +62,7 @@
   - [Keyboard navigation](http://localhost/docs/customize/keyboard/index.md): Every single-key shortcut, when each stands down for typing, and how to turn them off per site or per page.
   - [Languages](http://localhost/docs/customize/i18n/index.md): Add a language, keep translations side by side, configure menus and interface strings per language, and align heading anchors across languages.
   - [Versions](http://localhost/docs/customize/versions/index.md): Configure the version switcher and the archive banner, and choose how several versions are laid out across domains.
-  - [Taxonomies](http://localhost/docs/customize/taxonomy/index.md): Give pages a second index that cuts across the directory tree with tags and categories — term pages, filter chips, the rail cloud and the navbar panel are all automatic.
+  - [Taxonomies](http://localhost/docs/customize/taxonomy/index.md): Give pages a second index that cuts across the directory tree with tags and categories — term pages, term cards, the rail cloud and the navbar panel are all automatic.
   - [Repository links](http://localhost/docs/customize/repository/index.md): Wire "edit this page", "open an issue" and "view history" to your repository, and show the last-modified line, contributors and the feedback widget at the page end.
   - [Print](http://localhost/docs/customize/print/index.md): A single page goes to the browser's Cmd/Ctrl+P; a whole section becomes one continuous document through the print output format.
   - [AI-agent support](http://localhost/docs/customize/agents/index.md): Give every page a `.md` twin, the site root an `llms.txt`, and the reader a way to hand the current page to ChatGPT or Claude.
@@ -83,10 +83,8 @@
   - [Consumer evidence](http://localhost/docs/design/research/consumer-evidence/index.md): A dated corpus snapshot that shaped OINK's shells, authoring primitives, and deterministic Book migration policy.
   - [Media convergence](http://localhost/docs/design/proposals/media-convergence/index.md): A draft for the remaining convergence between content images, numbered figures, Landing media, and featured-image selection.
   - [2026-08-26 review](http://localhost/docs/design/research/2026-08-26-comprehensive-review/index.md): An evidence-based review of OINK's post-v0.7.0 implementation, configuration, outputs, security, tests, performance, bilingual contracts, and real integration site.
-  - [Agent indexes](http://localhost/docs/design/proposals/agent-indexes/index.md): Optional per-section full-text bundles and a stable navigation JSON, built on OINK's existing Markdown outputs and navigation authority.
   - [Markdown-first authoring](http://localhost/docs/design/decisions/authoring/index.md): Native Markdown carries common semantics; shortcodes fill real capability gaps, and content models extend shared shells instead of forking them.
   - [Shell and navigation](http://localhost/docs/design/shell/index.md): Navigation authorities, immersive blog presentation, search, actions, taxonomies, indexes, and page-end composition.
-  - [Book publication](http://localhost/docs/design/proposals/book-publication/index.md): Move Book semantic lowering and generic EPUB/PDF packaging into OINK without taking publication facts away from consumers.
   - [Config schema](http://localhost/docs/design/decisions/config-schema/index.md): The editor schemas are projected from the existing configuration authorities; a CI drift gate keeps them from ever becoming a third one.
   - [Landing pages](http://localhost/docs/design/landing/index.md): The maintainer contract for landing data, the built-in section registry, language resolution, runtime, accessibility, and outputs.
   - [Migration boundary](http://localhost/docs/design/migration/index.md): The supported source, configuration, and validation boundaries for migration from OINK 0.4 through OINK 1.0.0.

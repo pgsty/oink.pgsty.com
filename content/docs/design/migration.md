@@ -70,7 +70,7 @@ matching front-matter keys but never edits site configuration.
 | `github_url` | `github_repo` |
 | `ui.no_left_sidebar` | `ui.sidebar_enabled` (inverted) |
 | breadcrumb aliases | `ui.breadcrumb` |
-| `ui.scrollSpy` | `ui.scroll_spy` (inverted) |
+| `ui.scrollSpy` | No behavioral replacement; `ui.scroll_spy` remains a quiet 1.x compatibility no-op |
 | `ui.showLightDarkModeMenu` | `ui.dark_mode.show_menu` |
 | `ui.readingtime` | `ui.reading_time` |
 | `ui.ul_show` | `ui.sidebar_expand_levels` |

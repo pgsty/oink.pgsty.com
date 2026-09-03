@@ -351,7 +351,9 @@ params:
   ui:
     typography: technical
     # Site-wide backlinks: every page lists the pages that link to it, so the
-    # documentation demonstrates the 0.8.0 feature it describes.
+    # documentation demonstrates the 0.8.0 feature it describes. The Docs and
+    # Blog section roots opt out in their own front matter -- an index is read
+    # as a way in, not as a destination worth tracing links back to.
     backlinks: true
     # The blog index toolbar gets the form cycle (list, cards, table) beside
     # its feed button, on the root and on every child section index.
