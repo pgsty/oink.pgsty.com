@@ -46,7 +46,11 @@ aliases:
 
 ## 双语与 32 个界面语言 {#multilingual}
 
-多语言走 Hugo 原生机制：译文路由、按权重排序的语言选择器、缺译回退、RTL、以及 canonical 与 alternate 元数据。界面文案有 32 个语言包，共用同一套 key；英语、简体中文（`zh-cn` 与通用 `zh`）与繁体中文（`zh-tw`）经过人工审校，其余语言保留 Docsy 继承下来的翻译，OINK 新增的键先用英文兜底。
+多语言走 Hugo 原生机制：译文路由、按权重排序的语言选择器、缺译回退、RTL，
+以及 canonical 与 alternate 元数据。界面文案有 32 份语言包，共用 192 键
+schema：Docsy 支持的 31 个 locale 文件名，再加通用 `zh`。每份语言包都使用目标
+语言覆盖完整 OINK 界面，不再保留英文占位块；`zh` 与 `zh-cn` 使用简体中文，
+`zh-tw` 使用繁体中文。
 
 → [多语言](/zh/docs/customize/i18n/)
 

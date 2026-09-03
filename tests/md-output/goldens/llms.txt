@@ -74,7 +74,7 @@
   - [Upgrade](http://localhost/docs/admin/upgrade/index.md): Move to a new theme version, convert 0.4 shortcodes to current native forms with the migration toolkit, migrate from Docsy, and roll back safely.
   - [Troubleshooting](http://localhost/docs/admin/troubleshooting/index.md): Symptom → cause → fix for the four fault classes — build, language, search, platform — plus the checks a site can run for itself.
 - [Design](http://localhost/docs/design/index.md): OINK maintainer contracts, accepted decisions, dated research, and proposals in one canonical bilingual section.
-  - [Architecture](http://localhost/docs/design/architecture/index.md): Repository assembly, configuration, diagnostics, output, performance, security, CSS, accessibility, and release-state boundaries.
+  - [Architecture](http://localhost/docs/design/architecture/index.md): Repository assembly, configuration, diagnostics, localization, output, performance, security, CSS, accessibility, and release-state boundaries.
   - [Diagnostics](http://localhost/docs/design/decisions/diagnostics/index.md): Invalid author input warns and degrades safely during preview; --panicOnWarning restores a hard publication gate.
   - [Goldmark attributes](http://localhost/docs/design/research/goldmark-attributes/index.md): Reproducible findings for lists, images, tables, passthrough blocks, fences, callouts, and nested containers on Hugo 0.160.1 and 0.164.0.
   - [Knowledge graph](http://localhost/docs/design/proposals/knowledge-graph/index.md): A draft three-stage design for deriving backlinks and local or global graph views from ordinary Hugo links.

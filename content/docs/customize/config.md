@@ -459,7 +459,7 @@ reads the translation relationships it establishes:
 | `languages.<lang>.locale` | string | | The full locale, used for `<html lang>` and SEO |
 | `languages.<lang>.weight` | integer | | Language order, and the cycle order when clicking the language icon |
 | `languages.<lang>.title` | string | | The site name in that language |
-| `languages.<lang>.languageDirection` | string | ltr | Set `rtl` for a right-to-left language |
+| `languages.<lang>.direction` | string | ltr | Set `rtl` for a right-to-left language |
 {.fields meta="type default"}
 
 Paired files, anchor alignment and fallback for untranslated pages are in
