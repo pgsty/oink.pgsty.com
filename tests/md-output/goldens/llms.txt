@@ -62,7 +62,7 @@
   - [Keyboard navigation](http://localhost/docs/customize/keyboard/index.md): Every single-key shortcut, when each stands down for typing, and how to turn them off per site or per page.
   - [Languages](http://localhost/docs/customize/i18n/index.md): Add a language, keep translations side by side, configure menus and interface strings per language, and align heading anchors across languages.
   - [Versions](http://localhost/docs/customize/versions/index.md): Configure the version switcher and the archive banner, and choose how several versions are laid out across domains.
-  - [Taxonomies](http://localhost/docs/customize/taxonomy/index.md): Give pages a second index that cuts across the directory tree with tags and categories — term pages, filter chips, the rail cloud and the navbar panel are all automatic.
+  - [Taxonomies](http://localhost/docs/customize/taxonomy/index.md): Give pages a second index that cuts across the directory tree with tags and categories — term pages, term cards, the rail cloud and the navbar panel are all automatic.
   - [Repository links](http://localhost/docs/customize/repository/index.md): Wire "edit this page", "open an issue" and "view history" to your repository, and show the last-modified line, contributors and the feedback widget at the page end.
   - [Print](http://localhost/docs/customize/print/index.md): A single page goes to the browser's Cmd/Ctrl+P; a whole section becomes one continuous document through the print output format.
   - [AI-agent support](http://localhost/docs/customize/agents/index.md): Give every page a `.md` twin, the site root an `llms.txt`, and the reader a way to hand the current page to ChatGPT or Claude.
