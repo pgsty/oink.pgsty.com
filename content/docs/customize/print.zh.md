@@ -81,7 +81,7 @@ no_print: true
 ---
 ```
 
-它只影响整章打印视图，页面自己的 HTML 与浏览器 `Cmd/Ctrl+P` 不受影响。侧栏分隔项（`sidebar_divider`）也自动排除。
+它只影响整章打印视图，页面自己的 HTML 与浏览器 `Cmd/Ctrl+P` 不受影响。侧栏分隔项（`sidebar_divider`）也自动排除；分隔项为分区时，其子文档仍保留在打印顺序中。
 
 ## 组件在打印态的形态 {#components}
 

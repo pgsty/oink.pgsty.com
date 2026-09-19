@@ -242,6 +242,14 @@ and narrow viewports. Theme-owned decorative icons carry `aria-hidden`; pages
 with task lists or raw authored Font Awesome elements alone load the authored
 accessibility repair.
 
+Reading-container focus distinguishes pointer origin from keyboard navigation.
+A pointer-focused main region, table viewport, or code `pre` does not acquire
+an outline merely because the reader presses another key. Tab, blur, or a new
+non-pointer focus clears that exemption. Controls retain their own focus
+styles, scrollable containers retain `tabindex`, and the skip-link destination
+shows a local outline around its title instead of the entire article. Forced
+colors preserve the keyboard indication; no global focus-outline reset is used.
+
 Font roles are `ui`, `body`, `heading`, `code`, `display`, `meta`, and
 `print`, exposed as `--td-*-font-family`. `ui` is the main face: `body`
 resolves through it, and `heading` through `body`, so one assignment moves

@@ -47,6 +47,9 @@ jobs:
           - name: Section theme colour
             target: test:theme-color
             artifact: theme-color
+          - name: Community feedback regressions
+            target: test:community-feedback
+            artifact: community-feedback
     steps:
       - uses: actions/checkout@v7
         with:

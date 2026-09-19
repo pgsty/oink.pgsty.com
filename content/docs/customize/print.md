@@ -100,7 +100,8 @@ no_print: true
 
 It affects the whole-section print view only; the page's own HTML and the
 browser's `Cmd/Ctrl+P` are unaffected. Sidebar dividers (`sidebar_divider`) are
-excluded automatically.
+excluded automatically; when the divider is a section, its child documents
+remain in the print sequence.
 
 ## How components look in print {#components}
 

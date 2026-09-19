@@ -202,6 +202,11 @@ Chrome/Chromium 二进制，输出带 CSS 页码的 A4 页面。两种工具都�
 减少动画、超长 token 与窄视口。主题拥有的装饰图标带 `aria-hidden`；只有包含
 任务列表或原始 Font Awesome 元素的页面才加载作者内容无障碍修复。
 
+阅读容器区分指针聚焦与键盘导航。由指针聚焦的 main 区域、表格滚动区或代码 `pre`
+不会仅因读者随后按键而出现边框；Tab、失焦或新的非指针聚焦会清除这项豁免。普通控件
+保留自己的焦点样式，滚动容器保留 `tabindex`，跳过导航的目标在标题附近显示局部边框，
+不再包围整篇文章。强制颜色模式保留键盘提示，不使用全局焦点边框重置。
+
 字体角色为 `ui`、`body`、`heading`、`code`、`display`、`meta` 与 `print`，
 通过 `--td-*-font-family` 暴露。`ui` 是主字体：`body` 经它解析，`heading` 又经
 `body` 解析，因此赋一次值即同时移动界面、正文与标题。`params.ui.typography`

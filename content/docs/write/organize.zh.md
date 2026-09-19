@@ -117,7 +117,7 @@ params:
 
 ## 展开与折叠 {#folding}
 
-有子页的栏目在侧栏里带一个折叠箭头，读者的展开状态保存在本地。默认行为：当前页所在的那条路径展开，其余收起；博客类栏目默认展开。
+有子页的栏目在侧栏里带一个折叠箭头。OINK 保存整栏折叠、宽度和滚动位置；各分支的读者选择可由站点通过[侧栏运行时 API](/docs/design/shell/#sidebar-runtime) 自行持久保存。默认行为：当前页所在的那条路径展开，其余收起；博客类栏目默认展开。
 
 ```yaml {title="content/docs/reference/_index.zh.md"}
 sidebar_expanded: true   # 这个栏目始终默认展开
@@ -135,6 +135,28 @@ sidebar_expanded: true   # 这个栏目始终默认展开
 | `manual_link: https://…` | 侧栏这一行指向别处；配 `manual_link_title`、`manual_link_target: _blank` 用 |
 
 `toc_hide` 与 `hide_summary` 控制两个不同的入口，两处都不该出现时才同时设置。
+
+## 不发布目录页的分组 {#group-only}
+
+main 分支中的分隔分区可保留子页，同时让标题不再跳转。目录只负责组织子页时，使用这样的
+`_index.md`：
+
+```yaml
+---
+title: Reference
+sidebar_divider: true
+build:
+  render: never
+---
+```
+
+标题显示为分组标签，按钮负责展开子页；子页仍进入翻页、搜索、导航 JSON 和 Print。
+没有 JavaScript 时分组保持展开。省略 `build`，即可继续发布分区页面，同时保留侧栏的
+非链接标题。叶子分隔项保持原来的外观。
+
+`toc_hide` 会隐藏分区的整棵子树；`no_list` 只移除分区正文的子页列表，`hide_summary`
+只移除父页面列表中的一项，都不能代替分组。`build.render: link` 保留 permalink，却不
+发布页面；不发布的分组应使用 `never`，避免其他导航把它当成可访问的目标。
 
 ## 外壳由 `type` 决定，不是路径 {#type-and-shell}
 
@@ -177,7 +199,7 @@ sidebar_root_for: self   # self | children
 | `self` | 这个栏目的首页及其全部后代都以它为侧栏根 |
 | `children` | 首页仍留在父级树里，只有后代以它为根 |
 
-根节点上方的切换器是全站的：它列出所有顶层栏目，加上站内所有 `sidebar_root_for: self` 的栏目。只有一个入口时它退化成一个普通链接，两个及以上才是下拉菜单。顶层栏目不出现在切换器里时，在它的 `_index.md` 写 `sidebar_root_menu: false`。
+根节点上方的切换器是全站的：它列出所有顶层栏目，加上站内所有 `sidebar_root_for: self` 的栏目。只有一个入口时它退化成一个普通链接，两个及以上才是下拉菜单。在顶层栏目或嵌套自根的 `_index.md` 中写 `sidebar_root_menu: false`，可将其排除在全站候选之外；浏览该分区时，当前根仍保留为位置提示。
 
 切换器下方，栏目首页仍是树里的第一个链接：切换器选择一棵树，根链接指向一篇文档。`sidebar_root_link_self: false` 让根那一行改为指向父级栏目。
 

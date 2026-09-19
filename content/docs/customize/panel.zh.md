@@ -132,6 +132,38 @@ params:
 
 打印态不装配面板，打印输出里没有它；关闭 `offline_search` 后同样没有面板，此时 <kbd>f</kbd> 与 <kbd>c</kbd> 静默，不影响正常输入。
 
+## 使用当前查询的站点操作 {#search-tail}
+
+main 为受信任的站点 JavaScript 提供运行时接口。使用前检查能力是否存在：旧标签和未启用
+本地搜索的页面不提供它。以下示例假定站点实现了 `openSiteAssistant`，并自行管理服务商设置：
+
+```javascript
+if (window.OinkCommandPalette?.registerSearchTail) {
+  const unregister = window.OinkCommandPalette.registerSearchTail({
+    id: 'ask-site',
+    rows(context) {
+      return [{ id: 'ask', title: '询问站点', description: context.query }];
+    },
+    activate(row, context) {
+      context.handoff();
+      return openSiteAssistant(context.query, {
+        locale: context.locale,
+        signal: context.signal,
+      });
+    },
+  });
+  // 移除此集成时调用 unregister()。
+}
+```
+
+扩展行排在原生结果和操作之后，包括空结果与索引错误状态；空查询、命令、选择和加载状态
+不出现扩展行。`rows()` 应保持纯净且同步，所有字符串都作为文本渲染。激活接收生成该行时
+的查询，不会读取更新后的输入值。打开另一个受协调器管理的界面前调用 `handoff()`，此后
+由站点负责新界面的焦点与失败提示。没有新界面的操作直接返回 Promise，不调用 handoff。
+
+[Shell 契约](/docs/design/shell/#search-tail-extensions) 定义了字段、取消、校验和生命周期。
+YAML 仍不能包含回调，OINK 默认不添加远程服务或遥测。
+
 ## 验证 {#verify}
 
 1. 构建后确认命令清单进了页面：

@@ -146,8 +146,10 @@ the six sections on the left carry icons.
 
 ## Expanding and folding {#folding}
 
-A section with children carries a fold arrow in the sidebar, and the reader's
-expansion state is kept locally. The default behaviour: the path containing the
+A section with children carries a fold arrow in the sidebar. OINK saves the
+whole sidebar's collapse, width, and scroll state; persisting individual branch
+choices is optional site code using the [sidebar runtime API](/docs/design/shell/#sidebar-runtime).
+The default behaviour: the path containing the
 current page is expanded and everything else is collapsed; blog-type sections
 are expanded by default.
 
@@ -170,6 +172,32 @@ key definitions are in [Configuration](/docs/customize/config/).
 
 `toc_hide` and `hide_summary` control two different entry points, so set both
 only when the page should appear in neither.
+
+## Groups without a landing page {#group-only}
+
+On main, a divider section can keep its children while its title has no link.
+Use this `_index.md` when the directory should only organize child pages:
+
+```yaml
+---
+title: Reference
+sidebar_divider: true
+build:
+  render: never
+---
+```
+
+The title is a group label, its button folds the children, and the children
+remain in the pager, search, navigation JSON, and Print. Without JavaScript,
+the group stays expanded. Omit `build` to keep publishing the section page
+while still showing a non-link sidebar label. Leaf dividers keep their old
+separator appearance.
+
+`toc_hide` hides a section's entire subtree. `no_list` only removes the child
+list from a section's body, and `hide_summary` removes an entry from its parent
+page. None of these is a replacement for a group-only section. `build.render:
+link` retains a permalink without publishing a page; prefer `never` for an
+unpublished group so other navigation cannot invent a destination.
 
 ## The shell follows `type`, not the path {#type-and-shell}
 
@@ -223,8 +251,9 @@ sidebar_root_for: self   # self | children
 The switcher above the root is site-wide: it lists every top-level section plus
 every section anywhere that declares `sidebar_root_for: self`. With only one
 entry it degrades to a plain link; two or more make it a dropdown. To keep a
-top-level section out of the switcher, write `sidebar_root_menu: false` in its
-`_index.md`.
+top-level section or nested self-root out of the global choices, write
+`sidebar_root_menu: false` in its `_index.md`. The current root remains as a
+location marker when browsing that section.
 
 Below the switcher, the section index remains the first link in the tree: the
 switcher picks a tree and the root link points at a document.

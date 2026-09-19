@@ -60,6 +60,59 @@ settings. That markup remains visible without JavaScript; the normal shell
 runtime adds the active path. A Book page that emits `sidebar_headings` stays
 page-specific and bypasses the shared tree cache.
 
+Root candidates are linkable, non-divider top-level sections followed by `sidebar_root_for: self`
+sections, deduplicated by URL. Both sources honor explicit
+`sidebar_root_menu: false`; absent/true preserves inclusion. The current
+resolved root is appended even when excluded from global choices. Zero entries
+emit no control; one emits a static link. Language and deployment prefixes stay
+on every URL. A divider or unpublished section cannot become a switcher link.
+
+A `sidebar_divider` leaf retains its static heading. A divider section retains
+its children in both sidebar walkers, with a non-link label and a real
+disclosure button when folding is enabled. It never becomes a pager target;
+its children retain their positions. Pair it with `build.render: never` to
+omit the section's own outputs without hiding its descendants. Breadcrumbs
+render its label without a link, search omits it, navigation JSON hoists its
+children, and Print keeps the child documents. Book TOCs retain the group label
+and child links, but omit headings from the unpublished group body. `toc_hide` still hides the
+whole subtree and is not a grouping option. Explicit navigation keys are
+language- and deployment-independent paths; rendered links retain both prefixes.
+
+## Sidebar runtime {#sidebar-runtime}
+
+> [!NOTE] Main-branch additions
+> The disclosure API and explicit hidden-content isolation described here are
+> implemented on main; a public release tag is a separate delivery state.
+
+`window.OinkSidebar` owns registered tree disclosures and movable TOC,
+backlink, and taxonomy groups, independent of their current DOM parent.
+`setExpanded(id, boolean, {source})` returns true for a valid target and false
+for unknown IDs or non-boolean values. `getState(id)` returns a fresh
+`{id, expanded}` snapshot or null. IDs are the existing `aria-controls` region
+IDs; arbitrary elements outside the registered OINK groups cannot be changed.
+
+Sources are `user`, `active-path`, `responsive`, and `api` (default). Every
+writer commits `aria-expanded`, `td-is-open`, the localized label, and the
+region's inert state before one `oink:sidebar-disclosure` document event with
+`detail: {id, expanded, source}`. Repeated state writes emit no event. API
+restoration keeps current-path ancestors expanded; explicit user disclosure
+can still collapse them. Closing a region containing focus returns it to the
+toggle before isolation.
+
+`ready` is a Promise resolving to the API after initial hydration and responsive
+placement; `isReady` and `oink:sidebar-ready` also expose completion to late
+consumers. Optional persistence belongs to the site: await ready, read storage
+inside a try/catch, and restore valid region IDs through the setter. OINK owns
+whole-column collapse, width, and scroll persistence, not a version/locale
+schema for reader-selected branches.
+
+Desktop collapse and a closed mobile drawer make panel content inert and mark
+the panel `aria-hidden`. Focus leaves before isolation; opening clears it
+before focus enters. The panel itself remains the 16px pointer sensor, and the
+external restore control remains active. Hover, Escape, backdrop dismissal,
+breakpoint cleanup, and scroll unlocking retain their existing behavior.
+These runtime attributes are not emitted into the no-JavaScript fallback.
+
 ## Immersive blog presentation {#immersive-blog-presentation}
 
 There is no article type or second shell. Immersive reading is four independent
@@ -132,6 +185,53 @@ allowed. This tracking is always owned by the normal shell runtime.
 `params.ui.scroll_spy` and the page key `scroll_spy` are quiet compatibility
 no-ops throughout 1.x, emit no separate runtime, and may be removed only in a
 future breaking release.
+
+## Search-tail extensions {#search-tail-extensions}
+
+> [!NOTE] Main-branch API
+> This API is implemented on main and remains absent from older published tags.
+
+Trusted site JavaScript may call
+`OinkCommandPalette.registerSearchTail({id, rows, activate})`; YAML and the
+action manifest remain data-only. The bundle stays conditional on local search.
+Registration requires a unique ID matching `[A-Za-z0-9][A-Za-z0-9_-]*` and two
+functions; invalid or duplicate registrations throw. The returned unregister
+function is idempotent and cannot remove a later registration reusing the ID.
+Live changes schedule one owned render; removal cancels that provider's pending action.
+
+`rows(context)` synchronously returns descriptors. Context is a frozen snapshot
+`{query, locale, phase, pageResultCount}`: query is trimmed; locale is the HTML
+language tag; phase is `results`, `empty`, or `error`; count covers only local
+page results after the limit. Providers run only for settled, non-empty text
+search, never empty, command, choice, or loading states. Rows follow all native
+results and actions in the localized Actions group, in registration order.
+Native empty/error messages and input-triggered index retry remain available.
+
+Each descriptor requires a unique per-provider `id` with the same ID syntax and
+a non-empty string `title`. Optional `description`, `icon`, and `disabledReason`
+are strings; `available` is boolean, default true. OINK copies and freezes these
+fields and renders display strings as text. Invalid descriptors, duplicate IDs,
+an asynchronous return, or a thrown callback discard that provider for the
+render without affecting other providers. No callback-count promise is made.
+
+`activate(row, context)` runs only through ordinary row activation. It receives
+the copied descriptor and its original context plus an `AbortSignal` and a
+`handoff()` function. Pending activation blocks duplicates. Synchronous throws
+and rejected promises release pending state, keep the Palette open, and announce
+the localized action-failed message. Fulfillment values are ignored; success
+closes the Palette without stealing focus from another surface. Closing,
+reopening, changing the rendered query, or unregistering cancels pending work;
+late settlement cannot modify a newer session.
+
+Before opening another coordinated surface, call `context.handoff()`. It closes
+the Palette without returning focus or aborting that activation. The consumer
+then owns the new surface's focus and error UI. A later Palette session or
+unregistration can still cancel unfinished work; successful completion does not
+abort a handed-off operation. OINK imposes no timeout.
+
+`rows()` must remain pure. This is a trusted-code contract, not a sandbox. The
+default query remains local, with no remote provider or telemetry bundled.
+Any extension network behavior and provider consent belong to the site.
 
 ## Share {#share}
 

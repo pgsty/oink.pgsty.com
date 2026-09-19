@@ -178,6 +178,42 @@ The palette is not assembled in print state, so print output has none of it.
 With `offline_search` off there is likewise no palette, and <kbd>f</kbd> and
 <kbd>c</kbd> stay silent without disturbing normal typing.
 
+## Query-aware site actions {#search-tail}
+
+Main provides a runtime hook for trusted site JavaScript. Feature-detect it:
+older tags and pages without local search do not provide it. This example
+assumes the site implements `openSiteAssistant` and owns its provider settings:
+
+```javascript
+if (window.OinkCommandPalette?.registerSearchTail) {
+  const unregister = window.OinkCommandPalette.registerSearchTail({
+    id: 'ask-site',
+    rows(context) {
+      return [{ id: 'ask', title: 'Ask the site', description: context.query }];
+    },
+    activate(row, context) {
+      context.handoff();
+      return openSiteAssistant(context.query, {
+        locale: context.locale,
+        signal: context.signal,
+      });
+    },
+  });
+  // Call unregister() when removing this integration.
+}
+```
+
+Rows follow native results and actions, including empty/error searches. They
+are absent in empty, command, choice, and loading states. Keep `rows()` pure
+and synchronous; all strings render as text. Activation receives the query
+used to create the row, not a newer input value. Use `handoff()` before opening
+another coordinated surface; the site then owns its focus and failure UI.
+For non-UI actions, return the operation without calling handoff.
+
+The [Shell contract](/docs/design/shell/#search-tail-extensions) defines fields,
+cancellation, validation, and lifecycle. YAML still cannot contain callbacks,
+and OINK adds no remote service or telemetry by default.
+
 ## Verify {#verify}
 
 1. After a build, confirm the command manifest reached the page:

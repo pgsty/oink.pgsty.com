@@ -243,10 +243,11 @@ sidebar_root_link_self: true
 
 `self` makes the section index and all its descendants use the new tree;
 `children` leaves the index in the parent tree and binds only the descendants.
-To keep a top-level section out of the switcher, set `sidebar_root_menu: false`
-in its front matter.
+To exclude a top-level section or a nested self-root from the global choices,
+set `sidebar_root_menu: false` in its front matter. The current resolved root is
+still appended when absent: inside that section, it remains a location marker.
 
-With one entry the switcher degrades to a borderless link; two or more make it a
+With no entries nothing is rendered; one entry degrades to a borderless link; two or more make it a
 dropdown. The tree below it still has the section index as its first link: the
 switcher picks a tree, and the root link picks a document.
 
