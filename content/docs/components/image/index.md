@@ -182,6 +182,10 @@ and gallery images that have alt text become clickable buttons that open the
 full image in a native `<dialog>` (Esc closes it, focus returns where it was).
 This page turns it on in its front matter, so every image above is clickable.
 
+The preview action is part of the button's accessible name, alongside the image
+description. It adds no helper text to copied articles; the copied HTML retains
+images and authored captions for rich-text editors.
+
 ```yaml {title="hugo.yml"}
 params:
   ui:

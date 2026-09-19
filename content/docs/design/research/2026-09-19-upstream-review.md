@@ -418,3 +418,30 @@ next theme publication; pushing their new browser gate against the old public
 pin would test the wrong implementation. No contributor reply was sent, and issues #40, #41, #42 and #44 remain open. The exact original #42 screenshots and the reported Linux
 Super-key setup were not independently reproduced; the explicit grouping
 requirement and equivalent pointer-plus-key behavior were tested as described.
+
+## Image-copy follow-up {#image-copy-follow-up}
+
+The maintainer also reported preview instructions appearing below images after
+copying a blog article into a rich-text editor. The blog pins OINK `v1.0.0` and
+enables `params.ui.image_zoom`. That release and the reviewed main revision
+inserted a visually hidden text span after each eligible image. Native Chromium
+copy reproduced the extra `Open image preview` and Chinese equivalent in the
+clipboard; this is a theme defect independent of the destination editor.
+
+Theme commit [`75052f8`](https://github.com/pgsty/oink/commit/75052f8) moves the
+image description and localized action into the button's `aria-label`. No helper
+text node is added to the article. The image alt text, authored captions, native
+button operation and dialog focus return are preserved. The
+[component contract](/docs/design/components/#images-gallery-filetree-and-fences)
+and [image guide](/docs/components/image/#zoom) document the copy behavior.
+
+`check-image-zoom.py` passed, as did all 57 non-browser site tests. The focused
+browser run passed 16 tests: the 14 content-component cases, including four new
+EN/ZH image/gallery clipboard regressions, and two desktop-light/mobile-dark
+dialog accessibility cases. The regressions read both plain-text and HTML
+clipboard data, check text after removing its styling context, and verify
+retained image URLs, alt text and captions. They also check accessible names.
+
+No live Zhihu editor was used for acceptance. The blog dependency and hosted
+deployment were not changed; the fix reaches that published consumer after its
+theme dependency is upgraded and the site is rebuilt.

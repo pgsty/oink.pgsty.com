@@ -325,6 +325,74 @@ test.describe('Everyday content primitive guides', () => {
     ).toHaveCount(0);
   });
 
+  for (const prefix of ['', '/zh']) {
+    for (const guide of ['image', 'gallery']) {
+      test(`Image Zoom keeps ${prefix || 'English'} ${guide} copies free of UI hints`, async ({
+        page,
+        context,
+      }) => {
+        await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+        await page.goto(`${prefix}${componentsPath}${guide}/`, {
+          waitUntil: 'domcontentloaded',
+        });
+        const triggers = page.locator('.td-image-zoom__trigger:visible');
+        await expect(triggers.first()).toBeVisible();
+        const openLabel = await page
+          .locator('[data-td-image-zoom-dialog]')
+          .getAttribute('data-td-open-label');
+        for (const trigger of await triggers.all()) {
+          const alt = await trigger.locator('img').getAttribute('alt');
+          await expect(trigger).toHaveAccessibleName(`${alt} ${openLabel}`);
+        }
+
+        // Copy the real rendered article, including plain images, figures,
+        // Gallery items, decorative images, and linked images. Inspect both
+        // clipboard formats: rich editors can discard all OINK styling.
+        const expected = await page.locator('#td-main-content').evaluate((main) => {
+          const range = document.createRange();
+          range.selectNodeContents(main);
+          const selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+          return {
+            images: Array.from(main.querySelectorAll('img'))
+              .filter((image) => image.checkVisibility())
+              .map((image) => ({ src: image.src, alt: image.alt })),
+            captions: Array.from(main.querySelectorAll('figcaption'))
+              .filter((caption) => caption.checkVisibility())
+              .map((caption) => caption.textContent.trim()),
+          };
+        });
+        await page.keyboard.press('ControlOrMeta+c');
+        const copied = await page.evaluate(async () => {
+          const items = await navigator.clipboard.read();
+          const item = items.find((entry) => entry.types.includes('text/html'));
+          const html = await (await item.getType('text/html')).text();
+          const document = new DOMParser().parseFromString(html, 'text/html');
+          return {
+            plain: await navigator.clipboard.readText(),
+            // textContent models an editor retaining the text but removing
+            // class/style attributes or unwrapping unknown elements.
+            richText: document.body.textContent,
+            images: Array.from(document.querySelectorAll('img'), (image) => ({
+              src: image.src,
+              alt: image.alt,
+            })),
+          };
+        });
+        expect(copied.plain).not.toContain(openLabel);
+        expect(copied.richText).not.toContain(openLabel);
+        expect(copied.images).toEqual(expected.images);
+        // Chromium may serialize spaces between inline caption spans as NBSP.
+        const normalize = (text) => text.replace(/\s+/g, ' ').trim();
+        for (const caption of expected.captions) {
+          expect(normalize(copied.plain)).toContain(normalize(caption));
+          expect(normalize(copied.richText)).toContain(normalize(caption));
+        }
+      });
+    }
+  }
+
   test('content remains complete without JavaScript', async ({ browser }) => {
     const context = await browser.newContext({ javaScriptEnabled: false });
     const page = await context.newPage();

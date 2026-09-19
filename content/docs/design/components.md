@@ -127,6 +127,11 @@ Hugo `Fit`, `Resize`, `Fill`, or `Crop` on processable local resources. A plain
 linked image uses Markdown syntax; the `link` attribute therefore requires a
 caption or number. Linked and decorative images do not load Zoom.
 
+Zoom triggers keep the image's alt text and localized preview action in their
+ARIA accessible name, without inserting helper text into the article. Copying
+content as plain text or rich HTML must not add preview instructions, even when
+an editor discards the theme's styles. Authored images and captions are preserved.
+
 Gallery accepts one Markdown image per line with optional description, link,
 and class. FileTree accepts indentation, `- name`, optional `/`, comments, and
 validated icon/tone/open/type attributes. Markdown preserves authored source;
