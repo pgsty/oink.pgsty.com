@@ -13,8 +13,8 @@ Landing pages, and migration boundaries.
 Do not clone this regression repository as a project template. Use the small,
 public GitHub template at
 [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter), then follow the
-[Starter tutorial](https://oink.pgsty.com/docs/start/starter/). It pins the
-current release and includes neutral Docs, Blog, Book, language profiles, and
+[Starter tutorial](https://oink.pgsty.com/docs/start/starter/). It pins a
+published release and includes neutral Docs, Blog, Book, language profiles, and
 GitHub Pages / Cloudflare Pages workflows without this site's test harness or
 project-specific configuration.
 

@@ -25,7 +25,7 @@ aliases:
 The recommended path for a new site starts from
 [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter), not from a copy
 of this documentation and regression repository. The Starter is a public
-GitHub template: it pins OINK {{% param version %}}, builds as-is, and contains
+GitHub template: it pins a published OINK release, builds as-is, and contains
 only neutral project content and deployment workflows.
 
 > [!IMPORTANT] Two version numbers have different jobs

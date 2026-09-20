@@ -134,7 +134,7 @@ params:
 
 ## 使用当前查询的站点操作 {#search-tail}
 
-受信任站点 JavaScript 使用的运行时接口已在 main 实现，计划随 OINK 1.1 发布。
+受信任站点 JavaScript 使用的运行时接口自 OINK 1.1 起提供。
 使用前检查能力是否存在：v1.0.0 和未启用本地搜索的页面不提供它。集成代码应在主题脚本
 之后加载，例如使用 `layouts/_partials/hooks/body-end.html`。以下示例假定站点实现了
 `openSiteAssistant`，并自行管理服务商设置：

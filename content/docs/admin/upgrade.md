@@ -1,7 +1,7 @@
 ---
 title: Upgrade
 linkTitle: Upgrade
-description: Pin a published theme version, prepare a 1.0-to-1.1 upgrade, migrate legacy content or a Docsy site, and roll back safely.
+description: Pin a published theme version, upgrade from 1.0 to 1.1, migrate legacy content or a Docsy site, and roll back safely.
 weight: 50
 search_keywords: [upgrade, migration, version, Hugo Module, hugo mod get, oink06, Docsy, jQuery, breaking changes]
 aliases:
@@ -34,13 +34,12 @@ guessing afterwards why a page looks different.
 ## Upgrading the Hugo Module {#hugo-module}
 
 A production site pins a published release tag or a deliberately selected
-immutable commit, follows no branch, and does not use `@latest`. As of
-2026-09-20, the public release is `v1.0.0`; `v1.1.0` is still in preparation.
-The example below uses the available tag. Use a later tag only after its
-publication and module resolution have been verified:
+immutable commit, follows no branch, and does not use `@latest`. The example
+below upgrades to the published `v1.1.0` tag. For a later release, verify its
+publication and module resolution before selecting that tag:
 
 ```bash {title="Terminal"}
-hugo mod get github.com/pgsty/oink@v1.0.0   # the verified published tag
+hugo mod get github.com/pgsty/oink@v1.1.0   # the published release tag
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -56,7 +55,7 @@ module github.com/pgsty/oink.pgsty.com
 
 go 1.27.0
 
-require github.com/pgsty/oink v1.0.0
+require github.com/pgsty/oink v1.1.0
 ```
 
 > [!DANGER] A local module replacement overrides that pin
@@ -70,7 +69,7 @@ check out the exact published version rather than following its remote branch:
 
 ```bash {title="Terminal"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.0.0
+git -C themes/oink checkout --detach v1.1.0
 git add themes/oink
 ```
 
@@ -99,12 +98,12 @@ Once the build passes, look with your own eyes: the home page, a documentation
 page, a blog page, the 404, both languages, both colour schemes, the print view,
 and anywhere the site customized something.
 
-## Preparing the 1.0-to-1.1 upgrade {#from-1-0}
+## Upgrading from 1.0 to 1.1 {#from-1-0}
 
-> [!IMPORTANT] Implementation prepared; release pending
-> This checklist describes the implementation on `main` as of 2026-09-20.
-> `v1.1.0` is not yet a published module tag. It does not change the production
-> version pinned above or prove that a consumer has been deployed.
+> [!IMPORTANT] OINK 1.1.0 upgrade checklist
+> This checklist covers the published v1.1.0 release. Each consumer still needs
+> to update its dependency pin, rebuild and deploy; theme publication does not
+> upgrade an existing site automatically.
 
 No source migration is required from 1.0.0. Hugo Extended 0.160.1 remains the
 floor; CI uses the pinned 0.165.0 toolchain. The module's Go 1.27.0 directive is
@@ -134,7 +133,7 @@ Update or remove affected site-level copies of theme code after comparing
 them with the new implementation. A copied old image-zoom script or sidebar
 partial will otherwise continue to hide the upstream fix.
 
-To test a local candidate with the documentation site, use its sibling theme
+To test local theme changes with the documentation site, use its sibling theme
 checkout without committing a filesystem replacement:
 
 ```bash {title="Terminal — from oink.pgsty.com"}
@@ -143,8 +142,8 @@ make browser
 make dev
 ```
 
-These commands validate the local checkout. After publication, pin the exact
-release, build without a module replacement, then validate the deployed pages.
+These commands validate the local checkout. For release acceptance, pin the
+published version, build without a module replacement, then validate the deployed pages.
 The authoring and API details live in [content groups](/docs/write/organize/#group-only),
 the [sidebar contract](/docs/design/shell/#sidebar-runtime),
 [search actions](/docs/customize/panel/#search-tail), and

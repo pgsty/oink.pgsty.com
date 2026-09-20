@@ -183,8 +183,8 @@ sidebar_enabled: false
 }
 ```
 
-这些路径不带语言前缀，也不带 `baseURL` 中的部署子路径。main 中面向 1.1 的实现会在
-比较前去掉两种前缀，同一个 `/docs/start/` 键可用于 `/zh/docs/start/` 和
+这些路径不带语言前缀，也不带 `baseURL` 中的部署子路径。自 OINK 1.1 起，主题在比较前
+去掉两种前缀，同一个 `/docs/start/` 键可用于 `/zh/docs/start/` 和
 `/handbook/zh/docs/start/`；渲染出来的链接保留实际的语言与部署前缀。
 
 这棵树同时决定翻页顺序，侧栏与上一页 / 下一页不会出现两种排序。`sections` 为空数组

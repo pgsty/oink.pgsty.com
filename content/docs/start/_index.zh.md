@@ -14,8 +14,8 @@ aliases:
 
 新站点的推荐起点是
 [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter)，而不是复制本站这个
-文档与回归测试仓库。Starter 是公开的 GitHub 模板：它固定 OINK
-{{% param version %}}，默认即可构建，只包含中性的项目示例与部署 workflow。
+文档与回归测试仓库。Starter 是公开的 GitHub 模板：它固定一个已发布的 OINK
+版本，默认即可构建，只包含中性的项目示例与部署 workflow。
 
 > [!IMPORTANT] 两个版本号承担不同职责
 > OINK 声明的兼容性下限是 Hugo Extended {{% param hugoMinVersion %}}。当前

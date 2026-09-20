@@ -127,7 +127,7 @@ sidebar_expanded: true   # 这个栏目始终默认展开
 
 ### 通过站点代码控制分支 {#sidebar-api}
 
-`window.OinkSidebar` 已在 main 实现，计划随 OINK 1.1 发布；v1.0.0 不提供该 API。
+`window.OinkSidebar` 自 OINK 1.1 起提供；v1.0.0 不提供该 API。
 站点代码应在主题脚本之后加载，例如使用 `layouts/_partials/hooks/body-end.html`，
 读取或恢复分支状态前先等待 `ready`。以下示例展开侧栏的第一个分组：
 
@@ -167,7 +167,7 @@ if (sidebar) {
 
 ## 不发布目录页的分组 {#group-only}
 
-main 中面向 1.1 的实现让分隔分区保留子页，同时让标题不再跳转，修复了 v1.0.0
+自 OINK 1.1 起，分隔分区保留子页，同时让标题不再跳转，修复了 v1.0.0
 子页丢失的问题。目录只负责组织子页时，使用这样的 `_index.md`：
 
 ```yaml

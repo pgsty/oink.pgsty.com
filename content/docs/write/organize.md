@@ -163,8 +163,8 @@ key definitions are in [Configuration](/docs/customize/config/).
 
 ### Controlling a branch from site code {#sidebar-api}
 
-The `window.OinkSidebar` API is implemented on main for OINK 1.1; v1.0.0 does
-not provide it. Load site code after the theme scripts, for example through
+The `window.OinkSidebar` API is available since OINK 1.1; v1.0.0 does not
+provide it. Load site code after the theme scripts, for example through
 `layouts/_partials/hooks/body-end.html`, and wait for `ready` before reading or
 restoring branch state. This example expands the first sidebar group:
 
@@ -208,8 +208,8 @@ only when the page should appear in neither.
 
 ## Groups without a landing page {#group-only}
 
-The 1.1 implementation on main lets a divider section keep its children while
-its title has no link. This fixes the missing children in v1.0.0. Use this
+Since OINK 1.1, a divider section keeps its children while its title has no
+link. This fixes the missing children in v1.0.0. Use this
 `_index.md` when the directory should only organize child pages:
 
 ```yaml

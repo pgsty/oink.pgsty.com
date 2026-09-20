@@ -182,7 +182,7 @@ and gallery images that have alt text become clickable buttons that open the
 full image in a native `<dialog>` (Esc closes it, focus returns where it was).
 This page turns it on in its front matter, so every image above is clickable.
 
-The 1.1 implementation on main keeps the preview action in the button's
+Since OINK 1.1, the preview action is kept in the button's
 accessible name, alongside the image description. It adds no helper text to
 copied articles; the copied HTML retains images and authored captions for
 rich-text editors. In v1.0.0, a hidden preview label can appear after pasting.

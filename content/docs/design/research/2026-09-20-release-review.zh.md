@@ -1,7 +1,7 @@
 ---
 title: OINK 1.1 发布审查，2026-09-20
 linkTitle: 2026-09-20 发布审查
-description: OINK 1.1 的五项已复现运行时缺陷、文档修订、验证证据与待执行发布步骤。
+description: OINK 1.1 的五项已复现运行时缺陷、文档修订、验证证据与发布后续。
 weight: 50
 icon: fa-solid fa-magnifying-glass-chart
 search_keywords: [OINK 1.1, 发布审查, 侧栏就绪, 命令面板, 焦点, 键盘导航]
@@ -12,7 +12,8 @@ last_verified: 2026-09-20
 
 > [!NOTE] 发布准备，不是发布声明
 > 本文分别记录审查基线、已提交修复、已完成验证与尚待执行的发布步骤。基线 CI 通过不能
-> 证明后续修复也已通过验收；本文不声明 OINK 1.1.0 标签或站点已经发布。
+> 证明后续修复也已通过验收。从正文到“限制”保留发布前快照；后续已核实的发布证据追加在
+> [发布后续](#publication-follow-up)中。
 
 ## 范围与基线 {#scope-and-baseline}
 
@@ -148,3 +149,32 @@ HTML、图片描述与作者图注，但不证明真实知乎编辑器的粘贴�
 依赖固定版本及线上产物。Hugo 下限的定向检查，也不代表该版本上所有出版路径都已执行。
 
 这是对明确源码与行为的发布准备审查，不声称无边界的安全覆盖、生产上线，或支持额外的新功能。
+
+## 发布后续 {#publication-follow-up}
+
+审查之后，[v1.1.0 正式版](https://github.com/pgsty/oink/releases/tag/v1.1.0) 已于
+2026-09-20 从提交
+[`3a18234`](https://github.com/pgsty/oink/commit/3a18234aa3af15ae12e2d53839ffd321ef4bcb62)
+发布。该版本相对已验收的 `08f6563` 实现只修改更新日志。创建附注标签并发布稳定版
+GitHub Release 前，全部三项[发布提交 CI](https://github.com/pgsty/oink/actions/runs/35482327047)
+均已通过。
+
+仅使用官方 Go 模块代理、从全新缓存下载的版本准确解析到该提交。`.info`、`.mod`、
+`.zip`、版本列表条目与签名校验和记录均已验证。模块校验和为
+`h1:121L5g57ChRCPyidzEBBcln2Co+0zYRQ+XDDXjymd0Q=`，`go.mod` 校验和为
+`h1:pHvbUhJCfseB41n5RGwsF7abT3i32VSTpofLQoq4b7Y=`。
+公开记录见[代理版本信息](https://proxy.golang.org/github.com/pgsty/oink/@v/v1.1.0.info)与
+[校验和条目](https://sum.golang.org/lookup/github.com/pgsty/oink@v1.1.0)。
+
+文档站发布更新在 `go.mod` 与 `go.sum` 中固定 `v1.1.0`，同步公开版本标识和双语首页
+入口，公开两篇发布注记，并将六对契约标记为 `released-v1.1.0`。上方历史验收表继续
+描述此前的同级 checkout 运行。公开依赖的验证单独记录在本站的
+[Site checks](https://github.com/pgsty/oink.pgsty.com/actions/workflows/site-checks.yml) 和
+[Browser quality](https://github.com/pgsty/oink.pgsty.com/actions/workflows/browser-quality.yml)
+工作流中，两者均关闭 Go 与 Hugo 模块工作区。
+
+本地使用该公开模块通过了全部 57 项非浏览器测试、26 项命令面板与社区问题浏览器测试，
+以及严格生产构建（每种语言 378 页）。这些检查均设置 `GOWORK=off`、
+`HUGO_MODULE_WORKSPACE=off`，且未使用 `HUGO_MODULE_REPLACEMENTS`。完整的 149 项
+浏览器套件另由发布提交的 Browser quality 工作流执行；其结果与此前本地候选版本的
+运行记录分别记录。

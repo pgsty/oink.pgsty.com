@@ -5,13 +5,12 @@ description: 仓库装配、配置、诊断、本地化、输出、性能、安�
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK 架构, 仓库边界, 运行时, i18n, Docsy 语言, 输出格式, 安全, 无障碍, 性能]
-contract_status: candidate-v1.1.0
+contract_status: released-v1.1.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 候选契约
-> 这是面向 OINK 1.1.0 的架构契约，描述主题 main 分支已经实现的行为。
-> 公开版本标签、消费站点升级依赖与部署是彼此独立的步骤。本页是权威中文源文件，
-> 与英文版本一起维护在 `content/docs/design/`。
+> [!IMPORTANT] OINK 1.1.0 契约
+> 这是随 OINK 1.1.0 发布的架构契约。消费站点升级依赖与部署仍是独立步骤。
+> 本页是权威中文源文件，与英文版本一起维护在 `content/docs/design/`。
 
 ## 仓库与装配 {#repository-and-assembly}
 
@@ -66,9 +65,9 @@ Draw.io 只在渲染内容含 PNG 或 SVG 候选图片时加载，并且每个�
 
 ## 界面本地化 {#interface-localization}
 
-> [!NOTE] 计划随 OINK 1.1 发布
-> 这项语言扩展已在 main 实现。只有 1.1.0 发布标签可通过 Go Proxy 解析后，
-> 才能将它作为已发布模块能力使用。
+> [!NOTE] 自 OINK 1.1 起提供
+> OINK 1.1.0 将原生界面语言包扩展到下方列出的完整语言集合；消费站点编写的正文
+> 仍需自行翻译。
 
 OINK 为
 [`google/docsy@64f51c5`](https://github.com/google/docsy/tree/64f51c5bde2abd2e8a001cb31b32656f5800ca56/theme/i18n)

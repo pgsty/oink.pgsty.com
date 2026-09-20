@@ -214,7 +214,7 @@ the ancestor chain for each URL, used for highlighting the current entry:
 ```
 
 Write these paths without a language prefix or the deployment subpath from
-`baseURL`. The 1.1 implementation on main strips both prefixes before comparison,
+`baseURL`. Since OINK 1.1, both prefixes are stripped before comparison,
 so the same `/docs/start/` key works at `/zh/docs/start/` and
 `/handbook/zh/docs/start/`. Rendered links retain the real language and deployment
 prefixes.

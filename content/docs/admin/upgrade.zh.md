@@ -1,7 +1,7 @@
 ---
 title: 版本升级
 linkTitle: 版本升级
-description: 固定已发布的主题版本、准备从 1.0 升到 1.1、迁移旧内容或 Docsy 站点，并在出问题时安全回滚。
+description: 固定已发布的主题版本、从 1.0 升到 1.1、迁移旧内容或 Docsy 站点，并在出问题时安全回滚。
 weight: 50
 search_keywords: [升级, 迁移, 版本, Hugo Module, hugo mod get, oink06, Docsy, jQuery, 破坏性变更, upgrade, migration]
 aliases:
@@ -29,11 +29,11 @@ aliases:
 ## 升级 Hugo Module {#hugo-module}
 
 生产站点固定已发布标签或主动选定的不可变 commit，不跟随分支，也不用 `@latest`。
-截至 2026-09-20，公开版本是 `v1.0.0`，`v1.1.0` 仍在准备中。下面使用已可用的标签；
-更新版本需先确认已经发布且模块可以解析，再替换示例中的版本。
+下面升级到已发布的 `v1.1.0` 标签；选择后续版本时，先确认已经发布且模块可以解析，
+再替换示例中的版本。
 
 ```bash {title="终端"}
-hugo mod get github.com/pgsty/oink@v1.0.0   # 已确认发布的标签
+hugo mod get github.com/pgsty/oink@v1.1.0   # 已发布的版本标签
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -47,7 +47,7 @@ module github.com/pgsty/oink.pgsty.com
 
 go 1.27.0
 
-require github.com/pgsty/oink v1.0.0
+require github.com/pgsty/oink v1.1.0
 ```
 
 > [!DANGER] 本地模块替换会盖掉这个固定版本
@@ -58,7 +58,7 @@ require github.com/pgsty/oink v1.0.0
 
 ```bash {title="终端"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.0.0
+git -C themes/oink checkout --detach v1.1.0
 git add themes/oink
 ```
 
@@ -80,11 +80,11 @@ hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
 
 构建通过之后，人眼再过一遍：首页、一个文档页、一个博客页、404、两种语言、两种配色、打印视图，以及站点自己定制过的地方。
 
-## 准备从 1.0 升到 1.1 {#from-1-0}
+## 从 1.0 升到 1.1 {#from-1-0}
 
-> [!IMPORTANT] 实现已准备，版本尚未发布
-> 本清单说明截至 2026-09-20 的 `main` 实现。`v1.1.0` 还不是已发布的模块标签，
-> 这份清单不改变上面的生产版本固定，也不代表任何消费站已经部署。
+> [!IMPORTANT] OINK 1.1.0 升级清单
+> 本清单对应已发布的 v1.1.0。各消费站仍需更新依赖固定版本、重新构建和部署；
+> 主题发布不会自动升级既有站点。
 
 从 1.0.0 升级不需要迁移源码。Hugo Extended 0.160.1 仍是下限，CI 固定使用 0.165.0，
 模块的 Go 1.27.0 声明与 1.0.0 相同。在 Hugo 0.160.x 上，非默认通用 `zh` 与区域中文
@@ -111,7 +111,7 @@ hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
 将受影响的站点级主题副本与新实现比较后再更新或移除。保留旧图片缩放脚本或侧栏
 partial，会让站点继续使用旧实现，无法获得上游修复。
 
-在文档站验证本地候选实现时，使用同级主题 checkout，不要提交文件系统模块替换：
+在文档站验证本地主题修改时，使用同级主题 checkout，不要提交文件系统模块替换：
 
 ```bash {title="终端 — 在 oink.pgsty.com 目录内"}
 make check
@@ -119,7 +119,7 @@ make browser
 make dev
 ```
 
-这些命令验证的是本地 checkout。发布后，再固定精确版本，在没有模块替换的情况下
+这些命令验证的是本地 checkout。验收正式版本时，固定已发布标签，在没有模块替换的情况下
 构建，并验证部署后的页面。创作与 API 细节见[内容分组](/zh/docs/write/organize/#group-only)、
 [侧栏契约](/zh/docs/design/shell/#sidebar-runtime)、
 [搜索动作](/zh/docs/customize/panel/#search-tail) 与[图片缩放](/zh/docs/components/image/#zoom)。

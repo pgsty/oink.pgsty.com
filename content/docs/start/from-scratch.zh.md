@@ -30,8 +30,8 @@ aliases:
 已有 Hugo 站点时不需要脚手架：装上主题模块，再补三项 goldmark 前置配置（见[写 `hugo.yml`](#config)），正文不用重写。已有 Docsy 站点见[版本升级](/zh/docs/admin/upgrade/)。
 
 后半部分是四种安装方式的取舍：Hugo Module、Git submodule、离线归档、固定版本克隆。
-OINK 1.1.0 发布准备使用 Go 1.27 与 Hugo Extended 0.165.0 验证；新标签可用之前，
-公开版本仍是 v1.0.0。主题声明的较低兼容下限用于刻意保留旧工具链的既有站点。
+OINK 1.1.0 使用 Go 1.27 与 Hugo Extended 0.165.0 做发布验证。
+主题声明的较低兼容下限用于刻意保留旧工具链的既有站点。
 
 ## 从空目录到第一页 {#scaffold}
 

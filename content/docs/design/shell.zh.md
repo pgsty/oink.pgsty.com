@@ -5,13 +5,12 @@ description: 导航权威、沉浸式博客、搜索、操作、分类法、索�
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK 外壳, 导航契约, 搜索, 操作, 博客展示, 作者, 系列, 翻页]
-contract_status: candidate-v1.1.0
+contract_status: released-v1.1.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 候选契约
-> 这是面向 OINK 1.1.0 的外壳与导航契约，描述主题 main 分支已经实现的行为。
-> 公开版本标签、消费站点升级依赖与部署是彼此独立的步骤。本页是权威中文源文件，
-> 与英文版本一起维护在 `content/docs/design/`。
+> [!IMPORTANT] OINK 1.1.0 契约
+> 这是随 OINK 1.1.0 发布的外壳与导航契约。消费站点升级依赖与部署仍是独立步骤。
+> 本页是权威中文源文件，与英文版本一起维护在 `content/docs/design/`。
 
 ## 权威来源与导航 {#authorities-and-navigation}
 
@@ -65,8 +64,8 @@ lg 以上是文字链接，之下收缩为图标链接。lg 与 md 之间，右�
 
 ## 侧栏运行时 {#sidebar-runtime}
 
-> [!NOTE] 计划随 OINK 1.1 发布
-> 本节的展开状态 API 和隐藏内容隔离已在 main 实现；公开版本标签属于另一个交付状态。
+> [!NOTE] 自 OINK 1.1 起提供
+> OINK 1.1.0 提供本节的展开状态 API 与隐藏内容隔离；1.0.0 不提供该 API。
 
 `window.OinkSidebar` 管理已注册的树分支及可搬迁的 TOC、反向链接和分类法分组，
 不依赖它们当前的 DOM 父节点。`setExpanded(id, boolean, {source})` 对有效目标返回
@@ -162,8 +161,8 @@ Right/`d` 展开已折叠的分组，已展开时进入第一个可见子项。�
 
 ## 搜索尾部扩展 {#search-tail-extensions}
 
-> [!NOTE] 计划随 OINK 1.1 发布
-> 该 API 已在 main 实现，旧的公开标签中尚不存在。
+> [!NOTE] 自 OINK 1.1 起提供
+> OINK 1.1.0 包含该 API，1.0.0 中不存在。
 
 受信任的站点 JavaScript 可调用
 `OinkCommandPalette.registerSearchTail({id, rows, activate})`；YAML 和操作清单仍然只接受

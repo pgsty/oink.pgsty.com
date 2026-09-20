@@ -180,8 +180,8 @@ With `offline_search` off there is likewise no palette, and <kbd>f</kbd> and
 
 ## Query-aware site actions {#search-tail}
 
-The runtime hook for trusted site JavaScript is implemented on main for OINK
-1.1. Feature-detect it: v1.0.0 and pages without local search do not provide it.
+The runtime hook for trusted site JavaScript is available since OINK 1.1.
+Feature-detect it: v1.0.0 and pages without local search do not provide it.
 Load the integration after the theme scripts, for example through
 `layouts/_partials/hooks/body-end.html`. This example assumes the site
 implements `openSiteAssistant` and owns its provider settings:

@@ -13,7 +13,7 @@ starting point for a new OINK site. It is deliberately smaller than
 repository, browser regression suite, or PGSTY-specific brand is copied into
 your project.
 
-The current template pins OINK {{% param version %}}, Go 1.27, and Hugo
+As of 2026-09-20, the template pins OINK v1.0.0, Go 1.27, and Hugo
 Extended 0.165.0. Its default three-language, English-only, and English–Chinese
 profiles have all been built warning-strictly against that release.
 
@@ -78,8 +78,10 @@ Also record the resolved module:
 hugo mod graph | grep github.com/pgsty/oink
 ```
 
-It should resolve `github.com/pgsty/oink@{{% param version %}}`. This unchanged
-preview is the baseline against which every later edit is judged.
+It should resolve the version recorded in the template's `go.mod`, currently
+`github.com/pgsty/oink@v1.0.0`. This unchanged preview is the baseline against
+which every later edit is judged. After verifying it, follow the
+[1.0-to-1.1 upgrade checklist](/docs/admin/upgrade/#from-1-0) to adopt OINK 1.1.
 
 ## Customize in layers {#customize}
 

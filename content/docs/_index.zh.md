@@ -29,7 +29,7 @@ cascade:
   search_boost: 1.35
 ---
 
-OINK 是一款技术文档 Hugo 主题。组件是 Markdown 语法的一部分，不是另一套模板语言；浏览器需要的字体、图标、搜索与图表运行时随主题分发；构建依赖只有一个 Hugo Extended 二进制，不需要 Node.js，不请求 CDN。当前发布版本 {{% param version %}}。
+OINK 是一款技术文档 Hugo 主题。组件是 Markdown 语法的一部分，不是另一套模板语言；浏览器需要的字体、图标、搜索与图表运行时随主题分发；构建依赖只有一个 Hugo Extended 二进制，不需要 Node.js，不请求 CDN。当前发布版本 {{% param version %}}，详见 [OINK 1.1 发布注记](/zh/blog/release/1.1.0/)与[升级指南](/zh/docs/admin/upgrade/#from-1-0)。
 
 ## 五条入口 {#five-entries}
 

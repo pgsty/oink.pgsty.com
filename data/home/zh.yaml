@@ -13,7 +13,7 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 1.0 · 本地优先 · 仅依赖 Hugo
+  eyebrow: OINK 1.1 · 本地优先 · 仅依赖 Hugo
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -28,8 +28,8 @@ hero:
       url: docs/start/starter/
       icon: fa-solid fa-rocket
       style: primary
-    - label: 查看 1.0 新特性
-      url: blog/release/1.0.0/
+    - label: 查看 1.1 新特性
+      url: blog/release/1.1.0/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -296,9 +296,9 @@ faq:
         还有一个只用 OINK 做落地页的公司站。外壳向下缩放和向上扩展一样自然。
     - question: 中文与其它非拉丁文字的内容怎么处理？
       answer: >-
-        本地检索对拉丁文字用 Lunr、对中日韩文本用子串回退，无需托管服务也能搜索。英语、简体中文
-        （`zh-cn`、`zh`）与繁体中文（`zh-tw`）的界面文案经过人工审校，另外 28 种语言共用同一套
-        key。支持 RTL 布局。
+        本地检索对拉丁文字用 Lunr、对中日韩文本用子串回退，无需托管服务也能搜索。OINK 1.1
+        提供 32 份原生界面目录，每份包含 194 条消息与符合当地语言规则的复数形式，包括英语、
+        简体中文（`zh-cn`、`zh`）和繁体中文（`zh-tw`）。支持 RTL 布局。
     - question: AI 助手与爬虫拿到的是什么？
       answer: >-
         `outputs` 里加上 `markdown`，每个页面就有一份 `index.md`，由 `rel="alternate"` 指过去；

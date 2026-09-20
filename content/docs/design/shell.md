@@ -5,14 +5,14 @@ description: Navigation authorities, immersive blog presentation, search, action
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK shell, navigation contract, search, actions, blog presentation, authors, series, pager]
-contract_status: candidate-v1.1.0
+contract_status: released-v1.1.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 candidate contract
-> This is the shell and navigation contract targeted for OINK 1.1.0, reflecting
-> the implementation on theme main. A public release tag, consumer dependency
-> upgrades, and deployment are separate steps. This page is the canonical
-> English source; its Chinese peer is maintained beside it in `content/docs/design/`.
+> [!IMPORTANT] OINK 1.1.0 contract
+> This is the shell and navigation contract released with OINK 1.1.0. Consumer
+> dependency upgrades and deployment remain separate steps. This page is the
+> canonical English source; its Chinese peer is maintained beside it in
+> `content/docs/design/`.
 
 ## Authorities and navigation {#authorities-and-navigation}
 
@@ -83,9 +83,9 @@ language- and deployment-independent paths; rendered links retain both prefixes.
 
 ## Sidebar runtime {#sidebar-runtime}
 
-> [!NOTE] Planned for OINK 1.1
-> The disclosure API and explicit hidden-content isolation described here are
-> implemented on main; a public release tag is a separate delivery state.
+> [!NOTE] Available since OINK 1.1
+> OINK 1.1.0 provides this disclosure API and explicit hidden-content isolation.
+> Version 1.0.0 does not provide the API.
 
 `window.OinkSidebar` owns registered tree disclosures and movable TOC,
 backlink, and taxonomy groups, independent of their current DOM parent.
@@ -202,8 +202,8 @@ future breaking release.
 
 ## Search-tail extensions {#search-tail-extensions}
 
-> [!NOTE] Planned for OINK 1.1
-> This API is implemented on main and remains absent from older published tags.
+> [!NOTE] Available since OINK 1.1
+> This API is included in OINK 1.1.0 and absent from version 1.0.0.
 
 Trusted site JavaScript may call
 `OinkCommandPalette.registerSearchTail({id, rows, activate})`; YAML and the

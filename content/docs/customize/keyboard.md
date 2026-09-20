@@ -42,7 +42,7 @@ the body they keep native browser scrolling. In a right-to-left language
 {{< kbd "←" >}} {{< kbd "→" >}} swap with the reading direction, while
 {{< kbd "A" >}} {{< kbd "D" >}} always mean "collapse / expand".
 
-In the 1.1 implementation, a group without its own page participates through
+Since OINK 1.1, a group without its own page participates through
 its disclosure button. From a child, {{< kbd "A" >}} first returns to that
 group; pressing it again folds the group. {{< kbd "D" >}} opens a folded group,
 or moves into its first visible child if already open. Page navigation with
@@ -133,7 +133,7 @@ page, so no extra isolation is needed.
 
 ## Focus order and accessibility {#a11y}
 
-The 1.1 implementation on main removes hidden sidebar and drawer content from
+Since OINK 1.1, hidden sidebar and drawer content is removed from
 keyboard focus. Clicking the article, a table viewport or a code block no
 longer produces a large outline after a later keypress. Keyboard focus remains
 visible: the skip link highlights the article title, and scrollable tables

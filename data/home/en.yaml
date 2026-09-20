@@ -13,7 +13,7 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 1.0 · Local-first · Hugo-only
+  eyebrow: OINK 1.1 · Local-first · Hugo-only
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -28,8 +28,8 @@ hero:
       url: docs/start/starter/
       icon: fa-solid fa-rocket
       style: primary
-    - label: What's new in 1.0
-      url: blog/release/1.0.0/
+    - label: What's new in 1.1
+      url: blog/release/1.1.0/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -330,10 +330,10 @@ faq:
     - question: How does it handle Chinese and other non-Latin content?
       answer: >-
         Local search uses Lunr for Latin scripts and a substring fallback for
-        CJK, so those pages are searchable without a hosted service. English,
-        Simplified Chinese (`zh-cn`, `zh`) and Traditional Chinese (`zh-tw`)
-        interface text is human-reviewed; 28 more locales share the same key
-        schema. RTL layouts are supported.
+        CJK, so those pages are searchable without a hosted service. OINK 1.1
+        ships 32 native interface catalogs, each with 194 messages and
+        locale-aware plurals, including English, Simplified Chinese (`zh-cn`,
+        `zh`) and Traditional Chinese (`zh-tw`). RTL layouts are supported.
     - question: What do AI assistants and crawlers get?
       answer: >-
         With `markdown` in `outputs`, every page has an `index.md` sibling

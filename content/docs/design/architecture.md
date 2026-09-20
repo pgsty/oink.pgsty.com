@@ -5,14 +5,14 @@ description: Repository assembly, configuration, diagnostics, localization, outp
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK architecture, repository boundary, runtime, i18n, Docsy locales, output formats, security, accessibility, performance]
-contract_status: candidate-v1.1.0
+contract_status: released-v1.1.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 candidate contract
-> This is the architecture contract targeted for OINK 1.1.0, reflecting
-> the implementation on theme main. A public release tag, consumer dependency
-> upgrades, and deployment are separate steps. This page is the canonical
-> English source; its Chinese peer is maintained beside it in `content/docs/design/`.
+> [!IMPORTANT] OINK 1.1.0 contract
+> This is the architecture contract released with OINK 1.1.0. Consumer
+> dependency upgrades and deployment remain separate steps. This page is the
+> canonical English source; its Chinese peer is maintained beside it in
+> `content/docs/design/`.
 
 ## Repository and assembly {#repository-and-assembly}
 
@@ -77,9 +77,9 @@ candidates, then inspects each distinct image URL once.
 
 ## Interface localization {#interface-localization}
 
-> [!NOTE] Planned for OINK 1.1
-> This locale expansion is implemented on main. It is not a published module
-> capability until the 1.1.0 release tag resolves through the Go proxy.
+> [!NOTE] Available since OINK 1.1
+> OINK 1.1.0 expands the native interface catalogs to the complete locale set
+> below. Consumer-authored content still needs its own translations.
 
 OINK ships native interface catalogs for the 31 locale filenames present in
 [`google/docsy@64f51c5`](https://github.com/google/docsy/tree/64f51c5bde2abd2e8a001cb31b32656f5800ca56/theme/i18n),

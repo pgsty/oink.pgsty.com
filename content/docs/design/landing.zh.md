@@ -5,13 +5,12 @@ description: 落地页数据、内置区块注册表、语言解析、运行时�
 weight: 40
 icon: fa-solid fa-panorama
 search_keywords: [OINK 落地页契约, 落地页区块, 首页数据, 渐进增强, 落地页输出]
-contract_status: candidate-v1.1.0
+contract_status: released-v1.1.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 候选契约
-> 这是面向 OINK 1.1.0 的落地页契约，描述主题 main 分支已经实现的行为。
-> 公开版本标签、消费站点升级依赖与部署是彼此独立的步骤。本页是权威中文源文件，
-> 与英文版本一起维护在 `content/docs/design/`。
+> [!IMPORTANT] OINK 1.1.0 契约
+> 这是随 OINK 1.1.0 发布的落地页契约。消费站点升级依赖与部署仍是独立步骤。
+> 本页是权威中文源文件，与英文版本一起维护在 `content/docs/design/`。
 
 共享规则见[架构契约](/zh/docs/design/architecture/)与
 [组件契约](/zh/docs/design/components/)；迁移行为属于

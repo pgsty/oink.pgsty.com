@@ -5,14 +5,14 @@ description: The maintainer contract for landing data, the built-in section regi
 weight: 40
 icon: fa-solid fa-panorama
 search_keywords: [OINK landing contract, landing sections, homepage data, progressive enhancement, landing outputs]
-contract_status: candidate-v1.1.0
+contract_status: released-v1.1.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 candidate contract
-> This is the landing-page contract targeted for OINK 1.1.0, reflecting
-> the implementation on theme main. A public release tag, consumer dependency
-> upgrades, and deployment are separate steps. This page is the canonical
-> English source; its Chinese peer is maintained beside it in `content/docs/design/`.
+> [!IMPORTANT] OINK 1.1.0 contract
+> This is the landing-page contract released with OINK 1.1.0. Consumer
+> dependency upgrades and deployment remain separate steps. This page is the
+> canonical English source; its Chinese peer is maintained beside it in
+> `content/docs/design/`.
 
 Shared rules live in the [architecture](/docs/design/architecture/) and
 [component](/docs/design/components/) contracts; migration belongs in the

@@ -1,7 +1,7 @@
 ---
 title: OINK 1.1 release review, 2026-09-20
 linkTitle: 2026-09-20 release review
-description: Five reproduced runtime defects, documentation corrections, validation evidence, and remaining publication steps for OINK 1.1.
+description: Five reproduced runtime defects, documentation corrections, validation evidence, and the OINK 1.1 publication follow-up.
 weight: 50
 icon: fa-solid fa-magnifying-glass-chart
 search_keywords: [OINK 1.1, release review, sidebar readiness, command palette, focus, keyboard navigation]
@@ -13,7 +13,9 @@ last_verified: 2026-09-20
 > [!NOTE] Release preparation, not publication
 > This record separates the reviewed baseline, committed fixes,
 > completed validation, and remaining publication steps. A passing baseline CI run
-> does not certify the later fixes. No OINK 1.1.0 tag or deployment is announced here.
+> does not certify the later fixes. The sections through Limits preserve that
+> pre-publication snapshot; later release evidence is appended under
+> [Publication follow-up](#publication-follow-up).
 
 ## Scope and baseline {#scope-and-baseline}
 
@@ -179,3 +181,36 @@ every publication path was exercised on that version.
 This is a release-readiness review of the named source and behavior. It does
 not claim unbounded security coverage, production rollout, or support for
 additional requested features.
+
+## Publication follow-up {#publication-follow-up}
+
+After this review, the [v1.1.0 release](https://github.com/pgsty/oink/releases/tag/v1.1.0)
+was published on 2026-09-20 from
+[`3a18234`](https://github.com/pgsty/oink/commit/3a18234aa3af15ae12e2d53839ffd321ef4bcb62).
+This revision changes only the changelog from the accepted `08f6563`
+implementation. All three [release-commit CI jobs](https://github.com/pgsty/oink/actions/runs/35482327047)
+passed before the annotated tag and stable GitHub Release were published.
+
+A fresh-cache download using only the official Go module proxy resolved the
+tag to that exact commit. Its `.info`, `.mod`, `.zip`, version-list entry and
+signed checksum record were verified. The module checksum is
+`h1:121L5g57ChRCPyidzEBBcln2Co+0zYRQ+XDDXjymd0Q=`; the `go.mod` checksum is
+`h1:pHvbUhJCfseB41n5RGwsF7abT3i32VSTpofLQoq4b7Y=`.
+The public records are the [proxy version](https://proxy.golang.org/github.com/pgsty/oink/@v/v1.1.0.info)
+and [checksum entry](https://sum.golang.org/lookup/github.com/pgsty/oink@v1.1.0).
+
+The documentation publication update pins `v1.1.0` in `go.mod` and `go.sum`,
+aligns the advertised version and both home-page release entries, publishes
+both release notes, and promotes the six contract pairs to `released-v1.1.0`.
+The historical acceptance tables above continue to describe the earlier
+sibling-checkout run. Published-dependency validation is tracked separately by
+the site's [Site checks](https://github.com/pgsty/oink.pgsty.com/actions/workflows/site-checks.yml)
+and [Browser quality](https://github.com/pgsty/oink.pgsty.com/actions/workflows/browser-quality.yml)
+workflows, with both Go and Hugo module workspaces disabled.
+
+Local validation of this published module passed all 57 non-browser tests,
+26 focused Palette/community browser tests, and the strict production build
+(378 pages per language). The checks ran with `GOWORK=off`,
+`HUGO_MODULE_WORKSPACE=off`, and no `HUGO_MODULE_REPLACEMENTS`. The complete
+149-test browser suite is also run by the publication commit's Browser quality
+workflow; its result is separate from the earlier local candidate run.

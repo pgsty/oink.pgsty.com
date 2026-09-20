@@ -11,7 +11,7 @@ search_keywords: [OINK Starter, GitHub 模板, Use this template, 定制 Starter
 站点的正式起点。它刻意小于 `oink.pgsty.com`：不会把主题文档、分析账号、评论仓库、
 浏览器回归套件或 PGSTY 品牌复制进你的项目。
 
-当前模板固定 OINK {{% param version %}}、Go 1.27 与 Hugo Extended 0.165.0。
+截至 2026-09-20，模板固定 OINK v1.0.0、Go 1.27 与 Hugo Extended 0.165.0。
 默认三语、仅英文、英中双语三个 profile 都已经在这个版本上完成 warning 即失败的
 严格构建。
 
@@ -74,8 +74,9 @@ hugo server
 hugo mod graph | grep github.com/pgsty/oink
 ```
 
-结果应当是 `github.com/pgsty/oink@{{% param version %}}`。这份未修改的预览，是后面
-判断每次改动的基线。
+结果应与模板 `go.mod` 中的版本一致，当前为 `github.com/pgsty/oink@v1.0.0`。这份未修改
+的预览，是后面判断每次改动的基线。验证通过后，按
+[1.0 → 1.1 升级核对项](/zh/docs/admin/upgrade/#from-1-0) 升级到 OINK 1.1。
 
 ## 分层定制 {#customize}
 
