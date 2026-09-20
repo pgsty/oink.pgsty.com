@@ -5,13 +5,14 @@ description: Navigation authorities, immersive blog presentation, search, action
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK shell, navigation contract, search, actions, blog presentation, authors, series, pager]
-contract_status: released-v1.1.0
+contract_status: candidate-v1.1.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 contract
-> This is the shell and navigation contract released with OINK 1.1.0. This
-> page is the canonical English source; its Chinese peer is maintained beside
-> it in `content/docs/design/`.
+> [!IMPORTANT] OINK 1.1.0 candidate contract
+> This is the shell and navigation contract targeted for OINK 1.1.0, reflecting
+> the implementation on theme main. A public release tag, consumer dependency
+> upgrades, and deployment are separate steps. This page is the canonical
+> English source; its Chinese peer is maintained beside it in `content/docs/design/`.
 
 ## Authorities and navigation {#authorities-and-navigation}
 
@@ -37,7 +38,8 @@ true-centered at every width: text links from lg, icon links below. Between lg
 and md the end edge keeps search, version, language, theme, and GitHub with no
 menu button. Below md those utilities move to the footline dock, and Home or
 explicit Landing pages add one drawer entry beside search that opens the full
-labelled tree; no other width or surface renders a drawer entry. Language
+labelled tree. Shell pages with a sidebar open its drawer in that position
+instead; no drawer button is shown from md upward. Language
 links target the
 page translation or that language's home, stay relative when languages share a
 host/base path, and become absolute only for language-specific `baseURL`s;
@@ -65,7 +67,8 @@ sections, deduplicated by URL. Both sources honor explicit
 `sidebar_root_menu: false`; absent/true preserves inclusion. The current
 resolved root is appended even when excluded from global choices. Zero entries
 emit no control; one emits a static link. Language and deployment prefixes stay
-on every URL. A divider or unpublished section cannot become a switcher link.
+on every URL. A divider or a section with `build.render: never` cannot become a
+switcher link.
 
 A `sidebar_divider` leaf retains its static heading. A divider section retains
 its children in both sidebar walkers, with a non-link label and a real
@@ -80,7 +83,7 @@ language- and deployment-independent paths; rendered links retain both prefixes.
 
 ## Sidebar runtime {#sidebar-runtime}
 
-> [!NOTE] Main-branch additions
+> [!NOTE] Planned for OINK 1.1
 > The disclosure API and explicit hidden-content isolation described here are
 > implemented on main; a public release tag is a separate delivery state.
 
@@ -112,6 +115,13 @@ before focus enters. The panel itself remains the 16px pointer sensor, and the
 external restore control remains active. Hover, Escape, backdrop dismissal,
 breakpoint cleanup, and scroll unlocking retain their existing behavior.
 These runtime attributes are not emitted into the no-JavaScript fallback.
+
+Whole-column TOC collapse also isolates its hidden panel. If the collapsing
+control held focus, focus moves to the visible floating restore button; restoring
+the column returns focus to its visible column control. When the aside moves
+into the mobile sidebar, its former column isolation is cleared before the
+drawer owns interaction. The drawer's Tab trap includes only rendered,
+non-inert controls, excluding hidden or collapsed descendants.
 
 ## Immersive blog presentation {#immersive-blog-presentation}
 
@@ -177,6 +187,10 @@ editable controls and modals: `/`, `\`, `f`, `c` open search/commands; `j`/`k`
 move headings; `q`/`e` move pages; `h` changes presentation; `l`/`y`, `t`, and
 `r` open language, theme, and root choices. Sidebar WASD/Arrow navigation uses
 real focus without rewriting Tab order.
+Non-link divider buttons participate in this tree navigation. Left/`a` from a
+child first focuses its parent group, then a second press folds it; Right/`d`
+opens a closed group or enters its first visible child when already open.
+Previous/next page navigation still considers links only, never group buttons.
 
 The outline derives cursor and visible-heading range from one heading model and
 the scroller's computed `scroll-padding-top`; its SVG line and dot share the
@@ -188,7 +202,7 @@ future breaking release.
 
 ## Search-tail extensions {#search-tail-extensions}
 
-> [!NOTE] Main-branch API
+> [!NOTE] Planned for OINK 1.1
 > This API is implemented on main and remains absent from older published tags.
 
 Trusted site JavaScript may call
@@ -216,7 +230,8 @@ render without affecting other providers. No callback-count promise is made.
 
 `activate(row, context)` runs only through ordinary row activation. It receives
 the copied descriptor and its original context plus an `AbortSignal` and a
-`handoff()` function. Pending activation blocks duplicates. Synchronous throws
+`handoff()` function. Pending activation blocks all other row activations,
+including entry into native choice menus. Synchronous throws
 and rejected promises release pending state, keep the Palette open, and announce
 the localized action-failed message. Fulfillment values are ignored; success
 closes the Palette without stealing focus from another surface. Closing,

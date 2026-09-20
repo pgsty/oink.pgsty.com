@@ -24,6 +24,7 @@ design_status: active
 | [消费站与迁移证据](/zh/docs/design/research/consumer-evidence/)             | 带日期的语料盘点与确定性 Book 迁移结果                                 |
 | [2026-08-26 全面审查](/zh/docs/design/research/2026-08-26-comprehensive-review/) | 实现、配置、输出、安全、测试、性能与文档审查                           |
 | [2026-09-19 社区 Issue 与 PR 调研](/zh/docs/design/research/2026-09-19-upstream-review/) | 侧栏、焦点与搜索反馈的复现、PR 接收建议和解决方案 |
+| [2026-09-20 OINK 1.1 发布审查](/zh/docs/design/research/2026-09-20-release-review/) | 五项运行时修复、文档准备、验证证据与发布边界 |
 
 ## 发布规则 {#publication-rules}
 

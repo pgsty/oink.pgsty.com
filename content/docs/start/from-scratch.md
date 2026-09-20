@@ -32,9 +32,10 @@ three Goldmark prerequisites (see [Writing `hugo.yml`](#config)), and leave the
 content alone. For an existing Docsy site, see [Upgrade](/docs/admin/upgrade/).
 
 The second half weighs four install methods: Hugo Module, Git submodule,
-offline archive, and pinned clone. For the current v1.1.0 release path, use Go
-1.27 and Hugo Extended 0.165.0 unless an existing site deliberately targets the
-theme's lower declared compatibility floor.
+offline archive, and pinned clone. OINK 1.1.0 release preparation uses Go 1.27
+and Hugo Extended 0.165.0 for validation; the published version remains v1.0.0
+until the new tag is available. The theme's lower declared compatibility floor
+is for existing sites that deliberately retain an older toolchain.
 
 ## From an empty directory to the first page {#scaffold}
 

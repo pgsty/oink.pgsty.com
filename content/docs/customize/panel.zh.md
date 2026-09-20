@@ -134,8 +134,10 @@ params:
 
 ## 使用当前查询的站点操作 {#search-tail}
 
-main 为受信任的站点 JavaScript 提供运行时接口。使用前检查能力是否存在：旧标签和未启用
-本地搜索的页面不提供它。以下示例假定站点实现了 `openSiteAssistant`，并自行管理服务商设置：
+受信任站点 JavaScript 使用的运行时接口已在 main 实现，计划随 OINK 1.1 发布。
+使用前检查能力是否存在：v1.0.0 和未启用本地搜索的页面不提供它。集成代码应在主题脚本
+之后加载，例如使用 `layouts/_partials/hooks/body-end.html`。以下示例假定站点实现了
+`openSiteAssistant`，并自行管理服务商设置：
 
 ```javascript
 if (window.OinkCommandPalette?.registerSearchTail) {
@@ -161,7 +163,7 @@ if (window.OinkCommandPalette?.registerSearchTail) {
 的查询，不会读取更新后的输入值。打开另一个受协调器管理的界面前调用 `handoff()`，此后
 由站点负责新界面的焦点与失败提示。没有新界面的操作直接返回 Promise，不调用 handoff。
 
-[Shell 契约](/docs/design/shell/#search-tail-extensions) 定义了字段、取消、校验和生命周期。
+[Shell 契约](/zh/docs/design/shell/#search-tail-extensions) 定义了字段、取消、校验和生命周期。
 YAML 仍不能包含回调，OINK 默认不添加远程服务或遥测。
 
 ## 验证 {#verify}

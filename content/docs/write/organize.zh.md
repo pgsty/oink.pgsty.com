@@ -117,13 +117,42 @@ params:
 
 ## 展开与折叠 {#folding}
 
-有子页的栏目在侧栏里带一个折叠箭头。OINK 保存整栏折叠、宽度和滚动位置；各分支的读者选择可由站点通过[侧栏运行时 API](/docs/design/shell/#sidebar-runtime) 自行持久保存。默认行为：当前页所在的那条路径展开，其余收起；博客类栏目默认展开。
+有子页的栏目在侧栏里带一个折叠箭头。OINK 保存整栏折叠、宽度和滚动位置；各分支的读者选择可由站点通过[侧栏运行时 API](/zh/docs/design/shell/#sidebar-runtime) 自行持久保存。默认行为：当前页所在的那条路径展开，其余收起；博客类栏目默认展开。
 
 ```yaml {title="content/docs/reference/_index.zh.md"}
 sidebar_expanded: true   # 这个栏目始终默认展开
 ```
 
 站点级的折叠、紧凑模式、初始展开层数、宽度与截断在[布局与页面类型](/zh/docs/customize/layout/)里配；键的完整定义见[配置总览](/zh/docs/customize/config/)。
+
+### 通过站点代码控制分支 {#sidebar-api}
+
+`window.OinkSidebar` 已在 main 实现，计划随 OINK 1.1 发布；v1.0.0 不提供该 API。
+站点代码应在主题脚本之后加载，例如使用 `layouts/_partials/hooks/body-end.html`，
+读取或恢复分支状态前先等待 `ready`。以下示例展开侧栏的第一个分组：
+
+```javascript
+const sidebar = window.OinkSidebar;
+if (sidebar) {
+  sidebar.ready.then(() => {
+    const button = document.querySelector(
+      '#td-shell-sidebar [data-td-shell-tree-toggle]'
+    );
+    if (!button) return;
+    const id = button.getAttribute('aria-controls');
+    sidebar.setExpanded(id, true);
+  });
+}
+```
+
+区域 ID 使用按钮现有的 `aria-controls` 值；`getState(id)` 返回 `{id, expanded}`
+或 `null`。按钮、区域与无障碍状态一致后，变化会在 `document` 上触发一次
+`oink:sidebar-disclosure` 事件，detail 为 `{id, expanded, source}`；重复写入相同
+状态不发事件。通过 API 恢复时，当前页面的祖先分组保持展开，读者仍可主动折叠。
+
+主题不保存单个分支的偏好。站点自行增加这项功能时，应为存储键区分语言与导航版本，
+容忍存储不可用，并忽略当前页面不存在的 ID。完整生命周期见
+[侧栏契约](/zh/docs/design/shell/#sidebar-runtime)。
 
 ## 从侧栏里藏起来 {#hiding}
 
@@ -138,8 +167,8 @@ sidebar_expanded: true   # 这个栏目始终默认展开
 
 ## 不发布目录页的分组 {#group-only}
 
-main 分支中的分隔分区可保留子页，同时让标题不再跳转。目录只负责组织子页时，使用这样的
-`_index.md`：
+main 中面向 1.1 的实现让分隔分区保留子页，同时让标题不再跳转，修复了 v1.0.0
+子页丢失的问题。目录只负责组织子页时，使用这样的 `_index.md`：
 
 ```yaml
 ---
@@ -150,7 +179,7 @@ build:
 ---
 ```
 
-标题显示为分组标签，按钮负责展开子页；子页仍进入翻页、搜索、导航 JSON 和 Print。
+标题显示为分组标签，启用侧栏折叠时按钮负责展开子页；子页仍进入翻页、搜索、导航 JSON 和 Print。
 没有 JavaScript 时分组保持展开。省略 `build`，即可继续发布分区页面，同时保留侧栏的
 非链接标题。叶子分隔项保持原来的外观。
 

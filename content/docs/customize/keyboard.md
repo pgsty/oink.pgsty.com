@@ -25,7 +25,7 @@ Keyboard order and mouse order are therefore the same order.
 | --- | --- |
 | {{< kbd "W" >}} {{< kbd "S" >}} {{< kbd "↑" >}} {{< kbd "↓" >}} | Move focus to the previous / next visible entry |
 | {{< kbd "A" >}} {{< kbd "D" >}} {{< kbd "←" >}} {{< kbd "→" >}} | Collapse / expand a group; on a leaf, {{< kbd "A" >}} goes to the parent and {{< kbd "D" >}} does nothing |
-| {{< kbd "Enter" >}} {{< kbd "Space" >}} {{< kbd "G" >}} | Open the focused page |
+| {{< kbd "Enter" >}} {{< kbd "Space" >}} {{< kbd "G" >}} | Activate the focused entry: open a page link or toggle a group button |
 | {{< kbd "Esc" >}} | Leave the tree; focus returns to the body |
 
 The four letter keys need no prior entry into the tree: with focus still in the
@@ -41,6 +41,12 @@ The arrow keys act on the tree **only after focus has entered the sidebar**; in
 the body they keep native browser scrolling. In a right-to-left language
 {{< kbd "←" >}} {{< kbd "→" >}} swap with the reading direction, while
 {{< kbd "A" >}} {{< kbd "D" >}} always mean "collapse / expand".
+
+In the 1.1 implementation, a group without its own page participates through
+its disclosure button. From a child, {{< kbd "A" >}} first returns to that
+group; pressing it again folds the group. {{< kbd "D" >}} opens a folded group,
+or moves into its first visible child if already open. Page navigation with
+{{< kbd "Q" >}} / {{< kbd "E" >}} skips group buttons.
 
 ## Reading {#reading}
 
@@ -127,6 +133,12 @@ page, so no extra isolation is needed.
 
 ## Focus order and accessibility {#a11y}
 
+The 1.1 implementation on main removes hidden sidebar and drawer content from
+keyboard focus. Clicking the article, a table viewport or a code block no
+longer produces a large outline after a later keypress. Keyboard focus remains
+visible: the skip link highlights the article title, and scrollable tables
+and code keep their own focus indication and keyboard scrolling.
+
 - **Skip link**: the first {{< kbd "Tab" >}} after landing on a page reveals "skip to main content", stepping past the navbar and sidebar in one move.
 - **Real focus**: navigating the tree moves actual DOM focus rather than a virtual cursor. A screen reader therefore announces the link name and the "current page" marker, {{< kbd "Enter" >}} is the link's native behaviour, and the Tab order is not rewritten.
 - **High contrast**: the focused row's background drops out under `forced-colors` and degrades to a system highlight outline.
@@ -181,6 +193,10 @@ unaffected.
 4. Click into the search box and press {{< kbd "J" >}}: the page should **not** scroll, and the character should type normally. The same holds while typing with a Chinese input method.
 
 5. Turn on "reduce motion" in the system and press {{< kbd "J" >}}: it should position instantly with no glide.
+
+6. For the 1.1 focus fixes, follow the skip link and check the title's focus
+   indication. Collapse the sidebar and use {{< kbd "Tab" >}}: its hidden links
+   should be skipped, while the restore control remains reachable.
 
 ## Related {#related}
 

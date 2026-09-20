@@ -92,11 +92,11 @@ The guide is [Organizing content](/docs/write/organize/).
 | `icon` | Font Awesome class pair | — | Icon in the sidebar, section cards and search results, e.g. `fa-solid fa-rocket` |
 | `toc_hide` | boolean | `false` | Absent from the sidebar tree and from the pager sequence |
 | `hide_summary` | boolean | `false` | Absent from the section index |
-| `sidebar_divider` | boolean | `false` | The row renders as a sidebar group heading: not a link, and not in the pager sequence |
+| `sidebar_divider` | boolean | `false` | A non-link group heading, excluded from pager destinations; the 1.1 implementation retains a section's children. Use `build.render: never` for a [group without its own page](/docs/write/organize/#group-only) |
 | `sidebar_expanded` | boolean | `true` for blog sections, `false` otherwise | This section is expanded by default in the sidebar |
 | `sidebar_root_for` | `self` / `children` | — | Makes this section a sidebar tree root; `self` includes the section index, `children` covers descendants only. Any other value warns and is ignored |
 | `sidebar_root_link_self` | boolean | `true` | The root row links to itself; `false` links to the parent section instead. A non-boolean warns and uses `true` |
-| `sidebar_root_menu` | boolean | `true` | Whether a top-level section appears in the root switcher |
+| `sidebar_root_menu` | boolean | `true` | Includes a top-level section or nested self-root in global switcher choices; an excluded current root remains a location marker. The nested-root exclusion is fixed in 1.1 |
 | `toc_root` | boolean | `false` | When the sidebar root is the site home, excludes this whole top-level section from the tree and the pager sequence |
 | `manual_link` | URL | — | The sidebar and section index row points elsewhere |
 | `manual_link_relref` | content reference | — | The same, resolved with `relref`; a missing target fails the build |

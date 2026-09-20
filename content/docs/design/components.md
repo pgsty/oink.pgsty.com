@@ -5,13 +5,14 @@ description: The maintainer contract for OINK authoring primitives, validation, 
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK component contract, shortcode API, Markdown components, Book, release, validation]
-contract_status: released-v1.1.0
+contract_status: candidate-v1.1.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 contract
-> This is the component contract released with OINK 1.1.0. This page is the
-> canonical English source; its Chinese peer is maintained beside it in
-> `content/docs/design/`.
+> [!IMPORTANT] OINK 1.1.0 candidate contract
+> This is the component contract targeted for OINK 1.1.0, reflecting
+> the implementation on theme main. A public release tag, consumer dependency
+> upgrades, and deployment are separate steps. This page is the canonical
+> English source; its Chinese peer is maintained beside it in `content/docs/design/`.
 
 Tutorials and exhaustive examples belong in the reader-facing
 [Components](/docs/components/) section. This page defines the API and behavior

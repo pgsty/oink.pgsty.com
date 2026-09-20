@@ -52,8 +52,18 @@ for (const locale of ['', '/zh']) {
       await expectIsolated(page, false);
       const close = page.locator('button[data-td-shell-drawer-close]');
       await expect(close).toBeFocused();
+      for (const button of await page.locator('[data-td-shell-aside] [data-td-shell-tree-toggle]').all()) {
+        if (await button.getAttribute('aria-expanded') === 'true') await button.click();
+      }
+      const firstControl = page.locator('#td-shell-sidebar [data-td-shell-search-open]:visible');
+      const lastControl = page.locator('[data-td-shell-aside] [data-td-shell-tree-toggle]').last();
+      await firstControl.focus();
+      await expect(firstControl).toBeFocused();
       await page.keyboard.press('Shift+Tab');
-      expect(await page.locator('#td-shell-sidebar').evaluate(el => el.contains(document.activeElement))).toBe(true);
+      await expect(lastControl).toBeFocused();
+      expect(await page.evaluate(() => !!document.activeElement.closest('[inert], [hidden]'))).toBe(false);
+      await page.keyboard.press('Tab');
+      await expect(firstControl).toBeFocused();
       await page.keyboard.press('Escape');
       await expect(opener).toBeFocused();
       await expectIsolated(page, true);
@@ -67,6 +77,74 @@ for (const locale of ['', '/zh']) {
       expect(await page.locator('html').evaluate(el => getComputedStyle(el).overflowY)).not.toBe('hidden');
     });
   }
+}
+
+for (const locale of ['', '/zh']) {
+  test(`${locale || 'en'}: sidebar readiness observes the hydrated active path`, async ({ page }) => {
+    await page.addInitScript(() => {
+      function snapshot() {
+        const path = [...document.querySelectorAll('#td-sidebar-menu .td-active-path > .td-shell-tree__row [data-td-shell-tree-toggle]')];
+        return {
+          pending: !!document.querySelector('[data-td-sidebar-hydrate-active]'),
+          active: !!document.querySelector('#td-sidebar-menu a[aria-current="page"]'),
+          pathCount: path.length,
+          expanded: path.every(button => window.OinkSidebar.getState(button.getAttribute('aria-controls')).expanded),
+        };
+      }
+      document.addEventListener('oink:sidebar-ready', () => { window.sidebarReadyEvent = snapshot(); });
+      document.addEventListener('DOMContentLoaded', () => {
+        window.OinkSidebar.ready.then(() => { window.sidebarReadyPromise = snapshot(); });
+      });
+    });
+    await page.goto(`${locale}/docs/customize/config/`);
+    await page.waitForFunction(() => window.sidebarReadyPromise && window.sidebarReadyEvent);
+    for (const state of await page.evaluate(() => [window.sidebarReadyPromise, window.sidebarReadyEvent])) {
+      expect(state.pending).toBe(false);
+      expect(state.active).toBe(true);
+      expect(state.pathCount).toBeGreaterThan(0);
+      expect(state.expanded).toBe(true);
+    }
+  });
+
+  test(`${locale || 'en'}: collapsed right rail isolates focus without disabling relocated contents`, async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(`${locale}/docs/customize/config/`);
+    await page.evaluate(() => window.OinkSidebar.ready);
+    const panel = page.locator('.td-shell-toc__panel');
+    const hide = panel.locator('[data-td-shell-right-toggle]');
+    const restore = page.locator('.td-shell-toc-float [data-td-shell-right-toggle]');
+    await hide.click();
+    await expect(panel).toHaveAttribute('inert');
+    await expect(panel).toHaveAttribute('aria-hidden', 'true');
+    await expect(restore).toBeFocused();
+    for (let index = 0; index < 12; index += 1) {
+      await page.keyboard.press('Tab');
+      expect(await panel.evaluate(el => el.contains(document.activeElement))).toBe(false);
+    }
+    await restore.click();
+    await expect(panel).not.toHaveAttribute('inert');
+    await expect(panel).not.toHaveAttribute('aria-hidden');
+    await expect(hide).toBeFocused();
+    await hide.click();
+    await page.reload();
+    await expect(panel).toHaveAttribute('inert');
+    await page.setViewportSize({ width: 1024, height: 900 });
+    const relocated = page.locator('[data-td-shell-aside-slot] [data-td-shell-aside]');
+    await expect(relocated).toBeVisible();
+    const heading = relocated.locator('[aria-controls="td-shell-aside-toc"]');
+    await heading.focus();
+    await expect(heading).toBeFocused();
+    expect(await heading.evaluate(el => !!el.closest('[inert], [aria-hidden="true"]'))).toBe(false);
+    await page.setViewportSize({ width: 375, height: 813 });
+    await page.locator('[data-td-shell-drawer-open]:visible').click();
+    await heading.focus();
+    await expect(heading).toBeFocused();
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await expect(panel).toHaveAttribute('inert');
+    expect(await panel.evaluate(el => el.contains(document.activeElement))).toBe(false);
+    await restore.click();
+    await expect(hide).toBeFocused();
+  });
 }
 
 test('disclosure API commits once, scopes targets, and survives responsive relocation', async ({ page }) => {
@@ -190,6 +268,22 @@ for (const locale of ['', '/zh']) {
     await expect(child).toBeHidden();
     await page.keyboard.press('Enter');
     await expect(child).toBeVisible();
+    const first = page.locator(`#td-sidebar-menu a[href="${path}"]`);
+    for (const [back, forward] of [['ArrowLeft', 'ArrowRight'], ['a', 'd']]) {
+      await child.focus();
+      await page.keyboard.press(back);
+      await expect(toggle).toBeFocused();
+      await page.keyboard.press(back);
+      await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      await page.keyboard.press(forward);
+      await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+      await page.keyboard.press(forward);
+      await expect(first).toBeFocused();
+      await page.keyboard.press('w');
+      await expect(toggle).toBeFocused();
+      await page.keyboard.press('s');
+      await expect(first).toBeFocused();
+    }
     await expect(page.locator('[data-td-pager-next]')).toHaveAttribute('href', `${locale}/tests/group-demo/group-only/two/`);
     await expect(page.locator(`a[href="${locale}/tests/group-demo/group-only/"]`)).toHaveCount(0);
     const noScript = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1440, height: 900 } });

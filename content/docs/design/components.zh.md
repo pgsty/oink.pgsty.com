@@ -5,12 +5,13 @@ description: OINK 创作原语、校验、Book、发布行为与输出降级的�
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK 组件契约, shortcode API, Markdown 组件, Book, 发布, 校验]
-contract_status: released-v1.1.0
+contract_status: candidate-v1.1.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 契约
-> 这是随 OINK 1.1.0 正式发布的组件契约。本页是权威中文源文件，与英文版本
-> 一同维护在 `content/docs/design/`。
+> [!IMPORTANT] OINK 1.1.0 候选契约
+> 这是面向 OINK 1.1.0 的组件契约，描述主题 main 分支已经实现的行为。
+> 公开版本标签、消费站点升级依赖与部署是彼此独立的步骤。本页是权威中文源文件，
+> 与英文版本一起维护在 `content/docs/design/`。
 
 教程与完整示例位于面向读者的[组件](/zh/docs/components/)专栏。本页定义这些
 指南所依赖的 API 与行为。

@@ -183,12 +183,15 @@ sidebar_enabled: false
 }
 ```
 
-URL 在比较前去掉语言前缀，一份文件服务所有语言。
+这些路径不带语言前缀，也不带 `baseURL` 中的部署子路径。main 中面向 1.1 的实现会在
+比较前去掉两种前缀，同一个 `/docs/start/` 键可用于 `/zh/docs/start/` 和
+`/handbook/zh/docs/start/`；渲染出来的链接保留实际的语言与部署前缀。
 
 这棵树同时决定翻页顺序，侧栏与上一页 / 下一页不会出现两种排序。`sections` 为空数组
 时告警并回退到内容树；`page` 指向不存在的页面时告警并跳过该项。严格发布构建拒绝
 任一警告。带 `manual_link` 的占位节点与 `sidebar_divider` 分隔行留在侧栏里，但不会
-成为翻页目标。
+成为翻页目标。1.1 的显式树也保留分隔分区的子页，使用与内容树相同的
+[只分组、不发布页面的 front matter](/zh/docs/write/organize/#group-only) 即可。
 
 适用场景是导航顺序由外部工具生成的站点，例如从 Sphinx toctree 迁移过来、需要冻结既有章节顺序的手册。顺序由 `content/` 的 `weight` 维护时不需要这个文件。
 

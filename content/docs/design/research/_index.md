@@ -28,6 +28,7 @@ standard.
 | [Consumer and migration evidence](/docs/design/research/consumer-evidence/)                  | A dated corpus survey plus deterministic Book migration results                    |
 | [Comprehensive review, 2026-08-26](/docs/design/research/2026-08-26-comprehensive-review/)   | Implementation, configuration, output, security, test, performance, and doc audit  |
 | [Community issue and PR review, 2026-09-19](/docs/design/research/2026-09-19-upstream-review/) | Reproductions, PR acceptance advice, and remedies for sidebar, focus, and search feedback |
+| [OINK 1.1 release review, 2026-09-20](/docs/design/research/2026-09-20-release-review/) | Five runtime repairs, documentation readiness, validation evidence and publication boundaries |
 
 ## Publication rules {#publication-rules}
 

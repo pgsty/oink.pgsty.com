@@ -71,7 +71,7 @@
   - [Deploy](http://localhost/docs/admin/deploy/index.md): Publish public/ to GitHub Pages, Cloudflare Pages or any static host — matching baseURL, Content Security Policy, the acceptance checklist and rollback.
   - [Comments](http://localhost/docs/admin/comments/index.md): Wire GitHub Discussions into a comment section at the bottom of a page with giscus — on site-wide, off per page, following light and dark.
   - [Analytics and SEO](http://localhost/docs/admin/analytics/index.md): Connect an analytics service (or none), and pair up the canonical, hreflang, social cards, sitemap and robots the theme already generates.
-  - [Upgrade](http://localhost/docs/admin/upgrade/index.md): Move to a new theme version, convert 0.4 shortcodes to current native forms with the migration toolkit, migrate from Docsy, and roll back safely.
+  - [Upgrade](http://localhost/docs/admin/upgrade/index.md): Pin a published theme version, prepare a 1.0-to-1.1 upgrade, migrate legacy content or a Docsy site, and roll back safely.
   - [Troubleshooting](http://localhost/docs/admin/troubleshooting/index.md): Symptom → cause → fix for the four fault classes — build, language, search, platform — plus the checks a site can run for itself.
 - [Design](http://localhost/docs/design/index.md): OINK maintainer contracts, accepted decisions, dated research, and proposals in one canonical bilingual section.
   - [Architecture](http://localhost/docs/design/architecture/index.md): Repository assembly, configuration, diagnostics, localization, output, performance, security, CSS, accessibility, and release-state boundaries.
@@ -88,6 +88,7 @@
   - [2026-09-19 community review](http://localhost/docs/design/research/2026-09-19-upstream-review/index.md): Evidence, acceptance advice, and focused remedies for community issues 40, 41, 42, 44 and pull request 43.
   - [Config schema](http://localhost/docs/design/decisions/config-schema/index.md): The editor schemas are projected from the existing configuration authorities; a CI drift gate keeps them from ever becoming a third one.
   - [Landing pages](http://localhost/docs/design/landing/index.md): The maintainer contract for landing data, the built-in section registry, language resolution, runtime, accessibility, and outputs.
+  - [2026-09-20 release review](http://localhost/docs/design/research/2026-09-20-release-review/index.md): Five reproduced runtime defects, documentation corrections, validation evidence, and remaining publication steps for OINK 1.1.
   - [Migration boundary](http://localhost/docs/design/migration/index.md): The supported source, configuration, and validation boundaries for migration from OINK 0.4 through OINK 1.1.0.
 
 ## Full-text bundles

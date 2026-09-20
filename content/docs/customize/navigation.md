@@ -150,19 +150,18 @@ Enabling taxonomies is in [Taxonomies](/docs/customize/taxonomy/).
 
 ## Navbar controls {#navbar}
 
-The navbar is 50px tall and holds, left to right: the brand (logo or wordmark),
-the menu area, search, version, language, theme, GitHub. Home and Landing pages
-keep a final drawer menu button at the right edge. The navbar renders on every
-layout; documentation, blog and taxonomy pages use the same controls without
-that Landing drawer.
+The navbar is 50px tall and holds the brand (logo or wordmark), a centered
+menu, and utility controls at the end. When enabled, it appears across layouts;
+Home and Landing use a site-menu drawer on narrow screens, while shell pages
+with a sidebar open that sidebar's drawer instead.
 
 The navbar has a full desktop tier and a compact icon tier:
 
 | Viewport | State |
 | --- | --- |
-| `lg` and above | Full: brand, menu entries with text, all utility controls; Home/Landing ends with the drawer button |
-| Below `lg` | Compact: the brand stays, everything else becomes right-aligned icons |
-| Below `md` | Only search and the drawer button remain in the navbar; version, language, theme and keyboard help remain in the footer's bottom bar |
+| `lg` and above | Brand, centered menu entries with text, and search, version, language, theme and GitHub controls; no drawer button |
+| `md` to below `lg` | Centered menu icons; utility controls remain at the end; no drawer button |
+| Below `md` | Centered menu icons remain; the end keeps search and the appropriate drawer button; version, language, theme and keyboard help remain available in the footer's bottom bar |
 
 The individual controls are switched on elsewhere: the search icon needs
 `params.offline_search` (see [Search](/docs/customize/search/)), the version
@@ -180,16 +179,17 @@ params:
     navbar_autohide: true
 ```
 
-With it on, the navbar leaves the normal flow and rests above the viewport,
-sliding out only when the pointer enters the middle 60% of the area above its
-original position (or keyboard focus arrives), and it overlays the body rather
-than pushing it down. 64px at each side is outside the wake zone, so it does not
-cover the collapsed sidebar and outline restore buttons.
+With it on, the hidden navbar retains its 50px band. Entering the upper 60% of
+that band with the pointer, or focusing the navbar with the keyboard, fades it
+in at the same position. The layout does not move, and content at rest is not
+covered. The wake zone excludes 64px at each side, leaving the collapsed
+sidebar and outline restore controls usable.
 
 It is disabled automatically below 768px, on a coarse pointer, and on a
-touch-only device, where the navbar stays visible. A top-level
-`navbar_autohide` in page front matter or a section cascade overrides it per
-section.
+touch-only device, where the navbar stays visible. Home ignores the site-wide
+setting unless its own front matter enables it. Hero pages retain their
+overlay navbar, which scrolls with the hero. A top-level `navbar_autohide` in
+page front matter or a section cascade overrides the site setting.
 
 ### Turning the navbar off {#navbar-disable}
 
@@ -219,9 +219,9 @@ too many.
 ## The section switcher {#root-menu}
 
 The row at the top of the sidebar is the section switcher, deciding which tree
-is shown. Its entries are built in order and deduplicated: every top-level
-section → every section anywhere with `sidebar_root_for: self` → the currently
-resolved root.
+is shown. Its entries are built in order and deduplicated: eligible top-level
+sections → eligible sections with `sidebar_root_for: self` → the currently
+resolved root. Candidates need a permalink and cannot be divider groups.
 
 ```yaml {title="hugo.yml"}
 params:
@@ -246,6 +246,10 @@ sidebar_root_link_self: true
 To exclude a top-level section or a nested self-root from the global choices,
 set `sidebar_root_menu: false` in its front matter. The current resolved root is
 still appended when absent: inside that section, it remains a location marker.
+The 1.1 implementation applies the exclusion to nested self-roots as well as
+top-level sections; 1.0 could still include a nested self-root despite `false`.
+A root with `build.render: never`, or a divider root, never becomes a switcher
+link.
 
 With no entries nothing is rendered; one entry degrades to a borderless link; two or more make it a
 dropdown. The tree below it still has the section index as its first link: the

@@ -1,7 +1,7 @@
 ---
 title: 版本升级
 linkTitle: 版本升级
-description: 升到新版主题、用迁移工具把 0.4 shortcode 改成当前原生形态、从 Docsy 迁移，并在出问题时安全回滚。
+description: 固定已发布的主题版本、准备从 1.0 升到 1.1、迁移旧内容或 Docsy 站点，并在出问题时安全回滚。
 weight: 50
 search_keywords: [升级, 迁移, 版本, Hugo Module, hugo mod get, oink06, Docsy, jQuery, 破坏性变更, upgrade, migration]
 aliases:
@@ -28,28 +28,43 @@ aliases:
 
 ## 升级 Hugo Module {#hugo-module}
 
-生产站点固定发布标签或不可变 commit，不跟随分支，也不用 `@latest`：
+生产站点固定已发布标签或主动选定的不可变 commit，不跟随分支，也不用 `@latest`。
+截至 2026-09-20，公开版本是 `v1.0.0`，`v1.1.0` 仍在准备中。下面使用已可用的标签；
+更新版本需先确认已经发布且模块可以解析，再替换示例中的版本。
 
 ```bash {title="终端"}
-hugo mod get github.com/pgsty/oink@v1.1.0   # 换成发布注记里的标签
+hugo mod get github.com/pgsty/oink@v1.0.0   # 已确认发布的标签
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
 
-最后一条要能看到解析结果是那个标签本身，而不是伪版本（`v0.0.0-2026...-abcdef`）或 `main`。固定的版本落在 `go.mod` 里，跟着代码一起提交：
+选择标签时，确认模块图显示的就是该版本。主动选定的不可变 commit 通常会记录为 Go
+伪版本；只要它解析到预期提交就是有效固定，但不能作为某个命名版本已发布的证据。
+提交生成的 `go.mod` 与 `go.sum`。使用上面的公开标签时，`go.mod` 包含：
 
 ```go {title="go.mod"}
 module github.com/pgsty/oink.pgsty.com
 
 go 1.27.0
 
-require github.com/pgsty/oink v1.1.0
+require github.com/pgsty/oink v1.0.0
 ```
 
 > [!DANGER] 本地模块替换会盖掉这个固定版本
 > `make dev` 和 `make check` 会仅对当前命令设置 `HUGO_MODULE_REPLACEMENTS`，使用同级的主题 checkout。判定某个发布标签是否可用时使用不带替换的 `make build`，否则验证的是本地那份代码。
 
-其它安装方式各一句。Git submodule：用 `git submodule update --remote themes/oink` 拉到新 ref，再提交 submodule 指针。离线归档与克隆：把 `themes/oink/` 整个换成新版本的解压结果，确认 `theme:` 的值仍与目录名一致。三种方式的取舍见[从零建站与其它安装方式](/zh/docs/start/from-scratch/)。
+使用 Git submodule 时，先确认没有本地修改，再拉取标签并检出精确的公开版本，
+不要跟随远端分支：
+
+```bash {title="终端"}
+git -C themes/oink fetch origin --tags
+git -C themes/oink checkout --detach v1.0.0
+git add themes/oink
+```
+
+验证后提交更新的 submodule 指针。离线归档与克隆则用选定版本的完整内容替换
+`themes/oink/`，确认 `theme:` 的值仍与目录名一致。安装方式的取舍见
+[从零建站与其它安装方式](/zh/docs/start/from-scratch/)。
 
 ## 升级后必做 {#after-upgrade}
 
@@ -60,9 +75,54 @@ hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
 
 三件事一起做了：清掉可能过期的缓存、用新版本重新构建、把任何告警变成失败。
 
-`--logLevel info` 是为了看见 Hugo 的弃用提示。Hugo 的弃用分两级：先是 `WARN` 级提示（仍可使用），下一个版本变成 `ERROR`（构建失败）。带上 `--panicOnWarning` 相当于提前一个版本发现它们，把修复的时间留给自己。
+`--logLevel info` 包含信息级诊断，`--panicOnWarning` 将警告视为失败。升级 Hugo
+之前，先处理当前固定版本发出的弃用提示；诊断级别与移除时间取决于具体的弃用功能。
 
 构建通过之后，人眼再过一遍：首页、一个文档页、一个博客页、404、两种语言、两种配色、打印视图，以及站点自己定制过的地方。
+
+## 准备从 1.0 升到 1.1 {#from-1-0}
+
+> [!IMPORTANT] 实现已准备，版本尚未发布
+> 本清单说明截至 2026-09-20 的 `main` 实现。`v1.1.0` 还不是已发布的模块标签，
+> 这份清单不改变上面的生产版本固定，也不代表任何消费站已经部署。
+
+从 1.0.0 升级不需要迁移源码。Hugo Extended 0.160.1 仍是下限，CI 固定使用 0.165.0，
+模块的 Go 1.27.0 声明与 1.0.0 相同。在 Hugo 0.160.x 上，非默认通用 `zh` 与区域中文
+目录并存时，需要配置 `locale: zh-CN`。
+
+选择新固定版本前，检查这些受影响的页面与行为：
+
+| 范围 | 1.1 行为与升级检查 |
+| --- | --- |
+| 语言 | 32 份界面目录均具有相同的原生消息结构。检查站点语言标签、复数计数与 RTL 方向；正文译文仍由站点负责。 |
+| 分类法 | 根页变成术语卡片目录，并提供分类法切换器。检查分类法模板或 CSS 覆盖、作者头像与本地化面包屑。 |
+| 侧栏 | 缓存树保留页面有效设置，没有 JavaScript 时也可使用。检查折叠、悬停恢复、移动抽屉与键盘焦点，隐藏内容必须退出焦点顺序。 |
+| 分组 | `sidebar_divider: true` 保留分区子文档。仅在明确不发布分组自身输出时添加 `build.render: never`；检查子导航、面包屑、翻页、Print 与 Book 目录。 |
+| 根菜单 | 显式 `sidebar_root_menu: false` 对自根分区也生效；当前可链接的根仍作为位置标记显示。 |
+| 自定义脚本 | 若还需支持 1.0.0，先检测 `OinkSidebar` 与 `OinkCommandPalette.registerSearchTail`。通过 API 恢复分支状态，不要直接修改 class 或 ARIA 属性。 |
+| 文章复制 | 启用图片缩放时，以纯文本与富文本 HTML 复制图片和图注。预览提示不得进入文章复制内容，缩放与键盘操作仍需正常工作。 |
+| Print 与 Redoc | 检查单页和 Book 聚合 Print、标题与标签页链接，以及真实部署前缀下的本地 Redoc 规范。本地规范路径相对于 `static/`。 |
+{.fields}
+
+`params.ui.image_zoom` 与 `params.offline_search` 仍默认关闭。新搜索钩子不会启用远程
+服务，也不会添加查询遥测。`params.ui.scroll_spy` 与页面级 `scroll_spy` 在 1.x 中仍
+作为 no-op 接受；移除无效补丁不影响普通大纲跟踪。
+
+将受影响的站点级主题副本与新实现比较后再更新或移除。保留旧图片缩放脚本或侧栏
+partial，会让站点继续使用旧实现，无法获得上游修复。
+
+在文档站验证本地候选实现时，使用同级主题 checkout，不要提交文件系统模块替换：
+
+```bash {title="终端 — 在 oink.pgsty.com 目录内"}
+make check
+make browser
+make dev
+```
+
+这些命令验证的是本地 checkout。发布后，再固定精确版本，在没有模块替换的情况下
+构建，并验证部署后的页面。创作与 API 细节见[内容分组](/zh/docs/write/organize/#group-only)、
+[侧栏契约](/zh/docs/design/shell/#sidebar-runtime)、
+[搜索动作](/zh/docs/customize/panel/#search-tail) 与[图片缩放](/zh/docs/components/image/#zoom)。
 
 ## 内容迁移工具 {#migration-toolkit}
 
@@ -209,14 +269,16 @@ OINK 是 Docsy 的硬分支：内容模型、`td-` 命名、Sass 变量、大部
 本站的完整门禁是：
 
 ```bash {title="终端"}
-npm test           # 构建断言、Markdown 与 favicon goldens、翻译对等、渲染后链接
-npm run test:browser   # Playwright：无障碍、响应式外壳、键盘导航、内容组件、代码块、场景组件
+make check     # 同级本地主题：构建、输出、翻译与渲染后链接
+make browser   # 同级本地主题：无障碍、响应式与交互行为
+make build     # go.mod 固定的公开主题，不带本地替换
 ```
 
 其它站点跑等价的构建、链接、输出与浏览器检查即可，细节见[排错与检查](/zh/docs/admin/troubleshooting/#site-checks)。
 
 > [!IMPORTANT] 本地构建成功不等于发布完成
-> 源码可构建、标签已签名并能通过 Go proxy 解析、站点已固定该标签、线上已部署，这是四件事，要分别记录。别用一次绿色的本地构建代替它们。
+> 源码提交通过验收、公开标签能通过模块代理解析、消费站固定版本及校验和、生产部署
+> 通过验证，是彼此独立的状态。一次绿色的本地构建不能代替其它证据。
 
 最后一步在真实环境上做：先部署一份预览，在真实 URL 上验证页面与浏览器的网络请求，评审通过再合并，合并后在生产上做一次冒烟测试。
 
@@ -225,7 +287,7 @@ npm run test:browser   # Playwright：无障碍、响应式外壳、键盘导航
 回滚的是版本固定，不是工作树：
 
 ```bash {title="终端"}
-hugo mod get github.com/pgsty/oink@v0.4.0   # 上一个已知可用的标签
+hugo mod get github.com/pgsty/oink@v1.0.0   # 示例：本站上一个已知可用的标签
 hugo mod tidy
 rm -rf public resources/_gen
 hugo --gc --minify --panicOnWarning

@@ -73,11 +73,11 @@ cascade:
 | `icon` | Font Awesome class 对 | — | 侧栏、栏目卡片与搜索结果的图标，例如 `fa-solid fa-rocket` |
 | `toc_hide` | 布尔 | `false` | 不出现在侧栏树里，也不进翻页序列 |
 | `hide_summary` | 布尔 | `false` | 不出现在栏目首页的子页索引里 |
-| `sidebar_divider` | 布尔 | `false` | 这一行渲染成侧栏分组标题：不是链接，也不进翻页序列 |
+| `sidebar_divider` | 布尔 | `false` | 不带链接的分组标题，自身不进入翻页序列；1.1 的实现保留分区子页。配合 `build.render: never` 可[只分组、不发布自身页面](/zh/docs/write/organize/#group-only) |
 | `sidebar_expanded` | 布尔 | blog 栏目 `true`，其余 `false` | 这个栏目在侧栏里默认展开 |
 | `sidebar_root_for` | `self` / `children` | — | 让这个栏目成为侧栏树的根；`self` 连同栏目首页，`children` 只管后代。其它取值告警并忽略 |
 | `sidebar_root_link_self` | 布尔 | `true` | 根那一行链接自身；`false` 改为链接父栏目。非布尔值告警并使用 `true` |
-| `sidebar_root_menu` | 布尔 | `true` | 顶层栏目是否出现在根切换器里 |
+| `sidebar_root_menu` | 布尔 | `true` | 顶层栏目或嵌套自根是否进入全站切换器候选；被排除的当前根仍保留为位置提示。1.1 修复了嵌套自根的排除设置 |
 | `toc_root` | 布尔 | `false` | 侧栏根是站点首页时，把这个顶层栏目整个排除在树与翻页序列之外 |
 | `manual_link` | URL | — | 侧栏与栏目索引里这一行指向别处 |
 | `manual_link_relref` | 内容引用 | — | 同上，但用 `relref` 解析；目标不存在时构建失败 |

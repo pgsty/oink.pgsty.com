@@ -6,16 +6,17 @@ weight: 70
 icon: fa-solid fa-compass-drafting
 no_list: true
 search_keywords: [OINK 设计, 维护者契约, 架构, 决策, 研究, 提案, PRD]
-contract_status: released-v1.1.0
+contract_status: candidate-v1.1.0
 cascade:
   categories: [设计契约]
 ---
 
-> [!IMPORTANT] OINK 1.1.0 契约
-> 本专栏公开随 OINK 1.1.0 正式发布的维护者契约，兼容性下限为 Hugo Extended
-> 0.160.1。持续测试只使用一个固定的 Hugo Extended 工具链，当前为 0.165.0；
-> 兼容性下限不再单独作为矩阵测试项。唯一的中英文契约源文件位于本站仓库的
-> `content/docs/design/`。
+> [!IMPORTANT] OINK 1.1.0 候选契约
+> 本专栏描述主题 main 分支面向 OINK 1.1.0 已经实现的行为。截至 2026-09-20，
+> 公开版本与本站固定的主题依赖仍为 v1.0.0；这些契约不代表版本已发布或站点已部署。
+> Hugo Extended 0.160.1 是兼容性下限。持续测试只使用一个固定的 Hugo Extended
+> 工具链，当前为 0.165.0；兼容性下限不单独作为矩阵测试项。唯一的中英文契约源文件
+> 位于本站仓库的 `content/docs/design/`。
 
 本专栏是 OINK 可长期维护的设计记录。站内其它专栏按任务讲解如何搭建站点；
 这里集中说明现行不变量、这些选择背后的理由、用于比较方案的证据，以及仍处于

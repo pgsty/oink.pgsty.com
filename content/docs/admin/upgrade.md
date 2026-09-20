@@ -1,7 +1,7 @@
 ---
 title: Upgrade
 linkTitle: Upgrade
-description: Move to a new theme version, convert 0.4 shortcodes to current native forms with the migration toolkit, migrate from Docsy, and roll back safely.
+description: Pin a published theme version, prepare a 1.0-to-1.1 upgrade, migrate legacy content or a Docsy site, and roll back safely.
 weight: 50
 search_keywords: [upgrade, migration, version, Hugo Module, hugo mod get, oink06, Docsy, jQuery, breaking changes]
 aliases:
@@ -33,25 +33,30 @@ guessing afterwards why a page looks different.
 
 ## Upgrading the Hugo Module {#hugo-module}
 
-A production site pins a release tag or an immutable commit, follows no branch,
-and does not use `@latest`:
+A production site pins a published release tag or a deliberately selected
+immutable commit, follows no branch, and does not use `@latest`. As of
+2026-09-20, the public release is `v1.0.0`; `v1.1.0` is still in preparation.
+The example below uses the available tag. Use a later tag only after its
+publication and module resolution have been verified:
 
 ```bash {title="Terminal"}
-hugo mod get github.com/pgsty/oink@v1.1.0   # the tag from the release notes
+hugo mod get github.com/pgsty/oink@v1.0.0   # the verified published tag
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
 
-The last command must show that tag itself resolving, not a pseudo-version
-(`v0.0.0-2026...-abcdef`) or `main`. The pinned version lands in `go.mod` and is
-committed with the code:
+When selecting a tag, confirm that the module graph shows that exact version.
+A deliberately selected immutable commit is normally recorded as a Go
+pseudo-version; that is valid if it resolves to the intended commit, but it is
+not evidence of a named release. Commit the resulting `go.mod` and `go.sum`.
+For the published tag in this example, `go.mod` contains:
 
 ```go {title="go.mod"}
 module github.com/pgsty/oink.pgsty.com
 
 go 1.27.0
 
-require github.com/pgsty/oink v1.1.0
+require github.com/pgsty/oink v1.0.0
 ```
 
 > [!DANGER] A local module replacement overrides that pin
@@ -60,11 +65,19 @@ require github.com/pgsty/oink v1.1.0
 > use `make build` without a replacement; otherwise what is verified is the
 > local copy.
 
-One line for each other install method. Git submodule: fetch the new ref with
-`git submodule update --remote themes/oink` and commit the submodule pointer.
-Offline archive and clone: replace `themes/oink/` wholesale with the new
-version's unpacked tree, and confirm `theme:` still matches the directory name.
-Weighing the three is in
+For a Git submodule, check that it has no local edits, fetch the tags, and
+check out the exact published version rather than following its remote branch:
+
+```bash {title="Terminal"}
+git -C themes/oink fetch origin --tags
+git -C themes/oink checkout --detach v1.0.0
+git add themes/oink
+```
+
+Commit the updated submodule pointer after validation. For an offline archive
+or clone, replace `themes/oink/` with the selected version's complete tree and
+confirm that `theme:` still matches the directory name. The install-method
+tradeoffs are in
 [From scratch and other install methods](/docs/start/from-scratch/).
 
 ## What to do after upgrading {#after-upgrade}
@@ -77,14 +90,65 @@ hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
 That does three things at once: clears possibly stale caches, rebuilds with the
 new version, and turns any warning into a failure.
 
-`--logLevel info` is there to surface Hugo's deprecation notices. Hugo
-deprecates in two stages: first a `WARN` (still usable), then an `ERROR` in the
-next version (the build fails). Carrying `--panicOnWarning` finds them a version
-early and leaves you the time to fix them.
+`--logLevel info` includes informational diagnostics, while
+`--panicOnWarning` treats warnings as failures. Review the deprecation messages
+emitted by the pinned Hugo version before upgrading it; the severity and
+removal schedule depend on the deprecated feature.
 
 Once the build passes, look with your own eyes: the home page, a documentation
 page, a blog page, the 404, both languages, both colour schemes, the print view,
 and anywhere the site customized something.
+
+## Preparing the 1.0-to-1.1 upgrade {#from-1-0}
+
+> [!IMPORTANT] Implementation prepared; release pending
+> This checklist describes the implementation on `main` as of 2026-09-20.
+> `v1.1.0` is not yet a published module tag. It does not change the production
+> version pinned above or prove that a consumer has been deployed.
+
+No source migration is required from 1.0.0. Hugo Extended 0.160.1 remains the
+floor; CI uses the pinned 0.165.0 toolchain. The module's Go 1.27.0 directive is
+unchanged from 1.0.0. On Hugo 0.160.x, a non-default generic `zh` language
+alongside the regional Chinese catalogs needs `locale: zh-CN`.
+
+Review the affected surfaces before choosing the new pin:
+
+| Surface | 1.1 behavior and upgrade check |
+| --- | --- |
+| Languages | All 32 interface catalogs have the same native-message schema. Check the site's language labels, plural counts, and RTL direction; authored translations remain the site's responsibility. |
+| Taxonomies | Root pages become term-card directories with a taxonomy switcher. Review any taxonomy-template or CSS overrides, author portraits, and localized breadcrumbs. |
+| Sidebars | Cached trees preserve effective page settings and remain usable without JavaScript. Exercise collapse, hover restore, mobile drawer, and keyboard focus; hidden content must leave the focus order. |
+| Groups | `sidebar_divider: true` retains a section's children. Add `build.render: never` only when that group's own outputs are intentionally omitted; verify child navigation, breadcrumbs, paging, Print, and Book contents. |
+| Root menus | Explicit `sidebar_root_menu: false` now applies to self-root sections too. The current linkable root remains a location marker. |
+| Custom scripts | Feature-detect `OinkSidebar` and `OinkCommandPalette.registerSearchTail` if an integration must also support 1.0.0. Restore branch state through the API rather than changing classes or ARIA attributes directly. |
+| Copying articles | With image zoom enabled, copy an image and its caption as plain text and rich HTML. Preview instructions must not enter the copied article; zoom and its keyboard controls must still work. |
+| Print and Redoc | Check page and Book aggregate Print, heading and tab links, and local Redoc specifications under the real deployment prefix. Local specification paths are rooted under `static/`. |
+{.fields}
+
+`params.ui.image_zoom` and `params.offline_search` remain off by default. The
+new search hook does not enable a remote provider or add query telemetry.
+`params.ui.scroll_spy` and page-level `scroll_spy` remain accepted no-ops in
+1.x; removing the obsolete patch does not disable normal outline tracking.
+
+Update or remove affected site-level copies of theme code after comparing
+them with the new implementation. A copied old image-zoom script or sidebar
+partial will otherwise continue to hide the upstream fix.
+
+To test a local candidate with the documentation site, use its sibling theme
+checkout without committing a filesystem replacement:
+
+```bash {title="Terminal — from oink.pgsty.com"}
+make check
+make browser
+make dev
+```
+
+These commands validate the local checkout. After publication, pin the exact
+release, build without a module replacement, then validate the deployed pages.
+The authoring and API details live in [content groups](/docs/write/organize/#group-only),
+the [sidebar contract](/docs/design/shell/#sidebar-runtime),
+[search actions](/docs/customize/panel/#search-tail), and
+[image zoom](/docs/components/image/#zoom).
 
 ## The content migration toolkit {#migration-toolkit}
 
@@ -245,8 +309,9 @@ An upgrade is not finished at "the build passed". Look at each surface:
 This site's full gate is:
 
 ```bash {title="Terminal"}
-npm test           # build assertions, Markdown and favicon goldens, translation parity, rendered links
-npm run test:browser   # Playwright: accessibility, responsive shell, keyboard navigation, content components, code blocks, scenario components
+make check     # local sibling theme: build, outputs, translations, and rendered links
+make browser   # local sibling theme: accessibility, responsive and interactive behavior
+make build     # published theme pinned in go.mod, without a local replacement
 ```
 
 Another site runs the equivalent build, link, output and browser checks; the
@@ -254,9 +319,9 @@ details are in
 [Troubleshooting](/docs/admin/troubleshooting/#site-checks).
 
 > [!IMPORTANT] A successful local build is not a completed release
-> The source building, the tag being signed and resolvable through the Go proxy,
-> the site pinning that tag, and production being deployed are four things, each
-> recorded separately. Do not let one green local build stand in for them.
+> A validated source commit, a published tag that resolves through the module
+> proxy, a consumer pin with its checksum, and a verified production deployment
+> are separate states. One green local build does not prove the others.
 
 The last step happens in the real environment: deploy a preview, verify the
 pages and the browser's network requests on the real URL, merge once reviewed,
@@ -267,7 +332,7 @@ and smoke-test production afterwards.
 What rolls back is the version pin, not the working tree:
 
 ```bash {title="Terminal"}
-hugo mod get github.com/pgsty/oink@v0.4.0   # the last known-good tag
+hugo mod get github.com/pgsty/oink@v1.0.0   # example: the site's last known-good tag
 hugo mod tidy
 rm -rf public resources/_gen
 hugo --gc --minify --panicOnWarning
