@@ -134,3 +134,51 @@ test('Landing page opens the shared Command Palette without article rails', asyn
     dialog.getByRole('option', { name: /^Configuration/i }).first(),
   ).toBeVisible();
 });
+
+const fallbackLandingPath = '/tests/runtime/landing/';
+const metricDisplay = ['2.2k', '32+', '$12.50/day'];
+
+for (const failure of ['no JavaScript', 'missing Landing script']) {
+  test(`Landing content and metric labels survive ${failure}`, async ({ browser }) => {
+    const context = await browser.newContext({
+      javaScriptEnabled: failure !== 'no JavaScript',
+      reducedMotion: 'no-preference',
+    });
+    try {
+      const page = await context.newPage();
+      if (failure === 'missing Landing script') {
+        await page.route('**/js/chunks/landing*.js', route => route.abort());
+      }
+      await page.goto(fallbackLandingPath, { waitUntil: 'domcontentloaded' });
+      await expect(page.locator('.td-landing-command-box')).toContainText('echo landing fallback');
+      await expect(page.locator('.td-landing-pricing-grid')).toContainText('Community');
+      // toBeVisible deliberately ignores opacity. Check the computed result
+      // so invisible-but-laid-out server content cannot pass this regression.
+      const candidates = page.locator('[data-td-reveal]');
+      await expect(candidates).toHaveCount(2);
+      for (const candidate of await candidates.all()) {
+        await expect(candidate).toHaveCSS('opacity', '1');
+        await expect(candidate).toHaveCSS('transform', 'none');
+      }
+      await expect(page.locator('#animated-metrics strong')).toHaveText(metricDisplay);
+      await expect(page.locator('#static-metrics strong')).toHaveText(metricDisplay);
+    } finally {
+      await context.close();
+    }
+  });
+}
+
+for (const reducedMotion of ['reduce', 'no-preference']) {
+  test(`Landing metrics preserve their server display after count-up (${reducedMotion})`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion });
+    await page.goto(fallbackLandingPath, { waitUntil: 'domcontentloaded' });
+    await page.locator('#animated-metrics').scrollIntoViewIfNeeded();
+    await expect(page.locator('#animated-metrics [data-td-count-complete]')).toHaveCount(3);
+    await expect(page.locator('#animated-metrics strong')).toHaveText(metricDisplay);
+    await expect(page.locator('#static-metrics strong')).toHaveText(metricDisplay);
+    for (const candidate of await page.locator('[data-td-reveal]').all()) {
+      await candidate.scrollIntoViewIfNeeded();
+      await expect(candidate).toHaveCSS('opacity', '1');
+    }
+  });
+}

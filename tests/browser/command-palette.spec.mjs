@@ -347,3 +347,115 @@ test("mobile Palette restores focus and has no WCAG AA violations", async ({
   await expect(dialog).toBeHidden();
   await expect(opener).toBeFocused();
 });
+
+for (const clipboardMode of ["unavailable", "denied"]) {
+  test(`Palette retains typing and focus isolation after ${clipboardMode} clipboard fallback`, async ({ page }) => {
+    await page.addInitScript((mode) => {
+      Object.defineProperty(Navigator.prototype, "clipboard", {
+        configurable: true,
+        get() {
+          return mode === "unavailable" ? undefined : {
+            writeText() { return Promise.reject(new Error("Clipboard denied")); },
+          };
+        },
+      });
+      // Keep the browser's real textarea focus/selection behavior but avoid
+      // changing the host clipboard while exercising the fallback path.
+      document.execCommand = (command) => {
+        window.fallbackCopiedText = document.querySelector("textarea")?.value;
+        return command === "copy";
+      };
+    }, clipboardMode);
+    const { dialog, input } = await openPalette(page);
+    await fillCommandAndWait(input, dialog, "> copy link", "Copy link");
+    await input.evaluate(node => node.setSelectionRange(2, 6, "backward"));
+    await page.keyboard.press("Enter");
+    await expect.poll(() => page.evaluate(() => window.fallbackCopiedText)).toMatch(/\/docs\/customize\/config\/$/);
+    await expect(input).toBeFocused();
+    expect(await input.evaluate(node => [node.selectionStart, node.selectionEnd, node.selectionDirection]))
+      .toEqual([2, 6, "backward"]);
+    await page.keyboard.type("copied");
+    await expect(input).toHaveValue("> copied link");
+    // Recover even if site code sends focus outside the open Palette.
+    await page.locator(".td-skip-link").focus();
+    await page.keyboard.press("Tab");
+    await expect(input).toBeFocused();
+    await page.keyboard.press("Shift+Tab");
+    expect(await dialog.evaluate(node => node.contains(document.activeElement))).toBe(true);
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+  });
+}
+
+test("fixed ARIA dialogs own keyboard shortcuts only while visible", async ({ page }) => {
+  await page.goto(docsPath, { waitUntil: "domcontentloaded" });
+  await page.evaluate(() => {
+    const modal = document.createElement("div");
+    modal.id = "fixed-dialog-probe";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.style.cssText = "position:fixed;inset:20px;z-index:100000;background:white";
+    modal.innerHTML = '<button id="fixed-dialog-focus">Modal control</button>';
+    document.body.append(modal);
+    modal.firstElementChild.focus();
+  });
+  const modal = page.locator("#fixed-dialog-probe");
+  const palette = page.locator("#td-shell-search");
+  const theme = await page.locator("html").getAttribute("data-bs-theme");
+  expect(await modal.evaluate(node => node.offsetParent)).toBeNull();
+  for (const shortcut of ["Control+k", "Meta+k", "f", "c", "t"]) {
+    await page.keyboard.press(shortcut);
+    await expect(palette).toBeHidden();
+    await expect(page.locator("#fixed-dialog-focus")).toBeFocused();
+    await expect(page.locator("html")).not.toHaveAttribute("data-td-shell-lock");
+    await expect(page.locator("html")).toHaveAttribute("data-bs-theme", theme);
+  }
+  for (const [hiddenStyle, shortcut] of [["display:none", "Control+k"], ["visibility:hidden", "f"]]) {
+    await modal.evaluate((node, style) => { node.style.cssText += `;${style}`; }, hiddenStyle);
+    await page.keyboard.press(shortcut);
+    await expect(palette).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(palette).toBeHidden();
+    await modal.evaluate(node => { node.style.display = ""; node.style.visibility = ""; });
+  }
+});
+
+test("clipboard fallback restores a backward DOM selection on success and failure", async ({ page }) => {
+  await page.goto(docsPath, { waitUntil: "domcontentloaded" });
+  for (const outcome of ["success", "rejected", "throw"]) {
+    const result = await page.evaluate(async outcome => {
+      const field = document.createElement("p");
+      field.contentEditable = "true";
+      field.textContent = "0123456789";
+      document.body.append(field);
+      field.focus();
+      const text = field.firstChild;
+      const selection = getSelection();
+      selection.setBaseAndExtent(text, 8, text, 2);
+      const original = document.execCommand;
+      document.execCommand = () => {
+        if (outcome === "throw") throw new Error("Copy failed");
+        return outcome === "success";
+      };
+      let rejected = false;
+      try {
+        await window.OinkClipboard.writeText("Copy text", document, {
+          clipboard: { writeText() { return Promise.reject(new Error("Clipboard denied")); } },
+        });
+      } catch { rejected = true; }
+      finally { document.execCommand = original; }
+      const state = {
+        rejected, focused: document.activeElement === field,
+        anchor: selection.anchorNode === text && selection.anchorOffset,
+        focus: selection.focusNode === text && selection.focusOffset,
+        text: selection.toString(),
+      };
+      field.remove();
+      return state;
+    }, outcome);
+    expect(result).toEqual({
+      rejected: outcome !== "success", focused: true,
+      anchor: 8, focus: 2, text: "234567",
+    });
+  }
+});

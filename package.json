@@ -33,7 +33,7 @@
     "test:community-feedback": "playwright test tests/browser/community-feedback.spec.mjs",
     "test:command-palette": "playwright test tests/browser/command-palette.spec.mjs",
     "test:code-blocks": "playwright test tests/browser/code-blocks.spec.mjs",
-    "test:content-components": "playwright test tests/browser/content-components.spec.mjs",
+    "test:content-components": "playwright test tests/browser/content-components.spec.mjs tests/browser/math-compat.spec.mjs",
     "test:extra": "npm run seq -- test:hugo-build test:alt-site test:md-output test:favicons test:rendered-links test:release-pin-contract",
     "test:favicons": "node --test 'tests/favicons/**/*.test.mjs'",
     "test:hugo-build": "node --test 'tests/hugo-build/**/*.test.mjs'",

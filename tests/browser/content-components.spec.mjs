@@ -503,3 +503,69 @@ test('Asciinema waits for its web font before measuring terminal cells', async (
     )
     .toBe(true);
 });
+
+const mediaInteractionPath = '/tests/runtime/media/';
+
+for (const zoom of ['image', 'diagram']) {
+  test(`${zoom} modal owns Ctrl/Cmd+K and closes on the first Escape`, async ({ page }) => {
+    await page.goto(mediaInteractionPath, { waitUntil: 'domcontentloaded' });
+    const opener = zoom === 'image'
+      ? page.locator('.td-image-zoom__trigger').first()
+      : page.locator('[data-td-diagram-expand]').first();
+    const modal = page.locator(`[data-td-${zoom}-zoom-dialog]`);
+    const close = modal.locator(`[data-td-${zoom}-zoom-close]`);
+    for (const shortcut of ['Control+k', 'Meta+k']) {
+      await opener.click();
+      await expect(modal).toHaveAttribute('open', '');
+      await expect(close).toBeFocused();
+      await page.keyboard.press(shortcut);
+      await expect(page.locator('#td-shell-search')).toBeHidden();
+      await expect(page.locator('html')).not.toHaveAttribute('data-td-shell-lock');
+      await expect(close).toBeFocused();
+      await page.keyboard.press('Escape');
+      await expect(modal).not.toHaveAttribute('open');
+      await expect(opener).toBeFocused();
+    }
+  });
+}
+
+for (const zoomEnabled of [false, true]) {
+  test(`Draw.io is keyboard reachable and independent of Image Zoom (${zoomEnabled})`, async ({ page }) => {
+    await page.route('https://embed.diagrams.net/**', route => route.fulfill({
+      contentType: 'text/html',
+      body: '<!doctype html><title>Local editor fixture</title><button>Editor ready</button>',
+    }));
+    await page.goto(zoomEnabled ? mediaInteractionPath : '/docs/components/drawio/', {
+      waitUntil: 'domcontentloaded',
+    });
+    const edit = page.locator('.drawiobtn').first();
+    await expect(edit).toHaveCount(1);
+    expect(await page.locator('.drawio button button, .drawio a button').count()).toBe(0);
+    // Start at the article and advance with actual Tab keys, without hover or
+    // programmatically focusing the previously display:none Edit control.
+    await page.locator('#td-main-content').focus();
+    for (let index = 0; index < 40; index += 1) {
+      if (await edit.evaluate(node => node === document.activeElement)) break;
+      await page.keyboard.press('Tab');
+    }
+    await expect(edit).toBeFocused();
+    await expect(edit).toHaveCSS('opacity', '1');
+    await page.keyboard.press('Enter');
+    await expect(page.locator('.drawioframe iframe')).toBeVisible();
+    await expect(page.locator('dialog[open]')).toHaveCount(0);
+    await expect(page.frameLocator('.drawioframe iframe').getByRole('button')).toHaveText('Editor ready');
+    const editor = page.frames().find(frame => frame.url().startsWith('https://embed.diagrams.net/'));
+    // Match the documented editor exit message and its real Window source.
+    await editor.evaluate(() => parent.postMessage(JSON.stringify({ event: 'exit' }), '*'));
+    await expect(page.locator('.drawioframe')).toHaveCount(0);
+    if (zoomEnabled) {
+      await page.locator('.td-image-zoom__trigger').first().click();
+      await expect(page.locator('[data-td-image-zoom-dialog]')).toHaveAttribute('open', '');
+      await expect(page.locator('.drawioframe')).toHaveCount(0);
+      await page.keyboard.press('Escape');
+    }
+    await page.emulateMedia({ forcedColors: 'active' });
+    await page.locator('#td-main-content').focus();
+    await expect(edit).toHaveCSS('opacity', '1');
+  });
+}
