@@ -288,17 +288,30 @@ nothing to an analytics service.
 
 ## Content Security Policy {#csp}
 
-The runtimes, fonts and icons the theme ships are all same-origin assets, so a
-strict Content Security Policy is workable. The theme provides no general
-policy: which directives you need depends on what the site enabled.
+The shipped runtimes, fonts and icons are same-origin assets, but
+`script-src 'self'; style-src 'self'` alone does not cover an ordinary OINK
+page. The theme emits inline theme initialization and shell prepaint scripts,
+inline styles for the initial canvas, theme colors and font roles, and style
+attributes in some components. Markmap adds inline configuration and styles.
+The theme provides neither a general policy nor automatic CSP hashes or nonce
+injection; the deployment owns a policy derived from its actual built output.
 
-Five things change the directives needed:
+Additional features change the directives needed:
 
 - Inline HTML and inline scripts written by authors, which are the author's responsibility under `renderer.unsafe: true`.
 - [ECharts `$fn:` callbacks](/docs/components/echarts/#callbacks): the callback functions are registered by the site on `window.OinkEchartsFunctions`, and the registering script's origin belongs in `script-src`.
 - [Analytics scripts](/docs/admin/analytics/#other-analytics): the script the site inserts, and the destination it reports to.
 - [Remote API specifications](/docs/write/openapi/#spec-file) and [self-hosted diagram services](/docs/components/plantuml/#server): these land in `connect-src` and `img-src`.
 - [giscus](/docs/admin/comments/#privacy): `script-src` and `frame-src` must both permit it.
+
+Hash each permitted inline script/style block from the final deployed bytes,
+or have the hosting layer inject a fresh nonce into both the response policy
+and the corresponding tags. A nonce on a style tag does not authorize style
+attributes; review those separately under `style-src-attr`. Recheck hashes when
+content, configuration, minification, or the theme changes. Begin with
+`Content-Security-Policy-Report-Only` and exercise light/dark startup, shell
+state, menus, and every enabled component before enforcing it. An origin scan
+alone cannot establish CSP compatibility.
 
 Start from a minimal policy covering only reviewed features and permit things
 one at a time: keep ECharts options pure data where no callback is needed,

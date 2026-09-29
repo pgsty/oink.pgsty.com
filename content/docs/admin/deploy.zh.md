@@ -245,15 +245,25 @@ hugo --gc --minify --environment staging --baseURL "$PREVIEW_URL"
 
 ## 内容安全策略 {#csp}
 
-主题自带的运行时、字体与图标都是同源资源，严格的内容安全策略（CSP）因此可行。主题不提供一份通用策略：需要哪些指令由站点启用了什么决定。
+主题自带的运行时、字体与图标都是同源资源，但仅有
+`script-src 'self'; style-src 'self'` 并不能覆盖普通 OINK 页面。主题会输出行内的
+主题初始化与外壳预绘制脚本、初始画布及主题色和字体角色样式，以及部分组件的
+style 属性；Markmap 还会增加行内配置与样式。主题不提供通用策略，也不自动生成
+CSP 哈希或注入 nonce；部署方需根据实际构建产物制定策略。
 
-改变所需指令的地方有五处：
+额外功能也会改变所需指令：
 
 - 作者写的行内 HTML 与行内脚本，`renderer.unsafe: true` 之下由作者负责。
 - [ECharts 的 `$fn:` 回调](/zh/docs/components/echarts/#callbacks)：回调函数由站点注册到 `window.OinkEchartsFunctions`，注册脚本的来源要进 `script-src`。
 - [分析脚本](/zh/docs/admin/analytics/#other-analytics)：站点自己插入的那段脚本与它上报的目标。
 - [远程 API 规范](/zh/docs/write/openapi/#spec-file)与[自建图表服务](/zh/docs/components/plantuml/#server)：落在 `connect-src` 与 `img-src`。
 - [giscus](/zh/docs/admin/comments/#privacy)：`script-src` 与 `frame-src` 要一起放行。
+
+对允许执行的行内脚本和样式块，按最终部署字节计算哈希；或者由托管层为每次响应
+同时向策略和对应标签注入新的 nonce。style 标签上的 nonce 不会授权 style 属性，
+后者要在 `style-src-attr` 下单独审查。正文、配置、压缩方式或主题变更后，都要重新
+核对哈希。先以 `Content-Security-Policy-Report-Only` 观察，再验证明暗主题启动、
+外壳状态、菜单和所有启用的组件，之后再强制执行。仅扫描资源来源不能证明 CSP 兼容。
 
 从只覆盖已审查功能的最小策略起步，逐项放行：不需要回调时让 ECharts 选项保持纯数据，审查作者写的行内脚本，只为站点主动启用的集成添加远程来源。产物里的子资源来源可以先用[断网构建验证](/zh/docs/admin/preview/#air-gapped)里的脚本扫一遍。
 

@@ -43,7 +43,11 @@ instead; no drawer button is shown from md upward. Language
 links target the
 page translation or that language's home, stay relative when languages share a
 host/base path, and become absolute only for language-specific `baseURL`s;
-`hreflang` stays absolute. `navbar_autohide` applies to fine pointers from
+`hreflang` stays absolute and lists only actual translations, never the
+language-home fallback offered by the switcher. Paginated blog indexes use
+their own canonical URL; later pages omit cross-language alternates because
+translated archives need not have matching page boundaries.
+`navbar_autohide` applies to fine pointers from
 768px, never touch or drawer widths, and the hidden bar keeps its slot: the
 layout reserves the navbar band in both states, a pinned bar occupies exactly
 that band with its rule inside it, revealing fades the bar in place without
@@ -80,6 +84,10 @@ children, and Print keeps the child documents. Book TOCs retain the group label
 and child links, but omit headings from the unpublished group body. `toc_hide` still hides the
 whole subtree and is not a grouping option. Explicit navigation keys are
 language- and deployment-independent paths; rendered links retain both prefixes.
+An explicitly empty navigation `sections` array warns and falls back to the
+content tree in every navigation output. Both authorities prune `toc_hide`
+subtrees, and navigation JSON preserves `manual_link_relref` as an internal
+link to its resolved destination rather than a page identity.
 
 ## Sidebar runtime {#sidebar-runtime}
 
@@ -175,7 +183,9 @@ Built-in action IDs are `copy_markdown`, `copy_link`, `open_chatgpt`,
 `print`, `switch_theme`, `switch_language`, `switch_version`, and
 `open_github`. `copy_link` is Palette-only outside the share bar. Site commands
 under `languages.<lang>.params.ui.command_palette.commands` may open a safe URL
-or invoke a built-in ID, never inject JavaScript.
+or invoke a built-in ID, never inject JavaScript. The legacy clipboard fallback
+restores the previous focus and selection, including its direction, without taking focus back if another
+control acquired it during the copy operation.
 
 The Palette has empty, text-search, and `>` command modes; quick links derive
 from navigation. It has no history, semantic search, personalization, or remote
@@ -183,7 +193,9 @@ fallback. Search queries stay in-browser and no default telemetry is sent.
 
 `OinkSurfaceCoordinator` arbitrates Palette, drawer, root, language, and version
 menus. Surfaces own focus restoration and Escape. Keyboard navigation ignores
-editable controls and modals: `/`, `\`, `f`, `c` open search/commands; `j`/`k`
+editable controls and modals; Ctrl/Cmd+K also yields to another open dialog,
+including fixed-position ARIA dialogs.
+ `/`, `\`, `f`, `c` open search/commands; `j`/`k`
 move headings; `q`/`e` move pages; `h` changes presentation; `l`/`y`, `t`, and
 `r` open language, theme, and root choices. Sidebar WASD/Arrow navigation uses
 real focus without rewriting Tab order.

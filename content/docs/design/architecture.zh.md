@@ -62,6 +62,8 @@ OINK 没有通用的键名重命名注册表。仍需给出迁移诊断的过渡
 `appId`、`apiKey` 与 `indexName`；配置不完整时发出警告，而且不产生网络请求。
 Draw.io 只在渲染内容含 PNG 或 SVG 候选图片时加载，并且每个不同的图片 URL
 只检查一次。
+图表端点必须是字符串，内容为带主机的 HTTP(S) URL 或同站路径。不支持的协议、
+省略协议的 URL、反斜杠、空白字符及缺失路径都会告警，并在选择运行时前关闭该集成。
 
 ## 界面本地化 {#interface-localization}
 
@@ -93,7 +95,9 @@ Docsy 以后增加的 locale 不会自动成为 OINK 支持项；它必须先补
 解析裸 `locale: zh`。这项约束只影响语言配置，不改变语言包文件名 `i18n/zh.yaml`。
 
 `%s`、`{count}`、`{{ .Count }}` 等运行时占位符可以移到符合目标语言语法的位置，
-但字节内容必须保持不变。所有取值都是标量。语言包不得包含隐藏的双向文本控制符；
+但字节内容必须保持不变。取值可以是字符串或 Hugo 复数消息映射。复数映射使用该
+语言支持的类别（`zero`、`one`、`two`、`few`、`many`、`other`），必须包含 `other`，
+每种形式都是包含相同占位符的字符串。语言包不得包含隐藏的双向文本控制符；
 阿拉伯语、波斯语和希伯来语的方向仍由消费站点的语言设置（`direction: rtl`）
 决定，不得把方向字符塞进译文。
 `bin/check-i18n.py` 会检查 locale 集合、schema、取值类型、占位符、方向控制符，
@@ -115,7 +119,10 @@ Hugo 的 `images` 是唯一的创作 API；`params.images` 只作为全站社交
 资源仍然有效，只是不能执行 Hugo 图片操作。
 
 `featured-image-resolve.html` 统一决定来源优先级与相对、绝对 URL。页面自己的
-包资源优先于继承的 cascade 图片。列表缩略图、Open Graph/Twitter/schema
+显式 `images` 优先于页面包资源，页面包资源优先于继承的 cascade 图片；显式值与
+继承值恰好相同时也遵守此顺序。有源文件的页面通过原始 front matter 判断是否显式
+声明，由 Hugo 解析 YAML、TOML 或 JSON；没有源文件的生成页面将解析后的 `images`
+视为显式值。列表缩略图、Open Graph/Twitter/schema
 帮助模板、作者头像、Pinterest 图片与博客展示都消费同一个决定。
 
 `params.ui.featured_image` 只用于博客，默认值为 `none`；页面或 cascade 可用
@@ -173,6 +180,10 @@ Chrome/Chromium 二进制，输出带 CSS 页码的 A4 页面。两种工具都�
 本地文件协议仍属非法。EPUB metadata 文件中的相对资源以该文件所在目录为基准，不依赖
 调用者的工作目录。普通 Hugo 构建不会执行出版工作；PDF 仍从 Print 派生，而不是另一种
 模板输出。
+
+PDF 服务还会应用 CSP sandbox、拒绝 meta refresh 导航，并拒绝指向构建树以外的
+符号链接。没有网络 opt-in 时，图片与媒体请求仅限回环同源地址和 data URL，
+CSS 或 SVG 发起的请求也受此限制。
 
 性能规则如下：
 

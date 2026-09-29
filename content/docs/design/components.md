@@ -77,10 +77,13 @@ and positional forms are not mixed. Book target IDs match
 token-validated. Hook and shortcode targets share one page registry, so
 collisions cannot produce duplicate output IDs.
 
-URLs use `content/url.html`. Images resolve through page resources, section
+URLs use `content/url.html`; raw backslashes are invalid because browsers may
+interpret them as URL separators. Images resolve through page resources, section
 resources, global assets, then static or explicit remote URLs. Local rasters
 carry intrinsic dimensions; SVG, static, and remote sources remain valid but
 cannot use Hugo image operations.
+Resource metadata `alt` must be a string; an invalid value warns and is ignored,
+preserving the image's authored alt text.
 
 ## Component behavior {#component-behavior}
 
@@ -132,6 +135,9 @@ Zoom triggers keep the image's alt text and localized preview action in their
 ARIA accessible name, without inserting helper text into the article. Copying
 content as plain text or rich HTML must not add preview instructions, even when
 an editor discards the theme's styles. Authored images and captions are preserved.
+When Draw.io and Image Zoom share an image, Edit and Zoom remain separate sibling
+buttons. The editor entry supports keyboard access and stays visible on touch
+devices and in forced-colors mode.
 
 Gallery accepts one Markdown image per line with optional description, link,
 and class. FileTree accepts indentation, `- name`, optional `/`, comments, and
@@ -143,6 +149,13 @@ All code highlighting uses Chroma. Common fence attributes include `title`,
 `num`/`caption`. Copy returns authored source. ECharts input is declarative
 JSON/YAML; callbacks use `$fn:<name>` from `window.OinkEchartsFunctions`, never
 embedded script execution.
+
+Mathematics uses Hugo's build-time KaTeX output and local CSS, without a browser
+math runtime. The shared renderer normalizes pre-0.18 KaTeX class names to the
+vendored stylesheet in HTML and Print, preserving the Hugo 0.160.1 floor,
+MathML, and authored TeX. Markmap uses the matching vendored KaTeX runtime.
+On narrow screens, numbered-equation captions wrap within the reading column;
+a long caption must not widen the page.
 
 Swagger and Redoc accept an HTTP(S) specification URL or a path rooted under
 `static/`; neither resolves page resources. Redoc treats leading and

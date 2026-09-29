@@ -72,7 +72,10 @@ site data; only theme controls use OINK i18n.
 Interactive HTML sets `hasLanding`, which conditionally adds only `landing.js`.
 The runtime reuses `OinkSurfaceCoordinator` and owns reveal, count-up, copy,
 compact-menu, and theme-image enhancement. Server output remains complete
-without JavaScript.
+without JavaScript or when the Landing script fails to load. Reveal candidates
+are visible by default; only an installed observer may mark one pending its
+entrance animation. Metrics render their complete compact value, prefix, and
+suffix on the server, and the count-up's final frame uses that same display.
 
 Marquee duplication is CSS-only; the duplicate is `aria-hidden` and `inert`,
 and a localized checkbox persists pause without JS. Reduced motion disables

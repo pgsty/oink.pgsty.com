@@ -71,7 +71,8 @@ OINK 有 29 个 shortcode：
 token 校验。渲染钩子与 shortcode 目标共享同一个页面注册表，因此冲突不会生成
 重复的输出 ID。
 
-URL 使用 `content/url.html`。图片依次从页面资源、分区资源、全局 assets、static
+URL 使用 `content/url.html`；不允许原始反斜杠，因为浏览器可能将其解释为 URL
+分隔符。图片依次从页面资源、分区资源、全局 assets、static
 或显式远程 URL 中解析。本地位图带固有尺寸；SVG、static 与远程来源仍然有效，
 但不能执行 Hugo 图片操作。
 
@@ -116,7 +117,10 @@ Markdown 图片钩子是普通图片 API。行内图片保持行内；块图片�
 
 缩放按钮通过 ARIA 无障碍名称保留图片的 alt 与本地化预览操作，不向正文插入辅助
 文字。复制纯文本或富文本 HTML 时，即使编辑器移除主题样式，也不得额外带入
-预览提示；作者原有的图片与图注保持不变。
+预览提示；作者原有的图片与图注保持不变。资源 metadata 中的 `alt` 必须是字符串；
+无效值会告警并被忽略，保留正文中编写的图片 alt。
+Draw.io 与图片缩放共用一张图片时，编辑与缩放是同级的独立按钮。编辑入口支持
+键盘访问，并在触摸设备和强制颜色模式下保持可见。
 
 画廊每行接受一张 Markdown 图片，可带描述、链接与 class。FileTree 接受缩进、
 `- name`、可选 `/`、注释，以及经过校验的 icon、tone、open、type 属性。Markdown
@@ -126,6 +130,12 @@ Markdown 图片钩子是普通图片 API。行内图片保持行内；块图片�
 `collapse`、`label`、`id`、行选项、标签页，以及 Book 的 `num`/`caption`。复制
 操作返回作者源文。ECharts 输入是声明式 JSON/YAML；回调使用
 `window.OinkEchartsFunctions` 中的 `$fn:<name>`，绝不执行嵌入脚本。
+
+数学公式使用 Hugo 构建时生成的 KaTeX 产物和本地 CSS，不加载浏览器数学运行时。
+共享渲染器在 HTML 和 Print 中将 KaTeX 0.18 之前的类名统一为本地样式支持的类名，
+保留 Hugo 0.160.1 兼容下限、MathML 与作者的 TeX 源文。Markmap 使用与样式配套的
+本地 KaTeX 运行时。
+窄屏中，编号公式的标题在阅读列内换行，长标题不得撑宽整页。
 
 Swagger 与 Redoc 接受 HTTP(S) 规范 URL 或以 `static/` 为根的路径，都不解析页面
 资源。Redoc 将开头有无斜杠视为等价，并把本地路径与 `baseURL` 拼接。只有 HTML

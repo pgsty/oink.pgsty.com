@@ -74,6 +74,9 @@ Network-capable features are explicit and degrade closed. PlantUML requires
 requires `appId`, `apiKey`, and `indexName`; incomplete configuration warns and
 emits no request. Draw.io loads only when rendered content contains PNG or SVG
 candidates, then inspects each distinct image URL once.
+Diagram endpoints must be strings containing an HTTP(S) URL with a host or a
+same-site path. Unsupported schemes, protocol-relative URLs, backslashes, whitespace, and
+missing paths warn and disable the integration before its runtime is selected.
 
 ## Interface localization {#interface-localization}
 
@@ -110,7 +113,9 @@ from Hugo 0.161 onward. This affects language configuration, not the
 
 Runtime placeholders such as `%s`, `{count}`, and `{{ .Count }}` may move to a
 grammatically natural position but must remain byte-for-byte identical. Values
-are scalars. Catalogs contain no hidden bidirectional controls; Arabic,
+are strings or Hugo plural-message maps. Plural maps use the locale's supported
+categories (`zero`, `one`, `two`, `few`, `many`, `other`); `other` is required,
+and every form is a string with the same placeholders. Catalogs contain no hidden bidirectional controls; Arabic,
 Persian, and Hebrew direction still comes from the consumer language setting
 (`direction: rtl`), not from characters injected into translations.
 `bin/check-i18n.py` enforces the locale set, schema, value shape, placeholders,
@@ -135,7 +140,11 @@ processable rasters may be cropped; SVG, static, and remote resources remain
 valid without Hugo image operations.
 
 `featured-image-resolve.html` owns source ranking and relative/absolute URLs.
-A page's bundled resource outranks an inherited cascade image. List thumbnails,
+A page's explicit `images` outranks its bundled resource, which outranks an
+inherited cascade image, even when explicit and inherited values are identical.
+For file-backed pages, authored presence is read from the source front matter;
+Hugo parses its YAML, TOML, or JSON. For generated pages without a source file,
+resolved `images` is treated as explicit. List thumbnails,
 Open Graph/Twitter/schema helpers, author avatars, Pinterest media, and blog
 presentation all consume that decision.
 
@@ -202,6 +211,10 @@ whole-Book Print HTML and accepts consumer metadata separately. The PDF runner
 serves that Print output only on a temporary loopback address, invokes an
 explicit Chrome/Chromium binary behind a `script-src 'none'` Content Security
 Policy, and emits A4 pages with CSS page numbers.
+The PDF server also applies a CSP sandbox, rejects meta-refresh navigation,
+and refuses symlinks escaping the build tree. Without the network opt-in,
+image and media requests are limited to the loopback origin and data URLs,
+including requests initiated by CSS or SVG.
 Both tools refuse missing or out-of-tree resources; network resources and
 output replacement each require a separate explicit flag. The network opt-in
 allows passive HTTP(S) media only; remote scripts and local-file schemes remain
