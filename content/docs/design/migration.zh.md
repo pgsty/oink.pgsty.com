@@ -32,8 +32,42 @@ python3 bin/migrations/oink06.py migrate --site <dir> --write
 python3 bin/migrations/oink06.py check --site <dir>
 ```
 
-代码围栏不会改写。`book_figures.py` 保留范围明确的 TPME、DDIA v1/v2 与
+代码围栏的内容不会改写，包括与有序或无序列表标记处于同一行、可带引用前缀的围栏。
+`book_figures.py` 保留范围明确的 TPME、DDIA v1/v2 与
 pg-internal profile；它不是通用解析器。
+
+隔离验证工具 `bin/measure-baseline.py` 和 `bin/sites/build-all.py` 会在清理已有
+输出前，拒绝与任一输入站点、主题 checkout 或其他快照交叠的快照目录，
+包括通过符号链接别名指向这些位置的 `--keep` 目标。
+
+## 更新消费站点仓库 {#updating-consumers}
+
+主题发布后，应清点维护中的消费站点 checkout，并升级它们固定的版本。
+主题的 `bin/update-consumers.py` 扫描指定根目录下的直属项目目录，不递归进入
+归档、生成站点、缓存或主题测试夹具。
+
+```sh
+python3 bin/update-consumers.py v1.1.0 --roots ~/www ~/pgsty
+python3 bin/update-consumers.py v1.1.0 --roots ~/www ~/pgsty --write --check
+```
+
+第一条命令只报告版本采用情况。第二条更新 `go.mod` 和 `go.sum` 中的 OINK
+条目，核对精确的模块解析图，并对每个选中站点运行将警告视为失败的构建。
+执行时禁用 `GOWORK`、Hugo 模块 workspace 和环境变量中的模块替换。日志与
+原始模块文件保存在临时报告目录，也可通过 `--report-dir` 指定目录。
+更新失败会恢复模块文件；构建失败则保留新版本以便排查，并返回失败状态。
+扫描根目录无法读取或消费站模块格式错误时，会记录失败条目，继续清点其余站点，
+并以非零状态退出。显式选择的目录不存在或不是 OINK 消费站时，也会明确报告失败。
+
+工具跳过链接 worktree、隐藏副本和非默认分支。应检查所有跳过与阻塞条目：
+通过 `--sites <path>...` 显式选择已核对的 checkout，包括已有模块改动的目录。
+`go.mod` 中的 OINK 替换需要手工处理。vendor 主题需先独立核对，再使用
+`--refresh-vendor` 备份并重新生成 `_vendor/`；只改模块版本不会更新 vendor
+中的主题。
+
+保留无关改动，同步站点 README 和配置中的当前主题版本说明，并运行站点自身的
+检查与视觉验收。工具不改写正文、不提交、不推送、不部署。这些完成状态必须
+分别记录，已使用目标标签的站点也要纳入清点。
 
 ## 从 0.4 内容迁移到当前形态 {#content-to-current-forms}
 
