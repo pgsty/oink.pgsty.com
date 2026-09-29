@@ -242,7 +242,10 @@ test('content articles carry one pinned navbar without a subnav', async ({
     await expect(page.locator('[data-td-navbar-autohide]')).toHaveCount(autohide);
     await expect(page.locator('.td-shell-subnav')).toHaveCount(0);
     await expect(page.locator('.td-shell-footline')).toHaveCount(1);
-    await expect(page.locator('#td-site-footer')).toHaveCount(0);
+    await expect(page.locator('#td-site-footer')).toHaveCount(1);
+    await expect(page.locator('[data-td-footer-toggle]')).toHaveAttribute(
+      'aria-expanded', 'true',
+    );
   }
 });
 

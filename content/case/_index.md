@@ -17,7 +17,7 @@ blog_index_columns: 3
 blog_index_size: 24
 featured_image: hero
 toc_taxonomies: false
-footer_style: slim
+footer_style: fat
 comments: false
 share: [copy]
 # Section identity: Cases read in a neutral dark grey.
@@ -29,7 +29,7 @@ cascade:
   featured_image: hero
   toc_style: flow
   toc_taxonomies: false
-  footer_style: slim
+  footer_style: fat
   comments: false
   reading_time: false
   share: [copy]

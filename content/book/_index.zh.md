@@ -19,7 +19,7 @@ cascade:
   theme_color_dark: '#fb923c'
   type: book
   navbar_autohide: false
-  footer_style: slim
+  footer_style: fat
   comments: false
   feedback: false
   sidebar_headings: 3

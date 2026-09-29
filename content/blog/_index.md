@@ -6,7 +6,7 @@ type: blog
 icon: fa-solid fa-blog
 sidebar_root_for: self
 sidebar_root_link_self: true
-footer_style: slim
+footer_style: fat
 comments: true
 blog_index: cards
 # The section root is a feed index, not a destination: backlinks belong on
@@ -24,7 +24,7 @@ cascade:
   type: blog
   navbar_autohide: false
   images: [/images/oink.webp]
-  footer_style: slim
+  footer_style: fat
   comments: true
   reading_time: true
   # The page-end share bar, scoped to the blog. Every entry is a plain intent

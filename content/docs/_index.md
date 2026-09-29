@@ -33,7 +33,7 @@ cascade:
   theme_color_dark: '#5da2dd'
   type: docs
   navbar_autohide: false
-  footer_style: slim
+  footer_style: fat
   comments: true
   feedback: false
   search_boost: 1.35
