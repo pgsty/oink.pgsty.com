@@ -1,11 +1,10 @@
 ---
 title: pgsty.pro
 description: >-
-  PIGSTY PRO: the enterprise edition of Pigsty. A bilingual documentation and release archive built around reusable, structured release records.
+  PIGSTY PRO 是 Pigsty 的企业版。双语文档与版本档案围绕可复用的结构化发布记录组织。
 images: [featured.webp]
 weight: 140
 date: 2026-08-02
-manual_link: https://pgsty.pro/
 search_keywords: [pgsty.pro, Pigsty v5, 发布档案, release-card]
 tags: [文档, 双语, 发布]
 ---

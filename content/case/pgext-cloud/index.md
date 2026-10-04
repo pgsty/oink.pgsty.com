@@ -5,7 +5,6 @@ description: >-
 images: [featured.webp]
 weight: 150
 date: 2026-08-01
-manual_link: https://ext.pgsty.com/
 search_keywords: [ext.pgsty.com, pgext.cloud, PostgreSQL extension catalog, data application]
 tags: [Catalogue, Data driven]
 ---

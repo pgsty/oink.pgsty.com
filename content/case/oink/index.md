@@ -6,7 +6,6 @@ description: >-
 images: [featured.webp]
 weight: 50
 date: 2026-08-11
-manual_link: https://oink.pgsty.com/
 search_keywords: [oink.pgsty.com, OINK docs, regression site, component gallery]
 tags: [Docs, Reference, Testing]
 ---

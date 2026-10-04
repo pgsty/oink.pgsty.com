@@ -2,11 +2,10 @@
 title: oink.pgsty.com
 linkTitle: OINK 文档
 description: >-
-  OINK: the Hugo theme every site in this library is built with. Public manual, design reference, component gallery and regression fixture in one repository.
+  OINK 是本案例库各站点采用的 Hugo 主题。本站将公开手册、设计参考、组件示例与回归测试集中在同一仓库。
 images: [featured.webp]
 weight: 50
 date: 2026-08-11
-manual_link: https://oink.pgsty.com/
 search_keywords: [oink.pgsty.com, OINK 文档, 回归站, 组件画廊]
 tags: [文档, 参考, 测试]
 ---

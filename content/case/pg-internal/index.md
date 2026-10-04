@@ -5,7 +5,6 @@ description: >-
 images: [featured.webp]
 weight: 120
 date: 2026-08-04
-manual_link: https://pgint.vonng.com/
 search_keywords: [pgint.vonng.com, PostgreSQL Internals, PG 技术内幕, single language, book]
 tags: [Book, Chinese, Publishing]
 ---

@@ -5,7 +5,6 @@ description: >-
 images: [featured.webp]
 weight: 10
 date: 2026-08-15
-manual_link: https://pgsty.com/
 search_keywords: [pgsty.com, corporate site, landing page, bilingual]
 tags: [Landing, Bilingual, Corporate]
 ---

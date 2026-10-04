@@ -1,11 +1,10 @@
 ---
 title: pgint.vonng.com
 description: >-
-  PG Internals: the Chinese edition of PostgreSQL Internals. A single-language book site that runs the Book shell on its own, with no documentation tree beside it.
+  《PG 技术内幕》的中文译本站。它只使用 Book 阅读外壳，没有另建文档树。
 images: [featured.webp]
 weight: 120
 date: 2026-08-04
-manual_link: https://pgint.vonng.com/
 search_keywords: [pgint.vonng.com, PG 技术内幕, PostgreSQL Internals, 单语站点, 书籍]
 tags: [书籍, 中文, 出版]
 ---

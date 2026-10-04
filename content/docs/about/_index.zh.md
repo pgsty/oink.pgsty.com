@@ -13,7 +13,7 @@ aliases:
 
 OINK 是一款独立的 [Hugo](https://gohugo.io/) 主题，用于搭建中大型技术文档站。它从 [Docsy](https://github.com/google/docsy) 演化而来：保留 Docsy 的内容模型与多语言行为，替换外壳、导航、搜索与内容组件。
 
-消费站点的构建依赖只有一个 Hugo Extended 二进制，不需要 Node.js、npm 或 PostCSS，也不请求 CDN。Bootstrap、Font Awesome、字体、本地搜索、图表与 API 文档运行时都提交在主题仓库里，只在页面用到时下发。
+站点使用 Hugo Extended 构建。采用 Hugo Module 时还需要 Go 解析模块，首次下载需要可访问的模块来源。主题资源不依赖 Node.js、npm、PostCSS 或 CDN。Bootstrap、Font Awesome、字体、本地搜索、图表与 API 文档运行时都提交在主题仓库里，只在页面用到时下发。
 
 组件不是另一套模板语言：`> [!NOTE]` 是提示块，表格加一行 `{.fields}` 是参数表，图片下面加 `{caption=}` 就有图注。当前有[十五个生产站点](/zh/docs/about/showcase/)在用它，本站是其中之一。
 
@@ -23,7 +23,7 @@ OINK 是一款独立的 [Hugo](https://gohugo.io/) 主题，用于搭建中大�
 ## 主题的职责 {#what-oink-provides}
 - 文档与博客外壳：导航、侧栏树、目录、面包屑、翻页、深色模式、打印视图与无障碍交互。
 - 多语言框架：译文路由、缺译回退、语言权重、RTL，以及 32 份完整界面语言包。
-- 本地运行时：Mermaid、KaTeX、Markmap、Swagger UI、Redoc、Asciinema、ECharts、Infographic 与本地全文检索。
+- 本地浏览器功能：Mermaid、Markmap、Swagger UI、Redoc、Asciinema、ECharts、Infographic 与全文检索。数学公式由 Hugo 在构建时渲染，使用本地 KaTeX 样式。
 - 内容组件：提示块、标签页、步骤、卡片、参数表、文件树、画廊、徽章、按键等，多数有 Markdown 原生形态。
 - 内容类型：普通文档之外，还内置书籍编号与交叉引用、发布与下载页、数据驱动的 Landing 首页、OpenAPI 文档页。
 
@@ -40,18 +40,17 @@ OINK 是一款独立的 [Hugo](https://gohugo.io/) 主题，用于搭建中大�
 
 ## 与其它文档方案的差别 {#comparison}
 
-下表只列结构性差别，且只写能从各项目自身文档与仓库确认的部分。各项目的版本会变动，选型前以其当前文档为准。
+先选择团队愿意维护的工具链与创作模型，再比较单项功能。同一个项目可能适合不同方案：
 
-| 维度 | OINK | Docsy | Hextra | Docusaurus |
-| --- | --- | --- | --- | --- |
-| 构建工具 | Hugo Extended，单个二进制 | Hugo Extended + Node/npm | Hugo | Node.js 工具链 |
-| 消费站点要不要 npm | 不要 | 要：Bootstrap 与 Font Awesome 从 `node_modules/` 挂载 | 不要 | 要 |
-| 前端资源从哪来 | 全部提交在主题仓库，`VENDOR.json` 记录版本、来源、许可与校验值 | 每页无条件加载 CDN 上的 jQuery；Mermaid、KaTeX 等还会在构建期请求 CDN | 预编译产物提交在仓库 | npm 依赖 |
-| 组件写法 | Markdown 原生属性与围栏为主，29 个 shortcode 兜底 | shortcode（19 个） | shortcode（29 个）为主，提示块有 `> [!NOTE]` 原生形态 | MDX（React 组件） |
-| 多语言 | Hugo 多语言 + 32 份完整界面语言包 | Hugo 多语言 + 31 个界面 locale 文件 | Hugo 多语言 + 21 个界面语言包 | 内置 i18n 框架 |
-| 书籍编号与交叉引用 / 发布下载页 / 数据驱动落地页 | 主题内置 | 无 | 无 | 需自建或找插件 |
+| 优先需求 | 应重点比较什么 |
+| --- | --- |
+| 延续现有 Hugo 内容流程 | 用自己的内容树、模板覆盖与语言需求比较 OINK、Docsy 和 Hextra |
+| 不维护 Node 工具链 | OINK 随主题分发浏览器资源；Hugo Module 安装方式仍需 Go 解析模块 |
+| 在文档中编写 React 组件 | 考察 Docusaurus 一类基于 MDX 的方案；OINK 主要使用 Markdown、属性与短代码 |
+| 出版书籍、下载页或数据驱动落地页 | 先用一篇代表性页面验证 OINK 内置模式，再扩展到全站 |
 
-两点补充。每页 Markdown 输出与 `llms.txt` 不是 OINK 独有的能力，Docsy 与 Hextra 也有，三者都要站点在 `outputs` 里显式打开。表格最后一行的三项只有 OINK 内置，它们来自 PGSTY 自己的生产站点，不是通用文档站的必需品。主题的交互功能默认关闭，搜索、缩放、评论与反馈都要站点显式打开。
+选型时核对各项目当前的安装与扩展文档。OINK 的搜索、图片缩放、评论与反馈需要显式启用，
+Markdown 与 Agent 输出也由站点在 `outputs` 中选择。
 
 OINK 不是叠在 Docsy 上的皮肤，而是 fork 之后独立演化的主题。Docsy 的源码历史、Apache-2.0 义务与署名完整保留，细节见[开源许可与致谢](/zh/docs/about/license/)。
 

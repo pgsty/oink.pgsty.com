@@ -10,7 +10,7 @@ columns:
       - { label: What is OINK, url: docs/about/ }
       - { label: Highlights, url: docs/about/features/ }
       - { label: Showcase, url: docs/about/showcase/ }
-      - { label: License and acknowledgements, url: docs/about/license/ }
+      - { label: License & credits, url: docs/about/license/ }
   - title: Documentation
     links:
       - { label: Get started, url: docs/start/ }
@@ -23,17 +23,11 @@ columns:
       - { label: Deploy, url: docs/admin/deploy/ }
       - { label: Upgrade, url: docs/admin/upgrade/ }
       - { label: Configuration, url: docs/customize/config/ }
-  - title: Community
+  - title: "Community & knowledge"
     links:
       - { label: Blog, url: blog/ }
       - { label: Releases, url: blog/release/ }
-      - {
-          label: GitHub,
-          url: 'https://github.com/pgsty/oink',
-          external: true,
-        }
-      - {
-          label: Docsy discussions,
-          url: 'https://github.com/google/docsy/discussions',
-          external: true,
-        }
+      - { label: "GitHub", url: "https://github.com/pgsty/oink", external: true }
+      - { label: "Docsy discussions", url: "https://github.com/google/docsy/discussions", external: true }
+      - { label: "PG Center", url: "https://pg.center/docs/reference/", external: true }
+      - { label: "PGSQL.CC", url: "https://pgsql.cc/docs/", external: true }

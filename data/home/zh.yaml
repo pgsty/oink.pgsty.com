@@ -13,12 +13,12 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 1.1 · 本地优先 · 仅依赖 Hugo
+  eyebrow: OINK 1.1 · 本地优先 · Hugo 构建
   title_lines:
     - words:
         - { text: PGSTY OINK }
   # prettier-ignore
-  lead: Markdown 输入，现代文档输出。<br>知识发布框架
+  lead: 用 Markdown 创作技术内容。<br>在一个 Hugo 站点中发布文档、博客、书籍与 API 参考。
   image:
     light: images/hero-light.webp
     dark: images/hero-dark.webp
@@ -37,14 +37,14 @@ capabilities:
   eyebrow: 价值主张
   title: 工程文档所需的能力，开箱即用
   # prettier-ignore
-  text: 工程文档所需的一切——内置、本地、按需加载。
+  text: 让技术内容共用导航、搜索与发布工具。
   items:
     - ref: 01 / 工程文档
       title: 为工程师与文档站设计
       url: docs/start/
-      motto: 从第一次构建到长期维护都没有额外阻力
+      motto: 从可运行的模板开始，逐步完善自己的站点
       bullets:
-        - '开箱即用，提供零阻力的[部署上线](docs/admin/deploy/)体验'
+        - '[Starter 与部署指南](docs/start/)帮助你完成第一个站点'
         - '自带[全文检索](docs/customize/search/)、[i18n](docs/customize/i18n/)
           与[多版本支持](docs/customize/versions/)'
         - '自带
@@ -73,9 +73,9 @@ capabilities:
       bullets:
         - '继承 [Hugo](https://gohugo.io/) [Docsy](https://www.docsy.dev/)
           的强大文档能力'
-        - '借鉴参考 [Fumadocs](https://fumadocs.dev/) 的界面审美风格'
+        - '借鉴 [Fumadocs](https://fumadocs.dev/) 与 [Hextra](https://imfing.github.io/hextra/) 的阅读体验'
         - '针对 [开源项目与工程审美](docs/customize/brand/) 进行优化'
-      value: 界面保持克制，成熟文档站所需的功能一项不少。
+      value: 简洁的阅读界面，配合完整的内容导航。
       visual:
         type: components
         items:
@@ -86,7 +86,7 @@ capabilities:
             }
           - {
               icon: fa-solid fa-layer-group,
-              title: NEXTRA,
+              title: HEXTRA,
               detail: 清晰的内容层级,
             }
           - {
@@ -100,15 +100,15 @@ capabilities:
               detail: 面向工程社区,
             }
     - ref: 03 / 本地优先
-      title: 本地优先，无外部依赖
+      title: 使用 Hugo 构建
       url: docs/about/features/
-      motto: CSS、JavaScript、字体与运行时全部本地化
+      motto: 资源随主题内置，无需 npm 构建流程
       bullets:
         - '一条 [**hugo**](https://gohugo.io/) 命令完成全部构建'
         - '[无需 **npm install** 或 PostCSS
           构建](docs/about/features/)'
-        - '[所有资源本地提供](docs/about/features/)，[断网也能服务](docs/start/from-scratch/)'
-      value: 开发、CI 与生产环境使用同一条可确定的构建路径。
+        - '[内置资源本地提供](docs/about/features/)；[备齐依赖后可离线构建](docs/start/from-scratch/)'
+      value: Hugo Modules 需要 Go 解析模块，外部服务由站点按需接入。
       visual:
         type: code
         aria_label: Hugo 构建示例
@@ -129,9 +129,9 @@ capabilities:
           与 [Fields](docs/components/fields/) 覆盖日常技术写作'
         - '[Gallery](docs/components/gallery/)、[Image
           Zoom](docs/components/image/) 与图表组件用于视觉化说明'
-        - '每个[组件](docs/components/)都有语义化 Markdown
-          与打印输出，只在交互确实需要时加载 JavaScript'
-      value: 富内容能力属于主题，普通页面不会因此背上额外负担。
+        - '[组件](docs/components/)明确说明 Markdown 与打印输出；
+          交互内容按需保留源码或静态说明'
+      value: 组件脚本只在使用该组件的页面加载。
       visual:
         type: components
         aria_label: 浏览短代码与内容组件

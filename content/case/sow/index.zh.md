@@ -1,11 +1,10 @@
 ---
 title: sow.pgsty.com
 description: >-
-  SOW: the repository manager that builds and mirrors APT and YUM software repositories. A bilingual operations manual with a download surface fed by release metadata.
+  SOW 用于构建与镜像 APT、YUM 软件仓库。双语运维手册与下载页共享结构化发布元数据。
 images: [featured.webp]
 weight: 80
 date: 2026-08-08
-manual_link: https://sow.pgsty.com/
 search_keywords: [sow.pgsty.com, SOW, APT, YUM, 下载页]
 tags: [文档, 双语, 下载]
 ---

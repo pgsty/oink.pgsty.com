@@ -17,8 +17,9 @@ technical documentation sites. It evolved from
 multilingual behaviour are kept, while the shell, navigation, search and
 content components are replaced.
 
-A consuming site's only build dependency is one Hugo Extended binary. There is
-no Node.js, no npm, no PostCSS and no CDN request. Bootstrap, Font Awesome, the
+A consuming site builds with Hugo Extended. Hugo Module installations also
+need Go to resolve modules; the initial download needs access to the module
+source. Theme assets need no Node.js, npm, PostCSS, or CDN request. Bootstrap, Font Awesome, the
 fonts, local search, the diagram runtimes and the API reference runtimes are all
 committed to the theme repository and shipped only to the pages that use them.
 
@@ -33,7 +34,7 @@ run on it today, this one among them.
 ## What the theme provides {#what-oink-provides}
 - The documentation and blog shell: navigation, sidebar tree, table of contents, breadcrumbs, pager, dark mode, print view and accessible interaction.
 - The multilingual frame: translation routing, fallback for untranslated pages, language weighting, RTL, and 32 complete interface catalogs.
-- Local runtimes: Mermaid, KaTeX, Markmap, Swagger UI, Redoc, Asciinema, ECharts, Infographic and local full-text search.
+- Local browser features: Mermaid, Markmap, Swagger UI, Redoc, Asciinema, ECharts, Infographic and full-text search. Mathematics is rendered by Hugo at build time and uses local KaTeX styles.
 - Content components: callouts, tabs, steps, cards, field lists, file trees, galleries, badges, keys and more — most with a native Markdown form.
 - Content types: beyond ordinary documentation, built-in book numbering and cross-references, release and download pages, data-driven landing pages, and OpenAPI reference pages.
 
@@ -53,25 +54,20 @@ with the site; the theme supplies the shell and the reusable components.
 
 ## How it differs from other documentation systems {#comparison}
 
-The table below lists structural differences only, and only what can be
-confirmed from each project's own documentation and repository. Versions change;
-check each project's current documentation before choosing.
+Choose a toolchain and authoring model before comparing individual features.
+The same project can be a good fit for different systems depending on who
+maintains it:
 
-| Dimension | OINK | Docsy | Hextra | Docusaurus |
-| --- | --- | --- | --- | --- |
-| Build tool | Hugo Extended, one binary | Hugo Extended + Node/npm | Hugo | Node.js toolchain |
-| Does a consuming site need npm | No | Yes: Bootstrap and Font Awesome are mounted from `node_modules/` | No | Yes |
-| Where front-end assets come from | All committed to the theme repository; `VENDOR.json` records version, source, licence and checksum | jQuery is loaded from a CDN on every page unconditionally; Mermaid, KaTeX and others also fetch from a CDN at build time | Prebuilt artifacts committed to the repository | npm dependencies |
-| How components are written | Native Markdown attributes and fences first, 29 shortcodes as the fallback | Shortcodes (19) | Shortcodes (29) first; callouts also have a `> [!NOTE]` native form | MDX (React components) |
-| Multilingual | Hugo multilingual + 32 complete interface catalogs | Hugo multilingual + 31 interface locale files | Hugo multilingual + 21 interface language packs | Built-in i18n framework |
-| Book numbering and cross-references / release and download pages / data-driven landing pages | Built into the theme | None | None | Build your own or find a plugin |
+| Your priority | What to evaluate |
+| --- | --- |
+| Keep an existing Hugo content workflow | Compare OINK with Docsy and Hextra using your own content tree, overrides, and language needs |
+| Build without a Node toolchain | OINK ships its browser assets with the theme; the Hugo Module install path still needs Go to resolve modules |
+| Write React components inside documentation | Evaluate an MDX-based system such as Docusaurus; OINK's main authoring model is Markdown plus attributes and shortcodes |
+| Publish books, downloads, or data-driven landing pages | Try OINK's built-in patterns on one representative page before adopting them site-wide |
 
-Two qualifications. Per-page Markdown output and `llms.txt` are not unique to
-OINK — Docsy and Hextra have them too, and all three need the site to opt in
-under `outputs`. Only the last row is exclusive to OINK, and it comes from
-PGSTY's own production sites rather than from what a general documentation site
-needs. The theme's interactive features are off by default: search, zoom,
-comments and feedback all require the site to turn them on.
+Check each candidate's current installation and extension documentation. OINK's
+search, image zoom, comments, and feedback are opt-in; the site also chooses
+Markdown and agent outputs under `outputs`.
 
 OINK is not a skin layered over Docsy but a theme that forked and evolved
 separately. Docsy's source history, its Apache-2.0 obligations and its

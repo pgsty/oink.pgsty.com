@@ -1,11 +1,10 @@
 ---
 title: pgsty.com
 description: >-
-  PGSTY: the company behind Pigsty. A small bilingual corporate site that uses OINK primarily as a data-driven landing-page system.
+  PGSTY 是 Pigsty 背后的公司。这个小型双语公司站主要将 OINK 用作数据驱动的落地页系统。
 images: [featured.webp]
 weight: 10
 date: 2026-08-15
-manual_link: https://pgsty.com/
 search_keywords: [pgsty.com, 公司站, 落地页, 双语]
 tags: [落地页, 双语, 公司]
 ---

@@ -27,17 +27,17 @@ images, field entries whose body is several paragraphs of Markdown.
 
 → [Components](/docs/components/)
 
-## One Hugo binary is enough {#hugo-only}
+## Build with Hugo {#hugo-only}
 
-A consuming site's entire build dependency is Hugo Extended 0.160.1 or newer.
-SCSS is compiled by Hugo's embedded Sass transpiler; the theme never invokes
-`postCSS`. There is no npm, no webpack and no build-time download. Installing
-the theme as a Hugo Module needs Go on the machine to resolve the module; an
-offline archive or a submodule does not.
+Hugo Extended 0.160.1 or newer compiles the site's assets. SCSS is compiled by
+Hugo's embedded Sass transpiler; the theme never invokes `postCSS` and needs
+neither npm nor webpack. Installing the theme as a Hugo Module also needs Go
+and access to the module dependencies, either over the network or from a local
+cache. With an offline archive or a submodule already prepared, Hugo is enough
+to build the site.
 
-"Hugo only" refers to the build dependency. The interface still runs JavaScript
-in the browser: search, the command palette, diagrams and tabs are page
-scripts. The difference is that those scripts ship with the theme and are
+The interface runs JavaScript in the browser: search, the command palette,
+diagrams and tabs are page scripts. Those scripts ship with the theme and are
 delivered per page according to what that page actually uses.
 
 → [Quick start](/docs/start/)

@@ -5,7 +5,6 @@ description: >-
 images: [featured.webp]
 weight: 60
 date: 2026-08-10
-manual_link: https://caps.vonng.com/
 search_keywords: [caps.vonng.com, Capslock, configurator, small site]
 tags: [Tool, Bilingual, Small site]
 ---
@@ -24,5 +23,19 @@ a custom `customizer` shell type alongside the regular documentation shell.
 
 Use this pattern when documentation is small but one interactive tool deserves
 the same navigation, theme, and language controls as the rest of the site.
+
+## Keep the application at the site layer {#implementation}
+
+The site's [`hugo.yaml`](https://github.com/Vonng/caps.vonng.com/blob/25f5a2940208cad12df56ea9993e7b6d27860577/hugo.yaml)
+includes `customizer` in `params.ui.shell_types`.
+[`content/customizer.md`](https://github.com/Vonng/caps.vonng.com/blob/25f5a2940208cad12df56ea9993e7b6d27860577/content/customizer.md)
+selects `type: customizer` and `layout: customizer`, then invokes the site's
+[`capslock-configurator` shortcode](https://github.com/Vonng/caps.vonng.com/blob/25f5a2940208cad12df56ea9993e7b6d27860577/layouts/_shortcodes/capslock-configurator.html).
+The configurator, JavaScript, and keyboard data are site code; OINK does not
+include this application.
+
+Reuse this boundary when a small custom tool needs the documentation shell.
+You must maintain its interaction code yourself; a two-page site does not make
+that application maintenance disappear.
 
 → [Layout configuration](/docs/customize/layout/) · [All OINK cases](/case/)

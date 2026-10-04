@@ -4,7 +4,7 @@
 outputs: [HTML, RSS, print, markdown, LLMSFULL]
 title: OINK 文档
 linkTitle: 文档
-description: OINK 是一套本地优先的 Hugo 文档框架：组件在 Markdown 中仍然可读，资源随主题分发，多语言开箱可用，一份内容同时服务读者与 Agent。
+description: 为文档、博客、书籍与 API 参考建立统一的技术内容站点，共用导航、多语言与搜索。
 search_keywords: [OINK, Hugo 主题, 技术文档, 文档站, Hugo theme, documentation]
 type: docs
 icon: fa-solid fa-book
@@ -29,13 +29,24 @@ cascade:
   search_boost: 1.35
 ---
 
-OINK 是一款技术文档 Hugo 主题。组件是 Markdown 语法的一部分，不是另一套模板语言；浏览器需要的字体、图标、搜索与图表运行时随主题分发；构建依赖只有一个 Hugo Extended 二进制，不需要 Node.js，不请求 CDN。当前发布版本 {{% param version %}}，详见 [OINK 1.1 发布注记](/zh/blog/release/1.1.0/)与[升级指南](/zh/docs/admin/upgrade/#from-1-0)。
+第一次使用 OINK，请从 [Starter](/zh/docs/start/) 预览一个可运行的站点，再替换成
+自己的内容。正文用 Markdown 编写，Hugo Extended 负责构建；采用 Hugo Modules
+时还需要 Go 解析主题模块。主题内置资源无需 CDN，也不需要 npm 构建流程。
+
+当前发布版本为 {{% param version %}}。已有站点可查看
+[1.1 发布说明](/zh/blog/release/1.1.0/)与[升级指南](/zh/docs/admin/upgrade/#from-1-0)。
+
+> [!NOTE] 1.2.0 工作文档
+> 本指南包含当前本地 1.2.0 修改，主题版本尚待发布，站点依赖仍固定
+> {{% param version %}}。受影响的行为见
+> [1.2 升级清单](/zh/docs/admin/upgrade/#preparing-1-2)，独立可选工具见
+> [CLI 草案](/zh/docs/cli/)。
 
 ## 五条入口 {#five-entries}
 
 - [快速上手](/zh/docs/start/) — 创建 OINK Starter 仓库，建立本地基线，分层定制并部署。
 - [组件总览](/zh/docs/components/) — 每个组件一页，先给源码再给渲染效果。
-- [使用 OINK 创作优美的内容](/zh/book/) — 从第一次预览到持续维护发布物的实战教程。
+- [使用 OINK 创作优美的内容](/zh/book/) — 正在完善的实战教程；前三章覆盖预览、内容结构与页面创作。
 - [案例](/zh/case/) — 把生产站点拆解成可复用的设计与迁移模式。
 - [设计与开发](/zh/docs/design/) — 面向 OINK 维护者的契约、已接受决策、研究证据与候选提案。
   {.cards}
@@ -52,7 +63,7 @@ OINK 是一款技术文档 Hugo 主题。组件是 Markdown 语法的一部分�
 | 改站名、Logo、配色与字体     | [品牌外观](/zh/docs/customize/brand/)  |
 | 查某个配置键的默认值         | [配置总览](/zh/docs/customize/config/) |
 | 做双语或多语言站             | [多语言](/zh/docs/customize/i18n/)     |
-| 从头到尾掌握 OINK            | [使用 OINK 创作优美的内容](/zh/book/)  |
+| 跟随练习建站与写作            | [使用 OINK 创作优美的内容](/zh/book/)  |
 | 研究生产环境实现             | [案例](/zh/case/)                      |
 | 部署到线上                   | [发布上线](/zh/docs/admin/deploy/)     |
 | 升级版本或从 Docsy 迁移      | [版本升级](/zh/docs/admin/upgrade/)    |

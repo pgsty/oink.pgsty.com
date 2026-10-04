@@ -13,12 +13,12 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 1.1 · Local-first · Hugo-only
+  eyebrow: OINK 1.1 · Local-first · Built with Hugo
   title_lines:
     - words:
         - { text: PGSTY OINK }
   # prettier-ignore
-  lead: Markdown in. Modern docs out.<br>Knowledge Publishing Framework
+  lead: Technical content, written in Markdown.<br>Docs, blogs, books and API references in one Hugo site.
   image:
     light: images/hero-light.webp
     dark: images/hero-dark.webp
@@ -37,14 +37,14 @@ capabilities:
   eyebrow: Why OINK
   title: Docs. Engineered.
   # prettier-ignore
-  text: Everything engineering docs need — built in, kept local, and loaded on demand.
+  text: Shared navigation, search and publishing tools for your technical content.
   items:
     - ref: 01 / ENGINEERING FIRST
       title: Built for Engineers
       url: docs/start/
       motto: Ship docs, not build pipelines
       bullets:
-        - '[Production-ready](docs/admin/deploy/) from day one'
+        - '[Starter and deployment guides](docs/start/) for your first site'
         - '[Full-text search](docs/customize/search/),
           [i18n](docs/customize/i18n/), and
           [versioning](docs/customize/versions/)
@@ -91,7 +91,7 @@ capabilities:
             }
           - {
               icon: fa-solid fa-layer-group,
-              title: NEXTRA,
+              title: HEXTRA,
               detail: clear content hierarchy,
             }
           - {
@@ -105,16 +105,16 @@ capabilities:
               detail: built for engineers,
             }
     - ref: 03 / LOCAL FIRST
-      title: Hugo. Nothing Else.
+      title: Build with Hugo
       url: docs/about/features/
-      motto: Everything ships with the theme
+      motto: Bundled assets, no npm build step
       bullets:
         - 'One [**hugo**](https://gohugo.io/) command builds everything'
         - '[No **npm install**. No
           PostCSS.](docs/about/features/)'
-        - '[All assets local](docs/about/features/).
-          [Fully offline.](docs/start/from-scratch/)'
-      value: One deterministic path from laptop to production.
+        - '[Bundled assets stay local](docs/about/features/);
+          [prepare dependencies for offline builds](docs/start/from-scratch/)'
+      value: Hugo Modules need Go for resolution; external integrations remain your choice.
       visual:
         type: code
         aria_label: Hugo build example
@@ -140,9 +140,9 @@ capabilities:
         - '[Gallery](docs/components/gallery/), [Image
           Zoom](docs/components/image/), and diagrams for visual
           explanations'
-        - 'Every [component](docs/components/) has semantic Markdown and print
-          output, with JavaScript loaded only when interaction needs it'
-      value: More expression. Zero baggage elsewhere.
+        - '[Components](docs/components/) define their Markdown and print output;
+          interactive views use source or static fallbacks where needed'
+      value: Component scripts load only on pages that use them.
       visual:
         type: components
         aria_label: Browse shortcodes and content components

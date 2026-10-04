@@ -6,7 +6,6 @@ description: >-
 images: [featured.webp]
 weight: 100
 date: 2026-08-06
-manual_link: https://ddia.vonng.com/
 search_keywords: [ddia.vonng.com, DDIA, book, cross references, numbered figures]
 tags: [Book, Multilingual, Publishing]
 ---

@@ -5,7 +5,6 @@ description: >-
 images: [featured.webp]
 weight: 20
 date: 2026-08-14
-manual_link: https://pigsty.cc/
 search_keywords: [pigsty.cc, Chinese documentation, separate language sites, alt site]
 tags: [Docs, Chinese, Large site]
 ---

@@ -8,8 +8,8 @@ aliases:
   - /docs/about/examples/
 ---
 
-正式的 [Case 案例库](/zh/case/) 把十五个生产站点整理成可复用的实现模式，
-首页展示的也是同样这十五个。它们全都使用 OINK，本站本身也作为自举案例列入。
+[案例库](/zh/case/)介绍十五个采用 OINK 的站点项目及其实现模式，本站也包含在内。
+案例页链接到线上成果或项目源码；涉及定制实现时，区分站点自有代码与主题能力。
 
 当你已经知道自己要搭建哪类站点时，可以从这里开始：先通过案例了解架构与
 取舍，再沿页面链接进入具体配置文档。案例中的数量描述对应盘点时的快照，
@@ -65,7 +65,7 @@ aliases:
 
 ## 汇编、落地页与自定义站点 {#other-sites}
 
-### [pgsql.cc](/zh/case/pgsql-cc/) {#pgsql-cc}
+### [PostgreSQL 组件文库](/zh/case/pgsql-cc/) {#pgsql-cc}
 
 聚合型运维文库，让多个上游手册与完成度不一的翻译树共享搜索和视觉体系。
 
@@ -90,7 +90,7 @@ PostgreSQL 扩展目录：把可检索的数据集作为站点主体呈现，收
 ## 如何选择起点 {#choosing-a-starting-point}
 
 - 常规产品手册：从 [PIG](/zh/case/pig/) 或 [SOW](/zh/case/sow/) 开始。
-- 大型迁移：对比 [SILO](/zh/case/silo/) 与 [pgsql.cc](/zh/case/pgsql-cc/)。
+- 大型迁移：对比 [SILO](/zh/case/silo/) 与 [PostgreSQL 组件文库](/zh/case/pgsql-cc/)。
 - 书籍：对比精简的 [TPME](/zh/case/tpme/) 与更复杂的 [DDIA](/zh/case/ddia/)，
   单语场景可参考 [《PG 技术内幕》](/zh/case/pg-internal/)。
 - 落地页或交互站：参考 [pgsty.com](/zh/case/pgsty-com/) 或
@@ -102,4 +102,4 @@ PostgreSQL 扩展目录：把可检索的数据集作为站点主体呈现，收
 主题仓库的 `tests/site/` 是内部 CI 夹具，而不是起步模板；其中页面的职责是
 触发渲染行为。上面的生产案例更适合作为架构与设计参考。
 
-→ [浏览全部案例](/zh/case/) · [十分钟上手](/zh/docs/start/) · [仓库导览](/zh/docs/start/anatomy/)
+→ [浏览全部案例](/zh/case/) · [快速上手](/zh/docs/start/) · [仓库导览](/zh/docs/start/anatomy/)

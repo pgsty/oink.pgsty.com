@@ -1,4 +1,4 @@
 ---
 title: OINK
-description: A local-first, Hugo-only theme for technical documentation
+description: A local-first Hugo theme for technical documentation
 ---

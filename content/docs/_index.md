@@ -4,7 +4,7 @@
 outputs: [HTML, RSS, print, markdown, LLMSFULL]
 title: OINK Documentation
 linkTitle: Docs
-description: OINK is a local-first Hugo documentation framework — components stay readable in Markdown, assets ship with the theme, multilingual sites work out of the box, and one source serves readers and agents.
+description: Build a technical content site with shared navigation, multilingual support and search for documentation, blogs, books and API references.
 search_keywords:
   [
     OINK,
@@ -39,19 +39,26 @@ cascade:
   search_boost: 1.35
 ---
 
-OINK is a Hugo theme for technical documentation. Components are part of the
-Markdown syntax rather than a second template language; the fonts, icons,
-search and diagram runtimes the browser needs ship with the theme; the only
-build dependency is one Hugo Extended binary, with no Node.js and no CDN
-request. The current release is {{% param version %}}; see the
-[OINK 1.1 release notes](/blog/release/1.1.0/) and
-[upgrade guide](/docs/admin/upgrade/#from-1-0).
+New to OINK? [Start with the Starter](/docs/start/) to preview a working site,
+then replace its sample content. Write in Markdown and build with Hugo Extended;
+Hugo Modules also require Go to resolve the theme. Bundled theme assets need no
+CDN or npm build step.
+
+The current release is {{% param version %}}. See the
+[1.1 release notes](/blog/release/1.1.0/) or the
+[upgrade guide](/docs/admin/upgrade/#from-1-0) for an existing site.
+
+> [!NOTE] 1.2.0 working documentation
+> These guides include the current local 1.2.0 changes. The theme release is
+> still pending; the site dependency remains pinned to {{% param version %}}.
+> Review the [1.2 upgrade checklist](/docs/admin/upgrade/#preparing-1-2) for the
+> affected behavior and the [CLI draft](/docs/cli/) for the separate optional tool.
 
 ## Five ways in {#five-entries}
 
 - [Get started](/docs/start/) — create an OINK Starter repository, establish a local baseline, customize it in layers, deploy.
 - [Components](/docs/components/) — one page per component, source first and rendered result after it.
-- [Write Beautiful Docs](/book/) — a hands-on tutorial from first preview to a maintained publication.
+- [Write Beautiful Docs](/book/) — a tutorial in progress; the first three chapters cover preview, structure and page composition.
 - [Case studies](/case/) — production sites explained as reusable design and migration patterns.
 - [Design and development](/docs/design/) — contracts, accepted decisions, research evidence, and active proposals for OINK maintainers.
   {.cards}
@@ -68,7 +75,7 @@ request. The current release is {{% param version %}}; see the
 | Change the name, logo, colours and fonts              | [Brand and appearance](/docs/customize/brand/) |
 | Look up a configuration key's default                 | [Configuration](/docs/customize/config/)       |
 | Run a bilingual or multilingual site                  | [Languages](/docs/customize/i18n/)             |
-| Learn OINK end to end                                 | [Write Beautiful Docs](/book/)                 |
+| Practice building and writing                                 | [Write Beautiful Docs](/book/)                 |
 | Study a production implementation                     | [Case studies](/case/)                         |
 | Deploy                                                | [Deploy](/docs/admin/deploy/)                  |
 | Upgrade, or migrate from Docsy                        | [Upgrade](/docs/admin/upgrade/)                |

@@ -5,7 +5,6 @@ description: >-
 images: [featured.webp]
 weight: 90
 date: 2026-08-07
-manual_link: https://exp.pgsty.com/
 search_keywords: [exp.pgsty.com, PG Exporter, metrics catalogue, system typography]
 tags: [Docs, Bilingual, Data driven]
 ---

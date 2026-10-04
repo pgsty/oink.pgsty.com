@@ -5,7 +5,6 @@ description: >-
 images: [featured.webp]
 weight: 140
 date: 2026-08-02
-manual_link: https://pgsty.pro/
 search_keywords: [pgsty.pro, Pigsty v5, release archive, release card]
 tags: [Docs, Bilingual, Releases]
 ---

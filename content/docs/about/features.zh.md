@@ -8,7 +8,7 @@ aliases:
   - /docs/about/local-first/
 ---
 
-本页逐条列出 OINK 与普通 Hugo 主题的差别，每条末尾给出讲它的指南页。要立即安装，见[十分钟上手](/zh/docs/start/)。
+本页逐条列出 OINK 与普通 Hugo 主题的差别，每条末尾给出讲它的指南页。要立即安装，见[快速上手](/zh/docs/start/)。
 
 ## 组件写在 Markdown 里 {#native-components}
 
@@ -18,13 +18,13 @@ aliases:
 
 → [组件总览](/zh/docs/components/)
 
-## 只要一个 Hugo 二进制 {#hugo-only}
+## 用 Hugo 构建 {#hugo-only}
 
-消费站点的全部构建依赖是 Hugo Extended 0.160.1 或更新版本。SCSS 由 Hugo 内置的 Sass 转译器编译，主题不调用 `postCSS`；没有 npm、没有 webpack、没有构建期下载。用 Hugo Module 方式安装主题时需要本机有 Go 来解析模块，用离线归档或 submodule 则不需要。
+Hugo Extended 0.160.1 或更新版本负责构建站点资源。SCSS 由 Hugo 内置的 Sass 转译器编译，主题不调用 `postCSS`，也不需要 npm 或 webpack。用 Hugo Module 方式安装主题还需要 Go，并能通过网络或本地缓存取得模块依赖。离线归档或 submodule 准备就绪后，只用 Hugo 即可构建站点。
 
-「仅依赖 Hugo」指的是构建依赖。界面交互仍在浏览器中执行 JavaScript：搜索、命令面板、图表、标签页都是页面脚本，区别在于这些脚本随主题分发、按页面用到的功能下发。
+界面交互在浏览器中执行 JavaScript：搜索、命令面板、图表、标签页都是页面脚本。这些脚本随主题分发，按页面用到的功能下发。
 
-→ [十分钟上手](/zh/docs/start/)
+→ [快速上手](/zh/docs/start/)
 
 ## 本地优先 {#local-first}
 
@@ -117,5 +117,5 @@ schema：Docsy 支持的 31 个 locale 文件名，再加通用 `zh`。每份语
 
 - [OINK 是什么](/zh/docs/about/) — 定位、适用场景与对比
 - [示例站点](/zh/docs/about/showcase/) — 这些特性在生产站点里怎么用
-- [十分钟上手](/zh/docs/start/) — 从克隆到上线
+- [快速上手](/zh/docs/start/) — 建立首个本地预览
 - [配置总览](/zh/docs/customize/config/) — 上面提到的参数在哪查

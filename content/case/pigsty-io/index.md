@@ -5,7 +5,6 @@ description: >-
 images: [featured.webp]
 weight: 30
 date: 2026-08-13
-manual_link: https://pigsty.io/
 search_keywords: [pigsty.io, large documentation, extension catalogue, pricing landing]
 tags: [Docs, English, Large site]
 ---

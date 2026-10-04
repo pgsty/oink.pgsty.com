@@ -39,5 +39,7 @@ cascade:
   sidebar_expand_levels: 3
 ---
 
-Fifteen production sites, from a two-page utility to a multilingual
-documentation estate and three books. Every card opens the live site.
+Fifteen site projects, from a two-page utility to a multilingual
+documentation estate and three books. Open a card to read the case, then follow
+its site or source link. Use the [Case Guide](/docs/about/showcase/) to compare
+examples by the kind of site you want to build.

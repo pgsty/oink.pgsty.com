@@ -8,10 +8,10 @@ aliases:
   - /docs/about/examples/
 ---
 
-The canonical [Case library](/case/) turns fifteen production sites into short,
-reusable implementation patterns, and the home page mirrors the same fifteen.
-All of them run OINK, including this documentation site itself as a
-self-referential case.
+The [Case library](/case/) describes fifteen OINK site projects and their
+implementation patterns, including this documentation site. Case pages link to
+the live result or project source and distinguish site-owned code from theme
+features where a pattern needs custom implementation.
 
 Use this guide when you know the shape of the site you want to build. Follow a
 case for its architecture and trade-offs, then use the linked documentation for
@@ -75,7 +75,7 @@ with no documentation tree and nothing to switch languages to.
 
 ## Aggregate, landing, and custom sites {#other-sites}
 
-### [pgsql.cc](/case/pgsql-cc/) {#pgsql-cc}
+### [PostgreSQL ecosystem library](/case/pgsql-cc/) {#pgsql-cc}
 
 An aggregate operations library where several upstream manuals and partially
 translated language trees share one search and visual system.
@@ -105,7 +105,7 @@ a site, indexing 2,241 extensions and 576 packaged builds across 16 platforms.
 - For a conventional product manual, begin with [PIG](/case/pig/) or
   [SOW](/case/sow/).
 - For a large migration, compare [SILO](/case/silo/) and
-  [pgsql.cc](/case/pgsql-cc/).
+  [PostgreSQL ecosystem library](/case/pgsql-cc/).
 - For a book, compare [TPME](/case/tpme/) with the more elaborate
   [DDIA](/case/ddia/) implementation, or [PG Internal](/case/pg-internal/) for a
   single-language one.
