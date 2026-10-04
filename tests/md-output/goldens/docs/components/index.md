@@ -84,7 +84,7 @@ fence = a fenced block with a language tag; shortcode = `{{< … >}}`. The
 | [Steps](/docs/components/steps/) | A procedure with an order | `{.steps}` | native + shortcode | none |
 | [Cards](/docs/components/cards/) | A set of parallel destinations | `{.cards}` | native + shortcode | none |
 | [FileTree](/docs/components/filetree/) | Directory structure with an aligned comment column | ```` ```filetree ```` | fence | per page |
-| [Math](/docs/components/math/) | KaTeX inline and display formulas | `$$ … $$` | native | per page |
+| [Math](/docs/components/math/) | KaTeX inline and display formulas | `$$ … $$` | native | none |
 | [Mermaid](/docs/components/mermaid/) | Flowcharts, sequence diagrams, Gantt charts | ```` ```mermaid ```` | fence | per page |
 | [PlantUML](/docs/components/plantuml/) | UML diagrams; needs a rendering server | ```` ```plantuml ```` | fence | site switch |
 | [Markmap](/docs/components/markmap/) | A Markdown outline becomes a mind map | ```` ```markmap ```` | fence | site switch |
@@ -129,7 +129,7 @@ Section pages:
 - [Mermaid](/docs/components/mermaid/): A `mermaid` fence turns text into flowcharts, sequence diagrams, Gantt charts, class diagrams and state diagrams — rendered locally, theme-aware, diff-friendly.
 - [PlantUML](/docs/components/plantuml/): A `plantuml` fence writes sequence, class, component, activity and use-case diagrams; rendering requires a PlantUML server you configure yourself.
 - [Markmap](/docs/components/markmap/): A `markmap` fence turns a Markdown outline into an expandable, zoomable mind map — and the source stays a readable outline.
-- [Draw.io](/docs/components/drawio/): Put a `.drawio.svg` that carries an editable copy on the page as an ordinary image; hovering gives the reader a button that opens the Draw.io editor.
+- [Draw.io](/docs/components/drawio/): Put a `.drawio.svg` that carries an editable copy on the page as an ordinary image; an edit button opens the Draw.io editor.
 - [ECharts](/docs/components/echarts/): Write ECharts options as YAML or JSON in an `echarts` fence; Hugo validates them at build time and the browser draws a theme-aware chart with the local ECharts.
 - [Infographic](/docs/components/infographic/): An `infographic` fence picks an AntV template and renders a title plus a list of items as a flow, timeline, funnel, grid or hierarchy.
 - [Gallery](/docs/components/gallery/): A `gallery` fence arranges related screenshots in a responsive grid, each with an optional description or link, reusing the page's image zoom dialog.

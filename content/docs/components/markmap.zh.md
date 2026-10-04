@@ -10,6 +10,15 @@ search_keywords: [思维导图, Markmap, mind map, 大纲, outline, 脑图, 树�
 
 ## 最简例子 {#minimal}
 
+先在站点配置中启用 Markmap，默认关闭；未启用时，围栏保留为可读的代码块。
+
+```yaml {title="hugo.yml"}
+params:
+  markmap: true
+```
+
+再把大纲写进 `markmap` 围栏：
+
 ````markdown {title="源码"}
 ```markmap
 # OINK

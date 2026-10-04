@@ -8,8 +8,8 @@ search_keywords: [Asciinema, terminal recording, cast, asciicast, screencast, de
 
 `asciinema` renders a `.cast` recording as a terminal player on the page. It
 suits command-line walkthroughs: the text in the terminal is still text, it can
-be selected and copied, and the near-two-minute install excerpt on this page is
-about 110 KB. Graphical interfaces belong in screenshots or video — this
+be selected and copied, and the six-minute install recording on this page is
+about 196 KB. Graphical interfaces belong in screenshots or video — this
 component plays terminal recordings only. The player and its styles ship with
 the theme, nothing is downloaded at build time, no CDN is contacted at runtime,
 and the runtime loads only on a page that uses it, and only in its HTML
@@ -26,9 +26,9 @@ output.
 {{< asciinema file="images/install.cast" >}}
 
 The recording is a single-node Pigsty install on a Debian machine in a 120×36
-terminal, trimmed to the first minute and 54 seconds. The file lives at
-`static/images/install.cast` on this site, so the path is written from the site
-root. A file under `assets/` is written as a relative path: the theme looks in
+terminal, lasting about 6 minutes and 42 seconds. Download the
+[sample recording](/images/install.cast) to `static/images/install.cast` in your
+site and write its path from the site root. A file under `assets/` is written as a relative path: the theme looks in
 resources first and falls back to treating the value as a site-root path.
 Without `title`, the window title shows the value of `file`.
 
@@ -121,7 +121,7 @@ shows what it looks like.
    curl -fsSL https://repo.pigsty.io/get | bash
    ```
 
-2. Run the install; here are the first two minutes:
+2. Run the install; the recording plays the process at four times speed:
 
    {{</* asciinema file="images/install.cast" title="pig install" speed="4" */>}}
 
@@ -135,7 +135,7 @@ shows what it looks like.
    curl -fsSL https://repo.pigsty.io/get | bash
    ```
 
-2. Run the install; here are the first two minutes:
+2. Run the install; the recording plays the process at four times speed:
 
    {{< asciinema file="images/install.cast" title="pig install" speed="4" >}}
 
@@ -155,8 +155,10 @@ check it locally with `asciinema play install.cast`.
   and `clear` before you start.
 - Clear secrets first: a `.cast` is plain text and every character in the
   recording is greppable. Check before committing.
-- Put the file in `static/images/` or in the page bundle and commit it. Do not
-  reference a `.cast` URL on someone else's site.
+- Put the file at `static/images/install.cast` and use
+  `file="images/install.cast"`. `assets/images/install.cast` works with the same
+  value; page-bundle resources are not resolved. Commit the recording rather
+  than referencing a `.cast` URL on someone else's site.
 
 ## Output {#outputs}
 

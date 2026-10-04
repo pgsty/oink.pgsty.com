@@ -1,7 +1,7 @@
 ---
 title: Draw.io
 linkTitle: Draw.io
-description: Put a `.drawio.svg` that carries an editable copy on the page as an ordinary image; hovering gives the reader a button that opens the Draw.io editor.
+description: Put a `.drawio.svg` that carries an editable copy on the page as an ordinary image; an edit button opens the Draw.io editor.
 weight: 140
 search_keywords: [drawio-server, Draw.io, diagrams.net, drawio, mxfile, editable diagram, SVG, edit button]
 ---
@@ -15,6 +15,10 @@ looked at is an ordinary [image](/docs/components/image/).
 
 ## Shortest form {#minimal}
 
+To show the edit button, first set `params.drawio.enable: true` and configure
+`params.drawio.drawio_server` as shown under [The editor address](#server).
+Without this setup, the diagram remains an ordinary image without editing.
+
 The syntax is the plain image syntax. The filename does not matter;
 `.drawio.svg` is only a convention.
 
@@ -27,8 +31,11 @@ The syntax is the plain image syntax. The filename does not matter;
 {width="620" height="140"}
 
 An export that carries an `mxfile` copy is wrapped in a `.drawio` container.
-Hover it and a pencil button appears at the bottom right; clicking lays a
+A pencil button appears at the bottom right on hover or keyboard focus, and
+stays visible on touch devices and in forced-colors mode. Activating it lays a
 full-screen iframe over the page and loads the editor the site configured.
+When image zoom is enabled, Edit and Zoom are separate sibling buttons;
+activating Edit does not open the zoom dialog.
 
 ## How the copy is detected {#detection}
 
@@ -135,6 +142,10 @@ params:
 
 - `enable: true` without `drawio_server` warns and disables editing; strict
   builds fail on that warning. The theme does not pick a public service.
+- The address must be an HTTP(S) URL or a local path. Local paths honor the
+  deployment subpath in `baseURL`. Whitespace, control characters, raw
+  backslashes, protocol-relative URLs (`//host/`), and other schemes warn and
+  disable editing; strict builds reject the warning.
 - When editing has to stay inside the organization, deploy a
   [self-hosted editor](https://github.com/jgraph/docker-drawio) and point at it.
 - The public endpoint `https://embed.diagrams.net/` works, and the reader's
@@ -148,7 +159,7 @@ Both keys are defined in
 | Output | Shape |
 | --- | --- |
 | HTML | A plain `<img>` or `<figure>`; once enabled, the runtime wraps an image that carries a copy in `<div class="drawio">` and adds the button |
-| Print | The image prints as usual; the button is hidden except on hover, so it never reaches paper |
+| Print | The image prints as usual; this output loads no Draw.io runtime and creates no edit button |
 | Markdown | Plain Markdown image syntax |
 | RSS | A plain `<img>` with an absolute URL and no button |
 
@@ -179,8 +190,6 @@ Site parameters (`hugo.yml`):
 - Editing needs the editor and never writes back: offline, the images display
   fine and the button does nothing; saving is a browser download, and replacing
   the file and committing it are manual.
-- The button appears on hover only: touch devices have no hover, so readers may
-  not find it. Do not present editability as a headline feature.
 - Colours do not follow the colour scheme: an exported SVG has fixed colours.
   Set fills to `none` and use neutral greys for lines and text and it reads in
   both modes.

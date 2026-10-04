@@ -35,15 +35,21 @@ Sources resolve in the following order, written the same way in each case:
 | Placement | How it is written | Suited to |
 | --- | --- | --- |
 | Beside the page (a bundle: `index.md` plus the image) | `![…](oink-shell.webp)` | A screenshot only this page uses; it travels with the page and is shared by translations |
+| Current section bundle (`_index.md` and its resources) | `![…](post/image.png)` | Images belonging to a section; use the resource path relative to that section |
 | Global resource `assets/images/…` | `![…](images/logo/oink.webp)` | Images several pages share, especially ones needing processing (resize / crop) |
 | Static directory `static/images/…` | `![…](/images/hero-light.webp)` | Large images and downloads that need no processing; supply `width`/`height` where the theme cannot measure them |
 | Remote URL | `![…](https://example.com/a.png)` | Rare: nothing is downloaded at build time and nothing can be processed |
 
-A relative path is looked up first as a page resource and then as a global
-resource; failing both, it is emitted as a static path. The theme does not check
-whether a static path or a remote URL exists. When processing cannot resolve a
+A relative path is looked up as a page resource, a resource of the current
+section, and then a global resource; if none matches, it is emitted as a static
+path. The theme does not check whether a static path or a remote URL exists. When processing cannot resolve a
 processable resource, ordinary preview warns and leaves the image unprocessed;
 strict publishing rejects the warning.
+
+Markdown alternative text takes precedence over resource metadata, including an
+explicitly empty alt for a decorative image. Resource `params.alt` must be a
+string; invalid metadata warns and is ignored, preserving the authored alt.
+Strict publishing rejects that warning.
 
 ## Inline versus block {#inline-vs-block}
 An image inside a line of text is an inline image, rendered as one `<img>` and
@@ -79,11 +85,11 @@ An attribute line with `caption="…"` renders the image as a `<figure>` plus a
 
 ```markdown {title="Source"}
 ![Release card: version, publication date and asset buttons](release-note.webp)
-{caption="The release card is generated from data/download and the page's release record"}
+{caption="The release card uses the page's release_url and date"}
 ```
 
 ![Release card: version, publication date and asset buttons](release-note.webp)
-{caption="The release card is generated from data/download and the page's release record"}
+{caption="The release card uses the page's release_url and date"}
 
 A Markdown `"title"` keeps its own meaning (a hover tooltip) and never becomes
 the caption.
@@ -216,19 +222,21 @@ images are needed, give each a `class` and show one per scheme with
 `[data-bs-theme="dark"]` in the site's CSS:
 
 ```markdown {title="Source"}
-![Sidebar (light)](oink-shell.webp)
+![Sidebar (light)](sidebar-light.webp)
 {class="only-light"}
 
-![Sidebar (dark)](oink-shell.webp)
+![Sidebar (dark)](sidebar-dark.webp)
 {class="only-dark"}
 ```
 
 ```scss {title="assets/scss/_styles_project.scss"}
-[data-bs-theme="dark"] .only-light,
-:not([data-bs-theme="dark"]) .only-dark { display: none; }
+html[data-bs-theme="dark"] .only-light,
+html:not([data-bs-theme="dark"]) .only-dark { display: none; }
 ```
 
-`class` is passed through by the theme untouched, for the site's CSS to use.
+Replace `sidebar-light.webp` and `sidebar-dark.webp` with your own light and
+dark images. The theme sets `data-bs-theme` on `html`; the selectors above
+show only the matching image. `class` is passed through for the site's CSS.
 
 ## Output {#outputs}
 

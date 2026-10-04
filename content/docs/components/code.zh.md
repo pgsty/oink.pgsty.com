@@ -206,20 +206,20 @@ INFO installing pg_duckdb
 `copy=false` 关掉这一块的复制按钮，用于不应被抄走的反例片段：
 
 ````markdown {title="源码"}
-```yaml {title="反例：属性行离开了它的块" copy=false}
+```yaml {title="反例：无效的布尔值" copy=false}
 params:
   ui:
-    image_zoom: true   # 错：image_zoom 是一张表，不是布尔值
+    image_zoom: sometimes   # 错：应使用 true 或 false
 ```
 ````
 
-```yaml {title="反例：属性行离开了它的块" copy=false}
+```yaml {title="反例：无效的布尔值" copy=false}
 params:
   ui:
-    image_zoom: true   # 错：image_zoom 是一张表，不是布尔值
+    image_zoom: sometimes   # 错：应使用 true 或 false
 ```
 
-整站关掉复制用 `params.ui.code_copy: false`，它优先于每个块自己写的 `copy`（见[配置总览](/zh/docs/customize/config/)）。复制按钮只有图标，成功与失败会换图标并播报本地化状态；复制内容保留缩进、空行与 Unicode，去掉行号，末尾只留一个换行。
+用 `params.ui.code_copy: false` 默认关闭复制，围栏显式写出的 `copy` 会覆盖这个默认值（见[配置总览](/zh/docs/customize/config/)）。复制按钮只有图标，成功与失败会换图标并播报本地化状态；复制内容保留缩进、空行与 Unicode，去掉行号，末尾只留一个换行。
 
 ## 行链接与稳定 ID {#line-links}
 
@@ -360,7 +360,7 @@ sudo apt install hugo
 ## 限制与常见问题 {#limits}
 
 - 不换高亮器：没有 Shiki、Twoslash、浏览器端高亮，也没有可执行的代码演练场。补丁用 `diff` 围栏，Chroma 的 `.gi`/`.gd` 就是增删行的样式。
-- `copy="command"` 只认会话 lexer：写在别的语言上是构建错误，不会退化成复制全部。
+- `copy="command"` 只认会话 lexer：用于其他语言时，普通预览告警并回退到 `copy="all"`；严格发布构建拒绝这条警告。
 - 自动生成的 ID 不是永久链接：要发链接就写 `id`。
 - `mermaid`、`math`、`chem`、`markmap`、`plantuml`、`echarts`、`infographic`、`checksums`、`filetree`、`gallery` 不是代码块：它们有各自的渲染钩子，不套这层外壳，也没有复制按钮。
 

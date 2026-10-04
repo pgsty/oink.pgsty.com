@@ -1,7 +1,7 @@
 ---
 title: Draw.io
 linkTitle: Draw.io
-description: 把带着可编辑副本的 `.drawio.svg` 当普通图片放进页面，读者鼠标移上去就能点开 Draw.io 编辑器改图。
+description: 把带着可编辑副本的 `.drawio.svg` 当普通图片放进页面，读者通过编辑按钮打开 Draw.io 编辑器改图。
 weight: 140
 search_keywords: [drawio-server, Draw.io, diagrams.net, drawio, mxfile, 可编辑图, SVG, 编辑按钮]
 ---
@@ -9,6 +9,8 @@ search_keywords: [drawio-server, Draw.io, diagrams.net, drawio, mxfile, 可编�
 Draw.io 集成没有围栏也没有 shortcode，用的是普通 Markdown 图片。Draw.io 导出时勾上「Include a copy of my diagram」，SVG 或 PNG 里会带一份 `mxfile` 源码；主题的运行时识别这份副本后，给图片加一个编辑按钮。适合需要读者取走修改的图；只用于展示的图按普通[图片](/zh/docs/components/image/)处理。
 
 ## 最简例子 {#minimal}
+
+要显示编辑按钮，先设置 `params.drawio.enable: true`，并按[编辑器地址](#server)一节配置 `params.drawio.drawio_server`。未配置时，图仍按普通图片显示，不提供编辑功能。
 
 写法与普通图片相同，文件名不受限制，`.drawio.svg` 只是惯例。
 
@@ -20,7 +22,10 @@ Draw.io 集成没有围栏也没有 shortcode，用的是普通 Markdown 图片�
 ![Hugo 构建流水线：content 目录经 Hugo 产出 public 目录](pipeline.drawio.svg)
 {width="620" height="140"}
 
-这张图嵌着一份 `mxfile` 副本，因此被包进了 `.drawio` 容器。鼠标移到图上时，右下角出现一个铅笔按钮；点击后在当前页面盖一层全屏 iframe，加载站点配置的编辑器。
+这张图嵌着一份 `mxfile` 副本，因此被包进了 `.drawio` 容器。鼠标悬停或键盘聚焦时，
+右下角显示铅笔按钮；在触摸设备和强制颜色模式下，按钮始终可见。激活按钮后，
+在当前页面盖一层全屏 iframe，加载站点配置的编辑器。启用图片缩放时，编辑与缩放
+是同级的独立按钮，激活编辑不会同时打开缩放对话框。
 
 ## 副本检测 {#detection}
 
@@ -106,6 +111,9 @@ params:
 ```
 
 - `enable: true` 却没写 `drawio_server` 时会告警并关闭编辑；严格构建会因该告警失败。主题不代替站点选择公共服务。
+- 地址必须是 HTTP(S) URL 或本地路径；本地路径遵循 `baseURL` 中的部署子路径。
+  空白、控制字符、原始反斜杠、协议相对 URL（`//host/`）与其他 scheme 会告警并
+  关闭编辑；严格构建拒绝这条警告。
 - 编辑过程必须留在组织内部时，部署一份[自托管编辑器](https://github.com/jgraph/docker-drawio)，把地址指向它。
 - 公共端点 `https://embed.diagrams.net/` 可用，读者的图会进入第三方页面。
 
@@ -116,7 +124,7 @@ params:
 | 输出 | 呈现 |
 | --- | --- |
 | HTML | 普通 `<img>`（或 `<figure>`）；启用后运行时把带副本的图包进 `<div class="drawio">` 并加按钮 |
-| 打印 | 图片照常打印；按钮默认隐藏（只在悬停时出现），打印上不会有它 |
+| 打印 | 图片照常打印；该输出不加载 Draw.io 运行时，也不创建编辑按钮 |
 | Markdown | 普通 Markdown 图片语法 |
 | RSS | 普通 `<img>`，绝对 URL，没有按钮 |
 
@@ -139,7 +147,6 @@ params:
 - 运行时只在渲染内容含 `.svg` 或 `.png` 候选图的页面加载；同一 URL 的图片合并检查，只读取一次以查找 `mxfile`。
 - 导出时忘了勾「Include a copy of my diagram」，图就只是一张图，没有按钮。
 - 编辑依赖编辑器，且不写回仓库：离线环境里图片正常显示，按钮点了没有反应；编辑器保存等于浏览器下载，替换文件与提交都要手动做。
-- 按钮只在悬停时出现：触屏设备上没有 hover，读者不容易发现它，不要把可编辑当成关键功能来讲。
 - 配色不跟随深浅色：导出的 SVG 颜色是固定的；把填充设成 `none`、线条与文字用中性灰，两种模式下都能看（本页这两张图就是这么做的）。
 
 ## 相关 {#related}

@@ -78,10 +78,9 @@ test.describe('Everyday content primitive guides', () => {
     // The table form (`{.fields}`) and the shortcode form both render the same
     // definition-list markup: a labelled container holding a <dl>, never a
     // surviving <table>. Only the shortcode form carries block-level bodies.
-    const tableFields = page.locator('.td-fields').filter({
-      has: page.getByText('params.ui.image_zoom', { exact: true }),
-    });
+    const tableFields = page.locator('#zoom-params.td-fields');
     await expect(tableFields).toHaveCount(1);
+    await expect(tableFields.locator('.td-fields__label')).toHaveText('params.ui');
     await expect(tableFields.locator('dl')).toHaveCount(1);
     await expect(tableFields.locator('table')).toHaveCount(0);
     await expect(tableFields).toHaveAttribute('id', 'zoom-params');
@@ -265,15 +264,18 @@ test.describe('Everyday content primitive guides', () => {
     const close = dialog.locator('[data-td-image-zoom-close]');
     const preview = dialog.locator('[data-td-image-zoom-image]');
     const caption = dialog.locator('[data-td-image-zoom-caption]');
+    const sourceCaption = await trigger
+      .locator('xpath=ancestor::figure[1]')
+      .locator('figcaption')
+      .innerText();
+    expect(sourceCaption).not.toBe('');
 
     await expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
     await trigger.click();
     await expect.poll(() => dialog.evaluate((node) => node.open)).toBe(true);
     await expect(close).toBeFocused();
     await expect(preview).toHaveAttribute('src', /release-note\.webp$/);
-    await expect(caption).toHaveText(
-      "The release card is generated from data/download and the page's release record",
-    );
+    await expect(caption).toHaveText(sourceCaption);
     await page.keyboard.press('Escape');
     await expect.poll(() => dialog.evaluate((node) => node.open)).toBe(false);
     await expect(trigger).toBeFocused();

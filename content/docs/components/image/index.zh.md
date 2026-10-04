@@ -28,13 +28,18 @@ aliases:
 | 放法 | 源码里怎么写 | 适合 |
 | --- | --- | --- |
 | 与页面同目录（页面包 `index.md` + 图片） | `![…](oink-shell.webp)` | 只有这一页用的截图；随页面一起移动、翻译共用 |
+| 当前分区的页面包（`_index.md` 及其资源） | `![…](post/image.png)` | 分区内的图片；路径相对于该分区的资源目录 |
 | 全局资源 `assets/images/…` | `![…](images/logo/oink.webp)` | 多页共用、还要做处理（缩放 / 裁切）的图 |
 | 静态目录 `static/images/…` | `![…](/images/hero-light.webp)` | 不需要处理的大图、下载物；主题拿不到尺寸时可以用 `width`/`height` 补 |
 | 远程 URL | `![…](https://example.com/a.png)` | 少用：构建期不会下载，也不能处理 |
 
-相对路径先按页面资源、再按全局资源查找，都找不到时按静态路径原样输出；主题不检查
+相对路径依次按页面资源、当前分区资源、全局资源查找，都找不到时按静态路径输出；主题不检查
 静态路径与远程 URL 是否存在。要求处理（`command=`）却解析不到可处理资源时，普通
 预览告警并保留未处理图片；严格发布构建拒绝这条警告。
+
+Markdown 中的替代文字优先于资源 metadata，包括明确表示装饰图的空 alt。资源的
+`params.alt` 必须是字符串；无效 metadata 会告警并被忽略，保留正文中编写的 alt。
+严格发布构建拒绝这条警告。
 
 ## 行内与块级 {#inline-vs-block}
 位于文字中间的是行内图片，渲染为一个 `<img>`，不能带属性；独立成段的是块级图片，可以带属性行。
@@ -62,11 +67,11 @@ aliases:
 
 ```markdown {title="源码"}
 ![发布卡片：版本号、发布日期与资产按钮](release-note.webp)
-{caption="发布卡片由 data/download 与页面的 release 记录生成"}
+{caption="发布卡片使用页面的 release_url 与 date"}
 ```
 
 ![发布卡片：版本号、发布日期与资产按钮](release-note.webp)
-{caption="发布卡片由 data/download 与页面的 release 记录生成"}
+{caption="发布卡片使用页面的 release_url 与 date"}
 
 Markdown 里的 `"标题"` 保持原义（悬停提示），不会成为图注。
 
@@ -175,19 +180,19 @@ image_zoom: false
 主题没有按深浅色切换图片的参数。需要两张图时，各写一个 `class`，在站点 CSS 中按 `[data-bs-theme="dark"]` 显示其一：
 
 ```markdown {title="源码"}
-![侧栏（浅色）](oink-shell.webp)
+![侧栏（浅色）](sidebar-light.webp)
 {class="only-light"}
 
-![侧栏（深色）](oink-shell.webp)
+![侧栏（深色）](sidebar-dark.webp)
 {class="only-dark"}
 ```
 
 ```scss {title="assets/scss/_styles_project.scss"}
-[data-bs-theme="dark"] .only-light,
-:not([data-bs-theme="dark"]) .only-dark { display: none; }
+html[data-bs-theme="dark"] .only-light,
+html:not([data-bs-theme="dark"]) .only-dark { display: none; }
 ```
 
-`class` 由主题原样透传，供站点 CSS 使用。
+把 `sidebar-light.webp` 与 `sidebar-dark.webp` 换成自己的浅色、深色图片。主题把 `data-bs-theme` 设在 `html` 上，上面的选择器让对应图片单独显示；`class` 由主题原样透传给站点 CSS。
 
 ## 输出形态 {#outputs}
 

@@ -18,13 +18,13 @@ A link list with `{.cards}` is a card grid. The link is the title; whatever
 follows ` — ` is the description.
 
 ```markdown {title="Source"}
-- [Get started](/docs/start/) — Clone this documentation site, delete what you do not need, replace the site details with your own.
+- [Get started](/docs/start/) — Start with OINK Starter, preview locally, then replace the site details with your own.
 - [Authoring](/docs/write/) — How pages are organized and which front matter keys exist.
 - [Customization](/docs/customize/) — Navigation, search, branding, languages.
 {.cards}
 ```
 
-- [Get started](/docs/start/) — Clone this documentation site, delete what you do not need, replace the site details with your own.
+- [Get started](/docs/start/) — Start with OINK Starter, preview locally, then replace the site details with your own.
 - [Authoring](/docs/write/) — How pages are organized and which front matter keys exist.
 - [Customization](/docs/customize/) — Navigation, search, branding, languages.
 {.cards}
@@ -94,7 +94,7 @@ pair and `badge` is plain text.
 Use OINK Starter and establish a local preview before customizing.
 {{</* /card */>}}
 {{</* card title="Release and download pages" link="/docs/write/releases/" icon="fa-solid fa-box-open" badge="v0.5" */>}}
-A `release` fact record, an asset table and checksums — all generated locally.
+A release card from `release_url` and `date`, plus a `checksums` block for download assets.
 {{</* /card */>}}
 {{</* card title="Keyboard navigation" link="/docs/customize/keyboard/" icon="fa-solid fa-keyboard" */>}}
 Site-wide shortcuts and focus order.
@@ -107,7 +107,7 @@ Site-wide shortcuts and focus order.
 Use OINK Starter and establish a local preview before customizing.
 {{< /card >}}
 {{< card title="Release and download pages" link="/docs/write/releases/" icon="fa-solid fa-box-open" badge="v0.5" >}}
-A `release` fact record, an asset table and checksums — all generated locally.
+A release card from `release_url` and `date`, plus a `checksums` block for download assets.
 {{< /card >}}
 {{< card title="Keyboard navigation" link="/docs/customize/keyboard/" icon="fa-solid fa-keyboard" >}}
 Site-wide shortcuts and focus order.
@@ -155,8 +155,8 @@ A card without `link` renders as a bold title and produces no link.
 
 ## Cards with images {#image}
 
-`image` resolves in the same order as `![alt](src)`: page resource → global
-resource in `assets/` → static path `/images/…` → remote URL. Local resources
+`image` resolves in the same order as `![alt](src)`: page resource → current
+section resource → global resource in `assets/` → static path `/images/…` → remote URL. Local resources
 carry their intrinsic size so nothing shifts while loading.
 
 `image` needs one source of alternative text: `image_alt="…"` for an informative

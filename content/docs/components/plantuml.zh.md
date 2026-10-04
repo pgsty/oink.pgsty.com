@@ -186,9 +186,14 @@ params:
     svg: false
 ```
 
-- `enable: true` 却没写 `svg_image_url` → 构建报错 `params.plantuml.enable requires an explicit params.plantuml.svg_image_url`。主题不代替站点选择公共服务。
+- `enable: true` 却没写 `svg_image_url` 时告警并保持关闭，诊断为
+  `params.plantuml.enable requires an explicit params.plantuml.svg_image_url`。
+  严格发布构建拒绝这条警告。主题不代替站点选择公共服务。
 - 自建可以用官方镜像 [`plantuml/plantuml-server`](https://github.com/plantuml/plantuml-server)，`svg_image_url` 指向它的 `/svg/` 路径，**结尾的斜杠不能省略**，编码后的源码拼在它后面。
-- 端点的跨域策略、站点 CSP 的 `img-src`（`svg: true` 时还有 `connect-src`）都要放行；子路径部署时写绝对 URL。
+- 地址使用 HTTP(S) URL 或本地路径；本地路径遵循 `baseURL` 中的部署子路径。
+  空白、控制字符、原始反斜杠、协议相对 URL（`//host/`）与其他 scheme 会告警，
+  保留可见的源码块且不加载 PlantUML 运行时；严格发布构建拒绝这条警告。
+- 端点的跨域策略、站点 CSP 的 `img-src`（`svg: true` 时还有 `connect-src`）都要放行。
 
 这几个键的完整定义在[配置总览](/zh/docs/customize/config/)。
 

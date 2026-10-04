@@ -35,14 +35,14 @@ image_zoom: true
 ```gallery
 ![OINK 文档页面的三栏布局](/images/oink.webp) # 默认外壳：侧栏、正文、目录
 ![Docsy 的经典文档布局](/images/docsy.webp) # OINK 的上游 Docsy，内容模型一脉相承
-![发布说明页面](/images/releasenote.webp) # 发布页由 data/download 里的事实生成，不联网
+![发布说明页面](/images/releasenote.webp) # 发布卡片使用 release_url 与 date，checksums 块列出下载资产
 ```
 ````
 
 ```gallery
 ![OINK 文档页面的三栏布局](/images/oink.webp) # 默认外壳：侧栏、正文、目录
 ![Docsy 的经典文档布局](/images/docsy.webp) # OINK 的上游 Docsy，内容模型一脉相承
-![发布说明页面](/images/releasenote.webp) # 发布页由 data/download 里的事实生成，不联网
+![发布说明页面](/images/releasenote.webp) # 发布卡片使用 release_url 与 date，checksums 块列出下载资产
 ```
 
 说明长短可以不一致：网格按最高的一项对齐，说明换行不影响相邻的图。图片先被解析，替代文字与路径里的 `#` 不需要转义。

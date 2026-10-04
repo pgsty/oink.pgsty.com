@@ -13,6 +13,16 @@ with direction and conditions, use [Mermaid](/docs/components/mermaid/).
 
 ## Shortest form {#minimal}
 
+First enable Markmap in the site configuration; it is off by default. Without
+this setting, the fence remains a readable code block.
+
+```yaml {title="hugo.yml"}
+params:
+  markmap: true
+```
+
+Then put the outline in a `markmap` fence:
+
 ````markdown {title="Source"}
 ```markmap
 # OINK

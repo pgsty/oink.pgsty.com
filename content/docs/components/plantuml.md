@@ -218,9 +218,12 @@ params:
   [`plantuml/plantuml-server`](https://github.com/plantuml/plantuml-server)
   works; point `svg_image_url` at its `/svg/` path and **keep the trailing
   slash** — the encoded source is appended to it.
+- Use an HTTP(S) URL or a local path. Local paths honor the deployment subpath
+  in `baseURL`. Whitespace, control characters, raw backslashes, protocol-relative
+  URLs (`//host/`), and other schemes warn and leave the source block visible
+  without loading the PlantUML runtime; strict publishing rejects the warning.
 - The endpoint's CORS policy and the site's CSP `img-src` (plus `connect-src`
-  when `svg: true`) must both allow it; use an absolute URL on a subpath
-  deployment.
+  when `svg: true`) must both allow it.
 
 These keys are defined in
 [Configuration](/docs/customize/config/).

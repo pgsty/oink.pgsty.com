@@ -6,7 +6,7 @@ weight: 210
 search_keywords: [Asciinema, 终端录像, cast, asciicast, 录屏, 演示, terminal recording, 播放器]
 ---
 
-`asciinema` 把一段 `.cast` 录像渲染成页面里的终端播放器。适用于命令行流程的演示：终端里的文字仍然是文字，可以选中复制，一段六分多钟的安装过程约 190 KB。图形界面的操作用截图或视频，本组件只播放终端录像。播放器与样式随主题分发，构建期不下载、运行期不连 CDN，只有用到它的页面、且只在 HTML 输出里加载这套运行时。
+`asciinema` 把一段 `.cast` 录像渲染成页面里的终端播放器。适用于命令行流程的演示：终端里的文字仍然是文字，可以选中复制，本页六分多钟的安装录像约 196 KB。图形界面的操作用截图或视频，本组件只播放终端录像。播放器与样式随主题分发，构建期不下载、运行期不连 CDN，只有用到它的页面、且只在 HTML 输出里加载这套运行时。
 
 ## 最简例子 {#minimal}
 
@@ -18,7 +18,7 @@ search_keywords: [Asciinema, 终端录像, cast, asciicast, 录屏, 演示, term
 
 {{< asciinema file="images/install.cast" >}}
 
-这段录像是 Pigsty 在一台 Debian 机器上的单机安装，120×36 的终端，约 6 分 40 秒。文件在本站的 `static/images/install.cast`，路径写站点根路径。放在 `assets/` 下也写相对路径：主题先在资源里查找，找不到再当成站点根路径。不写 `title` 时，窗口标题显示 `file` 的值。
+这段录像是 Pigsty 在一台 Debian 机器上的单机安装，120×36 的终端，约 6 分 42 秒。下载[示例录像](/images/install.cast)，保存为自己站点的 `static/images/install.cast`，引用时写站点根路径。放在 `assets/` 下也写相对路径：主题先在资源里查找，找不到再当成站点根路径。不写 `title` 时，窗口标题显示 `file` 的值。
 
 ## 窗口标题与主题 {#title-theme}
 
@@ -85,7 +85,7 @@ search_keywords: [Asciinema, 终端录像, cast, asciicast, 录屏, 演示, term
    curl -fsSL https://repo.pigsty.io/get | bash
    ```
 
-2. 执行安装，全程约六分钟：
+2. 执行安装，录像以四倍速播放安装过程：
 
    {{</* asciinema file="images/install.cast" title="pig install" speed="4" */>}}
 
@@ -99,7 +99,7 @@ search_keywords: [Asciinema, 终端录像, cast, asciicast, 录屏, 演示, term
    curl -fsSL https://repo.pigsty.io/get | bash
    ```
 
-2. 执行安装，全程约六分钟：
+2. 执行安装，录像以四倍速播放安装过程：
 
    {{< asciinema file="images/install.cast" title="pig install" speed="4" >}}
 
@@ -114,7 +114,7 @@ search_keywords: [Asciinema, 终端录像, cast, asciicast, 录屏, 演示, term
 
 - 终端宽度控制在 100 列以内，窄屏上仍可读；录制前先 `clear`。
 - 录制前清理密钥：`.cast` 是纯文本，录像里的每个字符都能 `grep` 到，提交前检查一遍。
-- 文件放进 `static/images/` 或页面包并提交进仓库，不引用外站的 `.cast` URL。
+- 文件放在 `static/images/install.cast`，用 `file="images/install.cast"` 引用；放在 `assets/images/install.cast` 时写法相同。主题不解析页面包资源。把录像提交进仓库，不引用外站的 `.cast` URL。
 
 ## 输出形态 {#outputs}
 

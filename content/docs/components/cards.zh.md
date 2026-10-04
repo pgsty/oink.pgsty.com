@@ -13,13 +13,13 @@ search_keywords: [卡片, Cards, card, 链接卡片, 导航卡片, 栏目首页,
 带 `{.cards}` 的链接列表就是卡片。链接是标题，` — ` 之后是描述。
 
 ```markdown {title="源码"}
-- [快速上手](/zh/docs/start/) — 克隆这个文档站，删掉不需要的页面，替换为你的站点信息。
+- [快速上手](/zh/docs/start/) — 从 OINK Starter 开始，先在本地预览，再替换为自己的站点信息。
 - [创作内容](/zh/docs/write/) — 页面怎么组织、front matter 有哪些键。
 - [定制站点](/zh/docs/customize/) — 导航、搜索、品牌、多语言。
 {.cards}
 ```
 
-- [快速上手](/zh/docs/start/) — 克隆这个文档站，删掉不需要的页面，替换为你的站点信息。
+- [快速上手](/zh/docs/start/) — 从 OINK Starter 开始，先在本地预览，再替换为自己的站点信息。
 - [创作内容](/zh/docs/write/) — 页面怎么组织、front matter 有哪些键。
 - [定制站点](/zh/docs/customize/) — 导航、搜索、品牌、多语言。
 {.cards}
@@ -78,7 +78,7 @@ search_keywords: [卡片, Cards, card, 链接卡片, 导航卡片, 栏目首页,
 使用 OINK Starter，在定制前建立本地预览基线。
 {{</* /card */>}}
 {{</* card title="发布与下载页" link="/zh/docs/write/releases/" icon="fa-solid fa-box-open" badge="v0.5" */>}}
-`release` 事实记录 + 资产表 + 校验和，全部本地生成。
+用 `release_url` 与 `date` 生成发布卡片，再用 `checksums` 块列出下载资产。
 {{</* /card */>}}
 {{</* card title="键盘导航" link="/zh/docs/customize/keyboard/" icon="fa-solid fa-keyboard" */>}}
 全站快捷键与焦点顺序。
@@ -91,7 +91,7 @@ search_keywords: [卡片, Cards, card, 链接卡片, 导航卡片, 栏目首页,
 使用 OINK Starter，在定制前建立本地预览基线。
 {{< /card >}}
 {{< card title="发布与下载页" link="/zh/docs/write/releases/" icon="fa-solid fa-box-open" badge="v0.5" >}}
-`release` 事实记录 + 资产表 + 校验和，全部本地生成。
+用 `release_url` 与 `date` 生成发布卡片，再用 `checksums` 块列出下载资产。
 {{< /card >}}
 {{< card title="键盘导航" link="/zh/docs/customize/keyboard/" icon="fa-solid fa-keyboard" >}}
 全站快捷键与焦点顺序。
@@ -135,7 +135,7 @@ search_keywords: [卡片, Cards, card, 链接卡片, 导航卡片, 栏目首页,
 
 ## 带图片的卡片 {#image}
 
-`image` 与 `![alt](src)` 的解析顺序一致：页面资源 → 全局资源 `assets/` → 静态路径 `/images/…` → 远程 URL。本地资源带上固有尺寸，避免加载跳版。
+`image` 与 `![alt](src)` 的解析顺序一致：页面资源 → 当前分区资源 → 全局资源 `assets/` → 静态路径 `/images/…` → 远程 URL。本地资源带上固有尺寸，避免加载跳版。
 
 `image` 需要一个替代文字来源：`image_alt="…"`（有信息的图）或
 `decorative=true`（纯装饰）。两个都写时告警并保留 alt；两个都不写时告警并按装饰图

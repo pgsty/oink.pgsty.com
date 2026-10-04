@@ -85,7 +85,7 @@ fence = a fenced block with a language tag; shortcode = `{{</* … */>}}`. The
 | [Steps](/docs/components/steps/) | A procedure with an order | `{.steps}` | native + shortcode | none |
 | [Cards](/docs/components/cards/) | A set of parallel destinations | `{.cards}` | native + shortcode | none |
 | [FileTree](/docs/components/filetree/) | Directory structure with an aligned comment column | ```` ```filetree ```` | fence | per page |
-| [Math](/docs/components/math/) | KaTeX inline and display formulas | `$$ … $$` | native | per page |
+| [Math](/docs/components/math/) | KaTeX inline and display formulas | `$$ … $$` | native | none |
 | [Mermaid](/docs/components/mermaid/) | Flowcharts, sequence diagrams, Gantt charts | ```` ```mermaid ```` | fence | per page |
 | [PlantUML](/docs/components/plantuml/) | UML diagrams; needs a rendering server | ```` ```plantuml ```` | fence | site switch |
 | [Markmap](/docs/components/markmap/) | A Markdown outline becomes a mind map | ```` ```markmap ```` | fence | site switch |

@@ -29,7 +29,7 @@ between is metadata labelled with its own header text.
 | --- | --- | --- | --- |
 | `offline_search` | boolean | `false` | Build the local search index and enable the command palette |
 | `offline_search_max_results` | integer | `10` | Maximum number of search results |
-| `page_width` | string | `normal` | Reading column width: `narrow` `normal` `wide` |
+| `page_width` | string | `normal` | Reading column width: `normal` `wide` `full` |
 {.fields}
 ```
 
@@ -37,7 +37,7 @@ between is metadata labelled with its own header text.
 | --- | --- | --- | --- |
 | `offline_search` | boolean | `false` | Build the local search index and enable the command palette |
 | `offline_search_max_results` | integer | `10` | Maximum number of search results |
-| `page_width` | string | `normal` | Reading column width: `narrow` `normal` `wide` |
+| `page_width` | string | `normal` | Reading column width: `normal` `wide` `full` |
 {.fields}
 
 Metadata here shows as "Header: value". The theme infers nothing from the header
@@ -74,7 +74,7 @@ The rules:
   rejects the warning.
 - A `required` column is "non-empty means true": "yes", "是" or "✔" all read the
   same, and the rendered chip is the untranslated `required`. An empty cell
-  shows nothing.
+  shows nothing. Leave optional fields empty: `no` and `否` are non-empty too.
 - `type` and `default` cells with no inline markup of their own are wrapped in
   code formatting, matching the shortcode form.
 - The three semantic chips always display in the order `type`, `required`,
@@ -87,14 +87,14 @@ The rules:
 | Environment variable | Type | Scope | Description |
 | --- | --- | --- | --- |
 | `HUGO_MODULE_WORKSPACE` | string | build | Points at `go.work` so the theme resolves from a local checkout |
-| `HUGO_ENV` | string | build | Set to `production` to enable minification and fingerprinting |
+| `HUGO_ENV` | string | build | Selects production mode; OINK fingerprints CSS/JS assets. Use `--minify` to minify HTML |
 {.fields meta="type -"}
 ```
 
 | Environment variable | Type | Scope | Description |
 | --- | --- | --- | --- |
 | `HUGO_MODULE_WORKSPACE` | string | build | Points at `go.work` so the theme resolves from a local checkout |
-| `HUGO_ENV` | string | build | Set to `production` to enable minification and fingerprinting |
+| `HUGO_ENV` | string | build | Selects production mode; OINK fingerprints CSS/JS assets. Use `--minify` to minify HTML |
 {.fields meta="type -"}
 
 ## Labels and container IDs {#caption-id}
@@ -105,16 +105,16 @@ name; `id` names the outer container so it can be linked to or styled.
 ```markdown {title="Source"}
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `enable` | boolean | `false` | Turn image zoom on |
-| `selector` | string | `.td-content` | Root selector scanned for candidate images |
-{.fields caption="params.ui.image_zoom" id="zoom-params" meta="type default"}
+| `image_zoom` | boolean | `false` | Turn image zoom on |
+| `featured_image` | string | `none` | Article image mode: `none`, `banner`, `wash` or `hero` |
+{.fields caption="params.ui" id="zoom-params" meta="type default"}
 ```
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `enable` | boolean | `false` | Turn image zoom on |
-| `selector` | string | `.td-content` | Root selector scanned for candidate images |
-{.fields caption="params.ui.image_zoom" id="zoom-params" meta="type default"}
+| `image_zoom` | boolean | `false` | Turn image zoom on |
+| `featured_image` | string | `none` | Article image mode: `none`, `banner`, `wash` or `hero` |
+{.fields caption="params.ui" id="zoom-params" meta="type default"}
 
 ## Every entry is linkable {#anchors}
 
@@ -226,9 +226,9 @@ The `fields` shortcode:
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `label` | non-empty string | no | Visible label; the same thing the table's `caption` does |
-| `id` | identifier | no | Container ID; no whitespace, quotes, `<`, `>` or `&` |
-| `class` / `data-*` / `aria-*` | string | no | The same policy as the table attribute line |
+| `label` | non-empty string | | Visible label; the same thing the table's `caption` does |
+| `id` | identifier | | Container ID; no whitespace, quotes, `<`, `>` or `&` |
+| `class` / `data-*` / `aria-*` | string | | The same policy as the table attribute line |
 {.fields meta="type required"}
 
 The `field` shortcode:
@@ -236,9 +236,9 @@ The `field` shortcode:
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
 | `name` | non-empty string | yes | The field name |
-| `type` | non-empty string | no | Type label such as `boolean`, `string[]`, `duration` |
-| `required` | boolean | no | `true` shows the untranslated `required` chip; defaults to `false` |
-| `default` | scalar | no | String / boolean / integer / float; `false`, `0` and `""` all display |
+| `type` | non-empty string | | Type label such as `boolean`, `string[]`, `duration` |
+| `required` | boolean | | `true` shows the untranslated `required` chip; defaults to `false` |
+| `default` | scalar | | String / boolean / integer / float; `false`, `0` and `""` all display |
 {.fields meta="type required"}
 
 ## Limits {#limits}

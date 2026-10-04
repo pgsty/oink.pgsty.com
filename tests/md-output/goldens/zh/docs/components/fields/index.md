@@ -21,7 +21,7 @@ LLMS 索引： [llms.txt](/zh/llms.txt)
 | --- | --- | --- | --- |
 | `offline_search` | boolean | `false` | 构建本地搜索索引并启用命令面板 |
 | `offline_search_max_results` | integer | `10` | 搜索结果条数上限 |
-| `page_width` | string | `normal` | 正文栏宽度，可选 `narrow` `normal` `wide` |
+| `page_width` | string | `normal` | 正文栏宽度，可选 `normal` `wide` `full` |
 {.fields}
 ```
 
@@ -29,14 +29,14 @@ LLMS 索引： [llms.txt](/zh/llms.txt)
 | --- | --- | --- | --- |
 | `offline_search` | boolean | `false` | 构建本地搜索索引并启用命令面板 |
 | `offline_search_max_results` | integer | `10` | 搜索结果条数上限 |
-| `page_width` | string | `normal` | 正文栏宽度，可选 `narrow` `normal` `wide` |
+| `page_width` | string | `normal` | 正文栏宽度，可选 `normal` `wide` `full` |
 {.fields}
 
-这里的元数据显示成「表头: 值」。主题不推断表头的含义，`类型` 只是一个标签；要让它变成标准芯片见下一节。单元格接受行内 Markdown（代码、强调、链接），空的中间单元格省略。
+这里的元数据显示成「表头: 值」。主题不推断表头的含义，`类型` 只是一个标签；要让它变成标准标签见下一节。单元格接受行内 Markdown（代码、强调、链接），空的中间单元格省略。
 
 ## 语义列 `meta=` {#meta}
 
-`meta` 按顺序说明每一个中间列扮演什么角色：`type`（类型）、`required`（必填）、`default`（默认值），或者 `-`（保留表头当标签）。有了它，表格形态渲染出的芯片与 shortcode 形态一致。
+`meta` 按顺序说明每一个中间列扮演什么角色：`type`（类型）、`required`（必填）、`default`（默认值），或者 `-`（保留表头当标签）。有了它，表格形态渲染出的标签与 shortcode 形态一致。
 
 ```markdown {title="源码"}
 | 参数 | 类型 | 必填 | 默认值 | 说明 |
@@ -58,9 +58,9 @@ LLMS 索引： [llms.txt](/zh/llms.txt)
 
 - `meta` 应为每一个中间列写一个角色，个数等于总列数减二；写多写少时告警并忽略
   `meta`，严格发布构建拒绝这条警告。
-- `required` 列是「非空即真」：单元格里写「是」「yes」「✔」都一样，渲染出来的是不翻译的 `required` 芯片；留空就不显示。
+- `required` 列是「非空即真」：单元格里写「是」「yes」「✔」都一样，渲染出来的是不翻译的 `required` 标签；可选项留空就不显示，写「否」或 `no` 同样会被视为必填。
 - `type` 与 `default` 单元格如果本身没有行内标记，会自动套上代码格式，与 shortcode 形态对齐。
-- 三种语义芯片按 `type`、`required`、`default` 的顺序显示，与列的顺序无关；`-` 列跟在后面，按列顺序排。
+- 三种语义标签按 `type`、`required`、`default` 的顺序显示，与列的顺序无关；`-` 列跟在后面，按列顺序排。
 
 `-` 可以和语义角色混用，用来保留一列自定义标签：
 
@@ -68,14 +68,14 @@ LLMS 索引： [llms.txt](/zh/llms.txt)
 | 环境变量 | 类型 | 作用域 | 说明 |
 | --- | --- | --- | --- |
 | `HUGO_MODULE_WORKSPACE` | string | 构建 | 指向 `go.work`，让主题从本地 checkout 解析 |
-| `HUGO_ENV` | string | 构建 | 设为 `production` 时启用压缩与指纹 |
+| `HUGO_ENV` | string | 构建 | 选择生产模式，OINK 为 CSS/JS 资源生成指纹；HTML 压缩使用 `--minify` |
 {.fields meta="type -"}
 ```
 
 | 环境变量 | 类型 | 作用域 | 说明 |
 | --- | --- | --- | --- |
 | `HUGO_MODULE_WORKSPACE` | string | 构建 | 指向 `go.work`，让主题从本地 checkout 解析 |
-| `HUGO_ENV` | string | 构建 | 设为 `production` 时启用压缩与指纹 |
+| `HUGO_ENV` | string | 构建 | 选择生产模式，OINK 为 CSS/JS 资源生成指纹；HTML 压缩使用 `--minify` |
 {.fields meta="type -"}
 
 ## 标签与容器 ID {#caption-id}
@@ -85,16 +85,16 @@ LLMS 索引： [llms.txt](/zh/llms.txt)
 ```markdown {title="源码"}
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `enable` | boolean | `false` | 打开图片缩放 |
-| `selector` | string | `.td-content` | 扫描候选图片的根选择器 |
-{.fields caption="params.ui.image_zoom" id="zoom-params" meta="type default"}
+| `image_zoom` | boolean | `false` | 打开图片缩放 |
+| `featured_image` | string | `none` | 文章题图模式：`none`、`banner`、`wash` 或 `hero` |
+{.fields caption="params.ui" id="zoom-params" meta="type default"}
 ```
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `enable` | boolean | `false` | 打开图片缩放 |
-| `selector` | string | `.td-content` | 扫描候选图片的根选择器 |
-{.fields caption="params.ui.image_zoom" id="zoom-params" meta="type default"}
+| `image_zoom` | boolean | `false` | 打开图片缩放 |
+| `featured_image` | string | `none` | 文章题图模式：`none`、`banner`、`wash` 或 `hero` |
+{.fields caption="params.ui" id="zoom-params" meta="type default"}
 
 ## 每一条都能单独链接 {#anchors}
 
@@ -195,9 +195,9 @@ pig ext install pg_duckdb --dry-run
 
 | 参数 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
-| `label` | 非空字符串 | 否 | 可见标签，作用同表格的 `caption` |
-| `id` | 标识符 | 否 | 外层容器 ID；不能含空白、引号、`<`、`>`、`&` |
-| `class` / `data-*` / `aria-*` | 字符串 | 否 | 与表格属性行同一套策略 |
+| `label` | 非空字符串 | | 可见标签，作用同表格的 `caption` |
+| `id` | 标识符 | | 外层容器 ID；不能含空白、引号、`<`、`>`、`&` |
+| `class` / `data-*` / `aria-*` | 字符串 | | 与表格属性行同一套策略 |
 {.fields meta="type required"}
 
 `field` shortcode：
@@ -205,9 +205,9 @@ pig ext install pg_duckdb --dry-run
 | 参数 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
 | `name` | 非空字符串 | 是 | 字段名 |
-| `type` | 非空字符串 | 否 | 类型标签，如 `boolean` `string[]` `duration` |
-| `required` | 布尔 | 否 | `true` 时显示不翻译的 `required` 芯片，默认 `false` |
-| `default` | 标量 | 否 | 字符串 / 布尔 / 整数 / 浮点；`false`、`0`、`""` 都会显示 |
+| `type` | 非空字符串 | | 类型标签，如 `boolean` `string[]` `duration` |
+| `required` | 布尔 | | `true` 时显示不翻译的 `required` 标签，默认 `false` |
+| `default` | 标量 | | 字符串 / 布尔 / 整数 / 浮点；`false`、`0`、`""` 都会显示 |
 {.fields meta="type required"}
 
 ## 限制与常见问题 {#limits}

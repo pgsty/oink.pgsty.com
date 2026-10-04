@@ -241,21 +241,21 @@ and the clipboard is untouched. It never falls back to copying everything.
 counter-example nobody should paste:
 
 ````markdown {title="Source"}
-```yaml {title="counter-example: the attribute line left its block" copy=false}
+```yaml {title="counter-example: an invalid boolean" copy=false}
 params:
   ui:
-    image_zoom: true   # wrong: image_zoom is a table, not a boolean
+    image_zoom: sometimes   # wrong: use true or false
 ```
 ````
 
-```yaml {title="counter-example: the attribute line left its block" copy=false}
+```yaml {title="counter-example: an invalid boolean" copy=false}
 params:
   ui:
-    image_zoom: true   # wrong: image_zoom is a table, not a boolean
+    image_zoom: sometimes   # wrong: use true or false
 ```
 
-To turn copying off site-wide use `params.ui.code_copy: false`, which overrides
-whatever a block writes in `copy` (see
+To turn copying off by default, use `params.ui.code_copy: false`. An explicit
+`copy` attribute on a fence overrides that default (see
 [Configuration](/docs/customize/config/)). The copy button
 is icon-only; success and failure swap the icon and announce a localized status.
 What is copied keeps indentation, blank lines and Unicode, drops line numbers,

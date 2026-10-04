@@ -44,14 +44,14 @@ literal hash write `\#`.
 ```gallery
 ![The three-column layout of an OINK page](/images/oink.webp) # The default shell: sidebar, article, table of contents
 ![The classic Docsy documentation layout](/images/docsy.webp) # Docsy upstream — the content model is the same lineage
-![A release notes page](/images/releasenote.webp) # Release pages are generated from facts in data/download, offline
+![A release notes page](/images/releasenote.webp) # Release cards use release_url and date; checksums blocks list download assets
 ```
 ````
 
 ```gallery
 ![The three-column layout of an OINK page](/images/oink.webp) # The default shell: sidebar, article, table of contents
 ![The classic Docsy documentation layout](/images/docsy.webp) # Docsy upstream — the content model is the same lineage
-![A release notes page](/images/releasenote.webp) # Release pages are generated from facts in data/download, offline
+![A release notes page](/images/releasenote.webp) # Release cards use release_url and date; checksums blocks list download assets
 ```
 
 Descriptions need not be the same length: the grid aligns to the tallest item
