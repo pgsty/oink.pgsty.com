@@ -53,7 +53,7 @@ menu points at:
 
 A few conventions:
 
-- `github_repo` points at the repository holding the content, not the theme repository. Naming the theme repository sends a reader's change to the wrong place. Omit it and all five rows above disappear.
+- `github_repo` points at the repository holding the content, not the theme repository. Naming the theme repository sends a reader's change to the wrong place. Without it, the four documentation actions above are unavailable; the project issue still depends only on `github_project_repo`.
 - `github_project_repo` is a second repository, receiving product bugs rather than documentation errors. Do not configure it where readers cannot tell the two apart.
 - `github_branch` defaults to `main` and names the content branch — not the deployment branch, and not the branch Pages generates.
 - `github_subdir` is the path inside the repository. Leave it empty when the site source is at the repository root; set it to `website` when the source sits in a subdirectory (a repository holding both code and `website/`, say).
@@ -65,10 +65,10 @@ repositories. The full definitions are in
 
 ## Content from another repository {#imported-content}
 
-When a subtree is mounted from an upstream repository, override the repository
-parameters with a section cascade, then use `path_base_for_github_subdir` to
-tell the theme: strip the local path prefix, and append what remains to
-`github_subdir`.
+When content comes from an upstream repository, override the repository
+parameters with a section cascade. `path_base_for_github_subdir` removes or
+replaces the physical source path prefix before appending it to `github_subdir`.
+For source files copied inside the site, the path is relative to the site root:
 
 ```yaml {title="content/reference/_index.md"}
 ---
@@ -83,6 +83,21 @@ cascade:
 
 `content/reference/api/client.md` therefore maps to the upstream's
 `docs/api/client.md`.
+
+In the 1.2.0 working implementation, Windows and Unix source paths are normalized
+to `/` before matching; filename case is preserved. For a physical mount outside
+the site, match its absolute source path, not Hugo's virtual mount target:
+
+```yaml {title="External source at /srv/upstream/docs/"}
+path_base_for_github_subdir: '^/srv/upstream/docs/'
+```
+
+With `github_subdir: docs`, `/srv/upstream/docs/api/client.md` therefore maps to
+`docs/api/client.md`. After mapping and cleanup, the source must be a nonempty
+repository-relative path. Unmapped external files, absolute or drive-qualified
+results, `.` and parent-directory escapes suppress Edit, History, and Create
+child actions. Documentation and project issue links retain their own
+repository settings. Use `/` separators in Windows mapping expressions too.
 
 The value of `path_base_for_github_subdir` is a regular expression. Where the
 source filename differs from the local one, use a `from` / `to` mapping instead
@@ -119,7 +134,7 @@ Every menu entry carries a stable action ID:
 Where a host does not support one, hide it with CSS:
 
 ```scss {title="assets/scss/_styles_project.scss"}
-.td-page-actions__item[data-oink-action='create_child_page'] {
+.td-page-actions__item[data-td-action='create_child_page'] {
   display: none;
 }
 ```
@@ -293,16 +308,18 @@ In Markdown and RSS output the wall degrades to a list of
 
 ## Verify {#verify}
 
-- Open the action menu at the right of this page's breadcrumb row: "edit this page" should point at `github.com/<your repository>/edit/<branch>/<source path>`, with the path matching the repository segment for segment.
-- Click it again from a section index (`_index.md`): a section index is the likeliest thing for a `path_base_for_github_subdir` expression to get wrong.
-- The page end should have a "last modified" line; its absence on a locally created, not-yet-committed page is expected.
-- Check the generated links from the command line:
+Run from your site's root. Replace the example `PAGE` with an actual generated
+page whose source belongs to the configured repository:
 
 ```bash
-hugo -d public
-grep -o 'data-oink-action="edit_page" href="[^"]*"' \
-  public/docs/customize/repository/index.html
+hugo --printPathWarnings --panicOnWarning
+PAGE=public/docs/getting-started/index.html
+test -f "$PAGE" && grep -o '<a[^>]*data-td-action[^>]*>' "$PAGE"
 ```
+
+- Open that page's title action menu. “Edit this page” should point at `github.com/<your repository>/edit/<branch>/<source path>`, matching the actual source path segment for segment. In the command output, inspect the anchor with `data-td-action="edit_page"`.
+- Repeat from a section index (`_index.md`): it also needs the correct source path.
+- Check the “last modified” line at the page end; its absence on a locally created, not-yet-committed page is expected.
 
 ## Related {#related}
 

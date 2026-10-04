@@ -199,8 +199,11 @@ make build   # 用 go.mod 里的版本构建
 make serve   # 按生产配置起预览服务器
 ```
 
-> [!DANGER] 替换只作用于本机
-> 无论用环境变量还是 Go workspace（`go work init` + `HUGO_MODULE_WORKSPACE=go.work`），CI 与生产构建都只看 `go.mod`；`go.work` 记录的是开发机的路径，不能提交。判定一个发布标签是否可用时，去掉替换、用 `go.mod` 里的版本单独构建一次。
+> [!DANGER] 本地覆盖可能掩盖公开版本
+> CI 与生产构建仍可能继承替换或 workspace。不要提交包含开发机路径的 workspace。
+> 验证公开标签时，移除 `HUGO_MODULE_REPLACEMENTS`，同时设置 `GOWORK=off` 和
+> `HUGO_MODULE_WORKSPACE=off`。还要检查 `go.mod`、Hugo 配置中的持久替换，以及
+> `_vendor/` 副本；先在同一环境下用 `hugo mod graph` 确认精确版本，再执行构建。
 
 ## 断网构建验证 {#air-gapped}
 
@@ -214,11 +217,12 @@ make serve   # 按生产配置起预览服务器
 1. 检查子资源来源，确认没有意外的远程主机。
 {.steps}
 
-最后一步用主题仓库里的脚本，它不依赖站点的测试框架：
+最后一步使用与固定发布版本对应的主题 checkout 中的输出检查器。它需要 Python 3，
+不依赖本文档站的测试框架。将下面两个绝对路径换成自己的目录，base URL 与构建时保持一致：
 
 ```bash {title="终端"}
-python3 bin/check-output-security.py \
-  --public public --base-url https://docs.internal.example.com/
+python3 /path/to/oink/bin/check-output-security.py \
+  --public /path/to/my-site/public --base-url https://docs.internal.example.com/
 ```
 
 脚本扫描四种输出里的每个 `href` / `src` / `srcset` / `poster` 与表单 `action`，要求它们是站内相对路径或 `http` / `https` / `mailto` / `tel`，并拒绝行内 `on*` 事件处理器与 `javascript:` URL。指向别的主机的 `<iframe>` `<script>` `<link>` `<img>` `<video>` `<audio>` `<embed>` `<object>` `<source>` 一律报错，站点确实要嵌入第三方内容时加 `--third-party` 放行，多域名语言配置用 `--allow-host` 追加首方主机。
@@ -238,7 +242,7 @@ hugo --gc --minify --printPathWarnings --panicOnWarning
 
 - 日志里没有 npm、PostCSS、Autoprefixer 或下载浏览器资源的步骤。出现了说明配置里混进了上游 Docsy 的流程。
 - `public/` 下有 `sitemap.xml`、`robots.txt`，`robots.txt` 是 `Allow: /`。
-- 开了本地搜索的站点，`public/` 根下有 `offline-search-index.<语言>.json`。
+- 启用本地搜索后，`public/` 下每种语言各有一份索引：生产文件名为 `offline-search-index.<语言>.<hash>.json`，开发环境不带 hash。打开搜索，确认 `data-td-index-src` 指定的实际 URL 返回 200。
 - 用 `hugo server` 打开代表性页面：一个文档页、一个博客页、首页、404，两种语言、两种配色都看一遍。
 
 构建失败或结果不对，去[排错与检查](/zh/docs/admin/troubleshooting/)。

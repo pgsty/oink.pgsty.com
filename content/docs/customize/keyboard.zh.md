@@ -78,7 +78,7 @@ OINK 的交互式页面自带一套单键快捷键：WASD 在侧栏树中移动�
 - 焦点在 input、textarea、select 或 `contenteditable` 区域里；
 - 正在用输入法组字（中文站的硬约束）；
 - 按住修饰键时：{{< kbd "⌘" "C" >}} 仍是复制，{{< kbd "Shift" "↓" >}} 仍归浏览器；
-- 命令面板或别的对话框开着，键盘归那个弹层。
+- 命令面板、其他已打开的原生对话框或可见的 ARIA 对话框占用键盘。固定定位的 ARIA 对话框同样会阻止快捷键，隐藏的 ARIA 对话框则不会。
 
 评论区在 iframe 中，键事件不冒泡到页面，无需额外隔离。
 
@@ -121,10 +121,16 @@ keyboard_nav: false
 
 ## 验证 {#verify}
 
+先在自己的站点根目录完成严格构建。下方命令中的
+`public/zh/docs/getting-started/index.html` 是示例；请换成自己站点实际生成的文档页，
+并按语言配置调整路径前缀。
+
 1. 构建后确认速查卡按钮在页面里：
 
    ```bash
-   grep -c 'td-shell-keyboard__trigger' public/zh/docs/customize/keyboard/index.html
+   hugo --printPathWarnings --panicOnWarning
+   PAGE=public/zh/docs/getting-started/index.html
+   test -f "$PAGE" && grep -c 'td-shell-keyboard__trigger' "$PAGE"
    ```
 
    关闭键盘导航且没开本地搜索时，这个按钮整个不生成。

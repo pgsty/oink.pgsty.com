@@ -76,16 +76,16 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 | Switching language lands on the home page | Hugo found no translation | This is by design: with no translation it falls back to the target language's home page. Landing on the corresponding page requires that translation file to exist |
 | An anchor link opens the page but does not scroll | The translated heading text differs, so the generated ID does too | Write the English ID explicitly on the translated heading: `## 安装 {#installation}`. Where a heading contains a shortcode or inline HTML, do not guess the ID from the text — read the English page's rendered HTML |
 | Menus / home page sections are untranslated | They are not in pages but in configuration and data files | Menus are in `languages.<lang>.menus`, home sections in `data/home/<lang>.yaml`, interface strings in `i18n/<lang>.yaml` — see [Languages](/docs/customize/i18n/) |
-| A Chinese page's `hreflang` points at the English home page | That page has no English counterpart | Add the English page, or accept the fallback: it doubles as a probe for whether Hugo recognized the pairing |
+| A page's `hreflang` points at another language's home page | The published 1.1.0 behavior or a copied older SEO partial can reuse the language-switcher fallback | The 1.2.0 development implementation omits missing translations from SEO alternates. Check the resolved theme version and template overrides; add the corresponding page when a translation is intended. The visible language switcher's home-page fallback remains valid |
 
 ## Search {#search}
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| A search box that never returns results | No index was generated | With `params.offline_search: true`, the output root should have `offline-search-index.<language>.json`, one per language. Its absence means it is not enabled |
+| A search box that never returns results | No index was generated | Check `params.offline_search` and open search. Inspect the page's `data-td-index-src` URL in Network: production uses `offline-search-index.<language>.<hash>.json`, development omits the hash. If absent, also check `offline_search_on_serve` during `hugo server` |
 | The index file 404s | A wrong `baseURL` | On a subpath deployment, a wrong `baseURL` is the commonest cause of a 404 index. Look in the browser's network panel to see where it fetches the index — see [Deploy](/docs/admin/deploy/#baseurl) |
 | Search fails under `hugo server` but works in a build | The site turned the preview index off | `params.offline_search_on_serve` defaults to `true`, so preview matches production; an explicit `false` skips index generation during preview — remove it or set it back to `true` |
-| Chinese queries find nothing | Usually not a tokenization problem | A CJK query uses the theme's substring fallback. First confirm the Chinese page's content reached the Chinese index (open `offline-search-index.zh.json`), then consider tokenization |
+| Chinese queries find nothing | Usually not a tokenization problem | A CJK query uses the theme's substring fallback. First confirm the Chinese page's content reached the Chinese index (open the Chinese page's actual `data-td-index-src` URL), then consider tokenization |
 | A new page is not found while old ones are | The index is build output | Rebuild. Under `hugo server`, wait for the rebuild after editing |
 | `params.search.algolia requires explicit appId, apiKey, and indexName values` | The three Algolia keys are incomplete | All three must be given explicitly; the theme will not use another project's DocSearch credentials. If Algolia is not wanted, delete the block |
 | The command palette finds no content | It and full-text search are two things | With the index unavailable the palette still opens, saying so, while page actions and commands work as usual — see [Command palette](/docs/customize/panel/) |
@@ -106,14 +106,16 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 
 ## Checks a site can run {#site-checks}
 
-Beyond the build itself, a site can run these. The first two work on any OINK
-site; the rest are this repository's npm scripts, and another site runs the
-equivalent.
+Run the build in your site's root. The output checker is a separate script
+from a theme checkout matching your pinned release: replace `/path/to/oink`,
+`/path/to/my-site/public`, and the base URL with your values. The remaining
+commands are examples from this documentation repository's test harness,
+not commands supplied to every OINK consumer.
 
 | Check | Command | What it covers |
 | --- | --- | --- |
 | A zero-warning build | `hugo --printPathWarnings --panicOnWarning` | Duplicate output paths, invalid parameters, incomplete external integrations |
-| Output trust check | `python3 bin/check-output-security.py --public public --base-url https://oink.pgsty.com/` | Every `href` / `src` in all four outputs is site-relative or `http(s)` / `mailto` / `tel`; no `javascript:` URL and no inline `on*` handler; a cross-site `<iframe>`, `<script>` or `<img>` needs an explicit `--third-party` |
+| Output trust check | `python3 /path/to/oink/bin/check-output-security.py --public /path/to/my-site/public --base-url https://my-site.example/` | Every `href` / `src` in all four outputs is site-relative or `http(s)` / `mailto` / `tel`; no `javascript:` URL and no inline `on*` handler; a cross-site `<iframe>`, `<script>` or `<img>` needs an explicit `--third-party` |
 | Translation parity | `node scripts/check-doc-translations.mjs --public public` | Whether each English page has a Chinese counterpart, and whether the rendered heading IDs line up; misaligned anchors surface here |
 | The full gate | `npm test` | Runs the six below in sequence |
 {.fields}
@@ -133,8 +135,8 @@ content component, code block and scenario component suites in turn.
 
 > [!TIP] `check-output-security.py` lives in the theme repository
 > It sits under the theme's `bin/`, is a product-level trust check any OINK site
-> can run, and depends on no site test framework. Clone the theme repository and
-> point it at your own `public/`; the arguments and usage are in
+> can run, and depends on no site test framework. Keep the theme-tool path and
+> your site's output path distinct; the complete example is in
 > [Verifying an offline build](/docs/admin/preview/#air-gapped).
 
 ## Diagnostic habits {#habits}

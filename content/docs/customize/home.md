@@ -68,9 +68,11 @@ That is how this site's home page is written; the complete file is
 
 ## A minimal working home page {#minimal}
 
-Paste the following, replace the text and links, and it publishes. Write
-internal links as site paths without a leading slash, and the theme adds the
-current language prefix (`docs/start/` → `/docs/start/`).
+Create the data file below and replace the text and links with your own pages.
+Put the two hero images in `static/images/hero-light.webp` and
+`static/images/hero-dark.webp`, or omit the entire `hero.image` block for a
+text-only opening. Write internal links as site paths without a leading slash;
+the theme adds the current language prefix (`docs/start/` → `/docs/start/`).
 
 ```yaml {title="data/home/en.yaml"}
 sections:
@@ -102,7 +104,7 @@ cards:
       icon: fa-solid fa-cubes
       url: docs/components/
     - title: Four outputs
-      desc: HTML, print, Markdown and RSS from one source, losing nothing.
+      desc: HTML, print, Markdown and RSS share one source; interactive components use static or source fallbacks.
       icon: fa-solid fa-file-export
       url: docs/customize/agents/
     - title: Local-first
@@ -382,9 +384,11 @@ sections:
       title: Publish a product page with Hugo alone
       actions:
         - { label: Read the docs, url: docs/, style: primary }
-  - type: download
-    data: { title: Download, keys: [prd5] }
-  - cta
+  - type: cta
+    data:
+      title: Ready to start?
+      label: Read the docs
+      url: docs/
 ---
 ```
 
@@ -441,8 +445,10 @@ location. How to write it is in
 | Markdown | Titles, prose, lists, tables and code, with no component classes |
 | RSS | Landing sections are not emitted |
 
-With JavaScript disabled the server-rendered document is still complete. The
-marquee's duplicate track stays out of the accessibility tree, and pausing uses a
+With JavaScript disabled or `landing.js` unavailable, all server-rendered
+sections remain visible. Metrics already include their configured number formatting, prefix,
+and suffix; a count animation finishes on the same display text.
+The marquee's duplicate track stays out of the accessibility tree, and pausing uses a
 checkbox that needs no JavaScript; with the reader's reduced-motion preference
 on, movement and reveal are switched off.
 

@@ -55,7 +55,10 @@ cta: { … }
 
 ## 最小可用首页 {#minimal}
 
-粘贴下面这段，替换文字与链接即可发布。链接写成不带前导斜杠的站内路径，主题会补上当前语言前缀（`docs/start/` → `/zh/docs/start/`）。
+创建下面的数据文件，把文字和链接换成自己的页面。两张首屏图片分别放在
+`static/images/hero-light.webp` 与 `static/images/hero-dark.webp`；暂时没有图片时，
+删去整个 `hero.image` 块即可使用纯文字首屏。链接写成不带前导斜杠的站内路径，
+主题会补上当前语言前缀（`docs/start/` → `/zh/docs/start/`）。
 
 ```yaml {title="data/home/zh.yaml"}
 sections:
@@ -87,7 +90,7 @@ cards:
       icon: fa-solid fa-cubes
       url: docs/components/
     - title: 四态输出
-      desc: HTML、打印、Markdown、RSS，同一份内容不丢信息。
+      desc: HTML、打印、Markdown、RSS 共用一份源码，交互组件使用静态或源码回退。
       icon: fa-solid fa-file-export
       url: docs/customize/agents/
     - title: 本地优先
@@ -348,9 +351,11 @@ sections:
       title: 只用 Hugo 发布产品页面
       actions:
         - { label: 阅读文档, url: docs/, style: primary }
-  - type: download
-    data: { title: 下载, keys: [prd5] }
-  - cta
+  - type: cta
+    data:
+      title: 准备开始了吗？
+      label: 阅读文档
+      url: docs/
 ---
 ```
 
@@ -397,7 +402,10 @@ params:
 | Markdown | 标题、正文、列表、表格与代码，不带组件 class |
 | RSS | 不输出 Landing 分区 |
 
-禁用 JavaScript 后服务端文档仍然完整。跑马灯的副本轨道不进无障碍树，暂停用的是不依赖 JavaScript 的复选框；读者开启减少动态效果偏好时，移动与渐显关闭。
+禁用 JavaScript 或 `landing.js` 加载失败时，服务端渲染的所有区块仍然可见。数字
+指标已包含配置指定的数字格式、前缀和后缀；计数动画结束时使用相同的显示文本。跑马灯的
+副本轨道不进无障碍树，暂停用的是不依赖 JavaScript 的复选框；读者开启减少动态
+效果偏好时，移动与渐显关闭。
 
 ## 验证 {#verify}
 

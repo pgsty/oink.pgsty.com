@@ -126,7 +126,7 @@ could collide with typing or an overlay:
 - Focus is in an input, textarea, select or `contenteditable` region;
 - An input method is composing (a hard requirement on a Chinese site);
 - A modifier is held: {{< kbd "⌘" "C" >}} is still copy, {{< kbd "Shift" "↓" >}} still belongs to the browser;
-- The command palette or another dialog is open, and the keyboard belongs to that overlay.
+- The command palette, another open native dialog, or a visible ARIA dialog owns the keyboard. This includes fixed-position ARIA dialogs; hidden ARIA dialogs do not block shortcuts.
 
 The comment section lives in an iframe, where key events do not bubble to the
 page, so no extra isolation is needed.
@@ -177,10 +177,16 @@ unaffected.
 
 ## Verify {#verify}
 
+Run from your site's root after a strict build. In the commands below, replace
+`public/docs/getting-started/index.html` with an actual generated documentation
+page in your site (including a language prefix if needed).
+
 1. After a build, confirm the cheatsheet button is in the page:
 
    ```bash
-   grep -c 'td-shell-keyboard__trigger' public/docs/customize/keyboard/index.html
+   hugo --printPathWarnings --panicOnWarning
+   PAGE=public/docs/getting-started/index.html
+   test -f "$PAGE" && grep -c 'td-shell-keyboard__trigger' "$PAGE"
    ```
 
    With keyboard navigation off and local search not enabled, the button is not

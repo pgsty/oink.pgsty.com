@@ -39,7 +39,9 @@ hugo --gc --minify --baseURL "https://example.com/docs/"
 > [!WARNING] 不要用 `canonifyURLs` 修子路径
 > Hugo 的 `canonifyURLs` 默认 `false`，保持这个默认值。OINK 的模板与内容链接都基于 `baseURL` 解析：路径不对是 `baseURL` 不对，打开 `canonifyURLs` 会把本来正确的相对链接一起改写，让问题更难定位。
 
-判断是否配对，看构建后搜索索引的请求路径：浏览器应当去 `<baseURL>/offline-search-index.zh.json` 取索引，取到别处就是 `baseURL` 不对。
+启用本地搜索后，打开搜索，在浏览器 Network 面板检查实际索引请求：语言与部署子路径
+应正确，响应应为 200。页面的 `data-td-index-src` 属性给出完整地址；生产文件名是
+`offline-search-index.<语言>.<hash>.json`，开发环境不带 hash。不要通过猜文件名来验证。
 
 ## 选一个托管商 {#hosts}
 
@@ -185,13 +187,15 @@ HUGO_VERSION = "0.165.0"
 
 **Vercel** — 同样的三件事：构建命令 `hugo --gc --minify`、输出目录 `public`、环境变量 `HUGO_VERSION`。它同样不需要安装 npm 依赖。
 
-**任何静态服务器（Nginx / Caddy）** — 把 `public/` 的内容整个铺上去：
+**任意静态服务器（Nginx / Caddy）** — 原样提供 `public/` 的内容。下例通过
+`current` 符号链接指向一份发布目录，创建方法见下方离线打包步骤。配置 Nginx 或
+Caddy 时，将宿主的站点根目录设为这个链接：
 
 ```nginx {title="/etc/nginx/conf.d/docs.conf"}
 server {
     listen 80;
     server_name docs.example.com;
-    root /var/www/oink;
+    root /var/www/oink/current;
     index index.html;
 
     location / {
@@ -216,17 +220,35 @@ deployment:
 
 构建之后执行 `hugo deploy`：它比对远端与 `public/` 的差异，只上传变化的文件，并在给了 `cloudFrontDistributionID` 时使 CDN 缓存失效。不带 `--target` 时用第一个目标，`--dryRun` 先看要改什么。两个前提：Hugo 二进制带 `withdeploy`（`hugo version` 的输出里能看到），云厂商凭据由标准环境变量或配置文件提供（AWS 上先用 `aws s3 ls` 确认）。
 
-**离线打包** — 网络隔离环境里，在能联网的机器上构建，把产物打成一个包带过去：
+**离线打包** — 网络隔离环境里，在能联网的机器上构建，把产物打成一个包带过去。
+先将归档路径换成自己的值，每份产物使用新的发布名称。Linux 宿主上的命令需要
+`/var/www/oink` 的写权限及 GNU `mv`；`current` 应不存在或为符号链接，
+`current.next` 应不存在。按上例配置 Nginx 或 Caddy，从 `current` 提供文件；
+这是宿主配置，不是 Hugo 选项。
 
 ```bash {title="终端"}
-hugo --gc --minify --baseURL "https://docs.internal.example.com/"
-tar -czf oink-site-$(date +%Y%m%d).tar.gz -C public .
+hugo --cleanDestinationDir --gc --minify --panicOnWarning --baseURL "https://docs.internal.example.com/" &&
+  tar -czf oink-site-20260929-01.tar.gz -C public .
 
-# 目标机器上
-tar -xzf oink-site-20260817.tar.gz -C /var/www/oink
 ```
 
-构建时就要用目标环境的 `baseURL`，产物里的绝对链接不能在解包之后再改。
+仅在构建与打包成功后，把这份归档传到 Linux 宿主，再在那里执行以下命令。
+每份产物使用新的发布名称：
+
+```bash {title="Linux 宿主"}
+release_dir=/var/www/oink/releases/20260929-01
+mkdir -p /var/www/oink/releases
+mkdir "$release_dir" &&
+  tar -xzf oink-site-20260929-01.tar.gz -C "$release_dir" &&
+  test -f "$release_dir/index.html" &&
+  ln -s "$release_dir" /var/www/oink/current.next &&
+  mv -Tf /var/www/oink/current.next /var/www/oink/current
+```
+
+这组命令只有在新目录创建成功、解压完成且 `index.html` 存在时才切换 `current`。
+随后检查线上页面，并保留上一份发布目录用于回滚。不要把新包解压覆盖到已有发布目录。
+
+构建时就要用目标环境的 `baseURL`；需要改变它时重新构建。
 
 **托管商没有 Go** — 用 Hugo Module 引入主题需要构建环境有 Go。平台不提供时，改用 Git submodule（构建前执行 `git submodule update --init`）或离线归档（把 `themes/oink/` 提交进仓库），见[从零建站与其它安装方式](/zh/docs/start/from-scratch/)。
 
@@ -277,7 +299,7 @@ CSP 哈希或注入 nonce；部署方需根据实际构建产物制定策略。
 | `baseURL` 正确 | 页面源码里 `<link rel="canonical">` 指向真实生产地址（含子路径） |
 | 站点地图 | `<baseURL>/sitemap.xml` 可访问；多语言站点是一个索引，指向 `/en/sitemap.xml`、`/zh/sitemap.xml` |
 | robots | `<baseURL>/robots.txt` 是 `Allow: /` 并带 `Sitemap:` 行；预览部署应该是 `Disallow: /` |
-| 搜索索引 | 浏览器能取到 `<baseURL>/offline-search-index.<语言>.json`，站内搜索有结果 |
+| 搜索索引 | 启用本地搜索后，`data-td-index-src` 指定的实际 URL 返回 200；生产文件名带 hash，站内搜索有结果 |
 | Markdown 输出 | 任一页面 URL 后面加 `index.md` 能取到纯文本（站点在 `outputs.page` 里开了 `markdown` 时） |
 | `llms.txt` | 站点在 `outputs.home` 里开了 `LLMS` 时，首要语言与每种已启用语言根都能访问 `llms.txt` |
 | 已启用语言 | 每种语言的文档页、博客页、首页都能打开，语言切换落到对应页面而不是首页 |
@@ -293,7 +315,18 @@ CSP 哈希或注入 nonce；部署方需根据实际构建产物制定策略。
 
 - GitHub Pages：在 Actions 里找到上一次成功的 `Deploy to GitHub Pages` 运行，点 Re-run all jobs；或者 `git revert` 出问题的提交再推一次。
 - Cloudflare Pages / Netlify / Vercel：在部署列表里选上一个成功的部署，用平台的 Rollback / Publish deploy 把它重新设为生产版本。
-- 自建静态服务器：保留上一份 `tar.gz`，解压覆盖。[离线打包](#hosts)里给产物加日期后缀就是为了这一步。
+- 自建静态服务器：把 `current` 切回[离线打包](#hosts)时保留的上一份发布目录。不要把旧包覆盖到新文件上，否则新版本独有的路径仍会在线上保留。
+
+在 Linux 宿主上，把示例路径换成保留的已知可用版本。符号链接与 GNU `mv` 的前提同上：
+
+```bash {title="终端"}
+previous_release=/var/www/oink/releases/20260928-01
+test -d "$previous_release" &&
+  ln -s "$previous_release" /var/www/oink/current.next &&
+  mv -Tf /var/www/oink/current.next /var/www/oink/current
+```
+
+通过线上 URL 检查一个旧版代表页，并确认仅在被撤回版本中新增的路径已不再提供。
 
 问题出在主题升级而不是内容时，回滚的是 `go.mod` 里固定的版本，见[版本升级](/zh/docs/admin/upgrade/#rollback)。
 

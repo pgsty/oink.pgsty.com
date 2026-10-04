@@ -128,7 +128,11 @@ taxonomies:
 
 ## 右栏的分类云 {#rail-cloud}
 
-文档页、博客页与术语页的右栏（目录下面）每种分类法一组，芯片带计数，可折叠。这一组是自动的，没有开关：定义了分类法且当前范围内有术语时就会出现。
+文档页、博客页与术语页的右栏（目录下面）每种分类法一组，标签带计数，可折叠。
+定义了分类法且当前范围内有术语时，默认自动出现。在页面 front matter 中设置
+`toc_taxonomies: false` 可隐藏该页的分类云与分类法切换器；在 `hugo.yml` 中设置
+`params.ui.toc_taxonomies: false` 则全站隐藏。这只改变右栏显示，不改变页面的标签、
+署名、系列或分类归属。
 
 分类法列表页与术语页的右栏最上面是分类法切换器：声明的每种分类法一行，带图标、名称与术语数，链向各自的列表页，当前那一行高亮。列表页的分类云按全站统计，并略去自己这一种——它的术语就是旁边的卡片。只有一种分类法的站点不显示切换器。
 
@@ -187,7 +191,15 @@ tags: [PostgreSQL, Patroni, 故障切换]
 
 ## 按内容类型开关 {#per-type}
 
-主题没有「文档显示、博客不显示」这类开关，控制点是给哪些页面打标签。本站的做法：
+要在文档中保留右栏分类云、在博客分区隐藏它，为博客索引与子页设置显示开关：
+
+```yaml {title="content/blog/_index.zh.md front matter"}
+toc_taxonomies: false
+cascade:
+  toc_taxonomies: false
+```
+
+分类归属是另一回事，由页面上设置的术语决定。例如，本站的内容分类如下：
 
 | 内容 | categories | tags | 效果 |
 | --- | --- | --- | --- |
@@ -198,30 +210,29 @@ tags: [PostgreSQL, Patroni, 故障切换]
 
 ## 验证 {#verify}
 
-页面上看三处：
+在自己的站点选择一篇已设置分类术语的页面，检查：
 
-- 本页标题下面有一行「分类: 定制站点」；
-- 右栏目录下面有按分类法分组的芯片，每枚带计数；
-- 打开 [/zh/categories/](/zh/categories/) 能看到每个术语一张卡片，点任一张进入术语页。
+- 标题区显示了 `params.taxonomy.page_header` 选定的术语；
+- 启用 `toc_taxonomies` 时，右栏有分类分组与计数；关闭后分类云消失，页面的术语仍保留；
+- 自己的分类法索引（例如 `/zh/categories/`）列出术语，点击后能看到所属页面。
 
-命令行上查产物：
-
-```bash
-hugo -d public
-ls public/zh/categories/          # 每个术语一个目录
-grep -c 'taxonomy-term' public/zh/docs/customize/index.html
-```
-
-主题仓库自带一个针对性检查，验证「不写 `taxonomies:` 就不生成分类页」与「术语页在中英文下标题正确」两件事：
+在站点根目录执行，将两个示例路径换成自己的页面与分类法产物路径，并按需包含语言前缀：
 
 ```bash
-cd ~/pgsty/oink && python3 bin/check-taxonomy.py
+hugo --printPathWarnings --panicOnWarning
+PAGE=public/zh/docs/getting-started/index.html
+TAXONOMY_DIR=public/zh/categories
+ls "$TAXONOMY_DIR"
+test -f "$PAGE" && grep -o 'taxonomy-term' "$PAGE"
 ```
+
+主题的 `bin/check-taxonomy.py` 是维护者使用的回归检查，运行合成夹具，不检查消费站点
+内容。验证自己的配置时，使用上面的页面与产物检查即可。
 
 ## 限制 {#limits}
 
 - `page_header: []` **不会** 隐藏术语行：空列表被当作未设置，回落到「列出全部分类法」。要去掉这行，就不要给这些页面打标签，或在 `assets/scss/_styles_project.scss` 里隐藏 `.taxonomy-terms-article`。
-- 右栏分类云没有开关，也没有条数上限；术语数量很多的站点应当减少分类法，配置层面没有裁剪手段。
+- `toc_taxonomies: false` 可以隐藏右栏分类云，但配置不支持限制可见分类云的术语条数。
 - 术语页没有跨语言对等关系：语言切换在术语页上不保证落到「同一个术语的另一种语言」。
 
 ## 相关 {#related}

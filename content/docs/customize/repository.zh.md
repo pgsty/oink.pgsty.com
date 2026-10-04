@@ -52,7 +52,7 @@ params:
 
 几点约定：
 
-- `github_repo` 指向内容所在的仓库，不是主题仓库。写主题仓库会把读者的改动引到错误的位置。省略它时，上表五条全部消失。
+- `github_repo` 指向内容所在的仓库，不是主题仓库。写主题仓库会把读者的改动引到错误的位置。省略它时，上表四项文档操作不可用；项目 issue 仍只取决于 `github_project_repo`。
 - `github_project_repo` 是第二个仓库，接收产品缺陷而非文档错误的议题。读者难以区分两者时不要配置它。
 - `github_branch` 默认 `main`，填的是内容分支，不是部署分支，也不是 Pages 自动生成的分支。
 - `github_subdir` 是仓库内路径。站点源码在仓库根目录时留空；放在子目录（例如仓库里同时有代码和 `website/`）时填 `website`。
@@ -61,7 +61,9 @@ params:
 
 ## 内容来自另一个仓库 {#imported-content}
 
-把一棵子树从上游仓库挂进来时，用栏目 cascade 覆盖仓库参数，再用 `path_base_for_github_subdir` 告诉主题：先去掉本地路径前缀，剩下的部分接到 `github_subdir` 后面。
+内容来自上游仓库时，用栏目 cascade 覆盖仓库参数，再用
+`path_base_for_github_subdir` 移除或替换物理源码路径的前缀，将结果接到
+`github_subdir` 后面。复制到站点内部的源文件使用相对站点根的路径：
 
 ```yaml {title="content/reference/_index.zh.md"}
 ---
@@ -75,6 +77,20 @@ cascade:
 ```
 
 `content/reference/api/client.md` 因此映射到上游的 `docs/api/client.md`。
+
+1.2.0 工作实现会在匹配前将 Windows 与 Unix 源码路径统一为 `/`，保留文件名
+大小写。物理挂载位于站点外部时，需要匹配绝对源码路径，不能使用 Hugo 的虚拟
+挂载目标：
+
+```yaml {title="外部源码位于 /srv/upstream/docs/"}
+path_base_for_github_subdir: '^/srv/upstream/docs/'
+```
+
+配合 `github_subdir: docs`，`/srv/upstream/docs/api/client.md` 映射为
+`docs/api/client.md`。映射并整理后，源码必须得到非空的仓库相对路径。外部文件
+未映射、结果仍为绝对路径或带盘符、结果为 `.` 或向父目录逃逸时，不生成编辑、
+历史与新建子页操作；文档和项目 issue 链接仍遵循各自仓库配置。Windows 映射
+表达式也使用 `/` 分隔符。
 
 `path_base_for_github_subdir` 的值是正则；源文件名与本地不同名时改用 `from` / `to` 映射，例如把每个栏目的 `_index.md` 对到上游的 `README.md`：
 
@@ -105,7 +121,7 @@ OINK 把 `.md` 与 `.zh.md` 并排放在同一个目录里，两种语言共用�
 托管服务不支持某条时，用 CSS 隐藏：
 
 ```scss {title="assets/scss/_styles_project.scss"}
-.td-page-actions__item[data-oink-action='create_child_page'] {
+.td-page-actions__item[data-td-action='create_child_page'] {
   display: none;
 }
 ```
@@ -249,16 +265,17 @@ items:
 
 ## 验证 {#verify}
 
-- 点开本页面包屑行右侧的操作菜单，「编辑当前页面」应该指向 `github.com/<你的仓库>/edit/<分支>/<源文件路径>`，路径要与仓库里的实际路径逐段对应。
-- 从栏目首页（`_index.md`）再点一次：栏目首页最容易被 `path_base_for_github_subdir` 的正则改错。
-- 页尾应有「最后修改」行；本地新建、尚未 `git commit` 的页面没有这一行是正常的。
-- 命令行核对生成的链接：
+在自己的站点根目录执行。将示例 `PAGE` 换成实际生成的页面，其源文件应属于配置的仓库：
 
 ```bash
-hugo -d public
-grep -o 'data-oink-action="edit_page" href="[^"]*"' \
-  public/zh/docs/customize/repository/index.html
+hugo --printPathWarnings --panicOnWarning
+PAGE=public/zh/docs/getting-started/index.html
+test -f "$PAGE" && grep -o '<a[^>]*data-td-action[^>]*>' "$PAGE"
 ```
+
+- 打开该页标题旁的操作菜单。「编辑当前页面」应指向 `github.com/<你的仓库>/edit/<分支>/<源文件路径>`，与实际源文件路径逐段对应。在命令输出中查看带 `data-td-action="edit_page"` 的链接。
+- 从分区首页（`_index.md`）再检查一次，确认其源文件路径也正确。
+- 检查页尾的「最后修改」行；本地新建、尚未提交的页面没有这一行是正常的。
 
 ## 相关 {#related}
 

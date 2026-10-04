@@ -288,6 +288,10 @@ switch. The reader can collapse the right column entirely, and that state is
 kept locally. Below `xl` the right column is hidden and its content moves into
 the sidebar drawer.
 
+The 1.2.0 working implementation decodes valid URL fragments when tracking
+headings. A malformed percent sequence falls back to the literal heading ID,
+including when following a link to a heading near the page end.
+
 The old `params.ui.scroll_spy` site key and `scroll_spy` page key remain accepted
 as quiet compatibility no-ops throughout 1.x. Either boolean value produces the
 same outline and loads no extra runtime; removing the keys is reserved for a

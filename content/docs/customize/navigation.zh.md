@@ -11,7 +11,9 @@ aliases:
 
 本页覆盖读者在页面之间移动的入口：顶栏菜单、栏目切换器、面包屑、页面操作、上一页 / 下一页与页脚。侧栏树与目录属于[布局与页面类型](/zh/docs/customize/layout/)。
 
-导航没有第二套信息架构：顶栏来自 Hugo 的 `menus.main`，侧栏来自 `content/` 的目录结构。主题不读 `docs.json`、`navigation.yaml` 一类的并行导航树。
+顶栏来自 Hugo 的 `menus.main`。Docs 与 Book 默认按 `content/` 的目录结构组织；
+导入既有阅读顺序时，也可使用 [`data/docs_nav.json`](/zh/docs/customize/layout/#sidebar)。
+侧栏、翻页器与分区索引共享选定的顺序。
 
 ## 顶栏菜单 {#main-menu}
 
@@ -175,7 +177,7 @@ cascade:
 ---
 ```
 
-关闭后主题补回原本由顶栏承担的界面：移动端子导航、侧栏顶部的品牌与搜索行、大纲轨道上的工具按钮。这个开关适用于必须独占视口的页面，不作为常规排版偏好。本站的文档栏目使用它：文档页依靠侧栏导航，顶栏是多余的一行。
+关闭后主题补回原本由顶栏承担的界面：移动端子导航、侧栏顶部的品牌与搜索行、大纲轨道上的工具按钮。这个开关适用于必须独占视口的页面，不作为常规排版偏好。本站文档栏目保留顶栏，通过 `navbar_autohide: false` 关闭自动隐藏，让栏目导航始终可见。
 
 ## 栏目切换器 {#root-menu}
 
@@ -245,7 +247,15 @@ params:
       links: []
 ```
 
-助手入口默认关闭：读者点击时，**完整的当前 URL（含 query 与 fragment）会随本地化提示词发给第三方**，页面正文不上传。开启前确认 URL 里没有敏感信息，并在隐私说明里披露这个边界。页面可以用布尔型 front matter `assistant_links` 收紧站点策略，不能反过来替站点开启。
+助手入口默认关闭：读者点击时，**完整的当前 URL（含 query 与 fragment）会随本地化提示词发给第三方**，页面正文不上传。开启前确认 URL 里没有敏感信息，并在隐私说明里披露这个边界。页面可用以下 front matter 收紧站点策略，不能反过来替站点开启：
+
+```yaml {title="页面 front matter"}
+page_context_menu:
+  assistant_links: false
+```
+
+在该页确认标题菜单与命令面板中均没有 ChatGPT、Claude 入口。跳转行为见
+[Agent 支持](/zh/docs/customize/agents/)。
 
 自定义外部操作排在菜单最后，`url` 支持三个已 URL 编码的占位符：
 

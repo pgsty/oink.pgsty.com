@@ -1,7 +1,7 @@
 ---
 title: Upgrade
 linkTitle: Upgrade
-description: Pin a published theme version, upgrade from 1.0 to 1.1, migrate legacy content or a Docsy site, and roll back safely.
+description: Pin a published theme version, validate the 1.2.0 development changes, migrate legacy content or a Docsy site, and roll back safely.
 weight: 50
 search_keywords: [upgrade, migration, version, Hugo Module, hugo mod get, oink06, Docsy, jQuery, breaking changes]
 aliases:
@@ -61,8 +61,10 @@ require github.com/pgsty/oink v1.1.0
 > [!DANGER] A local module replacement overrides that pin
 > `make dev` and `make check` set `HUGO_MODULE_REPLACEMENTS` for that command
 > only, using the sibling theme checkout. To judge whether a release tag works,
-> use `make build` without a replacement; otherwise what is verified is the
-> local copy.
+> remove that environment replacement and disable both `GOWORK` and
+> `HUGO_MODULE_WORKSPACE`. Inspect persistent replacements and `_vendor/` too;
+> `make build` by itself does not prove which theme was resolved. See the
+> [preview guide](/docs/admin/preview/#theme-workspace).
 
 For a Git submodule, check that it has no local edits, fetch the tags, and
 check out the exact published version rather than following its remote branch:
@@ -83,7 +85,8 @@ tradeoffs are in
 
 ```bash {title="Terminal"}
 rm -rf public resources/_gen
-hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
+env -u HUGO_MODULE_REPLACEMENTS GOWORK=off HUGO_MODULE_WORKSPACE=off \
+  hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
 ```
 
 That does three things at once: clears possibly stale caches, rebuilds with the
@@ -148,6 +151,35 @@ The authoring and API details live in [content groups](/docs/write/organize/#gro
 the [sidebar contract](/docs/design/shell/#sidebar-runtime),
 [search actions](/docs/customize/panel/#search-tail), and
 [image zoom](/docs/components/image/#zoom).
+
+## Preparing for 1.2.0 {#preparing-1-2}
+
+1.2.0 is an unreleased draft. Keep the published v1.1.0 pin until a new tag is
+published and verified; the following is a local development checklist, not
+an instruction to resolve `v1.2.0` now. The current changes introduce no new
+required configuration or source migration, and retain the Hugo Extended
+0.160.1 floor.
+
+- Recheck explicit navigation, hidden subtrees, page links, Blog pagination
+  canonicals, and SEO alternates for pages without translations.
+- Check CJK keyword-only search summaries and outline links with literal
+  percent signs. Compare source-derived Edit, History, and Create child links
+  on Windows or mounted content; mappings must yield repository-relative paths.
+- Check Landing content with JavaScript disabled or blocked, preserved metric
+  formatting, dialogs and keyboard shortcuts, copy fallback, Draw.io controls,
+  and numbered equations at narrow widths.
+- Run a warning-fatal build for diagram endpoints and resource alt metadata;
+  malformed values now warn and take a safe fallback. Use `false` or an empty
+  string to disable a PlantUML or Draw.io endpoint intentionally.
+- Use the revised PDF and migration tools when testing publication or content
+  conversion. Review PDF remote-resource opt-ins and migration diffs, including
+  code examples nested in lists. The consumer-upgrade helper is also new in the
+  development checkout; it is not part of the v1.1.0 archive.
+
+The [Architecture](/docs/design/architecture/),
+[Components](/docs/design/components/), [Shell](/docs/design/shell/), and
+[Migration](/docs/design/migration/) contracts describe the current development
+behavior. Their 1.2.0 draft status does not change the site's published theme pin.
 
 ## The content migration toolkit {#migration-toolkit}
 

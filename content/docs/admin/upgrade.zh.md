@@ -1,7 +1,7 @@
 ---
 title: 版本升级
 linkTitle: 版本升级
-description: 固定已发布的主题版本、从 1.0 升到 1.1、迁移旧内容或 Docsy 站点，并在出问题时安全回滚。
+description: 固定已发布的主题版本、验证 1.2.0 开发改动、迁移旧内容或 Docsy 站点，并在出问题时安全回滚。
 weight: 50
 search_keywords: [升级, 迁移, 版本, Hugo Module, hugo mod get, oink06, Docsy, jQuery, 破坏性变更, upgrade, migration]
 aliases:
@@ -51,7 +51,11 @@ require github.com/pgsty/oink v1.1.0
 ```
 
 > [!DANGER] 本地模块替换会盖掉这个固定版本
-> `make dev` 和 `make check` 会仅对当前命令设置 `HUGO_MODULE_REPLACEMENTS`，使用同级的主题 checkout。判定某个发布标签是否可用时使用不带替换的 `make build`，否则验证的是本地那份代码。
+> `make dev` 和 `make check` 只为当次命令设置 `HUGO_MODULE_REPLACEMENTS`，
+> 使用同级主题 checkout。判定发布标签是否可用时，移除该环境变量替换，同时禁用
+> `GOWORK` 和 `HUGO_MODULE_WORKSPACE`。还要检查持久替换与 `_vendor/`；仅执行
+> `make build` 无法证明实际解析的是哪个主题版本。参见
+> [本地预览指南](/zh/docs/admin/preview/#theme-workspace)。
 
 使用 Git submodule 时，先确认没有本地修改，再拉取标签并检出精确的公开版本，
 不要跟随远端分支：
@@ -70,7 +74,8 @@ git add themes/oink
 
 ```bash {title="终端"}
 rm -rf public resources/_gen
-hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
+env -u HUGO_MODULE_REPLACEMENTS GOWORK=off HUGO_MODULE_WORKSPACE=off \
+  hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
 ```
 
 三件事一起做了：清掉可能过期的缓存、用新版本重新构建、把任何告警变成失败。
@@ -123,6 +128,28 @@ make dev
 构建，并验证部署后的页面。创作与 API 细节见[内容分组](/zh/docs/write/organize/#group-only)、
 [侧栏契约](/zh/docs/design/shell/#sidebar-runtime)、
 [搜索动作](/zh/docs/customize/panel/#search-tail) 与[图片缩放](/zh/docs/components/image/#zoom)。
+
+## 为 1.2.0 做准备 {#preparing-1-2}
+
+1.2.0 尚未发布，目前是草案。新标签正式发布并通过验证前，继续固定已发布的
+v1.1.0；以下是本地开发检查清单，不是立即解析 `v1.2.0` 的操作说明。当前修改
+没有引入必填的新配置或源码迁移，Hugo Extended 下限仍为 0.160.1。
+
+- 复查显式导航、隐藏子树、页面链接、博客分页 canonical，以及缺少译文页面的
+  SEO 备用链接。
+- 检查仅关键词命中的 CJK 搜索摘要，以及带字面百分号的大纲链接。复查 Windows
+  或挂载内容的编辑、历史与新建子页链接；映射结果必须是仓库相对路径。
+- 检查 JavaScript 被禁用或阻断时的 Landing 内容、指标格式、弹窗与快捷键、
+  复制回退、Draw.io 操作，以及窄屏上的编号公式。
+- 对图表端点与资源 alt 元数据执行将警告视为失败的构建；非法值现在会警告并采用
+  安全回退。要有意禁用 PlantUML 或 Draw.io 端点，使用 `false` 或空字符串。
+- 测试出版或内容转换时，使用修订后的 PDF 与迁移工具。审查 PDF 远程资源开关
+  和迁移 diff，包括嵌套在列表中的代码示例。消费站升级工具同样是开发 checkout
+  的新增能力，v1.1.0 归档中不包含它。
+
+[架构](/zh/docs/design/architecture/)、[组件](/zh/docs/design/components/)、
+[外壳](/zh/docs/design/shell/)与[迁移](/zh/docs/design/migration/)契约描述当前
+开发实现；这些契约的 1.2.0 草案状态不会改变站点固定的公开主题版本。
 
 ## 内容迁移工具 {#migration-toolkit}
 

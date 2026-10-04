@@ -106,10 +106,16 @@ params:
 
 ## 验证 {#verify}
 
+先在自己的站点根目录完成严格构建。下方命令中的
+`public/zh/docs/getting-started/index.html` 是示例；请换成自己站点实际生成的文档页，
+并按语言配置调整路径前缀。
+
 1. 构建后确认版本菜单进了页面：
 
    ```bash
-   grep -c 'nav-version-menu' public/zh/docs/customize/versions/index.html
+   hugo --printPathWarnings --panicOnWarning
+   PAGE=public/zh/docs/getting-started/index.html
+   test -f "$PAGE" && grep -c 'nav-version-menu' "$PAGE"
    ```
 
    `params.versions` 为空或未配置时，菜单整个不生成。
@@ -117,7 +123,7 @@ params:
 2. 看当前版本有没有被标成选中：
 
    ```bash
-   grep -o 'nav-hover-menu__option is-active[^>]*' public/index.html
+   grep -o 'td-nav-hover-menu__option td-is-active[^>]*' "$PAGE"
    ```
 
    一条都没有，说明 `params.version` 与 `versions` 里的 `version` 字段对不上，或者 `baseURL` 与该条目的 `url` 不一致（注意结尾斜杠）。

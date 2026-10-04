@@ -148,17 +148,21 @@ no_print: true
 
 ## 验证 {#verify}
 
+在自己的站点根目录构建，检查已启用 `print` 的分区产物。将示例路径换成该分区实际
+生成的文件；有语言前缀时也应包含在内：
+
 ```bash
-hugo -d public
-ls public/zh/_print/docs/          # 每个栏目一个目录
+hugo --printPathWarnings --panicOnWarning
+PRINT_PAGE=public/zh/_print/docs/index.html
+test -f "$PRINT_PAGE"
 ```
 
-再看页面：
+随后在运行中的站点上，打开该分区的 **打印整个分区** 操作：
 
-- 浏览器打开 `/zh/_print/docs/customize/`，确认目录条数等于栏目页数（减去 `no_print: true` 的页）。
-- 在这个视图里按 `Cmd/Ctrl+P`，打印预览里应当看不到提示条、顶栏与任何按钮。
-- 找一页含标签页与折叠提示块的（例如[标签页](/zh/docs/components/tabs/)），确认预览里所有面板都展开。
-- 打印一份 PDF 通读分页情况，阈值不合适时调整 `section_break_wordcount`。
+- 确认打印视图包含该分区的页面，并排除了 `no_print: true` 的页。
+- 按 `Cmd/Ctrl+P`，打印预览中应没有提示条、顶栏和按钮。
+- 选择含标签页与折叠提示块的页面，确认预览里所有面板都展开；写法可参考[标签页](/zh/docs/components/tabs/)。
+- 打印一份 PDF，通读分页情况，必要时调整 `section_break_wordcount`。
 
 ## 相关 {#related}
 

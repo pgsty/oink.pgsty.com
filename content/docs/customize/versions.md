@@ -135,10 +135,16 @@ lists them and adds the archive banner.
 
 ## Verify {#verify}
 
+Run from your site's root after a strict build. In the commands below, replace
+`public/docs/getting-started/index.html` with an actual generated documentation
+page in your site (including a language prefix if needed).
+
 1. After a build, confirm the version menu reached the page:
 
    ```bash
-   grep -c 'nav-version-menu' public/docs/customize/versions/index.html
+   hugo --printPathWarnings --panicOnWarning
+   PAGE=public/docs/getting-started/index.html
+   test -f "$PAGE" && grep -c 'nav-version-menu' "$PAGE"
    ```
 
    With `params.versions` empty or unset, the menu is not generated at all.
@@ -146,7 +152,7 @@ lists them and adds the archive banner.
 2. Check whether the current version is marked selected:
 
    ```bash
-   grep -o 'nav-hover-menu__option is-active[^>]*' public/index.html
+   grep -o 'td-nav-hover-menu__option td-is-active[^>]*' "$PAGE"
    ```
 
    None at all means `params.version` does not match any entry's `version`

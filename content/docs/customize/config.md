@@ -199,9 +199,9 @@ matter or a `cascade` on the blog root.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `params.ui.featured_image` | enum | none | How an article renders its own featured image: `none` renders nothing, `banner` frames it above the title in a 16:9 figure, `wash` lays it behind the article header at a tenth of its opacity, `hero` paints it as the shell's own full-bleed backdrop and moves the opening down — on single pages and section indexes alike. The image is whichever one the page already shares in its card and `og:image`, so the two cannot disagree. An article with no image renders nothing in any mode |
-| `params.ui.blog_index` | enum | list | The blog section's list page: `list` is the row list, `cards` a grid of content cards with a 16:9 lead image, the date and section line, and a three-line summary, `table` one compact row per post — the whole section at once, with no year groups and no pagination. Year grouping, pagination and `manual_link` behave the same in `list` and `cards` |
+| `params.ui.blog_index` | enum | list | Blog index form: `list` shows rows, `cards` shows image cards with dates and summaries, and `table` shows compact rows. All sort by date, newest first, without year groups. Only a standalone `table` with `blog_index_toggle: false` shows the whole section without pagination |
 | `params.ui.blog_index_columns` | integer | 3 | Column count when `blog_index: cards`; two between the md and xl breakpoints, one below md, whatever this says |
-| `params.ui.blog_index_size` | integer | 12 | Posts per page on a `list` or `cards` index; the `table` form always shows everything. Twelve divides by two, three and four, so no card row is left short |
+| `params.ui.blog_index_size` | integer | 12 | Posts per page for `list`, `cards`, and all three views when the toggle is enabled. A standalone `table` ignores it |
 | `params.ui.blog_index_toggle` | boolean | false | Lets a reader cycle the index through list, cards and table from the index toolbar. Off by default, because it puts all three forms in the document — the hidden ones load no images, but their markup is real |
 | `params.ui.toc_style` | enum | fixed | The right rail's presentation: `fixed` is a panel pinned to the viewport, `flow` a wider panel in the content flow that starts where the article starts and pins only on scroll |
 | `params.ui.toc_taxonomies` | boolean | true | Taxonomy term clouds on the right rail. A rail left with neither a table of contents nor clouds renders nothing at all |
@@ -367,8 +367,9 @@ lower-level typography still use the SCSS/CSS entry points — see
 | `params.ui.feedback.reasons` | boolean | true | Expands four optional reasons after "no" |
 {.fields meta="type default"}
 
-Missing any one of the four required giscus values leaves the comment section
-unrendered: no error, and nothing appears.
+Missing any required giscus value produces a warning and skips the comment
+section. Ordinary previews continue; builds with `--panicOnWarning` fail.
+See [Comments](/docs/admin/comments/#enable) for the required fields.
 
 ## Repository links and page information {#repository}
 
@@ -378,7 +379,7 @@ unrendered: no error, and nothing appears.
 | `params.github_project_repo` | string | github_repo | The product repository URL, for "open a project issue" and the navbar GitHub entry |
 | `params.github_branch` | string | main | The branch edit links point at |
 | `params.github_subdir` | string | | The content site's subdirectory inside a monorepo |
-| `params.path_base_for_github_subdir` | string or map | | Source path rewriting; the map form takes `from` and `to` |
+| `params.path_base_for_github_subdir` | string or map | | Rewrite normalized `/` source paths; the map takes `from` and `to`. External mounts need an explicit mapping to a repository-relative result; see [repository links](/docs/customize/repository/#imported-content). |
 | `params.github_url` | — | — | Removed; write `params.github_repo`. The migration registry that used to name the replacement is gone, so an old key is now simply an unread key |
 | `params.ui.lastmod_commit` | enum | subject | What follows "last modified": `subject` the commit subject, `hash` the short hash, `none` nothing. An invalid value warns and falls back |
 | `params.images` | string array | — | The site-level social card: fills `og:image` when a page has no image of its own. Metadata only; never rendered as a list thumbnail |
@@ -497,20 +498,24 @@ The theme ships two generated JSON Schemas under its `schema/` directory:
 `front-matter.schema.json` for page front matter. They are projections of the
 theme's own `hugo.yaml` defaults (with the comment documentation as hover
 text) and its parameter-scan registry; the theme's CI regenerates them and
-fails on drift, so they can never disagree with the theme you have pinned.
+fails on drift. Use the schema from the same release tag as your theme pin.
 
-With the VS Code YAML extension, map the site schema in your settings:
+With the VS Code YAML extension, map the site schema in your settings. This
+example matches OINK v1.1.0; replace that tag with the one in your `go.mod`.
+Both common YAML configuration filenames are covered:
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/main/schema/site-params.schema.json": "hugo.yaml"
+    "https://raw.githubusercontent.com/pgsty/oink/v1.1.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```
 
-Pin the URL to your release tag instead of `main` to match your `go.mod` pin.
-Front matter completion depends on your Markdown tooling; point it at
+To check the association, temporarily give a known boolean such as
+`params.offline_search` a string value: the editor should flag the type mismatch.
+Restore the valid value afterward. Front matter completion depends on your
+Markdown tooling; point it at
 `front-matter.schema.json` the same way. The front-matter schema deliberately
 omits type constraints, because keys like `share` and `theme_color` accept a
 bare-boolean opt-out beside their ordinary type.

@@ -14,9 +14,10 @@ section switcher, breadcrumbs, page actions, previous / next, and the footer.
 The sidebar tree and the outline belong to
 [Layouts and page types](/docs/customize/layout/).
 
-Navigation has no second information architecture: the navbar comes from Hugo's
-`menus.main`, and the sidebar from the shape of `content/`. The theme reads no
-parallel navigation tree such as a `docs.json` or a `navigation.yaml`.
+The navbar comes from Hugo's `menus.main`. Docs and Book navigation defaults
+to the `content/` tree; sites importing an existing reading order may use
+[`data/docs_nav.json`](/docs/customize/layout/#sidebar). The sidebar, pager
+and section index share the selected order.
 
 ## The navbar menu {#main-menu}
 
@@ -212,9 +213,9 @@ cascade:
 With it off, the theme restores the interface the navbar carried: mobile
 subnavigation, a brand and search row at the top of the sidebar, and utility
 buttons on the outline rail. The switch suits pages that must own the viewport;
-it is not a general layout preference. This site's documentation section uses
-it: documentation pages navigate through the sidebar, and the navbar is one row
-too many.
+it is not a general layout preference. This site's documentation section keeps
+the navbar enabled and disables its auto-hide behavior with
+`navbar_autohide: false`, so section navigation stays visible.
 
 ## The section switcher {#root-menu}
 
@@ -304,8 +305,17 @@ The assistant entries are off by default: on a click **the full current URL
 (query and fragment included) goes to a third party with a localized prompt**,
 while the body is not uploaded. Before enabling it, confirm no sensitive
 information appears in URLs, and disclose the boundary in the privacy statement.
-A page can narrow the site policy with a boolean `assistant_links` in front
-matter, but cannot enable it on the site's behalf.
+A page can narrow the site policy with this front matter; it cannot enable
+assistant links on the site's behalf:
+
+```yaml {title="Page front matter"}
+page_context_menu:
+  assistant_links: false
+```
+
+Confirm that ChatGPT and Claude are absent from both the title menu and the
+command palette on that page. See [AI-agent support](/docs/customize/agents/)
+for the handoff behavior.
 
 Custom external actions come last in the menu, and `url` supports three
 URL-encoded placeholders:

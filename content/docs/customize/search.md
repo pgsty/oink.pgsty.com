@@ -137,6 +137,10 @@ keywords, in-page headings, description and body in turn, scores whichever layer
 matched, and finally multiplies by `search_boost` as usual. Both paths rank by
 the same rules.
 
+In the 1.2.0 working implementation, a keyword-only match displays the page
+description or excerpt, keeping synonym lists out of result summaries. A body
+match still displays surrounding text as context.
+
 Three things follow:
 
 - A CJK query is a **substring** match. Searching 主从复制 finds only where those four characters appear consecutively; 复制主从 returns nothing.
@@ -166,8 +170,9 @@ params:
       indexName: YOUR_INDEX
 ```
 
-All three values must be written explicitly, and a missing one stops the build:
-OINK never falls back to another project's public index. The DocSearch JS and
+All three values must be written explicitly. A missing value produces a
+warning and disables Algolia: ordinary previews continue, while a build with
+`--panicOnWarning` fails. OINK never falls back to another project's public index. The DocSearch JS and
 CSS ship with the theme rather than loading from a CDN, but every query is a
 request to Algolia. Real credentials and a real index are needed for it to work,
 so nothing is rendered here.

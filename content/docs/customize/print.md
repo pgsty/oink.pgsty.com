@@ -181,17 +181,22 @@ see [Books](/docs/write/book/).
 
 ## Verify {#verify}
 
+In your site's root, build and check the print output for a section where you
+enabled `print`. Replace the example path with that section's actual output,
+including its language prefix if applicable:
+
 ```bash
-hugo -d public
-ls public/_print/docs/          # one directory per section
+hugo --printPathWarnings --panicOnWarning
+PRINT_PAGE=public/_print/docs/index.html
+test -f "$PRINT_PAGE"
 ```
 
-Then look at the page:
+Then open that section's **Print the whole section** action on the running site:
 
-- Open `/_print/docs/customize/` in a browser and confirm the contents has as many rows as the section has pages (minus those with `no_print: true`).
-- Press `Cmd/Ctrl+P` in that view: the print preview should show no notice bar, no navbar and no buttons.
-- Find a page with tabs and a collapsed callout (for example [Tabs](/docs/components/tabs/)) and confirm every panel is expanded in the preview.
-- Print a PDF and read the pagination through, adjusting `section_break_wordcount` where the threshold does not suit.
+- Confirm the print view contains the section's pages, excluding `no_print: true` pages.
+- Press `Cmd/Ctrl+P`: the print preview should show no notice bar, navbar or buttons.
+- Use a page with tabs and a collapsed callout and confirm every panel is expanded in the preview. [Tabs](/docs/components/tabs/) shows suitable authoring syntax.
+- Print a PDF and read through the pagination, adjusting `section_break_wordcount` if needed.
 
 ## Related {#related}
 

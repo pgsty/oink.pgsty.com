@@ -44,7 +44,7 @@ OINK 的评论走 [giscus](https://giscus.app/zh-CN)：每个页面对应一条 
 
 ## 全站启用 {#enable}
 
-把生成的标识符写进站点配置：
+从你自己仓库生成的配置中复制四个仓库与分类字段；启用评论前，替换下面全部占位值：
 
 ```yaml {title="hugo.yml"}
 params:
@@ -52,17 +52,17 @@ params:
     enable: true
     type: giscus
     giscus:
-      repo: pgsty/oink.pgsty.com
-      repoId: R_kgDOTzFZAg
-      category: Announcements
-      categoryId: DIC_kwDOTzFZAs4DDCm-
+      repo: YOUR_OWNER/YOUR_REPO
+      repoId: YOUR_REPO_ID
+      category: YOUR_CATEGORY
+      categoryId: YOUR_CATEGORY_ID
       mapping: pathname
       inputPosition: bottom
       theme: auto
       loading: lazy
 ```
 
-上面是本站正在使用的配置。`repo`、`repoId`、`category`、`categoryId` 四个键缺一不可：任何一个缺失或只有空白字符，Hugo 打一条 WARNING 并跳过 giscus，构建不会失败，因此生产构建要带 `--panicOnWarning`。`type` 目前只接受 `giscus`，写别的值同样是告警加跳过。`params.comments` 的键名与 Hextra 同形，从 Hextra 迁来的配置可以照搬。
+`repo`、`repoId`、`category`、`categoryId` 必须来自同一个仓库及其选定的 Discussion 分类，四个键缺一不可：任何一个缺失或只有空白字符，Hugo 打一条 WARNING 并跳过 giscus，构建不会失败，因此生产构建要带 `--panicOnWarning`。`type` 目前只接受 `giscus`，写别的值同样是告警加跳过。`params.comments` 的键名与 Hextra 同形，从 Hextra 迁来的配置可以照搬。
 
 其余的键（`strict`、`reactionsEnabled`、`emitMetadata`、`term`、`lang`、`lightTheme`、`darkTheme`、`ariaLabel`、`errorMessage`）都有默认值，完整定义见[配置总览](/zh/docs/customize/config/)。功能开关既可以写 YAML 布尔值，也可以写 giscus 风格的 `0` / `1`。
 

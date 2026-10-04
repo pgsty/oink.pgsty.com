@@ -17,17 +17,25 @@ to get right is `baseURL` and each page's `description`.
 
 ## Connecting Google Analytics {#google-analytics}
 
-Use Hugo's built-in service configuration with a GA4 measurement ID:
+Use Hugo's built-in service configuration. Replace `G-YOUR_MEASUREMENT_ID`
+with your own GA4 measurement ID before enabling this block:
 
 ```yaml {title="hugo.yml"}
 services:
   googleAnalytics:
-    id: G-6JLQEHYFQG
+    id: G-YOUR_MEASUREMENT_ID
 ```
 
-The theme renders that script in the production environment only (a `hugo`
-build defaults to production, and `hugo server` to development). Local previews
-and preview deployments therefore report nothing, and need no extra switch.
+The theme renders that script only in the production environment. A normal
+`hugo server` uses development and does not report, but a `hugo` build defaults
+to production even on a preview host. Select a non-production environment for
+PR and staging deployments, with `PREVIEW_URL` set to their actual address:
+
+```bash {title="Terminal"}
+hugo --panicOnWarning --environment staging --baseURL "$PREVIEW_URL"
+```
+
+See [preview deployment settings](/docs/admin/deploy/#preview-builds).
 
 Do not also set the deprecated top-level `googleAnalytics` key. Where analytics
 is not wanted, delete the block rather than filling in a fake ID.
@@ -50,9 +58,12 @@ repository and no theme change is needed:
 | `layouts/_partials/hooks/body-end.html` | Last among the page scripts | Third-party code affecting interaction rather than the first paint |
 {.fields}
 
+For Plausible, replace `your-site.example` with the domain registered in your
+own account before adding this hook:
+
 ```go-html-template {title="layouts/_partials/hooks/head-end.html"}
 {{ if hugo.IsProduction }}
-<script defer data-domain="oink.pgsty.com"
+<script defer data-domain="your-site.example"
         src="https://plausible.io/js/script.js"></script>
 {{ end }}
 ```
@@ -103,8 +114,8 @@ languages:
 
 ## canonical and hreflang {#canonical-hreflang}
 
-The theme emits one canonical and a set of `hreflang` alternates per page, with
-no configuration:
+The theme emits one canonical per page and `hreflang` alternates for actual
+translations, with no configuration:
 
 ```html {title="rendered output (this page)" copy=false}
 <link rel="canonical" href="https://oink.pgsty.com/docs/admin/analytics/">
@@ -113,10 +124,15 @@ no configuration:
 ```
 
 The `hreflang` codes come from each language's `locale` (`en-US` / `zh-CN` on
-this site), and the links from Hugo's translation relationships. Where a page
-has no counterpart in the other language, Hugo cannot find a translation and
-falls back to that language's home page. That is expected behaviour, and it also
-tells you whether Hugo recognized the translation pairing.
+this site), and the links from Hugo's translation relationships. In the 1.2.0
+development implementation, a missing translation is omitted from both
+`hreflang` and `og:locale:alternate`. The visible language switcher may still
+lead to that language's home page; that navigation fallback is not a translation.
+
+Each paginated Blog index has its own canonical URL. From page 2 onward,
+language alternates are omitted because pagination does not establish matching
+translated pages. These corrections are implemented in the 1.2.0 working tree; the published
+v1.1.0 tag retains the earlier behavior.
 
 The canonical is assembled from `baseURL`. A wrong `baseURL` points search
 engines at addresses that do not exist, which is harder to notice than a build
@@ -242,30 +258,29 @@ stale page stays that way however well its `description` is written.
 
 ## Verify {#verify}
 
+Run from your site's root. Replace `PAGE` with a generated page on your site,
+including any language prefix:
+
 ```bash {title="Terminal"}
 hugo --gc --minify --printPathWarnings --panicOnWarning
-```
+PAGE=public/docs/getting-started/index.html
+test -f "$PAGE"
 
-Then check these in the output:
-
-```bash {title="Terminal"}
-# the canonical points at the real production address
-grep -o '<link rel="canonical"[^>]*>' public/docs/admin/analytics/index.html
-
-# only a production build has index, follow
-grep -o '<meta name="robots"[^>]*>' public/docs/admin/analytics/index.html
-
-# robots.txt and the sitemap
+# Canonical should use the real production address; production robots allow indexing.
+grep -o '<link[^>]*canonical[^>]*>' "$PAGE"
+grep -o '<meta[^>]*robots[^>]*>' "$PAGE"
 cat public/robots.txt
 head -5 public/sitemap.xml
 
-# with no analytics connected, the output should have no gtag / analytics request
-grep -rl 'googletagmanager\|gtag(' public/ | head
+# No match is expected when Google Analytics is not configured.
+grep -o '<script[^>]*googletagmanager[^>]*>' "$PAGE"
 ```
 
-Confirm once more in a browser: open a representative page and look at the
-network panel — a site with no analytics should make no request to a third-party
-domain.
+In the browser's Network panel, check that any configured analytics request uses
+your own measurement ID or registered domain. Repeat on a deployment built with
+`--environment staging`: it should make no analytics request. If no analytics
+is configured, there should be no analytics request in either environment;
+other explicitly enabled integrations may still use their own remote services.
 
 ## Related {#related}
 

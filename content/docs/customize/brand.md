@@ -12,16 +12,15 @@ aliases:
   - /docs/appearance/customize/
 ---
 
-This page covers a site's appearance: the name and logo live in `hugo.yml`,
-colours and fonts go through SCSS entry points, and page width and footer shape
-are parameters. It assumes the site already builds
-([Quick start](/docs/start/)).
+This page assumes the site already builds ([Quick start](/docs/start/)).
+Start in `hugo.yml` for the name, logo, page width and footer. To select an
+existing system or site font, use [`params.ui.fonts`](#fonts-in-config);
+[section accent colours](#theme-color) also have configuration keys.
 
-There are four things to change: `hugo.yml`, the icons under `static/`,
-`assets/scss/_variables_project.scss`, and
-`assets/scss/_styles_project.scss`. **Do not edit files inside the theme
-directory**: the theme is a Hugo Module, and an upgrade replaces the whole
-directory.
+Add icons under `static/`. Use `assets/scss/_variables_project.scss` for
+SCSS variables and `assets/scss/_styles_project.scss` for custom styles or new
+`@font-face` declarations only when needed. **Do not edit files inside the
+theme directory**: an upgrade replaces them.
 
 ## Site name {#site-title}
 

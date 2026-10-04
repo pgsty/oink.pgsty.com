@@ -176,9 +176,9 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
 | `params.ui.featured_image` | enum | none | 文章正文里怎么渲染自己的题图：`none` 不渲染，`banner` 在标题上方框出一张 16:9 的图，`wash` 把它铺在文章头部背后、只留十分之一的不透明度，`hero` 把它作为外壳自己的通栏背景铺开并把开头下移——单页与栏目列表页都一样。用的就是这一页在卡片与 `og:image` 里已经在用的那张图，两处不会打架。没有题图的文章在任何模式下都不渲染任何东西 |
-| `params.ui.blog_index` | enum | list | 博客栏目列表页的形态：`list` 是行列表，`cards` 是内容卡片网格，卡片带 16:9 题图、日期与栏目行，以及三行摘要，`table` 是每篇一行的紧凑表格——整个栏目一次列全，不按年分组，也不分页。按年分组、分页与 `manual_link` 在 `list` 与 `cards` 下行为一致 |
+| `params.ui.blog_index` | enum | list | 博客索引形态：`list` 是行列表，`cards` 是带题图、日期与摘要的卡片，`table` 是紧凑表格。均按日期倒序排列，不按年分组；仅 `blog_index_toggle: false` 时的独立 `table` 不分页、列出整个栏目 |
 | `params.ui.blog_index_columns` | integer | 3 | `blog_index: cards` 时的列数；md 到 xl 之间恒为两列，md 以下一列，不受此值影响 |
-| `params.ui.blog_index_size` | integer | 12 | `list` 与 `cards` 索引每页的文章数；`table` 形态总是列全。12 能被 2、3、4 整除，卡片行不会缺角 |
+| `params.ui.blog_index_size` | integer | 12 | `list`、`cards` 及启用切换时三种视图共享的每页文章数；独立 `table` 忽略此值 |
 | `params.ui.blog_index_toggle` | boolean | false | 让读者从索引工具栏在列表、卡片、表格之间切换。默认关闭，因为它会把三种形态都放进文档——隐藏的那些不加载图片，但标记是真实存在的 |
 | `params.ui.toc_style` | enum | fixed | 右栏的呈现方式：`fixed` 是钉在视口上的面板，`flow` 是跟随内容流、从文章开头处开始、滚动后才钉住的宽面板 |
 | `params.ui.toc_taxonomies` | boolean | true | 右栏的分类词云。既没有目录也没有词云的右栏不会渲染任何东西 |
@@ -328,7 +328,8 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 | `params.ui.feedback.reasons` | boolean | true | 选「否」后展开四个可选原因 |
 {.fields meta="type default"}
 
-四个 giscus 必填项缺任意一个，评论区就不渲染：不报错，也不出现。
+四个 giscus 必填项缺任意一个，都会告警并跳过评论区。普通预览继续；带
+`--panicOnWarning` 的构建失败。必填字段见[评论](/zh/docs/admin/comments/#enable)。
 
 ## 仓库链接与页面信息 {#repository}
 
@@ -338,7 +339,7 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 | `params.github_project_repo` | string | github_repo | 产品仓库 URL，用于「提项目 issue」与顶栏 GitHub 入口 |
 | `params.github_branch` | string | main | 编辑链接指向的分支 |
 | `params.github_subdir` | string | | 内容站在 monorepo 里的子目录 |
-| `params.path_base_for_github_subdir` | string 或 map | | 源路径重写；map 形式接受 `from` 与 `to` |
+| `params.path_base_for_github_subdir` | string 或 map | | 重写统一为 `/` 的源码路径；map 接受 `from` 与 `to`。外部挂载必须显式映射为仓库相对路径，见[仓库链接](/zh/docs/customize/repository/#imported-content)。 |
 | `params.github_url` | — | — | 已移除，改写 `params.github_repo`。那份负责提示替代键名的迁移登记表已经删掉，所以旧键现在只是一个没人读的键 |
 | `params.ui.lastmod_commit` | enum | subject | 「最后修改」后面附什么：`subject` commit 标题、`hash` 短哈希、`none` 不附。非法值告警并回退 |
 | `params.images` | string 数组 | — | 站点级社交卡片：页面自己没有封面时用它填 `og:image`；只进元数据，不会渲染成列表缩略图 |
@@ -447,21 +448,23 @@ outputs:
 主题在其 `schema/` 目录下携带两个生成的 JSON Schema：校验站点 `hugo.yaml` 的
 `site-params.schema.json` 与校验页面 front matter 的
 `front-matter.schema.json`。它们是主题自身 `hugo.yaml` 默认值（注释即悬浮文档）
-与参数扫描注册表的投影；主题 CI 会重新生成并在漂移时失败，因此它们永远不会与你
-pin 的主题版本相左。
+与参数扫描注册表的投影；主题 CI 会重新生成并检查漂移。使用时应选择与主题固定版本
+相同标签下的 Schema。
 
-配合 VS Code YAML 扩展，在设置中映射站点 Schema：
+配合 VS Code YAML 扩展，在设置中映射站点 Schema。下面以 OINK v1.1.0 为例，
+请将标签换成 `go.mod` 中固定的版本；两种常见 YAML 配置文件名都已覆盖：
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/main/schema/site-params.schema.json": "hugo.yaml"
+    "https://raw.githubusercontent.com/pgsty/oink/v1.1.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```
 
-把 URL 里的 `main` 换成你的发布 tag，与 `go.mod` 的 pin 保持一致。front matter
-补全取决于你的 Markdown 工具链，用同样方式指向 `front-matter.schema.json` 即可。
+验证关联是否生效时，可暂时把 `params.offline_search` 这类已知布尔键写成字符串，
+确认编辑器提示类型不匹配后恢复正确值。front matter 补全取决于你的 Markdown
+工具链，用同样方式指向 `front-matter.schema.json` 即可。
 front-matter Schema 刻意不带类型约束，因为 `share`、`theme_color` 这类键在常规
 类型之外还接受裸布尔退出。
 

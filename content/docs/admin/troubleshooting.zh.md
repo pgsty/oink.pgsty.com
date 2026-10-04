@@ -71,16 +71,16 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 | 语言切换跳到了首页 | Hugo 没找到对应译文 | 这是设计行为：找不到译文就回退到目标语言首页。要跳到对应页面，需要那个译文文件确实存在 |
 | 锚点链接打开了页面却不定位 | 译文标题文字不同，自动生成的 ID 也不同 | 在译文标题上显式写英文 ID：`## 安装 {#installation}`。标题里含 shortcode 或行内 HTML 时不要凭文本猜 ID，去看英文页渲染出来的 HTML |
 | 菜单 / 首页分区没翻译 | 这些不在页面里，在配置和数据文件里 | 菜单在 `languages.<lang>.menus`，首页分区在 `data/home/<lang>.yaml`，界面字符串在 `i18n/<lang>.yaml`，见[多语言](/zh/docs/customize/i18n/) |
-| 中文页 `hreflang` 指向英文首页 | 该页没有英文对等文件 | 补上英文页，或接受这个回退：它同时是「Hugo 有没有认出译文关系」的探针 |
+| 页面的 `hreflang` 指向另一语言首页 | 已发布的 1.1.0 行为或复制的旧 SEO partial 可能沿用语言切换器的回退 | 1.2.0 开发实现会从 SEO 备用链接中省略缺失译文。检查实际解析的主题版本与模板覆盖；需要译文时补上对应页面。可见语言切换器的首页回退仍然有效 |
 
 ## 搜索 {#search}
 
 | 症状 | 原因 | 修法 |
 | --- | --- | --- |
-| 搜索框有但一直没结果 | 索引没生成 | `params.offline_search: true` 之后，产物根目录下应该有 `offline-search-index.<语言>.json`，每种语言一份。没有就是没开 |
+| 搜索框有但一直没结果 | 索引没生成 | 检查 `params.offline_search` 并打开搜索，在 Network 中查看页面 `data-td-index-src` 指定的请求。生产文件名为 `offline-search-index.<语言>.<hash>.json`，开发环境不带 hash；`hugo server` 未生成索引时还要检查 `offline_search_on_serve` |
 | 索引文件请求 404 | `baseURL` 不对 | 子路径部署下 `baseURL` 配错是索引 404 最常见的原因。先在浏览器网络面板看它去哪里取索引，见[发布上线](/zh/docs/admin/deploy/#baseurl) |
 | `hugo server` 下搜不了，构建出来就正常 | 站点把预览期的索引关掉了 | `params.offline_search_on_serve` 默认为 `true`，预览与线上行为一致；配置里显式写成 `false` 时预览不生成索引，删掉或改回 `true` |
-| 中文搜不到 | 多数不是分词问题 | 中文查询走主题的 CJK 子串回退。先确认那个中文页面的内容进了中文索引（打开 `offline-search-index.zh.json` 查一下），再看分词 |
+| 中文搜不到 | 多数不是分词问题 | 中文查询走主题的 CJK 子串回退。先确认那个中文页面的内容进了中文索引（打开中文页面 `data-td-index-src` 指定的实际 URL），再看分词 |
 | 新页面搜不到，旧页面正常 | 索引是构建产物 | 重新构建。`hugo server` 下改了页面要等它重建完 |
 | `params.search.algolia requires explicit appId, apiKey, and indexName values` | Algolia 三个键没配全 | 三个键必须显式给全，主题不会替你用别的项目的 DocSearch 凭据。不用 Algolia 就把这段配置删掉 |
 | 命令面板搜不到内容 | 它与全文检索是两件事 | 索引不可用时命令面板仍然能打开，只是提示索引不可用，页面操作与命令照常，见[命令面板](/zh/docs/customize/panel/) |
@@ -101,12 +101,14 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 
 ## 站点自带检查 {#site-checks}
 
-除了构建本身，站点还可以自己跑这几项。前两条任何 OINK 站点都能用，后面几条是本仓库的 npm 脚本，其它站点跑等价的检查即可。
+构建命令在自己的站点根目录执行。输出检查器是独立脚本，来自与固定发布版本对应的
+主题 checkout；将 `/path/to/oink`、`/path/to/my-site/public` 和 base URL 换成自己的值。
+其余命令是本文档仓库的测试实例，并非每个 OINK 消费站都自带的命令。
 
 | 检查 | 命令 | 管什么 |
 | --- | --- | --- |
 | 零告警构建 | `hugo --printPathWarnings --panicOnWarning` | 重复输出路径、参数非法、外部集成配置不全 |
-| 输出信任检查 | `python3 bin/check-output-security.py --public public --base-url https://oink.pgsty.com/` | 四种输出里的每个 `href` / `src` 都是站内相对或 `http(s)` / `mailto` / `tel`；没有 `javascript:` URL、没有行内 `on*` 事件处理器；跨站的 `<iframe>` `<script>` `<img>` 等要显式加 `--third-party` 才放行 |
+| 输出信任检查 | `python3 /path/to/oink/bin/check-output-security.py --public /path/to/my-site/public --base-url https://my-site.example/` | 四种输出里的每个 `href` / `src` 都是站内相对或 `http(s)` / `mailto` / `tel`；没有 `javascript:` URL、没有行内 `on*` 事件处理器；跨站的 `<iframe>` `<script>` `<img>` 等要显式加 `--third-party` 才放行 |
 | 翻译对等 | `node scripts/check-doc-translations.mjs --public public` | 每个英文页有没有中文对等页，以及渲染后的标题 ID 是否逐一对齐；锚点链接错位在这里暴露 |
 | 完整门禁 | `npm test` | 下面六项串起来跑 |
 {.fields}
@@ -123,7 +125,7 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 浏览器行为另开一套：`npm run test:browser` 依次跑 Playwright 的无障碍（axe WCAG AA）、响应式外壳、键盘导航、内容组件、代码块与场景组件六个套件。
 
 > [!TIP] `check-output-security.py` 在主题仓库里
-> 它在主题仓库的 `bin/` 下，是产品级的信任检查，任何 OINK 站点都可以跑，不依赖站点的测试框架。克隆主题仓库后指向自己的 `public/` 即可，参数与用法见[断网构建验证](/zh/docs/admin/preview/#air-gapped)。
+> 它在主题仓库的 `bin/` 下，不依赖站点测试框架。主题工具路径与待检查的站点产物路径应分别指定，完整例子见[断网构建验证](/zh/docs/admin/preview/#air-gapped)。
 
 ## 诊断习惯 {#habits}
 

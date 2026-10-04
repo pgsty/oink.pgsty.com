@@ -166,8 +166,11 @@ cloud instead.
 
 Documentation, blog and term pages carry one group per taxonomy in the right
 column (under the outline), with counted, collapsible chips. The group is
-automatic and has no switch: it appears wherever a taxonomy is defined and the
-current scope has terms.
+automatic by default: it appears wherever a taxonomy is defined and the
+current scope has terms. Set `toc_taxonomies: false` in a page's front matter
+to hide its rail clouds and taxonomy switcher, or set
+`params.ui.toc_taxonomies: false` in `hugo.yml` site-wide. These display settings
+leave the page's tags, byline, series and taxonomy membership intact.
 
 Taxonomy list pages and term pages lead the column with a taxonomy switcher:
 one row per declared taxonomy with its glyph, name and term count, linking to
@@ -243,8 +246,17 @@ The rest of running a multilingual site is in
 
 ## Switching by content type {#per-type}
 
-The theme has no "show on documentation, hide on blog" switch; the control is
-which pages you tag. What this site does:
+To retain the rail clouds on documentation but hide them on a blog section,
+set the display switch on that section index and its descendants:
+
+```yaml {title="content/blog/_index.md front matter"}
+toc_taxonomies: false
+cascade:
+  toc_taxonomies: false
+```
+
+Taxonomy membership is a separate choice: it comes from the terms assigned to
+pages. For example, this documentation site uses:
 
 | Content | categories | tags | Effect |
 | --- | --- | --- | --- |
@@ -257,32 +269,31 @@ the section index's cascade; nothing else is needed. To keep one page out, write
 
 ## Verify {#verify}
 
-Three things to look at on the page:
+Choose a page in your own site with taxonomy terms assigned, then check:
 
-- A "Categories: Customization" line under this page's title;
-- Chips grouped by taxonomy under the outline in the right column, each with a count;
-- [/categories/](/categories/) showing a card for every term, each leading to its term page.
+- Its title area shows the terms selected by `params.taxonomy.page_header`;
+- With `toc_taxonomies` enabled, the right rail shows term groups and counts; disabling it hides the clouds without removing the page's terms;
+- Your taxonomy index (for example `/categories/`) lists terms whose links open their member pages.
 
-On the command line, check the output:
-
-```bash
-hugo -d public
-ls public/categories/          # one directory per term
-grep -c 'taxonomy-term' public/docs/customize/index.html
-```
-
-The theme repository has a dedicated check verifying that no taxonomy pages are
-generated without `taxonomies:`, and that term page titles are correct in both
-languages:
+Run from your site's root, replacing both sample paths with your own page and
+taxonomy output paths, including language prefixes:
 
 ```bash
-cd ~/pgsty/oink && python3 bin/check-taxonomy.py
+hugo --printPathWarnings --panicOnWarning
+PAGE=public/docs/getting-started/index.html
+TAXONOMY_DIR=public/categories
+ls "$TAXONOMY_DIR"
+test -f "$PAGE" && grep -o 'taxonomy-term' "$PAGE"
 ```
+
+The theme's `bin/check-taxonomy.py` is a maintainer regression check using
+synthetic fixtures. It does not inspect your site's content; use the checks
+above to validate your configuration.
 
 ## Limits {#limits}
 
 - `page_header: []` does **not** hide the term line: an empty list is treated as unset and falls back to "list every taxonomy". To remove the line, stop tagging those pages, or hide `.taxonomy-terms-article` in `assets/scss/_styles_project.scss`.
-- The rail cloud has neither a switch nor a cap; a site with very many terms should reduce its taxonomies, as there is no way to trim it in configuration.
+- `toc_taxonomies: false` hides the rail clouds, but there is no configuration key to cap the number of terms in a visible cloud.
 - Term pages have no cross-language pairing: switching language on a term page does not guarantee landing on the same term in the other language.
 
 ## Related {#related}

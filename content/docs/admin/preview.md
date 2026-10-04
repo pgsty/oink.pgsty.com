@@ -238,12 +238,13 @@ make build   # build with the version in go.mod
 make serve   # preview server with the production configuration
 ```
 
-> [!DANGER] A replacement is local only
-> Whether through the environment variable or a Go workspace
-> (`go work init` plus `HUGO_MODULE_WORKSPACE=go.work`), CI and production builds
-> read only `go.mod`; `go.work` records a developer machine's paths and is never
-> committed. To judge whether a release tag works, drop the replacement and build
-> once against the version in `go.mod`.
+> [!DANGER] Local overrides can mask the published version
+> CI and production builds can still inherit replacements or workspaces.
+> Do not commit a workspace containing developer-machine paths. To verify a
+> published tag, unset `HUGO_MODULE_REPLACEMENTS` and set both `GOWORK=off` and
+> `HUGO_MODULE_WORKSPACE=off`. Also inspect persistent replacements in `go.mod`
+> and Hugo configuration, and any `_vendor/` copy; confirm the exact version in
+> `hugo mod graph` under the same environment before building.
 
 ## Verifying an offline build {#air-gapped}
 
@@ -258,12 +259,13 @@ and the browser stage. Six steps:
 1. Check subresource origins and confirm there is no unexpected remote host.
 {.steps}
 
-The last step uses a script from the theme repository that does not depend on
-the site's test framework:
+For the last step, use the output checker from a theme checkout matching your
+pinned release. It needs Python 3, not this documentation site's test framework.
+Replace both absolute paths below and use the same base URL as the build:
 
 ```bash {title="Terminal"}
-python3 bin/check-output-security.py \
-  --public public --base-url https://docs.internal.example.com/
+python3 /path/to/oink/bin/check-output-security.py \
+  --public /path/to/my-site/public --base-url https://docs.internal.example.com/
 ```
 
 The script scans every `href` / `src` / `srcset` / `poster` and form `action` in
@@ -291,7 +293,7 @@ It passes on `Total in …` with no ERROR and no WARNING. Then confirm:
 
 - The log has no npm, PostCSS, Autoprefixer or browser-asset download step. One appearing means upstream Docsy's process has crept into the configuration.
 - `public/` has `sitemap.xml` and `robots.txt`, and `robots.txt` reads `Allow: /`.
-- On a site with local search, `public/` has `offline-search-index.<language>.json` at its root.
+- With local search enabled, each language has an index in `public/`: production filenames are `offline-search-index.<language>.<hash>.json`, while development omits the hash. Open search and confirm the actual `data-td-index-src` URL returns 200.
 - Open representative pages with `hugo server`: one documentation page, one blog page, the home page and the 404, in both languages and both colour schemes.
 
 For a failing build or a wrong result, see

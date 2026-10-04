@@ -381,32 +381,35 @@ validates.
 
 ## Verify {#verify}
 
+Run from your site's root, with Markdown and LLMS outputs enabled. Replace
+`PAGE_MD` with an actual page's generated Markdown file. The section paths below
+assume a `docs` section; adjust them and any language prefix to your site.
+
 ```bash
-hugo -d public
-ls public/llms.txt public/docs/customize/agents/index.md
-ls public/docs/llms-full.txt public/navigation.json   # where you opted in
+hugo --printPathWarnings --panicOnWarning
+PAGE_MD=public/docs/getting-started/index.md
+ls "$PAGE_MD" public/llms.txt
+# Only if you enabled LLMSFULL on docs and NAVJSON on home:
+ls public/docs/llms-full.txt public/navigation.json
 ```
 
-With `curl`, against production or a local preview:
+Against a running local preview or production, use your own base URL and page
+path. `BASE_URL` includes the deployment subpath and, when testing a translated
+site, the language prefix:
 
-```console
-$ curl -s http://localhost:1313/docs/customize/agents/index.md | head -5
-# AI-agent support
-
-> Give every page a `.md` twin, the site root an `llms.txt`, and the reader a way to hand the current page to ChatGPT or Claude.
-
-$ curl -sI http://localhost:1313/llms.txt | head -3
-
-$ curl -s http://localhost:1313/docs/llms-full.txt | head -3
-================
-Source: http://localhost:1313/docs/index.md
-================
+```bash
+BASE_URL=https://your-site.example/
+PAGE_PATH=docs/getting-started/index.md
+curl -fsS "${BASE_URL}${PAGE_PATH}" | head -5
+curl -fsSI "${BASE_URL}llms.txt" | head -3
+# Only if you enabled LLMSFULL on docs:
+curl -fsS "${BASE_URL}docs/llms-full.txt" | head -3
 ```
 
 Then check four things:
 
-- Any page's HTML `<head>` has `rel="alternate" type="text/markdown"`;
-- Clicking the copy button at the right of the breadcrumb row and pasting yields Markdown rather than HTML;
+- The chosen page's HTML `<head>` has `rel="alternate" type="text/markdown"`;
+- Clicking the copy button beside its title and pasting yields Markdown rather than HTML;
 - `llms.txt` contains no off-site links;
 - Where you enabled them: every page in `llms-full.txt` opens with a `Source:` line, and the same page carries the same `id` in each language's `navigation.json`.
 

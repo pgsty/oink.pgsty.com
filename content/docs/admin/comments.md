@@ -61,7 +61,8 @@ keep a redirect or rename the Discussion at the same time.
 
 ## Enabling it site-wide {#enable}
 
-Write the generated identifiers into the site configuration:
+Copy all four repository/category fields from the configuration generated for
+your own repository; replace every placeholder below before enabling comments:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -69,18 +70,18 @@ params:
     enable: true
     type: giscus
     giscus:
-      repo: pgsty/oink.pgsty.com
-      repoId: R_kgDOTzFZAg
-      category: Announcements
-      categoryId: DIC_kwDOTzFZAs4DDCm-
+      repo: YOUR_OWNER/YOUR_REPO
+      repoId: YOUR_REPO_ID
+      category: YOUR_CATEGORY
+      categoryId: YOUR_CATEGORY_ID
       mapping: pathname
       inputPosition: bottom
       theme: auto
       loading: lazy
 ```
 
-That is this site's live configuration. All four of `repo`, `repoId`,
-`category` and `categoryId` are required: if any is missing or only whitespace,
+All four of `repo`, `repoId`, `category` and `categoryId` must describe the
+same repository and its selected Discussion category. They are required: if any is missing or only whitespace,
 Hugo prints one WARNING and skips giscus without failing the build — which is
 why a production build carries `--panicOnWarning`. `type` accepts only `giscus`
 today, and any other value likewise warns and skips. The `params.comments` key

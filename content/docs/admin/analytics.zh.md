@@ -12,15 +12,24 @@ aliases:
 
 ## 接 Google Analytics {#google-analytics}
 
-用 Hugo 内置的服务配置，填 GA4 的 measurement ID：
+用 Hugo 内置的服务配置。启用前，将 `G-YOUR_MEASUREMENT_ID` 换成你自己的
+GA4 measurement ID：
 
 ```yaml {title="hugo.yml"}
 services:
   googleAnalytics:
-    id: G-6JLQEHYFQG
+    id: G-YOUR_MEASUREMENT_ID
 ```
 
-主题只在 production 环境渲染这段脚本（`hugo` 构建默认 production，`hugo server` 默认 development）。本地预览与预览部署因此不上报数据，不需要另加开关。
+主题只在 production 环境渲染这段脚本。普通 `hugo server` 默认使用 development，
+不会上报；但 `hugo` 构建默认 production，即使运行在预览宿主上也一样。PR 与 staging
+部署需要明确选择非 production 环境，并将 `PREVIEW_URL` 设为预览的实际地址：
+
+```bash {title="终端"}
+hugo --panicOnWarning --environment staging --baseURL "$PREVIEW_URL"
+```
+
+详见[预览部署配置](/zh/docs/admin/deploy/#preview-builds)。
 
 不要同时设置已经弃用的顶层 `googleAnalytics` 键。不需要分析时删掉整段配置，不要填一个假 ID。
 
@@ -37,9 +46,11 @@ Plausible、Umami、Matomo 这类服务只要求插入一段脚本。主题提�
 | `layouts/_partials/hooks/body-end.html` | 页面脚本的最后 | 只影响交互、不影响首屏的第三方代码 |
 {.fields}
 
+使用 Plausible 时，先把 `your-site.example` 换成你自己账户中登记的域名，再加入这个钩子：
+
 ```go-html-template {title="layouts/_partials/hooks/head-end.html"}
 {{ if hugo.IsProduction }}
-<script defer data-domain="oink.pgsty.com"
+<script defer data-domain="your-site.example"
         src="https://plausible.io/js/script.js"></script>
 {{ end }}
 ```
@@ -83,15 +94,21 @@ languages:
 
 ## canonical 与 hreflang {#canonical-hreflang}
 
-主题为每个页面输出一条 canonical 和一组 `hreflang` 备用链接，不需要配置：
+主题为每个页面输出一条 canonical，并为实际译文输出 `hreflang` 备用链接，不需要配置：
 
 ```html {title="渲染结果（本页）" copy=false}
 <link rel="canonical" href="https://oink.pgsty.com/zh/docs/admin/analytics/">
 <link rel="alternate" hreflang="zh-CN" href="https://oink.pgsty.com/zh/docs/admin/analytics/">
-<link rel="alternate" hreflang="en-US" href="https://oink.pgsty.com/">
+<link rel="alternate" hreflang="en-US" href="https://oink.pgsty.com/docs/admin/analytics/">
 ```
 
-`hreflang` 的语言代码来自各语言的 `locale`（本站是 `en-US` / `zh-CN`），链接来自 Hugo 的译文关系。上面英文那一条指向站点首页而不是对应的英文页：本页没有英文对等文件，Hugo 找不到译文时回退到目标语言首页。这是预期行为，也可以用来判断译文关系有没有被 Hugo 认出来。
+`hreflang` 的语言代码来自各语言的 `locale`（本站是 `en-US` / `zh-CN`），链接来自
+Hugo 的译文关系。1.2.0 开发实现会从 `hreflang` 和 `og:locale:alternate` 中省略
+缺失的译文。可见的语言切换器仍可跳到目标语言首页，但这种导航回退不代表译文关系。
+
+博客索引的每一分页使用自身的 canonical URL。从第 2 页起不输出语言备用链接，
+因为分页不代表各语言存在一一对应的译文页。这些修正已在 1.2.0 工作树实现；已发布的
+v1.1.0 标签仍保留之前的行为。
 
 canonical 由 `baseURL` 拼出。`baseURL` 配错时 canonical 会把搜索引擎指向不存在的地址，比构建失败更难发现。上线前照[发布上线的验收清单](/zh/docs/admin/deploy/#checklist)查一遍。
 
@@ -198,28 +215,26 @@ Disallow: /
 
 ## 验证 {#verify}
 
+在自己的站点根目录执行。将 `PAGE` 换成自己站点实际生成的页面，并按需包含语言前缀：
+
 ```bash {title="终端"}
 hugo --gc --minify --printPathWarnings --panicOnWarning
-```
+PAGE=public/zh/docs/getting-started/index.html
+test -f "$PAGE"
 
-在产物里查这几项：
-
-```bash {title="终端"}
-# canonical 指向真实生产地址
-grep -o '<link rel="canonical"[^>]*>' public/zh/docs/admin/analytics/index.html
-
-# production 构建才有 index, follow
-grep -o '<meta name="robots"[^>]*>' public/zh/docs/admin/analytics/index.html
-
-# robots.txt 与站点地图
+# canonical 应使用真实生产地址；production 的 robots 允许收录。
+grep -o '<link[^>]*canonical[^>]*>' "$PAGE"
+grep -o '<meta[^>]*robots[^>]*>' "$PAGE"
 cat public/robots.txt
 head -5 public/sitemap.xml
 
-# 没接分析时，产物里不应该有任何 gtag / analytics 请求
-grep -rl 'googletagmanager\|gtag(' public/ | head
+# 未配置 Google Analytics 时，应没有匹配结果。
+grep -o '<script[^>]*googletagmanager[^>]*>' "$PAGE"
 ```
 
-浏览器里再确认一次：打开一个代表性页面，看开发者工具的网络面板，没接分析的站点不应有指向第三方域名的请求。
+在浏览器 Network 面板确认已配置的统计请求使用自己的 measurement ID 或登记域名。
+再检查用 `--environment staging` 构建的预览部署，应没有统计请求。未配置分析时，
+两种环境均不应产生统计请求；其他显式启用的集成仍可能访问各自的远程服务。
 
 ## 相关 {#related}
 

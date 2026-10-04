@@ -26,8 +26,11 @@ all stay out of the page — see [Search](/docs/customize/search/).
 <kbd>/</kbd>, backslash, <kbd>f</kbd> and <kbd>c</kbd> are all bare single keys
 and stand down for typing: while focus is in an input, textarea, select or
 `contenteditable`, and while an input method is composing, they type an ordinary
-character. The modified <kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>K</kbd> has no such
-restriction and opens the palette even from inside a text box.
+character. The modified <kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>K</kbd> can open the
+palette from a text box, but also stands down during input-method composition.
+All opening shortcuts yield to another open native dialog or visible ARIA
+dialog, including a fixed-position dialog; a hidden ARIA dialog does not block
+them.
 
 Inside the palette: <kbd>↑</kbd> <kbd>↓</kbd> select, <kbd>Enter</kbd> runs, and
 <kbd>Esc</kbd> closes and returns focus to whatever opened it.
@@ -123,27 +126,32 @@ are one implementation: the same action descriptors, the same URL generation, th
 same executor. The button's left half copies this page's Markdown, and the arrow
 on the right expands every action.
 
-To turn the whole group off, or off on certain pages:
+To hide the button beside the title, set `page_context_menu: false`. The
+corresponding actions stay in the palette:
 
 ```yaml {title="hugo.yml"}
 params:
   ui:
-    page_context_menu:
-      enable: true
-      # "Open in ChatGPT / Claude" appears only once this is on
-      assistant_links: false
-      links: []
+    page_context_menu: false
 ```
 
-`enable: false` removes only the button beside the title; the corresponding
-items stay in the palette, which is itself the command entry point. A single
-page overrides it with the front matter `page_context_menu: false`.
+To hide the button on just one page, use `page_context_menu: false` in that
+page's front matter instead.
 
 `assistant_links` is off by default because clicking one **sends the current
 page's full URL — including query string and anchor — to a third party**, while
-the body is never uploaded. That is a site-level choice, and a page's
-`assistant_links` in front matter can only narrow it, never enable it on the
-site's behalf.
+the body is never uploaded. Enable it site-wide through
+`params.ui.page_context_menu.assistant_links`. A page can only narrow that
+policy with the following front matter:
+
+```yaml {title="Page front matter"}
+page_context_menu:
+  assistant_links: false
+```
+
+Check both the title menu and the palette: neither should offer the assistant
+links on that page. [AI-agent support](/docs/customize/agents/) explains the
+handoff behavior.
 
 `links` adds external actions that appear only in the menu beside the title, not
 in the palette:
@@ -218,13 +226,20 @@ and OINK adds no remote service or telemetry by default.
 
 ## Verify {#verify}
 
+Run from your site's root after a strict build. In the commands below, replace
+`public/docs/getting-started/index.html` with an actual generated documentation
+page in your site (including a language prefix if needed).
+
 1. After a build, confirm the command manifest reached the page:
 
    ```bash
-   grep -o 'id="oink-action-manifest"' public/docs/customize/panel/index.html
+   hugo --printPathWarnings --panicOnWarning
+   PAGE=public/docs/getting-started/index.html
+   test -f "$PAGE" && grep -o 'td-action-manifest' "$PAGE"
    ```
 
-   Its absence means local search is off, or this page is not in a shell layout.
+   This confirms the action data reached the HTML; the remaining steps check
+   the palette interface with local search enabled.
 
 2. Open the site and press <kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>K</kbd> without typing: quick links, page actions, preferences and commands should appear in that order.
 

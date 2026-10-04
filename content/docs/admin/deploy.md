@@ -50,9 +50,12 @@ hugo --gc --minify --baseURL "https://example.com/docs/"
 > `baseURL`, and turning `canonifyURLs` on rewrites the relative links that were
 > already correct, making the problem harder to locate.
 
-To tell whether it matches, look at the search index request path after a build:
-the browser should fetch `<baseURL>/offline-search-index.en.json`, and fetching
-it from anywhere else means `baseURL` is wrong.
+With local search enabled, open search and inspect its index request in the
+browser's Network panel. It must use the correct language and deployment
+subpath and return 200. The page's `data-td-index-src` attribute supplies the
+actual URL: production filenames are
+`offline-search-index.<language>.<hash>.json`; development filenames have no
+hash. Do not test a guessed filename.
 
 ## Choosing a host {#hosts}
 
@@ -209,14 +212,16 @@ use one Hugo version, unless the preview environment exists to test an upgrade.
 directory `public`, environment variable `HUGO_VERSION`. It likewise needs no
 npm install.
 
-**Any static server (Nginx / Caddy)** — lay the contents of `public/` down as
-they are:
+**Any static server (Nginx / Caddy)** — serve an unchanged copy of `public/`.
+The example below uses a `current` symlink to a release directory; create it
+with the offline packaging steps below. Set the host's document root to that
+link when configuring Nginx or Caddy:
 
 ```nginx {title="/etc/nginx/conf.d/docs.conf"}
 server {
     listen 80;
     server_name docs.example.com;
-    root /var/www/oink;
+    root /var/www/oink/current;
     index index.html;
 
     location / {
@@ -249,18 +254,38 @@ the standard environment variables or configuration file (on AWS, confirm with
 `aws s3 ls` first).
 
 **Offline packaging** — in a network-isolated environment, build on a connected
-machine and carry the output across as one package:
+machine and carry the output across as one package. Choose your own archive path
+and a new release name for every artifact. On the Linux host, these commands
+require write access to `/var/www/oink` and GNU `mv`; `current` must be absent or
+a symlink, and `current.next` must not already exist. Configure Nginx or Caddy to
+serve `current`, as above; this is a host setting, not a Hugo option.
 
 ```bash {title="Terminal"}
-hugo --gc --minify --baseURL "https://docs.internal.example.com/"
-tar -czf oink-site-$(date +%Y%m%d).tar.gz -C public .
+hugo --cleanDestinationDir --gc --minify --panicOnWarning --baseURL "https://docs.internal.example.com/" &&
+  tar -czf oink-site-20260929-01.tar.gz -C public .
 
-# on the target machine
-tar -xzf oink-site-20260817.tar.gz -C /var/www/oink
 ```
 
-Build with the target environment's `baseURL` from the start; the absolute links
-in the output cannot be changed after unpacking.
+Only after the build and packaging succeed, transfer this archive to the Linux
+host and run the following there. Use a new release name for every artifact:
+
+```bash {title="Linux host"}
+release_dir=/var/www/oink/releases/20260929-01
+mkdir -p /var/www/oink/releases
+mkdir "$release_dir" &&
+  tar -xzf oink-site-20260929-01.tar.gz -C "$release_dir" &&
+  test -f "$release_dir/index.html" &&
+  ln -s "$release_dir" /var/www/oink/current.next &&
+  mv -Tf /var/www/oink/current.next /var/www/oink/current
+```
+
+The command chain switches `current` only after a new directory is created,
+extraction succeeds and `index.html` exists. Check the deployed pages afterward
+and retain the previous release directory for rollback. Never unpack a release
+over an existing release directory.
+
+Build with the target environment's `baseURL` from the start; changing it requires
+a new build.
 
 **A host without Go** — the Hugo Module method needs Go in the build
 environment. Where a platform does not provide it, switch to a Git submodule
@@ -331,7 +356,7 @@ be checked on the real URL.
 | `baseURL` is correct | `<link rel="canonical">` in the page source points at the real production address, subpath included |
 | Sitemap | `<baseURL>/sitemap.xml` resolves; a multilingual site has an index pointing at `/en/sitemap.xml` and `/zh/sitemap.xml` |
 | robots | `<baseURL>/robots.txt` reads `Allow: /` with a `Sitemap:` line; a preview deployment should read `Disallow: /` |
-| Search index | The browser can fetch `<baseURL>/offline-search-index.<language>.json`, and site search returns results |
+| Search index | With local search enabled, the URL from `data-td-index-src` returns 200; production filenames contain a hash, and site search returns results |
 | Markdown output | Appending `index.md` to any page URL returns plain text (where the site enabled `markdown` under `outputs.page`) |
 | `llms.txt` | The primary and every enabled language root publish `llms.txt` where the site enabled `LLMS` under `outputs.home` |
 | Enabled languages | Documentation, blog and home pages open in each, and switching language lands on the corresponding page rather than the home page |
@@ -350,7 +375,20 @@ edit files by hand in production.
 
 - GitHub Pages: find the last successful `Deploy to GitHub Pages` run in Actions and click Re-run all jobs; or `git revert` the offending commit and push again.
 - Cloudflare Pages / Netlify / Vercel: pick the last successful deployment from the list and use the platform's Rollback / Publish deploy to make it production again.
-- A self-hosted static server: keep the previous `tar.gz` and unpack it over the top. The dated suffix in [offline packaging](#hosts) exists for exactly this.
+- A self-hosted static server: point `current` back to the previous release directory from [offline packaging](#hosts). Do not overlay the old archive on the new files: paths added by the newer release would remain live.
+
+On the Linux host, replace the example path with the retained known-good release.
+The same symlink and GNU `mv` prerequisites apply:
+
+```bash {title="Terminal"}
+previous_release=/var/www/oink/releases/20260928-01
+test -d "$previous_release" &&
+  ln -s "$previous_release" /var/www/oink/current.next &&
+  mv -Tf /var/www/oink/current.next /var/www/oink/current
+```
+
+Check a representative old page at the public URL and confirm that a path added
+only by the rejected release is no longer served.
 
 Where the problem is a theme upgrade rather than the content, what rolls back is
 the version pinned in `go.mod` — see
