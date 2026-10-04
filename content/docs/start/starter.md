@@ -1,7 +1,7 @@
 ---
 title: Use OINK Starter
 linkTitle: OINK Starter
-description: Turn the official starter into your project site, one controlled layer at a time — identity, languages, home page, content, navigation, brand, integrations, and deployment.
+description: Turn the official starter into your project site, one controlled layer at a time — languages, identity, home page, content, navigation, brand, integrations, and deployment.
 weight: 10
 icon: fa-solid fa-wand-magic-sparkles
 search_keywords: [OINK Starter, GitHub template, use this template, customize starter, starter repository]
@@ -78,14 +78,40 @@ Also record the resolved module:
 hugo mod graph | grep github.com/pgsty/oink
 ```
 
-It should resolve the version recorded in the template's `go.mod`, currently
-`github.com/pgsty/oink@v1.0.0`. This unchanged preview is the baseline against
-which every later edit is judged. After verifying it, follow the
-[1.0-to-1.1 upgrade checklist](/docs/admin/upgrade/#from-1-0) to adopt OINK 1.1.
+The template snapshot `137843b` documented here pins
+`github.com/pgsty/oink@v1.0.0`; if the template has since changed, use the version
+in your clone's `go.mod`. This unchanged preview is your baseline. After that
+first success, upgrade a site still using 1.0 as a separate step with the
+[1.0-to-1.1 checklist](/docs/admin/upgrade/#from-1-0), before customizing content.
 
 ## Customize in layers {#customize}
 
-### Layer 1: identity {#identity}
+### Layer 1: language profile {#languages}
+
+The root configuration enables English, Chinese, and French. Before making
+other configuration edits, choose one of the supplied profiles when that is
+not your intended language set. Choose one of these commands:
+
+```bash
+cp examples/hugo.single.yaml hugo.yaml     # English only
+cp examples/hugo.bilingual.yaml hugo.yaml  # English + Chinese
+```
+
+These are complete minimal configurations, not fragments: copying one replaces
+the commented integration examples in the root file. Do it at the beginning;
+if `hugo.yaml` already contains project changes, merge the `languages` and
+`disableLanguages` sections instead of overwriting it.
+
+If you already changed the title and URL in Get started, keep that file. To
+change the default three-language setup to English and Chinese, add only
+`disableLanguages: [fr]` at the top level; use `[zh, fr]` for English only.
+This preserves the identity and integration settings you have already changed.
+
+Disabled languages stay declared so Hugo recognizes `.zh.md` and `.fr.md` as
+translations and safely ignores them. If you remove a language permanently,
+remove its content and home data only after the selected profile builds.
+
+### Layer 2: identity {#identity}
 
 Change the two marked values at the top of `hugo.yaml`:
 
@@ -109,26 +135,6 @@ params:
 Run `hugo server` again and check the browser title, footer, edit/history links,
 and canonical URL. Do not change the logo yet unless the project has final
 artwork; text identity is easier to review first.
-
-### Layer 2: language profile {#languages}
-
-The root configuration enables English, Chinese, and French. Before making
-other configuration edits, choose one of the supplied profiles when that is
-not your intended language set:
-
-```bash
-cp examples/hugo.single.yaml hugo.yaml     # English only
-cp examples/hugo.bilingual.yaml hugo.yaml  # English + Chinese
-```
-
-These are complete minimal configurations, not fragments: copying one replaces
-the commented integration examples in the root file. Do it at the beginning;
-if `hugo.yaml` already contains project changes, merge the `languages` and
-`disableLanguages` sections instead of overwriting it.
-
-Disabled languages stay declared so Hugo recognizes `.zh.md` and `.fr.md` as
-translations and safely ignores them. If you remove a language permanently,
-remove its content and home data only after the selected profile builds.
 
 ### Layer 3: home page {#home}
 

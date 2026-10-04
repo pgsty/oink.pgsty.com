@@ -75,7 +75,7 @@ only neutral project content and deployment workflows.
 
 ## Customize from shallow to deep {#learning-path}
 
-- [Use OINK Starter](/docs/start/starter/) — identity first, then languages,
+- [Use OINK Starter](/docs/start/starter/) — choose languages first, then identity,
   home page, content, navigation, brand, integrations, and deployment.
 - [Starter repository tour](/docs/start/anatomy/) — which file owns each part
   of the site, what to replace, and what can be removed.
@@ -120,9 +120,11 @@ site or when you explicitly want to assemble every file yourself.
 
 Section pages:
 
-- [Use OINK Starter](/docs/start/starter/): Turn the official starter into your project site, one controlled layer at a time — identity, languages, home page, content, navigation, brand, integrations, and deployment.
+- [Use OINK Starter](/docs/start/starter/): Turn the official starter into your project site, one controlled layer at a time — languages, identity, home page, content, navigation, brand, integrations, and deployment.
 - [Starter repository tour](/docs/start/anatomy/): A file-level map of oink-starter — what owns identity, languages, home, content, navigation, brand, deployment, and the pinned theme.
-- [From scratch and other install methods](/docs/start/from-scratch/): Build a minimal OINK site in an empty directory, and weigh the four install methods — Module, submodule, offline archive, pinned clone.
+- [From scratch and other install methods](/docs/start/from-scratch/): Build a minimal OINK site in an empty directory, and weigh the four install methods — Module, submodule, offline archive, pinned source copy.
+- [OINK CLI capabilities and next steps](/docs/start/cli-overview/): The 2026-09-30 six-command CLI snapshot, its safety and automation features, and the development directions proposed at that time.
+- [Use the OINK CLI](/docs/start/cli/): Build the optional Go executable locally, initialize a pinned Starter, inspect existing sites, and validate a single-site upgrade before writing.
 
 ---
 

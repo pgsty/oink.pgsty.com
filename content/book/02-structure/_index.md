@@ -19,33 +19,57 @@ small engineering site usually needs a start section, a reference, operations
 guidance, and a record of change. Add a directory only when it gives several
 pages a useful shared context.
 
+Keep the Starter from Chapter 1, including its existing examples. In this
+chapter, add one English page and its Chinese peer under the existing Docs
+section. French can remain enabled; this exercise adds only the two peers below.
+
 ## Build the tree {#content-tree}
 
-```filetree {title="A small bilingual documentation tree"}
+```filetree {title="Files used by this exercise; other Starter files stay in place"}
 - content/
-  - _index.md
-  - _index.zh.md
   - docs/
-    - _index.md
-    - _index.zh.md
-    - start/
-      - _index.md
-      - _index.zh.md
-      - install.md
-      - install.zh.md
-  - blog/
-    - _index.md
-    - _index.zh.md
+    - _index.md                         # existing section root
+    - _index.zh.md                      # existing translated root
+    - preview-check.md                  # add this page
+    - preview-check.zh.md               # add its translation
 ```
 
-Every directory that readers can enter gets an `_index.md`. A translation sits
-beside its English source with the `.zh.md` suffix. Use a Page Bundle when a
-page owns images or downloads; keep a single Markdown file when it does not.
+Create these two files with the complete contents below. The section roots
+already exist; do not replace them.
+
+```markdown {title="content/docs/preview-check.md"}
+---
+title: Verify a local preview
+description: Check that a documentation edit reaches the browser.
+weight: 25
+---
+
+## Check the preview {#check-preview}
+
+Open this page locally, change this sentence, and confirm the browser updates.
+```
+
+```markdown {title="content/docs/preview-check.zh.md"}
+---
+title: 验证本地预览
+description: 确认文档修改已经显示在浏览器中。
+weight: 25
+---
+
+## 检查预览 {#check-preview}
+
+在本地打开本页，修改这句话，再确认浏览器已显示新内容。
+```
+
+A translation sits beside its English source with the `.zh.md` suffix. These
+pages have no images or downloads, so individual Markdown files are enough;
+use a page bundle when a page owns those resources.
 
 ## Keep order explicit {#ordering}
 
-Use weights in multiples of ten. The gaps leave room for a future page without
-renumbering every sibling.
+The existing sections use spaced weights. The new page uses `25` so it can
+fit between neighbors without renumbering them. Keep the same weight on both
+translations. For a new tree, multiples of ten leave similar room to grow:
 
 | Item | Weight | Why it comes here |
 | --- | ---: | --- |
@@ -62,9 +86,10 @@ Chinese pages use the same ID even though their visible headings differ. This
 keeps links, the table of contents, and whole-book print aligned across both
 languages.
 
-The [Chapter 1 baseline](/book/01-start/#baseline) is a visible reference
-point. The tree in this chapter gives every later change a stable place
-relative to it.
+With `hugo server` running, open `/docs/preview-check/` and
+`/zh/docs/preview-check/`. Both should appear in their Docs sidebar, and the
+language switch should open the matching peer. The heading in both pages
+should have `#check-preview`. Keep these files for Chapter 3.
 
 For the complete rules, see [Writing pages](/docs/write/pages/) and
 [Organizing content](/docs/write/organize/).

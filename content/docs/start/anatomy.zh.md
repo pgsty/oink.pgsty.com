@@ -57,26 +57,26 @@ Go 模块缓存。
 | --- | --- | --- |
 | `hugo.yaml` | 身份、规范 URL、语言、输出、主题功能、可选集成 | 修改两个标记值；其它修改前先选择语言 profile |
 | `data/home/` | 首页承诺、卡片与行动入口 | 一种语言确认后，再重写所有已启用语言 |
-| `content/` | 全部读者可见内容 | 替换示例叶子；确认整个表面不要时才删除栏目根 |
+| `content/` | 全部读者可见内容 | 替换示例叶子；确认整个内容区不要时才删除栏目根 |
 | `assets/icons/logo.svg` | 经处理的 Logo | 有正式图形后再替换 |
 | `static/favicon.svg` | 浏览器图标 | 与 Logo 一起评审后替换 |
 | `hugo.yaml` 中的 `params.github_*` | 编辑、历史、新建页面与 issue 链接 | 目标仓库已存在后才取消注释 |
 
 ## 哪些必须保留 {#keep}
 
-- `go.mod` 与 `go.sum`：两者共同固定并校验 OINK {{% param version %}}，都要提交。
+- `go.mod` 与 `go.sum`：两者共同固定并校验模板选定的 OINK 版本，都要提交；这条基线与后续升级分开记录。
 - `hugo.yaml` 中三项 Goldmark 设置：原生 Steps、Cards、Fields、图片属性与 Book
   目标都依赖它们。
 - `outputs`：删除 `markdown`、`LLMS` 或 `print`，会有意删除对应的 Markdown、
-  Agent 索引或打印表面。
+  Agent 索引或打印内容区。
 - workflow 中的 `fetch-depth: 0`：保留 `enableGitInfo` 时，最后修改与贡献者事实需要
   完整 Git 历史。
 - CI 中的 `GOWORK: off` 与 `HUGO_MODULE_WORKSPACE: off`：开发者本地 workspace 不得
   替换 CI 正在验证的公开版本。
 
-## 可选表面 {#optional}
+## 可选内容区 {#optional}
 
-Docs、Blog 与 Book 是彼此独立的顶层表面。安全删除其中一个的顺序是：
+Docs、Blog 与 Book 是彼此独立的顶层内容区。安全删除其中一个的顺序是：
 
 1. 删除对应的 `content/<surface>/` 内容树；
 1. 删除首页指向它的卡片或链接；
@@ -85,7 +85,7 @@ Docs、Blog 与 Book 是彼此独立的顶层表面。安全删除其中一个�
 {.steps}
 
 不要只删除某种语言的栏目根：那会形成难以区分「有意不对称」与「漏译」的语言专属导航
-和回退行为。要么在所有已启用语言中删除整个表面，要么明确记录这种不对称。
+和回退行为。要么在所有已启用语言中删除整个内容区，要么明确记录这种不对称。
 
 完成语言选择后，`examples/` 下两个配置 profile 可以删除，也可以作为参考保留；真正
 生效的站点配置只有根目录 `hugo.yaml`。
@@ -131,8 +131,10 @@ module github.com/OWNER/PROJECT-DOCS
 
 go 1.27.0
 
-require github.com/pgsty/oink {{< param tdVersion.latest >}}
+require github.com/pgsty/oink v1.0.0
 ```
+
+这里展示教程采用的 Starter 快照 `137843b`，不是 OINK 最新版本；更新模板应以自己的 `go.mod` 为准。
 
 `hugo mod graph` 显示实际解析版本。生产使用 `go.mod` 中的精确标签；本地
 `HUGO_MODULE_REPLACEMENTS` 只是开发覆盖，绝不能提交，也不能当成发布证明。
@@ -150,7 +152,7 @@ GitHub Pages workflow 在推送 `main` 后自动运行；仓库设置必须选�
 ## 安全的定制顺序 {#order}
 
 1. 证明未修改的预览可用。
-1. 修改身份并选择语言。
+1. 先选择语言，再修改身份。
 1. 替换一种首页，再补齐译文。
 1. 替换内容并验证导航。
 1. 品牌与阅读功能一次只改一组。

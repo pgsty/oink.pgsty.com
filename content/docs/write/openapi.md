@@ -6,12 +6,12 @@ weight: 70
 search_keywords: [API, OpenAPI, Swagger, Swagger UI, Redoc, swagger, spec, specification]
 ---
 
-An API reference page is one OpenAPI specification plus one shortcode. The
-Swagger UI and Redoc runtimes ship with the theme (versions 5.32.13 and 2.5.3
-respectively, per the repository's `VENDOR.json`), load only on a page that uses
-them in its HTML output, and reach no external service at build time or in the
-browser. Swagger UI's online validator is pinned off (`validatorUrl: null`), so
-a published API page never sends its specification address anywhere.
+An API reference page is one OpenAPI specification plus one shortcode. Choose
+Swagger UI when readers need to try requests, or Redoc for browsing endpoint
+descriptions and schemas. Both runtimes ship with the theme and load only on
+pages that use them in HTML output, without a CDN. Swagger UI's online validator
+is disabled; remote specifications and API requests still contact their
+configured hosts.
 
 Three steps: put the specification file under `static/`, create a page with the
 shortcode, and change the page `type` to `swagger` if it needs the dedicated
@@ -43,7 +43,8 @@ specification. Only `http` and `https` are accepted: any other scheme, a
 protocol-relative `//host`, or an empty value warns and the shortcode renders
 nothing.
 
-The examples below use the real `/openapi/docs-demo.yaml`, a demonstration
+To try the examples, download [docs-demo.yaml](/openapi/docs-demo.yaml) and save
+it as `static/openapi/docs-demo.yaml` in your site. It describes a demonstration
 cluster-management API with no reachable server behind it.
 
 ## Swagger UI {#swaggerui}
@@ -56,19 +57,12 @@ resolves correctly:
 {{</* swagger src="/openapi/docs-demo.yaml" */>}}
 ```
 
-It renders a container with `class="td-swagger-ui"` carrying the specification
-address in `data-td-spec-url`; a single cacheable `js/chunks/swagger-init.js`
-mounts every container on the page. The container ID is derived from the page
-address and the shortcode's ordinal (`td-swagger-<hash>-<n>`), so one page can
-hold several.
+In your local preview, this displays expandable API operations, request
+parameters and response schemas. "Try it out" sends requests to the
+specification's `servers` address; the sample has no working backend.
 
-This page shows the source without rendering Swagger UI: the markup it generates
-carries axe WCAG AA violations (the server dropdown has no accessible name, and
-the version stamp is a scrollable region without keyboard access), and this
-site's accessibility gate requires zero violations per page. The Redoc below is
-really rendered — but be aware that both widgets are scoped out of that gate,
-because Redoc's operation descriptions have their own colour-contrast defect.
-Neither is a fully accessible interface; see [Limits](#limits).
+This page shows Swagger UI source and a live Redoc example below. Both widgets
+have known accessibility limitations; see [Limits](#limits).
 
 ## Redoc {#redoc}
 
@@ -136,7 +130,7 @@ four outputs.
 
 - Both components derive their container ID from the page address and the shortcode's ordinal, so several on one page never collide.
 - The two can coexist on one page, but the page becomes long and its HTML output loads both runtimes. Pick one for a production site.
-- Neither interface is fully accessible, and both come from upstream distributions the theme does not rewrite. Swagger UI's markup has axe WCAG AA violations (`select-name`, `scrollable-region-focusable`); Redoc's operation descriptions fail AA colour contrast. This site excludes `.td-swagger-ui` and `.td-redoc` from its zero-violation gate for that reason — a site with such a gate has to do the same, and should say so rather than assume either widget passes.
+- Neither interface is fully accessible: Swagger UI has unnamed server controls and scrollable regions without keyboard access; Redoc's operation descriptions have insufficient colour contrast. Assess these limitations against your site's accessibility requirements. Excluding a widget from an automated check does not make it conformant; provide readable endpoint documentation when an embedded widget is unsuitable.
 - `redoc` accepts no attribute parameter: a second positional argument warns and the shortcode renders nothing.
 - A local `redoc` path is rooted under `static/`; a leading `/` is optional, and page resources are not resolved.
 - The specification must be fetchable by the browser: put it in `static/` and confirm the file exists under `public/` after a build.
@@ -147,7 +141,7 @@ four outputs.
 1. The build is warning-free: `hugo --printPathWarnings --panicOnWarning`.
 2. The specification really was published: `ls public/openapi/docs-demo.yaml`, or open `http://localhost:1313/openapi/docs-demo.yaml`.
 3. Endpoints expand on the page and their schemas appear; the browser console shows no 404 and no cross-origin error.
-4. Reload once with the network off: the runtimes are local, and with a same-origin specification the interface should still appear.
+4. Disconnect from the external network while keeping the local preview server reachable, then reload: local runtimes and a same-origin specification should still appear.
 
 ## Related {#related}
 

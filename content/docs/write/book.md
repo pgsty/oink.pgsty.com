@@ -19,6 +19,9 @@ Two prerequisites: the site's `markup.goldmark` has attribute lines and
 passthrough enabled (see [Components](/docs/components/)); and
 `params.ui.shell_types` still contains `book` (the theme default includes it).
 
+For a new book, start with the directory below. For an existing manuscript,
+see [Migrating an existing manuscript](#migrate).
+
 ## A book's directory {#layout}
 
 The book root is an ordinary Hugo section, chapters are its subdirectories, and
@@ -145,9 +148,9 @@ An attribute line follows a pipe table, and the default ID is `tbl-<num>`.
 ### Equations {#equation}
 
 An attribute line follows a `$$` block, and the default ID is `eq-<num>`. The
-number and caption sit on one non-wrapping line to the right of the formula, so
-a long caption squeezes the formula column until it becomes a horizontally
-scrolling region. Keep an equation caption short.
+number and caption sit to the right of the formula on wider screens. On narrow
+screens they move below it and wrap; a wide formula can scroll horizontally.
+Short captions keep the equation easy to scan.
 
 ```markdown {title="Source"}
 $$
@@ -193,9 +196,11 @@ GROUP BY 1 ORDER BY 1 DESC LIMIT 7;
 
 The four shortcodes `fig`, `tbl`, `eq` and `eg` render a `<figure>` identical to
 the native form, register into the same target table, and sort by source
-position. Use them only where the native form cannot reach: an image that needs
-an outbound link, several tables under one number, a site without passthrough,
-or an example body made of several fences and prose.
+position. Use them where the native form cannot reach: a figure with several
+images or other Markdown, several tables under one number, a site without
+passthrough, or an example body made of several fences and prose. A single
+numbered image can use `link` in its native attribute line; it does not need
+`fig` just for an outbound link.
 
 `fig` takes `src=` (it also accepts inner Markdown content, and the two are
 mutually exclusive) and additionally supports `link`, `alt`, `width`, `height`,

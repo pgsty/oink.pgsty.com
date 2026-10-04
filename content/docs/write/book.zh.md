@@ -13,6 +13,8 @@ aliases:
 
 前提两条：站点的 `markup.goldmark` 已开启属性行与 passthrough（见[组件总览](/zh/docs/components/)）；`params.ui.shell_types` 保留 `book`（主题默认包含）。
 
+新建一本书时，从下面的目录结构开始；已有书稿可先看[迁移既有书稿](#migrate)。
+
 ## 一本书的目录 {#layout}
 
 书根是一个普通的 Hugo section，章是它的子目录，节是章里的页面。没有第二份章节清单：侧栏、翻页器、生成的目录读的都是这棵树。
@@ -116,7 +118,7 @@ weight: 20
 
 ### 式 {#equation}
 
-`$$` 块后面跟属性行，默认 ID 是 `eq-<num>`。编号与题注排在公式右侧的同一行里，不换行；题注写长了会挤压公式那一列，公式随之变成需要横向滚动的区域。公式的题注要短。
+`$$` 块后面跟属性行，默认 ID 是 `eq-<num>`。宽屏上，编号与题注排在公式右侧；窄屏上移到公式下方并换行，过宽的公式可以横向滚动。题注简短些更方便阅读。
 
 ```markdown {title="源码"}
 $$
@@ -155,7 +157,7 @@ GROUP BY 1 ORDER BY 1 DESC LIMIT 7;
 
 ## 编号：shortcode 形态 {#numbering-shortcodes}
 
-四个 shortcode `fig` `tbl` `eq` `eg` 渲染出与原生形态一致的 `<figure>`，注册到同一个目标表，按源码位置排序。仅在原生形态做不到时使用：图片要外链跳转、表格要在一个编号下放多张表、站点未开 passthrough、例子体是多个围栏加说明文字。
+四个短代码 `fig`、`tbl`、`eq`、`eg` 渲染出与原生形态一致的 `<figure>`，注册到同一个目标表，按源码位置排序。原生形态做不到时再使用：一幅图含多张图片或其他 Markdown、一个编号下放多张表、站点未开 passthrough，或示例包含多个围栏与说明。单张编号图片可以在原生属性行里写 `link`，无需仅为了外链改用 `fig`。
 
 `fig` 用 `src=`（也接受内部 Markdown 内容，二者互斥），并额外支持 `link` `alt` `width` `height` `class` 与迁移用的 `title` 别名：
 

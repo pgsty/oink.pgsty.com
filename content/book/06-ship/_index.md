@@ -25,18 +25,20 @@ that revision.
 
 ## Validate the smallest useful surface {#validate}
 
-Start with the checker that owns the changed contract, then widen the scope.
-For this site, a strict local build against the sibling theme checkout is an
-explicit development operation:
+From your Starter repository, run the ordinary production build before using
+the deployment workflow you selected:
 
 ```bash
-HUGO_MODULE_REPLACEMENTS='github.com/pgsty/oink -> /path/to/oink' \
-  npm run build -- --panicOnWarning
+hugo --cleanDestinationDir --gc --minify --environment production \
+  --printPathWarnings --panicOnWarning
 ```
 
-Before a public release, repeat the build without the replacement and verify
-the module selected by `go.mod`. Record which command produced each result so
-another maintainer can reproduce it.
+Check that `hugo mod graph` resolves the intended release in `go.mod`, then
+follow the [Starter deployment steps](/docs/start/starter/#build-deploy).
+A normal Starter site needs no npm build script or sibling theme checkout.
+If you are also changing OINK itself, follow the separate
+[theme-development workflow](/docs/start/from-scratch/#local-theme-checkout).
+Record the build, workflow result, and public URL checks separately.
 
 ## Review the rendered result {#visual-review}
 

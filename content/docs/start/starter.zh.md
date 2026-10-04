@@ -1,7 +1,7 @@
 ---
 title: 使用 OINK Starter
 linkTitle: OINK Starter
-description: 按身份、语言、首页、内容、导航、品牌、集成、部署的顺序，把官方 Starter 逐层变成你的项目站点。
+description: 按语言、身份、首页、内容、导航、品牌、集成、部署的顺序，把官方 Starter 逐层变成你的项目站点。
 weight: 10
 icon: fa-solid fa-wand-magic-sparkles
 search_keywords: [OINK Starter, GitHub 模板, Use this template, 定制 Starter, starter repository]
@@ -17,10 +17,10 @@ search_keywords: [OINK Starter, GitHub 模板, Use this template, 定制 Starter
 
 ## 模板包含什么 {#contents}
 
-| 表面 | 内置基线 | 第一个决定 |
+| 内容区 | 内置基线 | 第一个决定 |
 | --- | --- | --- |
 | 语言 | 英语、简体中文、法语 | 保留三语，或选择内置单语 / 双语 profile |
-| 内容 | Docs、Blog 与一本简短 Book 教程 | 重写示例；确认整个表面不需要时才整棵删除 |
+| 内容 | Docs、Blog 与一本简短 Book 教程 | 重写示例；确认整个内容区不需要时才整棵删除 |
 | 首页 | 每种语言一份精简 `data/home/<lang>.yaml` | 替换项目承诺与入口 |
 | 品牌 | 中性 Logo 与 favicon | 有正式项目图形之前先保留 |
 | 集成 | 仓库、Giscus、分析、分享、反馈示例均被注释 | 只启用你准备长期运营的完整配置 |
@@ -64,7 +64,7 @@ hugo server
 依次打开：
 
 - `/`、`/zh/`、`/fr/`：三个首页；
-- `/docs/`、`/blog/`、`/book/`：三种内容表面；
+- `/docs/`、`/blog/`、`/book/`：三种内容区；
 - 任意一组译文，再操作语言切换器；
 - 本地搜索、深浅色切换，以及一个窄屏视口。
 
@@ -74,13 +74,35 @@ hugo server
 hugo mod graph | grep github.com/pgsty/oink
 ```
 
-结果应与模板 `go.mod` 中的版本一致，当前为 `github.com/pgsty/oink@v1.0.0`。这份未修改
-的预览，是后面判断每次改动的基线。验证通过后，按
-[1.0 → 1.1 升级核对项](/zh/docs/admin/upgrade/#from-1-0) 升级到 OINK 1.1。
+本文记录的模板快照 `137843b` 固定 `github.com/pgsty/oink@v1.0.0`；
+如果模板后来更新，以你克隆出的 `go.mod` 为准。这份未修改的预览是后续改动的基线。
+先完成首次预览，再单独按[1.0 → 1.1 升级核对项](/zh/docs/admin/upgrade/#from-1-0)
+升级仍使用 1.0 的站点，不要把主题升级与首次内容定制混在一次操作里。
 
 ## 分层定制 {#customize}
 
-### 第一层：站点身份 {#identity}
+### 第一层：语言配置 {#languages}
+
+根配置默认启用英语、中文和法语。如果这不是目标语言组合，请在其它配置修改之前
+选择内置 profile。以下两条命令二选一：
+
+```bash
+cp examples/hugo.single.yaml hugo.yaml     # 仅英文
+cp examples/hugo.bilingual.yaml hugo.yaml  # 英文 + 中文
+```
+
+这两份是完整的最小配置，不是可以叠加的片段；复制会覆盖根文件里那些被注释的集成
+示例。因此应在最开始做；`hugo.yaml` 已有项目修改时，只合并 `languages` 与
+`disableLanguages`，不要整文件覆盖。
+
+如果已按快速上手修改站名与 URL，不必复制整份 profile。默认三语改为英中双语时，
+只需在现有 `hugo.yaml` 顶层加入 `disableLanguages: [fr]`；仅英文则使用 `[zh, fr]`。
+这样可以保留已完成的身份与集成配置。
+
+未启用语言仍保留声明，让 Hugo 能识别 `.zh.md` 与 `.fr.md` 是译文并安全忽略。
+要永久移除一种语言，先确认所选 profile 能构建，再删除对应内容与首页数据。
+
+### 第二层：站点身份 {#identity}
 
 修改 `hugo.yaml` 顶部标有 `CHANGE ME` 的两个值：
 
@@ -104,23 +126,6 @@ params:
 重新运行 `hugo server`，检查浏览器标题、页脚、编辑 / 历史链接与 canonical URL。
 项目图形尚未定稿时先不要改 Logo；文字身份更容易先完成评审。
 
-### 第二层：语言 profile {#languages}
-
-根配置默认启用英语、中文和法语。如果这不是目标语言组合，请在其它配置修改之前
-选择内置 profile：
-
-```bash
-cp examples/hugo.single.yaml hugo.yaml     # 仅英文
-cp examples/hugo.bilingual.yaml hugo.yaml  # 英文 + 中文
-```
-
-这两份是完整的最小配置，不是可以叠加的片段；复制会覆盖根文件里那些被注释的集成
-示例。因此应在最开始做；`hugo.yaml` 已有项目修改时，只合并 `languages` 与
-`disableLanguages`，不要整文件覆盖。
-
-未启用语言仍保留声明，让 Hugo 能识别 `.zh.md` 与 `.fr.md` 是译文并安全忽略。
-要永久移除一种语言，先确认所选 profile 能构建，再删除对应内容与首页数据。
-
 ### 第三层：首页 {#home}
 
 首页是数据，不是难以维护的整页模板覆盖：
@@ -140,7 +145,7 @@ Starter 的首页 partial，因为这里本来就没有站点自有模板。
 
 ### 第四层：内容与导航 {#content-navigation}
 
-重写或删除 `content/` 下的示例叶子页面。确定整个表面不属于你的项目之前，先保留
+重写或删除 `content/` 下的示例叶子页面。确定整个内容区不属于你的项目之前，先保留
 栏目根：
 
 ```text
@@ -238,7 +243,7 @@ Direct Upload 项目，添加 `CLOUDFLARE_ACCOUNT_ID` 与 `CLOUDFLARE_API_TOKEN`
 {.steps}
 
 删除示例 Book 或 Blog 之前，要同时移除对应顶部菜单根，以及首页上指向它的卡片。每整棵
-删除一个表面就严格重建一次，才能让失败归因到单一改动。
+删除一个内容区就严格重建一次，才能让失败归因到单一改动。
 
 ## 下一步 {#next}
 

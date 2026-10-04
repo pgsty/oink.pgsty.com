@@ -71,7 +71,7 @@ cascade:
 | 键 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
 | `icon` | Font Awesome class 对 | — | 侧栏、栏目卡片与搜索结果的图标，例如 `fa-solid fa-rocket` |
-| `toc_hide` | 布尔 | `false` | 不出现在侧栏树里，也不进翻页序列 |
+| `toc_hide` | 布尔 | `false` | 将本页及其整棵子树排除在侧栏与翻页序列之外；内容树与显式导航树都遵循这一规则 |
 | `hide_summary` | 布尔 | `false` | 不出现在栏目首页的子页索引里 |
 | `sidebar_divider` | 布尔 | `false` | 不带链接的分组标题，自身不进入翻页序列；1.1 的实现保留分区子页。配合 `build.render: never` 可[只分组、不发布自身页面](/zh/docs/write/organize/#group-only) |
 | `sidebar_expanded` | 布尔 | blog 栏目 `true`，其余 `false` | 这个栏目在侧栏里默认展开 |
@@ -197,9 +197,9 @@ cascade:
 | `images` | 字符串数组 | — | 第一项作为文章封面与分享卡片；写进栏目 `_index.md` 的 `cascade` 即为栏目级默认。`images: []` 让这一页不继承 cascade 里的值，但不会屏蔽页面 bundle 里已有的 `featured`、`cover` 或 `thumbnail` 图片 |
 | `byline` | 字符串 | — | 解析到的题图实际渲染时显示的图片署名 |
 | `featured_image` | `none` / `banner` / `wash` / `hero` | 站点值（`none`） | 本文正文里怎么渲染自己的题图；`hero` 使用沉浸式通栏外壳。非法值告警并回退 |
-| `blog_index` | `list` / `cards` / `table` | 站点值（`list`） | 写在博客根目录上，决定该栏目索引形态；`table` 不分页，列出整个栏目。非法值告警并回退 |
+| `blog_index` | `list` / `cards` / `table` | 站点值（`list`） | 写在博客根目录上，决定该栏目索引形态；仅 `blog_index_toggle: false` 时的独立 `table` 不分页、列出整个栏目。非法值告警并回退 |
 | `blog_index_columns` | 正整数 | 站点值（`3`） | 宽视口下的卡片列数；中等与窄视口仍保留响应式限制 |
-| `blog_index_size` | 正整数 | 站点值（`12`） | `list` 与 `cards` 每页文章数；`table` 始终列出整个栏目 |
+| `blog_index_size` | 正整数 | 站点值（`12`） | `list`、`cards` 及启用切换时三种视图共享的每页文章数；独立 `table` 忽略此值 |
 | `blog_index_toggle` | 布尔 | 站点值（`false`） | 同时发布三种索引形态，让读者切换；隐藏形态不加载图片 |
 | `share` | 字符串数组或 `false` | 站点 `params.ui.share`（空） | 页尾分享目标，整体替换继承来的列表；`false` 让本页退出，见[分享](/zh/docs/write/blog/#share)。未知目标告警并丢弃 |
 | `summary` | 字符串 | — | 标签 / 分类页上文章行的摘要回退来源，`description` 优先 |
@@ -233,7 +233,7 @@ cascade:
 
 | 键 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `release_url` | 字符串 | — | 一个 GitHub 发布地址，`https://github.com/<owner>/<repo>/releases/tag/<tag>`。主题从中解析出项目、标签、日期与资产列表。其它写法告警并跳过发布区块 |
+| `release_url` | 字符串 | — | 一个 GitHub 发布地址，`https://github.com/<owner>/<repo>/releases/tag/<tag>`。主题从中提取 owner、项目名与标签，并生成源码归档链接；日期取页面的 `date`，下载资产由发布正文中的 `checksums` 块提供（见[发布与下载页](/zh/docs/write/releases/)）。其它写法告警并跳过发布区块 |
 {.fields meta="type default"}
 
 ## 相关 {#related}

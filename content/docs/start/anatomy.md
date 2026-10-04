@@ -65,8 +65,8 @@ ignored build state, not source.
 
 ## What to keep {#keep}
 
-- `go.mod` and `go.sum`: together they pin and verify OINK
-  {{% param version %}}. Commit both.
+- `go.mod` and `go.sum`: together they pin and verify the template's selected
+  OINK release. Commit both; keep that baseline distinct from a later upgrade.
 - The three Goldmark settings in `hugo.yaml`: native Steps, Cards, Fields,
   image attributes, and Book targets depend on them.
 - `outputs`: removing `markdown`, `LLMS`, or `print` intentionally removes the
@@ -140,8 +140,11 @@ module github.com/OWNER/PROJECT-DOCS
 
 go 1.27.0
 
-require github.com/pgsty/oink {{< param tdVersion.latest >}}
+require github.com/pgsty/oink v1.0.0
 ```
+
+This is the `137843b` Starter snapshot used by the tutorial, not the latest
+OINK release. For a newer template, read its own `go.mod`.
 
 `hugo mod graph` shows the resolved version. Production follows the exact tag
 in `go.mod`; a local `HUGO_MODULE_REPLACEMENTS` value is a development override
@@ -162,7 +165,7 @@ same project, not two gates to run together.
 ## Safe customization order {#order}
 
 1. Prove the untouched preview.
-1. Change identity and select languages.
+1. Select languages, then change identity.
 1. Replace one home page and then its translations.
 1. Replace content and verify navigation.
 1. Change brand and reader features one group at a time.

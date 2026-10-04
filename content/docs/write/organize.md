@@ -161,39 +161,6 @@ Site-level folding, compact mode, initial expansion depth, width and truncation
 are configured in [Layouts and page types](/docs/customize/layout/); the full
 key definitions are in [Configuration](/docs/customize/config/).
 
-### Controlling a branch from site code {#sidebar-api}
-
-The `window.OinkSidebar` API is available since OINK 1.1; v1.0.0 does not
-provide it. Load site code after the theme scripts, for example through
-`layouts/_partials/hooks/body-end.html`, and wait for `ready` before reading or
-restoring branch state. This example expands the first sidebar group:
-
-```javascript
-const sidebar = window.OinkSidebar;
-if (sidebar) {
-  sidebar.ready.then(() => {
-    const button = document.querySelector(
-      '#td-shell-sidebar [data-td-shell-tree-toggle]'
-    );
-    if (!button) return;
-    const id = button.getAttribute('aria-controls');
-    sidebar.setExpanded(id, true);
-  });
-}
-```
-
-Use the button's existing `aria-controls` value as the region ID;
-`getState(id)` returns `{id, expanded}` or `null`. A change sends one
-`oink:sidebar-disclosure` event on `document`, after the button, region and
-accessibility state agree. Its detail is `{id, expanded, source}`; repeated
-writes of the same value send no event. Restoring through the API keeps the
-current page's ancestor groups open, while a reader can still fold them.
-
-The theme does not save individual branch preferences. A site that adds this
-should own the storage key's language and navigation-version scope, tolerate
-unavailable storage, and ignore IDs absent from the current page. The
-[sidebar contract](/docs/design/shell/#sidebar-runtime) defines the lifecycle.
-
 ## Hiding from the sidebar {#hiding}
 
 | Front matter | Effect |
@@ -315,6 +282,40 @@ Then confirm each of these in the browser:
 When sidebar entries exceed `params.ui.sidebar_menu_truncate`, the build warns
 and says what to raise it to. That warning cannot be ignored: truncated entries
 never appear in the sidebar.
+
+## Controlling a branch from site code {#sidebar-api}
+
+The `window.OinkSidebar` API is available since OINK 1.1; v1.0.0 does not
+provide it. Load site code after the theme scripts, for example through
+`layouts/_partials/hooks/body-end.html`, and wait for `ready` before reading or
+restoring branch state. This example expands the first sidebar group:
+
+```javascript
+const sidebar = window.OinkSidebar;
+if (sidebar) {
+  sidebar.ready.then(() => {
+    const button = document.querySelector(
+      '#td-shell-sidebar [data-td-shell-tree-toggle]'
+    );
+    if (!button) return;
+    const id = button.getAttribute('aria-controls');
+    sidebar.setExpanded(id, true);
+  });
+}
+```
+
+Use the button's existing `aria-controls` value as the region ID;
+`getState(id)` returns `{id, expanded}` or `null`. A change sends one
+`oink:sidebar-disclosure` event on `document`, after the button, region and
+accessibility state agree. Its detail is `{id, expanded, source}`; repeated
+writes of the same value send no event. Restoring through the API keeps the
+current page's ancestor groups open, while a reader can still fold them.
+
+The theme does not save individual branch preferences. A site that adds this
+should own the storage key's language and navigation-version scope, tolerate
+unavailable storage, and ignore IDs absent from the current page. The
+[sidebar contract](/docs/design/shell/#sidebar-runtime) defines the lifecycle.
+
 
 ## Related {#related}
 

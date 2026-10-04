@@ -1,15 +1,15 @@
 ---
 title: 博客与文章
 linkTitle: 博客与文章
-description: 开一个博客栏目：目录约定、文章的 front matter、封面图、按年份分组的列表页与 RSS。
+description: 开一个博客栏目：目录约定、文章的 front matter、封面图、按日期排序的列表页与 RSS。
 weight: 40
 search_keywords: [博客, 文章, blog, post, RSS, Feed, 封面图, featured image, 作者, 日期, 分页]
 ---
 
-博客文章与文档页的正文写法相同，区别在外壳：文章带日期、作者、标签与封面图，列表按年份倒序排列，栏目带 RSS。本页覆盖博客栏目的建立、文章 front matter、封面图、列表分页与 Feed。
+博客文章与文档页的正文写法相同，区别在外壳：文章带日期、作者、标签与封面图，列表按日期倒序排列，栏目带 RSS。本页覆盖博客栏目的建立、文章 front matter、封面图、列表分页与 Feed。
 
 ## 博客目录结构 {#layout}
-博客是 `content/` 下的一个栏目，`type: blog` 使它使用博客外壳。子目录按发布方与受众划分，文章平铺其中。不要建年份目录，年份分组由列表页自动生成：
+博客是 `content/` 下的一个栏目，`type: blog` 使它使用博客外壳。子目录按发布方与受众划分，文章平铺其中。无需建立年份目录，列表会按文章的 `date` 排序：
 
 ```filetree {title="本站的 content/blog/"}
 - content/
@@ -52,7 +52,7 @@ cascade:
 ---
 title: Oink 0.4.0 — 面向完整发布流程的场景组件体系
 linkTitle: Oink v0.4.0        # 侧栏与翻页器里的短名
-date: 2026-08-14              # 发布日期，决定排序与分组
+date: 2026-08-14              # 发布日期，决定列表顺序
 lastmod: 2026-08-14
 description: >-
   Oink 0.4.0 交付连续阅读与发布界面、可复用 Landing 页面、
@@ -65,7 +65,7 @@ tags: [Oink, Release]
 
 与文档页不同的几点：
 
-- `date` 必填。它决定文章在列表里的位置、年份分组与 RSS 时间。写在未来的日期默认不构建，`hugo server -F` 可以预览。
+- `date` 必填。它决定文章在列表里的位置与 RSS 时间。写在未来的日期默认不构建，`hugo server -F` 可以预览。
 - `description` 渲染成正文上方的导语，不只是搜索摘要，因此写成给读者阅读的一句话。
 - `author` 支持行内 Markdown，可以写成 `[Vonng](https://vonng.com)`。需要多位作者、头像或作者主页时，改用下面的 `authors` taxonomy；两者互不干扰，没写 `authors` 的文章照旧渲染 `author`。
 - 日期显示格式由 `params.time_format_blog` 决定，可以按语言分别设置（本站英文是 `Monday, January 02, 2006`，中文是 `2006年1月2日`）。
@@ -77,7 +77,7 @@ tags: [Oink, Release]
 列表页与标签页的每一行左侧有一张缩略图，按以下顺序解析，第一个命中的生效：
 
 1. 文章 front matter 的 `images`，取第一项；
-2. 页面包里文件名含 `featured` 的图片资源（会被裁切成缩略图，图片资源自己的 `byline` 会作为图注）；
+2. 页面包里文件名匹配 `featured` 或 `feature` 的图片，其次是 `cover` 或 `thumbnail`（会被裁切成缩略图，图片资源自己的 `byline` 会作为图注）；
 3. 从祖先栏目 `cascade` 继承来的 `images`，就近生效。
 
 栏目级默认封面用 Hugo 原生的 `cascade` 覆盖整棵子树，本站两个子栏目各设一张：
@@ -87,17 +87,18 @@ cascade:
   images: [/images/releasenote.webp]
 ```
 
-某一篇不要封面时，在它的 front matter 写 `images: []`；整个子栏目都不要，就把 `images: []` 写进那一层的 `cascade`。站点级的 `params.images` 不受影响 —— 它只做分享卡片，不会渲染成列表缩略图。
+要取消某篇文章继承来的封面，在它的 front matter 写 `images: []`；整个子栏目取消继承，就写进那一层的 `cascade`。这不会抑制页面包自身提供的图片。只想关闭文章里的题图时，用 `featured_image: none`；列表缩略图与分享卡片仍各自生效。站点级的 `params.images` 只做分享卡片，不会渲染成列表缩略图。
 
 ### 渲染到文章正文里 {#featured-image-article}
 
-默认情况下，解析出来的这张图只出现在列表行与社交卡片里，文章本身什么都不显示——手写一个题图，迟早会和卡片对不上。`params.ui.featured_image` 让主题用同一个解析结果把它渲染出来：
+默认情况下，解析出来的图片显示在列表行与社交卡片里。设置 `params.ui.featured_image`，即可把同一张图显示在文章里：
 
 | 模式 | 文章里显示什么 |
 | --- | --- |
-| `none` | 什么都不显示。主题默认值，所以今天不渲染题图的站点，升级后渲染出的字节完全一样 |
+| `none` | 文章不显示题图，主题默认值 |
 | `banner` | 标题上方一张固定 16:9 的图，连着读一串文章时节奏统一 |
-| `wash` | 图铺在文章头部背后，只留十分之一的不透明度，在正文开始之前渐隐为无——文章从自己的主题里取到一点颜色，却不消耗任何对比度 |
+| `wash` | 图片淡化后铺在文章头部背后，在正文开始前渐隐 |
+| `hero` | 占满页面宽度的沉浸式图片头部 |
 
 ```yaml {title="hugo.yml"}
 params:
@@ -105,7 +106,7 @@ params:
     featured_image: banner
 ```
 
-页面键是 `featured_image`，所以某个子栏目的 `cascade` 可以只为那棵树打开它，单篇文章也可以退出。没有题图的文章在两种模式下都不渲染任何东西——正因如此，一个题图有一搭没一搭的栏目也可以整体打开这个开关。两种模式都不引入脚本，也不增加打包成员。
+页面键是 `featured_image`，所以某个子栏目的 `cascade` 可以只为那棵树打开它，单篇文章也可以退出。没有图片的文章在任何模式下都不显示题图，因此只有部分文章配图的栏目也可以整体开启。这些模式无需额外脚本。
 
 ```yaml {title="content/blog/release/_index.md"}
 cascade:
@@ -114,16 +115,17 @@ cascade:
 
 ## 列表页与分页 {#list}
 
-栏目 `_index.md` 的正文之后，主题自动接上文章列表：按年份分组（「撰写于 2026」），年份倒序，每条显示标题、日期、所属子栏目、标签、缩略图与正文前 250 字的摘要。
+栏目 `_index.md` 的正文之后，主题自动接上文章列表：按日期倒序平铺，不按年份分组；每条显示标题、日期、所属子栏目、标签、缩略图与正文前 250 字的摘要。
 
-分页用 Hugo 原生的分页器，默认每页 10 篇，在 `hugo.yml` 里调整：
+列表与卡片默认每页 12 篇，用主题的 `blog_index_size` 在 `hugo.yml` 里调整：
 
 ```yaml {title="hugo.yml"}
-pagination:
-  pagerSize: 20
+params:
+  ui:
+    blog_index_size: 20
 ```
 
-取值与其余分页选项见 [Hugo 文档](https://gohugo.io/configuration/pagination/)。
+博客栏目 front matter 中的同名键可以覆盖站点值。主题会把这个大小显式传给 Hugo 分页器，因此 `pagination.pagerSize` 不控制这里的列表。
 
 ### 卡片形态 {#list-cards}
 
@@ -136,7 +138,16 @@ params:
     blog_index_columns: 3
 ```
 
-这个选择纯粹是呈现层面的——按年分组、分页与 `manual_link` 的行为完全一致，行列表那一路的输出一个字节都没变。列数只在 xl 断点以上生效；md 到 xl 之间恒为两列，md 以下一列。博客根目录的 front matter `blog_index` 或它的 `cascade` 可以按栏目设置。Term 页与 taxonomy 页保持行列表，读者侧没有在两种形态之间切换的开关。
+列表与卡片共用日期排序、分页与 `manual_link` 的规则。列数只在 xl 断点以上生效；md 到 xl 之间为两列，md 以下一列。博客根目录的 front matter `blog_index` 或它的 `cascade` 可以按栏目设置。分类项页与分类法首页保持行列表。
+
+单独使用 `blog_index: table` 且 `blog_index_toggle: false` 时，表格列出整个栏目，不分页。设置 `blog_index_toggle: true`，读者即可在列表、卡片、表格之间切换：
+
+```yaml {title="content/blog/_index.zh.md"}
+blog_index: cards
+blog_index_toggle: true
+```
+
+开启切换时，三种形态显示同一页文章，都使用 `blog_index_size`。只有 `blog_index_toggle: false` 的独立表格才显示整个栏目；隐藏形态不会加载图片。
 
 卡片题图只要资源可处理就走 Hugo 的 `.Fill`，一屏卡片不会为此下载一堆原图。
 
@@ -196,9 +207,9 @@ taxonomies:
 authors: [vonng, ada-example]
 ```
 
-文章头部就按这个顺序渲染头像与带链接的名字——front matter 里的序列既是集合也是顺序——列表行渲染名字，博客 feed 为每篇文章的每位作者发一条 `<dc:creator>`，与站点级的 `managingEditor` 并存。名字之间用 CSS 的 gap 分隔而不是连接词，因为「和」是个逐语言的决定，而这里有 32 种语言。
+文章头部按这个顺序显示头像与带链接的名字，列表行显示名字；博客 Feed 除了站点级的 `managingEditor`，还会包含文章的每位作者。
 
-作者主页就是 term 页本身，所以不存在另一份 `data/authors` 和它打架：
+作者主页就是分类项页，无需另建 `data/authors` 文件：
 
 ```markdown {title="content/authors/vonng/_index.md"}
 ---
@@ -232,7 +243,7 @@ series_weight: 20
 
 它的正文上方就会出现一条横幅，写明系列名、自己是第几篇、下一篇是哪篇，以及折在 `<details>` 里的完整列表——不用 JavaScript，也不增加打包成员。term 页 `content/series/<name>/_index.md` 是系列的引言，旁边放一个 `_index.zh.md` 就成双语。
 
-阅读顺序由主题自己算，因为 term 页给不出这个顺序：Hugo 的 taxonomy weight 既到不了 `Page.Weight`，也进不了 `GroupByParam`。带权重的成员按 `series_weight` 升序排在前，其余按日期升序跟在后面，同序时用 `Path` 决胜。横幅与 term 页读同一个解析结果，所以它们不可能对「第二篇是哪篇」有分歧——这也意味着系列 term 页是由旧到新排列的，和其它所有 term 页相反。这正是这个功能本身。
+写了 `series_weight` 的文章按该值升序排在前，其余按日期从旧到新排列，同序时按内容路径排序。系列横幅与分类项页使用相同的阅读顺序；实现规则见[作者与系列](/zh/docs/design/shell/#authors-and-series)。
 
 一篇文章属于多个系列时只显示一条横幅，取它写在最前面的那个系列。只有一篇的系列不显示横幅。
 
@@ -259,7 +270,7 @@ cascade:
 
 只有普通页面渲染分享栏——列表页、term 页与首页没有「唯一被分享的那个东西」——打印、Markdown 与 RSS 一概不带。
 
-**它不做什么**，才是它能出现在这个主题里的原因。没有分享计数、没有平台 SDK、没有 iframe、没有第三方脚本或样式表——而那三样正是这类组件通常的形态：每一页都向一家读者从未选择过的公司发一次请求。每个目标都是一个纯粹的 `<a href>` intent 链接，只带这一页自己的 permalink 与标题，不挂任何投放参数，另加一个本地复制按钮。站点构建时不取任何东西，页面加载时也不取；一次分享唯一可能引发的请求，就是读者点下去之后自己发起的那次跳转。把十六个目标全开的构建，不加 `--third-party` 也能通过 `bin/check-output-security.py`。
+分享栏由携带页面永久链接与标题的链接，以及一个本地复制按钮组成。它不加载第三方脚本或样式表，只有读者点击链接时才会访问对应目标。实现规则见[分享契约](/zh/docs/design/shell/#share)。
 
 `chatgpt` 与 `claude` 是把同一个构建期 permalink 交给助手，附一句「请读这一页」。它们不是页面操作菜单里的「在 ChatGPT 中打开」/「在 Claude 中打开」——那两条由运行时在激活时改写成浏览器里的实时 URL，因此留在 `page_context_menu.assistant_links` 后面。
 
@@ -273,7 +284,7 @@ hugo --printPathWarnings --panicOnWarning
 
 必须 `Total in …`，没有 ERROR / WARN。随后确认：
 
-1. 文章出现在 `/zh/blog/` 的正确年份分组里，日期显示为中文格式；
+1. 文章在 `/zh/blog/` 中按正确的日期顺序排列，日期显示为中文格式；
 2. `public/zh/blog/index.xml` 存在，里面有这篇文章，链接是完整的绝对地址；
 3. 缩略图出现在列表里（缺失说明三条封面来源都没命中）；
 4. 标签 chip 能点进对应的标签页。

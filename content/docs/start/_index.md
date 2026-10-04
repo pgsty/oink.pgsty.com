@@ -89,7 +89,7 @@ only neutral project content and deployment workflows.
 
 ## Customize from shallow to deep {#learning-path}
 
-- [Use OINK Starter](/docs/start/starter/) — identity first, then languages,
+- [Use OINK Starter](/docs/start/starter/) — choose languages first, then identity,
   home page, content, navigation, brand, integrations, and deployment.
 - [Starter repository tour](/docs/start/anatomy/) — which file owns each part
   of the site, what to replace, and what can be removed.

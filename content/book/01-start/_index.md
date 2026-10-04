@@ -1,7 +1,7 @@
 ---
 title: Start with a working site
 linkTitle: Start with a working site
-description: Install the one required tool, run a local preview, and establish a visible baseline before changing the design.
+description: Install the prerequisite tools, run a local preview, and establish a visible baseline before changing the design.
 book_kind: chapter
 book_number: 1
 weight: 10
@@ -18,8 +18,8 @@ pages; working Docs, Blog, and Book routes; local search; and a color-mode
 control. That small baseline is enough to distinguish a content mistake from a
 theme or deployment problem later.
 
-![The OINK documentation site after its first successful local build](/images/oink.webp)
-{#fig-first-preview num="1-1" caption="The first milestone is a site a reader can open, not a configuration file that merely looks plausible." width=600 height=300}
+![The OINK documentation site illustrates the theme; this is not the Starter preview](/images/oink.webp)
+{#fig-first-preview num="1-1" caption="Documentation-site illustration. Your Starter preview uses neutral sample content; the first milestone is a site you can open and edit." width=600 height=300}
 
 ## Install the prerequisite {#prerequisite}
 

@@ -28,11 +28,21 @@ cascade:
 ---
 
 *Write Beautiful Docs* is the tutorial companion to the OINK reference. The
-reference tells you what each parameter and component does; this book follows
-one site from its first local preview to a reviewed, published result.
+reference tells you what each parameter and component does; this book is being developed around one Starter site, from its first local
+preview toward a reviewed, published result.
 
 The first three chapters contain working material. Later chapters deliberately
 show the Book draft state while their full walkthroughs are being written.
+
+## How to read this book {#reading-path}
+
+Start with [Chapter 1: Start with a working site](/book/01-start/). Chapters
+1–3 use the same Starter to preview the site, add bilingual pages, and improve
+their content. Chapters 4–6 and the appendix are still draft outlines. To
+finish customization and deployment now, continue with the
+[Starter tutorial](/docs/start/starter/) and [Deploy](/docs/admin/deploy/).
+The object indexes below also demonstrate Book publishing features; use them
+when you need to locate a figure, table, or example.
 
 ## Contents {#contents}
 
@@ -53,9 +63,3 @@ show the Book draft state while their full walkthroughs are being written.
 ## Examples {#examples}
 
 {{< book-examples >}}
-
-## How to read this book {#reading-path}
-
-Read chapters 1–3 in order when starting a site. Return to chapters 4–6 when
-you are shaping the public presentation and preparing a release. The appendix
-is a copy-and-adapt reference for the front matter patterns used throughout.

@@ -90,7 +90,7 @@ The guide is [Organizing content](/docs/write/organize/).
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
 | `icon` | Font Awesome class pair | — | Icon in the sidebar, section cards and search results, e.g. `fa-solid fa-rocket` |
-| `toc_hide` | boolean | `false` | Absent from the sidebar tree and from the pager sequence |
+| `toc_hide` | boolean | `false` | Excludes this page and its subtree from sidebar navigation and the pager sequence, in both content-derived and explicit trees |
 | `hide_summary` | boolean | `false` | Absent from the section index |
 | `sidebar_divider` | boolean | `false` | A non-link group heading, excluded from pager destinations; the 1.1 implementation retains a section's children. Use `build.render: never` for a [group without its own page](/docs/write/organize/#group-only) |
 | `sidebar_expanded` | boolean | `true` for blog sections, `false` otherwise | This section is expanded by default in the sidebar |
@@ -229,9 +229,9 @@ The guide is [Blog posts](/docs/write/blog/).
 | `images` | string array | — | The first entry becomes the post's featured image and share card; put it in a section `_index.md` cascade for a section-wide default. `images: []` opts the page out of an inherited cascade value; it does not suppress an image the page bundle already supplies under a `featured`, `cover` or `thumbnail` name |
 | `byline` | string | — | Credit shown with the resolved featured image when that image is rendered |
 | `featured_image` | `none` / `banner` / `wash` / `hero` | site value (`none`) | How this article renders its own featured image; `hero` paints the immersive full-bleed shell. An invalid value warns and falls back |
-| `blog_index` | `list` / `cards` / `table` | site value (`list`) | Written on a blog root, the index form for that section. `table` lists the whole section without pagination. An invalid value warns and falls back |
+| `blog_index` | `list` / `cards` / `table` | site value (`list`) | Written on a blog root, the index form for that section. A standalone `table` with `blog_index_toggle: false` lists the whole section without pagination. An invalid value warns and falls back |
 | `blog_index_columns` | positive integer | site value (`3`) | Card columns at wide breakpoints; medium and narrow layouts retain their responsive limits |
-| `blog_index_size` | positive integer | site value (`12`) | Posts per page for `list` and `cards`; `table` always lists the whole section |
+| `blog_index_size` | positive integer | site value (`12`) | Posts per page for `list`, `cards`, and all three views when the toggle is enabled; a standalone `table` ignores it |
 | `blog_index_toggle` | boolean | site value (`false`) | Publishes all three index forms and lets the reader switch among them; hidden forms do not load images |
 | `share` | string array or `false` | site `params.ui.share` (empty) | The page-end share targets, replacing any inherited list; `false` opts this page out — see [Share](/docs/write/blog/#share). An unknown target warns and is dropped |
 | `summary` | string | — | Fallback excerpt for post rows on tag and category pages; `description` wins |
@@ -269,7 +269,7 @@ newest first.
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `release_url` | string | — | One GitHub release URL, `https://github.com/<owner>/<repo>/releases/tag/<tag>`. The theme derives the project, tag, date and asset list from it. Anything else warns and the release block is skipped |
+| `release_url` | string | — | One GitHub release URL, `https://github.com/<owner>/<repo>/releases/tag/<tag>`. The theme extracts the owner, project and tag and generates source archive links. The date comes from the page's `date`; download assets come from the release body's `checksums` block (see [Releases](/docs/write/releases/)). Anything else warns and the release block is skipped |
 {.fields meta="type default"}
 
 ## Related {#related}

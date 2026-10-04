@@ -6,7 +6,7 @@ weight: 70
 search_keywords: [API, OpenAPI, Swagger, Swagger UI, Redoc, 接口文档, swagger, spec, 规范]
 ---
 
-一页接口文档由一份 OpenAPI 规范加一个 shortcode 构成。Swagger UI 与 Redoc 两个运行时随主题分发（版本分别是 5.32.13 与 2.5.3，见仓库 `VENDOR.json`），只有用到它们的页面、且只在 HTML 输出里加载，构建与浏览都不访问外部服务。Swagger UI 的在线 validator 已写死关闭（`validatorUrl: null`），已发布的接口页面不会把规范地址发往任何地方。
+一页接口文档由一份 OpenAPI 规范加一个短代码构成。需要让读者试发请求时选 Swagger UI，以阅读端点说明与数据结构为主时选 Redoc。两个运行时都随主题分发，只在用到它们的页面的 HTML 输出中加载，不依赖 CDN。Swagger UI 的在线校验器已关闭；远程规范与 API 请求仍会访问各自配置的主机。
 
 三个步骤：把规范文件放进 `static/`，新建一页写上 shortcode，需要专用外壳时把页面 `type` 改成 `swagger`。
 
@@ -29,7 +29,7 @@ search_keywords: [API, OpenAPI, Swagger, Swagger UI, Redoc, 接口文档, swagge
 
 远程规范（`https://…` 开头）两个 shortcode 都接受，但那是一项网络依赖，还会把读者的元数据暴露给那台主机。内网部署与有 CSP 的站点应当使用同源规范。只接受 `http` 与 `https`：其它 scheme、协议相对的 `//host` 或空值都会告警，shortcode 不渲染。
 
-下面的例子用真实存在的 `/openapi/docs-demo.yaml`，一份演示用的集群管理 API，没有可访问的服务端。
+试用下面的例子时，下载 [docs-demo.yaml](/openapi/docs-demo.yaml)，保存为自己站点的 `static/openapi/docs-demo.yaml`。它描述一份演示用的集群管理 API，没有可访问的服务端。
 
 ## Swagger UI {#swaggerui}
 
@@ -39,9 +39,9 @@ search_keywords: [API, OpenAPI, Swagger, Swagger UI, Redoc, 接口文档, swagge
 {{</* swagger src="/openapi/docs-demo.yaml" */>}}
 ```
 
-它渲染一个 `class="td-swagger-ui"` 的容器，规范地址放在 `data-td-spec-url` 上；页面上所有容器由一个可缓存的 `js/chunks/swagger-init.js` 统一挂载。容器 ID 由页面地址与 shortcode 序号推导（`td-swagger-<hash>-<n>`），因此同一页可以放多个。
+在本地预览中，页面会显示可展开的 API 操作、请求参数与响应数据结构。“Try it out” 会向规范中的 `servers` 地址发送请求；示例没有可用的后端服务。
 
-本页只给源码，不真渲染 Swagger UI：它自己生成的标记有 axe WCAG AA 违规（服务器下拉框没有可访问名称、版本号区域是不能聚焦的可滚动区），本站的无障碍门禁要求每个页面零违规。下面的 Redoc 是真渲染的——但要知道两个控件都被排除在那道门禁之外，因为 Redoc 的接口描述文字自身有对比度缺陷。两者都不是完全无障碍的界面，见[限制](#limits)。
+本页展示 Swagger UI 源码，下方提供 Redoc 实效。两个控件都有已知的无障碍限制，见[限制](#limits)。
 
 ## Redoc {#redoc}
 
@@ -94,7 +94,7 @@ cascade:
 
 - 两个组件的容器 ID 都按「页面地址 + shortcode 序号」推导，同一页放多个互不冲突。
 - 两者可以同页共存，但页面会很长，HTML 输出也会同时加载两套运行时。正式站点选一个。
-- 两个界面都不是完全无障碍的，且都来自主题不改写的上游产物。Swagger UI 的标记有 axe WCAG AA 违规（`select-name`、`scrollable-region-focusable`）；Redoc 的接口描述文字不满足 AA 对比度。本站因此把 `.td-swagger-ui` 与 `.td-redoc` 排除在零违规门禁之外——有同类门禁的站点只能照做，并且应当明说，而不是默认其中某一个能过。
+- 两个界面都不是完全无障碍的：Swagger UI 存在未命名的服务器控件与无法通过键盘访问的滚动区域；Redoc 的接口描述文字对比度不足。请按站点的无障碍要求评估这些限制。把控件排除在自动检查之外不等于符合要求；嵌入式控件不适用时，提供可阅读的端点文档。
 - `redoc` 不接受额外属性参数：写第二个位置参数会告警，shortcode 不渲染。
 - 本地 `redoc` 路径以 `static/` 为根，开头的 `/` 可有可无；它不解析页面资源。
 - 规范文件必须能被浏览器取到：放 `static/`，构建后确认 `public/` 下存在该文件。
@@ -105,7 +105,7 @@ cascade:
 1. 构建零告警：`hugo --printPathWarnings --panicOnWarning`。
 2. 规范确实发布了：`ls public/openapi/docs-demo.yaml`，或访问 `http://localhost:1313/openapi/docs-demo.yaml`。
 3. 页面上能展开端点、看到 schema；浏览器控制台没有 404 或跨域报错。
-4. 断网后再刷新一次：运行时是本地的，规范同源时界面应照常出现。
+4. 断开外部网络，但保持本地预览服务器可访问，再刷新页面：运行时与规范都来自本地时，界面应照常出现。
 
 ## 相关 {#related}
 

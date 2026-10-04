@@ -1,7 +1,7 @@
 ---
 title: 从零建站与其它安装方式
 linkTitle: 从零建站
-description: 从空目录搭一个最小 OINK 站点，以及 Module / submodule / 离线归档 / 克隆四种安装方式的取舍。
+description: 从空目录搭一个最小 OINK 站点，以及 Module / submodule / 离线归档 / 固定版本源码副本四种安装方式的取舍。
 weight: 30
 search_keywords:
   [
@@ -27,11 +27,22 @@ aliases:
 搭建一个最小 OINK 站点：一份精简 `hugo.yml` 加一条 `hugo mod get`，得到一个可预览
 的单语站点。代价是首页、示例内容、部署 workflow 与每种组件用法都要自己组装。
 
-已有 Hugo 站点时不需要脚手架：装上主题模块，再补三项 goldmark 前置配置（见[写 `hugo.yml`](#config)），正文不用重写。已有 Docsy 站点见[版本升级](/zh/docs/admin/upgrade/)。
+已有 Hugo 站点时，按下方[接入现有站点](#existing-site)操作；已有 Docsy 站点见[版本升级](/zh/docs/admin/upgrade/)。
 
-后半部分是四种安装方式的取舍：Hugo Module、Git submodule、离线归档、固定版本克隆。
+后半部分是四种安装方式的取舍：Hugo Module、Git submodule、离线归档、固定版本源码副本。
 OINK 1.1.0 使用 Go 1.27 与 Hugo Extended 0.165.0 做发布验证。
 主题声明的较低兼容下限用于刻意保留旧工具链的既有站点。
+
+## 接入现有站点 {#existing-site}
+
+在保留现有配置与内容的分支中操作。跳过 `hugo new site`，继续使用原配置文件名。
+
+1. 只有站点没有 `go.mod` 时，才用自己的仓库模块路径执行 `hugo mod init`；已有模块声明保持不变。
+1. 执行 `hugo mod get github.com/pgsty/oink@{{< param tdVersion.latest >}}`。
+1. 用下方的 OINK `module.imports` 替换旧主题引用，保留无关导入与配置。合并[示例](#config)中的三项 `markup.goldmark` 设置与 `markup.highlight.noClasses: false`，不要整份覆盖原配置。
+1. 检查站点自有 `layouts/`、资源、旧主题短代码，以及页面的 `type`/`layout`：这些覆盖和约定可能仍然选择旧主题行为。保留内容，只做必要适配。
+1. 执行 `hugo --panicOnWarning`，再用 `hugo server` 打开一篇已有的代表性页面。先核对导航、图片与代码块，再启用可选 OINK 功能。最后按[验证](#verify)完成检查。
+{.steps}
 
 ## 从空目录到第一页 {#scaffold}
 
@@ -40,23 +51,33 @@ OINK 1.1.0 使用 Go 1.27 与 Hugo Extended 0.165.0 做发布验证。
    ```bash
    hugo new site --format yaml my-docs
    cd my-docs
+   git init
    hugo mod init github.com/example/my-docs
    hugo mod get github.com/pgsty/oink@{{< param tdVersion.latest >}}
    ```
 
    `hugo mod init` 后面跟的是你自己站点的模块路径，通常就是仓库地址。`hugo mod get` 会写出 `go.mod` 与 `go.sum`，两个都要提交。
 
+   构建前创建 `.gitignore`，避免把生成文件加入 Git。完成首个提交前，保持 `enableGitInfo` 关闭：
+
+   ```gitignore {title=".gitignore"}
+   /public/
+   /resources/
+   /.hugo_build.lock
+   /.hugo_cache/
+   ```
+
    最新版本号在 [GitHub Releases](https://github.com/pgsty/oink/releases)；本页出现的 `{{< param tdVersion.latest >}}` 是本站当前固定的版本。生产站点固定到发布标签，不要跟随 `main`：`@latest` 是一次性解析动作，不是版本策略。
 
 1. ### 写 `hugo.yml` {#config}
 
-   把 `hugo new site` 生成的 `hugo.yaml` 改名为 `hugo.yml`（两个后缀 Hugo 都接受，本文统一用后者），内容替换为下面这份，可直接构建：
+   仅对这个新站：把生成的 `hugo.yaml` 改名为 `hugo.yml`（Hugo 两者都接受），再用下面内容替换。已有站点应合并所需配置，不要整份覆盖：
 
    ```yaml {title="hugo.yml" collapse=30}
    title: Product Docs
    baseURL: https://docs.example.com/
    defaultContentLanguage: en
-   # enableGitInfo: true        # 页面「最后修改」时间来自 git，先 git init 再打开
+   # enableGitInfo: true        # 页面「最后修改」时间来自 git，完成首次 Git 提交后再打开
 
    languages:
      en:
@@ -161,7 +182,7 @@ OINK 1.1.0 使用 Go 1.27 与 Hugo Extended 0.165.0 做发布验证。
    hugo server
    ```
 
-   打开 <http://localhost:1313/>，侧栏里有 Docs → Install。修改文件是毫秒级热重载。
+   打开 <http://localhost:1313/docs/>，Docs 分区中应列出 Install。添加首页内容之前，根地址的首页仍为空。修改 Install 页面，确认预览随之更新。
 {.steps}
 
 ## 其它安装方式 {#install-methods}
@@ -212,7 +233,7 @@ git submodule update --init --recursive
 
 ```bash
 hugo mod vendor          # 生成 _vendor/，里面是主题的完整源码树
-tar czf my-docs.tgz .    # 连 _vendor/ 一起搬进隔离环境
+tar czf ../my-docs.tgz . # 把归档写到正在打包的目录之外
 ```
 
 `_vendor/` 存在时 Hugo 优先使用它（`hugo mod graph` 输出 `+vendor`），`hugo.yml` 里的 `module.imports` 保持不变。这一步需要 Go，之后的构建不需要。升级主题要回到联网环境重新执行 `hugo mod get` 与 `hugo mod vendor`。
@@ -272,16 +293,13 @@ tar -xzf oink-{{< param tdVersion.latest >}}.tar.gz -C themes
   - data/               # 页尾出处行用的 SPDX 许可证表
 ```
 
-### 固定版本克隆 {#pinned-clone}
+### 固定版本源码副本 {#pinned-clone}
 
-托管平台要求构建输入包含完整主题树时用：
+托管平台要求站点仓库包含主题文件时，按上方[tag 归档步骤](#offline-archive)准备并解压到
+`themes/oink/`。配置 `theme: oink`，把解压后的文件连同已验证的标签与校验值记录一起提交。
 
-```bash
-git clone https://github.com/pgsty/oink.git themes/oink
-git -C themes/oink checkout {{< param tdVersion.latest >}}
-```
-
-与 submodule 的区别是主题文件直接进入你的仓库历史，没有 `.gitmodules` 这层间接。记录最终解析出的 commit 与恢复流程。
+直接 `git clone ... themes/oink` 会保留嵌套 `.git` 目录，加入父仓库时记录的是 Git 引用，
+而非主题文件，因此不能得到这里所需的完整源码副本。希望用 Git 引用跟踪主题时，应使用 submodule。
 
 ### 四种方式对比 {#comparison}
 
@@ -290,7 +308,7 @@ git -C themes/oink checkout {{< param tdVersion.latest >}}
 | **Hugo Module** | 是 | `go.sum` 自动校验 | 否 | 默认推荐 |
 | Git submodule | 否 | 仓库记录 commit | 以引用形式 | 需要主题源码在库内 |
 | 离线归档 | 否 | 手工核对 checksum | 是 | 网络隔离 |
-| 固定版本克隆 | 否 | 需自行记录 | 是 | 平台要求完整树 |
+| 固定版本源码副本 | 否 | 记录标签与校验值 | 是 | 平台要求完整树 |
 
 > [!TIP] 消费站点不需要前端工具链
 > Bootstrap、Font Awesome、字体、搜索与图表运行时全部随主题分发。站点不需要 `node_modules`、PostCSS、RTLCSS，也不需要 CDN。为 Docsy 站点安装 npm 依赖的教程属于上游 Docsy 的流程，不适用于 OINK。
@@ -339,7 +357,7 @@ hugo --gc --minify --printPathWarnings --panicOnWarning
 - `/docs/` 打得开，侧栏里有你写的页面
 - 顶栏有搜索框，搜得到刚写的标题
 - 深浅色切换按钮在，切换后代码块配色跟着变（说明 `markup.highlight.noClasses: false` 生效）
-- `git status` 里有 `go.mod` 与 `go.sum`，没有 `public/`、`resources/`
+- `git status --short` 只列出源码修改，生成产物已被忽略。Module 方式提交 `go.mod` 与 `go.sum`；其它安装方式保留各自的主题源码或 submodule 记录。
 
 ## 相关 {#related}
 

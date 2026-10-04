@@ -1,7 +1,7 @@
 ---
 title: 从一个能运行的站点开始
 linkTitle: 跑起第一个站点
-description: 安装唯一必需的工具，启动本地预览，在调整设计前先建立可见的基线。
+description: 安装前置工具，启动本地预览，在调整设计前先建立可见的基线。
 book_kind: chapter
 book_number: 1
 weight: 10
@@ -15,8 +15,8 @@ weight: 10
 完成本章时，你应该拥有英文、中文、法语首页，可用的 Docs、Blog、Book 路由，本地搜索，
 以及颜色模式控件。这条小基线足以在后续工作中区分内容问题、主题问题与部署问题。
 
-![OINK 文档站第一次成功本地构建后的页面](/images/oink.webp)
-{#fig-first-preview num="1-1" caption="第一个里程碑是读者能打开的站点，而不是一份仅仅看起来正确的配置文件。" width=600 height=300}
+![OINK 文档站的主题效果示意，并非 Starter 预览截图](/images/oink.webp)
+{#fig-first-preview num="1-1" caption="文档站效果示意。你的 Starter 预览使用中性示例内容；第一个里程碑是能打开并修改的站点。" width=600 height=300}
 
 ## 安装前置工具 {#prerequisite}
 

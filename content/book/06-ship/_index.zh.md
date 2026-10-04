@@ -23,16 +23,17 @@ weight: 60
 
 ## 验证最小且有效的范围 {#validate}
 
-先运行直接负责当前契约的检查器，再逐步扩大范围。对于本站，使用相邻主题检出的严格构建
-是一项明确的本地开发操作：
+在自己的 Starter 仓库中，先执行普通生产构建，再使用已选定的部署 workflow：
 
 ```bash
-HUGO_MODULE_REPLACEMENTS='github.com/pgsty/oink -> /path/to/oink' \
-  npm run build -- --panicOnWarning
+hugo --cleanDestinationDir --gc --minify --environment production \
+  --printPathWarnings --panicOnWarning
 ```
 
-公开发布之前，要去掉本地替换再次构建，并验证 `go.mod` 选中的模块。记录每条命令及其结果，
-让下一位维护者能够复现结论。
+确认 `hugo mod graph` 解析到 `go.mod` 中预期的公开版本，再按[Starter 部署步骤](/zh/docs/start/starter/#build-deploy)操作。
+普通 Starter 站点不需要 npm 构建脚本或同级主题 checkout。如果同时修改 OINK 主题本身，
+另按[主题开发流程](/zh/docs/start/from-scratch/#local-theme-checkout)验证。
+分别记录本地构建、workflow 结果与公开 URL 检查。
 
 ## 审阅真正渲染出的结果 {#visual-review}
 

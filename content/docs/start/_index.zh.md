@@ -73,7 +73,7 @@ aliases:
 
 ## 由浅入深地定制 {#learning-path}
 
-- [使用 OINK Starter](/zh/docs/start/starter/) — 先改身份，再依次处理语言、首页、
+- [使用 OINK Starter](/zh/docs/start/starter/) — 先选语言，再依次处理身份、首页、
   内容、导航、品牌、集成与部署。
 - [Starter 仓库导览](/zh/docs/start/anatomy/) — 每个文件负责什么，哪些要替换，
   哪些可以删除。

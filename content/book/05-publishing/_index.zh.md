@@ -1,6 +1,6 @@
 ---
 title: 发布不止于参考页面的内容
-linkTitle: 选择发布界面
+linkTitle: 选择内容类型
 description: 用 Docs、Blog、Case、Book 与发布页面分别回答读者的不同需求。
 book_kind: chapter
 book_number: 5
@@ -11,7 +11,7 @@ weight: 50
 同一个站点可以发布多种知识，而不必把它们强行塞进同一种布局。内容类型选择页面外壳，
 front matter 变体则在同一外壳内调整呈现。
 
-## 让发布界面匹配读者 {#surfaces}
+## 让内容类型匹配读者 {#surfaces}
 
 - Docs 回答任务或参考问题，并显示它在内容树中的位置。
 - Blog 是带日期、作者、分类法、订阅源与分享能力的文章。
