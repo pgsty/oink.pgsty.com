@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oink.pgsty.com/schema/cli-result.v1.schema.json",
+  "title": "OINK CLI result v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "version", "command", "exit_code", "diagnostics", "coverage", "evidence"],
+  "properties": {
+    "schema_version": {"const": "oink.result/v1"},
+    "version": {"type": "string"},
+    "command": {"type": "string"},
+    "site": {"type": "string"},
+    "exit_code": {"enum": [0, 1, 2]},
+    "diagnostics": {"type": "array", "items": {"$ref": "#/$defs/diagnostic"}},
+    "coverage": {"type": "array", "items": {"$ref": "#/$defs/coverage"}},
+    "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "data": {"description": "Command-specific explanatory data; consumers must tolerate new fields."}
+  },
+  "$defs": {
+    "diagnostic": {
+      "type": "object", "additionalProperties": true,
+      "required": ["rule_id", "severity", "message", "action"],
+      "properties": {
+        "rule_id": {"type": "string", "minLength": 1},
+        "severity": {"enum": ["info", "warning", "error"]},
+        "message": {"type": "string"},
+        "action": {"type": "string"},
+        "incomplete": {"type": "boolean", "description": "True when required work did not complete; policy cannot downgrade this failure."},
+        "disposition": {"type": "string", "description": "Visible reviewed disposition; excluded findings remain in diagnostics."},
+        "review": {"$ref": "#/$defs/review"},
+        "location": {
+          "type": "object", "additionalProperties": true, "required": ["file"],
+          "properties": {
+            "file": {"type": "string"},
+            "line": {"type": "integer", "minimum": 1},
+            "pointer": {"type": "string"},
+            "kind": {"enum": ["source", "output"]}
+          }
+        }
+      }
+    },
+    "review": {
+      "type": "object", "additionalProperties": true,
+      "required": ["reason", "reviewed_by", "reviewed_at"],
+      "properties": {
+        "reason": {"type": "string", "minLength": 1},
+        "reviewed_by": {"type": "string", "minLength": 1},
+        "reviewed_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "coverage": {
+      "type": "object", "additionalProperties": true,
+      "required": ["id", "status", "required", "detail"],
+      "properties": {
+        "id": {"type": "string"},
+        "status": {"enum": ["complete", "not_checked", "not_applicable", "incomplete", "unsupported"]},
+        "required": {"type": "boolean"},
+        "detail": {"type": "string"}
+      }
+    },
+    "evidence": {
+      "type": "object", "additionalProperties": true,
+      "required": ["command", "stdout", "stderr", "exit_code"],
+      "properties": {
+        "command": {"type": "array", "items": {"type": "string"}},
+        "directory": {"type": "string"},
+        "stdout": {"type": "string"},
+        "stderr": {"type": "string"},
+        "exit_code": {"type": "integer"}
+      }
+    }
+  }
+}

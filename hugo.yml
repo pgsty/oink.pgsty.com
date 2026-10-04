@@ -137,6 +137,14 @@ languages:
           params:
             icon: fa-solid fa-compass-drafting
             description: Maintainer contracts for architecture, components, shell, landing, and migration
+        - identifier: docs-cli
+          parent: docs
+          name: CLI
+          pageRef: /docs/cli
+          weight: 80
+          params:
+            icon: fa-solid fa-terminal
+            description: Draft introduction to the unreleased OINK CLI
         - identifier: book
           name: Book
           pageRef: /book
@@ -259,6 +267,14 @@ languages:
           params:
             icon: fa-solid fa-compass-drafting
             description: 面向维护者的架构、组件、阅读壳、落地页与迁移契约
+        - identifier: docs-cli
+          parent: docs
+          name: CLI
+          pageRef: /docs/cli
+          weight: 80
+          params:
+            icon: fa-solid fa-terminal
+            description: 尚未正式发布的 OINK CLI 草案介绍
         - identifier: book
           name: 教程
           pageRef: /book

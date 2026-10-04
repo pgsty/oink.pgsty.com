@@ -5,6 +5,8 @@ description: 仍在评估中的 OINK PRD 与设计草案的唯一双语归档位
 weight: 80
 icon: fa-solid fa-compass-drafting
 no_list: true
+cascade:
+  search_boost: 0.35
 search_keywords: [提案, PRD, 设计草案, 路线图, RFC]
 design_kind: proposal-index
 design_status: active
@@ -23,6 +25,7 @@ design_status: active
 | ---------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | [反向链接与知识图谱](/zh/docs/design/proposals/knowledge-graph/) | G1（静态反向链接）已接受，已在主题 main 分支实现，随 OINK 0.8.0 发布；局部与全站图谱（G2/G3）保持草案 |
 | [媒体收敛](/zh/docs/design/proposals/media-convergence/)         | 部分已实现；media-result 契约与 Landing 资源元数据已交付，M3 决议为原生图片处理，退役（M4）保持开放 |
+| [OINK CLI 与下一阶段产品路线](/zh/docs/design/proposals/oink-cli-roadmap/) | 独立 Go 仓库与首期边界已接受，本地 CLI 候选已实现、尚未公开发布；后续主题、迁移、采用、版本管理、OpenAPI 与平台阶段保持提案 |
 
 Agent 批量索引提案已在输出交付后退役。稳定行为现在归属
 [架构](/zh/docs/design/architecture/#outputs-and-runtime)，用户步骤归属
@@ -34,6 +37,14 @@ Agent 批量索引提案已在输出交付后退役。稳定行为现在归属
 
 生成式配置 Schema 提案已按生命周期退役：行为的规范位置是[配置总览](/zh/docs/customize/config/#editor-schema)，
 长期理由进入[生成式配置 Schema 决策](/zh/docs/design/decisions/config-schema/)，草案原文由 Git 历史保存。
+
+## CLI 工作区与适配器 {#cli-maintenance-candidate}
+
+显式 workspace 与可选适配器保留在当前收缩后的 CLI 中。
+[当前契约](/zh/docs/design/decisions/cli/#workspace-registry)与
+[使用指南](/zh/docs/start/cli/#workspace-registry)定义命令边界。
+带日期 R1–R8/A18 记录是绑定历史源码/二进制的证据，不能证明后续命令或输出修改。
+有限维护路线继续退出活动导航，尚未建立公开 CLI 发布或部署。
 
 ## 新 PRD 放在哪里 {#where-a-new-prd-goes}
 
@@ -80,3 +91,15 @@ content/docs/design/proposals/<slug>.zh.md
 实施前，评审者确认提案没有重复已有外壳、resolver、组件族或数据权威。实施期间，如果设计改变，
 先更新这份双语提案，不能让代码悄悄漂移。验收至少覆盖主题的最窄归属检查、真实文档站、渲染后的
 中英文、相关输出、无障碍与响应式检查。
+
+## 只读 Studio 候选 {#cli-studio-candidate}
+
+2026-10-04 当前 CLI 移除 Studio。使用 `oink dev`、普通编辑器与
+`inspect`/`check` 结构化报告。[R7 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r7)
+保留此前浏览器实现的历史验收。
+
+## 受审阅编辑 {#cli-editing-candidate}
+
+当前 CLI 移除通用源码编辑，保留受保护的 `new`、`move`、审阅记录与基线计划。
+旧编辑计划会被拒绝。[R8 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r8)
+继续作为历史证据，不是当前命令 API。

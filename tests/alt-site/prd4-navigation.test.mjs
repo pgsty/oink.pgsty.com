@@ -73,17 +73,19 @@ for (const [deployment, baseURL, prefix] of [
       '/book',
       '/case',
       '/blog',
+      '/docs/cli',
       '/zh/docs',
       '/zh/book',
       '/zh/case',
       '/zh/blog',
+      '/zh/docs/cli',
     ]) {
       documentAt(outDir, route);
     }
 
     for (const [languagePath, labels, panelCount] of [
-      ['', ['Docs', 'Get started', 'Book', 'Case', 'Blog'], 2],
-      ['/zh', ['文档', '快速上手', '教程', '案例', '博客'], 2],
+      ['', ['Docs', 'Get started', 'Book', 'Case', 'Blog', 'CLI'], 2],
+      ['/zh', ['文档', '快速上手', '教程', '案例', '博客', 'CLI'], 2],
     ]) {
       const home = documentAt(outDir, languagePath || '/');
       const desktop = navbarEntries(home);
@@ -138,6 +140,9 @@ for (const [deployment, baseURL, prefix] of [
 
       const tutorial = desktop.find((entry) => entry.label === labels[1]);
       assert.equal(tutorial.level, 1);
+      const cli = desktop.find((entry) => entry.label === 'CLI');
+      assert.equal(cli.level, 1);
+      assert.equal(cli.href, `${prefix}${languagePath}/docs/cli/`);
       // Menu descriptions are configuration data only; panels render rows of
       // one icon and one title.
       assert.equal(tutorial.description, '');
