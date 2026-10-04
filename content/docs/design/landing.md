@@ -5,14 +5,14 @@ description: The maintainer contract for landing data, the built-in section regi
 weight: 40
 icon: fa-solid fa-panorama
 search_keywords: [OINK landing contract, landing sections, homepage data, progressive enhancement, landing outputs]
-contract_status: released-v1.1.0
+contract_status: draft-v1.2.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 contract
-> This is the landing-page contract released with OINK 1.1.0. Consumer
-> dependency upgrades and deployment remain separate steps. This page is the
-> canonical English source; its Chinese peer is maintained beside it in
-> `content/docs/design/`.
+> [!IMPORTANT] OINK 1.2.0 working contract
+> This working contract includes the locally implemented 1.2.0 revisions
+> to the 1.1.0 baseline. It is not a published v1.2.0 release; consumer
+> upgrades and deployment remain separate steps. The canonical bilingual
+> sources live in `content/docs/design/`.
 
 Shared rules live in the [architecture](/docs/design/architecture/) and
 [component](/docs/design/components/) contracts; migration belongs in the
@@ -74,7 +74,7 @@ The runtime reuses `OinkSurfaceCoordinator` and owns reveal, count-up, copy,
 compact-menu, and theme-image enhancement. Server output remains complete
 without JavaScript or when the Landing script fails to load. Reveal candidates
 are visible by default; only an installed observer may mark one pending its
-entrance animation. Metrics render their complete compact value, prefix, and
+entrance animation. Metrics render their configured number formatting, prefix, and
 suffix on the server, and the count-up's final frame uses that same display.
 
 Marquee duplication is CSS-only; the duplicate is `aria-hidden` and `inert`,

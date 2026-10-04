@@ -10,6 +10,7 @@ LLMS index: [llms.txt](/llms.txt)
 
 Section pages:
 
+- [OINK 1.2.0 — Safer publishing and reliable reading](/blog/release/1.2.0/): OINK 1.2.0 release draft: consistent navigation and SEO, readable search results, reliable reader interactions, compatible math, safer publication, and guarded consumer upgrades.
 - [OINK 1.1.0 — Native locales, navigation, and site extensions](/blog/release/1.1.0/): OINK 1.1.0 brings 32 native interface catalogs, taxonomy directories, reliable sidebar state, site-owned search actions, and fixes for printing, keyboard focus, and copying images.
 - [OINK 1.0.0 — Stable contracts, a supported starter, and a complete public release](/blog/release/1.0.0/): OINK 1.0.0 makes the current knowledge-publishing contracts stable and rolls up every theme change since 0.8.0: Print and Book correctness, pinned Go 1.27 and Hugo 0.165.0 release tooling, a supported Starter, and the public metadata and media needed to enter the wider Hugo ecosystem.
 - [OINK 0.8.2 — Go 1.26 module compatibility for the Hugo Themes builder](/blog/release/0.8.2/): OINK 0.8.2 lowers the Hugo Module's Go directive from 1.27 to 1.26 so GOTOOLCHAIN=local builders, including the official Hugo Themes pipeline, can import the theme without changing its Hugo floor or rendered behavior.

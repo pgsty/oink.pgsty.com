@@ -5,12 +5,13 @@ description: 落地页数据、内置区块注册表、语言解析、运行时�
 weight: 40
 icon: fa-solid fa-panorama
 search_keywords: [OINK 落地页契约, 落地页区块, 首页数据, 渐进增强, 落地页输出]
-contract_status: released-v1.1.0
+contract_status: draft-v1.2.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 契约
-> 这是随 OINK 1.1.0 发布的落地页契约。消费站点升级依赖与部署仍是独立步骤。
-> 本页是权威中文源文件，与英文版本一起维护在 `content/docs/design/`。
+> [!IMPORTANT] OINK 1.2.0 工作契约草案
+> 本契约包含在 1.1.0 基线上已于本地实现的 1.2.0 修订，不代表 v1.2.0
+> 已正式发布。消费站点升级与部署仍是独立步骤。唯一的中英文契约源文件
+> 位于 `content/docs/design/`。
 
 共享规则见[架构契约](/zh/docs/design/architecture/)与
 [组件契约](/zh/docs/design/components/)；迁移行为属于
@@ -67,7 +68,7 @@ i18n。
 `OinkSurfaceCoordinator`，负责出现动画、数字递增、复制、紧凑菜单与主题图片
 增强。没有 JavaScript 或 Landing 脚本加载失败时，服务端输出仍然完整可见。
 出现动画的候选元素默认可见，只有成功安装观察器后才标记为等待动画。数字指标
-由服务端输出完整的紧凑数值、前缀和后缀，递增动画的最后一帧使用同一显示文本。
+由服务端按配置输出完整的数字格式、前缀和后缀，递增动画的最后一帧使用同一显示文本。
 
 跑马灯只用 CSS 复制；副本带 `aria-hidden` 与 `inert`，本地化复选框无需
 JavaScript 也能持久保存暂停状态。减少动画会停用动画，强制颜色保留控件，主题

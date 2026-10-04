@@ -5,14 +5,14 @@ description: Repository assembly, configuration, diagnostics, localization, outp
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK architecture, repository boundary, runtime, i18n, Docsy locales, output formats, security, accessibility, performance]
-contract_status: released-v1.1.0
+contract_status: draft-v1.2.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 contract
-> This is the architecture contract released with OINK 1.1.0. Consumer
-> dependency upgrades and deployment remain separate steps. This page is the
-> canonical English source; its Chinese peer is maintained beside it in
-> `content/docs/design/`.
+> [!IMPORTANT] OINK 1.2.0 working contract
+> This working contract includes the locally implemented 1.2.0 revisions
+> to the 1.1.0 baseline. It is not a published v1.2.0 release; consumer
+> upgrades and deployment remain separate steps. The canonical bilingual
+> sources live in `content/docs/design/`.
 
 ## Repository and assembly {#repository-and-assembly}
 
@@ -76,7 +76,7 @@ emits no request. Draw.io loads only when rendered content contains PNG or SVG
 candidates, then inspects each distinct image URL once.
 Diagram endpoints must be strings containing an HTTP(S) URL with a host or a
 same-site path. Unsupported schemes, protocol-relative URLs, backslashes, whitespace, and
-missing paths warn and disable the integration before its runtime is selected.
+pathless same-site references warn and disable the integration before its runtime is selected.
 
 ## Interface localization {#interface-localization}
 

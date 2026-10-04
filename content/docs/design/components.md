@@ -5,14 +5,14 @@ description: The maintainer contract for OINK authoring primitives, validation, 
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK component contract, shortcode API, Markdown components, Book, release, validation]
-contract_status: released-v1.1.0
+contract_status: draft-v1.2.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 contract
-> This is the component contract released with OINK 1.1.0. Consumer
-> dependency upgrades and deployment remain separate steps. This page is the
-> canonical English source; its Chinese peer is maintained beside it in
-> `content/docs/design/`.
+> [!IMPORTANT] OINK 1.2.0 working contract
+> This working contract includes the locally implemented 1.2.0 revisions
+> to the 1.1.0 baseline. It is not a published v1.2.0 release; consumer
+> upgrades and deployment remain separate steps. The canonical bilingual
+> sources live in `content/docs/design/`.
 
 Tutorials and exhaustive examples belong in the reader-facing
 [Components](/docs/components/) section. This page defines the API and behavior
@@ -65,7 +65,8 @@ OINK has 29 shortcodes:
 | Table | attributes, caption, number, or tabs | `tbl` for compound Book tables | tabs when tabbed |
 | Book target | image/table/passthrough/fence + `{num=}` | `fig`, `tbl`, `eq`, `eg` | none |
 | Release assets | `checksums` data fence | `release-assets` | copy in HTML |
-| Diagram/data | `mermaid`, `plantuml`, `markmap`, `math`, `chem`, `echarts`, `infographic` fences | none | selected local runtime only |
+| Math and chemistry | passthrough, `math`, `chem` fences | `eq` | none; build-time rendering and local styles |
+| Diagram/data | `mermaid`, `plantuml`, `markmap`, `echarts`, `infographic` fences | none | selected local runtime only |
 
 ## Validation {#validation}
 
@@ -91,7 +92,7 @@ preserving the image's authored alt text.
 
 Callout types are `note`, `tip`, `important`, `warning`, `caution`, `success`,
 `danger`, `question`, `example`, `quote`, and `details`; `-` starts folded and
-`+` expanded. Unknown types remain visible as neutral callouts without JS.
+`+` expanded. Unknown types render as plain blockquotes with their markers preserved, without JS.
 
 Adjacent tabs group only when consecutive and of the same block kind. `group`
 enables hash `#<group>-<value>` and storage `td-tabs:v1:<group>`; ungrouped tabs

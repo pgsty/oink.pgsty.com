@@ -5,12 +5,13 @@ description: OINK 创作原语、校验、Book、发布行为与输出降级的�
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK 组件契约, shortcode API, Markdown 组件, Book, 发布, 校验]
-contract_status: released-v1.1.0
+contract_status: draft-v1.2.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 契约
-> 这是随 OINK 1.1.0 发布的组件契约。消费站点升级依赖与部署仍是独立步骤。
-> 本页是权威中文源文件，与英文版本一起维护在 `content/docs/design/`。
+> [!IMPORTANT] OINK 1.2.0 工作契约草案
+> 本契约包含在 1.1.0 基线上已于本地实现的 1.2.0 修订，不代表 v1.2.0
+> 已正式发布。消费站点升级与部署仍是独立步骤。唯一的中英文契约源文件
+> 位于 `content/docs/design/`。
 
 教程与完整示例位于面向读者的[组件](/zh/docs/components/)专栏。本页定义这些
 指南所依赖的 API 与行为。
@@ -60,7 +61,8 @@ OINK 有 29 个 shortcode：
 | 表格 | 属性、caption、编号或标签页 | 复合 Book 表格使用 `tbl` | 只有标签页表格加载 tabs |
 | Book 目标 | 图片、表格、passthrough、围栏加 `{num=}` | `fig`、`tbl`、`eq`、`eg` | 无 |
 | 发布资产 | `checksums` 数据围栏 | `release-assets` | HTML 中加载复制功能 |
-| 图表与数据 | `mermaid`、`plantuml`、`markmap`、`math`、`chem`、`echarts`、`infographic` 围栏 | 无 | 只加载选中的本地运行时 |
+| 数学与化学公式 | passthrough、`math`、`chem` 围栏 | `eq` | 无；构建期渲染并加载本地样式 |
+| 图表与数据 | `mermaid`、`plantuml`、`markmap`、`echarts`、`infographic` 围栏 | 无 | 只加载选中的本地运行时 |
 
 ## 校验 {#validation}
 
@@ -75,6 +77,7 @@ URL 使用 `content/url.html`；不允许原始反斜杠，因为浏览器可能
 分隔符。图片依次从页面资源、分区资源、全局 assets、static
 或显式远程 URL 中解析。本地位图带固有尺寸；SVG、static 与远程来源仍然有效，
 但不能执行 Hugo 图片操作。
+资源元数据 `alt` 必须是字符串；无效值会告警并被忽略，保留正文填写的替代文本。
 
 ## 组件行为 {#component-behavior}
 
@@ -82,7 +85,7 @@ URL 使用 `content/url.html`；不允许原始反斜杠，因为浏览器可能
 
 提示块类型包括 `note`、`tip`、`important`、`warning`、`caution`、`success`、
 `danger`、`question`、`example`、`quote` 与 `details`；`-` 表示初始折叠，`+`
-表示初始展开。未知类型会以中性提示块保持可见，不依赖 JavaScript。
+表示初始展开。未知类型渲染为保留原标记的普通块引用，不依赖 JavaScript。
 
 只有连续且区块类型相同的相邻标签页才会分组。`group` 启用
 `#<group>-<value>` hash 与 `td-tabs:v1:<group>` 存储键；未分组标签页两者都不用。

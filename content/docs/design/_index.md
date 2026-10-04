@@ -15,17 +15,19 @@ search_keywords:
     proposal,
     PRD,
   ]
-contract_status: released-v1.1.0
+contract_status: draft-v1.2.0
 cascade:
+  search_boost: 0.6
   categories: [Design]
 ---
 
-> [!IMPORTANT] OINK 1.1.0 contracts
-> This section publishes the maintainer contracts released with OINK 1.1.0.
-> Consumer dependency upgrades and deployment remain separate steps.
-> Hugo Extended 0.160.1 is the compatibility floor. Continuous tests use one
-> pinned Hugo Extended toolchain, currently 0.165.0; the floor is not a second
-> matrix leg. The canonical bilingual sources live in `content/docs/design/`.
+> [!IMPORTANT] OINK 1.2.0 working contracts
+> This working contract includes the locally implemented 1.2.0 revisions
+> to the 1.1.0 baseline. It is not a published v1.2.0 release; consumer
+> upgrades and deployment remain separate steps. The canonical bilingual
+> sources live in `content/docs/design/`.
+> Hugo Extended 0.160.1 remains the compatibility floor. CI uses one pinned
+> toolchain, currently 0.165.0; the floor is not a second full matrix leg.
 
 This section is the durable design record for OINK. It complements the
 task-oriented guides elsewhere on the site: use those guides to build a site,

@@ -19,8 +19,9 @@
 | `content/series/`  |            2 |
 | 合计               |          127 |
 
-覆盖检查逐一核对首页以及 `docs/`、`blog/`、`book/`、`case/`、
-`authors/` 与 `series/`。以下命令同时检查文件覆盖率、显式锚点、中英文渲染 ID
+以上数量保留为历史基线。当前覆盖检查逐一核对首页以及 `docs/`、`blog/`、
+`book/`、`case/`、`authors/` 与 `series/`，包括 `docs/cli` 的 CLI 草案介绍。
+以下命令同时检查文件覆盖率、显式锚点、中英文渲染 ID
 和站内链接：
 
 ```bash

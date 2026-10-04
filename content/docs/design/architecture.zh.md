@@ -5,12 +5,13 @@ description: 仓库装配、配置、诊断、本地化、输出、性能、安�
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK 架构, 仓库边界, 运行时, i18n, Docsy 语言, 输出格式, 安全, 无障碍, 性能]
-contract_status: released-v1.1.0
+contract_status: draft-v1.2.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 契约
-> 这是随 OINK 1.1.0 发布的架构契约。消费站点升级依赖与部署仍是独立步骤。
-> 本页是权威中文源文件，与英文版本一起维护在 `content/docs/design/`。
+> [!IMPORTANT] OINK 1.2.0 工作契约草案
+> 本契约包含在 1.1.0 基线上已于本地实现的 1.2.0 修订，不代表 v1.2.0
+> 已正式发布。消费站点升级与部署仍是独立步骤。唯一的中英文契约源文件
+> 位于 `content/docs/design/`。
 
 ## 仓库与装配 {#repository-and-assembly}
 
@@ -63,7 +64,7 @@ OINK 没有通用的键名重命名注册表。仍需给出迁移诊断的过渡
 Draw.io 只在渲染内容含 PNG 或 SVG 候选图片时加载，并且每个不同的图片 URL
 只检查一次。
 图表端点必须是字符串，内容为带主机的 HTTP(S) URL 或同站路径。不支持的协议、
-省略协议的 URL、反斜杠、空白字符及缺失路径都会告警，并在选择运行时前关闭该集成。
+省略协议的 URL、反斜杠、空白字符及缺少路径的同站引用都会告警，并在选择运行时前关闭该集成。
 
 ## 界面本地化 {#interface-localization}
 

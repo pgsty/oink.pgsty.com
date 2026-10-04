@@ -5,14 +5,14 @@ description: Navigation authorities, immersive blog presentation, search, action
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK shell, navigation contract, search, actions, blog presentation, authors, series, pager]
-contract_status: released-v1.1.0
+contract_status: draft-v1.2.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 contract
-> This is the shell and navigation contract released with OINK 1.1.0. Consumer
-> dependency upgrades and deployment remain separate steps. This page is the
-> canonical English source; its Chinese peer is maintained beside it in
-> `content/docs/design/`.
+> [!IMPORTANT] OINK 1.2.0 working contract
+> This working contract includes the locally implemented 1.2.0 revisions
+> to the 1.1.0 baseline. It is not a published v1.2.0 release; consumer
+> upgrades and deployment remain separate steps. The canonical bilingual
+> sources live in `content/docs/design/`.
 
 ## Authorities and navigation {#authorities-and-navigation}
 
@@ -175,7 +175,9 @@ Search metadata is `search_keywords`, `search_boost` (default 1), and
 `search_exclude`. The index carries URL, title, taxonomies, excerpt, headings,
 description, body/summary, root, section, type, keywords, boost, breadcrumb,
 and icon. Fixture budget is 2 MiB raw / 512 KiB gzip. Sites may return extra
-strings from `hooks/search-keywords-extra.html`.
+strings from `hooks/search-keywords-extra.html`. Keywords affect matching and
+ranking; CJK keyword-only matches display the page description or excerpt, not
+the keyword list. Body matches retain their surrounding text as context.
 
 Built-in action IDs are `copy_markdown`, `copy_link`, `open_chatgpt`,
 `open_claude`, `view_markdown`, `view_history`, `edit_page`,
@@ -186,6 +188,18 @@ under `languages.<lang>.params.ui.command_palette.commands` may open a safe URL
 or invoke a built-in ID, never inject JavaScript. The legacy clipboard fallback
 restores the previous focus and selection, including its direction, without taking focus back if another
 control acquired it during the copy operation.
+
+Edit, history, and create-child actions require a repository-relative source
+file. Physical filenames and the site working directory use normalized `/`
+separators before containment checks. `path_base_for_github_subdir` matches
+that normalized path: relative to the working directory for local content,
+absolute for an external mount. A string regex removes its matches; a
+`{from, to}` mapping may replace it. External sources require an explicit
+match. After mapping and path cleanup, empty paths, `.`, absolute or
+drive-qualified paths, and paths starting with `..` as a segment suppress
+these three actions. Docs and project issue actions remain available under
+their existing repository settings. Windows mappings must match `/` rather
+than `\`; normalization does not change filename case.
 
 The Palette has empty, text-search, and `>` command modes; quick links derive
 from navigation. It has no history, semantic search, personalization, or remote
@@ -206,7 +220,10 @@ Previous/next page navigation still considers links only, never group buttons.
 
 The outline derives cursor and visible-heading range from one heading model and
 the scroller's computed `scroll-padding-top`; its SVG line and dot share the
-same animated values so they cannot drift. No speculative DOM repair pass is
+same animated values so they cannot drift. URL fragments are decoded when
+valid; malformed percent sequences fall back to the literal heading ID, both
+when indexing links and when selecting a requested heading near the page end.
+No speculative DOM repair pass is
 allowed. This tracking is always owned by the normal shell runtime.
 `params.ui.scroll_spy` and the page key `scroll_spy` are quiet compatibility
 no-ops throughout 1.x, emit no separate runtime, and may be removed only in a

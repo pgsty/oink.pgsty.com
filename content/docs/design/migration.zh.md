@@ -1,16 +1,17 @@
 ---
 title: OINK 迁移边界
 linkTitle: 迁移边界
-description: 从 OINK 0.4 到 OINK 1.1.0 所支持的源码、配置与验证迁移边界。
+description: OINK 迁移所支持的源码、配置与验证边界，包含 1.2.0 开发修订。
 weight: 50
 icon: fa-solid fa-code-compare
 search_keywords: [OINK 迁移契约, 0.4 迁移, 0.5 迁移, 配置重命名, 迁移工具]
-contract_status: released-v1.1.0
+contract_status: draft-v1.2.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 契约
-> 这是随 OINK 1.1.0 发布的迁移契约。消费站点升级依赖与部署仍是独立步骤。
-> 本页是权威中文源文件，与英文版本一起维护在 `content/docs/design/`。
+> [!IMPORTANT] OINK 1.2.0 工作契约草案
+> 本契约包含在 1.1.0 基线上已于本地实现的 1.2.0 修订，不代表 v1.2.0
+> 已正式发布。消费站点升级与部署仍是独立步骤。唯一的中英文契约源文件
+> 位于 `content/docs/design/`。
 
 这是源码与配置指南，不是版本发布流水账。本地源码、提交、标签、推送、消费站点
 固定版本、部署与生产一致仍是彼此独立的状态。面向读者的升级流程见
@@ -33,18 +34,24 @@ python3 bin/migrations/oink06.py check --site <dir>
 ```
 
 代码围栏的内容不会改写，包括与有序或无序列表标记处于同一行、可带引用前缀的围栏。
+代码示例里额外的字面引用前缀不会结束该围栏。
 `book_figures.py` 保留范围明确的 TPME、DDIA v1/v2 与
 pg-internal profile；它不是通用解析器。
 
 隔离验证工具 `bin/measure-baseline.py` 和 `bin/sites/build-all.py` 会在清理已有
-输出前，拒绝与任一输入站点、主题 checkout 或其他快照交叠的快照目录，
-包括通过符号链接别名指向这些位置的 `--keep` 目标。
+输出前，拒绝与任一输入站点、运行工具的 checkout、选中的主题 checkout 或其他
+快照交叠的快照目录，包括通过符号链接别名指向这些位置的 `--keep` 目标，以及
+通过 `--theme` 选择其他主题 checkout 的情况。
 
 ## 更新消费站点仓库 {#updating-consumers}
 
 主题发布后，应清点维护中的消费站点 checkout，并升级它们固定的版本。
 主题的 `bin/update-consumers.py` 扫描指定根目录下的直属项目目录，不递归进入
 归档、生成站点、缓存或主题测试夹具。
+
+此工具属于 1.2.0 开发 checkout，已发布的 v1.1.0 标签中不包含它。下面使用开发
+工具选择已经发布的 v1.1.0 目标；只有 v1.2.0 正式发布且模块能够成功解析后，
+才能将目标改为 v1.2.0。
 
 ```sh
 python3 bin/update-consumers.py v1.1.0 --roots ~/www ~/pgsty

@@ -1,21 +1,23 @@
 ---
 title: 设计与开发
 linkTitle: 设计
-description: 在唯一的双语专栏中管理 OINK 维护者契约、已接受决策、定期研究与候选提案。
+description: 在唯一的双语专栏中管理 OINK 维护者契约、已接受决策、带日期的研究记录与候选提案。
 weight: 70
 icon: fa-solid fa-compass-drafting
 no_list: true
 search_keywords: [OINK 设计, 维护者契约, 架构, 决策, 研究, 提案, PRD]
-contract_status: released-v1.1.0
+contract_status: draft-v1.2.0
 cascade:
+  search_boost: 0.6
   categories: [设计契约]
 ---
 
-> [!IMPORTANT] OINK 1.1.0 契约
-> 本专栏公开随 OINK 1.1.0 发布的维护者契约。消费站点升级依赖与部署仍是独立步骤。
-> Hugo Extended 0.160.1 是兼容性下限。持续测试只使用一个固定的 Hugo Extended
-> 工具链，当前为 0.165.0；兼容性下限不单独作为矩阵测试项。唯一的中英文契约源文件
-> 位于本站仓库的 `content/docs/design/`。
+> [!IMPORTANT] OINK 1.2.0 工作契约草案
+> 本契约包含在 1.1.0 基线上已于本地实现的 1.2.0 修订，不代表 v1.2.0
+> 已正式发布。消费站点升级与部署仍是独立步骤。唯一的中英文契约源文件
+> 位于 `content/docs/design/`。
+> Hugo Extended 0.160.1 仍是兼容性下限；CI 只使用一套固定工具链，当前为
+> 0.165.0，下限版本不单独作为完整矩阵测试项。
 
 本专栏是 OINK 可长期维护的设计记录。站内其它专栏按任务讲解如何搭建站点；
 这里集中说明现行不变量、这些选择背后的理由、用于比较方案的证据，以及仍处于

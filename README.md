@@ -8,6 +8,12 @@ The bilingual maintainer contracts under `content/docs/design/` are the
 canonical prose source for OINK architecture, components, reading shells,
 Landing pages, and migration boundaries.
 
+The working guides and bilingual `content/blog/release/1.2.0{,.zh}.md` release
+draft cover the current 1.2.0 theme changes. The dependency and advertised
+published version remain `v1.1.0` until release publication and adoption.
+`content/docs/cli{,.zh}.md` is a one-page introduction to the separate,
+unreleased OINK CLI.
+
 ## Starting a new OINK site
 
 Do not clone this regression repository as a project template. Use the small,

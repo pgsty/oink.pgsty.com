@@ -5,12 +5,13 @@ description: 导航权威、沉浸式博客、搜索、操作、分类法、索�
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK 外壳, 导航契约, 搜索, 操作, 博客展示, 作者, 系列, 翻页]
-contract_status: released-v1.1.0
+contract_status: draft-v1.2.0
 ---
 
-> [!IMPORTANT] OINK 1.1.0 契约
-> 这是随 OINK 1.1.0 发布的外壳与导航契约。消费站点升级依赖与部署仍是独立步骤。
-> 本页是权威中文源文件，与英文版本一起维护在 `content/docs/design/`。
+> [!IMPORTANT] OINK 1.2.0 工作契约草案
+> 本契约包含在 1.1.0 基线上已于本地实现的 1.2.0 修订，不代表 v1.2.0
+> 已正式发布。消费站点升级与部署仍是独立步骤。唯一的中英文契约源文件
+> 位于 `content/docs/design/`。
 
 ## 权威来源与导航 {#authorities-and-navigation}
 
@@ -136,7 +137,8 @@ sidebar_enabled: false
 `search_exclude`。索引携带 URL、标题、分类法、摘录、小标题、description、
 正文或摘要、根、分区、类型、关键词、boost、面包屑导航与图标。夹具预算为原始
 2 MiB、gzip 512 KiB。站点可以通过 `hooks/search-keywords-extra.html` 返回额外
-字符串。
+字符串。关键词用于匹配与排序；CJK 查询仅命中关键词时，结果显示页面描述或
+摘录，不展示关键词列表。正文命中仍使用匹配位置附近的文字作为摘要。
 
 内置操作 ID 包括 `copy_markdown`、`copy_link`、`open_chatgpt`、`open_claude`、
 `view_markdown`、`view_history`、`edit_page`、`create_child_page`、`create_issue`、
@@ -146,6 +148,14 @@ sidebar_enabled: false
 `languages.<lang>.params.ui.command_palette.commands` 配置的命令可以打开安全
 URL，或调用内置 ID，绝不能注入 JavaScript。剪贴板的旧式回退恢复此前的焦点、选区及其方向，
 但复制期间其他控件已获得焦点时不再抢回。
+
+编辑、历史与新建子页操作要求源文件具有仓库相对路径。物理文件名和站点工作目录
+先统一为 `/` 分隔符，再判断包含关系。`path_base_for_github_subdir` 匹配归一化后的
+路径：站点内内容使用相对工作目录的路径，外部挂载使用绝对路径。字符串正则可以
+移除匹配的内容，`{from, to}` 映射可以替换它；外部来源必须显式匹配规则。
+映射并整理路径后，空路径、`.`、绝对路径、带盘符的路径以及以 `..` 路径段开头的
+结果都会隐藏这三项操作。文档 issue 与项目 issue 操作仍按各自的仓库配置提供。
+Windows 映射应匹配 `/` 而不是 `\`；归一化不会改变文件名大小写。
 
 命令面板有空状态、文本搜索状态与 `>` 命令状态；快捷链接来自导航。它没有历史、
 语义搜索、个性化或远程回退。搜索查询留在浏览器内，默认不发送遥测。
@@ -161,7 +171,9 @@ Right/`d` 展开已折叠的分组，已展开时进入第一个可见子项。�
 不会把分组按钮当成页面。
 
 页面大纲从同一套标题模型与滚动容器计算后的 `scroll-padding-top` 推导光标和可见
-标题范围；SVG 线条与圆点共享同一组动画值，不会漂移。禁止增加臆测性的 DOM
+标题范围；SVG 线条与圆点共享同一组动画值，不会漂移。合法 URL 片段会被解码；
+非法百分号序列则回退到字面的标题 ID，建立链接索引和选中页尾请求的标题时遵循
+同一规则。禁止增加臆测性的 DOM
 修复遍历。这项跟踪始终由普通外壳运行时负责。`params.ui.scroll_spy` 与页面键
 `scroll_spy` 在整个 1.x 期间都是静默兼容 no-op，不加载独立运行时；只有未来的
 破坏性版本才会删除它们。
