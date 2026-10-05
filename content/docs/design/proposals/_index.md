@@ -29,6 +29,7 @@ or the documentation repository.
 | [Backlinks and knowledge graph](/docs/design/proposals/knowledge-graph/) | G1 (static backlinks) is accepted, implemented on the theme's main branch, and ships with OINK 0.8.0; the local and global graphs (G2/G3) remain draft |
 | [Media convergence](/docs/design/proposals/media-convergence/)           | Partially implemented; the media-result contract and Landing resource metadata shipped, M3 resolved for native-image processing, retirement (M4) open |
 | [OINK CLI and the next product stage](/docs/design/proposals/oink-cli-roadmap/) | Independent Go repository and first-stage boundary accepted; local CLI candidate implemented, not publicly released; later theme, migration, adoption, versioning, OpenAPI, and platform stages remain proposals |
+| [Visual presets and appearance switching](/docs/design/proposals/visual-presets/) | Paper/Slate locally implemented; Ink/Terminal remain research; see the accepted decision and dated acceptance record |
 
 The bulk agent-index proposal retired after the outputs shipped. Its stable
 behaviour now belongs to [Architecture](/docs/design/architecture/#outputs-and-runtime),

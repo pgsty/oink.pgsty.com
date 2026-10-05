@@ -54,7 +54,7 @@ for (const width of widths) {
       await expect(toc.locator('.td-shell-toc__actions')).toHaveCount(0);
       await expect(
         toc.locator(
-          '.td-language-selector, [data-td-theme-toggle], a[aria-label="GitHub"]',
+          '.td-language-selector, [data-td-appearance-trigger], a[aria-label="GitHub"]',
         ),
       ).toHaveCount(0);
 
@@ -72,7 +72,7 @@ for (const width of widths) {
     await expect(utilityDock.locator('.td-version-menu--icon-only')).toBeVisible();
     await expect(utilityDock.locator('.td-language-selector')).toBeVisible();
     await expect(utilityDock.locator('.td-shell-keyboard')).toBeVisible();
-    await expect(utilityDock.locator('[data-td-theme-toggle]')).toBeVisible();
+    await expect(utilityDock.locator('[data-td-appearance-trigger]')).toBeVisible();
     await expect(utilityDock.locator('a[aria-label="GitHub"]')).toHaveCount(0);
 
     const actionsToggle = page.locator('[data-td-page-actions-toggle]:visible');
@@ -249,7 +249,7 @@ for (const [locale, path, roots] of [
       await expect(link.locator('.td-navbar-entry__label')).toBeHidden();
     }
 
-    // Search leads the two-control end edge; the drawer entry sits outermost.
+    // Search leads the utility end edge; the drawer entry sits outermost.
     const [searchBox, toggleBox, zoneBox] = await Promise.all([
       search.boundingBox(),
       toggle.boundingBox(),
@@ -279,7 +279,7 @@ for (const [locale, path, roots] of [
     await expect(toggle).toBeHidden();
     await expect(menuZone).toBeVisible();
     await expect(
-      page.locator('.td-nav-util-zone > .td-nav-theme-menu'),
+      page.locator('.td-nav-util-zone > .td-nav-appearance'),
     ).toBeVisible();
   });
 }
@@ -398,12 +398,13 @@ test('bottom bar utilities keep their order and open upward', async ({ page }) =
   for (const [triggerSelector, menuSelector] of [
     ['.td-version-menu__title', '.td-version-menu .dropdown-menu'],
     ['.td-language-selector__trigger', '.td-language-selector > ul'],
-    ['[data-td-theme-toggle]', '.td-shell-footline__theme .td-nav-hover-menu__pop'],
+    ['[data-td-appearance-trigger]', '.td-shell-footline__theme dialog'],
     ['.td-shell-keyboard__trigger', '.td-shell-keyboard-help'],
   ]) {
     const trigger = dock.locator(triggerSelector);
     const menu = dock.locator(menuSelector);
-    await trigger.hover();
+    if (triggerSelector === '[data-td-appearance-trigger]') await trigger.click();
+    else await trigger.hover();
     await expect(menu).toBeVisible();
     const [triggerBox, menuBox] = await Promise.all([
       trigger.boundingBox(),
@@ -412,6 +413,7 @@ test('bottom bar utilities keep their order and open upward', async ({ page }) =
     expect(triggerBox).not.toBeNull();
     expect(menuBox).not.toBeNull();
     expect(menuBox.y + menuBox.height).toBeLessThanOrEqual(triggerBox.y + 1);
+    if (triggerSelector === '[data-td-appearance-trigger]') await page.keyboard.press('Escape');
   }
 
   await page.setViewportSize({ width: 820, height: 900 });

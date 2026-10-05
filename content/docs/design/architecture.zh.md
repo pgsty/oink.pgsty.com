@@ -219,7 +219,7 @@ CSS 或 SVG 发起的请求也受此限制。
 保留自己的焦点样式，滚动容器保留 `tabindex`，跳过导航的目标在标题附近显示局部边框，
 不再包围整篇文章。强制颜色模式保留键盘提示，不使用全局焦点边框重置。
 
-字体角色为 `ui`、`body`、`heading`、`code`、`display`、`meta` 与 `print`，
+字体角色为 `ui`、`body`、`heading`、`code`、`display`、`meta`、`brand` 与 `print`，
 通过 `--td-*-font-family` 暴露。`ui` 是主字体：`body` 经它解析，`heading` 又经
 `body` 解析，因此赋一次值即同时移动界面、正文与标题。`params.ui.typography`
 可取 `technical` 或 `system`；两者编译到同一份样式表，不加载运行时。旧
@@ -234,7 +234,7 @@ Bootstrap/Docsy Sass 变量继续为这些角色提供初值。
 技术字体。
 
 强调色按角色拆开。**强调文字**（链接、外链、行内代码）跟随 Bootstrap 链接
-族与 `--bs-code-color`，主题色永不重声明它们；行内代码是固定的胭脂红明暗对，
+族与 `--bs-code-color`，主题色永不重声明它们；行内代码随视觉预设变化：Slate 保留胭脂红明暗对，Paper 使用墨色文字与淡底，
 使一页密集的标识符读成「代码与正文」而非「代码与链接」。**强调底**（选中行、
 指针划过导航行时那层更灰的底、hover 淡铺、目录药丸与轨道光点、徽章 hover、
 卡片 hover 时的外边、分享按钮 hover 时的实心底、文本选中、焦点环）跟随
@@ -250,6 +250,39 @@ Bootstrap/Docsy Sass 变量继续为这些角色提供初值。
 上达到 4.5:1。注入的每个字节
 都由解析出的整数通道格式化，绝不来自作者文本。同一个解析器同时回答 head 注入块
 与侧栏根切换器的「这一页是什么颜色」。
+
+## 视觉预设 {#visual-presets}
+
+本地未发布主题默认使用 Paper。`params.ui.preset` 接受 `paper`、`slate`，以及显式
+选择的实验预设 `ink`、`terminal`；非法值与保留名称（`folio`、`canvas`）告警并回退到
+`paper`。`params.ui.preset_menu` 默认 `false`；`true` 提供 Paper、Slate 与站点默认值，
+列表指定可选项并可显式开启实验。列表必须包含站点默认值，缺失时告警并补入。不支持页面级预设。
+
+Hugo 为所有文档根元素输出 `data-td-preset` 与 `data-td-site-preset`，包括 404
+和打印输出。开启读者选择时，head 内联脚本在 CSS 加载前校验 `td-preset`。选择
+带默认标记的预设会删除该存储键。非法存储值被清除；存储被禁用时，控件仍可在当前
+页面使用，并显示无法持久化的提示。`storage` 事件同步标签页，`td-preset-change`
+携带 `{preset, previous, stored}`。明暗状态独立使用 `data-bs-theme`、
+`td-color-theme` 与 `td-theme-change`。浏览器栏颜色跟随实际明暗和预设。禁用
+JavaScript 时显示站点默认的浅色预设；外观控件需要 JavaScript。
+
+四套预设编入同一个样式表。Slate 保留 v1.1.0 的基础色板选择器与值。Paper 调整
+配色和少量组件规则，不改变外壳列宽、断点或全局间距。Paper 深色块重声明浅色块的
+每个色板 token，并覆盖嵌套深色区域。字体角色保持同等选择器优先级，顺序为预设、
+`typography: system`、head 输出的 `params.ui.fonts`；站点的
+`_styles_project.scss` 仍在最后。`brand` 单独控制字标。Paper 使用本地 IBM Plex Sans，
+Slate 保留 Inter；两者的字标保留 Chakra Petch，代码保留 IBM Plex Mono。
+系统排版模式不请求内置文字字体，除非站点显式覆盖角色。没有新增外部字体请求。
+Ink 统一使用 Inter，配合红色标记、正文链接下划线、直角与无阴影。Terminal 使用
+等宽界面和标题、Plex Sans 正文、青色链接、琥珀强调、2 px 圆角与无阴影；仅压紧
+桌面导航，保留正文行长与手机触控目标。CSS 标题标记使用空的无障碍替代文字，
+不支持的浏览器省略标记。显式 `fonts.ui` 仍控制主字体，除非设置了有效的
+`fonts.body`。参见[实验记录](/zh/docs/design/research/2026-10-05-ink-terminal-experiment/)。
+
+Giscus 自动色板同时跟随风格与明暗；显式主题或浅深色样式表配置仍优先。打印使用
+当前预设的浅色配色与白纸背景，即使屏幕为深色。Mermaid 与 ECharts 继续只跟随
+明暗，API 组件保留供应商色板。参见[已接受决策](/zh/docs/design/decisions/visual-presets/)
+与[本地验收记录](/zh/docs/design/research/2026-10-05-visual-presets-acceptance/)。
 
 ## 发布状态 {#release-states}
 

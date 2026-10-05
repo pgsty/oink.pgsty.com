@@ -131,7 +131,11 @@ Draw.io 与图片缩放共用一张图片时，编辑与缩放是同级的独立
 
 所有代码高亮都使用 Chroma。通用围栏属性包括 `title`、`copy`、`wrap`、
 `collapse`、`label`、`id`、行选项、标签页，以及 Book 的 `num`/`caption`。复制
-操作返回作者源文。ECharts 输入是声明式 JSON/YAML；回调使用
+操作返回作者源文。Mermaid 色板按明暗切换，与视觉预设独立；默认深色连线标签
+背景使用 `#404040`，使标签文字达到 AA 对比度。显式
+`params.mermaid.themeVariables` 配置仍然优先。
+
+ECharts 输入是声明式 JSON/YAML；回调使用
 `window.OinkEchartsFunctions` 中的 `$fn:<name>`，绝不执行嵌入脚本。
 
 数学公式使用 Hugo 构建时生成的 KaTeX 产物和本地 CSS，不加载浏览器数学运行时。

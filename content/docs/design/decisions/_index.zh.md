@@ -27,6 +27,7 @@ OINK 过去把评审、PRD 与执行记录放在本地 `plan/` 目录中。这�
 | [Markdown 优先创作](/zh/docs/design/decisions/authoring/) | 为什么优先使用原生 Markdown，以及 Docs、Blog、Book、Landing 如何延长共享系统 |
 | [生成式配置 Schema](/zh/docs/design/decisions/config-schema/) | 为什么编辑器 Schema 是生成的投影，以及漂移门禁如何阻止第三个配置权威出现 |
 | [可选 CLI 与结果契约](/zh/docs/design/decisions/cli/) | 本地 CLI 候选的独立 Go 可执行文件、版本化诊断、覆盖范围与显式写入边界 |
+| [视觉预设](/zh/docs/design/decisions/visual-presets/) | Paper 默认、Slate 兼容、可选外观菜单、独立明暗状态与字体边界 |
 
 ## 记录格式 {#record-format}
 

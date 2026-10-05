@@ -203,7 +203,13 @@ async function setTheme(page, mode) {
   }, mode);
 }
 
-test.describe('Section theme colour reaches the shell', () => {
+for (const preset of ['paper', 'slate']) test.describe(`${preset}: section theme colour reaches the shell`, () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript((value) => {
+      localStorage.setItem('td-preset', value);
+      localStorage.setItem('td-color-theme', 'light');
+    }, preset);
+  });
   test('sidebar rows: the pointer ground is the section accent, one step under the selected row', async ({
     page,
   }) => {
@@ -213,6 +219,7 @@ test.describe('Section theme colour reaches the shell', () => {
       '--td-accent',
       '--td-shell-accent',
       '--bs-link-color',
+      '--bs-secondary-bg',
     ]);
     // The fixture book is deliberately not the brand blue; without that the
     // rest of this test could not tell accent from link family.
@@ -223,7 +230,11 @@ test.describe('Section theme colour reaches the shell', () => {
     const active = page.locator('.td-shell-tree__row.td-shell-active').first();
     await expect(active).toBeVisible();
     const activeGround = parseColor(await cssOf(active, 'background-color'));
-    expect(near(activeGround, withAlpha(palette['--td-accent'], 0.14))).toBe(
+    // Paper selects on opaque warm paper; Slate keeps its translucent accent.
+    const selected = preset === 'paper'
+      ? mix(palette['--td-accent'], 0.09, palette['--bs-secondary-bg'])
+      : withAlpha(palette['--td-accent'], 0.14);
+    expect(near(activeGround, selected)).toBe(
       true,
     );
 
@@ -250,6 +261,7 @@ test.describe('Section theme colour reaches the shell', () => {
     const darkPalette = await tokens(page, [
       '--td-accent',
       '--td-shell-accent',
+      '--bs-secondary-bg',
     ]);
     await page.mouse.move(0, 0);
     const { hovered: darkHover } = await hoverUntilChanged(
@@ -269,6 +281,10 @@ test.describe('Section theme colour reaches the shell', () => {
     expect(
       parseColor(await cssOf(active, 'background-color')).a,
     ).toBeGreaterThan(darkHover.a);
+    const darkSelected = preset === 'paper'
+      ? mix(darkPalette['--td-accent'], 0.12, darkPalette['--bs-secondary-bg'])
+      : withAlpha(darkPalette['--td-accent'], 0.16);
+    expect(near(parseColor(await cssOf(active, 'background-color')), darkSelected)).toBe(true);
   });
 
   test('sidebar rows: two differently coloured sections hover differently', async ({

@@ -51,3 +51,6 @@ Schema 在同一次提交中随之再生，不存在需要单独记得维护的�
 `python3 bin/generate-config-schema.py --check` 在内存中重新生成，`schema/`
 过期或缺失即失败；主题 CI 把它放在参数契约检查旁边运行。编辑器接入方法与
 行为描述的规范位置是[配置总览](/zh/docs/customize/config/#editor-schema)。
+
+视觉预设枚举值另从 `preset-config.html` 提取。`preset_menu` 联合类型接受布尔值或
+由解析器管理的预设名称列表，schema 不另行维护名称清单。

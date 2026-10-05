@@ -291,8 +291,10 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `params.ui.typography` | enum | technical | `technical` 用随主题分发的 Inter / Chakra Petch / IBM Plex Mono；`system` 只用平台字体栈，不请求品牌字体。非法值告警并回退 |
-| `params.ui.fonts` | map | | 为 `ui` `body` `heading` `code` `display` `meta` `print` 七个角色指定字体族。主题校验名称但不加载字体文件；每份列表都应以通用字体族收尾 |
+| `params.ui.preset` | enum | paper | 站点级视觉预设：`paper`、`slate`，或显式选择的实验 `ink`、`terminal`。本地未发布行为；选择 `slate` 保留原有外观 |
+| `params.ui.preset_menu` | boolean 或列表 | false | `true` 提供 Paper、Slate 与站点默认值；列表显式开启实验且必须包含站点默认值；与 `dark_mode` 独立 |
+| `params.ui.typography` | enum | technical | `technical` 使用所选预设的本地字体（Paper：Plex Sans；Slate：Inter）；`system` 只用平台字体栈，不请求品牌字体。非法值告警并回退 |
+| `params.ui.fonts` | map | | 为 `ui` `body` `heading` `code` `display` `meta` `brand` `print` 八个角色指定字体族。主题校验名称但不加载字体文件；每份列表都应以通用字体族收尾 |
 | `params.page_width` | enum | normal | 外壳整体宽度：`normal` `wide` `full`，可逐页覆盖 |
 | `params.reading_width` | enum | normal | Book 页正文的阅读行宽：`slim` `normal` `wide`，不影响外壳 |
 {.fields meta="type default"}

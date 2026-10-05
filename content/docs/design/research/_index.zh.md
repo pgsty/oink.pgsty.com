@@ -28,6 +28,8 @@ design_status: active
 | [2026-09-19 社区 Issue 与 PR 调研](/zh/docs/design/research/2026-09-19-upstream-review/) | 侧栏、焦点与搜索反馈的复现、PR 接收建议和解决方案 |
 | [2026-09-20 OINK 1.1 发布审查](/zh/docs/design/research/2026-09-20-release-review/) | 五项运行时修复、文档准备、验证证据与发布边界 |
 | [2026-09-29 CLI 验收快照](/zh/docs/design/research/2026-09-29-cli-acceptance/) | 已执行的 Starter、真实站点、离线、升级及可复现归档检查；最终本地验收与公开发布分别记录 |
+| [视觉预设验收，2026-10-05](/zh/docs/design/research/2026-10-05-visual-presets-acceptance/) | Paper/Slate 本地实现、真实输出与有范围说明的浏览器证据 |
+| [Ink 与 Terminal 实验，2026-10-05](/zh/docs/design/research/2026-10-05-ink-terminal-experiment/) | 显式实验预设、设计取舍与真实站点验证 |
 
 ## 发布规则 {#publication-rules}
 

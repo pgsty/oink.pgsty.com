@@ -366,6 +366,7 @@ params:
       loading: lazy
   ui:
     typography: technical
+    preset_menu: [paper, slate, ink, terminal]
     # Site-wide backlinks: every page lists the pages that link to it, so the
     # documentation demonstrates the 0.8.0 feature it describes. The Docs and
     # Blog section roots opt out in their own front matter -- an index is read

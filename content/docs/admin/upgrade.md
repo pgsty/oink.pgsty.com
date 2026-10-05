@@ -154,10 +154,18 @@ the [sidebar contract](/docs/design/shell/#sidebar-runtime),
 
 ## Preparing for 1.2.0 {#preparing-1-2}
 
+> [!IMPORTANT] Local default appearance change
+> Paper is now the local theme default. Set `params.ui.preset: slate` before
+> adopting this change if the site must retain its existing appearance.
+> `preset_menu: true` enables reader choice; its default remains false.
+> Review custom dark brand selectors as described in [Brand](/docs/customize/brand/#visual-presets).
+> This does not publish a tag or change any consumer pin.
+
+
 1.2.0 is an unreleased draft. Keep the published v1.1.0 pin until a new tag is
 published and verified; the following is a local development checklist, not
-an instruction to resolve `v1.2.0` now. The current changes introduce no new
-required configuration or source migration, and retain the Hugo Extended
+an instruction to resolve `v1.2.0` now. Except for the visible preset default described above, the current changes require
+no source migration and retain the Hugo Extended
 0.160.1 floor.
 
 - Recheck explicit navigation, hidden subtrees, page links, Blog pagination

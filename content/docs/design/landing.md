@@ -100,3 +100,16 @@ Removed 0.4 component forms belong to the migration toolkit, not parallel
 Landing implementations. OINK adds no pricing-period toggle, remote-fact API,
 hotspot editor, visual builder, or second registry. Existing homepage data and
 explicit custom section partials remain valid.
+
+## Visual presets {#visual-presets}
+
+Paper removes the hero grid and glow, uses warm shadows, Plex Sans display
+headings, and a link-colored primary action. Slate retains its technical grid,
+glow, Chakra Petch headings, and original primary-action colors. Shared section
+geometry and density remain unchanged. The mobile drawer includes the shared
+Appearance sheet; see the [shell contract](/docs/design/shell/#appearance-control).
+
+The explicit Ink/Terminal experiments also remove the grid, glow and shadows.
+Ink uses heavy Inter headings, square cards and a red primary action. Terminal
+uses mono headings, 2 px corners and an amber primary action with a static
+cursor-shaped decoration. Neither adds animation or changes section columns.

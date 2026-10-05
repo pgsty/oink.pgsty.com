@@ -264,7 +264,7 @@ styles, scrollable containers retain `tabindex`, and the skip-link destination
 shows a local outline around its title instead of the entire article. Forced
 colors preserve the keyboard indication; no global focus-outline reset is used.
 
-Font roles are `ui`, `body`, `heading`, `code`, `display`, `meta`, and
+Font roles are `ui`, `body`, `heading`, `code`, `display`, `meta`, `brand`, and
 `print`, exposed as `--td-*-font-family`. `ui` is the main face: `body`
 resolves through it, and `heading` through `body`, so one assignment moves
 chrome, prose, and headings together. `params.ui.typography` is `technical` or
@@ -284,8 +284,8 @@ the prose face, not in a technical one.
 
 The accent family splits by role. Accent *text* -- links, external URLs, inline
 code -- follows the Bootstrap link family and `--bs-code-color`, which a theme
-color never redeclares; inline code is a fixed crimson pair so a page dense in
-identifiers reads as code and prose rather than code and links. Accent
+color never redeclares. Inline code follows the visual preset: Slate retains
+the crimson pair, while Paper uses ink text on a quiet chip. Accent
 *grounds* -- selected rows, the greyed ground a navigation row takes under the
 pointer, hover washes, the outline pill, rail and dot, chip hovers, a card's
 hovered edge, a share button's hover fill, selection, focus rings -- follow
@@ -296,7 +296,7 @@ anchors the viewport is standing over, and a Book chapter's headings under the
 pointer or keyboard focus, light in the section's color, not in the link blue.
 `theme_color` and `theme_color_dark` take `#rgb`/`#rrggbb`; front matter and
 section cascades override the site value. An unconfigured site emits nothing.
-An unparseable value warns and keeps the default palette. A resolved color below 4.5:1 against the theme's own
+An unparseable value warns and keeps the default palette. A resolved color below 4.5:1 against the site default preset
 canvas warns with a suppressible id and still ships: the check is advisory, and
 only a parse failure drops a color. The light color is the key: a
 `theme_color_dark` with no valid `theme_color` warns and is ignored, so a page
@@ -305,6 +305,52 @@ white in 4% steps until it clears 4.5:1 on the dark canvas. Every emitted byte i
 formatted from parsed integer channels, never from author text. One resolver
 answers "what color is this page" for the head block and the sidebar root
 switcher alike.
+
+## Visual presets {#visual-presets}
+
+The local, unreleased theme defaults to Paper. `params.ui.preset` accepts
+`paper`, `slate`, and the explicit experimental presets `ink`, `terminal`.
+Invalid and reserved names (`folio`, `canvas`) warn and fall back to `paper`.
+`params.ui.preset_menu` defaults to `false`; `true` offers Paper, Slate and the
+site default. A list selects available choices, including experiments. A list must include the site default; missing it
+warns and adds it. There is no page-level preset override.
+
+Hugo renders `data-td-preset` and `data-td-site-preset` on every document root,
+including 404 and print output. With reader choice enabled, an inline head
+script validates `td-preset` before CSS loads. Selecting the default removes
+that storage key. Invalid saved values are removed; blocked storage leaves
+in-page controls usable and shows a non-persistence note. The `storage` event
+synchronizes tabs. `td-preset-change` carries `{preset, previous, stored}`.
+Mode remains independent: `data-bs-theme`, `td-color-theme`, and
+`td-theme-change` retain their meaning. The browser chrome color follows the
+resolved mode and preset. Without JavaScript, the site default light palette
+renders; appearance controls require JavaScript.
+
+All four presets compile into one stylesheet. Slate retains the v1.1.0 base
+palette selectors and values. Paper changes palette and selected component
+rules without changing shell columns, breakpoints, or global spacing. Dark
+Paper redeclares every light palette token, including nested dark islands.
+Font roles have equal selector specificity: preset, then `typography: system`,
+then head-emitted `params.ui.fonts`. Site `_styles_project.scss` remains last.
+`brand` controls the wordmark independently from display headings. Paper uses
+local IBM Plex Sans; Slate keeps Inter; both retain Chakra Petch for the
+wordmark and IBM Plex Mono for code. System typography requests no bundled
+text face unless the site explicitly overrides a role. No external font is
+introduced. Ink uses Inter throughout, with red markers, underlined prose
+links, square geometry and no shadows. Terminal uses mono chrome/headings,
+Plex Sans prose, teal links, amber accents, 2 px corners and no shadows. Its
+navigation density changes only on desktop; prose measure and mobile targets
+remain unchanged. CSS heading marks have empty accessible alternatives and
+are omitted in unsupported browsers. Explicit `fonts.ui` still supplies the
+main face unless a valid `fonts.body` overrides it. See the
+[experiment record](/docs/design/research/2026-10-05-ink-terminal-experiment/).
+
+Giscus auto palettes follow both dimensions; explicit Giscus theme or
+light/dark stylesheet overrides remain authoritative. Print uses a light
+preset palette on white paper even when the screen is dark. Mermaid and
+ECharts continue to follow mode only; API widgets retain vendor palettes.
+See the [accepted decision](/docs/design/decisions/visual-presets/) and
+[local acceptance record](/docs/design/research/2026-10-05-visual-presets-acceptance/).
 
 ## Release states {#release-states}
 

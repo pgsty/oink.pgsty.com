@@ -329,8 +329,10 @@ Which images become zoom candidates is in [Images](/docs/components/image/).
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.typography` | enum | technical | `technical` uses the bundled Inter / Chakra Petch / IBM Plex Mono; `system` uses the platform stack only and requests no brand font. An invalid value warns and falls back |
-| `params.ui.fonts` | map | | Font-family names for the `ui`, `body`, `heading`, `code`, `display`, `meta`, and `print` roles. The theme validates names but never loads font files; every list should end in a generic family |
+| `params.ui.preset` | enum | paper | Site-wide visual preset: `paper`, `slate`, or the explicit experiments `ink`, `terminal`. Local unreleased behavior; choose `slate` to retain the previous appearance |
+| `params.ui.preset_menu` | boolean or list | false | `true` offers Paper, Slate and the site default; a list explicitly opts into experiments and must include the site default. Independent of `dark_mode` |
+| `params.ui.typography` | enum | technical | `technical` uses the selected preset’s local fonts (Paper: Plex Sans; Slate: Inter); `system` uses the platform stack only and requests no brand font. An invalid value warns and falls back |
+| `params.ui.fonts` | map | | Font-family names for the `ui`, `body`, `heading`, `code`, `display`, `meta`, `brand`, and `print` roles. The theme validates names but never loads font files. End each list with a generic family |
 | `params.page_width` | enum | normal | Overall shell width: `normal`, `wide`, `full`; overridable per page |
 | `params.reading_width` | enum | normal | Reading measure of a Book page's body: `slim`, `normal`, `wide`; it does not affect the shell |
 {.fields meta="type default"}

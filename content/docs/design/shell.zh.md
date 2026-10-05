@@ -31,7 +31,7 @@ contract_status: draft-v1.2.0
 "图标 + 标题"行——mega 面板与其 `columns` 菜单参数已退役，配置 `columns`
 会发出警告并保持单列。菜单描述只是配置数据，不再渲染。链接树在任何宽度都保持居中：
 lg 以上是文字链接，之下收缩为图标链接。lg 与 md 之间，右端保留搜索、版本、
-语言、主题与 GitHub，没有菜单按钮；md 以下这些工具移入底栏工具组，此时首页
+语言、主题与 GitHub，没有菜单按钮；md 以下外观入口保留在搜索与抽屉入口旁，版本、语言与 GitHub 移入底栏工具组，此时首页
 与显式 Landing 页在搜索旁增加一枚抽屉入口，展开完整的带标签菜单树。带侧栏的外壳页面
 在这个位置打开自己的侧栏抽屉；从 md 起均不显示抽屉按钮。语言链接指向页面译文，缺少译文时
 指向对应语言首页；多个语言共享主机与 base path 时保持相对链接，只有语言拥有
@@ -142,7 +142,7 @@ sidebar_enabled: false
 
 内置操作 ID 包括 `copy_markdown`、`copy_link`、`open_chatgpt`、`open_claude`、
 `view_markdown`、`view_history`、`edit_page`、`create_child_page`、`create_issue`、
-`create_project_issue`、`print_section`、`print`、`switch_theme`、
+`create_project_issue`、`print_section`、`print`、`switch_preset`、`switch_theme`、
 `switch_language`、`switch_version` 与 `open_github`。分享栏之外的 `copy_link`
 只出现在命令面板中。站点通过
 `languages.<lang>.params.ui.command_palette.commands` 配置的命令可以打开安全
@@ -353,3 +353,25 @@ OINK 没有归档外壳、任意深度飞出菜单、第二个导航权威、查
 `bin/check-navigation-contract.py`、`bin/check-shell.py`、JavaScript 测试、输出
 golden 与消费站点浏览器套件覆盖导航、语言与子路径链接、博客变体、页尾顺序、
 键盘行为、无障碍与响应式布局。
+
+## 外观控件 {#appearance-control}
+
+顶栏与底栏共用点击或键盘展开的外观控件，Landing 手机抽屉另有带标签的入口。
+`preset_menu` 允许选择时显示原生风格单选组；`dark_mode.show_menu` 开启时显示
+浅色、深色、跟随系统单选组。选择立即生效，面板保持打开。Enter、Space 或向下
+方向键展开；方向键在组内选择，Tab 在组间移动，Escape 关闭并归还焦点。触发按钮
+图标表示实际明暗状态：浅色显示太阳，深色显示月亮，跟随系统变化时也同步更新。
+
+英文分组标题为 Style 和 Light，中文为「风格」与「明暗」。风格选项以两列独立
+按钮排列，使用带主题色的纸页、叠层、笔尖或终端图标与预设名称，不显示 Aa 预览
+或实验标记。站点默认项在悬停提示与无障碍名称中注明，选择后清除保存的风格。
+选中项使用淡色背景与边框，键盘焦点另有轮廓线。
+
+桌面使用锚定触发器的非模态 dialog，外部点击或焦点离开时关闭。低于 768 px 或
+从 Landing 抽屉进入时，通过 `showModal()` 在浏览器顶层打开底部表单，提供关闭
+按钮和 44 px 选项目标。关闭表单保留下方抽屉。表面协调器在展开前关闭无关弹层。
+`t` 快捷键继续通过 `switch_theme` 切换明暗；`switch_preset` 是独立的命令面板选项。
+
+本地 Ink/Terminal 实验仍需显式配置；`preset_menu: true`
+继续提供 Paper/Slate 与站点默认值。两者复用同一套状态、键盘、命令面板与底部表单
+机制。Terminal 压紧桌面导航行，保留正文与手机触控目标尺寸。

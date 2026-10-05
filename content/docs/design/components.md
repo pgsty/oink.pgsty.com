@@ -147,7 +147,11 @@ print renders expanded static figures and trees.
 
 All code highlighting uses Chroma. Common fence attributes include `title`,
 `copy`, `wrap`, `collapse`, `label`, `id`, line options, tabs, and Book
-`num`/`caption`. Copy returns authored source. ECharts input is declarative
+`num`/`caption`. Copy returns authored source. Mermaid palettes follow mode independently
+of visual presets. The default dark edge-label background is `#404040` for
+AA text contrast; authored `params.mermaid.themeVariables` remain authoritative.
+
+ECharts input is declarative
 JSON/YAML; callbacks use `$fn:<name>` from `window.OinkEchartsFunctions`, never
 embedded script execution.
 

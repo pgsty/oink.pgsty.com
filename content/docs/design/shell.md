@@ -36,7 +36,8 @@ single column. Menu descriptions are configuration data only. The link tree
 stays
 true-centered at every width: text links from lg, icon links below. Between lg
 and md the end edge keeps search, version, language, theme, and GitHub with no
-menu button. Below md those utilities move to the footline dock, and Home or
+menu button. Below md appearance stays beside search and the drawer entry; version,
+language, and GitHub move to the footline dock. Home or
 explicit Landing pages add one drawer entry beside search that opens the full
 labelled tree. Shell pages with a sidebar open its drawer in that position
 instead; no drawer button is shown from md upward. Language
@@ -182,7 +183,7 @@ the keyword list. Body matches retain their surrounding text as context.
 Built-in action IDs are `copy_markdown`, `copy_link`, `open_chatgpt`,
 `open_claude`, `view_markdown`, `view_history`, `edit_page`,
 `create_child_page`, `create_issue`, `create_project_issue`, `print_section`,
-`print`, `switch_theme`, `switch_language`, `switch_version`, and
+`print`, `switch_preset`, `switch_theme`, `switch_language`, `switch_version`, and
 `open_github`. `copy_link` is Palette-only outside the share bar. Site commands
 under `languages.<lang>.params.ui.command_palette.commands` may open a safe URL
 or invoke a built-in ID, never inject JavaScript. The legacy clipboard fallback
@@ -457,3 +458,35 @@ does not replace Giscus.
 goldens, and the consumer browser suite cover navigation, language/subpath
 links, blog variants, page-end order, keyboard behavior, accessibility, and
 responsive layout.
+
+## Appearance control {#appearance-control}
+
+The navbar and footer dock share one click/keyboard disclosure. The Landing
+mobile drawer also provides a labeled Appearance row. The panel offers native
+Style radios when `preset_menu` allows a choice and native Light/Dark/System
+radios when `dark_mode.show_menu` is enabled. Selection is immediate and keeps
+the panel open. Enter, Space, or ArrowDown opens it; arrow keys select within
+a group; Tab moves between groups; Escape closes and returns focus. Sun/moon
+trigger icons show the resolved current state: sun for light and moon for
+dark, including changes while following the system.
+
+The English group labels are Style and Light. Style options are independent
+buttons in a two-column grid, with a colored page, layers, pen-nib or terminal
+icon and the preset name. There are no Aa previews or experiment badges.
+The site default is identified in its tooltip and accessible name; selecting
+it clears the saved preset. A tinted background and border show selection,
+and keyboard focus has a separate outline.
+
+Desktop uses a non-modal dialog anchored to the trigger; outside press or
+focus leaving closes it. Below 768 px and inside the Landing drawer,
+`showModal()` opens a bottom sheet in the browser top layer with a close
+button and 44 px option targets. Closing the sheet preserves the underlying
+drawer. The surface coordinator closes unrelated popovers before opening.
+The `t` shortcut still toggles light/dark through `switch_theme`;
+`switch_preset` is the separate command-palette choice.
+
+The local Ink/Terminal experiments require explicit configuration;
+`preset_menu: true` continues
+to offer Paper/Slate plus the site default. Both reuse the same state, keyboard,
+command-palette and bottom-sheet mechanisms. Terminal compacts desktop
+navigation rows, while prose and mobile touch targets retain their sizes.

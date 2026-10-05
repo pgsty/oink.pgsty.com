@@ -29,7 +29,7 @@
     "test:a11y": "playwright test tests/browser/accessibility.spec.mjs",
     "test:alt-site": "node --test 'tests/alt-site/**/*.test.mjs'",
     "test:base": "mkdir -p tmp && bash -o pipefail -c 'npm run build 2>&1 | tee tmp/hugo-build.log' && npm run _test:base",
-    "test:browser": "npm run seq -- test:a11y test:responsive-shell test:keyboard-nav test:content-components test:code-blocks test:prd5 test:theme-color test:community-feedback",
+    "test:browser": "npm run seq -- test:a11y test:responsive-shell test:keyboard-nav test:content-components test:code-blocks test:prd5 test:theme-color test:community-feedback test:appearance",
     "test:community-feedback": "playwright test tests/browser/community-feedback.spec.mjs",
     "test:command-palette": "playwright test tests/browser/command-palette.spec.mjs",
     "test:code-blocks": "playwright test tests/browser/code-blocks.spec.mjs",
@@ -49,7 +49,9 @@
     "update:favicon-goldens": "node tests/favicons/update-goldens.mjs",
     "update:goldens": "npm run _update:goldens",
     "update:md-goldens": "node tests/md-output/update-goldens.mjs",
-    "update:packages": "npx npm-check-updates -u"
+    "update:packages": "npx npm-check-updates -u",
+    "test:appearance": "playwright test tests/browser/appearance.spec.mjs tests/browser/appearance-fonts.spec.mjs",
+    "test:appearance:engines": "playwright test tests/browser/appearance-engines.spec.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",

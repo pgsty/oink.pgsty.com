@@ -26,6 +26,7 @@ design_status: active
 | [反向链接与知识图谱](/zh/docs/design/proposals/knowledge-graph/) | G1（静态反向链接）已接受，已在主题 main 分支实现，随 OINK 0.8.0 发布；局部与全站图谱（G2/G3）保持草案 |
 | [媒体收敛](/zh/docs/design/proposals/media-convergence/)         | 部分已实现；media-result 契约与 Landing 资源元数据已交付，M3 决议为原生图片处理，退役（M4）保持开放 |
 | [OINK CLI 与下一阶段产品路线](/zh/docs/design/proposals/oink-cli-roadmap/) | 独立 Go 仓库与首期边界已接受，本地 CLI 候选已实现、尚未公开发布；后续主题、迁移、采用、版本管理、OpenAPI 与平台阶段保持提案 |
+| [视觉预设与外观切换](/zh/docs/design/proposals/visual-presets/) | Paper/Slate 已在本地实现；Ink/Terminal 继续研究；当前行为与证据见已接受决策和带日期验收记录 |
 
 Agent 批量索引提案已在输出交付后退役。稳定行为现在归属
 [架构](/zh/docs/design/architecture/#outputs-and-runtime)，用户步骤归属

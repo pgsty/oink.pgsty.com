@@ -22,6 +22,52 @@ SCSS variables and `assets/scss/_styles_project.scss` for custom styles or new
 `@font-face` declarations only when needed. **Do not edit files inside the
 theme directory**: an upgrade replaces them.
 
+## Visual presets {#visual-presets}
+
+In the local unreleased theme, Paper is the default: warm paper backgrounds,
+ink text, blue links, Plex Sans, heading hairlines and framed tables. Slate
+keeps OINK's existing cool blue-gray identity. Enable reader choice with:
+
+```yaml
+params:
+  ui:
+    preset: paper
+    preset_menu: true
+    dark_mode: true
+```
+
+The theme default for `preset_menu` is `false`. Choose `preset: slate` to keep
+the previous appearance. Preset and mode are saved separately; selecting the
+site default (identified in its tooltip) restores the site policy. All styles use one stylesheet
+and local fonts.
+
+Ink and Terminal are available as explicit experiments in the local theme:
+
+```yaml
+params:
+  ui:
+    preset: paper
+    preset_menu: [paper, slate, ink, terminal]
+    dark_mode: true
+```
+
+Ink uses black/white surfaces, red markers, square panels and underlined prose
+links. Terminal uses mono controls/headings, teal links, amber accents and
+compact desktop navigation; its long-form prose stays sans-serif. Both support
+light/dark mode and reuse existing fonts. The menu shows four compact style
+buttons in a two-column grid, each with a colored icon and no experiment badge.
+`preset_menu: true` offers Paper, Slate and the site default; it does not opt
+into every experiment. Set `preset: ink` or `preset: terminal` to make an
+experiment the site default, even without a reader menu. See the
+[experiment record](/docs/design/research/2026-10-05-ink-terminal-experiment/)
+for tested scope and remaining design work.
+
+Custom dark brand rules using only `[data-bs-theme='dark']` have lower
+specificity than Paper's dark palette. Retain Slate, or scope those rules to
+`[data-td-preset='paper'][data-bs-theme='dark']`. Font configuration and section
+`theme_color` overrides keep their precedence in every preset. Print remains
+light on white paper. This local change does not upgrade the published pin.
+
 ## Site name {#site-title}
 
 The site name appears in the navbar, the browser title and the footer. A
@@ -218,11 +264,12 @@ params:
     dark_mode: true
 ```
 
-A theme control then appears in the navbar: clicking it toggles light and dark,
-and hovering or focusing it expands "follow system / light / dark". The reader's
-choice is stored locally in the browser, and with no choice it follows
-`prefers-color-scheme`. The switching script sets `data-bs-theme` before the
-first paint, so there is no theme flash.
+The sun/moon icon shows the current state: sun for light, moon for dark.
+Click Appearance in the navbar or footer to open the Light / Dark / System
+radio group. It supports touch and keyboard; on phones it opens a bottom
+sheet. The preference is saved locally and synchronized across tabs. No saved
+choice means follow `prefers-color-scheme`. The inline head script applies the
+resolved mode before the stylesheet loads.
 
 For the dark palette without the control, write
 `dark_mode: { show_menu: false, enable: true }`; `dark_mode: false` (the
@@ -233,7 +280,7 @@ both modes, with at least 4.5:1 contrast for body text and 3:1 for large text.
 
 ## Fonts {#fonts}
 
-There are two font presets, decided at build time with no JavaScript involved:
+The typography policy is selected at build time; visual preset switching chooses its bundled faces:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -241,7 +288,8 @@ params:
     typography: technical # technical | system
 ```
 
-- `technical` (the default): interface and body text use the bundled Inter (variable weight, with Latin / Cyrillic / Greek / Vietnamese subsets, while Chinese and emoji fall through to platform fonts), display headings use Chakra Petch, and code uses IBM Plex Mono. All font files are local, and Google Fonts is never requested.
+- `technical` (the default): Paper uses IBM Plex Sans for interface, body and display text; Slate uses Inter for interface/body and Chakra Petch for display. Both use Chakra Petch for the wordmark and IBM Plex Mono for code. Chinese and emoji use platform fallbacks. Plex Sans and Inter include local Latin, Cyrillic, Greek and Vietnamese subsets. No Google Fonts request is made.
+- Experimental fonts: Ink uses Inter for UI, prose and headings; Terminal uses IBM Plex Mono for controls/headings and Plex Sans for prose. Both reuse existing code fonts. Explicit `fonts.ui` still supplies the main face; use `fonts.body` for a separate prose face.
 - `system`: the interface, display, metadata, print and monospace roles all fall back to the platform stack, and the browser requests no brand font. The font files still ship with the theme; they are simply not referenced.
 
 An invalid value warns and falls back to `technical`, so an ordinary
@@ -250,7 +298,7 @@ where that warning becomes a hard failure. The chosen value is written to
 `<html data-td-typography="…">` and can be confirmed in the browser.
 
 ### Custom fonts {#custom-fonts}
-The font roles are seven CSS custom properties. Override them rather than
+The font roles are eight CSS custom properties. Override them rather than
 hunting for component selectors:
 
 | Property | Config key | Where it is used |
@@ -259,8 +307,9 @@ hunting for component selectors:
 | `--td-body-font-family` | `body` | Body text and blog posts |
 | `--td-heading-font-family` | `heading` | Headings in the body |
 | `--td-code-font-family` | `code` | Code and terminals |
-| `--td-display-font-family` | `display` | Wordmark and display headings |
+| `--td-display-font-family` | `display` | Display headings |
 | `--td-meta-font-family` | `meta` | Technical labels and metadata |
+| `--td-brand-font-family` | `brand` | Wordmark |
 | `--td-print-font-family` | `print` | Print body text |
 
 `ui` is the main face: `body` resolves through it and `heading` through `body`,
@@ -343,7 +392,7 @@ variables still feed the corresponding roles, still work from
 | Legacy Sass variable | Font role it feeds | Note |
 | --- | --- | --- |
 | `$td-fonts-serif` | `--td-ui-font-family` / `--td-body-font-family` | Docsy's interface stack, assigned to `$font-family-sans-serif` |
-| `$font-family-sans-serif` | `--td-ui-font-family` / `--td-body-font-family` | Once a project supplies its own stack, the `technical` preset stops putting Inter in front of it |
+| `$font-family-sans-serif` | `--td-ui-font-family` / `--td-body-font-family` | If a project supplies its own stack, the `technical` preset no longer prepends the preset’s bundled sans face |
 | `$font-family-base` | `--td-ui-font-family` / `--td-body-font-family` | Bootstrap's body variable, reaching the role through `--bs-body-font-family` |
 | `$headings-font-family` | `--td-heading-font-family` | Unset, headings inherit the body role |
 | `$font-family-code` | `--td-code-font-family` | Code, terminals and `pre` / `code` / `kbd` |
@@ -353,8 +402,8 @@ variables still feed the corresponding roles, still work from
 Docsy's three Google Fonts variables — `$td-enable-google-fonts`,
 `$td-google-font-name` and `$td-web-font-path` — are no longer read by the
 theme. Leaving them in `_variables_project.scss` breaks nothing and does
-nothing: what ships with the theme is Inter, Chakra Petch and IBM Plex Mono, and
-neither preset requests anything from Google Fonts. The print role
+nothing: what ships with the theme is IBM Plex Sans, Inter, Chakra Petch and IBM Plex Mono, and
+no preset requests anything from Google Fonts. The print role
 `--td-print-font-family` follows the body role, and the theme ships no separate
 font for paper.
 
@@ -423,7 +472,7 @@ The compilation order is: Bootstrap functions → project variables → OINK
 defaults and Bootstrap → post-Bootstrap project variables → OINK components and
 the brand layer → project styles.
 
-The CSS interface has a defined boundary. The seven font roles in
+The CSS interface has a defined boundary. The eight font roles in
 [Fonts](#fonts) and the `--td-brand-*` properties are public, and the theme
 keeps their names and meanings across minor versions. Component aliases such as
 `--td-asciinema-font-family` promise only to work within that component, and
@@ -453,9 +502,9 @@ hugo --printPathWarnings --panicOnWarning
 - Switch to dark mode and look again at body text, tables, callouts, code blocks and focus rings. A colour change is easy to verify in only one mode;
 - Switch language and confirm the site name changes with it.
 
-To check whether the font really was replaced, inspect any paragraph's
-`font-family` in the browser's developer tools: it should be the face you
-declared rather than `Inter`.
+To verify the font change, inspect a paragraph's `font-family` in the browser's
+developer tools. It should include your declared family. Check the rendered
+font as well to confirm that the local file or system fallback is being used.
 
 ## Related {#related}
 

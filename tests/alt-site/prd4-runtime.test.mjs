@@ -130,6 +130,7 @@ test('default subpath output localizes manifests and keeps print static', () => 
         'print',
         'switch_version',
         'switch_language',
+        'switch_preset',
         'switch_theme',
         'open_github',
       ],

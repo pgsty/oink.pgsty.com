@@ -20,6 +20,46 @@ aliases:
 `assets/scss/_variables_project.scss`；自定义样式或新增 `@font-face` 声明放在
 `assets/scss/_styles_project.scss`。**不要改主题目录里的文件**：升级会替换它们。
 
+## 视觉预设 {#visual-presets}
+
+本地未发布主题默认使用 Paper：暖纸色背景、墨色正文、蓝色链接、Plex Sans、标题
+尾随细线与外框表格。Slate 保留 OINK 原有的冷灰蓝外观。开启读者选择：
+
+```yaml
+params:
+  ui:
+    preset: paper
+    preset_menu: true
+    dark_mode: true
+```
+
+主题的 `preset_menu` 默认值为 `false`。设置 `preset: slate` 即可保留原有外观。
+风格与明暗分别保存；选择站点默认项（悬停提示中注明）恢复跟随站点。所有风格共用一个
+样式表，字体全部本地加载。
+
+本地主题已提供 Ink 与 Terminal 实验版，需要显式开启：
+
+```yaml
+params:
+  ui:
+    preset: paper
+    preset_menu: [paper, slate, ink, terminal]
+    dark_mode: true
+```
+
+Ink 使用黑白表面、红色标记、直角面板和带下划线的正文链接。Terminal 使用等宽
+控件与标题、青色链接、琥珀强调和紧凑的桌面导航，长文正文仍为无衬线字体。两者
+均支持明暗切换并复用现有字体。菜单使用两列排列的四个简洁按钮，各带主题色图标，
+不加实验标记。`preset_menu: true` 提供 Paper、
+Slate 和站点默认值，不会自动开启所有实验。设置 `preset: ink` 或 `preset: terminal`
+可将实验风格设为站点默认值，不依赖读者菜单。测试范围与后续设计工作见
+[实验记录](/zh/docs/design/research/2026-10-05-ink-terminal-experiment/)。
+
+只使用 `[data-bs-theme='dark']` 的站点自定义深色规则，优先级低于 Paper 深色色板。
+可以保留 Slate，或改用 `[data-td-preset='paper'][data-bs-theme='dark']` 限定规则。
+字体配置与分区 `theme_color` 在所有预设下继续优先。打印始终使用浅色与白纸背景。
+本地改动不意味着公开主题 pin 已升级。
+
 ## 站名 {#site-title}
 
 站名出现在顶栏、浏览器标题与页脚。多语言站每种语言各写一个：
@@ -176,7 +216,10 @@ params:
     dark_mode: true
 ```
 
-开启后顶栏出现一个主题控件：点击在浅色与深色之间切换，悬停或键盘聚焦展开「跟随系统 / 浅色 / 深色」。读者的选择存在浏览器本地，没有选择时跟随 `prefers-color-scheme`。切换脚本在首屏绘制前设置好 `data-bs-theme`，不会出现主题闪烁。
+太阳/月亮图标表示当前状态：浅色显示太阳，深色显示月亮。
+点击顶栏或底栏的「外观」，打开浅色、深色、跟随系统单选组，支持触屏与键盘，
+手机上显示为底部表单。选择保存在浏览器本地并同步到其他标签页，没有选择时跟随
+`prefers-color-scheme`。head 内联脚本在样式表加载前应用实际明暗状态。
 
 只要深色调色板、不要控件时写 `dark_mode: { show_menu: false, enable: true }`；`dark_mode: false`（默认）两者都不启用。
 
@@ -184,7 +227,7 @@ params:
 
 ## 字体 {#fonts}
 
-字体有两档预设，在构建期决定，不涉及 JavaScript：
+字体策略在构建期选择，切换视觉预设时使用对应的内置字体：
 
 ```yaml {title="hugo.yml"}
 params:
@@ -192,13 +235,14 @@ params:
     typography: technical # technical | system
 ```
 
-- `technical`（默认）：界面与正文用随主题分发的 Inter（可变字重，拉丁 / 西里尔 / 希腊 / 越南语子集，中文与 emoji 落到平台字体），标题装饰用 Chakra Petch，代码用 IBM Plex Mono。字体文件都是本地的，不请求 Google Fonts。
+- `technical`（默认）：Paper 的界面、正文与展示标题使用 IBM Plex Sans；Slate 的界面与正文使用 Inter，展示标题使用 Chakra Petch。两者的字标使用 Chakra Petch，代码使用 IBM Plex Mono。中文与 emoji 落到平台字体。Plex Sans 与 Inter 包含本地拉丁、西里尔、希腊与越南语子集，不请求 Google Fonts。
+- 实验字体：Ink 的界面、正文与标题使用 Inter；Terminal 的控件与标题使用 IBM Plex Mono，正文使用 Plex Sans。两者复用现有代码字体。显式 `fonts.ui` 仍控制主字体；需要独立正文字体时设置 `fonts.body`。
 - `system`：界面、展示、元数据、打印与等宽角色全部回到平台字体栈，浏览器不请求品牌字体。字体文件仍随主题分发，只是不被引用。
 
 非法取值告警并回落到 `technical`，普通 `hugo server` 照常可用；发布门禁开着 `--panicOnWarning`，这类告警在那里才是硬失败。选中的值写入 `<html data-td-typography="…">`，可在浏览器中确认。
 
 ### 自定义字体 {#custom-fonts}
-字体角色是七个 CSS 自定义属性，覆盖它们即可，不必查找组件选择器：
+字体角色是八个 CSS 自定义属性，覆盖它们即可，不必查找组件选择器：
 
 | 属性 | 配置键 | 用在哪 |
 | --- | --- | --- |
@@ -206,8 +250,9 @@ params:
 | `--td-body-font-family` | `body` | 正文与博客 |
 | `--td-heading-font-family` | `heading` | 正文标题 |
 | `--td-code-font-family` | `code` | 代码与终端 |
-| `--td-display-font-family` | `display` | 字标与展示型大标题 |
+| `--td-display-font-family` | `display` | 展示型大标题 |
 | `--td-meta-font-family` | `meta` | 技术标签与元数据 |
+| `--td-brand-font-family` | `brand` | 字标 |
 | `--td-print-font-family` | `print` | 打印正文 |
 
 `ui` 是主字体：`body` 经它解析，`heading` 又经 `body` 解析，所以只写 `ui` 一行，界面、正文与标题一起换掉。
@@ -273,14 +318,14 @@ body.td-blog {
 | 旧 Sass 变量 | 喂给的字体角色 | 说明 |
 | --- | --- | --- |
 | `$td-fonts-serif` | `--td-ui-font-family` / `--td-body-font-family` | Docsy 的界面字体栈，赋值给 `$font-family-sans-serif` |
-| `$font-family-sans-serif` | `--td-ui-font-family` / `--td-body-font-family` | 项目给出自己的栈时，`technical` 预设不再把 Inter 放在它前面 |
+| `$font-family-sans-serif` | `--td-ui-font-family` / `--td-body-font-family` | 项目给出自己的栈时，`technical` 预设不再把预设内置的无衬线字体放在它前面 |
 | `$font-family-base` | `--td-ui-font-family` / `--td-body-font-family` | Bootstrap 的正文变量，经 `--bs-body-font-family` 进入角色 |
 | `$headings-font-family` | `--td-heading-font-family` | 不设置时标题继承正文角色 |
 | `$font-family-code` | `--td-code-font-family` | 代码、终端与 `pre` / `code` / `kbd` |
 | `$td-font-family-monospace` | `--bs-font-monospace` | 赋值给 `$font-family-monospace` |
 | `$font-family-monospace` | `--bs-font-monospace` | `system` 预设下，项目的显式取值优先于平台等宽栈 |
 
-Docsy 的三个 Google Fonts 变量 `$td-enable-google-fonts`、`$td-google-font-name` 与 `$td-web-font-path` 主题已不再读取。它们留在 `_variables_project.scss` 里不影响构建，也不产生任何效果：随主题分发的是 Inter、Chakra Petch 与 IBM Plex Mono，两档预设都不向 Google Fonts 发请求。打印角色 `--td-print-font-family` 跟随正文角色，主题不为纸张单独提供字体。
+Docsy 的三个 Google Fonts 变量 `$td-enable-google-fonts`、`$td-google-font-name` 与 `$td-web-font-path` 主题已不再读取。它们留在 `_variables_project.scss` 里不影响构建，也不产生任何效果：随主题分发的是 IBM Plex Sans、Inter、Chakra Petch 与 IBM Plex Mono，所有预设都不向 Google Fonts 发请求。打印角色 `--td-print-font-family` 跟随正文角色，主题不为纸张单独提供字体。
 
 YAML 里只接受字体族名。远程字体 URL 与任意 CSS 都不接受：字体文件与样式必须是可审查的本地输入，一次普通构建不会因为字体发出任何网络请求。
 
@@ -332,7 +377,7 @@ params:
 
 编译顺序是：Bootstrap 函数 → 项目变量 → OINK 默认值与 Bootstrap → Bootstrap 之后的项目变量 → OINK 组件与品牌层 → 项目样式。
 
-CSS 接口有明确边界。[字体](#fonts)那一节的七个字体角色与 `--td-brand-*` 品牌属性是公开接口，主题在小版本之间保持它们的名字与含义。组件别名（如 `--td-asciinema-font-family`）只承诺在该组件范围内有效，未在文档中记录的 `--td-shell-*` 一类变量是实现细节，随时可能改名或消失。
+CSS 接口有明确边界。[字体](#fonts)那一节的八个字体角色与 `--td-brand-*` 品牌属性是公开接口，主题在小版本之间保持它们的名字与含义。组件别名（如 `--td-asciinema-font-family`）只承诺在该组件范围内有效，未在文档中记录的 `--td-shell-*` 一类变量是实现细节，随时可能改名或消失。
 
 不该做的事：
 
