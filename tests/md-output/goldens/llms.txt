@@ -73,7 +73,7 @@
   - [Deploy](http://localhost/docs/admin/deploy/index.md): Publish public/ to GitHub Pages, Cloudflare Pages or any static host — matching baseURL, Content Security Policy, the acceptance checklist and rollback.
   - [Comments](http://localhost/docs/admin/comments/index.md): Wire GitHub Discussions into a comment section at the bottom of a page with giscus — on site-wide, off per page, following light and dark.
   - [Analytics and SEO](http://localhost/docs/admin/analytics/index.md): Connect an analytics service (or none), and pair up the canonical, hreflang, social cards, sitemap and robots the theme already generates.
-  - [Upgrade](http://localhost/docs/admin/upgrade/index.md): Pin a published theme version, validate the 1.2.0 development changes, migrate legacy content or a Docsy site, and roll back safely.
+  - [Upgrade](http://localhost/docs/admin/upgrade/index.md): Pin a published theme version, adopt the 1.2.0 changes, migrate legacy content or a Docsy site, and roll back safely.
   - [Troubleshooting](http://localhost/docs/admin/troubleshooting/index.md): Symptom → cause → fix for the four fault classes — build, language, search, platform — plus the checks a site can run for itself.
 - [Design](http://localhost/docs/design/index.md): OINK maintainer contracts, accepted decisions, dated research, and proposals in one canonical bilingual section.
   - [Architecture](http://localhost/docs/design/architecture/index.md): Repository assembly, configuration, diagnostics, localization, output, performance, security, CSS, accessibility, and release-state boundaries.
@@ -81,6 +81,7 @@
   - [Goldmark attributes](http://localhost/docs/design/research/goldmark-attributes/index.md): Reproducible findings for lists, images, tables, passthrough blocks, fences, callouts, and nested containers on Hugo 0.160.1 and 0.164.0.
   - [Knowledge graph](http://localhost/docs/design/proposals/knowledge-graph/index.md): A draft three-stage design for deriving backlinks and local or global graph views from ordinary Hugo links.
   - [Ink / Terminal experiment](http://localhost/docs/design/research/2026-10-05-ink-terminal-experiment/index.md): Explicit experimental presets in real theme output, their design tradeoffs, checks and remaining work.
+  - [OINK 1.2 pre-release review](http://localhost/docs/design/research/2026-10-05-v1-2-release-review/index.md): Local 1.2.0 candidate review, cleanup, compatibility, resource provenance and publication checks, with release boundaries.
   - [Preset acceptance](http://localhost/docs/design/research/2026-10-05-visual-presets-acceptance/index.md): Local Paper and Slate verification, real theme output, and bounded browser evidence.
   - [Components](http://localhost/docs/design/components/index.md): The maintainer contract for OINK authoring primitives, validation, Book and release behavior, and output degradation.
   - [Configuration](http://localhost/docs/design/decisions/configuration/index.md): OINK extends Hugo and Docsy-compatible configuration without creating a second namespace or a parallel global resolver.
@@ -94,10 +95,10 @@
   - [2026-09-19 community review](http://localhost/docs/design/research/2026-09-19-upstream-review/index.md): Evidence, acceptance advice, and focused remedies for community issues 40, 41, 42, 44 and pull request 43.
   - [Config schema](http://localhost/docs/design/decisions/config-schema/index.md): The editor schemas are projected from the existing configuration authorities; a CI drift gate keeps them from ever becoming a third one.
   - [Landing pages](http://localhost/docs/design/landing/index.md): The maintainer contract for landing data, the built-in section registry, language resolution, runtime, accessibility, and outputs.
-  - [Visual presets](http://localhost/docs/design/proposals/visual-presets/index.md): Paper and Slate are implemented locally; Ink and Terminal are explicitly enabled experiments awaiting design acceptance.
+  - [Visual presets](http://localhost/docs/design/proposals/visual-presets/index.md): Paper and Slate ship in 1.2.0; Ink and Terminal are explicitly enabled experiments awaiting design acceptance.
   - [2026-09-20 release review](http://localhost/docs/design/research/2026-09-20-release-review/index.md): Five reproduced runtime defects, documentation corrections, validation evidence, and the OINK 1.1 publication follow-up.
   - [CLI contract](http://localhost/docs/design/decisions/cli/index.md): The independent Go executable boundary, versioned diagnostics, isolated validation, and guarded maintenance plans for the current local CLI candidate.
-  - [Migration boundary](http://localhost/docs/design/migration/index.md): Supported source, configuration, and validation boundaries for OINK migration, including the 1.2.0 development revisions.
+  - [Migration boundary](http://localhost/docs/design/migration/index.md): Supported source, configuration, and validation boundaries for OINK migration, including the 1.2.0 changes.
   - [Visual presets](http://localhost/docs/design/decisions/visual-presets/index.md): Accepted phase-one visual identity and appearance controls, with separate reader style and mode state.
   - [2026-10-03 CLI maintenance](http://localhost/docs/design/research/2026-10-03-cli-maintenance-acceptance/index.md): Dated source and binary evidence for the R1–R8/A18 local implementation program, preserving its initial audit, failed trials, and final supported acceptance scope.
   - [2026-09-29 CLI acceptance](http://localhost/docs/design/research/2026-09-29-cli-acceptance/index.md): Executed Starter, real-site, offline, upgrade, and reproducible-archive checks for the local CLI candidate, with final acceptance and publication kept separate.

@@ -58,10 +58,11 @@ params:
 ```
 
 The local docs site enables this list. Select Ink or Terminal in Appearance,
-then choose light, dark or system independently. Both experimental cards are
-labeled. A site may set either as `preset` without enabling reader choice.
+then choose light, dark or system independently. Following the October 5 menu
+revision, all four options use icon-and-name buttons without experiment badges.
+A site may set either as `preset` without enabling reader choice.
 `preset_menu: true` remains Paper/Slate plus the site default; it does not
-include every experiment. Selecting the Default card clears the saved preset.
+include every experiment. Selecting the site's default preset clears the saved preset.
 Font overrides, system typography and pre-CSS initialization use the same
 contracts as Paper/Slate.
 

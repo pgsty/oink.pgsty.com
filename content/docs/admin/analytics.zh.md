@@ -103,12 +103,12 @@ languages:
 ```
 
 `hreflang` 的语言代码来自各语言的 `locale`（本站是 `en-US` / `zh-CN`），链接来自
-Hugo 的译文关系。1.2.0 开发实现会从 `hreflang` 和 `og:locale:alternate` 中省略
+Hugo 的译文关系。1.2.0 实现会从 `hreflang` 和 `og:locale:alternate` 中省略
 缺失的译文。可见的语言切换器仍可跳到目标语言首页，但这种导航回退不代表译文关系。
 
 博客索引的每一分页使用自身的 canonical URL。从第 2 页起不输出语言备用链接，
-因为分页不代表各语言存在一一对应的译文页。这些修正已在 1.2.0 工作树实现；已发布的
-v1.1.0 标签仍保留之前的行为。
+因为分页不代表各语言存在一一对应的译文页。这些修正已随 1.2.0 发布；
+1.1.0 仍保留之前的行为。
 
 canonical 由 `baseURL` 拼出。`baseURL` 配错时 canonical 会把搜索引擎指向不存在的地址，比构建失败更难发现。上线前照[发布上线的验收清单](/zh/docs/admin/deploy/#checklist)查一遍。
 

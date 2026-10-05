@@ -24,7 +24,7 @@ theme directory**: an upgrade replaces them.
 
 ## Visual presets {#visual-presets}
 
-In the local unreleased theme, Paper is the default: warm paper backgrounds,
+OINK 1.2.0 defaults to Paper: warm paper backgrounds,
 ink text, blue links, Plex Sans, heading hairlines and framed tables. Slate
 keeps OINK's existing cool blue-gray identity. Enable reader choice with:
 
@@ -41,7 +41,7 @@ the previous appearance. Preset and mode are saved separately; selecting the
 site default (identified in its tooltip) restores the site policy. All styles use one stylesheet
 and local fonts.
 
-Ink and Terminal are available as explicit experiments in the local theme:
+Ink and Terminal are available as explicit opt-ins in OINK 1.2.0:
 
 ```yaml
 params:
@@ -66,7 +66,7 @@ Custom dark brand rules using only `[data-bs-theme='dark']` have lower
 specificity than Paper's dark palette. Retain Slate, or scope those rules to
 `[data-td-preset='paper'][data-bs-theme='dark']`. Font configuration and section
 `theme_color` overrides keep their precedence in every preset. Print remains
-light on white paper. This local change does not upgrade the published pin.
+light on white paper.
 
 ## Site name {#site-title}
 

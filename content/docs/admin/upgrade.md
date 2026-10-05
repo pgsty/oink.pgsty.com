@@ -1,7 +1,7 @@
 ---
 title: Upgrade
 linkTitle: Upgrade
-description: Pin a published theme version, validate the 1.2.0 development changes, migrate legacy content or a Docsy site, and roll back safely.
+description: Pin a published theme version, adopt the 1.2.0 changes, migrate legacy content or a Docsy site, and roll back safely.
 weight: 50
 search_keywords: [upgrade, migration, version, Hugo Module, hugo mod get, oink06, Docsy, jQuery, breaking changes]
 aliases:
@@ -35,11 +35,11 @@ guessing afterwards why a page looks different.
 
 A production site pins a published release tag or a deliberately selected
 immutable commit, follows no branch, and does not use `@latest`. The example
-below upgrades to the published `v1.1.0` tag. For a later release, verify its
+below upgrades to the published `v1.2.0` tag. For a later release, verify its
 publication and module resolution before selecting that tag:
 
 ```bash {title="Terminal"}
-hugo mod get github.com/pgsty/oink@v1.1.0   # the published release tag
+hugo mod get github.com/pgsty/oink@v1.2.0   # the published release tag
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -55,7 +55,7 @@ module github.com/pgsty/oink.pgsty.com
 
 go 1.27.0
 
-require github.com/pgsty/oink v1.1.0
+require github.com/pgsty/oink v1.2.0
 ```
 
 > [!DANGER] A local module replacement overrides that pin
@@ -71,7 +71,7 @@ check out the exact published version rather than following its remote branch:
 
 ```bash {title="Terminal"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.1.0
+git -C themes/oink checkout --detach v1.2.0
 git add themes/oink
 ```
 
@@ -152,22 +152,23 @@ the [sidebar contract](/docs/design/shell/#sidebar-runtime),
 [search actions](/docs/customize/panel/#search-tail), and
 [image zoom](/docs/components/image/#zoom).
 
-## Preparing for 1.2.0 {#preparing-1-2}
+## Upgrading from 1.1 to 1.2 {#preparing-1-2}
 
-> [!IMPORTANT] Local default appearance change
-> Paper is now the local theme default. Set `params.ui.preset: slate` before
+> [!IMPORTANT] Default appearance change
+> Paper is the default in OINK 1.2.0. Set `params.ui.preset: slate` before
 > adopting this change if the site must retain its existing appearance.
 > `preset_menu: true` enables reader choice; its default remains false.
+> Ink and Terminal require an explicit preset or menu list. Their buttons do
+> not carry experiment badges; the configuration opt-in remains unchanged.
 > Review custom dark brand selectors as described in [Brand](/docs/customize/brand/#visual-presets).
-> This does not publish a tag or change any consumer pin.
 
+OINK 1.2.0 is available as a published tag. Apart from the default appearance
+change above, no content migration is required. Hugo Extended 0.160.1 remains
+the compatibility floor. Update the module, then verify the site:
 
-1.2.0 is an unreleased draft. Keep the published v1.1.0 pin until a new tag is
-published and verified; the following is a local development checklist, not
-an instruction to resolve `v1.2.0` now. Except for the visible preset default described above, the current changes require
-no source migration and retain the Hugo Extended
-0.160.1 floor.
-
+- Check the chosen preset, light/dark icons, keyboard and mobile menus, saved
+  preferences, and custom font/accent overrides. Sun means light; moon means
+  dark. Switching styles must not change the saved light/dark preference.
 - Recheck explicit navigation, hidden subtrees, page links, Blog pagination
   canonicals, and SEO alternates for pages without translations.
 - Check CJK keyword-only search summaries and outline links with literal
@@ -177,17 +178,17 @@ no source migration and retain the Hugo Extended
   formatting, dialogs and keyboard shortcuts, copy fallback, Draw.io controls,
   and numbered equations at narrow widths.
 - Run a warning-fatal build for diagram endpoints and resource alt metadata;
-  malformed values now warn and take a safe fallback. Use `false` or an empty
-  string to disable a PlantUML or Draw.io endpoint intentionally.
+  malformed values now produce a warning and use a safe fallback. To disable
+  a PlantUML or Draw.io endpoint intentionally, use `false` or an empty string.
 - Use the revised PDF and migration tools when testing publication or content
   conversion. Review PDF remote-resource opt-ins and migration diffs, including
-  code examples nested in lists. The consumer-upgrade helper is also new in the
-  development checkout; it is not part of the v1.1.0 archive.
+  code examples nested in lists. The consumer-upgrade helper ships with
+  1.2.0 for inventory, module updates and exact-version validation.
 
 The [Architecture](/docs/design/architecture/),
 [Components](/docs/design/components/), [Shell](/docs/design/shell/), and
-[Migration](/docs/design/migration/) contracts describe the current development
-behavior. Their 1.2.0 draft status does not change the site's published theme pin.
+[Migration](/docs/design/migration/) contracts describe the published 1.2.0
+behavior.
 
 ## The content migration toolkit {#migration-toolkit}
 

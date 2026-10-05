@@ -1,18 +1,16 @@
 ---
 title: OINK migration boundary
 linkTitle: Migration boundary
-description: Supported source, configuration, and validation boundaries for OINK migration, including the 1.2.0 development revisions.
+description: Supported source, configuration, and validation boundaries for OINK migration, including the 1.2.0 changes.
 weight: 50
 icon: fa-solid fa-code-compare
 search_keywords: [OINK migration contract, 0.4 migration, 0.5 migration, configuration rename, migration toolkit]
-contract_status: draft-v1.2.0
+contract_status: v1.2.0
 ---
 
-> [!IMPORTANT] OINK 1.2.0 working contract
-> This working contract includes the locally implemented 1.2.0 revisions
-> to the 1.1.0 baseline. It is not a published v1.2.0 release; consumer
-> upgrades and deployment remain separate steps. The canonical bilingual
-> sources live in `content/docs/design/`.
+> [!NOTE] OINK 1.2.0 contract
+> This contract describes the v1.2.0 release. Its canonical bilingual sources
+> are in `content/docs/design/`.
 
 This is source and configuration guidance, not a release ledger. Local source,
 commit, tag, push, consumer pin, deployment, and production parity remain
@@ -55,14 +53,12 @@ upgrade their exact pins. The theme's `bin/update-consumers.py` scans immediate
 project directories under the supplied roots; it does not recurse into
 archives, generated sites, caches, or theme fixtures.
 
-This tool is part of the 1.2.0 development checkout; it is not included in the
-published v1.1.0 tag. The example below uses that development tool to select
-the already published v1.1.0 target. Select v1.2.0 only after it is published
-and its module resolves successfully.
+The tool ships with OINK 1.2.0. Run it from the theme checkout to inventory
+consumers and upgrade them to the published tag.
 
 ```sh
-python3 bin/update-consumers.py v1.1.0 --roots ~/www ~/pgsty
-python3 bin/update-consumers.py v1.1.0 --roots ~/www ~/pgsty --write --check
+python3 bin/update-consumers.py v1.2.0 --roots ~/www ~/pgsty
+python3 bin/update-consumers.py v1.2.0 --roots ~/www ~/pgsty --write --check
 ```
 
 The first command only reports adoption. The second updates `go.mod` and

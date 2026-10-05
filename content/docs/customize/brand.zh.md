@@ -22,7 +22,7 @@ aliases:
 
 ## 视觉预设 {#visual-presets}
 
-本地未发布主题默认使用 Paper：暖纸色背景、墨色正文、蓝色链接、Plex Sans、标题
+OINK 1.2.0 默认使用 Paper：暖纸色背景、墨色正文、蓝色链接、Plex Sans、标题
 尾随细线与外框表格。Slate 保留 OINK 原有的冷灰蓝外观。开启读者选择：
 
 ```yaml
@@ -58,7 +58,7 @@ Slate 和站点默认值，不会自动开启所有实验。设置 `preset: ink`
 只使用 `[data-bs-theme='dark']` 的站点自定义深色规则，优先级低于 Paper 深色色板。
 可以保留 Slate，或改用 `[data-td-preset='paper'][data-bs-theme='dark']` 限定规则。
 字体配置与分区 `theme_color` 在所有预设下继续优先。打印始终使用浅色与白纸背景。
-本地改动不意味着公开主题 pin 已升级。
+
 
 ## 站名 {#site-title}
 

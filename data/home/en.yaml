@@ -13,12 +13,12 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 1.1 · Local-first · Built with Hugo
+  eyebrow: OINK 1.2 · Local-first · Built with Hugo
   title_lines:
     - words:
         - { text: PGSTY OINK }
   # prettier-ignore
-  lead: Technical content, written in Markdown.<br>Docs, blogs, books and API references in one Hugo site.
+  lead: Technical content, written in Markdown.<br>Four styles for docs, blogs, books and API references.
   image:
     light: images/hero-light.webp
     dark: images/hero-dark.webp
@@ -28,8 +28,8 @@ hero:
       url: docs/start/starter/
       icon: fa-solid fa-rocket
       style: primary
-    - label: What's new in 1.1
-      url: blog/release/1.1.0/
+    - label: What's new in 1.2
+      url: blog/release/1.2.0/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -69,40 +69,41 @@ capabilities:
         eyebrow: ENGINEERING DOCS / SHIP FAST
         title_lines: [Ready to use., Built to last.]
         rules: ['88%', '72%', '55%']
-    - ref: 02 / CLEAN BY DESIGN
-      title: Clean. Complete.
-      url: docs/customize/brand/
-      motto: Modern design. Proven foundation.
+    - ref: 02 / FOUR STYLES
+      title: Four styles. One site.
+      url: docs/customize/brand/#visual-presets
+      motto: Paper · Slate · Ink · Terminal
       bullets:
-        - 'User Experience inspired by [Fumadocs](https://fumadocs.dev/) &
-          [Hextra](https://imfing.github.io/hextra/)'
-        - 'The powerful [Hugo](https://gohugo.io/)
-          [Docsy](https://www.docsy.dev/) documentation feature set'
-        - '[Look and feel](docs/customize/brand/) tuned for open source and
-          engineering teams'
-      value: Quiet interface. Serious capability.
+        - '[Paper](docs/customize/brand/#visual-presets) brings warm pages and
+          quiet typography; Slate keeps the original technical look'
+        - 'Ink adds black, white and red; Terminal pairs mono headings with
+          readable sans-serif prose'
+        - 'Choose Style and Light independently in Appearance; your choices
+          stay with you across pages'
+      value: Same content, a different feel. Fonts and core scripts stay local.
       visual:
         type: components
+        aria_label: Four visual styles in OINK 1.2
         items:
           - {
-              icon: fa-solid fa-window-maximize,
-              title: FUMADOCS,
-              detail: restrained docs shell,
+              icon: fa-solid fa-file-lines,
+              title: Paper,
+              detail: warm pages · default,
             }
           - {
               icon: fa-solid fa-layer-group,
-              title: HEXTRA,
-              detail: clear content hierarchy,
+              title: Slate,
+              detail: the original technical look,
             }
           - {
-              icon: fa-solid fa-book-open,
-              title: DOCSY,
-              detail: mature feature base,
+              icon: fa-solid fa-pen-nib,
+              title: Ink,
+              detail: black · white · red,
             }
           - {
-              icon: fa-solid fa-code-branch,
-              title: OPEN SOURCE,
-              detail: built for engineers,
+              icon: fa-solid fa-terminal,
+              title: Terminal,
+              detail: mono · teal · amber,
             }
     - ref: 03 / LOCAL FIRST
       title: Build with Hugo
@@ -330,10 +331,18 @@ faq:
     - question: How does it handle Chinese and other non-Latin content?
       answer: >-
         Local search uses Lunr for Latin scripts and a substring fallback for
-        CJK, so those pages are searchable without a hosted service. OINK 1.1
-        ships 32 native interface catalogs, each with 194 messages and
-        locale-aware plurals, including English, Simplified Chinese (`zh-cn`,
+        CJK, so those pages are searchable without a hosted service. OINK 1.2
+        ships 32 native interface catalogs with locale-aware plurals and
+        translated appearance controls, including English, Simplified Chinese (`zh-cn`,
         `zh`) and Traditional Chinese (`zh-tw`). RTL layouts are supported.
+    - question: How do I choose a style, and can I keep the old look?
+      answer: >-
+        Open Appearance from the sun or moon button, choose Paper, Slate, Ink
+        or Terminal, then select light, dark or system mode. Paper is the new
+        default; Slate preserves the previous look. Site owners choose which
+        presets to offer, and Ink/Terminal currently require explicit opt-in.
+        Fonts and core scripts are served locally. See [what changed in
+        1.2](blog/release/1.2.0/) and the [appearance guide](docs/customize/brand/#visual-presets).
     - question: What do AI assistants and crawlers get?
       answer: >-
         With `markdown` in `outputs`, every page has an `index.md` sibling

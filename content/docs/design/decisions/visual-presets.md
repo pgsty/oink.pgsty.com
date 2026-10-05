@@ -9,9 +9,9 @@ design_status: accepted
 decision_date: 2026-10-05
 ---
 
-> [!IMPORTANT] Local, unreleased implementation
-> This decision accepts phase 1. It does not publish a release, upgrade a
-> consumer, or implement Ink and Terminal.
+> [!NOTE] OINK 1.2.0
+> Paper and Slate ship in 1.2.0. Ink and Terminal are included as explicit
+> opt-ins; their remaining design work is recorded below.
 
 ## Decision {#decision}
 
@@ -20,19 +20,19 @@ heading hairlines and framed tables. Slate retains the v1.1.0 palette,
 Inter/Chakra/Plex Mono roles and Landing grid/glow. This gives reading sites a
 quieter default while preserving an explicit compatibility choice. The cost is
 a visible default change: existing sites can set `params.ui.preset: slate`.
-No release-version decision is made here.
+The 1.2.0 release notes and upgrade guide call out this default change.
 
 The reader menu is opt-in (`preset_menu: false`). The docs site enables it.
-One Appearance disclosure combines native Style and Mode radio groups;
+One Appearance disclosure combines native Style and Light radio groups;
 mobile uses a modal dialog in the browser top layer. It is reachable by touch
 and keyboard without relying on hover. The cost is replacing the old one-click
 mode toggle with a selection panel; the `t` shortcut still toggles mode.
 
 Style and mode use separate attributes and storage keys. Choosing the site
-Default clears the style key. Hugo renders the default without JavaScript;
+default preset clears the style key. Hugo renders the default without JavaScript;
 an allowlisted inline script restores reader state before CSS. This prevents
 the common initial preset mismatch, while keeping blocked storage usable.
-Both presets ship in one stylesheet, at the cost of additional CSS bytes.
+Presets ship in one stylesheet, at the cost of additional CSS bytes.
 
 `brand` separates the wordmark from display headings. Paper adds the local
 OFL IBM Plex Sans variable font, including normal/italic and the six supported

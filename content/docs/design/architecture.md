@@ -5,14 +5,12 @@ description: Repository assembly, configuration, diagnostics, localization, outp
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK architecture, repository boundary, runtime, i18n, Docsy locales, output formats, security, accessibility, performance]
-contract_status: draft-v1.2.0
+contract_status: v1.2.0
 ---
 
-> [!IMPORTANT] OINK 1.2.0 working contract
-> This working contract includes the locally implemented 1.2.0 revisions
-> to the 1.1.0 baseline. It is not a published v1.2.0 release; consumer
-> upgrades and deployment remain separate steps. The canonical bilingual
-> sources live in `content/docs/design/`.
+> [!NOTE] OINK 1.2.0 contract
+> This contract describes the v1.2.0 release. Its canonical bilingual sources
+> are in `content/docs/design/`.
 
 ## Repository and assembly {#repository-and-assembly}
 
@@ -308,7 +306,7 @@ switcher alike.
 
 ## Visual presets {#visual-presets}
 
-The local, unreleased theme defaults to Paper. `params.ui.preset` accepts
+OINK 1.2.0 defaults to Paper. `params.ui.preset` accepts
 `paper`, `slate`, and the explicit experimental presets `ink`, `terminal`.
 Invalid and reserved names (`folio`, `canvas`) warn and fall back to `paper`.
 `params.ui.preset_menu` defaults to `false`; `true` offers Paper, Slate and the

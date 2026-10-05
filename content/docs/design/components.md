@@ -5,14 +5,12 @@ description: The maintainer contract for OINK authoring primitives, validation, 
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK component contract, shortcode API, Markdown components, Book, release, validation]
-contract_status: draft-v1.2.0
+contract_status: v1.2.0
 ---
 
-> [!IMPORTANT] OINK 1.2.0 working contract
-> This working contract includes the locally implemented 1.2.0 revisions
-> to the 1.1.0 baseline. It is not a published v1.2.0 release; consumer
-> upgrades and deployment remain separate steps. The canonical bilingual
-> sources live in `content/docs/design/`.
+> [!NOTE] OINK 1.2.0 contract
+> This contract describes the v1.2.0 release. Its canonical bilingual sources
+> are in `content/docs/design/`.
 
 Tutorials and exhaustive examples belong in the reader-facing
 [Components](/docs/components/) section. This page defines the API and behavior

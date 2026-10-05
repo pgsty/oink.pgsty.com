@@ -5,13 +5,12 @@ description: 仓库装配、配置、诊断、本地化、输出、性能、安�
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK 架构, 仓库边界, 运行时, i18n, Docsy 语言, 输出格式, 安全, 无障碍, 性能]
-contract_status: draft-v1.2.0
+contract_status: v1.2.0
 ---
 
-> [!IMPORTANT] OINK 1.2.0 工作契约草案
-> 本契约包含在 1.1.0 基线上已于本地实现的 1.2.0 修订，不代表 v1.2.0
-> 已正式发布。消费站点升级与部署仍是独立步骤。唯一的中英文契约源文件
-> 位于 `content/docs/design/`。
+> [!NOTE] OINK 1.2.0 契约
+> 本契约描述 v1.2.0 的正式行为。唯一的中英文契约源文件位于
+> `content/docs/design/`。
 
 ## 仓库与装配 {#repository-and-assembly}
 
@@ -253,7 +252,7 @@ Bootstrap/Docsy Sass 变量继续为这些角色提供初值。
 
 ## 视觉预设 {#visual-presets}
 
-本地未发布主题默认使用 Paper。`params.ui.preset` 接受 `paper`、`slate`，以及显式
+OINK 1.2.0 默认使用 Paper。`params.ui.preset` 接受 `paper`、`slate`，以及显式
 选择的实验预设 `ink`、`terminal`；非法值与保留名称（`folio`、`canvas`）告警并回退到
 `paper`。`params.ui.preset_menu` 默认 `false`；`true` 提供 Paper、Slate 与站点默认值，
 列表指定可选项并可显式开启实验。列表必须包含站点默认值，缺失时告警并补入。不支持页面级预设。

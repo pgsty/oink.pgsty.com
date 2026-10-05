@@ -291,7 +291,7 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `params.ui.preset` | enum | paper | 站点级视觉预设：`paper`、`slate`，或显式选择的实验 `ink`、`terminal`。本地未发布行为；选择 `slate` 保留原有外观 |
+| `params.ui.preset` | enum | paper | 站点级视觉预设：`paper`、`slate`，或显式选择的实验 `ink`、`terminal`。1.2.0 新增；选择 `slate` 保留原有外观 |
 | `params.ui.preset_menu` | boolean 或列表 | false | `true` 提供 Paper、Slate 与站点默认值；列表显式开启实验且必须包含站点默认值；与 `dark_mode` 独立 |
 | `params.ui.typography` | enum | technical | `technical` 使用所选预设的本地字体（Paper：Plex Sans；Slate：Inter）；`system` 只用平台字体栈，不请求品牌字体。非法值告警并回退 |
 | `params.ui.fonts` | map | | 为 `ui` `body` `heading` `code` `display` `meta` `brand` `print` 八个角色指定字体族。主题校验名称但不加载字体文件；每份列表都应以通用字体族收尾 |
@@ -453,13 +453,13 @@ outputs:
 与参数扫描注册表的投影；主题 CI 会重新生成并检查漂移。使用时应选择与主题固定版本
 相同标签下的 Schema。
 
-配合 VS Code YAML 扩展，在设置中映射站点 Schema。下面以 OINK v1.1.0 为例，
+配合 VS Code YAML 扩展，在设置中映射站点 Schema。下面以 OINK v1.2.0 为例，
 请将标签换成 `go.mod` 中固定的版本；两种常见 YAML 配置文件名都已覆盖：
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/v1.1.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
+    "https://raw.githubusercontent.com/pgsty/oink/v1.2.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```

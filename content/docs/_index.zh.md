@@ -34,13 +34,7 @@ cascade:
 时还需要 Go 解析主题模块。主题内置资源无需 CDN，也不需要 npm 构建流程。
 
 当前发布版本为 {{% param version %}}。已有站点可查看
-[1.1 发布说明](/zh/blog/release/1.1.0/)与[升级指南](/zh/docs/admin/upgrade/#from-1-0)。
-
-> [!NOTE] 1.2.0 工作文档
-> 本指南包含当前本地 1.2.0 修改，主题版本尚待发布，站点依赖仍固定
-> {{% param version %}}。受影响的行为见
-> [1.2 升级清单](/zh/docs/admin/upgrade/#preparing-1-2)，独立可选工具见
-> [CLI 草案](/zh/docs/cli/)。
+[1.2 发布说明](/zh/blog/release/1.2.0/)与[升级指南](/zh/docs/admin/upgrade/#preparing-1-2)。
 
 ## 五条入口 {#five-entries}
 

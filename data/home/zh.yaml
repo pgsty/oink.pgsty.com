@@ -13,12 +13,12 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 1.1 · 本地优先 · Hugo 构建
+  eyebrow: OINK 1.2 · 本地优先 · Hugo 构建
   title_lines:
     - words:
         - { text: PGSTY OINK }
   # prettier-ignore
-  lead: 用 Markdown 创作技术内容。<br>在一个 Hugo 站点中发布文档、博客、书籍与 API 参考。
+  lead: 用 Markdown 创作技术内容。<br>用四套风格呈现文档、博客、书籍与 API 参考。
   image:
     light: images/hero-light.webp
     dark: images/hero-dark.webp
@@ -28,8 +28,8 @@ hero:
       url: docs/start/starter/
       icon: fa-solid fa-rocket
       style: primary
-    - label: 查看 1.1 新特性
-      url: blog/release/1.1.0/
+    - label: 查看 1.2 新特性
+      url: blog/release/1.2.0/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -66,38 +66,39 @@ capabilities:
         eyebrow: 工程文档 / 快速上线
         title_lines: [开箱即用。, 持续维护。]
         rules: ['88%', '72%', '55%']
-    - ref: 02 / 设计与能力
-      title: 简洁、素雅、功能齐全
-      url: docs/customize/brand/
-      motto: 现代文档视觉与成熟内容能力兼得
+    - ref: 02 / 四套风格
+      title: 四套风格，同一个站点
+      url: docs/customize/brand/#visual-presets
+      motto: Paper · Slate · Ink · Terminal
       bullets:
-        - '继承 [Hugo](https://gohugo.io/) [Docsy](https://www.docsy.dev/)
-          的强大文档能力'
-        - '借鉴 [Fumadocs](https://fumadocs.dev/) 与 [Hextra](https://imfing.github.io/hextra/) 的阅读体验'
-        - '针对 [开源项目与工程审美](docs/customize/brand/) 进行优化'
-      value: 简洁的阅读界面，配合完整的内容导航。
+        - '[Paper](docs/customize/brand/#visual-presets) 使用暖色纸面与克制排版；
+          Slate 保留原有技术风格'
+        - 'Ink 用黑白与红色建立对比；Terminal 将等宽标题与易读的无衬线正文搭配'
+        - '在外观菜单中独立选择风格与明暗，翻页后仍保留你的偏好'
+      value: 内容不变，风格自选。字体与核心脚本均由本地提供。
       visual:
         type: components
+        aria_label: OINK 1.2 的四套视觉风格
         items:
           - {
-              icon: fa-solid fa-window-maximize,
-              title: FUMADOCS,
-              detail: 克制的文档外壳,
+              icon: fa-solid fa-file-lines,
+              title: Paper,
+              detail: 暖色纸面 · 默认风格,
             }
           - {
               icon: fa-solid fa-layer-group,
-              title: HEXTRA,
-              detail: 清晰的内容层级,
+              title: Slate,
+              detail: 原有技术风格,
             }
           - {
-              icon: fa-solid fa-book-open,
-              title: DOCSY,
-              detail: 成熟的功能底座,
+              icon: fa-solid fa-pen-nib,
+              title: Ink,
+              detail: 黑 · 白 · 红,
             }
           - {
-              icon: fa-solid fa-code-branch,
-              title: OPEN SOURCE,
-              detail: 面向工程社区,
+              icon: fa-solid fa-terminal,
+              title: Terminal,
+              detail: 等宽 · 青绿 · 琥珀,
             }
     - ref: 03 / 本地优先
       title: 使用 Hugo 构建
@@ -296,9 +297,16 @@ faq:
         还有一个只用 OINK 做落地页的公司站。外壳向下缩放和向上扩展一样自然。
     - question: 中文与其它非拉丁文字的内容怎么处理？
       answer: >-
-        本地检索对拉丁文字用 Lunr、对中日韩文本用子串回退，无需托管服务也能搜索。OINK 1.1
-        提供 32 份原生界面目录，每份包含 194 条消息与符合当地语言规则的复数形式，包括英语、
+        本地检索对拉丁文字用 Lunr、对中日韩文本用子串回退，无需托管服务也能搜索。OINK 1.2
+        提供 32 份原生界面语言包、符合当地语言规则的复数形式与已翻译的外观控件，包括英语、
         简体中文（`zh-cn`、`zh`）和繁体中文（`zh-tw`）。支持 RTL 布局。
+    - question: 怎样选择风格？可以保留旧版外观吗？
+      answer: >-
+        点击太阳或月亮按钮打开外观菜单，选择 Paper、Slate、Ink 或 Terminal，
+        再独立选择亮色、暗色或跟随系统。Paper 是新默认风格，Slate 保留原有外观。
+        站点作者可以决定提供哪些预设，Ink/Terminal 当前需显式启用。
+        字体和核心脚本均从本地加载，详见 [1.2 新变化](blog/release/1.2.0/)
+        与[外观指南](docs/customize/brand/#visual-presets)。
     - question: AI 助手与爬虫拿到的是什么？
       answer: >-
         `outputs` 里加上 `markdown`，每个页面就有一份 `index.md`，由 `rel="alternate"` 指过去；

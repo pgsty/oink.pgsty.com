@@ -1,7 +1,7 @@
 ---
 title: 版本升级
 linkTitle: 版本升级
-description: 固定已发布的主题版本、验证 1.2.0 开发改动、迁移旧内容或 Docsy 站点，并在出问题时安全回滚。
+description: 固定已发布的主题版本、验证 1.2.0 变化、迁移旧内容或 Docsy 站点，并在出问题时安全回滚。
 weight: 50
 search_keywords: [升级, 迁移, 版本, Hugo Module, hugo mod get, oink06, Docsy, jQuery, 破坏性变更, upgrade, migration]
 aliases:
@@ -29,11 +29,11 @@ aliases:
 ## 升级 Hugo Module {#hugo-module}
 
 生产站点固定已发布标签或主动选定的不可变 commit，不跟随分支，也不用 `@latest`。
-下面升级到已发布的 `v1.1.0` 标签；选择后续版本时，先确认已经发布且模块可以解析，
+下面升级到已发布的 `v1.2.0` 标签；选择后续版本时，先确认已经发布且模块可以解析，
 再替换示例中的版本。
 
 ```bash {title="终端"}
-hugo mod get github.com/pgsty/oink@v1.1.0   # 已发布的版本标签
+hugo mod get github.com/pgsty/oink@v1.2.0   # 已发布的版本标签
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -47,7 +47,7 @@ module github.com/pgsty/oink.pgsty.com
 
 go 1.27.0
 
-require github.com/pgsty/oink v1.1.0
+require github.com/pgsty/oink v1.2.0
 ```
 
 > [!DANGER] 本地模块替换会盖掉这个固定版本
@@ -62,7 +62,7 @@ require github.com/pgsty/oink v1.1.0
 
 ```bash {title="终端"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.1.0
+git -C themes/oink checkout --detach v1.2.0
 git add themes/oink
 ```
 
@@ -129,19 +129,19 @@ make dev
 [侧栏契约](/zh/docs/design/shell/#sidebar-runtime)、
 [搜索动作](/zh/docs/customize/panel/#search-tail) 与[图片缩放](/zh/docs/components/image/#zoom)。
 
-## 为 1.2.0 做准备 {#preparing-1-2}
+## 从 1.1 升级到 1.2 {#preparing-1-2}
 
-> [!IMPORTANT] 本地默认外观变化
-> 本地主题默认改为 Paper。需要保留原有外观的站点，在采用此改动前设置
+> [!IMPORTANT] 默认外观变化
+> OINK 1.2.0 默认改为 Paper。需要保留原有外观的站点，在采用此改动前设置
 > `params.ui.preset: slate`。`preset_menu: true` 开启读者切换，默认仍为 false。
+> Ink 与 Terminal 需要显式设置预设或菜单列表；按钮不显示实验标记，配置启用边界不变。
 > 自定义深色品牌选择器的兼容处理见[品牌外观](/zh/docs/customize/brand/#visual-presets)。
-> 这不代表已发布标签或已升级任何消费站点的 pin。
 
+OINK 1.2.0 已发布。除上面的默认外观变化外，无需迁移内容源码。
+Hugo Extended 下限仍为 0.160.1。更新模块后，按以下清单验收站点：
 
-1.2.0 尚未发布，目前是草案。新标签正式发布并通过验证前，继续固定已发布的
-v1.1.0；以下是本地开发检查清单，不是立即解析 `v1.2.0` 的操作说明。当前修改
-除上面的默认外观变化外，没有引入源码迁移，Hugo Extended 下限仍为 0.160.1。
-
+- 检查所选预设、明暗图标、键盘与手机菜单、保存的偏好，以及自定义字体和强调色覆盖。
+  太阳表示亮色，月亮表示暗色；切换风格不得改变保存的明暗偏好。
 - 复查显式导航、隐藏子树、页面链接、博客分页 canonical，以及缺少译文页面的
   SEO 备用链接。
 - 检查仅关键词命中的 CJK 搜索摘要，以及带字面百分号的大纲链接。复查 Windows
@@ -151,12 +151,12 @@ v1.1.0；以下是本地开发检查清单，不是立即解析 `v1.2.0` 的操�
 - 对图表端点与资源 alt 元数据执行将警告视为失败的构建；非法值现在会警告并采用
   安全回退。要有意禁用 PlantUML 或 Draw.io 端点，使用 `false` 或空字符串。
 - 测试出版或内容转换时，使用修订后的 PDF 与迁移工具。审查 PDF 远程资源开关
-  和迁移 diff，包括嵌套在列表中的代码示例。消费站升级工具同样是开发 checkout
-  的新增能力，v1.1.0 归档中不包含它。
+  和迁移 diff，包括嵌套在列表中的代码示例。消费站升级工具也随 1.2.0
+  一同发布，可用于批量清点、更新与验证模块版本。
 
 [架构](/zh/docs/design/architecture/)、[组件](/zh/docs/design/components/)、
-[外壳](/zh/docs/design/shell/)与[迁移](/zh/docs/design/migration/)契约描述当前
-开发实现；这些契约的 1.2.0 草案状态不会改变站点固定的公开主题版本。
+[外壳](/zh/docs/design/shell/)与[迁移](/zh/docs/design/migration/)契约描述
+1.2.0 的正式行为。
 
 ## 内容迁移工具 {#migration-toolkit}
 

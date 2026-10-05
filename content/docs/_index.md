@@ -45,14 +45,8 @@ Hugo Modules also require Go to resolve the theme. Bundled theme assets need no
 CDN or npm build step.
 
 The current release is {{% param version %}}. See the
-[1.1 release notes](/blog/release/1.1.0/) or the
-[upgrade guide](/docs/admin/upgrade/#from-1-0) for an existing site.
-
-> [!NOTE] 1.2.0 working documentation
-> These guides include the current local 1.2.0 changes. The theme release is
-> still pending; the site dependency remains pinned to {{% param version %}}.
-> Review the [1.2 upgrade checklist](/docs/admin/upgrade/#preparing-1-2) for the
-> affected behavior and the [CLI draft](/docs/cli/) for the separate optional tool.
+[1.2 release notes](/blog/release/1.2.0/) or the
+[upgrade guide](/docs/admin/upgrade/#preparing-1-2) for an existing site.
 
 ## Five ways in {#five-entries}
 

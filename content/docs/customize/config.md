@@ -329,7 +329,7 @@ Which images become zoom candidates is in [Images](/docs/components/image/).
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.preset` | enum | paper | Site-wide visual preset: `paper`, `slate`, or the explicit experiments `ink`, `terminal`. Local unreleased behavior; choose `slate` to retain the previous appearance |
+| `params.ui.preset` | enum | paper | Site-wide visual preset: `paper`, `slate`, or the explicit experiments `ink`, `terminal`. Available in 1.2.0; choose `slate` to retain the previous appearance |
 | `params.ui.preset_menu` | boolean or list | false | `true` offers Paper, Slate and the site default; a list explicitly opts into experiments and must include the site default. Independent of `dark_mode` |
 | `params.ui.typography` | enum | technical | `technical` uses the selected preset’s local fonts (Paper: Plex Sans; Slate: Inter); `system` uses the platform stack only and requests no brand font. An invalid value warns and falls back |
 | `params.ui.fonts` | map | | Font-family names for the `ui`, `body`, `heading`, `code`, `display`, `meta`, `brand`, and `print` roles. The theme validates names but never loads font files. End each list with a generic family |
@@ -503,13 +503,13 @@ text) and its parameter-scan registry; the theme's CI regenerates them and
 fails on drift. Use the schema from the same release tag as your theme pin.
 
 With the VS Code YAML extension, map the site schema in your settings. This
-example matches OINK v1.1.0; replace that tag with the one in your `go.mod`.
+example matches OINK v1.2.0; replace that tag with the one in your `go.mod`.
 Both common YAML configuration filenames are covered:
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/v1.1.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
+    "https://raw.githubusercontent.com/pgsty/oink/v1.2.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```

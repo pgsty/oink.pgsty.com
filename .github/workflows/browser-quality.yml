@@ -50,6 +50,9 @@ jobs:
           - name: Community feedback regressions
             target: test:community-feedback
             artifact: community-feedback
+          - name: Visual presets and appearance controls
+            target: test:appearance
+            artifact: appearance
     steps:
       - uses: actions/checkout@v7
         with:

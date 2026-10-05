@@ -8,11 +8,10 @@ not a projection of a second theme-local document tree.
 
 ## Current baseline
 
-As checked on 2026-10-04, `go.mod` and the advertised versions in `hugo.yml`
-still pin the published theme `v1.1.0`. The working Design contracts and
-`content/blog/release/1.2.0{,.zh}.md` describe unreleased theme work. CLI
-documentation describes the separate local `0.1.0-dev` candidate. Recheck
-those files and actual release state rather than treating drafts as delivery.
+The site pins and advertises OINK `v1.2.0`, released on 2026-10-05. The Design
+contracts and bilingual release notes describe that release. CLI documentation
+describes the separate local `0.1.0-dev` candidate. Recheck actual tags, module
+resolution and deployment before making later release claims.
 
 ## Repository boundary
 

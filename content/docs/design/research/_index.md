@@ -34,6 +34,7 @@ standard.
 | [CLI acceptance snapshot, 2026-09-29](/docs/design/research/2026-09-29-cli-acceptance/) | Executed Starter, real-site, offline, upgrade, and reproducible-archive checks; final local acceptance and public release remain separate |
 | [Visual preset acceptance, 2026-10-05](/docs/design/research/2026-10-05-visual-presets-acceptance/) | Paper/Slate local implementation, actual output and bounded browser evidence |
 | [Ink and Terminal experiment, 2026-10-05](/docs/design/research/2026-10-05-ink-terminal-experiment/) | Explicit experimental presets, design tradeoffs and real-site verification |
+| [OINK 1.2 pre-release review, 2026-10-05](/docs/design/research/2026-10-05-v1-2-release-review/) | Final local candidate checks, cleanup, local resources, compatibility and publication boundaries |
 
 ## Publication rules {#publication-rules}
 

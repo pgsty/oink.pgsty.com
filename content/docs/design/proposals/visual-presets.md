@@ -1,7 +1,7 @@
 ---
 title: Visual presets and appearance switching
 linkTitle: Visual presets
-description: Paper and Slate are implemented locally; Ink and Terminal are explicitly enabled experiments awaiting design acceptance.
+description: Paper and Slate ship in 1.2.0; Ink and Terminal are explicitly enabled experiments awaiting design acceptance.
 weight: 40
 icon: fa-solid fa-swatchbook
 search_keywords:
@@ -22,9 +22,8 @@ design_status: partially-implemented
 proposal_date: 2026-10-04
 ---
 
-> [!IMPORTANT] Phase 1 implemented locally; Ink/Terminal experiments now available
-> Paper, Slate and the Appearance menu are implemented in the unreleased local
-> theme. The [architecture contract](/docs/design/architecture/#visual-presets),
+> [!IMPORTANT] Phase 1 released in 1.2.0; Ink/Terminal opt-ins available
+> Paper, Slate and the Appearance menu ship with OINK 1.2.0. The [architecture contract](/docs/design/architecture/#visual-presets),
 > [accepted decision](/docs/design/decisions/visual-presets/) and
 > [acceptance record](/docs/design/research/2026-10-05-visual-presets-acceptance/)
 > own phase-one behavior and evidence. A subsequent [Ink/Terminal experiment](/docs/design/research/2026-10-05-ink-terminal-experiment/)
@@ -35,7 +34,7 @@ proposal_date: 2026-10-04
 
 | Field | Value |
 | --- | --- |
-| Status | Phase 1 local implementation; Ink/Terminal explicit experiments |
+| Status | Phase 1 released in 1.2.0; Ink/Terminal explicit opt-ins |
 | Owner | OINK maintainers |
 | Date | 2026-10-04 |
 | Baseline | Theme `main` after `v1.1.0` with unreleased `1.2.0` work; documentation site pinned to `v1.1.0` |
@@ -238,20 +237,22 @@ Behaviour:
 
 - **Trigger:** one icon button (`aria-expanded`, `aria-controls`, label
   "Appearance"). It replaces the current theme button in the navbar and in the
-  shell footer line. The `t` shortcut keeps toggling light/dark.
+  shell footer line. Sun means the current light state; moon means dark.
+  The `t` shortcut keeps toggling light/dark.
 - **Panel:** a non-modal popover containing two native `fieldset` radio
-  groups. *Style*: preset cards with a small swatch (canvas, ink, accent) and
-  name; the site default carries a "Default" badge. *Mode*: a segmented
-  Light / Dark / System control. Selection applies immediately and the panel
-  stays open so readers can compare.
+  groups. The October 5 revision uses *Style*: icon-and-name buttons in two
+  columns, with a preset-colored icon and no preview letters or experiment
+  badges. The site default is identified by its tooltip and accessible name.
+  *Light*: a segmented Light / Dark / System control. Selection applies
+  immediately and the panel stays open so readers can compare.
 - **Keyboard:** Enter/Space or ArrowDown opens and focuses the checked radio;
   arrow keys move within a group (native radio behaviour); Tab moves between
   groups; Esc closes and returns focus to the trigger; focus leaving the panel
   or an outside click closes it.
-- **Feedback:** checked card has a 2 px accent outline and a check mark; the
-  mode segment uses the existing selected style. Changes are announced through
-  native radio semantics; no extra live region.
-- **Restore default:** selecting the "Default" card clears the stored choice.
+- **Feedback:** the selected option has a tinted background and accent border;
+  keyboard focus has a separate outline. Changes are announced through native
+  radio semantics; no extra live region.
+- **Restore default:** selecting the site's default preset clears the stored choice.
   No separate reset button is needed.
 - **Mobile (< 768 px):** the trigger stays in the compact header and is also
   offered in the docs drawer footer and in a new row of the Landing mobile
@@ -263,7 +264,7 @@ Behaviour:
 - **Command palette:** a `switch_preset` action next to `switch_theme`.
 
 `dark-mode.js` keeps its storage key and attributes. It must sync the
-`checked` state of the Mode radios and listen to their `change` events instead
+`checked` state of the Light radios and listen to their `change` events instead
 of the current `aria-pressed` buttons.
 
 ## Token architecture {#token-architecture}
@@ -587,12 +588,13 @@ limits are recorded separately in the [October 5 acceptance record](/docs/design
 - The menu is fully operable with keyboard, touch, and screen readers; axe
   reports no new violations.
 - All palettes meet the contrast table in both modes.
-- No external requests; `--panicOnWarning` builds pass.
+- Presets add no external font or script dependency; explicitly configured
+  services such as Giscus remain separate. `--panicOnWarning` builds pass.
 
 ## Open decisions {#open-decisions}
 
 1. Resolved for phase 1: `preset_menu: false`; the docs site enables it.
-2. Version that changes the default: `1.2.0` with a prominent note, or `2.0.0`.
+2. Target resolved for release preparation: `1.2.0`, with a prominent Paper-default notice and the `preset: slate` compatibility setting. Published in 1.2.0.
 3. Resolved for phase 1: the wordmark role is `brand`.
 4. Whether a display-only serif becomes a Paper option after phase 1.
 5. Whether charts (Mermaid, ECharts) should take preset colours in phase 2.
@@ -619,3 +621,4 @@ geometry/density tokens and preset-colored charts require a separate decision.
 | 2026-10-04 | Draft created with Paper/Slate phase-1 scope, Ink/Terminal research specs, Appearance menu choice, and token architecture |
 | 2026-10-05 | Phase 1 implemented locally; defaults, brand role and mode-only chart scope accepted; release version undecided and no publication performed |
 | 2026-10-05 | Subsequent explicit Ink/Terminal experiments implemented; stable menu policy retained; design acceptance remains open |
+| 2026-10-05 | Release preparation targets 1.2.0; simplified Style/Light controls and current-state icons replace the earlier swatch proposal; no tag or deployment created |

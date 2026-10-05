@@ -124,15 +124,13 @@ translations, with no configuration:
 ```
 
 The `hreflang` codes come from each language's `locale` (`en-US` / `zh-CN` on
-this site), and the links from Hugo's translation relationships. In the 1.2.0
-development implementation, a missing translation is omitted from both
+this site), and the links from Hugo's translation relationships. In the 1.2.0 implementation, a missing translation is omitted from both
 `hreflang` and `og:locale:alternate`. The visible language switcher may still
 lead to that language's home page; that navigation fallback is not a translation.
 
 Each paginated Blog index has its own canonical URL. From page 2 onward,
 language alternates are omitted because pagination does not establish matching
-translated pages. These corrections are implemented in the 1.2.0 working tree; the published
-v1.1.0 tag retains the earlier behavior.
+translated pages. OINK 1.2.0 includes these corrections; 1.1.0 retains the earlier behavior.
 
 The canonical is assembled from `baseURL`. A wrong `baseURL` points search
 engines at addresses that do not exist, which is harder to notice than a build

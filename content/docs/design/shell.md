@@ -5,14 +5,12 @@ description: Navigation authorities, immersive blog presentation, search, action
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK shell, navigation contract, search, actions, blog presentation, authors, series, pager]
-contract_status: draft-v1.2.0
+contract_status: v1.2.0
 ---
 
-> [!IMPORTANT] OINK 1.2.0 working contract
-> This working contract includes the locally implemented 1.2.0 revisions
-> to the 1.1.0 baseline. It is not a published v1.2.0 release; consumer
-> upgrades and deployment remain separate steps. The canonical bilingual
-> sources live in `content/docs/design/`.
+> [!NOTE] OINK 1.2.0 contract
+> This contract describes the v1.2.0 release. Its canonical bilingual sources
+> are in `content/docs/design/`.
 
 ## Authorities and navigation {#authorities-and-navigation}
 
