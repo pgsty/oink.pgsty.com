@@ -29,7 +29,7 @@ hero:
       icon: fa-solid fa-rocket
       style: primary
     - label: 查看 1.3.2 新特性
-      url: blog/release/1.3.0/
+      url: blog/release/1.3.2/
       icon: fa-solid fa-book-open
       style: ghost
 
