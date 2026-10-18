@@ -14,7 +14,7 @@ design_status: active
 
 > [!NOTE] 证据，不是契约
 > 研究记录测量了什么、使用了哪些输入与工具版本。它可以解释决策，但不能覆盖当前契约或实现。
-> 当前验收使用 Hugo Extended 0.166.0，遵循[工具链契约](/zh/docs/design/architecture/#hugo-toolchain)。
+> 当前验收使用 Hugo Extended 0.168.0，遵循[工具链契约](/zh/docs/design/architecture/#hugo-toolchain)。
 > 这里记录的旧版本属于历史证据，不构成兼容性测试目标。
 
 只有其他维护者能够检查方法、理解边界并复现相关检查时，研究才适合进入公开 Design 内容树。

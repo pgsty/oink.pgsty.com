@@ -70,8 +70,7 @@ markup:
       unsafe: true
 ```
 
-`filename` 是 `title` 的历史别名，两个一起写时告警并使用 `filename`；严格发布构建
-拒绝这条警告。
+`filename` 是 `title` 的历史别名，两个一起写时告警并使用 `filename`；发布前应审阅告警并检查回退结果。
 
 ## 行号、起始行与高亮 {#line-numbers}
 
@@ -130,8 +129,7 @@ CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 ```
 
 `wrap=true` 与表格行号不能共存：行号列与代码列是两个表格单元格，换行后会错位。
-写在一起时告警并关闭换行，提示改用 `lineNos="inline"` 或去掉换行；严格发布构建
-拒绝这条警告。
+写在一起时告警并关闭换行，提示改用 `lineNos="inline"` 或去掉换行；发布前应审阅告警并检查回退结果。
 
 ## 折叠长代码 {#collapse}
 
@@ -198,7 +196,7 @@ INFO installing pg_duckdb
 
 要连提示符与输出一起复制就写 `copy="all"`。把 `copy="command"` 用在 `bash`、`sh`
 之类普通 lexer 上时告警并使用 `copy="all"`，因为它们分不出提示符、命令与输出；
-严格发布构建拒绝这条警告。多行命令请在续行里写出续行提示符（通常是 `>`），否则
+发布前应审阅告警并检查回退结果。多行命令请在续行里写出续行提示符（通常是 `>`），否则
 那一行会被当成输出而排除。
 
 会话 lexer 的块里一行提示符都没有时，复制按钮报失败：图标转为错误状态，控制台留一条错误，剪贴板不变。它不会退化成复制全文。
@@ -250,7 +248,7 @@ ORDER BY n_live_tup DESC;
 不写 `id` 时主题也会生成一个页面内唯一的 ID，但它依赖围栏在页面里的顺序，前面
 插入一个新围栏就会变。只有作者书写的 `id` 才是永久链接。ID 不能含空白与控制字符，
 也不能与页面上其它块的 viewport、标签、面板、标题、行锚点 ID 重复；无效或重复 ID
-会告警，严格发布构建拒绝这条警告。
+会告警，发布前应审阅告警并检查回退结果。
 
 ## 编号例 {#numbered}
 
@@ -275,7 +273,7 @@ WHERE n_dead_tup > n_live_tup * 0.2;
 参见 {{< xref eg="4-1" anchor="eg-bloat" />}}。
 
 `num` 与 `caption` 必须成对出现。只写 caption 时忽略它，只写编号时丢弃编号并告警；
-严格发布构建拒绝这条警告。`num` 与标签页属性 `tab` 互斥。图、表、公式的编号写法与
+发布前应审阅告警并检查回退结果。`num` 与标签页属性 `tab` 互斥。图、表、公式的编号写法与
 索引见[书籍出版](/zh/docs/write/book/)。
 
 ## 一组围栏做成标签页 {#tabs}
@@ -344,7 +342,7 @@ sudo apt install hugo
 
 `title`、`filename` 与 `label` 已经为块生成了无障碍名称与 `role="group"`。它们中的
 任意一个与 `aria-label`、`aria-labelledby` 或 `role` 同时出现时告警并忽略冲突属性；
-严格发布构建拒绝这条警告。这三个属性只在块没有标题也没有 `label` 时可以透传。
+发布前应审阅告警并检查回退结果。这三个属性只在块没有标题也没有 `label` 时可以透传。
 
 同一行还能写 Chroma 选项，主题原样转交 Hugo：
 
@@ -360,7 +358,7 @@ sudo apt install hugo
 ## 限制与常见问题 {#limits}
 
 - 不换高亮器：没有 Shiki、Twoslash、浏览器端高亮，也没有可执行的代码演练场。补丁用 `diff` 围栏，Chroma 的 `.gi`/`.gd` 就是增删行的样式。
-- `copy="command"` 只认会话 lexer：用于其他语言时，普通预览告警并回退到 `copy="all"`；严格发布构建拒绝这条警告。
+- `copy="command"` 只认会话 lexer：用于其他语言时，普通预览告警并回退到 `copy="all"`；发布前应审阅告警并检查回退结果。
 - 自动生成的 ID 不是永久链接：要发链接就写 `id`。
 - `mermaid`、`math`、`chem`、`markmap`、`plantuml`、`echarts`、`infographic`、`checksums`、`filetree`、`gallery` 不是代码块：它们有各自的渲染钩子，不套这层外壳，也没有复制按钮。
 

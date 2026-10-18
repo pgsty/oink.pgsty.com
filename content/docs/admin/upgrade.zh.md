@@ -11,14 +11,14 @@ aliases:
   - /docs/upgrade/v0-4/
 ---
 
-升级 OINK 是换一个固定的模块版本，再确认站点仍能零告警构建。内容多数不用改；
+升级 OINK 是换一个固定的模块版本，再确认站点仍能生产构建。内容多数不用改；
 0.4 shortcode 改成当前 Markdown 原生形态时，有一套默认干跑的迁移工具，不必手改
 几百个文件。
 
 升级会改变渲染结果。先建一个升级分支再动手，回退的代价就是丢弃一个分支。
 
 > [!IMPORTANT] 当前 Hugo 基线
-> 自 2026-10-15 起，开发与验收统一使用 Hugo Extended 0.166.0。升级时同步更新
+> 自 2026-10-15 起，开发与验收统一使用 Hugo Extended 0.168.0。升级时同步更新
 > Hugo workflow 固定版本，不再维护旧 Hugo 兼容性。下方旧版本章节中的要求仅说明
 > 当时的发布状态。
 
@@ -28,7 +28,7 @@ OINK `v1.3.0` 新增 [Expo 相册](/zh/docs/write/expo/)，并修复导航、模
 已有 Docs、Blog、Book 内容无需批量迁移。仅在新相册分区设置 `type: expo` 及对应
 cascade，图片与原图保存在各自的叶子页面包中。
 
-在关闭替换和工作区的环境中验证公开模块解析。固定 `github.com/pgsty/oink@v1.3.0`，零告警构建，再检查导航、
+在关闭替换和工作区的环境中验证公开模块解析。固定 `github.com/pgsty/oink@v1.3.0`，生产构建，再检查导航、
 图片查看器与读者设置。源码副本方式的消费站还需要刷新固定主题文件；修改 `go.mod`
 不会升级已有的 vendor 副本。
 
@@ -93,12 +93,12 @@ git add themes/oink
 ```bash {title="终端"}
 rm -rf public resources/_gen
 env -u HUGO_MODULE_REPLACEMENTS GOWORK=off HUGO_MODULE_WORKSPACE=off \
-  hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
+  hugo --gc --minify --printPathWarnings --logLevel info
 ```
 
-三件事一起做了：清掉可能过期的缓存、用新版本重新构建、把任何告警变成失败。
+三件事一起做了：清掉可能过期的缓存、用新版本重新构建、保留并审阅构建诊断。
 
-`--logLevel info` 包含信息级诊断，`--panicOnWarning` 将警告视为失败。升级 Hugo
+`--logLevel info` 包含信息级诊断，告警保持可见并接受审阅。升级 Hugo
 之前，先处理当前固定版本发出的弃用提示；诊断级别与移除时间取决于具体的弃用功能。
 
 构建通过之后，人眼再过一遍：首页、一个文档页、一个博客页、404、两种语言、两种配色、打印视图，以及站点自己定制过的地方。
@@ -110,7 +110,7 @@ env -u HUGO_MODULE_REPLACEMENTS GOWORK=off HUGO_MODULE_WORKSPACE=off \
 > 主题发布不会自动升级既有站点。
 
 从 1.0.0 升级到 1.1.0 不需要迁移源码，模块的 Go 1.27.0 声明与 1.0.0 相同。
-当前升级统一使用 Hugo Extended 0.166.0 验证；历史工具链信息保留在
+当前升级统一使用 Hugo Extended 0.168.0 验证；历史工具链信息保留在
 [1.1 发布说明](/zh/blog/release/1.1.0/)中。
 
 选择新固定版本前，检查这些受影响的页面与行为：
@@ -156,7 +156,7 @@ make dev
 > 自定义深色品牌选择器的兼容处理见[品牌外观](/zh/docs/customize/brand/#visual-presets)。
 
 OINK 1.2.0 已发布。除上面的默认外观变化外，无需迁移内容源码。
-当前升级统一使用 Hugo Extended 0.166.0 验证，并按以下清单验收站点：
+当前升级统一使用 Hugo Extended 0.168.0 验证，并按以下清单验收站点：
 
 - 检查所选预设、明暗图标、键盘与手机菜单、保存的偏好，以及自定义字体和强调色覆盖。
   太阳表示亮色，月亮表示暗色；切换风格不得改变保存的明暗偏好。
@@ -166,7 +166,7 @@ OINK 1.2.0 已发布。除上面的默认外观变化外，无需迁移内容源
   或挂载内容的编辑、历史与新建子页链接；映射结果必须是仓库相对路径。
 - 检查 JavaScript 被禁用或阻断时的 Landing 内容、指标格式、弹窗与快捷键、
   复制回退、Draw.io 操作，以及窄屏上的编号公式。
-- 对图表端点与资源 alt 元数据执行将警告视为失败的构建；非法值现在会警告并采用
+- 对图表端点与资源 alt 元数据执行保留告警的生产构建；非法值现在会警告并采用
   安全回退。要有意禁用 PlantUML 或 Draw.io 端点，使用 `false` 或空字符串。
 - 测试出版或内容转换时，使用修订后的 PDF 与迁移工具。审查 PDF 远程资源开关
   和迁移 diff，包括嵌套在列表中的代码示例。消费站升级工具也随 1.2.0
@@ -211,7 +211,7 @@ python3 bin/migrations/oink06.py check --site ~/pgsty/oink.pgsty.com
 python3 bin/migrations/oink06.py migrate --site ~/www/ddia --only callout,tabs --write
 ```
 
-改完重新构建一次（带 `--panicOnWarning`），并逐页看渲染结果：工具保证语法正确，不保证语义符合预期。
+改完重新构建一次并审阅告警，并逐页看渲染结果：工具保证语法正确，不保证语义符合预期。
 
 ## 0.4 → 当前语法映射 {#syntax-map}
 
@@ -289,7 +289,7 @@ OINK 是 Docsy 的硬分支：内容模型、`td-` 命名、Sass 变量、大部
 - 顶栏在所有布局上都显示。紧凑状态只有一行图标导航，没有第二套移动端手风琴菜单，依赖旧移动菜单的本地脚本与测试要删掉。整个分区不要顶栏时用 cascade 里的 `navbar_enabled: false`。
 - 页脚默认 `fat` 且全站生效。只接受 `fat` / `slim` / `none`；页脚数据必须放在
   `data/footer/<语言>.yaml`（单语言站点用 `data/footer.yaml`），`data/home` 里残留的
-  `footer` 键会告警并提示新位置，严格发布构建拒绝这条警告。
+  `footer` 键会告警并提示新位置，发布前应审阅告警并检查回退结果。
 - 单键导航默认开启：`/` 打开完整搜索，`\` 只进命令模式。培训材料里描述旧行为的地方要改。页面操作也挪到了面包屑旁边的拆分按钮上。
 - 代码块的 DOM 变了。`.td-code` 外壳套在原来的 `.highlight` 外面（`.highlight` 与 `.chroma` 都保留），站点 CSS 里 `.td-content > .highlight` 这类直接子选择器要改成后代选择器 `.td-content .highlight`。
 - 两个 ICP 页脚参数被移除：`footer_icp` 与 `footer_icp_url` 换成一个支持行内 Markdown 的字符串。
@@ -342,7 +342,7 @@ make build     # go.mod 固定的公开主题，不带本地替换
 hugo mod get github.com/pgsty/oink@v1.0.0   # 示例：本站上一个已知可用的标签
 hugo mod tidy
 rm -rf public resources/_gen
-hugo --gc --minify --panicOnWarning
+hugo --gc --minify
 ```
 
 三条原则：

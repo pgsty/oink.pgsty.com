@@ -42,22 +42,20 @@ The registry has exactly 22 built-ins:
 - `pricing`, `pricing-compare`, `command-box`, `steps`, `timeline`,
   `code-plate`, `preview`, `case-study`, `download`, `bar-chart`.
 
-An entry is a type string or a map with `type`, `key`, `id`, `enabled`, inline
-`data`, or a deliberate local `partial`. Authors provide unique IDs; OINK
-normalizes them to anchor-safe values. Unknown types follow the shared
-warn-and-safe-fallback policy; they never vanish silently, and
-`--panicOnWarning` rejects them at publication. `landing/` partials own
-built-ins; removed `home/` partial names are not an API.
+An entry is a type string or a map with `type`, `key`, `id`, `enabled`, inline `data`, or an explicit local `partial`.
+Authors provide unique IDs. OINK converts them to anchor-safe values.
+Unknown types warn and use safe fallbacks. They never disappear silently. Review their diagnostics before publication.
+`landing/` partials define built-ins. Removed `home/` partial names are not an API.
 
-`preview` places Markdown `source` beside `RenderString` output through the
-site's hooks, so its content registers the same runtimes as docs content. The
-source pane uses Chroma and a `file` name, default `page.md`. Markdown output
-uses a four-backtick `markdown` fence; RSS omits it. Pane labels are theme i18n.
+`preview` displays Markdown `source` beside its `RenderString` output using site hooks.
+The content registers the same runtimes as docs content.
+The source pane uses Chroma and a `file` name, defaulting to `page.md`.
+Markdown output uses a four-backtick `markdown` fence. RSS omits it. Pane labels use theme i18n.
 
-`hero.align` is `start` or `center`. Center is text-only; combining it with an
-image warns and falls back to `start`, preserving the image. `download`
-consumes the same `data/download/<key>.yaml` schema as the shortcode and
-introduces no second channel, version, publication, or interpolation model.
+`hero.align` accepts `start` or `center`. Center alignment supports only text.
+Combining center alignment with an image warns, falls back to `start`, and preserves the image.
+`download` uses the shortcode's `data/download/<key>.yaml` schema.
+It adds no second channel, version, publication, or interpolation model.
 
 ## Language, runtime, and accessibility {#language-runtime-and-accessibility}
 
@@ -71,7 +69,8 @@ Each built-in Markdown render has a stable section, item, and field scope.
 Repeated bodies and marquee copies therefore get distinct generated code IDs,
 including their copy controls, titles, viewports, and line links. The scope does
 not depend on render order or output order. Explicit code IDs remain unchanged;
-repeating one in the assembled Landing output warns and fails a strict build.
+repeating one in the assembled Landing output warns and keeps the page available.
+Authored IDs remain unchanged; correct the collision before publication.
 Custom partials that reuse the Markdown helpers should pass a distinct stable
 `scope` for each rendered position.
 

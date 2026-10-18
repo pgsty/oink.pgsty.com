@@ -12,7 +12,7 @@ aliases:
 
 ```bash {title="终端"}
 rm -rf public resources/_gen
-hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
+hugo --gc --minify --printPathWarnings --logLevel info
 ```
 
 日志里出现 npm、PostCSS、Autoprefixer 或下载浏览器资源的步骤，说明配置里混进了上游 Docsy 的流程。OINK 消费端的构建只有一条 Hugo 命令。
@@ -23,7 +23,7 @@ hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
 
 | 症状 | 原因 | 修法 |
 | --- | --- | --- |
-| 构建报要求更高的 Hugo 版本 | 装的是标准版而不是 Extended，或版本低于 {{< param hugoMinVersion >}} | `hugo version` 输出里必须有 `extended`。多个 Hugo 共存时先查 `PATH` 与版本固定配置，而不是再装一份 |
+| 构建报要求更高的 Hugo 版本 | 装的是标准版而不是 Extended，或版本低于 {{< param hugoMinVersion >}} |`hugo version` 输出里必须有 `extended`。多个 Hugo 共存时先查 `PATH` 与版本固定配置，而不是再装一份 |
 | `module "github.com/pgsty/oink" not found` | 主题没解析出来 | Hugo Module：看 `hugo mod graph`、`go.mod`、`go.sum`，以及有没有多余的 workspace / replace。submodule：CI 有没有在 Hugo 之前跑 `git submodule update --init`。归档 / 克隆：`theme:` 的值要与 `themes/` 下的目录名一致 |
 | 模块下载卡住或超时 | Go 的模块代理不通 | Hugo 通过 Go 拉模块，所以走 `GOPROXY`。国内网络可以 `export GOPROXY=https://goproxy.cn,direct`；隔离环境改用离线归档或提交 `themes/oink/` |
 | 页面上出现 `{.cards}`、`{.steps}`、`{caption=…}` 这类原样文字 | 站点没开 goldmark 的块级属性 | 站点的 `hugo.yml` 里必须有下面那三项，主题的 `markup` 配置不会被 Hugo 合并进来 |
@@ -32,11 +32,11 @@ hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
 | `\(…\)` `$$…$$` 原样显示 | 站点没启用 goldmark passthrough | 见[公式](/zh/docs/components/math/)；`math: true` 不是启用开关 |
 | `shortcode "tabs" must be closed or self-closed` | 有 `{{</* tabs */>}}` 没写对应的 `{{</* /tabs */>}}` | 报错里带 `文件:行:列`，去那一行补上闭合标记 |
 | `template for shortcode "tabs" not found` | 正文里写了一个不存在的 shortcode，或引用 shortcode 语法时没有转义 | 文档里讲解 shortcode 语法时必须转义：在开标记与闭标记的内侧各加一对 `/*` 与 `*/`，Hugo 才会把它当文字而不是调用。名字打错就改回正确的名字 |
-| `... attributes: unknown attribute "witdh" at ...` | 属性行里的键拼错或不被允许 | 警告列出允许键并忽略坏属性；`style` 与 `on*` 同样丢弃。`--panicOnWarning` 在发布时把它变成失败 |
-| `shortcode "field": unsupported parameter "colour" at ...` | shortcode 参数名不对 | 警告指出 shortcode、参数、文件与行号，再忽略不支持的参数或组件。普通预览保持可用，严格发布失败 |
-| `invalid params.ui.page_width "widee" (allowed: normal \| wide \| full) -- using "normal"` | **配置或 front matter 的取值**，不在允许集合里 | 配置类的错误降级而不中断，一个笔误不会让 `hugo server` 下每个 URL 都返回 500。消息里带键名、收到的值和实际用的回退值。构建加 `--panicOnWarning`，它就上不了线 |
+| `... attributes: unknown attribute "witdh" at ...` | 属性行里的键拼错或不被允许 | 警告列出允许键并忽略坏属性；`style` 与 `on*` 同样丢弃。审阅告警并修正属性 |
+| `shortcode "field": unsupported parameter "colour" at ...` | shortcode 参数名不对 | 警告指出 shortcode、参数、文件与行号，再忽略不支持的参数或组件。普通预览保持可用，发布前核对降级产物 |
+| `invalid params.ui.page_width "widee" (allowed: normal \| wide \| full) -- using "normal"` | **配置或 front matter 的取值**，不在允许集合里 | 配置类的错误降级而不中断，一个笔误不会让 `hugo server` 下每个 URL 都返回 500。消息里带键名、收到的值和实际用的回退值。发布前修正无效取值 |
 | 某个页面设置不生效，也没有任何提示 | 键写在了 front matter 的 `ui:` 段里 | 页面键写在 front matter 顶层，键名是站点键去掉 `ui.`。写进 `ui:` 段的键没有人读，也没有人报错，见[页面参数](/zh/docs/write/frontmatter/) |
-| 构建通过但线上少东西 | 有 WARNING 没人看 | 构建命令加 `--panicOnWarning`。非法配置取值、giscus 必填键缺失、不支持的 `comments.type`、Hugo 的弃用提示都只是告警 |
+| 构建通过但线上少东西 | 有 WARNING 没人看 | 审阅构建告警，修正非法配置取值、缺失的 giscus 必填键或不支持的 `comments.type`。上游 LibSass 弃用告警允许出现 |
 
 那三项 goldmark 配置：
 
@@ -107,7 +107,7 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 
 | 检查 | 命令 | 管什么 |
 | --- | --- | --- |
-| 零告警构建 | `hugo --printPathWarnings --panicOnWarning` | 重复输出路径、参数非法、外部集成配置不全 |
+| 生产构建 | `hugo --printPathWarnings` | 重复输出路径、参数非法、外部集成配置不全 |
 | 输出信任检查 | `python3 /path/to/oink/bin/check-output-security.py --public /path/to/my-site/public --base-url https://my-site.example/` | 四种输出里的每个 `href` / `src` 都是站内相对或 `http(s)` / `mailto` / `tel`；没有 `javascript:` URL、没有行内 `on*` 事件处理器；跨站的 `<iframe>` `<script>` `<img>` 等要显式加 `--third-party` 才放行 |
 | 翻译对等 | `node scripts/check-doc-translations.mjs --public public` | 每个英文页有没有中文对等页，以及渲染后的标题 ID 是否逐一对齐；锚点链接错位在这里暴露 |
 | 完整门禁 | `npm test` | 下面六项串起来跑 |

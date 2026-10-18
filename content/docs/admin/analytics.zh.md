@@ -26,7 +26,7 @@ services:
 部署需要明确选择非 production 环境，并将 `PREVIEW_URL` 设为预览的实际地址：
 
 ```bash {title="终端"}
-hugo --panicOnWarning --environment staging --baseURL "$PREVIEW_URL"
+hugo --environment staging --baseURL "$PREVIEW_URL"
 ```
 
 详见[预览部署配置](/zh/docs/admin/deploy/#preview-builds)。
@@ -218,7 +218,7 @@ Disallow: /
 在自己的站点根目录执行。将 `PAGE` 换成自己站点实际生成的页面，并按需包含语言前缀：
 
 ```bash {title="终端"}
-hugo --gc --minify --printPathWarnings --panicOnWarning
+hugo --gc --minify --printPathWarnings
 PAGE=public/zh/docs/getting-started/index.html
 test -f "$PAGE"
 

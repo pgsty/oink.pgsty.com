@@ -22,5 +22,5 @@ cascade:
 
 > [!NOTE] 按版本保留的历史记录
 > 每篇发布说明记录对应版本当时的要求与验收结果。当前开发、CI 与发布测试统一使用
-> Hugo Extended 0.166.0，基线随稳定版更新。旧发布说明不构成当前支持要求，
+> Hugo Extended 0.168.0，默认基线保持固定。旧发布说明不构成当前支持要求，
 > 请遵循[工具链契约](/zh/docs/design/architecture/#hugo-toolchain)。

@@ -170,12 +170,12 @@ params:
       indexName: YOUR_INDEX
 ```
 
-All three values must be written explicitly. A missing value produces a
-warning and disables Algolia: ordinary previews continue, while a build with
-`--panicOnWarning` fails. OINK never falls back to another project's public index. The DocSearch JS and
-CSS ship with the theme rather than loading from a CDN, but every query is a
-request to Algolia. Real credentials and a real index are needed for it to work,
-so nothing is rendered here.
+You must supply all three values explicitly. A missing value warns and disables
+Algolia. Normal preview continues. Review the warning and confirm Algolia is disabled.
+OINK never falls back to another project's public index. The theme bundles
+DocSearch JS and CSS locally. They do not load from a CDN. However, every
+query sends a request to Algolia. The integration requires real credentials
+and an index, so this page renders no demonstration.
 
 ### Google Programmable Search {#google-cse}
 
@@ -202,7 +202,7 @@ likewise an external service and is not rendered here.
 1. Build, and confirm one index per language was generated:
 
    ```bash
-   hugo --printPathWarnings --panicOnWarning
+   hugo --printPathWarnings
    ls public/offline-search-index.*
    ```
 

@@ -75,7 +75,7 @@ languages:
 ```
 
 上面是本站在用的那一条。字段共七个。写入其它键或无效记录时，普通预览告警并
-丢弃该命令，严格发布构建拒绝这条警告：
+丢弃该命令，发布前应审阅告警并检查回退结果：
 
 - `id` 必填，小写字母开头，只能用小写字母、数字、下划线和短横线；不能与内建动作 ID 重名。
 - `title` 显示在面板里；`description` 是它下面那行小字；`icon` 是一对 Font Awesome class。
@@ -175,14 +175,14 @@ YAML 仍不能包含回调，OINK 默认不添加远程服务或遥测。
 
 ## 验证 {#verify}
 
-先在自己的站点根目录完成严格构建。下方命令中的
+先在自己的站点根目录完成生产构建。下方命令中的
 `public/zh/docs/getting-started/index.html` 是示例；请换成自己站点实际生成的文档页，
 并按语言配置调整路径前缀。
 
 1. 构建后确认命令清单进了页面：
 
    ```bash
-   hugo --printPathWarnings --panicOnWarning
+   hugo --printPathWarnings
    PAGE=public/zh/docs/getting-started/index.html
    test -f "$PAGE" && grep -o 'td-action-manifest' "$PAGE"
    ```

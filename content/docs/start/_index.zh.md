@@ -34,14 +34,14 @@ aliases:
 
 1. ### 安装工具 {#tools}
 
-   安装 Git、Go 1.27 或更新版本，以及 Hugo Extended 0.166.0 或更新版本。Hugo
+   安装 Git、Go 1.27 或更新版本，以及 Hugo Extended 0.168.0 或更新版本。Hugo
    输出必须包含 `extended`：
 
    ```console
    $ go version
    go version go1.27.0 darwin/arm64
    $ hugo version
-   hugo v0.166.0+extended+withdeploy darwin/arm64
+   hugo v0.168.0+extended+withdeploy darwin/arm64
    ```
 
    macOS 可以执行 `brew install git go hugo`。Linux 与 Windows 请按官方
@@ -89,11 +89,11 @@ CSS、分析与托管更容易定位问题。
 
 ## 发布门禁 {#publication-gate}
 
-第一次推送前，执行与 Starter workflow 相同的严格生产构建：
+第一次推送前，执行与 Starter workflow 相同的生产构建：
 
 ```bash
 hugo --cleanDestinationDir --gc --minify --environment production \
-  --printPathWarnings --panicOnWarning
+  --printPathWarnings
 ```
 
 命令以 `Total in …` 结束、没有警告或错误，而且 `public/` 中存在各语言根与代表性的

@@ -15,28 +15,20 @@ glance, use the cheatsheet below.
 
 ## Two forms {#two-forms}
 
-A component's first form is Markdown itself: blockquotes, lists, tables,
-images, fences — plus a single `{…}` attribute line right after them. The
-native form stays readable on GitHub and in any Markdown editor, and the
-Markdown output keeps the source rather than the rendered HTML.
+The native form uses Markdown blockquotes, lists, tables, images, or fences, followed by one `{…}` attribute line.
+This form stays readable on GitHub and in Markdown editors. Markdown output preserves the source instead of rendered HTML.
 
-Whatever the native form cannot express is a shortcode: tabs in running text,
-parameter tables with block-level descriptions, cards with icons and badges,
-terminal recordings. Five rules cover them:
+Use a shortcode for features that the native form cannot express. Examples include tabs in prose and parameter tables with block descriptions.
+Cards with icons and badges, and terminal recordings, also need shortcodes. Follow these five rules:
 
-- Every shortcode is written `{{< name >}}`. Only `{{% steps %}}` uses
-  the `%` delimiter, because its body is page-level Markdown.
-- Nested names (`tab`, `card`, `field`) are valid only inside their parent.
-- A bad author parameter never degrades silently. An ordinary preview warns,
-  names the source position, and uses the documented fallback or omits the
-  unsafe part; a publishing build with `--panicOnWarning` fails on that warning.
-- Public string parameters (captions, labels, titles) are plain text and are
-  not parsed as Markdown. Only bodies are Markdown: `tab`, `card` and `field`
-  bodies, files pulled in by `include`, and the Book `fig` / `tbl` / `eg`
-  bodies.
-- A component the page never used ships no runtime. HTML references only the
-  stable capability chunks the page actually needs; print, Markdown and RSS
-  load no interactive runtime.
+- Write every shortcode as `{{< name >}}`. Only `{{% steps %}}` uses the `%` delimiter because its body is page-level Markdown.
+- Use nested names (`tab`, `card`, `field`) only inside their parent.
+- Invalid author parameters never fail silently. Ordinary previews warn, identify the source position, and use the documented fallback or omit unsafe content.
+  Review the warning and rendered fallback before publication.
+- Public string parameters, such as captions, labels, and titles, are plain text. They are not parsed as Markdown.
+  Only bodies are Markdown: `tab`, `card` and `field` bodies, files loaded by `include`, and Book `fig` / `tbl` / `eg` bodies.
+- Components that a page does not use load no runtime. HTML references only the stable capability chunks that the page needs.
+  Print, Markdown, and RSS load no interactive runtime.
 
 ## Site prerequisites {#prerequisites}
 

@@ -152,8 +152,7 @@ params:
 | `hash` | `commit a1b2c3d` |
 | `none` | 只有日期，不链 commit |
 
-写别的值时普通预览告警并使用 `subject`；严格发布构建会因
-`invalid params.ui.lastmod_commit` 失败。
+写别的值时普通预览告警并使用 `subject`；发布前应审阅 `invalid params.ui.lastmod_commit` 诊断并检查回退结果。
 
 两点注意：
 
@@ -247,8 +246,7 @@ items:
 {{</* contributors */>}}
 ```
 
-字段：`github` 必填并校验为合法 GitHub 用户名；重复时告警并跳过后项，严格发布构建
-拒绝这条警告。`name` 缺省等于 `github`；`role` 可选；`url` 缺省是
+字段：`github` 必填并校验为合法 GitHub 用户名；重复时告警并跳过后项，发布前应审阅告警并检查回退结果。`name` 缺省等于 `github`；`role` 可选；`url` 缺省是
 `https://github.com/<github>`；`avatar` 可选，不填时渲染成首字母占位块，不发任何
 网络请求，填写时必须是 `http(s)://` 或站内根相对路径。
 
@@ -268,7 +266,7 @@ items:
 在自己的站点根目录执行。将示例 `PAGE` 换成实际生成的页面，其源文件应属于配置的仓库：
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 PAGE=public/zh/docs/getting-started/index.html
 test -f "$PAGE" && grep -o '<a[^>]*data-td-action[^>]*>' "$PAGE"
 ```

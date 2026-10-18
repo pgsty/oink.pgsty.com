@@ -42,8 +42,7 @@ contract_status: v1.3.0
 
 条目可以是类型字符串，也可以是包含 `type`、`key`、`id`、`enabled`、内联
 `data` 或有意指定的本地 `partial` 的 map。作者提供唯一 ID，OINK 把它规范为
-锚点安全值。未知类型遵循共享的警告与安全回退策略，绝不静默消失；发布时
-`--panicOnWarning` 会拒绝它。内置区块由 `landing/` partial 负责；已经移除的
+锚点安全值。未知类型遵循共享的警告与安全回退策略，绝不静默消失，发布前应审阅对应告警。内置区块由 `landing/` partial 负责；已经移除的
 `home/` partial 名称不是 API。
 
 `preview` 通过站点渲染钩子，把 Markdown `source` 放在 `RenderString` 输出旁，
@@ -66,7 +65,7 @@ i18n。
 每次内置 Markdown 渲染都有稳定的区块、条目和字段作用域。重复正文和跑马灯
 副本使用不同的自动代码 ID，复制按钮、标题、视口和行链接也随之对应。作用域
 不依赖渲染次序或输出次序。显式代码 ID 保持不变；整页出现重复显式 ID 时会
-警告，严格构建会失败。自定义 partial 重复调用 Markdown 辅助模板时，应为
+警告，构建继续并保留告警；作者 ID 保持原样，发布前必须修正冲突。自定义 partial 重复调用 Markdown 辅助模板时，应为
 每个渲染位置传入不同且稳定的 `scope`。
 
 区块 Markdown 正文使用共享 `.td-content` 组件作用域，并登记实际内容所需的

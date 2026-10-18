@@ -20,15 +20,15 @@ weight: 10
 
 ## 安装前置工具 {#prerequisite}
 
-本教程使用 Git、Go 1.27 或更新版本，以及 Hugo Extended 0.166.0。
-开发、CI 与发布测试统一使用这条 Hugo 基线，并随稳定版更新。采用旧 Starter 时，
+本教程使用 Git、Go 1.27 或更新版本，以及 Hugo Extended 0.168.0。
+开发、CI 与发布测试统一使用这条 Hugo 基线，并保持固定。采用旧 Starter 时，
 先更新其 Hugo workflow 固定版本再验证，不再维护旧 Hugo 兼容性。不需要 Node.js。
 
 ```console
 $ go version
 go version go1.27.0 darwin/arm64
 $ hugo version
-hugo v0.166.0+extended+withdeploy darwin/arm64
+hugo v0.168.0+extended+withdeploy darwin/arm64
 ```
 
 ## 启动本地预览 {#preview}

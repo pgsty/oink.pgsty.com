@@ -45,9 +45,11 @@ make build
 ./bin/oink check --site ../my-docs
 ```
 
-将 `../my-docs` 替换为既有站点路径。站点操作需要 Hugo Extended 0.166.0 或更新
+将 `../my-docs` 替换为既有站点路径。站点操作需要 Hugo Extended 0.168.0 或更新
 版本；固定 Starter 的模块流程需要 Go 1.27 或更新版本。开发与验收使用 Hugo
-Extended 0.166.0，基线随稳定版更新，不再维护旧 Hugo 兼容性。
+Extended 0.168.0，新建站点使用 OINK v1.3.2。默认基线保持固定，不再维护旧 Hugo
+兼容性。禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；告警保持可见，
+上游 LibSass 弃用告警允许出现。
 
 `make deps` 会下载构建依赖。CLI 命令默认离线，当前调用需要未缓存的输入时
 加入 `--network`。检查与变更预览保留站点源文件，写入经审阅变更需要显式应用；

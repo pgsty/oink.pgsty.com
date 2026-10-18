@@ -80,13 +80,15 @@ params:
       loading: lazy
 ```
 
-All four of `repo`, `repoId`, `category` and `categoryId` must describe the
-same repository and its selected Discussion category. They are required: if any is missing or only whitespace,
-Hugo prints one WARNING and skips giscus without failing the build — which is
-why a production build carries `--panicOnWarning`. `type` accepts only `giscus`
-today, and any other value likewise warns and skips. The `params.comments` key
-names match Hextra's, so a configuration migrated from Hextra transfers as it
-stands.
+The required fields `repo`, `repoId`, `category`, and `categoryId` must describe
+the same repository and its selected Discussion category. If a field is missing
+or contains only whitespace, Hugo prints one WARNING and skips giscus. The
+build succeeds with a warning. Review production build diagnostics and correct
+missing values before publication.
+
+Currently, `type` accepts only `giscus`. Any other value also produces a warning
+and skips giscus. The `params.comments` key names match Hextra's. A configuration
+migrated from Hextra can therefore remain unchanged.
 
 The remaining keys (`strict`, `reactionsEnabled`, `emitMetadata`, `term`,
 `lang`, `lightTheme`, `darkTheme`, `ariaLabel`, `errorMessage`) all have
@@ -211,7 +213,7 @@ leaving the page on "loading".
 ## Verify {#verify}
 
 ```bash {title="Terminal"}
-hugo --minify --panicOnWarning     # a missing required key fails here
+hugo --minify # a missing required key warns and disables comments
 hugo server --disableFastRender
 ```
 

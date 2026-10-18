@@ -56,7 +56,7 @@ python3 bin/update-consumers.py v1.3.0 --roots ~/www ~/pgsty --write --check --c
 ```
 
 第一条命令只报告版本采用情况。第二条更新 `go.mod` 和 `go.sum` 中的 OINK
-条目，核对精确的模块解析图，并对每个选中站点运行将警告视为失败的构建。
+条目，核对精确的模块解析图，并对每个选中站点运行保留告警的生产构建。
 执行时禁用 `GOWORK`、Hugo 模块 workspace 和环境变量中的模块替换。日志与
 原始模块文件保存在临时报告目录，也可通过 `--report-dir` 指定目录。
 更新失败会恢复模块文件；构建失败则保留新版本以便排查，并返回失败状态。
@@ -154,8 +154,7 @@ front matter `ui` map 会连同替代项一起报告。
 - 博客与默认日期现在采用 ISO `2006-01-02`；面向读者的日期继续显式保留
   `time_format_blog` 或 `time_format_default`。
 
-已移除名称会警告，并采用文档规定的安全回退或不渲染；普通预览可以继续，严格
-门禁通过 `--panicOnWarning` 拒绝它们。`blog_index_toggle`、
+已移除名称会警告，并采用文档规定的安全回退或不渲染；构建和预览可以继续，发布前应核对对应告警。`blog_index_toggle`、
 `featured_image: hero`、`toc_style` 与 `toc_taxonomies` 是增量选择启用项，不会
 引入内容类型；沉浸式阅读仍使用普通博客外壳。
 
@@ -165,7 +164,7 @@ front matter `ui` map 会连同替代项一起报告。
 独立块图片。要使用 `\(...\)`、`\[...\]` 或 `$$...$$`，需要显式启用 passthrough；
 Hugo 不会合并主题的 markup 配置。
 
-针对改动的契约，使用固定的 Hugo Extended 0.166.0 工具链运行范围最小的源码与输出
-检查；运行时变化时执行 JavaScript 测试，并严格构建根路径与子路径。对于维护范围
+针对改动的契约，使用固定的 Hugo Extended 0.168.0 工具链运行范围最小的源码与输出
+检查；运行时变化时执行 JavaScript 测试，并生产构建根路径与子路径。对于维护范围
 内的站点，在桌面与窄视口检查有代表性的 EN/ZH Docs 与 Blog 路由，再分别记录固定
 版本、部署与线上一致状态。

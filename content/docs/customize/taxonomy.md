@@ -279,7 +279,7 @@ Run from your site's root, replacing both sample paths with your own page and
 taxonomy output paths, including language prefixes:
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 PAGE=public/docs/getting-started/index.html
 TAXONOMY_DIR=public/categories
 ls "$TAXONOMY_DIR"

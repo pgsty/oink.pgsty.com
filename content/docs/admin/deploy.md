@@ -85,7 +85,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  HUGO_VERSION: 0.166.0
+  HUGO_VERSION: 0.168.0
   # a workspace from a sibling checkout must never take part in a CI build
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
@@ -124,7 +124,7 @@ jobs:
       - name: Build
         run: |
           hugo --cleanDestinationDir --gc --minify --environment production \
-            --printPathWarnings --panicOnWarning \
+            --printPathWarnings \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: Upload Pages artifact
@@ -147,11 +147,12 @@ jobs:
 
 That is the workflow shipped by OINK Starter. Several pieces cannot be removed:
 
-- `fetch-depth: 0` — with `enableGitInfo` on, "last modified" and contributor information need the full Git history, and a shallow clone leaves them empty.
-- `setup-go` plus `go mod download` — with the theme as a Hugo Module, Hugo needs Go to resolve it. A site installing the theme as a submodule uses `submodules: recursive` instead, and one using an offline archive commits `themes/oink/`; either way both steps go.
-- `GOWORK: off` and `HUGO_MODULE_WORKSPACE: off` — keep a local development `go.work` from taking part in the CI build, so CI verifies the published tag pinned in `go.mod`.
-- `--baseURL "${{ steps.pages.outputs.base_url }}/"` — a project site's URL is `https://<OWNER>.github.io/<REPO>/`, and `configure-pages` computes it, so it need not be hard-coded.
-- `--panicOnWarning` — a warning means no publish.
+- `fetch-depth: 0` — if `enableGitInfo` is enabled, "last modified" and contributor information require the complete Git history. A shallow clone leaves them empty.
+- `setup-go` plus `go mod download` — Hugo needs Go to resolve the theme as a Hugo Module. For a submodule installation, use `submodules: recursive` instead. For an offline archive, commit `themes/oink/`. With either alternative, remove both Go steps.
+- `GOWORK: off` and `HUGO_MODULE_WORKSPACE: off` — exclude a local development `go.work` from the CI build. CI then verifies the published tag pinned in `go.mod`.
+- `--baseURL "${{ steps.pages.outputs.base_url }}/"` — a project site's URL is `https://<OWNER>.github.io/<REPO>/`. Use the value computed by `configure-pages` instead of a hard-coded address.
+Warnings remain visible for review. Do not enable `--panicOnWarning` or
+`HUGO_PANICONWARNING`; the upstream LibSass deprecation warning is accepted.
 
 In the repository, set Settings → Pages → Build and deployment → Source to
 GitHub Actions, push to `main`, and watch the first run on the Actions tab.
@@ -165,7 +166,7 @@ domain. Where the publishing flow needs a `CNAME` file in the output, put it at
 {{< tab label="Cloudflare Pages" value="cloudflare" >}}
 
 OINK Starter ships `.github/workflows/cloudflare-pages.yaml`, a Direct Upload
-workflow. The strict build stays in GitHub Actions and Wrangler uploads the
+workflow. The production build stays in GitHub Actions and Wrangler uploads the
 same `public/` artifact to a Cloudflare Pages project.
 
 1. Create a **Direct Upload** Pages project. By default its name matches the
@@ -178,15 +179,17 @@ same `public/` artifact to a Cloudflare Pages project.
    `CLOUDFLARE_SITE_URL` when a custom domain becomes production.
 {.steps}
 
-The workflow pins Hugo Extended 0.166.0, reads Go from `go.mod`, disables local
-module workspaces, and builds with `--panicOnWarning` before upload. It is the
+The workflow pins Hugo Extended 0.168.0, reads Go from `go.mod`, disables local
+module workspaces, and builds with Hugo Extended 0.168.0 and visible warnings
+before upload. It is the
 recommended reproducible path for Starter users.
 
-Cloudflare Git integration remains valid as a separate mode: configure build
-command `hugo --gc --minify --printPathWarnings --panicOnWarning`, output
-directory `public`, Hugo `0.166.0`, and Go `1.27`. Use Git integration **or**
-the Direct Upload workflow for one project, not both. A preview deployment is
-still not production proof; rebuild with its own URL and keep it unindexed.
+You can also use Cloudflare Git integration as a separate mode. Set the build
+command to `hugo --gc --minify --printPathWarnings`, the output
+directory to `public`, Hugo to `0.168.0`, and Go to `1.27`. For one project,
+use either Git integration **or** the Direct Upload workflow. Do not use both.
+A preview deployment does not verify production. Rebuild the preview with its
+own URL and keep it unindexed.
 
 {{< /tab >}}
 {{< tab label="Others" value="other" >}}
@@ -197,11 +200,11 @@ repository:
 
 ```toml {title="netlify.toml"}
 [build]
-command = "hugo --gc --minify --printPathWarnings --panicOnWarning"
+command = "hugo --gc --minify --printPathWarnings "
 publish = "public"
 
 [build.environment]
-HUGO_VERSION = "0.166.0"
+HUGO_VERSION = "0.168.0"
 ```
 
 With the theme as a submodule, enable recursive submodule checkout; with a Hugo
@@ -261,7 +264,7 @@ a symlink, and `current.next` must not already exist. Configure Nginx or Caddy t
 serve `current`, as above; this is a host setting, not a Hugo option.
 
 ```bash {title="Terminal"}
-hugo --cleanDestinationDir --gc --minify --panicOnWarning --baseURL "https://docs.internal.example.com/" &&
+hugo --cleanDestinationDir --gc --minify --baseURL "https://docs.internal.example.com/" &&
   tar -czf oink-site-20260929-01.tar.gz -C public .
 
 ```
@@ -352,7 +355,7 @@ be checked on the real URL.
 
 | Check | How to confirm |
 | --- | --- |
-| A warning-free build | The build command carries `--printPathWarnings --panicOnWarning` and the log has `Total in …` |
+| A warning-free build | The build command carries `--printPathWarnings ` and the log has `Total in …` |
 | `baseURL` is correct | `<link rel="canonical">` in the page source points at the real production address, subpath included |
 | Sitemap | `<baseURL>/sitemap.xml` resolves; a multilingual site has an index pointing at `/en/sitemap.xml` and `/zh/sitemap.xml` |
 | robots | `<baseURL>/robots.txt` reads `Allow: /` with a `Sitemap:` line; a preview deployment should read `Disallow: /` |

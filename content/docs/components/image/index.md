@@ -40,16 +40,14 @@ Sources resolve in the following order, written the same way in each case:
 | Static directory `static/images/…` | `![…](/images/hero-light.webp)` | Large images and downloads that need no processing; supply `width`/`height` where the theme cannot measure them |
 | Remote URL | `![…](https://example.com/a.png)` | Rare: nothing is downloaded at build time and nothing can be processed |
 
-A relative path is looked up as a page resource, a resource of the current
-section, and then a global resource; if none matches, it is emitted as a static
-path. The theme does not check whether a static path or a remote URL exists. When processing cannot resolve a
-processable resource, ordinary preview warns and leaves the image unprocessed;
-strict publishing rejects the warning.
+The theme resolves relative paths as page resources, current-section resources, then global resources.
+If no resource matches, it emits a static path. It does not check whether static paths or remote URLs exist.
+If image processing cannot find a processable resource, ordinary previews warn and preserve the unprocessed image.
+Review the warning and rendered fallback before publication.
 
-Markdown alternative text takes precedence over resource metadata, including an
-explicitly empty alt for a decorative image. Resource `params.alt` must be a
-string; invalid metadata warns and is ignored, preserving the authored alt.
-Strict publishing rejects that warning.
+Markdown alternative text takes precedence over resource metadata, including explicitly empty alt text for decorative images.
+Resource `params.alt` must be a string. Invalid metadata warns and is ignored, preserving the authored alt text.
+Review the warning and rendered fallback before publication.
 
 ## Inline versus block {#inline-vs-block}
 An image inside a line of text is an inline image, rendered as one `<img>` and
@@ -130,11 +128,9 @@ original.
 ![the left half of the shell](oink-shell.webp)
 {command="Fill" options="300x150 Left" caption="Fill 300x150 Left: fills the box, cropped from the left"}
 
-Static paths, remote URLs and SVG cannot be processed. Writing `command` for
-one warns and leaves it unprocessed; strict publishing rejects the warning. The
-options syntax (anchors, quality, format conversion, as
-in `300x150 webp q80`) is in
-[Hugo image processing](https://gohugo.io/content-management/image-processing/).
+Static paths, remote URLs, and SVG do not support processing.
+Using `command` for these sources warns and preserves the unprocessed image. Review the warning and rendered fallback before publication.
+[Hugo image processing](https://gohugo.io/content-management/image-processing/) documents anchors, quality, and format conversion, such as`300x150 webp q80`.
 
 ## Linked images {#link}
 Two forms, for different purposes:
@@ -154,8 +150,8 @@ Two forms, for different purposes:
 ![Release card](release-note.webp)
 {caption="Click the image for the releases and downloads guide" link="/docs/write/releases/"}
 
-A linked image never zooms. Writing `link=` with no caption warns and drops the
-link, pointing at `[![…](…)](…)` instead; strict publishing rejects the warning.
+Linked images never zoom. Using `link=` without a caption warns and removes the link.
+The warning recommends `[![…](…)](…)`. Review the warning and rendered fallback before publication.
 
 ## Numbered figures {#numbered}
 
@@ -264,9 +260,8 @@ The attribute line `{…}` (the line immediately after a block image):
 | `data-*` / `aria-*` | string | — | Passed through |
 {.fields meta="type default"}
 
-`style`, `on*`, `alt`, `title`, `src`, and unsupported keys on the attribute
-line warn and are ignored; strict publishing rejects the warning. Alt, title,
-and src belong to the Markdown image itself.
+`style`, `on*`, `alt`, `title`, `src`, and unsupported attribute-line keys warn and are ignored.
+Review the warning and rendered fallback before publication. Write alt, title, and src in the Markdown image itself.
 
 ## Limits {#limits}
 

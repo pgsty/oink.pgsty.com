@@ -32,7 +32,7 @@ to production even on a preview host. Select a non-production environment for
 PR and staging deployments, with `PREVIEW_URL` set to their actual address:
 
 ```bash {title="Terminal"}
-hugo --panicOnWarning --environment staging --baseURL "$PREVIEW_URL"
+hugo --environment staging --baseURL "$PREVIEW_URL"
 ```
 
 See [preview deployment settings](/docs/admin/deploy/#preview-builds).
@@ -260,7 +260,7 @@ Run from your site's root. Replace `PAGE` with a generated page on your site,
 including any language prefix:
 
 ```bash {title="Terminal"}
-hugo --gc --minify --printPathWarnings --panicOnWarning
+hugo --gc --minify --printPathWarnings
 PAGE=public/docs/getting-started/index.html
 test -f "$PAGE"
 

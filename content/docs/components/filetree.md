@@ -91,6 +91,13 @@ file tree's only JavaScript, and only a tree **with comments** loads it.
   - restart.md                                                    # short
 ```
 
+## Wrap long comments {#wrap}
+
+Use `wrap=true` on the `filetree` fence to show complete comments in their
+column. Rows grow as needed, including for unbroken identifiers. The default
+`wrap=false` keeps compact rows with ellipsis. Names, folding, splitter controls,
+mobile layout, and expanded Print output retain their existing behavior.
+
 ## Title bars {#title}
 
 The fence attribute `{title="…"}` renders a title bar above the tree; without it
@@ -159,9 +166,8 @@ content/docs
 3 directories, 5 files
 ```
 
-Returning to an indentation level that was never opened warns and skips that
-line; the message carries the line number inside the fence, and strict
-publishing rejects it.
+Returning to an unopened indentation level warns and skips that line. The warning identifies the line inside the fence.
+Review the warning and rendered fallback before publication.
 
 ## Folding and explicit types {#dir-file}
 
@@ -338,9 +344,8 @@ The line syntax itself:
 | `N directories, M files` | The `tree` summary line, dropped automatically |
 {.fields}
 
-Unknown attributes and values, `open` on a file, malformed `{…}`, and a dedent
-to an unopened level all warn and take a safe fallback or skip the bad line.
-The message names the line; strict publishing rejects the warning.
+Unknown attributes or values, `open` on files, malformed `{…}`, and dedents to unopened levels warn.
+The theme uses a safe fallback or skips the invalid line. The message identifies the line. Review the warning and rendered fallback before publication.
 
 ## Limits {#limits}
 

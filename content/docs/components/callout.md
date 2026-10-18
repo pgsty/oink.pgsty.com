@@ -37,7 +37,7 @@ type has a default icon and accent colour.
 > `hugo server -D` previews drafts.
 
 > [!IMPORTANT]
-> The floor is Hugo Extended 0.166.0; anything older fails the build outright.
+> The floor is Hugo Extended 0.168.0; anything older fails the build outright.
 
 > [!WARNING]
 > `hugo --cleanDestinationDir` empties `public/`.
@@ -46,7 +46,7 @@ type has a default icon and accent colour.
 > The first build after deleting `resources/_gen` is much slower.
 
 > [!SUCCESS]
-> Build passed with zero warnings — ship it.
+> Build passed with reviewed warnings — ship it.
 
 > [!DANGER]
 > Never commit `go.work`.
@@ -65,7 +65,7 @@ type has a default icon and accent colour.
 > `hugo server -D` previews drafts.
 
 > [!IMPORTANT]
-> The floor is Hugo Extended 0.166.0; anything older fails the build outright.
+> The floor is Hugo Extended 0.168.0; anything older fails the build outright.
 
 > [!WARNING]
 > `hugo --cleanDestinationDir` empties `public/`.
@@ -74,7 +74,7 @@ type has a default icon and accent colour.
 > The first build after deleting `resources/_gen` is much slower.
 
 > [!SUCCESS]
-> Build passed with zero warnings — ship it.
+> Build passed with reviewed warnings — ship it.
 
 > [!DANGER]
 > Never commit `go.work`.
@@ -170,13 +170,13 @@ that has to be foldable.
 ````markdown {title="Source"}
 > [!DETAILS] Full `hugo version` output
 > ```text
-> hugo v0.166.0+extended+withdeploy darwin/arm64
+> hugo v0.168.0+extended+withdeploy darwin/arm64
 > ```
 ````
 
 > [!DETAILS] Full `hugo version` output
 > ```text
-> hugo v0.166.0+extended+withdeploy darwin/arm64
+> hugo v0.168.0+extended+withdeploy darwin/arm64
 > ```
 
 ## Custom icon {#icon}
@@ -229,14 +229,10 @@ renders as an ordinary blockquote with the `[!TYPE]` marker still visible.
 
 Other things that bite:
 
-- Title merged into the body. In files that pass through Prettier and friends,
-  keep an empty `>` line under the title line, or the formatter folds the title
-  into the body.
-- Attribute line moved by a formatter. Wrap marker lines such as `{icon=…}` in
-  `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->`.
-- `style`, `onclick`, and unsupported attributes warn and are ignored: the
-  attribute line accepts `icon` and `class` only. Strict publishing rejects the
-  warning (see the table below).
+- Formatters such as Prettier can merge titles into the body. Keep an empty `>` line below the title to prevent this.
+- Formatters can move attribute lines. Wrap marker lines such as `{icon=…}` in `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->`.
+- `style`, `onclick`, and unsupported attributes warn and are ignored. The attribute line accepts only `icon` and `class`.
+  Review the warning and rendered fallback before publication. See the table below.
 
 ## Output {#outputs}
 
@@ -268,8 +264,7 @@ The attribute line `{…}`, immediately after the blockquote:
 | `class` | space-separated classes | — | Passed through verbatim for site CSS |
 {.fields meta="type default"}
 
-`style`, `on*`, and other keys warn and are ignored; strict publishing rejects
-the warning.
+`style`, `on*`, and other keys warn and are ignored. Review the warning and rendered fallback before publication.
 
 ## Limits {#limits}
 

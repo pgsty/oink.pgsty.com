@@ -286,12 +286,11 @@ items:
 {{</* contributors */>}}
 ```
 
-The fields: `github` is required and validated as a GitHub username; a
-duplicate warns and skips the repeated entry, and strict publishing rejects
-the warning. `name` defaults to `github`; `role` is optional;
-`url` defaults to `https://github.com/<github>`; `avatar` is optional, and
-without it an initial placeholder block is rendered with no network request at
-all, while a value must be `http(s)://` or a site-root-relative path.
+The `github` field is required and must be a valid GitHub username. A duplicate
+produces a warning and skips the repeated entry. Review the warning and rendered fallback before publication. The `name` defaults to `github`. The `role` is optional. The `url`
+defaults to `https://github.com/<github>`. The `avatar` is optional. Without it,
+the shortcode renders an initial placeholder and makes no network request.
+If present, its value must be `http(s)://` or a site-root-relative path.
 
 Several lists mean several data files, selected with `data=`:
 
@@ -312,7 +311,7 @@ Run from your site's root. Replace the example `PAGE` with an actual generated
 page whose source belongs to the configured repository:
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 PAGE=public/docs/getting-started/index.html
 test -f "$PAGE" && grep -o '<a[^>]*data-td-action[^>]*>' "$PAGE"
 ```

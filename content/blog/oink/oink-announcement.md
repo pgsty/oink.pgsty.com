@@ -110,10 +110,10 @@ manifest records pinned third-party sources, licenses, artifacts, and checksums.
 
 > [!NOTE] Setup instructions updated on 2026-10-15
 > This article records the original implementation preview. Use Hugo Extended
-> 0.166.0 for setup and validation today; the baseline advances with stable
+> 0.168.0 for setup and validation today; the baseline advances with stable
 > releases. Older-Hugo compatibility testing and adaptation are discontinued.
 
-Install Git, Go 1.27 or newer, and Hugo Extended `0.166.0`, then evaluate the
+Install Git, Go 1.27 or newer, and Hugo Extended `0.168.0`, then evaluate the
 [official Starter](/docs/start/starter/):
 
 ```sh
@@ -131,7 +131,7 @@ and visit the component examples. For an isolated environment, follow the
 
 The implementation includes automated coverage for:
 
-- Hugo Extended 0.166.0 builds;
+- Hugo Extended 0.168.0 builds;
 - forbidden consumer Node/npm/PostCSS/Autoprefixer paths;
 - LTR, RTL, subpath, print, color-mode, and production assets;
 - hidden, click-to-cycle, hover-menu, translation-fallback, and RTL language

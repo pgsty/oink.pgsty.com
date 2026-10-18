@@ -188,9 +188,9 @@ Fence attributes:
 | `class` | class list | — | Passed through for site CSS |
 {.fields meta="type default"}
 
-There is no `columns`, `caption` or `title` attribute. A malformed line or
-attribute warns, drops only the invalid part or line, and names the line number
-inside the fence. Strict publishing rejects the warning.
+There is no `columns`, `caption`, or `title` attribute.
+Malformed lines or attributes warn and remove only the invalid part or line. The warning identifies the line inside the fence.
+Review the warning and rendered fallback before publication.
 
 ## Limits {#limits}
 

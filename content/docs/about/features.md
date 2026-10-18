@@ -29,8 +29,8 @@ images, field entries whose body is several paragraphs of Markdown.
 
 ## Build with Hugo {#hugo-only}
 
-Hugo Extended 0.166.0 or newer compiles the site's assets. SCSS is compiled by
-Hugo's embedded Sass transpiler; the theme never invokes `postCSS` and needs
+Hugo Extended 0.168.0 or newer compiles the site's assets. SCSS is compiled by
+Hugo's embedded Sass transpiler. The theme never invokes `postCSS`. It requires
 neither npm nor webpack. Installing the theme as a Hugo Module also needs Go
 and access to the module dependencies, either over the network or from a local
 cache. With an offline archive or a submodule already prepared, Hugo is enough
@@ -47,21 +47,22 @@ delivered per page according to what that page actually uses.
 Everything the browser needs is committed to the theme repository: Bootstrap,
 Font Awesome, four fonts, Lunr, Mermaid, KaTeX, Markmap, Swagger UI, Redoc,
 Asciinema, ECharts, Infographic. `VENDOR.json` records the version, source,
-licence file and SHA-256 checksum of each of the 26 dependencies; updating a
-runtime means updating artifact, licence and checksum together.
+license file and SHA-256 checksum of each of the 26 dependencies. When you
+update a runtime, update its artifact, license, and checksum together.
 
-Where a feature could cause a network request, the theme leaves it off rather
-than reaching out silently: PlantUML without `params.plantuml.svg_image_url`,
-Diagrams.net without `params.drawio.drawio_server`, and Algolia without
-`appId` / `apiKey` / `indexName` each warn and stay disabled, and a publishing
-gate built with `--panicOnWarning` turns that warning into a failure.
+Features that could make network requests require explicit configuration.
+Without `params.plantuml.svg_image_url`, PlantUML warns and stays disabled.
+Without `params.drawio.drawio_server`, Diagrams.net warns and stays disabled.
+Without `appId` / `apiKey` / `indexName`, Algolia warns and stays disabled.
+Review warnings and their safe fallbacks before publishing.
 
-Local-first does not extend to what an author adds. All of these are explicit
-network choices: external links, remote images and video, iframes, remote API
-specifications; hosted search such as Algolia or Google Programmable Search;
-analytics, comments and other SaaS integrations; and PlantUML or Diagrams.net
-once the author configures a remote renderer. Pages using them are still valid
-pages, but a site should stop claiming those pages work fully offline.
+Local-first does not cover content that an author adds. Explicit network
+choices include external links, remote images and video, iframes, and remote
+API specifications. They also include hosted search, such as Algolia or Google
+Programmable Search, and analytics, comments, or other SaaS integrations.
+PlantUML and Diagrams.net use the network if the author configures a remote
+renderer. Pages with these features remain valid. The site should not claim
+that those pages work fully offline.
 
 → [License and acknowledgements](/docs/about/license/) · [Configuration](/docs/customize/config/)
 

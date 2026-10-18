@@ -30,8 +30,8 @@ aliases:
 已有 Hugo 站点时，按下方[接入现有站点](#existing-site)操作；已有 Docsy 站点见[版本升级](/zh/docs/admin/upgrade/)。
 
 后半部分是四种安装方式的取舍：Hugo Module、Git submodule、离线归档、固定版本源码副本。
-当前开发与验收统一使用 Go 1.27 与 Hugo Extended 0.166.0。
-Hugo 基线随稳定版更新，不再测试或适配旧版本。
+当前开发与验收统一使用 Go 1.27 与 Hugo Extended 0.168.0。
+Hugo 默认基线保持固定，不再测试或适配旧版本。
 
 ## 接入现有站点 {#existing-site}
 
@@ -41,7 +41,7 @@ Hugo 基线随稳定版更新，不再测试或适配旧版本。
 1. 执行 `hugo mod get github.com/pgsty/oink@{{< param tdVersion.latest >}}`。
 1. 用下方的 OINK `module.imports` 替换旧主题引用，保留无关导入与配置。合并[示例](#config)中的三项 `markup.goldmark` 设置与 `markup.highlight.noClasses: false`，不要整份覆盖原配置。
 1. 检查站点自有 `layouts/`、资源、旧主题短代码，以及页面的 `type`/`layout`：这些覆盖和约定可能仍然选择旧主题行为。保留内容，只做必要适配。
-1. 执行 `hugo --panicOnWarning`，再用 `hugo server` 打开一篇已有的代表性页面。先核对导航、图片与代码块，再启用可选 OINK 功能。最后按[验证](#verify)完成检查。
+1. 执行 `hugo`，再用 `hugo server` 打开一篇已有的代表性页面。先核对导航、图片与代码块，再启用可选 OINK 功能。最后按[验证](#verify)完成检查。
 {.steps}
 
 ## 从空目录到第一页 {#scaffold}
@@ -349,7 +349,7 @@ Go workspace（`go work init` + `HUGO_MODULE_WORKSPACE=go.work`）是等价的�
 
 ```bash
 hugo mod graph                                       # 主题实际解析到哪一版
-hugo --gc --minify --printPathWarnings --panicOnWarning
+hugo --gc --minify --printPathWarnings
 ```
 
 构建以 `Total in …` 结束、没有 `WARN` / `ERROR` 即通过。再确认：

@@ -65,8 +65,7 @@ params:
     docs_sidebar_root: home # home | section
 ```
 
-取值只有这两个。其它值在普通预览中告警并使用 `section`，严格发布构建通过
-`--panicOnWarning` 拒绝这条警告。
+取值只有这两个。其它值在普通预览中告警并使用 `section`，发布前应审阅告警与降级产物。
 
 ### 文档挂在站点根 {#docs-at-root}
 
@@ -213,8 +212,7 @@ sidebar_enabled: false
 清单未包含的根使用其内容树。
 
 这棵树同时决定翻页顺序与导航 JSON，侧栏与上一页 / 下一页保持相同排序。`sections` 为空数组
-时告警并回退到内容树；`page` 指向不存在的页面时告警并跳过该项。严格发布构建拒绝
-任一警告。带 `manual_link` 的占位节点与 `sidebar_divider` 分隔行留在侧栏里，但不会
+时告警并回退到内容树；`page` 指向不存在的页面时告警并跳过该项。发布前应审阅告警并检查回退结果。带 `manual_link` 的占位节点与 `sidebar_divider` 分隔行留在侧栏里，但不会
 成为翻页目标。1.1 的显式树也保留分隔分区的子页，使用与内容树相同的
 [只分组、不发布页面的 front matter](/zh/docs/write/organize/#group-only) 即可。
 
@@ -252,7 +250,7 @@ params:
 ```
 
 整数指定展开到第几级（2–4），`true` 等于 2（只展开 h2），`false` 关闭。取值超出
-范围时普通预览告警并关闭标题分支，严格发布构建拒绝这条警告。只对 `type: book`
+范围时普通预览告警并关闭标题分支，发布前应审阅告警并检查回退结果。只对 `type: book`
 的页面生效，且只在侧栏当前行下展开。
 
 ## 目录 TOC {#toc}
@@ -296,8 +294,7 @@ params:
 - `list`（默认）：每个子页一个标题 + 描述段落；
 - `cards`：网格卡片，读子页的 `title`（或 `linkTitle`）、`description` 与 `icon`。
 
-可以按分区覆盖。非法取值在普通预览中告警并回退，发布门禁带
-`--panicOnWarning` 时拒绝这条警告：
+可以按分区覆盖。非法取值在普通预览中告警并回退，发布前应核对告警与降级产物：
 
 ```yaml {title="content/docs/components/_index.md"}
 ---
@@ -326,7 +323,7 @@ page_width: wide
 ```
 
 Book 页另有一个 `reading_width`（`slim` / `normal` / `wide`），改的是正文本身的
-阅读行宽，不动外壳。两个键取值非法都会在普通预览中告警并回退，严格发布时失败。
+阅读行宽，不动外壳。两个键取值非法都会在普通预览中告警并回退，发布前应核对降级结果。
 
 ## 顶栏与页脚开关 {#chrome}
 
@@ -346,10 +343,10 @@ cascade:
 ## 验证 {#verify}
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 ```
 
-- 构建输出 `Total in …`，没有 ERROR / WARN；
+- 构建输出 `Total in …`，没有 ERROR，并完成告警审阅；上游 LibSass 弃用告警允许出现；
 - 新建的 `type: docs` 页面有左侧栏。没有则检查 cascade 是否覆盖到该页，以及 `shell_types` 是否包含这个 type；
 - 拖动侧栏分隔条，刷新后宽度保留，双击恢复默认；
 - 窗口缩到 `md` 以下时侧栏变成抽屉且可关闭，缩到 `xl` 以下时大纲移进抽屉；

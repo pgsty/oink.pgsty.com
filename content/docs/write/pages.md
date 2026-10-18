@@ -171,7 +171,7 @@ parameters in [Components](/docs/components/).
 A combined example: code fences and a callout inside steps.
 
 ````markdown {title="Source"}
-1. Install Hugo Extended, 0.166.0 at the oldest:
+1. Install Hugo Extended, 0.168.0 at the oldest:
    ```bash
    brew install hugo
    ```
@@ -185,7 +185,7 @@ A combined example: code fences and a callout inside steps.
 {.steps}
 ````
 
-1. Install Hugo Extended, 0.166.0 at the oldest:
+1. Install Hugo Extended, 0.168.0 at the oldest:
    ```bash
    brew install hugo
    ```
@@ -219,14 +219,14 @@ in [Page parameters](/docs/write/frontmatter/).
 
 ## Verify {#verify}
 
-After writing a page, run a strict build:
+After writing a page, run a production build:
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 ```
 
-- The output must end with `Total in …` and no ERROR and no WARN. A disallowed key on an attribute line, an invalid component parameter, or a `ref` whose target is missing all fail here naming the file and the line; the theme never degrades silently.
-- `--printPathWarnings` reports two pages resolving to the same output path, which turns up most often in multilingual sites or after changing `permalinks`.
+- The output must end with `Total in …` and no ERROR; review warnings and accept only the known upstream LibSass notice. A disallowed attribute key or invalid component parameter produces a warning with a source position and uses a safe fallback. Review that output. A `ref` whose target is missing still causes a Hugo error.
+- `--printPathWarnings` reports two pages resolving to the same output path, which occurs most often in multilingual sites or after changing `permalinks`.
 
 Then confirm three things in the browser:
 

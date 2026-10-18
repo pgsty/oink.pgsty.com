@@ -69,17 +69,13 @@ renders the same chips as the shortcode form.
 
 The rules:
 
-- `meta` should name a role for every middle column — exactly the column count
-  minus two. Too many or too few warns and ignores `meta`; strict publishing
-  rejects the warning.
-- A `required` column is "non-empty means true": "yes", "是" or "✔" all read the
-  same, and the rendered chip is the untranslated `required`. An empty cell
-  shows nothing. Leave optional fields empty: `no` and `否` are non-empty too.
-- `type` and `default` cells with no inline markup of their own are wrapped in
-  code formatting, matching the shortcode form.
-- The three semantic chips always display in the order `type`, `required`,
-  `default`, whatever order the columns are in; `-` columns follow, in column
-  order.
+- `meta` should specify one role per middle column: the total column count minus two.
+  Too many or too few roles warns and ignores `meta`. Review the warning and rendered fallback before publication.
+- Every nonempty `required` cell means true. "yes", "是", and "✔" all display the untranslated `required` chip.
+  Empty cells display nothing. Leave optional fields empty, because `no` and `否` also mean true.
+- `type` and `default` cells without their own inline markup receive code formatting, as in the shortcode form.
+- Semantic chips always appear in this order: `type`, `required`, `default`, regardless of column order.
+  `-` columns follow in their original order.
 
 `-` mixes with semantic roles, which is how you keep one custom label:
 
@@ -243,16 +239,13 @@ The `field` shortcode:
 
 ## Limits {#limits}
 
-- The first column must be non-empty and unique within one table; a duplicate or
-  empty name warns and skips that row, and strict publishing rejects the warning.
-- `.fields` cannot combine with `.matrix`, `.full-width` or `num`, and `meta`
-  cannot appear on a table without `.fields`.
-- Block content does not fit in a table cell: paragraphs, lists and fences need
-  the shortcode form.
-- `required` and `default` are untranslated API vocabulary and stay in English
-  in every language. They are contract words, not interface copy.
-- No `kind`, `since`, `deprecated`, `location`, per-field links or nested
-  structures, and nothing parses TypeScript or an OpenAPI schema at build time.
+- The first column must be nonempty and unique within each table.
+  Empty or duplicate names warn and skip the row. Review the warning and rendered fallback before publication.
+- `.fields` cannot be combined with `.matrix`, `.full-width`, or `num`. `meta` requires a table with `.fields`.
+- Table cells cannot contain block content. Use shortcodes for paragraphs, lists, and fences.
+- `required` and `default` remain untranslated English API terms in every language. They are contract terms, not interface text.
+- Fields do not support `kind`, `since`, `deprecated`, `location`, per-field links, or nested structures.
+  They do not parse TypeScript or OpenAPI schemas at build time.
 
 ## Related {#related}
 

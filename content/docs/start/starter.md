@@ -13,7 +13,7 @@ starting point for a new OINK site. It is deliberately smaller than
 repository, browser regression suite, or PGSTY-specific brand is copied into
 your project.
 
-Use Git, Go 1.27 or newer, and Hugo Extended 0.166.0 for this workflow.
+Use Git, Go 1.27 or newer, and Hugo Extended 0.168.0 for this workflow.
 Validate the selected language profiles with this toolchain and update older
 Starter workflow pins to match. The Hugo baseline advances with stable
 releases; older versions receive no compatibility testing or adaptation.
@@ -220,13 +220,13 @@ of each integration.
 
 ## Build and deploy {#build-deploy}
 
-### Strict local build {#strict-build}
+### Local production build {#strict-build}
 
 Before enabling a hosting workflow:
 
 ```bash
 hugo --cleanDestinationDir --gc --minify --environment production \
-  --printPathWarnings --panicOnWarning
+  --printPathWarnings
 ```
 
 Commit `hugo.yaml`, `go.mod`, and `go.sum`; never commit generated `public/`,
@@ -268,8 +268,8 @@ Before calling the site ready:
 {.steps}
 
 Delete the sample Book or Blog only after removing its top-menu root and any
-home-page card that links to it. A warning-strict rebuild after each whole
-surface is removed keeps failures attributable to one change.
+home-page card that links to it. After you remove each whole surface, rebuild and review the diagnostics.
+This lets you identify which change caused a failure.
 
 ## Next {#next}
 

@@ -13,7 +13,7 @@ first error; the ones after it are usually cascades:
 
 ```bash {title="Terminal"}
 rm -rf public resources/_gen
-hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
+hugo --gc --minify --printPathWarnings --logLevel info
 ```
 
 An npm, PostCSS, Autoprefixer or browser-asset download step in the log means
@@ -27,20 +27,20 @@ row; there is no need to read from the top.
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| The build demands a newer Hugo | The standard build is installed rather than Extended, or the version is below {{< param hugoMinVersion >}} | `hugo version` output must contain `extended`. With several Hugos installed, check `PATH` and any version pinning before installing another |
-| `module "github.com/pgsty/oink" not found` | The theme did not resolve | Hugo Module: check `hugo mod graph`, `go.mod`, `go.sum`, and any stray workspace or replace. Submodule: does CI run `git submodule update --init` before Hugo. Archive / clone: `theme:` must match the directory name under `themes/` |
-| Module download hangs or times out | The Go module proxy is unreachable | Hugo pulls modules through Go, so `GOPROXY` applies. In mainland China, `export GOPROXY=https://goproxy.cn,direct`; in an isolated environment, use an offline archive or commit `themes/oink/` |
-| `{.cards}`, `{.steps}`, `{caption=…}` appear as literal text | The site has not enabled Goldmark block attributes | The three settings below must be in the site's own `hugo.yml`; Hugo does not merge a theme's `markup` configuration |
-| An image with an attribute line is wrapped in `<p>` and the caption does nothing | `wrapStandAloneImageWithinParagraph: false` is missing | As above; add all three together |
+| The build demands a newer Hugo | Hugo Standard is installed instead of Extended, or the version is below {{< param hugoMinVersion >}} |`hugo version` output must contain `extended`. If several Hugo versions are installed, check `PATH` and version pins before installing another |
+| `module "github.com/pgsty/oink" not found` | The theme did not resolve | Hugo Module: check `hugo mod graph`, `go.mod`, `go.sum`, and unexpected workspaces or replacements. Submodule: confirm that CI runs `git submodule update --init` before Hugo. Archive / clone: `theme:` must match the directory name under `themes/` |
+| Module download hangs or times out | The Go module proxy is unreachable | Hugo downloads modules through Go, so `GOPROXY` applies. In mainland China, use `export GOPROXY=https://goproxy.cn,direct`. In an isolated environment, use an offline archive or commit `themes/oink/` |
+| `{.cards}`, `{.steps}`, `{caption=…}` appear as literal text | The site has not enabled Goldmark block attributes | Put all three settings below in the site's own `hugo.yml`. Hugo does not merge a theme's `markup` configuration |
+| An image with an attribute line is wrapped in `<p>` and the caption does nothing | `wrapStandAloneImageWithinParagraph: false` is missing | Add all three settings below together |
 | Inline HTML is escaped into text | `renderer.unsafe: true` is missing | As above |
-| `\(…\)` `$$…$$` display literally | The site has not enabled Goldmark passthrough | See [Math](/docs/components/math/); `math: true` is not the switch |
-| `shortcode "tabs" must be closed or self-closed` | A `{{</* tabs */>}}` has no matching `{{</* /tabs */>}}` | The error carries `file:line:column`; add the closing marker there |
-| `template for shortcode "tabs" not found` | The body calls a shortcode that does not exist, or quotes shortcode syntax without escaping it | Documentation that explains shortcode syntax must escape it: add `/*` and `*/` inside the opening and closing markers so Hugo treats it as text rather than a call. A misspelled name is simply corrected |
-| `... attributes: unknown attribute "witdh" at ...` | An attribute-line key is misspelled or not permitted | The warning names the allowed keys and ignores the bad attribute; `style` and `on*` are likewise dropped. `--panicOnWarning` turns it into a publishing failure |
-| `shortcode "field": unsupported parameter "colour" at ...` | A shortcode parameter name is wrong | The warning names the shortcode, parameter, file, and line, then ignores the unsupported parameter or component. Ordinary preview remains usable; strict publishing fails |
-| `invalid params.ui.page_width "widee" (allowed: normal \| wide \| full) -- using "normal"` | A *configuration* or front matter value is not one of the accepted ones | Configuration degrades instead of stopping, so one typo does not serve HTTP 500 on every URL under `hugo server`. The message names the key, the value and the fallback used. Build with `--panicOnWarning` and it cannot ship |
-| A page setting has no effect and nothing is reported | The key was written inside a `ui:` block in front matter | Page keys sit at the top level of the front matter — the site key with `ui.` dropped. A `ui:` block there is read by nobody and reported by nobody; see [Page parameters](/docs/write/frontmatter/) |
-| The build passes but production is missing something | A WARNING nobody read | Add `--panicOnWarning` to the build command. An invalid configuration value, a missing required giscus key, an unsupported `comments.type` and Hugo's deprecation notices are all warnings |
+| `\(…\)` `$$…$$` display literally | The site has not enabled Goldmark passthrough | See [Math](/docs/components/math/). The setting `math: true` does not enable passthrough |
+| `shortcode "tabs" must be closed or self-closed` | A `{{</* tabs */>}}` has no matching `{{</* /tabs */>}}` | The error identifies `file:line:column`. Add the closing marker at that location |
+| `template for shortcode "tabs" not found` | The body calls a shortcode that does not exist, or quotes shortcode syntax without escaping it | Documentation that explains shortcode syntax must escape it. Add `/*` and `*/` inside the opening and closing markers. Hugo then treats it as text instead of a call. If the name is misspelled, correct it |
+| `... attributes: unknown attribute "witdh" at ...` | An attribute-line key is misspelled or not permitted | The warning lists allowed keys. The theme ignores the invalid attribute and drops `style` and `on*`. Review the warning and correct the attribute |
+| `shortcode "field": unsupported parameter "colour" at ...` | A shortcode parameter name is wrong | The warning identifies the shortcode, parameter, file, and line. The theme ignores the unsupported parameter or component. Normal preview remains usable. Review the warning and rendered fallback before publication |
+| `invalid params.ui.page_width "widee" (allowed: normal \| wide \| full) -- using "normal"` | A *configuration* or front matter value is not one of the accepted ones | The theme uses a fallback instead of stopping. One typo therefore does not produce HTTP 500 on every URL under `hugo server`. The message identifies the key, value, and fallback. Correct the value before publication |
+| A page setting has no effect and nothing is reported | The key was written inside a `ui:` block in front matter | Put page keys at the top level of front matter. Remove `ui.` from the site key. The theme ignores a front matter `ui:` block without reporting it. See [Page parameters](/docs/write/frontmatter/) |
+| The build passes but production is missing something | An unreviewed WARNING | Review the build warnings and correct invalid configuration values, missing required giscus keys, or unsupported `comments.type` values. The upstream LibSass deprecation warning is accepted |
 
 The three Goldmark settings:
 
@@ -114,9 +114,9 @@ not commands supplied to every OINK consumer.
 
 | Check | Command | What it covers |
 | --- | --- | --- |
-| A zero-warning build | `hugo --printPathWarnings --panicOnWarning` | Duplicate output paths, invalid parameters, incomplete external integrations |
-| Output trust check | `python3 /path/to/oink/bin/check-output-security.py --public /path/to/my-site/public --base-url https://my-site.example/` | Every `href` / `src` in all four outputs is site-relative or `http(s)` / `mailto` / `tel`; no `javascript:` URL and no inline `on*` handler; a cross-site `<iframe>`, `<script>` or `<img>` needs an explicit `--third-party` |
-| Translation parity | `node scripts/check-doc-translations.mjs --public public` | Whether each English page has a Chinese counterpart, and whether the rendered heading IDs line up; misaligned anchors surface here |
+| A production build | `hugo --printPathWarnings` | Duplicate output paths, invalid parameters, incomplete external integrations |
+| Output trust check | `python3 /path/to/oink/bin/check-output-security.py --public /path/to/my-site/public --base-url https://my-site.example/` | Checks every `href` / `src` in all four outputs for site-relative paths or `http(s)` / `mailto` / `tel`. Rejects `javascript:` URLs and inline `on*` handlers. A cross-site `<iframe>`, `<script>`, or `<img>` requires explicit `--third-party` |
+| Translation parity | `node scripts/check-doc-translations.mjs --public public` | Checks that each English page has a Chinese counterpart and that rendered heading IDs match. Detects misaligned anchors |
 | The full gate | `npm test` | Runs the six below in sequence |
 {.fields}
 

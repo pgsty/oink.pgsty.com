@@ -196,8 +196,7 @@ Hugo 会把这些 cascade 值同时解析到分区首页与子页，因此只声
 > [!CAUTION] 对比度是检查，不是强制
 > 主题按默认页面背景检查颜色，低于 AA 正文对比度（4.5:1）时告警，颜色仍会生效。
 > 若使用自定义背景或必须保留品牌色，可根据实际对比度选择是否忽略该告警。
-> 发布构建使用 `--panicOnWarning`，因此需要调整颜色，或将告警给出的 ID 加入
-> `ignoreLogs` 后才能通过。
+> 发布前检查实际背景上的对比度，按需调整颜色；无需将全部告警改为构建失败。
 >
 > 这个检查是拿颜色对着页面画布读的。有些交互表面会同时把它用作文字与半透明淡铺；
 > 例如可点击的实心徽章在 hover 时，是强调色文字压在 12% 的同色淡铺上。这一对比
@@ -239,7 +238,7 @@ params:
 - 实验字体：Ink 的界面、正文与标题使用 Inter；Terminal 的控件与标题使用 IBM Plex Mono，正文使用 Plex Sans。两者复用现有代码字体。显式 `fonts.ui` 仍控制主字体；需要独立正文字体时设置 `fonts.body`。
 - `system`：界面、展示、元数据、打印与等宽角色全部回到平台字体栈，浏览器不请求品牌字体。字体文件仍随主题分发，只是不被引用。
 
-非法取值告警并回落到 `technical`，普通 `hugo server` 照常可用；发布门禁开着 `--panicOnWarning`，这类告警在那里才是硬失败。选中的值写入 `<html data-td-typography="…">`，可在浏览器中确认。
+非法取值告警并回落到 `technical`，普通 `hugo server` 照常可用，发布前应审阅告警与降级结果。选中的值写入 `<html data-td-typography="…">`，可在浏览器中确认。
 
 ### 自定义字体 {#custom-fonts}
 字体角色是八个 CSS 自定义属性，覆盖它们即可，不必查找组件选择器：
@@ -338,7 +337,7 @@ params:
 
 `page_width` 控制外壳整体宽度，可逐页或按分区 cascade 覆盖。Book 页另有一个
 `reading_width`（`slim` / `normal` / `wide`），改的是正文阅读行宽，不是外壳。
-两个键取值非法都会在普通预览中告警并回退；带 `--panicOnWarning` 的发布构建会失败。
+两个键取值非法都会在普通预览中告警并回退，发布前应核对告警与实际宽度。
 
 ## 页脚 {#footer}
 
@@ -358,8 +357,7 @@ params:
 - `none`：不渲染页脚。
 
 页面 front matter（含分区 cascade）可以覆盖它，本站的文档栏目用的是
-`footer_style: slim`。无法识别的取值在普通预览中告警并回退到 `fat`，严格发布构建
-拒绝这条警告。
+`footer_style: slim`。无法识别的取值在普通预览中告警并回退到 `fat`，发布前应审阅告警并检查回退结果。
 
 多列网格的数据在 `data/footer/<语言>.yaml`，写法见[导航与菜单](/zh/docs/customize/navigation/#footer)。配了 `fat` 但没有数据时自动降级成 `slim`，可以先开启再补内容。
 
@@ -391,10 +389,10 @@ CSS 接口有明确边界。[字体](#fonts)那一节的八个字体角色与 `-
 ## 验证 {#verify}
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 ```
 
-- 构建输出 `Total in …`，没有 ERROR / WARN；
+- 构建输出 `Total in …`，没有 ERROR，并完成告警审阅；上游 LibSass 弃用告警允许出现；
 - 页面源码里 `<html>` 上有 `data-td-typography="technical"`（或所选的预设）；
 - 浏览器中顶栏显示自己的 Logo 与站名，标签页图标是自己的 favicon；
 - 切到深色模式再看一遍正文、表格、提示块、代码块与焦点框。配色改动容易只在一种模式下验证过；

@@ -410,29 +410,28 @@ cascade:
 ---
 ```
 
-The index is derived at build time from what authors already write: an ordinary
-Markdown link, or a `ref` / `relref` shortcode, in the page source. There is no
-new syntax to learn, nothing to migrate, and no JavaScript — the list is in the
-HTML. Fenced and inline code are stripped before scanning, several links to one
-target merge into a single entry, and self links, external links, `mailto:` and
-same-page anchors never count. A fragment is dropped when identifying the target
-page, and each language has its own graph, so a Chinese page never appears under
-an English one. Entries are sorted by stable page path, so the same content
-builds the same order every time, and the block is absent entirely — no heading,
-no empty container — when nothing links in.
+Hugo derives the index at build time from ordinary Markdown links and
+`ref` / `relref` shortcodes in page source. No new syntax, migration, or
+JavaScript is required. The list is in HTML. Before scanning, the theme removes
+fenced and inline code. Multiple links to one target become one entry. It
+ignores self links, external links, `mailto:`, and same-page anchors.
 
-The first eight entries are visible and the rest fold behind a native "Show N
-more" disclosure, so a heavily referenced page cannot swallow the rail; no
-JavaScript is involved. Each entry carries its source page's description, shown
-on hover.
+The theme removes fragments when identifying target pages. Each language has
+its own graph. A Chinese page never appears below an English page. Entries
+sort by stable page path, so identical content always produces identical order.
+If no pages link in, the entire block is absent, including its heading and
+container.
 
-Reading the source has a known limit: a URL inside a custom shortcode's
-parameters, or a raw `<a href>`, does not become an edge, and a destination that
-cannot be resolved is dropped without a warning. This is a navigation
-enhancement, not a link checker; keep using a link checker for broken links.
+The first eight entries are visible. Remaining entries use a native "Show N
+more" disclosure. This limits right-rail space for heavily referenced pages.
+No JavaScript is required. Each entry shows its source page's description on hover.
 
-A non-boolean value warns, falls back to off and fails a build run with
-`--panicOnWarning`, while `hugo server` keeps working.
+Source scanning has a known limit. URLs in custom shortcode parameters and
+raw `<a href>` elements do not become edges. Unresolved destinations are
+discarded without a warning. Backlinks enhance navigation. They do not check
+links. Continue using a link checker to find broken links.
+
+A non-boolean value warns and falls back to off. The `hugo server` preview continues to work.
 
 The page's Markdown output carries the same list, introduced by "Backlinks:".
 RSS omits it, and the `print` output format omits it with the rest of the rail.
@@ -487,7 +486,7 @@ The copyright row and the centre note are parameters — see
 ## Verify {#verify}
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 ```
 
 After changing navigation, check each of these:

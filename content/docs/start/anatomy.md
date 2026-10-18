@@ -43,8 +43,8 @@ Module, and Hugo stores the resolved source in the Go module cache.
   - i18n/
     - fr.yaml                         # Starter-specific French interface overrides
   - .github/workflows/
-    - github-pages.yaml               # strict build and GitHub Pages deployment
-    - cloudflare-pages.yaml           # strict build and Cloudflare Direct Upload
+    - github-pages.yaml               # production build and GitHub Pages deployment
+    - cloudflare-pages.yaml           # production build and Cloudflare Direct Upload
   - README.md                         # operating summary for repository maintainers
   - LICENSE                           # template source license
 ```
@@ -80,10 +80,10 @@ ignored build state, not source.
 
 Docs, Blog, and Book are independent top-level surfaces. To remove one safely:
 
-1. delete its `content/<surface>/` tree;
-1. remove any home-page card or link that targets it;
-1. confirm no other page links to it;
-1. run a warning-strict build and inspect the remaining top navigation.
+1. Delete its `content/<surface>/` tree.
+1. Remove any home-page card or link that targets it.
+1. Confirm that no other page links to it.
+1. Run a build that keeps warnings visible for review. Inspect the remaining top navigation.
 {.steps}
 
 Do not delete only translated section roots: that creates language-specific
@@ -170,7 +170,7 @@ same project, not two gates to run together.
 1. Replace content and verify navigation.
 1. Change brand and reader features one group at a time.
 1. Enable complete external integrations.
-1. Run the strict production build.
+1. Run the production build.
 1. Deploy, then verify production independently.
 {.steps}
 
@@ -182,7 +182,7 @@ make a later regression or rollback attributable to one decision.
 ```bash
 hugo mod graph | grep github.com/pgsty/oink
 hugo --cleanDestinationDir --gc --minify --environment production \
-  --printPathWarnings --panicOnWarning
+  --printPathWarnings
 git status --short
 ```
 

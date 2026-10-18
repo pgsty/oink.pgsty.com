@@ -40,9 +40,8 @@ These five values, and no custom colours.
 {{< badge text="Experimental" tone="warning" >}}
 {{< badge text="Deprecated" tone="danger" >}}
 
-Without `tone` the badge is `neutral`. Any other value warns and uses `neutral`
-in ordinary preview; the warning names the source location and fails a strict
-publishing build.
+If you omit `tone`, the badge uses `neutral`. Other values warn and use `neutral` in ordinary previews.
+The warning identifies the source location and should be reviewed with the rendered fallback before publication.
 
 ## Inside a sentence {#inline}
 
@@ -102,13 +101,13 @@ Badges make a comparison table easier to scan than a column of "yes" and "no".
 ## In lists and steps {#in-lists}
 
 ```markdown {title="Source"}
-1. Install Hugo Extended {{</* badge text="≥ 0.166.0" tone="info" */>}}
+1. Install Hugo Extended {{</* badge text="≥ 0.168.0" tone="info" */>}}
 1. Create a site from OINK Starter and change `baseURL` in `hugo.yaml`
 1. `hugo server` to preview {{</* badge text="port 1313" tone="neutral" */>}}
 {.steps}
 ```
 
-1. Install Hugo Extended {{< badge text="≥ 0.166.0" tone="info" >}}
+1. Install Hugo Extended {{< badge text="≥ 0.168.0" tone="info" >}}
 1. Create a site from OINK Starter and change `baseURL` in `hugo.yaml`
 1. `hugo server` to preview {{< badge text="port 1313" tone="neutral" >}}
 {.steps}
@@ -151,8 +150,7 @@ for the upgrade steps see {{</* badge text="Upgrading" tone="neutral" link="/doc
 Current version {{< badge text="v0.5" tone="info" link="/blog/" >}};
 for the upgrade steps see {{< badge text="Upgrading" tone="neutral" link="/docs/admin/upgrade/" >}}.
 
-An illegal link warns and is dropped, leaving a plain badge in ordinary
-preview; strict publishing rejects the warning.
+An invalid link warns and is removed. Ordinary previews show a plain badge. Review the warning and rendered fallback before publication.
 
 ## Output {#outputs}
 
@@ -175,10 +173,9 @@ anything to a screen reader.
 | `link` | URL | — | Turns the badge into a link |
 {.fields meta="type default"}
 
-Named parameters only. There is no `icon`, `class`, `color`, `outline` or `size`
-parameter. Invalid input warns and takes the safe result: unknown parameters
-are ignored, empty `text` renders nothing, bad `tone` becomes `neutral`, and an
-unsafe link is dropped. Strict publishing rejects every such warning.
+Use named parameters only. There is no `icon`, `class`, `color`, `outline`, or `size` parameter.
+Invalid input warns and uses a safe fallback. Unknown parameters are ignored. Empty `text` renders nothing.
+Invalid `tone` uses `neutral`, and unsafe links are removed. Review the warning and rendered fallback before publication.
 
 ## Limits {#limits}
 

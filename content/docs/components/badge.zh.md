@@ -37,7 +37,7 @@ search_keywords: [徽章, Badge, 状态标签, tone, Beta, 已弃用, neutral, i
 {{< badge text="已弃用" tone="danger" >}}
 
 不写 `tone` 时使用 `neutral`。其它取值在普通预览中告警并使用 `neutral`；警告带
-源码位置，严格发布构建会失败。
+源码位置，发布前应审阅告警并检查回退结果。
 
 ## 夹在句子里 {#inline}
 
@@ -95,13 +95,13 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 ## 列表与步骤里 {#in-lists}
 
 ```markdown {title="源码"}
-1. 安装 Hugo Extended {{</* badge text="≥ 0.166.0" tone="info" */>}}
+1. 安装 Hugo Extended {{</* badge text="≥ 0.168.0" tone="info" */>}}
 1. 从 OINK Starter 创建站点，修改 `hugo.yaml` 里的 `baseURL`
 1. `hugo server` 预览 {{</* badge text="1313 端口" tone="neutral" */>}}
 {.steps}
 ```
 
-1. 安装 Hugo Extended {{< badge text="≥ 0.166.0" tone="info" >}}
+1. 安装 Hugo Extended {{< badge text="≥ 0.168.0" tone="info" >}}
 1. 从 OINK Starter 创建站点，修改 `hugo.yaml` 里的 `baseURL`
 1. `hugo server` 预览 {{< badge text="1313 端口" tone="neutral" >}}
 {.steps}
@@ -142,7 +142,7 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 当前版本 {{< badge text="v0.5" tone="info" link="/zh/blog/" >}}，
 升级步骤见 {{< badge text="版本升级" tone="neutral" link="/zh/docs/admin/upgrade/" >}}。
 
-链接非法时普通预览告警并丢弃链接，保留普通徽章；严格发布构建拒绝这条警告。
+链接非法时普通预览告警并丢弃链接，保留普通徽章；发布前应审阅告警并检查回退结果。
 
 ## 输出形态 {#outputs}
 
@@ -166,7 +166,7 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 
 只接受命名参数。没有 `icon`、`class`、`color`、`outline`、`size` 参数。无效输入
 会告警并采用安全结果：未知参数忽略，空 `text` 不渲染，非法 `tone` 回退
-`neutral`，不安全链接被丢弃。严格发布构建会拒绝每条此类警告。
+`neutral`，不安全链接被丢弃。发布前应审阅告警并检查回退结果。
 
 ## 限制与常见问题 {#limits}
 

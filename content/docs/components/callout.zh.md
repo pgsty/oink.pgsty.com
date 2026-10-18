@@ -31,7 +31,7 @@ aliases:
 > 用 `hugo server -D` 可以预览草稿。
 
 > [!IMPORTANT]
-> 主题下限是 Hugo Extended 0.166.0，低于它构建直接失败。
+> 主题下限是 Hugo Extended 0.168.0，低于它构建直接失败。
 
 > [!WARNING]
 > `hugo --cleanDestinationDir` 会清空 `public/`。
@@ -40,7 +40,7 @@ aliases:
 > 删除 `resources/_gen` 后第一次构建会慢很多。
 
 > [!SUCCESS]
-> 构建通过、零告警——可以推上线了。
+> 构建通过、生产——可以推上线了。
 
 > [!DANGER]
 > 不要把 `go.work` 提交进仓库。
@@ -59,7 +59,7 @@ aliases:
 > 用 `hugo server -D` 可以预览草稿。
 
 > [!IMPORTANT]
-> 主题下限是 Hugo Extended 0.166.0，低于它构建直接失败。
+> 主题下限是 Hugo Extended 0.168.0，低于它构建直接失败。
 
 > [!WARNING]
 > `hugo --cleanDestinationDir` 会清空 `public/`。
@@ -68,7 +68,7 @@ aliases:
 > 删除 `resources/_gen` 后第一次构建会慢很多。
 
 > [!SUCCESS]
-> 构建通过、零告警——可以推上线了。
+> 构建通过、生产——可以推上线了。
 
 > [!DANGER]
 > 不要把 `go.work` 提交进仓库。
@@ -152,13 +152,13 @@ aliases:
 ````markdown {title="源码"}
 > [!DETAILS] 完整的 `hugo version` 输出
 > ```text
-> hugo v0.166.0+extended+withdeploy darwin/arm64
+> hugo v0.168.0+extended+withdeploy darwin/arm64
 > ```
 ````
 
 > [!DETAILS] 完整的 `hugo version` 输出
 > ```text
-> hugo v0.166.0+extended+withdeploy darwin/arm64
+> hugo v0.168.0+extended+withdeploy darwin/arm64
 > ```
 
 ## 自定义图标 {#icon}
@@ -209,7 +209,7 @@ aliases:
 - 正文与标题合并：经过 Prettier 等格式化工具的文件，在标题行下保留一个空的 `>` 行，否则工具会把标题并入正文。
 - 属性行被格式化工具移动：把 `{icon=…}` 这类标记行放在 `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->` 之间。
 - `style`、`onclick` 与不支持的属性会告警并忽略：属性行只接受 `icon` 与 `class`；
-  严格发布构建拒绝这条警告（见下表）。
+  发布前应审阅告警并检查回退结果（见下表）。
 
 ## 输出形态 {#outputs}
 
@@ -241,7 +241,7 @@ aliases:
 | `class` | 空格分隔的 class | — | 原样透传给站点 CSS |
 {.fields meta="type default"}
 
-`style`、`on*` 与其它键会告警并忽略；严格发布构建拒绝这条警告。
+`style`、`on*` 与其它键会告警并忽略；发布前应审阅告警并检查回退结果。
 
 ## 限制与常见问题 {#limits}
 

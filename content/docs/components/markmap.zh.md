@@ -134,7 +134,7 @@ params:
 - `hugo server` — 打开 [localhost:1313](http://localhost:1313/)
 - `hugo server -D` — **连草稿一起**预览
 ## 构建
-- `hugo --printPathWarnings --panicOnWarning`
+- `hugo --printPathWarnings`
 - `hugo --gc --minify` — 发布用
 ## 主题
 - `hugo mod get -u github.com/pgsty/oink`
@@ -149,7 +149,7 @@ params:
 - `hugo server` — 打开 [localhost:1313](http://localhost:1313/)
 - `hugo server -D` — **连草稿一起**预览
 ## 构建
-- `hugo --printPathWarnings --panicOnWarning`
+- `hugo --printPathWarnings`
 - `hugo --gc --minify` — 发布用
 ## 主题
 - `hugo mod get -u github.com/pgsty/oink`

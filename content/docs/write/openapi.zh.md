@@ -102,7 +102,7 @@ cascade:
 
 ## 验证 {#verify}
 
-1. 构建零告警：`hugo --printPathWarnings --panicOnWarning`。
+1. 构建生产：`hugo --printPathWarnings`。
 2. 规范确实发布了：`ls public/openapi/docs-demo.yaml`，或访问 `http://localhost:1313/openapi/docs-demo.yaml`。
 3. 页面上能展开端点、看到 schema；浏览器控制台没有 404 或跨域报错。
 4. 断开外部网络，但保持本地预览服务器可访问，再刷新页面：运行时与规范都来自本地时，界面应照常出现。

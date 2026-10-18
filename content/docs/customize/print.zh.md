@@ -152,7 +152,7 @@ no_print: true
 生成的文件；有语言前缀时也应包含在内：
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 PRINT_PAGE=public/zh/_print/docs/index.html
 test -f "$PRINT_PAGE"
 ```

@@ -21,7 +21,7 @@ data
     - label 写
       desc 先写中文 .zh.md
     - label 校
-      desc 构建零告警，例子真渲染
+      desc 构建生产，例子真渲染
     - label 发
       desc 补英文对等页，提交 PR
 ```
@@ -35,7 +35,7 @@ data
     - label 写
       desc 先写中文 .zh.md
     - label 校
-      desc 构建零告警，例子真渲染
+      desc 构建生产，例子真渲染
     - label 发
       desc 补英文对等页，提交 PR
 ```
@@ -296,8 +296,7 @@ data
 | `class` | 空格分隔的 class | — | 透传给容器 |
 {.fields meta="type default"}
 
-`style`、`on*` 与未知属性会告警并忽略；空 DSL 正文告警并不渲染。严格发布构建拒绝
-所有这些警告。
+`style`、`on*` 与未知属性会告警并忽略；空 DSL 正文告警并不渲染。发布前应审阅告警并检查回退结果。
 
 DSL 的顶层键（属于 AntV，不是主题）：
 

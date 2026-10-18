@@ -8,7 +8,7 @@ not a projection of a second theme-local document tree.
 
 ## Current baseline
 
-The current theme release is OINK `v1.3.0`, dated 2026-10-15. This site pins
+The current theme release is OINK `v1.3.2`, dated 2026-10-15. This site pins
 that version. The Design contracts and release notes describe its public
 behavior. Use sibling-checkout Make targets for development; validate the
 published pin separately with replacements and both workspaces disabled.
@@ -78,28 +78,26 @@ themselves; use the Make targets for local theme acceptance. The local `check`,
 do not clear inherited replacements or workspaces; use the published-pin
 commands below to establish release identity. Node >= 24 and npm >= 11.16.0
 are contributor test dependencies, not ordinary Hugo consumer requirements.
-As of 2026-10-15, development, CI, and release tests use Hugo Extended 0.166.0
-as their single baseline. Advance it with stable Hugo releases and update CI
-pins, declared requirements, checkers, and current bilingual documentation
-together. Do not test or adapt for older Hugo versions or add compatibility
-shims unless the user explicitly requests it. Historical release/research
-records do not establish current support requirements. CI also pins Go 1.27.0
-and Node 24. Test overlays such as `tests/fixtures/browser.yml` do not change
-the single-root-config rule for the production site.
+Use OINK v1.3.2 and Hugo Extended 0.168.0 for development, CI, and release
+validation. Keep this baseline pinned. Never enable `--panicOnWarning` or
+`HUGO_PANICONWARNING`. Warnings remain visible and are reviewed; the upstream
+LibSass deprecation warning is accepted. SCSS uses Hugo's built-in LibSass,
+with no external Sass installation. Preserve project SCSS hooks and this
+dependency boundary. CI uses Node 24 and follows stable Go releases. Test
+overlays do not change the single-root-config rule for the production site.
 
 For published-pin acceptance, disable environment replacements and both
-workspace mechanisms, verify advertised/pinned versions, and build strictly:
+workspace mechanisms, verify advertised/pinned versions, and build:
 
 ```sh
 env -u HUGO_MODULE_REPLACEMENTS GOWORK=off HUGO_MODULE_WORKSPACE=off \
   npm run test:release-pin
 env -u HUGO_MODULE_REPLACEMENTS GOWORK=off HUGO_MODULE_WORKSPACE=off \
   hugo --cleanDestinationDir --gc --minify --environment production \
-  --printPathWarnings --panicOnWarning
+  --printPathWarnings
 ```
 
-`make check` uses a development build; `make build` alone is not warning-fatal.
-Neither replaces the strict production gate above. Review changed Markdown,
+`make check` uses a development build. Also run the production build above. Review changed Markdown,
 LLMS, and favicon output before refreshing goldens; do not update expectations
 merely to hide a failed check.
 

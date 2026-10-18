@@ -194,12 +194,10 @@ not the terminal session.
 | `markers` | `time:label,time:label` | — | Chapter markers; see the limits — the labels do not reach the player today |
 {.fields meta="type default"}
 
-The boolean-ish parameters compare against the text `true`: `loop="true"` and
-`loop=true` both enable, anything else disables. Everything else warns and
-carries on: an illegal `fit` uses `width`, a non-numeric `speed` uses `1`, a
-non-numeric `startAt` uses `0`, and a `cols`, `rows`, `idleTimeLimit` or marker
-time that is not a number is ignored. None of them stops an ordinary build,
-and every one of them fails a publishing gate built with `--panicOnWarning`.
+Boolean-like parameters compare their value with the text `true`. Both `loop="true"` and `loop=true` enable the option. Other values disable it.
+Other invalid values warn and use a fallback. Invalid `fit` uses `width`; nonnumeric `speed` uses `1`; nonnumeric `startAt` uses `0`.
+Nonnumeric `cols`, `rows`, `idleTimeLimit`, and marker times are ignored.
+These warnings do not stop ordinary builds. Review each warning and the rendered player fallback before publication.
 
 ## Limits {#limits}
 

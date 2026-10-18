@@ -66,7 +66,7 @@ params:
       '--environment', 'development', '--destination', output,
       '--cacheDir', join(source, 'cache'), '--noBuildLock',
       '--ignoreVendorPaths', 'github.com/pgsty/oink',
-      '--printPathWarnings', '--panicOnWarning',
+      '--printPathWarnings',
     ], {
       cwd: source, encoding: 'utf8', timeout: 120000,
       env: { ...process.env, GOWORK: 'off', HUGO_MODULE_WORKSPACE: 'off', HUGO_RESOURCEDIR: join(source, 'resources') },

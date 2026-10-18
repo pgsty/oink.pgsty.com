@@ -62,7 +62,7 @@ params:
       loading: lazy
 ```
 
-`repo`、`repoId`、`category`、`categoryId` 必须来自同一个仓库及其选定的 Discussion 分类，四个键缺一不可：任何一个缺失或只有空白字符，Hugo 打一条 WARNING 并跳过 giscus，构建不会失败，因此生产构建要带 `--panicOnWarning`。`type` 目前只接受 `giscus`，写别的值同样是告警加跳过。`params.comments` 的键名与 Hextra 同形，从 Hextra 迁来的配置可以照搬。
+`repo`、`repoId`、`category`、`categoryId` 必须来自同一个仓库及其选定的 Discussion 分类，四个键缺一不可：任何一个缺失或只有空白字符，Hugo 打一条 WARNING 并跳过 giscus，构建成功并保留告警；发布前应审阅诊断并补齐缺失值。`type` 目前只接受 `giscus`，写别的值同样是告警加跳过。`params.comments` 的键名与 Hextra 同形，从 Hextra 迁来的配置可以照搬。
 
 其余的键（`strict`、`reactionsEnabled`、`emitMetadata`、`term`、`lang`、`lightTheme`、`darkTheme`、`ariaLabel`、`errorMessage`）都有默认值，完整定义见[配置总览](/zh/docs/customize/config/)。功能开关既可以写 YAML 布尔值，也可以写 giscus 风格的 `0` / `1`。
 
@@ -162,7 +162,7 @@ frame-src 'self' https://giscus.app;
 ## 验证 {#verify}
 
 ```bash {title="终端"}
-hugo --minify --panicOnWarning     # 必填键缺失会在这里失败
+hugo --minify # 必填键缺失会告警并停用评论
 hugo server --disableFastRender
 ```
 

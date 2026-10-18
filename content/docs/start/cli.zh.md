@@ -40,8 +40,8 @@ export PATH="$HOME/.local/bin:$PATH"
 
 [带日期的运行时验收记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#a18)
 对其绑定的历史候选实测 macOS arm64、原生 Linux arm64 和通过 QEMU TCG 模拟的
-Linux amd64，使用 Go 1.27.1、Hugo Extended 0.166.0 与公开 OINK v1.1.0 模块。Hugo 版本检查接受 Extended 0.160.1 或更新版本，但这不代表
-每个被接受的版本都经过测试。内嵌 Starter 的文档要求 Hugo Extended 0.165.0
+Linux amd64，使用 Go 1.27.1、Hugo Extended 0.168.0 与公开 OINK v1.1.0 模块。Hugo 版本检查接受 Extended 0.168.0 或更新版本，但这不代表
+每个被接受的版本都经过测试。内嵌 Starter 的文档要求 Hugo Extended 0.168.0
 或更新版本，以及 Go 1.27。当时的 Linux 测试在 ext4 上以非 root 用户运行，使用
 已供应离线依赖，实际执行必需文件系统/信号与选定实际 Hugo 案例。guest 缺少
 的可选工具保持明确跳过，拥有独立 host 协议证据。两个新构建复现全部五份归档，
@@ -86,7 +86,7 @@ oink init my-docs --profile docs --languages en,zh
 ```sh
 cd my-docs
 GOWORK=off HUGO_MODULE_WORKSPACE=off GOPROXY=off HUGO_MODULE_PROXY=off \
-  GOTOOLCHAIN=local hugo --environment production --panicOnWarning
+  GOTOOLCHAIN=local hugo --environment production
 cd ..
 ```
 
@@ -180,7 +180,7 @@ oink check --site ./my-docs --release --keep-work
 配置、模块图与挂载、workspace、replacement、vendor 状态、语言及启用输出。
 它不会构建站点。调查 Hugo 错误时，应将原始子进程证据与结构化发现一并保留。
 
-`check` 将输入复制到临时目录，隔离构建产物与缓存，以 `--panicOnWarning` 运行
+`check` 将输入复制到临时目录，隔离构建产物与缓存，运行并保留可见告警
 Hugo，再根据渲染文件检查受支持的站内链接、锚点、资源与机器输出引用。每种语言下
 每个页面实际启用的输出格式与 URL 都由 Hugo 枚举，包括 front matter 覆盖和未进入
 普通页面列表的静态页面。临时验证输出仅加入隔离副本，并在产物检查前移除。CLI
@@ -414,7 +414,7 @@ oink build --site ./my-docs -- --minify
 ```
 
 `--` 后面的参数直接传给 Hugo。CLI 展示生效命令并转发进程取消。
-`dev` 运行 `hugo server`；`build` 默认选择生产环境，并添加 `--panicOnWarning`。
+`dev` 运行 `hugo server`；`build` 默认选择生产环境，并保留可见告警。
 这两项默认直接调用 Hugo，可能创建站点通常使用的产物与缓存文件，不执行
 `oink check` 所包含的引用检查。
 

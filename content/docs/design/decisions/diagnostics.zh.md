@@ -1,10 +1,10 @@
 ---
 title: 警告与安全回退
 linkTitle: 诊断策略
-description: 作者输入无效时，预览阶段发出警告并安全降级；--panicOnWarning 在发布阶段恢复硬门禁。
+description: 输入无效时保留可见警告并安全回退；检查器验证具体诊断与渲染产物，不因任意告警中断构建。
 weight: 10
 icon: fa-solid fa-triangle-exclamation
-search_keywords: [warnf, errorf, panicOnWarning, 校验, 回退, hugo server]
+search_keywords: [warnf, errorf, 诊断, 校验, 回退, hugo server]
 design_kind: decision
 design_status: accepted
 decision_date: 2026-08-19
@@ -12,8 +12,9 @@ decision_date: 2026-08-19
 
 > [!IMPORTANT] 决策
 > OINK 不调用 Hugo 的 `errorf`。作者或站点输入无效时，主题发出警告，并使用文档中
-> 明确的安全回退，或者省略无效片段。版本发布与部署构建使用 `--panicOnWarning`，
-> 因此同一条警告在发布门禁中仍会导致硬失败。
+> 明确的安全回退，或者省略无效片段。开发、CI、发布与部署统一使用 Hugo Extended
+> 0.168.0，禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。告警保持可见，
+> 检查器验证具体诊断与回退后的产物。
 
 ## 背景 {#context}
 
@@ -22,7 +23,7 @@ Hugo 把整座站点作为一次事务构建。编辑一页时触发的 `errorf`
 的预览在此期间完全不可用。
 
 警告的开发成本不同。出错的值可以回退，站点其余部分仍可检查，作者也能看到准确消息。
-发布构建则不会放过它，因为 OINK 的 CI 与集成门禁都会加上 `--panicOnWarning`。
+发布构建保留这些告警供审阅。上游 LibSass 弃用告警允许出现；非预期的主题或内容告警需要检查。
 
 ## 决策 {#decision}
 
@@ -44,18 +45,18 @@ Hugo 把整座站点作为一次事务构建。编辑一页时触发的 `errorf`
 配置不完整时，要在浏览器可能发起请求之前省略组件；不安全的操作 URL 直接丢弃。真正的保护是
 坏输出没有出现，而不是 Hugo 被终止。
 
-这也把编辑与发布清晰分开：
+编辑与发布采用相同的告警与回退行为：
 
 | 阶段                         | 无效输入的处理                                       |
 | ---------------------------- | ---------------------------------------------------- |
 | `hugo server` 或普通本地构建 | 警告、回退或省略，其它页面继续可用                   |
-| CI、版本验收、部署           | 同一警告在 `--panicOnWarning` 下让构建以非零状态退出 |
+| CI、版本验收、部署           | 告警并安全回退，审阅诊断并验证产物 |
 
 ## 后果 {#consequences}
 
 - 每个回退值都是公开契约的一部分，必须与主题声明的默认值一致。
-- 从“失败”改成“回退”时，测试也必须改变。负向测试要同时证明普通构建存活、警告文案、
-  渲染后的回退，以及严格构建失败。
+- 从“失败”改成“回退”时，测试也必须改变。负向测试要证明构建成功、警告文案与渲染后的
+  回退或省略结果。警告本身不得导致 Hugo 构建失败。
 - 检查器必须直接验证被拒绝的输出。例如 URL 安全测试应断言危险 URL 没有进入产物，不能把
   任意构建失败当作充分证据。
 - 渲染产物负责 DOM、属性、顺序与已注入 token 的断言；浏览器套件负责计算后的颜色、尺寸、
@@ -67,4 +68,6 @@ Hugo 把整座站点作为一次事务构建。编辑一页时触发的 `errorf`
 
 本决策的归属参考包括
 [架构契约](/zh/docs/design/architecture/#configuration-and-diagnostics)、
-`bin/check-params.py`，以及主题夹具与本站的严格构建。
+`bin/check-params.py`，以及主题夹具与本站使用 Hugo Extended 0.168.0 的生产构建。
+
+本告警策略于 2026-10-18 更新。不得恢复遇到告警就中断的发布门禁。

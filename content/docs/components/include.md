@@ -58,9 +58,8 @@ sidebar, it takes no part in translation pairing, and it has no URL.
 | 2 | A global resource under `assets/` | `file="snippets/dsn.txt"` |
 | 3 | A file under `content/`: a leading `/` is the content root, otherwise relative to the page's directory | `file="notes/caveat.md"`, `file="/shared/notice.md"` |
 
-Missing in all three, or containing `..`, the include warns and emits nothing.
-Strict publishing rejects the warning: include reads from `content/` and
-`assets/` and nowhere else.
+If no source matches, or the path contains `..`, the include warns and emits nothing. Review the warning and rendered fallback before publication.
+Include reads only from `content/` and `assets/`.
 
 A Markdown fragment is read as source, so write the file's real name on disk.
 One trap belongs to step 1 alone: Hugo attaches a language-suffixed page
@@ -120,10 +119,8 @@ and this page's front matter says `pigsty_pg_major: 18`, which reads back as {{<
 This site publishes {{< param version >}}, copyright from {{< param copyright.from_year >}},
 and this page's front matter says `pigsty_pg_major: 18`, which reads back as {{< param pigsty_pg_major >}}.
 
-Nested keys join with `.`, so `copyright.from_year` reads
-`params.copyright.from_year`. A parameter that does not exist, or whose value is
-a map or list rather than a scalar, warns and prints nothing; strict publishing
-rejects the warning.
+Join nested keys with `.`. For example, `copyright.from_year` reads `params.copyright.from_year`.
+Missing parameters and values that are maps or lists warn and print nothing. Review the warning and rendered fallback before publication.
 
 ## Parameters inside commands, tables and links {#param-in-place}
 
@@ -212,8 +209,7 @@ a script.
 | `lang` | string | — | Code language; without `code=true` it warns and is ignored |
 {.fields meta="type default"}
 
-Any other parameter name warns and is ignored, with the file and line in the
-message; strict publishing rejects the warning.
+Other parameter names warn and are ignored. The message identifies the file and line. Review the warning and rendered fallback before publication.
 
 `param` (one positional parameter):
 

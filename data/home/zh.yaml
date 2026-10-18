@@ -281,9 +281,9 @@ faq:
   items:
     - question: 哪里需要 Node.js、npm 或打包器吗？
       answer: >-
-        不需要。构建依赖只有 Hugo Extended（0.166.0 或更新）。Go 只用一次，用来把主题解析为
-        Hugo Module；离线归档或 Git submodule 方式连 Go 也不需要。界面交互仍在浏览器里执行
-        JavaScript，但这些脚本随主题分发，只挂在用到它们的页面上。
+        不需要。站点使用 Hugo Extended 及其内置 Sass 编译器构建，不需要另外安装 Sass。
+        Hugo 0.168.0 是最低版本和默认版本。Go 用来把主题解析为模块；使用离线归档或
+        Git submodule 时不需要 Go。浏览器脚本随主题分发，只在用到时加载。
       open: true
     - question: 我有一个 Docsy 站，迁移有多难？
       answer: >-
@@ -319,7 +319,7 @@ faq:
 
 cta:
   title: 从一个已经能运行的仓库开始。
-  text: 使用 OINK Starter，替换身份与内容，再通过 warning 即失败的 Hugo 构建发布。
+  text: 使用 OINK Starter，替换身份与内容，再使用 Hugo 0.168.0 构建，审阅诊断后发布。
   label: 使用 OINK Starter
   url: docs/start/starter/
   style: primary

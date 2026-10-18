@@ -114,8 +114,7 @@ Site-wide shortcuts and focus order.
 {{< /card >}}
 {{< /cards >}}
 
-An icon that is not one valid Font Awesome class pair warns and is dropped in
-ordinary preview; strict publishing rejects the warning.
+An invalid Font Awesome class pair warns and is removed in ordinary previews. Review the warning and rendered fallback before publication.
 
 ## Markdown bodies {#markdown-body}
 
@@ -159,10 +158,9 @@ A card without `link` renders as a bold title and produces no link.
 section resource → global resource in `assets/` → static path `/images/…` → remote URL. Local resources
 carry their intrinsic size so nothing shifts while loading.
 
-`image` needs one source of alternative text: `image_alt="…"` for an informative
-image or `decorative=true` for a decorative one. Writing both warns and keeps
-the alt text; writing neither warns and renders the image decorative. Strict
-publishing rejects either warning.
+With `image`, provide exactly one alternative-text source. Use `image_alt="…"` for informative images or `decorative=true` for decorative images.
+If you provide both, the theme warns and keeps the alt text. If you provide neither, it warns and makes the image decorative.
+Review the warning and rendered fallback before publication.
 
 ```markdown {title="Source"}
 {{</* cards */>}}
@@ -260,24 +258,18 @@ The native form:
 | Body | Markdown | — | The card description |
 {.fields meta="type default"}
 
-There is no `cols`, `columns`, `accent`, `desc` or `color` parameter. Unknown
-parameters warn and are ignored in ordinary preview; strict publishing rejects
-the warning.
+There is no `cols`, `columns`, `accent`, `desc`, or `color` parameter.
+Unknown parameters warn and are ignored in ordinary previews. Review the warning and rendered fallback before publication.
 
 ## Limits {#limits}
 
-- `{.cards}` recognizes unordered lists only: on an ordered list it does
-  nothing.
-- `{.cards}` must touch the list: a blank line in between, or indenting it into
-  a list item, drops the marker silently — the build succeeds and the list stays
-  a list. Check that line first when the output is not a card grid.
-- A `card` lives only inside `cards`: alone, or inside another shortcode, it
-  warns and is skipped; strict publishing rejects the warning.
-- The column count is not configurable: the grid adapts to the container. Only
-  automatic section cards take a count, through
-  `params.ui.section_index_columns`.
-- Cards are not for long text: when a description runs past two lines, use a
-  paragraph or a [callout](/docs/components/callout/).
+- `{.cards}` supports only unordered lists. It has no effect on ordered lists.
+- `{.cards}` must immediately follow the list. A blank line or indentation inside a list item silently removes the marker.
+  The build succeeds, but the result stays a list. Check this line first if no card grid appears.
+- A `card` must be inside `cards`. Alone or inside another shortcode, it warns and is skipped. Review the warning and rendered fallback before publication.
+- The grid adapts to its container. Its column count cannot be configured.
+  Only automatic section cards accept a count, through `params.ui.section_index_columns`.
+- If a description exceeds two lines, use a paragraph or a [callout](/docs/components/callout/).
 
 ## Related {#related}
 

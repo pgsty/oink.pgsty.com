@@ -382,10 +382,10 @@ configured.
 ## Verify {#verify}
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 ```
 
-It must reach `Total in …` with no ERROR and no WARN. Then confirm:
+It must reach `Total in …` with no ERROR; review warnings and accept only the known upstream LibSass notice. Then confirm:
 
 1. The post appears in the right date order at `/blog/`, with the date in the expected format;
 2. `public/blog/index.xml` exists, contains the post, and its links are complete absolute addresses;

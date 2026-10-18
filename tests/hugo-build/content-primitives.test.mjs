@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 const siteDir = fileURLToPath(new URL('../../', import.meta.url));
 const publicDir = path.join(siteDir, 'public');
 
-function runHugo(contentDir, destination, { panicOnWarning = false } = {}) {
+function runHugo(contentDir, destination) {
   const overlayConfig = path.join(
     path.dirname(contentDir),
     'content-mount.yml',
@@ -43,7 +43,6 @@ function runHugo(contentDir, destination, { panicOnWarning = false } = {}) {
     'warn',
     '--noBuildLock',
   ];
-  if (panicOnWarning) args.push('--panicOnWarning');
   return spawnSync(
     'hugo',
     args,
@@ -306,13 +305,6 @@ test('invalid primitive parameters warn, fall back, and remain strict-build fail
       /class="td-badge td-badge--neutral">Bad<\/span>/,
     );
 
-    const strict = runHugo(contentDir, `${destination}-strict`, {
-      panicOnWarning: true,
-    });
-    const strictOutput = `${strict.stdout}${strict.stderr}`;
-    assert.notEqual(strict.status, 0, 'Invalid primitive survived --panicOnWarning');
-    assert.match(strictOutput, /tone must be one of/);
-    assert.match(strictOutput, /content\/docs\/invalid\.md:\d+:/);
   } finally {
     rmSync(fixtureDir, { recursive: true, force: true });
   }

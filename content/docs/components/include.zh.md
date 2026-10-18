@@ -50,7 +50,7 @@ hugo server
 | 2 | 全局资源 `assets/` 下的文件 | `file="snippets/dsn.txt"` |
 | 3 | `content/` 下的文件：`/` 开头是内容根目录，否则相对当前页面所在目录 | `file="notes/caveat.md"`、`file="/shared/notice.md"` |
 
-三处都找不到，或路径里含 `..` 时，引用会告警并不输出。严格发布构建拒绝这条警告：
+三处都找不到，或路径里含 `..` 时，引用会告警并不输出。发布前应审阅告警并检查回退结果：
 引用只能在 `content/` 与 `assets/` 中取文件。
 
 引 Markdown 片段时写文件在磁盘上的真名。有一个陷阱只属于第 1 步：Hugo 把带语言后缀的页面资源（如 `notice.zh.md`）按去掉后缀的名字挂在页面上，向页面包索取 `notice.md` 拿到的是已渲染的 HTML 而不是源码，Markdown 输出里会出现 `<div class="td-code">`。`assets/` 与 `content/` 下写什么名字就取什么文件，没有这层转换。非 Markdown 文件（`.yaml`、`.sh`、`.txt`）也没有这个区别。
@@ -90,7 +90,7 @@ hugo server
 本页 front matter 里写了 `pigsty_pg_major: 18`，这里取到 {{< param pigsty_pg_major >}}。
 
 嵌套键用 `.` 连接，`copyright.from_year` 取的是 `params.copyright.from_year`。参数不存在，
-或者值是 map / 列表而不是标量时，告警并不输出；严格发布构建拒绝这条警告。
+或者值是 map / 列表而不是标量时，告警并不输出；发布前应审阅告警并检查回退结果。
 
 ## 在命令、表格与链接里插参数 {#param-in-place}
 
@@ -170,7 +170,7 @@ Markdown 输出里片段是源码而不是 HTML，片段里的 shortcode 保持 
 | `lang` | 字符串 | — | 代码语言；没有 `code=true` 时告警并忽略 |
 {.fields meta="type default"}
 
-其它参数名会告警并忽略，消息带文件名与行号；严格发布构建拒绝这条警告。
+其它参数名会告警并忽略，消息带文件名与行号；发布前应审阅告警并检查回退结果。
 
 `param`（一个位置参数）：
 

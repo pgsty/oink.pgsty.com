@@ -238,11 +238,10 @@ inherited dark half included — and reverts to the default palette without a
 warning. Any other non-hex value (a number, `true`, a named colour) warns.
 
 > [!CAUTION] Contrast is checked, not enforced
-> The theme reads your colour against its own canvases and warns when it falls
-> below AA body text (4.5:1). The colour still ships: a custom canvas or a
-> brand mandate is your call. The warning carries an `ignoreLogs` id that
-> silences it, and because publishing builds with `--panicOnWarning`, the gate
-> stops until you either darken the colour or silence the check.
+> The theme checks your color against its own canvases. It warns if contrast
+> is below AA body text (4.5:1). The color still appears in the output. You may
+> choose it for a custom canvas or brand requirement. The warning includes an
+> `ignoreLogs` id that can silence it. Review the contrast on the actual canvas and adjust the color when needed.
 >
 > The check reads the colour against the page canvas. Some interactive
 > surfaces reuse it as both ink and a translucent wash — a linked solid badge,
@@ -292,10 +291,9 @@ params:
 - Experimental fonts: Ink uses Inter for UI, prose and headings; Terminal uses IBM Plex Mono for controls/headings and Plex Sans for prose. Both reuse existing code fonts. Explicit `fonts.ui` still supplies the main face; use `fonts.body` for a separate prose face.
 - `system`: the interface, display, metadata, print and monospace roles all fall back to the platform stack, and the browser requests no brand font. The font files still ship with the theme; they are simply not referenced.
 
-An invalid value warns and falls back to `technical`, so an ordinary
-`hugo server` stays usable; publishing gates run `--panicOnWarning`, which is
-where that warning becomes a hard failure. The chosen value is written to
-`<html data-td-typography="…">` and can be confirmed in the browser.
+If the value is invalid, the theme warns and falls back to `technical`. Normal
+`hugo server` preview remains usable. The selected value appears in
+`<html data-td-typography="…">`. Check it in the browser.
 
 ### Custom fonts {#custom-fonts}
 The font roles are eight CSS custom properties. Override them rather than
@@ -418,11 +416,11 @@ params:
   page_width: normal # normal | wide | full
 ```
 
-`page_width` controls the overall shell width and can be overridden per page or
-per section by cascade. Book pages additionally have `reading_width` (`slim` /
-`normal` / `wide`), which changes the reading measure of the body rather than
-the shell. An invalid value in either key warns and falls back during ordinary
-preview; the warning fails a publishing build with `--panicOnWarning`.
+The `page_width` key controls the overall shell width. Override it per page or
+per section through a cascade. Book pages also support `reading_width` (`slim` /
+`normal` / `wide`). This changes the body's reading width instead of the shell.
+If either key has an invalid value, normal preview warns and uses a fallback.
+Review the warning and rendered widths before publication.
 
 ## Footer {#footer}
 
@@ -441,10 +439,9 @@ params:
 - `slim`: the copyright line only;
 - `none`: no footer at all.
 
-Page front matter (including a section cascade) can override it; this site's
-documentation section uses `footer_style: slim`. An unrecognized value warns
-and falls back to `fat` in ordinary preview; strict publishing rejects the
-warning.
+Page front matter, including a section cascade, can override the footer style.
+This site's documentation section uses `footer_style: slim`. In normal preview,
+an unrecognized value warns and falls back to `fat`. Review the warning and rendered fallback before publication.
 
 The grid's data lives in `data/footer/<language>.yaml` — see
 [Navigation and menus](/docs/customize/navigation/#footer). With `fat`
@@ -493,10 +490,10 @@ Markdown.
 ## Verify {#verify}
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 ```
 
-- The build prints `Total in …` with no ERROR and no WARN;
+- The build prints `Total in …` with no ERROR; review warnings and accept only the known upstream LibSass notice;
 - The page source has `data-td-typography="technical"` (or your chosen preset) on `<html>`;
 - In the browser the navbar shows your logo and site name, and the tab shows your favicon;
 - Switch to dark mode and look again at body text, tables, callouts, code blocks and focus rings. A colour change is easy to verify in only one mode;

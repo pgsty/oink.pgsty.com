@@ -11,7 +11,7 @@ search_keywords: [OINK Starter, GitHub 模板, Use this template, 定制 Starter
 站点的正式起点。它刻意小于 `oink.pgsty.com`：不会把主题文档、分析账号、评论仓库、
 浏览器回归套件或 PGSTY 品牌复制进你的项目。
 
-本流程使用 Git、Go 1.27 或更新版本，以及 Hugo Extended 0.166.0。
+本流程使用 Git、Go 1.27 或更新版本，以及 Hugo Extended 0.168.0。
 所选语言 profile 统一使用这套工具链验证，旧 Starter 的 workflow 固定版本也应
 同步更新。Hugo 基线随稳定版更新，不再测试或适配旧版本。
 
@@ -201,13 +201,13 @@ Starter 默认关闭或注释了仓库操作、Giscus、Google Analytics、反�
 
 ## 构建与部署 {#build-deploy}
 
-### 严格本地构建 {#strict-build}
+### 本地生产构建 {#strict-build}
 
 启用托管 workflow 前执行：
 
 ```bash
 hugo --cleanDestinationDir --gc --minify --environment production \
-  --printPathWarnings --panicOnWarning
+  --printPathWarnings
 ```
 
 提交 `hugo.yaml`、`go.mod` 与 `go.sum`；不要提交生成的 `public/`、`resources/`、模块

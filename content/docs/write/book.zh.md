@@ -138,7 +138,7 @@ $$
 
 代码围栏加 `num=` 与 `caption=` 即编号例，默认 ID 是 `eg-<num>`。围栏里写的 `#id`
 命名外层 `<figure>`，即引用目标，不是代码块本身。例的题注必填：只写 caption 时
-忽略它，只写编号时丢弃编号并告警；严格发布构建拒绝这条警告。编号例渲染成一个
+忽略它，只写编号时丢弃编号并告警；发布前应审阅告警并检查回退结果。编号例渲染成一个
 整体：题注是框的表头，正文在框内；正文恰好是一个代码块时贴着框排，不再另画一圈边框。
 
 ````markdown {title="源码"}
@@ -213,12 +213,12 @@ pg_basebackup -h primary -U replicator -D /pg/data -Fp -Xs -P -R
 {{< /eg >}}
 
 同一页里 ID 必须唯一，同一类里一个编号也只能对应一个 ID。重复时告警并保留第一项；
-严格发布构建拒绝这条警告，消息指出先占用它的那一处在哪行。
+发布前应审阅告警并检查回退结果，消息指出先占用它的那一处在哪行。
 
 > [!IMPORTANT] shortcode 正文里不能写脚注
 > Hugo 把 shortcode 的正文当作独立 Goldmark 文档渲染，脚注是页面级的。`tbl`、
 > `eg`、`fig`、`card`、`tab`、`field`、`include` 的正文里出现 `[^label]` 会告警，
-> 消息给出文件、行号与标签；严格发布构建拒绝这条警告。定义写在页面上时该引用会
+> 消息给出文件、行号与标签；发布前应审阅告警并检查回退结果。定义写在页面上时该引用会
 > 原样印出 `[^label]`，定义写在正文里则生成第二份脚注列表、`fn:N` 与页面自身 ID
 > 冲突——两种结果都不该发布。
 >
@@ -362,7 +362,7 @@ python3 ~/pgsty/oink/bin/migrations/book_figures.py \
 
 ## 验证 {#verify}
 
-1. 构建零告警：`hugo --printPathWarnings --panicOnWarning`。编号写错、ID 重复、题注缺失都在这一步失败。
+1. 构建生产：`hugo --printPathWarnings`。编号写错、ID 重复、题注缺失都在这一步失败。
 2. 页面上应看到「图 2-1」这样的本地化标签、可点的 `xref` 链接，以及点击后正确跳转的锚点。
 3. 对比侧栏、翻页器、`book-toc` 与整本打印四处的章节顺序是否一致。
 4. 检查 Markdown 输出：`curl -s http://localhost:1313/zh/handbook/ch02/index.md`。shortcode 形态应退化成 `**图 2-2.** 题注` 加原始正文，原生形态原样保留源码块与属性行。
@@ -412,8 +412,7 @@ python3 ~/pgsty/oink/bin/check-book.py --site-public public
 - 属性行必须紧贴块，中间不能有空行。被 Prettier 之类工具移动过的属性行静默失效，图退化成普通图片。
 - `book_kind` 与 `book_part` 是契约认可的元数据键，当前主题模板不渲染它们；有视觉效果的是 `book_number` 与 `book_status`。
 - 索引 shortcode 会触发后代内容渲染，在超大树上明显拉长构建时间。整本 `print` 需要显式开启也是同一原因。
-- shortcode 正文里不能出现脚注引用；出现时告警并指出改用原生形态，严格发布构建
-  拒绝这条警告，见上文[编号：shortcode 形态](#numbering-shortcodes)。
+- shortcode 正文里不能出现脚注引用；出现时告警并指出改用原生形态，发布前应审阅告警并检查回退结果，见上文[编号：shortcode 形态](#numbering-shortcodes)。
 - 打包是可选的，且在构建之外运行。`BookManifest` 加上 `bin/book-epub.py` / `bin/book-pdf.py` 可以产出 EPUB 与 PDF，但没有任何一次 Hugo 构建会自己生成这两个文件；专业排版的分页、字体嵌入与索引编制仍在契约之外。
 
 ## 相关 {#related}

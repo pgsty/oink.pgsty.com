@@ -172,13 +172,13 @@ use the `eq` shortcode below, which goes through local server-side KaTeX.
 ### Examples {#example}
 
 A code fence with `num=` and `caption=` is a numbered example, and the default
-ID is `eg-<num>`. An `#id` written on the fence names the enclosing `<figure>` —
-the reference target — rather than the code block itself. The caption is
-required: a lone caption is ignored and a lone number is dropped with a
-warning; strict publishing rejects the warning. A numbered
-example renders as one framed unit: the caption is the frame's header and the
-body sits inside it, and a body that is exactly one code block sits flush
-against the frame instead of drawing a second border.
+ID is `eg-<num>`. An `#id` on the fence names the enclosing `<figure>`, which
+is the reference target. It does not name the code block. The caption is
+required. A caption without a number is ignored. A number without a caption
+is dropped with a warning. Review the warning and rendered fallback before publication. A numbered
+example renders in one frame. The caption is the frame header. The body sits
+inside it. If the body is one code block, it uses the frame border without
+a second border.
 
 ````markdown {title="Source"}
 ```sql {num="2-1" caption="Daily write volume on the primary." #eg-2-1}
@@ -265,14 +265,12 @@ pg_basebackup -h primary -U replicator -D /pg/data -Fp -Xs -P -R
 {{< /eg >}}
 
 IDs must be unique within a page, and within one kind a number maps to exactly
-one ID. A duplicate warns and keeps the first registration; strict publishing
-rejects the warning, which names the line that claimed it first.
+one ID. A duplicate warns and keeps the first registration. Review the warning and rendered fallback before publication. The warning names the first registration's line.
 
 > [!IMPORTANT] Footnotes cannot appear in a shortcode body
-> Hugo renders a shortcode body as its own Goldmark document, and footnotes are
-> page-level. A `[^label]` inside the body of `tbl`, `eg`, `fig`, `card`, `tab`,
-> `field` or `include` warns, naming the file, line, and label. Strict
-> publishing rejects the warning.
+> Hugo renders each shortcode body as a separate Goldmark document. Footnotes
+> belong to the page. A `[^label]` inside the body of `tbl`, `eg`, `fig`, `card`, `tab`,
+> `field` or `include` warns, naming the file, line, and label. Review the warning and rendered fallback before publication.
 > With the definition on the page, the reference would print literally as
 > `[^label]`; with the definition in the body, it would build a second footnote
 > list whose `fn:N` ids collide with the page's own. Neither belongs in
@@ -469,7 +467,7 @@ idempotency check.
 
 ## Verify {#verify}
 
-1. The build is warning-free: `hugo --printPathWarnings --panicOnWarning`. A malformed number, a duplicate ID and a missing caption all fail here.
+1. Build with visible diagnostics: `hugo --printPathWarnings`. A malformed number, a duplicate ID and a missing caption all produce warnings that need review.
 2. The page should show a localized label such as "Figure 2-1", clickable `xref` links, and anchors that land correctly.
 3. Compare the chapter order across all four places: sidebar, pager, `book-toc` and whole-book print.
 4. Check the Markdown output: `curl -s http://localhost:1313/handbook/ch02/index.md`. The shortcode form should degrade to `**Figure 2-2.** caption` plus the original body, and the native form should keep its source block and attribute line as they are.
@@ -522,8 +520,8 @@ parameters.
 - The attribute line must touch its block, with no blank line between. An attribute line a tool like Prettier has moved fails silently, and the figure degrades to a plain image.
 - `book_kind` and `book_part` are metadata keys the contract acknowledges but the current templates do not render. The ones with a visible effect are `book_number` and `book_status`.
 - The index shortcodes trigger descendant content rendering, which noticeably lengthens the build on a very large tree. The same reason is why whole-book `print` has to be requested explicitly.
-- A footnote reference cannot appear in a shortcode body; it warns and names the native form to use instead, and strict publishing rejects it — see [Numbering: the shortcode form](#numbering-shortcodes).
-- Packaging is opt-in and runs outside the build. `BookManifest` plus `bin/book-epub.py` / `bin/book-pdf.py` produce EPUB and PDF, but no Hugo build emits either file on its own, and typeset pagination, font embedding and index compilation remain outside the contract.
+- A footnote reference cannot appear in a shortcode body. It warns and identifies the native form to use instead. Review the warning and rendered fallback before publication. See [Numbering: the shortcode form](#numbering-shortcodes).
+- Packaging requires explicit selection and runs outside the build. `BookManifest` plus `bin/book-epub.py` / `bin/book-pdf.py` produce EPUB and PDF. Hugo alone emits neither file. Typeset pagination, font embedding, and index compilation remain outside the contract.
 
 ## Related {#related}
 

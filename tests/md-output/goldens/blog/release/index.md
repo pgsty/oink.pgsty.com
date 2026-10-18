@@ -10,14 +10,15 @@ LLMS index: [llms.txt](/llms.txt)
 
 > [!NOTE] Versioned history
 > Each release note records that release's requirements and validation. Current
-> development, CI, and release tests use Hugo Extended 0.166.0, with the baseline
-> advancing with stable releases. Older requirements below do not define
+> development, CI, and release tests use Hugo Extended 0.168.0 as the pinned default. Older requirements below do not define
 > current support; follow the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
 
 ---
 
 Section pages:
 
+- [OINK 1.3.2 — Hugo-only builds restored](/blog/release/1.3.2/): Remove the mandatory Dart Sass dependency and use Hugo Extended 0.168.0 with visible warnings for all maintained sites.
+- [OINK 1.3.1 — Readability repairs](/blog/release/1.3.1/): Readable Markmap labels, reliable TOC footer clearance, opt-in technical tables and FileTree comment wrapping, with Hugo 0.168 and Dart Sass.
 - [OINK 1.3.0 — Expo image albums](/blog/release/1.3.0/): Expo brings resource-backed image albums, three layouts and an original-image viewer to OINK, with more reliable navigation, dialogs and focus.
 - [OINK 1.2.0 — Four styles, one local-first theme](/blog/release/1.2.0/): OINK 1.2.0 introduces Paper, Slate, Ink and Terminal, independent style and light/dark controls, local fonts, clearer search, consistent navigation, and safer book publishing and site maintenance.
 - [OINK 1.1.0 — Native locales, navigation, and site extensions](/blog/release/1.1.0/): OINK 1.1.0 brings 32 native interface catalogs, taxonomy directories, reliable sidebar state, site-owned search actions, and fixes for printing, keyboard focus, and copying images.

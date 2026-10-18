@@ -205,10 +205,9 @@ Source: https://oink.pgsty.com/docs/customize/agents/index.md
 `Source:` points at the page's Markdown output, falling back to its HTML URL
 where the page publishes no `.md`.
 
-Only a top-level section can carry a bundle. Listing `LLMSFULL` further down the
-tree warns — "LLMSFULL output requires a top-level section" — and emits nothing,
-so `hugo server` keeps working while a publishing build with `--panicOnWarning`
-stops there.
+Only a top-level section can publish a bundle. If you list `LLMSFULL` further
+down the tree, the theme warns: "LLMSFULL output requires a top-level section".
+It emits nothing. The `hugo server` preview continues to work. Review the diagnostic and confirm the unsupported output is absent.
 
 Where at least one section has a bundle, `llms.txt` grows a `## Full-text
 bundles` list of this language's bundles: discovery stays in the file an agent
@@ -386,7 +385,7 @@ Run from your site's root, with Markdown and LLMS outputs enabled. Replace
 assume a `docs` section; adjust them and any language prefix to your site.
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 PAGE_MD=public/docs/getting-started/index.md
 ls "$PAGE_MD" public/llms.txt
 # Only if you enabled LLMSFULL on docs and NAVJSON on home:

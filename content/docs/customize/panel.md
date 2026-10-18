@@ -96,9 +96,9 @@ params:
           keywords: [bug, support, roadmap]
 ```
 
-That is the one this site uses. There are seven fields. An unsupported key or
-invalid record warns and drops that command during ordinary preview; strict
-publishing rejects the warning:
+This site uses the command above. Commands have seven fields. In normal
+preview, an unsupported key or invalid record warns and discards that command.
+Review the warning and rendered fallback before publication:
 
 - `id` is required, starts with a lowercase letter, and holds only lowercase letters, digits, underscores and hyphens; it must not collide with a built-in action ID.
 - `title` is what the palette shows; `description` is the smaller line beneath it; `icon` is one Font Awesome class pair.
@@ -226,14 +226,14 @@ and OINK adds no remote service or telemetry by default.
 
 ## Verify {#verify}
 
-Run from your site's root after a strict build. In the commands below, replace
+Run from your site's root after a production build. In the commands below, replace
 `public/docs/getting-started/index.html` with an actual generated documentation
 page in your site (including a language prefix if needed).
 
 1. After a build, confirm the command manifest reached the page:
 
    ```bash
-   hugo --printPathWarnings --panicOnWarning
+   hugo --printPathWarnings
    PAGE=public/docs/getting-started/index.html
    test -f "$PAGE" && grep -o 'td-action-manifest' "$PAGE"
    ```

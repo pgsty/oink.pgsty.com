@@ -35,11 +35,11 @@ aliases:
 
 相对路径依次按页面资源、当前分区资源、全局资源查找，都找不到时按静态路径输出；主题不检查
 静态路径与远程 URL 是否存在。要求处理（`command=`）却解析不到可处理资源时，普通
-预览告警并保留未处理图片；严格发布构建拒绝这条警告。
+预览告警并保留未处理图片；发布前应审阅告警并检查回退结果。
 
 Markdown 中的替代文字优先于资源 metadata，包括明确表示装饰图的空 alt。资源的
 `params.alt` 必须是字符串；无效 metadata 会告警并被忽略，保留正文中编写的 alt。
-严格发布构建拒绝这条警告。
+发布前应审阅告警并检查回退结果。
 
 ## 行内与块级 {#inline-vs-block}
 位于文字中间的是行内图片，渲染为一个 `<img>`，不能带属性；独立成段的是块级图片，可以带属性行。
@@ -106,7 +106,7 @@ Markdown 里的 `"标题"` 保持原义（悬停提示），不会成为图注�
 {command="Fill" options="300x150 Left" caption="Fill 300x150 Left：填满框，从左侧裁"}
 
 静态路径、远程 URL 与 SVG 不能处理。对它们写 `command` 时告警并保留未处理图片；
-严格发布构建拒绝这条警告。选项语法（锚点、质量、格式转换，如
+发布前应审阅告警并检查回退结果。选项语法（锚点、质量、格式转换，如
 `300x150 webp q80`）见 [Hugo 图片处理](https://gohugo.io/content-management/image-processing/)。
 
 ## 链接图片 {#link}
@@ -128,7 +128,7 @@ Markdown 里的 `"标题"` 保持原义（悬停提示），不会成为图注�
 {caption="点击图片查看发布与下载页的说明" link="/zh/docs/write/releases/"}
 
 带链接的图不参与缩放。没有图注只写 `link=` 时告警并丢弃链接，消息提示改用
-`[![…](…)](…)`；严格发布构建拒绝这条警告。
+`[![…](…)](…)`；发布前应审阅告警并检查回退结果。
 
 ## 编号图 {#numbered}
 
@@ -221,7 +221,7 @@ html:not([data-bs-theme="dark"]) .only-dark { display: none; }
 {.fields meta="type default"}
 
 `style`、`on*`、`alt`、`title`、`src` 与不支持的键出现在属性行时告警并忽略；
-严格发布构建拒绝这条警告。alt、title、src 属于 Markdown 图片本身。
+发布前应审阅告警并检查回退结果。alt、title、src 属于 Markdown 图片本身。
 
 ## 限制与常见问题 {#limits}
 

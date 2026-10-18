@@ -361,7 +361,7 @@ Other facts resolve from site params → `data/upstreams[upstream_source]` → f
 `upstream_name`, `upstream_copyright`, `upstream_license`, `upstream_notice`, optional `upstream_ref`, and `upstream_modified`.
 A link requires the first four facts.
 Invalid or incomplete attribution warns and emits no legal notice. Unsupported URLs are refused.
-Publication gates reject the warning with `--panicOnWarning`.
+Review the warning and rendered attribution before publication.
 
 `upstream_modified` changes the credit verb and links commit history within the existing attribution sentence.
 The notice page includes complete license and warranty text.
@@ -499,7 +499,7 @@ does not replace Giscus.
 An explicit `params.ui.quick_links: []` disables quick links instead of restoring
 the defaults. Invalid `sidebar_root_link_self` values warn and keep the documented
 `true` fallback. Taxonomy and term pages use the shared `page_width` validator,
-including its warning-fatal publication gate.
+including production builds with visible warnings.
 
 ## Verification {#verification}
 

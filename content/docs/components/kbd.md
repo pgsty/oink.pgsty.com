@@ -19,9 +19,8 @@ Press {{</* kbd "Ctrl" "K" */>}} to open the command palette.
 
 Press {{< kbd "Ctrl" "K" >}} to open the command palette.
 
-Parameters must be quoted, one key per positional parameter. Missing, empty, or
-named parameters warn and render no invalid key in ordinary preview; strict
-publishing rejects the warning.
+Quote each positional parameter and use one parameter per key.
+Missing, empty, or named parameters warn. Ordinary previews do not render invalid keys. Review the warning and rendered fallback before publication.
 
 ## A single key {#single}
 

@@ -48,8 +48,7 @@ from those two blocks.
 | `mode` | `wall`, `cards`, or `seamless` | `wall` |
 | `size` | Integer from 160 to 360, in CSS pixels | `240` |
 
-Invalid configuration produces a warning and uses a fallback. A build with
-`--panicOnWarning` fails on that warning. The size is a layout target; it does
+Invalid configuration produces a warning and uses a fallback. The size is a layout target; it does
 not set both dimensions of each tile.
 
 ### Image resources {#image-resources}
@@ -72,7 +71,7 @@ The build does not fetch remote album images.
 IDs must be unique within the album. Invalid or duplicate IDs produce a warning
 and use a filename hash. Renaming a file changes its fallback anchor. Keep an
 explicit ID and the album URL unchanged when a citation must remain valid.
-An ID may be a string or a YAML integer. If a fallback hash is also occupied, append the first unused numeric suffix so development output still has unique anchors. Publishing with `--panicOnWarning` rejects the invalid or duplicate metadata.
+An ID may be a string or a YAML integer. If a fallback hash is also occupied, append the first unused numeric suffix so development output still has unique anchors. Review the warning and generated fallback anchors before publication.
 
 Processable images larger than 960 pixels receive previews within a 960 × 960
 pixel box. GIFs also receive still previews for pause and reduced motion.

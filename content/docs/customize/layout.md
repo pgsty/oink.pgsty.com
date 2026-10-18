@@ -76,8 +76,8 @@ params:
     docs_sidebar_root: home # home | section
 ```
 
-Those are the only two values. Anything else warns and uses `section` in
-ordinary preview; `--panicOnWarning` rejects the warning during publishing.
+Only these two values are valid. In normal preview, any other value warns and
+uses `section`. Review the warning and rendered fallback before publication.
 
 ### Documentation at the site root {#docs-at-root}
 
@@ -248,8 +248,7 @@ absent from the manifest uses its content tree.
 
 This tree also sets paging order and navigation JSON. The sidebar and previous
 / next links therefore agree. An empty `sections` array warns and falls back to the content
-tree. A nonexistent `page` warns and skips that entry. Strict publishing rejects
-either warning. Placeholder nodes with `manual_link` and
+tree. A nonexistent `page` warns and skips that entry. Review the warning and rendered fallback before publication. Placeholder nodes with `manual_link` and
 `sidebar_divider` rows stay in the sidebar without becoming paging targets.
 In 1.1, a divider section retains its children in this explicit tree too; use
 the same [group-only front matter](/docs/write/organize/#group-only) as for the
@@ -290,12 +289,13 @@ params:
     sidebar_headings: 3 # false | true | 2 | 3 | 4
 ```
 
-An integer sets the deepest level expanded (2–4), `true` means 2 (h2 only), and
-`false` turns it off. Out of range warns and disables the branch in ordinary
-preview; strict publishing rejects the warning. It applies to `type: book`
-pages only, and expands only under the current sidebar row. Page front matter or a section
-cascade can set the same key; `sidebar_headings: false` turns off an inherited
-opt-in. The right outline remains available.
+An integer sets the deepest expanded level (2–4). The value `true` means 2,
+or h2 only. The value `false` disables the branch. An out-of-range value warns
+and disables it in normal preview. Review the warning and rendered fallback before publication.
+This feature applies only to `type: book` pages. It expands only below the
+current sidebar row. Page front matter or a section cascade can set the same
+key; `sidebar_headings: false` turns off an inherited opt-in. The right outline
+remains available.
 
 ## Table of contents {#toc}
 
@@ -347,8 +347,8 @@ params:
 - `list` (the default): one title plus description paragraph per child page;
 - `cards`: a grid of cards reading each child's `title` (or `linkTitle`), `description` and `icon`.
 
-It can be overridden per section. An invalid value warns and falls back during
-ordinary preview; `--panicOnWarning` rejects it at the publication gate:
+You can override this setting per section. An invalid value warns and uses a
+fallback in normal preview. Review the warning and rendered fallback before publication:
 
 ```yaml {title="content/docs/components/_index.md"}
 ---
@@ -381,10 +381,9 @@ page_width: wide
 ---
 ```
 
-Book pages additionally have `reading_width` (`slim` / `normal` / `wide`), which
-changes the body's own reading measure without touching the shell. An invalid
-value in either key warns and falls back during ordinary preview; strict
-publishing rejects the warning.
+Book pages also support `reading_width` (`slim` / `normal` / `wide`). This
+changes body reading width without changing the shell. An invalid value in
+either key warns and uses a fallback in normal preview. Review the warning and rendered fallback before publication.
 
 ## Navbar and footer switches {#chrome}
 
@@ -409,12 +408,12 @@ in [Page parameters](/docs/write/frontmatter/).
 ## Verify {#verify}
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 ```
 
-- The build prints `Total in …` with no ERROR and no WARN;
-- A newly created `type: docs` page has a left sidebar. If not, check whether the cascade reaches that page and whether `shell_types` contains the type;
-- Drag the sidebar divider, reload and confirm the width persists; double-click restores the default;
+- The build prints `Total in …` with no ERROR; review warnings and accept only the known upstream LibSass notice;
+- Confirm that a new `type: docs` page has a left sidebar. If it does not, check its cascade and `shell_types`;
+- Drag the sidebar divider and reload. Confirm that the width persists. Double-click to restore the default;
 - Below `md` the sidebar becomes a closable drawer, and below `xl` the outline moves into the drawer;
 - A section index has as many cards as the sidebar has child pages;
 - A page with `page_width: wide` is wider than its neighbours;

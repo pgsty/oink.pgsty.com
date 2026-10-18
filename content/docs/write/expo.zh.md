@@ -244,7 +244,7 @@ RSS 包含静态图片说明。输出配置见[打印](/zh/docs/customize/print/
 
 ## 检查相册 {#check-an-album}
 
-1. 使用包含 Expo 的主题版本运行 `hugo --printPathWarnings --panicOnWarning`。
+1. 使用包含 Expo 的主题版本运行 `hugo --printPathWarnings`。
 2. 打开每个相册，确认图片顺序、标题与说明。
 3. 检查小图、宽图、长图，以及相册中的 GIF。
 4. 检查重置、放大至适屏、缩放、拖动、快捷键导航和相册定位。

@@ -106,14 +106,14 @@ params:
 
 ## 验证 {#verify}
 
-先在自己的站点根目录完成严格构建。下方命令中的
+先在自己的站点根目录完成生产构建。下方命令中的
 `public/zh/docs/getting-started/index.html` 是示例；请换成自己站点实际生成的文档页，
 并按语言配置调整路径前缀。
 
 1. 构建后确认版本菜单进了页面：
 
    ```bash
-   hugo --printPathWarnings --panicOnWarning
+   hugo --printPathWarnings
    PAGE=public/zh/docs/getting-started/index.html
    test -f "$PAGE" && grep -c 'nav-version-menu' "$PAGE"
    ```

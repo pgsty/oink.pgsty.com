@@ -143,7 +143,7 @@ and italic behave as usual.
 - `hugo server` — open [localhost:1313](http://localhost:1313/)
 - `hugo server -D` — **including drafts**
 ## Build
-- `hugo --printPathWarnings --panicOnWarning`
+- `hugo --printPathWarnings`
 - `hugo --gc --minify` — for publishing
 ## Theme
 - `hugo mod get -u github.com/pgsty/oink`
@@ -158,7 +158,7 @@ and italic behave as usual.
 - `hugo server` — open [localhost:1313](http://localhost:1313/)
 - `hugo server -D` — **including drafts**
 ## Build
-- `hugo --printPathWarnings --panicOnWarning`
+- `hugo --printPathWarnings`
 - `hugo --gc --minify` — for publishing
 ## Theme
 - `hugo mod get -u github.com/pgsty/oink`

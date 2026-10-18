@@ -206,10 +206,10 @@ sidebar_root_for: self   # self | children
 ## 验证 {#verify}
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 ```
 
-必须 `Total in …`，没有 ERROR / WARN。`--printPathWarnings` 报出两个页面指向同一输出路径的情况，改目录结构时较常出现。
+必须 `Total in …`，没有 ERROR，并完成告警审阅；上游 LibSass 弃用告警允许出现。`--printPathWarnings` 报出两个页面指向同一输出路径的情况，改目录结构时较常出现。
 
 在浏览器里逐项确认：
 

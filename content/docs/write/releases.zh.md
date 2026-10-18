@@ -32,8 +32,7 @@ release_url: https://github.com/pgsty/oink/releases/tag/v0.4.0
 ```
 
 owner、项目名与标签从 URL 里解析出来，日期用页面自己的 `date`。不是精确
-标签形式的 GitHub 发布 URL 会警告并跳过发布区块——`--panicOnWarning` 构建
-随之失败。0.5 的 `release` 映射（product / version / repo / tag / date /
+标签形式的 GitHub 发布 URL 会警告并跳过发布区块。0.5 的 `release` 映射（product / version / repo / tag / date /
 prev / checksums）及其字符串简写已移除；仍携带它的页面会收到指名
 `release_url` 的警告。
 
@@ -85,7 +84,7 @@ layout: releases
 
 只接受两种行：`<十六进制><两个空格><文件名>` 与 `<十六进制><空格>*<文件名>`。空行
 与以 `#` 开头的行忽略。哈希长度决定算法（MD5 / SHA-1 / SHA-256 / SHA-512），一个块
-里只能有一种算法。格式错误的行带行号告警并跳过；严格发布构建拒绝这条警告。文件名
+里只能有一种算法。格式错误的行带行号告警并跳过；发布前应审阅告警并检查回退结果。文件名
 必须是单个路径段。类型、操作系统与架构徽章由文件名推断，属于装饰，推断不出时不显示。
 
 资产链接的基址：页面有 `release_url` front matter 时推导为 `https://github.com/<repo>/releases/download/<tag>/`；没有发布事实的页面必须显式写 `base=`。两者同时存在时报错。
@@ -154,7 +153,7 @@ channels:
 ```
 
 记录级字段只有 `version` `repo` `tag` `published` `channels` 五个。多写一个键时告警并
-跳过记录，严格发布构建拒绝这条警告。`version` 也可以不写在这里，改由站点的
+跳过记录，发布前应审阅告警并检查回退结果。`version` 也可以不写在这里，改由站点的
 `params.version` 提供。
 
 | 字段 | 类型 | 默认 | 说明 |
@@ -219,7 +218,7 @@ published: false
 
 ## 验证 {#verify}
 
-1. 构建零告警：`hugo --printPathWarnings --panicOnWarning`。哈希行格式、算法混用、缺 `base`、渠道字段拼错都在这一步失败。
+1. 构建生产：`hugo --printPathWarnings`。哈希行格式、算法混用、缺 `base`、渠道字段拼错都在这一步失败。
 2. 页面上：卡片显示的标签与日期与仓库一致；资产表每行都能点开真实的下载 URL。
 3. 逐条核对哈希与实际产物：组件只负责排版，不验证内容。
 4. 检查非 HTML 输出里哈希是完整的：

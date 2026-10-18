@@ -51,10 +51,11 @@ make build
 ```
 
 Replace `../my-docs` with an existing site. Site operations require Hugo
-Extended 0.166.0 or later; the fixed Starter's module workflow needs Go 1.27
-or later. Development and validation use Hugo Extended 0.166.0, with the
-baseline advancing with stable releases. Older Hugo compatibility is no
-longer maintained.
+Extended 0.168.0 or later; the fixed Starter's module workflow needs Go 1.27
+or later. Development and validation use Hugo Extended 0.168.0, with the
+default baseline kept pinned. New sites use OINK v1.3.2. Do not enable
+`--panicOnWarning` or `HUGO_PANICONWARNING`. Warnings remain visible; the upstream
+LibSass deprecation warning is accepted. No external Sass tool is required.
 
 `make deps` downloads build dependencies. CLI commands are offline by default;
 add `--network` when that invocation needs uncached inputs. Checks and change

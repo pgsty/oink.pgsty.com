@@ -98,8 +98,7 @@ search_keywords: [卡片, Cards, card, 链接卡片, 导航卡片, 栏目首页,
 {{< /card >}}
 {{< /cards >}}
 
-图标不是一对有效的 Font Awesome class 时，普通预览告警并丢弃图标；严格发布构建
-拒绝这条警告。
+图标不是一对有效的 Font Awesome class 时，普通预览告警并丢弃图标；发布前应审阅告警并检查回退结果。
 
 ## Markdown 正文 {#markdown-body}
 
@@ -139,7 +138,7 @@ search_keywords: [卡片, Cards, card, 链接卡片, 导航卡片, 栏目首页,
 
 `image` 需要一个替代文字来源：`image_alt="…"`（有信息的图）或
 `decorative=true`（纯装饰）。两个都写时告警并保留 alt；两个都不写时告警并按装饰图
-渲染。严格发布构建会拒绝任一警告。
+渲染。发布前应审阅告警并检查回退结果。
 
 ```markdown {title="源码"}
 {{</* cards */>}}
@@ -228,7 +227,7 @@ section_index: list
 {.fields meta="type default"}
 
 没有 `cols`、`columns`、`accent`、`desc`、`color` 参数。未知参数在普通预览中告警
-并忽略；严格发布构建拒绝这条警告。
+并忽略；发布前应审阅告警并检查回退结果。
 
 ## 限制与常见问题 {#limits}
 

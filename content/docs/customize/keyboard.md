@@ -183,9 +183,8 @@ keyboard_nav: false
 ---
 ```
 
-The key accepts a boolean only; `"false"` or any other value warns and uses the
-site default during ordinary preview. A strict publishing build fails on
-`params.ui.keyboard_nav must be a boolean`. The full definition is in
+The key accepts only a boolean. In normal preview, `"false"` or any other
+value warns and uses the site default. Review the `params.ui.keyboard_nav must be a boolean` diagnostic and rendered fallback before publication. See the complete definition in
 [Configuration](/docs/customize/config/).
 
 Turned off, the runtime never enters the JavaScript bundle rather than loading
@@ -195,14 +194,14 @@ unaffected.
 
 ## Verify {#verify}
 
-Run from your site's root after a strict build. In the commands below, replace
+Run from your site's root after a production build. In the commands below, replace
 `public/docs/getting-started/index.html` with an actual generated documentation
 page in your site (including a language prefix if needed).
 
 1. After a build, confirm the cheatsheet button is in the page:
 
    ```bash
-   hugo --printPathWarnings --panicOnWarning
+   hugo --printPathWarnings
    PAGE=public/docs/getting-started/index.html
    test -f "$PAGE" && grep -c 'td-shell-keyboard__trigger' "$PAGE"
    ```

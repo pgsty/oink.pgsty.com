@@ -30,7 +30,7 @@ the deployment workflow you selected:
 
 ```bash
 hugo --cleanDestinationDir --gc --minify --environment production \
-  --printPathWarnings --panicOnWarning
+  --printPathWarnings
 ```
 
 Check that `hugo mod graph` resolves the intended release in `go.mod`, then

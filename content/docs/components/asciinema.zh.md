@@ -147,7 +147,7 @@ search_keywords: [Asciinema, 终端录像, cast, asciicast, 录屏, 演示, term
 | `markers` | `时间:标签,时间:标签` | — | 章节标记；见下面的限制，标签目前到不了播放器 |
 {.fields meta="type default"}
 
-布尔类参数比较的是文本 `true`：`loop="true"` 与 `loop=true` 都表示开启，其它值表示关闭。其余参数一律告警后继续：`fit` 非法时用 `width`，`speed` 非数字时用 `1`，`startAt` 非数字时用 `0`，`cols`、`rows`、`idleTimeLimit` 与标记时间非数字时忽略。它们都不会中断普通构建，也都会让带 `--panicOnWarning` 的发布关卡失败。
+布尔类参数比较的是文本 `true`：`loop="true"` 与 `loop=true` 都表示开启，其它值表示关闭。其余参数一律告警后继续：`fit` 非法时用 `width`，`speed` 非数字时用 `1`，`startAt` 非数字时用 `0`，`cols`、`rows`、`idleTimeLimit` 与标记时间非数字时忽略。这些告警不会中断构建，发布前应审阅诊断并修正无效参数。
 
 ## 限制与常见问题 {#limits}
 

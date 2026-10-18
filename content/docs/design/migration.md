@@ -152,11 +152,9 @@ reported with replacements.
 - Blog and default dates now default to ISO `2006-01-02`; retain explicit
   `time_format_blog` or `time_format_default` for prose dates.
 
-Removed names warn and take the documented safe fallback or render nothing;
-ordinary previews continue, while `--panicOnWarning` rejects them at a strict
-gate. `blog_index_toggle`, `featured_image: hero`, `toc_style`, and
-`toc_taxonomies` are additive opt-ins. They introduce no content type;
-immersive reading stays on the ordinary blog shell.
+Removed names warn and use the documented safe fallback or render nothing, allowing ordinary previews to continue. Review these warnings and their rendered fallbacks before publication.
+`blog_index_toggle`, `featured_image: hero`, `toc_style`, and `toc_taxonomies` are additional opt-ins.
+They add no content type. Immersive reading remains on the ordinary blog shell.
 
 ## Prerequisites and validation {#prerequisites-and-validation}
 
@@ -165,8 +163,7 @@ as shown in the [component contract](/docs/design/components/). Enable
 passthrough explicitly for `\(...\)`, `\[...\]`, or `$$...$$`; Hugo does not
 merge theme markup config.
 
-Run the smallest source and output checks for the changed contract with the
-pinned Hugo Extended 0.166.0 toolchain, JS tests when runtime changes, and
-strict root and subpath builds. For maintained sites, inspect representative
-EN/ZH Docs and Blog routes at desktop and narrow widths, then record pin,
-deployment, and hosted parity separately.
+Run the smallest source and output checks for the changed contract with pinned Hugo Extended 0.168.0.
+For runtime changes, also run JS tests. Run production root and subpath builds.
+For maintained sites, inspect representative EN/ZH Docs and Blog routes at desktop and narrow widths.
+Record pin, deployment, and hosted parity separately.

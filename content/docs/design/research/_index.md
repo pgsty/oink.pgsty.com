@@ -13,11 +13,11 @@ design_status: active
 ---
 
 > [!NOTE] Evidence, not a contract
-> Research records what was measured, with which inputs and tool versions.
-> Results may explain a decision, but they do not override the current
-> contracts or implementation. Current validation uses Hugo Extended 0.166.0
-> and follows the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
-> Older versions recorded here are historical evidence, not compatibility test targets.
+> Research records measurements, inputs, and tool versions.
+> Results may explain a decision. They do not override current contracts or
+> implementation. Current validation uses Hugo Extended 0.168.0 and follows
+> the [toolchain contract](/docs/design/architecture/#hugo-toolchain). Older
+> versions recorded here are historical evidence, not compatibility test targets.
 
 Research belongs in the public Design tree when another maintainer can inspect
 its method, understand its limits, and repeat the relevant check. Raw agent

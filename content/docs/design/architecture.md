@@ -5,26 +5,29 @@ description: Repository assembly, configuration, diagnostics, localization, outp
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK architecture, repository boundary, runtime, i18n, Docsy locales, output formats, security, accessibility, performance]
-contract_status: v1.3.0
+contract_status: v1.3.2
 ---
 
-> [!NOTE] OINK 1.3.0 contract
-> This contract describes OINK v1.3.0. Theme development uses the sibling
+> [!NOTE] OINK 1.3.2 contract
+> This contract describes OINK v1.3.2. Theme development uses the sibling
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 
 ## Hugo toolchain {#hugo-toolchain}
 
-As of 2026-10-15, Hugo Extended **0.166.0** is the single development, CI, and
-release-test baseline and the current theme's declared minimum. Advance this
-baseline with stable Hugo releases. Update workflow pins, `hugo.yaml`,
-`theme.toml`, site requirements, the CLI version gate, and current bilingual
-documentation together.
+Use **OINK v1.3.2** and **Hugo Extended 0.168.0** for maintained sites,
+development, CI, and release validation. Keep this toolchain pinned.
 
-Do not run older-Hugo compatibility matrices, adapt code for older versions,
-or add compatibility shims unless the user explicitly requests it. Historical
-release notes and dated research retain their original tool versions; they do
-not establish current support requirements.
+Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Warnings remain
+visible and are reviewed. The upstream LibSass deprecation warning is accepted;
+it does not make a successful build fail. Invalid-input tests verify their
+specific warning and safe fallback output directly.
+
+OINK uses Hugo's built-in LibSass for main and ReDoc styles. Ordinary consumers
+need no Dart Sass or other Sass executable. Project-variable and project-style
+SCSS hooks remain supported. Future upgrades must preserve this dependency
+boundary. Update requirements, checkers, CI pins, and both language contracts
+together; historical release and research records retain their original tools.
 
 ## Repository and assembly {#repository-and-assembly}
 
@@ -63,32 +66,26 @@ merging would change Hugo lookup precedence.
 
 ## Configuration and diagnostics {#configuration-and-diagnostics}
 
-Theme policy lives under `params.ui.*`; multi-setting integrations such as
-`comments.giscus`, `plantuml`, and `drawio` stay top-level. Boolean features use
-bare booleans unless they also have several settings. A page override drops the
-`ui.` prefix: `params.ui.image_zoom` becomes `image_zoom`, never a front-matter
-`ui` map. `hugo.yaml` declares published defaults; an owning resolver and its
-checker define any optional configuration shape or range.
+Theme policy uses `params.ui.*`. Integrations with multiple settings, such as `comments.giscus`, `plantuml`, and `drawio`, remain top-level.
+Boolean features use bare booleans unless they have multiple settings.
+Page overrides omit the `ui.` prefix. Thus `params.ui.image_zoom` becomes `image_zoom`, never a front matter `ui` map.
+`hugo.yaml` declares published defaults. The owning resolver and checker define optional configuration shapes or ranges.
 
-Invalid input follows one rule: warn with the value, allowed shape, and safe
-fallback; then use that fallback or omit the unsafe feature. Ordinary
-`hugo server` therefore remains usable, while every publishing gate uses
-`--panicOnWarning`. The theme never calls `errorf`, and `check-params.py`
-enforces that boundary. Do not add speculative validation for unreachable
-states.
+For invalid input, warn with the value, allowed shape, and safe fallback. Then apply the fallback or omit the unsafe feature.
+Ordinary builds and previews remain usable. Review warnings and validate the rendered fallback.
+The theme never calls `errorf`. `check-params.py` enforces this rule.
+Do not add speculative validation for unreachable states.
 
-There is no generic renamed-key registry. A transition that still needs a
-migration diagnostic uses a targeted warning in its owning resolver plus a
-strict negative test; removed keys are never read as a compatibility path.
+There is no generic registry of renamed keys.
+If a transition needs a migration diagnostic, add a targeted warning to its resolver and a negative test that verifies the warning and fallback.
+Never read removed keys as a compatibility path.
 
-Network-capable features are explicit and degrade closed. PlantUML requires
-`plantuml.svg_image_url`, Draw.io requires `drawio.drawio_server`, and Algolia
-requires `appId`, `apiKey`, and `indexName`; incomplete configuration warns and
-emits no request. Draw.io loads only when rendered content contains PNG or SVG
-candidates, then inspects each distinct image URL once.
-Diagram endpoints must be strings containing an HTTP(S) URL with a host or a
-same-site path. Unsupported schemes, protocol-relative URLs, backslashes, whitespace, and
-pathless same-site references warn and disable the integration before its runtime is selected.
+Network-capable features require explicit configuration and remain disabled when that configuration is invalid.
+PlantUML requires `plantuml.svg_image_url`. Draw.io requires `drawio.drawio_server`. Algolia requires `appId`, `apiKey`, and `indexName`.
+Incomplete configuration warns and sends no request.
+Draw.io loads only if rendered content has PNG or SVG candidates. It inspects each distinct image URL once.
+Diagram endpoints must be strings with an HTTP(S) URL containing a host or a same-site path.
+Unsupported schemes, protocol-relative URLs, backslashes, whitespace, and same-site references without paths warn and disable the integration before runtime selection.
 
 > [!NOTE] Fixed in OINK 1.3.0
 > Editor URLs retain their query parameters and fragments when embedding
@@ -215,7 +212,7 @@ A top-level section enables `LLMSFULL` by listing it in its `_index` front matte
 The theme never adds it to site outputs. One renderer creates per-page Markdown and the bundle.
 The bundle concatenates the same semantic Markdown, without `td-` component markup, in sidebar and pager reading order.
 Enabling it below the top level warns and emits nothing.
-Ordinary builds remain usable, while `--panicOnWarning` blocks publication.
+Builds remain usable; the warning and absence of the disabled output are checked directly.
 
 Site `outputs.home` enables `NAVJSON`. It publishes one `navigation.json` per language at the language root.
 It uses the sidebar and pager authority: explicit `data/docs_nav.json` when present, or the weighted content tree otherwise.

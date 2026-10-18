@@ -52,12 +52,10 @@ cascade:
   section_index: list
 ```
 
-An invalid value does not stop the build. The theme warns — naming the key, the
-value it got and the fallback it used — and renders the page with the default in
-the table, so one typo degrades one setting instead of serving HTTP 500 on every
-URL under `hugo server`. It still never ships: every publishing gate builds with
-`--panicOnWarning`, which turns that warning back into a hard failure where it
-counts.
+An invalid value does not stop an ordinary build. The theme warns and names
+the key, supplied value, and fallback. It renders the page with the table's
+default. One typo affects one setting rather than serving HTTP 500 on every
+URL under `hugo server`. Review the warning and rendered fallback before publication.
 
 No front matter key stops the build; the theme's templates never raise an
 error. Where carrying on would publish something wrong rather than merely

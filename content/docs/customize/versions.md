@@ -135,14 +135,14 @@ lists them and adds the archive banner.
 
 ## Verify {#verify}
 
-Run from your site's root after a strict build. In the commands below, replace
+Run from your site's root after a production build. In the commands below, replace
 `public/docs/getting-started/index.html` with an actual generated documentation
 page in your site (including a language prefix if needed).
 
 1. After a build, confirm the version menu reached the page:
 
    ```bash
-   hugo --printPathWarnings --panicOnWarning
+   hugo --printPathWarnings
    PAGE=public/docs/getting-started/index.html
    test -f "$PAGE" && grep -c 'nav-version-menu' "$PAGE"
    ```

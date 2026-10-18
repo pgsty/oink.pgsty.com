@@ -138,7 +138,7 @@ four outputs.
 
 ## Verify {#verify}
 
-1. The build is warning-free: `hugo --printPathWarnings --panicOnWarning`.
+1. Build with visible diagnostics: `hugo --printPathWarnings`.
 2. The specification really was published: `ls public/openapi/docs-demo.yaml`, or open `http://localhost:1313/openapi/docs-demo.yaml`.
 3. Endpoints expand on the page and their schemas appear; the browser console shows no 404 and no cross-origin error.
 4. Disconnect from the external network while keeping the local preview server reachable, then reload: local runtimes and a same-origin specification should still appear.

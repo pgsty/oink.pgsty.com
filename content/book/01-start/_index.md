@@ -23,7 +23,7 @@ theme or deployment problem later.
 
 ## Install the prerequisite {#prerequisite}
 
-Use Git, Go 1.27 or newer, and Hugo Extended 0.166.0 for this tutorial.
+Use Git, Go 1.27 or newer, and Hugo Extended 0.168.0 for this tutorial.
 Development, CI, and release tests use this single Hugo baseline, which
 advances with stable releases. Update an older Starter's Hugo workflow pins
 before validation. Older Hugo compatibility is no longer maintained.
@@ -33,7 +33,7 @@ Node.js is not required.
 $ go version
 go version go1.27.0 darwin/arm64
 $ hugo version
-hugo v0.166.0+extended+withdeploy darwin/arm64
+hugo v0.168.0+extended+withdeploy darwin/arm64
 ```
 
 ## Run the preview {#preview}

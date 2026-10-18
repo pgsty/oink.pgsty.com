@@ -95,11 +95,9 @@ chunk, and the runtime's test is identical.
 ![The Hugo build pipeline (PNG export)](pipeline.drawio.png)
 {width="620" height="140"}
 
-Prefer SVG in documentation: it scales without loss, its text is real text
-(searchable, readable by screen readers) and its diffs are legible. Use PNG when
-the diagram is very complex or the target platform cannot take SVG. Only PNG can
-go through Hugo's image processing; operations on SVG warn and leave the source
-unchanged, and strict builds reject the warning.
+Prefer SVG for documentation. It scales without quality loss, contains searchable text accessible to screen readers, and has readable diffs.
+Use PNG for very complex diagrams or platforms without SVG support. Only PNG supports Hugo image processing.
+Processing an SVG warns and preserves the source. Review the warning and rendered fallback before publication.
 
 ## What the button does {#editing}
 
@@ -145,16 +143,13 @@ params:
     drawio_server: https://drawio.internal.example/
 ```
 
-- `enable: true` without `drawio_server` warns and disables editing; strict
-  builds fail on that warning. The theme does not pick a public service.
-- The address must be an HTTP(S) URL or a local path. Local paths honor the
-  deployment subpath in `baseURL`. Whitespace, control characters, raw
-  backslashes, protocol-relative URLs (`//host/`), and other schemes warn and
-  disable editing; strict builds reject the warning.
-- When editing has to stay inside the organization, deploy a
-  [self-hosted editor](https://github.com/jgraph/docker-drawio) and point at it.
-- The public endpoint `https://embed.diagrams.net/` works, and the reader's
-  diagram then travels to a third-party page.
+- `enable: true` without `drawio_server` warns and disables editing. Review the warning and rendered fallback before publication.
+  The theme does not select a public service.
+- The address must be an HTTP(S) URL or local path. Local paths honor the `baseURL` deployment subpath.
+  Whitespace, control characters, raw backslashes, protocol-relative URLs (`//host/`), and other schemes warn and disable editing.
+  Review the warning and rendered fallback before publication.
+- If editing must stay within your organization, deploy a [self-hosted editor](https://github.com/jgraph/docker-drawio) and configure its address.
+- The public endpoint `https://embed.diagrams.net/` works. With this endpoint, the reader's diagram is sent to a third-party page.
 
 Both keys are defined in
 [Configuration](/docs/customize/config/).

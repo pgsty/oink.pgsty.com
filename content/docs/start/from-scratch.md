@@ -32,8 +32,7 @@ below. For an existing Docsy site, see [Upgrade](/docs/admin/upgrade/).
 
 The second half weighs four install methods: Hugo Module, Git submodule,
 offline archive, and pinned source copy. Current development and validation use
-Go 1.27 and Hugo Extended 0.166.0. The Hugo baseline advances with stable
-releases; older-Hugo compatibility testing and adaptation are discontinued.
+Go 1.27 and Hugo Extended 0.168.0. The default Hugo version stays pinned; older-Hugo compatibility testing and adaptation are discontinued.
 
 ## Add OINK to an existing site {#existing-site}
 
@@ -48,9 +47,9 @@ Skip `hugo new site` and keep the existing configuration filename.
    `markup.goldmark` settings and `markup.highlight.noClasses: false` from
    [the example](#config). Do not replace your whole configuration with it.
 1. Review site-owned `layouts/` and assets, old theme shortcodes, and page
-   `type`/`layout` values: those overrides and conventions may still select the
-   previous theme's behavior. Keep content and make only the adaptations needed.
-1. Run `hugo --panicOnWarning`, then open an existing representative page with
+   `type`/`layout` values. These overrides and conventions may still select the
+   previous theme's behavior. Keep content. Make only the necessary adaptations.
+1. Run `hugo`, then open an existing representative page with
    `hugo server`. Check its navigation, images, and code blocks before applying
    optional OINK features. Continue with [verification](#verify).
 {.steps}
@@ -416,7 +415,7 @@ builds use the version in `go.mod`, and `go.work` is never committed.
 
 ```bash
 hugo mod graph                                       # which theme version actually resolved
-hugo --gc --minify --printPathWarnings --panicOnWarning
+hugo --gc --minify --printPathWarnings
 ```
 
 It passes when the build ends with `Total in …` and no `WARN` or `ERROR`. Then

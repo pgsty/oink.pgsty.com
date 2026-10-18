@@ -307,11 +307,11 @@ faq:
   items:
     - question: Do I need Node.js, npm or a bundler anywhere?
       answer: >-
-        No. The build dependency is Hugo Extended (0.166.0 or newer). Go is used
-        once, to resolve the theme as a Hugo module; an offline archive or a Git
-        submodule works without it. Interactive features still run JavaScript,
-        but those scripts ship with the theme and attach only to the pages that
-        use them.
+        No. Site builds use Hugo Extended and its built-in Sass compiler; no
+        external Sass installation is required. Hugo 0.168.0 is the minimum
+        and default version. Go resolves the theme as a module; an offline
+        archive or Git submodule works without it. Browser scripts ship
+        with the theme and load only where they are used.
       open: true
     - question: I have a Docsy site. How hard is the move?
       answer: >-
@@ -356,7 +356,7 @@ faq:
 
 cta:
   title: Start from a repository that already works.
-  text: Use OINK Starter, replace the identity and content, then publish with a warning-strict Hugo build.
+  text: Use OINK Starter, replace the identity and content, then build with Hugo 0.168.0, review its diagnostics, and publish.
   label: Use OINK Starter
   url: docs/start/starter/
   style: primary

@@ -31,7 +31,7 @@ your site repository in a second terminal while the preview server stays open.
 ````markdown {title="content/docs/preview-check.md" num="3-1" caption="The same page now states a prerequisite, a command, and a visible result." #eg-page-contract}
 ---
 title: Verify a local preview
-description: Check that a documentation edit reaches the browser and builds without warnings.
+description: Check that a documentation edit reaches the browser and builds with reviewed diagnostics.
 weight: 25
 ---
 
@@ -41,10 +41,10 @@ weight: 25
 > Run the build below in a second terminal, from the site repository.
 
 ```bash
-hugo --environment production --panicOnWarning
+hugo --environment production
 ```
 
-The command should exit successfully without warnings. Refresh this page at
+The command should exit successfully with reviewed diagnostics. Refresh this page at
 `http://localhost:1313/docs/preview-check/` and confirm the new note and command
 are visible. A successful build and a visible edit are two separate checks.
 ````

@@ -278,19 +278,15 @@ activate, and focus stays on the tab.
 
 ## Limits {#limits}
 
-- Invalid grouping and composition warn during the Hugo build and take a safe
-  fallback: drop an unusable group/value/default, ignore stray content, keep
-  the later duplicate, or render no empty set. Strict publishing rejects every
-  warning, and the message names the source position.
-- In the attribute form, a run missing a usable `value` loses synchronization
-  and remains a set of local tabs; grouping never silently invents an identity.
-- Fences and tables never merge into one set. To mix prose with code, use the
-  shortcode form.
-- Tabs are not a disclosure. To fold away long output use `> [!DETAILS]` (see
-  [Callouts](/docs/components/callout/)).
-- A `group` name is shared site-wide: a reader who picks pnpm on page A gets
-  pnpm in the same group on page B. That is the point — and it means `group`
-  names should mean something, not be `tabs1`.
+- Invalid grouping or composition warns during Hugo builds and uses a safe fallback.
+  The theme removes unusable group/value/default settings, ignores stray content, keeps later duplicates, or omits empty sets.
+  Warnings identify the source position. Review the warning and rendered fallback before publication.
+- In the attribute form, a sequence without usable `value` loses synchronization and remains local tabs.
+  Grouping never silently creates an identity.
+- Fences and tables cannot form one set. Use shortcodes to combine prose and code.
+- To collapse long output, use `> [!DETAILS]` instead of tabs. See [Callouts](/docs/components/callout/).
+- `group` names are shared site-wide. Selecting pnpm on page A also selects pnpm in the same group on page B.
+  Choose meaningful `group` names instead of `tabs1`.
 
 ## Related {#related}
 

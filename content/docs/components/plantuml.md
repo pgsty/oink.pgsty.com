@@ -6,13 +6,11 @@ weight: 120
 search_keywords: [svg-image-url, PlantUML, UML, sequence, class, component, activity, usecase]
 ---
 
-A `plantuml` fence holds PlantUML source. The browser compresses and encodes it,
-appends it to the URL of a PlantUML server, and gets an SVG back. It suits
-sequence, class, component, activity and use-case diagrams that need the full
-expressiveness of UML. Rendering depends on that server: the theme ships no
-default endpoint. `enable: true` without `svg_image_url` warns and leaves
-PlantUML off in ordinary preview; strict publishing rejects the warning. With
-no server available, use [Mermaid](/docs/components/mermaid/) instead.
+A `plantuml` fence contains PlantUML source. The browser compresses and encodes it, appends it to a server URL, and retrieves SVG.
+Use it for sequence, class, component, activity, or use-case diagrams that need full UML features.
+Rendering needs a server. The theme supplies no default endpoint.
+`enable: true` without `svg_image_url` warns and leaves PlantUML disabled in ordinary previews. Review the warning and rendered fallback before publication.
+Without a server, use [Mermaid](/docs/components/mermaid/).
 
 > [!WARNING] This page shows source only, not rendered diagrams
 > PlantUML has to reach a server you run, and this site assumes no endpoint on
@@ -124,7 +122,7 @@ correctly in the current version.
 start
 :write content/docs/**/*.md;
 :add the translated peer, copying the rendered heading IDs;
-if (hugo --panicOnWarning passes?) then (yes)
+if (hugo passes?) then (yes)
   :npm test;
 else (no)
   :fix using the file and line in the error;
@@ -213,17 +211,14 @@ params:
 
 - `enable: true` without `svg_image_url` warns and stays off with
   `params.plantuml.enable requires an explicit params.plantuml.svg_image_url`.
-  Strict publishing rejects the warning. The theme never picks a public service.
-- To self-host, the official image
-  [`plantuml/plantuml-server`](https://github.com/plantuml/plantuml-server)
-  works; point `svg_image_url` at its `/svg/` path and **keep the trailing
-  slash** — the encoded source is appended to it.
-- Use an HTTP(S) URL or a local path. Local paths honor the deployment subpath
-  in `baseURL`. Whitespace, control characters, raw backslashes, protocol-relative
-  URLs (`//host/`), and other schemes warn and leave the source block visible
-  without loading the PlantUML runtime; strict publishing rejects the warning.
-- The endpoint's CORS policy and the site's CSP `img-src` (plus `connect-src`
-  when `svg: true`) must both allow it.
+  Review the warning and rendered fallback before publication. The theme never selects a public service.
+- For self-hosting, use the official [`plantuml/plantuml-server`](https://github.com/plantuml/plantuml-server) image.
+  Set `svg_image_url` to its `/svg/` path and **keep the trailing slash**. The encoded source is appended to it.
+- Use an HTTP(S) URL or local path. Local paths honor the deployment subpath in `baseURL`.
+  Whitespace, control characters, raw backslashes, protocol-relative URLs (`//host/`), and other schemes warn.
+  The source block stays visible, and the PlantUML runtime does not load. Review the warning and rendered fallback before publication.
+- The endpoint's CORS policy and the site's CSP `img-src` must allow it.
+  When `svg: true`, `connect-src` must also allow it.
 
 These keys are defined in
 [Configuration](/docs/customize/config/).

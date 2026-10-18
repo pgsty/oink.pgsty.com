@@ -304,8 +304,7 @@ Pinterest 图片来自共享特色图片解析器。ChatGPT 与 Claude 接收构
 其它上游事实按站点参数 → `data/upstreams[upstream_source]` → front matter 解析：
 `upstream_name`、`upstream_copyright`、`upstream_license`、`upstream_notice`，
 以及可选的 `upstream_ref`、`upstream_modified`。存在链接时，前四项必填。无效或
-残缺的署名会警告，而且不渲染法律声明；不支持的 URL 会被拒绝。发布门禁通过
-`--panicOnWarning` 拒绝这类警告。
+残缺的署名会警告，而且不渲染法律声明；不支持的 URL 会被拒绝。发布前应核对告警与署名输出。
 
 `upstream_modified` 改变署名动词并链接提交历史，不增加新行。notice 页面承载
 完整的许可证与免责声明。翻译说明通过 `params.ui.translation_notice` 选择启用，
@@ -408,7 +407,7 @@ OINK 没有归档外壳、任意深度飞出菜单、第二个导航权威、查
 
 显式设置 `params.ui.quick_links: []` 会关闭快速链接，不恢复默认值。
 无效的 `sidebar_root_link_self` 会告警并采用文档规定的 `true` 回退。
-分类法总览页与 term 页使用共享的 `page_width` 校验器，其诊断同样受严格发布门禁约束。
+分类法总览页与 term 页使用共享的 `page_width` 校验器，发布前同样需要审阅其诊断与回退结果。
 
 ## 验证 {#verification}
 

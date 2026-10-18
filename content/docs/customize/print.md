@@ -186,7 +186,7 @@ enabled `print`. Replace the example path with that section's actual output,
 including its language prefix if applicable:
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 PRINT_PAGE=public/_print/docs/index.html
 test -f "$PRINT_PAGE"
 ```

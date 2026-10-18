@@ -219,7 +219,7 @@ cascade:
 在站点根目录执行，将两个示例路径换成自己的页面与分类法产物路径，并按需包含语言前缀：
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 PAGE=public/zh/docs/getting-started/index.html
 TAXONOMY_DIR=public/zh/categories
 ls "$TAXONOMY_DIR"

@@ -38,7 +38,7 @@ module:
     - path: github.com/pgsty/oink
   hugoVersion:
     extended: true
-    min: 0.166.0
+    min: 0.168.0
 
 params:
   offline_search: true
@@ -49,8 +49,8 @@ params:
 
 - **主题默认保守，只写要改的键**。交互功能（本地搜索、图片缩放、评论、反馈、深浅色菜单）默认关闭，主题不替站点做策略决定。从一份「完整配置」逐条删减，比按需添加更容易留下用不上的键。
 - **没有主题总开关**。不存在 `oink.enabled`，也没有 `params.oink.*` 命名空间，更没有在「Docsy 外壳」与「OINK 外壳」之间切换的选项。这一页查不到的开关即不存在。
-- **非法值告警并回退到文档里写明的默认值**。`params.ui.typography: solarized` 报 `invalid params.ui.typography "solarized" (allowed: technical | system) -- using "technical"`，站点照常构建；`footer_style: thin`、`page_width: huge`、`section_index: grid` 同理。一个笔误因此只降级一个设置，而不是让 `hugo server` 下每个 URL 都返回 HTTP 500。它也不会因此静悄悄上线：所有发布关卡都带 `--panicOnWarning` 构建，那条警告在那里仍然是硬失败。
-- **有一条警告保留取值而不是丢弃它**。主题读出的 `theme_color` 若在它自己的画布上低于 AA 正文对比度（4.5:1），颜色照常生效 —— 自定义画布或品牌强制色是作者的决定 —— 但会说出来，并打印可以让它闭嘴的 `ignoreLogs` id。把它当建议而不是拒绝：要么换个更深的颜色，要么加一行配置，在你做出选择之前发布关卡会一直卡住构建。只有解析不出来的十六进制才会被真正丢弃，那种情况和其他非法值一样回退到默认配色。
+- **非法值告警并回退到文档里写明的默认值**。`params.ui.typography: solarized` 报 `invalid params.ui.typography "solarized" (allowed: technical | system) -- using "technical"`，站点照常构建；`footer_style: thin`、`page_width: huge`、`section_index: grid` 同理。一个笔误因此只降级一个设置，而不是让 `hugo server` 下每个 URL 都返回 HTTP 500。发布前应核对这些告警与降级产物。
+- **有一条警告保留取值而不是丢弃它**。主题读出的 `theme_color` 若在它自己的画布上低于 AA 正文对比度（4.5:1），颜色照常生效 —— 自定义画布或品牌强制色是作者的决定 —— 但会说出来，并打印可以让它闭嘴的 `ignoreLogs` id。把它当建议而不是拒绝：要么换个更深的颜色，要么加一行配置，发布前应确认实际对比度。只有解析不出来的十六进制才会被真正丢弃，那种情况和其他非法值一样回退到默认配色。
 
 - **主题自身从不中断构建**。它的模板里没有任何 `errorf`：每个非法值都走上面的告警并回退。需要外部端点的功能——PlantUML、Draw.io、Algolia——缺少端点时告警并保持关闭，因为主题不会代为连接公共服务；残缺的上游署名告警并略去整条声明，因为半条读起来和完整的一模一样。真正会中断构建的来自 Hugo 而非主题：解析不到目标的内容引用，以及低于 `module.hugoVersion.min` 的 Hugo 版本。
 
@@ -346,8 +346,7 @@ OINK 1.3.0 为默认 `shell_types` 列表添加了 `expo`，
 | `params.ui.feedback.reasons` | boolean | true | 选「否」后展开四个可选原因 |
 {.fields meta="type default"}
 
-四个 giscus 必填项缺任意一个，都会告警并跳过评论区。普通预览继续；带
-`--panicOnWarning` 的构建失败。必填字段见[评论](/zh/docs/admin/comments/#enable)。
+四个 giscus 必填项缺任意一个，都会告警并跳过评论区。普通预览继续；发布前应核对告警，并确认评论区已停用。必填字段见[评论](/zh/docs/admin/comments/#enable)。
 
 ## 仓库链接与页面信息 {#repository}
 
@@ -457,7 +456,7 @@ outputs:
 | `taxonomies` | map | | Hugo 原生：启用 `tag: tags` / `category: categories`，见[分类体系](/zh/docs/customize/taxonomy/) |
 | `params.taxonomy.page_header` | list | | 只在文章头部显示这几种分类；不设则显示全部 |
 | `services.googleAnalytics.id` | string | | Hugo 原生：分析脚本只在生产构建注入，见[分析与 SEO](/zh/docs/admin/analytics/) |
-| `module.hugoVersion.min` | string | 0.166.0 | 主题声明的 Hugo 下限，低于它构建失败 |
+| `module.hugoVersion.min` | string | 0.168.0 | 主题声明的 Hugo 下限，低于它构建失败 |
 | `module.hugoVersion.extended` | boolean | true | 必须是 Hugo Extended（要编译 SCSS） |
 {.fields meta="type default"}
 
@@ -488,13 +487,13 @@ front-matter Schema 刻意不带类型约束，因为 `share`、`theme_color` �
 
 ## 验证配置变更 {#verify}
 
-改完配置跑一次严格构建：
+改完配置跑一次生产构建：
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 ```
 
-输出 `Total in …` 且没有 ERROR / WARN 才算通过。常见报错与原因：
+输出 `Total in …` 且没有 ERROR，并完成告警审阅才算通过；上游 LibSass 弃用告警允许出现。常见报错与原因：
 
 | 报错片段 | 原因 |
 | --- | --- |
@@ -515,13 +514,13 @@ hugo --printPathWarnings --panicOnWarning
 
 配置改动还要至少验证三件事：每种语言各一页、缺译页的回退、生产 `baseURL` 下的链接（子路径部署容易漏）。
 
-主题的最低版本与统一测试基线都是 Hugo Extended `0.166.0`。配置改动使用这个
-版本验证；基线随稳定版更新，不再测试或适配旧 Hugo：
+主题的最低版本与统一测试基线都是 Hugo Extended `0.168.0`。配置改动使用这个
+版本验证；默认基线保持固定，不再测试或适配旧 Hugo：
 
 ```bash
-# 输出必须包含 v0.166.0+extended
+# 输出必须包含 v0.168.0+extended
 hugo version
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 ```
 
 最低版本写在主题的 `hugo.yaml` 与 `theme.toml` 里，站点自己的

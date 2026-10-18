@@ -1,7 +1,7 @@
 ---
 title: Local preview
 linkTitle: Local preview
-description: Preview changes with hugo server, build a deployable public/ with hugo --panicOnWarning, and need neither Node nor a CDN.
+description: Preview changes with hugo server and build deployable output with hugo. Neither Node nor a CDN is required.
 weight: 10
 search_keywords: [local preview, hugo server, development server, drafts, production build, container, Docker, cache, offline, air-gapped]
 aliases:
@@ -83,7 +83,7 @@ while CSS and the search index — anything using an absolute path — point at
 Build deployable output with `hugo`, not `hugo server`:
 
 ```bash {title="Terminal"}
-hugo --gc --minify --printPathWarnings --panicOnWarning
+hugo --gc --minify --printPathWarnings
 ```
 
 The output goes to `public/`, which can be deployed independently of the source
@@ -93,21 +93,17 @@ tree. Each of the four switches does one thing:
 | --- | --- |
 | `--gc` | Clears cached resources in `resources/_gen` that are no longer referenced |
 | `--minify` | Minifies the HTML, CSS, JS and XML output |
-| `--printPathWarnings` | Warns when two pages collide on one output path, the commonest silent error on a multilingual site |
-| `--panicOnWarning` | Fails the build on the first WARNING |
+| `--printPathWarnings` | Warns when two pages use the same output path. This is the most common silent error on multilingual sites |
 {.fields}
 
-`--panicOnWarning` deserves its own note. Most of OINK's degradation paths warn
-rather than error: a missing required giscus key, an unsupported
-`params.comments.type`, a configuration key Hugo has deprecated — each prints one
-WARNING and moves on. CI logs are rarely read line by line, so those reach
-production. Putting this switch in the build command makes zero warnings the
-condition for a passing build.
+Use Hugo Extended 0.168.0 and leave warnings visible. Do not enable
+`--panicOnWarning` or `HUGO_PANICONWARNING`: Hugo's upstream LibSass deprecation
+warning is accepted. Invalid giscus settings or unsupported theme values also
+warn and fall back; review these diagnostics and the rendered output before
+publication.
 
-This site's CI build step (`.github/workflows/site-checks.yml`) is
-`hugo --cleanDestinationDir --gc --minify --environment production
---printPathWarnings --panicOnWarning`, so any warning stops the deployment at
-the build stage.
+This site's CI uses the production command above, with local module
+replacements and workspaces disabled for published-pin acceptance.
 
 ### baseURL and the build environment {#baseurl-and-environment}
 
@@ -148,7 +144,7 @@ machine.
 ```dockerfile {title="Dockerfile" collapse=16}
 FROM debian:bookworm-slim
 
-ARG HUGO_VERSION=0.166.0
+ARG HUGO_VERSION=0.168.0
 ARG GO_VERSION=1.27.0
 ARG TARGETARCH
 
@@ -253,7 +249,7 @@ and the browser stage. Six steps:
 
 1. Start from a verified theme archive and an empty module cache (`hugo mod clean --all`).
 1. Block outbound HTTP, HTTPS and the Go module proxy.
-1. Run the production build `hugo --gc --minify --printPathWarnings --panicOnWarning`.
+1. Run the production build `hugo --gc --minify --printPathWarnings`.
 1. Browse pages in both languages: a documentation page, a blog page, the home page, the 404.
 1. Exercise search, the light/dark toggle, diagrams and content components.
 1. Check subresource origins and confirm there is no unexpected remote host.
@@ -286,10 +282,11 @@ A clean production build should look like this:
 
 ```bash {title="Terminal"}
 rm -rf public resources/_gen
-hugo --gc --minify --printPathWarnings --panicOnWarning
+hugo --gc --minify --printPathWarnings
 ```
 
-It passes on `Total in …` with no ERROR and no WARNING. Then confirm:
+The build passes when it reports `Total in …` with no ERROR; review warnings and accept only the known upstream LibSass noticeING.
+Then check the following items:
 
 - The log has no npm, PostCSS, Autoprefixer or browser-asset download step. One appearing means upstream Docsy's process has crept into the configuration.
 - `public/` has `sitemap.xml` and `robots.txt`, and `robots.txt` reads `Allow: /`.

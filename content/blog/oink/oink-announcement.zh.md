@@ -77,10 +77,10 @@ matter、文档与博客 section、菜单、taxonomy、打印输出、仓库链�
 ## 体验 starter {#try-the-starter}
 
 > [!NOTE] 使用说明更新于 2026-10-15
-> 本文记录最初的实现预览。当前搭建与验收统一使用 Hugo Extended 0.166.0，基线随
+> 本文记录最初的实现预览。当前搭建与验收统一使用 Hugo Extended 0.168.0，基线随
 > 稳定版更新，不再测试或适配旧 Hugo。
 
-安装 Git、Go 1.27 或更新版本，以及 Hugo Extended `0.166.0`，再评估
+安装 Git、Go 1.27 或更新版本，以及 Hugo Extended `0.168.0`，再评估
 [官方 Starter](/zh/docs/start/starter/)：
 
 ```sh
@@ -97,7 +97,7 @@ hugo server
 
 当前实现的自动化覆盖包括：
 
-- 统一使用 Hugo Extended 0.166.0 构建；
+- 统一使用 Hugo Extended 0.168.0 构建；
 - 禁止消费端 Node/npm/PostCSS/Autoprefixer 路径；
 - LTR、RTL、子路径、打印、颜色模式与生产资源；
 - 完整的一种/两种/三种/四种及以上语言选择器矩阵；

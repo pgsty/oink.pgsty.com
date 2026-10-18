@@ -169,7 +169,7 @@ hero:
 | `download` | 一个或多个 `data/download/` 记录 |
 | `bar-chart` | 不用图表 JS 的数值对比 |
 
-写错类型名不会静默消失：构建时给一条 `unknown section type` 警告并跳过该分区。CI 里加上 `--panicOnWarning` 即变成构建失败。
+写错类型名不会静默消失：构建时给一条 `unknown section type` 警告并跳过该分区。发布前检查告警，并确认该分区已跳过。
 
 ## 常用分区的最小写法 {#section-examples}
 
@@ -332,7 +332,7 @@ landing: pricing
 ```
 
 非首页落地页按这个顺序查找数据。全部找不到时，普通预览告警并渲染没有分区的
-Landing 外壳；严格发布构建拒绝这条警告：
+Landing 外壳；发布前应审阅告警并检查回退结果：
 
 1. 页面 front matter 里的 `sections`；
 2. `data/landing/<key>/<精确语言>.yaml`；
@@ -390,7 +390,7 @@ params:
 
 页脚不属于首页数据：它读 `data/footer/<语言>.yaml`（单语言站点用
 `data/footer.yaml`），本站两种语言各一份。`data/home/<语言>.yaml` 里残留的
-`footer` 键会在普通预览中告警并忽略，`--panicOnWarning` 会拒绝它并提示新位置。
+`footer` 键会在普通预览中告警并忽略，告警会提示新位置。
 写法见[导航与菜单](/zh/docs/customize/navigation/)。
 
 ## 输出形态 {#outputs}
@@ -409,7 +409,7 @@ params:
 
 ## 验证 {#verify}
 
-1. 构建零告警：`hugo --printPathWarnings --panicOnWarning`。类型写错、数据键不存在、`landing` 与 `sections` 同时出现都在这一步暴露。
+1. 构建生产：`hugo --printPathWarnings`。类型写错、数据键不存在、`landing` 与 `sections` 同时出现都在这一步暴露。
 2. 打开首页与落地页，逐个分区对照数据文件，每种语言各看一遍。
 3. 禁用 JavaScript 后刷新：内容仍在，只是没有动效。
 4. 深浅色各看一遍，确认 `image.light` / `image.dark` 都给对。

@@ -131,21 +131,21 @@ keyboard_nav: false
 ```
 
 这个键只接受布尔值。写成 `"false"` 或其它值时，普通预览告警并使用站点默认值；
-严格发布构建因 `params.ui.keyboard_nav must be a boolean` 失败。完整定义见
+发布前应审阅 `params.ui.keyboard_nav must be a boolean` 诊断并检查回退结果。完整定义见
 [配置总览](/zh/docs/customize/config/)。
 
 关闭后运行时不进入 JavaScript bundle，而不是加载后再判断。{{< kbd "/" >}}、反斜杠和 {{< kbd "⌘" "K" >}} 属于搜索，仍然可用；页脚折叠链接栅格的箭头不受影响。
 
 ## 验证 {#verify}
 
-先在自己的站点根目录完成严格构建。下方命令中的
+先在自己的站点根目录完成生产构建。下方命令中的
 `public/zh/docs/getting-started/index.html` 是示例；请换成自己站点实际生成的文档页，
 并按语言配置调整路径前缀。
 
 1. 构建后确认速查卡按钮在页面里：
 
    ```bash
-   hugo --printPathWarnings --panicOnWarning
+   hugo --printPathWarnings
    PAGE=public/zh/docs/getting-started/index.html
    test -f "$PAGE" && grep -c 'td-shell-keyboard__trigger' "$PAGE"
    ```

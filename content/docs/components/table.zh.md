@@ -52,7 +52,7 @@ aliases:
 | 条目 | 取值 |
 | --- | --- |
 | 主题版本 | v0.8.1 |
-| Hugo 下限 | 0.166.0 Extended |
+| Hugo 下限 | 0.168.0 Extended |
 | 许可证 | Apache-2.0 |
 {caption="本站当前使用的主题事实"}
 ```
@@ -60,7 +60,7 @@ aliases:
 | 条目 | 取值 |
 | --- | --- |
 | 主题版本 | v0.8.1 |
-| Hugo 下限 | 0.166.0 Extended |
+| Hugo 下限 | 0.168.0 Extended |
 | 许可证 | Apache-2.0 |
 {caption="本站当前使用的主题事实"}
 
@@ -205,7 +205,7 @@ aliases:
 | `data-*` / `aria-*` | 字符串 | 无 | 透传 |
 {.fields meta="type default"}
 
-`style`、`on*` 与其它键会告警并忽略；严格发布构建拒绝这条警告。
+`style`、`on*` 与其它键会告警并忽略；发布前应审阅告警并检查回退结果。
 
 ## 限制与常见问题 {#limits}
 

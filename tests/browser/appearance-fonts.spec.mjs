@@ -12,7 +12,7 @@ for (const [typography, override] of [['system', false], ['system', true], ['tec
     const temp = mkdtempSync(join(tmpdir(), 'oink-font-browser-'));
     const config = join(temp, 'fonts.yml');
     writeFileSync(config, `params:\n  ui:\n    typography: ${typography}\n    preset: terminal\n` + (override ? '    fonts:\n      ui: serif\n      brand: serif\n      code: monospace\n' : ''));
-    const build = spawnSync('hugo', ['--config', `hugo.yml,${config}`, '--destination', join(temp, 'public'), '--baseURL', 'http://preset-font.test/', '--noBuildLock', '--panicOnWarning', '-DFE'], { encoding: 'utf8', timeout: 120_000 });
+    const build = spawnSync('hugo', ['--config', `hugo.yml,${config}`, '--destination', join(temp, 'public'), '--baseURL', 'http://preset-font.test/', '--noBuildLock', '-DFE'], { encoding: 'utf8', timeout: 120_000 });
     expect(build.status, build.stdout + build.stderr).toBe(0);
     const context = await browser.newContext();
     try {

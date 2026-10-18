@@ -146,7 +146,7 @@ Any uncompleted required coverage, including `not_checked`, determines exit
 
 The severity vocabulary is `info`, `warning`, and `error`. `error` is blocking.
 `info` and `warning` are advisory unless the underlying required Hugo
-build fails under `--panicOnWarning`, in which case required work is incomplete.
+build or its owning output check fails, in which case required work is incomplete.
 Informational completion and scope explanations belong in coverage details.
 Automation must use the result exit code and coverage, not only count severities.
 
@@ -238,7 +238,7 @@ Without a policy, links, translations and style are enabled and required.
 `check links`, `check translations`, or `check style` explicitly selects one
 required group, regardless of its policy selection. Unselected or disabled
 optional groups report `not_checked`. Every check invocation retains the
-required strict Hugo build and output-enumeration prerequisites. Standalone
+required Hugo build and diagnostics and output-enumeration prerequisites. Standalone
 translation/source checks also use an explicit nonpublishable draft/future/expired
 analysis view; it never replaces production artifacts. Managed `build --check`
 renders only the production view and returns `2` for unknown required scope identities.
@@ -573,7 +573,7 @@ build that depended on an unreviewed generated module-file change.
 ## Checked builds and artifact identity {#checked-artifacts}
 
 `build --check --destination DIR --manifest FILE` uses an isolated,
-warning-strict production build. Hugo renders once; the check engines inspect
+production build that keeps warnings visible for review. Hugo renders once. The check engines inspect
 that output, then seal and export those same bytes. It never invokes a second
 renderer to create the publication tree. The source checkout remains unchanged.
 Only an outcome of `0` with complete or inapplicable required coverage can be
@@ -795,12 +795,12 @@ configuration, or enable telemetry. Its process policy is not an operating
 system network sandbox. Qualification records distinguish ordinary offline
 execution from tests that actually deny outbound access at the OS boundary.
 
-Compatibility is declared from executed evidence, not inferred from a
-successful cross compilation. The local candidate has an exercised macOS
-arm64 path with Hugo Extended 0.166.0 and public OINK v1.1.0; the version gate
-requires Hugo Extended 0.166.0 or newer. Development and validation use 0.166.0;
-the baseline advances with stable releases, without older-Hugo compatibility
-testing or adaptation. Initialized sites retain normal Hugo inputs and require only their
+The current development and validation baseline is Hugo Extended 0.168.0;
+the version gate requires 0.168.0 or newer and initialized sites use public
+OINK v1.3.2. Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
+Warnings stay visible, including Hugo's accepted upstream LibSass notice.
+Compatibility claims require executed evidence on the identified source and
+binary. Initialized sites retain ordinary Hugo inputs and need only their
 documented dependencies after removing the CLI.
 
 ## Retired local Studio {#studio}

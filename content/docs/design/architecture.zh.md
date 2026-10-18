@@ -5,21 +5,26 @@ description: 仓库装配、配置、诊断、本地化、输出、性能、安�
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK 架构, 仓库边界, 运行时, i18n, Docsy 语言, 输出格式, 安全, 无障碍, 性能]
-contract_status: v1.3.0
+contract_status: v1.3.2
 ---
 
-> [!NOTE] OINK 1.3.0 契约
-> 本契约描述 OINK v1.3.0。主题开发使用同级 checkout；发布验收在关闭替换与
+> [!NOTE] OINK 1.3.2 契约
+> 本契约描述 OINK v1.3.2。主题开发使用同级 checkout；发布验收在关闭替换与
 > 工作区后验证公开模块。消费站升级与部署分别检查。
 
 ## Hugo 工具链 {#hugo-toolchain}
 
-自 2026-10-15 起，Hugo Extended **0.166.0** 是开发、CI 与发布测试的统一基线，
-也是当前主题声明的最低版本。基线随 Hugo 稳定版更新；升级时同步调整 workflow
-固定版本、`hugo.yaml`、`theme.toml`、站点要求、CLI 版本门禁和当前双语文档。
+维护中的站点、开发、CI 与发布验收统一使用 **OINK v1.3.2** 和
+**Hugo Extended 0.168.0**，固定这套工具链。
 
-除非用户明确要求，不运行旧 Hugo 兼容性矩阵，不为旧版本适配代码或增加兼容补丁。
-历史发布说明和带日期的研究保留当时的工具版本，不构成当前支持要求。
+禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。告警保持可见并接受审阅；
+上游 LibSass 弃用告警允许出现，不会让成功的构建失败。无效输入测试直接检查对应
+告警和安全降级产物。
+
+主样式与 ReDoc 样式使用 Hugo 内置 LibSass，普通用户无需安装 Dart Sass 或其他
+Sass 程序。项目变量与项目样式的 SCSS 钩子保持可用。后续升级必须保持这条依赖
+边界，并同步修改要求、检查器、CI 固定版本与双语契约；历史发布和研究记录保留
+当时的工具版本。
 
 ## 仓库与装配 {#repository-and-assembly}
 
@@ -59,8 +64,7 @@ Hugo 的查找优先级，即使几个基础模板看起来相似，也应保持
 任何可选配置的结构或范围。
 
 无效输入遵循同一条规则：警告中写明输入值、允许的结构与安全回退，然后使用该
-回退，或省略不安全的功能。普通 `hugo server` 因而仍可使用，而所有发布门禁都
-使用 `--panicOnWarning`。主题绝不调用 `errorf`，`check-params.py` 会强制守住
+回退，或省略不安全的功能。普通构建与预览保持可用；告警和降级产物由对应检查器直接验证。主题绝不调用 `errorf`，`check-params.py` 会强制守住
 这条边界。不要为无法到达的状态增加臆测式校验。
 
 OINK 没有通用的键名重命名注册表。仍需给出迁移诊断的过渡，应在所属解析器中
@@ -189,7 +193,7 @@ Print 保留操作层，并且只加载渲染打印功能所需的运行时。�
 顶层 section 在自己 `_index` front matter 的 `outputs` 中列出 `LLMSFULL` 才会启用它，
 主题绝不替站点把它加进输出集合。逐页 Markdown 与全文包由同一个渲染器产出，因此全文包
 就是那份语义 Markdown（同样不含 `td-` 组件标记）按侧栏与 pager 的阅读顺序拼接。在顶层
-之下启用会告警且不产出任何文件，普通构建仍然可用，而 `--panicOnWarning` 会拦住发布。
+之下启用会告警且不产出任何文件，普通构建仍然可用，检查器直接验证告警与已禁用的输出。
 
 站点在 `outputs.home` 中启用 `NAVJSON`，为每种语言在语言根下发布一份 `navigation.json`。
 它序列化侧栏与 pager 所读的同一条权威链：存在显式 `data/docs_nav.json` 树时用它，否则用

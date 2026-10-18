@@ -15,7 +15,7 @@ GitHub template: it pins a published OINK release, builds as-is, and contains
 only neutral project content and deployment workflows.
 
 > [!IMPORTANT] Current Hugo baseline
-> Development, CI, and release tests use Hugo Extended 0.166.0
+> Development, CI, and release tests use Hugo Extended 0.168.0
 > and Go 1.27. The Hugo baseline advances with stable releases. When starting
 > from an older Starter snapshot, update its Hugo workflow pins to this baseline;
 > older Hugo compatibility is no longer maintained.
@@ -32,14 +32,14 @@ only neutral project content and deployment workflows.
 
 1. ### Install the tools {#tools}
 
-   Install Git, Go 1.27 or newer, and Hugo Extended 0.166.0 or newer. The Hugo
+   Install Git, Go 1.27 or newer, and Hugo Extended 0.168.0 or newer. The Hugo
    output must contain `extended`:
 
    ```console
    $ go version
    go version go1.27.0 darwin/arm64
    $ hugo version
-   hugo v0.166.0+extended+withdeploy darwin/arm64
+   hugo v0.168.0+extended+withdeploy darwin/arm64
    ```
 
    On macOS, `brew install git go hugo` supplies them. On Linux and Windows,
@@ -94,12 +94,12 @@ and hosting at the same time.
 
 ## Publication gate {#publication-gate}
 
-Before the first push, run the same warning-strict production build the Starter
-workflows use:
+Before the first push, run the production build that the Starter workflows use.
+This build keeps warnings visible for review:
 
 ```bash
 hugo --cleanDestinationDir --gc --minify --environment production \
-  --printPathWarnings --panicOnWarning
+  --printPathWarnings
 ```
 
 Success means the command ends with `Total in …`, prints no warning or error,

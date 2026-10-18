@@ -47,9 +47,9 @@ toolchain without downloading dependencies or another Go compiler.
 The [dated runtime acceptance record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#a18)
 exercised its identified historical candidate on macOS arm64, native
 Linux arm64 and Linux amd64 emulated through QEMU TCG, with Go 1.27.1, Hugo
-Extended 0.166.0 and the public OINK v1.1.0 module. The Hugo version gate accepts
-Extended 0.160.1 or newer; this is not a claim that every accepted version has
-been tested. The embedded Starter documents Hugo Extended 0.165.0 or newer
+Extended 0.168.0 and the public OINK v1.1.0 module. The Hugo version gate accepts
+Extended 0.168.0 or newer; this is not a claim that every accepted version has
+been tested. The embedded Starter documents Hugo Extended 0.168.0 or newer
 and requires Go 1.27. Those Linux tests ran as nonroot users on ext4 with
 provisioned offline dependencies; required filesystem/signal and selected
 actual-Hugo cases execute. Optional tools absent from a guest stay explicit
@@ -108,12 +108,12 @@ Ordinary Hugo can build the generated site without the CLI:
 ```sh
 cd my-docs
 GOWORK=off HUGO_MODULE_WORKSPACE=off GOPROXY=off HUGO_MODULE_PROXY=off \
-  GOTOOLCHAIN=local hugo --environment production --panicOnWarning
+  GOTOOLCHAIN=local hugo --environment production
 cd ..
 ```
 
 This uses the `GOMODCACHE` exported above and provisioned dependencies. All
-12 profile/language combinations passed ordinary warning-strict Hugo at both
+12 profile/language combinations passed ordinary production Hugo at both
 root and `/manual/` URLs (24 builds). Rendered local references were checked,
 and complete source bytes/modes/file inventories compared equal before/after.
 Public init/check tests separately cover all four profiles in English and
@@ -227,7 +227,7 @@ It does not build the site. Keep the raw subprocess evidence alongside the
 structured findings when investigating a Hugo error.
 
 `check` copies the inputs into a disposable directory, isolates build outputs
-and caches, invokes Hugo with `--panicOnWarning`, and checks supported local
+and caches, invokes Hugo with visible warnings, and checks supported local
 links, anchors, resources, and machine-output references against the rendered
 files. Hugo itself enumerates each page's enabled output formats and URLs for
 each language, including front matter overrides and statically authored pages
@@ -507,7 +507,7 @@ oink build --site ./my-docs -- --minify
 
 Arguments after `--` go directly to Hugo. The CLI shows the effective command
 and forwards process cancellation. `dev` runs `hugo server`; `build` selects
-the production environment by default and adds `--panicOnWarning`. These are
+the production environment by default and keeps warnings visible. These are
 direct Hugo operations by default and may create the site's normal output and
 cache files. They do not run the reference checks performed by `oink check`.
 

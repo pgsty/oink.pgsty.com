@@ -38,7 +38,7 @@ weight: 25
 > 在第二个终端中进入站点仓库，再执行下方构建。
 
 ```bash
-hugo --environment production --panicOnWarning
+hugo --environment production
 ```
 
 命令应成功退出且没有警告。刷新本页

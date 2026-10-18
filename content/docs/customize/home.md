@@ -153,10 +153,10 @@ Without `title_lines` it uses `title`, and without either the site title. The
 image is a CSS background: with an `alt` the container carries `role="img"`, and
 without one it is hidden from assistive technology.
 
-`align: center` gives a text-only centred first screen: the text block widens
-and centres, the title balances its line breaks, and `note` moves below the
-buttons. When an image is present too, ordinary preview warns and falls back to
-`start` so the image is preserved; a strict publishing build rejects the warning.
+The setting `align: center` creates a text-only centered first screen. It widens
+and centers the text block, balances title line breaks, and moves `note` below
+the buttons. If an image is also present, normal preview warns and falls back
+to `start`. This preserves the image. A production build keeps the warning visible.
 
 ## The section registry {#registry}
 
@@ -189,9 +189,8 @@ normalized). Apart from the hero, each shares the three heading fields
 | `download` | One or more `data/download/` records |
 | `bar-chart` | Numeric comparison without any chart JS |
 
-A misspelled type does not silently disappear: the build emits an
-`unknown section type` warning and skips the section. Adding
-`--panicOnWarning` in CI turns that into a build failure.
+If a type is misspelled, the build emits an `unknown section type` warning
+and skips the section. Review the warning and confirm the invalid section is skipped.
 
 ## The commonest sections, minimally {#section-examples}
 
@@ -362,9 +361,8 @@ language:
       - zh.yaml
 ```
 
-A non-home landing page looks for its data in this order. When nothing is
-found, ordinary preview warns and renders the landing shell with no sections;
-a strict publishing build rejects the warning:
+A non-home landing page searches for data in this order. If it finds no data,
+normal preview warns and renders the landing shell without sections. Review the warning and rendered fallback before publication:
 
 1. `sections` in the page's front matter;
 2. `data/landing/<key>/<exact language>.yaml`;
@@ -429,12 +427,11 @@ params:
     alt_site: { label: 中文站, url: 'https://example.cn/' }
 ```
 
-The footer is not home page data: it reads `data/footer/<language>.yaml` (or
-`data/footer.yaml` on a single-language site), and this site has one per
-language. A leftover `footer` key in `data/home/<language>.yaml` warns and is
-ignored in ordinary preview; `--panicOnWarning` rejects it while naming the new
-location. How to write it is in
-[Navigation and menus](/docs/customize/navigation/).
+The footer uses separate data in `data/footer/<language>.yaml`, or
+`data/footer.yaml` for a single-language site. This site has one file per
+language. If `data/home/<language>.yaml` still contains a `footer` key, normal
+preview warns and ignores it. The warning identifies the new location; review the output before publication. See
+[Navigation and menus](/docs/customize/navigation/) for authoring instructions.
 
 ## Output {#outputs}
 
@@ -454,11 +451,11 @@ on, movement and reveal are switched off.
 
 ## Verify {#verify}
 
-1. The build is warning-free: `hugo --printPathWarnings --panicOnWarning`. A misspelled type, a missing data key, and `landing` alongside `sections` all surface here.
-2. Open the home page and any landing page, compare each section against the data file, and look at every language.
-3. Reload with JavaScript disabled: the content is still there, only without motion.
-4. Look at both light and dark, confirming `image.light` and `image.dark` are each correct.
-5. When deploying to a subpath, confirm internal links and images all carry the prefix.
+1. Run `hugo --printPathWarnings`. Confirm a warning-free build. This detects misspelled types, missing data keys, and simultaneous `landing` and `sections`.
+2. Open the home page and any landing page. Compare sections with their data files. Check every language.
+3. Reload with JavaScript disabled. Confirm that content remains visible without motion.
+4. Check light and dark modes. Confirm that `image.light` and `image.dark` show the correct images.
+5. For a subpath deployment, confirm that all internal links and images include the prefix.
 
 ## Related {#related}
 

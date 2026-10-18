@@ -9,7 +9,7 @@ search_keywords: [svg-image-url, PlantUML, UML, sequence, class, component, acti
 `plantuml` 围栏里写 PlantUML 源码，浏览器把源码压缩编码后拼在一个 PlantUML 服务的
 URL 后面，换回一张 SVG。适合需要完整 UML 表达力的时序图、类图、组件图、活动图与
 用例图。渲染依赖一个服务：主题不提供默认端点；`enable: true` 却没给
-`svg_image_url` 时，普通预览告警并保持关闭，严格发布构建拒绝这条警告。没有可用
+`svg_image_url` 时，普通预览告警并保持关闭，发布前应审阅告警并检查回退结果。没有可用
 服务时改用 [Mermaid](/zh/docs/components/mermaid/)。
 
 > [!WARNING] 本页只给源码，不放渲染结果
@@ -106,7 +106,7 @@ grafana --> prom : PromQL
 start
 :写 content/docs/**/*.zh.md;
 :补英文对等页，抄渲染出来的标题 ID;
-if (hugo --panicOnWarning 通过?) then (是)
+if (hugo 通过?) then (是)
   :npm test;
 else (否)
   :按报错的文件名与行号修正;
@@ -188,11 +188,11 @@ params:
 
 - `enable: true` 却没写 `svg_image_url` 时告警并保持关闭，诊断为
   `params.plantuml.enable requires an explicit params.plantuml.svg_image_url`。
-  严格发布构建拒绝这条警告。主题不代替站点选择公共服务。
+  发布前应审阅告警并检查回退结果。主题不代替站点选择公共服务。
 - 自建可以用官方镜像 [`plantuml/plantuml-server`](https://github.com/plantuml/plantuml-server)，`svg_image_url` 指向它的 `/svg/` 路径，**结尾的斜杠不能省略**，编码后的源码拼在它后面。
 - 地址使用 HTTP(S) URL 或本地路径；本地路径遵循 `baseURL` 中的部署子路径。
   空白、控制字符、原始反斜杠、协议相对 URL（`//host/`）与其他 scheme 会告警，
-  保留可见的源码块且不加载 PlantUML 运行时；严格发布构建拒绝这条警告。
+  保留可见的源码块且不加载 PlantUML 运行时；发布前应审阅告警并检查回退结果。
 - 端点的跨域策略、站点 CSP 的 `img-src`（`svg: true` 时还有 `connect-src`）都要放行。
 
 这几个键的完整定义在[配置总览](/zh/docs/customize/config/)。

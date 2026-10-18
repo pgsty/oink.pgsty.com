@@ -69,21 +69,16 @@ OINK has 29 shortcodes:
 
 ## Validation {#validation}
 
-Invalid author input follows the [architecture contract](/docs/design/architecture/):
-warn, use the documented safe fallback or omit the component, and let
-`--panicOnWarning` make the same diagnostic fatal at publication gates. Named
-and positional forms are not mixed. Book target IDs match
-`[A-Za-z][A-Za-z0-9_.:-]*`; Book numbers match `[0-9A-Za-z.-]+`; classes are
-token-validated. Hook and shortcode targets share one page registry, so
-collisions cannot produce duplicate output IDs.
+Invalid author input follows the [architecture contract](/docs/design/architecture/).
+Warn, then use the documented safe fallback or omit the component. Review the diagnostic and rendered fallback before publication.
+Do not combine named and positional forms.
+Book target IDs match `[A-Za-z][A-Za-z0-9_.:-]*`. Book numbers match `[0-9A-Za-z.-]+`. Classes use token validation.
+Hooks and shortcodes share one page target registry so collisions cannot produce duplicate output IDs.
 
-URLs use `content/url.html`; raw backslashes are invalid because browsers may
-interpret them as URL separators. Images resolve through page resources, section
-resources, global assets, then static or explicit remote URLs. Local rasters
-carry intrinsic dimensions; SVG, static, and remote sources remain valid but
-cannot use Hugo image operations.
-Resource metadata `alt` must be a string; an invalid value warns and is ignored,
-preserving the image's authored alt text.
+URLs use `content/url.html`. Raw backslashes are invalid because browsers can interpret them as URL separators.
+Images resolve through page resources, section resources, global assets, then static or explicit remote URLs.
+Local rasters include intrinsic dimensions. SVG, static, and remote sources remain valid but cannot use Hugo image operations.
+Resource metadata `alt` must be a string. Invalid values warn and are ignored, preserving authored alt text.
 
 Empty `tabs` warn and emit no container in HTML, Print, Markdown, or RSS.
 An `xref` without a usable target or with a missing target page preserves its

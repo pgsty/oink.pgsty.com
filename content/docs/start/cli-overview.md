@@ -58,11 +58,11 @@ programs consuming stable JSON results and exit codes.
 | Command | Problem it addresses | Current behavior and boundary |
 | --- | --- | --- |
 | `oink doctor` | Is the environment ready, and what does this site actually use? | Inspects Hugo Extended/version, required Go/Git, effective configuration, the declared theme version and resolved source, workspaces, replacements, vendor, languages, and outputs. Read-only diagnosis; no site build. |
-| `oink check` | Does the rendered site contain detectable problems? | Copies inputs, isolates output and caches, builds with `--panicOnWarning`, then checks actual local links, anchors, resources, and supported machine outputs. |
+| `oink check` | Does the rendered site contain detectable problems? | Copies inputs, isolates output and caches, builds with visible warnings, then checks actual local links, anchors, resources, and supported machine outputs. |
 | `oink init <directory>` | How can I get a usable, reproducible starting point? | Creates a site from an embedded, fixed Starter snapshot with its license and provenance. Supports `en`, `en,zh`, and `all` (EN/ZH/FR); validates before creating files and refuses nonempty targets. |
 | `oink upgrade --to <tag>` | Will an upgrade work, and what will it change? | Handles one selected site, validates a candidate, and reports a plan. Preview is the default; only explicit `--write` applies selected module-file changes. |
 | `oink dev` | How do I start everyday local preview? | Transparently runs `hugo server`, forwards arguments after `--`, and forwards process signals. |
-| `oink build` | How do I run a strict production build? | Transparently runs Hugo, defaults to `production`, and adds `--panicOnWarning`. It does not run the additional reference checks provided by `check`. |
+| `oink build` | How do I run a production build with visible diagnostics? | Transparently runs Hugo, defaults to `production`, and keeps warnings visible. It does not run the additional reference checks provided by `check`. |
 
 `doctor` inspects readiness; `check` also builds and validates artifacts.
 `build` produces the site's normal publishing output, while `check` validates
@@ -167,7 +167,7 @@ network denial, real upgrade write protection, thin-wrapper process checks,
 and archive reproduction.
 
 The exercised runtime platform is macOS arm64, with Go 1.27.1 and Hugo Extended
-0.166.0. Darwin amd64 and Linux amd64/arm64 were cross-compiled but have not
+0.168.0. Darwin amd64 and Linux amd64/arm64 were cross-compiled but have not
 completed runtime qualification on those systems. Windows is outside the
 first-stage support scope. Source installation is available; public downloads,
 tag-based installation, and Homebrew distribution are not delivered yet.

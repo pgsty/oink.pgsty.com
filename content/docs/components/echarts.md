@@ -6,14 +6,11 @@ weight: 150
 search_keywords: [ECharts, chart, bar, line, pie, height, theme, OinkEchartsFunctions]
 ---
 
-The body of an `echarts` fence is an ECharts option object in YAML or JSON — not
-code. Use it for quantitative charts that need axes, series and a legend. For
-relationships and flows use [Mermaid](/docs/components/mermaid/); for order and
-hierarchy use [Infographic](/docs/components/infographic/). Hugo parses the
-options at build time; invalid input warns and leaves its source readable in an
-ordinary preview, while strict publishing rejects the warning. The browser
-draws with the ECharts copy the theme ships, and only a page that uses it loads
-the runtime.
+An `echarts` fence contains an ECharts option object in YAML or JSON. It contains data, not code.
+Use it for quantitative charts with axes, series, and a legend.
+Use [Mermaid](/docs/components/mermaid/) for relationships and flows. Use [Infographic](/docs/components/infographic/) for order and hierarchy.
+Hugo parses options at build time. Invalid input warns and preserves readable source in ordinary previews. Review the warning and rendered fallback before publication.
+The browser draws charts with the theme's bundled ECharts. Only pages that use it load the runtime.
 
 ## Shortest form {#minimal}
 
@@ -52,10 +49,9 @@ series:
     data: [4, 4, 8, 22, 15, 7]
 ```
 
-Both formats are accepted; YAML needs no quotes or commas and is shorter to
-write. Broken indentation, or a body that parses to an array instead of a map,
-warns on that line and renders the source instead of a blank chart. Strict
-publishing rejects the warning.
+Both formats are supported. YAML is shorter because it needs no quotes or commas.
+Incorrect indentation or an array instead of a map warns and identifies the source line.
+The result shows the source instead of a blank chart. Review the warning and rendered fallback before publication.
 
 ## Multiple line series {#line}
 
@@ -228,8 +224,7 @@ series:
     data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ```
 
-An invalid height (`360`, `36pt`) warns and uses the default in ordinary
-preview; strict publishing rejects the warning.
+Invalid heights such as `360` and `36pt` warn and use the default in ordinary previews. Review the warning and rendered fallback before publication.
 
 ## Light and dark {#theme}
 
@@ -363,10 +358,9 @@ The fence attribute line (```` ```echarts {…} ````):
 | `class` | space-separated classes | — | Passed through to the container for site CSS |
 {.fields meta="type default"}
 
-`style`, `on*`, and unknown attributes warn and are ignored. A fence body that
-does not parse to a YAML/JSON map warns and renders as source. Strict publishing
-rejects all these warnings. The option keys themselves are ECharts', documented in the
-[official option manual](https://echarts.apache.org/en/option.html).
+`style`, `on*`, and unknown attributes warn and are ignored.
+If a fence body does not parse to a YAML/JSON map, it warns and displays the source. Review the warnings and rendered fallback before publication.
+ECharts defines the option keys in its [official option manual](https://echarts.apache.org/en/option.html).
 
 There is no site-level parameter: ECharts needs no switch in `hugo.yml` and
 loads only where it is used.

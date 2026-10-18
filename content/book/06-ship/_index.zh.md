@@ -27,7 +27,7 @@ weight: 60
 
 ```bash
 hugo --cleanDestinationDir --gc --minify --environment production \
-  --printPathWarnings --panicOnWarning
+  --printPathWarnings
 ```
 
 确认 `hugo mod graph` 解析到 `go.mod` 中预期的公开版本，再按[Starter 部署步骤](/zh/docs/start/starter/#build-deploy)操作。

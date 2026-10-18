@@ -13,7 +13,7 @@ aliases:
 
 OINK 站点的产物是一个纯静态目录，任何能托管静态文件的地方都能部署，不需要 Node 运行时、服务端渲染或构建插件。托管商一侧只有三件事：用正确的 Hugo 版本执行一条命令、发布 `public/`、让 `baseURL` 与最终访问地址一致。
 
-前提是本机已经能完成零告警的[生产构建](/zh/docs/admin/preview/#production-build)。
+前提是本机已经能完成生产的[生产构建](/zh/docs/admin/preview/#production-build)。
 
 ## 确定 baseURL {#baseurl}
 `baseURL` 是最常见的故障源，失败方式也隐蔽：页面能打开，但搜索索引 404、页面操作链接指向错误位置、部分资源加载失败。
@@ -70,7 +70,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  HUGO_VERSION: 0.166.0
+  HUGO_VERSION: 0.168.0
   # 同级 checkout 的 workspace 绝不能参与 CI 构建
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
@@ -109,7 +109,7 @@ jobs:
       - name: Build
         run: |
           hugo --cleanDestinationDir --gc --minify --environment production \
-            --printPathWarnings --panicOnWarning \
+            --printPathWarnings \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: Upload Pages artifact
@@ -136,7 +136,8 @@ jobs:
 - `setup-go` + `go mod download` — Hugo Module 方式引入主题时，Hugo 需要 Go 才能解析模块。用 submodule 安装主题的站点改成 `submodules: recursive`，用离线归档的站点把 `themes/oink/` 提交进仓库，这两步都可以去掉。
 - `GOWORK: off` 与 `HUGO_MODULE_WORKSPACE: off` — 防止本地开发用的 `go.work` 意外参与 CI 构建，保证 CI 验证的是 `go.mod` 里固定的那个公开标签。
 - `--baseURL "${{ steps.pages.outputs.base_url }}/"` — 项目站点的 URL 形如 `https://<OWNER>.github.io/<REPO>/`，`configure-pages` 会把它算出来，不用手写。
-- `--panicOnWarning` — 有告警不发布。
+告警保持可见并接受审阅。禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；
+上游 LibSass 弃用告警允许出现。
 
 在仓库 Settings → Pages → Build and deployment 里把 Source 设为 GitHub Actions，推一次 `main`，在 Actions 标签页查看第一次运行。
 
@@ -148,7 +149,7 @@ jobs:
 {{< tab label="Cloudflare Pages" value="cloudflare" >}}
 
 OINK Starter 内置 `.github/workflows/cloudflare-pages.yaml`，使用 Direct Upload。
-严格构建留在 GitHub Actions，Wrangler 把同一份 `public/` 产物上传到 Cloudflare
+生产构建留在 GitHub Actions，Wrangler 把同一份 `public/` 产物上传到 Cloudflare
 Pages 项目。
 
 1. 创建一个 **Direct Upload** Pages 项目。项目名默认与仓库相同，也可用仓库变量
@@ -161,12 +162,12 @@ Pages 项目。
    `CLOUDFLARE_SITE_URL`。
 {.steps}
 
-workflow 固定 Hugo Extended 0.166.0，从 `go.mod` 读取 Go 版本，关闭本地模块
-workspace，并在上传前用 `--panicOnWarning` 构建。这是 Starter 用户最可复现的推荐路径。
+workflow 固定 Hugo Extended 0.168.0，从 `go.mod` 读取 Go 版本，关闭本地模块
+workspace，并在上传前使用 Hugo Extended 0.168.0 构建，保留可见告警。这是 Starter 用户最可复现的推荐路径。
 
 Cloudflare Git integration 仍然是另一种有效模式：构建命令设为
-`hugo --gc --minify --printPathWarnings --panicOnWarning`，输出目录 `public`，Hugo
-固定 `0.166.0`，Go 固定 `1.27`。同一个项目只用 Git integration 或 Direct Upload
+`hugo --gc --minify --printPathWarnings`，输出目录 `public`，Hugo
+固定 `0.168.0`，Go 固定 `1.27`。同一个项目只用 Git integration 或 Direct Upload
 workflow 其中一种。预览部署仍不等于生产证明；它要按自己的 URL 重建并保持不收录。
 
 {{< /tab >}}
@@ -176,11 +177,11 @@ workflow 其中一种。预览部署仍不等于生产证明；它要按自己�
 
 ```toml {title="netlify.toml"}
 [build]
-command = "hugo --gc --minify --printPathWarnings --panicOnWarning"
+command = "hugo --gc --minify --printPathWarnings "
 publish = "public"
 
 [build.environment]
-HUGO_VERSION = "0.166.0"
+HUGO_VERSION = "0.168.0"
 ```
 
 用 submodule 安装主题就打开递归 submodule 检出；用 Hugo Module 就要求构建环境有 Git 和 Go。生产与预览应使用同一个 Hugo 版本，除非预览环境本来就是用来测升级的。
@@ -227,7 +228,7 @@ deployment:
 这是宿主配置，不是 Hugo 选项。
 
 ```bash {title="终端"}
-hugo --cleanDestinationDir --gc --minify --panicOnWarning --baseURL "https://docs.internal.example.com/" &&
+hugo --cleanDestinationDir --gc --minify --baseURL "https://docs.internal.example.com/" &&
   tar -czf oink-site-20260929-01.tar.gz -C public .
 
 ```
@@ -295,7 +296,7 @@ CSP 哈希或注入 nonce；部署方需根据实际构建产物制定策略。
 
 | 检查 | 怎么确认 |
 | --- | --- |
-| 零告警构建 | 构建命令带 `--printPathWarnings --panicOnWarning`，日志里有 `Total in …` |
+| 生产构建 | 构建命令带 `--printPathWarnings `，日志里有 `Total in …` |
 | `baseURL` 正确 | 页面源码里 `<link rel="canonical">` 指向真实生产地址（含子路径） |
 | 站点地图 | `<baseURL>/sitemap.xml` 可访问；多语言站点是一个索引，指向 `/en/sitemap.xml`、`/zh/sitemap.xml` |
 | robots | `<baseURL>/robots.txt` 是 `Allow: /` 并带 `Sitemap:` 行；预览部署应该是 `Disallow: /` |

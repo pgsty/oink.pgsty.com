@@ -133,7 +133,7 @@ draft: true
 组合例子：步骤里放代码围栏与提示块。
 
 ````markdown {title="源码"}
-1. 安装 Hugo Extended，最低 0.166.0：
+1. 安装 Hugo Extended，最低 0.168.0：
    ```bash
    brew install hugo
    ```
@@ -147,7 +147,7 @@ draft: true
 {.steps}
 ````
 
-1. 安装 Hugo Extended，最低 0.166.0：
+1. 安装 Hugo Extended，最低 0.168.0：
    ```bash
    brew install hugo
    ```
@@ -176,13 +176,13 @@ draft: true
 
 ## 验证 {#verify}
 
-写完一页，运行一次严格构建：
+写完一页，运行一次生产构建：
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 ```
 
-- 输出必须以 `Total in …` 结束，没有 ERROR、没有 WARN。属性行写了不允许的键、组件参数非法、`ref` 目标不存在，都在这一步失败并指出文件与行号；主题不做静默降级。
+- 输出必须以 `Total in …` 结束，没有 ERROR；审阅所有告警，上游 LibSass 弃用告警允许出现。属性行写了不允许的键或组件参数非法时，主题会带源码位置告警并安全回退，应检查对应产物；`ref` 目标不存在时，Hugo 仍会报错。
 - `--printPathWarnings` 报出两个页面指向同一输出路径的情况，多语言站或改过 `permalinks` 时较常出现。
 
 在浏览器里确认三项：

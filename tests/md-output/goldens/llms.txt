@@ -70,7 +70,7 @@
   - [Print](http://localhost/docs/customize/print/index.md): A single page goes to the browser's Cmd/Ctrl+P; a whole section becomes one continuous document through the print output format.
   - [AI-agent support](http://localhost/docs/customize/agents/index.md): Give every page a `.md` twin, the site root an `llms.txt`, and the reader a way to hand the current page to ChatGPT or Claude.
 - [Operations](http://localhost/docs/admin/index.md): Running the site from a laptop to production — local preview, deployment, comments, analytics and SEO, upgrades and troubleshooting.
-  - [Local preview](http://localhost/docs/admin/preview/index.md): Preview changes with hugo server, build a deployable public/ with hugo --panicOnWarning, and need neither Node nor a CDN.
+  - [Local preview](http://localhost/docs/admin/preview/index.md): Preview changes with hugo server and build deployable output with hugo. Neither Node nor a CDN is required.
   - [Deploy](http://localhost/docs/admin/deploy/index.md): Publish public/ to GitHub Pages, Cloudflare Pages or any static host — matching baseURL, Content Security Policy, the acceptance checklist and rollback.
   - [Comments](http://localhost/docs/admin/comments/index.md): Wire GitHub Discussions into a comment section at the bottom of a page with giscus — on site-wide, off per page, following light and dark.
   - [Analytics and SEO](http://localhost/docs/admin/analytics/index.md): Connect an analytics service (or none), and pair up the canonical, hreflang, social cards, sitemap and robots the theme already generates.
@@ -78,9 +78,10 @@
   - [Troubleshooting](http://localhost/docs/admin/troubleshooting/index.md): Symptom → cause → fix for the four fault classes — build, language, search, platform — plus the checks a site can run for itself.
 - [Design](http://localhost/docs/design/index.md): OINK maintainer contracts, accepted decisions, dated research, and proposals in one canonical bilingual section.
   - [Architecture](http://localhost/docs/design/architecture/index.md): Repository assembly, configuration, diagnostics, localization, output, performance, security, CSS, accessibility, and release-state boundaries.
-  - [Diagnostics](http://localhost/docs/design/decisions/diagnostics/index.md): Invalid author input warns and degrades safely during preview; --panicOnWarning restores a hard publication gate.
+  - [Diagnostics](http://localhost/docs/design/decisions/diagnostics/index.md): Invalid input produces visible warnings and safe fallbacks. Checks verify diagnostics and rendered output without aborting on every warning.
   - [Goldmark attributes](http://localhost/docs/design/research/goldmark-attributes/index.md): Reproducible findings for lists, images, tables, passthrough blocks, fences, callouts, and nested containers on Hugo 0.160.1 and 0.164.0.
   - [Knowledge graph](http://localhost/docs/design/proposals/knowledge-graph/index.md): A draft three-stage design for deriving backlinks and local or global graph views from ordinary Hugo links.
+  - [2026-10-18 build baseline](http://localhost/docs/design/research/2026-10-18-consumer-baseline/index.md): Local inventory of 37 maintained OINK sites using v1.3.2 and Hugo Extended 0.168.0, with visible warnings and separate publication evidence.
   - [Ink / Terminal experiment](http://localhost/docs/design/research/2026-10-05-ink-terminal-experiment/index.md): Explicit experimental presets in real theme output, their design tradeoffs, checks and remaining work.
   - [OINK 1.2 pre-release review](http://localhost/docs/design/research/2026-10-05-v1-2-release-review/index.md): Local 1.2.0 candidate review, cleanup, compatibility, resource provenance and publication checks, with release boundaries.
   - [Preset acceptance](http://localhost/docs/design/research/2026-10-05-visual-presets-acceptance/index.md): Local Paper and Slate verification, real theme output, and bounded browser evidence.

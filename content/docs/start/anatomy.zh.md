@@ -42,8 +42,8 @@ Go 模块缓存。
   - i18n/
     - fr.yaml                         # Starter 自有法语界面覆盖
   - .github/workflows/
-    - github-pages.yaml               # 严格构建与 GitHub Pages 部署
-    - cloudflare-pages.yaml           # 严格构建与 Cloudflare Direct Upload
+    - github-pages.yaml               # 生产构建与 GitHub Pages 部署
+    - cloudflare-pages.yaml           # 生产构建与 Cloudflare Direct Upload
   - README.md                         # 面向仓库维护者的操作摘要
   - LICENSE                           # 模板源码许可证
 ```
@@ -81,7 +81,7 @@ Docs、Blog 与 Book 是彼此独立的顶层内容区。安全删除其中一�
 1. 删除对应的 `content/<surface>/` 内容树；
 1. 删除首页指向它的卡片或链接；
 1. 确认其它页面不再链接它；
-1. 严格构建，并检查剩余顶部导航。
+1. 生产构建，并检查剩余顶部导航。
 {.steps}
 
 不要只删除某种语言的栏目根：那会形成难以区分「有意不对称」与「漏译」的语言专属导航
@@ -157,7 +157,7 @@ GitHub Pages workflow 在推送 `main` 后自动运行；仓库设置必须选�
 1. 替换内容并验证导航。
 1. 品牌与阅读功能一次只改一组。
 1. 启用完整的外部集成。
-1. 执行严格生产构建。
+1. 执行生产构建。
 1. 部署，再独立验证生产环境。
 {.steps}
 
@@ -168,7 +168,7 @@ GitHub Pages workflow 在推送 `main` 后自动运行；仓库设置必须选�
 ```bash
 hugo mod graph | grep github.com/pgsty/oink
 hugo --cleanDestinationDir --gc --minify --environment production \
-  --printPathWarnings --panicOnWarning
+  --printPathWarnings
 git status --short
 ```
 

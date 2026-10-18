@@ -1,7 +1,7 @@
 ---
 title: 本地预览
 linkTitle: 本地预览
-description: 用 hugo server 在本机预览改动，用 hugo --panicOnWarning 构建可部署的 public/，不需要 Node 与 CDN。
+description: 用 hugo server 在本机预览改动，用 hugo 构建可部署的 public/，不需要 Node 与 CDN。
 weight: 10
 search_keywords: [本地预览, hugo server, 开发服务器, 草稿, 生产构建, 容器, Docker, 缓存, 断网, preview, local, build, air-gapped]
 aliases:
@@ -70,22 +70,23 @@ hugo server --bind 0.0.0.0 --port 1313 --baseURL http://192.168.1.10:1313/
 部署产物用 `hugo` 构建，不用 `hugo server`：
 
 ```bash {title="终端"}
-hugo --gc --minify --printPathWarnings --panicOnWarning
+hugo --gc --minify --printPathWarnings
 ```
 
-产物写入 `public/`，该目录可以脱离源码树独立部署。四个开关各管一件事：
+产物写入 `public/`，该目录可以脱离源码树独立部署。三个开关各管一件事：
 
 | 开关 | 说明 |
 | --- | --- |
 | `--gc` | 构建后清掉 `resources/_gen` 里不再被引用的缓存资源 |
 | `--minify` | 压缩 HTML、CSS、JS 与 XML 输出 |
 | `--printPathWarnings` | 两个页面撞到同一个输出路径时告警，多语言站点最常见的静默错误 |
-| `--panicOnWarning` | 遇到第一条 WARNING 就让构建失败 |
 {.fields}
 
-`--panicOnWarning` 需要单独说明。OINK 的多数降级路径是告警而不是报错：giscus 必填键缺失、`params.comments.type` 取了不支持的值、Hugo 弃用的配置键，都只打一条 WARNING 然后跳过。CI 日志通常无人逐行阅读，这些问题会带到线上。把这个开关写进构建命令，等于要求零告警才算构建通过。
+统一使用 Hugo Extended 0.168.0，告警保持可见。禁止启用 `--panicOnWarning`
+或 `HUGO_PANICONWARNING`，上游 LibSass 弃用告警允许出现。giscus 配置缺失或主题
+取值无效时也会告警并降级；发布前应核对这些诊断与实际产物。
 
-本站 CI 的构建步骤（`.github/workflows/site-checks.yml`）是 `hugo --cleanDestinationDir --gc --minify --environment production --printPathWarnings --panicOnWarning`，任何一条告警都会让部署停在构建阶段。
+本站 CI 使用上面的生产构建命令。验证公开主题版本时，关闭本地模块替换与两种工作区。
 
 ### baseURL 与构建环境 {#baseurl-and-environment}
 
@@ -120,7 +121,7 @@ hugo --minify --environment staging --baseURL "$PREVIEW_URL"
 ```dockerfile {title="Dockerfile" collapse=16}
 FROM debian:bookworm-slim
 
-ARG HUGO_VERSION=0.166.0
+ARG HUGO_VERSION=0.168.0
 ARG GO_VERSION=1.27.0
 ARG TARGETARCH
 
@@ -211,7 +212,7 @@ make serve   # 按生产配置起预览服务器
 
 1. 从一份已校验的主题归档与空的模块缓存开始（`hugo mod clean --all`）。
 1. 阻断出站 HTTP、HTTPS 与 Go module proxy。
-1. 运行生产构建 `hugo --gc --minify --printPathWarnings --panicOnWarning`。
+1. 运行生产构建 `hugo --gc --minify --printPathWarnings`。
 1. 浏览产物里两种语言的页面：文档页、博客页、首页、404。
 1. 操作搜索、深浅色切换、图表与内容组件。
 1. 检查子资源来源，确认没有意外的远程主机。
@@ -235,10 +236,10 @@ python3 /path/to/oink/bin/check-output-security.py \
 
 ```bash {title="终端"}
 rm -rf public resources/_gen
-hugo --gc --minify --printPathWarnings --panicOnWarning
+hugo --gc --minify --printPathWarnings
 ```
 
-看到 `Total in …` 且没有 ERROR / WARNING 才算通过。然后确认：
+看到 `Total in …` 且没有 ERROR，并完成告警审阅才算通过；上游 LibSass 弃用告警允许出现。然后确认：
 
 - 日志里没有 npm、PostCSS、Autoprefixer 或下载浏览器资源的步骤。出现了说明配置里混进了上游 Docsy 的流程。
 - `public/` 下有 `sitemap.xml`、`robots.txt`，`robots.txt` 是 `Allow: /`。

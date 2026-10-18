@@ -331,7 +331,7 @@ cascade:
 
 读源码有一处已知遗漏：写在自定义 shortcode 参数里或原始 `<a href>` 里的 URL 不会成为一条边；解析不出来的目标被静默丢弃，不发告警。它是导航增强，不是链接检查器，查断链仍然要用链接检查器。
 
-非布尔取值告警并回落到关闭，`hugo server` 照常可用，加了 `--panicOnWarning` 的构建会停在这里。
+非布尔取值告警并回落到关闭，`hugo server` 照常可用，发布前应核对告警与回退结果。
 
 页面的 Markdown 输出带同一份列表，前缀是「反链：」。RSS 省略它，`print` 输出格式连同整个右栏一起省略。
 
@@ -372,7 +372,7 @@ columns:
 ## 验证 {#verify}
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 ```
 
 改完导航要检查这几处：

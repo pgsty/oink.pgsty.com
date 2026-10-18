@@ -11,16 +11,16 @@ aliases:
   - /docs/upgrade/v0-4/
 ---
 
-Upgrading OINK is changing one pinned module version and confirming the site
-still builds warning-free. Most content needs no change; where it does — 0.4
-shortcodes becoming the current native Markdown forms — a dry-run-first migration tool
-does it, so hundreds of files need not be edited by hand.
+To upgrade OINK, change the pinned module version. Then confirm that the site
+builds with reviewed diagnostics. Most content needs no changes. To convert 0.4
+shortcodes to current native Markdown forms, use the migration tool. It starts
+with a dry run and avoids manual edits to hundreds of files.
 
 An upgrade changes rendered output. Create an upgrade branch before starting,
 and the cost of backing out is discarding a branch.
 
 > [!IMPORTANT] Current Hugo baseline
-> Since 2026-10-15, use Hugo Extended 0.166.0 for development and validation.
+> Since 2026-10-15, use Hugo Extended 0.168.0 for development and validation.
 > Update Hugo workflow pins when upgrading; older-Hugo compatibility is no
 > longer maintained. Version requirements in the older release sections below
 > describe those releases only.
@@ -33,7 +33,7 @@ migration. Set `type: expo` only on the new album section, with a matching casca
 keep images and originals in its leaf bundles.
 
 Verify public module resolution with replacements and workspaces disabled.
-Pin `github.com/pgsty/oink@v1.3.0`, build without warnings, and review
+Pin `github.com/pgsty/oink@v1.3.0`, build with reviewed diagnostics, and review
 navigation, image viewing and reader settings. Source-copy consumers must also
 refresh their fixed theme files; changing `go.mod` does not update a vendored copy.
 
@@ -107,14 +107,14 @@ tradeoffs are in
 ```bash {title="Terminal"}
 rm -rf public resources/_gen
 env -u HUGO_MODULE_REPLACEMENTS GOWORK=off HUGO_MODULE_WORKSPACE=off \
-  hugo --gc --minify --printPathWarnings --panicOnWarning --logLevel info
+  hugo --gc --minify --printPathWarnings --logLevel info
 ```
 
-That does three things at once: clears possibly stale caches, rebuilds with the
-new version, and turns any warning into a failure.
+These commands clear potentially stale caches, rebuild with the new version,
+and review the visible diagnostics.
 
 `--logLevel info` includes informational diagnostics, while
-`--panicOnWarning` treats warnings as failures. Review the deprecation messages
+Warnings remain visible. Review the deprecation messages
 emitted by the pinned Hugo version before upgrading it; the severity and
 removal schedule depend on the deprecated feature.
 
@@ -131,7 +131,7 @@ and anywhere the site customized something.
 
 No source migration was required from 1.0.0 to 1.1.0. Its Go 1.27.0 module
 directive was unchanged from 1.0.0. Validate current upgrades with Hugo Extended
-0.166.0. Historical toolchain details remain in the [1.1 release note](/blog/release/1.1.0/).
+0.168.0. Historical toolchain details remain in the [1.1 release note](/blog/release/1.1.0/).
 
 Review the affected surfaces before choosing the new pin:
 
@@ -184,7 +184,7 @@ the [sidebar contract](/docs/design/shell/#sidebar-runtime),
 
 OINK 1.2.0 is available as a published tag. Apart from the default appearance
 change above, no content migration is required. Validate current upgrades with
-Hugo Extended 0.166.0, then verify the site:
+Hugo Extended 0.168.0, then verify the site:
 
 - Check the chosen preset, light/dark icons, keyboard and mobile menus, saved
   preferences, and custom font/accent overrides. Sun means light; moon means
@@ -197,7 +197,7 @@ Hugo Extended 0.166.0, then verify the site:
 - Check Landing content with JavaScript disabled or blocked, preserved metric
   formatting, dialogs and keyboard shortcuts, copy fallback, Draw.io controls,
   and numbered equations at narrow widths.
-- Run a warning-fatal build for diagram endpoints and resource alt metadata;
+- Run a production build for diagram endpoints and resource alt metadata;
   malformed values now produce a warning and use a safe fallback. To disable
   a PlantUML or Draw.io endpoint intentionally, use `false` or an empty string.
 - Use the revised PDF and migration tools when testing publication or content
@@ -246,8 +246,8 @@ column:
 python3 bin/migrations/oink06.py migrate --site ~/www/ddia --only callout,tabs --write
 ```
 
-Rebuild afterwards (with `--panicOnWarning`) and look at the rendered pages: the
-tool guarantees correct syntax, not that the meaning is what you intended.
+After conversion, rebuild, review warnings, and inspect the rendered
+pages. The tool guarantees correct syntax. You must verify the intended meaning.
 
 ## The 0.4 → current syntax map {#syntax-map}
 
@@ -333,12 +333,12 @@ shortcode family. Switch to home page sections in
 0.4 changed several defaults. If the page gained or lost something after the
 upgrade, check these first:
 
-- Sequential paging is on by default. `docs`, `book` and `blog` pages all have previous / next at the page end; documentation follows the sidebar tree and the blog follows time. A page deliberately outside any sequence opts out with `pager: false`.
-- The navbar shows on every layout. Its compact state is one row of icon navigation, with no second mobile accordion menu, so local scripts and tests that depend on the old mobile menu have to go. A whole section without a navbar uses `navbar_enabled: false` in a cascade.
-- The footer defaults to `fat` site-wide. Only `fat` / `slim` / `none` are accepted, and footer data must live in `data/footer/<language>.yaml` (or `data/footer.yaml` on a single-language site); a leftover `footer` key in `data/home` warns with the new location, and strict publishing rejects it.
-- Single-key navigation is on by default: `/` opens full search and `\` command-only mode. Training material describing the old behaviour needs updating. Page actions have also moved to a split button beside the breadcrumbs.
-- The code block DOM changed. A `.td-code` wrapper now encloses the original `.highlight` (both `.highlight` and `.chroma` are kept), so a direct child selector such as `.td-content > .highlight` in site CSS becomes the descendant selector `.td-content .highlight`.
-- Two ICP footer parameters were removed: `footer_icp` and `footer_icp_url` became one string accepting inline Markdown.
+- Sequential paging is on by default. `docs`, `book`, and `blog` pages have previous / next links at the page end. Documentation follows the sidebar tree. Blog pages follow time. For a page intentionally outside a sequence, set `pager: false`.
+- The navbar appears on every layout. Its compact state has one row of icon navigation and no second mobile accordion menu. Remove local scripts and tests that depend on the old mobile menu. To disable the navbar for a section, set `navbar_enabled: false` in a cascade.
+- The footer defaults to `fat` for the site. It accepts only `fat` / `slim` / `none`. Store footer data in `data/footer/<language>.yaml`, or `data/footer.yaml` for a single-language site. A remaining `footer` key in `data/home` produces a warning with the new location. Review the warning and rendered fallback before publication.
+- Single-key navigation is on by default. `/` opens full search, and `\` opens command-only mode. Update training material that describes the old behavior. Page actions now use a split button beside the breadcrumbs.
+- The code block DOM changed. A `.td-code` wrapper now encloses the original `.highlight`. Both `.highlight` and `.chroma` remain. In site CSS, replace a direct child selector such as `.td-content > .highlight` with the descendant selector `.td-content .highlight`.
+- Two ICP footer parameters were removed. The keys `footer_icp` and `footer_icp_url` became one string that accepts inline Markdown.
 
   ```yaml {title="hugo.yml"}
   params:
@@ -395,7 +395,7 @@ What rolls back is the version pin, not the working tree:
 hugo mod get github.com/pgsty/oink@v1.0.0   # example: the site's last known-good tag
 hugo mod tidy
 rm -rf public resources/_gen
-hugo --gc --minify --panicOnWarning
+hugo --gc --minify
 ```
 
 Three principles:

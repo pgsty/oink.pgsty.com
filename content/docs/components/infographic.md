@@ -315,8 +315,8 @@ The fence attribute line (```` ```infographic {…} ````):
 | `class` | space-separated classes | — | Passed through to the container |
 {.fields meta="type default"}
 
-`style`, `on*`, and unknown attributes warn and are ignored. An empty DSL body
-warns and renders nothing. Strict publishing rejects all these warnings.
+`style`, `on*`, and unknown attributes warn and are ignored. Empty DSL bodies warn and render nothing.
+Review the warning and rendered fallback before publication.
 
 The DSL's top-level keys (AntV's, not the theme's):
 

@@ -265,7 +265,7 @@ for output configuration.
 
 ## Check an album {#check-an-album}
 
-1. Run `hugo --printPathWarnings --panicOnWarning` with a theme version that includes Expo.
+1. Run `hugo --printPathWarnings` with a theme version that includes Expo.
 2. Open each album and confirm its image order, titles, and descriptions.
 3. Test a small image, a wide image, a long image, and a GIF if the album has one.
 4. Test Reset, Expand to fit, zoom, dragging, keyboard navigation, and Locate in album.

@@ -160,7 +160,7 @@ Source: https://oink.pgsty.com/zh/docs/customize/agents/index.md
 
 `Source:` 指向该页的 Markdown 输出；页面没有 `.md` 输出时回退到它的 HTML 地址。
 
-只有顶层栏目能带全文包。写在更深一层的栏目上会告警——「LLMSFULL output requires a top-level section」——并且什么都不产出：`hugo server` 照常能用，加了 `--panicOnWarning` 的发布构建则会停在这里。
+只有顶层栏目能带全文包。写在更深一层的栏目上会告警——「LLMSFULL output requires a top-level section」——并且什么都不产出：`hugo server` 照常能用，发布前应检查告警，并确认不支持的输出没有生成。
 
 只要有栏目开了全文包，`llms.txt` 就会多出一段 `## Full-text bundles`，列出本语言的全部全文包：发现入口仍在 agent 本来就会抓的那个文件里。
 
@@ -291,7 +291,7 @@ outputs: [HTML, RSS, print]
 生成的 Markdown 文件。下例假设文档分区为 `docs`，请按站点结构调整分区名与语言前缀。
 
 ```bash
-hugo --printPathWarnings --panicOnWarning
+hugo --printPathWarnings
 PAGE_MD=public/zh/docs/getting-started/index.md
 ls "$PAGE_MD" public/zh/llms.txt
 # 仅在 docs 启用 LLMSFULL、home 启用 NAVJSON 时检查：

@@ -13,7 +13,7 @@ formulas are `$$…$$` or `\[…\]`, and there are `math` and `chem` fences. For
 TikZ drawings or macro packages KaTeX does not support, use a pre-rendered
 [image](/docs/components/image/).
 
-Validate generated formulas with Hugo Extended 0.166.0 and the bundled stylesheet.
+Validate generated formulas with Hugo Extended 0.168.0 and the bundled stylesheet.
 TeX and MathML remain unchanged. No browser mathematics runtime or extra site switch is needed.
 
 ## Site prerequisites {#config}
@@ -137,11 +137,9 @@ $$
 See [Equation 3-1](#eq-wal): multiply by the retention period for the floor on
 archive disk size.
 
-`caption` (plain text) is optional. `#id` and `caption` must appear with `num` —
-there is no half-numbered equation. Incomplete or duplicate targets warn and
-drop the unusable part or keep the first; strict publishing rejects the warning.
-On narrow screens, long equation captions wrap within the reading column
-without widening the page.
+`caption` is optional plain text. `#id` and `caption` require `num`.
+Incomplete or duplicate targets warn. The theme removes unusable parts or keeps the first target. Review the warning and rendered fallback before publication.
+On narrow screens, long captions wrap within the reading column without widening the page.
 
 ## Cross references {#xref}
 
@@ -225,9 +223,8 @@ The `eq` shortcode:
 | Body | TeX | — | Required, non-empty |
 {.fields meta="type default"}
 
-Broken TeX warns and leaves the expression as written in ordinary preview. The
-message carries KaTeX's detail and the source position; strict publishing
-rejects the warning.
+Invalid TeX warns and preserves the expression in ordinary previews. The message includes KaTeX details and the source position.
+Review the warning and rendered fallback before publication.
 
 ## Limits {#limits}
 

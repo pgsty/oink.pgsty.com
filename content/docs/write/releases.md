@@ -40,9 +40,9 @@ GitHub release URL:
 release_url: https://github.com/pgsty/oink/releases/tag/v0.4.0
 ```
 
-The owner, the project, and the tag come out of the URL, and the date is the
-page's own `date`. A value that is not an exact-tag GitHub release URL warns
-and skips the release block — and fails a `--panicOnWarning` build. The 0.5
+The URL supplies the owner, project, and tag. The page's `date` supplies the
+date. An invalid exact-tag GitHub release URL warns and skips the release block.
+The 0.5
 `release` map (product / version / repo / tag / date / prev / checksums) and
 its string shorthand are gone; a page still carrying one gets a warning that
 names `release_url`.
@@ -104,9 +104,9 @@ Only two line shapes are accepted: `<hex><two spaces><filename>` and
 `<hex><space>*<filename>`. Blank lines and lines starting with `#` are ignored.
 The hash length decides the algorithm (MD5 / SHA-1 / SHA-256 / SHA-512), and one
 block holds one algorithm. A malformed line warns and is skipped with its line
-number; strict publishing rejects the warning. A filename must be a single path segment. The type, operating system and
-architecture badges are inferred from the filename; they are decoration, and
-nothing shows when the inference fails.
+number. Review the warning and rendered fallback before publication. A filename must be a single path segment. The type, operating system and
+architecture badges are inferred from the filename. They are decorative.
+If inference fails, no badge appears.
 
 The base for asset links: with `release_url` front matter on the page it is derived
 as `https://github.com/<repo>/releases/download/<tag>/`; a page without release
@@ -184,9 +184,8 @@ channels:
       aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  oink-0.4.0.tar.gz
 ```
 
-The record has exactly five top-level fields — `version`, `repo`, `tag`,
-`published`, `channels`. An extra key warns and skips the record; strict
-publishing rejects the warning. `version` may be omitted here and supplied by
+The record has exactly five top-level fields: `version`, `repo`, `tag`,
+`published`, and `channels`. An extra key warns and skips the record. Review the warning and rendered fallback before publication. `version` may be omitted here and supplied by
 the site's `params.version` instead.
 
 | Field | Type | Default | Description |
@@ -262,7 +261,7 @@ new `content/blog/release/<version>.md` with its `release_url` → flip
 
 ## Verify {#verify}
 
-1. The build is warning-free: `hugo --printPathWarnings --panicOnWarning`. A malformed hash line, mixed algorithms, a missing `base` and a misspelled channel field all fail here.
+1. Build with visible diagnostics: `hugo --printPathWarnings`. A malformed hash line, mixed algorithms, a missing `base` and a misspelled channel field all produce warnings that need review.
 2. On the page: the card's tag and date match the repository, and every asset row opens a real download URL.
 3. Check the hashes against the actual artifacts by hand: the component only lays them out and verifies nothing.
 4. Confirm the hashes are complete in non-HTML output:

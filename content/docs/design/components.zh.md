@@ -66,8 +66,7 @@ OINK 有 29 个 shortcode：
 ## 校验 {#validation}
 
 无效的作者输入遵循[架构契约](/zh/docs/design/architecture/)：发出警告，使用文档
-规定的安全回退或省略组件，再由 `--panicOnWarning` 在发布门禁中把同一条诊断
-变为致命错误。命名参数与位置参数不能混用。Book 目标 ID 匹配
+规定的安全回退或省略组件，并在发布前审阅告警与降级产物。命名参数与位置参数不能混用。Book 目标 ID 匹配
 `[A-Za-z][A-Za-z0-9_.:-]*`，Book 编号匹配 `[0-9A-Za-z.-]+`，class 必须通过
 token 校验。渲染钩子与 shortcode 目标共享同一个页面注册表，因此冲突不会生成
 重复的输出 ID。
