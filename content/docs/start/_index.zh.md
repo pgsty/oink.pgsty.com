@@ -19,13 +19,13 @@ aliases:
 
 > [!IMPORTANT] 当前 Hugo 基线
 > 开发、CI 与发布测试统一使用 Hugo Extended {{% param hugoMinVersion %}} 和
-> Go 1.27，Hugo 基线随稳定版更新。使用旧 Starter 快照时，同步更新它的 Hugo
+> Go 1.27，Hugo 基线固定为 0.166.0。使用旧 Starter 快照时，同步更新它的 Hugo
 > workflow 固定版本；不再维护旧 Hugo 兼容性。
 
-> [!NOTE] OINK 1.3.1 构建要求
-> OINK 1.3.1 还需要在 `PATH` 中安装独立的
-> [Dart Sass 1.105.2](https://github.com/sass/dart-sass/releases/tag/1.105.2)。
-> 从 v1.3.0 升级前，请先安装编译器。
+> [!NOTE] OINK 1.3.2 构建要求
+> Hugo Extended 0.166.0 是最低版本，也是开发与严格验收的默认版本。
+> SCSS 使用 Hugo 内置 LibSass，无需安装 Dart Sass。Hugo 0.168.0 普通构建
+> 可以保留上游 LibSass 弃用警告；使用 `--panicOnWarning` 时请选择 0.166.0。
 
 ## 选择起点 {#choose}
 
@@ -39,14 +39,14 @@ aliases:
 
 1. ### 安装工具 {#tools}
 
-   安装 Git、Go 1.27 或更新版本，以及 Hugo Extended 0.168.0 或更新版本。Hugo
+   安装 Git、Go 1.27 或更新版本，以及 Hugo Extended 0.166.0 或更新版本。Hugo
    输出必须包含 `extended`：
 
    ```console
    $ go version
    go version go1.27.2 darwin/arm64
    $ hugo version
-   hugo v0.168.0+extended+withdeploy darwin/arm64
+   hugo v0.166.0+extended+withdeploy darwin/arm64
    ```
 
    macOS 可以执行 `brew install git go hugo`。Linux 与 Windows 请按官方

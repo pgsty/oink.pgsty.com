@@ -15,14 +15,14 @@ search_keywords:
     proposal,
     PRD,
   ]
-contract_status: v1.3.1
+contract_status: v1.3.2
 cascade:
   search_boost: 0.6
   categories: [Design]
 ---
 
-> [!NOTE] OINK 1.3.1 contract
-> This contract describes OINK v1.3.1. Theme development uses the sibling
+> [!NOTE] OINK 1.3.2 contract
+> This contract describes OINK v1.3.2. Theme development uses the sibling
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 

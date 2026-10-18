@@ -30,13 +30,13 @@ aliases:
 已有 Hugo 站点时，按下方[接入现有站点](#existing-site)操作；已有 Docsy 站点见[版本升级](/zh/docs/admin/upgrade/)。
 
 后半部分是四种安装方式的取舍：Hugo Module、Git submodule、离线归档、固定版本源码副本。
-当前开发与验收统一使用 Go 1.27 与 Hugo Extended 0.168.0。
-Hugo 基线随稳定版更新，不再测试或适配旧版本。
+当前开发与验收统一使用 Go 1.27 与 Hugo Extended 0.166.0。
+Hugo 基线固定为 0.166.0，不再测试或适配旧版本。
 
-> [!NOTE] OINK 1.3.1 构建要求
-> OINK 1.3.1 还需要在 `PATH` 中安装独立的
-> [Dart Sass 1.105.2](https://github.com/sass/dart-sass/releases/tag/1.105.2)。
-> 从 v1.3.0 升级前，请先安装编译器。
+> [!NOTE] OINK 1.3.2 构建要求
+> Hugo Extended 0.166.0 是最低版本，也是开发与严格验收的默认版本。
+> SCSS 使用 Hugo 内置 LibSass，无需安装 Dart Sass。Hugo 0.168.0 普通构建
+> 可以保留上游 LibSass 弃用警告；使用 `--panicOnWarning` 时请选择 0.166.0。
 
 ## 接入现有站点 {#existing-site}
 

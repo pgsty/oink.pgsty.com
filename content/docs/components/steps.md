@@ -161,7 +161,7 @@ indented. The three headings below appear in this page's table of contents.
 
 ### Install the toolchain {#install-toolchain}
 
-You need Hugo Extended ≥ 0.168.0 and Go.
+You need Hugo Extended ≥ 0.166.0 and Go.
 
 ### Run the server {#run-server}
 
@@ -185,7 +185,7 @@ Push to `main`; the workflow the repository ships builds and publishes.
 
 ### Install the toolchain {#install-toolchain}
 
-You need Hugo Extended ≥ 0.168.0 and Go.
+You need Hugo Extended ≥ 0.166.0 and Go.
 
 ### Run the server {#run-server}
 

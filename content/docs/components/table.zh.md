@@ -52,7 +52,7 @@ aliases:
 | 条目 | 取值 |
 | --- | --- |
 | 主题版本 | v0.8.1 |
-| Hugo 下限 | 0.168.0 Extended |
+| Hugo 下限 | 0.166.0 Extended |
 | 许可证 | Apache-2.0 |
 {caption="本站当前使用的主题事实"}
 ```
@@ -60,7 +60,7 @@ aliases:
 | 条目 | 取值 |
 | --- | --- |
 | 主题版本 | v0.8.1 |
-| Hugo 下限 | 0.168.0 Extended |
+| Hugo 下限 | 0.166.0 Extended |
 | 许可证 | Apache-2.0 |
 {caption="本站当前使用的主题事实"}
 

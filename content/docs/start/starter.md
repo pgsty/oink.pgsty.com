@@ -13,15 +13,16 @@ starting point for a new OINK site. It is deliberately smaller than
 repository, browser regression suite, or PGSTY-specific brand is copied into
 your project.
 
-Use Git, Go 1.27 or newer, and Hugo Extended 0.168.0 for this workflow.
+Use Git, Go 1.27 or newer, and Hugo Extended 0.166.0 for this workflow.
 Validate the selected language profiles with this toolchain and update older
-Starter workflow pins to match. The Hugo baseline advances with stable
-releases; older versions receive no compatibility testing or adaptation.
+Starter workflow pins to match. The Hugo baseline stays pinned at 0.166.0; later upgrades need a separate
+compatibility review.
 
-> [!NOTE] OINK 1.3.1 build requirements
-> OINK 1.3.1 also needs standalone
-> [Dart Sass 1.105.2](https://github.com/sass/dart-sass/releases/tag/1.105.2)
-> on `PATH`. Install the compiler before upgrading from v1.3.0.
+> [!NOTE] OINK 1.3.2 build requirements
+> Hugo Extended 0.166.0 is the minimum and default for development and strict checks.
+> SCSS uses built-in LibSass; no Dart Sass installation is needed. Ordinary Hugo
+> 0.168.0 builds may show the upstream LibSass warning; use 0.166.0 with
+> `--panicOnWarning`.
 
 ## What the template contains {#contents}
 

@@ -45,7 +45,7 @@ module:
     - path: github.com/pgsty/oink
   hugoVersion:
     extended: true
-    min: 0.168.0
+    min: 0.166.0
 
 params:
   offline_search: true
@@ -505,7 +505,7 @@ Version parameters:
 | `taxonomies` | map | | Hugo's own: enables `tag: tags` / `category: categories` — see [Taxonomies](/docs/customize/taxonomy/) |
 | `params.taxonomy.page_header` | list | | Shows only these taxonomies in a post header; unset shows all |
 | `services.googleAnalytics.id` | string | | Hugo's own: the analytics script is injected in production builds only — see [Analytics and SEO](/docs/admin/analytics/) |
-| `module.hugoVersion.min` | string | 0.168.0 | The Hugo floor the theme declares; anything older fails the build |
+| `module.hugoVersion.min` | string | 0.166.0 | The Hugo floor the theme declares; anything older fails the build |
 | `module.hugoVersion.extended` | boolean | true | Hugo Extended is required (SCSS has to be compiled) |
 {.fields meta="type default"}
 
@@ -519,13 +519,13 @@ text) and its parameter-scan registry; the theme's CI regenerates them and
 fails on drift. Use the schema from the same release tag as your theme pin.
 
 With the VS Code YAML extension, map the site schema in your settings. This
-example matches OINK v1.3.1; replace that tag with the one in your `go.mod`.
+example matches OINK v1.3.2; replace that tag with the one in your `go.mod`.
 Both common YAML configuration filenames are covered:
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/v1.3.1/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
+    "https://raw.githubusercontent.com/pgsty/oink/v1.3.2/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```
@@ -570,12 +570,12 @@ A configuration change also needs at least three checks: one page in each
 language, a page with no translation to see the fallback, and the links under
 the production `baseURL` (easy to miss on a subpath deployment).
 
-The theme's minimum and single test baseline are Hugo Extended `0.168.0`.
-Validate configuration changes with this version. Advance the baseline with
-stable releases; do not run older-Hugo compatibility tests or add adaptation:
+The theme's minimum and single test baseline are Hugo Extended `0.166.0`.
+Validate configuration changes with this version and keep the baseline pinned.
+Hugo 0.168.0 ordinary builds may show the upstream LibSass warning:
 
 ```bash
-# require v0.168.0+extended in this output
+# require v0.166.0+extended in this output
 hugo version
 hugo --printPathWarnings --panicOnWarning
 ```

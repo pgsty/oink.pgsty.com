@@ -37,7 +37,7 @@ type has a default icon and accent colour.
 > `hugo server -D` previews drafts.
 
 > [!IMPORTANT]
-> The floor is Hugo Extended 0.168.0; anything older fails the build outright.
+> The floor is Hugo Extended 0.166.0; anything older fails the build outright.
 
 > [!WARNING]
 > `hugo --cleanDestinationDir` empties `public/`.
@@ -65,7 +65,7 @@ type has a default icon and accent colour.
 > `hugo server -D` previews drafts.
 
 > [!IMPORTANT]
-> The floor is Hugo Extended 0.168.0; anything older fails the build outright.
+> The floor is Hugo Extended 0.166.0; anything older fails the build outright.
 
 > [!WARNING]
 > `hugo --cleanDestinationDir` empties `public/`.
@@ -170,13 +170,13 @@ that has to be foldable.
 ````markdown {title="Source"}
 > [!DETAILS] Full `hugo version` output
 > ```text
-> hugo v0.168.0+extended+withdeploy darwin/arm64
+> hugo v0.166.0+extended+withdeploy darwin/arm64
 > ```
 ````
 
 > [!DETAILS] Full `hugo version` output
 > ```text
-> hugo v0.168.0+extended+withdeploy darwin/arm64
+> hugo v0.166.0+extended+withdeploy darwin/arm64
 > ```
 
 ## Custom icon {#icon}

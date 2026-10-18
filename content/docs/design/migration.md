@@ -5,11 +5,11 @@ description: Supported source, configuration, and validation boundaries for OINK
 weight: 50
 icon: fa-solid fa-code-compare
 search_keywords: [OINK migration contract, 0.4 migration, 0.5 migration, configuration rename, migration toolkit]
-contract_status: v1.3.1
+contract_status: v1.3.2
 ---
 
-> [!NOTE] OINK 1.3.1 contract
-> This contract describes OINK v1.3.1. Theme development uses the sibling
+> [!NOTE] OINK 1.3.2 contract
+> This contract describes OINK v1.3.2. Theme development uses the sibling
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 
@@ -57,8 +57,8 @@ The tool ships with OINK 1.2.0. Run it from the theme checkout to inventory
 consumers and upgrade them to the published tag.
 
 ```sh
-python3 bin/update-consumers.py v1.3.1 --roots ~/www ~/pgsty
-python3 bin/update-consumers.py v1.3.1 --roots ~/www ~/pgsty --write --check --check-appearance
+python3 bin/update-consumers.py v1.3.2 --roots ~/www ~/pgsty
+python3 bin/update-consumers.py v1.3.2 --roots ~/www ~/pgsty --write --check --check-appearance
 ```
 
 The first command only reports adoption.
@@ -166,7 +166,7 @@ passthrough explicitly for `\(...\)`, `\[...\]`, or `$$...$$`; Hugo does not
 merge theme markup config.
 
 Run the smallest source and output checks for the changed contract with the
-pinned Hugo Extended 0.168.0 toolchain, JS tests when runtime changes, and
+pinned Hugo Extended 0.166.0 toolchain, JS tests when runtime changes, and
 strict root and subpath builds. For maintained sites, inspect representative
 EN/ZH Docs and Blog routes at desktop and narrow widths, then record pin,
 deployment, and hosted parity separately.

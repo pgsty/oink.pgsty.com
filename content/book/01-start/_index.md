@@ -23,18 +23,18 @@ theme or deployment problem later.
 
 ## Install the prerequisite {#prerequisite}
 
-Use Git, Go 1.27 or newer, and Hugo Extended 0.168.0 for this tutorial.
+Use Git, Go 1.27 or newer, and Hugo Extended 0.166.0 for this tutorial.
 Development, CI, and release tests use this single Hugo baseline, which
-advances with stable releases. Update an older Starter's Hugo workflow pins
+stays pinned at 0.166.0. Update an older Starter's Hugo workflow pins
 before validation. Older Hugo compatibility is no longer maintained.
-The development theme also needs standalone Dart Sass 1.105.2 on `PATH`.
+Styles use Hugo Extended's built-in LibSass; no external Sass compiler is needed.
 Node.js is not required.
 
 ```console
 $ go version
 go version go1.27.2 darwin/arm64
 $ hugo version
-hugo v0.168.0+extended+withdeploy darwin/arm64
+hugo v0.166.0+extended+withdeploy darwin/arm64
 ```
 
 ## Run the preview {#preview}

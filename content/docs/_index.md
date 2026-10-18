@@ -41,11 +41,11 @@ cascade:
 
 New to OINK? [Start with the Starter](/docs/start/) to preview a working site,
 then replace its sample content. Write in Markdown and build with Hugo Extended
-and standalone Dart Sass; Hugo Modules also require Go to resolve the theme. Bundled theme assets need no
+with built-in LibSass; Hugo Modules also require Go to resolve the theme. Bundled theme assets need no
 CDN or npm build step.
 
 The current release is {{% param version %}}. See the
-[1.3.1 release notes](/blog/release/1.3.1/) or the
+[1.3.2 release notes](/blog/release/1.3.2/) or the
 [upgrade guide](/docs/admin/upgrade/#preparing-1-3) for an existing site.
 
 ## Five ways in {#five-entries}

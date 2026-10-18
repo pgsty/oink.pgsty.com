@@ -133,7 +133,7 @@ draft: true
 组合例子：步骤里放代码围栏与提示块。
 
 ````markdown {title="源码"}
-1. 安装 Hugo Extended，最低 0.168.0：
+1. 安装 Hugo Extended，最低 0.166.0：
    ```bash
    brew install hugo
    ```
@@ -147,7 +147,7 @@ draft: true
 {.steps}
 ````
 
-1. 安装 Hugo Extended，最低 0.168.0：
+1. 安装 Hugo Extended，最低 0.166.0：
    ```bash
    brew install hugo
    ```

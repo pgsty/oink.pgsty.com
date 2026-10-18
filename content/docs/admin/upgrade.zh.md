@@ -1,7 +1,7 @@
 ---
 title: 版本升级
 linkTitle: 版本升级
-description: 固定主题版本、升级到 1.3.1、迁移旧内容或 Docsy 站点，并保留回滚路径。
+description: 固定主题版本、升级到 1.3.2、迁移旧内容或 Docsy 站点，并保留回滚路径。
 weight: 50
 search_keywords: [升级, 迁移, 版本, Hugo Module, hugo mod get, oink06, Docsy, jQuery, 破坏性变更, upgrade, migration]
 aliases:
@@ -18,23 +18,27 @@ aliases:
 升级会改变渲染结果。先建一个升级分支再动手，回退的代价就是丢弃一个分支。
 
 > [!IMPORTANT] 当前 Hugo 基线
-> 自 2026-10-17 起，开发与验收统一使用 Hugo Extended 0.168.0。升级时同步更新
+> 自 2026-10-18 起，开发与验收统一使用 Hugo Extended 0.166.0。升级时同步更新
 > Hugo workflow 固定版本，不再维护旧 Hugo 兼容性。下方旧版本章节中的要求仅说明
 > 当时的发布状态。
 
-> [!NOTE] OINK 1.3.1 构建要求
-> OINK 1.3.1 还需要在 `PATH` 中安装独立的
-> [Dart Sass 1.105.2](https://github.com/sass/dart-sass/releases/tag/1.105.2)。
-> 从 v1.3.0 升级前，请先安装编译器。
+> [!NOTE] OINK 1.3.2 构建要求
+> Hugo Extended 0.166.0 是最低版本，也是开发与严格验收的默认版本。
+> SCSS 使用 Hugo 内置 LibSass，无需安装 Dart Sass。Hugo 0.168.0 普通构建
+> 可以保留上游 LibSass 弃用警告；使用 `--panicOnWarning` 时请选择 0.166.0。
 
-## 升级到 1.3.1 {#preparing-1-3}
+## 升级到 1.3.2 {#preparing-1-3}
+
+OINK `v1.3.2` 恢复内置 LibSass，移除外部 Sass 依赖。Hugo Extended 0.166.0
+是最低版本和默认版本；0.168.0 普通构建允许出现上游警告。详情参见
+[1.3.2 发布说明](/zh/blog/release/1.3.2/)。
 
 OINK `v1.3.1` 修复 Markmap 文字对比度和固定 TOC 的页脚避让，并为技术表格与
 文件树长注释提供显式开启的布局。已有内容保留默认外观，仅在需要完整技术信息时
 添加 `.td-table--wide` 或 `wrap=true`。
 
-更新模块前，先安装 Hugo Extended 0.168.0 和独立 Dart Sass 1.105.2。在关闭替换与
-工作区的环境中验证公开模块解析，固定 `github.com/pgsty/oink@v1.3.1`，并完成零告警
+更新模块前，先安装 Hugo Extended 0.166.0，无需安装 Dart Sass。在关闭替换与
+工作区的环境中验证公开模块解析，固定 `github.com/pgsty/oink@v1.3.2`，并完成零告警
 构建。源码副本方式的消费站还需要刷新固定主题文件；修改 `go.mod` 不会升级已有的
 vendor 副本。
 
@@ -53,11 +57,11 @@ vendor 副本。
 ## 升级 Hugo Module {#hugo-module}
 
 生产站点固定已发布标签或主动选定的不可变 commit，不跟随分支，也不用 `@latest`。
-下面升级到已发布的 `v1.3.1` 标签；选择后续版本时，先确认已经发布且模块可以解析，
+下面升级到已发布的 `v1.3.2` 标签；选择后续版本时，先确认已经发布且模块可以解析，
 再替换示例中的版本。
 
 ```bash {title="终端"}
-hugo mod get github.com/pgsty/oink@v1.3.1   # 已发布的版本标签
+hugo mod get github.com/pgsty/oink@v1.3.2   # 已发布的版本标签
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -71,7 +75,7 @@ module github.com/pgsty/oink.pgsty.com
 
 go 1.27.0
 
-require github.com/pgsty/oink v1.3.1
+require github.com/pgsty/oink v1.3.2
 ```
 
 > [!DANGER] 本地模块替换会盖掉这个固定版本
@@ -86,7 +90,7 @@ require github.com/pgsty/oink v1.3.1
 
 ```bash {title="终端"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.3.1
+git -C themes/oink checkout --detach v1.3.2
 git add themes/oink
 ```
 
@@ -116,7 +120,7 @@ env -u HUGO_MODULE_REPLACEMENTS GOWORK=off HUGO_MODULE_WORKSPACE=off \
 > 主题发布不会自动升级既有站点。
 
 从 1.0.0 升级到 1.1.0 不需要迁移源码，模块的 Go 1.27.0 声明与 1.0.0 相同。
-当前升级统一使用 Hugo Extended 0.168.0 验证；历史工具链信息保留在
+当前升级统一使用 Hugo Extended 0.166.0 验证；历史工具链信息保留在
 [1.1 发布说明](/zh/blog/release/1.1.0/)中。
 
 选择新固定版本前，检查这些受影响的页面与行为：
@@ -162,7 +166,7 @@ make dev
 > 自定义深色品牌选择器的兼容处理见[品牌外观](/zh/docs/customize/brand/#visual-presets)。
 
 OINK 1.2.0 已发布。除上面的默认外观变化外，无需迁移内容源码。
-当前升级统一使用 Hugo Extended 0.168.0 验证，并按以下清单验收站点：
+当前升级统一使用 Hugo Extended 0.166.0 验证，并按以下清单验收站点：
 
 - 检查所选预设、明暗图标、键盘与手机菜单、保存的偏好，以及自定义字体和强调色覆盖。
   太阳表示亮色，月亮表示暗色；切换风格不得改变保存的明暗偏好。

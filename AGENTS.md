@@ -8,9 +8,9 @@ not a projection of a second theme-local document tree.
 
 ## Current baseline
 
-The documentation target is OINK `v1.3.1`. Verify the actual published theme
+The documentation target is OINK `v1.3.2`. Verify the actual published theme
 version in `go.mod` and public tags before claiming release or deployment.
-The Design contracts and release notes describe the 1.3.1 behavior. Use
+The Design contracts and release notes describe the 1.3.2 behavior. Use
 sibling-checkout Make targets for development; validate the
 published pin separately with replacements and both workspaces disabled.
 CLI documentation describes the separate local `0.1.0-dev` candidate. Recheck
@@ -79,16 +79,14 @@ themselves; use the Make targets for local theme acceptance. The local `check`,
 do not clear inherited replacements or workspaces; use the published-pin
 commands below to establish release identity. Node >= 24 and npm >= 11.16.0
 are contributor test dependencies, not ordinary Hugo consumer requirements.
-As of 2026-10-17, the tested development and release toolchain is Go 1.27.2
-and Hugo Extended 0.168.0. CI automatically follows the latest stable Go and
-Hugo releases and records their actual versions. Go 1.27.0 and Hugo 0.168.0
-remain minimums, not exact-version locks. Update declared requirements,
-checkers, and current bilingual documentation together when raising a minimum.
-Do not test or adapt for older Hugo versions or add compatibility shims unless
-the user explicitly requests it. Historical release/research records do not
-establish current support requirements. SCSS builds use standalone Dart Sass
-1.105.2 on `PATH`; CI also uses Node 24. Test overlays such as
-`tests/fixtures/browser.yml` do not change the single-root-config rule for the production site.
+Hugo Extended 0.166.0 is the minimum and default development and strict release
+version. Keep Hugo pinned. SCSS uses built-in LibSass; ordinary consumers must
+not install Dart Sass. Hugo 0.168.0 builds may emit the accepted upstream
+LibSass warning; use 0.166.0 for `--panicOnWarning` gates. The theme owns a
+focused 0.168.0 check that rejects other diagnostics. Preserve project SCSS
+hooks and the dependency boundary on future upgrades. CI uses Node 24 and
+follows stable Go releases. Test overlays such as `tests/fixtures/browser.yml`
+do not change the single-root-config rule for the production site.
 
 For published-pin acceptance, disable environment replacements and both
 workspace mechanisms, verify advertised/pinned versions, and build strictly:
