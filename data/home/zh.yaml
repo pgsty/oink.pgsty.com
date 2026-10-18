@@ -13,7 +13,7 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 1.3.1 · 本地优先 · Hugo 构建
+  eyebrow: OINK 1.3.2 · 本地优先 · Hugo 构建
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -28,8 +28,8 @@ hero:
       url: docs/start/starter/
       icon: fa-solid fa-rocket
       style: primary
-    - label: 查看 1.3.1 新特性
-      url: blog/release/1.3.1/
+    - label: 查看 1.3.2 新特性
+      url: blog/release/1.3.2/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -281,7 +281,7 @@ faq:
   items:
     - question: 哪里需要 Node.js、npm 或打包器吗？
       answer: >-
-        不需要。开发构建使用 Hugo Extended 0.168.0 与独立的 Dart Sass 1.105.2。Go 只用一次，用来把主题解析为
+        不需要。开发构建使用 Hugo Extended 0.166.0 及其内置 LibSass，无需额外安装 Sass。Go 只用一次，用来把主题解析为
         Hugo Module；离线归档或 Git submodule 方式连 Go 也不需要。界面交互仍在浏览器里执行
         JavaScript，但这些脚本随主题分发，只挂在用到它们的页面上。
       open: true

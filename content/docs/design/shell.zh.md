@@ -5,11 +5,11 @@ description: 导航权威、沉浸式博客、搜索、操作、分类法、索�
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK 外壳, 导航契约, 搜索, 操作, 博客展示, 作者, 系列, 翻页]
-contract_status: v1.3.1
+contract_status: v1.3.2
 ---
 
-> [!NOTE] OINK 1.3.1 契约
-> 本契约描述 OINK v1.3.1。主题开发使用同级 checkout；发布验收在关闭替换与
+> [!NOTE] OINK 1.3.2 契约
+> 本契约描述 OINK v1.3.2。主题开发使用同级 checkout；发布验收在关闭替换与
 > 工作区后验证公开模块。消费站升级与部署分别检查。
 
 ## 权威来源与导航 {#authorities-and-navigation}

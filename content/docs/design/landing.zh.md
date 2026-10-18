@@ -5,11 +5,11 @@ description: 落地页数据、内置区块注册表、语言解析、运行时�
 weight: 40
 icon: fa-solid fa-panorama
 search_keywords: [OINK 落地页契约, 落地页区块, 首页数据, 渐进增强, 落地页输出]
-contract_status: v1.3.1
+contract_status: v1.3.2
 ---
 
-> [!NOTE] OINK 1.3.1 契约
-> 本契约描述 OINK v1.3.1。主题开发使用同级 checkout；发布验收在关闭替换与
+> [!NOTE] OINK 1.3.2 契约
+> 本契约描述 OINK v1.3.2。主题开发使用同级 checkout；发布验收在关闭替换与
 > 工作区后验证公开模块。消费站升级与部署分别检查。
 
 共享规则见[架构契约](/zh/docs/design/architecture/)与

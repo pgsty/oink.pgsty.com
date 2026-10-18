@@ -51,10 +51,10 @@ make build
 ```
 
 Replace `../my-docs` with an existing site. Site operations require Hugo
-Extended 0.168.0 or later; the fixed Starter's module workflow needs Go 1.27
-or later. Development and validation use Hugo Extended 0.168.0, with the
-baseline advancing with stable releases. Older Hugo compatibility is no
-longer maintained.
+Extended 0.166.0 or later; the fixed Starter's module workflow needs Go 1.27
+or later. Development and validation use Hugo Extended 0.166.0, with the
+baseline pinned at 0.166.0. Ordinary Hugo 0.168.0 builds may show the upstream
+LibSass warning. No external Sass installation is required.
 
 `make deps` downloads build dependencies. CLI commands are offline by default;
 add `--network` when that invocation needs uncached inputs. Checks and change

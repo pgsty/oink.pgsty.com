@@ -798,7 +798,7 @@ execution from tests that actually deny outbound access at the OS boundary.
 Compatibility is declared from executed evidence, not inferred from a
 successful cross compilation. The local candidate has an exercised macOS
 arm64 path with Hugo Extended 0.166.0 and public OINK v1.1.0; the version gate
-requires Hugo Extended 0.168.0 or newer. Development and validation use 0.168.0;
+requires Hugo Extended 0.166.0 or newer. Development and validation use 0.166.0;
 the baseline advances with stable releases, without older-Hugo compatibility
 testing or adaptation. Initialized sites retain normal Hugo inputs and require only their
 documented dependencies after removing the CLI.

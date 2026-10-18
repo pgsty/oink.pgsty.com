@@ -10,7 +10,7 @@ permissions:
 
 env:
   GO_VERSION: stable
-  HUGO_VERSION: latest
+  HUGO_VERSION: "0.166.0"
   NODE_VERSION: 24
   # Resolve the published pin, never a workspace or filesystem replace: the
   # gate is only meaningful if CI builds against the module a reader would get.
@@ -45,22 +45,10 @@ jobs:
         with:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
-      - name: Install Dart Sass 1.105.2
-        shell: bash
-        run: |
-          sass_archive="$RUNNER_TEMP/dart-sass-1.105.2-linux-x64.tar.gz"
-          curl --fail --location --silent --show-error \
-            --output "$sass_archive" \
-            https://github.com/sass/dart-sass/releases/download/1.105.2/dart-sass-1.105.2-linux-x64.tar.gz
-          echo "a530ee08d5792c80bdb9d9614b45fb58219c890cb42a280a80775f0af9c29582  $sass_archive" | sha256sum --check
-          tar --extract --gzip --file "$sass_archive" --directory "$RUNNER_TEMP"
-          echo "$RUNNER_TEMP/dart-sass" >> "$GITHUB_PATH"
-
       - name: Record build tool versions
         run: |
           go version
           hugo version
-          sass --version
 
       - name: Download Hugo module
         run: go mod download github.com/pgsty/oink

@@ -5,46 +5,41 @@ description: Repository assembly, configuration, diagnostics, localization, outp
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK architecture, repository boundary, runtime, i18n, Docsy locales, output formats, security, accessibility, performance]
-contract_status: v1.3.1
+contract_status: v1.3.2
 ---
 
-> [!NOTE] OINK 1.3.1 contract
-> This contract describes OINK v1.3.1. Theme development uses the sibling
+> [!NOTE] OINK 1.3.2 contract
+> This contract describes OINK v1.3.2. Theme development uses the sibling
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 
 ## Hugo toolchain {#hugo-toolchain}
 
-> [!NOTE] OINK 1.3.1 toolchain
-> These requirements apply to OINK 1.3.1. Install the standalone Sass compiler
-> before upgrading from v1.3.0.
+Hugo Extended **0.166.0** is the minimum and default development and strict
+release-test version. OINK 1.3.2 uses Hugo's built-in LibSass for main and ReDoc
+styles. Ordinary consumers do not install Dart Sass or another Sass executable.
+Project-variable and project-style SCSS hooks remain supported.
 
-As of 2026-10-17, the tested development and release toolchain is **Go 1.27.2**
-and **Hugo Extended 0.168.0**. CI automatically follows the latest stable Go
-and Hugo releases and records the versions used. These defaults do not lock
-consumers to an exact version: the module declares Go 1.27.0 and Hugo Extended
-0.168.0 as minimums, with no upper version limit. When raising the Hugo minimum,
-update `hugo.yaml`, `theme.toml`, site requirements, the CLI version gate, and
-current bilingual documentation together.
+Hugo Extended **0.168.0** can also build and preview the site. Its upstream
+LibSass deprecation warning is accepted and remains visible. `--panicOnWarning`
+makes that warning fatal, so the strict publishing gate uses **0.166.0**. A
+separate 0.168.0 check runs without a Sass executable and accepts only this
+known warning; other diagnostics fail the check.
 
-Install standalone [Dart Sass 1.105.2](https://github.com/sass/dart-sass/releases/tag/1.105.2)
-on `PATH`; the npm package is not required. Main and ReDoc styles select the
-Dart Sass transpiler explicitly. CI verifies the compiler archive checksum.
-Bootstrap 5.3 and the public project-variable hooks still share the legacy
-import scope. The main bundle silences only `import`, `global-builtin`,
-`color-functions`, and `if-function` deprecations; Sass `@warn`, invalid selectors,
-and Hugo warnings remain visible and fail strict publication. Font Awesome
-continues to use its separate compiled vendor stylesheet.
+Keep the default Hugo version pinned. Future upgrades must preserve the
+consumer dependency boundary; versions that remove built-in LibSass require
+a separate compatibility decision. Update requirements, checkers, CI pins,
+and both language contracts together. Historical release and research records
+retain their original toolchain versions.
 
-Do not run older-Hugo compatibility matrices, adapt code for older versions,
-or add compatibility shims unless the user explicitly requests it. Historical
-release notes and dated research retain their original tool versions; they do
-not establish current support requirements.
+The module minimum is Go **1.27.0**; current local release validation uses Go
+**1.27.2**. Go resolves Hugo Modules and is not needed for a prepared classic
+theme copy.
 
 ## Repository and assembly {#repository-and-assembly}
 
 The repository root is a Hugo Module and complete theme, not a site or npm
-workspace. Hugo renders templates and invokes standalone Dart Sass to compile SCSS. Browser runtimes and
+workspace. Hugo Extended renders templates and compiles SCSS with built-in LibSass. Browser runtimes and
 third-party assets are committed, so a normal build performs no network fetch.
 Public bilingual documentation, examples, and browser tests live in the
 sibling `oink.pgsty.com` repository; the theme repository keeps only narrow

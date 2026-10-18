@@ -30,14 +30,15 @@ only neutral project content and deployment workflows.
 
 > [!IMPORTANT] Current Hugo baseline
 > Development, CI, and release tests use Hugo Extended {{% param hugoMinVersion %}}
-> and Go 1.27. The Hugo baseline advances with stable releases. When starting
+> and Go 1.27. The Hugo baseline stays pinned at 0.166.0. When starting
 > from an older Starter snapshot, update its Hugo workflow pins to this baseline;
 > older Hugo compatibility is no longer maintained.
 
-> [!NOTE] OINK 1.3.1 build requirements
-> OINK 1.3.1 also needs standalone
-> [Dart Sass 1.105.2](https://github.com/sass/dart-sass/releases/tag/1.105.2)
-> on `PATH`. Install the compiler before upgrading from v1.3.0.
+> [!NOTE] OINK 1.3.2 build requirements
+> Hugo Extended 0.166.0 is the minimum and default for development and strict checks.
+> SCSS uses built-in LibSass; no Dart Sass installation is needed. Ordinary Hugo
+> 0.168.0 builds may show the upstream LibSass warning; use 0.166.0 with
+> `--panicOnWarning`.
 
 ## Choose a path {#choose}
 
@@ -51,14 +52,14 @@ only neutral project content and deployment workflows.
 
 1. ### Install the tools {#tools}
 
-   Install Git, Go 1.27 or newer, and Hugo Extended 0.168.0 or newer. The Hugo
+   Install Git, Go 1.27 or newer, and Hugo Extended 0.166.0 or newer. The Hugo
    output must contain `extended`:
 
    ```console
    $ go version
    go version go1.27.2 darwin/arm64
    $ hugo version
-   hugo v0.168.0+extended+withdeploy darwin/arm64
+   hugo v0.166.0+extended+withdeploy darwin/arm64
    ```
 
    On macOS, `brew install git go hugo` supplies them. On Linux and Windows,

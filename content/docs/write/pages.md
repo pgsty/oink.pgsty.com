@@ -171,7 +171,7 @@ parameters in [Components](/docs/components/).
 A combined example: code fences and a callout inside steps.
 
 ````markdown {title="Source"}
-1. Install Hugo Extended, 0.168.0 at the oldest:
+1. Install Hugo Extended, 0.166.0 at the oldest:
    ```bash
    brew install hugo
    ```
@@ -185,7 +185,7 @@ A combined example: code fences and a callout inside steps.
 {.steps}
 ````
 
-1. Install Hugo Extended, 0.168.0 at the oldest:
+1. Install Hugo Extended, 0.166.0 at the oldest:
    ```bash
    brew install hugo
    ```

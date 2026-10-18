@@ -13,7 +13,7 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 1.3.1 · Local-first · Built with Hugo
+  eyebrow: OINK 1.3.2 · Local-first · Built with Hugo
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -28,8 +28,8 @@ hero:
       url: docs/start/starter/
       icon: fa-solid fa-rocket
       style: primary
-    - label: What's new in 1.3.1
-      url: blog/release/1.3.1/
+    - label: What's new in 1.3.2
+      url: blog/release/1.3.2/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -307,8 +307,8 @@ faq:
   items:
     - question: Do I need Node.js, npm or a bundler anywhere?
       answer: >-
-        No. The development build uses Hugo Extended 0.168.0 and standalone Dart Sass
-        1.105.2. Go is used
+        No. The development build uses Hugo Extended 0.166.0 with built-in LibSass;
+        no external Sass compiler is needed. Go is used
         once, to resolve the theme as a Hugo module; an offline archive or a Git
         submodule works without it. Interactive features still run JavaScript,
         but those scripts ship with the theme and attach only to the pages that

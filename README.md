@@ -8,9 +8,9 @@ The bilingual maintainer contracts under `content/docs/design/` are the
 canonical prose source for OINK architecture, components, reading shells,
 Landing pages, and migration boundaries.
 
-The site documents OINK `v1.3.1`. The guides, homepage, Design contracts, and
-bilingual `content/blog/release/1.3.1{,.zh}.md` notes cover the readability repairs,
-optional FileTree wrapping, and Hugo/Dart Sass toolchain. Local development uses
+The site documents OINK `v1.3.2`. The guides, homepage, Design contracts, and
+bilingual `content/blog/release/1.3.2{,.zh}.md` notes cover the restored Hugo-only
+build and retain the readability repairs and optional FileTree wrapping from 1.3.1. Local development uses
 the sibling checkout. Published module resolution, consumer version pins, and
 hosted deployment each require separate validation.
 `content/docs/cli{,.zh}.md` is a one-page introduction to the separate,
@@ -28,11 +28,11 @@ project-specific configuration.
 
 ## Local development
 
-The tested OINK 1.3.1 toolchain is Go 1.27.2, Hugo Extended 0.168.0, and
-standalone Dart Sass 1.105.2 on `PATH`. CI automatically follows the latest
-stable Go and Hugo releases and records the resolved versions. These defaults
-do not lock consumers to an exact version; older Hugo versions receive no
-compatibility testing or adaptation. See the [architecture contract](content/docs/design/architecture.md#hugo-toolchain).
+Hugo Extended 0.166.0 is the minimum and pinned default for development and
+strict CI. Styles use built-in LibSass; ordinary users do not install Dart Sass.
+Hugo 0.168.0 can build with its upstream LibSass warning; use 0.166.0 with
+`--panicOnWarning`. Go 1.27.0 is the module minimum; local release validation
+uses Go 1.27.2. See the [architecture contract](content/docs/design/architecture.md#hugo-toolchain).
 
 For theme development, clone both repositories as siblings:
 

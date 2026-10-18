@@ -120,7 +120,7 @@ hugo --minify --environment staging --baseURL "$PREVIEW_URL"
 ```dockerfile {title="Dockerfile" collapse=16}
 FROM debian:bookworm-slim
 
-ARG HUGO_VERSION=0.168.0
+ARG HUGO_VERSION=0.166.0
 ARG GO_VERSION=1.27.2
 ARG TARGETARCH
 

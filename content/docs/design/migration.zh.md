@@ -5,11 +5,11 @@ description: OINK 迁移所支持的源码、配置与验证边界，包含 1.3.
 weight: 50
 icon: fa-solid fa-code-compare
 search_keywords: [OINK 迁移契约, 0.4 迁移, 0.5 迁移, 配置重命名, 迁移工具]
-contract_status: v1.3.1
+contract_status: v1.3.2
 ---
 
-> [!NOTE] OINK 1.3.1 契约
-> 本契约描述 OINK v1.3.1。主题开发使用同级 checkout；发布验收在关闭替换与
+> [!NOTE] OINK 1.3.2 契约
+> 本契约描述 OINK v1.3.2。主题开发使用同级 checkout；发布验收在关闭替换与
 > 工作区后验证公开模块。消费站升级与部署分别检查。
 
 这是源码与配置指南，不是版本发布流水账。本地源码、提交、标签、推送、消费站点
@@ -51,8 +51,8 @@ pg-internal profile；它不是通用解析器。
 此工具随 OINK 1.2.0 发布。在主题 checkout 中执行，先清点，再升级到正式标签。
 
 ```sh
-python3 bin/update-consumers.py v1.3.1 --roots ~/www ~/pgsty
-python3 bin/update-consumers.py v1.3.1 --roots ~/www ~/pgsty --write --check --check-appearance
+python3 bin/update-consumers.py v1.3.2 --roots ~/www ~/pgsty
+python3 bin/update-consumers.py v1.3.2 --roots ~/www ~/pgsty --write --check --check-appearance
 ```
 
 第一条命令只报告版本采用情况。第二条更新 `go.mod` 和 `go.sum` 中的 OINK
@@ -165,7 +165,7 @@ front matter `ui` map 会连同替代项一起报告。
 独立块图片。要使用 `\(...\)`、`\[...\]` 或 `$$...$$`，需要显式启用 passthrough；
 Hugo 不会合并主题的 markup 配置。
 
-针对改动的契约，使用固定的 Hugo Extended 0.168.0 工具链运行范围最小的源码与输出
+针对改动的契约，使用固定的 Hugo Extended 0.166.0 工具链运行范围最小的源码与输出
 检查；运行时变化时执行 JavaScript 测试，并严格构建根路径与子路径。对于维护范围
 内的站点，在桌面与窄视口检查有代表性的 EN/ZH Docs 与 Blog 路由，再分别记录固定
 版本、部署与线上一致状态。

@@ -60,7 +60,7 @@ number the table.
 | Item | Value |
 | --- | --- |
 | Theme version | v0.8.1 |
-| Hugo floor | 0.168.0 Extended |
+| Hugo floor | 0.166.0 Extended |
 | Licence | Apache-2.0 |
 {caption="Theme facts this site currently builds against"}
 ```
@@ -68,7 +68,7 @@ number the table.
 | Item | Value |
 | --- | --- |
 | Theme version | v0.8.1 |
-| Hugo floor | 0.168.0 Extended |
+| Hugo floor | 0.166.0 Extended |
 | Licence | Apache-2.0 |
 {caption="Theme facts this site currently builds against"}
 

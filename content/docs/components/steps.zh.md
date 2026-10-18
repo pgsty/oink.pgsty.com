@@ -142,7 +142,7 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 
 ### 安装工具链 {#install-toolchain}
 
-需要 Hugo Extended ≥ 0.168.0 与 Go。
+需要 Hugo Extended ≥ 0.166.0 与 Go。
 
 ### 启动服务器 {#run-server}
 
@@ -166,7 +166,7 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 
 ### 安装工具链 {#install-toolchain}
 
-需要 Hugo Extended ≥ 0.168.0 与 Go。
+需要 Hugo Extended ≥ 0.166.0 与 Go。
 
 ### 启动服务器 {#run-server}
 

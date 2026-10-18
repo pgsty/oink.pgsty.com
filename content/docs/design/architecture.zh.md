@@ -5,38 +5,35 @@ description: 仓库装配、配置、诊断、本地化、输出、性能、安�
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK 架构, 仓库边界, 运行时, i18n, Docsy 语言, 输出格式, 安全, 无障碍, 性能]
-contract_status: v1.3.1
+contract_status: v1.3.2
 ---
 
-> [!NOTE] OINK 1.3.1 契约
-> 本契约描述 OINK v1.3.1。主题开发使用同级 checkout；发布验收在关闭替换与
+> [!NOTE] OINK 1.3.2 契约
+> 本契约描述 OINK v1.3.2。主题开发使用同级 checkout；发布验收在关闭替换与
 > 工作区后验证公开模块。消费站升级与部署分别检查。
 
 ## Hugo 工具链 {#hugo-toolchain}
 
-> [!NOTE] OINK 1.3.1 工具链
-> 以下构建要求适用于 OINK 1.3.1。从 v1.3.0 升级前，先安装独立 Sass 编译器。
+Hugo Extended **0.166.0** 是最低版本，也是开发与严格发布验收的默认版本。
+OINK 1.3.2 使用 Hugo 内置的 LibSass 编译主样式与 ReDoc 样式，普通用户不需要
+安装 Dart Sass 或其他 Sass 可执行程序。项目变量与项目样式的 SCSS 钩子保持可用。
 
-截至 2026-10-17，经过验证的开发与发布工具链为 **Go 1.27.2** 和
-**Hugo Extended 0.168.0**。CI 自动跟随 Go 和 Hugo 的最新稳定版，并记录实际版本。
-这些默认值不是精确版本锁定：模块声明的最低版本仍为 Go 1.27.0 与 Hugo Extended
-0.168.0，不设版本上限。提高 Hugo 最低版本时，同步调整 `hugo.yaml`、`theme.toml`、
-站点要求、CLI 版本门禁和当前双语文档。
+Hugo Extended **0.168.0** 同样可以构建和预览站点，其上游 LibSass 弃用警告允许
+出现并保持可见。`--panicOnWarning` 会让这条警告变成失败，因此严格发布门禁使用
+**0.166.0**。独立的 0.168.0 检查会在没有 Sass 程序的环境中构建，只接受这条已知
+警告；其他诊断仍使检查失败。
 
-除非用户明确要求，不运行旧 Hugo 兼容性矩阵，不为旧版本适配代码或增加兼容补丁。
-历史发布说明和带日期的研究保留当时的工具版本，不构成当前支持要求。
+默认 Hugo 版本保持固定。以后升级必须保持普通用户的依赖边界；如果新版本移除
+内置 LibSass，需要另行评估兼容方案。版本要求、检查器、CI 固定版本和双语契约
+必须一起更新。历史发布说明与研究记录保留当时使用的工具版本。
 
-在 `PATH` 中安装独立的 [Dart Sass 1.105.2](https://github.com/sass/dart-sass/releases/tag/1.105.2)，
-不需要 npm 包。主样式与 ReDoc 样式显式选择 Dart Sass，CI 校验编译器压缩包的摘要。
-Bootstrap 5.3 与公开的项目变量钩子仍共享传统导入作用域。主样式仅忽略 `import`、
-`global-builtin`、`color-functions`、`if-function` 四类已知语言弃用提示；
-Sass `@warn`、无效选择器与 Hugo 警告仍会使严格发布构建失败。
-Font Awesome 继续使用独立的预编译供应商样式表。
+模块要求 Go **1.27.0** 或更新版本；当前本地发布验收使用 Go **1.27.2**。
+Go 用于解析 Hugo Modules；已准备好传统主题副本的站点无需 Go。
 
 ## 仓库与装配 {#repository-and-assembly}
 
 仓库根目录是一个完整的 Hugo 模块与主题，不是站点，也不是 npm workspace。
-Hugo 渲染模板，并调用独立的 Dart Sass 编译 SCSS。浏览器运行时与第三方资源都已提交到仓库，
+Hugo Extended 使用内置 LibSass 编译 SCSS，并渲染模板。浏览器运行时与第三方资源都已提交到仓库，
 因此普通构建不会访问网络。公开的双语文档、示例与浏览器测试位于同级的
 `oink.pgsty.com` 仓库；主题仓库只在 `tests/site/` 中保留范围明确的内部回归
 夹具，不再维护独立的公开示例面。

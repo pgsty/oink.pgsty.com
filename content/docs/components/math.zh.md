@@ -8,7 +8,7 @@ search_keywords: [公式, 数学, Math, KaTeX, LaTeX, TeX, passthrough, chem, mh
 
 公式由 KaTeX 在构建期渲染成 HTML + MathML，页面只额外加载一份本地 KaTeX 样式表，没有 JavaScript，也不请求远程数学服务。行内公式写 `\(…\)`，块级公式写 `$$…$$`、`\[…\]`，另有 `math` 与 `chem` 两种围栏。需要 TikZ 绘图或 KaTeX 不支持的宏包时，改用预渲染的[图片](/zh/docs/components/image/)。
 
-生成的公式按 Hugo Extended 0.168.0 与内置样式表验证，保留 TeX 与 MathML；
+生成的公式按 Hugo Extended 0.166.0 与内置样式表验证，保留 TeX 与 MathML；
 无需浏览器数学运行时或额外的站点开关。
 
 ## 站点前置配置 {#config}
