@@ -47,10 +47,7 @@ toolchain without downloading dependencies or another Go compiler.
 The [dated runtime acceptance record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#a18)
 exercised its identified historical candidate on macOS arm64, native
 Linux arm64 and Linux amd64 emulated through QEMU TCG, with Go 1.27.1, Hugo
-Extended 0.168.0 and the public OINK v1.1.0 module. The Hugo version gate accepts
-Extended 0.168.0 or newer; this is not a claim that every accepted version has
-been tested. The embedded Starter documents Hugo Extended 0.168.0 or newer
-and requires Go 1.27. Those Linux tests ran as nonroot users on ext4 with
+Extended 0.166.0 and the public OINK v1.1.0 module. Those Linux tests ran as nonroot users on ext4 with
 provisioned offline dependencies; required filesystem/signal and selected
 actual-Hugo cases execute. Optional tools absent from a guest stay explicit
 skips; they have separate host protocol evidence. Two fresh builds reproduced
@@ -60,6 +57,12 @@ archive and remains unverified after actual Bad CPU type; cross-compilation
 does not prove runtime support. Windows is outside the declared scope.
 These results remain bound to the recorded source and archives; they do not
 qualify the later reduced CLI or a newly built executable automatically.
+
+Current development uses Go 1.27.2, Hugo Extended 0.168.0 and OINK v1.3.2.
+The Hugo version gate requires Extended 0.168.0 or newer; initialized sites
+need Go 1.27 for module resolution. Keep warnings visible and do not enable
+the warning-fatal flag. The dated platform record does not qualify a later
+source revision or toolchain.
 
 `make release VERSION=0.1.0-dev DIST=dist` prepares four binary archives, a
 source archive, and `SHA256SUMS` in a new or empty directory. It does not
@@ -72,7 +75,7 @@ Prepare the public theme once if it is not already cached. This explicit
 provisioning command may use the network:
 
 ```sh
-GOWORK=off GOTOOLCHAIN=local go mod download github.com/pgsty/oink@v1.1.0
+GOWORK=off GOTOOLCHAIN=local go mod download github.com/pgsty/oink@v1.3.2
 export GOMODCACHE="$(go env GOMODCACHE)"
 oink init my-docs --profile docs --languages en,zh
 ```
@@ -95,7 +98,7 @@ Language choices remain `en` (default), `en,zh`, and `all` (English, Chinese and
 French), independently of the selected profile. Every composition uses the
 same MIT-licensed Starter commit
 `137843b25bacd76ddd1f7ce71330bf2e3155b954` embedded in the executable, pins OINK
-v1.1.0 with recorded Go checksums and disables `enableGitInfo` before the first
+v1.3.2 with recorded Go checksums and disables `enableGitInfo` before the first
 Git commit. No runtime template fetch, Git initialization or commit occurs.
 Unknown profiles fail before writing; unavailable or failed required Hugo
 validation leaves the new/empty target unchanged.
@@ -460,7 +463,7 @@ Choose an explicit release tag. The following command validates a candidate
 and prints the proposed module-file changes without applying them:
 
 ```sh
-oink upgrade --site ./my-docs --to v1.1.0 --json > upgrade-plan.json
+oink upgrade --site ./my-docs --to v1.3.2 --json > upgrade-plan.json
 ```
 
 The normal human output shows a unified module diff, mode changes and bounded
@@ -472,7 +475,7 @@ incomplete. This is not universal theme or browser compatibility. To apply
 the freshly revalidated reviewed plan, use its recorded ID:
 
 ```sh
-oink upgrade --site ./my-docs --to v1.1.0 --write \
+oink upgrade --site ./my-docs --to v1.3.2 --write \
   --expect-plan 'COPY_PLAN_ID_FROM_PREVIEW'
 ```
 

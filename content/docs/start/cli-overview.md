@@ -136,7 +136,7 @@ The first command is an explicit dependency-preparation step that may use the
 network:
 
 ```sh
-GOWORK=off GOTOOLCHAIN=local go mod download github.com/pgsty/oink@v1.1.0
+GOWORK=off GOTOOLCHAIN=local go mod download github.com/pgsty/oink@v1.3.2
 export GOMODCACHE="$(go env GOMODCACHE)"
 
 oink init my-docs --languages en,zh
@@ -153,11 +153,15 @@ oink build --site my-docs -- --minify
 ```
 
 For an existing site's upgrade, preview first, then review and explicitly apply
-the plan using the [upgrade guide](/docs/start/cli/#upgrade). OINK v1.1.0 here is
+the plan using the [upgrade guide](/docs/start/cli/#upgrade). OINK v1.3.2 here is
 the tested initialization baseline, not a claim that it is always the latest
 theme version.
 
 ## Verified scope and current limits {#limits}
+
+The current development and initialization baseline is Hugo Extended 0.168.0
+and OINK v1.3.2. Earlier platform records below apply only to their identified
+source and tools.
 
 First-stage acceptance covers Go tests, vet, race checks, ordinary Hugo builds
 for all three Starter profiles at root URLs and subpaths, and three real
@@ -166,8 +170,8 @@ documentation. It also includes initialization and checking with OS-level
 network denial, real upgrade write protection, thin-wrapper process checks,
 and archive reproduction.
 
-The exercised runtime platform is macOS arm64, with Go 1.27.1 and Hugo Extended
-0.168.0. Darwin amd64 and Linux amd64/arm64 were cross-compiled but have not
+The historical first-stage runtime record used macOS arm64, Go 1.27.1 and
+Hugo Extended 0.166.0. Darwin amd64 and Linux amd64/arm64 were cross-compiled but have not
 completed runtime qualification on those systems. Windows is outside the
 first-stage support scope. Source installation is available; public downloads,
 tag-based installation, and Homebrew distribution are not delivered yet.

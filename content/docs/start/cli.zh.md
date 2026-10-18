@@ -40,14 +40,17 @@ export PATH="$HOME/.local/bin:$PATH"
 
 [带日期的运行时验收记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#a18)
 对其绑定的历史候选实测 macOS arm64、原生 Linux arm64 和通过 QEMU TCG 模拟的
-Linux amd64，使用 Go 1.27.1、Hugo Extended 0.168.0 与公开 OINK v1.1.0 模块。Hugo 版本检查接受 Extended 0.168.0 或更新版本，但这不代表
-每个被接受的版本都经过测试。内嵌 Starter 的文档要求 Hugo Extended 0.168.0
-或更新版本，以及 Go 1.27。当时的 Linux 测试在 ext4 上以非 root 用户运行，使用
+Linux amd64，使用 Go 1.27.1、Hugo Extended 0.166.0 与公开 OINK v1.1.0 模块。当时的 Linux 测试在 ext4 上以非 root 用户运行，使用
 已供应离线依赖，实际执行必需文件系统/信号与选定实际 Hugo 案例。guest 缺少
 的可选工具保持明确跳过，拥有独立 host 协议证据。两个新构建复现全部五份归档，
 三个声明运行归档在 checkout 外提取/执行，无 Node 依赖。Darwin amd64 为实验
 归档，实际 Bad CPU type 后仍未验证；交叉编译不证明运行支持。Windows 不在声明范围。
 这些结果只适用于记录绑定的源码与归档，不能自动证明后续收缩后的 CLI 或新构建的可执行文件。
+
+当前开发统一使用 Go 1.27.2、Hugo Extended 0.168.0 与 OINK v1.3.2。Hugo
+版本门禁要求 Extended 0.168.0 或更新版本；初始化站点解析模块需要 Go 1.27。
+告警保持可见，禁止启用遇警告中断的开关。带日期的平台记录不自动赋予后续源码或
+工具链相同的运行资格。
 
 `make release VERSION=0.1.0-dev DIST=dist` 在新目录或空目录中准备四份二进制
 归档、一份源码归档及 `SHA256SUMS`，不会公开发布。已验证平台与可复现性边界见
@@ -58,7 +61,7 @@ Linux amd64，使用 Go 1.27.1、Hugo Extended 0.168.0 与公开 OINK v1.1.0 模
 如果尚未缓存公开主题，先预备一次。下面是显式的依赖预备命令，可能访问网络：
 
 ```sh
-GOWORK=off GOTOOLCHAIN=local go mod download github.com/pgsty/oink@v1.1.0
+GOWORK=off GOTOOLCHAIN=local go mod download github.com/pgsty/oink@v1.3.2
 export GOMODCACHE="$(go env GOMODCACHE)"
 oink init my-docs --profile docs --languages en,zh
 ```
@@ -75,7 +78,7 @@ oink init my-docs --profile docs --languages en,zh
 
 语言仍独立选择 `en`（默认）、`en,zh`、`all`（英语、中文、法语）。全部配置使用同一
 份内嵌 MIT 许可证 Starter 提交 `137843b25bacd76ddd1f7ce71330bf2e3155b954`，
-按记录的 Go 校验和固定 OINK v1.1.0，并在首次 Git 提交前关闭 `enableGitInfo`。
+按记录的 Go 校验和固定 OINK v1.3.2，并在首次 Git 提交前关闭 `enableGitInfo`。
 不在运行时抓取模板、初始化 Git 或提交。未知配置在写入前失败，必需 Hugo 缺失或
 验证失败保留新建/空目标。
 
@@ -376,7 +379,7 @@ oink plans apply /tmp/oink-baseline.json --site ./my-docs
 选择明确的版本标签。下面的命令验证候选站点，输出模块文件变更计划，但不应用：
 
 ```sh
-oink upgrade --site ./my-docs --to v1.1.0 --json > upgrade-plan.json
+oink upgrade --site ./my-docs --to v1.3.2 --json > upgrade-plan.json
 ```
 
 普通文本显示统一模块 diff、模式变化和有界路由/alias/能力变化。JSON 中检查
@@ -386,7 +389,7 @@ alias 身份保持未完成。这不证明普遍主题或浏览器兼容。应�
 使用已记录 ID：
 
 ```sh
-oink upgrade --site ./my-docs --to v1.1.0 --write \
+oink upgrade --site ./my-docs --to v1.3.2 --write \
   --expect-plan 'COPY_PLAN_ID_FROM_PREVIEW'
 ```
 

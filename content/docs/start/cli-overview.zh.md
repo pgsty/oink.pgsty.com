@@ -109,7 +109,7 @@ stderr。结果包含规则 ID、严重度、已知位置、解释、行动建�
 Hugo Extended 后，可以按下面的顺序工作。首条命令是显式的联网依赖预备步骤：
 
 ```sh
-GOWORK=off GOTOOLCHAIN=local go mod download github.com/pgsty/oink@v1.1.0
+GOWORK=off GOTOOLCHAIN=local go mod download github.com/pgsty/oink@v1.3.2
 export GOMODCACHE="$(go env GOMODCACHE)"
 
 oink init my-docs --languages en,zh
@@ -125,15 +125,18 @@ oink build --site my-docs -- --minify
 ```
 
 升级既有站点时先预览，再按[升级指南](/zh/docs/start/cli/#upgrade)审阅计划并显式写入。
-这里的 OINK v1.1.0 是已验收的初始化基线，不表示它始终是最新主题版本。
+这里的 OINK v1.3.2 是当前初始化基线，不表示它始终是最新主题版本。
 
 ## 已验证范围与当前限制 {#limits}
+
+当前开发与初始化基线为 Hugo Extended 0.168.0 和 OINK v1.3.2。下文早期平台记录
+只适用于其绑定的源码与工具。
 
 首期验收记录覆盖 Go 测试、vet、race、三种 Starter 配置的普通 Hugo 根路径与子路径
 构建，以及 OINK 文档站、PIG 站点和软件仓库文档站三个真实消费站。还执行了操作系统
 禁止联网条件下的初始化与检查、真实升级写入保护、薄包装进程和归档复现检查。
 
-实际运行平台为 macOS arm64，记录的工具链为 Go 1.27.1、Hugo Extended 0.168.0。
+历史首期记录的实际平台为 macOS arm64，工具链为 Go 1.27.1、Hugo Extended 0.166.0。
 Darwin amd64 与 Linux amd64/arm64 已交叉编译，尚未完成对应平台的运行验收；
 Windows 不属于首期支持范围。源码安装可用，公开下载、标签安装和 Homebrew 分发
 尚未交付。
