@@ -1,6 +1,6 @@
-# Oink Release Notes
+# OINK Release Notes
 
-> Versioned OINK release notes, upgrade guidance, and compatibility notices
+> OINK 1.3.2 release notes, Hugo-only build requirements, and versioned upgrade history
 
 ---
 
@@ -12,6 +12,14 @@ LLMS index: [llms.txt](/llms.txt)
 > Each release note records that release's requirements and validation. Current
 > development, CI, and release tests use Hugo Extended 0.168.0 as the pinned default. Older requirements below do not define
 > current support; follow the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
+
+The current release is [OINK 1.3.2](/blog/release/1.3.2/): Hugo-only builds,
+readability repairs, and opt-in FileTree comment wrapping. Use Hugo Extended
+**0.168.0**, keep warnings visible, and never enable `--panicOnWarning` or
+`HUGO_PANICONWARNING`. No external Sass compiler is required.
+
+For the changes contributed in 1.3.1, see its
+[reading repairs and contributor credits](/blog/release/1.3.1/#thanks).
 
 ---
 

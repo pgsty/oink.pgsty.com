@@ -7,8 +7,6 @@ icon: fa-solid fa-circle-info
 search_keywords: [OINK, Hugo theme, Docsy, technical documentation, documentation site, local-first, Markdown native]
 cascade:
   categories: [Introduction]
-aliases:
-  - /docs/about/contributing/
 ---
 
 OINK is a standalone [Hugo](https://gohugo.io/) theme for medium and large
@@ -17,9 +15,9 @@ technical documentation sites. It evolved from
 multilingual behaviour are kept, while the shell, navigation, search and
 content components are replaced.
 
-A consuming site builds with Hugo Extended. Hugo Module installations also
-need Go to resolve modules; the initial download needs access to the module
-source. Theme assets need no Node.js, npm, PostCSS, or CDN request. Bootstrap, Font Awesome, the
+Current sites use **OINK v1.3.2** and **Hugo Extended 0.168.0**, with its
+built-in Sass compiler. Hugo Module installations also need Go to resolve
+modules. The initial download needs access to the module source. Theme assets need no Node.js, npm, PostCSS, or CDN request. Bootstrap, Font Awesome, the
 fonts, local search, the diagram runtimes and the API reference runtimes are all
 committed to the theme repository and shipped only to the pages that use them.
 
@@ -82,3 +80,8 @@ attribution are kept intact; the details are in
 
 [Highlights](/docs/about/features/) lists what the theme provides capability by
 capability, each entry linking to the guide that covers it.
+
+To report a problem or submit a correction, follow the
+[contribution guide](/docs/about/contributing/). The
+[1.3.2 release notes](/blog/release/1.3.2/) cover the current build requirements
+and recent community fixes.

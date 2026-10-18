@@ -10,5 +10,5 @@ LLMS index: [llms.txt](/llms.txt)
 
 Section pages:
 
-- [Oink Release Notes](/blog/release/): Versioned OINK release notes, upgrade guidance, and compatibility notices
+- [OINK Release Notes](/blog/release/): OINK 1.3.2 release notes, Hugo-only build requirements, and versioned upgrade history
 - [Oink Blog](/blog/oink/): OINK announcements, engineering stories, and implementation notes

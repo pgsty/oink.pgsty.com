@@ -6,14 +6,14 @@ weight: 70
 icon: fa-solid fa-compass-drafting
 no_list: true
 search_keywords: [OINK 设计, 维护者契约, 架构, 决策, 研究, 提案, PRD]
-contract_status: v1.3.0
+contract_status: v1.3.2
 cascade:
   search_boost: 0.6
   categories: [设计契约]
 ---
 
-> [!NOTE] OINK 1.3.0 契约
-> 本契约描述 OINK v1.3.0。主题开发使用同级 checkout；发布验收在关闭替换与
+> [!NOTE] OINK 1.3.2 契约
+> 本契约描述 OINK v1.3.2。主题开发使用同级 checkout；发布验收在关闭替换与
 > 工作区后验证公开模块。消费站升级与部署分别检查。
 
 本专栏是 OINK 可长期维护的设计记录。站内其它专栏按任务讲解如何搭建站点；

@@ -7,13 +7,11 @@ icon: fa-solid fa-circle-info
 search_keywords: [OINK, Hugo 主题, Docsy, 技术文档, 文档站, 本地优先, Markdown 原生, Hugo theme]
 cascade:
   categories: [简介]
-aliases:
-  - /docs/about/contributing/
 ---
 
 OINK 是一款独立的 [Hugo](https://gohugo.io/) 主题，用于搭建中大型技术文档站。它从 [Docsy](https://github.com/google/docsy) 演化而来：保留 Docsy 的内容模型与多语言行为，替换外壳、导航、搜索与内容组件。
 
-站点使用 Hugo Extended 构建。采用 Hugo Module 时还需要 Go 解析模块，首次下载需要可访问的模块来源。主题资源不依赖 Node.js、npm、PostCSS 或 CDN。Bootstrap、Font Awesome、字体、本地搜索、图表与 API 文档运行时都提交在主题仓库里，只在页面用到时下发。
+当前站点统一使用 **OINK v1.3.2** 和 **Hugo Extended 0.168.0**，通过内置 Sass 编译器构建。采用 Hugo Module 时还需要 Go 解析模块，首次下载需要可访问的模块来源。主题资源不依赖 Node.js、npm、PostCSS 或 CDN。Bootstrap、Font Awesome、字体、本地搜索、图表与 API 文档运行时都提交在主题仓库里，只在页面用到时下发。
 
 组件不是另一套模板语言：`> [!NOTE]` 是提示块，表格加一行 `{.fields}` 是参数表，图片下面加 `{caption=}` 就有图注。当前有[十五个生产站点](/zh/docs/about/showcase/)在用它，本站是其中之一。
 
@@ -61,3 +59,6 @@ OINK 不是叠在 Docsy 上的皮肤，而是 fork 之后独立演化的主题�
 {.cards}
 
 [特性](/zh/docs/about/features/)按能力逐条列出主题提供的东西，每条链接到讲它的指南页。
+
+报告问题或提交修改请参阅[贡献指南](/zh/docs/about/contributing/)；
+[1.3.2 发布说明](/zh/blog/release/1.3.2/)介绍当前构建要求与近期社区修复。

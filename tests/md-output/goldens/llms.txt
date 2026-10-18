@@ -17,6 +17,7 @@
   - [Highlights](http://localhost/docs/about/features/index.md): What separates OINK from an ordinary Hugo theme, one item at a time, each linking to the guide that covers it.
   - [Cases](http://localhost/docs/about/showcase/index.md): Find the OINK production case closest to your documentation, book, landing page, or interactive tool.
   - [License](http://localhost/docs/about/license/index.md): Which licence applies to which layer — Apache-2.0 for the theme, CC BY 4.0 for the documentation, and their own terms for every third-party runtime shipped with the theme.
+  - [Contributing](http://localhost/docs/about/contributing/index.md): Where to report bugs and contribute theme changes, documentation, translations, and regression tests for OINK 1.3.2.
 - [Get started](http://localhost/docs/start/index.md): Start from the official OINK Starter, establish a working local baseline, then customize content, language, brand, integrations, and deployment in that order.
   - [OINK Starter](http://localhost/docs/start/starter/index.md): Turn the official starter into your project site, one controlled layer at a time — languages, identity, home page, content, navigation, brand, integrations, and deployment.
   - [Repository tour](http://localhost/docs/start/anatomy/index.md): A file-level map of oink-starter — what owns identity, languages, home, content, navigation, brand, deployment, and the pinned theme.
