@@ -108,7 +108,7 @@ manifest records pinned third-party sources, licenses, artifacts, and checksums.
 
 ## Try the starter
 
-> [!NOTE] Setup instructions updated on 2026-10-15
+> [!NOTE] Setup instructions updated on 2026-10-17
 > This article records the original implementation preview. Use Hugo Extended
 > 0.168.0 for setup and validation today; the baseline advances with stable
 > releases. Older-Hugo compatibility testing and adaptation are discontinued.

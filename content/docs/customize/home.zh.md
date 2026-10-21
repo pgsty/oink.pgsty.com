@@ -409,7 +409,7 @@ params:
 
 ## 验证 {#verify}
 
-1. 构建生产：`hugo --printPathWarnings`。类型写错、数据键不存在、`landing` 与 `sections` 同时出现都在这一步暴露。
+1. 构建生产：`hugo --printPathWarnings`。确认构建成功并审阅告警，上游 LibSass 弃用告警允许出现。类型写错、数据键不存在、`landing` 与 `sections` 同时出现都在这一步暴露。
 2. 打开首页与落地页，逐个分区对照数据文件，每种语言各看一遍。
 3. 禁用 JavaScript 后刷新：内容仍在，只是没有动效。
 4. 深浅色各看一遍，确认 `image.light` / `image.dark` 都给对。

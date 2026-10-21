@@ -22,11 +22,12 @@ weight: 10
 
 本教程使用 Git、Go 1.27 或更新版本，以及 Hugo Extended 0.168.0。
 开发、CI 与发布测试统一使用这条 Hugo 基线，并保持固定。采用旧 Starter 时，
-先更新其 Hugo workflow 固定版本再验证，不再维护旧 Hugo 兼容性。不需要 Node.js。
+先更新其 Hugo workflow 固定版本再验证，不再维护旧 Hugo 兼容性。SCSS 使用 Hugo 内置 LibSass，无需安装外部 Sass 编译器。
+不需要 Node.js。
 
 ```console
 $ go version
-go version go1.27.0 darwin/arm64
+go version go1.27.2 darwin/arm64
 $ hugo version
 hugo v0.168.0+extended+withdeploy darwin/arm64
 ```

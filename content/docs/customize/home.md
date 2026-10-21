@@ -450,7 +450,7 @@ movement and reveal are disabled.
 
 ## Verify {#verify}
 
-1. Run `hugo --printPathWarnings`. Confirm a warning-free build. This detects misspelled types, missing data keys, and simultaneous `landing` and `sections`.
+1. Run `hugo --printPathWarnings`. Confirm a successful build and review its diagnostics; the upstream LibSass warning is accepted. This detects misspelled types, missing data keys, and simultaneous `landing` and `sections`.
 2. Open the home page and any landing page. Compare sections with their data files. Check every language.
 3. Reload with JavaScript disabled. Confirm that content remains visible without motion.
 4. Check light and dark modes. Confirm that `image.light` and `image.dark` show the correct images.

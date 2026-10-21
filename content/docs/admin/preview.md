@@ -146,20 +146,31 @@ or does not want to install Hugo on every developer's machine.
 FROM debian:bookworm-slim
 
 ARG HUGO_VERSION=0.168.0
-ARG GO_VERSION=1.27.0
+ARG GO_VERSION=1.27.2
 ARG TARGETARCH
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates curl git \
-    && curl -L -o /tmp/hugo.deb \
+    && curl --fail --location -o /tmp/hugo.deb \
       "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.deb" \
     && apt-get install -y /tmp/hugo.deb \
-    && curl -L -o /tmp/go.tgz \
+    && curl --fail --location -o /tmp/go.tgz \
       "https://go.dev/dl/go${GO_VERSION}.linux-${TARGETARCH}.tar.gz" \
     && tar -C /usr/local -xzf /tmp/go.tgz \
     && rm -rf /var/lib/apt/lists/* /tmp/hugo.deb /tmp/go.tgz
 
-ENV PATH="/usr/local/go/bin:${PATH}"
+RUN case "${TARGETARCH}" in \
+      amd64) sass_arch=x64; sass_sha=a530ee08d5792c80bdb9d9614b45fb58219c890cb42a280a80775f0af9c29582 ;; \
+      arm64) sass_arch=arm64; sass_sha=40c7a1946f654163daab34d3824cf572d2e72cc48a2efcf9ca0a33140007d374 ;; \
+      *) exit 1 ;; \
+    esac \
+    && curl --fail --location -o /tmp/sass.tgz \
+      "https://github.com/sass/dart-sass/releases/download/1.105.2/dart-sass-1.105.2-linux-${sass_arch}.tar.gz" \
+    && echo "${sass_sha}  /tmp/sass.tgz" | sha256sum --check \
+    && tar -C /opt -xzf /tmp/sass.tgz \
+    && rm /tmp/sass.tgz
+
+ENV PATH="/usr/local/go/bin:/opt/dart-sass:${PATH}"
 WORKDIR /src
 EXPOSE 1313
 ENTRYPOINT ["hugo"]

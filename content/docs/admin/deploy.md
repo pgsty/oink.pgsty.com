@@ -16,8 +16,13 @@ that serves static files. It requires no Node runtime, server-side rendering,
 or build plugin. On the host, run one command with the correct Hugo version.
 Publish `public/` and set `baseURL` to match the final address.
 
-The prerequisite is a warning-free
-[production build](/docs/admin/preview/#production-build) locally.
+First complete a local [production build](/docs/admin/preview/#production-build)
+and review its diagnostics, including the accepted upstream LibSass warning.
+
+> [!NOTE] OINK 1.3.2 build requirements
+> Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass.
+> No external Sass installation is required. Keep the upstream LibSass warning
+> visible and review it; do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
 
 ## Getting baseURL right {#baseurl}
 An incorrect `baseURL` is the most common source of failure. The page can open
@@ -85,7 +90,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  HUGO_VERSION: 0.168.0
+  GO_VERSION: stable
+  HUGO_VERSION: "0.168.0"
   # a workspace from a sibling checkout must never take part in a CI build
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
@@ -104,7 +110,8 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version-file: go.mod
+          go-version: ${{ env.GO_VERSION }}
+          check-latest: true
           cache-dependency-path: go.sum
 
       - name: Configure GitHub Pages
@@ -112,11 +119,15 @@ jobs:
         uses: actions/configure-pages@v6
 
       - name: Install Hugo Extended
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: Record build tool versions
         run: |
-          curl --fail --location --silent --show-error \
-            --output "${RUNNER_TEMP}/hugo.deb" \
-            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
-          sudo dpkg -i "${RUNNER_TEMP}/hugo.deb"
+          go version
+          hugo version
 
       - name: Download OINK
         run: go mod download github.com/pgsty/oink
@@ -356,7 +367,7 @@ output. Check the remaining items at the real URL.
 
 | Check | How to confirm |
 | --- | --- |
-| A warning-free build | The build command carries `--printPathWarnings ` and the log has `Total in …` |
+| A successful build with reviewed diagnostics | The build command carries `--printPathWarnings` and the log has `Total in …`; the upstream LibSass warning is accepted |
 | `baseURL` is correct | `<link rel="canonical">` in the page source points at the real production address, subpath included |
 | Sitemap | `<baseURL>/sitemap.xml` resolves; a multilingual site has an index pointing at `/en/sitemap.xml` and `/zh/sitemap.xml` |
 | robots | `<baseURL>/robots.txt` reads `Allow: /` with a `Sitemap:` line; a preview deployment should read `Disallow: /` |

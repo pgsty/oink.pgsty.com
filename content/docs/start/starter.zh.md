@@ -15,6 +15,11 @@ search_keywords: [OINK Starter, GitHub 模板, Use this template, 定制 Starter
 所选语言 profile 统一使用这套工具链验证，旧 Starter 的 workflow 固定版本也应
 同步更新。Hugo 默认基线保持固定，不再测试或适配旧版本。
 
+> [!NOTE] OINK 1.3.2 构建要求
+> 维护中的站点使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
+> 上游 LibSass 弃用告警保持可见并接受审阅；不要启用 `--panicOnWarning`
+> 或 `HUGO_PANICONWARNING`。
+
 ## 模板包含什么 {#contents}
 
 | 内容区 | 内置基线 | 第一个决定 |

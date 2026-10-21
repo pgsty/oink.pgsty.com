@@ -22,6 +22,11 @@ aliases:
 > Go 1.27，Hugo 默认基线保持固定。使用旧 Starter 快照时，同步更新它的 Hugo
 > workflow 固定版本；不再维护旧 Hugo 兼容性。
 
+> [!NOTE] OINK 1.3.2 构建要求
+> 维护中的站点使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
+> 上游 LibSass 弃用告警保持可见并接受审阅；不要启用 `--panicOnWarning`
+> 或 `HUGO_PANICONWARNING`。
+
 ## 选择起点 {#choose}
 
 | 当前情况 | 推荐路径 | 得到什么 |
@@ -39,7 +44,7 @@ aliases:
 
    ```console
    $ go version
-   go version go1.27.0 darwin/arm64
+   go version go1.27.2 darwin/arm64
    $ hugo version
    hugo v0.168.0+extended+withdeploy darwin/arm64
    ```
@@ -96,8 +101,8 @@ hugo --cleanDestinationDir --gc --minify --environment production \
   --printPathWarnings
 ```
 
-命令以 `Total in …` 结束、没有警告或错误，而且 `public/` 中存在各语言根与代表性的
-Docs、Blog、Book 路由，才算通过。此时仍只证明本地构建：本地构建、提交、推送、
+命令成功退出并输出 `Total in …`，完成告警审阅，而且 `public/` 中存在各语言根与
+代表性的 Docs、Blog、Book 路由，才算通过。上游 LibSass 弃用告警允许出现。此时仍只证明本地构建：本地构建、提交、推送、
 workflow 变绿与公开站点正确，是彼此独立的关卡。
 
 ## 下一步 {#next}

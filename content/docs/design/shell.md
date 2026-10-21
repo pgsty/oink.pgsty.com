@@ -5,11 +5,11 @@ description: Navigation authorities, immersive blog presentation, search, action
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK shell, navigation contract, search, actions, blog presentation, authors, series, pager]
-contract_status: v1.3.0
+contract_status: v1.3.2
 ---
 
-> [!NOTE] OINK 1.3.0 contract
-> This contract describes OINK v1.3.0. Theme development uses the sibling
+> [!NOTE] OINK 1.3.2 contract
+> This contract describes OINK v1.3.2. Theme development uses the sibling
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 
@@ -196,6 +196,15 @@ Without JavaScript, the rail starts at the article's start.
 `notoc` remains the page-level TOC opt-out.
 These switches do not change bylines, tags, series, pager order, feeds, or page-end composition.
 The rail disappears below the `xl` breakpoint.
+
+When scrolling down and the footer enters the viewport, the fixed TOC rail (`fixed`)
+shares the visible-footer offset (`--td-shell-footer-offset`) so its scrollable
+area ends neatly above the footer, keeping the lowest headings and taxonomy links
+accessible by wheel and keyboard. Footer resizing and content reflow, including tabs, blog view switches and
+loaded media, update this boundary without requiring a scroll event. This clearance applies even when the sidebar is
+disabled (`sidebar_enabled: false`). With no footer the offset is zero, while
+`toc_style: flow` relies on its own sticky boundary. Mobile drawer placement and
+print visibility are unchanged. (Added in OINK 1.3.1.)
 
 ## Search, actions, and runtime {#search-actions-and-runtime}
 

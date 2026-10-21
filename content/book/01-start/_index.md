@@ -27,11 +27,12 @@ Use Git, Go 1.27 or newer, and Hugo Extended 0.168.0 for this tutorial.
 Development, CI, and release tests use this single Hugo baseline, which
 remains pinned. Update an older Starter's Hugo workflow pins
 before validation. Older Hugo compatibility is no longer maintained.
+Styles use Hugo Extended's built-in LibSass; no external Sass compiler is needed.
 Node.js is not required.
 
 ```console
 $ go version
-go version go1.27.0 darwin/arm64
+go version go1.27.2 darwin/arm64
 $ hugo version
 hugo v0.168.0+extended+withdeploy darwin/arm64
 ```

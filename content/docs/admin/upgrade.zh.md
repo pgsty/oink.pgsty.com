@@ -1,7 +1,7 @@
 ---
 title: 版本升级
 linkTitle: 版本升级
-description: 固定主题版本、升级到 1.3.0、迁移旧内容或 Docsy 站点，并保留回滚路径。
+description: 固定主题版本、升级到 1.3.2、迁移旧内容或 Docsy 站点，并保留回滚路径。
 weight: 50
 search_keywords: [升级, 迁移, 版本, Hugo Module, hugo mod get, oink06, Docsy, jQuery, 破坏性变更, upgrade, migration]
 aliases:
@@ -18,22 +18,32 @@ aliases:
 升级会改变渲染结果。先建一个升级分支再动手，回退的代价就是丢弃一个分支。
 
 > [!IMPORTANT] 当前 Hugo 基线
-> 自 2026-10-15 起，开发与验收统一使用 Hugo Extended 0.168.0。升级时同步更新
+> 当前开发与验收统一使用 Hugo Extended 0.168.0。升级时同步更新
 > Hugo workflow 固定版本，不再维护旧 Hugo 兼容性。下方旧版本章节中的要求仅说明
 > 当时的发布状态。
 
-## 升级到 1.3 {#preparing-1-3}
+> [!NOTE] OINK 1.3.2 构建要求
+> 维护中的站点使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
+> 上游 LibSass 弃用告警保持可见并接受审阅；不要启用 `--panicOnWarning`
+> 或 `HUGO_PANICONWARNING`。
 
-OINK `v1.3.0` 新增 [Expo 相册](/zh/docs/write/expo/)，并修复导航、模态关闭和焦点。
-已有 Docs、Blog、Book 内容无需批量迁移。仅在新相册分区设置 `type: expo` 及对应
-cascade，图片与原图保存在各自的叶子页面包中。
+## 升级到 1.3.2 {#preparing-1-3}
 
-在关闭替换和工作区的环境中验证公开模块解析。固定 `github.com/pgsty/oink@v1.3.0`，生产构建，再检查导航、
-图片查看器与读者设置。源码副本方式的消费站还需要刷新固定主题文件；修改 `go.mod`
-不会升级已有的 vendor 副本。
+OINK `v1.3.2` 恢复内置 LibSass，移除外部 Sass 依赖。维护中的站点统一使用
+Hugo Extended 0.168.0，保留并审阅上游 LibSass 弃用告警。详情参见
+[1.3.2 发布说明](/zh/blog/release/1.3.2/)。
+
+OINK `v1.3.1` 修复 Markmap 文字对比度和固定 TOC 的页脚避让，并为技术表格与
+文件树长注释提供显式开启的布局。已有内容保留默认外观，仅在需要完整技术信息时
+添加 `.td-table--wide` 或 `wrap=true`。
+
+更新模块前，先安装 Hugo Extended 0.168.0，无需安装 Dart Sass。在关闭替换与
+工作区的环境中验证公开模块解析，固定 `github.com/pgsty/oink@v1.3.2`，构建并审阅
+告警与产物。源码副本方式的消费站还需要刷新固定主题文件；修改 `go.mod` 不会升级
+已有的 vendor 副本。
 
 提供四套风格的站点继续使用 `preset: paper` 和显式 `[paper, slate, ink, terminal]`
-菜单。[1.3 发布注记](/zh/blog/release/1.3.0/)说明本次变化。
+菜单。[1.3.1 发布说明](/zh/blog/release/1.3.1/)列出修复细节与贡献者致谢。
 
 ## 先看发布注记 {#release-notes}
 
@@ -47,11 +57,11 @@ cascade，图片与原图保存在各自的叶子页面包中。
 ## 升级 Hugo Module {#hugo-module}
 
 生产站点固定已发布标签或主动选定的不可变 commit，不跟随分支，也不用 `@latest`。
-下面升级到已发布的 `v1.3.0` 标签；选择后续版本时，先确认已经发布且模块可以解析，
+下面升级到已发布的 `v1.3.2` 标签；选择后续版本时，先确认已经发布且模块可以解析，
 再替换示例中的版本。
 
 ```bash {title="终端"}
-hugo mod get github.com/pgsty/oink@v1.3.0   # 已发布的版本标签
+hugo mod get github.com/pgsty/oink@v1.3.2   # 已发布的版本标签
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -65,7 +75,7 @@ module github.com/pgsty/oink.pgsty.com
 
 go 1.27.0
 
-require github.com/pgsty/oink v1.3.0
+require github.com/pgsty/oink v1.3.2
 ```
 
 > [!DANGER] 本地模块替换会盖掉这个固定版本
@@ -80,7 +90,7 @@ require github.com/pgsty/oink v1.3.0
 
 ```bash {title="终端"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.3.0
+git -C themes/oink checkout --detach v1.3.2
 git add themes/oink
 ```
 

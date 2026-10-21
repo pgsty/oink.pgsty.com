@@ -468,13 +468,13 @@ outputs:
 与参数扫描注册表的投影；主题 CI 会重新生成并检查漂移。使用时应选择与主题固定版本
 相同标签下的 Schema。
 
-配合 VS Code YAML 扩展，在设置中映射站点 Schema。下面以 OINK v1.3.0 为例，
+配合 VS Code YAML 扩展，在设置中映射站点 Schema。下面以 OINK v1.3.2 为例，
 请将标签换成 `go.mod` 中固定的版本；两种常见 YAML 配置文件名都已覆盖：
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/v1.3.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
+    "https://raw.githubusercontent.com/pgsty/oink/v1.3.2/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```

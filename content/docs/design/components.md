@@ -5,11 +5,11 @@ description: The maintainer contract for OINK authoring primitives, validation, 
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK component contract, shortcode API, Markdown components, Book, release, validation]
-contract_status: v1.3.0
+contract_status: v1.3.2
 ---
 
-> [!NOTE] OINK 1.3.0 contract
-> This contract describes OINK v1.3.0. Theme development uses the sibling
+> [!NOTE] OINK 1.3.2 contract
+> This contract describes OINK v1.3.2. Theme development uses the sibling
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 
@@ -112,9 +112,15 @@ The full form accepts block descriptions. Use `card` and `field` only within the
 Field anchors use `field-<name>`, with lowercase punctuation runs replaced by hyphens.
 Thus `params.ui.typography` becomes `field-params-ui-typography`. Duplicate anchors get positional suffixes.
 
-The table hook controls responsive wrappers and captions. `.matrix` makes the first column row headers.
-`.full-width` widens ordinary or matrix tables. `.fields` cannot be combined with matrix, full-width, numbering, or tabs.
-Numbering and tabs are also mutually exclusive.
+The table hook owns responsive wrapping and captions. `.matrix` makes the first
+column row headers; `.full-width` widens the outer wrapper to the article width.
+On screens, `.td-table--wide` opts technical tables into intrinsic sizing inside
+that scrollable wrapper, preserving identifiers with `overflow-wrap: break-word`
+and `word-break: normal`. Body cells have a soft `max-width: 40ch` bound so prose
+wraps. Ordinary tables retain their existing layout. The modifier has no effect
+on `.fields`, which renders a definition list, or on static and print output.
+`.fields` cannot combine with matrix, full-width, numbering, or tabs; numbering
+and tabs are also mutually exclusive. This width modifier is available in OINK 1.3.1.
 
 ### Images, Gallery, FileTree, and fences {#images-gallery-filetree-and-fences}
 
@@ -135,9 +141,17 @@ When Draw.io and Image Zoom share an image, Edit and Zoom remain separate siblin
 The editor control supports keyboards and stays visible on touch devices and in forced-colors mode.
 The Draw.io editor opens in a modal dialog with a localized host Close button. The button, backdrop, editor exit message, and Escape while focus is in the host dialog dismiss it, release its message listener, and restore focus to Edit. Cross-origin iframe keystrokes belong to the editor and cannot bubble to the host; users can leave the editor's Tab sequence to reach the host Close button. Opening another editor starts a fresh session.
 
-Gallery accepts one Markdown image per line, with optional description, link, and class.
-FileTree accepts indentation, `- name`, optional `/`, comments, and validated icon/tone/open/type attributes.
-Markdown keeps authored source. Print renders expanded static figures and trees.
+Gallery accepts one Markdown image per line with optional description, link,
+and class. FileTree accepts indentation, `- name`, optional `/`, comments, and
+validated icon/tone/open/type attributes. FileTree fence `wrap` accepts `true`
+or `false`, defaults to `false`, and changes only screen comment layout: `true`
+wraps comments, including unbroken tokens, while rows grow from their existing
+minimum height. Filenames retain ellipsis. Missing or false values preserve
+compact desktop/tablet rows; mobile stacking, divider controls, directory
+folding, and expanded Print output keep their existing behavior. Invalid values
+warn and fall back to false; review the warning and fallback before publication. Markdown
+preserves explicit wrap values and tree source; Print renders expanded static
+figures and trees.
 
 All code highlighting uses Chroma.
 Common fence attributes include `title`, `copy`, `wrap`, `collapse`, `label`, `id`, line options, tabs, and Book `num`/`caption`.
@@ -145,6 +159,13 @@ Copy returns authored source.
 Mermaid palettes follow light/dark mode, independently of visual preset. The default dark edge-label background is `#404040` for AA contrast with its label text; explicit `params.mermaid.themeVariables` values retain priority.
 
 ECharts uses declarative JSON/YAML. Callbacks use `$fn:<name>` from `window.OinkEchartsFunctions`. Embedded scripts are never executed.
+
+Markmap node text on screens follows the article text color (`--bs-body-color`)
+via `--markmap-text-color`, dynamically adapting to light/dark mode changes,
+style presets, and restored user preferences to maintain contrast. Printing
+retains Markmap's default dark text on the white canvas. This mapping is scoped
+to article content across both the wrapper and generated SVG, and can still be
+overridden by site CSS of equal specificity or SVG inline tokens. (Added in OINK 1.3.1.)
 
 Mathematics uses Hugo's build-time KaTeX output and local CSS, without a browser mathematics runtime.
 HTML and Print use the vendored stylesheet and preserve MathML and authored TeX.

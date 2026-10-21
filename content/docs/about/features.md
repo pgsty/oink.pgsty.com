@@ -33,8 +33,7 @@ Hugo Extended 0.168.0 or newer compiles the site's assets. SCSS is compiled by
 Hugo's embedded Sass transpiler. The theme never invokes `postCSS`. It requires
 neither npm nor webpack. Installing the theme as a Hugo Module also needs Go
 and access to the module dependencies, either over the network or from a local
-cache. With an offline archive or a submodule already prepared, Hugo is enough
-to build the site.
+cache. With an offline archive or a submodule already prepared, Hugo Extended builds the site without Go or an external Sass compiler.
 
 The interface runs JavaScript in the browser: search, the command palette,
 diagrams and tabs are page scripts. The theme includes those scripts. Each page receives only the scripts it uses.

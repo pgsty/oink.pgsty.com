@@ -4,11 +4,11 @@ linkTitle: Expo
 description: Define album resources, display modes, image viewing, shared appearance, and static outputs.
 weight: 45
 icon: fa-solid fa-images
-contract_status: v1.3.0
+contract_status: v1.3.2
 ---
 
-> [!NOTE] OINK 1.3.0 contract
-> This contract describes OINK v1.3.0. Theme development uses the sibling
+> [!NOTE] OINK 1.3.2 contract
+> This contract describes OINK v1.3.2. Theme development uses the sibling
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 

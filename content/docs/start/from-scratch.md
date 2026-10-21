@@ -34,6 +34,11 @@ The second half compares four install methods: Hugo Module, Git submodule,
 offline archive, and pinned source copy. Current development and validation use
 Go 1.27 and Hugo Extended 0.168.0. The default Hugo version stays pinned; older-Hugo compatibility testing and adaptation are discontinued.
 
+> [!NOTE] OINK 1.3.2 build requirements
+> Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass.
+> No external Sass installation is required. Keep the upstream LibSass warning
+> visible and review it; do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
+
 ## Add OINK to an existing site {#existing-site}
 
 Work on a branch with the site's current configuration and content preserved.

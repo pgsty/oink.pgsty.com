@@ -5,11 +5,11 @@ description: 导航权威、沉浸式博客、搜索、操作、分类法、索�
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK 外壳, 导航契约, 搜索, 操作, 博客展示, 作者, 系列, 翻页]
-contract_status: v1.3.0
+contract_status: v1.3.2
 ---
 
-> [!NOTE] OINK 1.3.0 契约
-> 本契约描述 OINK v1.3.0。主题开发使用同级 checkout；发布验收在关闭替换与
+> [!NOTE] OINK 1.3.2 契约
+> 本契约描述 OINK v1.3.2。主题开发使用同级 checkout；发布验收在关闭替换与
 > 工作区后验证公开模块。消费站升级与部署分别检查。
 
 ## 权威来源与导航 {#authorities-and-navigation}
@@ -169,6 +169,13 @@ sidebar_enabled: false
 文章起点开始。`toc_taxonomies: false` 移除术语云；导轨既无 TOC 又无术语云时
 完全不渲染。`notoc` 仍是页面级 TOC 退出键。这些开关不改变署名、标签、系列、
 翻页顺序、feed 或页尾组合；导轨在 `xl` 断点以下消失。
+
+在页面向下滚动且页脚进入视口时，固定 TOC 导轨（`fixed`）会共享侧边栏的页脚可见
+偏移量（`--td-shell-footer-offset`），使其底部可滚动区域止于页脚上方，确保
+导轨底部的分类标签或末尾标题始终可通过滚轮与键盘访问；页脚尺寸或正文高度变化时（包括标签页、
+博客视图切换和媒体加载），无需滚动即可更新避让边界。即使在禁用侧边栏（`sidebar_enabled: false`）的单栏沉浸
+阅读中，该避让机制依然生效。页面无页脚时偏移量为 0；而 `toc_style: flow` 则依托
+自身的 sticky 边界停止于正文末尾。移动端抽屉与打印输出均不受影响。（OINK 1.3.1 新增。）
 
 ## 搜索、操作与运行时 {#search-actions-and-runtime}
 

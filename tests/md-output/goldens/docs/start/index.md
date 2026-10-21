@@ -20,6 +20,11 @@ contains only neutral project content and deployment workflows.
 > from an older Starter snapshot, update its Hugo workflow pins to this baseline;
 > older Hugo compatibility is no longer maintained.
 
+> [!NOTE] OINK 1.3.2 build requirements
+> Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass.
+> No external Sass installation is required. Keep the upstream LibSass warning
+> visible and review it; do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
+
 ## Choose a path {#choose}
 
 | Starting point | Path | Result |
@@ -37,7 +42,7 @@ contains only neutral project content and deployment workflows.
 
    ```console
    $ go version
-   go version go1.27.0 darwin/arm64
+   go version go1.27.2 darwin/arm64
    $ hugo version
    hugo v0.168.0+extended+withdeploy darwin/arm64
    ```
@@ -101,8 +106,8 @@ hugo --cleanDestinationDir --gc --minify --environment production \
   --printPathWarnings
 ```
 
-The command succeeds if it ends with `Total in …` and prints no warning or
-error. `public/` must contain the language roots and representative Docs, Blog,
+The command must exit successfully and report `Total in …`. Review all
+diagnostics; the known upstream LibSass deprecation warning is accepted. `public/` must contain the language roots and representative Docs, Blog,
 and Book routes. This does not prove deployment. A local build, commit, push,
 successful workflow, and correct public rendering are separate checks.
 

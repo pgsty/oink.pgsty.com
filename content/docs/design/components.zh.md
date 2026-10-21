@@ -5,11 +5,11 @@ description: OINK 创作原语、校验、Book、发布行为与输出降级的�
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK 组件契约, shortcode API, Markdown 组件, Book, 发布, 校验]
-contract_status: v1.3.0
+contract_status: v1.3.2
 ---
 
-> [!NOTE] OINK 1.3.0 契约
-> 本契约描述 OINK v1.3.0。主题开发使用同级 checkout；发布验收在关闭替换与
+> [!NOTE] OINK 1.3.2 契约
+> 本契约描述 OINK v1.3.2。主题开发使用同级 checkout；发布验收在关闭替换与
 > 工作区后验证公开模块。消费站升级与部署分别检查。
 
 教程与完整示例位于面向读者的[组件](/zh/docs/components/)专栏。本页定义这些
@@ -115,8 +115,12 @@ Print 给主题生成的标签页容器、面板 ID 加上来源页面的命名�
 `params.ui.typography` 变成 `field-params-ui-typography`。重复锚点追加位置后缀。
 
 表格渲染钩子负责响应式包装与 caption。`.matrix` 把第一列变为行表头；
-`.full-width` 加宽普通表格或矩阵表格。`.fields` 不能与 matrix、full-width、
-编号或标签页组合；编号与标签页也互斥。
+`.full-width` 加宽外层视口以占满文章可用宽度。在屏幕显示中，`.td-table--wide`
+让技术表格按内容尺寸排版，在容器内横向滚动；单元格使用 `overflow-wrap: break-word`
+与 `word-break: normal` 保留标识符，正文单元格以 `max-width: 40ch` 作为软宽度约束，
+让长描述适当换行。普通表格保持现有布局。该标记不影响定义列表形式的 `.fields`，
+也不影响静态与打印输出。`.fields` 不能与 matrix、full-width、编号或标签页组合；
+编号与标签页也互斥。此宽度标记从 OINK 1.3.1 起可用。
 
 ### 图片、画廊、FileTree 与围栏 {#images-gallery-filetree-and-fences}
 
@@ -141,8 +145,13 @@ Draw.io 在模态对话框中打开，外层始终提供本地化的关闭按钮
 编辑器的 Tab 顺序移出 iframe，访问外层关闭按钮。重新打开时创建新的编辑会话。
 
 画廊每行接受一张 Markdown 图片，可带描述、链接与 class。FileTree 接受缩进、
-`- name`、可选 `/`、注释，以及经过校验的 icon、tone、open、type 属性。Markdown
-保留作者源文；打印输出渲染展开的静态图片与文件树。
+`- name`、可选 `/`、注释，以及经过校验的 icon、tone、open、type 属性。
+FileTree 围栏参数 `wrap` 接受 `true` 或 `false`，默认 `false`；设置为 `true` 时，
+屏幕上的长注释和无空格标识符在列内换行，行高从现有最小高度随内容增长，文件名
+仍使用省略号。省略参数或设为 false 时保留桌面与平板的紧凑行；移动端堆叠、
+分隔条操作、目录折叠和打印展开保持现有行为。无效值告警并回退到 false，发布前应
+审阅告警并检查回退结果。Markdown 保留显式 wrap 参数和文件树源文；打印输出渲染
+展开的静态图片与文件树。
 
 所有代码高亮都使用 Chroma。通用围栏属性包括 `title`、`copy`、`wrap`、
 `collapse`、`label`、`id`、行选项、标签页，以及 Book 的 `num`/`caption`。复制
@@ -152,6 +161,12 @@ Draw.io 在模态对话框中打开，外层始终提供本地化的关闭按钮
 
 ECharts 输入是声明式 JSON/YAML；回调使用
 `window.OinkEchartsFunctions` 中的 `$fn:<name>`，绝不执行嵌入脚本。
+
+Markmap 节点文字在屏幕显示下通过 `--markmap-text-color` 继承页面正文颜色
+（`--bs-body-color`），在明暗模式切换、预设风格变更或恢复用户偏好时均可实时同步，
+确保足够的对比度；打印时则保留默认深色文字，以适配白底纸张。该映射作用于正文
+容器及生成的 SVG，站点仍可通过同优先级的自定义 CSS 或 SVG 内联属性进行覆盖。
+（OINK 1.3.1 新增。）
 
 数学公式使用 Hugo 构建时生成的 KaTeX 产物和本地 CSS，不加载浏览器数学运行时。
 HTML 和 Print 使用本地样式表，并保留 MathML 与作者的 TeX 源文。

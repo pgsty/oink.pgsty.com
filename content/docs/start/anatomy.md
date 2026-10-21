@@ -185,8 +185,8 @@ hugo --cleanDestinationDir --gc --minify --environment production \
 git status --short
 ```
 
-Confirm that the module graph names the pinned release. The build must emit
-no warning or error. Git status must contain source edits but no `public/` or
+Confirm that the module graph names the pinned release. The build must succeed
+and its diagnostics must be reviewed; the upstream LibSass warning is accepted. Git status must contain source edits but no `public/` or
 cache files. Before deployment, open each enabled language root and one route
 from each of Docs, Blog, and Book.
 

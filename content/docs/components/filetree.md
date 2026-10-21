@@ -67,7 +67,7 @@ The comment column occupies at least three tenths and at most half of the panel.
 Drag the dashed splitter to change the width. Alternatively, focus it with <kbd>Tab</kbd> and move it with arrow keys.
 <kbd>Home</kbd> / <kbd>End</kbd> move it to the limits.
 
-Long names and comments are truncated with an ellipsis within their columns. Hover to see the full text in `title`.
+By default (`wrap=false`), long names and comments are truncated with an ellipsis within their columns. Hover to see the full text in `title`.
 Only trees **with comments** load JavaScript. This script controls the splitter.
 
 ````markdown {title="Source"}
@@ -90,6 +90,22 @@ Use `wrap=true` on the `filetree` fence to show complete comments in their
 column. Rows grow as needed, including for unbroken identifiers. The default
 `wrap=false` keeps compact rows with ellipsis. Names, folding, splitter controls,
 mobile layout, and expanded Print output retain their existing behavior.
+
+````markdown {title="Source"}
+```filetree {title="Complete storage comments" wrap=true}
+- storage/
+  - metadata/ # Schema definitions: property keys, vertex and edge labels, indexes, and counters.
+  - graph/    # Graph data: vertices, edges, index tables, and OLAP analysis data.
+```
+````
+
+```filetree {title="Complete storage comments" wrap=true}
+- storage/
+  - metadata/ # Schema definitions: property keys, vertex and edge labels, indexes, and counters.
+  - graph/    # Graph data: vertices, edges, index tables, and OLAP analysis data.
+```
+
+Invalid `wrap` values warn and fall back to `false`. Review the warning and fallback before publication.
 
 ## Title bars {#title}
 
@@ -300,6 +316,7 @@ Fence attributes, after ```` ```filetree ````:
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
 | `title` | plain text | — | Title bar above the tree; omitted when absent; must not be empty |
+| `wrap` | boolean | `false` | Wrap long comments and grow rows; filenames keep ellipsis |
 | `tab` | plain text | — | Makes this tree one panel of a tab set |
 | `group` / `value` | string | — | Tab group and sync value; must appear with `tab` |
 | `class` | class list | — | Passed through for site CSS |

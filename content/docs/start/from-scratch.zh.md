@@ -33,6 +33,11 @@ aliases:
 当前开发与验收统一使用 Go 1.27 与 Hugo Extended 0.168.0。
 Hugo 默认基线保持固定，不再测试或适配旧版本。
 
+> [!NOTE] OINK 1.3.2 构建要求
+> 维护中的站点使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
+> 上游 LibSass 弃用告警保持可见并接受审阅；不要启用 `--panicOnWarning`
+> 或 `HUGO_PANICONWARNING`。
+
 ## 接入现有站点 {#existing-site}
 
 在保留现有配置与内容的分支中操作。跳过 `hugo new site`，继续使用原配置文件名。

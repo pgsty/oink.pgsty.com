@@ -13,7 +13,12 @@ aliases:
 
 OINK 站点的产物是一个纯静态目录，任何能托管静态文件的地方都能部署，不需要 Node 运行时、服务端渲染或构建插件。托管商一侧只有三件事：用正确的 Hugo 版本执行一条命令、发布 `public/`、让 `baseURL` 与最终访问地址一致。
 
-前提是本机已经能完成生产的[生产构建](/zh/docs/admin/preview/#production-build)。
+先在本机完成[生产构建](/zh/docs/admin/preview/#production-build)并审阅告警；上游 LibSass 弃用告警允许出现。
+
+> [!NOTE] OINK 1.3.2 构建要求
+> 维护中的站点使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
+> 上游 LibSass 弃用告警保持可见并接受审阅；不要启用 `--panicOnWarning`
+> 或 `HUGO_PANICONWARNING`。
 
 ## 确定 baseURL {#baseurl}
 `baseURL` 是最常见的故障源，失败方式也隐蔽：页面能打开，但搜索索引 404、页面操作链接指向错误位置、部分资源加载失败。
@@ -70,7 +75,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  HUGO_VERSION: 0.168.0
+  GO_VERSION: stable
+  HUGO_VERSION: "0.168.0"
   # 同级 checkout 的 workspace 绝不能参与 CI 构建
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
@@ -89,7 +95,8 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version-file: go.mod
+          go-version: ${{ env.GO_VERSION }}
+          check-latest: true
           cache-dependency-path: go.sum
 
       - name: Configure GitHub Pages
@@ -97,11 +104,15 @@ jobs:
         uses: actions/configure-pages@v6
 
       - name: Install Hugo Extended
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: Record build tool versions
         run: |
-          curl --fail --location --silent --show-error \
-            --output "${RUNNER_TEMP}/hugo.deb" \
-            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
-          sudo dpkg -i "${RUNNER_TEMP}/hugo.deb"
+          go version
+          hugo version
 
       - name: Download OINK
         run: go mod download github.com/pgsty/oink

@@ -1,7 +1,7 @@
 ---
 title: Upgrade
 linkTitle: Upgrade
-description: Pin a theme version, upgrade to 1.3.0, migrate legacy content or a Docsy site, and keep a rollback path.
+description: Pin a theme version, upgrade to 1.3.2, migrate legacy content or a Docsy site, and keep a rollback path.
 weight: 50
 search_keywords: [upgrade, migration, version, Hugo Module, hugo mod get, oink06, Docsy, jQuery, breaking changes]
 aliases:
@@ -20,25 +20,35 @@ An upgrade changes rendered output. Before you start, create an upgrade branch.
 You can discard that branch if you cancel the upgrade.
 
 > [!IMPORTANT] Current Hugo baseline
-> Since 2026-10-15, use Hugo Extended 0.168.0 for development and validation.
+> Current development and validation use Hugo Extended 0.168.0.
 > Update Hugo workflow pins when upgrading; older-Hugo compatibility is no
 > longer maintained. Version requirements in the older release sections below
 > describe those releases only.
 
-## Upgrade to 1.3 {#preparing-1-3}
+> [!NOTE] OINK 1.3.2 build requirements
+> Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass.
+> No external Sass installation is required. Keep the upstream LibSass warning
+> visible and review it; do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
 
-OINK `v1.3.0` adds [Expo albums](/docs/write/expo/) and repairs navigation,
-modal closure and focus. Existing Docs, Blog and Book content needs no bulk
-migration. Set `type: expo` only on the new album section, with a matching cascade;
-keep images and originals in its leaf bundles.
+## Upgrade to 1.3.2 {#preparing-1-3}
+
+OINK `v1.3.2` restores built-in LibSass and removes the external Sass dependency.
+Use Hugo Extended 0.168.0 for maintained sites and review the visible upstream
+LibSass warning. See the [1.3.2 release notes](/blog/release/1.3.2/).
 
 Verify public module resolution with replacements and workspaces disabled.
-Pin `github.com/pgsty/oink@v1.3.0`, build with reviewed diagnostics, and review
-navigation, image viewing and reader settings. Source-copy consumers must also
+Pin `github.com/pgsty/oink@v1.3.2`, build with reviewed diagnostics, and review
+navigation, image viewing, and reader settings. Source-copy consumers must also
 refresh their fixed theme files; changing `go.mod` does not update a vendored copy.
 
-Keep `preset: paper` and the explicit `[paper, slate, ink, terminal]` menu when the
-site offers all four styles. The [1.3 notes](/blog/release/1.3.0/) describe the changes.
+OINK `v1.3.1` repairs Markmap text contrast and fixed-TOC footer clearance, and
+adds opt-in layouts for technical tables and long FileTree comments. Existing
+content keeps its default appearance. Add `.td-table--wide` or `wrap=true` only
+where complete technical text is needed.
+
+Keep `preset: paper` and the explicit `[paper, slate, ink, terminal]` menu when
+the site offers all four styles. The [1.3.1 notes](/blog/release/1.3.1/) describe
+these fixes and credit their contributor.
 
 ## Read the release notes first {#release-notes}
 
@@ -55,11 +65,11 @@ changed default behavior. Read them to understand differences in the upgraded pa
 
 For a production site, pin a published release tag or an explicitly selected
 immutable commit. Do not follow a branch or use `@latest`. The example below
-upgrades to the published `v1.3.0` tag. Before you select a later tag, verify
+upgrades to the published `v1.3.2` tag. Before you select a later tag, verify
 that the release is published and its module resolves:
 
 ```bash {title="Terminal"}
-hugo mod get github.com/pgsty/oink@v1.3.0   # the published release tag
+hugo mod get github.com/pgsty/oink@v1.3.2   # the published release tag
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -75,7 +85,7 @@ module github.com/pgsty/oink.pgsty.com
 
 go 1.27.0
 
-require github.com/pgsty/oink v1.3.0
+require github.com/pgsty/oink v1.3.2
 ```
 
 > [!DANGER] A local module replacement overrides that pin
@@ -91,7 +101,7 @@ Check out the exact published version. Do not follow its remote branch:
 
 ```bash {title="Terminal"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.3.0
+git -C themes/oink checkout --detach v1.3.2
 git add themes/oink
 ```
 

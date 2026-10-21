@@ -279,7 +279,7 @@ Content after the explicit feed summary boundary.
   }
 });
 
-test('invalid primitive parameters warn, fall back, and remain strict-build failures', () => {
+test('invalid primitive parameters warn and preserve safe fallback output', () => {
   const fixtureDir = mkdtempSync(
     path.join(tmpdir(), 'oink-primitives-invalid-'),
   );

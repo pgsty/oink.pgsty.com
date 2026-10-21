@@ -4,11 +4,11 @@ linkTitle: Expo
 description: 规定相册资源、显示模式、图片查看、共享外观与静态输出的行为。
 weight: 45
 icon: fa-solid fa-images
-contract_status: v1.3.0
+contract_status: v1.3.2
 ---
 
-> [!NOTE] OINK 1.3.0 契约
-> 本契约描述 OINK v1.3.0。主题开发使用同级 checkout；发布验收在关闭替换与
+> [!NOTE] OINK 1.3.2 契约
+> 本契约描述 OINK v1.3.2。主题开发使用同级 checkout；发布验收在关闭替换与
 > 工作区后验证公开模块。消费站升级与部署分别检查。
 
 本页规定实现必须遵循的行为。创建内容请阅读 [Expo 相册](/zh/docs/write/expo/)，

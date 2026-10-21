@@ -28,7 +28,7 @@ weight: 30
 ````markdown {title="content/docs/preview-check.zh.md" num="3-1" caption="同一页面现在明确了前置条件、命令与可见结果。" #eg-page-contract}
 ---
 title: 验证本地预览
-description: 确认文档修改已显示在浏览器中，并通过无警告构建。
+description: 确认文档修改已显示在浏览器中，构建成功并完成告警审阅。
 weight: 25
 ---
 
@@ -41,7 +41,7 @@ weight: 25
 hugo --environment production
 ```
 
-命令应成功退出且没有警告。刷新本页
+命令应成功退出并完成告警审阅。刷新本页
 `http://localhost:1313/zh/docs/preview-check/`，确认新提示块与命令已显示。
 构建成功与可见内容已更新，需要分别确认。
 ````
