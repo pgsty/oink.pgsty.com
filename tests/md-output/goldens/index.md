@@ -12,9 +12,9 @@ Section pages:
 
 - [Write Beautiful Docs](/book/): A practical tutorial for creating clear, beautiful, and maintainable technical content with OINK.
 - [OINK Case](/case/): Fifteen real sites show how OINK scales from a two-page utility to a multilingual documentation estate and three books.
-- [Expo](/expo/): Albums of images, with room to look closer.
+- [Expo](/expo/): Browse image albums and inspect each original.
 - [Blog](/blog/): OINK engineering stories, immersive guides, and release notes
-- [OINK Documentation](/docs/): Build a technical content site with shared navigation, multilingual support and search for documentation, blogs, books and API references.
+- [OINK Documentation](/docs/): Build a technical content site. Use shared navigation, multilingual support, and search for documentation, blogs, books, and API references.
 
 ---
 

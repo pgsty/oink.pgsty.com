@@ -1,6 +1,6 @@
 # Authoring
 
-> Writing documentation pages, blog posts, books, release pages and API references — what a page looks like, and how content is organized.
+> Write documentation pages, blog posts, books, release pages, and API references. Learn the page structure and content organization.
 
 ---
 
@@ -10,14 +10,14 @@ LLMS index: [llms.txt](/llms.txt)
 
 This section covers the content types OINK supports: documentation pages, blog
 posts, books, release and download pages, and OpenAPI references. They share one
-Markdown dialect and one front matter schema, and each adds its own conventions.
+Markdown dialect and one front matter schema. Each type adds its own conventions.
 
 ## What a documentation page is made of {#anatomy}
 
-A documentation page is one Markdown file. Between the two `---` lines at the
-top is the front matter — the page's metadata: title, short sidebar name,
-description, ordering. The rest is the body: ordinary Markdown plus OINK's
-native components. Here is a complete page:
+A documentation page is one Markdown file. Front matter appears between the
+two `---` lines at the top. It contains page metadata: title, short sidebar
+name, description, and order. The body follows. It uses ordinary Markdown and
+OINK's native components. This is a complete page:
 
 ```markdown {title="content/docs/install.md"}
 ---
@@ -36,7 +36,7 @@ newer.
 > The installer rewrites `/etc/yum.repos.d/`. Back it up first.
 ```
 
-Save it as `content/docs/install.md`, run `hugo server`, and the page appears at
+Save it as `content/docs/install.md`. Run `hugo server`. The page appears at
 `/docs/install/` with an "Install" entry in the sidebar.
 
 ## Content types and where they are covered {#map}
@@ -58,14 +58,14 @@ Save it as `content/docs/install.md`, run `hugo server`, and the page appears at
 
 Section pages:
 
-- [Writing pages](/docs/write/pages/): Creating a documentation page — where the file goes, what the front matter says, why heading anchors are written by hand, how links and images work, and what appears at the end of a page on its own.
-- [Organizing content](/docs/write/organize/): The directory structure is the sidebar tree — `_index.md` and weight, section index styles, icons and folding, hiding pages, and putting documentation at any path.
+- [Writing pages](/docs/write/pages/): Create a documentation page. Learn where to save it, how to set front matter and anchors, and how links, images, and page-end controls work.
+- [Organizing content](/docs/write/organize/): Use the directory structure to create the sidebar tree. Configure `_index.md`, weight, index styles, icons, folding, hidden pages, and documentation paths.
 - [Page parameters](/docs/write/frontmatter/): The full front matter table — active page keys and retained 1.x compatibility no-ops, grouped by sidebar, shell, search, output, page end, Book, Expo, landing and release pages.
-- [Blog posts](/docs/write/blog/): Setting up a blog section — directory conventions, a post's front matter, featured images, the date-ordered list page, and RSS.
+- [Blog posts](/docs/write/blog/): Set up a blog section. Learn directory conventions, post front matter, featured images, the date-ordered list page, and RSS.
 - [Books](/docs/write/book/): Turn a directory tree into a book with `type: book`: chapter numbering, numbered figures and tables, cross-references, generated indexes and whole-book print.
 - [Image albums with Expo](/docs/write/expo/): Create an image album, add optional metadata, select a layout, and use the image viewer.
-- [Releases and downloads](/docs/write/releases/): Record versions, tags, archive links, checksums and install commands as local facts, then let release cards, asset tables, download blocks and index pages derive from that one record.
-- [API reference pages](/docs/write/openapi/): Put an OpenAPI specification on the site and render it as a browsable API reference with the bundled Swagger UI or Redoc, without touching a CDN.
+- [Releases and downloads](/docs/write/releases/): Record versions, tags, archive links, checksums, and install commands locally. Release cards, asset tables, download blocks, and index pages use these records.
+- [API reference pages](/docs/write/openapi/): Add an OpenAPI specification to the site. Use bundled Swagger UI or Redoc to render a browsable API reference without a CDN.
 
 ---
 

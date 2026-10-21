@@ -8,11 +8,10 @@ The bilingual maintainer contracts under `content/docs/design/` are the
 canonical prose source for OINK architecture, components, reading shells,
 Landing pages, and migration boundaries.
 
-The site pins OINK `v1.3.2`, released on 2026-10-15. The guides, homepage, Design
-contracts, and bilingual `content/blog/release/1.3.0{,.zh}.md` notes describe Expo
-and the navigation, Landing, and Print repairs in this release. Local development
-uses the sibling checkout. Published module resolution, consumer version pins,
-and hosted deployment each require separate validation.
+The site documents OINK `v1.3.2`. The bilingual release notes explain the
+restored Hugo-only build and the accepted Hugo 0.168.0 LibSass warning. Local
+development uses the sibling checkout. Published module resolution, consumer
+pins, and hosted deployment require separate validation.
 `content/docs/cli{,.zh}.md` is a one-page introduction to the separate,
 unreleased OINK CLI.
 

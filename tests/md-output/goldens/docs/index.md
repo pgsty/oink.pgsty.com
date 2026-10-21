@@ -1,6 +1,6 @@
 # OINK Documentation
 
-> Build a technical content site with shared navigation, multilingual support and search for documentation, blogs, books and API references.
+> Build a technical content site. Use shared navigation, multilingual support, and search for documentation, blogs, books, and API references.
 
 ---
 
@@ -8,22 +8,22 @@ LLMS index: [llms.txt](/llms.txt)
 
 ---
 
-New to OINK? [Start with the Starter](/docs/start/) to preview a working site,
-then replace its sample content. Write in Markdown and build with Hugo Extended;
-Hugo Modules also require Go to resolve the theme. Bundled theme assets need no
-CDN or npm build step.
+For a new OINK site, [Start with the Starter](/docs/start/). Preview the working site,
+then replace its sample content. Write in Markdown and build with Hugo Extended
+with its built-in Sass compiler. Hugo Modules also require Go to resolve the theme. Bundled theme assets require
+no CDN or npm build step.
 
 The current release is v1.3.2. See the
-[1.3 release notes](/blog/release/1.3.0/) or the
+[1.3.2 release notes](/blog/release/1.3.2/) or the
 [upgrade guide](/docs/admin/upgrade/#preparing-1-3) for an existing site.
 
 ## Five ways in {#five-entries}
 
-- [Get started](/docs/start/) — create an OINK Starter repository, establish a local baseline, customize it in layers, deploy.
-- [Components](/docs/components/) — one page per component, source first and rendered result after it.
-- [Write Beautiful Docs](/book/) — a tutorial in progress; the first three chapters cover preview, structure and page composition.
-- [Case studies](/case/) — production sites explained as reusable design and migration patterns.
-- [Design and development](/docs/design/) — contracts, accepted decisions, research evidence, and active proposals for OINK maintainers.
+- [Get started](/docs/start/) — Create an OINK Starter repository. Verify the local site, customize one part at a time, then deploy it.
+- [Components](/docs/components/) — Each component has one page. The source appears first, followed by the rendered result.
+- [Write Beautiful Docs](/book/) — This tutorial is in progress. The first three chapters cover preview, structure, and page composition.
+- [Case studies](/case/) — Learn reusable design and migration patterns from production sites.
+- [Design and development](/docs/design/) — Read contracts, accepted decisions, research evidence, and active proposals for OINK maintainers.
   {.cards}
 
 ## Find it by task {#where-to-go}
@@ -35,7 +35,7 @@ The current release is v1.3.2. See the
 | Write a documentation page                            | [Writing pages](/docs/write/pages/)            |
 | Turn a directory tree into a sidebar                  | [Organizing content](/docs/write/organize/)    |
 | Look up a component's syntax                          | [Components](/docs/components/)                |
-| Change the name, logo, colours and fonts              | [Brand and appearance](/docs/customize/brand/) |
+| Change the name, logo, colors, and fonts              | [Brand and appearance](/docs/customize/brand/) |
 | Look up a configuration key's default                 | [Configuration](/docs/customize/config/)       |
 | Run a bilingual or multilingual site                  | [Languages](/docs/customize/i18n/)             |
 | Practice building and writing                                 | [Write Beautiful Docs](/book/)                 |
@@ -44,19 +44,19 @@ The current release is v1.3.2. See the
 | Upgrade, or migrate from Docsy                        | [Upgrade](/docs/admin/upgrade/)                |
 | Maintain the theme, review a contract, or write a PRD | [Design and development](/docs/design/)        |
 
-The seven Docs sections are ordered the way they are read: understand, install,
-write content, look up components, adjust the site, run the release, then study
-or maintain the contracts and design records behind it.
+The seven Docs sections follow the reading sequence. First understand and
+install OINK. Then write content, find components, adjust the site, and release
+it. Finally, study or maintain its contracts and design records.
 
 ---
 
 Section pages:
 
-- [What is OINK](/docs/about/): A local-first Hugo documentation framework evolved from Docsy. Its components stay readable in Markdown, its assets ship with the theme, and fifteen production sites exercise it.
-- [Get started](/docs/start/): Start from the official OINK Starter, establish a working local baseline, then customize content, language, brand, integrations, and deployment in that order.
-- [Authoring](/docs/write/): Writing documentation pages, blog posts, books, release pages and API references — what a page looks like, and how content is organized.
-- [Components](/docs/components/): Every component available for writing, one page each, examples from the simplest upwards, with the parameter table at the end.
-- [Customization](/docs/customize/): Site-level configuration — brand, navigation, layout, search, languages, versions, print and agent output.
-- [Operations](/docs/admin/): Running the site from a laptop to production — local preview, deployment, comments, analytics and SEO, upgrades and troubleshooting.
-- [Design and development](/docs/design/): OINK maintainer contracts, accepted decisions, dated research, and proposals in one canonical bilingual section.
-- [OINK CLI](/docs/cli/): A draft introduction to the optional OINK command-line companion for Hugo sites.
+- [What is OINK](/docs/about/): A local-first Hugo documentation framework that evolved from Docsy. Its components remain readable in Markdown. The theme includes its assets. Fifteen production sites use it.
+- [Get started](/docs/start/): Start from the official OINK Starter. Verify the local site, then customize content, language, brand, integrations, and deployment in that order.
+- [Authoring](/docs/write/): Write documentation pages, blog posts, books, release pages, and API references. Learn the page structure and content organization.
+- [Components](/docs/components/): Find each writing component, from simple examples to detailed examples, with its output matrix, parameters, and limits.
+- [Customization](/docs/customize/): Configure the site brand, navigation, layout, search, languages, versions, print output, and agent output.
+- [Operations](/docs/admin/): Preview, deploy, and maintain a site. Configure comments, analytics, and SEO. Upgrade the theme and diagnose problems.
+- [Design and development](/docs/design/): OINK's contracts, accepted decisions, dated research, and active proposals in one bilingual section.
+- [OINK CLI](/docs/cli/): An introduction to the optional OINK command-line companion for Hugo sites. The CLI is still a draft.

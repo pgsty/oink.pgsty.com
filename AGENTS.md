@@ -8,9 +8,10 @@ not a projection of a second theme-local document tree.
 
 ## Current baseline
 
-The current theme release is OINK `v1.3.2`, dated 2026-10-15. This site pins
-that version. The Design contracts and release notes describe its public
-behavior. Use sibling-checkout Make targets for development; validate the
+The documentation target is OINK `v1.3.2`. Verify the actual published theme
+version in `go.mod` and public tags before claiming release or deployment.
+The Design contracts and release notes describe the 1.3.2 behavior. Use
+sibling-checkout Make targets for development; validate the
 published pin separately with replacements and both workspaces disabled.
 CLI documentation describes the separate local `0.1.0-dev` candidate. Recheck
 actual tags, module resolution and deployment before making release claims.
@@ -43,8 +44,8 @@ actual tags, module resolution and deployment before making release claims.
 - Keep changelog, upgrade guidance, current docs, and release messages focused
   on their distinct audiences.
 - Current CLI behavior belongs to `content/docs/design/decisions/cli{,.zh}.md`
-  and `content/docs/start/cli{,.zh}.md`. The `cli-overview` page is a historical
-  first-stage snapshot; proposal roadmaps are not the current command API.
+  with the short introduction at `content/docs/cli{,.zh}.md`. Retired detailed
+  guides remain in Git history; proposal roadmaps are not the current command API.
 
 ## Design records and PRDs
 
@@ -64,13 +65,13 @@ actual tags, module resolution and deployment before making release claims.
 Use the smallest relevant command from `package.json`. The five Make targets
 select different theme sources:
 
-| Target | Theme source and purpose |
-| --- | --- |
-| `make check` | Sibling `../oink`; complete non-browser site suite |
-| `make browser` | Sibling `../oink`; Playwright and axe suites |
-| `make dev` | Sibling `../oink`; fast, memory-rendered development preview |
-| `make build` | Published pin; minified Hugo build |
-| `make serve` | Published pin; production preview without fast/live reload |
+| Target         | Theme source and purpose                                     |
+|----------------|--------------------------------------------------------------|
+| `make check`   | Sibling `../oink`; complete non-browser site suite           |
+| `make browser` | Sibling `../oink`; Playwright and axe suites                 |
+| `make dev`     | Sibling `../oink`; fast, memory-rendered development preview |
+| `make build`   | Published pin; minified Hugo build                           |
+| `make serve`   | Published pin; production preview without fast/live reload   |
 
 Direct `npm test` and `npm run test:browser` do not select the sibling theme
 themselves; use the Make targets for local theme acceptance. The local `check`,
@@ -110,3 +111,13 @@ started the current checkout. CLI command checks remain owned by the CLI's Make 
 Keep generated `public/`, `resources/`, `tmp/`, caches, and workspace files out
 of Git. Preserve unrelated source edits. Local validation, commits, theme/CLI
 publication, consumer adoption, and hosted deployment are separate states.
+
+## Git 内容与大文件规则
+
+用户于 2026-10-10 明确的通用仓库规则：
+
+- 仓库默认保存源代码、配置和必要的轻量文档、元数据。构建产物、可执行文件、软件包、容器/虚拟机镜像、下载压缩包、数据库导出和大体积原始数据默认不进入 Git；文本格式的数据大文件同样需要检查。
+- 在工作树内下载或生成上述文件之前，先选择仓库外的制品/数据位置，或补上合理的 `.gitignore` 规则并验证实际路径已被忽略，防止暂存和代理恢复/差异快照将它们写入 Git 对象库。
+- 暂存、提交前检查新增文件的大小、类型和 staged 文件列表，只加入本次需要的源文件；不得用强制添加绕过忽略规则。优先保留来源清单、校验值及可复现的下载/构建方法。
+- 对二进制素材、数据集或生成文件是否应纳入版本控制拿不准时，先问用户，再暂存或提交；确需例外时也先取得用户明确指示。
+- 本规则不授权删除已有文件、stash、恢复快照或改写 Git 历史。忽略规则不会清除已存在的 Git 对象，历史清理需要单独明确范围。

@@ -1,6 +1,6 @@
 # Gallery
 
-> A `gallery` fence arranges related screenshots in a responsive grid, each with an optional description or link, reusing the page's image zoom dialog.
+> Use a `gallery` fence for a responsive image grid with optional descriptions and links. Images share the page zoom dialog.
 
 ---
 
@@ -8,15 +8,13 @@ LLMS index: [llms.txt](/llms.txt)
 
 ---
 
-A gallery arranges related images in a responsive grid, one image per line
-inside the fence. It suits several views of one thing: a few screenshots, a few
-states, a few colour schemes. A single image is an
-[image](/docs/components/image/), and images with no order or comparison between
-them do not belong in one gallery.
+A gallery displays related images in a responsive grid. Put one image per line inside the fence.
+Use it for multiple views of the same subject, such as screenshots, states, or color schemes.
+Use an [image](/docs/components/image/) for a single picture. Gallery images should have an order or support a comparison.
 
 ## Shortest form {#minimal}
 
-One image per line, written as Markdown's `![alt](src)`.
+Write one image per line with Markdown's `![alt](src)` syntax.
 
 ````markdown {title="Source"}
 ```gallery
@@ -30,16 +28,13 @@ One image per line, written as Markdown's `![alt](src)`.
 ![The classic Docsy layout upstream](/images/docsy.webp)
 ```
 
-Alternative text is mandatory: it is the item's title, the only text a screen
-reader gets, and what decides whether the image can zoom. There is no column
-parameter — the grid adapts to the container and drops columns on a narrow
-screen.
+Alternative text is mandatory. It sets the item's title, supplies its only screen reader text, and determines zoom eligibility.
+There is no column parameter. The grid follows the container width and reduces columns on narrow screens.
 
 ## Descriptions {#description}
 
-Start a description with ` # ` after the image and it appears underneath.
-Descriptions are plain text, so Markdown inside them shows literally; for a
-literal hash write `\#`.
+Add ` # ` after the image to start a description below it.
+Descriptions are plain text. Markdown appears literally. Use `\#` for a literal hash.
 
 ````markdown {title="Source"}
 ```gallery
@@ -55,14 +50,12 @@ literal hash write `\#`.
 ![A release notes page](/images/releasenote.webp) # Release cards use release_url and date; checksums blocks list download assets
 ```
 
-Descriptions need not be the same length: the grid aligns to the tallest item
-and a wrapped description does not disturb its neighbours. The image is parsed
-first, so a `#` inside the alt text or the path needs no escaping.
+Descriptions can have different lengths. The grid aligns to the tallest item, and wrapped descriptions do not affect neighboring items.
+The image is parsed first. A `#` in alternative text or a path needs no escaping.
 
 ## A link per item {#link}
 
-`{link=…}` at the end of a line turns that item into a link. Site paths,
-relative paths and `http(s):` all work.
+Put `{link=…}` at the end of a line to make that item a link. Site paths, relative paths, and `http(s):` are supported.
 
 ````markdown {title="Source"}
 ```gallery
@@ -76,17 +69,14 @@ relative paths and `http(s):` all work.
 ![A release notes page](/images/releasenote.webp) # Opens "Releases and downloads" {link=/docs/write/releases/}
 ```
 
-A linked item does not zoom, because clicking already means something else. Both
-kinds can share one gallery: linked items open a page, the rest open the full
-image.
+Linked items do not zoom because clicking opens their link. A gallery can contain both linked and unlinked items.
+Linked items open pages. Unlinked items open full images.
 
 ## Where images come from {#sources}
 
-Sources resolve exactly as for a plain image: page resource (a file next to the
-page in its bundle) → global resource in `assets/` → static path `/images/…` →
-remote URL. A local resource carries its intrinsic size, so the page does not
-shift while loading; a remote image is neither downloaded at build time nor
-measured.
+Sources use the plain-image resolution order: page resource in the page bundle → global resource in `assets/` → static path `/images/…` → remote URL.
+Local resources include intrinsic dimensions to prevent layout changes while loading.
+Remote images are not downloaded or measured at build time.
 
 ````markdown {title="Source"}
 ```gallery
@@ -100,17 +90,14 @@ measured.
 ![The light home page (static path)](/images/hero-light.webp) # Under static/images/…, published as is
 ```
 
-An unresolved page/global resource is retained as a static path, just like an
-explicit static path; the theme does not check static or remote existence.
+Unresolved page or global resources are kept as static paths. The theme does not check whether static or remote images exist.
 
 ## Decorative images and zoom {#zoom}
 
-Empty alternative text marks a decorative image: no title, skipped by screen
-readers, and never a zoom candidate.
+Empty alternative text marks decorative images. They have no title, are skipped by screen readers, and never qualify for zoom.
 
-Image zoom is a site-level switch and is off by default. This page turns it on
-in its front matter, so every image above that has alt text and no link opens
-full size (<kbd>Esc</kbd> closes it and focus returns where it was).
+Image zoom is a site-level switch and is off by default. This page enables it in front matter.
+Images above with alternative text and no link open at full size. <kbd>Esc</kbd> closes the dialog and restores the previous focus.
 
 ```yaml {title="this page's front matter"}
 image_zoom: true
@@ -128,16 +115,14 @@ image_zoom: true
 ![The Pigsty release notes page](/images/releasenote.webp) # Has alt text, so it opens
 ```
 
-A gallery has no zoom runtime of its own; it reuses the one dialog the page
-shares. With no zoomable image on the page, that runtime is never loaded. The
-details are in [Images · Zoom](/docs/components/image/#zoom).
+Galleries share the page's image zoom dialog and have no separate zoom runtime.
+If no image on the page qualifies for zoom, this runtime does not load. See [Images · Zoom](/docs/components/image/#zoom).
 
 ## Classes and tabs {#class-and-tabs}
 
-`class` can go on the whole fence (after the language) or on one item (at the
-end of its line). The theme does not interpret it and passes it through for site
-CSS. A fence carrying `tab=` (with `group=` / `value=`) becomes one panel of a
-[tab set](/docs/components/tabs/).
+Put `class` on the fence after the language, or on an item at the end of its line.
+The theme passes it through for site CSS without interpreting it.
+A fence with `tab=` and `group=` / `value=` becomes a [tab set](/docs/components/tabs/) panel.
 
 ````markdown {title="Source"}
 ```gallery {tab="OINK" group="shell" value="oink"}
@@ -194,18 +179,12 @@ Review the warning and rendered fallback before publication.
 
 ## Limits {#limits}
 
-- The fence is the only form: there is no `{.gallery}` list marker and no
-  shortcode. The cost is that the source does not render as images on GitHub;
-  the benefit is that four-state output and zoom eligibility are guaranteed by
-  the theme.
-- Columns cannot be set and images are not cropped to one aspect ratio: the grid
-  follows the viewport and images keep their own proportions.
-- No slideshow, no carousel, no previous / next: the zoom dialog shows one image
-  at a time.
-- Remote images are not downloaded: there is no network request at build time,
-  so a remote image's size is unknown until the browser loads it and the layout
-  may shift.
-- Descriptions are not Markdown: put rich text in a paragraph under the gallery.
+- Fences are the only form. There is no `{.gallery}` list marker or shortcode.
+  GitHub does not display the source as images. The theme guarantees behavior across four outputs and applies zoom eligibility rules.
+- Column counts cannot be set. The grid follows the viewport, and images keep their proportions without aspect-ratio cropping.
+- There is no slideshow, carousel, or previous / next control. The zoom dialog displays one image at a time.
+- Remote images are not downloaded at build time. Their dimensions remain unknown until the browser loads them, so layout can change.
+- Descriptions do not support Markdown. Put rich text in a paragraph below the gallery.
 
 For album navigation, image sequencing, and drag-to-pan viewing, use the
 [Expo layout](/docs/write/expo/) introduced in OINK 1.3.0. The `gallery` fence
