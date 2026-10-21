@@ -1,7 +1,7 @@
 ---
 title: Get started
 linkTitle: Get started
-description: Start from the official OINK Starter, establish a working local baseline, then customize content, language, brand, integrations, and deployment in that order.
+description: Start from the official OINK Starter. Verify the local site, then customize content, language, brand, integrations, and deployment in that order.
 weight: 20
 icon: fa-solid fa-rocket
 no_list: true
@@ -22,21 +22,21 @@ aliases:
   - /docs/tutorial/project-site/
 ---
 
-The recommended path for a new site starts from
-[`pgsty/oink-starter`](https://github.com/pgsty/oink-starter), not from a copy
-of this documentation and regression repository. The Starter is a public
-GitHub template: it pins a published OINK release, builds as-is, and contains
-only neutral project content and deployment workflows.
+For a new site, the recommended path starts with
+[`pgsty/oink-starter`](https://github.com/pgsty/oink-starter), instead of a copy
+of this documentation and regression repository. The Starter is a public GitHub
+template. It pins a published OINK release and builds without changes. It
+contains only neutral project content and deployment workflows.
 
 > [!IMPORTANT] Current Hugo baseline
 > Development, CI, and release tests use Hugo Extended {{% param hugoMinVersion %}}
-> and Go 1.27. The Hugo baseline advances with stable releases. When starting
+> and Go 1.27. The Hugo baseline remains pinned. When starting
 > from an older Starter snapshot, update its Hugo workflow pins to this baseline;
 > older Hugo compatibility is no longer maintained.
 
 ## Choose a path {#choose}
 
-| Starting point | Recommended path | Result |
+| Starting point | Path | Result |
 | --- | --- | --- |
 | New documentation or project site | [OINK Starter](/docs/start/starter/) | A small three-language Docs, Blog, and Book site with two deployment workflows |
 | Existing Hugo site | [From scratch](/docs/start/from-scratch/) | Add the OINK module and required Goldmark settings without replacing content |
@@ -58,13 +58,13 @@ only neutral project content and deployment workflows.
 
    On macOS, `brew install git go hugo` supplies them. On Linux and Windows,
    use the official [Hugo installation guide](https://gohugo.io/installation/)
-   and [Go downloads](https://go.dev/dl/); choose Hugo **Extended**.
+   and [Go downloads](https://go.dev/dl/). Choose Hugo **Extended**.
 
 1. ### Create or clone the site {#clone}
 
-   For a repository you intend to keep, open the Starter and select
-   **Use this template**, then clone the repository GitHub created for you.
-   To evaluate the untouched original locally:
+   If you intend to keep the repository, open the Starter and select
+   **Use this template**. Then clone the repository that GitHub creates.
+   To evaluate the original without changes, use these commands:
 
    ```bash
    git clone https://github.com/pgsty/oink-starter.git my-docs
@@ -81,9 +81,8 @@ only neutral project content and deployment workflows.
 1. ### Make one visible change {#first-change}
 
    Change the title and canonical URL at the top of `hugo.yaml`, then edit one
-   sentence in `data/home/en.yaml`. A browser reload that shows both changes is
-   the first useful proof that configuration, content, and the pinned theme are
-   connected correctly.
+   sentence in `data/home/en.yaml`. Reload the browser. If both changes appear, configuration, content, and the
+   pinned theme are connected correctly.
 {.steps}
 
 ## Customize from shallow to deep {#learning-path}
@@ -102,9 +101,9 @@ only neutral project content and deployment workflows.
   Pages workflow, then verify the real public routes.
 {.cards}
 
-This order is deliberate. A site that first proves its build and content tree
-is easier to debug than one that changes languages, navigation, CSS, analytics,
-and hosting at the same time.
+Verify the build and content tree first. This makes the site easier to debug.
+Changing languages, navigation, CSS, analytics, and hosting together makes it
+harder to identify a failure.
 
 ## Publication gate {#publication-gate}
 
@@ -116,15 +115,15 @@ hugo --cleanDestinationDir --gc --minify --environment production \
   --printPathWarnings
 ```
 
-Success means the command ends with `Total in …`, prints no warning or error,
-and `public/` contains the language roots and representative Docs, Blog, and
-Book routes. It does not yet prove deployment: a local build, a commit, a push,
-a green workflow, and correct public rendering are separate gates.
+The command succeeds if it ends with `Total in …` and prints no warning or
+error. `public/` must contain the language roots and representative Docs, Blog,
+and Book routes. This does not prove deployment. A local build, commit, push,
+successful workflow, and correct public rendering are separate checks.
 
 ## Next {#next}
 
 Start with the [complete Starter tutorial](/docs/start/starter/). If the
-template deliberately carries more structure than your project needs, use the
+template has more structure than your project needs, use the
 [repository tour](/docs/start/anatomy/) to remove it safely. Use
 [From scratch](/docs/start/from-scratch/) only when adding OINK to an existing
 site or when you explicitly want to assemble every file yourself.

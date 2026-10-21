@@ -18,7 +18,7 @@ last_verified: 2026-09-29
 
 CLI 位于独立的 `oink-cli` Go 仓库。已接受的边界见
 [CLI 与结果契约](/zh/docs/design/decisions/cli/)，可复现的用户步骤见
-[使用指南](/zh/docs/start/cli/)。Hugo 继续作为外部渲染器，生成站点保留普通
+[CLI 简介](/zh/docs/cli/)。Hugo 继续作为外部渲染器，生成站点保留普通
 Hugo 输入。
 
 | 输入 | 观察到的基线 |
@@ -197,7 +197,7 @@ sandbox-exec -p '(version 1) (allow default) (deny network*)' \
   2> "$oink_acceptance_dir/reports/offline-init.log"
 ```
 
-[升级指南](/zh/docs/start/cli/#upgrade)说明预览、计划审查与显式应用步骤。
+[命令契约](/zh/docs/design/decisions/cli/#upgrade-comparison)说明预览、计划审查与显式应用步骤。
 写入路径测试应使用单独的审查副本。归档实验需保持 Go 工具链和发布版本一致：
 
 ```sh

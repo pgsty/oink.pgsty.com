@@ -1,7 +1,7 @@
 ---
 title: CLI acceptance snapshot, 2026-09-29
 linkTitle: 2026-09-29 CLI acceptance
-description: Executed Starter, real-site, offline, upgrade, and reproducible-archive checks for the local CLI candidate, with final acceptance and publication kept separate.
+description: Executed Starter, real-site, offline, upgrade, and reproducible-archive checks for the local CLI candidate, with acceptance and publication recorded separately.
 weight: 60
 icon: fa-solid fa-magnifying-glass-chart
 search_keywords: [OINK CLI, acceptance, Starter, offline, reproducible build, upgrade, local candidate]
@@ -12,15 +12,15 @@ last_verified: 2026-09-29
 
 > [!IMPORTANT] Local implementation and acceptance completed
 > The local `0.1.0-dev` implementation passed the checks recorded here. The CLI
-> source is committed as `e623d93`; public publication, downstream adoption,
-> and production deployment remain separate and have not been performed.
+> source is committed as `e623d93`. Public publication, downstream adoption,
+> and production deployment are separate steps. None has been performed.
 
 ## Inputs and method {#inputs}
 
-The CLI lives in the independent `oink-cli` Go repository. Its accepted
-boundary is the [CLI and result contract](/docs/design/decisions/cli/), with
-reproducible user steps in the [usage guide](/docs/start/cli/). Hugo remains an
-external renderer; generated sites contain normal Hugo inputs.
+The CLI belongs to the independent `oink-cli` Go repository. The
+[CLI and result contract](/docs/design/decisions/cli/) defines its accepted boundary. The
+[CLI introduction](/docs/cli/) gives reproducible user steps. Hugo remains an
+external renderer. Generated sites contain normal Hugo inputs.
 
 | Input | Observed baseline |
 | --- | --- |
@@ -35,16 +35,16 @@ external renderer; generated sites contain normal Hugo inputs.
 The Starter archive hash is
 `e55bde279715f6d8d19d3d88671a2cf7561b515be46915b0f12c640d0ce1d958`.
 Its recorded projections select an existing language profile, pin OINK v1.1.0,
-and set `enableGitInfo: false` for a new directory. The last projection was
-required by an observed failure: the original `enableGitInfo: true` caused a
+and set `enableGitInfo: false` for a new directory. An observed failure required
+the last projection. The original `enableGitInfo: true` caused a
 warning-strict build to fail before the site's first Git commit. No Git
 repository or commit was created to hide that failure.
 
 Checks used disposable source copies, module/render caches, and output
 directories. Original Starter and consumer source trees were not written by
 the CLI checks. Existing unrelated theme and documentation edits were retained.
-Counts below are snapshots of those inputs and CLI revisions, not thresholds
-that later documentation edits must preserve.
+The counts below describe those inputs and CLI revisions at the recorded date.
+Later documentation edits do not have to preserve these counts.
 
 ## Starter and ordinary Hugo {#starter}
 
@@ -57,23 +57,23 @@ All six ordinary-Hugo cases passed `--environment production
 | `en,zh` | Passed | Passed | EN 91, ZH 89 |
 | `all` | Passed | Passed | EN 91, ZH 89, FR 89 |
 
-The tests checked expected language roots and representative Docs, Blog, and
-Book outputs, and compared generated source bytes before and after Hugo.
+The tests checked the expected language roots and representative Docs, Blog,
+and Book outputs. They compared generated source bytes before and after Hugo.
 The public CLI's `init` command also passed separately for all three profiles,
-with zero diagnostics and 94 generated source files per profile. The three
-profiles differ in the selected root configuration; untranslated sample files
-remain in the snapshot and are disabled through the existing profiles.
+returning zero diagnostics and 94 generated source files per profile. The
+profiles select different root configurations and disable untranslated sample
+files while retaining them in the snapshot.
 
-Starter package unit, race, and vet checks passed. Its failure cases exercise
-nonempty and symlink targets, validation failure, target replacement after
-planning, cancellation rollback, concurrent modification/deletion, and archive
-path rejection. The regeneration script reproduced the fixed archive,
+Starter package unit, race, and vet checks passed. Failure cases cover
+nonempty and symlink targets, validation failure, and target replacement after
+planning. They also cover cancellation rollback, concurrent modification/deletion,
+and archive path rejection. The regeneration script reproduced the fixed archive,
 provenance, and license exactly.
 
 ## Real-site inspection snapshot {#sites}
 
-Each run below returned CLI exit `0` with zero recorded diagnostics. Counts
-describe rendered artifacts and inspected references; they are not counts of
+Each run below returned CLI exit `0` with zero recorded diagnostics. The counts
+describe rendered artifacts and inspected references. They do not measure
 authored pages or independent users.
 
 | Site shape and theme source | Files | HTML files | References | Machine artifacts |
@@ -85,8 +85,8 @@ authored pages or independent users.
 
 The last three are distinct local consumer repositories. PIG and the catalog
 site validate published-pin resolution. The OINK documentation run validates
-the explicitly selected local theme changes; it cannot be substituted for a
-public-pin or deployed-site acceptance result. Source instructions were read
+the explicitly selected local theme changes. It does not establish acceptance
+of the public pin or deployed site. Source instructions were read
 before these read-only pilots.
 
 The inspection covered the implemented HTML link/anchor/resource and emitted
@@ -95,15 +95,14 @@ inspect hosting redirects, or perform browser, accessibility, and visual
 acceptance. The completed Hugo manifest enumerated 261, 766, 662, and 3,192
 output declarations respectively. Every supported enabled machine output was
 required by its actual language and URL. Before/after manifests compared all
-tracked and non-ignored untracked source bytes, modes, and Git status: unchanged
-for all four sites (94, 415, 858, and 2,294 source files respectively).
+tracked and non-ignored untracked source bytes, modes, and Git status.
+All four sites were unchanged (94, 415, 858, and 2,294 source files respectively).
 
-Two real regressions were fixed during this work. A NAVJSON template that
-rendered only English had previously hidden the missing Chinese output; it now
-returns policy exit `1` with the missing output location. PIG's intentional
-`build.render: link` sidebar entries were initially mistaken for missing pages;
-Hugo's effective build parameters now exclude them, with direct and cascaded
-regression cases. A paired build of the bilingual Starter also proved all 223
+Two real regressions were fixed during this work. A NAVJSON template
+rendered only English. This previously hid the missing Chinese output. The check
+now returns policy exit `1` with the missing output location. The check initially treated PIG's intentional
+`build.render: link` sidebar entries as missing pages. Hugo's effective build
+parameters now exclude them. Direct and cascaded regression cases verify this behavior. A paired build of the bilingual Starter also proved all 223
 ordinary artifacts byte-identical before and after adding the isolated probe.
 
 ## Offline execution and upgrade {#offline-upgrade}
@@ -113,9 +112,8 @@ On macOS, a full `check` of an initialized bilingual Starter passed under
 result was exit `0`, zero diagnostics, 223 files, 95 HTML files, 4,461
 references, and four machine artifacts. A separate English `init` also passed
 under the same OS-level network denial, returning exit `0`, zero diagnostics,
-and the expected 94 generated files. These are executed network denial tests
-for those operations, not Linux firewall tests or evidence for every possible
-consumer's remote-resource workflow.
+and the expected 94 generated files. These tests executed those operations with network access denied. They do not
+qualify Linux firewall behavior or every consumer's remote-resource workflow.
 
 A cold-cache fixture requiring `example.invalid/oink-cache-miss@v0.0.1`
 returned CLI exit `2` and retained Hugo's original
@@ -131,18 +129,18 @@ to v1.1.0. The original consumer was not used as a write target:
 | `--write --expect-plan` | Exit `0`; the matching plan was validated and applied |
 | Repeat the same target version | Exit `0`; candidate validated; no proposed changes and `applied: false` |
 
-Unrelated dirty `README.md` content and untracked `user-note.txt` survived all three operations. The preview and
-write shared the same plan ID and before/after module-file hashes. This proves
-the exercised single-site path; it does not establish vendor refresh or an
-upgrade performed by an independent user. Replacement, workspace, dirty-file,
+All three operations preserved unrelated dirty `README.md` content and untracked
+`user-note.txt`. The preview and write used the same plan ID and before/after module-file hashes. This proves
+the exercised single-site path. It does not establish vendor refresh or an
+upgrade by an independent user. Replacement, workspace, dirty-file,
 rollback, and failure-protection cases passed the final focused Go tests and
 race run. Only `go.mod` and `go.sum` changed on write; backup manifests retained
 original bytes. Preview and repeat executions preserved all source bytes.
 
 Real thin-wrapper smoke tests also passed in a disposable initialized site.
 `build --json` returned `0` and produced `index.html`. `dev --json` served HTTP
-200, forwarded SIGINT to Hugo, and closed the listener. Hugo exited `0`; the
-cancelled wrapper reported `2` under the documented cancellation semantics.
+200, forwarded SIGINT to Hugo, and closed the listener. Hugo exited `0`. The
+canceled wrapper reported `2`, as specified by the cancellation contract.
 These runs used provisioned local caches without `--network`.
 
 Final `make test` (all packages plus vet), `make test-hugo` (ordinary Hugo,
@@ -174,8 +172,8 @@ a temporary prefix and the installed binary's `--version` succeeded.
 | `linux/amd64` | Cross compiled only; not executed on Linux |
 | `linux/arm64` | Cross compiled only; not executed on Linux |
 
-The archive builder records toolchain, flags, source-input hash, and platform
-limits. It prepares local files only. There is no public download URL or
+The archive builder records the toolchain, flags, source-input hash, and
+platform limits. It prepares local files only. There is no public download URL or
 published installation tag established by this test.
 
 ## Reproduce the relevant checks {#reproduce}
@@ -226,7 +224,7 @@ sandbox-exec -p '(version 1) (allow default) (deny network*)' \
   2> "$oink_acceptance_dir/reports/offline-init.log"
 ```
 
-The [upgrade guide](/docs/start/cli/#upgrade) describes preview, plan review,
+The [command reference](/docs/design/decisions/cli/#upgrade-comparison) describes preview, plan review,
 and explicit application. Use a separate review copy for write-path testing.
 For the archive experiment, keep the same Go toolchain and release version:
 
@@ -254,12 +252,12 @@ cmp dist/first/SHA256SUMS \
 
 Raw JSON, logs, source-preservation manifests, upgrade recovery evidence, and
 archive-verification results are retained locally under the CLI checkout's
-ignored `tmp/acceptance/`; archives are in `dist/first/`. They are local evidence,
-not published downloads. No browser suite was run because this delivery changes
+ignored `tmp/acceptance/`; archives are in `dist/first/`. These files are local
+evidence rather than published downloads. No browser suite was run because this delivery changes
 CLI behavior and prose, not theme presentation or interaction.
 
 No Docsy conversion is implemented in this first-stage candidate. The pilots
-above already use OINK and cannot validate arbitrary Docsy or MDX migration.
+above already use OINK. They cannot validate arbitrary Docsy or MDX migration.
 The [roadmap](/docs/design/proposals/oink-cli-roadmap/) retains bounded Docsy
 assessment and later migration, theme descriptor, version lifecycle, OpenAPI,
 MCP, and Studio as separate proposals. No future capability is accepted or

@@ -17,7 +17,7 @@ proposal_date: 2026-10-03
 > 有限 R1–R8 受支持本地实现与 A18 运行时/归档范围对验收增补记录的历史源码和
 > 二进制通过；当前精简 CLI 需要独立验证。本记录保留原 URL
 > 与锚点，保留历史排期文本和失败试验；稳定行为归属
-> [CLI 契约](/zh/docs/design/decisions/cli/)与[指南](/zh/docs/start/cli/)，历史证据归属
+> [CLI 契约](/zh/docs/design/decisions/cli/)与[CLI 简介](/zh/docs/cli/)，历史证据归属
 > [2026-10-04 增补](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#a18)。
 > 记录退出活动导航，未启动 E1–E4 是独立非活动范围。渲染导航/URL 验证需要这些准确晋升字节的独立收据。
 
@@ -197,9 +197,8 @@ HTTP 200，也必须无法通过身份验证。超时、认证、限流或缺少
 ## 影响分析与安全内容修改 {#impact-and-change-plans}
 
 此受支持范围已本地接受。下文保留原始提案需求作为历史；当前行为、边界与参数归
-[捕获事实契约](/zh/docs/design/decisions/cli/#project-graph)、
-[移动契约](/zh/docs/design/decisions/cli/#content-moves)及
-[指南](/zh/docs/start/cli/#project-graph)所有。
+[捕获事实契约](/zh/docs/design/decisions/cli/#project-graph)与
+[移动契约](/zh/docs/design/decisions/cli/#content-moves)所有。
 
 在共享事实之上提供 `inspect <page>`、`impact --since <ref>` 与 `context <task>`。
 Inspect 显示来源、发布状态、引用、翻译及产物。Context 按任务打包相关本地资料，
@@ -229,8 +228,7 @@ Inspect 显示来源、发布状态、引用、翻译及产物。Context 按任�
 
 显式登记与可选适配器的受支持 R6 范围已本地接受。稳定字段和限制见
 [登记契约](/zh/docs/design/decisions/cli/#workspace-registry)与
-[工具契约](/zh/docs/design/decisions/cli/#optional-checkers)，用户步骤归属
-[指南](/zh/docs/start/cli/#workspace-registry)。下述已接受 R7/R8 边界仍有
+[工具契约](/zh/docs/design/decisions/cli/#optional-checkers)。下述已接受 R7/R8 边界仍有
 自身证据与限制。
 
 `oink.workspace/v1` 用一份最多 256 KiB 的普通 YAML 文件登记 1–64 个字面目录，
@@ -262,8 +260,7 @@ R6/A07/A15 受支持范围已本地接受，见
 ### R7 候选边界 {#r7-candidate}
 
 只读 Studio 候选现已基于同一原生检查与捕获 Hugo 事实，提供内嵌五视图浏览器和
-鉴权字面回环 API。稳定候选边界见[契约](/zh/docs/design/decisions/cli/#studio)与
-[指南](/zh/docs/start/cli/#studio)。显式现存站点/登记选择、类型化分页发现、源码/
+鉴权字面回环 API。稳定候选边界见[契约](/zh/docs/design/decisions/cli/#studio)。显式现存站点/登记选择、类型化分页发现、源码/
 diff/哈希状态、真实生产预览及独立可选分析覆盖保留 CLI 权威。
 
 冻结原生/浏览器/核心案例及精确二进制四消费者收据现已验证受支持只读范围，
@@ -295,8 +292,7 @@ Markdown、准确源码哈希、支持顶层 YAML 标量/文本回退、原生�
 完整模式身份；候选 HTML 来自实际选定不可发布 Hugo 分析，原生发现与必需视图
 未完成保持不同。
 
-已接受本地接口见[契约](/zh/docs/design/decisions/cli/#editing)及
-[指南](/zh/docs/start/cli/#editing)。修正冻结公共/Go/race/vet、实际/普通
+已接受本地接口见[契约](/zh/docs/design/decisions/cli/#editing)。修正冻结公共/Go/race/vet、实际/普通
 Hugo、Editor 浏览器/无障碍/移动端及精确二进制四消费者保护门禁已通过。
 R8/A17 受支持本地范围也通过受保护规范源码/渲染门禁并已接受，记录于 [R8 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r8)。
 先前失败浏览器/准备试验只证明当次输入，不验证后续字节。R1–R8 受支持范围已接受；当前 A18 运行时/归档验证通过。Darwin amd64 保持实验/未验证，公开发布、采用
@@ -415,12 +411,12 @@ R1–R3 形成拟议 `0.2` 质量与发布候选，计入早期预留后约在�
 | 日期 | 记录 |
 | --- | --- |
 | 2026-10-03 | 根据当前 CLI 盘点与提供的功能目标创建草案，提出 R1–R8、可选扩展门禁、投入假设及可执行验收用例。本文不声称新增 CLI 能力、版本发布、消费站采用或部署已经完成。 |
-| 2026-10-03 | R1 共享 Hugo 事实与检查政策通过本地归属/真实 Hugo 检查。稳定行为移入 [CLI 契约](/zh/docs/design/decisions/cli/#project-policy)和[指南](/zh/docs/start/cli/#project-policy)；[验收记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r1)分别跟踪最终报告刷新与中英文产物证据。R2–R8 及条件性扩展仍未完成，不声称公开分发、采用或部署。 |
-| 2026-10-03 | R2 翻译范围/哈希审阅、有界原生规则和可见基线已使用共享保护文件计划。本地归属、真实 Hugo 与聚焦 race 门禁通过，最终消费站刷新和中英文文档验收仍在[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r2)中待完成。已实现行为见[契约](/zh/docs/design/decisions/cli/#translations)与[指南](/zh/docs/start/cli/#translations)。R3–R8 仍未完成。 |
-| 2026-10-03 | R2 最终语料与中英文文档门禁通过。R3 一次渲染的已检查导出、准确文件身份、两种服务商的保护 CI 计划、发布诊断和显式联网 HTTP 验证已通过各自本地门禁，包括自定义 workflow 发现。稳定行为移入[契约](/zh/docs/design/decisions/cli/#checked-artifacts)与[指南](/zh/docs/start/cli/#checked-artifacts)；准确证据与 A08–A10 结果归[维护记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r3)所有。R4–R8、最终 A18 运行时/归档刷新及 Darwin amd64 仍未完成。不声称公开分发、托管 CI 已执行、采用或部署。 |
-| 2026-10-03 | R4 受支持本地范围通过冻结 Go/vet、真实 Hugo/race 及准确二进制只读 Starter/文档站/PIG/repository 门禁。同一未修改许可证 Starter 组合全部配置/语言；普通 new/editor/snippet 流程与源码/外部输入保护，以及可读有界升级视图和 alias/输出回归保护均通过。稳定行为归[契约](/zh/docs/design/decisions/cli/#authoring)与[指南](/zh/docs/start/cli/#authoring)，准确 A11/A12 证据和边界归[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r4)。R5–R8、最终 A18 运行时/归档刷新及 Darwin amd64 仍未完成。未公开发布、写消费站/采用或部署。 |
-| 2026-10-03 | R5 修正冻结 Go/vet、实际 Hugo/race 及精确二进制四消费者只读门禁已完成。全部站点 inspect/context 完成；历史影响与移动阻断保持明确。受保护规范源码/渲染门禁及阶段接受仍待完成。稳定行为归[契约](/zh/docs/design/decisions/cli/#project-graph)与[指南](/zh/docs/start/cli/#project-graph)所有；[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r5)标识 A13/A14/context 证据、缓存模块修正及精确保护记录。R6–R8、workspace A15 与最终 A18 保持未完成；没有消费者写入或部署。 |
-| 2026-10-03 | R5 受支持检查/影响/有界上下文与受保护移动范围在修正冻结归属门禁、精确二进制四消费者保护及首次晋升规范源码/渲染门禁后已本地接受。生产翻译检查仅保留已知 draft 发布文档缺失；独立不可发布分析的全部归属检查通过。稳定行为归[契约](/zh/docs/design/decisions/cli/#project-graph)与[指南](/zh/docs/start/cli/#content-moves)所有；[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r5)保留精确结果及单独渲染后证据边界。A13/A14 受支持 CLI 范围通过；A15 context 通过，workspace/direct 一致仍归 R6。R6–R8 与最终 A18 未完成；没有发布、消费者写入/采用或部署。 |
+| 2026-10-03 | R1 共享 Hugo 事实与检查政策通过本地归属/真实 Hugo 检查。稳定行为移入 [CLI 契约](/zh/docs/design/decisions/cli/#project-policy)；[验收记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r1)分别跟踪最终报告刷新与中英文产物证据。R2–R8 及条件性扩展仍未完成，不声称公开分发、采用或部署。 |
+| 2026-10-03 | R2 翻译范围/哈希审阅、有界原生规则和可见基线已使用共享保护文件计划。本地归属、真实 Hugo 与聚焦 race 门禁通过，最终消费站刷新和中英文文档验收仍在[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r2)中待完成。已实现行为见[契约](/zh/docs/design/decisions/cli/#translations)。R3–R8 仍未完成。 |
+| 2026-10-03 | R2 最终语料与中英文文档门禁通过。R3 一次渲染的已检查导出、准确文件身份、两种服务商的保护 CI 计划、发布诊断和显式联网 HTTP 验证已通过各自本地门禁，包括自定义 workflow 发现。稳定行为移入[契约](/zh/docs/design/decisions/cli/#checked-artifacts)；准确证据与 A08–A10 结果归[维护记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r3)所有。R4–R8、最终 A18 运行时/归档刷新及 Darwin amd64 仍未完成。不声称公开分发、托管 CI 已执行、采用或部署。 |
+| 2026-10-03 | R4 受支持本地范围通过冻结 Go/vet、真实 Hugo/race 及准确二进制只读 Starter/文档站/PIG/repository 门禁。同一未修改许可证 Starter 组合全部配置/语言；普通 new/editor/snippet 流程与源码/外部输入保护，以及可读有界升级视图和 alias/输出回归保护均通过。稳定行为归[契约](/zh/docs/design/decisions/cli/#authoring)，准确 A11/A12 证据和边界归[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r4)。R5–R8、最终 A18 运行时/归档刷新及 Darwin amd64 仍未完成。未公开发布、写消费站/采用或部署。 |
+| 2026-10-03 | R5 修正冻结 Go/vet、实际 Hugo/race 及精确二进制四消费者只读门禁已完成。全部站点 inspect/context 完成；历史影响与移动阻断保持明确。受保护规范源码/渲染门禁及阶段接受仍待完成。稳定行为归[契约](/zh/docs/design/decisions/cli/#project-graph)所有；[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r5)标识 A13/A14/context 证据、缓存模块修正及精确保护记录。R6–R8、workspace A15 与最终 A18 保持未完成；没有消费者写入或部署。 |
+| 2026-10-03 | R5 受支持检查/影响/有界上下文与受保护移动范围在修正冻结归属门禁、精确二进制四消费者保护及首次晋升规范源码/渲染门禁后已本地接受。生产翻译检查仅保留已知 draft 发布文档缺失；独立不可发布分析的全部归属检查通过。稳定行为归[契约](/zh/docs/design/decisions/cli/#project-graph)与[命令契约](/zh/docs/design/decisions/cli/#content-moves)所有；[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r5)保留精确结果及单独渲染后证据边界。A13/A14 受支持 CLI 范围通过；A15 context 通过，workspace/direct 一致仍归 R6。R6–R8 与最终 A18 未完成；没有发布、消费者写入/采用或部署。 |
 | 2026-10-03 | R6 显式登记与有界可选工具候选已实现；聚焦工作区与修正实际协议试验通过，预备失败独立记录。最终运行时/语料/规范门禁及 A07/A15 阶段接受仍待完成，见 [R6 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6)。R7/R8 与最终 A18 未完成；无版本发布、消费者写入或部署。 |
 | 2026-10-03 | R6 冻结 Go/vet、实际 Hugo/固定工具、归属 race 及精确二进制四消费者直接/汇总一致性与保护已验证。完成收据记录六个原始操作、repository 已有重复 ID 发现，以及不变原始输出上的驱动命令摘要修正；无需 CLI/Hugo 重跑或运行时修正。规范源码/渲染检查和显式 R6/A07/A15 阶段接受仍在[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6)中待完成。R7/R8/最终 A18 未完成；没有消费者源码写入、版本发布或部署。 |
 | 2026-10-03 | R6 受支持显式登记与可选工具范围在冻结 Go/vet、实际 Hugo/固定工具、race、精确二进制四消费者一致性/保护及受保护规范源码/渲染门禁后已本地接受。A07 适配器与 A15 工作区/直接/context 受支持范围通过；[R6 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6)区分首次晋升渲染字节与本次渲染后状态/证据修订。R7/R8 与最终 A18 仍未完成；没有公开发布、消费者源码写入/采用或部署。 |

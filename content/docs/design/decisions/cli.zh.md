@@ -34,7 +34,7 @@ implementation_status: local-candidate-not-released
 配置预处理仅在临时副本中重定位 workspace、replacement 与缓存路径。默认值、
 配置合并、语言选择、验证和渲染语义仍由 Hugo 负责。
 
-[使用指南](/zh/docs/start/cli/)提供安装与命令示例。
+[CLI 简介](/zh/docs/cli/)提供概览与本地构建步骤。
 [带日期的验收记录](/zh/docs/design/research/2026-09-29-cli-acceptance/)将已执行
 检查、未解决限制和发布状态分开说明。
 [维护验收记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/)
@@ -252,12 +252,13 @@ Hugo 公共 `Page.OutputFormats` 按页面和启用语言给出预期产物名�
 必需源码覆盖不能静默通过。
 
 通用规则检测重复的已识别显式 ID，并检查 `style.protected` 声明中的 `file`、
-确切正文 `literal` 和预期 `count`。有界 OINK v1.1.0 目录另提供代码/表格属性、
+确切正文 `literal` 和预期 `count`。有界 OINK v1.1.0 与 v1.2.0 目录另提供代码/表格属性、
 弃用 front matter 和被丢弃的不安全属性建议。每项规则在
 `data.native_rule_provenance` 中记录模块、版本、不可变 revision、模块 sum、
 许可证及确切来源文件的 SHA-256。
 
-只有实际挂载的公开 v1.1.0 模块缓存输入匹配这些哈希时，才运行该目录。
+只有实际挂载的公开 v1.1.0 或 v1.2.0 模块缓存输入匹配相应版本记录的哈希时，
+才运行该目录。后续版本必须经过明确的源码审计，才能启用原生主题规则。
 replacement、vendor 副本、其他版本或未知来源不选择最新主题回退：
 `native-theme-rules` 为可选 `not_checked`，通用语法检查仍运行。
 这份目录不保证覆盖每个自定义组件或主题功能。
@@ -653,14 +654,13 @@ CLI 不提供编辑器，也不接受浏览器 Apply 请求。
 并为已配置可选工具运行 `make test-tools`。跳过集成不等于通过。
 当前实现修改需要绑定新的源码与二进制证据；历史记录不自动赋予当前版本运行资格。
 
-> [!WARNING] 当前集成门禁尚未通过
-> 2026-10-04，在 macOS arm64、Go 1.27.1 与 Hugo Extended 0.166.0 上，
-> `make test` 通过，`make test-hugo` 的
-> `TestPublicR5CachedPublicModuleMovePreviewApplyAndOrdinaryHugo` 失败：
-> 模块收集文本出现在配置 JSON 之前，移动操作返回 `2`，报错
-> `Hugo config did not return JSON`。候选验证拒绝操作，诊断报告源码未改变。
-> 随后的单用例重跑通过，但间歇失败原因尚未明确；单次重跑不构成当前候选的
-> 完整集成门禁通过。
+> [!NOTE] 2026-10-14 重新核验本地集成门禁
+> 在 macOS arm64、Go 1.27.1 与 Hugo Extended 0.166.0 上，`make test`
+>（离线 Go 测试与 vet）和 `make test-hugo` 均通过。冷缓存配置读取失败已修复：
+> 两处 JSON 读取器接受前导 `hugo:` 模块收集提示，保留原始证据，并拒绝未知前缀
+> 或畸形 JSON。确定性回归测试在每次配置调用前强制加入该提示。
+> 原生规则也通过公开 v1.2.0 来源的审计检查。可选工具适配器仍由独立的
+> `make test-tools` 门禁验收。
 
 带日期[维护验收记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/)
 保留旧 R1–R8 与 A18 证据。声明目标为 macOS arm64、Linux arm64/amd64，

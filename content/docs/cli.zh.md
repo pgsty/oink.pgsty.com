@@ -6,6 +6,9 @@ weight: 80
 type: docs
 icon: fa-solid fa-terminal
 comments: false
+aliases:
+  - /docs/start/cli/
+  - /docs/start/cli-overview/
 ---
 
 `oink` 是 OINK 站点的可选命令行工具，帮助创建站点、检查 Hugo 产物，以及
@@ -17,15 +20,15 @@ comments: false
 
 ## 能做什么 {#capabilities}
 
-| 命令 | 用途 |
-| --- | --- |
-| `oink init` | 从固定 Starter 创建站点，选择站点类型与语言。 |
-| `oink doctor` | 检查工具、配置和实际解析的主题来源。 |
-| `oink check` | 检查渲染后的链接、翻译关系与源码风格政策。 |
-| `oink dev` / `oink build` | 调用 Hugo 的预览服务或生产构建。 |
-| `oink new` / `oink move` | 预览页面创建或移动，再应用保存的计划。 |
-| `oink translations` | 查看翻译状态与差异，记录人工审阅结果。 |
-| `oink upgrade` | 对比主题升级，审阅后显式写入模块变更。 |
+| 命令                      | 用途                                          |
+|---------------------------|-----------------------------------------------|
+| `oink init`               | 从固定 Starter 创建站点，选择站点类型与语言。 |
+| `oink doctor`             | 检查工具、配置和实际解析的主题来源。          |
+| `oink check`              | 检查渲染后的链接、翻译关系与源码风格政策。    |
+| `oink dev` / `oink build` | 调用 Hugo 的预览服务或生产构建。              |
+| `oink new` / `oink move`  | 预览页面创建或移动，再应用保存的计划。        |
+| `oink translations`       | 查看翻译状态与差异，记录人工审阅结果。        |
+| `oink upgrade`            | 对比主题升级，审阅后显式写入模块变更。        |
 
 本地候选还提供 JSON/YAML 结果、显式多站点工作区，以及经过检查的构建产物。
 
@@ -57,6 +60,5 @@ Extended 0.168.0，新建站点使用 OINK v1.3.2。默认基线保持固定，�
 
 ## 延伸阅读 {#further-reading}
 
-- [详细使用指南](/zh/docs/start/cli/)：当前命令、示例与限制。
 - [CLI 契约](/zh/docs/design/decisions/cli/)：支持的行为与维护规则。
 - [维护路线图](/zh/docs/design/proposals/oink-cli-maintenance-roadmap/)：历史开发阶段及其退役状态。

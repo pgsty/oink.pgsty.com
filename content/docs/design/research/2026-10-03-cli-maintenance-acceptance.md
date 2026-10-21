@@ -1,7 +1,7 @@
 ---
 title: CLI maintenance acceptance on 2026-10-03
 linkTitle: 2026-10-03 CLI maintenance
-description: Dated source and binary evidence for the R1–R8/A18 local implementation program, preserving its initial audit, failed trials, and final supported acceptance scope.
+description: Dated source and binary evidence for the local R1–R8/A18 program, preserving the initial audit, failed trials, and final acceptance scope.
 weight: 55
 icon: fa-solid fa-magnifying-glass-chart
 search_keywords: [OINK CLI, maintenance, acceptance, translations, CI, Studio, preservation]
@@ -12,10 +12,10 @@ last_verified: 2026-10-04
 
 > [!NOTE] Historical source and binary evidence
 > This record preserves earlier R1–R8/A18 acceptance. Command changes do not
-> rewrite those results. The reduced CLI and its Cobra/text/JSON/YAML interface
-> on 2026-10-04 are defined by the [current contract](/docs/design/decisions/cli/)
-> and [guide](/docs/start/cli/). Earlier runtime qualification does not qualify
-> a changed binary automatically.
+> rewrite those results. The [current contract](/docs/design/decisions/cli/)
+> and [CLI introduction](/docs/cli/) define the reduced CLI and its Cobra/text/JSON/YAML
+> interface on 2026-10-04. Earlier runtime qualification does not automatically
+> qualify a changed binary.
 
 
 > [!IMPORTANT] Finite implementation locally validated
@@ -36,8 +36,8 @@ last_verified: 2026-10-04
 > and guarded canonical source/render gates. R1–R8 supported scope is accepted
 > locally. The 2026-10-04 supplement refreshes the changed backend and closes
 > current A18 runtime/archive qualification for the three declared targets.
-> Canonical lifecycle promotion/render has a separate exact-byte receipt boundary;
-> public release, adoption and deployment have not occurred.
+> Canonical lifecycle promotion/render has a separate exact-byte receipt boundary.
+> Public release, adoption and deployment have not occurred.
 
 ## Scope and evidence rules {#scope}
 
@@ -46,12 +46,12 @@ defines the authorized R1–R8 scope. The [current CLI contract](/docs/design/de
 defines its compatibility baseline; the [original roadmap](/docs/design/proposals/oink-cli-roadmap/)
 does not add Docsy migration, version lifecycle, OpenAPI, theme publication,
 or the conditional E1–E4 extensions to this program. Hugo remains an external
-renderer and generated sites remain ordinary Hugo projects.
+renderer. Generated sites remain ordinary Hugo projects.
 
-Stages are accepted in dependency order. Every stage needs a complete usable
-flow, its owning tests, relevant actual Hugo integration, known limits, a
-reviewable diff, and accepted EN/ZH contract and guide updates. Passing an
-aggregate command alone does not close a case. New public behavior moves from
+Stages are accepted in dependency order. Each stage needs a complete usable
+flow supported by owning tests and relevant actual Hugo integration, together
+with known limits, a reviewable diff, and accepted EN/ZH contract and guide
+updates. Passing an aggregate command alone does not close a case. New public behavior moves from
 the proposal into the owning contract only after its implementation and
 acceptance evidence exist.
 
@@ -65,11 +65,11 @@ result is relabeled as a current pass.
 
 ## Inspected inputs and tools {#inputs}
 
-The initial 2026-10-03 audit read both repositories' instructions, the
+The initial 2026-10-03 audit read both repositories' instructions and the
 documentation README and translation rules, both maintenance PRD languages,
-the original proposal, the current CLI contract, and existing Go packages and
-test names. It executed version and Git inspection commands only; it did not
-run the owning suites or write consumer sources.
+the original proposal, and the current CLI contract. It also inspected existing
+Go packages and test names. Execution was limited to version and Git inspection
+commands, without running the owning suites or writing consumer sources.
 
 | Input | Observed initial state |
 | --- | --- |
@@ -85,7 +85,7 @@ run the owning suites or write consumer sources.
 The [2026-09-29 acceptance record](/docs/design/research/2026-09-29-cli-acceptance/)
 contains historical first-candidate checks. It supplies useful reproduction
 inputs, but does not prove the new maintenance scope. Existing dirty files are
-preserved; this initial research addition does not accept or overwrite them.
+preserved. This initial research addition does not accept or overwrite them.
 
 ## Stage requirements and implementation evidence {#stages}
 
@@ -106,7 +106,7 @@ R1 now provides shared Hugo page/translation/source facts, rendered reference
 and anchor evidence, strict `oink.policy/v1` input, `check links`,
 `--format json`, visible reviewed exclusions/external scopes and required-work
 precedence. Translation and style selections explicitly return required
-unsupported coverage; they are not implemented engines. Default build/dev
+unsupported coverage. These engines are not implemented. Default build/dev
 remain direct Hugo operations. The following evidence accepts the tested
 shared-facts/policy scope without closing R2–R8 or the full A01–A18 cases.
 
@@ -131,8 +131,8 @@ Earlier offline R1 trials returned `0` without diagnostics on three consumers:
 These earlier reports spell optional unselected coverage `not_selected`,
 outside the existing result-schema enum. The final code corrects it to
 `not_checked` and includes `project.pages` coverage. Their measured counts and
-exact inventories remain valid earlier-binary observations; final JSON
-conformance is established by the final reports below. Raw evidence stays in task-named local
+exact inventories remain valid observations of the earlier binary. The final
+reports below establish final JSON conformance. Raw evidence stays in task-named local
 acceptance directories outside consumer sources. These trials do not prove
 external availability, deployment, Linux runtime or translation/style acceptance.
 
@@ -143,8 +143,8 @@ JSON serialization, is
 `518260f07f3c916468ee3d56c4eeca03c131514155aa82539564ccd2f3c1f664`.
 The exercised binary SHA-256 is
 `3deb7e357fc86f6907df60da0769d93f2d41ba5e01949b641548a67d7f459d12`.
-This identifies local inputs and an executed binary, not a maintenance commit,
-public archive or published module.
+This identifies local inputs and an executed binary. It does not identify a
+maintenance commit, public archive or published module.
 
 | Final current-binary trial | Source files | Built files | HTML files | References | Page facts | Acceptance |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
@@ -152,8 +152,8 @@ public archive or published module.
 | PIG project site | 858 | 1,392 | 424 | 64,440 | 248 | Exit `0`, valid result, complete page facts, exact source bytes/modes/Git preservation |
 | Repository catalog | 2,294 | 3,287 | 1,635 | 851,535 | 1,572 | Exit `0`, valid result, complete page facts, exact source bytes/modes/Git preservation |
 
-Each final result has `check.links: complete` and `project.pages: complete`,
-both required. Unselected translation/style coverage is `not_checked`, optional.
+Each final result has required `check.links: complete` and `project.pages: complete`
+coverage. Unselected translation/style coverage is optional and reports `not_checked`.
 The final offline `make test` and vet passed; the corrected actual-Hugo owning
 target also passed. The recorded tools remain Go 1.27.1, Hugo Extended 0.166.0,
 Git 2.54.0 on macOS arm64. The three exact before/after inventories were
@@ -163,11 +163,11 @@ Production output passed rendered Markdown and link checks. Its global
 translation checker returned `1` solely because the pre-existing draft
 `content/blog/release/1.2.0.md` / `.zh.md` pair is correctly absent from
 production. The changed R1 pages rendered in both languages. A separate explicit
-analysis build with `HUGO_BUILDDRAFTS`, `HUGO_BUILDFUTURE` and
-`HUGO_BUILDEXPIRED` set to `true` passed all three owning checks: 137/137 paired
-sources, 1,085 headings, rendered Markdown and rendered links. That view is
-nonpublishable evidence for excluded sources; it never replaces production
-output and does not change or publish the draft. No existing draft file was
+analysis build set `HUGO_BUILDDRAFTS`, `HUGO_BUILDFUTURE` and
+`HUGO_BUILDEXPIRED` to `true`. All three owning checks passed: 137/137 paired
+sources, 1,085 headings, rendered Markdown and rendered links. That view provides
+nonpublishable evidence for excluded sources. It never replaces production
+output. It does not change or publish the draft. No existing draft file was
 modified to make the global production checker green.
 
 ## R2 local validation {#r2}
@@ -176,12 +176,11 @@ The local candidate now implements translation policy/status/diff/hash review,
 syntax-bounded native content rules, visible reviewed baselines and shared
 `oink.plan/v1` preview/validate/apply. Default `check` requires links,
 translations and style. Production output and the explicit draft/future/expired
-analysis are separate; the latter is not publishable. Stable behavior and
-examples are in the [contract](/docs/design/decisions/cli/#translations) and
-[guide](/docs/start/cli/#translations). The R2 local gate passed owning checks,
+analysis are separate. The analysis is not publishable. Stable behavior and
+examples are in the [contract](/docs/design/decisions/cli/#translations). The R2 local gate passed owning checks,
 final frozen-input consumer reports and rendered bilingual documentation.
 The exact exercised binary and the subsequent narrow equality fix are recorded
-separately below; no public release or consumer write is implied.
+separately below. This evidence does not establish a public release or consumer write.
 
 | Requirement | Executed owning evidence | Outcome and limit |
 | --- | --- | --- |
@@ -198,8 +197,8 @@ The frozen parser corpus at
 records parser input SHA-256
 `a601200ec4fe275d2bd4baf11d4db7d46a2cc6f1674900c1fd801769e55d12de`.
 Each scope parsed completely with zero findings. The core uses actual Hugo
-site-source identities from the recorded configuration; supplemental Markdown
-includes disabled/unpublished files and does not invent routes or relationships.
+site-source identities from the recorded configuration. Supplemental Markdown
+includes disabled/unpublished files. It does not invent routes or relationships.
 These captures precede the authorized R2 documentation edits.
 
 | Corpus | Unique actual Hugo source files | Supplemental local Markdown | Source inventory files | Bytes/modes/Git |
@@ -215,7 +214,7 @@ used binary `c8d87e6d73d3101fefcb62c5d6845518573c02c400f474dc9f4603afafc774d5`
 and CLI input inventory `d8a75be0e074365a4164b7aaaa27d82a1e844e04406a36c3dd6d39ff2b6e873f`.
 They precede the final parser/doc freeze and are not final acceptance evidence.
 The initial Starter invocation selected the enclosing evidence folder and
-returned `2`; it was a validation setup error. Selecting its actual `site` child
+returned `2`. This was a validation setup error. Selecting its actual `site` child
 returned `0`, with evidence in
 `/var/folders/df/bfm8q07d7bv3kpjf1fjchq4m0000gn/T/oink-r2-starter-27vmi0w5`.
 
@@ -226,8 +225,8 @@ returned `0`, with evidence in
 | PIG | 0 | 248 | 1,392 | 64,440 | 120 | Complete; 858 source files/inventory unchanged |
 | Repository catalog | 1 | 1,572 | 3,287 | 851,535 | 788 | Completed policy check: 10,462 actual `HTML_ID_DUPLICATE` findings in existing merged-print output; 2,294 source files/inventory unchanged |
 
-The repository catalog result is a completed finding outcome, not a passing
-site or implementation failure. No policy was weakened and no consumer source
+The repository catalog result records completed findings. It does not indicate
+a passing site or an implementation failure. No policy was weakened and no consumer source
 was changed. Informational review states remain visible.
 
 The final frozen-input reports at
@@ -249,8 +248,8 @@ equal before/after. These reports supersede preliminary public-command trials:
 No final report has incomplete diagnostics. The repository catalog retains
 10,462 actual merged-print `HTML_ID_DUPLICATE` findings and 788 informational
 review states; the other sites retain informational unknown review states.
-This accepts the tested checking behavior and source preservation, without
-calling that catalog a passing publication.
+This accepts the tested checking behavior and source preservation. It does not
+establish a passing publication for the catalog.
 
 Kept production docs at
 `/private/var/folders/df/bfm8q07d7bv3kpjf1fjchq4m0000gn/T/oink-site-2201601475/public`
@@ -268,8 +267,8 @@ A final review identified optional `equal_fields` comparing JSON `7.0` with
 YAML/TOML numeric `7` by representation. The narrow supplement now normalizes
 decoded numeric values recursively to an exact rational number tag, preserving
 strings versus numbers, map keys and array order. Tests cover decimals/exponents,
-negative zero, integers beyond float64 precision, nested differences, source
-byte preservation and required incompletion for unrepresentable values.
+negative zero, integers beyond float64 precision, and nested differences. They
+also cover source byte preservation and required incompletion for unrepresentable values.
 Actual-Hugo translation tests passed in `/tmp/oink-r2-numeric-translations-gate.log`;
 all public maintenance actual-Hugo cases passed in
 `/tmp/oink-r2-numeric-public-gate.log`; owning vet and whitespace checks passed.
@@ -281,30 +280,30 @@ Supplemental source SHA-256 values are:
 | `internal/translations/translations_test.go` | `f58f4a305fe9fe3f5500ddfcf85faf3cfa37d72f8c220a1cb16ce4ccfbddb74d` |
 
 The frozen real-site reports and Linux qualification above/below predate this
-supplement. Those sites configured no numeric equality constraint, so their
-recorded outputs are unaffected and were not rerun for this narrow fix. Later
+supplement. Those sites configured no numeric equality constraint. The narrow fix does not
+affect their recorded outputs, so those runs were not repeated. Later
 full runtime and archive qualification must refresh the subsequent source.
-The evidence amendments here are authorized documentation writes after the
-acceptance runs; their before/after preservation scope ends before this amendment.
+These evidence amendments are authorized documentation writes after the
+acceptance runs. Their before/after preservation scope ends before this amendment.
 
 A18 remains open. macOS arm64 is exercised; an attempted Darwin amd64 runtime
 on this host failed with `arch -x86_64` / `posix_spawn: Bad CPU type in executable`
-(`/tmp/oink-r2-darwin-amd64-gate.log`). This is unavailable host runtime support,
-not a code failure or Darwin amd64 acceptance. No system installation was made.
-Native Linux arm64 and Docker Desktop Rosetta-emulated Linux amd64 were both
-actually executed with the same runtime/schema/license input SHA-256
+(`/tmp/oink-r2-darwin-amd64-gate.log`). The host cannot support this runtime. This is not a code failure or Darwin
+amd64 acceptance. No system installation was made.
+Both native Linux arm64 and Docker Desktop Rosetta-emulated Linux amd64
+executed the same runtime/schema/license inputs. Their SHA-256 is
 `0f786df68ef3c4844c983a51595f79242d1cb1d2bf6c5b5eb7f2c6415fb8d861`.
 Evidence is retained at
 `/var/folders/df/bfm8q07d7bv3kpjf1fjchq4m0000gn/T/oink-a18-linux-ajbbnvki`
 in `arm64-results`, `amd64-results`, `commands.json`, `candidate-inputs.json`,
-`preparation.json` and `qualify.sh`. Each target passed 270 test/subtest cases,
-with no failures and two optional external corpus/provenance skips: full
-actual-Hugo `go test ./...`, vet, built CLI version/bilingual init/doctor/full
-check/translation status and missing-Hugo exit `2` smoke. JSON stdout and source
+`preparation.json` and `qualify.sh`. Each target passed 270 test/subtest cases. There were no failures and two
+optional external corpus/provenance skips. Checks included full actual-Hugo
+`go test ./...`, vet, and built CLI version/bilingual init/doctor/full
+check/translation status. They also included missing-Hugo exit `2` smoke. JSON stdout and source
 byte/mode inventories were verified. Go 1.27.1 ran on Linux arm64; Hugo Extended
 0.166.0 architecture assets were SHA-verified. This qualifies those source
-runtime paths, not final archives or hosted CI. Darwin amd64 remains open;
-cross compilation does not close it. Later stages and future command/adapter/browser
+runtime paths. It does not qualify final archives or hosted CI. Darwin amd64
+remains open. Cross compilation does not close it. Later stages and future command/adapter/browser
 acceptance remain open.
 
 ## R3 local validation {#r3}
@@ -312,7 +311,7 @@ acceptance remain open.
 R3 adds managed `build --check`, `oink.artifact/v1` sealing/export/local
 verification, explicit-network HTTP verification, release diagnosis and
 guarded local CI generation. The default build/dev path remains ordinary Hugo.
-The executed runtime and paired contract/guide gates passed; R3 is locally
+The executed runtime and paired contract/guide gates passed. R3 is locally
 accepted. Hosted CI and deployment were not executed.
 
 | Requirement | Executed owning evidence | Outcome and limit |
@@ -337,9 +336,9 @@ Runtime inputs remained exactly equal after all runs. Live tools were Go
 1.27.1 and Hugo Extended 0.166.0 on Darwin arm64. The manifest's normalized
 Hugo version excludes vendor build text and private paths.
 
-Each run used offline `build --check` with fresh external destination/manifest
-paths, the optional marker and retained isolated work. These existing local
-consumer inputs were checked without `--release`; their configured workspaces
+Each run used offline `build --check`. It used fresh external
+destination/manifest paths, the optional marker, and retained isolated work. These existing local
+consumer inputs were checked without `--release`. Their configured workspaces
 were preserved. Every raw report records exactly one strict Hugo renderer,
 zero incomplete diagnostics and zero required unfinished coverage.
 
@@ -355,14 +354,14 @@ primary inventory also compares logical Git state. Git sites include tracked
 and non-ignored untracked sources; the non-Git Starter includes its existing
 generated files and lock. The supplemental copied-source inventory also
 includes ignored workspace/editor metadata read by snapshots, excluding
-existing generated output/cache trees. Counts alone are not the proof.
+existing generated output/cache trees. Counts alone do not prove preservation.
 All four comparisons were exactly equal.
 
 The repository catalog retains 10,462 existing merged-print
 `HTML_ID_DUPLICATE` findings, so neither destination nor manifest was created.
-This is a complete policy finding, not a passing publication or implementation
-failure. Production review states number 28/143/120/786; analysis includes
-unpublished pages, explaining the earlier R2 144/788 counts. Existing custom
+This is a complete policy finding. It does not establish a passing publication
+or an implementation failure. Production review states number 28/143/120/786. Analysis includes
+unpublished pages. This explains the earlier R2 144/788 counts. Existing custom
 workflow information remains visible, and Starter's example address is a
 warning in this non-release run.
 
@@ -380,17 +379,17 @@ the temporary compilation source was removed after building the helper.
 
 Earlier R3 captures remain historical: the first capture preceded runtime
 freeze; the first frozen capture at `oink-r3-final-pisrr21h` preceded custom-CI
-diagnosis. An initial `/Users/vonng/pgsty/PIG` selection returned `2` because
-that different repository is not the intended site; corrected
-`pig.pgsty.com` passed. Those setup trials are retained, not relabeled as
+diagnosis. An initial `/Users/vonng/pgsty/PIG` selection returned `2`.
+That repository is not the intended site. The corrected
+`pig.pgsty.com` selection passed. Those setup trials remain recorded. They are not classified as
 candidate failures. This latest corpus supersedes their managed-build results.
-The CI templates/bootstrap are independently authored from recorded primary
-provider contracts; no provider implementation code was incorporated.
+The CI templates/bootstrap were independently authored from recorded primary
+provider contracts. They contain no provider implementation code.
 
 The scoped R3 documentation gate passed at
 `/var/folders/df/bfm8q07d7bv3kpjf1fjchq4m0000gn/T/oink-r3-docs-render-pljj5aqd/summary.json`.
 Ten paired contract/guide/roadmap/index/overview edits were installed only after
-matching their original bytes/modes; recorded hashes are at
+the original bytes/modes matched. Their recorded hashes are at
 `/var/folders/df/bfm8q07d7bv3kpjf1fjchq4m0000gn/T/oink-r3-doc-drafts-s0b3g48l/applied-files.json`.
 Source style passed 88 Chinese docs; translation coverage passed 137 pairs and
 1,099 headings; schemas remained equal and scoped whitespace passed. Actual
@@ -401,12 +400,12 @@ separate explicitly nonpublishable draft/future/expired analysis passed Hugo
 and all three owning checks: 137 pairs/1,099 headings, 216 pages/42,177 text
 nodes and 347 pages/48,720 links/4,199 fragments. All 421 canonical and 488
 copied source files retained exact bytes/modes throughout these rendered
-checks. Analysis was not published and did not replace production. This
+checks. Analysis was not published. It did not replace production. This
 acceptance amendment follows that frozen preservation boundary.
 
 This gate does not claim hosted workflow execution, uploads, publication,
 minimum-version combinations, browser behavior or current Linux/Darwin amd64
-qualification. A18 remains open; historical Linux R2 results retain their
+qualification. A18 remains open. Historical Linux R2 results retain their
 original source hash. Authorized bilingual evidence/contract/guide writes
 occur after these preservation inventories and are outside their no-write scope.
 
@@ -415,8 +414,8 @@ occur after these preservation inventories and are outside their no-write scope.
 The supported R4 implementation and read-only corpus scope are locally
 accepted after frozen owning/full gates. This record covers profiles, ordinary
 authoring/editor/snippets and bounded upgrade views. Guarded canonical
-documentation promotion and fresh scoped rendered validation also passed as
-recorded below; R5–R8 and final A18 qualification stay open.
+documentation promotion and fresh scoped rendered validation also passed, as
+recorded below. R5–R8 and final A18 qualification stay open.
 
 | Executed profile evidence | Outcome and limit |
 | --- | --- |
@@ -470,17 +469,17 @@ required incompletion or uncompleted required coverage. Primary Git-visible
 source bytes/full modes/logical Git state, supplemental copied inputs and
 source directory modes matched exactly before/after every command and each
 complete site flow. Repo's `10,462` existing `merged_print` duplicate HTML IDs
-remain visible; its completed finding is neither a passing artifact nor an
-implementation failure. No policy or consumer inputs were adjusted.
+remain visible. This completed finding does not establish a passing artifact or
+an implementation failure. No policy or consumer inputs were adjusted.
 
 Consumer upgrade previews selected the available public v1.1.0 pin and did
 not apply writes. Cross-version route/alias/output regressions use explicit
 synthetic fixture pins, not an invented published theme release. New/editor
-plans were validated previews; no consumer plan was saved or applied.
+plans were validated previews. No consumer plan was saved or applied.
 Multi-host and unknown relative-alias identities stay incomplete. Nondeterministic
 output may require a fresh v2 plan preview; browser/universal compatibility,
 configuration migration and current cross-platform/archive qualification remain
-outside this scoped result. The prior Linux R2 source hash remains historical;
+outside this scoped result. The prior Linux R2 source hash remains historical.
 Darwin amd64 and final A18 refresh are still unverified. Authorized bilingual
 canonical writes occur only after this frozen no-write evidence boundary.
 
@@ -500,16 +499,16 @@ link check returned `0`.
 | Separate nonpublishable analysis | Fresh ordinary Hugo with the actual original snapshot environment/rebased paths and explicit draft/future/expired flags returned `0`; all three owners `0`: Markdown 216 pages / 42,520 nodes, links 347 pages / 48,736 links / 4,215 fragments, translations 137/137 pairs / 1,104 headings |
 | Source preservation | Canonical 421 Git-inventoried files and 427 copied inputs retained exact bytes, modes, Git state and directory modes; production copied 428 and analysis copied 427 files remained unchanged through their checks; analysis build also retained copied full modes |
 
-Production output remained separate and was never replaced by the analysis
-tree; the analysis is not publishable. The temporary helper copied the frozen
+Production output remained separate. The analysis
+tree never replaced it. The analysis is not publishable. The temporary helper copied the frozen
 core without modifying it: helper source SHA
 `7faea7e726a6c6fb2e0747be1a4428f4c5fb5734fa52b6f981157a5fe37d9989`
 and helper binary SHA
 `532638e76f96f8b173c122e512b3bf5fc2c4d4a7130f59c99c2c69e135e87073`
 are retained with raw logs. This authorized bilingual research amendment
 occurs after the exact no-write capture boundary and receives narrow source
-checks separately. R4's scoped local documentation gate is accepted; this
-result does not claim publication, deployment, R5–R8 completion or final A18
+checks separately. R4's scoped local documentation gate is accepted. This
+result does not establish publication, deployment, R5–R8 completion or final A18
 qualification.
 
 ## R5 implementation and documentation acceptance {#r5}
@@ -523,23 +522,23 @@ retain distinct preservation boundaries.
 
 The actual public Git/Hugo flow at `/tmp/oink-r5-public-final-flow.log` passed
 in 53.963 seconds. Its committed synthetic site owns its local theme, bilingual
-pages and binary attachment; ordinary modes `0640` and `0600` remain full
-current facts while historic Git comparison uses executable bits only.
+pages and binary attachment. Ordinary modes `0640` and `0600` remain full
+current facts. Historic Git comparison uses only executable bits.
 Deleting B selects unchanged inbound A, the remaining translation, removed
 attachment and actual RSS output. Actual alias-inbound uncertainty, global
 configuration/template/data and unknown-input changes expand full scope.
 
 Completed inspect/impact/context returns `0` with separate current-check
-findings `1`; check-since retains current quality `1` and full validation scope.
-Missing/unborn/foreign history returns `2`, retaining every known current
-page/attachment/reference/output with no fabricated prior identity or change.
+findings `1`. Check-since retains current quality `1` and full validation scope.
+Missing/unborn/foreign history returns `2`. It retains every known current
+page/attachment/reference/output. It does not invent a prior identity or change.
 Malformed selectors/limits, missing tools and failed renderer logs are tested.
 Bounded context gives reasons/versions/source and excerpt hashes, visible
 omission/truncation and no execution of literal document instructions.
 
 Saved move preview/apply and subsequent ordinary Hugo passed, retaining
 binary bytes, raw full modes, unrelated files and Git index/revision. Actual
-opaque HTML/shortcode references remain manual; inline/fenced/opaque spans
+opaque HTML/shortcode references remain manual. Inline/fenced/opaque spans
 stay unchanged. Their broken final candidate returns `1`, with no saved plan
 or source writes. Source/config/attachment/mode/fresh-target drift returns `2`
 and preserves the later edit. A deterministic mutation after the actual
@@ -556,11 +555,11 @@ Before the cached-module supplement, frozen parent `make test`/vet and
 and its vet counterpart; full inventory/mode/selector plan safety passed
 `/tmp/oink-r5-plan-owning-final.log`.
 
-A first frozen consumer trial exposed an actual cached-public-module guard
-gap: resolved module inputs present in the original graph were absent from a
-fresh outer candidate hash. It returned false incomplete `2`, without source
+The first frozen consumer trial exposed a cached-public-module guard
+gap. The original graph contained resolved module inputs that were absent from
+a fresh outer candidate hash. It returned false incomplete `2`, without source
 writes. Content plans now resolve/capture the same module inputs before
-comparison, retaining legacy metadata/authoring plan scopes. The separate
+comparison. Legacy metadata/authoring plan scopes remain unchanged. The separate
 checksum-verified public OINK v1.1.0 regression passed preview, fresh saved
 apply and ordinary bilingual Hugo in 27.42 seconds (package 28.220) at
 `/tmp/oink-r5-public-cached-module-move.log`, including raw modes, binary bytes,
@@ -579,14 +578,14 @@ and 165 broader CLI inputs with SHA-256
 `4965a0c92cb6126f67a6dabd548c7c25ee5d7c9c57e14cce5e55ebb7a22fca2d`.
 The corrected binary SHA-256 is
 `d7675aecca2f77b1eb37bb4f664c3314cf5207149e6abbb86523686c5c50bff0`.
-These are local working-input/executable identities, not a new commit or
-published archive. The corrected four-consumer capture completed 16 commands
+These identify local working inputs and an executable. They do not identify a
+new commit or published archive. The corrected four-consumer capture completed 16 commands
 in 831.825 seconds at
 `/private/var/folders/df/bfm8q07d7bv3kpjf1fjchq4m0000gn/T/oink-r5-corpus-corrected-y2eue81h`.
 Its bounded `final-receipt.json` has SHA-256
 `b86e0e6c7dbfbaed62c845c03a55d963068f7d9a16771de5ff3b0974e76fce3b`;
-the receipt retains 12 copied owning gate logs, all 20 observed move routes
-and links to the complete raw JSON/logs and per-move classifications.
+the receipt retains 12 copied owning gate logs and all 20 observed move routes.
+It links to the complete raw JSON/logs and per-move classifications.
 
 | Site | Primary/copied inputs/directories | Inspect/context | Current check | Impact | Move preview |
 | --- | --- | --- | --- | --- | --- |
@@ -597,11 +596,11 @@ and links to the complete raw JSON/logs and per-move classifications.
 
 Starter and Repository impact retain known current facts without inventing
 prior pages or changes. PIG's actual baseline is complete (theme v1.0.0 versus
-current v1.1.0), but required foreign-input provenance is incomplete, so the
-comparison expands full scope and returns `2`. These are distinct outcomes.
+current v1.1.0). Required foreign-input provenance is incomplete. The comparison
+therefore expands full scope and returns `2`. These are distinct outcomes.
 Documentation impact completes with 192 captured input changes, 343 affected
 prior/current pages and full scope. All completed fact queries expose current
-quality findings separately; Repository inspect/context remain `0`.
+quality findings separately. Repository inspect/context remain `0`.
 
 Documentation move proves 18 rewrites and four routes. Two ordinary literal
 `/docs/admin/comments/` occurrences in `content/docs/customize/repository.md`
@@ -612,17 +611,17 @@ and four binary attachments, with eight proven page/processed-resource routes.
 Equal-byte paired outputs prove processed `featured_hu_*` resources, but not
 new URLs for the four original absolute image references
 `/article/pgext-day/{featured,topic,venue,schedule}.webp`. Their 32 candidate
-missing references block validation; no guessed original-asset rewrites occur.
+missing references block validation. Original-asset rewrites are not guessed.
 These ordinary Markdown limits are separate from opaque HTML/shortcode limits.
 
-Repository move proves ten rewrites and four routes; its candidate has only
-the same 10,462 existing duplicate-ID findings, with no new missing reference
-or required incomplete finding. Starter's zero-link bilingual move is
-validated. All four moves remain unapplied, no consumer plans were saved and
-no consumer source writes occurred. Failed candidates have `validated: false`.
+Repository move proves ten rewrites and four routes. Its candidate retains
+only the same 10,462 existing duplicate-ID findings. It has no new missing
+reference or required incomplete finding. Starter's zero-link bilingual move is
+validated. All four moves remain unapplied. No consumer plans were saved.
+No consumer source writes occurred. Failed candidates have `validated: false`.
 All JSON stdout is pure. Primary/copied inputs, full modes, directory
-inventories and logical Git/index state are unchanged; ignored copied inputs
-are included. The Git metadata inventory excludes immutable object storage.
+inventories and logical Git/index state are unchanged. These comparisons include
+ignored copied inputs. The Git metadata inventory excludes immutable object storage.
 The runtime and broader CLI inventories still match the captured identities.
 The receipt does not qualify another platform, browser runtime or deployment.
 
@@ -646,16 +645,15 @@ The permanent first-promotion `applied-files.json` in
 `/var/folders/df/bfm8q07d7bv3kpjf1fjchq4m0000gn/T/oink-r5-doc-drafts-t3_klnck`
 retains the ten authorized files and their original modes. This separately
 authorized post-render amendment touches only six paired proposal/index/research
-files, after the recorded no-write boundary; the qualified contract and guide
+files after the recorded no-write boundary. The qualified contract and guide
 bytes remain frozen. Its guarded originals, prepared diff and focused source
-checks are retained separately. It does not retroactively claim these later
-evidence bytes were in the earlier rendered capture, and no full corpus or
-rendered rerun is inferred from the amendment.
+checks are retained separately. These later evidence bytes were not in the earlier rendered capture.
+The amendment does not establish a new full corpus or rendered run.
 
 Core owning logs `/tmp/oink-r5-frozen-core-hugo.log`,
 `/tmp/oink-r5-owning-race.log` and `/tmp/oink-r5-owning-vet.log` passed.
-A13 impact and A14 move safety passed their required supported CLI scope;
-A15 bounded context passed, while workspace/direct parity remains R6 scope.
+A13 impact and A14 move safety passed their required supported CLI scope.
+A15 bounded context passed. Workspace/direct parity remains R6 scope.
 No consumer source write, commit, publication, network deployment, remote
 model integration or incremental speed claim is made.
 
@@ -665,17 +663,16 @@ R6 supported scope is accepted locally after frozen owning/runtime, exact-binary
 consumer parity/preservation and guarded canonical source/render gates.
 The supported registry/tool fields belong in the
 [contract](/docs/design/decisions/cli/#workspace-registry) and
-[guide](/docs/start/cli/#optional-checkers). R1–R6 are accepted locally; historical
+[command reference](/docs/design/decisions/cli/#optional-checkers). R1–R6 are accepted locally. Historical
 receipts remain intact. A07 adapter and A15 workspace/direct/context supported
-scope passed the gates below; R7/R8 and final A18 remain open.
+scope passed the gates below. R7/R8 and final A18 remain open.
 
-The registry is independently versioned `oink.workspace/v1`: strict one-document
-regular YAML, 1–64 entries, at most 256 KiB, exact ASCII names, literal
-relative/absolute directories, proven canonical identities and overlap
-refusal. Missing-site results stay per-site incomplete while later selected
-sites run. Selection preserves registry order; no default named site,
-sibling discovery, Hugo settings duplication or automatic multi-site apply is
-provided. Optional tools extend `oink.policy/v1`, with pinned protocol versions,
+The registry has an independent version, `oink.workspace/v1`. It requires
+strict one-document regular YAML, 1–64 entries, and at most 256 KiB. It requires
+exact ASCII names, literal relative/absolute directories, and proven canonical
+identities. It refuses overlap. Missing-site results stay per-site incomplete while later selected
+sites run. Selection preserves registry order. There is no default named site,
+sibling discovery, Hugo settings duplication or automatic multi-site apply. Optional tools extend `oink.policy/v1`, with pinned protocol versions,
 configuration/full-mode provenance and typed omissions/coverage.
 
 ### Workspace owning receipts {#r6-workspace-gates}
@@ -689,8 +686,8 @@ configuration/full-mode provenance and typed omissions/coverage.
 | Public outcomes | Actual bilingual committed fixture sites retain direct diagnostics/coverage/exit parity for `links` and full checks. A missing first site yields `2` while later clean/finding sites yield `0`/`1`; explicit subsets preserve registry order, invalid unregistered siblings remain untouched and human output retains findings |
 | Selected application | Saved translation-review preview is validated but unapplied; a different registered name is refused before writes and preserves plan/source bytes/full modes/Git. Explicit matching-name apply writes only its planned review file; other registered and unregistered sites remain unchanged |
 
-These are owning fixture outcomes, not consumer adoption or permission to apply
-plans to actual consumers. The inspected core `workspace.go` SHA-256 is
+These are owning fixture outcomes. They do not establish consumer adoption or
+authorize plan application to actual consumers. The inspected core `workspace.go` SHA-256 is
 `cf2cbc9509e8c83eedf6d8833c9eb0ea6492de9a85c959798112fa3f105213f4`;
 its owning test is
 `9070a8e2c3e58680f6567f2394160ec682bf0457c068c2addf354921e7612d6b`;
@@ -744,21 +741,20 @@ correction. `workspace list` returns `0`; four direct full checks return
 | Repository | 2,294 | `1`/`1` | 11,250/29 | Existing 10,462 duplicate-ID findings and 788 translation review information items |
 
 Direct and aggregate child identities, order, every diagnostic and coverage
-record match. All four consumer sources retain full modes/types, logical and
-mutable Git metadata, ignored copied inputs and directory inventories after
-every operation and overall; the complete root CLI inventory also still equals
-its frozen capture. The 478,603,149-byte direct repository JSON and
+record match. After every operation and overall, all four consumer sources retain full
+modes/types, logical and mutable Git metadata, ignored copied inputs and directory
+inventories. The complete root CLI inventory still equals its frozen capture. The 478,603,149-byte direct repository JSON and
 635,470,795-byte aggregate JSON were validated streamingly rather than
-truncated. Optional-tool protocols are qualified by their separate pinned-tool
-fixtures; the consumer registry is task-local and writes no consumer policy.
+truncated. Separate pinned-tool fixtures qualify optional-tool protocols.
+The consumer registry is task-local and writes no consumer policy.
 
 The initial acceptance driver overwrote a summarized result's `command` string
 with invocation argv, producing a false parity exception after all six CLI
 operations and their per-operation guards had completed. The failed driver and
 summary remain preserved as `pre-correction.r6_qualify.py` and
 `pre-correction.summary.json`. Receipt completion corrected only invocation
-metadata, verified unchanged raw-result SHA-256 values and header commands,
-retained all original full-stream diagnostic/coverage digests, and rechecked
+metadata. It verified unchanged raw-result SHA-256 values and header commands.
+It retained all original full-stream diagnostic/coverage digests and rechecked
 overall consumer/root guards. No CLI runtime correction or Hugo/CLI rerun was
 needed. The receipt-only completion took 2.002 seconds and exited `0` in
 `/tmp/oink-r6-corpus-receipt-completion.log`.
@@ -777,27 +773,27 @@ This receipt qualifies local darwin/arm64 with Go 1.27.1, Hugo Extended
 0.166.0, Node 26.9.0 and Apple Git 2.54.0. It does not refresh final A18,
 qualify Darwin amd64 or another platform, apply a consumer plan, publish or
 deploy. At corpus capture, canonical promotion and actual rendered EN/ZH owning gates
-were separate pending work. The later receipt below closes that boundary; the
-first-promotion bytes do not claim this post-render amendment retrospectively.
+were separate pending work. The later receipt below completes that work.
+The first-promotion bytes do not include this later post-render amendment.
 
-The initial actual-tool trial was preparation evidence, not a passed
+The initial actual-tool trial records preparation evidence. It did not pass
 qualification. It exposed Darwin `/var` versus `/private/var` staging identity,
 actual loopback proxy routing, and an invalid inline-block-attribute/line
-assertion in the Vale fixture. Staging is now canonical; the Vale fixture uses
-a real standalone block attribute without changing the source-mask boundary.
+assertion in the Vale fixture. Staging is now canonical. The Vale fixture uses
+a real standalone block attribute. The source-mask boundary is unchanged.
 The qualified child environment forwards literal `NO_PROXY`/`no_proxy` host-list
 data while omitting proxy URLs/credentials and Node preload settings. Neither
 an empty proxy environment nor `NO_PROXY=*` established the tested Darwin
-loopback path; no universal operating-system proxy bypass is claimed.
+loopback path. This evidence does not establish a universal operating-system proxy bypass.
 
-Supported source diagnostics require proven original ranges; rendered lychee
-locations remain output file/DOM pointers, with no inferred Markdown line.
+Supported source diagnostics require proven original ranges. Rendered lychee
+locations remain output file/DOM pointers. They do not infer a Markdown line.
 Offline lychee is not invoked. Authentication/rate-limit/server/transport
 uncertainty cannot become required success through severity, exclusions or
 baseline acknowledgement. External fragments, browser execution and remote
 content identity are not proven. The declarations, output envelope and
 required-incomplete precedence remain independent from final platform/archive
-qualification; Darwin amd64 and final A18 are still open.
+qualification. Darwin amd64 and final A18 are still open.
 
 The first guarded ten-file promotion and its fresh rendered qualification are
 now complete. The receipt is
@@ -820,23 +816,23 @@ The first-promotion installer receipt,
 `oink-r6-doc-drafts-ymjop499/applied-files.json`, binds
 `13c965592d64056d8365aed1927d2d422fadec8adc54ee7050b22e2ea0ad6270`.
 It retains captured actual original inodes in private temporary storage,
-preserving later old-open-handle writes; recovery also preserves later target
+preserving later old-open-handle writes. Recovery also preserves later target
 edits or deletion. The subsequent paired status/evidence amendment has its own
 full-byte/full-mode guards and source-owner receipt. It updates current notes,
 command status and this ledger, preserving earlier receipts and configuration
-examples. Its new bytes were not inputs to the 64.17-second rendered run, and
-that run is not claimed as their rerender. Supported R6/A07/A15 is accepted
-locally after these gates; R7/R8 and final A18 remain open. No duplicate corpus,
+examples. Its new bytes were not inputs to the 64.17-second rendered run.
+That run does not validate their rendered output. Supported R6/A07/A15 is accepted
+locally after these gates. R7/R8 and final A18 remain open. No duplicate corpus,
 public release, consumer plan application/adoption or deployment is claimed.
 
 ## R7 read-only Studio candidate evidence {#r7}
 
 R7 implements the embedded five-view browser and authenticated loopback API
-candidate described in the [contract](/docs/design/decisions/cli/#studio) and
-[guide](/docs/start/cli/#studio). R1–R6 historical sections and their exact
+candidate described in the [contract](/docs/design/decisions/cli/#studio). R1–R6 historical sections and their exact
 receipts remain unchanged. Frozen core/browser and exact-binary four-consumer
 qualification and guarded canonical rendered gates passed within the declared
-scope. R7/A16 supported read-only scope is accepted locally; R1–R7 are accepted. R8 editing and final A18 remain open.
+scope. R7/A16 supported read-only scope is accepted locally. R1–R7 are accepted.
+R8 editing and final A18 remain open.
 
 ### Focused native and browser evidence {#r7-focused-gates}
 
@@ -854,12 +850,12 @@ Initial browser receipt:
 `/private/var/folders/df/bfm8q07d7bv3kpjf1fjchq4m0000gn/T/oink-studio-browser-AfwaYi/summary.json`,
 SHA-256 `930fbd1ab86806069b963bff2e3e95aaa07e3634400cec65e2b8c7922e2a1707`.
 Its exact binary binds
-`92e5b962e40fbe828a0b006f3ae76a2bddf4ad7e8b1c5b6967e365b8f1827879`;
-the subsequent declared/captured theme metadata row is not claimed tested by
-that preceding binary. The qualified local versions are Node 26.9.0,
+`92e5b962e40fbe828a0b006f3ae76a2bddf4ad7e8b1c5b6967e365b8f1827879`.
+That preceding binary did not test the subsequent declared/captured theme
+metadata row. The qualified local versions are Node 26.9.0,
 Playwright 1.62.1, `@axe-core/playwright` 4.13.0 and Chromium 151.0.7922.34.
-These are explicitly prepared contributor dependencies, not consumer runtime
-requirements or automatic installations. Clipboard evidence covers the actual
+These contributor dependencies were prepared explicitly. They are not consumer
+runtime requirements or automatic installations. Clipboard evidence covers the actual
 UI click with a private clipboard implementation, not the whole host clipboard.
 
 The refreshed held UI/backend browser receipt is
@@ -869,7 +865,7 @@ with exact binary `73bf90c69dce84849ee20ddfbfe825b9f2dd46f0cd37a228ce1b041a83afa
 All 14 axe runs and 14 screenshots passed, including declared/captured
 theme metadata and all five views at 320 pixels. It retains the same bounded
 synthetic-fixture/source/preview/clipboard claims above for that preceding
-runtime. It does not qualify the later partial-preview correction; new browser,
+runtime. It does not qualify the later partial-preview correction. New browser,
 full-stage, consumer and rendered-documentation qualification remains separate.
 
 The initial parallel whole-suite trials in
@@ -877,9 +873,9 @@ The initial parallel whole-suite trials in
 `/tmp/oink-r7-frozen-hugo-gate.log` failed and are not qualification receipts.
 The failures were existing ten-second CI-test deadlines under parallel package
 load and a graph test observer refreshing its own Git index. The isolated CI
-target sets then passed in 12.149 and 2.291 seconds; the controlled Git-observer
+target sets then passed in 12.149 and 2.291 seconds. The controlled Git-observer
 graph run passed in 1.354 seconds. Only
-`internal/projectgraph/hugo_test.go` changed: its read-only observer disables
+`internal/projectgraph/hugo_test.go` changed. Its read-only observer disables
 Git optional locks, filesystem monitoring and the untracked cache. The ordinary
 actual-Hugo graph run passed in 1.562 seconds after that test-only correction.
 No runtime or embedded UI bytes changed.
@@ -915,7 +911,7 @@ and prepared driver
 That audit did not execute or qualify canonical rendering.
 
 The first consumer driver trial, `oink-r7-corpus-h1lOFl`, stopped with
-`KeyError('preview_base_path')`: it indexed a field legitimately omitted when
+`KeyError('preview_base_path')`. It indexed a field that can be omitted when
 the actual preview base path is empty. Its private rebuild was byte-identical
 to the final browser binary
 `73bf90c69dce84849ee20ddfbfe825b9f2dd46f0cd37a228ce1b041a83afa33f`,
@@ -927,28 +923,27 @@ That failed driver run does not qualify the four-consumer gate. The fresh
 That fresh run subsequently failed when the repository produced an inventoried
 file larger than 64 MiB: the preceding runtime refused all production preview.
 Its native check retained outcome `1`, while required unavailable preview made
-Studio outcome `2`. Starter, docs and PIG completed that run with outcome `0`;
-all four source inventories and the root inventory stayed preserved. The failed
+Studio outcome `2`. Starter, docs and PIG completed that run with outcome `0`.
+All four source inventories and the root inventory were preserved. The failed
 `cByXTa` trial is retained and does not qualify the four-consumer gate. Neither
 empty-base-path driver correction changed runtime or consumer sources.
 
 The parent then authorized a narrow runtime/test correction for partial
 preview. It keeps the 64 MiB limit, exposes guarded production files within the
 limit, returns `413` for the exact skipped oversized paths and keeps required
-`studio.preview` coverage incomplete. Native check outcome remains unchanged;
+`studio.preview` coverage incomplete. Native check outcome remains unchanged.
 Studio still returns `2` for required incomplete preview. The embedded UI is
 held unchanged. All preceding browser/owning/binary/corpus receipts describe
 their earlier runtime boundaries, not this new runtime. The new owning/browser
-gates are recorded separately below rather than inferred from those earlier
-receipts; exact-binary four-consumer qualification remains separate.
-The old failed capture proved that an output exceeded 64 MiB but did not expose
-its captured path/size; ignored repository output is not evidence for that
-capture's identity. The new bounded coverage detail will record actual omitted
+gates are recorded separately below. Earlier receipts do not establish their
+results. Exact-binary four-consumer qualification remains separate.
+The old failed capture proved that an output exceeded 64 MiB. It did not expose
+the captured path/size. Ignored repository output does not identify that capture. The new bounded coverage detail will record actual omitted
 relative paths, sizes and count. A prepared real-Hugo browser fixture adds
 `static/oversized.bin` at 64 MiB plus one byte to exercise an available guarded
 HTML preview, an exact skipped-file `413`, native outcome `1` and required
-partial-view outcome `2`. That fixture preparation alone was not browser
-qualification; the subsequent completed browser proof is recorded below.
+partial-view outcome `2`. That fixture preparation alone did not qualify the browser.
+The subsequent completed browser proof is recorded below.
 
 The new partial-preview freeze is
 `/tmp/oink-r7-partial-preview-runtime-freeze.json`, SHA-256
@@ -957,15 +952,15 @@ Its 113 runtime inputs bind
 `4900ae05abbdf4409b0be54f276fb4135269cf0a49e9071013ccf42544d35c84`;
 193 broader inputs bind
 `8b172cef2b228e2642f0139d6cc569136e86843f818e52e412fa4a2d56add25d`.
-Only `internal/studio/preview.go` changed among runtime inputs; the broader
+Only `internal/studio/preview.go` changed among runtime inputs. The broader
 changes also include its test and `scripts/test-studio.mjs`. All three UI files
 retain their exact bytes and modes. Focused core final race passed in 1.748
 seconds, with vet and scoped whitespace checks also passing. Its receipt,
 `oink-r7-partial-preview-owning-a56dunn4/receipt.json`, binds SHA-256
 `7b6ecb491f283d04fe54347e564dba426b1a84d152040a1d945af54bc67756ac`.
-The initial sparse-fixture mode trial is excluded: host umask `0077` made a
-requested `0640` file actually `0600`; explicit fixture chmod to `0640` corrected
-that setup without changing production behavior. Focused proof covers normal
+The initial sparse-fixture mode trial is excluded. Host umask `0077` made a
+requested `0640` file actually `0600`. Explicit fixture chmod to `0640` corrected
+the setup. Production behavior did not change. Focused proof covers normal
 `200`, oversized `GET`/`HEAD` `413`, changed identity `409`, private path `404`
 and refusal for other unknown output errors. It does not substitute for the
 subsequent independent broader browser/owning/corpus/render gates.
@@ -983,12 +978,12 @@ verified all 113/193 inputs and physical/logical identities during that parent
 Go/vet run. It is not a post-suite or browser/corpus/render completion claim.
 The new whole actual-Hugo/pinned-tool invocation subsequently completed with
 exit `1` after 285.649 seconds. Its sole failure was the parent's unavailable
-Markdownlint preparation path `/md/node_modules`; all other actual cases passed.
+Markdownlint preparation path `/md/node_modules`. All other actual cases passed.
 The log remains a failed invocation:
 `/tmp/oink-r7-partial-preview-hugo-gate.log`, SHA-256
 `1ab6b8cfd399d484e08a1d1f05d25475754caa731991dd1eec1cca03cf6ce970`.
 The sole owning case was rerun with the exact provisioned
-`/markdownlint/node_modules` executable, with no source/runtime change, and
+`/markdownlint/node_modules` executable. Source/runtime did not change. The case
 passed: application package 2.317 seconds, wall 3.265 seconds. Its receipt is
 `/tmp/oink-r7-partial-preview-corrected-tools-gate.json`, SHA-256
 `62b75e563e8074995ed9dd354434e653b2f5f2c6d20767226286d0c08d4c667c`;
@@ -1003,8 +998,8 @@ corrected case. Its receipt,
 `0a9e4a1a1e1a08f597becb2f27e743c9f23df672c713c2757241704edb16b51e`.
 All 113/193 physical/logical inputs remain frozen. Optional
 `TestArtifactCorpus` and `TestPublishedRuleSourceProvenance` cases were explicitly
-skipped. This never relabels the whole invocation as exit `0`, nor claims those
-skipped cases executed.
+skipped. This cumulative coverage does not reclassify the whole invocation as exit `0`.
+The skipped cases remain unexecuted.
 
 The new post-Go input audit,
 `oink-r7-partial-postgo-audit-g1hcqdtl/receipt.json`, SHA-256
@@ -1025,29 +1020,29 @@ binds all 113 runtime and 193 broader source inputs plus physical identities
 before capture/build/after to the new freeze; root inputs stayed unchanged.
 All 14 axe checks had zero violations and all 14 screenshots passed, retaining
 the keyboard/mobile/light-dark/source/clipboard/security checks described above.
-Actual Hugo emitted `oversized.bin` at 67,108,865 bytes, reached through its
-rendered `/sub/oversized.bin` link and returning `413`; ordinary actual HTML
-returned `200`. Required partial preview coverage stayed visible; 228 typed
-native diagnostics and native coverage/outcome `1` matched the CLI/API/UI,
-while Studio and the subsequent refresh returned `2`. Source preservation still
-excludes only the declared task-fixture external edit. This is the bounded
-synthetic browser proof, not a completed four-consumer or canonical render gate.
+Actual Hugo emitted `oversized.bin` at 67,108,865 bytes. A request through its
+rendered `/sub/oversized.bin` link returned `413`. Ordinary actual HTML
+returned `200`. Required partial preview coverage stayed visible. The CLI/API/UI matched
+228 typed native diagnostics and native coverage/outcome `1`.
+Studio and the subsequent refresh returned `2`. Source preservation still
+excludes only the declared task-fixture external edit. This proves the bounded
+synthetic browser scope. It does not complete the four-consumer or canonical render gate.
 
 Another prepared, unexecuted corpus driver had assumed that an available normal
 preview always appends a `studio.preview` coverage row. Actual normal
-Starter/docs/PIG Overviews do not emit that row; the preparation assumption
-was corrected without changing native coverage. The repaired fresh
+Starter/docs/PIG Overviews do not emit that row. The preparation assumption
+was corrected. Native coverage did not change. The repaired fresh
 `oink-r7-corpus-partial-pZLwY0` driver, SHA-256
 `47778df62505beeb7432985be927f1b001e03824e9dee3a6dbed9d9b2dbe049c`,
 was reviewed against those three retained actual Overviews and the current
 partial browser capture. Normal availability still requires its actual preview
-URL and independent HTML `200`; a partial capture retains its actual required
+URL and independent HTML `200`. A partial capture retains its actual required
 row, omitted count/identities and `413`. The preparation audit is
 `oink-r7-partial-driver-correction-audit-sa98cm6k/receipt.json`, SHA-256
 `a519a5bc6ae83438146ff4710d53f5edb0e656a05d0532c02123e5771416f07e`.
-Its earlier `f762` preparation was not executed or qualified. The parent has
-released the corrected driver for a fresh all-four run; its completed
-qualification is recorded next.
+Its earlier `f762` preparation was not executed or qualified. The parent authorized
+the corrected driver for a fresh all-four run. The next section records its
+completed qualification.
 
 The fresh four-consumer qualification completed with driver outcome `0` in
 234.6425 seconds. Its current summary is
@@ -1060,8 +1055,8 @@ The durable current corpus `qualification.receipt.json` binds SHA-256
 primary source inventories contain 97/421/858/2,294 files respectively.
 The private captured-source rebuild is byte-identical to the new browser binary
 `f39d6754f7ad13599e4e849394e0f470b2c6f26edf96ce40f199d27b65a8030e`.
-Runtime 113/broader 193 inputs and root physical identities stayed frozen;
-every operation and the overall boundary preserve all four consumer bytes,
+Runtime 113/broader 193 inputs and root physical identities stayed frozen.
+Every operation and the overall boundary preserve all four consumer bytes,
 full modes/types, logical/mutable Git, ignored copied inputs and directories.
 
 | Consumer | Native outcome | Typed diagnostics | Studio outcome | Actual captured pages |
@@ -1072,12 +1067,11 @@ full modes/types, logical/mutable Git, ignored copied inputs and directories.
 | repo | `1` | 10,462 existing duplicate-ID findings plus 788 review-info records | `2` | 1,576 |
 
 Nested native headers, typed diagnostics, coverage and exit match direct CLI
-checks exactly for all four sites. Issues were fully paginated; other views
-were bounded samples, with captured physical source and translation diff
+checks exactly for all four sites. All issues were paginated. Other views
+used bounded samples. Captured physical source and translation diff were
 available on all four. The first three actual production previews returned
-HTML `200`; they emit no `studio.preview` omission row, and the driver invents
-none. The repository normal HTML returned `200` with 60,100 bytes. Its current
-capture exposes exactly four oversized print paths; each actual `HEAD` returned
+HTML `200`. They emit no `studio.preview` omission row. The driver adds none. The repository normal HTML returned `200` with 60,100 bytes. Its current
+capture exposes exactly four oversized print paths. Each actual `HEAD` returned
 `413` with zero response-body bytes:
 
 | Captured omitted relative path | Captured byte size |
@@ -1087,15 +1081,15 @@ capture exposes exactly four oversized print paths; each actual `HEAD` returned
 | `zh/_print/pkg/index.html` | 73,086,240 |
 | `zh/_print/pkg/pgsql/index.html` | 69,052,754 |
 
-These identities come from current bounded capture detail and live requests,
-not the earlier ignored-output clues. Required `studio.preview` remains
+Current bounded capture detail and live requests establish these identities.
+The earlier ignored-output clues do not establish them. Required `studio.preview` remains
 incomplete, so repository Studio `2` retains native `1`. Actual analysis-only
-draft routes returned production `404` in docs and repo; that test was explicitly
-not applicable in Starter/PIG without a unique captured draft route. Workspace
-subset/full/healthy-subset sessions selected only registered sites and closed
-listeners without captures; unknown or selected missing sites returned `2`
+draft routes returned production `404` in docs and repo. The test was explicitly
+not applicable in Starter/PIG, which had no unique captured draft route. Workspace
+subset/full/healthy-subset sessions selected only registered sites. They closed
+listeners without captures. Unknown or selected missing sites returned `2`
 before startup. This is local Darwin/arm64 CLI/API evidence with Hugo 0.166.0
-Extended, Go 1.27.1 and Git 2.54.0; browser scope remains the separate synthetic
+Extended, Go 1.27.1 and Git 2.54.0. Browser scope remains the separate synthetic
 fixture. No source writes, install, publication, adoption or deployment occurred.
 Independent final corpus audit
 `oink-r7-final-corpus-audit-xr3_u5dt/receipt.json`, SHA-256
@@ -1108,7 +1102,7 @@ remain pending; R8 and final A18 remain open.
 For temporary disk capacity, the parent retired only three explicitly created
 private Go build caches, totaling 366,184,826 bytes, as recorded in
 `/tmp/oink-r7-private-cache-retirement.json`. Sources, binaries and qualification
-evidence were retained; no global, user or system cache was removed. This
+evidence were retained. No global, user or system cache was removed. This
 preparation action is not a runtime correction or a qualification gate.
 
 ### Remaining stage gates and promotion boundary {#r7-pending-gates}
@@ -1124,53 +1118,62 @@ preparation action is not a runtime correction or a qualification gate.
 The next prepared documentation installer retains the actual captured old inode
 outside canonical source storage on both success and recovery, without
 unlinking its last name after an earlier target identity check. This private
-helper hardening and its new recovery fixture are a new preparation boundary;
-executed R6 installers/hashes/receipts remain immutable and are not retroactively
-claimed to contain it. R6's successful promotions already retained originals.
+helper hardening and its new recovery fixture establish a new preparation boundary.
+Executed R6 installers/hashes/receipts remain immutable. They do not contain the later hardening. R6's successful promotions already retained originals.
 No consumer plan writes, release, adoption or deployment are implied by this
 candidate documentation or the local browser fixtures.
 
-The completed first-promotion rendered gate is `/private/var/folders/df/bfm8q07d7bv3kpjf1fjchq4m0000gn/T/oink-r7-docs-render-n8tw2tbw/summary.json`, SHA-256 `35e79f51d39803b3e4cdf134ed277957dd627acba42e0e0dc785e4745ec3c481`, with log SHA-256 `de3a07eac661c15805070e0ed2e364a71ebbd38e15d8907aab3bdf716e95131d` and elapsed 63.33 seconds. Exact qualified binary `f39d6754f7ad13599e4e849394e0f470b2c6f26edf96ce40f199d27b65a8030e` passed production CLI links with one strict Hugo build. Ordinary production Hugo without a probe passed rendered Markdown (214 pages/44,075 text nodes) and links (345 pages/48,482 internal links/4,303 fragments). Its translation owner retained exit `1` only for the existing nonpublished release `1.2.0` draft. Independent draft/future/expired analysis passed Markdown (216 pages/44,381 nodes), links (347 pages/48,858 internal links/4,331 fragments) and translations (137 pairs/1,129 headings); it did not replace production output. Source translation/style/whitespace checks passed and CLI/docs schema `7468c2d04cde8a368ce0ba44a1f27125b5fca364b6d4672353519b9545b3bdda` remained identical. All twelve operations, schema and overall guards preserved 421 primary files, 427 copied inputs, 109 directories, 36 mutable Git files and 113 runtime inputs.
+The completed first-promotion rendered gate is
+`/private/var/folders/df/bfm8q07d7bv3kpjf1fjchq4m0000gn/T/oink-r7-docs-render-n8tw2tbw/summary.json`.
+Its SHA-256 is `35e79f51d39803b3e4cdf134ed277957dd627acba42e0e0dc785e4745ec3c481`.
+The log SHA-256 is `de3a07eac661c15805070e0ed2e364a71ebbd38e15d8907aab3bdf716e95131d`.
+The run took 63.33 seconds. Exact qualified binary `f39d6754f7ad13599e4e849394e0f470b2c6f26edf96ce40f199d27b65a8030e` passed production CLI links with one strict Hugo build. Ordinary production Hugo without a probe passed rendered Markdown (214 pages/44,075 text nodes) and links (345 pages/48,482 internal links/4,303 fragments). Its translation owner retained exit `1` only for the existing nonpublished release `1.2.0` draft. Independent draft/future/expired analysis passed Markdown (216 pages/44,381 nodes), links (347 pages/48,858 internal links/4,331 fragments) and translations (137 pairs/1,129 headings).
+It did not replace production output. Source translation/style/whitespace checks passed and CLI/docs schema `7468c2d04cde8a368ce0ba44a1f27125b5fca364b6d4672353519b9545b3bdda` remained identical. All twelve operations, schema and overall guards preserved 421 primary files, 427 copied inputs, 109 directories, 36 mutable Git files and 113 runtime inputs.
 
-The first guarded promotion receipt `oink-r7-root-promotion-p9g1u7pz/summary.json`, SHA-256 `323a5ce267e39aaf8f97dc4a12cccbdde83730155a199efb5f3815e29b334e4a`, verifies actual original inodes retained outside canonical source. Its post-apply receipt lookup initially used `0` instead of `00`; that metadata-only driver failure is preserved, followed by receipt finalization with unchanged raw guards. The successful source installation was not reapplied. Executed R6/R7 helpers and first-promotion receipts remain immutable.
+The first guarded promotion receipt is `oink-r7-root-promotion-p9g1u7pz/summary.json`.
+Its SHA-256 is `323a5ce267e39aaf8f97dc4a12cccbdde83730155a199efb5f3815e29b334e4a`.
+It verifies that actual original inodes are retained outside canonical source. Its post-apply receipt lookup initially used `0` instead of `00`.
+That metadata-only driver failure is preserved. Receipt finalization followed, with unchanged raw guards. The successful source installation was not reapplied. Executed R6/R7 helpers and first-promotion receipts remain immutable.
 
-R7/A16 supported read-only local scope is accepted after the frozen cumulative owning-case/browser/corpus and canonical gates above. The original whole-Hugo invocation still has exit `1`; the corrected sole tool case plus independent matrix establishes cumulative executed-case coverage. Repository native `1` and required partial preview/Studio `2` remain visible. R1–R7 are accepted locally; R8 editing and final A18 remain open. This post-render status/evidence amendment has its own byte/full-mode guards, unchanged headings/command fences, paired source checks and retained-inode installer fixtures. Its new bytes are not claimed tested by the preceding 63.33-second render; no additional rendering, consumer write, public release, adoption or deployment is implied.
+R7/A16 supported read-only local scope is accepted after the frozen cumulative owning-case/browser/corpus and canonical gates above. The original whole-Hugo invocation still has exit `1`.
+The corrected sole tool case and independent matrix establish cumulative executed-case coverage. Repository native `1` and required partial preview/Studio `2` remain visible. R1–R7 are accepted locally. R8 editing and final A18 remain open. This post-render status/evidence amendment has its own byte/full-mode guards, unchanged headings/command fences, paired source checks and retained-inode installer fixtures. The preceding 63.33-second render did not test its new bytes.
+This amendment does not establish additional rendering, consumer writes, public release, adoption or deployment.
 
 ## R8 accepted reviewed editing evidence {#r8}
 
 R8/A17 supported editing scope is accepted locally after the corrected frozen
 owning/browser/corpus and guarded canonical rendered gates recorded below. CLI `edit text`, `field`, `snippet` and `attachment` preview the same
-bound `oink.edit/v1` intent used by explicit `studio --edit`. Saved-plan apply or
+bound `oink.edit/v1` intent. Explicit `studio --edit` uses this intent. Saved-plan apply or
 explicit acknowledged Editor Apply owns selected source writes. The default
 Studio session remains read-only. This section retains capture-time candidate
-facts and trials, followed by the completed current qualification; it does not
-extend earlier R1–R7 evidence to changed code.
+facts and trials. The completed current qualification follows them. Earlier
+R1–R7 evidence does not qualify changed code.
 
 ### Candidate scope and preservation {#r8-scope}
 
 Known site-owned UTF-8 Markdown is bounded to 1 MiB. Full text and supported
 ordinary top-level YAML scalar forms retain the declared BOM/line-ending and
-source-span preservation boundaries; unsupported form shapes remain text.
+source-span preservation boundaries. Unsupported form shapes remain text.
 Exact `value_json` numeric tokens avoid browser Number rounding. Scalar forms
-bound numeric literals to 4,096 bytes and absolute decimal exponent 10,000;
-larger/nonfinite constructs remain manual text. Field JSON is at most 1 MiB;
-escaped lone surrogates refuse, valid Unicode pairs are supported. Catalog
-components use original UTF-8 body byte offsets; attachments require actual
+limit numeric literals to 4,096 bytes and absolute decimal exponent 10,000.
+Larger/nonfinite constructs remain manual text. Field JSON is at most 1 MiB.
+Escaped lone surrogates are refused. Valid Unicode pairs are supported. Catalog
+components use original UTF-8 body byte offsets. Attachments require actual
 leaf-bundle identity, at most 4 MiB and an exclusive new clean basename.
 Source hashes, full modes, all site/external inputs, regenerated intent and
 fresh actual Hugo validation bind the same shared guarded application path.
 
 The Editor displays the complete UTF-8 review, selected-file base/after
-identity and native candidate result; the review is capped at 2 MiB and its
+identity and native candidate result. The review is capped at 2 MiB. Its
 literal bytes are hash-checked before acknowledgement. The actual selected
 candidate HTML is draft/future/expired analysis, visibly nonpublishable and
 separate from the original production preview. Required candidate-view
 incompletion may raise the proposal/session to `2` without changing native
 findings. For page-file edits, the selected candidate source hash/full mode
-matches its reviewed After state; attachment/no-op proposals retain the
+matches its reviewed After state. Attachment/no-op proposals retain the
 selected page’s reviewed Base state.
 Stale/replayed plans, attachment collisions and untrusted preview requests are
-refused; applied-with-refresh-error remains explicitly applied.
+refused. Applied-with-refresh-error remains explicitly applied.
 
 ### Focused preparation receipts {#r8-focused-gates}
 
@@ -1185,8 +1188,8 @@ refused; applied-with-refresh-error remains explicitly applied.
 | Corrected-selector Editor trial | Desktop field/component/binary apply checks and axe checks passed before 320 px draft-review horizontal overflow failed; retained original trial, not a final browser pass |
 | Narrow layout correction | Editor review hashes/receipt text wrap and intrinsic widths are bounded; prior CSS and failure evidence retained separately. Development rerun passed 12 axe checks/screenshots, including real 320 px dark review and light receipts/refusals; final frozen-source/binary rerun pending |
 
-The helper evidence is focused file-copy/cancellation qualification, not the
-whole editing application or all platform support. Browser trials describe
+The helper evidence qualifies focused file-copy/cancellation behavior. It does
+not qualify the whole editing application or all platform support. Browser trials describe
 their actual stopped scope. They do not establish final A17, consumer adoption,
 deployment or a successful current frozen browser binary.
 
@@ -1203,25 +1206,25 @@ Its source guards passed. These receipts qualify those earlier bytes only.
 The first frozen browser receipt
 `eb6977235ef9ae6cec28651b5654eb101685af67abe0cbed0acb0f8375458d9c`
 binds that same binary and source freeze. Editor had 12 axe runs with zero
-violations and 12 screenshots; retained read-only Studio had 14/zero/14.
-The actual form preserved the literal `1e400`, its planned after hash and diff,
-then discarded it; exponent ±10,001 and a 4,097-byte numeric literal refused
-locally without an API request. Four acknowledged field/component/binary/draft
+violations and 12 screenshots. Retained read-only Studio had 14/zero/14.
+The actual form preserved the literal `1e400`, its planned after hash and diff.
+It then discarded the proposal. Exponent ±10,001 and a 4,097-byte numeric literal
+were refused locally without an API request. Four acknowledged field/component/binary/draft
 applications occurred only in disposable fixtures. Default read-only refusal,
 stale preservation, no-op source bytes, preview isolation and native-result
 independence passed. This is development browser evidence for the first
-freeze, not a four-consumer or current corrected-runtime acceptance.
+freeze. It does not establish four-consumer or current corrected-runtime acceptance.
 
 The first exact-binary consumer trial then stopped at Starter after 37.533 s.
 Its immutable failed-trial receipt is
 `853a8397ba4c527c03aa3cc9ac7cacc41c0ab0379549d145b874f1d1ecc3901c`.
 Two failures are recorded separately. A driver event hash depended on JSON
-object-key order even though recursive comparison proved API/CLI arrays equal:
+object-key order. Recursive comparison nevertheless proved API/CLI arrays equal:
 28 diagnostics, 29 coverage rows and native exits `0`/`0`. Separately, repeated
-resolved cache capture produced a genuine duplicate module input
-`.gitattributes`; required candidate graph capture became incomplete, mutation
-outcome `2`, with native check still `0`, no actual selected DFE HTML and no
-applicable lease. The public published-cache fixture reproduced that defect;
+resolved cache capture produced a genuine duplicate module input,
+`.gitattributes`. Required candidate graph capture became incomplete. Mutation
+outcome was `2`, and native check remained `0`. There was no actual selected
+DFE HTML or applicable lease. The public published-cache fixture reproduced that defect;
 its retained failing log is
 `50ab704e715665096e0f36391bb1364841c3a2b2ac88dd262915ce53fb66afa6`.
 All 48 recorded per-operation source proofs and four overall consumer guards
@@ -1231,13 +1234,13 @@ trial has no completed four-consumer qualification claim.
 
 The narrow runtime correction gathers complete resolved-module rows before
 committing additions. Identical repeated or reordered captures retain the
-original inventory. Changed hashes/full modes, added or removed paths within
-an existing scope, missing scopes, conflicting identities or capture errors
-refuse without refreshing prior evidence or appending partial additions;
-non-module rows remain exact. Site owning receipt
+original inventory. Changed hashes/full modes and added or removed paths within
+an existing scope are refused. Missing scopes, conflicting identities and capture
+errors are also refused. Refusal does not refresh prior evidence or append partial
+additions. Non-module rows remain exact. Site owning receipt
 `e7b284b9dece1c5f2b696cd76166d2286fcbec69e6c48912ab9a78204bdb980b`
 records focused `0`/0.746 s, site `0`/2.123 s, focused race `0`/1.958 s and vet
-`0`/0.167 s. This compares reobserved complete rows; it does not lock module
+`0`/0.167 s. This compares reobserved complete rows. It does not lock module
 files against concurrent writers.
 
 The corrected published-cache receipt
@@ -1245,9 +1248,9 @@ The corrected published-cache receipt
 records actual `github.com/pgsty/oink@v1.1.0` from a task-local copied checksummed
 archive, with no downloads or replacement. Original and candidate graphs each
 have 1,256 unique inputs, including 1,198 module inputs. Full API/CLI typed
-diagnostics, coverage, exits and plan identity match; actual selected DFE HTML
-returns `200`, with source bytes/full modes/Git unchanged and no Apply or saved
-plan. Owning race passed in 30.255 s; vet passed. Its corrected race log is
+diagnostics, coverage, exits and plan identity match. Actual selected DFE HTML
+returns `200`. Source bytes/full modes/Git are unchanged. No Apply or saved
+plan occurred. Owning race passed in 30.255 s; vet passed. Its corrected race log is
 `c7d21a30b8af141d9d9604a80ddf9cf3f608320b97a441a06a742376e2119551`.
 
 The current complete corrected freeze is
@@ -1255,7 +1258,7 @@ The current complete corrected freeze is
 runtime 123/`cdf629eeb4bbef6d4d88ee27fe3fb0a73b07b6bf6438336e033a18fb7feb1c17`
 and broader 212/`f6e305e792733a550814eb841615d12fa14a9a6bb2a97c4ada85f7275183e579`.
 Only `source_inputs.go`, its owning test and the public published-cache test
-differ from the first freeze; held UI/helper bytes and all full modes remain
+differ from the first freeze. Held UI/helper bytes and all full modes remain
 unchanged. The rebuilt candidate is
 `bd25f9e0b35ec10e227aabf9582ae40b0b367390f64b93668de6ae85222c3d71`
 (`0.5.0-r8-local`). Its observed corrected source-bound browser receipt
@@ -1263,7 +1266,7 @@ unchanged. The rebuilt candidate is
 again reports Editor 12/zero/12 and read-only 14/zero/14 with complete 123/212
 pre/post source preservation. Corrected whole owning gates, the fresh
 four-consumer corpus and protected canonical rendering are still pending at
-this evidence amendment. R8/A17 is not stage accepted; final A18 stays open.
+this evidence amendment. R8/A17 is not stage accepted. Final A18 stays open.
 
 At the next evidence observation, the corrected whole gates completed for
 that held `bd25f9e0…22c3d71` binary and `fb276500…02949f` freeze. Summary
@@ -1271,7 +1274,7 @@ that held `bd25f9e0…22c3d71` binary and `fb276500…02949f` freeze. Summary
 records Go tests `0`/57.826 s, vet `0`/0.521 s, whole actual Hugo plus all three
 pinned tools `0`/378.847 s, core/site/Studio race `0`/17.937 s and public
 R8/attachment/output-helper race `0`/85.159 s. Every gate's source pre/post guard
-passed. The actual-Hugo log has 434 top-level passes and zero failures; the two
+passed. The actual-Hugo log has 434 top-level passes and zero failures. The two
 optional external fixtures `TestArtifactCorpus` and
 `TestPublishedRuleSourceProvenance` remained explicitly skipped. Those skips
 are not claimed as executed corpus or provenance qualification.
@@ -1283,15 +1286,15 @@ core race `cdd3d761b5ca7b5e986b25aee3129d65663e3e5ebb83eecb6fbb080387298a58`
 and public race `bb610bdcd7a299cb9b66f4c69e30e246c20546efae47653c01d350b1026ea2de`.
 The corrected browser-only evidence above remains bound to the same current
 source and binary. The separately authorized fresh four-consumer trial is in
-progress; no completed corpus, canonical render, R8/A17 acceptance or final
-A18 qualification is inferred from these owning gates.
+progress. These owning gates do not establish completed corpus, canonical render,
+R8/A17 acceptance or final A18 qualification.
 
 The 434 passes and two optional skips above are top-level counts. The same
 whole invocation also skipped the nested Unix-socket refusal fixture because
 the Darwin temporary pathname exceeded the socket limit. A first shorter
-private-path trial still skipped: receipt
+private-path trial still skipped. Receipt
 `93106854ca890b497d3c74522b895f597ac60cec55ced42cad7b187d334da200`
-retains process exit `0` but explicitly records no actual socket execution and
+retains process exit `0`. It explicitly records no actual socket execution and
 failed qualification. It is not relabeled as a passing fixture.
 
 A subsequent nonresolved short private `TMPDIR` executed the same frozen
@@ -1311,7 +1314,7 @@ and qualification receipt
 bind a byte-identical private rebuild of `bd25f9e0…22c3d71`, the complete held
 123/`cdf629ee…feb1c17` runtime and 212/`f6e305e7…5183e579` inputs. Original
 failed corpus, published-cache regression and first frozen browser/gate bytes
-remain separate historical evidence; all 2,383 entries of the first failed
+remain separate historical evidence. All 2,383 entries of the first failed
 trial retained their exact bytes/full modes/types.
 
 | Corrected consumer | Native/current and native candidate exit | API candidate outcome | Full diagnostics/coverage | Actual selected analysis HTML |
@@ -1322,10 +1325,10 @@ trial retained their exact bytes/full modes/types.
 | Repository | `1` / `1` | `2` | `11,250` / `29` | `200`, 92,352 bytes, `/blog/infra/2020-12/` |
 
 These are actual selected Hugo HTML routes in the separate, visibly
-nonpublishable draft/future/expired candidate view; each expected candidate
-marker was present. API and CLI matched full typed diagnostics/coverage, native exits, plan ID,
-Base/After hashes and full modes, unified diff and the selected page’s proposed
-source. The complete literal API review and its hash were independently
+nonpublishable draft/future/expired candidate view. Each expected candidate
+marker was present. API and CLI matched full typed diagnostics/coverage, native exits, and plan ID.
+They also matched Base/After hashes and full modes, unified diff, and the
+selected page’s proposed source. The complete literal API review and its hash were independently
 validated. No consumer Apply or
 saved plan occurred, and no listeners remained. The repository retained
 10,462 existing duplicate-ID findings and 788 information records. Its four
@@ -1334,10 +1337,10 @@ actual PRINT outputs remained required partial-preview incompletion:
 `_print/pkg/pgsql/index.html` 69,903,999 bytes,
 `zh/_print/pkg/index.html` 73,086,240 bytes and
 `zh/_print/pkg/pgsql/index.html` 69,052,754 bytes. Each bounded HEAD request
-returned `413` with zero body; selected in-limit HTML remained `200`. Native
-`1` remained unchanged, proposal/session `2` and Apply refusal stayed visible.
+returned `413` with zero body. Selected in-limit HTML remained `200`. Native
+`1` remained unchanged. Proposal/session `2` and Apply refusal stayed visible.
 The other three complete previews had no invented explicit complete-coverage
-row: actual guarded HTML `200` supplied that evidence.
+row. Actual guarded HTML `200` supplied the evidence.
 
 Exactly 53 protected operations each checked all four sources: 212
 per-operation source proofs plus four overall proofs, with source bytes/full
@@ -1345,10 +1348,10 @@ modes/types, copied ignored inputs, directories and logical/mutable Git
 unchanged. Each source proof compared four inventory categories, yielding 864
 raw inventory pairs including the overall comparisons. All 53 root guards and
 the final complete 123/212 logical/physical inputs also matched. All issues and
-pages were paginated; the other five view endpoints were sampled to their
-first 50 records, with one known source and one bounded diff per site. Full
-native/CLI record parity used the declared bounded complete-record codec;
-object order was canonicalized while array order, types, null and field
+pages were paginated. The other five view endpoints were sampled to their
+first 50 records. Each site included one known source and one bounded diff. Full
+native/CLI record parity used the declared bounded complete-record codec.
+Object order was canonicalized. Array order, types, null and field
 presence remained significant. This does not claim every relationship was
 visually reviewed or every source was edited.
 
@@ -1359,7 +1362,7 @@ and the large native/CLI raw-file digest bindings. It did not separately
 repeat multi-gigabyte native semantic scans. Its additive receipt
 `335f137663d4ec0b2a0d3e49c8d70b9918f86078ab6264855171a2644d8aa6c6`
 also verified the fresh current root's complete logical Git inventory against
-the freeze; the original audit stayed immutable. Corrected owning, socket,
+the freeze. The original audit stayed immutable. Corrected owning, socket,
 browser and four-consumer supported scopes are qualified. Canonical TEN
 promotion/rendering, the R8/A17 stage decision and final A18 remain pending.
 
@@ -1367,8 +1370,8 @@ The preceding R8 candidate/trial statements retain their capture-time scope.
 The reviewed first TEN promotion subsequently passed through the guarded
 retained-inode installer, root receipt
 `7cd9b4604d2340b9e46965a26281c921b967060909d518b8b4b31e5f42d0120c`.
-Its actual original source inodes remained retained outside the documentation
-site; unselected source/copied inputs, directories and Git, and complete CLI
+Its actual original source inodes were retained outside the documentation
+site. Unselected source/copied inputs, directories and Git, and complete CLI
 123/212 logical/physical inputs stayed unchanged.
 
 The separately authorized canonical render then completed exactly once in
@@ -1386,27 +1389,26 @@ draft/future/expired Hugo analysis passed Markdown (216 pages/44,997 nodes),
 links (347 pages/48,908 references/4,379 fragments) and all translations `0`.
 Analysis did not replace production output.
 
-Source translations passed 137/137 pairs and 1,143 headings; Chinese style
-passed 137 files/181 strong spans/zero emphasis, whitespace passed and schema
+Source translations passed 137/137 pairs and 1,143 headings. Chinese style
+passed 137 files/181 strong spans/zero emphasis. Whitespace passed. Schema
 SHA-256 `7468c2d04cde8a368ce0ba44a1f27125b5fca364b6d4672353519b9545b3bdda`
 matched exactly. All 12 commands, schema and overall guards preserved 421
 primary source files, 427 copied inputs, 109 directories and 36 mutable Git
 files, plus all 123 runtime/212 broader CLI logical/physical inputs. The
 qualification receipt binds 60 canonical inventory pairs, 15 CLI guard pairs
-and six private-copy source pairs; it claims no consumer writes or deployment.
+and six private-copy source pairs. It does not establish consumer writes or deployment.
 
 R8/A17 supported local editing scope is accepted after corrected owning,
 socket, source-bound browser, exact-binary four-consumer preservation and
-these guarded canonical gates. R1–R8 are accepted locally; native repository
+these guarded canonical gates. R1–R8 are accepted locally. Native repository
 findings and required partial-preview `2`/Apply refusal remain visible. Final
 A18 current Linux/runtime/archive qualification stays open. The separate
 platform-authority audit
 `762571dab9a07651ac8e4c71764bfef292f8d5eba729a089e72d9d755b7e2d7c`
 confirms that the initial contract qualifies actually exercised architectures:
 macOS arm64, native Linux arm64 and emulated Linux amd64. Darwin amd64 remains
-an experimental archive with failed actual execution/unverified runtime; its
-history is preserved, and no successful cross compilation becomes a runtime
-pass. Both current Linux runtimes and final archives still require fresh proof.
+an experimental archive with failed actual execution/unverified runtime. Its
+history is preserved. Successful cross compilation does not qualify runtime execution. Both current Linux runtimes and final archives still require fresh proof.
 
 This post-render status/evidence amendment has separate full-byte/full-mode
 and inode guards, unchanged stable IDs/command fences, paired source checks
@@ -1427,71 +1429,72 @@ public release, adoption or deployment is implied.
 | R8/A17 stage decision | Supported local scope accepted after corrected whole owning/browser/corpus/canonical gates; R1–R8 accepted locally |
 | Final A18/platform/archive delivery | Open; compile success alone is not runtime qualification |
 
-Passed and pending entries are explicit; later gates are not inferred successes. Prior R1–R7
+Passed and pending entries are explicit. Later gates are not inferred successes. Prior R1–R7
 sections, whole-invocation failures and scoped acceptance receipts remain
 unchanged. Temporary qualification files stay outside canonical content and
-Git; first canonical promotion/rendering has exact receipts, while this status
+Git. First canonical promotion/rendering has exact receipts. This status
 amendment remains a guarded proposal. No public release or deployment is claimed.
 
 ## Current runtime completion supplement on 2026-10-04 {#a18}
 
 This supplement records the current candidate on 2026-10-04 (Asia/Shanghai).
 The dated page URL and all initial 2026-10-03/R1–R7 records remain unchanged.
-The preceding R8 stage and browser/render receipts are historical input-bound
-proofs; they do not qualify subsequently changed backend bytes. The three UI
+The preceding R8 stage and browser/render receipts prove their historical
+inputs. They do not qualify backend bytes changed later. The three UI
 files retain exactly the browser-qualified bytes and full modes. Current Go,
 Hugo, platform, archive and four-consumer checks refresh the changed backend.
 
-The first current ARM offline unit run exposed a real output-copy integrity gap:
-adding a directory entry on ext4 could retain the parent's allocation size and
-observed timestamp. That failed run stopped before later qualification steps. The
-bounded correction captures and rechecks actual sorted directory membership and
-entry identity, alongside regular-file byte/full-mode proofs. Only
+The first current ARM offline unit run exposed an output-copy integrity gap.
+On ext4, adding a directory entry could preserve the parent's allocation size
+and observed timestamp. That failed run stopped before later qualification steps. The
+correction captures and rechecks actual sorted directory membership and entry
+identity. It also checks regular-file bytes and full modes. Only
 `internal/app/studio_output.go` and its owning test changed. The failed receipt
-and independent audit are retained; a failure never becomes a passed run.
+and independent audit are retained. A failed run never becomes a passed run.
 
 The preceding integrity-correction qualification freeze is `683daca0e522193c7ff1b0de6ac2fee5d2fca080811bf184a8dfd5b90a33f224`:
 123 runtime inputs hash to `d346ad15cd4239004e32e1b9f30d727eaf156be0187dc165ca874032a7cf962a`,
 and 212 complete CLI inputs hash to `2abd1a044d8192b07f9bbc06b55dc8b4544d66ca17b8867971cec702ba3af088`.
 The `0.5.0-r8-local` Darwin arm64 candidate is
 `74ad94e73557f6538cd64edd1766d6df92c596d98411031159d94af072c186ec`.
-The observed integrity-correction receipts below bind that source scope; old R2 Linux and earlier R8
-binary receipts retain their historical scope. The later one-test fixture amendment has its own complete source identity and
-completed formal qualification boundary, recorded below.
+The integrity-correction receipts below bind that source scope. Old R2 Linux
+and earlier R8 binary receipts keep their historical scope. The later one-test
+fixture amendment has a separate complete source identity and completed formal
+qualification boundary. Both are recorded below.
 
 The current complete source freeze is now
 `196245a3ba09305e34b86539c8eb79f1473e4373ee47aa1f56f8933b04a42d43`.
 The 123 runtime inputs remain exactly
-`d346ad15cd4239004e32e1b9f30d727eaf156be0187dc165ca874032a7cf962a`;
-the 212 complete CLI inputs are
+`d346ad15cd4239004e32e1b9f30d727eaf156be0187dc165ca874032a7cf962a`. The 212 complete CLI inputs are
 `2c487bfb4c65ed40ff78356b2860de627e6ac1afa0da2df433b09345dab7f5b0`.
 Only the owning published-cache test changed, to source
 `54c10ef89310256b5f4c165c7de5de9668e1d4d2991b71751076680141dbe779`.
-The fixture amendment is separately guarded; production bytes and all semantic
-assertions remain unchanged. Formal qualification of this complete source, including current eight owning
-gates, reproduced archives and full plain-Go AMD/ARM runs, passed. Root A18
+The fixture amendment is separately guarded. Production bytes and all semantic
+assertions remain unchanged. Formal qualification of this complete source
+passed. It includes the current eight owning gates, reproduced archives, and
+full plain-Go AMD/ARM runs. Root A18
 proof `2c018cb2afa3f26699a9e6b5a0971096246b12405fde5a27e43a9e213e46da60` binds all three declared supported targets and five reproduced
-archives. Earlier receipts retain their captured inputs; they are not relabeled
+archives. Earlier receipts retain their captured inputs. They are not relabeled
 as runs of this amended test source.
 
 | Current proof and preserved earlier input boundary | Observed result and bound receipt |
 | --- | --- |
-| New complete-source formal qualification | Freeze `196245a3ba09305e34b86539c8eb79f1473e4373ee47aa1f56f8933b04a42d43`, owning test `54c10ef89310256b5f4c165c7de5de9668e1d4d2991b71751076680141dbe779`, unchanged runtime123. Current eight gates, host/archive and both full plain-Go Linux flows passed, bound by root A18 proof `2c018cb2afa3f26699a9e6b5a0971096246b12405fde5a27e43a9e213e46da60`; this does not claim final document bytes were already rendered |
-| Narrow integrity correction | Owning receipt `6966d768025497b45958073d4c53a2a2981065c8a95857834dcf6a4faa4f0201`; independent audit `6cb5d2eabf57b41079026a38a674f46def9f56a15df17ad27e671e4f765798df` |
-| Prior-source six frozen owning gates | Build, full offline Go unit/vet, whole actual Hugo/pinned tools, core race and public R8/output-helper race all `0`; elapsed 3.501/68.257/3.909/333.801/37.070/79.670 seconds. Summary `b40b7787b3da8dc1e0763812b6dde529b4b5b69fe479d79940f1161223124e1d`; independent audit `20780662b7ff35019b2c8c84e6dc763f9351ae0816f6ef7a7789f7a15be99167` |
-| Eight current frozen owning gates | Selected published-cache actual Hugo and race, build, full offline unit/vet, whole actual Hugo/pinned tools, core race and public R8/output-helper race all `0`. Current summary `d6272fcc4dfab114aecfcdf19a7e2b78f1e931817331b460f43ff2056bf754a4`; raw whole Hugo has 435 top-level passes, no failures, two optional top-level skips and the explicit long-path socket child skip. Runtime/binary bytes remain identical |
-| Prior-source Darwin arm64 and archives | Current extracted candidate runs outside the checkout with no consumer Node requirement. Seventeen commands and eight actual process tests, including child signals, passed without process-test skips. Two fresh release directories contain byte-identical five archives and checksums; source/license/provenance/canonical tar checks pass. Summary `bcb4d7599e965c1b3cfe7fe698ca14061ad53d45e7a194337aeebb8d37aa77c1`; independent audit `60a04771365d8be15ac91fbbd8d485b019aae081598e468018861ca5734e387c` |
-| Current Darwin arm64 and deterministic archives | Seventeen extracted-archive/ordinary-Hugo/process commands passed expected exits, with missing Hugo explicitly `2`; eight actual signal/process cases ran without skips. Two independent fresh builds reproduced five byte-identical archives from current complete source. Summary `3890fd8468b6bce5271bb32ffa1a18bd5daf99c19c43becac0be8e3b908a5d57`; source, tools, module-cache and smoke-source guards remained equal |
-| Prior-source Linux arm64 | Actual nonroot Linux arm64 on ext4 with Go 1.27.1, Hugo Extended 0.166.0 and Git 2.47.3: full offline Go unit/vet, all 13 required pure top-level pass records and the membership case plus its four children without skips, 10 selected actual-Hugo cases without skips, native rebuilt archive identity, installed bilingual/offline/ordinary-Hugo/missing-Hugo `2` JSON and signal/source-mode checks passed. Guest summary `409990bc1425f4bf219f8911a71581af6e68729865580121dbeb6d85a06d2ea7`; outer receipt `a022e40f068703cd59ce6d6a7fb6530cce6907681baa26eb1dfc77c09f0c8898`; exported-record audit `24afc50f6f860394d1ebfa7a8b754ddd9cb97f9e88a0dcfcbcb659193ecbfe5f` |
-| Current Linux arm64 | Current nonroot Linux arm64 on ext4, native ARM through QEMU HVF, Go1.27.1/HugoExtended0.166.0/Git2.47.3: full offline unit/vet (370 top-level passes), all13 decisive pure cases and4 membership children without skips,10 selected actual-Hugo cases without skips, exact native/installed current archive identity and bilingual/offline/ordinary-Hugo/signal flows passed. 24 commands reach expected exits including missingHugo2. Guest `268102f69c0950f9d2994d22cd2fd290fc11e24bd6d6f916fd70a93ca4946c74`; outer `f3c066fdc9b97feff92160346185a1af978a5172eed5c81904ac7c0e5fc6c982`; source/SDK/borrowed/old-task guards equal and owned VM reaped. Default optional unit skips retain their named gating reasons; no full Linux Hugo-suite/browser/linter claim |
-| Prior-source Linux amd64 failed trial | Unqualified after the preserved current TCG trial failed: outer receipt `3543664ba5590f2ba5a8f676b196bb636b72bc819913289f415d0a8a841c1bdb`, guest summary `16075204d287713c7f7650c0a65dd289dd4bd83db07c9ba4b85b3f21244d5240`. Full offline units (370 top-level passes), vet and the first three selected Hugo cases passed. The published-cache candidate request hit the test HTTP client's 90-second deadline; candidate parity, the remaining six selected Hugo cases, native rebuilt archive and installed archive smokes were not reached. Deadline review `12917b9eb89e3abc5893e08da3b6b6e20743dcb4c14e6f7ba8561628e3566934`. A18 stays open; no future preflight or full qualification result is inferred |
-| Current Linux amd64 | Current nonroot Linux amd64 on ext4, QEMU TCG emulation, Go1.27.1/HugoExtended0.166.0/Git2.47.3: full offline unit/vet (370 top-level passes), all13 decisive pure cases and4 membership children without skips,10 selected actual-Hugo cases without skips, exact native/installed current archive identity and bilingual/offline/ordinary-Hugo/signal flows passed. 49 commands reach expected exits including missingHugo2. Guest `3a1a32979efc843de8b95b7c13824026e17f71c06d4c458b738c0b9583fb4723`; outer `30cf4950cc83fa0732047d9a0f89bb59e68779ee2e8f5c755724c9679be265e3`; source/SDK/borrowed/old-task guards equal and owned VM reaped. Default optional unit skips retain their named gating reasons; no full Linux Hugo-suite/browser/linter claim |
-| Runtime-equivalent preceding four-consumer candidate corpus | Source epoch `683daca0…33f224`; runtime123/binary74ad is byte-identical to current `196245a3…42d43`. The corpus was not rerun after the test-only amendment. 853.249 seconds; native/candidate-native `0/0/0/1`, API/view `0/0/0/2`; diagnostics `28/144/120/11250`, coverage `29/34/41/29`. Summary `a1e98ca3e10095a1134381666bacf256f8e8827cd3900c9e811b7120de4c2974`, receipt `05c4562a50d9f83ba2c99879ec841870c5e753199e41792bd5bc718cf8046e7b`, independent audit `3a1b0b6e3a8c6b1a0d82c5f82b46c84b1e44d6c30bab655610cb9e86e6a30b47`; final TEN bytes have their own render boundary |
-| Final canonical lifecycle and rendered checks | The exact promoted TEN bytes require independent canonical rendering and navigation/URL receipts; earlier rendered proofs do not qualify these amended bytes |
+| New complete-source formal qualification | Freeze `196245a3ba09305e34b86539c8eb79f1473e4373ee47aa1f56f8933b04a42d43`, owning test `54c10ef89310256b5f4c165c7de5de9668e1d4d2991b71751076680141dbe779`, unchanged runtime123. Current eight gates, host/archive and both full plain-Go Linux flows passed, bound by root A18 proof `2c018cb2afa3f26699a9e6b5a0971096246b12405fde5a27e43a9e213e46da60`. This does not claim final document bytes were already rendered |
+| Narrow integrity correction | Owning receipt `6966d768025497b45958073d4c53a2a2981065c8a95857834dcf6a4faa4f0201`. Independent audit `6cb5d2eabf57b41079026a38a674f46def9f56a15df17ad27e671e4f765798df` |
+| Prior-source six frozen owning gates | Build, full offline Go unit/vet, whole actual Hugo/pinned tools, core race and public R8/output-helper race all `0`. Elapsed 3.501/68.257/3.909/333.801/37.070/79.670 seconds. Summary `b40b7787b3da8dc1e0763812b6dde529b4b5b69fe479d79940f1161223124e1d`. Independent audit `20780662b7ff35019b2c8c84e6dc763f9351ae0816f6ef7a7789f7a15be99167` |
+| Eight current frozen owning gates | Selected published-cache actual Hugo and race, build, full offline unit/vet, whole actual Hugo/pinned tools, core race and public R8/output-helper race all `0`. Current summary `d6272fcc4dfab114aecfcdf19a7e2b78f1e931817331b460f43ff2056bf754a4`. Raw whole Hugo has 435 top-level passes, no failures, two optional top-level skips and the explicit long-path socket child skip. Runtime/binary bytes remain identical |
+| Prior-source Darwin arm64 and archives | Current extracted candidate runs outside the checkout with no consumer Node requirement. Seventeen commands and eight actual process tests, including child signals, passed without process-test skips. Two fresh release directories contain byte-identical five archives and checksums. Source/license/provenance/canonical tar checks pass. Summary `bcb4d7599e965c1b3cfe7fe698ca14061ad53d45e7a194337aeebb8d37aa77c1`. Independent audit `60a04771365d8be15ac91fbbd8d485b019aae081598e468018861ca5734e387c` |
+| Current Darwin arm64 and deterministic archives | Seventeen extracted-archive/ordinary-Hugo/process commands passed expected exits, with missing Hugo explicitly `2`. Eight actual signal/process cases ran without skips. Two independent fresh builds reproduced five byte-identical archives from current complete source. Summary `3890fd8468b6bce5271bb32ffa1a18bd5daf99c19c43becac0be8e3b908a5d57`. Source, tools, module-cache and smoke-source guards remained equal |
+| Prior-source Linux arm64 | Actual nonroot Linux arm64 on ext4 with Go 1.27.1, Hugo Extended 0.166.0 and Git 2.47.3: full offline Go unit/vet, all 13 required pure top-level pass records and the membership case plus its four children without skips, 10 selected actual-Hugo cases without skips, native rebuilt archive identity, installed bilingual/offline/ordinary-Hugo/missing-Hugo `2` JSON and signal/source-mode checks passed. Guest summary `409990bc1425f4bf219f8911a71581af6e68729865580121dbeb6d85a06d2ea7`. Outer receipt `a022e40f068703cd59ce6d6a7fb6530cce6907681baa26eb1dfc77c09f0c8898`. Exported-record audit `24afc50f6f860394d1ebfa7a8b754ddd9cb97f9e88a0dcfcbcb659193ecbfe5f` |
+| Current Linux arm64 | Current nonroot Linux arm64 ran on ext4, with native ARM through QEMU HVF and Go1.27.1/HugoExtended0.166.0/Git2.47.3. Full offline unit/vet passed with 370 top-level passes. The following cases passed without skips: all13 decisive pure cases and4 membership children, and 10 selected actual-Hugo cases. Exact native/installed current archive identity and bilingual/offline/ordinary-Hugo/signal flows passed. 24 commands reached expected exits, including missingHugo2. Guest `268102f69c0950f9d2994d22cd2fd290fc11e24bd6d6f916fd70a93ca4946c74`. Outer `f3c066fdc9b97feff92160346185a1af978a5172eed5c81904ac7c0e5fc6c982`. Source/SDK/borrowed/old-task guards were equal. The owned VM was reaped. Default optional unit skips retain their named gating reasons. No full Linux Hugo-suite/browser/linter claim |
+| Prior-source Linux amd64 failed trial | Unqualified after the preserved current TCG trial failed. outer receipt `3543664ba5590f2ba5a8f676b196bb636b72bc819913289f415d0a8a841c1bdb`, guest summary `16075204d287713c7f7650c0a65dd289dd4bd83db07c9ba4b85b3f21244d5240`. Full offline units (370 top-level passes), vet and the first three selected Hugo cases passed. The published-cache candidate request reached the test HTTP client's 90-second deadline. Candidate parity, the remaining six selected Hugo cases, native rebuilt archive and installed archive smokes were not reached. Deadline review `12917b9eb89e3abc5893e08da3b6b6e20743dcb4c14e6f7ba8561628e3566934`. A18 stays open. No future preflight or full qualification result is inferred |
+| Current Linux amd64 | Current nonroot Linux amd64 ran on ext4 under QEMU TCG emulation, with Go1.27.1/HugoExtended0.166.0/Git2.47.3. Full offline unit/vet passed with 370 top-level passes. The following cases passed without skips: all13 decisive pure cases and4 membership children, and 10 selected actual-Hugo cases. Exact native/installed current archive identity and bilingual/offline/ordinary-Hugo/signal flows passed. 49 commands reached expected exits, including missingHugo2. Guest `3a1a32979efc843de8b95b7c13824026e17f71c06d4c458b738c0b9583fb4723`. Outer `30cf4950cc83fa0732047d9a0f89bb59e68779ee2e8f5c755724c9679be265e3`. Source/SDK/borrowed/old-task guards equal and owned VM reaped. Default optional unit skips retain their named gating reasons. No full Linux Hugo-suite/browser/linter claim |
+| Runtime-equivalent preceding four-consumer candidate corpus | Source epoch `683daca0…33f224`. Runtime123/binary74ad is byte-identical to current `196245a3…42d43`. The corpus was not rerun after the test-only amendment. 853.249 seconds. Native/candidate-native `0/0/0/1`, API/view `0/0/0/2`. Diagnostics `28/144/120/11250`, coverage `29/34/41/29`. Summary `a1e98ca3e10095a1134381666bacf256f8e8827cd3900c9e811b7120de4c2974`, receipt `05c4562a50d9f83ba2c99879ec841870c5e753199e41792bd5bc718cf8046e7b`, independent audit `3a1b0b6e3a8c6b1a0d82c5f82b46c84b1e44d6c30bab655610cb9e86e6a30b47`. Final TEN bytes have their own render boundary |
+| Final canonical lifecycle and rendered checks | The exact promoted TEN bytes require independent canonical rendering and navigation/URL receipts. Earlier rendered proofs do not qualify these amended bytes |
 
 The preceding six-gate `b40b7787b3da8dc1e0763812b6dde529b4b5b69fe479d79940f1161223124e1d`, host/archive `bcb4d7599e965c1b3cfe7fe698ca14061ad53d45e7a194337aeebb8d37aa77c1`, and ARM outer `a022e40f068703cd59ce6d6a7fb6530cce6907681baa26eb1dfc77c09f0c8898` / guest `409990bc1425f4bf219f8911a71581af6e68729865580121dbeb6d85a06d2ea7` / audit `24afc50f6f860394d1ebfa7a8b754ddd9cb97f9e88a0dcfcbcb659193ecbfe5f` remain passed only for their captured source. They are retained alongside the new exact-source proof, not overwritten or relabeled. Historical 26 axe checks/screenshots and 22 codec cases are carried with unchanged UI/codec/runtime inputs, not claimed re-executed.
 
-The initial `max`-CPU AMD trial stays failed: receipt `3543664ba5590f2ba5a8f676b196bb636b72bc819913289f415d0a8a841c1bdb`, guest summary `16075204d287713c7f7650c0a65dd289dd4bd83db07c9ba4b85b3f21244d5240`. The test client timed out after 90 seconds awaiting candidate headers; candidate parity and the remaining six selected Hugo cases/native rebuild/installed smokes were not reached. Guest inputs stayed exact; the host guard recorded only a `.git` directory timestamp change, whose cause was not proven. The separate qemu64 one-test preflight also failed at the unchanged 90-second HTTP client deadline: outer receipt `fc68173ccdfd8ce263ecdf082a533d9da666a4cc2e1e5e29880ee827286132ac`, guest summary `e350ff65feeee166ffac1d337db9bbd70d3895b1fb6d93df0a30ca4de09019fc`. The named case took 177.71 seconds, compared with 176.64 seconds in the first trial; no CPU-model speedup is inferred. Its inputs remained exact and its VM was reaped. Neither failed trial is relabeled as a pass.
+The initial `max`-CPU AMD trial remains failed: receipt `3543664ba5590f2ba5a8f676b196bb636b72bc819913289f415d0a8a841c1bdb`, guest summary `16075204d287713c7f7650c0a65dd289dd4bd83db07c9ba4b85b3f21244d5240`. The test client timed out after 90 seconds while awaiting candidate headers. Candidate parity and the remaining six selected Hugo cases/native rebuild/installed smokes were not reached. Guest inputs stayed exact. The host guard recorded only a `.git` directory timestamp change. Its cause was not proven. The separate qemu64 one-test preflight also failed at the unchanged 90-second HTTP client deadline: outer receipt `fc68173ccdfd8ce263ecdf082a533d9da666a4cc2e1e5e29880ee827286132ac`, guest summary `e350ff65feeee166ffac1d337db9bbd70d3895b1fb6d93df0a30ca4de09019fc`. The named case took 177.71 seconds. The first trial took 176.64 seconds. These results do not establish a CPU-model speedup. Its inputs remained exact and its VM was reaped. Neither failed trial is relabeled as a pass.
 
 A later, explicitly nonqualifying Go-overlay diagnostic preserved the same
 production source and every original semantic assertion. Outer receipt
@@ -1501,55 +1504,58 @@ and raw-bound classification
 record a passed named case in 352.40 seconds. Original capture took 26.254 seconds,
 Studio capture 26.211, candidate HTTP 94.312, direct preview 94.318 and CLI
 preview 81.962. Both graphs retained 1,256 unique inputs, including 1,198 module
-inputs. The old original-capture context was expired by the HTTP result; fresh
+inputs. The original-capture context had expired when the HTTP result arrived. Fresh
 independent direct/CLI contexts completed normally. All 20,564 host guards and
-five guest command guard pairs stayed exact; the owned VM was cleanly reaped.
+five guest command guard pairs stayed exact. The owned VM was cleanly reaped.
 This diagnostic altered test budgets and is not exact-source or full A18
 qualification. The scoped owning-fixture amendment now uses a 300-second budget
 for that candidate request and fresh direct/CLI operations, about 3.18 times the
 slowest observed operation. General/original-capture 90-second limits, restoration
 of the shared client, shutdown 15 seconds and Go's default ten-minute cap remain
-unchanged. These are test fixture limits, not a product performance SLA. Formal plain-Go AMD/ARM and current archive qualification is recorded in the
-current table above; the diagnostic itself remains nonqualifying.
+unchanged. These test fixture limits are not a product performance SLA. The current
+table above records formal plain-Go AMD/ARM and current archive qualification.
+The diagnostic itself remains nonqualifying.
 
-This preceding corpus qualifies the unchanged runtime CLI against its captured, unchanged
-pre-final-TEN consumer inputs. It does not qualify subsequently amended
-canonical document bytes; the final TEN has a separate rendered receipt boundary.
+The preceding corpus qualifies the unchanged runtime CLI against its captured,
+unchanged pre-final-TEN consumer inputs. It does not qualify canonical document
+bytes amended later. The final TEN has a separate rendered receipt boundary.
 
 The consumer driver compared complete typed diagnostics, coverage, native exit,
 PlanID, selected Base/After/full modes, unified diff and selected source between
 API and CLI. It separately verified the complete literal API review and its
-hash. For attachments and no-ops the selected page retains reviewed Base;
-page-file edits match reviewed After. Nonissue views are bounded samples; all
+hash. For attachments and no-ops, the selected page retains reviewed Base.
+Page-file edits match reviewed After. Nonissue views are bounded samples. All
 issues and pages are paginated. The 53 protected operations have 212 all-four
 per-operation source proofs plus four overall proofs (864 raw inventory pairs
 across four categories) and 53 root pairs. Seventy-one retained artifacts are
 bound. No Apply, saved plan or consumer write occurred. The completed corpus's
 file-only collector needed two preserved metadata corrections for absent
-historical trial/self-test files; no CLI/Hugo operation was rerun. The existing
+historical trial/self-test files. No CLI/Hugo operation was rerun. The existing
 22 negative codec cases are historical checks of unchanged codec bytes, not a
 newly executed self-test.
 
 The repository retains its 10,462 pre-existing duplicate-ID findings and 788
-review-info records. Its selected actual DFE HTML is available, while four
-oversized actual PRINT files stay unserved (`413`, zero response body):
+review-info records. Its selected actual DFE HTML is available. Four oversized
+actual PRINT files remain unserved (`413`, zero response body):
 `_print/pkg/index.html` 73,976,221 bytes, `_print/pkg/pgsql/index.html` 69,903,999,
 `zh/_print/pkg/index.html` 73,086,240 and `zh/_print/pkg/pgsql/index.html` 69,052,754.
-The 64 MiB per-file preview bound is unchanged: required partial-preview
-incompletion remains `2`, native findings remain `1`, and Apply is refused.
-This is an expected diagnostic outcome, not a failed preservation check.
+The 64 MiB per-file preview bound is unchanged. Required partial-preview
+incompletion remains `2`. Native findings remain `1`. Apply is refused.
+This is an expected diagnostic outcome. It does not indicate a failed
+preservation check.
 
 Linux prerequisites were prepared in exclusively owned guests from signed
-Debian metadata: exactly ten new packages and three approved existing-package
-updates, verified before and after installation. SDK/Hugo/module caches were
+Debian metadata. Exactly ten new packages and three approved existing-package
+updates were verified before and after installation. SDK/Hugo/module caches were
 provisioned separately and reused offline. Qualification runs as an ordinary
-user on ext4; cached inputs and all 212 source files’ bytes/full modes stay guarded.
-Optional tools/browser tests are not silently claimed on guests without those
-prerequisites: default unit skips retain their actual gating/not-applicable
-reasons, while all required pure top-level cases, the no-skip membership children, selected Hugo and signal cases must execute.
+user on ext4. Cached inputs and all 212 source files’ bytes/full modes stay guarded.
+Guests without optional tools/browser prerequisites do not claim those tests.
+Default unit skips retain their actual gating/not-applicable reasons. All
+required pure top-level cases, no-skip membership children, selected Hugo cases,
+and signal cases must execute.
 Linux amd64 uses QEMU TCG on the ARM host and is explicitly emulated. Darwin
-amd64 remains an experimental archive: actual execution returned Bad CPU type
-(errno 86), with no Rosetta installation or claimed supported runtime. Windows
+amd64 remains an experimental archive. Actual execution returned Bad CPU type
+(errno 86). Rosetta was not installed, and runtime support is not claimed. Windows
 is outside the declared scope.
 
 The current Linux archive digests are `ac883e54a1df0b820696279c63881ba75a00d279f507330128fe8d5aff59c52e`
@@ -1569,49 +1575,49 @@ open.
 
 This ledger combines the initial audit with accepted R1–R7 evidence and the
 qualified R8 candidate gates. Each
-full case stays open until its entire outcome is recorded; an accepted stage
+full case stays open until its entire outcome is recorded. An accepted stage
 does not close later-stage scope.
 
 | Case | Required outcome | Code or checker evidence | Status and missing decisive evidence |
 | --- | --- | --- | --- |
-| A01 | One `oink.result/v1` JSON result; stderr logs; policy `1`, required incompletion `2` |Protocol/public R1–R8 commands, frozen owning tests and exact-binary CLI/API reports; unchanged result schema; current eight owning gates/Linux qualification plus unchanged-runtime carry-forward of the preceding corpus in #a18 | Passed supported current command scope; future added commands require their own evidence |
-| A02 | Hugo resolves slug/url/permalinks/aliases, mounts, unlisted pages and language roots | Real PageFacts/manifest/custom-mount/translationKey fixtures; preserved ordinary artifacts; final consumer facts | R1 scope passed; later stage-specific use of those facts requires its own acceptance |
-| A03 | Definite local missing routes fail; outside origin/path and declared external scope classified honestly | Actual rendered-reference fixture plus subpath/policy regressions and final real sites | Passed the required A03 scope; external availability remains explicitly unchecked |
-| A04 | Filename, directory and `translationKey`; duplicate/missing/draft cases; strict/localized policy | R2 translation engine, actual Hugo/public commands, final reports and numeric supplement | Passed R2 required scope |
-| A05 | Absent record unknown; changed source/translation hash visible; no mtime inference | R2 hash/status/diff, public preview/apply and final reports | Passed R2 required scope |
-| A06 | Real fences, inline code, shortcodes, HTML, attributes, unknown fields and protected text boundaries | R2 actual syntax/provenance fixtures, reviewed corpus and final reports | Passed R2 required scope; catalog and unsupported-source limits remain explicit |
-| A07 | Acknowledged findings visible; new findings block per policy; required unavailable tools cannot pass | R2 baseline/public plans; R6 fake/actual protocol, missing/unsafe/offline/network-uncertainty and required-precedence fixtures passed | Supported scope passed; required unavailable/uncertain tools remain `2` |
-| A08 | Post-check bytes invalidate manifest; provider uploads verified tree without another build | R3 manifest/export/tampering/public one-build tests; final ordinary-Hugo comparison and provider rehearsal | Passed R3 required local scope; provider upload not executed |
-| A09 | Both CI templates; custom workflows preserved; permissions/variables/provenance and stale plan protection | R3 offline generation/bootstrap, public preview/apply/stale-input tests, custom workflow supplement and local rehearsal | Passed R3 required local scope; custom workflows remain unknown and unchanged; hosted CI not executed |
-| A10 | Reject HTTP 200 fallback, wrong language/build, missing resource/canonical mismatch; incomplete timeout/auth/rate-limit | R3 explicit-network local HTTP and public result fixtures, including required identity absence | Passed R3 required fixture scope; public deployment and browser runtime not verified |
-| A11 | All declared profiles/languages; target protection; ordinary Hugo; unknown editor settings retained | R4 24 ordinary Hugo/public profiles, full Starter authoring/editor flow, snippets, actual mounts, source identities, JSONC preservation and external schema reproof | Required supported R4 local implementation/corpus scope passed; documented unsupported editor inputs remain explicit |
-| A12 | Readable diff and route comparison; dirty/workspaces/replacement/vendor; recovery/concurrency | Frozen actual-Hugo seven synthetic pinned cases, public upgrade, source/external guards, observed alias retarget and guarded partial rollback | Required bounded R4 local implementation/corpus scope passed; unknown redirects/multihost remain incomplete and no automatic config migration is claimed |
-| A13 | Deleted B finds unchanged inbound A; translations/attachments/derived outputs; global full scope | R5 committed Git/actual Hugo deletion, alias-inbound, global/uncertain input and unavailable-baseline fixtures; exact-binary consumer reports | Passed required supported R5 scope; unavailable or unproven historical inputs stay explicit `2` |
-| A14 | Candidate before apply; stale/hash/write failures preserve later edits; ambiguous references unchanged |R2/R4 shared safety, R5 full-mode/inventory moves and R8 regenerated intent/fresh-input candidate validation, guarded writer and stale/late-editor/attachment tests; current eight owning gates/Linux qualification plus unchanged-runtime carry-forward of the preceding corpus in #a18 | Passed supported R5 CLI and R8 CLI/Studio editing scope; ambiguous or unavailable required inputs still block |
-| A15 | Workspace/direct parity; selected writes only; bounded context with paths/versions/reasons; no content execution | R5 bounded captured-source/context fixtures and four-site queries; R6 registry/direct/aggregate parity and explicit-name saved apply with other sites preserved | Supported context/workspace scope passed; no implicit batch writes |
-| A16 | Five useful CLI-parity views; keyboard/mobile/light/dark; source/preview isolation |Accepted R7 evidence retained; historical source-bound R8 read-only 14 axe/screenshots and Editor 12 axe/screenshots with unchanged UI bytes; current backend gates, ARM and corpus separately verified, native/API parity, preview isolation, four consumers and canonical render passed; current eight owning gates/Linux qualification plus unchanged-runtime carry-forward of the preceding corpus in #a18 | Passed supported local views; required partial-preview incompletion/native findings remain visible; no universal browser/platform claim |
-| A17 | No-op bytes; YAML unknown/comment/order preservation; stale-save and attachment collisions rejected |Corrected frozen core/public/guarded-writer race, actual Hugo/tools, source-bound Editor/read-only browsers, exact-binary four-consumer proposal parity/preservation and guarded canonical source/render passed in #r8; current eight owning gates/Linux qualification plus unchanged-runtime carry-forward of the preceding corpus in #a18 | Passed supported local editing scope; required partial preview/native findings still block Apply; final A18 separate |
-| A18 | Actual declared macOS/Linux runtimes; child signals; provisioned offline runs; honest unsupported inputs | Current freeze/source and repeated five-archive reproduction; Darwin arm64, native Linux arm64 and emulated Linux amd64 nonroot ext4/full offline unit-vet/selected Hugo/native archive/signal smokes passed in #a18 | Passed current declared runtime/archive scope; optional guest prerequisites remain explicit skips; Darwin amd64 is experimental/unverified and Windows outside scope |
+| A01 | One `oink.result/v1` JSON result. Stderr logs. Policy `1`, required incompletion `2` |Protocol/public R1–R8 commands, frozen owning tests and exact-binary CLI/API reports. Unchanged result schema. Current eight owning gates/Linux qualification plus unchanged-runtime carry-forward of the preceding corpus in #a18 | Passed supported current command scope. Future added commands require their own evidence |
+| A02 | Hugo resolves slug/url/permalinks/aliases, mounts, unlisted pages and language roots | Real PageFacts/manifest/custom-mount/translationKey fixtures. Preserved ordinary artifacts. Final consumer facts | R1 scope passed. Later stage-specific use of those facts requires its own acceptance |
+| A03 | Definite local missing routes fail. Outside origin/path and declared external scope classified honestly | Actual rendered-reference fixture plus subpath/policy regressions and final real sites | Passed the required A03 scope. External availability remains explicitly unchecked |
+| A04 | Filename, directory and `translationKey`. Duplicate/missing/draft cases. Strict/localized policy | R2 translation engine, actual Hugo/public commands, final reports and numeric supplement | Passed R2 required scope |
+| A05 | Absent record unknown. Changed source/translation hash visible. No mtime inference | R2 hash/status/diff, public preview/apply and final reports | Passed R2 required scope |
+| A06 | Real fences, inline code, shortcodes, HTML, attributes, unknown fields and protected text boundaries | R2 actual syntax/provenance fixtures, reviewed corpus and final reports | Passed R2 required scope. Catalog and unsupported-source limits remain explicit |
+| A07 | Acknowledged findings visible. New findings block per policy. Required unavailable tools cannot pass | R2 baseline/public plans. R6 fake/actual protocol, missing/unsafe/offline/network-uncertainty and required-precedence fixtures passed | Supported scope passed. Required unavailable/uncertain tools remain `2` |
+| A08 | Post-check bytes invalidate manifest. Provider uploads verified tree without another build | R3 manifest/export/tampering/public one-build tests. Final ordinary-Hugo comparison and provider rehearsal | Passed R3 required local scope. Provider upload not executed |
+| A09 | Both CI templates. Custom workflows preserved. Permissions/variables/provenance and stale plan protection | R3 offline generation/bootstrap, public preview/apply/stale-input tests, custom workflow supplement and local rehearsal | Passed R3 required local scope. Custom workflows remain unknown and unchanged. Hosted CI not executed |
+| A10 | Reject HTTP 200 fallback, wrong language/build, missing resource/canonical mismatch. Incomplete timeout/auth/rate-limit | R3 explicit-network local HTTP and public result fixtures, including required identity absence | Passed R3 required fixture scope. Public deployment and browser runtime not verified |
+| A11 | All declared profiles/languages. Target protection. Ordinary Hugo. Unknown editor settings retained | R4 24 ordinary Hugo/public profiles, full Starter authoring/editor flow, snippets, actual mounts, source identities, JSONC preservation and external schema reproof | Required supported R4 local implementation/corpus scope passed. Documented unsupported editor inputs remain explicit |
+| A12 | Readable diff and route comparison. Dirty/workspaces/replacement/vendor. Recovery/concurrency | Frozen actual-Hugo seven synthetic pinned cases, public upgrade, source/external guards, observed alias retarget and guarded partial rollback | Required bounded R4 local implementation/corpus scope passed. Unknown redirects/multihost remain incomplete and no automatic config migration is claimed |
+| A13 | Deleted B finds unchanged inbound A. Translations/attachments/derived outputs. Global full scope | R5 committed Git/actual Hugo deletion, alias-inbound, global/uncertain input and unavailable-baseline fixtures. Exact-binary consumer reports | Passed required supported R5 scope. Unavailable or unproven historical inputs stay explicit `2` |
+| A14 | Candidate before apply. Stale/hash/write failures preserve later edits. Ambiguous references unchanged |R2/R4 shared safety, R5 full-mode/inventory moves and R8 regenerated intent/fresh-input candidate validation, guarded writer and stale/late-editor/attachment tests. Current eight owning gates/Linux qualification plus unchanged-runtime carry-forward of the preceding corpus in #a18 | Passed supported R5 CLI and R8 CLI/Studio editing scope. Ambiguous or unavailable required inputs still block |
+| A15 | Workspace/direct parity. Selected writes only. Bounded context with paths/versions/reasons. No content execution | R5 bounded captured-source/context fixtures and four-site queries. R6 registry/direct/aggregate parity and explicit-name saved apply with other sites preserved | Supported context/workspace scope passed. No implicit batch writes |
+| A16 | Five useful CLI-parity views. Keyboard/mobile/light/dark. Source/preview isolation |Accepted R7 evidence retained. Historical source-bound R8 read-only 14 axe/screenshots and Editor 12 axe/screenshots with unchanged UI bytes. Current backend gates, ARM and corpus separately verified, native/API parity, preview isolation, four consumers and canonical render passed. Current eight owning gates/Linux qualification plus unchanged-runtime carry-forward of the preceding corpus in #a18 | Passed supported local views. Required partial-preview incompletion/native findings remain visible. No universal browser/platform claim |
+| A17 | No-op bytes. YAML unknown/comment/order preservation. Stale-save and attachment collisions rejected |Corrected frozen core/public/guarded-writer race, actual Hugo/tools, source-bound Editor/read-only browsers, exact-binary four-consumer proposal parity/preservation and guarded canonical source/render passed in #r8. Current eight owning gates/Linux qualification plus unchanged-runtime carry-forward of the preceding corpus in #a18 | Passed supported local editing scope. Required partial preview/native findings still block Apply. Final A18 separate |
+| A18 | Actual declared macOS/Linux runtimes. Child signals. Provisioned offline runs. Honest unsupported inputs | Current freeze/source and repeated five-archive reproduction. Darwin arm64, native Linux arm64 and emulated Linux amd64 nonroot ext4/full offline unit-vet/selected Hugo/native archive/signal smokes passed in #a18 | Passed current declared runtime/archive scope. Optional guest prerequisites remain explicit skips. Darwin amd64 is experimental/unverified and Windows outside scope |
 
 ## Candidate sites and source preservation {#sites}
 
-The selected acceptance inputs are the embedded Starter plus three distinct
-maintained consumer sites. They reuse the historical corpus without writing
-consumer sources. The Starter source checkout is provenance input; generated
-profile trials use disposable directories.
+The selected acceptance inputs include the embedded Starter and three distinct
+maintained consumer sites, reusing the historical corpus without writing
+consumer sources. The Starter source checkout provides provenance, while
+generated profile trials use disposable directories.
 
 | Input in the sibling checkout layout | Initial observed identity and purpose | Current candidate acceptance |
 | --- | --- | --- |
-| `oink-starter` / generated Starter | Source `137843b`, two initial status entries; licensed fixed archive, language/profile/root/subpath trials | R1 bilingual init/check and R4 all-profile ordinary/public authoring flows passed; archive/license unchanged |
-| `oink.pgsty.com` | Source `907d873` with existing changes; bilingual documentation/regression and explicit local-theme trial | Final R1 check and source preservation passed; local-theme evidence remains distinct from public-pin evidence |
-| `pig.pgsty.com` | Source `75050c0`, five initial status entries; root Docs/Blog rewrites and nonrendering sidebar entries; declared v1.1.0 | Final R1 check and source preservation passed |
-| `repo.pgsty.com` | Unborn `main`, no HEAD revision; materialized untracked sources, generated catalog and declared v1.1.0 | Final R1 check and source preservation passed; revision remains unknown |
+| `oink-starter` / generated Starter | Source `137843b`, two initial status entries. Licensed fixed archive, language/profile/root/subpath trials | R1 bilingual init/check and R4 all-profile ordinary/public authoring flows passed. Archive/license unchanged |
+| `oink.pgsty.com` | Source `907d873` with existing changes. Bilingual documentation/regression and explicit local-theme trial | Final R1 check and source preservation passed. Local-theme evidence remains distinct from public-pin evidence |
+| `pig.pgsty.com` | Source `75050c0`, five initial status entries. Root Docs/Blog rewrites and nonrendering sidebar entries. Declared v1.1.0 | Final R1 check and source preservation passed |
+| `repo.pgsty.com` | Unborn `main`, no HEAD revision. Materialized untracked sources, generated catalog and declared v1.1.0 | Final R1 check and source preservation passed. Revision remains unknown |
 
 For each run, record effective module source and versions, flags/network
 policy, exit/result/coverage, raw evidence location, and preservation outcome.
 Before/after inventories must include all tracked and non-ignored untracked
 source bytes and modes, Git status/index state, workspace/replacement files,
-and effective vendor inputs. Compare exact inventories; unchanged file counts
+and effective vendor inputs. Compare exact inventories. Unchanged file counts
 alone do not prove preservation. Keep reports, isolated candidates, output and
 caches outside consumer sources and outside Git. Full-build timing comparisons
 must use the same current input baseline before any incremental speed claim.
@@ -1622,20 +1628,20 @@ Start with the smallest affected Go packages and public behavior tests. The
 existing repository gates are `make test` (offline tests and vet) and
 `make test-hugo` (actual Hugo Starter, snapshot, manifest and public command
 fixtures). The owning Hugo gate now runs all owning packages without the old
-narrow test-name filter; new fixtures must remain in that gate.
+narrow test-name filter. New fixtures must remain in that gate.
 Use a race run for concurrent plan/server changes when the focused tests justify
-it. Unit fixtures remain offline; networking requires explicit invocation.
+it. Unit fixtures remain offline. Networking requires explicit invocation.
 
 For documentation, preserve EN/ZH heading number, order and stable explicit
-IDs. The narrow source checks are:
+IDs. Use these narrow source checks:
 
 ```sh
 node scripts/check-markdown-style.mjs content/docs/design/research
 node scripts/check-doc-translations.mjs
 ```
 
-Both source checks passed after adding this record and its Chinese peer:
-eight Chinese research files passed the style checker; translation source
+Both source checks passed after this record and its Chinese peer were added.
+Eight Chinese research files passed the style checker. Translation source
 coverage was 137/137 pairs with 1,082 source headings. These checks establish
 source style, pairing and explicit translated IDs only. Rendered acceptance
 was not run by this documentation audit.
@@ -1650,26 +1656,27 @@ npm run _check:rendered-links
 ```
 
 `make build` validates the declared published pin. `make check` selects the
-sibling theme for the complete non-browser regression suite; these inputs
+sibling theme for the complete non-browser regression suite. These inputs
 cannot substitute for one another. Studio requires its own actual browser and
 accessibility acceptance. A passing prose source check does not prove rendered
 bilingual output or Studio interaction.
 
 ## Delivery state and remaining limits {#delivery}
 
-| State | Current completion evidence; history retained above |
+| State | Current completion evidence. History retained above |
 | --- | --- |
-| Local implementation | Finite R1–R8 supported implementation completed locally, including Studio/read-only and opt-in reviewed editing; current A18 runtime/archive scope passed. Canonical lifecycle rendering is bound separately to these exact bytes |
-| Local validation | Historical R1–R8 owning/browser/corpus/render records retained; current 2026-10-04 backend correction and eight current owning gates, actual three-target runtime/archive checks and unchanged-runtime carry-forward of the preceding four-consumer preservation/parity passed in #a18. Required repository findings/partial preview remain visible. Rendered navigation/URL checks have a separate exact-byte receipt boundary |
-| Commits | Baseline CLI commit identified; no maintenance commit established by this record |
-| Archive and runtime qualification | Current corrected source: Darwin arm64, native Linux arm64 and QEMU-TCG-emulated Linux amd64 passed installed archive/offline/signal/filesystem flows; two fresh builds reproduce all five archives. Darwin amd64 remains experimental/unverified after actual failed execution |
+| Local implementation | Finite R1–R8 supported implementation completed locally, including Studio/read-only and opt-in reviewed editing. Current A18 runtime/archive scope passed. Canonical lifecycle rendering is bound separately to these exact bytes |
+| Local validation | Historical R1–R8 owning/browser/corpus/render records retained. Current 2026-10-04 backend correction and eight current owning gates, actual three-target runtime/archive checks and unchanged-runtime carry-forward of the preceding four-consumer preservation/parity passed in #a18. Required repository findings/partial preview remain visible. Rendered navigation/URL checks have a separate exact-byte receipt boundary |
+| Commits | Baseline CLI commit identified. No maintenance commit established by this record |
+| Archive and runtime qualification | Current corrected source: Darwin arm64, native Linux arm64 and QEMU-TCG-emulated Linux amd64 passed installed archive/offline/signal/filesystem flows. Two fresh builds reproduce all five archives. Darwin amd64 remains experimental/unverified after actual failed execution |
 | Public distribution and consumer adoption | Not performed by this work |
-| Deployment and public-content verification | Not performed by this work; local HTTP fixtures can prove the verifier without cloud credentials |
+| Deployment and public-content verification | Not performed by this work. Local HTTP fixtures can prove the verifier without cloud credentials |
 
 The finite R1–R8 implementation and required current A01–A18 runtime/archive
-scope have decisive local evidence. Canonical lifecycle rendering requires a separate receipt for these exact
-new documentation bytes; preceding rendered evidence does not qualify them. Uninvoked E1–E4 and
-experimental/unsupported platforms do not add unfinished core requirements.
+scope have decisive local evidence. Canonical lifecycle rendering requires a
+separate receipt for these exact new documentation bytes. Preceding rendered
+evidence does not qualify them. Uninvoked E1–E4 and experimental/unsupported
+platforms do not add unfinished core requirements.
 Publication, pushing, deployment, hosted CI and consumer writes remain separate
-unperformed actions; known repository findings and required preview incompletion
-remain diagnostic limitations, not hidden successes.
+unperformed actions. Known repository findings and required preview incompletion
+remain visible diagnostic limitations rather than hidden successes.

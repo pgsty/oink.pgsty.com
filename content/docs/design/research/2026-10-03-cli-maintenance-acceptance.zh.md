@@ -13,7 +13,7 @@ last_verified: 2026-10-04
 > [!NOTE] 历史源码与二进制证据
 > 本记录保留此前 R1–R8/A18 验收，不随命令调整重写历史结果。2026-10-04 的
 > CLI 精简与 Cobra/文本/JSON/YAML 界面以[当前契约](/zh/docs/design/decisions/cli/)和
-> [指南](/zh/docs/start/cli/)为准；旧运行时资格不能自动证明修改后的二进制。
+> [CLI 简介](/zh/docs/cli/)为准；旧运行时资格不能自动证明修改后的二进制。
 
 
 > [!IMPORTANT] 有限实现已本地验证
@@ -146,8 +146,7 @@ R1 修改页面均已双语渲染。另一个显式分析构建将 `HUGO_BUILDDR
 本地候选已实现翻译政策/状态/diff/哈希审阅、有界原生内容规则、可见的经审阅基线，
 以及共享 `oink.plan/v1` 预览/验证/应用。默认 `check` 要求链接、翻译和风格。
 生产输出与显式草稿/未来/过期分析相互独立，后者不可发布。稳定行为与示例见
-[契约](/zh/docs/design/decisions/cli/#translations)与
-[指南](/zh/docs/start/cli/#translations)。R2 本地门禁已通过归属检查、最终冻结输入
+[契约](/zh/docs/design/decisions/cli/#translations)。R2 本地门禁已通过归属检查、最终冻结输入
 消费站报告及产物双语文档。下文分别记录确切实测二进制和后续有界相等比较修复，
 不表示公开发布或消费站写入。
 
@@ -543,7 +542,7 @@ SHA-256 为 `06ae844a4b3f1c01bb5faa8a21091d5461c28aab592d12c4310fb34bc176c5d4`�
 R6 受支持范围在冻结归属/运行时、精确二进制消费者一致性/保护及受保护规范
 源码/渲染门禁后已本地接受。受支持登记/工具字段归属
 [契约](/zh/docs/design/decisions/cli/#workspace-registry)与
-[指南](/zh/docs/start/cli/#optional-checkers)。R1–R6 已本地接受；历史收据保持不变。
+[命令契约](/zh/docs/design/decisions/cli/#optional-checkers)。R1–R6 已本地接受；历史收据保持不变。
 A07 适配器与 A15 工作区/直接/context 受支持范围通过下列门禁；R7/R8 与最终 A18 仍未完成。
 
 登记独立版本为 `oink.workspace/v1`：严格单文档普通 YAML、1–64 个条目、最多
@@ -682,8 +681,7 @@ amd64 与最终 A18 仍未完成。
 
 ## R7 只读 Studio 候选证据 {#r7}
 
-R7 已实现[契约](/zh/docs/design/decisions/cli/#studio)与
-[指南](/zh/docs/start/cli/#studio)描述的内嵌五视图浏览器及鉴权回环 API 候选。
+R7 已实现[契约](/zh/docs/design/decisions/cli/#studio)描述的内嵌五视图浏览器及鉴权回环 API 候选。
 R1–R6 历史章节及准确收据保持不变。冻结核心/浏览器及精确二进制四消费者验收
 及受保护规范渲染门禁在声明范围内通过；R7/A16 受支持只读范围已本地接受。
 R1–R7 已本地接受。R8 编辑与最终 A18 未完成。

@@ -11,7 +11,7 @@ proposal_date: 2026-09-29
 ---
 
 > [!WARNING] 首期为本地候选，后续路线仍是草案
-> 用户于 2026-09-29 授权独立 Go 仓库 `pgsty/oink-cli` 及首期开发。六个命令已有本地 `0.1.0-dev` 实现，最终本地验收单独记录。当前行为归属 [CLI 决策与结果契约](/zh/docs/design/decisions/cli/)及[使用指南](/zh/docs/start/cli/)。这不代表 CLI 已公开发布或已有独立用户采用。主题 1.2、工具能力描述、Docsy 迁移、版本生命周期、OpenAPI、MCP 与 Studio 保持提案状态。
+> 用户于 2026-09-29 授权独立 Go 仓库 `pgsty/oink-cli` 及首期开发。六个命令已有本地 `0.1.0-dev` 实现，最终本地验收单独记录。当前行为归属 [CLI 决策与结果契约](/zh/docs/design/decisions/cli/)及[CLI 简介](/zh/docs/cli/)。这不代表 CLI 已公开发布或已有独立用户采用。主题 1.2、工具能力描述、Docsy 迁移、版本生命周期、OpenAPI、MCP 与 Studio 保持提案状态。
 
 | 记录 | 内容 |
 | --- | --- |
@@ -133,7 +133,7 @@ CLI 读取 Hugo 的生效配置、实际解析到的主题所发布的契约文�
 
 ## CLI 首发：建议 0.1 {#cli-first}
 
-下列命令已在本地 `0.1.0-dev` 候选中实现。当前参数、结果语义与限制由 [CLI 契约](/zh/docs/design/decisions/cli/)及[使用指南](/zh/docs/start/cli/)定义；公开分发与最终验收仍为独立状态。
+下列命令已在本地 `0.1.0-dev` 候选中实现。当前参数、结果语义与限制由 [CLI 契约](/zh/docs/design/decisions/cli/)及[CLI 简介](/zh/docs/cli/)定义；公开分发与最终验收仍为独立状态。
 
 | 命令 | 用户结果 | 首发边界 |
 | --- | --- | --- |

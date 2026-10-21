@@ -19,7 +19,7 @@ aliases:
 
 > [!IMPORTANT] 当前 Hugo 基线
 > 开发、CI 与发布测试统一使用 Hugo Extended {{% param hugoMinVersion %}} 和
-> Go 1.27，Hugo 基线随稳定版更新。使用旧 Starter 快照时，同步更新它的 Hugo
+> Go 1.27，Hugo 默认基线保持固定。使用旧 Starter 快照时，同步更新它的 Hugo
 > workflow 固定版本；不再维护旧 Hugo 兼容性。
 
 ## 选择起点 {#choose}
