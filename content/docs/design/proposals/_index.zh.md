@@ -42,8 +42,7 @@ Agent 批量索引提案已在输出交付后退役。稳定行为现在归属
 ## CLI 工作区与适配器 {#cli-maintenance-candidate}
 
 显式 workspace 与可选适配器保留在当前收缩后的 CLI 中。
-[当前契约](/zh/docs/design/decisions/cli/#workspace-registry)与
-[使用指南](/zh/docs/start/cli/#workspace-registry)定义命令边界。
+[当前契约](/zh/docs/design/decisions/cli/#workspace-registry)定义命令边界。
 带日期 R1–R8/A18 记录是绑定历史源码/二进制的证据，不能证明后续命令或输出修改。
 有限维护路线继续退出活动导航，尚未建立公开 CLI 发布或部署。
 

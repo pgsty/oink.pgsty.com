@@ -1,17 +1,15 @@
 ---
 title: Callouts
 linkTitle: Callouts
-description: Write notes, warnings and collapsible asides — with colour, icon and title — as `> [!NOTE]` blockquotes, no shortcode involved.
+description: Write notes, warnings, and collapsible asides with colors, icons, and titles. Use `> [!NOTE]` blockquotes without shortcodes.
 weight: 10
 search_keywords: [Callout, Alert, Admonition, note, tip, warning, caution, details, collapsible]
 aliases:
   - /docs/components/layout/
 ---
 
-A callout is a GitHub / Obsidian style blockquote: `> [!TYPE]` on the first
-line, the body underneath. Use it to lift a prerequisite, a warning or an aside
-out of the running text; if a sentence in the prose says it, a callout is not
-needed.
+A callout is a GitHub / Obsidian style blockquote. Put `> [!TYPE]` on the first line and the body below it.
+Use callouts to separate prerequisites, warnings, and asides from prose. If a prose sentence is sufficient, a callout is unnecessary.
 
 ## Shortest form {#minimal}
 
@@ -23,14 +21,12 @@ needed.
 > [!NOTE]
 > Hugo Modules need Go on the machine; an offline archive does not.
 
-Without a title the localized type name is used ("Note" on an English site,
-「注意」 on a Chinese one). The source renders as a GitHub callout on GitHub and
-as a plain blockquote in any other Markdown reader — nothing is ever lost.
+If you omit the title, the callout uses the localized type name: "Note" in English or 「注意」 in Chinese.
+GitHub displays the source as a GitHub callout. Other Markdown readers display a plain blockquote. All content remains available.
 
 ## Ten types {#types}
 
-The first five match GitHub; the other five are semantic types OINK adds. Every
-type has a default icon and accent colour.
+The first five types match GitHub. OINK adds five semantic types. Each type has a default icon and accent color.
 
 ```markdown {title="Source"}
 > [!TIP]
@@ -92,8 +88,7 @@ Type names are case-insensitive.
 
 ## Custom title {#title}
 
-Text after the marker on the same line becomes the title and accepts inline
-Markdown — code, bold, links.
+Text after the marker on the same line becomes the title. It accepts inline Markdown, including code, bold text, and links.
 
 ```markdown {title="Source"}
 > [!WARNING] Rewrites `public/`
@@ -107,8 +102,8 @@ Markdown — code, bold, links.
 
 ## Body content {#body}
 
-The body is page-level Markdown: lists, fenced code, tables, images, nested
-callouts. Every line starts with `>`, fences included.
+The body uses page-level Markdown. It can contain lists, fenced code, tables, images, and nested callouts.
+Start every line with `>`, including fence lines.
 
 ````markdown {title="Source"}
 > [!TIP] Three commands to a live preview
@@ -140,10 +135,8 @@ callouts. Every line starts with `>`, fences included.
 
 ## Collapsing {#collapsible}
 
-A `-` after the type starts the callout closed, a `+` starts it open. Both
-render as a native `<details>`; no JavaScript is loaded. Use them for full
-command output, alternatives, background — anything that need not be visible by
-default.
+A `-` after the type makes the callout initially closed. A `+` makes it initially open.
+Both use native `<details>` and load no JavaScript. Use them for full command output, alternatives, or background information that can remain hidden initially.
 
 ```markdown {title="Source"}
 > [!NOTE]- Why is Go needed?
@@ -163,9 +156,8 @@ default.
 
 ## The neutral disclosure, DETAILS {#details}
 
-`[!DETAILS]` is a disclosure without a semantic colour: closed by default,
-`[!DETAILS]+` open. Use it for long output, whole configuration files, anything
-that has to be foldable.
+`[!DETAILS]` is a disclosure without a semantic color. It is closed by default; `[!DETAILS]+` is open.
+Use it for long output, complete configuration files, or other content that must be collapsible.
 
 ````markdown {title="Source"}
 > [!DETAILS] Full `hugo version` output
@@ -181,9 +173,8 @@ that has to be foldable.
 
 ## Custom icon {#icon}
 
-The line right after the blockquote can carry `{icon="fa-solid fa-xxx"}` — one
-Font Awesome class pair — replacing the type's default icon. The attribute line
-must follow the blockquote immediately, with no blank line between them.
+To replace the default icon, put `{icon="fa-solid fa-xxx"}` after the blockquote. Use one Font Awesome class pair.
+The attribute line must immediately follow the blockquote, with no blank line between them.
 
 ```markdown {title="Source"}
 > [!TIP] PostgreSQL 18 is supported
@@ -197,8 +188,8 @@ must follow the blockquote immediately, with no blank line between them.
 
 ## Nesting {#nesting}
 
-Callouts nest (one more `>` per level) and can sit inside list items or steps.
-One level of nesting is plenty.
+To nest callouts, add one `>` per level. Callouts can also appear inside list items or steps.
+One nesting level is sufficient.
 
 ```markdown {title="Source"}
 > [!WARNING] Back up before upgrading
@@ -216,8 +207,7 @@ One level of nesting is plenty.
 
 ## Unknown types and common slips {#pitfalls}
 
-An unknown type name neither fails the build nor loses content: the block
-renders as an ordinary blockquote with the `[!TYPE]` marker still visible.
+Unknown type names do not fail the build or remove content. The block renders as an ordinary blockquote with its `[!TYPE]` marker visible.
 
 ```markdown {title="Source"}
 > [!NOTICE] Not a valid type
@@ -227,7 +217,7 @@ renders as an ordinary blockquote with the `[!TYPE]` marker still visible.
 > [!NOTICE] Not a valid type
 > The marker stays on the page to tell you so.
 
-Other things that bite:
+Other common problems:
 
 - Formatters such as Prettier can merge titles into the body. Keep an empty `>` line below the title to prevent this.
 - Formatters can move attribute lines. Wrap marker lines such as `{icon=…}` in `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->`.
@@ -268,12 +258,10 @@ The attribute line `{…}`, immediately after the blockquote:
 
 ## Limits {#limits}
 
-- Colours cannot be customized: the type decides. When you need a new meaning,
-  pick the closest type and write your own title.
-- The collapsed state is not persisted.
-- Callouts work inside `{.steps}` list items and `{{%/* steps */%}}` steps (see
-  [Steps](/docs/components/steps/)); every line of the blockquote starts with
-  `>` and lines up with the list item's indent.
+- Colors cannot be customized. The type sets the color. If you need a new meaning, choose the nearest type and write a title.
+- The collapsed state is not saved.
+- Callouts work inside `{.steps}` list items and `{{%/* steps */%}}` steps. See [Steps](/docs/components/steps/).
+  Start every blockquote line with `>` and align it with the list item's indentation.
 
 ## Related {#related}
 

@@ -1,37 +1,35 @@
 ---
 title: Use OINK Starter
 linkTitle: OINK Starter
-description: Turn the official starter into your project site, one controlled layer at a time — languages, identity, home page, content, navigation, brand, integrations, and deployment.
+description: "Create your project site from the official Starter. Change one part at a time: languages, identity, home page, content, navigation, brand, integrations, and deployment."
 weight: 10
 icon: fa-solid fa-wand-magic-sparkles
 search_keywords: [OINK Starter, GitHub template, use this template, customize starter, starter repository]
 ---
 
 [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter) is the supported
-starting point for a new OINK site. It is deliberately smaller than
-`oink.pgsty.com`: no theme documentation, analytics account, comment
-repository, browser regression suite, or PGSTY-specific brand is copied into
-your project.
+starting point for a new OINK site. It is smaller than
+`oink.pgsty.com`. It copies no theme documentation, analytics account, comment
+repository, browser regression suite, or PGSTY-specific brand into your project.
 
 Use Git, Go 1.27 or newer, and Hugo Extended 0.168.0 for this workflow.
 Validate the selected language profiles with this toolchain and update older
-Starter workflow pins to match. The Hugo baseline advances with stable
-releases; older versions receive no compatibility testing or adaptation.
+Starter workflow pins to match. The default Hugo version stays pinned; older versions receive no compatibility testing or adaptation.
 
 ## What the template contains {#contents}
 
 | Surface | Included baseline | First decision |
 | --- | --- | --- |
 | Languages | English, Simplified Chinese, French | Keep all three, or select a supplied single/bilingual profile |
-| Content | Docs, Blog, and a short Book tutorial | Rewrite the examples; delete a whole surface only when you do not need it |
+| Content | Docs, Blog, and a short Book tutorial | Rewrite the examples. Delete a whole surface only if you do not need it |
 | Home | One compact `data/home/<lang>.yaml` per language | Replace the project promise and destinations |
 | Brand | Neutral logo and favicon | Keep them until real project artwork exists |
 | Integrations | Repository, Giscus, analytics, share, and feedback examples are commented | Enable only complete configurations you intend to operate |
 | Deployment | GitHub Pages and Cloudflare Pages Direct Upload workflows | Choose one production path and verify its real URL |
 
 The Starter's own Book at `/book/` is a four-chapter tour from preview to
-deployment. This page is the maintainer-grade version: it explains the order of
-changes, the boundaries between them, and the checks after each layer.
+deployment. This page gives maintainers more detail. It explains the order of changes,
+their boundaries, and the checks after each group of changes.
 
 ## Create your repository {#create-repository}
 
@@ -47,8 +45,8 @@ cd PROJECT-DOCS
 hugo server
 ```
 
-This gives your site its own Git history and keeps the original Starter as an
-upstream reference rather than as a remote you might accidentally push to.
+This creates your site's own Git history. The original Starter remains an
+upstream reference rather than a remote for pushes.
 
 ### Clone the original to evaluate it {#clone-original}
 
@@ -61,7 +59,7 @@ hugo server
 ```
 
 Do not start a real project by deleting this clone's `.git` directory. GitHub's
-template operation already creates the clean project boundary and preserves an
+template operation already creates a separate project and preserves an
 auditable first commit.
 
 ## Preview before changing anything {#preview}
@@ -80,8 +78,8 @@ hugo mod graph | grep github.com/pgsty/oink
 ```
 
 The template snapshot `137843b` documented here pins
-`github.com/pgsty/oink@v1.0.0`; if the template has since changed, use the version
-in your clone's `go.mod`. This unchanged preview is your baseline. After that
+`github.com/pgsty/oink@v1.0.0`. If the template has changed, use the version
+in your clone's `go.mod`. Use this unchanged preview as your baseline. After that
 first success, upgrade a site still using 1.0 as a separate step with the
 [1.0-to-1.1 checklist](/docs/admin/upgrade/#from-1-0), before customizing content.
 
@@ -98,14 +96,14 @@ cp examples/hugo.single.yaml hugo.yaml     # English only
 cp examples/hugo.bilingual.yaml hugo.yaml  # English + Chinese
 ```
 
-These are complete minimal configurations, not fragments: copying one replaces
-the commented integration examples in the root file. Do it at the beginning;
-if `hugo.yaml` already contains project changes, merge the `languages` and
-`disableLanguages` sections instead of overwriting it.
+These are complete minimal configurations. Copying one replaces the commented
+integration examples in the root file. Copy it before other changes.
+If `hugo.yaml` already contains project changes, merge the `languages` and
+`disableLanguages` sections. Do not overwrite the file.
 
 If you already changed the title and URL in Get started, keep that file. To
 change the default three-language setup to English and Chinese, add only
-`disableLanguages: [fr]` at the top level; use `[zh, fr]` for English only.
+`disableLanguages: [fr]` at the top level. For English only, use `[zh, fr]`.
 This preserves the identity and integration settings you have already changed.
 
 Disabled languages stay declared so Hugo recognizes `.zh.md` and `.fr.md` as
@@ -134,12 +132,12 @@ params:
 ```
 
 Run `hugo server` again and check the browser title, footer, edit/history links,
-and canonical URL. Do not change the logo yet unless the project has final
-artwork; text identity is easier to review first.
+and canonical URL. Change the logo only if the project has final
+artwork. Review the text identity first.
 
 ### Layer 3: home page {#home}
 
-The home page is data rather than an opaque layout override:
+Home-page content is stored in data rather than a layout override:
 
 ```text
 data/home/en.yaml
@@ -147,14 +145,14 @@ data/home/zh.yaml
 data/home/fr.yaml
 ```
 
-Edit one language first. In each file, `sections` fixes the order; `hero`,
+Edit one language first. In each file, `sections` determines the order. `hero`,
 `cards`, and `cta` provide the content. Replace the promise, destination URLs,
-and sample card copy while keeping the structure. After the first language is
-right, translate the same information into the enabled peers.
+and sample card text. Keep the structure. After you approve the first language,
+translate the same information into each enabled peer.
 
 For another composition, use the full registry in
-[Home and landing pages](/docs/customize/home/); do not copy the Starter home
-partial, because there is no site-specific template to copy.
+[Home and landing pages](/docs/customize/home/). Do not copy the Starter home
+partial. There is no site-specific template to copy.
 
 ### Layer 4: content and navigation {#content-navigation}
 
@@ -167,9 +165,9 @@ content/blog/  posts, design records, and release announcements
 content/book/  a sequential long-form guide
 ```
 
-The content tree becomes the sidebar. Top navigation lives in `menus.main` on
-the translated `_index` roots, so renaming Docs, Blog, or Book happens beside
-the content it names rather than in a second global menu tree. Keep translated
+The content tree becomes the sidebar. `menus.main` on the translated `_index`
+roots controls top navigation. Rename Docs, Blog, or Book beside its content.
+There is no second global menu tree. Keep translated
 files side by side and give corresponding headings the same explicit IDs:
 
 ```text
@@ -179,7 +177,7 @@ page.fr.md
 ```
 
 Follow [Organizing content](/docs/write/organize/) before creating a custom
-navigation data file; the generated tree is enough for most sites.
+navigation data file. The generated tree is enough for most sites.
 
 ### Layer 5: brand and reader features {#brand-features}
 
@@ -206,12 +204,12 @@ The Starter leaves repository actions, Giscus, Google Analytics, feedback, and
 sharing off or commented. Enable an integration only after all of its required
 facts are known:
 
-- repository links need the real owner, repository, and branch;
-- Giscus needs its repository/category names and immutable IDs;
-- Google Analytics needs a project-owned measurement ID;
-- feedback records structured `gtag` events only when analytics is present;
-- assistant links send the current URL to a third party and therefore require
-  an explicit policy choice.
+- Repository links need the real owner, repository, and branch.
+- Giscus needs its repository/category names and immutable IDs.
+- Google Analytics needs a project-owned measurement ID.
+- Feedback records structured `gtag` events only if analytics is present.
+- Assistant links send the current URL to a third party. They require an
+  explicit policy choice.
 
 An incomplete optional block should remain commented. See
 [Comments](/docs/admin/comments/), [Analytics and SEO](/docs/admin/analytics/),
@@ -229,7 +227,7 @@ hugo --cleanDestinationDir --gc --minify --environment production \
   --printPathWarnings
 ```
 
-Commit `hugo.yaml`, `go.mod`, and `go.sum`; never commit generated `public/`,
+Commit `hugo.yaml`, `go.mod`, and `go.sum`. Never commit generated `public/`,
 `resources/`, module caches, or a local module replacement.
 
 ### GitHub Pages {#github-pages}
@@ -248,19 +246,19 @@ variable `CLOUDFLARE_PAGES_ENABLED=true` for automatic deploys, and
 `CLOUDFLARE_SITE_URL` when the canonical address is not the default
 `pages.dev` domain.
 
-Use either Direct Upload or Cloudflare Git integration for one project, not
-both. The complete host comparison and `baseURL` rules are in
+For one project, choose either Direct Upload or Cloudflare Git integration.
+Do not use both. The complete host comparison and `baseURL` rules are in
 [Deploy](/docs/admin/deploy/).
 
 ## Verify and remove samples {#verify}
 
-Before calling the site ready:
+Before you declare the site ready, complete these checks:
 
 1. Search for placeholders such as `Project Name`, `example.org`, `OWNER`, and
    `PROJECT`, then decide whether each remaining occurrence is intentional.
 1. Open every enabled language root and representative Docs, Blog, and Book
    pages on desktop and mobile.
-1. Confirm language switching lands on peers, not the home page.
+1. Confirm that language switching opens peer pages rather than the home page.
 1. Test search, dark mode, one component, Markdown output, print, 404, canonical
    URLs, and repository actions.
 1. Check the deployed workflow and the public URL separately from the local

@@ -1,7 +1,7 @@
 ---
 title: Releases and downloads
 linkTitle: Releases and downloads
-description: Record versions, tags, archive links, checksums and install commands as local facts, then let release cards, asset tables, download blocks and index pages derive from that one record.
+description: Record versions, tags, archive links, checksums, and install commands locally. Release cards, asset tables, download blocks, and index pages use these records.
 weight: 60
 search_keywords: [release, download, checksums, sha256, release card, asset table, rolling channel, pinned version]
 release_url: https://github.com/pgsty/oink/releases/tag/v0.4.0
@@ -9,18 +9,18 @@ aliases:
   - /docs/scenarios/releases/
 ---
 
-OINK keeps release facts in two local places: a `release_url` in a page's
-front matter names the GitHub release this page is about, and
-`data/download/<key>.yaml` says how to install it. Release cards, asset tables, download blocks and index pages all
-derive from those two. Nothing contacts GitHub at build time, and nothing claims
-a tag or an asset already exists.
+OINK stores release facts in two local places. A page's front matter
+`release_url` identifies its GitHub release. `data/download/<key>.yaml` records
+installation instructions. Release cards, asset tables, download blocks, and
+index pages use those records. Nothing contacts GitHub at build time. Nothing
+claims that a tag or asset already exists.
 
 > [!NOTE] This page carries demonstration release facts
 > Its front matter holds a `release_url` (OINK v0.4.0), and the card, asset
 > table and download block below are really rendered. The checksums and asset
-> filenames are fabricated: the URLs are derived locally from the repository and
-> the tag, the files they point at do not exist in any real release, and the
-> hashes here must not be used to verify anything.
+> filenames are fabricated. The URLs are derived locally from the repository and
+> tag. Their target files do not exist in any real release.
+> Do not use these hashes to verify anything.
 
 ## Components and where the facts come from {#overview}
 
@@ -33,8 +33,8 @@ a tag or an asset already exists.
 
 ## The page owns the release facts {#release-facts}
 
-One key in the release page's front matter is the whole record — the exact-tag
-GitHub release URL:
+One front matter key contains the release record. It is the GitHub release URL
+for an exact tag:
 
 ```yaml {title="content/blog/release/0.4.0.md"}
 release_url: https://github.com/pgsty/oink/releases/tag/v0.4.0
@@ -44,11 +44,11 @@ The URL supplies the owner, project, and tag. The page's `date` supplies the
 date. An invalid exact-tag GitHub release URL warns and skips the release block.
 The 0.5
 `release` map (product / version / repo / tag / date / prev / checksums) and
-its string shorthand are gone; a page still carrying one gets a warning that
-names `release_url`.
+its string shorthand are removed. A page that still uses either gets a warning
+that names `release_url`.
 
-Put a parameterless shortcode wherever the summary belongs; the call itself
-accepts no facts:
+Put a parameterless shortcode where you want the summary. The call accepts
+no release facts:
 
 ```markdown {title="Source"}
 {{</* release-card */>}}
@@ -56,16 +56,16 @@ accepts no facts:
 
 {{< release-card >}}
 
-The card carries the four links the URL alone can name — the release, both
-source archives, and the repository — all derived locally. Checksum files
+The card shows four locally derived links: the release, both source archives,
+and the repository. Checksum files
 belong in the asset table below a note, and comparisons live on GitHub.
 
 ## The release index page {#release-index}
 
 A section can switch to the release index layout. It lists every regular page
-of the section, newest first — the page date, with the tag's version as the
-tiebreaker inside one day (SemVer precedence, with a deterministic fallback
-for non-SemVer tags):
+in the section, newest first by page date. Within one day, the tag's version
+breaks ties. It uses SemVer precedence with a deterministic fallback for
+non-SemVer tags:
 
 ```yaml {title="content/blog/release/_index.md"}
 ---
@@ -74,11 +74,11 @@ layout: releases
 ---
 ```
 
-An entry whose `release_url` parses reads as `project tag` — `oink v0.4.0` —
-over the page's description; a page without one keeps its own title, so a
-plain note between releases is a plain entry, not a warning. The 0.5
+If `release_url` parses, the entry shows `project tag`, such as `oink v0.4.0`,
+above the page description. A page without that URL keeps its own title. A
+plain note between releases is therefore an ordinary entry and causes no warning. The 0.5
 `release_products` filter and `release_group_by_product` grouping are gone;
-naming either warns.
+Using either warns.
 
 This site's [Releases](/blog/release/) currently uses the ordinary blog list.
 Switch to `layout: releases` when a strict chronology is wanted.
@@ -108,9 +108,9 @@ number. Review the warning and rendered fallback before publication. A filename 
 architecture badges are inferred from the filename. They are decorative.
 If inference fails, no badge appears.
 
-The base for asset links: with `release_url` front matter on the page it is derived
-as `https://github.com/<repo>/releases/download/<tag>/`; a page without release
-facts must write `base=` explicitly. Having both is an error.
+If the page has `release_url` front matter, the base for asset links is derived
+as `https://github.com/<repo>/releases/download/<tag>/`. A page without release
+facts must set `base=` explicitly. Having both is an error.
 
 ````markdown {title="a page with no release front matter"}
 ```checksums {base="https://repo.pigsty.io/oink/v0.4.0/" algo="sha256"}
@@ -119,9 +119,9 @@ facts must write `base=` explicitly. Having both is an error.
 ````
 
 `release-assets` is the shortcode form of the same parser and renderer. It adds
-one thing the fence lacks, `src=`, so the checksum file itself can be committed
-as a page resource or a global asset (`src` and inner content are mutually
-exclusive); `group="auto"` groups by platform and architecture:
+one parameter that the fence lacks, `src=`. Use it for a checksum file stored
+as a page resource or global asset. `src` and inner content are mutually
+exclusive. `group="auto"` groups by platform and architecture:
 
 ```markdown {title="Source"}
 {{</* release-assets group="auto" */>}}
@@ -135,16 +135,15 @@ c93f16a8d052b7e41ac68d3907b25fe0a41d8c7362b95e0187ac4d63f9520ea8  oink-0.4.0-1.e
 c93f16a8d052b7e41ac68d3907b25fe0a41d8c7362b95e0187ac4d63f9520ea8  oink-0.4.0-1.el9.aarch64.rpm
 {{< /release-assets >}}
 
-In HTML the hash is shown truncated while the full value stays in the accessible
-name and in what the copy button copies, and that button comes from a local
-runtime loaded on demand. With JavaScript disabled it is still a complete linked
+HTML shows a truncated hash. The accessible name and copied text retain the
+full value. The copy button uses a local runtime loaded on demand. With JavaScript disabled it is still a complete linked
 table. Print expands the full hash without controls, and Markdown and RSS emit a
 pipe table of full hashes.
 
 ## Download channel data {#download-data}
 
-How to install belongs to the product rather than to one release, so it lives in
-`data/download/<key>.yaml`. This site's real record is
+Installation instructions belong to the product rather than one release. Store
+them in `data/download/<key>.yaml`. This site's real record is
 `data/download/prd5.yaml`:
 
 ```yaml {title="data/download/prd5.yaml"}
@@ -201,14 +200,14 @@ Each channel:
 
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
-| `id` | `^[a-z][a-z0-9-]*$` | — | Unique within the record; used as the anchor |
+| `id` | `^[a-z][a-z0-9-]*$` | — | Unique within the record. Used as the anchor |
 | `kind` | `rolling` \| `pinned` | — | Decides whether release facts may be interpolated |
 | `title` | localized string | — | Must resolve to a non-empty value |
 | `note` | localized string | — | One line of explanation under the channel |
 | `icon` | Font Awesome class pair | — | For example `fa-solid fa-bolt` |
 | `url` | http(s) or a site path | — | Interpolatable on `pinned` only |
 | `steps[]` | `title` / `code` / `lang` | `lang: text` | Code steps go through OINK's enhanced code renderer |
-| `checksums` | `sha*sum` text | — | `pinned` only; mutually exclusive with `checksums_src` |
+| `checksums` | `sha*sum` text | — | `pinned` only. Mutually exclusive with `checksums_src` |
 | `checksums_src` | asset path | — | Reads the checksum file as a Hugo asset |
 {.fields meta="type default"}
 
@@ -227,13 +226,13 @@ Two rules:
 
 {{< download "prd5" >}}
 
-In HTML it renders a row of anchor chips plus one section per channel; code
-steps reuse the enhanced code block and its on-demand copy runtime, and a
-checksum channel reuses the asset table above. Print statically expands the same
+HTML renders a row of anchor chips and one section per channel. Code steps
+reuse the enhanced code block and its on-demand copy runtime. A checksum
+channel reuses the asset table above. Print statically expands the same
 content, Markdown emits the titles, source fences and full hashes, and RSS omits
 the component.
 
-Before the tag is cut and the assets are uploaded, mark the record unpublished:
+Before you create the tag and upload assets, mark the record unpublished:
 
 ```yaml {title="data/download/<key>.yaml"}
 published: false
@@ -241,36 +240,36 @@ published: false
 
 Rolling channels keep working. Pinned channels become an unclickable "pending
 release" state, omit the pinned commands, and disable asset links and copy
-controls. Flip the switch once the tag and the assets resolve, rather than
-writing a guessed link into the prose first.
+controls. After the tag and assets resolve, change the publication state. Do not write
+a guessed link in the prose.
 
-The same record can also feed a landing page's `download` section, with no
-second version model — see
+The same record can supply a landing page's `download` section. No second version
+model is required. See
 [Home and landing pages](/docs/customize/home/).
 
 ## How this relates to blog release notes {#release-notes}
 
 The two have different jobs:
 
-- A release note in the blog (this site keeps them in `content/blog/release/`) is the narrative: what changed, how to upgrade, what breaks. Its front matter carries `release_url`, and a `release-card` can sit at the top. How to write one is in [Blog posts](/docs/write/blog/).
-- The download data is the operation: which channel, which command, which hash. It is decoupled from the version number, so an upgrade edits one place.
+- A release note in the blog (this site keeps them in `content/blog/release/`) explains what changed, how to upgrade, and what breaks. Its front matter carries `release_url`, and a `release-card` can sit at the top. For writing instructions, see [Blog posts](/docs/write/blog/).
+- Download data identifies the channel, command, and hash. It is separate from the version number. An upgrade changes one place.
 
-The order for a release: update `version` in `data/download/<key>.yaml` → write a
-new `content/blog/release/<version>.md` with its `release_url` → flip
-`published` to `true` once the tag and assets are in place.
+For a release, follow this order: update `version` in `data/download/<key>.yaml` → write a
+new `content/blog/release/<version>.md` with its `release_url` → set
+`published` to `true` after the tag and assets are in place.
 
 ## Verify {#verify}
 
 1. Build with visible diagnostics: `hugo --printPathWarnings`. A malformed hash line, mixed algorithms, a missing `base` and a misspelled channel field all produce warnings that need review.
 2. On the page: the card's tag and date match the repository, and every asset row opens a real download URL.
-3. Check the hashes against the actual artifacts by hand: the component only lays them out and verifies nothing.
+3. Check hashes against the actual artifacts manually. The component only displays them. It verifies nothing.
 4. Confirm the hashes are complete in non-HTML output:
 
 ```bash
 curl -s http://localhost:1313/docs/write/releases/index.md | grep -c '^| '
 ```
 
-5. Rehearse with `published: false` first and switch to `true` only once the tag and assets really exist; test each language and a subpath deployment.
+5. Test with `published: false` first. Set it to `true` only after the tag and assets exist. Test each language and a subpath deployment.
 
 ## Related {#related}
 

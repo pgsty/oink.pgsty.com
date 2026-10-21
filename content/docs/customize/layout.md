@@ -1,16 +1,15 @@
 ---
 title: Layouts and page types
 linkTitle: Layouts and page types
-description: Let `type` decide which shell a page uses, then adjust sidebar width and icons, outline depth, section index style and page width.
+description: Select the page shell with `type`. Set sidebar width and icons, outline depth, section index style, and page width.
 weight: 50
 search_keywords:
   [layout, page type, shell, sidebar, table of contents, TOC, section index, page width, type]
 ---
 
-This page covers a page's skeleton: whether it has a sidebar, how wide that is,
-how deep the outline goes, and whether a section index is a list or cards. Where
-content goes is in [Organizing content](/docs/write/organize/); this page is
-only about the shell.
+This page describes the page shell. Configure sidebar visibility and width,
+outline depth, and list or card styles for section indexes. For content
+locations, see [Organizing content](/docs/write/organize/).
 
 The rule is that **the shell follows `type`, not the path**. Documentation can
 live anywhere under `content/` as long as it has `type: docs`.
@@ -31,7 +30,7 @@ params:
 | `docs` | The documentation shell: left sidebar (section switcher + tree) + body + right-hand outline |
 | `book` | The documentation shell, plus numbered targets, the `reading_width` measure and the draft banner |
 | `blog` | The documentation shell, with the sidebar expanded by default and RSS as the left half of the title row |
-| `swagger` | The documentation shell, with the body handed to Swagger UI or Redoc — see [API reference pages](/docs/write/openapi/) |
+| `swagger` | The documentation shell, with Swagger UI or Redoc rendering the body. See [API reference pages](/docs/write/openapi/) |
 | Any other type | An ordinary page: navbar + single-column body + footer, with no sidebar |
 
 OINK 1.3.0 adds `expo`: a shared sidebar and an image album,
@@ -41,8 +40,8 @@ See [Expo albums](/docs/write/expo/).
 
 Taxonomy and term pages are not in this table but use the same shell.
 
-Assigning a type to a subtree uses a cascade, which is how documentation ends up
-at an arbitrary path:
+Use a cascade to assign a type to a subtree. This lets you put documentation
+at any content path:
 
 ```yaml {title="content/handbook/_index.md"}
 ---
@@ -62,10 +61,10 @@ params:
     blog_section: blog
 ```
 
-These two keys **do not decide the shell**. They tell the theme where the
-documentation and blog trees are rooted, for resolving the sidebar root, quick
-links and default icons. The `content/handbook/` example above still has the
-documentation shell, and leaving `docs_section` at `docs` does not affect it.
+These two keys **do not select the shell**. They identify the documentation and
+blog tree roots. The theme uses them to resolve sidebar roots, quick links,
+and default icons. The `content/handbook/` example still uses the documentation
+shell. Keeping `docs_section` set to `docs` does not affect it.
 
 To make a docs page's sidebar root the site home rather than the documentation
 section:
@@ -81,9 +80,9 @@ uses `section`. Review the warning and rendered fallback before publication.
 
 ### Documentation at the site root {#docs-at-root}
 
-A documentation-first site can publish the `docs` section at the URL root while
-the source stays in `content/docs/`. Three pieces of configuration are needed
-together.
+A documentation-first site can publish the `docs` section at the URL root.
+Its source can remain in `content/docs/`. Apply all three configuration changes
+below together.
 
 The first uses Hugo's own `permalinks` to drop the `docs/` segment from URLs:
 
@@ -95,9 +94,9 @@ permalinks:
     docs: /:sections[1:]
 ```
 
-The second keeps the physical site root index usable as a link target while no
-longer competing for the same output path. Every language's site root index
-(`content/_index.md`, `content/_index.zh.md`) needs it:
+The second keeps the physical site root index usable as a link target. It
+prevents that index from competing for the same output path. Apply it to each
+language's site root index (`content/_index.md`, `content/_index.zh.md`):
 
 ```yaml {title="content/_index.md"}
 ---
@@ -106,8 +105,8 @@ build: { render: link }
 ---
 ```
 
-The third declares the sidebar root to be the site home, so the sidebar and the
-pager share one tree:
+The third sets the sidebar root to the site home. The sidebar and pager then
+share one tree:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -116,10 +115,10 @@ params:
     docs_sidebar_root: home
 ```
 
-With `docs_sidebar_root: home`, every top-level section of the site home enters
-that tree. Overview sections that are not part of the reading sequence — blog,
-community, download — opt out with `toc_root: true` in their own `_index.md`,
-which keeps them out of the tree and out of the paging order:
+With `docs_sidebar_root: home`, the tree includes every top-level section of
+the site home. Exclude overview sections outside the reading sequence, such
+as blog, community, and download. Set `toc_root: true` in each section's
+`_index.md` to exclude it from both the tree and paging order:
 
 ```yaml {title="content/blog/_index.md"}
 ---
@@ -133,8 +132,8 @@ with `--printPathWarnings` and resolve every duplicate target before publishing.
 
 ### Landing pages {#landing}
 
-Any page with `layout: landing` uses the landing layout: navbar + a body
-assembled from sections + footer, with no sidebar. How to write the data is in
+A page with `layout: landing` uses a navbar, a body assembled from sections,
+and a footer. It has no sidebar. To write the data, see
 [Home and landing pages](/docs/customize/home/).
 
 ```yaml {title="hugo.yml"}
@@ -148,9 +147,8 @@ and affects no other page.
 
 ## Sidebar {#sidebar}
 
-The sidebar tree comes from the shape of `content/`, ordered by `weight` and
-labelled with `linkTitle` where one exists. What is adjustable is density and
-size:
+The sidebar tree uses the structure of `content/`. It sorts by `weight` and
+uses `linkTitle` labels when present. You can adjust its density and size:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -164,16 +162,16 @@ params:
     sidebar_expand_levels: 2
 ```
 
-- `sidebar_menu_compact` expands only the current branch and its neighbours; `false` expands the whole tree.
-- `sidebar_menu_foldable` lets the reader expand and collapse sections manually. Blog sections are expanded by default; to collapse one by default, write `sidebar_expanded: false` in its `_index.md`.
+- `sidebar_menu_compact` expands only the current branch and adjacent branches. The value `false` expands the complete tree.
+- `sidebar_menu_foldable` lets readers expand and collapse sections manually. Blog sections start expanded. To start one collapsed, set `sidebar_expanded: false` in its `_index.md`.
 - `sidebar_expand_levels` is how many levels are expanded by default.
-- `sidebar_menu_truncate` is the maximum entries rendered per section, so a thousand-page tree does not inflate the HTML past usability.
-- `sidebar_width_min` / `sidebar_width_max` bound drag-resizing on the desktop, in pixels. The reader's adjusted width is kept locally, and double-clicking the divider restores the default.
-- `sidebar_item_overflow` defaults to `ellipsis` (long titles truncate); a site with many long titles can use `wrap`.
+- `sidebar_menu_truncate` limits rendered entries per section. This keeps the HTML usable for a thousand-page tree.
+- `sidebar_width_min` / `sidebar_width_max` set desktop drag-resizing limits in pixels. The browser stores the adjusted width locally. Double-click the divider to restore the default.
+- `sidebar_item_overflow` defaults to `ellipsis`, which truncates long titles. For many long titles, use `wrap`.
 
 At `sidebar_cache_limit`, pages with the same effective settings may share a
-neutral rendered tree. It remains visible and navigable without JavaScript;
-the shell runtime only adds the current path and opens its ancestors. Page or
+neutral rendered tree. It remains visible and navigable without JavaScript.
+The shell runtime only adds the current path and opens its ancestors. Page or
 cascade overrides select the matching cached variant. A Book page with
 `sidebar_headings` enabled keeps its page-specific tree instead.
 
@@ -275,8 +273,8 @@ params:
 | `groups` | Only the root and nodes with children show icons |
 | `none` | No entry icons in the sidebar |
 
-An invalid value only warns and falls back to `all` rather than failing the
-build. This site uses `groups`.
+An invalid value warns and falls back to `all`. It does not fail the build.
+This site uses `groups`.
 
 ### Expanding headings in the sidebar {#sidebar-headings}
 
@@ -299,8 +297,8 @@ remains available.
 
 ## Table of contents {#toc}
 
-The right-hand outline is generated by Hugo from the Markdown headings, and the
-levels collected are Hugo's own configuration:
+Hugo generates the right-hand outline from Markdown headings. Configure the
+collected levels in Hugo's own settings:
 
 ```yaml {title="hugo.yml"}
 markup:
@@ -310,11 +308,11 @@ markup:
     ordered: false
 ```
 
-The normal shell runtime always tracks the active heading. It draws a continuous
-rail, highlights the current section, and marks the position without a separate
-switch. The reader can collapse the right column entirely, and that state is
-kept locally. Below `xl` the right column is hidden and its content moves into
-the sidebar drawer.
+The normal shell runtime always tracks the active heading. It draws a
+continuous rail, highlights the current section, and marks the position. No
+separate switch is required. Readers can collapse the right column. The browser
+stores that state locally. Below `xl`, the right column hides, and its content
+moves to the sidebar drawer.
 
 The 1.2.0 working implementation decodes valid URL fragments when tracking
 headings. A malformed percent sequence falls back to the literal heading ID,
@@ -322,15 +320,14 @@ including when following a link to a heading near the page end.
 
 The old `params.ui.scroll_spy` site key and `scroll_spy` page key remain accepted
 as quiet compatibility no-ops throughout 1.x. Either boolean value produces the
-same outline and loads no extra runtime; removing the keys is reserved for a
-future breaking release.
+same outline and loads no extra runtime. The theme will remove these keys only
+in a future breaking release.
 
 To hide the outline on one page, use the front matter `notoc: true`.
 
-Only headings that reach Hugo's table of contents appear in the outline:
-headings emitted by a Markdown-form shortcode (`{{%/* … */%}}`) do, and those
-from an ordinary shortcode (`{{</* … */>}}`) usually do not. Structural headings
-belong in the Markdown.
+The outline includes only headings in Hugo's table of contents. Headings from
+Markdown-form shortcodes (`{{%/* … */%}}`) appear there. Headings from ordinary
+shortcodes (`{{</* … */>}}`) usually do not. Write structural headings in Markdown.
 
 ## Section index style {#section-index}
 
@@ -358,10 +355,10 @@ section_index_columns: 3
 ---
 ```
 
-Related page-level switches: `no_list: true` lists no children;
-`simple_list: true` emits a bulleted list with no descriptions; and a child page
-with `hide_summary: true` removes itself from the list. **Do not hand-write a
-child list**: a hand-written one goes out of step with the sidebar.
+Related page switches control child listings. The setting `no_list: true`
+lists no children. The setting `simple_list: true` emits a bulleted list without
+descriptions. A child with `hide_summary: true` excludes itself from the list.
+**Do not write a child list by hand**. It can become inconsistent with the sidebar.
 
 ## Page width {#page-width}
 
@@ -370,9 +367,10 @@ params:
   page_width: normal # normal | wide | full
 ```
 
-`normal` is the usual reading width, `wide` widens the content column, and
-`full` fills the viewport. It can be overridden per page or per section; wide
-tables, large images and API reference pages often use `wide`:
+The value `normal` uses the usual reading width. The value `wide` widens the
+content column. The value `full` fills the viewport. Override the setting per
+page or per section. Wide tables, large images, and API reference pages often
+use `wide`:
 
 ```yaml {title="content/docs/api/reference.md"}
 ---
@@ -387,9 +385,9 @@ either key warns and uses a fallback in normal preview. Review the warning and r
 
 ## Navbar and footer switches {#chrome}
 
-The navbar and footer are per-page layout decisions, written at the **top
-level** of front matter (not under `ui`), and can be set once with a section
-cascade:
+Configure the navbar and footer per page at the **top level** of front matter.
+Do not put these keys under `ui`. To configure a section, set them once in
+a cascade:
 
 ```yaml {title="content/docs/_index.md"}
 ---
@@ -416,7 +414,7 @@ hugo --printPathWarnings
 - Drag the sidebar divider and reload. Confirm that the width persists. Double-click to restore the default;
 - Below `md` the sidebar becomes a closable drawer, and below `xl` the outline moves into the drawer;
 - A section index has as many cards as the sidebar has child pages;
-- A page with `page_width: wide` is wider than its neighbours;
+- Confirm that a page with `page_width: wide` is wider than adjacent pages;
 - With documentation at the site root, `hugo --printPathWarnings` reports no duplicate output paths.
 
 ## Related {#related}

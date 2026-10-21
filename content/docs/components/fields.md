@@ -1,28 +1,24 @@
 ---
 title: Fields
 linkTitle: Fields
-description: A plain table plus `{.fields}` documents configuration keys, command flags and API fields — name, type, default and description each in place, readable on a narrow screen, every entry individually linkable.
+description: Add `{.fields}` to a table to document configuration keys, command flags, and API fields. Entries adapt to narrow screens and have individual anchors.
 weight: 60
 search_keywords: [Fields, field, configuration key, parameter, API field, meta, type, required, default, definition list, anchor]
 ---
 
-Fields render "a list of named values with metadata and a description" as a
-responsive definition list: the name gets its own line, type / required /
-default sit beside it as small chips, the description starts on the next line,
-and every entry carries its own anchor. Use it for configuration keys, command
-flags and API fields. When readers need to compare many rows across the same
-columns, keep a plain table; when the content is a sequence of actions, use
-steps.
+Fields display named values, metadata, and descriptions as a responsive definition list.
+Each name has its own line. Small chips beside it show type, required status, and default value.
+The description starts on the next line. Each entry has an anchor.
+Use fields for configuration keys, command flags, and API fields.
+Use a plain table to compare many rows across the same columns. Use steps for sequences of actions.
 
-There are two spellings: a plain table plus `{.fields}` (the default choice),
-and the `fields`/`field` shortcode, for when a description needs several
-paragraphs, a list or a code block. Both render the same entries.
+There are two forms. Use a plain table with `{.fields}` by default.
+Use `fields`/`field` shortcodes for descriptions with multiple paragraphs, lists, or code blocks. Both forms display the same entries.
 
 ## Shortest form {#minimal}
 
-A pipe table with at least two columns and `{.fields}` on the next line. The
-first column is the name, the last is the description, and every column in
-between is metadata labelled with its own header text.
+Write a pipe table with at least two columns, then put `{.fields}` on the next line.
+The first column is the name. The last is the description. Middle columns are metadata labeled with their header text.
 
 ```markdown {title="Source"}
 | Parameter | Type | Default | Description |
@@ -40,16 +36,13 @@ between is metadata labelled with its own header text.
 | `page_width` | string | `normal` | Reading column width: `normal` `wide` `full` |
 {.fields}
 
-Metadata here shows as "Header: value". The theme infers nothing from the header
-— `Type` is only a label. The next section turns those into standard chips.
-Cells accept inline Markdown (code, emphasis, links) and empty middle cells are
-omitted.
+Metadata appears as "Header: value". The theme does not infer meaning from headers. `Type` is only a label.
+The next section explains standard chips. Cells accept inline Markdown, including code, emphasis, and links. Empty middle cells are omitted.
 
 ## Semantic columns with `meta=` {#meta}
 
-`meta` says, in order, what each middle column means: `type`, `required`,
-`default`, or `-` to keep the header as a plain label. With it, the table form
-renders the same chips as the shortcode form.
+`meta` assigns a role to each middle column, in order: `type`, `required`, `default`, or `-` for a plain header label.
+With this attribute, tables display the same chips as shortcodes.
 
 ```markdown {title="Source"}
 | Parameter | Type | Required | Default | Description |
@@ -77,7 +70,7 @@ The rules:
 - Semantic chips always appear in this order: `type`, `required`, `default`, regardless of column order.
   `-` columns follow in their original order.
 
-`-` mixes with semantic roles, which is how you keep one custom label:
+Combine `-` with semantic roles to keep a custom label:
 
 ```markdown {title="Source"}
 | Environment variable | Type | Scope | Description |
@@ -95,8 +88,7 @@ The rules:
 
 ## Labels and container IDs {#caption-id}
 
-`caption` gives the whole list a visible label, which is also its accessible
-name; `id` names the outer container so it can be linked to or styled.
+`caption` sets the list's visible label and accessible name. `id` identifies the outer container for links or styles.
 
 ```markdown {title="Source"}
 | Parameter | Type | Default | Description |
@@ -114,19 +106,15 @@ name; `id` names the outer container so it can be linked to or styled.
 
 ## Every entry is linkable {#anchors}
 
-Each entry gets an anchor of the form `field-<name>`, and a self-link icon
-appears beside the name on hover. `page_width` in the first table above is
-[#field-page_width](#field-page_width) — a link you can send on its own when
-answering a question.
+Each entry has a `field-<name>` anchor. A self-link icon appears beside the name on hover.
+For example, `page_width` in the first table has [#field-page_width](#field-page_width). Share this link to refer to that entry.
 
-Duplicate names on one page get `-2`, `-3` suffixes, the same rule Goldmark uses
-for duplicate headings. Anchors are generated in HTML only: print and RSS
-assemble many pages into one document, where in-page anchors would collide.
+Duplicate names on a page receive `-2` and `-3` suffixes, as Goldmark does for duplicate headings.
+Only HTML generates these anchors. Print and RSS combine pages into one document, where these anchors would collide.
 
 ## The shortcode form {#shortcode}
 
-When the description needs several paragraphs, a list or a code block, a table
-cell cannot hold it. Use `fields`/`field`:
+If a description needs multiple paragraphs, a list, or a code block, use `fields`/`field`. A table cell cannot contain these blocks.
 
 ````markdown {title="Source"}
 {{</* fields label="Common pig flags" */>}}
@@ -158,7 +146,7 @@ pig ext install pg_duckdb --dry-run
 Path to the configuration file. Relative paths resolve against the working
 directory.
 
-When `PIG_CONFIG` is also set, the command-line flag wins.
+When `PIG_CONFIG` is also set, the command-line flag takes precedence.
 {{< /field >}}
 {{< field name="--log-level" type="string" default="info" >}}
 Log level, from low to high:
@@ -176,10 +164,9 @@ pig ext install pg_duckdb --dry-run
 {{< /field >}}
 {{< /fields >}}
 
-`required=true` and `default=false` are booleans and take no quotes. `default`
-accepts any scalar: `default=0` and `default=""` both display faithfully (the
-empty string shows as `""`), and omitting `default` omits the chip. Every
-`field` needs a non-empty body and must be a direct child of `fields`.
+`required=true` and `default=false` are booleans. Do not quote them.
+`default` accepts any scalar. Both `default=0` and `default=""` display their values; the empty string appears as `""`.
+If you omit `default`, the chip is omitted. Every `field` needs a nonempty body and must be a direct child of `fields`.
 
 ## Which form to use {#which}
 
@@ -190,8 +177,7 @@ empty string shows as `""`), and omitting `default` omits the chip. Every
 | Readers comparing many rows across the same columns | a plain table, not a field list |
 | Content that is a sequence of actions | [Steps](/docs/components/steps/) |
 
-The table form stays a readable table on GitHub, and OINK's Markdown output
-keeps it as a table. That is why it is the default.
+The table form stays readable on GitHub and remains a table in OINK's Markdown output. It is therefore the default.
 
 ## Output {#outputs}
 

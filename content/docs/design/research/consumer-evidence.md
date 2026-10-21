@@ -1,7 +1,7 @@
 ---
 title: Consumer and migration evidence
 linkTitle: Consumer evidence
-description: A dated corpus snapshot that shaped OINK's shells, authoring primitives, and deterministic Book migration policy.
+description: A dated consumer corpus survey that informed OINK shells, authoring primitives, and deterministic Book migration rules.
 weight: 20
 icon: fa-solid fa-chart-column
 search_keywords: [consumer survey, corpus, migration evidence, Book, DDIA, TPME]
@@ -11,21 +11,21 @@ last_verified: 2026-08-24
 ---
 
 > [!NOTE] Dated corpus snapshot
-> These counts describe the repositories inspected in August 2026. They are
-> evidence for design choices, not live product metrics or compatibility
-> promises.
+> These counts describe repositories inspected in August 2026.
+> They support design decisions. They are not current product metrics or
+> compatibility promises.
 
 ## Corpus {#corpus}
 
-The authoring survey scanned the `content/` trees of eleven OINK consumer sites:
-5,325 Markdown files, of which 5,293 had YAML front matter. The set included
-single-language English and Chinese references, bilingual product sites,
-release archives, custom landing pages, and separate Book consumers.
+The authoring survey scanned the `content/` trees of eleven OINK consumer sites
+and found 5,325 Markdown files, of which 5,293 had YAML front matter.
+The survey included single-language English and Chinese references, bilingual
+product sites, release archives, custom landing pages, and separate Book consumers.
 
-The survey deliberately measured source Markdown rather than generated HTML.
-It counted shortcode calls, fenced-code attributes, callouts, table markers,
-raw HTML, front-matter keys, content types, and site-local layouts. A later
-Book-focused pass added five long-form consumers.
+The survey measured source Markdown rather than generated HTML, counting
+shortcode calls, fenced-code attributes, callouts, table markers,
+raw HTML, front-matter keys, content types, and site-local layouts.
+A later Book-focused survey added five long-form consumers.
 
 ## Findings that changed the design {#findings}
 
@@ -38,30 +38,29 @@ Book-focused pass added five long-form consumers.
 | Sites mixed single-language, peer-file bilingual, and generated-language content                       | Language authority and generation boundaries must be explicit; a migration never treats an untracked generated tree as source                    |
 | Rich HTML pages still needed print, Markdown, feeds, and agent output                                  | Every component declares its output degradation before its interactive HTML is accepted                                                          |
 
-The evidence also rejected several attractive additions. Documentation sites
-did not justify a second Landing system; Book sites did not need a new cover
-component; a serial archive did not justify a new shell type; and remote API
-collection belonged to site-side CI rather than a Hugo theme that promises
-local builds.
+The evidence also argued against several additions: documentation sites did not
+require a second Landing system, Book sites did not need a new cover component,
+and a serial archive did not require a new shell type. Remote API collection
+belonged in site-side CI, outside a Hugo theme that promises local builds.
 
 ## Block and table evidence {#block-and-table-evidence}
 
-A focused pass over eleven sites plus Book consumers found 11,484 pipe tables.
-Only eleven already matched the strict Field-table heading vocabulary, while
-roughly 874 were reference-style tables and about 1,300 were compatibility
-matrices. The result was explicit `.fields` and `.matrix` markers rather than
-shape guessing.
+A focused survey of eleven sites plus Book consumers found 11,484 pipe tables,
+but only eleven matched the strict Field-table heading vocabulary. Roughly 874
+were reference-style tables and about 1,300 were compatibility matrices. OINK
+therefore uses explicit `.fields` and `.matrix` markers rather than inferring
+these components from table shape.
 
-The same pass found eighteen Steps blocks in the eleven-site corpus. They all
-used the full form with headings and rich content. Platform probes showed that
-a native ordered list could carry most of that content, while another full `%`
-container inside a list item could not. OINK therefore keeps both forms for a
-technical capability boundary, not merely for stylistic preference.
+The same survey found eighteen Steps blocks in the eleven-site corpus, all
+using the full form with headings and rich content. Platform probes showed that
+a native ordered list could contain most of that content, but not another full
+`%` container inside a list item. OINK keeps both forms because their technical
+capabilities differ, rather than treating the choice as a style preference.
 
 ## Deterministic Book migration {#book-migration}
 
-Three dated dry-run profiles tested whether the migration rules could account
-for every recognized source without inventing semantics:
+Three dated dry-run profiles checked whether migration rules accounted for
+every recognized source without inventing meaning:
 
 | Profile snapshot     | Classified result                                                                  | Manual boundary                                                 |
 | -------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------- |
@@ -70,29 +69,30 @@ for every recognized source without inventing semantics:
 | TPME                 | 31 figures, 10 tables, 44 numbered references, and 1,018 generic stable references | No skipped recognized item                                      |
 | Private Book profile | 119 figures, 5 tables, and 136 numbered references                                 | 3 ambiguous images retained for manual review                   |
 
-Each profile was dry-run first, wrote only after its ambiguity boundary was
-understood, produced zero changes on a second run, built with warnings fatal,
-and passed rendered kind/number/anchor checks. The public migration toolkit and
-current profile boundaries are documented in
+Each profile first ran without writes, and writes began only after reviewers
+understood its ambiguous inputs. A second run produced zero changes.
+Each profile built with warnings fatal and passed rendered kind/number/anchor
+checks. The public migration toolkit and current profile boundaries are
+documented in
 [Writing a book](/docs/write/book/#migrate) and the
 [migration contract](/docs/design/migration/).
 
 ## Publication adoption snapshot {#publication-adoption}
 
-An isolated 2026-08-24 pass exercised the released generic Book publication
-path against two consumers:
+An isolated 2026-08-24 check tested the released generic Book publication
+path with two consumers:
 
 | Consumer | Generic publication evidence                                                                                 | Downstream status                                                                                         |
 | -------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
 | DDIA     | 23 ordered pages, 131 typed targets, and 292 resolved cross-references; EPUBCheck, internal, and PDF checks passed | At this snapshot it still retained a semantic preprocessor pending independent acceptance of the new gate |
 | TPME     | 18 ordered pages, 41 typed targets, and 1,062 resolved cross-references; the same generic checks passed     | A second consumer confirmed portability; it created no upstream migration gate                            |
 
-This is downstream adoption evidence, not an open upstream design boundary.
+These results record downstream adoption without leaving an upstream design
+decision open.
 
 ## Limits {#limits}
 
 These counts should not be copied into product marketing or used as a current
-site inventory. Repeating the research requires a fresh repository list and a
-new dated report. Paths, uncommitted content, private repository names, raw
-agent transcripts, and generated build artifacts are intentionally excluded
-from this public record.
+site inventory. Repeating the research requires a new repository list and dated
+report. This public record excludes paths, uncommitted content, private
+repository names, raw agent transcripts, and generated build artifacts.

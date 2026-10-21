@@ -1,7 +1,7 @@
 ---
 title: Expo
 linkTitle: Expo
-description: Albums of images, with room to look closer.
+description: Browse image albums and inspect each original.
 weight: 45
 icon: fa-solid fa-images
 cascade:
@@ -9,4 +9,9 @@ cascade:
 outputs: [HTML, print, markdown, RSS, LLMSFULL]
 ---
 
-An Expo demonstration from the local v1.3.0 tag. Switch between a wall, cards, and a seamless wall inside an album.
+Open an album to try Wall, Cards, and Seamless. Select an image to inspect it.
+Use K to zoom in, drag to move the enlarged image, and press R to reset.
+
+Expo is included in OINK v1.3.0. To create your own album, follow
+[Expo albums](/docs/write/expo/). The [layout contract](/docs/design/expo/)
+defines the controls, configuration, and outputs.

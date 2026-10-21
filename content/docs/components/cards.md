@@ -1,21 +1,19 @@
 ---
 title: Cards
 linkTitle: Cards
-description: A link list plus `{.cards}` lays out a grid of navigation cards; switch to the shortcode when you need icons, badges or images.
+description: Add `{.cards}` to a link list to create navigation cards. Use the shortcode for icons, badges, or images.
 weight: 80
 search_keywords: [Cards, card, link card, navigation card, section index, icon, badge]
 ---
 
-Cards are a set of parallel links: each card is a linked title plus a sentence,
-and the grid adapts to the container width. They suit section landing pages,
-"what to read next", and a handful of parallel entry points. They do not suit
-running prose (use paragraphs) or a wall of images (use a
-[gallery](/docs/components/gallery/)).
+Cards provide related links. Each card has a linked title and a sentence. The grid adapts to the container width.
+Use cards for section landing pages, reading recommendations, or a few related entry points.
+Use paragraphs for prose and a [gallery](/docs/components/gallery/) for image collections.
 
 ## Shortest form {#minimal}
 
-A link list with `{.cards}` is a card grid. The link is the title; whatever
-follows ` — ` is the description.
+Add `{.cards}` to a link list to make a card grid. The link becomes the title.
+Text after ` — ` becomes the description.
 
 ```markdown {title="Source"}
 - [Get started](/docs/start/) — Start with OINK Starter, preview locally, then replace the site details with your own.
@@ -29,13 +27,12 @@ follows ` — ` is the description.
 - [Customization](/docs/customize/) — Navigation, search, branding, languages.
 {.cards}
 
-The whole card is the click target, not just the title text. There is no
-`columns` parameter: the column count follows the container width and collapses
-to one on a narrow screen.
+The whole card is clickable. There is no `columns` parameter.
+The number of columns follows the container width and decreases to one on narrow screens.
 
 ## Title-only cards {#title-only}
 
-The description is optional. One link per line, `{.cards}` at the end.
+The description is optional. Put one link on each line and `{.cards}` after the list.
 
 ```markdown {title="Source"}
 - [Callouts](/docs/components/callout/)
@@ -53,10 +50,8 @@ The description is optional. One link per line, `{.cards}` at the end.
 
 ## Loose lists and longer descriptions {#loose}
 
-When a sentence is not enough, switch to a loose list: the link is its own
-paragraph, the description another, with a blank line between items. The title
-takes its own line and the description sits under it. `{.cards}` still has to
-touch the last paragraph — **no blank line** in between.
+If a sentence is insufficient, use a loose list. Put the link and description in separate paragraphs, with blank lines between items.
+The title appears above the description. `{.cards}` must immediately follow the last paragraph, with **no blank line** between them.
 
 ```markdown {title="Source"}
 - [Front matter](/docs/write/frontmatter/)
@@ -84,9 +79,8 @@ touch the last paragraph — **no blank line** in between.
 
 ## Icons and badges {#icon-badge}
 
-A link list has no icons, badges, images or multi-paragraph descriptions; those
-need the `cards` / `card` shortcode. `icon` is exactly one Font Awesome class
-pair and `badge` is plain text.
+Link lists do not support icons, badges, images, or descriptions with multiple paragraphs. Use the `cards` / `card` shortcode for these features.
+`icon` takes exactly one Font Awesome class pair. `badge` is plain text.
 
 ```markdown {title="Source"}
 {{</* cards */>}}
@@ -118,9 +112,8 @@ An invalid Font Awesome class pair warns and is removed in ordinary previews. Re
 
 ## Markdown bodies {#markdown-body}
 
-A `card` body renders as page-level Markdown: inline code, emphasis, links,
-lists. Parameters such as `title` and `badge` are plain text and are not parsed
-as Markdown.
+A `card` body uses page-level Markdown, including inline code, emphasis, links, and lists.
+Parameters such as `title` and `badge` are plain text. They are not parsed as Markdown.
 
 ```markdown {title="Source"}
 {{</* cards */>}}
@@ -154,9 +147,8 @@ A card without `link` renders as a bold title and produces no link.
 
 ## Cards with images {#image}
 
-`image` resolves in the same order as `![alt](src)`: page resource → current
-section resource → global resource in `assets/` → static path `/images/…` → remote URL. Local resources
-carry their intrinsic size so nothing shifts while loading.
+`image` uses the same resolution order as `![alt](src)`: page resource → current section resource → global resource in `assets/` → static path `/images/…` → remote URL.
+Local resources include their intrinsic size, which prevents layout changes during loading.
 
 With `image`, provide exactly one alternative-text source. Use `image_alt="…"` for informative images or `decorative=true` for decorative images.
 If you provide both, the theme warns and keeps the alt text. If you provide neither, it warns and makes the image decorative.
@@ -187,9 +179,8 @@ whole card is already a link.
 
 ## Automatic cards on section pages {#section-index}
 
-A section landing page (`_index.md`) needs no hand-written card list: the theme
-reads each child page's `title`, `description` and `icon` and generates the
-cards. This site turns it on globally in `hugo.yml`:
+A section landing page (`_index.md`) needs no manual card list. The theme generates cards from each child page's `title`, `description`, and `icon`.
+This site enables section cards globally in `hugo.yml`:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -197,19 +188,16 @@ params:
     section_index: cards # list | cards
 ```
 
-One section can override it in its own front matter, or push the choice down a
-whole subtree with `cascade`:
+A section can override this setting in its front matter. Use `cascade` to apply the setting to the whole subtree:
 
 ```yaml {title="content/docs/customize/_index.md"}
 section_index: list
 ```
 
-Automatic and hand-written cards share the `td-content-card` styling; only the
-data source differs. Do not hand-write a list of child pages on a section page —
-it drifts out of step with the sidebar. Hand-write cards only when the set is
-not this section's children (external links mixed in, cross-section
-recommendations). The keys are defined in
-[Configuration](/docs/customize/config/).
+Automatic and manual cards share the `td-content-card` styles. Only their data source differs.
+Do not manually list child pages on a section page. The list can become inconsistent with the sidebar.
+Use manual cards for other sets, such as external links or recommendations from other sections.
+[Configuration](/docs/customize/config/) defines these keys.
 
 ## Which form to use {#forms}
 
@@ -221,8 +209,7 @@ recommendations). The keys are defined in
 | A card with no link | `cards` / `card` shortcode |
 | This section's child pages | nothing at all — `section_index: cards` |
 
-A link list is still a link list on GitHub; a shortcode is not. Use the native
-form whenever it is enough.
+The native form stays readable as a link list on GitHub. Shortcodes do not. Use the native form when it supports your content.
 
 ## Output {#outputs}
 

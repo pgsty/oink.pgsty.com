@@ -9,11 +9,11 @@ aliases:
   - /docs/deploy/local/
 ---
 
-Two commands cover the daily work: `hugo server` previews changes locally, and
-`hugo` produces a `public/` deployable to any static host. The prerequisite is
-Hugo Extended ({{< param hugoMinVersion >}} or newer) on the machine, plus Go
-when the theme comes in as a Hugo Module. The build depends on no Node.js, npm
-or PostCSS — those serve only this repository's own regression checks.
+Use `hugo server` to preview local changes. Use `hugo` to produce a `public/`
+directory that you can deploy to any static host. Install Hugo Extended
+({{< param hugoMinVersion >}} or newer) on the machine. If you install the theme
+as a Hugo Module, also install Go. The build does not require Node.js, npm, or
+PostCSS. Only this repository's regression checks use those tools.
 
 ## The preview server {#hugo-server}
 
@@ -23,10 +23,10 @@ From the site root (the directory holding `hugo.yml`):
 hugo server
 ```
 
-Open <http://localhost:1313/>. Saving a file rebuilds and refreshes the browser,
-and switching Git branches triggers a rebuild too. The first start is slower:
-with the theme as a Hugo Module, Hugo has to download the module through Go into
-its cache, and every start after that reads the cache.
+Open <http://localhost:1313/>. When you save a file, Hugo rebuilds the site and
+refreshes the browser. Switching Git branches also triggers a rebuild. The first
+start is slower. For a Hugo Module, Hugo downloads the module through Go into
+its cache. Later starts read the cache.
 
 ## The switches worth knowing {#server-flags}
 
@@ -35,10 +35,10 @@ its cache, and every start after that reads the cache.
 | `-D` / `--buildDrafts` | off | Also builds pages with `draft: true` |
 | `-F` / `--buildFuture` | off | Also builds pages whose `date` / `publishDate` is in the future |
 | `-E` / `--buildExpired` | off | Also builds pages whose `expiryDate` has passed |
-| `--disableFastRender` | off | Re-renders the whole site on every change instead of incrementally |
-| `-M` / `--renderToMemory` | off (writes to disk) | Renders in memory only, writing no `public/` |
-| `-N` / `--navigateToChanged` | off | The browser jumps to whichever page you saved |
-| `--bind` | `127.0.0.1` | The listen address; use `0.0.0.0` to reach it from a LAN or outside a container |
+| `--disableFastRender` | off | Re-renders the complete site on every change instead of using incremental rendering |
+| `-M` / `--renderToMemory` | off (writes to disk) | Renders only in memory. Writes no `public/` |
+| `-N` / `--navigateToChanged` | off | The browser opens the page you saved |
+| `--bind` | `127.0.0.1` | The listen address. Use `0.0.0.0` for access from a LAN or outside a container |
 | `-p` / `--port` | `1313` | The listen port |
 | `--minify` | off | Minifies the preview too, to reproduce production rendering |
 | `--printPathWarnings` | off | Warns when two pages write to the same target path |
@@ -52,18 +52,19 @@ hugo server -DFE \
   --printPathWarnings --logLevel info
 ```
 
-`-DFE` is shorthand for `-D -F -E`, building drafts, future and expired pages
-together so a newly created page is visible while writing.
+`-DFE` means `-D -F -E`. It builds drafts, future pages, and expired pages
+together. Newly created pages are therefore visible while you write them.
 
 ### A change that did not take effect {#fast-render}
 
-Hugo enables fast render by default, rebuilding only what it judges affected.
-When editing layouts, configuration, `data/`, or a file pulled in by `include`,
-that judgement can miss, and the page appears unchanged. Three steps:
+Hugo enables fast render by default. It rebuilds only the output that it
+identifies as affected. Changes to layouts, configuration, `data/`, or a file
+used by `include` can escape detection. If the page appears unchanged, follow
+these three steps:
 
-1. Restart with `--disableFastRender` and see whether it comes back.
-1. Hard-refresh the browser (`Cmd`/`Ctrl` + `Shift` + `R`) to rule out browser cache.
-1. If it still does not, [clear the caches](#clean-caches) and restart.
+1. Restart with `--disableFastRender`. Check whether the change appears.
+1. Force a browser refresh (`Cmd`/`Ctrl` + `Shift` + `R`) to exclude browser cache as the cause.
+1. If the change still does not appear, [clear the caches](#clean-caches) and restart.
 {.steps}
 
 ### Reaching it from another device {#bind}
@@ -74,9 +75,9 @@ preview on a phone or another machine:
 hugo server --bind 0.0.0.0 --port 1313 --baseURL http://192.168.1.10:1313/
 ```
 
-`--baseURL` must be an address the other device can reach, or the page opens
-while CSS and the search index — anything using an absolute path — point at
-`localhost`.
+Set `--baseURL` to an address that the other device can reach. Otherwise, the
+page opens, but resources with absolute paths point to `localhost`. These
+resources include CSS and the search index.
 
 ## Production build {#production-build}
 
@@ -86,8 +87,8 @@ Build deployable output with `hugo`, not `hugo server`:
 hugo --gc --minify --printPathWarnings
 ```
 
-The output goes to `public/`, which can be deployed independently of the source
-tree. Each of the four switches does one thing:
+Hugo writes the output to `public/`. You can deploy it independently of the
+source tree. The four switches have these functions:
 
 | Switch | Description |
 | --- | --- |
@@ -120,16 +121,17 @@ hugo --minify --baseURL "https://example.com/docs/"
 When deploying to a subpath, `--baseURL` must include that path segment; the
 details are in [Deploy](/docs/admin/deploy/#baseurl).
 
-The build environment is chosen with `-e` / `--environment`; `hugo` defaults to
-`production` and `hugo server` to `development`. That choice has three visible
-consequences in OINK:
+Select the build environment with `-e` / `--environment`. The default is
+`production` for `hugo` and `development` for `hugo server`. This choice has
+three visible effects in OINK:
 
-- Only `production` emits `<meta name="robots" content="index, follow">`; other environments emit `noindex, nofollow`.
-- Under `production` `robots.txt` is `Allow: /`; elsewhere it is `Disallow: /`.
+- Only `production` emits `<meta name="robots" content="index, follow">`. Other environments emit `noindex, nofollow`.
+- In `production`, `robots.txt` contains `Allow: /`. In other environments, it contains `Disallow: /`.
 - Only `production` renders Hugo's Google Analytics template, and only there are static assets fingerprinted with SRI.
 
-Build preview deployments (PR previews, staging) with a non-production
-environment, and the output declines indexing and analytics by itself:
+For preview deployments, including PR previews and staging, use a
+non-production environment. The output automatically disables analytics and
+requests no indexing:
 
 ```bash {title="Terminal"}
 hugo --minify --environment staging --baseURL "$PREVIEW_URL"
@@ -137,9 +139,8 @@ hugo --minify --environment staging --baseURL "$PREVIEW_URL"
 
 ## Previewing in a container {#container}
 
-A container is not required. Two situations suit one: a team that needs a pinned
-toolchain version, or one that would rather not install Hugo on every developer
-machine.
+A container is optional. Use one if your team needs a pinned toolchain version
+or does not want to install Hugo on every developer's machine.
 
 ```dockerfile {title="Dockerfile" collapse=16}
 FROM debian:bookworm-slim
@@ -180,29 +181,29 @@ docker run --rm --user "$(id -u):$(id -g)" \
   oink-hugo --gc --minify
 ```
 
-Go is in the image because Hugo needs it to resolve and download the module when
-the theme comes in as a Hugo Module. A site using a submodule, an offline
-archive or a plain clone can drop Go, and the image gets much smaller.
+The image includes Go because Hugo needs it to resolve and download a Hugo
+Module. If the site uses a submodule, offline archive, or plain clone, you can
+remove Go. This makes the image much smaller.
 
 > [!WARNING] Do not let root write `public/`
-> A container process is root by default, the generated `public/` belongs to
-> root, and the host cannot delete it. In a shared environment, map the user ID
-> with `--user "$(id -u):$(id -g)"` (the production build command above already
-> does).
+> A container process runs as root by default. The generated `public/` belongs
+> to root, so the host cannot delete it. In a shared environment, map the user
+> ID with `--user "$(id -u):$(id -g)"`. The production build command above
+> already does this.
 
-The image needs no Node.js, npm or PostCSS, and should have no step fetching
-remote browser assets. A network-isolated environment needs the base image and
-those two packages mirrored in advance.
+The image requires no Node.js, npm, or PostCSS. It should not fetch remote
+browser assets. For a network-isolated environment, mirror the base image and
+the Hugo and Go packages in advance.
 
 ## Clearing caches {#clean-caches}
 
-Hugo's intermediate output lives in three places; clear them lightest first:
+Hugo stores intermediate output in three places. Clear the smallest scope first:
 
 | Directory / command | Contents | When to clear |
 | --- | --- | --- |
-| `public/` | The previous build's output | A page was deleted but is still live; or let the build clear it with `hugo --cleanDestinationDir` |
-| `resources/_gen/` | Processed images and compiled CSS | Image processing parameters, fonts or the accent colour changed and the page still looks old |
-| `hugo mod clean` | The Hugo Module cache | The theme version changed but the old one still resolves; add `--all` to clear the whole module cache |
+| `public/` | The previous build's output | A deleted page remains live. You can also let the build clear this directory with `hugo --cleanDestinationDir` |
+| `resources/_gen/` | Processed images and compiled CSS | Image processing parameters, fonts, or the accent color changed, but the page still shows the old appearance |
+| `hugo mod clean` | The Hugo Module cache | The theme version changed, but the old version still resolves. Add `--all` to clear the complete module cache |
 {.fields}
 
 ```bash {title="Terminal"}
@@ -211,14 +212,12 @@ hugo mod clean          # only the modules this project uses
 hugo mod clean --all    # the whole module cache; the next build downloads again
 ```
 
-Both `public/` and `resources/` belong in `.gitignore`; generated output is
-never committed.
+Add both `public/` and `resources/` to `.gitignore`. Never commit generated output.
 
 ## Working on the theme alongside {#theme-workspace}
 
-This section applies only when changing the theme and the site together. Point
-the module at a local checkout temporarily with `HUGO_MODULE_REPLACEMENTS`,
-leaving `go.mod` untouched:
+If you change the theme and site together, temporarily select a local checkout
+with `HUGO_MODULE_REPLACEMENTS`. Leave `go.mod` unchanged:
 
 ```bash {title="Terminal"}
 HUGO_MODULE_REPLACEMENTS='github.com/pgsty/oink -> /absolute/path/to/oink' hugo server
@@ -244,8 +243,8 @@ make serve   # preview server with the production configuration
 
 ## Verifying an offline build {#air-gapped}
 
-Acceptance in a network-isolated environment has to cover both the build stage
-and the browser stage. Six steps:
+For acceptance in a network-isolated environment, check both the build and the
+browser. Follow these six steps:
 
 1. Start from a verified theme archive and an empty module cache (`hugo mod clean --all`).
 1. Block outbound HTTP, HTTPS and the Go module proxy.
@@ -264,17 +263,17 @@ python3 /path/to/oink/bin/check-output-security.py \
   --public /path/to/my-site/public --base-url https://docs.internal.example.com/
 ```
 
-The script scans every `href` / `src` / `srcset` / `poster` and form `action` in
-all four outputs, requiring each to be a site-relative path or `http` /
-`https` / `mailto` / `tel`, and rejecting inline `on*` handlers and
+The script scans every `href` / `src` / `srcset` / `poster` and form `action`
+in all four outputs. Each value must be a site-relative path or use `http` /
+`https` / `mailto` / `tel`. The script rejects inline `on*` handlers and
 `javascript:` URLs. An `<iframe>`, `<script>`, `<link>`, `<img>`, `<video>`,
-`<audio>`, `<embed>`, `<object>` or `<source>` pointing at another host is an
-error; where a site genuinely embeds third-party content, `--third-party`
-permits it, and a multi-domain language configuration adds first-party hosts
-with `--allow-host`.
+`<audio>`, `<embed>`, `<object>`, or `<source>` that points to another host is
+an error. If the site intentionally embeds third-party content, use
+`--third-party` to permit it. For a multi-domain language configuration, add
+first-party hosts with `--allow-host`.
 
-One pass proves that commit in that environment. Run it again for every theme
-candidate and after every bundled-dependency update.
+A passing check validates that commit in that environment. Repeat it for every
+theme candidate and after every bundled-dependency update.
 
 ## Verify {#verify}
 
@@ -288,10 +287,10 @@ hugo --gc --minify --printPathWarnings
 The build passes when it reports `Total in …` with no ERROR; review warnings and accept only the known upstream LibSass noticeING.
 Then check the following items:
 
-- The log has no npm, PostCSS, Autoprefixer or browser-asset download step. One appearing means upstream Docsy's process has crept into the configuration.
+- Confirm that the log has no npm, PostCSS, Autoprefixer, or browser-asset download step. Such a step indicates upstream Docsy configuration.
 - `public/` has `sitemap.xml` and `robots.txt`, and `robots.txt` reads `Allow: /`.
-- With local search enabled, each language has an index in `public/`: production filenames are `offline-search-index.<language>.<hash>.json`, while development omits the hash. Open search and confirm the actual `data-td-index-src` URL returns 200.
-- Open representative pages with `hugo server`: one documentation page, one blog page, the home page and the 404, in both languages and both colour schemes.
+- If local search is enabled, confirm that each language has an index in `public/`. Production filenames are `offline-search-index.<language>.<hash>.json`. Development filenames omit the hash. Open search and confirm that the actual `data-td-index-src` URL returns 200.
+- With `hugo server`, open one documentation page, one blog page, the home page, and the 404. Check both languages and both color schemes.
 
 For a failing build or a wrong result, see
 [Troubleshooting](/docs/admin/troubleshooting/).

@@ -1,7 +1,7 @@
 ---
 title: Components
 linkTitle: Components
-description: Every component available for writing, one page each, examples from the simplest upwards, with the parameter table at the end.
+description: Find each writing component, from simple examples to detailed examples, with its output matrix, parameters, and limits.
 weight: 40
 icon: fa-solid fa-cubes
 search_keywords: [components, cheatsheet, Markdown syntax, shortcode, native form]
@@ -9,10 +9,8 @@ cascade:
   categories: [Components]
 ---
 
-This section answers one question: how do I write this component in Markdown?
-Every page has the same shape — the shortest example, progressively richer
-examples, the output matrix, the parameter table, the limits. For syntax at a
-glance, use the cheatsheet below.
+Use this section to write components in Markdown. Each page starts with the shortest example, then gives more detailed examples.
+The page also gives the output matrix, parameter table, and limits. Use the cheatsheet below for a quick syntax reference.
 
 ## Two forms {#two-forms}
 
@@ -33,8 +31,7 @@ Cards with icons and badges, and terminal recordings, also need shortcodes. Foll
 
 ## Site prerequisites {#prerequisites}
 
-Components depend on three Goldmark settings. OINK Starter provides them
-already configured; copy the snippet when starting from scratch:
+Components need three Goldmark settings. OINK Starter configures these settings. If you start from scratch, copy this snippet:
 
 ```yaml {title="hugo.yml"}
 markup:
@@ -47,24 +44,18 @@ markup:
       wrapStandAloneImageWithinParagraph: false # standalone images are not wrapped in <p>
 ```
 
-- `renderer.unsafe: true` — Goldmark drops raw HTML in content by default;
-  with it off, HTML nested inside component bodies disappears.
-- `parser.attribute.block: true` — the master switch for attribute lines. With
-  it off, `{.steps}` and `{caption="…"}` are just a line of text.
-- `parser.wrapStandAloneImageWithinParagraph: false` — a standalone image is no
-  longer wrapped in `<p>`, so it can become a captioned figure and an attribute
-  line can follow it.
+- `renderer.unsafe: true` keeps raw HTML in content. Goldmark drops it by default. Without this setting, HTML inside component bodies disappears.
+- `parser.attribute.block: true` enables attribute lines. Without it, `{.steps}` and `{caption="…"}` appear as text.
+- `parser.wrapStandAloneImageWithinParagraph: false` prevents `<p>` wrappers around standalone images. This permits captioned figures and attribute lines after images.
 
-A few components have their own prerequisites: mathematics needs Goldmark
-passthrough, PlantUML and Draw.io need a rendering server you run yourself.
-Each page says so. The complete set of configuration keys is in
-[Configuration](/docs/customize/config/).
+Some components need other settings. Mathematics needs Goldmark passthrough. PlantUML and Draw.io need a rendering server that you run yourself.
+Each component page explains its requirements. [Configuration](/docs/customize/config/) lists all configuration keys.
 
 ## Cheatsheet {#cheatsheet}
 
-Values in the *Form* column: native = Markdown syntax plus an attribute line;
-fence = a fenced block with a language tag; shortcode = `{{</* … */>}}`. The
-*Runtime* column says whether the component ships JavaScript to the page.
+The *Form* column uses three labels. Native means Markdown syntax plus an attribute line.
+Fence means a fenced block with a language tag. Shortcode means `{{</* … */>}}`.
+The *Runtime* column shows whether the component loads JavaScript on the page.
 
 | Component | In one line | Shortest form | Form | Runtime |
 | --- | --- | --- | --- | --- |
@@ -92,15 +83,10 @@ fence = a fenced block with a language tag; shortcode = `{{</* … */>}}`. The
 
 Four notes on the *Runtime* column:
 
-- A code block loads `code-block.js` only when a block on the page has a copy
-  or fold control; a file tree loads `filetree.js` only when the tree has a
-  comment column, which is the runtime that drags the split.
-- Images and galleries share one zoom dialog runtime. It needs `ui.image_zoom`
-  on for the site and at least one eligible image on the page.
-- Mathematics is rendered to HTML and MathML by KaTeX at build time. The page
-  gains a KaTeX stylesheet and its fonts, and no script.
-- Draw.io loads only on pages whose rendered content contains PNG or SVG
-  candidates, then inspects each distinct image URL once.
+- A code block loads `code-block.js` only if a block on the page has a copy or fold control.
+  A file tree loads `filetree.js` only if it has a comment column. This runtime lets readers drag the splitter.
+- Images and galleries share one zoom dialog runtime. It needs site-level `ui.image_zoom` and at least one eligible image on the page.
+- KaTeX renders mathematics to HTML and MathML at build time. The page loads a KaTeX stylesheet and fonts, but no script.
+- Draw.io loads only on pages whose rendered content has PNG or SVG candidates. It inspects each distinct image URL once.
 
-Every component has a defined shape in all four outputs — HTML, print, Markdown
-and RSS. See the *Output* section on each page.
+Every component defines its behavior in four outputs: HTML, print, Markdown, and RSS. See *Output* on each component page.

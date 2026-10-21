@@ -20,11 +20,10 @@ decision_date: 2026-08-19
 
 ## Context {#context}
 
-Hugo builds the whole site as one transaction. An `errorf` raised while one
-page is being edited makes every URL served by that rebuild return an error,
-including unrelated pages and the home page. The server process survives and
-recovers after the input is fixed, but collaborative preview is unavailable in
-the meantime.
+Hugo builds the whole site as one transaction, so an `errorf` from one edited
+page makes every URL served by that rebuild return an error, including unrelated
+pages and the home page. The server process continues and recovers after the
+input is corrected, but other authors cannot use the preview in the meantime.
 
 A warning allows the affected value to use a safe fallback while other pages
 remain available for inspection and the author receives a precise message.
@@ -40,20 +39,20 @@ Validation follows four rules:
    repeating one site-wide warning for every page.
 3. Never pass an invalid value into a later operation. Validate first, then
    render from the normalized value.
-4. Where no honest fallback exists, warn and render nothing. Do not invent
-   content, make a network request, or emit an unsafe URL merely to keep going.
+4. If no valid fallback exists, give a warning and render nothing. Do not
+   invent content, make a network request, or emit an unsafe URL to continue.
 
-The shared enum, boolean, CSS-length, and number shapes live in
+The shared enum, boolean, CSS-length, and number shapes are in
 `layouts/_partials/validate.html`. Domain resolvers may add narrower checks,
 but they preserve the same warning/fallback contract.
 
 ## Safety boundary {#safety-boundary}
 
-Continuing a build never means continuing with unsafe output. A rejected CSS
-length falls back before it reaches a style attribute. An incomplete remote
-service configuration omits the component before the browser can make a
-request. An unsafe action URL is dropped. The protection is the absence of the
-bad output, not the act of terminating Hugo.
+A build must never continue with unsafe output. OINK replaces a rejected CSS
+length before it reaches a style attribute, omits a component with incomplete
+remote service configuration before the browser can make a request, and removes
+unsafe action URLs. These fallbacks protect the reader without terminating
+Hugo.
 
 Editing and publication share the warning and fallback behavior:
 

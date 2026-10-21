@@ -1,7 +1,7 @@
 ---
 title: From scratch and other install methods
 linkTitle: From scratch
-description: Build a minimal OINK site in an empty directory, and weigh the four install methods — Module, submodule, offline archive, pinned source copy.
+description: "Build a minimal OINK site in an empty directory. Compare four install methods: Module, submodule, offline archive, and pinned source copy."
 weight: 30
 search_keywords:
   [
@@ -23,14 +23,14 @@ aliases:
 
 This is the manual alternative to the recommended
 [OINK Starter](/docs/start/starter/). It builds a minimal site in an empty
-directory: a small `hugo.yml` plus one `hugo mod get` gives a single-language
-site you can preview. The cost is that the home page, example content,
-deployment workflow, and every component usage are yours to assemble.
+directory. A small `hugo.yml` and one `hugo mod get` command create a
+single-language site you can preview. You must assemble the home page, example
+content, deployment workflow, and all component usage yourself.
 
 For an existing Hugo site, use the short [integration path](#existing-site)
 below. For an existing Docsy site, see [Upgrade](/docs/admin/upgrade/).
 
-The second half weighs four install methods: Hugo Module, Git submodule,
+The second half compares four install methods: Hugo Module, Git submodule,
 offline archive, and pinned source copy. Current development and validation use
 Go 1.27 and Hugo Extended 0.168.0. The default Hugo version stays pinned; older-Hugo compatibility testing and adaptation are discontinued.
 
@@ -43,7 +43,7 @@ Skip `hugo new site` and keep the existing configuration filename.
    path. Otherwise keep the existing module declaration.
 1. Run `hugo mod get github.com/pgsty/oink@{{< param tdVersion.latest >}}`.
 1. Replace the old theme selection with the OINK `module.imports` entry shown
-   below; preserve unrelated imports and configuration. Merge the three
+   below. Preserve unrelated imports and configuration. Merge the three
    `markup.goldmark` settings and `markup.highlight.noClasses: false` from
    [the example](#config). Do not replace your whole configuration with it.
 1. Review site-owned `layouts/` and assets, old theme shortcodes, and page
@@ -66,9 +66,8 @@ Skip `hugo new site` and keep the existing configuration filename.
    hugo mod get github.com/pgsty/oink@{{< param tdVersion.latest >}}
    ```
 
-   What follows `hugo mod init` is your own site's module path, usually the
-   repository address. `hugo mod get` writes `go.mod` and `go.sum`, and both are
-   committed.
+   After `hugo mod init`, specify your site's module path. This is usually its
+   repository address. `hugo mod get` writes `go.mod` and `go.sum`. Commit both.
 
    Before building, create `.gitignore` so generated files stay out of Git.
    Leave `enableGitInfo` off until you have made the first commit:
@@ -81,10 +80,10 @@ Skip `hugo new site` and keep the existing configuration filename.
    ```
 
    The newest version number is on
-   [GitHub Releases](https://github.com/pgsty/oink/releases); the
-   `{{< param tdVersion.latest >}}` on this page is what this site currently
-   pins. A production site pins a release tag rather than following `main`:
-   `@latest` is a one-off resolution, not a version policy.
+   [GitHub Releases](https://github.com/pgsty/oink/releases). The
+   `{{< param tdVersion.latest >}}` on this page is this site's current pin.
+   A production site pins a release tag instead of following `main`.
+   `@latest` resolves a version once. It is not a version policy.
 
 1. ### Writing `hugo.yml` {#config}
 
@@ -147,24 +146,24 @@ Skip `hugo new site` and keep the existing configuration filename.
        min: '{{< param hugoMinVersion >}}'
    ```
 
-   What each of the five blocks governs:
+   These five blocks control different parts of the site:
 
    | Block | Governs | Consequence of omitting it |
    | --- | --- | --- |
-   | Top level + `languages` | Site name, domain, languages and navbar menu | A wrong `baseURL` sends every absolute link astray in production |
+   | Top level + `languages` | Site name, domain, languages and navbar menu | An incorrect `baseURL` makes every absolute production link incorrect |
    | `markup.goldmark` | The three component prerequisites | An attribute line becomes a literal `{.steps}` in the prose |
-   | `params` | Search, repository links, shell switches | Interactive features stay off; the theme does not decide for the site |
+   | `params` | Search, repository links, shell switches | Interactive features stay off. The theme does not select them for the site |
    | `outputs` | The per-page `.md`, `llms.txt` and print pages | No "Copy as Markdown" in the page menu, and no print view |
    | `module` | References the theme and declares the Hugo floor | The build cannot find the theme |
 
    Mathematics additionally needs Goldmark's passthrough extension; see
-   [Math](/docs/components/math/). Every key's full meaning and default is in
+   [Math](/docs/components/math/). For each key's meaning and default, see
    [Configuration](/docs/customize/config/).
 
 1. ### Write the first page {#first-page}
 
-   Every top-level directory under `content/` is a section, and the directory
-   structure is the sidebar structure. A documentation section needs at least an
+   Every top-level directory under `content/` is a section. The directory
+   structure determines the sidebar structure. A documentation section needs at least an
    `_index.md`:
 
    ```markdown {title="content/docs/_index.md"}
@@ -197,9 +196,9 @@ Skip `hugo new site` and keep the existing configuration filename.
    ```
    ````
 
-   Write explicit `{#id}` anchors on headings: when a translation is added
-   later, the two languages' anchors have to correspond. How to write a page is
-   in [Writing pages](/docs/write/pages/).
+   Write explicit `{#id}` anchors on headings. When you add a translation,
+   the anchors in both languages must correspond. For page-writing instructions,
+   see [Writing pages](/docs/write/pages/).
 
 1. ### Preview {#preview}
 
@@ -207,20 +206,18 @@ Skip `hugo new site` and keep the existing configuration filename.
    hugo server
    ```
 
-   Open <http://localhost:1313/docs/>; the Docs section lists Install. The
+   Open <http://localhost:1313/docs/>. The Docs section lists Install. The
    home page is still empty until you add home content. Edit the Install page
    and confirm that the preview updates.
 {.steps}
 
 ## Other install methods {#install-methods}
 
-The steps above use a Hugo Module. The other three address particular
-constraints: network isolation, a platform that requires the build input to
-contain the whole theme tree, or an organization that reviews its own copy of
-the theme. Apart from `hugo mod vendor`, none of them creates a Go module, and
+The steps above use a Hugo Module. The other three address specific
+constraints. These include network isolation, platforms that require the full
+theme tree as build input, and organizations that review their own theme copy. Apart from `hugo mod vendor`, none of them creates a Go module, and
 the site references the theme with `theme: oink` rather than `module.imports`.
-The shared cost is that version resolution and integrity checking become your
-responsibility.
+For these methods, you must manage version resolution and integrity checks.
 
 ### Hugo Module (recommended) {#hugo-module}
 
@@ -235,9 +232,9 @@ module:
     - path: github.com/pgsty/oink
 ```
 
-The only method where Hugo resolves the version itself, verifies the checksum,
-and leaves an audit record in `go.sum`. `hugo mod graph` shows what actually
-resolved and `hugo mod get -u` upgrades. It needs Go on the machine.
+This is the only method in which Hugo resolves the version, verifies the
+checksum, and records it in `go.sum`. `hugo mod graph` shows the resolved
+version. `hugo mod get -u` upgrades it. This method requires Go on the machine.
 
 ### Git submodule {#git-submodule}
 
@@ -254,8 +251,8 @@ git add .gitmodules themes/oink
 theme: oink
 ```
 
-CI must initialize the submodule before running Hugo, or `themes/oink` is an
-empty directory:
+Before CI runs Hugo, it must initialize the submodule. Otherwise, `themes/oink`
+is an empty directory:
 
 ```bash
 git submodule update --init --recursive
@@ -263,8 +260,8 @@ git submodule update --init --recursive
 
 ### Offline archive {#offline-archive}
 
-For network-isolated environments. Two paths, both prepared on a connected
-machine and carried in whole.
+For network-isolated environments, choose one of two paths. Prepare either
+archive on a connected machine. Transfer the complete archive.
 
 **With `hugo mod vendor`**, the resolved theme source is frozen into the site
 directory, and later builds need neither the network nor Go.
@@ -274,9 +271,9 @@ hugo mod vendor          # writes _vendor/, holding the theme's full source tree
 tar czf ../my-docs.tgz . # put the archive outside the directory being archived
 ```
 
-When `_vendor/` exists Hugo prefers it (`hugo mod graph` prints `+vendor`), and
-`module.imports` in `hugo.yml` stays as it is. This step needs Go; the builds
-after it do not. Upgrading the theme means returning to a connected environment
+If `_vendor/` exists, Hugo prefers it. `hugo mod graph` prints `+vendor`.
+Keep `module.imports` in `hugo.yml` unchanged. This step requires Go. Later
+builds do not. Upgrading the theme means returning to a connected environment
 and running `hugo mod get` and `hugo mod vendor` again.
 
 `_vendor/` collects only the directories the theme mounts (`assets`, `data`,
@@ -284,8 +281,8 @@ and running `hugo mod get` and `hugo mod vendor` again.
 include `LICENSE`, `NOTICE` or `VENDOR.json`. To redistribute that archive, take
 those three files from the theme repository as well.
 
-**With a tag source archive**, no Go module is created; a version of the theme is
-simply unpacked into `themes/oink/`.
+**With a tag source archive**, no Go module is created. Unpack the selected
+theme version into `themes/oink/`.
 
 ```bash
 curl -L -o oink.tar.gz \
@@ -298,11 +295,11 @@ tar xzf oink.tar.gz -C themes/oink --strip-components=1
 theme: oink
 ```
 
-The theme repository's root is the module root, so unpacking lands directly on
-`layouts/`, `assets/`, `i18n/` and `static/` with no further level to descend
-into. Redistribution must keep `LICENSE`, `NOTICE` and `VENDOR.json`; the last
-records each third-party runtime's version, source, licence path and SHA-256,
-and is what an offline audit rests on.
+The theme repository's root is the module root. Unpacking places
+`layouts/`, `assets/`, `i18n/`, and `static/` directly under the target. There
+is no additional directory level. Redistribution must keep `LICENSE`, `NOTICE`,
+and `VENDOR.json`. The manifest records each third-party runtime's version,
+source, license path, and SHA-256. Use it for an offline audit.
 
 When moving between machines, generate the archive and its checksum from an
 immutable tag on the connected side:
@@ -326,8 +323,8 @@ tar -xzf oink-{{< param tdVersion.latest >}}.tar.gz -C themes
 ```
 
 An archive produced this way is your own artifact, not a project release.
-Whether a given tag's release page carries an archive and a checksum file varies
-by release; verify the checksum independently when using a public attachment.
+Release pages do not all provide an archive and checksum file. If you use a
+public attachment, verify its checksum independently.
 
 Before building offline, confirm the archive is complete. All eleven of these
 must be present:
@@ -355,8 +352,8 @@ When a hosting platform needs the theme files in the site repository, use the
 the tag and checksum you verified.
 
 A plain `git clone ... themes/oink` leaves a nested `.git` directory. Adding it
-to the parent repository records a Git link, not the theme files; it therefore
-does not provide this self-contained source copy. Use a submodule if you want
+to the parent repository records a Git link rather than the theme files.
+This does not provide a self-contained source copy. Use a submodule if you want
 Git to track the theme by reference.
 
 ### The four methods compared {#comparison}
@@ -393,7 +390,7 @@ cd ~/pgsty/product-docs
 HUGO_MODULE_REPLACEMENTS='github.com/pgsty/oink -> ../oink' hugo server
 ```
 
-The documentation site's `Makefile` is an alias for exactly these commands, and
+The documentation site's `Makefile` runs these commands.
 `make dev` and `make check` expect the theme checkout at the sibling `../oink`:
 
 ```makefile {title="Makefile: as the documentation site writes it"}
@@ -408,8 +405,8 @@ dev:
 ```
 
 A Go workspace (`go work init` plus `HUGO_MODULE_WORKSPACE=go.work`) is an
-equivalent alternative. Both apply to the local machine only: CI and production
-builds use the version in `go.mod`, and `go.work` is never committed.
+equivalent alternative. Both apply only to the local machine. CI and production
+builds use the version in `go.mod`. Never commit `go.work`.
 
 ## Verify {#verify}
 
@@ -423,9 +420,9 @@ confirm:
 
 - `/docs/` opens and the sidebar holds the page you wrote
 - The navbar has a search box that finds the heading you just wrote
-- The light/dark toggle is present, and code block colours follow it (which shows `markup.highlight.noClasses: false` took effect)
-- `git status --short` lists only source changes; generated output is ignored.
-  For the Module path, commit both `go.mod` and `go.sum`; other install methods
+- The light/dark toggle is present. Code block colors change with it, which confirms `markup.highlight.noClasses: false` took effect
+- `git status --short` lists only source changes. Git ignores generated output.
+  For the Module path, commit both `go.mod` and `go.sum`. Other install methods
   keep their own theme source or submodule record.
 
 ## Related {#related}

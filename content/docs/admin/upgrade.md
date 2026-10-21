@@ -16,8 +16,8 @@ builds with reviewed diagnostics. Most content needs no changes. To convert 0.4
 shortcodes to current native Markdown forms, use the migration tool. It starts
 with a dry run and avoids manual edits to hundreds of files.
 
-An upgrade changes rendered output. Create an upgrade branch before starting,
-and the cost of backing out is discarding a branch.
+An upgrade changes rendered output. Before you start, create an upgrade branch.
+You can discard that branch if you cancel the upgrade.
 
 > [!IMPORTANT] Current Hugo baseline
 > Since 2026-10-15, use Hugo Extended 0.168.0 for development and validation.
@@ -42,22 +42,21 @@ site offers all four styles. The [1.3 notes](/blog/release/1.3.0/) describe the 
 
 ## Read the release notes first {#release-notes}
 
-Every version's changes, breaking changes and upgrade notes are in its release
-notes; read the target version's before upgrading:
+Each version's release notes describe its changes, breaking changes, and
+upgrade steps. Before upgrading, read the target version's notes:
 
 - The release series in this site's [project blog](/blog/)
 - The [Releases page](https://github.com/pgsty/oink/releases) on GitHub
 
-The notes say whether content has to change, whether a configuration key was
-removed, and whether a default behaviour moved. Skipping this step means
-guessing afterwards why a page looks different.
+The notes identify required content changes, removed configuration keys, and
+changed default behavior. Read them to understand differences in the upgraded pages.
 
 ## Upgrading the Hugo Module {#hugo-module}
 
-A production site pins a published release tag or a deliberately selected
-immutable commit, follows no branch, and does not use `@latest`. The example
-below upgrades to the published `v1.3.0` tag. For a later release, verify its
-publication and module resolution before selecting that tag:
+For a production site, pin a published release tag or an explicitly selected
+immutable commit. Do not follow a branch or use `@latest`. The example below
+upgrades to the published `v1.3.0` tag. Before you select a later tag, verify
+that the release is published and its module resolves:
 
 ```bash {title="Terminal"}
 hugo mod get github.com/pgsty/oink@v1.3.0   # the published release tag
@@ -66,9 +65,9 @@ hugo mod graph | grep github.com/pgsty/oink
 ```
 
 When selecting a tag, confirm that the module graph shows that exact version.
-A deliberately selected immutable commit is normally recorded as a Go
-pseudo-version; that is valid if it resolves to the intended commit, but it is
-not evidence of a named release. Commit the resulting `go.mod` and `go.sum`.
+An explicitly selected immutable commit normally uses a Go pseudo-version.
+This is valid if it resolves to the intended commit. It does not prove that a
+named release exists. Commit the resulting `go.mod` and `go.sum`.
 For the published tag in this example, `go.mod` contains:
 
 ```go {title="go.mod"}
@@ -87,8 +86,8 @@ require github.com/pgsty/oink v1.3.0
 > `make build` by itself does not prove which theme was resolved. See the
 > [preview guide](/docs/admin/preview/#theme-workspace).
 
-For a Git submodule, check that it has no local edits, fetch the tags, and
-check out the exact published version rather than following its remote branch:
+For a Git submodule, first confirm that it has no local edits. Fetch the tags.
+Check out the exact published version. Do not follow its remote branch:
 
 ```bash {title="Terminal"}
 git -C themes/oink fetch origin --tags
@@ -118,9 +117,9 @@ Warnings remain visible. Review the deprecation messages
 emitted by the pinned Hugo version before upgrading it; the severity and
 removal schedule depend on the deprecated feature.
 
-Once the build passes, look with your own eyes: the home page, a documentation
-page, a blog page, the 404, both languages, both colour schemes, the print view,
-and anywhere the site customized something.
+After the build passes, visually check the home page, a documentation page,
+a blog page, and the 404. Check both languages, both color schemes, the print
+view, and every site customization.
 
 ## Upgrading from 1.0 to 1.1 {#from-1-0}
 
@@ -137,13 +136,13 @@ Review the affected surfaces before choosing the new pin:
 
 | Surface | 1.1 behavior and upgrade check |
 | --- | --- |
-| Languages | All 32 interface catalogs have the same native-message schema. Check the site's language labels, plural counts, and RTL direction; authored translations remain the site's responsibility. |
+| Languages | All 32 interface catalogs have the same native-message schema. Check the site's language labels, plural counts, and RTL direction. The site remains responsible for authored translations. |
 | Taxonomies | Root pages become term-card directories with a taxonomy switcher. Review any taxonomy-template or CSS overrides, author portraits, and localized breadcrumbs. |
-| Sidebars | Cached trees preserve effective page settings and remain usable without JavaScript. Exercise collapse, hover restore, mobile drawer, and keyboard focus; hidden content must leave the focus order. |
-| Groups | `sidebar_divider: true` retains a section's children. Add `build.render: never` only when that group's own outputs are intentionally omitted; verify child navigation, breadcrumbs, paging, Print, and Book contents. |
+| Sidebars | Cached trees preserve effective page settings and remain usable without JavaScript. Test collapse, hover restore, mobile drawer, and keyboard focus. Hidden content must leave the focus order. |
+| Groups | `sidebar_divider: true` retains a section's children. Add `build.render: never` only if you intentionally omit the group's own outputs. Verify child navigation, breadcrumbs, paging, Print, and Book contents. |
 | Root menus | Explicit `sidebar_root_menu: false` now applies to self-root sections too. The current linkable root remains a location marker. |
 | Custom scripts | Feature-detect `OinkSidebar` and `OinkCommandPalette.registerSearchTail` if an integration must also support 1.0.0. Restore branch state through the API rather than changing classes or ARIA attributes directly. |
-| Copying articles | With image zoom enabled, copy an image and its caption as plain text and rich HTML. Preview instructions must not enter the copied article; zoom and its keyboard controls must still work. |
+| Copying articles | With image zoom enabled, copy an image and its caption as plain text and rich HTML. Preview instructions must not enter the copied article. Zoom and its keyboard controls must still work. |
 | Print and Redoc | Check page and Book aggregate Print, heading and tab links, and local Redoc specifications under the real deployment prefix. Local specification paths are rooted under `static/`. |
 {.fields}
 
@@ -152,9 +151,9 @@ new search hook does not enable a remote provider or add query telemetry.
 `params.ui.scroll_spy` and page-level `scroll_spy` remain accepted no-ops in
 1.x; removing the obsolete patch does not disable normal outline tracking.
 
-Update or remove affected site-level copies of theme code after comparing
-them with the new implementation. A copied old image-zoom script or sidebar
-partial will otherwise continue to hide the upstream fix.
+Compare affected site-level copies of theme code with the new implementation.
+Then update or remove those copies. Otherwise, an old image-zoom script or
+sidebar partial continues to override the upstream fix.
 
 To test local theme changes with the documentation site, use its sibling theme
 checkout without committing a filesystem replacement:
@@ -212,8 +211,8 @@ behavior.
 
 ## The content migration toolkit {#migration-toolkit}
 
-A batch of 0.4 shortcodes became the current native Markdown forms. The theme
-repository ships a tool for that, depending only on the Python standard library:
+Several 0.4 shortcodes now use native Markdown forms. The theme repository
+ships a conversion tool that requires only the Python standard library:
 
 ```bash {title="Terminal"}
 git clone https://github.com/pgsty/oink
@@ -232,12 +231,12 @@ python3 bin/migrations/oink06.py migrate --site ~/pgsty/oink.pgsty.com --write
 python3 bin/migrations/oink06.py check --site ~/pgsty/oink.pgsty.com
 ```
 
-Four things to remember while using it:
+Follow these four rules when you use the tool:
 
-- A dry run is the default, and only `--write` touches disk. Dry-run, read the diff, then write.
-- A second run should change nothing. A second `--write` still reporting changes means a transformation is not converging; stop and look at those files.
-- Text inside fences is untouched, so a documentation site demonstrating the old syntax is not damaged.
-- A construct it cannot express is left as it stands and listed with `file:line` and a reason, as a manual work list rather than a failure.
+- A dry run is the default. Only `--write` changes files. Run the dry run, read the diff, and then write.
+- A second run should change nothing. If a second `--write` reports changes, a transformation has not converged. Stop and inspect those files.
+- The tool leaves text inside fences unchanged. Documentation examples of old syntax therefore remain intact.
+- If the tool cannot express a construct, it leaves that construct unchanged. It reports `file:line` and a reason for manual work. This is not a failure.
 
 To convert one class first, use `--only` with the keys in the table's last
 column:
@@ -267,21 +266,21 @@ pages. The tool guarantees correct syntax. You must verify the intended meaning.
 | `{{%/* _param x */%}}`, `iframe`, `conditional-text`, `blocks/*`, `netlify`, a kindless `xref` | Reported only; handle by hand | `reportonly` |
 {.fields}
 
-What each new form looks like and what parameters it takes is on its page under
-[Components](/docs/components/).
+Each page under [Components](/docs/components/) describes the new form and its
+parameters.
 
 ## Migrating from Docsy {#from-docsy}
 
-OINK is a hard fork of Docsy: the content model, the `td-` naming, the Sass
-variables and most front matter are still there. The core of a migration is
-deleting the copies of the shared shell in the site and letting the theme's
-implementation take over — not rewriting the prose.
+OINK is a hard fork of Docsy. It retains the content model, `td-` naming, Sass
+variables, and most front matter. Migration mainly requires removing site
+copies of the shared shell. The theme's implementation then supplies the shell.
+You do not need to rewrite the prose.
 
 1. Pin the target version. Change `go.mod` to an OINK release tag, or use a complete versioned archive. During evaluation, an uncommitted `go.work` can point at a local checkout.
 
-1. Inventory the overrides. Sort every site-level file under `layouts/`, `assets/` and `static/` into four classes: copies of the shared shell (delete after verifying), components OINK already provides (delete or rename mechanically), brand customization (keep, reduced to the smallest hook), and business-specific data and interaction (stays in the site). Delete by reference order, and do not empty `layouts/` at once: the home page and download page may still call a partial you are removing.
+1. Inventory the overrides. Classify each site-level file under `layouts/`, `assets/`, and `static/` into four groups. Delete verified copies of the shared shell. Delete or mechanically rename components that OINK already provides. Retain brand customization in the smallest suitable hook. Keep business-specific data and interaction in the site. Delete files in reference order. Do not empty `layouts/` at once. The home page or download page may still call a partial that you plan to remove.
 
-1. Move the configuration. `title`, `languages.*`, `github_repo`, `github_branch`, `page_width` and `params.ui.*` all stay in their existing semantic positions; OINK opens no namespace of its own. Search and the logo are just keys to turn on:
+1. Move the configuration. Keep `title`, `languages.*`, `github_repo`, `github_branch`, `page_width`, and `params.ui.*` in their existing semantic positions. OINK adds no separate namespace. Enable search and the logo with these keys:
 
    ```yaml {title="hugo.yml"}
    params:
@@ -292,15 +291,15 @@ implementation take over — not rewriting the prose.
    Docsy's camelCase search keys have been renamed in OINK: `offlineSearch`,
    `offlineSearchIndex`, `offlineSearchMaxResults`, `offlineSearchOnServe` and
    `offlineSearchSummaryLength` all become their underscored forms. Rename them
-   deliberately — the migration registry that used to stop the build and name
-   the replacement has been removed, so an old key is now simply a key nobody
-   reads, and search stays off with no message at all.
+   deliberately. The old migration registry stopped the build and named the
+   replacement. That registry was removed. The theme now ignores an old key,
+   so search remains off without a message.
 
-1. Fonts and styling compatibility. The Docsy Sass variables in the site's `assets/scss/_variables_project.scss` still work as the seed values for the font roles, and need not be deleted to upgrade: `$td-fonts-serif`, `$font-family-sans-serif`, `$headings-font-family` and `$font-family-code` each feed their role. Docsy's Google Fonts switches `$td-enable-google-fonts`, `$td-google-font-name` and `$td-web-font-path` are no longer read by the theme; leaving them breaks nothing and does nothing, because OINK ships Inter, Chakra Petch and IBM Plex Mono and neither preset requests anything from Google Fonts. To change fonts, go through the token layer — see [Brand and appearance](/docs/customize/brand/).
+1. Fonts and styling compatibility. The Docsy Sass variables in `assets/scss/_variables_project.scss` still supply seed values for font roles. You do not need to delete them for an upgrade. Each of `$td-fonts-serif`, `$font-family-sans-serif`, `$headings-font-family`, and `$font-family-code` supplies its role. The theme no longer reads Docsy's Google Fonts switches `$td-enable-google-fonts`, `$td-google-font-name`, and `$td-web-font-path`. These unused switches cause no failure and have no effect. OINK bundles Inter, Chakra Petch, and IBM Plex Mono. Neither preset requests Google Fonts. To change fonts, use the token layer. See [Brand and appearance](/docs/customize/brand/).
 
 1. Convert the shortcodes. Docsy's `alert`, `pageinfo`, `tabpane` and `card` families all have a current counterpart; convert them in bulk with the [migration toolkit](#migration-toolkit) above, one `--only` class at a time.
 
-1. Delete one group at a time, building after each. Rehearse on a scratch copy, recording the theme commit, the Hugo version, which files were removed and how many HTML files came out; only after confirming equivalence, repeat it on the production branch.
+1. Delete one group at a time. Build after each group. First test on a scratch copy. Record the theme commit, Hugo version, removed files, and generated HTML file count. After you confirm equivalent behavior, repeat the process on the production branch.
 {.steps}
 
 The "delete after verifying" class in step two is usually these files:
@@ -312,26 +311,26 @@ The "delete after verifying" class in step two is usually these files:
 - The JavaScript, Lunr copy, carousel code and SCSS that served only those implementations;
 - PostCSS and Autoprefixer steps no site asset needs any more.
 
-Two kinds of problem surface after the deleting.
+Two types of problem can appear after deletion.
 
-A site's own script reports `$ is not defined`: the theme does not bundle
-jQuery, which Docsy used to load in every page's `<head>`. Nothing in the theme
-needs it, and a site that still does loads it itself:
+A site script can report `$ is not defined`. OINK does not bundle jQuery,
+which Docsy loaded in each page's `<head>`. The theme does not need jQuery.
+If your site needs it, load it in the site:
 
 ```html {title="layouts/_partials/hooks/head-end.html"}
 <script src="{{ (resources.Get "js/jquery.min.js").RelPermalink }}"></script>
 ```
 
-A home page built from Docsy's `blocks/*` fails an OINK build with
-`template for shortcode "blocks/cover" not found`: the theme has no such
-shortcode family. Switch to home page sections in
-`data/home/<language>.yaml`, or give the page `layout: landing` — see
+A home page that uses Docsy's `blocks/*` fails an OINK build with
+`template for shortcode "blocks/cover" not found`. OINK has no such shortcode
+family. Use home page sections in `data/home/<language>.yaml`, or set
+`layout: landing` on the page. See
 [Home and landing pages](/docs/customize/home/).
 
 ## Upgrading from 0.4 {#from-0-4}
 
-0.4 changed several defaults. If the page gained or lost something after the
-upgrade, check these first:
+0.4 changed several defaults. If an upgrade adds or removes a page feature,
+check these settings first:
 
 - Sequential paging is on by default. `docs`, `book`, and `blog` pages have previous / next links at the page end. Documentation follows the sidebar tree. Blog pages follow time. For a page intentionally outside a sequence, set `pager: false`.
 - The navbar appears on every layout. Its compact state has one row of icon navigation and no second mobile accordion menu. Remove local scripts and tests that depend on the old mobile menu. To disable the navbar for a section, set `navbar_enabled: false` in a cascade.
@@ -345,7 +344,7 @@ upgrade, check these first:
     footer_center_info: '[京ICP备00000000号](https://beian.miit.gov.cn/)'
   ```
 
-- Mathematics needs the site to enable passthrough. Hugo does not merge a theme's `markup` configuration, so a site using `\(…\)`, `\[…\]` or `$$…$$` must enable the Goldmark passthrough extension in its own `hugo.yml` — see [Math](/docs/components/math/).
+- For mathematics, enable passthrough in the site. Hugo does not merge a theme's `markup` configuration. If the site uses `\(…\)`, `\[…\]`, or `$$…$$`, enable Goldmark passthrough in its own `hugo.yml`. See [Math](/docs/components/math/).
 
 The complete configuration for all of these is in
 [Configuration](/docs/customize/config/) and
@@ -353,7 +352,7 @@ The complete configuration for all of these is in
 
 ## Verify {#verify}
 
-An upgrade is not finished at "the build passed". Look at each surface:
+After "the build passed", the upgrade still requires checks. Inspect each surface:
 
 | Surface | What to look at |
 | --- | --- |
@@ -362,7 +361,7 @@ An upgrade is not finished at "the build passed". Look at each surface:
 | Home / landing | Content without JS, the compact menu, print |
 | Release pages | Derived download URLs, checksums, publication state |
 | Components | One page each for the components the site uses most |
-| Accessibility | A keyboard-only pass, focus order, both colour schemes, forced-colors mode |
+| Accessibility | Keyboard-only operation, focus order, both color schemes, forced-colors mode |
 | Deployment | Internal links and assets all keep the base path prefix |
 {.fields}
 
@@ -383,13 +382,13 @@ details are in
 > proxy, a consumer pin with its checksum, and a verified production deployment
 > are separate states. One green local build does not prove the others.
 
-The last step happens in the real environment: deploy a preview, verify the
-pages and the browser's network requests on the real URL, merge once reviewed,
-and smoke-test production afterwards.
+Complete the final checks in the real environment. Deploy a preview. Verify its
+pages and browser network requests at the real URL. After review, merge the
+upgrade and run a production smoke test.
 
 ## Rollback {#rollback}
 
-What rolls back is the version pin, not the working tree:
+To roll back the theme, restore the version pin:
 
 ```bash {title="Terminal"}
 hugo mod get github.com/pgsty/oink@v1.0.0   # example: the site's last known-good tag
@@ -401,8 +400,8 @@ hugo --gc --minify
 Three principles:
 
 - Keep the pre-upgrade module pin, the site commit and the known-good deployment artifact, and restore all three together.
-- Do not roll back only part of it. Putting a few old layout copies back on top of a new theme produces a hybrid harder to diagnose than either complete version.
-- Keep the upgrade branch and its acceptance evidence. A rollback restores production first; it does not throw away the work already done.
+- Do not perform a partial rollback. Old layout copies over a new theme produce a mixed implementation. This is harder to diagnose than either complete version.
+- Keep the upgrade branch and its acceptance evidence. A rollback first restores production. It does not discard completed upgrade work.
 
 Rolling back the deployed output itself (republishing the previous deployment)
 is in [Deploy](/docs/admin/deploy/#rollback).

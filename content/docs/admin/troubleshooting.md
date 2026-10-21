@@ -1,27 +1,27 @@
 ---
 title: Troubleshooting
 linkTitle: Troubleshooting
-description: Symptom → cause → fix for the four fault classes — build, language, search, platform — plus the checks a site can run for itself.
+description: Diagnose build, language, search, and platform problems by symptom, cause, and fix. Run checks on your site.
 weight: 60
 search_keywords: [troubleshooting, error, build failure, no search results, 404, baseURL, checks, debug]
 aliases:
   - /docs/tutorial/troubleshooting/
 ---
 
-When something goes wrong, run a clean production build first and read from the
-first error; the ones after it are usually cascades:
+If a problem occurs, first run a clean production build. Read the first error.
+Later errors usually result from it:
 
 ```bash {title="Terminal"}
 rm -rf public resources/_gen
 hugo --gc --minify --printPathWarnings --logLevel info
 ```
 
-An npm, PostCSS, Autoprefixer or browser-asset download step in the log means
-upstream Docsy's process has crept into the configuration. A consuming OINK
-build is one Hugo command.
+If the log includes an npm, PostCSS, Autoprefixer, or browser-asset download
+step, the configuration still uses upstream Docsy's process. An OINK consumer
+build requires one Hugo command.
 
-The four tables below are organized as symptom → cause → fix. Find the symptom
-row; there is no need to read from the top.
+The four tables below show each symptom, its cause, and its fix. Find the row
+for your symptom. You do not need to read every row.
 
 ## Build {#build}
 
@@ -55,7 +55,7 @@ markup:
       unsafe: true
 ```
 
-The two commonest shortcode errors look like this; note the trailing
+The two most common shortcode errors look like this. Each ends with
 `file:line:column`:
 
 ```text {title="build output" copy=false}
@@ -73,44 +73,44 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 | Symptom | Cause | Fix |
 | --- | --- | --- |
 | A translated page does not appear | Four possibilities, in order | ① `hugo.yml` has `languages.zh` with a `weight`; ② the filename is `page.zh.md`, with `zh` lowercase; ③ the translation's front matter has no `draft: true` and no future `date`; ④ routing metadata matches the source file |
-| Switching language lands on the home page | Hugo found no translation | This is by design: with no translation it falls back to the target language's home page. Landing on the corresponding page requires that translation file to exist |
-| An anchor link opens the page but does not scroll | The translated heading text differs, so the generated ID does too | Write the English ID explicitly on the translated heading: `## 安装 {#installation}`. Where a heading contains a shortcode or inline HTML, do not guess the ID from the text — read the English page's rendered HTML |
-| Menus / home page sections are untranslated | They are not in pages but in configuration and data files | Menus are in `languages.<lang>.menus`, home sections in `data/home/<lang>.yaml`, interface strings in `i18n/<lang>.yaml` — see [Languages](/docs/customize/i18n/) |
+| Switching language lands on the home page | Hugo found no translation | If no translation exists, the switcher uses the target language's home page. To open the corresponding page, add its translation file |
+| An anchor link opens the page but does not scroll | The translated heading text differs, so the generated ID does too | Set the English ID explicitly on the translated heading: `## 安装 {#installation}`. If a heading contains a shortcode or inline HTML, read its ID from the English page's rendered HTML. Do not guess it |
+| Menus / home page sections are untranslated | They are not in pages but in configuration and data files | Menus are in `languages.<lang>.menus`. Home sections are in `data/home/<lang>.yaml`. Interface strings are in `i18n/<lang>.yaml`. See [Languages](/docs/customize/i18n/) |
 | A page's `hreflang` points at another language's home page | The published 1.1.0 behavior or a copied older SEO partial can reuse the language-switcher fallback | The 1.2.0 development implementation omits missing translations from SEO alternates. Check the resolved theme version and template overrides; add the corresponding page when a translation is intended. The visible language switcher's home-page fallback remains valid |
 
 ## Search {#search}
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| A search box that never returns results | No index was generated | Check `params.offline_search` and open search. Inspect the page's `data-td-index-src` URL in Network: production uses `offline-search-index.<language>.<hash>.json`, development omits the hash. If absent, also check `offline_search_on_serve` during `hugo server` |
-| The index file 404s | A wrong `baseURL` | On a subpath deployment, a wrong `baseURL` is the commonest cause of a 404 index. Look in the browser's network panel to see where it fetches the index — see [Deploy](/docs/admin/deploy/#baseurl) |
-| Search fails under `hugo server` but works in a build | The site turned the preview index off | `params.offline_search_on_serve` defaults to `true`, so preview matches production; an explicit `false` skips index generation during preview — remove it or set it back to `true` |
-| Chinese queries find nothing | Usually not a tokenization problem | A CJK query uses the theme's substring fallback. First confirm the Chinese page's content reached the Chinese index (open the Chinese page's actual `data-td-index-src` URL), then consider tokenization |
+| A search box that never returns results | No index was generated | Check `params.offline_search` and open search. Inspect the page's `data-td-index-src` URL in Network. Production uses `offline-search-index.<language>.<hash>.json`. Development omits the hash. If the index is absent during `hugo server`, also check `offline_search_on_serve` |
+| The index file 404s | A wrong `baseURL` | For a subpath deployment, an incorrect `baseURL` is the most common cause of an index 404. Check the requested index URL in the browser's network panel. See [Deploy](/docs/admin/deploy/#baseurl) |
+| Search fails under `hugo server` but works in a build | The site turned the preview index off | `params.offline_search_on_serve` defaults to `true`, so preview matches production. An explicit `false` skips preview index generation. Remove that setting or restore `true` |
+| Chinese queries find nothing | Usually not a tokenization problem | A CJK query uses the theme's substring fallback. First, open the Chinese page's actual `data-td-index-src` URL. Confirm that the Chinese index contains its content. Then check tokenization |
 | A new page is not found while old ones are | The index is build output | Rebuild. Under `hugo server`, wait for the rebuild after editing |
 | `params.search.algolia requires explicit appId, apiKey, and indexName values` | The three Algolia keys are incomplete | All three must be given explicitly; the theme will not use another project's DocSearch credentials. If Algolia is not wanted, delete the block |
-| The command palette finds no content | It and full-text search are two things | With the index unavailable the palette still opens, saying so, while page actions and commands work as usual — see [Command palette](/docs/customize/panel/) |
+| The command palette finds no content | Command actions and full-text search are separate | If the index is unavailable, the palette still opens and reports this condition. Page actions and commands still work. See [Command palette](/docs/customize/panel/) |
 
 ## Platform {#platform}
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| A 404 or missing styles on GitHub Pages | A project site's URL carries the repository path and `baseURL` does not | Use `--baseURL "${{ steps.pages.outputs.base_url }}/"` from the workflow rather than hard-coding it. The full workflow is in [Deploy](/docs/admin/deploy/#hosts) |
-| "Last modified" and contributors are empty on GitHub Pages | The checkout is shallow | Add `fetch-depth: 0` to `actions/checkout`: `enableGitInfo` needs the full history |
+| A 404 or missing styles on GitHub Pages | A project site's URL carries the repository path and `baseURL` does not | Use `--baseURL "${{ steps.pages.outputs.base_url }}/"` from the workflow. Do not hard-code the address. See the complete workflow in [Deploy](/docs/admin/deploy/#hosts) |
+| "Last modified" and contributors are empty on GitHub Pages | The checkout is shallow | Add `fetch-depth: 0` to `actions/checkout`. The setting `enableGitInfo` requires the complete history |
 | A Cloudflare Pages build says Hugo is too old | The build image's default Hugo is older than the theme requires | Set `HUGO_VERSION` in both the Production and Preview environments, and set `SKIP_DEPENDENCY_INSTALL=1` |
-| The host's build cannot fetch the theme | The build environment has no Go | Hugo Modules need Go. Where a platform does not provide it, use a submodule or commit `themes/oink/` |
+| The host's build cannot fetch the theme | The build environment has no Go | Hugo Modules require Go. If the platform does not provide it, use a submodule or commit `themes/oink/` |
 | CI output differs from local | `go.work` took part in the CI build | Set `GOWORK: off` and `HUGO_MODULE_WORKSPACE: off` in CI so it reads only the version pinned in `go.mod` |
-| A preview deployment got indexed | The preview was built in the production environment too | Do not pass `--environment production` for previews; a non-production build carries `noindex` and `Disallow: /` — see [Analytics and SEO](/docs/admin/analytics/#robots) |
-| macOS reports too many open files | Live preview watches more files than the shell limit allows | Exclude generated and irrelevant directories from the watch first — usually the real cause — and only then consider `ulimit -n` |
-| Slow, or missed changes, under WSL | Working across a Windows mount point | Let Hugo work on paths inside the Linux filesystem; cross-filesystem change notification and permission behaviour break live reload |
-| Bootstrap / Font Awesome / Lunr / Mermaid assets are missing | An incomplete distribution | Do not paper over it with a CDN URL. Confirm `assets/third_party/`, `assets/js/third_party/`, `static/webfonts/` and `VENDOR.json` are all present, and re-fetch the same pinned version if one really is missing |
+| A preview deployment got indexed | The preview was built in the production environment too | Do not pass `--environment production` for previews. A non-production build emits `noindex` and `Disallow: /`. See [Analytics and SEO](/docs/admin/analytics/#robots) |
+| macOS reports too many open files | Live preview watches more files than the shell limit allows | First exclude generated and irrelevant directories from the watch. These usually cause the problem. Then, if necessary, consider `ulimit -n` |
+| Slow, or missed changes, under WSL | Working across a Windows mount point | Run Hugo on paths inside the Linux filesystem. Cross-filesystem change notifications and permission behavior can break live reload |
+| Bootstrap / Font Awesome / Lunr / Mermaid assets are missing | An incomplete distribution | Do not substitute a CDN URL. Confirm that `assets/third_party/`, `assets/js/third_party/`, `static/webfonts/`, and `VENDOR.json` are present. If a file is missing, download the same pinned version again |
 
 ## Checks a site can run {#site-checks}
 
-Run the build in your site's root. The output checker is a separate script
-from a theme checkout matching your pinned release: replace `/path/to/oink`,
+Run the build from your site's root. Use the separate output checker from a
+theme checkout that matches your pinned release. Replace `/path/to/oink`,
 `/path/to/my-site/public`, and the base URL with your values. The remaining
-commands are examples from this documentation repository's test harness,
-not commands supplied to every OINK consumer.
+commands are examples from this documentation repository's test harness.
+They are not supplied to every OINK consumer.
 
 | Check | Command | What it covers |
 | --- | --- | --- |
@@ -120,18 +120,18 @@ not commands supplied to every OINK consumer.
 | The full gate | `npm test` | Runs the six below in sequence |
 {.fields}
 
-What each of the six covers:
+The six checks cover the following items:
 
 - `test:base` — builds once, then runs the Markdown style, translation parity, rendered Markdown and link checks.
 - `test:hugo-build` — build assertions: blog metadata, RSS, content components, and a deprecation-free build.
-- `test:md-output` — byte-level golden comparison of the Markdown and `llms.txt` output. Changing a component's Markdown shape fails here.
-- `test:alt-site` — builds once per alternate configuration in `tests/fixtures/*.yml`, confirming the combinations still come up.
+- `test:md-output` — compares Markdown and `llms.txt` output byte for byte against goldens. A change to a component's Markdown structure fails this check.
+- `test:alt-site` — builds once for each alternate configuration in `tests/fixtures/*.yml`. Confirms that each combination still works.
 - `test:favicons` — golden comparison of the head output.
 - `test:release-pin-contract` — whether the version the site advertises matches the one pinned in `go.mod`.
 
-Browser behaviour is a separate suite: `npm run test:browser` runs the
-Playwright accessibility (axe WCAG AA), responsive shell, keyboard navigation,
-content component, code block and scenario component suites in turn.
+Browser behavior has a separate suite. The command `npm run test:browser`
+runs the Playwright accessibility (axe WCAG AA), responsive shell, keyboard
+navigation, content component, code block, and scenario component suites in sequence.
 
 > [!TIP] `check-output-security.py` lives in the theme repository
 > It sits under the theme's `bin/`, is a product-level trust check any OINK site
@@ -141,19 +141,20 @@ content component, code block and scenario component suites in turn.
 
 ## Diagnostic habits {#habits}
 
-For problems the tables do not cover, dig along these lines:
+If the tables do not cover the problem, use these diagnostic steps:
 
-- Reproduce with a pinned Hugo Extended version rather than judging in an environment where the version floats.
+- Reproduce the problem with a pinned Hugo Extended version. Avoid an environment with an unpinned version.
 - Clear `public/` and `resources/_gen` and rebuild, to rule out stale caches.
 - Compare the development and production configuration layers; many production-only problems are environment differences.
-- Read the first error, not the last.
-- Separate "theme behaviour" from "site override" with a minimal page: isolate the suspect content on its own page and re-enable site overrides in batches until one is implicated.
+- Read the first error. Later errors may result from it.
+- Use a minimal page to distinguish "theme behaviour" from "site override". Put the suspect content on its own page. Re-enable site overrides in batches until a batch causes the problem.
 - Look at the failing page's browser console and network panel, especially the paths of any 404 resources.
 
 ## Getting help {#getting-help}
-Opening an issue with these saves a round trip: the Hugo version (the full
-`hugo version` output), the theme version (`hugo mod graph | grep oink`), the
-first complete error, and a minimal page or site that reproduces it.
+When you open an issue, include the complete `hugo version` output and the
+theme version from `hugo mod graph | grep oink`. Include the first complete
+error and a minimal page or site that reproduces it. This information avoids
+an additional request for details.
 
 - Theme and documentation issues: <https://github.com/pgsty/oink/issues>
 - Issues with this site's content: <https://github.com/pgsty/oink.pgsty.com/issues>

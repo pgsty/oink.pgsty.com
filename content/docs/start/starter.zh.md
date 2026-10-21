@@ -13,7 +13,7 @@ search_keywords: [OINK Starter, GitHub 模板, Use this template, 定制 Starter
 
 本流程使用 Git、Go 1.27 或更新版本，以及 Hugo Extended 0.168.0。
 所选语言 profile 统一使用这套工具链验证，旧 Starter 的 workflow 固定版本也应
-同步更新。Hugo 基线随稳定版更新，不再测试或适配旧版本。
+同步更新。Hugo 默认基线保持固定，不再测试或适配旧版本。
 
 ## 模板包含什么 {#contents}
 

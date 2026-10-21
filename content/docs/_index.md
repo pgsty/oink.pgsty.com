@@ -4,7 +4,7 @@
 outputs: [HTML, RSS, print, markdown, LLMSFULL]
 title: OINK Documentation
 linkTitle: Docs
-description: Build a technical content site with shared navigation, multilingual support and search for documentation, blogs, books and API references.
+description: Build a technical content site. Use shared navigation, multilingual support, and search for documentation, blogs, books, and API references.
 search_keywords:
   [
     OINK,
@@ -39,22 +39,22 @@ cascade:
   search_boost: 1.35
 ---
 
-New to OINK? [Start with the Starter](/docs/start/) to preview a working site,
-then replace its sample content. Write in Markdown and build with Hugo Extended;
-Hugo Modules also require Go to resolve the theme. Bundled theme assets need no
-CDN or npm build step.
+For a new OINK site, [Start with the Starter](/docs/start/). Preview the working site,
+then replace its sample content. Write in Markdown and build with Hugo Extended
+with its built-in Sass compiler. Hugo Modules also require Go to resolve the theme. Bundled theme assets require
+no CDN or npm build step.
 
 The current release is {{% param version %}}. See the
-[1.3 release notes](/blog/release/1.3.0/) or the
+[1.3.2 release notes](/blog/release/1.3.2/) or the
 [upgrade guide](/docs/admin/upgrade/#preparing-1-3) for an existing site.
 
 ## Five ways in {#five-entries}
 
-- [Get started](/docs/start/) — create an OINK Starter repository, establish a local baseline, customize it in layers, deploy.
-- [Components](/docs/components/) — one page per component, source first and rendered result after it.
-- [Write Beautiful Docs](/book/) — a tutorial in progress; the first three chapters cover preview, structure and page composition.
-- [Case studies](/case/) — production sites explained as reusable design and migration patterns.
-- [Design and development](/docs/design/) — contracts, accepted decisions, research evidence, and active proposals for OINK maintainers.
+- [Get started](/docs/start/) — Create an OINK Starter repository. Verify the local site, customize one part at a time, then deploy it.
+- [Components](/docs/components/) — Each component has one page. The source appears first, followed by the rendered result.
+- [Write Beautiful Docs](/book/) — This tutorial is in progress. The first three chapters cover preview, structure, and page composition.
+- [Case studies](/case/) — Learn reusable design and migration patterns from production sites.
+- [Design and development](/docs/design/) — Read contracts, accepted decisions, research evidence, and active proposals for OINK maintainers.
   {.cards}
 
 ## Find it by task {#where-to-go}
@@ -66,7 +66,7 @@ The current release is {{% param version %}}. See the
 | Write a documentation page                            | [Writing pages](/docs/write/pages/)            |
 | Turn a directory tree into a sidebar                  | [Organizing content](/docs/write/organize/)    |
 | Look up a component's syntax                          | [Components](/docs/components/)                |
-| Change the name, logo, colours and fonts              | [Brand and appearance](/docs/customize/brand/) |
+| Change the name, logo, colors, and fonts              | [Brand and appearance](/docs/customize/brand/) |
 | Look up a configuration key's default                 | [Configuration](/docs/customize/config/)       |
 | Run a bilingual or multilingual site                  | [Languages](/docs/customize/i18n/)             |
 | Practice building and writing                                 | [Write Beautiful Docs](/book/)                 |
@@ -75,6 +75,6 @@ The current release is {{% param version %}}. See the
 | Upgrade, or migrate from Docsy                        | [Upgrade](/docs/admin/upgrade/)                |
 | Maintain the theme, review a contract, or write a PRD | [Design and development](/docs/design/)        |
 
-The seven Docs sections are ordered the way they are read: understand, install,
-write content, look up components, adjust the site, run the release, then study
-or maintain the contracts and design records behind it.
+The seven Docs sections follow the reading sequence. First understand and
+install OINK. Then write content, find components, adjust the site, and release
+it. Finally, study or maintain its contracts and design records.

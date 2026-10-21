@@ -1,7 +1,7 @@
 ---
 title: Goldmark block-attribute evidence
 linkTitle: Goldmark attributes
-description: Reproducible findings for lists, images, tables, passthrough blocks, fences, callouts, and nested containers on Hugo 0.160.1 and 0.164.0.
+description: Repeatable probes of lists, images, tables, passthrough blocks, fences, callouts, and nested containers on Hugo 0.160.1 and 0.164.0.
 weight: 10
 icon: fa-solid fa-code
 search_keywords:
@@ -12,21 +12,21 @@ last_verified: 2026-08-16
 ---
 
 > [!NOTE] Verified snapshot
-> These probes produced byte-identical relevant output on Hugo Extended
-> 0.160.1 and 0.164.0. They explain OINK's native component forms; the current
-> [component contract](/docs/design/components/) remains authoritative.
+> These probes produced identical relevant output bytes on Hugo Extended
+> 0.160.1 and 0.164.0. They explain OINK's native component forms.
+> The current [component contract](/docs/design/components/) defines required behavior.
 
 ## Method {#method}
 
-The probe used a minimal Hugo site without OINK templates. Render hooks printed
-their context fields and `.Attributes` as visible markers. The site enabled
-Goldmark block attributes, passthrough delimiters for inline and block math,
-unsafe rendering for the deliberately inspected raw HTML, and
-`wrapStandAloneImageWithinParagraph: false`.
+The probe used a minimal Hugo site without OINK templates, with render hooks
+printing their context fields and `.Attributes` as visible markers.
+The site enabled Goldmark block attributes and passthrough delimiters for inline
+and block math, deliberately allowed unsafe rendering to inspect raw HTML, and
+set `wrapStandAloneImageWithinParagraph: false`.
 
-Each source shape was rendered with the compatibility-floor Hugo and the then
-current Hugo version. Relevant output was compared byte for byte. The findings
-below record platform behaviour, not visual styling.
+Each source shape was rendered with the minimum supported Hugo and the then
+current Hugo version, comparing relevant output byte for byte. The findings
+below record platform behavior rather than visual styling.
 
 ## Findings {#findings}
 
@@ -46,38 +46,38 @@ below record platform behaviour, not visual styling.
 
 ## Container boundary {#container-boundary}
 
-Hugo's `%` shortcode delimiter renders `.Inner` as Markdown, but its template
-must put a blank line before and after that inner Markdown. Without both blank
-lines, a following list may be treated as literal HTML-block content instead of
-Markdown.
+Hugo's `%` shortcode delimiter renders `.Inner` as Markdown.
+Its template must put a blank line before and after the inner Markdown.
+Without both blank lines, Hugo may treat a following list as literal HTML-block
+content instead of Markdown.
 
-A multi-line `%` container inside a CommonMark list item has a harder limit:
-the generated HTML is not indented as list content, so the list closes before
-the container and restarts afterwards. This is why OINK keeps a full Steps form
-for steps that must contain another full container. Ordinary rich blocks,
-fences, and `<` shortcodes do not have that limitation.
+A multi-line `%` container inside a CommonMark list item has another limitation:
+its generated HTML lacks list-content indentation, so the list closes before
+the container and restarts after it. OINK therefore keeps a full Steps form for
+steps that must contain another full container. Ordinary rich blocks, fences,
+and `<` shortcodes do not have this limitation.
 
-Nested `%` shortcodes also receive already rendered inner HTML in the relevant
-collector shape. A collector that requires the child's original Markdown uses
-`<` delimiters and renders the captured body through the shared scoped block
-renderer.
+In the applicable collector shape, nested `%` shortcodes receive inner HTML
+that is already rendered. If a collector requires the child's original
+Markdown, it uses `<` delimiters and renders the captured body through the
+shared scoped block renderer.
 
 ## Attribute ownership {#attribute-ownership}
 
-An available attribute is not automatically a public attribute. Every hook
-owns a documented allowlist. `style` and inline `on*` handlers are rejected;
-URL-bearing values pass the shared URL policy. A site class is retained only on
-the surfaces where downstream CSS is an established extension mechanism.
+An available attribute is not automatically a public attribute.
+Each hook has a documented allowlist. Hooks reject `style` and inline `on*`
+handlers. URL-bearing values must pass the shared URL policy.
+A hook retains a site class only where downstream CSS is an established
+extension mechanism.
 
-The experiment also showed that gallery images inside list items can be block
-images while still receiving no knowledge of their parent list's marker. A
-runtime may therefore need either a theme-emitted marker or a narrow structural
-fallback; it cannot assume the image hook sees arbitrary ancestors.
+The experiment showed that gallery images inside list items can be block images,
+but the image hook still does not receive their parent list's marker. A runtime
+may therefore need a theme-emitted marker or a specific structural fallback,
+rather than assuming that the image hook sees arbitrary ancestors.
 
 ## Limits and verification {#limits-and-verification}
 
 These results cover Hugo 0.160.1 and 0.164.0 with the stated Goldmark settings.
-They do not promise identical behaviour for a site that changes those settings
-or for a later Hugo release. A Hugo-floor change reruns the focused component,
-Book, table, gallery, and Markdown-output checks before this snapshot is
-updated.
+They do not promise identical behavior with different settings or a later Hugo
+release. Before updating this snapshot for a minimum-version change, rerun the
+focused component, Book, table, gallery, and Markdown-output checks.

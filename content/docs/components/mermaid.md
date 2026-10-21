@@ -1,19 +1,17 @@
 ---
 title: Mermaid
 linkTitle: Mermaid
-description: A `mermaid` fence turns text into flowcharts, sequence diagrams, Gantt charts, class diagrams and state diagrams — rendered locally, theme-aware, diff-friendly.
+description: Use a `mermaid` fence for flowcharts, sequence diagrams, Gantt charts, class diagrams, and state diagrams. Bundled Mermaid follows the color scheme; source diffs show changes.
 weight: 110
 search_keywords: [Mermaid, flowchart, sequence, gantt, classDiagram, erDiagram, stateDiagram, diagram]
 aliases:
   - /docs/components/diagrams/
 ---
 
-A `mermaid` fence renders text as a flowchart, sequence diagram, Gantt chart,
-class diagram, ER diagram or state diagram. The diagram exists as source: it goes
-into Git, it reviews as a diff, and search finds it. Rendering happens in the
-reader's browser with the Mermaid copy the theme ships — no external service is
-contacted. Diagrams that need pixel-level control belong in an SVG, used as an
-[image](/docs/components/image/).
+A `mermaid` fence displays text as a flowchart, sequence diagram, Gantt chart, class diagram, ER diagram, or state diagram.
+Git stores the diagram source, diffs show changes, and search can find it.
+The reader's browser renders it with bundled Mermaid. It contacts no external service.
+If a diagram needs precise pixel control, use SVG as an [image](/docs/components/image/).
 
 ## Shortest form {#minimal}
 
@@ -35,14 +33,12 @@ flowchart LR
   Hugo --> site["public/"]
 ```
 
-The fence language is `mermaid` and there is no other switch. Only when the
-theme sees such a fence does it add the Mermaid runtime to that page, and ten
-diagrams on one page still load it once.
+Use `mermaid` as the fence language. No other switch is needed.
+Only pages with this fence load the Mermaid runtime. Even ten diagrams on one page load it only once.
 
 ## Sequence diagrams {#sequence}
 
-`sequenceDiagram` describes messages between participants over time, which suits
-request paths and load order.
+`sequenceDiagram` describes messages between participants over time. Use it for request paths and loading order.
 
 ````markdown {title="Source"}
 ```mermaid
@@ -76,8 +72,8 @@ sequenceDiagram
 
 ## Gantt charts {#gantt}
 
-`gantt` draws intervals. Below is the five-year community support window of each
-PostgreSQL major version, counted from its release date; `1825d` is five years.
+`gantt` displays intervals. This example shows each PostgreSQL major version's five-year community support period, measured from release.
+`1825d` means five years.
 
 ````markdown {title="Source"}
 ```mermaid
@@ -113,8 +109,7 @@ gantt
 
 ## Class and ER diagrams {#class-and-er}
 
-`classDiagram` draws types and relationships, `erDiagram` entities and
-cardinality. Both are common ways to explain a data model.
+`classDiagram` displays types and relationships. `erDiagram` displays entities and cardinality. Use either to explain a data model.
 
 ````markdown {title="Source"}
 ```mermaid
@@ -202,9 +197,8 @@ erDiagram
 
 ## State diagrams {#state}
 
-`stateDiagram-v2` draws states and the conditions between them. Below are the
-five states an OINK release passes through. They are not interchangeable, and a
-green local build is none of them.
+`stateDiagram-v2` displays states and transition conditions.
+This example shows five OINK release states. They are not interchangeable. A successful local build establishes none of them.
 
 ````markdown {title="Source"}
 ```mermaid
@@ -232,10 +226,9 @@ stateDiagram-v2
 
 ## Per-diagram title and configuration {#per-diagram-config}
 
-The top of a fence body may carry Mermaid's own YAML header — this is not Hugo
-front matter. `title` gives the diagram a title and `config` overrides Mermaid
-configuration for this diagram alone. A diagram that hard-codes `config.theme`
-no longer follows the site's colour scheme.
+A fence body can start with Mermaid's YAML header. This is not Hugo front matter.
+`title` sets the diagram title. `config` overrides Mermaid configuration for this diagram only.
+If a diagram fixes `config.theme`, it no longer follows the site's color scheme.
 
 ````markdown {title="Source"}
 ```mermaid
@@ -269,14 +262,11 @@ flowchart TD
 
 ## Light and dark {#dark-mode}
 
-The theme reads the current colour scheme when the page initializes: in dark
-mode it uses Mermaid's `dark` theme, in light mode the theme the site
-configured. Switching the colour scheme redraws the diagrams in place — the
-page is not reloaded, and each diagram holds its height while it is redrawn,
-so nothing on the page moves under you.
+At initialization, the theme reads the current color scheme. Dark mode uses Mermaid's `dark` theme.
+Light mode uses the site's configured theme. Changing the color scheme redraws diagrams in place without reloading the page.
+Each diagram keeps its height during redrawing, so page content does not move.
 
-Site-wide defaults go in `hugo.yml` with lowercase keys; the theme matches them
-back to Mermaid's own casing:
+Put site-wide defaults in `hugo.yml` with lowercase keys. The theme maps them to Mermaid's key casing:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -286,16 +276,13 @@ params:
       diagrampadding: 6
 ```
 
-The full key table is in
-[Configuration](/docs/customize/config/); for accepted
-values see the
-[Mermaid configuration reference](https://mermaid.js.org/config/schema-docs/config.html).
+[Configuration](/docs/customize/config/) lists all keys.
+See the [Mermaid configuration reference](https://mermaid.js.org/config/schema-docs/config.html) for accepted values.
 
 ## Inside tabs and steps {#compose}
 
-A `mermaid` fence has no `tab` attribute — adjacent-fence tabs apply to ordinary
-code fences only. To compare two diagrams side by side, use the `tabs`
-shortcode.
+A `mermaid` fence has no `tab` attribute. Adjacent-fence tabs apply only to ordinary code fences.
+To compare two diagrams, use the `tabs` shortcode.
 
 ````markdown {title="Source"}
 {{</* tabs */>}}
@@ -335,8 +322,8 @@ flowchart LR
 {{< /tab >}}
 {{< /tabs >}}
 
-Each step inside `{{%/* steps */%}}` is page-level Markdown and can hold a
-`mermaid` fence; see [Steps](/docs/components/steps/).
+Each step in `{{%/* steps */%}}` uses page-level Markdown and can contain a `mermaid` fence.
+See [Steps](/docs/components/steps/).
 
 ## Output {#outputs}
 
@@ -349,9 +336,8 @@ Each step inside `{{%/* steps */%}}` is page-level Markdown and can hold a
 
 ## Parameter reference {#reference}
 
-Fence attributes: none. A `mermaid` fence reads no attribute line; writing
-`{height=…}` or `{class=…}` neither works nor errors. Size follows the diagram
-itself and the container width, and the diagram is centred in it.
+A `mermaid` fence reads no attribute line. `{height=…}` and `{class=…}` have no effect and produce no error.
+The diagram and container width determine the size. The diagram is centered.
 
 Site parameters (`hugo.yml`):
 
@@ -361,35 +347,27 @@ Site parameters (`hugo.yml`):
 | `params.mermaid.theme` | string | Mermaid's default | The light-mode theme; dark mode forces `dark` |
 {.fields meta="type default"}
 
-Per-diagram configuration goes in the YAML header at the top of the fence body
-(`title`, `config`). That is Mermaid syntax, not a theme parameter.
+Put per-diagram configuration (`title`, `config`) in the YAML header at the start of the fence body.
+These are Mermaid keys, not theme parameters.
 
 ## Enlarging a diagram {#zoom}
 
-A diagram is centred in the column, and Mermaid scales anything wider than the
-column down to fit — a wide sequence diagram can land near a third of its own
-size on a phone. Hovering a diagram (or reaching it with the keyboard) reveals
-a control in its corner that opens the diagram on its own: rendered again at
-full size, panned by dragging, zoomed with the wheel, a pinch, or the `+` and
-`-` keys, and reset with `0`. `Esc` closes it. A diagram that would have to
-shrink past half size to fit opens at 1:1 at its starting corner instead of as
-a thumbnail, and zooming back out always reaches the whole diagram however
-large it is. Nothing is downloaded for this and there is no switch to set: the
-viewer ships with the fence.
+Mermaid centers diagrams and scales them to fit the column. Wide sequence diagrams can shrink to about one third on phones.
+Hover or focus a diagram to reveal its corner control. Open it to render it again at full size.
+Drag to pan. Zoom with the wheel, a pinch, or `+` and `-`. Press `0` to reset and `Esc` to close.
+If fitting would shrink a diagram below half size, it opens at 1:1 from its starting corner instead of as a thumbnail.
+Zooming out can always show the complete diagram, regardless of size.
+The viewer is bundled with the fence. It downloads nothing extra and needs no switch.
 
 ## Limits {#limits}
 
-- Diagrams cannot be numbered: Mermaid emits inline SVG, not an `<img>`, so
-  `{#id num=}` numbering does not apply. Export to an image when you need a
-  number and use the [image](/docs/components/image/) numbering.
-- Fence attributes do nothing: control width inside the diagram (flowchart
-  direction, class-diagram layout) or with CSS. There is no alignment
-  attribute — a diagram is always centred.
-- Syntax errors show up only in the browser: Hugo does not parse Mermaid, so a
-  broken diagram renders an alert carrying the parse error and its own source,
-  while the build still passes. Check in a browser before publishing.
-- RSS, Markdown and Print carry the source, not the picture: put the conclusion
-  in the prose, not only in the diagram.
+- Mermaid emits inline SVG instead of `<img>`, so `{#id num=}` numbering does not apply.
+  If you need numbering, export an image and use [image](/docs/components/image/) numbering.
+- Fence attributes have no effect. Control width through diagram syntax, such as flowchart direction or class-diagram layout, or CSS.
+  There is no alignment attribute. Diagrams are always centered.
+- Syntax errors appear only in the browser because Hugo does not parse Mermaid.
+  Invalid diagrams display an alert with the parse error and source, but the build still passes. Check the browser before publishing.
+- RSS, Markdown, and Print include source instead of pictures. State conclusions in prose as well as in diagrams.
 
 ## Related {#related}
 

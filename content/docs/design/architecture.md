@@ -31,38 +31,29 @@ together; historical release and research records retain their original tools.
 
 ## Repository and assembly {#repository-and-assembly}
 
-The repository root is a Hugo Module and complete theme, not a site or npm
-workspace. Hugo Extended compiles SCSS and templates. Browser runtimes and
-third-party assets are committed, so a normal build performs no network fetch.
-Public bilingual documentation, examples, and browser tests live in the
-sibling `oink.pgsty.com` repository; the theme repository keeps only narrow
-internal regression fixtures under `tests/site/` and has no separate public
-example surface.
+The repository root is a complete Hugo Module theme. It is not a site or npm workspace.
+Hugo Extended compiles SCSS and templates. Committed browser runtimes and third-party assets need no network fetch during normal builds.
+Public bilingual documentation, examples, and browser tests belong to the sibling `oink.pgsty.com` repository.
+The theme keeps only narrow internal regression fixtures under `tests/site/`. It has no separate public example site.
 
-Generated `public/` and `resources/` trees are never source. Vendored runtimes,
-font families, and Font Awesome glyph definitions are supported distributions,
-not dead-code candidates; `VENDOR.json` and `bin/check-vendor.py` pin their
-integrity. OINK ships the complete supported Font Awesome distribution because
-consumer-authored content may use icons that theme templates do not.
+Generated `public/` and `resources/` directories are never source.
+Vendored runtimes, font families, and Font Awesome glyph definitions are supported distributions. Do not remove them as dead code.
+`VENDOR.json` and `bin/check-vendor.py` verify their integrity.
+OINK includes the complete supported Font Awesome distribution because consumer content can use icons absent from theme templates.
 
-The official compiled Font Awesome CSS is one stable, fingerprinted vendor
-stylesheet loaded before the fingerprinted `main.css` produced from theme and
-consumer SCSS. A site-style edit therefore does not invalidate the icon
-distribution, while ordinary cascade order still lets the site override it.
-Capability styles such as KaTeX, DocSearch, Swagger, and Asciinema remain
-separate and load only when used. Fingerprints make immutable URLs possible;
-the deployment host, not the Hugo theme, owns their HTTP cache headers.
+The official compiled Font Awesome CSS is a stable, fingerprinted vendor stylesheet.
+It loads before fingerprinted `main.css`, which is compiled from theme and consumer SCSS.
+Site style changes therefore preserve the icon distribution's fingerprint, while cascade order still lets sites override its styles.
+Capability styles, including KaTeX, DocSearch, Swagger, and Asciinema, stay separate and load only when used.
+Fingerprints permit immutable URLs. The deployment host controls their HTTP cache headers.
 
-Hugo types `docs`, `book`, `blog`, and `swagger` select the reading shells;
-`params.ui.shell_types` may add types. Landing is `layout: landing`. There is no
-`article` type or second blog shell: immersive pages are a blog presentation
-described in the [shell contract](/docs/design/shell/).
+Hugo types `docs`, `book`, `blog`, and `swagger` select reading shells. `params.ui.shell_types` may add types.
+Landing uses `layout: landing`. There is no `article` type or second blog shell.
+The [shell contract](/docs/design/shell/) defines immersive pages as a blog presentation.
 
-`layouts/_partials/shell/config.html` resolves shared shell facts. Layouts must
-render through `content/render.html` before `scripts.html`, because render hooks
-and shortcodes register capability flags in the Page Store. Override the
-narrowest partial; superficially similar base templates remain separate where
-merging would change Hugo lookup precedence.
+`layouts/_partials/shell/config.html` resolves shared shell settings.
+Layouts must render through `content/render.html` before `scripts.html` because render hooks and shortcodes register capability flags in the Page Store.
+Override the narrowest partial. Keep similar base templates separate when merging them would change Hugo lookup precedence.
 
 ## Configuration and diagnostics {#configuration-and-diagnostics}
 
@@ -108,38 +99,29 @@ ar az bg bn de en es et fa fi fr he hi hu it ja ko nl no oc pl pt-br ro ru
 sr-cyrl sr-latn sv tr uk zh-cn zh-tw
 ```
 
-That is a compatibility scope, not a runtime dependency on Docsy and not a
-claim that a consumer's authored content has been translated. A new Docsy
-locale does not enter OINK automatically: it needs a complete OINK catalog and
-the same review as every existing locale.
+This defines compatibility scope without creating a runtime dependency on Docsy or making claims about translations of consumer content.
+New Docsy locales do not enter OINK automatically: they need a complete OINK catalog and the same review as existing locales.
 
-`i18n/en.yaml` owns the 218-message schema. Every one of the 32 OINK bundles has
-exactly that key set and native UI text; an English value may remain only when
-it is a reviewed product name, punctuation token, conventional abbreviation,
-or genuine word shared by the target language. There are no generated English
-fallback blocks. `zh` and `zh-cn` carry Simplified Chinese, while `zh-tw`
-carries Traditional Chinese.
+`i18n/en.yaml` defines the 218-message schema. Each of the 32 OINK bundles has exactly these keys and native interface text.
+An English value may remain only as a reviewed product name, punctuation token, conventional abbreviation, or word shared by the target language.
+There are no generated English fallback blocks.
+`zh` and `zh-cn` use Simplified Chinese. `zh-tw` uses Traditional Chinese.
 
 The current Hugo baseline accepts `locale: zh` for the generic `zh` language
 alongside regional Chinese catalogs. A site may also select `locale: zh-CN`.
 Neither choice changes the `i18n/zh.yaml` filename.
 
-Runtime placeholders such as `%s`, `{count}`, and `{{ .Count }}` may move to a
-grammatically natural position but must remain byte-for-byte identical. Values
-are strings or Hugo plural-message maps. Plural maps use the locale's supported
-categories (`zero`, `one`, `two`, `few`, `many`, `other`); `other` is required,
-and every form is a string with the same placeholders. Catalogs contain no hidden bidirectional controls; Arabic,
-Persian, and Hebrew direction still comes from the consumer language setting
-(`direction: rtl`), not from characters injected into translations.
-`bin/check-i18n.py` enforces the locale set, schema, value shape, placeholders,
-directional controls, and the small reviewed set of English-identical terms.
-Adding a visible string therefore means translating it in every bundle in the
-same change, not running a fallback generator.
+Runtime placeholders such as `%s`, `{count}`, and `{{ .Count }}` may move for natural grammar. Their bytes must stay identical.
+Values are strings or Hugo plural-message maps. Plural maps use supported locale categories: `zero`, `one`, `two`, `few`, `many`, and `other`.
+`other` is required. Each form must be a string with the same placeholders.
+Catalogs contain no hidden bidirectional controls.
+Arabic, Persian, and Hebrew direction comes from consumer language configuration (`direction: rtl`), not injected translation characters.
+`bin/check-i18n.py` checks locales, schema, value shapes, placeholders, directional controls, and the small reviewed set of English-identical terms.
+Translate every new visible string in every bundle in the same change. Do not generate fallback text.
 
 ## Featured images {#featured-images}
 
-Hugo's `images` is the single authored API; `params.images` is only the
-site-wide social fallback.
+Hugo's `images` is the single authoring API. `params.images` supplies only the site-wide social fallback.
 
 | Source | Reader thumbnail | Social card |
 | --- | --- | --- |
@@ -147,24 +129,21 @@ site-wide social fallback.
 | Section `cascade.images` | yes | yes |
 | Site `params.images` | no | yes |
 
-`images: []` clears an explicit or cascaded value but does not disable bundled
-resource discovery. Only the first resolved image is representative. Local
-processable rasters may be cropped; SVG, static, and remote resources remain
-valid without Hugo image operations.
+`images: []` clears explicit or cascaded values but does not disable bundle resource discovery.
+Only the first resolved image represents the page. Local processable rasters may be cropped.
+SVG, static, and remote resources remain valid without Hugo image operations.
 
-`featured-image-resolve.html` owns source ranking and relative/absolute URLs.
-A page's explicit `images` outranks its bundled resource, which outranks an
-inherited cascade image, even when explicit and inherited values are identical.
-For file-backed pages, authored presence is read from the source front matter;
-Hugo parses its YAML, TOML, or JSON. For generated pages without a source file,
-resolved `images` is treated as explicit. List thumbnails,
-Open Graph/Twitter/schema helpers, author avatars, Pinterest media, and blog
-presentation all consume that decision.
+`featured-image-resolve.html` defines source priority and relative or absolute URLs.
+Explicit page `images` take precedence over bundle resources. Bundle resources take precedence over inherited cascade images.
+This order also applies when explicit and inherited values are identical.
+For file-backed pages, authored presence is read from source front matter. Hugo parses YAML, TOML, or JSON.
+For generated pages without source files, resolved `images` count as explicit.
+List thumbnails, Open Graph/Twitter/schema helpers, author avatars, Pinterest media, and blog presentation all use this decision.
 
-`params.ui.featured_image` is blog-only and defaults to `none`; front matter
-overrides it per page or cascade. `banner` renders a figure above a single-page
-title, `wash` colors its header, and `hero` paints the shell backdrop on single
-pages and section indexes. Missing images and non-HTML output render no image.
+`params.ui.featured_image` applies only to blogs and defaults to `none`. Page front matter or cascades can override it.
+`banner` adds a figure above single-page titles. `wash` colors the header.
+`hero` fills the shell background on single pages and section indexes.
+Missing images and non-HTML outputs render no image.
 
 ## Outputs and runtime {#outputs-and-runtime}
 
@@ -259,75 +238,58 @@ Formula-free Print documents do not load those styles.
 
 ## Trust, CSS, and accessibility {#trust-css-and-accessibility}
 
-Authors may enable Goldmark `unsafe`; configuration and component parameters
-are not raw HTML. The shared attribute policy consumes an allowlist, validates
-class tokens, passes `data-*` and `aria-*`, and warns while dropping `style`,
-`srcdoc`, `on*`, reserved, and unknown attributes. URL helpers reject dangerous
-schemes and protocol-relative URLs where local or explicit absolute URLs are
-required. Promised remote URLs remain supported but are never fetched at build
-time.
+Authors may enable Goldmark `unsafe`. Configuration and component parameters are not raw HTML.
+The shared attribute policy uses an allowlist, validates class tokens, and passes `data-*` and `aria-*`.
+It warns and removes `style`, `srcdoc`, `on*`, reserved attributes, and unknown attributes.
+URL helpers reject dangerous schemes and protocol-relative URLs where local or explicit absolute URLs are required.
+Promised remote URLs remain supported. They are never fetched at build time.
 
 > [!NOTE] Fixed in OINK 1.3.0
 > Image and Gallery URLs are HTML-attribute escaped after URL validation,
 > including full-size Zoom sources. Quotes and ampersands remain part of the
 > URL; they cannot introduce attributes or be decoded as HTML entities.
 
-Theme output uses `td-` classes, `data-td-*` attributes, and `--td-*` custom
-properties; author markers such as `.steps`, `.cards`, and `.full-width` stay
-unprefixed. CSS supports RTL, print, forced colors, reduced motion, long tokens,
-and narrow viewports. Theme-owned decorative icons carry `aria-hidden`; pages
-with task lists or raw authored Font Awesome elements alone load the authored
-accessibility repair.
+Theme output uses `td-` classes, `data-td-*` attributes, and `--td-*` custom properties.
+Author markers such as `.steps`, `.cards`, and `.full-width` remain unprefixed.
+CSS supports RTL, print, forced colors, reduced motion, long tokens, and narrow viewports.
+Theme decorative icons have `aria-hidden`. Only pages with task lists or raw authored Font Awesome elements load the authored accessibility repair.
 
-Reading-container focus distinguishes pointer origin from keyboard navigation.
-A pointer-focused main region, table viewport, or code `pre` does not acquire
-an outline merely because the reader presses another key. Tab, blur, or a new
-non-pointer focus clears that exemption. Controls retain their own focus
-styles, scrollable containers retain `tabindex`, and the skip-link destination
-shows a local outline around its title instead of the entire article. Forced
-colors preserve the keyboard indication; no global focus-outline reset is used.
+Reading-container focus distinguishes pointer input from keyboard navigation.
+A pointer-focused main region, table viewport, or code `pre` does not gain an outline merely when another key is pressed.
+Tab, blur, or new non-pointer focus clears that exception.
+Controls keep their focus styles. Scrollable containers keep `tabindex`.
+The skip-link destination shows a local outline around its title instead of the whole article.
+Forced colors retain keyboard focus indication. No global focus-outline reset is used.
 
-Font roles are `ui`, `body`, `heading`, `code`, `display`, `meta`, `brand`, and
-`print`, exposed as `--td-*-font-family`. `ui` is the main face: `body`
-resolves through it, and `heading` through `body`, so one assignment moves
-chrome, prose, and headings together. `params.ui.typography` is `technical` or
-`system`; both compile into one stylesheet with no runtime. Legacy
-Bootstrap/Docsy Sass variables continue to seed these roles.
+Font roles are `ui`, `body`, `heading`, `code`, `display`, `meta`, `brand`, and `print`. They use `--td-*-font-family` properties.
+`ui` is the primary face, with `body` resolving through it and `heading` through `body`, so one assignment changes interface text, prose, and headings together.
+`params.ui.typography` accepts `technical` or `system`. Both compile into one stylesheet and need no runtime.
+Legacy Bootstrap/Docsy Sass variables still initialize these roles.
 
-`params.ui.fonts` reaches the same roles from configuration, for a site that
-would rather not mount SCSS or add a stylesheet. It names faces and never
-loads them: a family must be one the reader has or one the site declared in an
-`@font-face` of its own, which keeps the key outside the network contract.
-Values are gated to plain font family syntax and the emitted `:root` block is
-rebuilt from the matched parts; an unknown role or an unsafe value warns and is
-dropped alone. The block renders after the stylesheet, which is what lets an
-authored face outrank the preset at equal specificity. A shell reads in the
-site's faces and owns none of its own: a Book sets its numbers and captions in
-the prose face, not in a technical one.
+`params.ui.fonts` configures the same roles without mounted SCSS or an added stylesheet.
+It names faces without loading them, so readers must have the family or the site must declare it through its own `@font-face`.
+This key remains outside the network contract.
+Values must use plain font-family syntax. The emitted `:root` block is reconstructed from matched parts.
+Unknown roles or unsafe values warn and are individually removed.
+The block follows the stylesheet, allowing authored faces to override presets at equal specificity.
+Shells inherit site faces and define none of their own. Book numbers and captions use the prose face, not a technical face.
 
-The accent family splits by role. Accent *text* -- links, external URLs, inline
-code -- follows the Bootstrap link family and `--bs-code-color`, which a theme
-color never redeclares. Inline code follows the visual preset: Slate retains
-the crimson pair, while Paper uses ink text on a quiet chip. Accent
-*grounds* -- selected rows, the greyed ground a navigation row takes under the
-pointer, hover washes, the outline pill, rail and dot, chip hovers, a card's
-hovered edge, a share button's hover fill, selection, focus rings -- follow
-`--td-accent`, `--td-accent-rgb` and `--td-accent-hover`, which default to the
-link family and are the only properties `params.ui.theme_color` emits. Ink that
-belongs to the shell rather than to the prose follows them too: the outline
-anchors the viewport is standing over, and a Book chapter's headings under the
-pointer or keyboard focus, light in the section's color, not in the link blue.
-`theme_color` and `theme_color_dark` take `#rgb`/`#rrggbb`; front matter and
-section cascades override the site value. An unconfigured site emits nothing.
-An unparseable value warns and keeps the default palette. A resolved color below 4.5:1 against the site default preset
-canvas warns with a suppressible id and still ships: the check is advisory, and
-only a parse failure drops a color. The light color is the key: a
-`theme_color_dark` with no valid `theme_color` warns and is ignored, so a page
-is colored in both modes or in neither. An omitted dark half lightens toward
-white in 4% steps until it clears 4.5:1 on the dark canvas. Every emitted byte is
-formatted from parsed integer channels, never from author text. One resolver
-answers "what color is this page" for the head block and the sidebar root
-switcher alike.
+Accent roles are separate. Accent *text*, including links, external URLs, and inline code, uses the Bootstrap link family and `--bs-code-color`.
+Theme colors never redeclare these properties. Inline code follows the visual preset: Slate keeps the crimson pair; Paper uses ink text on a quiet chip.
+Accent *backgrounds* include selected rows, gray pointer-hover navigation backgrounds, hover washes, outline pills, rails, dots, chip hovers, and hovered card borders.
+They also include share-button hover fills, selections, and focus rings.
+These use `--td-accent`, `--td-accent-rgb`, and `--td-accent-hover`, which default to the link family.
+These are the only properties emitted by `params.ui.theme_color`.
+Shell text uses them too: active outline anchors and Book chapter headings under pointer or keyboard focus use the section color, not link blue.
+`theme_color` and `theme_color_dark` accept `#rgb`/`#rrggbb`. Page front matter and section cascades override site values.
+Unconfigured sites emit nothing. Unparseable values warn and keep the default palette.
+Resolved colors below 4.5:1 against the theme canvas warn with a suppressible ID but are still emitted.
+This check uses the site default preset canvas and is advisory. Only parse failures remove colors.
+The light color is required. `theme_color_dark` without valid `theme_color` warns and is ignored.
+A page therefore receives color in both modes or neither.
+If dark color is omitted, the theme lightens toward white in 4% steps until it reaches 4.5:1 on the dark canvas.
+Every emitted byte is formatted from parsed integer channels, never author text.
+One resolver supplies page colors to both the head block and sidebar root switcher.
 
 ## Visual presets {#visual-presets}
 
@@ -377,6 +339,5 @@ See the [accepted decision](/docs/design/decisions/visual-presets/) and
 
 ## Release states {#release-states}
 
-Source complete, locally validated, committed, tagged, pushed, pinned by a
-consumer, deployed, and production-identical are distinct states. A local Hugo
-build proves only local validation.
+Source completion, local validation, commit, tag, push, consumer pin, deployment, and production parity are separate states.
+A local Hugo build proves only local validation.

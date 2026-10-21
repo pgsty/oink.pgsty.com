@@ -1,7 +1,7 @@
 ---
 title: Markdown-first authoring
 linkTitle: Markdown-first authoring
-description: Native Markdown carries common semantics; shortcodes fill real capability gaps, and content models extend shared shells instead of forking them.
+description: Native Markdown carries common semantics, shortcodes fill capability gaps, and new content models extend shared shells.
 weight: 30
 icon: fa-brands fa-markdown
 search_keywords:
@@ -12,20 +12,20 @@ decision_date: 2026-08-17
 ---
 
 > [!IMPORTANT] Decision
-> Prefer a native Markdown form when Goldmark can preserve the intended
-> semantics. Keep a shortcode only when it provides a capability the native
-> form cannot express. Add a content scenario by extending an existing shell
-> and data model, not by creating a parallel rendering system.
+> If Goldmark can preserve the intended meaning, prefer a native Markdown form.
+> Keep a shortcode only when the native form cannot provide its capability.
+> For a new content scenario, extend an existing shell and data model.
+> Do not create a parallel rendering system.
 
 ## Context {#context}
 
-OINK serves short manuals, large references, release archives, landing pages,
-and books. A survey of eleven consumer sites covered more than five thousand
-Markdown files and exposed both extremes: pages with almost no theme syntax and
+OINK supports short manuals, large references, release archives, landing pages,
+and books. A survey of eleven consumer sites examined more than five thousand
+Markdown files and found both extremes: pages with almost no theme syntax and
 pages assembled from many nested shortcodes and local layout overrides.
 
-A component API optimized only for the second group becomes a private DSL. An
-API optimized only for plain Markdown leaves books, rich figures, tab groups,
+A component API optimized only for the second group becomes a private DSL,
+while one limited to plain Markdown leaves books, rich figures, tab groups,
 and structured releases to site-local HTML. The useful boundary is capability,
 not novelty.
 
@@ -39,11 +39,11 @@ OINK applies the following order:
 2. **Shortcodes for missing capability.** A full-form shortcode remains where
    CommonMark indentation, nested containers, processing options, or
    cross-page registration cannot express the same result safely.
-3. **One semantic implementation.** Native and full forms normalize into the
-   same partials and output contract. They are not two components that merely
-   look alike.
-4. **One extension line.** A new Landing section joins the section registry; a
-   new Blog presentation remains a Blog variant; Book numbering joins the
+3. **One semantic implementation.** Native and full forms share normalization,
+   partials, and an output contract, making them one component rather than two
+   components with the same appearance.
+4. **One extension line.** A new Landing section joins the section registry;
+   a new Blog presentation remains a Blog variant; Book numbering joins the
    content primitive and navigation systems. OINK does not add a second card,
    landing, navigation, or article shell for one feature.
 5. **Facts stay outside presentation strings.** Versions, repositories,
@@ -52,8 +52,8 @@ OINK applies the following order:
 
 ## Output contract {#output-contract}
 
-An authoring form is complete only when its semantic content has a deliberate
-result in every enabled output:
+An authoring form is complete only when it defines a result for its semantic
+content in every enabled output:
 
 | Output          | Requirement                                                              |
 | --------------- | ------------------------------------------------------------------------ |
@@ -62,16 +62,16 @@ result in every enabled output:
 | Markdown / LLMS | Source-shaped prose, links, lists, tables, and fences; no component HTML |
 | RSS             | Safe static content or an explicit omission                              |
 
-This requirement prevents an attractive HTML-only component from silently
-damaging agent output, feeds, or a printable book.
+This requirement prevents an HTML-only component from removing or corrupting
+content in agent output, feeds, or a printable book.
 
 ## Trust and presentation {#trust-and-presentation}
 
-Render hooks and shortcodes consume explicit allowlists. Unsafe URL schemes,
-inline event handlers, and arbitrary style input are dropped. Author-provided
-classes are accepted only on the documented surfaces where downstream site CSS
-is part of the established authoring contract. Icons use one Font Awesome class
-pair; OINK does not invent a second icon-ID language.
+Render hooks and shortcodes use explicit allowlists to remove unsafe URL
+schemes, inline event handlers, and arbitrary style input. Author-provided
+classes are accepted only where the documented contract permits downstream
+site CSS. Icons use one Font Awesome class pair, without a second icon-ID
+language.
 
 ## Consequences {#consequences}
 
@@ -88,7 +88,8 @@ pair; OINK does not invent a second icon-ID language.
 
 ## Verification {#verification}
 
-The authoring contract is exercised by theme component, Book, output, and
-golden checkers, then by this site's bilingual examples and browser suites. The
-Goldmark facts behind the native forms are recorded in
+Theme component, Book, output, and golden checkers test the authoring contract,
+followed by this site's bilingual examples and browser suites for the integrated
+result.
+The Goldmark behavior that supports native forms is recorded in
 [block-attribute research](/docs/design/research/goldmark-attributes/).

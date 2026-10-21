@@ -1,22 +1,20 @@
 ---
 title: Infographic
 linkTitle: Infographic
-description: An `infographic` fence picks an AntV template and renders a title plus a list of items as a flow, timeline, funnel, grid or hierarchy.
+description: Use an `infographic` fence and AntV template to display a title and items as a flow, timeline, funnel, grid, or hierarchy.
 weight: 160
 search_keywords: [Infographic, AntV, flow, timeline, funnel, template]
 ---
 
-An `infographic` fence picks an AntV template and renders "a title plus a list
-of items" as an infographic. Use it for structure: order, hierarchy, comparison.
-When you need axes and numeric precision use
-[ECharts](/docs/components/echarts/); when you need a flow with conditional
-branches use [Mermaid](/docs/components/mermaid/). The fence body is data, and
-it stays readable text on GitHub.
+An `infographic` fence selects an AntV template to display a title and item list.
+Use it for order, hierarchy, or comparison. Use [ECharts](/docs/components/echarts/) for axes and precise numbers.
+Use [Mermaid](/docs/components/mermaid/) for flows with conditional branches.
+The fence contains data and stays readable as text on GitHub.
 
 ## Shortest form {#minimal}
 
-The first line is `infographic <template>`, followed by a `data` block: `title`
-is the title and every entry under `items` needs at least a `label`.
+Start with `infographic <template>`, then add a `data` block. `title` sets the title.
+Every entry under `items` needs at least a `label`.
 
 ````markdown {title="Source"}
 ```infographic
@@ -46,13 +44,11 @@ data
       desc Add the translated peer, open the PR
 ```
 
-Indentation decides the structure, two spaces per level. Keep labels short and
-put the explanation in `desc`.
+Use two spaces per indentation level to define structure. Keep labels short and put explanations in `desc`.
 
 ## Timelines {#timeline}
 
-The `sequence-timeline-*` family lays the items out on a time axis, with `label`
-as the point in time and `desc` as the event.
+The `sequence-timeline-*` family arranges items on a time axis. `label` gives the point in time, and `desc` gives the event.
 
 ````markdown {title="Source"}
 ```infographic {height="420px"}
@@ -92,8 +88,8 @@ data
 
 ## Funnels {#funnel}
 
-`sequence-funnel-simple` draws stages that narrow. Below are the theme's five
-release states: they are not interchangeable, and only the last one is live.
+`sequence-funnel-simple` displays narrowing stages.
+This example shows the theme's five release states. They are not interchangeable. Only the last state is live.
 
 ````markdown {title="Source"}
 ```infographic {height="420px"}
@@ -133,8 +129,7 @@ data
 
 ## Grid cards {#grid}
 
-When items have no order between them, `list-grid-*` arranges them in a grid
-rather than a queue.
+For unordered items, `list-grid-*` uses a grid instead of a sequence.
 
 ````markdown {title="Source"}
 ```infographic {height="380px"}
@@ -172,8 +167,7 @@ data
 
 ## Items with values {#values}
 
-Add `value` to an item and templates that express proportion — pies, doughnuts,
-progress — will use it.
+Add `value` to an item for templates that show proportions, such as pies, doughnuts, or progress displays.
 
 ````markdown {title="Source"}
 ```infographic {height="400px"}
@@ -209,9 +203,8 @@ data
 
 ## Hierarchy and hand-drawn style {#hierarchy-and-theme}
 
-Items can nest through `children`, and `hierarchy-mindmap-*` draws two levels of
-structure. A top-level `theme` block changes the whole look; `type` takes
-`light`, `dark` or `hand-drawn`.
+Nest items with `children`. `hierarchy-mindmap-*` displays two levels of structure.
+A top-level `theme` block sets the appearance. `type` accepts `light`, `dark`, or `hand-drawn`.
 
 ````markdown {title="Source"}
 ```infographic {height="320px"}
@@ -267,14 +260,12 @@ data
             desc libraries shipped with the theme
 ```
 
-`theme` belongs to the DSL, not to the fence attributes, and it does not follow
-the site's colour scheme: a diagram with `type dark` stays dark on a light page.
-Check contrast in both modes.
+`theme` is part of the DSL, not a fence attribute. It does not follow the site's color scheme.
+A diagram with `type dark` stays dark on light pages. Check contrast in both modes.
 
 ## Picking a template {#templates}
 
-Template names are `structure-variant`, and one structure has several visual
-variants. The common families:
+Template names use `structure-variant`. Each structure has several visual variants. Common families are listed below:
 
 | Structure prefix | What it expresses | Example |
 | --- | --- | --- |
@@ -288,9 +279,8 @@ variants. The common families:
 | `chart-pie-*` `chart-bar-*` `chart-column-*` | Illustrative charts, with `value` | `chart-pie-donut-plain-text` |
 | `relation-network-*` `relation-dagre-flow` | Networks and flows, with `relations` | `relation-dagre-flow` |
 
-Choose the smallest form that makes the relationship clear. The full gallery is
-at [AntV Infographic](https://infographic.antv.vision/gallery), and the template
-names match the version shipped with the theme.
+Choose the simplest form that explains the relationship.
+See the full [AntV Infographic](https://infographic.antv.vision/gallery) gallery. Template names match the version bundled with the theme.
 
 ## Output {#outputs}
 
@@ -301,8 +291,7 @@ names match the version shipped with the theme.
 | Markdown | The `infographic` fence and its DSL, kept as written |
 | RSS | Same as print — source only |
 
-Whatever the diagram says, say it in the prose too: print and RSS carry the DSL
-and nothing else.
+Explain the diagram's information in prose. Print and RSS include only the DSL source.
 
 ## Parameter reference {#reference}
 
@@ -318,7 +307,7 @@ The fence attribute line (```` ```infographic {…} ````):
 `style`, `on*`, and unknown attributes warn and are ignored. Empty DSL bodies warn and render nothing.
 Review the warning and rendered fallback before publication.
 
-The DSL's top-level keys (AntV's, not the theme's):
+AntV defines these top-level DSL keys:
 
 | Key | Description |
 | --- | --- |
@@ -337,18 +326,13 @@ version shipped with the theme and its checksum are recorded in the theme's
 
 ## Limits {#limits}
 
-- A wrong template name does not fail the build: Hugo checks the fence
-  attributes only, the DSL is parsed by the browser runtime, and a missing
-  template shows a line of error text in the container. Check the page after
-  changing a template name.
-- No colour-scheme awareness: `theme` lives in the DSL, so check contrast in
-  both modes.
-- Print and RSS carry the DSL only, so the conclusion belongs in the prose.
-- SVG is not a semantic structure: the order a screen reader gets is not
-  necessarily the visual order. Prefer headings, lists and tables when they can
-  say it.
-- Keep labels short: long text is truncated or squeezed on a narrow screen, so
-  check at phone width after editing.
+- Incorrect template names do not fail the build. Hugo checks only fence attributes; the browser runtime parses the DSL.
+  Missing templates display error text in the container. Check the page after changing template names.
+- `theme` is part of the DSL and does not follow the site's color scheme. Check contrast in both modes.
+- Print and RSS include only the DSL. State conclusions in prose.
+- SVG does not provide semantic structure. Screen reader order can differ from visual order.
+  Prefer headings, lists, or tables when they can express the information.
+- Keep labels short. Narrow screens can truncate or compress long text. Check at phone width after editing.
 
 ## Related {#related}
 

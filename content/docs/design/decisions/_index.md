@@ -1,7 +1,7 @@
 ---
 title: Design decisions
 linkTitle: Decisions
-description: Accepted choices that explain why OINK's public contracts and implementation have their present shape.
+description: Accepted decisions that explain why OINK's current contracts and implementation have their present shape.
 weight: 60
 icon: fa-solid fa-gavel
 no_list: true
@@ -11,14 +11,14 @@ design_status: active
 ---
 
 > [!NOTE] Accepted rationale
-> A decision explains why OINK chose one compatible design over another. The
-> five contracts above it remain the normative description of current
-> behaviour; implementation and owning checkers remain the executable facts.
+> A decision explains why OINK selected one compatible design instead of another.
+> The five contracts define the required current behavior. The implementation
+> and its checkers define the executable facts.
 
-OINK used to keep reviews, PRDs, and execution notes in a local `plan/`
-directory. That made useful reasoning hard to discover and allowed abandoned
-designs to look authoritative. Accepted reasoning now lives here, in the same
-bilingual, versioned site as the contracts it supports.
+OINK previously kept reviews, PRDs, and execution notes in a local `plan/`
+directory, which made useful reasoning hard to find and allowed abandoned
+designs to appear authoritative. Accepted rationale now lives here, beside the
+contracts it supports, in the same bilingual, versioned site.
 
 ## Decision map {#decision-map}
 
@@ -34,18 +34,18 @@ bilingual, versioned site as the contracts it supports.
 
 ## Record format {#record-format}
 
-An accepted decision records context, the choice, consequences, and the proof
-that makes the choice current. It does not reproduce a parameter reference or
-a tutorial. Every decision links to its owning contract and verification
-surface, and its English and Simplified Chinese pages change together.
+An accepted decision records its context, choice, consequences, and evidence
+that the choice remains current. It does not repeat a parameter reference or
+tutorial. Each decision links to its contract and verification checks, and its
+English and Simplified Chinese pages change together.
 
-When a decision changes, update the implementation, checker, affected
-contract, and decision record in one delivery. Preserve the old answer in Git
-history and the release changelog instead of leaving two active answers in the
+When a decision changes, update the implementation, checker, affected contract,
+and decision record in one delivery. Preserve the previous decision in Git
+history and the release changelog rather than leaving two active answers in the
 navigation tree.
 
 ## Related {#related}
 
-- [Design contracts](/docs/design/) — current normative behaviour
+- [Design contracts](/docs/design/) — current required behavior
 - [Research](/docs/design/research/) — dated evidence that informs decisions
 - [Proposals](/docs/design/proposals/) — ideas that have not been accepted

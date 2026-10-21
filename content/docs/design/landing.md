@@ -13,25 +13,19 @@ contract_status: v1.3.0
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 
-Shared rules live in the [architecture](/docs/design/architecture/) and
-[component](/docs/design/components/) contracts; migration belongs in the
-[migration contract](/docs/design/migration/).
+The [architecture](/docs/design/architecture/) and [component](/docs/design/components/) contracts define shared rules.
+The [migration contract](/docs/design/migration/) defines migration rules.
 
 ## Shell and data {#shell-and-data}
 
-Any regular page may declare `layout: landing`. It renders navbar, full-width
-canvas, and footer without docs sidebars or TOC rails. The homepage keeps
-`data/home/<lang>.yaml` as a compatible authoring path through the same renderer.
+Any regular page may use `layout: landing`. It renders the navbar, a full-width content area, and footer without docs sidebars or TOC rails.
+The homepage can still use `data/home/<lang>.yaml` with the same renderer.
 
-A non-home page resolves `sections` from inline front matter,
-`data/landing/<key>/<lang>.yaml`, an exact-language entry in one
-`data/landing/<key>.yaml`, then English or unsuffixed local data. Landing never
-fetches mutable facts; stars, prices, screenshots, and avatars are committed or
-generated before Hugo runs.
+Non-home pages resolve `sections` in this order: inline front matter, `data/landing/<key>/<lang>.yaml`, exact-language entries in `data/landing/<key>.yaml`, then English or unsuffixed local data.
+Landing never fetches mutable facts. Commit or generate stars, prices, screenshots, and avatars before Hugo runs.
 
-`params.ui.landing_search` defaults to true and enables the existing local
-Palette only when `offline_search` is enabled. `params.ui.github_stars` and
-`params.ui.alt_site` are optional local chrome facts.
+`params.ui.landing_search` defaults to true. It enables the existing local Palette only when `offline_search` is enabled.
+`params.ui.github_stars` and `params.ui.alt_site` are optional local interface facts.
 
 ## Section registry {#section-registry}
 

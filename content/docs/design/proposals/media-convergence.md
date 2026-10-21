@@ -19,39 +19,38 @@ proposal_date: 2026-08-20
 ---
 
 > [!IMPORTANT] Partially implemented
-> M1 (the shared media-result contract) and M2 (Landing resource metadata)
-> are implemented on the theme's main branch, and M3 is resolved as option 2:
-> processing stays exclusively on native Markdown images, and the full `fig`
-> source form remains a container whose parameter list deliberately excludes
-> `command`/`options`. M4 (compatibility retirement) stays open pending a
-> consumer inventory. The sections below are the original design record.
+> The theme's main branch implements M1 (the shared media-result contract)
+> and M2 (Landing resource metadata). M3 is resolved as option 2.
+> Only native Markdown images support processing. The full `fig` source form
+> remains a container. Its parameter list deliberately excludes `command`/`options`.
+> M4 (compatibility retirement) remains open until consumers are inventoried.
+> The sections below retain the original design record.
 
 ## Current baseline {#current-baseline}
 
 The content image hook, numbered `fig`, cards, and galleries resolve local page
 resources, section resources, global assets, static files, and explicit remote
-URLs through `content/image-resolve.html`. Raster resources can contribute
-intrinsic dimensions and processing derivatives. HTML Zoom eligibility is
-marked with `data-td-image-zoom`; the build-time detector only checks that
-theme-emitted marker.
+URLs through `content/image-resolve.html`. Raster resources can supply intrinsic
+dimensions and processed derivatives. `data-td-image-zoom` marks HTML Zoom
+eligibility, and the build-time detector checks only this theme-emitted marker.
 
-Standalone Markdown images can already combine caption or Book numbering with
+Standalone Markdown images can combine a caption or Book numbering with
 processing and a link. Numbered image figures share `td-figure` and
-`td-book-figure` semantics. Landing media passes the shared URL trust policy,
-while featured images intentionally use a ranking resolver because their job
-is to select a representative image rather than render one explicit source.
+`td-book-figure` semantics. Landing media uses the shared URL trust policy,
+while featured images deliberately use a ranking resolver because they select
+a representative image rather than render one explicit source.
 
 ## Remaining problem {#remaining-problem}
 
 The shared safety boundary is stronger than the shared media model. Landing
-media still does not obtain the same page-resource metadata and processing
+media does not obtain the same page-resource metadata and processing
 result as body images. Featured-image selection and explicit image resolution
-have separate result shapes. Some compatibility class names remain in markup,
-and Book's full `fig` form cannot express every processing option available to
-the native image hook.
+return different result shapes, some compatibility class names remain in
+markup, and Book's full `fig` form cannot express every processing option that
+the native image hook supports.
 
-The design question is therefore no longer “replace seven image entry points.”
-It is whether the remaining surfaces can share a small result contract without
+The design question is therefore no longer “replace seven image entry points,”
+but whether the remaining surfaces can share a small result contract without
 erasing their different semantics.
 
 ## Goals and non-goals {#goals-and-non-goals}
@@ -80,17 +79,17 @@ Non-goals:
 
 ### M1 — Result contract {#m1-result-contract}
 
-Document the fields returned by the content and representative-image
-resolvers, then extract the intersection into one internal media-result
-contract. Keep source ranking in the featured resolver and source resolution in
-the content resolver. This is an internal refactor with byte-stable output.
+Document the fields that the content and representative-image resolvers return,
+then extract their shared fields into one internal media-result contract.
+Source ranking stays in the featured resolver and source resolution in the
+content resolver. This internal refactor must preserve output bytes.
 
 ### M2 — Landing resource metadata {#m2-landing-resource-metadata}
 
 Allow Landing items to resolve eligible local resources through the media
-contract, gaining intrinsic dimensions and the same URL/security decision.
-Explicit width and height in Landing data continue to win. Remote and static
-sources remain valid but cannot pretend to have processable-resource metadata.
+contract, gaining intrinsic dimensions and the shared URL/security decision.
+Explicit width and height in Landing data retain precedence. Remote and static
+sources remain valid without claiming metadata for a processable resource.
 
 ### M3 — Full figure capability decision {#m3-full-figure-capability}
 
@@ -101,14 +100,15 @@ Choose one of two answers:
 2. keep processing exclusively on native Markdown images and document full
    `fig` as the container for arbitrary numbered block content.
 
-No implementation should leave both answers half-supported. Markdown/LLMS
-must link to the documented source or derivative consistently in both forms.
+No implementation should leave both options half-supported. In both forms,
+Markdown/LLMS must consistently link to the documented source or derivative.
 
 ### M4 — Compatibility retirement {#m4-compatibility-retirement}
 
-Inventory downstream CSS and JavaScript before removing old image-element
-classes or attributes. If a compatibility name is still used, retain it for a
-documented release window or migrate the owning site in the same release train.
+Before removing old image-element classes or attributes, inventory downstream
+CSS and JavaScript. If a compatibility name is still used, retain it for a
+documented release window. Alternatively, migrate the owning site in the
+same release.
 
 ## Safety, output, and accessibility {#safety-output-and-accessibility}
 
@@ -124,10 +124,10 @@ documented release window or migrate the owning site in the same release train.
 
 ## Acceptance criteria {#acceptance-criteria}
 
-Each phase owns byte-level HTML and Markdown evidence, content and Landing
-resolver tests, URL/security checks, image-processing tests, Book targets,
-gallery/Zoom browser tests, and real-site EN/ZH narrow-screen review. The
-proposal is accepted only after the M3 capability choice is explicit.
+For each phase, collect byte-level HTML and Markdown evidence.
+Run content and Landing resolver tests, URL/security checks, image-processing
+tests, and Book target checks. Run gallery/Zoom browser tests and real-site
+EN/ZH narrow-screen review. Acceptance requires an explicit M3 capability choice.
 
 ## Open decisions {#open-decisions}
 

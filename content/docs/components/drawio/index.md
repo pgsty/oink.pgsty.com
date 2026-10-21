@@ -1,17 +1,15 @@
 ---
 title: Draw.io
 linkTitle: Draw.io
-description: Put a `.drawio.svg` that carries an editable copy on the page as an ordinary image; an edit button opens the Draw.io editor.
+description: Display a `.drawio.svg` with an embedded editable copy as an ordinary image. Its edit button opens the Draw.io editor.
 weight: 140
 search_keywords: [drawio-server, Draw.io, diagrams.net, drawio, mxfile, editable diagram, SVG, edit button]
 ---
 
-The Draw.io integration has neither a fence nor a shortcode — it uses plain
-Markdown images. Tick "Include a copy of my diagram" when exporting from
-Draw.io and the SVG or PNG carries an `mxfile` copy inside it; the theme's
-runtime spots that copy and adds an edit button to the image. It suits diagrams
-readers are meant to take away and change. A diagram that is only there to be
-looked at is an ordinary [image](/docs/components/image/).
+Draw.io uses plain Markdown images. It has no fence or shortcode.
+When exporting from Draw.io, select "Include a copy of my diagram". The SVG or PNG then contains an `mxfile` copy.
+The theme detects this copy and adds an edit button. Use this integration for diagrams that readers can download and change.
+Use an ordinary [image](/docs/components/image/) for diagrams that only need to be viewed.
 
 ## Shortest form {#minimal}
 
@@ -19,8 +17,7 @@ To show the edit button, first set `params.drawio.enable: true` and configure
 `params.drawio.drawio_server` as shown under [The editor address](#server).
 Without this setup, the diagram remains an ordinary image without editing.
 
-The syntax is the plain image syntax. The filename does not matter;
-`.drawio.svg` is only a convention.
+Use ordinary image syntax. The filename does not affect detection. `.drawio.svg` is only a naming convention.
 
 ```markdown {title="Source"}
 ![The Hugo build pipeline: content goes through Hugo and out as public](pipeline.drawio.svg)
@@ -30,19 +27,15 @@ The syntax is the plain image syntax. The filename does not matter;
 ![The Hugo build pipeline: content goes through Hugo and out as public](pipeline.drawio.svg)
 {width="620" height="140"}
 
-An export that carries an `mxfile` copy is wrapped in a `.drawio` container.
-A pencil button appears at the bottom right on hover or keyboard focus, and
-stays visible on touch devices and in forced-colors mode. Activating it lays a
-full-screen iframe over the page and loads the editor the site configured.
-When image zoom is enabled, Edit and Zoom are separate sibling buttons;
-activating Edit does not open the zoom dialog.
+An export with an `mxfile` copy is wrapped in a `.drawio` container.
+A pencil button appears at the bottom right on hover or keyboard focus. It stays visible on touch devices and in forced-colors mode.
+The button opens a full-screen iframe with the site's configured editor.
+When image zoom is enabled, Edit and Zoom are separate sibling buttons. Edit does not open the zoom dialog.
 
 ## How the copy is detected {#detection}
 
-The runtime looks at one thing: whether the file's contents contain `mxfile`.
-The filename is irrelevant. A hand-drawn SVG written exactly the same way — a
-block image with the same attribute line — carries no copy, so it gets no
-button.
+The runtime checks whether the file contains `mxfile`. It does not check the filename.
+A hand-drawn SVG with the same block-image syntax and attribute line has no embedded copy, so it gets no edit button.
 
 ```markdown {title="Source"}
 ![The three columns of the documentation shell: sidebar, article, table of contents](plain-shell.svg)
@@ -54,9 +47,8 @@ button.
 
 ## With a caption {#caption}
 
-Draw.io images go through the ordinary image render hook, so every
-[image](/docs/components/image/) attribute still applies. Add `caption` for a
-captioned figure; the edit button still appears on the image.
+Draw.io images use the ordinary image render hook. All [image](/docs/components/image/) attributes apply.
+Add `caption` to create a captioned figure. The edit button still appears on the image.
 
 ```markdown {title="Source"}
 ![The Hugo build pipeline](pipeline.drawio.svg)
@@ -68,8 +60,7 @@ captioned figure; the edit button still appears on the image.
 
 ## As a numbered figure {#numbered}
 
-Add `{#id num=…}` for a cross-referenceable numbered figure, which `xref` can
-reach and which appears in the list of figures like any other.
+Add `{#id num=…}` to create a numbered figure. `xref` can reference it, and it appears in the list of figures.
 
 ```markdown {title="Source"}
 ![The Hugo build pipeline](pipeline.drawio.svg)
@@ -84,8 +75,8 @@ The complete numbering and cross-reference rules are in
 
 ## SVG or PNG {#svg-or-png}
 
-Both are recognized. A Draw.io PNG export can carry the same copy in a text
-chunk, and the runtime's test is identical.
+Both SVG and PNG are recognized. A Draw.io PNG can store the editable copy in a text chunk.
+The runtime uses the same detection test.
 
 ```markdown {title="Source"}
 ![The Hugo build pipeline (PNG export)](pipeline.drawio.png)
@@ -101,7 +92,7 @@ Processing an SVG warns and preserves the source. Review the warning and rendere
 
 ## What the button does {#editing}
 
-Three things, in order.
+The button performs three actions in this order.
 
 {{% steps %}}
 
@@ -118,21 +109,17 @@ focus to Edit unless another surface has already taken focus.
 
 ### Hand the diagram to the editor {#editing-load}
 
-Once the editor is ready, the runtime sends this image's contents — the `mxfile`
-copy included — into the iframe as a data URL. That step does not go through
-your server.
+When the editor is ready, the runtime sends the image and its `mxfile` copy to the iframe as a data URL.
+This transfer does not use your server.
 
 ### Save and write back {#editing-save}
 
-Saving in the editor makes it export in the original format, SVG or PNG, and the
-browser downloads it under the same name. The runtime never writes to the
-repository: overwrite the file in `content/` with what you downloaded and commit
-it yourself.
+When you save, the editor exports the original format, SVG or PNG. The browser downloads it with the same filename.
+The runtime never writes to the repository. Replace the file in `content/` with the download and commit it yourself.
 
 {{% /steps %}}
 
-The edit button is there so a reader can take the diagram away and change it. It
-is not online editing of the site.
+The edit button lets readers download and change a diagram. It does not edit the site online.
 
 ## The editor address {#server}
 
@@ -163,14 +150,12 @@ Both keys are defined in
 | Markdown | Plain Markdown image syntax |
 | RSS | A plain `<img>` with an absolute URL and no button |
 
-The image itself exists in all four states; the edit button is an increment on
-top.
+All four outputs include the image. Only HTML adds the optional edit button.
 
 ## Parameter reference {#reference}
 
-There are no fence or shortcode parameters of its own. The image attribute line
-is the one from [Images](/docs/components/image/): `caption`, `width`, `height`,
-`link`, `#id`, `num`, `command`, `options`.
+Draw.io has no fence or shortcode parameters. It uses the [Images](/docs/components/image/) attribute line:
+`caption`, `width`, `height`, `link`, `#id`, `num`, `command`, and `options`.
 
 Site parameters (`hugo.yml`):
 
@@ -182,17 +167,13 @@ Site parameters (`hugo.yml`):
 
 ## Limits {#limits}
 
-- The runtime loads only when rendered page content contains `.svg` or `.png`
-  candidates. It groups matching images by URL, then reads each URL once to
-  look for `mxfile`.
-- Forget to tick "Include a copy of my diagram" on export and the image is just
-  an image, with no button.
-- Editing needs the editor and never writes back: offline, the images display
-  fine and the button does nothing; saving is a browser download, and replacing
-  the file and committing it are manual.
-- Colours do not follow the colour scheme: an exported SVG has fixed colours.
-  Set fills to `none` and use neutral greys for lines and text and it reads in
-  both modes.
+- The runtime loads only if rendered page content has `.svg` or `.png` candidates.
+  It groups matching images by URL and reads each URL once to find `mxfile`.
+- Without "Include a copy of my diagram" on export, the image has no edit button.
+- Editing needs the editor and never writes to the repository. Offline, images display normally, but the button has no effect.
+  Saving downloads a file. You must replace and commit the file manually.
+- Exported SVG colors are fixed and do not follow the site's color scheme.
+  Use `none` fills and neutral gray lines and text so the image is readable in both modes.
 
 ## Related {#related}
 

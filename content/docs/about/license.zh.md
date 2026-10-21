@@ -10,12 +10,12 @@ OINK 由三层材料组成：主题源码、文档内容、随主题分发的第
 
 ## 许可证对应关系 {#license-map}
 
-| 范围 | 许可证 | 权威文件 |
-| --- | --- | --- |
-| OINK 主题源码（布局、partial、 shortcode、SCSS、JS、i18n） | Apache License 2.0 | 主题 [`LICENSE`](https://github.com/pgsty/oink/blob/main/LICENSE)、[`NOTICE`](https://github.com/pgsty/oink/blob/main/NOTICE) |
-| 本站的站点代码、构建脚本与源自 Docsy 的材料 | Apache License 2.0 | 站点 [`LICENSE`](https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE)、[`NOTICE`](https://github.com/pgsty/oink.pgsty.com/blob/main/NOTICE) |
-| 本站的原创文档内容（另有声明的除外） | Creative Commons Attribution 4.0 International | 站点 [`LICENSE-CC-BY-4.0`](https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE-CC-BY-4.0) |
-| 随主题分发的浏览器库、字体与图标 | 各组件自己的许可证 | 主题 [`VENDOR.json`](https://github.com/pgsty/oink/blob/main/VENDOR.json) 与资源旁的许可证文件 |
+| 范围                                                       | 许可证                                         | 权威文件                                                                                                                                          |
+|------------------------------------------------------------|------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| OINK 主题源码（布局、partial、 shortcode、SCSS、JS、i18n） | Apache License 2.0                             | 主题 [`LICENSE`](https://github.com/pgsty/oink/blob/main/LICENSE)、[`NOTICE`](https://github.com/pgsty/oink/blob/main/NOTICE)                     |
+| 本站的站点代码、构建脚本与源自 Docsy 的材料                | Apache License 2.0                             | 站点 [`LICENSE`](https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE)、[`NOTICE`](https://github.com/pgsty/oink.pgsty.com/blob/main/NOTICE) |
+| 本站的原创文档内容（另有声明的除外）                       | Creative Commons Attribution 4.0 International | 站点 [`LICENSE-CC-BY-4.0`](https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE-CC-BY-4.0)                                                   |
+| 随主题分发的浏览器库、字体与图标                           | 各组件自己的许可证                             | 主题 [`VENDOR.json`](https://github.com/pgsty/oink/blob/main/VENDOR.json) 与资源旁的许可证文件                                                    |
 
 两条边界要分清：CC BY 4.0 只覆盖原创文档内容，不覆盖主题代码、商标、截图与第三方资源；主题采用 Apache-2.0，也不会把随附依赖变成 Apache 许可的作品。
 
@@ -97,12 +97,12 @@ Inter、IBM Plex Sans、Chakra Petch 与 IBM Plex Mono 四种字体采用 SIL Op
 
 代码上游只有 Docsy 一个。下面这些项目是设计语言上的参考，既不是代码来源也不是运行时依赖，OINK 没有移植它们的代码：
 
-| 项目 | 借鉴之处 |
-| --- | --- |
-| [Fumadocs](https://www.fumadocs.dev/) | 以内容为中心的呈现、信息层级、文件树与参数表一类的写作组件（主题 `NOTICE` 记录了这条致敬） |
-| [Nextra](https://nextra.site/) | 精炼的文档外壳、代码块的文件名与复制交互、按页布局开关 |
-| [Hextra](https://imfing.github.io/hextra/) | Hugo 原生的实现取向、文件树、徽章、标签页 |
-| [Mintlify](https://mintlify.com/) | 结构化导航分层、同步的代码分组、API 参考的阅读体验 |
+| 项目                                       | 借鉴之处                                                                                   |
+|--------------------------------------------|--------------------------------------------------------------------------------------------|
+| [Fumadocs](https://www.fumadocs.dev/)      | 以内容为中心的呈现、信息层级、文件树与参数表一类的写作组件（主题 `NOTICE` 记录了这条致敬） |
+| [Nextra](https://nextra.site/)             | 精炼的文档外壳、代码块的文件名与复制交互、按页布局开关                                     |
+| [Hextra](https://imfing.github.io/hextra/) | Hugo 原生的实现取向、文件树、徽章、标签页                                                  |
+| [Mintlify](https://mintlify.com/)          | 结构化导航分层、同步的代码分组、API 参考的阅读体验                                         |
 
 [Hugo](https://gohugo.io/) 是构建平台，Go 在 Hugo Module 安装方式下负责解析模块。两者都是前提条件，主题不重新分发它们的可执行文件。
 

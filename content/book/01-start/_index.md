@@ -25,7 +25,7 @@ theme or deployment problem later.
 
 Use Git, Go 1.27 or newer, and Hugo Extended 0.168.0 for this tutorial.
 Development, CI, and release tests use this single Hugo baseline, which
-advances with stable releases. Update an older Starter's Hugo workflow pins
+remains pinned. Update an older Starter's Hugo workflow pins
 before validation. Older Hugo compatibility is no longer maintained.
 Node.js is not required.
 

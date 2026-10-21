@@ -1,15 +1,15 @@
 ---
 title: Highlights
 linkTitle: Highlights
-description: What separates OINK from an ordinary Hugo theme, one item at a time, each linking to the guide that covers it.
+description: Compare OINK with an ordinary Hugo theme. Each feature links to its guide.
 weight: 10
 search_keywords: [features, highlights, Markdown native components, local-first, four outputs, bilingual, command palette, keyboard navigation, llms.txt]
 aliases:
   - /docs/about/local-first/
 ---
 
-This page lists what separates OINK from an ordinary Hugo theme, each item
-ending with the guide that covers it. To install straight away, see
+This page lists the differences between OINK and an ordinary Hugo theme.
+Each item links to its guide. To install OINK now, see
 [Quick start](/docs/start/).
 
 ## Components are written in Markdown {#native-components}
@@ -17,13 +17,13 @@ ending with the guide that covers it. To install straight away, see
 A callout is a `> [!NOTE]` blockquote (ten semantic types plus one neutral
 disclosure). A field list is a table with a `{.fields}` line. Steps and cards
 are lists with `{.steps}` / `{.cards}`. A caption is a `{caption="…"}` line
-under an image. Tabs are adjacent fences each carrying a `{tab="…"}`; file
-trees, galleries, Mermaid and ECharts are data fences named after their
-language. On GitHub or in any plain Markdown reader these degrade to
-blockquotes, tables, lists and code blocks, and nothing is lost.
+under an image. Tabs use adjacent fences, each with a `{tab="…"}` attribute. File
+trees, galleries, Mermaid, and ECharts use data fences named after their
+language. On GitHub or in a plain Markdown reader, these appear as
+blockquotes, tables, lists, and code blocks. They retain all content.
 
-29 shortcodes cover what the native forms cannot express: cards with icons and
-images, field entries whose body is several paragraphs of Markdown.
+29 shortcodes provide forms that native Markdown cannot express. These include
+cards with icons and images, and field entries with several Markdown paragraphs.
 
 → [Components](/docs/components/)
 
@@ -37,8 +37,7 @@ cache. With an offline archive or a submodule already prepared, Hugo is enough
 to build the site.
 
 The interface runs JavaScript in the browser: search, the command palette,
-diagrams and tabs are page scripts. Those scripts ship with the theme and are
-delivered per page according to what that page actually uses.
+diagrams and tabs are page scripts. The theme includes those scripts. Each page receives only the scripts it uses.
 
 → [Quick start](/docs/start/)
 
@@ -68,14 +67,14 @@ that those pages work fully offline.
 
 ## One source, four outputs {#four-outputs}
 
-Every component has a defined shape in all four outputs: interactive HTML; a
-print page with zoom and copy controls stripped and disclosures fully expanded;
-plain Markdown; and RSS. The print view is generated per section (this one is
+Every component has a defined form in four outputs: interactive HTML, print,
+plain Markdown, and RSS. Print pages omit zoom and copy controls and fully
+expand disclosures. The print view is generated per section (this one is
 `/_print/docs/about/`), and the Markdown version is the same page address plus
 `index.md`.
 
-A site chooses which of them it wants under `outputs`; the theme does not decide
-for it.
+Select the site's output formats under `outputs`. The theme does not select
+them for the site.
 
 → [Print](/docs/customize/print/) · [AI-agent support](/docs/customize/agents/)
 
@@ -84,10 +83,10 @@ for it.
 Multilingual support uses Hugo's own mechanism: translation routing, a language
 picker ordered by weight, fallback for untranslated pages, RTL, and canonical
 and alternate metadata. Interface strings come in 32 language packs sharing one
-218-message schema: all 31 locale filenames supported by Docsy, plus generic `zh`.
-Every pack now contains native OINK interface text rather than English
-placeholder blocks; `zh` and `zh-cn` use Simplified Chinese and `zh-tw` uses
-Traditional Chinese.
+218-message schema. These include all 31 locale filenames that Docsy supports,
+plus generic `zh`. Every pack contains native OINK interface text instead of
+English placeholder blocks. `zh` and `zh-cn` use Simplified Chinese. `zh-tw`
+uses Traditional Chinese.
 
 → [Languages](/docs/customize/i18n/)
 
@@ -95,39 +94,39 @@ Traditional Chinese.
 
 With `params.offline_search` on, Hugo generates one index per language. The
 browser searches Latin text with a local Lunr index and falls back to substring
-matching for CJK text; no query leaves for a third party. A page can adjust its
+matching for CJK text. It sends no query to a third party. A page can adjust its
 weight with `search_boost` and add synonyms with `search_keywords`.
 
 → [Search](/docs/customize/search/)
 
 ## Command palette {#command-palette}
 
-`Cmd/Ctrl + K` opens the command palette; a bare `/` enters search mode and a
-bare `\` enters command-only mode. The palette holds pages, commands and page
-actions (switch language, switch theme, copy Markdown) together, so searching
-and acting share one entry point.
+`Cmd/Ctrl + K` opens the command palette. A bare `/` enters search mode. A
+bare `\` enters command-only mode. The palette contains pages, commands, and
+page actions, such as switching language, switching theme, and copying Markdown.
+Use the same entry point to search and run actions.
 
 → [Command palette](/docs/customize/panel/)
 
 ## Keyboard navigation {#keyboard}
 
-On by default, and switchable off per site or per section. `w` and `s` move up
-and down the sidebar tree, `a` and `d` collapse and expand, `q` and `e` go to
-the previous and next page, `j` and `k` jump along the page's table of
-contents, `t` toggles light and dark, `l` switches language, `h` hides the
-reading shell. Every single-key shortcut stands down while an input or textarea
-has focus or an input method is composing. The question-mark button in the
+Keyboard navigation is on by default. You can turn it off per site or section.
+`w` and `s` move up and down the sidebar tree. `a` and `d` collapse and expand
+it. `q` and `e` go to the previous and next page. `j` and `k` move through the
+page's table of contents. `t` toggles light and dark mode. `l` switches
+language. `h` hides the reading shell. Single-key shortcuts are inactive while
+an input or textarea has focus, or while an input method is composing. The question-mark button in the
 footer's bottom bar opens the cheatsheet.
 
 → [Keyboard navigation](/docs/customize/keyboard/)
 
 ## Backlinks {#backlinks}
 
-Turn on `params.ui.backlinks` and every page lists the pages that link to it —
-derived at build time from the ordinary links you already write, with no new
-syntax and no JavaScript. This site enables it site-wide: look at the "Linked
-from" group in this page's right rail, and the more a page is referenced, the
-longer its list — past eight entries it folds.
+Turn on `params.ui.backlinks` to list the pages that link to each page. Hugo
+derives the list at build time from ordinary links. This requires no new
+syntax and no JavaScript. This site enables backlinks site-wide. See the
+"Linked from" group in this page's right rail. More references produce a longer
+list. The list collapses when it has more than eight entries.
 
 → [Backlinks](/docs/customize/navigation/#backlinks)
 
@@ -135,52 +134,51 @@ longer its list — past eight entries it folds.
 
 The theme also has four kinds of page that need extra structure:
 
-- Books: chapter numbering, figures / tables / equations / examples numbered with `{#id num=}` and cross-referenced with `xref`, indexes generated by `book-toc` and `book-figures` and friends, and a printable whole.
-- Release and download pages: `data/download/*.yaml` produces release cards, asset tables and checksums, with a controlled publication state.
-- Landing pages: `data/home/<lang>.yaml` assembles the home page sections; any page with `layout: landing` can use data under `data/landing/`.
-- API references: Swagger UI and Redoc are both local runtimes, and the specification can live on the site.
+- Books provide chapter numbering. Use `{#id num=}` to number figures / tables / equations / examples and `xref` to reference them. `book-toc`, `book-figures`, and related shortcodes generate indexes. You can print the whole book.
+- Release and download pages use `data/download/*.yaml` to produce release cards, asset tables, and checksums. The data controls publication state.
+- Landing pages use `data/home/<lang>.yaml` to assemble home-page sections. Any page with `layout: landing` can use data under `data/landing/`.
+- API references use the local Swagger UI and Redoc runtimes. The specification can reside on the site.
 
 → [Books](/docs/write/book/) · [Releases and downloads](/docs/write/releases/) · [Home and landing pages](/docs/customize/home/) · [API reference pages](/docs/write/openapi/)
 
 ## Output for AI assistants {#agent-output}
 
-Add `markdown` to `outputs` and every page gains a `.md` twin, the HTML `<head>`
-gains a `rel="alternate"` pointing at it, and the page actions gain "Copy
+Add `markdown` to `outputs`. Each page then has a `.md` version. Its HTML `<head>`
+has a `rel="alternate"` reference to that version. Page actions include "Copy
 Markdown" and "View source". The `LLMS` output format writes an `llms.txt`
 inventory at the site root (this site's is
 <https://oink.pgsty.com/llms.txt>).
 
-0.8.0 adds two more: a section that enables `LLMSFULL` becomes one
-`llms-full.txt` an agent fetches in a single request, and a site that enables
-`NAVJSON` publishes `navigation.json` per language — the sidebar's tree
-readable as data. Both are live on this site:
+0.8.0 adds two more outputs. A section that enables `LLMSFULL` produces one
+`llms-full.txt` file. An agent can fetch it in a single request. A site that
+enables `NAVJSON` publishes `navigation.json` per language. This file represents
+the sidebar tree as data. Both are live on this site:
 <https://oink.pgsty.com/docs/llms-full.txt> and
 <https://oink.pgsty.com/navigation.json> are the real artifacts.
 
-"Open in ChatGPT / Claude" is off by default: clicking it hands the current URL
-to a third party, so the site must turn on
+"Open in ChatGPT / Claude" is off by default. Clicking it sends the current URL
+to a third party. The site must turn on
 `params.ui.page_context_menu.assistant_links` explicitly.
 
 → [AI-agent support](/docs/customize/agents/)
 
 ## Versions {#versions}
 
-Configure `params.versions` and a version menu appears in the navbar, while an
-archived version shows a banner at the top of the page pointing readers at the
-current one; whether the menu jumps page-for-page is the site's choice. The
-versions are separately built and separately deployed static sites, so nothing
-is needed at runtime.
+Configure `params.versions` to add a version menu to the navbar. An archived
+version shows a banner that links to the current version. The site chooses
+whether the menu links to corresponding pages. Each version is a separately
+built and deployed static site. No runtime service is required.
 
 → [Versions](/docs/customize/versions/)
 
 ## See for yourself {#verify}
 
-This site has most of the above enabled. Four checks:
+This site enables most of these features. Use these four checks:
 
-1. Press `Cmd/Ctrl + K` on any page and type `postgres` to see local search results; press `\` for command-only mode.
+1. Press `Cmd/Ctrl + K` on any page. Type `postgres` to see local search results. Press `\` for command-only mode.
 2. Append `index.md` to the current page address to get this page's Markdown version.
-3. Open <https://oink.pgsty.com/llms.txt>, the site inventory written for AI assistants; it leads to the docs section's `llms-full.txt` and to `navigation.json`.
-4. Look at this page's right rail: "Backlinks" lists the pages that link here.
+3. Open <https://oink.pgsty.com/llms.txt>, the site inventory for AI assistants. It links to the docs section's `llms-full.txt` and to `navigation.json`.
+4. Look at this page's right rail. "Backlinks" lists the pages that link here.
 
 ## Related {#related}
 

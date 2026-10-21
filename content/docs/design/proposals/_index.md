@@ -1,7 +1,7 @@
 ---
 title: Design proposals and PRDs
 linkTitle: Proposals
-description: The canonical bilingual home for OINK PRDs and designs that are still being evaluated.
+description: The canonical bilingual home for OINK PRDs and designs that remain under evaluation.
 weight: 80
 icon: fa-solid fa-compass-drafting
 no_list: true
@@ -13,11 +13,11 @@ design_status: active
 ---
 
 > [!WARNING] Non-normative material
-> A proposal describes behaviour that may not exist. Current behaviour is
-> defined by the contracts, accepted decisions, implementation, and owning
-> checkers. Never use a proposal as a configuration reference.
+> A proposal describes behavior that may not exist. The contracts, accepted
+> decisions, implementation, and owning checkers define current behavior.
+> Never use a proposal as a configuration reference.
 
-This section is the canonical home for OINK product requirement documents,
+This section contains the authoritative OINK product requirement documents,
 RFC-style designs, and unresolved maintainer proposals. Do not create a local
 `plan/`, `plans/`, `proposal/`, or parallel design tree in the theme repository
 or the documentation repository.
@@ -31,33 +31,31 @@ or the documentation repository.
 | [OINK CLI and the next product stage](/docs/design/proposals/oink-cli-roadmap/) | Independent Go repository and first-stage boundary accepted; local CLI candidate implemented, not publicly released; later theme, migration, adoption, versioning, OpenAPI, and platform stages remain proposals |
 | [Visual presets and appearance switching](/docs/design/proposals/visual-presets/) | Paper/Slate ship in v1.2.0; Ink/Terminal ship as explicit opt-in experiments awaiting design acceptance; see the accepted decision and dated acceptance record |
 
-The bulk agent-index proposal retired after the outputs shipped. Its stable
-behaviour now belongs to [Architecture](/docs/design/architecture/#outputs-and-runtime),
-and user steps belong to [Agent-ready output](/docs/customize/agents/).
-The Book publication proposal likewise retired after `BookManifest` and the
-EPUB/PDF tooling shipped. The stable behaviour belongs to
+The bulk agent-index proposal was retired after its outputs were released.
+[Architecture](/docs/design/architecture/#outputs-and-runtime) defines the accepted
+behavior. [Agent-ready output](/docs/customize/agents/) gives the user steps.
+The Book publication proposal was retired after `BookManifest` and the
+EPUB/PDF tools were released. The accepted behavior is documented in
 [Architecture](/docs/design/architecture/#outputs-and-runtime) and
 [Writing a book](/docs/write/book/#print); dated downstream adoption evidence
-belongs to [Consumer evidence](/docs/design/research/consumer-evidence/#publication-adoption).
-Remaining consumer adoption does not keep an upstream design proposal active.
-Both proposal drafts remain available in Git history.
+is recorded in [Consumer evidence](/docs/design/research/consumer-evidence/#publication-adoption).
+Pending consumer adoption does not keep an upstream design proposal active.
+Git history retains both proposal drafts.
 
-The generated-configuration-schema proposal has been retired through the
-lifecycle: the behaviour is documented normatively in
-[Configuration](/docs/customize/config/#editor-schema), the long-lived
-rationale moved to the
-[generated configuration schema decision](/docs/design/decisions/config-schema/),
-and the draft text is preserved by Git history.
+The generated-configuration-schema proposal completed its lifecycle and was
+retired: [Configuration](/docs/customize/config/#editor-schema) defines the
+required behavior, the
+[generated configuration schema decision](/docs/design/decisions/config-schema/)
+records the accepted rationale, and Git history retains the draft text.
 
 ## CLI workspaces and adapters {#cli-maintenance-candidate}
 
 Explicit workspaces and optional adapters remain in the current reduced CLI.
-The [current contract](/docs/design/decisions/cli/#workspace-registry) and
-[usage guide](/docs/start/cli/#workspace-registry) define the command boundary.
-The dated R1–R8 and A18 record is historical source/binary-bound evidence.
+The [current contract](/docs/design/decisions/cli/#workspace-registry) defines the command boundary.
+The dated R1–R8 and A18 record applies only to its historical source and binaries.
 It does not qualify later command or output changes. The finite maintenance
 roadmap remains retired from active navigation; no public CLI release or
-deployment is established.
+deployment has been established.
 
 ## Where a new PRD goes {#where-a-new-prd-goes}
 
@@ -81,9 +79,9 @@ draft status and includes:
 7. acceptance criteria and open decisions;
 8. a decision log for later changes to the proposal itself.
 
-Large experiments may add a dated page under
-[`../research/`](/docs/design/research/), but temporary logs and generated
-artifacts stay outside Hugo content and outside Git.
+For a large experiment, you may add a dated page under
+[`../research/`](/docs/design/research/). Keep temporary logs and generated
+artifacts outside Hugo content and Git.
 
 ## Lifecycle {#lifecycle}
 
@@ -97,19 +95,19 @@ draft proposal
           └── changelog, migration, and user docs when their audiences need them
 ```
 
-Acceptance does not turn the PRD into a second contract. Move stable behaviour
-into the owning contract, stable rationale into Decisions, and user steps into
-the relevant guide. Then retire the proposal from active navigation. A local
-build, commit, tag, public module, consumer pin, and deployment remain separate
-completion states.
+Acceptance does not make the PRD a second contract. Move accepted behavior
+to the owning contract, stable rationale to Decisions, and user steps to the
+applicable guide, then retire the proposal from active navigation.
+A local build, commit, tag, public module, consumer pin, and deployment are
+separate completion states.
 
 ## Review gate {#review-gate}
 
-Before implementation, reviewers confirm that the proposal does not duplicate
-an existing shell, resolver, component family, or data authority. During
-implementation, a changed design updates this bilingual proposal before code
-silently diverges. Acceptance requires the narrow theme checker, the real
-documentation site, rendered EN/ZH, relevant outputs, accessibility, and
+Before implementation, confirm that the proposal does not duplicate an existing
+shell, resolver, component family, or data authority. If the design changes
+during implementation, update this bilingual proposal before changing the code.
+Acceptance requires the focused theme checker and the real documentation site.
+It also requires rendered EN/ZH, applicable outputs, accessibility checks, and
 responsive review.
 
 ## Read-only Studio candidate {#cli-studio-candidate}

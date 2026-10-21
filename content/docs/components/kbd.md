@@ -1,15 +1,14 @@
 ---
 title: Kbd
 linkTitle: Kbd
-description: Write shortcuts with `kbd` — one shortcode, a list of key names, a semantic key sequence that stays readable in print and in Markdown output.
+description: Use `kbd` with one key name per parameter to display a semantic key sequence. Instructions remain readable in print and Markdown.
 weight: 190
 search_keywords: [Kbd, shortcut, keyboard, Ctrl, Cmd, chord]
 ---
 
-Keys separate what the reader has to press from the prose. Use it for shortcuts
-and chords: one positional parameter per key, and the theme draws the caps, adds
-the separators, and gives screen readers a readable sequence. Command names,
-flags and text to type are inline code — they are not physical keys.
+Use keys to show shortcuts and chords separately from prose. Supply one positional parameter per key.
+The theme draws keycaps, adds separators, and gives screen readers a readable sequence.
+Use inline code for command names, flags, and text to type. They are not physical keys.
 
 ## Shortest form {#minimal}
 
@@ -24,7 +23,7 @@ Missing, empty, or named parameters warn. Ordinary previews do not render invali
 
 ## A single key {#single}
 
-One parameter is one key, and symbol keys are written as they are.
+Each parameter represents one key. Write symbol keys as displayed on the keyboard.
 
 ```markdown {title="Source"}
 {{</* kbd "Escape" */>}} closes a dialog;
@@ -40,8 +39,8 @@ One parameter is one key, and symbol keys are written as they are.
 
 ## Chords {#combo}
 
-Several parameters render in order with `+` between them. That plus sign is
-hidden from assistive technology, which hears a localized connector instead.
+Multiple parameters display in order, separated by `+`.
+Assistive technology receives a localized connector instead of the visible plus sign.
 
 ```markdown {title="Source"}
 {{</* kbd "⌘" "Shift" "P" */>}} and {{</* kbd "Ctrl" "Shift" "P" */>}} are the same action.
@@ -53,10 +52,9 @@ For a literal plus, treat it as a key of its own: {{< kbd "Ctrl" "+" >}} zooms t
 
 ## Platform differences {#platforms}
 
-Write the label printed on the reader's keyboard: `⌘` on macOS, `Ctrl` on
-Windows and Linux. Never merge two platforms into one sequence — a spelling like
-`Ctrl/⌘` cannot be read aloud correctly. Say which platform in the sentence, or
-split into [tabs](/docs/components/tabs/).
+Use the reader's keyboard labels: `⌘` on macOS and `Ctrl` on Windows and Linux.
+Never combine platform labels in one sequence. Labels such as `Ctrl/⌘` cannot be read aloud correctly.
+Name the platform in the sentence or use [tabs](/docs/components/tabs/).
 
 ```markdown {title="Source"}
 On macOS press {{</* kbd "⌘" "K" */>}}; on Windows and Linux, {{</* kbd "Ctrl" "K" */>}}.
@@ -66,8 +64,7 @@ On macOS press {{< kbd "⌘" "K" >}}; on Windows and Linux, {{< kbd "Ctrl" "K" >
 
 ## Shortcut tables {#in-tables}
 
-A cheatsheet is where keys most often live. Here are some of the global keys
-this site honours:
+Keys are common in cheatsheets. This table shows some global keys that the site supports:
 
 ```markdown {title="Source"}
 | Key | Action |
@@ -110,16 +107,14 @@ The complete list of site-wide shortcuts is in
 
 ## Raw `<kbd>` tags {#raw-kbd}
 
-A raw `<kbd>` tag in Markdown gets the same styling, and GitHub renders it too.
-The difference is that the separators and the accessible sequence are then yours
-to maintain: either spelling works for a single key, but use the shortcode for
-chords.
+Raw `<kbd>` tags get the same styles, and GitHub also displays them.
+With raw tags, you maintain separators and accessible sequences yourself. Either form works for single keys. Use the shortcode for chords.
 
 ```markdown {title="Source"}
 Press <kbd>F5</kbd> to reload; in an editor, <kbd>Ctrl</kbd>+<kbd>S</kbd> saves.
 ```
 
-Press <kbd>F5</kbd> to reload; in an editor, <kbd>Ctrl</kbd>+<kbd>S</kbd> saves.
+Press <kbd>F5</kbd> to reload. In an editor, <kbd>Ctrl</kbd>+<kbd>S</kbd> saves.
 
 ## Output {#outputs}
 
@@ -130,7 +125,7 @@ Press <kbd>F5</kbd> to reload; in an editor, <kbd>Ctrl</kbd>+<kbd>S</kbd> saves.
 | Markdown | Plain text: `Ctrl + K`, `⌘ + Shift + P` |
 | RSS | Same as print |
 
-Without CSS or JavaScript the instruction is still readable.
+The instruction remains readable without CSS or JavaScript.
 
 ## Parameter reference {#reference}
 
@@ -139,21 +134,17 @@ Without CSS or JavaScript the instruction is still readable.
 | Positional 1..n | string | — | At least one; each must be non-empty and quoted; order is display order |
 {.fields meta="type default"}
 
-Positional parameters only. There is no `separator`, `label`, `platform`,
-`class` or `size`: Hugo does not allow positional and named parameters in one
-shortcode call.
+Only positional parameters are supported. There is no `separator`, `label`, `platform`, `class`, or `size` parameter.
+Hugo cannot combine positional and named parameters in one shortcode call.
 
 ## Limits {#limits}
 
-- One sequence is one set of keys pressed together: press-A-then-B is two `kbd`
-  calls and a sentence — press {{< kbd "Escape" >}}, then {{< kbd "Enter" >}}.
-- No platform detection: the page never swaps `Ctrl` for `⌘` based on the
-  visitor's operating system.
-- No key mapping or recording: menu paths, gestures and gamepads are out of
-  scope.
-- Missing quotes fail the build: `Ctrl` in `{{</* kbd Ctrl K */>}}` is not a
-  string parameter.
-- Do not use it for commands: `hugo server` is inline code; `Ctrl` is a key.
+- Each sequence represents keys pressed together. For consecutive keys, use two `kbd` calls and describe the order:
+  press {{< kbd "Escape" >}}, then {{< kbd "Enter" >}}.
+- There is no platform detection. The page never replaces `Ctrl` with `⌘` based on the visitor's operating system.
+- There is no key mapping or recording. Menu paths, gestures, and gamepads are outside the scope.
+- Missing quotes fail the build. `Ctrl` in `{{</* kbd Ctrl K */>}}` is not a string parameter.
+- Do not use keys for commands. `hugo server` is inline code; `Ctrl` is a key.
 
 ## Related {#related}
 

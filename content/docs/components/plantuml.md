@@ -1,7 +1,7 @@
 ---
 title: PlantUML
 linkTitle: PlantUML
-description: A `plantuml` fence writes sequence, class, component, activity and use-case diagrams; rendering requires a PlantUML server you configure yourself.
+description: Use a `plantuml` fence for sequence, class, component, activity, and use-case diagrams. Configure your own PlantUML rendering server.
 weight: 120
 search_keywords: [svg-image-url, PlantUML, UML, sequence, class, component, activity, usecase]
 ---
@@ -13,22 +13,19 @@ Rendering needs a server. The theme supplies no default endpoint.
 Without a server, use [Mermaid](/docs/components/mermaid/).
 
 > [!WARNING] This page shows source only, not rendered diagrams
-> PlantUML has to reach a server you run, and this site assumes no endpoint on
-> the reader's behalf. In the current theme version the `plantuml` fence also
-> double-escapes `<`, `>`, `&` and `"`, so source with arrows or quotes comes
-> back from the endpoint as a `Syntax Error?` image (see [Limits](#limits)).
-> Every snippet below is correct PlantUML in itself.
+> PlantUML needs a server that you run. This site does not assume an endpoint for readers.
+> The current theme also double-escapes `<`, `>`, `&`, and `"` in `plantuml` fences.
+> Sources with arrows or quotes therefore return a `Syntax Error?` image. See [Limits](#limits).
+> Each example below is valid PlantUML source.
 
 > [!IMPORTANT] Diagrams leave the reader's browser
-> The encoded diagram source is sent to the endpoint you configure. Never put
-> passwords, internal hostnames or customer names in a PlantUML fence. Internal
-> sites should run their own endpoint, or use a pre-rendered
-> [image](/docs/components/image/).
+> Encoded diagram source is sent to your configured endpoint.
+> Never include passwords, internal hostnames, or customer names in PlantUML fences.
+> Internal sites should run their own endpoint or use a pre-rendered [image](/docs/components/image/).
 
 ## Shortest form {#minimal}
 
-Sequence diagrams are the most common kind: `participant` declares a
-participant, `->` is a synchronous message, `-->` a return.
+Sequence diagrams are the most common type. `participant` declares a participant, `->` is a synchronous message, and `-->` is a return.
 
 ````markdown {title="Source"}
 ```plantuml
@@ -44,14 +41,12 @@ Browser -> Browser : replace the fence with an img element
 ```
 ````
 
-That draws four lanes and four messages: the reader opens the page, the browser
-requests the endpoint with the encoded source, the endpoint returns SVG, and the
-runtime swaps the fence for an image.
+This creates four lanes and four messages. The reader opens the page, and the browser sends encoded source to the endpoint.
+The endpoint returns SVG. The runtime replaces the fence with an image.
 
 ## Class diagrams {#class}
 
-`class` lists members and `"1" -- "0..*"` gives a relationship its cardinality —
-the usual way to explain a data model.
+`class` lists members. `"1" -- "0..*"` sets relationship cardinality. Use this form to explain data models.
 
 ````markdown {title="Source"}
 ```plantuml
@@ -77,13 +72,12 @@ Subscription "1" -- "1" ReplicationSlot : bound to
 ```
 ````
 
-Three boxes with their fields and two annotated connectors: one publication can
-serve many subscriptions, and every subscription binds one replication slot.
+The diagram has three boxes with fields and two annotated connectors.
+One publication can serve multiple subscriptions. Each subscription binds one replication slot.
 
 ## Component diagrams {#component}
 
-`package` groups deployment units, `[component]` is a box, and `-->` is the
-direction of a dependency.
+`package` groups deployment units. `[component]` draws a box, and `-->` sets dependency direction.
 
 ````markdown {title="Source"}
 ```plantuml
@@ -107,14 +101,12 @@ grafana --> prom : PromQL
 ```
 ````
 
-Two dashed boxes with three components each, and five labelled arrows tracing
-the collection path.
+The diagram has two dashed boxes, each with three components. Five labeled arrows show the collection path.
 
 ## Activity diagrams {#activity}
 
-`start` / `stop` with `if … then … else … endif` draws a branching procedure.
-This kind contains no arrow characters, so it is the one kind that renders
-correctly in the current version.
+`start` / `stop` with `if … then … else … endif` defines a branching procedure.
+Activity diagrams contain no arrow characters, so they are the only type that renders correctly in the current version.
 
 ````markdown {title="Source"}
 ```plantuml
@@ -139,12 +131,12 @@ endif
 ```
 ````
 
-One vertical flow line, two diamonds each branching yes / no, four end points.
+The diagram has one vertical flow line, two diamonds with yes / no branches, and four endpoints.
 
 ## Use-case diagrams {#usecase}
 
-`actor` is a stick figure, `(use case)` an ellipse, and `rectangle` draws the
-system boundary — a good fit for a "who is this for" section.
+`actor` draws a stick figure, `(use case)` draws an ellipse, and `rectangle` draws the system boundary.
+Use this form to show who a system serves.
 
 ````markdown {title="Source"}
 ```plantuml
@@ -166,15 +158,14 @@ rectangle "Documentation site" {
 ```
 ````
 
-Three figures on the left, one box with seven ellipses on the right, and
-connectors saying who can do what.
+The diagram has three figures on the left and a box with seven ellipses on the right.
+Connectors show each actor's available actions.
 
 ## Colours in dark mode {#dark-mode}
 
-The server knows nothing about the site's colour scheme, so the SVG comes back
-on a fixed white ground. `skinparam backgroundColor transparent` removes it and
-the diagram sits on the page background. With neutral lines and text it reads in
-both modes.
+The server does not know the site's color scheme. Its SVG uses a fixed white background.
+`skinparam backgroundColor transparent` removes that background. The diagram then uses the page background.
+Neutral lines and text make it readable in both modes.
 
 ````markdown {title="Source"}
 ```plantuml
@@ -193,13 +184,12 @@ stop
 ```
 ````
 
-PlantUML's `!theme` directive (`!theme plain`, for instance) also works. Themes
-come from the server, so a self-hosted endpoint has to have them installed.
+PlantUML's `!theme` directive also works, for example `!theme plain`.
+Themes come from the server. Self-hosted endpoints must have them installed.
 
 ## The rendering server {#server}
 
-The fence itself has no switch; whether it renders depends on the site
-configuration:
+The fence has no switch. Site configuration controls rendering:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -209,7 +199,7 @@ params:
     svg: false
 ```
 
-- `enable: true` without `svg_image_url` warns and stays off with
+- `enable: true` without `svg_image_url` warns and disables rendering with
   `params.plantuml.enable requires an explicit params.plantuml.svg_image_url`.
   Review the warning and rendered fallback before publication. The theme never selects a public service.
 - For self-hosting, use the official [`plantuml/plantuml-server`](https://github.com/plantuml/plantuml-server) image.
@@ -232,14 +222,12 @@ These keys are defined in
 | Markdown | The `plantuml` fence and its source, kept as written |
 | RSS | The fence source only — subscribers see text |
 
-When the feature is off, or the runtime has not loaded, what stays on the page
-is a readable source block, never a broken-image icon.
+If the feature is disabled or the runtime has not loaded, a readable source block remains. No broken-image icon appears.
 
 ## Parameter reference {#reference}
 
-Fence attributes: none. A `plantuml` fence reads no attribute line and does not
-go through OINK's code-block shell, so `title`, `copy` and the line-number
-options from [Code blocks](/docs/components/code/) have no effect here.
+A `plantuml` fence reads no attribute line and bypasses OINK's code-block shell.
+`title`, `copy`, and [Code blocks](/docs/components/code/) line-number options have no effect.
 
 Site parameters (`hugo.yml`):
 
@@ -254,21 +242,14 @@ The theme reads those three keys and nothing else.
 
 ## Limits {#limits}
 
-- `<`, `>`, `&` and `"` are double-escaped: the current theme version escapes the
-  fence content once too often, leaving literal `--&gt;` and `&#34;` in the page
-  and returning a `Syntax Error?` image from the endpoint. Diagrams with arrows
-  (sequence, component, use case, state) therefore do not render today; activity
-  diagrams, which contain none of those characters, do. Until it is fixed, use
-  [Mermaid](/docs/components/mermaid/) or a pre-rendered
-  [image](/docs/components/image/).
-- A server is mandatory: the theme provides no default endpoint and assumes
-  none.
-- Diagram source leaves the browser: keep anything confidential out of a
-  PlantUML fence.
-- No colour-scheme awareness: the server does not know the reader's mode, so
-  `skinparam` is the only lever.
-- No numbering, no zoom: the `<img>` the runtime inserts does not pass through
-  the image render hook, so `{#id num=}` and image zoom do not apply.
+- The current theme double-escapes `<`, `>`, `&`, and `"` in fences.
+  Literal `--&gt;` and `&#34;` remain in the page, and the endpoint returns a `Syntax Error?` image.
+  Diagrams with arrows, including sequence, component, use-case, and state diagrams, do not render.
+  Activity diagrams without these characters do render. Until fixed, use [Mermaid](/docs/components/mermaid/) or a pre-rendered [image](/docs/components/image/).
+- A server is mandatory. The theme supplies and assumes no default endpoint.
+- Diagram source leaves the browser. Keep confidential information out of PlantUML fences.
+- The server does not know the reader's color scheme. Use `skinparam` to control appearance.
+- Runtime `<img>` elements bypass the image render hook. `{#id num=}` numbering and image zoom do not apply.
 
 ## Related {#related}
 

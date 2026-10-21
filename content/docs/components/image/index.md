@@ -1,7 +1,7 @@
 ---
 title: Images
 linkTitle: Images
-description: Plain Markdown image syntax plus one attribute line gives you captions, sizing, zoom, links, numbering and Hugo image processing.
+description: Use Markdown image syntax and attributes for captions, sizing, zoom, links, numbering, and Hugo image processing.
 weight: 20
 search_keywords: [Image, Figure, caption, zoom, image processing, imgproc, width, height, numbering]
 image_zoom: true
@@ -10,10 +10,9 @@ aliases:
   - /docs/content/media/
 ---
 
-There is one way to write an image: Markdown's `![alt text](source "title")`. An
-image standing alone as its own paragraph can be followed by a `{…}` attribute
-line, making it a captioned figure, a zoom candidate, a numbered figure, or a
-derivative processed by Hugo. The theme has no image shortcode.
+Write images with Markdown's `![alt text](source "title")` syntax.
+For an image in its own paragraph, add a `{…}` attribute line to enable captions, zoom, numbering, or Hugo processing.
+The theme has no image shortcode.
 
 ## Shortest form {#minimal}
 
@@ -23,14 +22,13 @@ derivative processed by Hugo. The theme has no image shortcode.
 
 ![The OINK documentation shell: sidebar, article and table of contents](oink-shell.webp)
 
-This image sits in the same directory as the page (a page bundle), so the theme
-reads its intrinsic size and writes `width`/`height`, and the page does not
-shift while loading; every image is lazy-loaded. Alternative text serves screen
-readers and search engines and should always be written; an empty alt marks a
-decorative image, which zoom skips.
+This image is in the page's directory, which forms a page bundle.
+The theme reads its intrinsic dimensions and writes `width`/`height` to prevent layout changes during loading. All images use lazy loading.
+You should always write alternative text for screen readers and search engines. Empty alt text marks a decorative image, which is excluded from zoom.
 
 ## Where images come from {#sources}
-Sources resolve in the following order, written the same way in each case:
+
+Sources resolve in this order. Use the corresponding path form for each location:
 
 | Placement | How it is written | Suited to |
 | --- | --- | --- |
@@ -50,9 +48,9 @@ Resource `params.alt` must be a string. Invalid metadata warns and is ignored, p
 Review the warning and rendered fallback before publication.
 
 ## Inline versus block {#inline-vs-block}
-An image inside a line of text is an inline image, rendered as one `<img>` and
-unable to carry attributes; an image standing alone as its own paragraph is a
-block image and can carry an attribute line.
+
+An image within a text line is inline. It renders as one `<img>` and accepts no attributes.
+An image in its own paragraph is a block image and accepts an attribute line.
 
 ```markdown {title="Source"}
 This little one ![shell thumbnail](oink-mini.webp) sits inside a sentence — an inline image.
@@ -61,25 +59,22 @@ This little one ![shell thumbnail](oink-mini.webp) sits inside a sentence — an
 {width="100" height="64"}
 ```
 
-This little one ![shell thumbnail](oink-mini.webp) sits inside a sentence — an inline image.
+This image ![shell thumbnail](oink-mini.webp) is inside a sentence, so it is inline.
 
 ![shell thumbnail](oink-mini.webp)
 {width="100" height="64"}
 
-An inline image displays at its own size (50×32 here). An SVG with no intrinsic
-size stretches to the container width when inlined, so an SVG belongs as a block
-image with explicit `width`/`height`.
+Inline images display at their intrinsic dimensions: 50×32 in this example.
+An inline SVG without intrinsic dimensions fills the container width. Use a block image with explicit `width`/`height` for SVG.
 
 > [!NOTE]
-> Block images depend on the site setting
-> `markup.goldmark.parser.wrapStandAloneImageWithinParagraph: false` (this site
-> has it; see [Configuration](/docs/customize/config/)). Without it, Goldmark
-> wraps a standalone image in `<p>` and the attribute line is treated as prose.
+> Block images need `markup.goldmark.parser.wrapStandAloneImageWithinParagraph: false`.
+> This site has that setting. See [Configuration](/docs/customize/config/).
+> Without it, Goldmark wraps standalone images in `<p>` and treats attribute lines as prose.
 
 ## Captions {#caption}
 
-An attribute line with `caption="…"` renders the image as a `<figure>` plus a
-`<figcaption>`. A caption is plain text and is not parsed as Markdown.
+`caption="…"` creates a `<figure>` with a `<figcaption>`. Captions are plain text and are not parsed as Markdown.
 
 ```markdown {title="Source"}
 ![Release card: version, publication date and asset buttons](release-note.webp)
@@ -89,14 +84,13 @@ An attribute line with `caption="…"` renders the image as a `<figure>` plus a
 ![Release card: version, publication date and asset buttons](release-note.webp)
 {caption="The release card uses the page's release_url and date"}
 
-A Markdown `"title"` keeps its own meaning (a hover tooltip) and never becomes
-the caption.
+A Markdown `"title"` is a hover tooltip. It never becomes a caption.
 
 ## Size {#size}
 
-`width`/`height` are positive integers overriding the resource's own dimensions:
-they give a static or remote image a placeholder box so the page does not shift,
-or display a large image smaller (the browser scales it; the file is unchanged).
+`width`/`height` take positive integers and override the resource dimensions.
+For static or remote images, they reserve space to prevent layout changes. They can also display a large image at a smaller size.
+The browser scales the image. The file stays unchanged.
 
 ```markdown {title="Source"}
 ![The OINK home page illustration (light)](/images/hero-light.webp)
@@ -108,11 +102,9 @@ or display a large image smaller (the browser scales it; the file is unchanged).
 
 ## Processed images {#processing}
 
-Page resources and global resources can be processed by Hugo at build time:
-`command` and `options` must both be given, the command is one of `Fit`,
-`Resize`, `Fill` or `Crop`, and the options are Hugo's image processing string.
-The rendered `src` is the derivative; with zoom enabled the dialog opens the
-original.
+Hugo can process page and global resources at build time. Provide both `command` and `options`.
+Commands are `Fit`, `Resize`, `Fill`, or `Crop`. Options use Hugo's image-processing syntax.
+The rendered `src` points to the derivative. With zoom enabled, the dialog opens the original.
 
 ```markdown {title="Source"}
 ![shell thumbnail](oink-shell.webp)
@@ -155,12 +147,10 @@ The warning recommends `[![…](…)](…)`. Review the warning and rendered fal
 
 ## Numbered figures {#numbered}
 
-Numbered figures are for books and long manuals: add `num` to the attribute
-line, with an optional `#id`. The number is a string the author writes (`2-1`,
-`3.4`) and the theme never counts automatically; the caption gains a localized
-"Figure 2-1" prefix, and `#id` defaults to `fig-<num>`. Reference it from the
-prose with an ordinary link `[Figure 2-1](#fig-2-1)` or the `xref` shortcode; a
-whole-book list of figures is in [Books](/docs/write/book/).
+For books or long manuals, add `num` to the attribute line, with an optional `#id`.
+The author writes the number as a string, such as `2-1` or `3.4`. The theme never counts automatically.
+The caption receives a localized "Figure 2-1" prefix. `#id` defaults to `fig-<num>`.
+Reference it with `[Figure 2-1](#fig-2-1)` or `xref`. See [Books](/docs/write/book/) for the whole-book figure list.
 
 ```markdown {title="Source"}
 ![Release card](release-note.webp)
@@ -179,16 +169,13 @@ A numbered figure can be a processed image at the same time (`num` plus
 
 ## Zoom {#zoom}
 
-Image zoom is off by default. Once the site enables it, block images, figures
-and gallery images that have alt text become clickable buttons that open the
-full image in a native `<dialog>` (Esc closes it, focus returns where it was).
-This page turns it on in its front matter, so every image above is clickable.
+Image zoom is off by default. When enabled, block images, figures, and gallery images with alt text become clickable buttons.
+They open the full image in a native `<dialog>`. Esc closes it and restores the previous focus.
+This page enables zoom in front matter, so every image above is clickable.
 
-Since OINK 1.1, the preview action is kept in the button's
-accessible name, alongside the image description. It adds no helper text to
-copied articles; the copied HTML retains images and authored captions for
-rich-text editors. In v1.0.0, a hidden preview label can appear after pasting.
-Until upgrading, setting `image_zoom: false` and rebuilding avoids that label.
+Since OINK 1.1, the button's accessible name includes the preview action and image description.
+Copied articles receive no helper text. Copied HTML keeps images and authored captions for rich-text editors.
+In v1.0.0, a hidden preview label can appear after pasting. Until you upgrade, use `image_zoom: false` and rebuild to avoid it.
 
 ```yaml {title="hugo.yml"}
 params:
@@ -200,9 +187,8 @@ params:
 image_zoom: false
 ```
 
-Images that never zoom: inline images, decorative images with an empty alt,
-linked images, and images marked `data-no-zoom`. The runtime loads only when the
-page really has a candidate; print, Markdown and RSS have no dialog.
+Inline images, decorative images with empty alt text, linked images, and images with `data-no-zoom` never zoom.
+The runtime loads only if the page has an eligible image. Print, Markdown, and RSS have no dialog.
 
 ```markdown {title="Source: a decorative image does not zoom"}
 ![](oink-shell.webp)
@@ -213,9 +199,9 @@ page really has a candidate; print, Markdown and RSS have no dialog.
 {width="150" height="75"}
 
 ## Light and dark images {#dark-mode}
-The theme has no parameter for swapping an image by colour scheme. Where two
-images are needed, give each a `class` and show one per scheme with
-`[data-bs-theme="dark"]` in the site's CSS:
+
+The theme has no parameter to switch images by color scheme.
+If you need two images, give each a `class`. Use `[data-bs-theme="dark"]` in site CSS to display the image for each scheme:
 
 ```markdown {title="Source"}
 ![Sidebar (light)](sidebar-light.webp)
@@ -230,9 +216,9 @@ html[data-bs-theme="dark"] .only-light,
 html:not([data-bs-theme="dark"]) .only-dark { display: none; }
 ```
 
-Replace `sidebar-light.webp` and `sidebar-dark.webp` with your own light and
-dark images. The theme sets `data-bs-theme` on `html`; the selectors above
-show only the matching image. `class` is passed through for the site's CSS.
+Replace `sidebar-light.webp` and `sidebar-dark.webp` with your images.
+The theme sets `data-bs-theme` on `html`. These selectors display only the matching image.
+`class` passes through for site CSS.
 
 ## Output {#outputs}
 
@@ -265,11 +251,11 @@ Review the warning and rendered fallback before publication. Write alt, title, a
 
 ## Limits {#limits}
 
-- A caption holds no Markdown: every public string parameter is plain text, so rich explanation goes in a paragraph below the image.
-- `title` is not a caption: the `c` in `![a](b "c")` is a hover tooltip.
-- Processing applies to resources only: an image in `static/` that needs processing moves to the page bundle or `assets/`.
+- Captions do not support Markdown. Public string parameters are plain text. Put detailed explanations in a paragraph below the image.
+- `title` is not a caption. The `c` in `![a](b "c")` is a hover tooltip.
+- Only resources support processing. Move images that need processing from `static/` to the page bundle or `assets/`.
 - Remote images are never downloaded at build time.
-- Zoom has no drag, pan or previous / next; a set of related images uses a [gallery](/docs/components/gallery/).
+- Zoom has no drag, pan, or previous / next controls. Use a [gallery](/docs/components/gallery/) for related images.
 
 ## Related {#related}
 

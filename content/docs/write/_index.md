@@ -1,7 +1,7 @@
 ---
 title: Authoring
 linkTitle: Authoring
-description: Writing documentation pages, blog posts, books, release pages and API references — what a page looks like, and how content is organized.
+description: Write documentation pages, blog posts, books, release pages, and API references. Learn the page structure and content organization.
 weight: 30
 icon: fa-solid fa-pen-nib
 search_keywords: [authoring, writing, content, front matter, page, blog, book, release, OpenAPI]
@@ -14,14 +14,14 @@ aliases:
 
 This section covers the content types OINK supports: documentation pages, blog
 posts, books, release and download pages, and OpenAPI references. They share one
-Markdown dialect and one front matter schema, and each adds its own conventions.
+Markdown dialect and one front matter schema. Each type adds its own conventions.
 
 ## What a documentation page is made of {#anatomy}
 
-A documentation page is one Markdown file. Between the two `---` lines at the
-top is the front matter — the page's metadata: title, short sidebar name,
-description, ordering. The rest is the body: ordinary Markdown plus OINK's
-native components. Here is a complete page:
+A documentation page is one Markdown file. Front matter appears between the
+two `---` lines at the top. It contains page metadata: title, short sidebar
+name, description, and order. The body follows. It uses ordinary Markdown and
+OINK's native components. This is a complete page:
 
 ```markdown {title="content/docs/install.md"}
 ---
@@ -40,7 +40,7 @@ newer.
 > The installer rewrites `/etc/yum.repos.d/`. Back it up first.
 ```
 
-Save it as `content/docs/install.md`, run `hugo server`, and the page appears at
+Save it as `content/docs/install.md`. Run `hugo server`. The page appears at
 `/docs/install/` with an "Install" entry in the sidebar.
 
 ## Content types and where they are covered {#map}

@@ -1,19 +1,16 @@
 ---
 title: Asciinema
 linkTitle: Asciinema
-description: Put a .cast terminal recording on the page — the text stays selectable text, and the player ships with the theme rather than coming from a CDN.
+description: Display a .cast terminal recording with selectable text. The theme includes the player and does not use a CDN.
 weight: 210
 search_keywords: [Asciinema, terminal recording, cast, asciicast, screencast, demo, player]
 ---
 
-`asciinema` renders a `.cast` recording as a terminal player on the page. It
-suits command-line walkthroughs: the text in the terminal is still text, it can
-be selected and copied, and the six-minute install recording on this page is
-about 196 KB. Graphical interfaces belong in screenshots or video — this
-component plays terminal recordings only. The player and its styles ship with
-the theme, nothing is downloaded at build time, no CDN is contacted at runtime,
-and the runtime loads only on a page that uses it, and only in its HTML
-output.
+`asciinema` displays a `.cast` recording in a terminal player. Use it for command-line procedures.
+Readers can select and copy the terminal text. The six-minute installation recording on this page is about 196 KB.
+This component plays only terminal recordings. Use screenshots or video for graphical interfaces.
+The theme includes the player and styles. It downloads nothing at build time and contacts no CDN at runtime.
+The runtime loads only in HTML output on pages that use the component.
 
 ## Shortest form {#minimal}
 
@@ -25,16 +22,14 @@ output.
 
 {{< asciinema file="images/install.cast" >}}
 
-The recording is a single-node Pigsty install on a Debian machine in a 120×36
-terminal, lasting about 6 minutes and 42 seconds. Download the
-[sample recording](/images/install.cast) to `static/images/install.cast` in your
-site and write its path from the site root. A file under `assets/` is written as a relative path: the theme looks in
-resources first and falls back to treating the value as a site-root path.
-Without `title`, the window title shows the value of `file`.
+The recording shows a single-node Pigsty installation on Debian in a 120×36 terminal. It lasts about 6 minutes and 42 seconds.
+Download the [sample recording](/images/install.cast) to `static/images/install.cast` in your site. Write its path from the site root.
+For a file under `assets/`, use a relative path. The theme checks resources first, then treats the value as a site-root path.
+If you omit `title`, the window title shows the value of `file`.
 
 ## Window title and theme {#title-theme}
 
-`title` sets the window title, `theme` the colours:
+`title` sets the window title. `theme` sets the colors:
 
 ```markdown {title="Source"}
 {{</* asciinema file="images/install.cast" title="Pigsty single-node install" theme="dracula" */>}}
@@ -42,19 +37,15 @@ Without `title`, the window title shows the value of `file`.
 
 {{< asciinema file="images/install.cast" title="Pigsty single-node install" theme="dracula" >}}
 
-`theme` defaults to `auto`: it follows the site's colour scheme, `td-light` in
-light and `td-dark` in dark, remounting in place when the reader switches. To
-pin a terminal palette, the values are the player's own `asciinema`, `dracula`,
-`gruvbox-dark`, `monokai`, `nord`, `seti`, `solarized-dark`, `solarized-light`,
-`tango`, plus the theme's `td-light` / `td-dark`. A pinned theme stops following
-the colour scheme, and `solarized-light` on a dark site does not have workable
-contrast. The terminal font needs no setting: the player uses the site's code
-font, the one the code blocks use.
+`theme` defaults to `auto` and follows the site's color scheme. It uses `td-light` in light mode and `td-dark` in dark mode.
+When the reader changes modes, the player remounts in place. To fix the terminal palette, use a player theme:
+`asciinema`, `dracula`, `gruvbox-dark`, `monokai`, `nord`, `seti`, `solarized-dark`, `solarized-light`, or `tango`.
+You can also use the theme's `td-light` / `td-dark`. A fixed theme does not follow the site's color scheme.
+`solarized-light` does not provide usable contrast on a dark site. The player uses the same code font as the site's code blocks.
 
 ## Speed, start point and poster {#playback}
 
-Three parameters control where a long recording starts: `speed` sets the rate,
-`startAt` skips the opening, `poster` decides the frame shown before playback.
+Three parameters control the initial playback state. `speed` sets the rate, `startAt` skips the opening, and `poster` sets the frame before playback.
 
 ```markdown {title="Source"}
 {{</* asciinema file="images/install.cast" title="From 60 seconds in, at double speed"
@@ -63,19 +54,16 @@ Three parameters control where a long recording starts: `speed` sets the rate,
 
 {{< asciinema file="images/install.cast" title="From 60 seconds in, at double speed" speed="2" startAt="60" poster="npt:1:30" >}}
 
-`speed` and `startAt` are numbers (seconds) and `poster` uses the player's
-`npt:` notation for a point in time, so `npt:1:30` is one minute thirty. The
-player above rests on the frame at 90 seconds and starts playing from 60.
+`speed` and `startAt` take numbers (seconds). `poster` uses the player's `npt:` time notation.
+For example, `npt:1:30` means one minute and thirty seconds. The player above shows the frame at 90 seconds and starts playback at 60 seconds.
 
-`idleTimeLimit` compresses silent stretches to at most N seconds. This recording
-was already compressed while recording (`idle_time_limit: 0.5` in the `.cast`
-header), so it does not need it. Only files recorded without an idle limit do.
+`idleTimeLimit` limits silent intervals to N seconds. This recording already limits idle time through `idle_time_limit: 0.5` in its `.cast` header.
+It needs no additional limit. Only recordings made without an idle limit need this setting.
 
 ## Size and fit {#size}
 
-The player scales to the container width by default (`fit="width"`), and the
-terminal's rows and columns come from the `.cast` header. `cols` / `rows`
-override that:
+By default, the player scales to the container width (`fit="width"`). It reads the terminal dimensions from the `.cast` header.
+Use `cols` / `rows` to override those dimensions:
 
 ```markdown {title="Source"}
 {{</* asciinema file="images/install.cast" title="Only 16 rows tall" rows="16" */>}}
@@ -83,19 +71,16 @@ override that:
 
 {{< asciinema file="images/install.cast" title="Only 16 rows tall" rows="16" >}}
 
-A size smaller than the recording clips it — the one above shows 16 of the 36
-rows. `cols` / `rows` exist to correct a wrong size in the recording's header;
-they are not a layout tool. To make the player shorter, record again in a
-smaller terminal.
+Dimensions smaller than the recording clip its content. The example above shows 16 of the 36 rows.
+Use `cols` / `rows` to correct incorrect header dimensions. Do not use them to control layout.
+To make the player shorter, record again in a smaller terminal.
 
-`fit` takes four values: `width` (the default, scale to width), `height` (to
-height), `both` (fit both axes) and `none` (no scaling — a wide terminal
-overflows).
+`fit` accepts four values: `width`, the default, scales to width; `height` scales to height; `both` fits both axes.
+`none` disables scaling, so a wide terminal overflows.
 
 ## Looping and preloading {#autoplay}
 
-`loop` replays at the end, and `preload` fetches the `.cast` when the page
-loads so pressing play does not wait:
+`loop` restarts playback at the end. `preload` fetches the `.cast` when the page loads, so playback starts without waiting:
 
 ```markdown {title="Source"}
 {{</* asciinema file="images/install.cast" title="Looping: the first minute after login"
@@ -104,15 +89,13 @@ loads so pressing play does not wait:
 
 {{< asciinema file="images/install.cast" title="Looping: the first minute after login" startAt="0" speed="3" loop="true" preload="true" >}}
 
-`autoplay="true"` starts playback as the page opens. It is not recommended: a
-"reduce motion" preference only disables the transitions on the player's
-controls, it does not stop autoplay. When you really need it, pair it with
-`loop`, keep the clip very short, and put only one on a page.
+`autoplay="true"` starts playback when the page opens. This is not recommended.
+The "reduce motion" preference disables only player control transitions. It does not stop autoplay.
+If autoplay is necessary, use `loop`, keep the clip very short, and use only one clip per page.
 
 ## Inside steps {#in-steps}
 
-Put the recording next to the step: the text says what to do, the recording
-shows what it looks like.
+Put the recording beside its step. The text gives the action. The recording shows the result.
 
 ````markdown {title="Source"}
 1. Install the dependencies and fetch the installer:
@@ -146,19 +129,14 @@ A page can hold several players, and the script and styles load once.
 
 ## Recording a cast file {#recording}
 
-The theme only plays. Record with
-[asciinema](https://docs.asciinema.org/) —
-`asciinema rec --idle-time-limit=2 --cols=100 --rows=28 install.cast` — and
-check it locally with `asciinema play install.cast`.
+The theme plays recordings but does not create them. Record with [asciinema](https://docs.asciinema.org/).
+Use `asciinema rec --idle-time-limit=2 --cols=100 --rows=28 install.cast`, then check locally with `asciinema play install.cast`.
 
-- Keep the terminal under 100 columns so it stays readable on a narrow screen,
-  and `clear` before you start.
-- Clear secrets first: a `.cast` is plain text and every character in the
-  recording is greppable. Check before committing.
-- Put the file at `static/images/install.cast` and use
-  `file="images/install.cast"`. `assets/images/install.cast` works with the same
-  value; page-bundle resources are not resolved. Commit the recording rather
-  than referencing a `.cast` URL on someone else's site.
+- Keep the terminal under 100 columns so it stays readable on narrow screens. Run `clear` before you start.
+- Remove secrets before recording. A `.cast` is plain text, so every recorded character can be searched. Check the file before committing.
+- Put the file at `static/images/install.cast` and use `file="images/install.cast"`.
+  `assets/images/install.cast` works with the same value. Page-bundle resources are not resolved.
+  Commit the recording instead of using a `.cast` URL from another site.
 
 ## Output {#outputs}
 
@@ -169,10 +147,8 @@ check it locally with `asciinema play install.cast`.
 | Markdown | A plain Markdown link, `[title](/images/install.cast)` — no component markup, no configuration block |
 | RSS | The same plain link |
 
-A recording must never be the only source of information. Write the key commands
-and the key output beside it in text or a code block: offline readers, whatever
-consumes `llms.txt`, and anyone printing the page get the link and your prose,
-not the terminal session.
+A recording must never be the only source of information. Write the key commands and output beside it as text or code.
+Offline readers, consumers of `llms.txt`, and readers of printed pages receive the link and prose. They do not receive the terminal session.
 
 ## Parameter reference {#reference}
 
@@ -201,22 +177,15 @@ These warnings do not stop ordinary builds. Review each warning and the rendered
 
 ## Limits {#limits}
 
-- `markers` labels are lost: the theme flattens the `time:label` list into a
-  one-dimensional array, and the player accepts only pairs, so the timeline ends
-  up with unlabelled markers. A marker whose time is not a number warns and is
-  skipped. When you need chapters, write a list beside the recording.
-- The player needs JavaScript: with scripts disabled in the browser, only the
-  window frame remains. Print, Markdown and RSS carry a link instead — see
-  [Output](#outputs).
-- Recordings are not searchable: the site index covers page text, so a command
-  that only appears in a recording cannot be found.
-- Do not reference a remote `.cast`: `http` and `https` addresses are accepted,
-  and the page then depends on someone else's site. Any other scheme, a
-  protocol-relative `//host`, or an empty value warns and the component renders
-  nothing.
-- Keep each clip short: few people finish a recording longer than five or six
-  minutes. Split a long procedure into several short ones, each with its own
-  text.
+- `markers` labels are lost. The theme converts the `time:label` list to a one-dimensional array, but the player accepts only pairs.
+  The timeline therefore has unlabeled markers. A nonnumeric marker time warns and is skipped. If you need chapters, write a list beside the recording.
+- The player needs JavaScript. With browser scripts disabled, only the window frame remains.
+  Print, Markdown, and RSS provide a link instead. See [Output](#outputs).
+- Recordings are not searchable. The site index covers page text, so it cannot find commands that appear only in recordings.
+- Do not use a remote `.cast`. Although `http` and `https` addresses are accepted, they make the page depend on another site.
+  Other schemes, protocol-relative `//host` addresses, and empty values warn and render nothing.
+- Keep clips short. Few readers finish recordings longer than five or six minutes.
+  Split long procedures into short recordings, each with its own text.
 
 ## Related {#related}
 

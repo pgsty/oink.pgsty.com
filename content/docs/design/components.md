@@ -13,15 +13,14 @@ contract_status: v1.3.0
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 
-Tutorials and exhaustive examples belong in the reader-facing
-[Components](/docs/components/) section. This page defines the API and behavior
-that those guides rely on.
+The reader-facing [Components](/docs/components/) section provides tutorials and complete examples.
+This page defines the API and behavior used by those guides.
 
 ## Authoring model {#authoring-model}
 
-Use ordinary Markdown when one block plus attributes can express a component.
-Use shortcodes for compound bodies or facts Markdown cannot carry. There is no
-parallel component registry. Native forms require:
+Use ordinary Markdown when one block with attributes can express the component.
+Use shortcodes for compound bodies or information that Markdown cannot represent. There is no parallel component registry.
+Native forms require:
 
 ```yaml
 markup:
@@ -32,13 +31,11 @@ markup:
       attribute: { block: true }
 ```
 
-Only `{{%/* steps */%}}` uses percent delimiters because its body belongs to the
-page outline; every other shortcode uses angle delimiters. Compound bodies pass
-through `content/render-block.html` with a unique ID scope. Shortcode and
-component parameter captions, labels, titles, and names are plain text;
-Markdown belongs in bodies. Landing narrative fields follow their own contract.
-An icon is one Font Awesome class pair. Components expose safe classes and
-attributes, not arbitrary color or inline style.
+Only `{{%/* steps */%}}` uses percent delimiters because its body belongs to the page outline.
+Other shortcodes use angle delimiters. Compound bodies use `content/render-block.html` with a unique ID scope.
+Shortcode and component captions, labels, titles, and names are plain text. Put Markdown in bodies.
+Landing narrative fields have their own contract. Icons use one Font Awesome class pair.
+Components expose safe classes and attributes. They do not expose arbitrary colors or inline styles.
 
 ## Public API {#public-api}
 
@@ -107,76 +104,57 @@ Orphan `tab` shortcodes warn and render nothing.
 
 ### Steps, cards, fields, and tables {#steps-cards-fields-and-tables}
 
-Native steps accept ordinary block content. Use the shortcode only when a step
-must contain a percent-delimited container. Native cards are link lists; the
-full form adds bodies, badges, icons, and images. Native fields map the first
-column to the name, the last to the description, and middle columns through
-`meta=` or headings; the full form allows block descriptions. `card` and
-`field` are valid only inside their parents.
+Native steps accept ordinary block content. Use shortcodes only when steps must contain percent-delimited containers.
+Native cards use link lists. The full form adds bodies, badges, icons, and images.
+Native fields use the first column for names, the last for descriptions, and middle columns for metadata through `meta=` or headings.
+The full form accepts block descriptions. Use `card` and `field` only within their parents.
 
-Field anchors are `field-<name>` with lowercase punctuation runs collapsed to
-hyphens, so `params.ui.typography` becomes `field-params-ui-typography`.
-Duplicate anchors receive positional suffixes.
+Field anchors use `field-<name>`, with lowercase punctuation runs replaced by hyphens.
+Thus `params.ui.typography` becomes `field-params-ui-typography`. Duplicate anchors get positional suffixes.
 
-The table hook owns responsive wrapping and captions. `.matrix` makes the first
-column row headers; `.full-width` widens normal or matrix tables. `.fields`
-cannot combine with matrix, full-width, numbering, or tabs; numbering and tabs
-are also mutually exclusive.
+The table hook controls responsive wrappers and captions. `.matrix` makes the first column row headers.
+`.full-width` widens ordinary or matrix tables. `.fields` cannot be combined with matrix, full-width, numbering, or tabs.
+Numbering and tabs are also mutually exclusive.
 
 ### Images, Gallery, FileTree, and fences {#images-gallery-filetree-and-fences}
 
-The Markdown image hook is the ordinary image API. Inline images stay inline;
-block images become figures with `caption` or `num`. Image processing belongs
-to this native form alone: the full `fig` source form is a numbered container
-whose parameter list deliberately excludes `command`/`options`, so a processed
-numbered image is written as a native block image with `num`. Allowed image attributes
-are `id`, `num`, `caption`, `width`, `height`, `link`, `command`, and `options`
-plus shared safe attributes. `command` and `options` appear together and use
-Hugo `Fit`, `Resize`, `Fill`, or `Crop` on processable local resources. A plain
-linked image uses Markdown syntax; the `link` attribute therefore requires a
-caption or number. Linked and decorative images do not load Zoom.
+The Markdown image hook is the ordinary image API. Inline images stay inline. Block images become figures with `caption` or `num`.
+Only the native form supports image processing.
+The full `fig` source form is a numbered container and deliberately excludes `command`/`options`.
+For processed numbered images, use native block images with `num`.
+Allowed image attributes are `id`, `num`, `caption`, `width`, `height`, `link`, `command`, and `options`, plus shared safe attributes.
+`command` and `options` must appear together. They use Hugo `Fit`, `Resize`, `Fill`, or `Crop` on processable local resources.
+Plain linked images use Markdown syntax. The `link` attribute therefore requires a caption or number.
+Linked and decorative images do not load Zoom.
 
-Zoom triggers keep the image's alt text and localized preview action in their
-ARIA accessible name, without inserting helper text into the article. Copying
-content as plain text or rich HTML must not add preview instructions, even when
-an editor discards the theme's styles. Authored images and captions are preserved.
-When Draw.io and Image Zoom share an image, Edit and Zoom remain separate sibling
-buttons. The editor entry supports keyboard access and stays visible on touch
-devices and in forced-colors mode.
-The Draw.io editor opens in a modal dialog with a localized host Close button.
-The button, backdrop, editor exit message, and Escape while focus is in the host
-dialog dismiss it, release its message listener, and restore focus to Edit.
-Cross-origin iframe keystrokes belong to the editor and cannot bubble to the
-host; users can leave the editor's Tab sequence to reach the host Close button.
-Opening another editor starts a fresh session.
+Zoom triggers keep image alt text and the localized preview action in their ARIA accessible name.
+They insert no helper text into articles.
+Plain-text or rich-HTML copying must not add preview instructions, even if the editor removes theme styles.
+Authored images and captions remain intact.
+When Draw.io and Image Zoom share an image, Edit and Zoom remain separate sibling buttons.
+The editor control supports keyboards and stays visible on touch devices and in forced-colors mode.
+The Draw.io editor opens in a modal dialog with a localized host Close button. The button, backdrop, editor exit message, and Escape while focus is in the host dialog dismiss it, release its message listener, and restore focus to Edit. Cross-origin iframe keystrokes belong to the editor and cannot bubble to the host; users can leave the editor's Tab sequence to reach the host Close button. Opening another editor starts a fresh session.
 
-Gallery accepts one Markdown image per line with optional description, link,
-and class. FileTree accepts indentation, `- name`, optional `/`, comments, and
-validated icon/tone/open/type attributes. Markdown preserves authored source;
-print renders expanded static figures and trees.
+Gallery accepts one Markdown image per line, with optional description, link, and class.
+FileTree accepts indentation, `- name`, optional `/`, comments, and validated icon/tone/open/type attributes.
+Markdown keeps authored source. Print renders expanded static figures and trees.
 
-All code highlighting uses Chroma. Common fence attributes include `title`,
-`copy`, `wrap`, `collapse`, `label`, `id`, line options, tabs, and Book
-`num`/`caption`. Copy returns authored source. Mermaid palettes follow mode independently
-of visual presets. The default dark edge-label background is `#404040` for
-AA text contrast; authored `params.mermaid.themeVariables` remain authoritative.
+All code highlighting uses Chroma.
+Common fence attributes include `title`, `copy`, `wrap`, `collapse`, `label`, `id`, line options, tabs, and Book `num`/`caption`.
+Copy returns authored source.
+Mermaid palettes follow light/dark mode, independently of visual preset. The default dark edge-label background is `#404040` for AA contrast with its label text; explicit `params.mermaid.themeVariables` values retain priority.
 
-ECharts input is declarative
-JSON/YAML; callbacks use `$fn:<name>` from `window.OinkEchartsFunctions`, never
-embedded script execution.
+ECharts uses declarative JSON/YAML. Callbacks use `$fn:<name>` from `window.OinkEchartsFunctions`. Embedded scripts are never executed.
 
-Mathematics uses Hugo's build-time KaTeX output and local CSS, without a browser
-math runtime. HTML and Print use the vendored stylesheet and preserve MathML
-and authored TeX. Validate mathematics with the current Hugo baseline defined
-in the [architecture contract](/docs/design/architecture/#hugo-toolchain).
+Mathematics uses Hugo's build-time KaTeX output and local CSS, without a browser mathematics runtime.
+HTML and Print use the vendored stylesheet and preserve MathML and authored TeX.
+Validate mathematics with the current Hugo baseline defined in the [architecture contract](/docs/design/architecture/#hugo-toolchain).
 Markmap uses the matching vendored KaTeX runtime.
-On narrow screens, numbered-equation captions wrap within the reading column;
-a long caption must not widen the page.
+On narrow screens, numbered-equation captions wrap within the reading column. Long captions must not widen the page.
 
-Swagger and Redoc accept an HTTP(S) specification URL or a path rooted under
-`static/`; neither resolves page resources. Redoc treats leading and
-non-leading slashes equivalently and joins local paths to `baseURL`. Only HTML
-is interactive; Print, Markdown, and RSS render a static specification link.
+Swagger and Redoc accept HTTP(S) specification URLs or paths rooted under `static/`. Neither resolves page resources.
+Redoc handles paths with or without leading slashes identically and joins local paths to `baseURL`.
+Only HTML is interactive. Print, Markdown, and RSS provide static specification links.
 
 ### Book {#book}
 
@@ -225,10 +203,8 @@ Their expand and collapse controls remain usable after fonts settle and when
 
 ## Verification {#verification}
 
-Shared output rules live in the [architecture contract](/docs/design/architecture/);
-exceptions are defined with their components above. Markdown and RSS set no
-browser runtime flags; Print retains only flags required by rendered print
-features. Source checks cover parameters, hook policy, runtime isolation, and
-migration; output checks compare HTML, print, Markdown, RSS, and LLMS goldens;
-browser tests cover interactive surfaces. Migration is documented in the
-[migration contract](/docs/design/migration/).
+The [architecture contract](/docs/design/architecture/) defines shared output rules. Component-specific exceptions appear above.
+Markdown and RSS set no browser runtime flags. Print keeps only flags required by rendered print features.
+Source checks cover parameters, hook policy, runtime isolation, and migration.
+Output checks compare HTML, print, Markdown, RSS, and LLMS goldens. Browser tests cover interactive features.
+See the [migration contract](/docs/design/migration/) for migration rules.

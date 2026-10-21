@@ -1,7 +1,7 @@
 ---
 title: Design and development
 linkTitle: Design
-description: OINK maintainer contracts, accepted decisions, dated research, and proposals in one canonical bilingual section.
+description: OINK's contracts, accepted decisions, dated research, and active proposals in one bilingual section.
 weight: 70
 icon: fa-solid fa-compass-drafting
 no_list: true
@@ -26,11 +26,10 @@ cascade:
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 
-This section is the durable design record for OINK. It complements the
-task-oriented guides elsewhere on the site: use those guides to build a site,
-and use this section to understand current invariants, the reasons behind them,
-the evidence used to evaluate alternatives, and work that is still only a
-proposal.
+This section explains how OINK works and why it has its present shape. It brings
+together current contracts, the reasoning behind accepted decisions, evidence
+from alternative designs, and ideas that remain proposals. The other guides on
+this site explain how to build and maintain a site with OINK.
 
 ## Reading this section {#reading-this-section}
 
@@ -59,12 +58,12 @@ proposal.
 | [Research](/docs/design/research/)   | Goldmark probes, consumer evidence, CLI acceptance, and October theme reviews                             |
 | [Proposals](/docs/design/proposals/) | Active PRDs for knowledge graphs, media convergence, visual presets, and the CLI roadmap |
 
-Create every new OINK PRD or RFC as an English and Chinese page pair under
+Create each new OINK PRD or RFC as an English and Chinese page pair under
 `content/docs/design/proposals/`. Do not create another repository-local
-`plan/`, `plans/`, or `proposal/` tree. Once a proposal is accepted, update the
-implementation, owning checker, and relevant contract; preserve the stable
-rationale under Decisions and retire the draft through Git history and the
-changelog.
+`plan/`, `plans/`, or `proposal/` tree. After acceptance, update the
+implementation, its checker, and the applicable contract, then record the
+accepted rationale under Decisions. Retire the draft from active use while
+preserving it in Git history and the changelog.
 
 ## Expo contract {#unreleased-contracts}
 
@@ -77,12 +76,13 @@ released content model and controls.
 
 ## Authority and maintenance {#authority-and-maintenance}
 
-This directory owns the maintainer design prose in English and Chinese. The theme
-repository owns executable facts: `hugo.yaml` owns published defaults; owning
-resolvers and checkers define optional shapes; `layouts/` and `assets/` own
-rendered behavior; check scripts and `tests/goldens/` own validation; and
-`VENDOR.json` owns bundled versions, licenses, files, and checksums.
+This directory owns the English and Chinese design text for maintainers; the
+theme repository owns the executable facts. Within the theme, `hugo.yaml`
+defines published defaults, while each resolver and checker defines the input
+shapes it accepts. `layouts/` and `assets/` define rendered behavior, and check
+scripts with `tests/goldens/` define validation. `VENDOR.json` records bundled
+versions, licenses, files, and checksums.
 
-Whenever public behavior changes, update the implementation, its owning
-checker, and both language versions of the relevant contract in the same
-delivery. Tests should exercise behavior and output rather than pinning prose.
+When public behavior changes, update the implementation, its checker, and both
+language versions of the applicable contract in the same delivery.
+Tests should check behavior and output without requiring exact prose.

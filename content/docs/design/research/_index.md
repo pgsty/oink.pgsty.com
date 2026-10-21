@@ -1,7 +1,7 @@
 ---
 title: Design research
 linkTitle: Research
-description: Dated experiments and consumer evidence used to make OINK design decisions, without normative force.
+description: Dated experiments and consumer evidence that inform OINK design decisions without defining current behavior.
 weight: 70
 icon: fa-solid fa-flask
 no_list: true
@@ -19,10 +19,10 @@ design_status: active
 > the [toolchain contract](/docs/design/architecture/#hugo-toolchain). Older
 > versions recorded here are historical evidence, not compatibility test targets.
 
-Research belongs in the public Design tree when another maintainer can inspect
-its method, understand its limits, and repeat the relevant check. Raw agent
-transcripts, temporary build logs, and local absolute paths do not meet that
-standard.
+Publish research in the Design tree only when another maintainer can inspect
+its method, understand its limits, and repeat the applicable check.
+Do not publish raw agent transcripts, temporary build logs, or local absolute
+paths as research records.
 
 ## Research map {#research-map}
 
@@ -42,11 +42,11 @@ standard.
 
 ## Publication rules {#publication-rules}
 
-A research record states its date, inputs, relevant versions, method, result,
-and known limits. Volatile counts are labeled as snapshots. External framework
-comparisons are refreshed from primary sources before publication and distilled
-into OINK-relevant conclusions rather than copied as a competitor catalogue.
+A research record states its date, inputs, applicable versions, method, result,
+and known limits, with changing counts labeled as snapshots. External framework
+comparisons need a refresh from primary sources before publication and should
+record conclusions that affect OINK rather than reproduce a competitor catalog.
 
-When a result becomes a stable product choice, link it from an accepted
-[decision](/docs/design/decisions/). When it proposes behaviour that does not
-exist, move the design question to [Proposals](/docs/design/proposals/).
+When a result becomes an accepted product choice, link it from an accepted
+[decision](/docs/design/decisions/). If it proposes behavior that does not exist,
+move the design question to [Proposals](/docs/design/proposals/).

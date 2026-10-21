@@ -1,7 +1,7 @@
 ---
 title: Generated configuration schema
 linkTitle: Config schema
-description: The editor schemas are projected from the existing configuration authorities; a CI drift gate keeps them from ever becoming a third one.
+description: Editor schemas generated from existing configuration sources, with a CI gate that prevents drift.
 weight: 40
 icon: fa-solid fa-list-check
 search_keywords: [JSON Schema, configuration, front matter, editor completion, yaml-language-server, drift gate]
@@ -11,44 +11,43 @@ decision_date: 2026-08-24
 ---
 
 > [!IMPORTANT] Decision
-> The two JSON Schemas under `schema/` are projected by
-> `bin/generate-config-schema.py` from the theme's `hugo.yaml` and the
-> template read-point scan; hand edits cannot survive CI. The schema is a
-> read-only projection of the existing authorities, never a third one.
+> `bin/generate-config-schema.py` generates the two JSON Schemas under `schema/`.
+> It reads the theme's `hugo.yaml` and the template read-point scan.
+> CI rejects manual schema changes. The schemas are read-only projections
+> of the existing configuration authorities. They are not a third authority.
 
 ## Context {#context}
 
-The theme already has two configuration authorities: `hugo.yaml`, which
-declares every default beside a comment explaining it, and
-`check-params.py`, whose read-point scan knows every key the templates
-actually consume. Editors know neither, so authors type `params.ui.*` keys
-and front matter from memory.
+The theme already has two configuration authorities: `hugo.yaml` declares each
+default beside an explanatory comment, and the read-point scan in
+`check-params.py` identifies each key that the templates consume. Editors do
+not read either source, so authors have to enter `params.ui.*` keys and front
+matter from memory.
 
-A JSON Schema gives editors completion and hover documentation. The danger is
-the schema quietly becoming a third authority that drifts from the other two.
-A hand-maintained schema always ends up out of step with the implementation,
-and stale completion is worse than none.
+A JSON Schema gives editors completion and hover documentation, but a manually
+maintained schema can become a third authority that drifts from the
+implementation. Incorrect completion can cause more problems than no
+completion, so the schema must follow the existing sources.
 
 ## Decision {#decision}
 
-`bin/generate-config-schema.py` generates two files under `schema/`:
-`site-params.schema.json` validates a site's `hugo.yaml` (types and defaults
-from the theme's own `hugo.yaml`, descriptions from its comment blocks), and
-`front-matter.schema.json` validates page front matter (every key the
-templates read as authoring surface, descriptions inherited from the matching
-site key). Keys read only to warn that they were renamed or removed are
-excluded by name.
+`bin/generate-config-schema.py` generates two files under `schema/`.
+`site-params.schema.json` validates a site's `hugo.yaml`, taking types and
+defaults from the theme's own `hugo.yaml` and descriptions from its comment
+blocks. `front-matter.schema.json` validates page front matter and includes each
+key that the templates read as an authoring input, with descriptions from the
+matching site key. The generator excludes, by name, keys read only to warn about
+a rename or removal.
 
 Two deliberate restraints are part of the decision:
 
-- The front-matter schema carries **no type constraints**. Several keys
-  accept a bare-boolean opt-out beside their site type (`share: false`,
-  `theme_color: false`); a wrong red squiggle under valid input would be
-  worse than no squiggle at all.
-- The `hugo.yaml` reader is a small parser for exactly the shapes that file
-  uses -- nested maps, scalars, inline lists. Anything it cannot read is a
-  hard error, so outgrowing it breaks the drift gate loudly instead of
-  mis-generating.
+- The front-matter schema has **no type constraints**. Several keys accept a
+  bare-boolean opt-out in addition to their site type (`share: false`,
+  `theme_color: false`). An incorrect editor warning for valid input would be
+  worse than no warning.
+- The `hugo.yaml` reader parses only the shapes that the file uses: nested
+  maps, scalars, and inline lists. If the parser cannot read an input, it fails.
+  The drift gate then fails instead of generating an incorrect schema.
 
 The parameter checker identifies maps with documented boolean shorthand.
 The generated site schema preserves both boolean and object forms for those
@@ -59,18 +58,17 @@ properties do not exclude the supported boolean page override.
 
 ## Consequences {#consequences}
 
-The only way to change a schema is to change `hugo.yaml` or the templates the
-scan reads: when the public configuration surface moves, the schemas
-regenerate in the same commit, and there is no second inventory anyone must
-remember to maintain. The cost is that the generator and the read-point scan
-become an implicit gate on the public surface -- a new parameter key must be
-something they can understand, or CI fails outright.
+To change a schema, change `hugo.yaml` or the templates that the scan reads.
+When public configuration changes, regenerate the schemas in the same commit.
+Maintainers do not need a second parameter inventory, but the generator and
+read-point scan constrain the public configuration surface: a new parameter
+key must use a shape they understand, or CI fails.
 
 ## Verification {#verification}
 
-`python3 bin/generate-config-schema.py --check` regenerates in memory and
-fails when `schema/` is stale or missing; the theme's CI runs it beside the
-parameter contract checker. Editor wiring and the behaviour itself are
+`python3 bin/generate-config-schema.py --check` regenerates schemas in memory
+and fails if `schema/` is stale or missing. Theme CI runs this check with the
+parameter contract checker. Editor configuration and schema behavior are
 documented normatively in [Configuration](/docs/customize/config/#editor-schema).
 
 Visual preset enum values are also derived from `preset-config.html`. The

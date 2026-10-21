@@ -1,36 +1,36 @@
 ---
 title: Comments
 linkTitle: Comments
-description: Wire GitHub Discussions into a comment section at the bottom of a page with giscus — on site-wide, off per page, following light and dark.
+description: Use giscus for page comments through GitHub Discussions. Control comments for the site or a page, and match light and dark themes.
 weight: 30
 search_keywords: [comments, giscus, GitHub Discussions, discussion, Disqus]
 aliases:
   - /docs/advanced/comments/
 ---
 
-OINK's comments run on [giscus](https://giscus.app/): each page maps to one
-GitHub Discussion, readers sign in with a GitHub account to post, and
-maintainers moderate in GitHub Discussions. The theme provides no comment
-backend of its own and bundles no provider other than giscus.
+OINK uses [giscus](https://giscus.app/) for comments. Each page maps to one
+GitHub Discussion. Readers sign in with a GitHub account to post comments.
+Maintainers moderate comments in GitHub Discussions. The theme has no comment
+backend of its own. It bundles only giscus.
 
-The prerequisite is a public GitHub repository; a visitor cannot read a private
+You must use a public GitHub repository. Visitors cannot read a private
 repository's Discussions.
 
 > [!IMPORTANT] This is one of the few features in the theme that makes an outbound request
 > A page with comments enabled loads a script and an iframe from
 > `https://giscus.app`, which does not work in a network-isolated environment.
-> It is off by default and loads only when explicitly enabled. Where a site has
-> a privacy policy, this external data boundary belongs in it.
+> Comments are off by default. They load only when you explicitly enable them.
+> If the site has a privacy policy, document this external data boundary in it.
 
 ## Preparing the GitHub repository {#prepare-github}
 
-1. Choose a public repository to hold the comment threads; the site's source repository works.
+1. Choose a public repository for the comment threads. You can use the site's source repository.
 
-1. In the repository's Settings → General → Features, tick Discussions.
+1. In the repository's Settings → General → Features, select Discussions.
 
 1. Install the [giscus GitHub App](https://github.com/apps/giscus) for that repository. Without the App, visitors cannot comment or react.
 
-1. Choose a Discussion category. giscus recommends the Announcements type: only maintainers and the giscus bot can open a Discussion there, so readers cannot start one by accident.
+1. Choose a Discussion category. giscus recommends the Announcements type. Only maintainers and the giscus bot can open a Discussion there. Readers cannot start one accidentally.
 {.steps}
 
 The repository ID and category ID are public identifiers, not credentials. Never
@@ -39,9 +39,9 @@ configuration.
 
 ## Generating the configuration {#generate}
 
-Open [giscus.app](https://giscus.app/), fill in the repository, mapping and
-category, and the page generates a `<script>` block below. Copy four of its
-attributes into the OINK configuration:
+Open [giscus.app](https://giscus.app/). Enter the repository, mapping, and
+category. The page generates a `<script>` block below. Copy four attributes
+from that block to the OINK configuration:
 
 | Attribute giscus.app generates | OINK configuration key |
 | --- | --- |
@@ -51,18 +51,19 @@ attributes into the OINK configuration:
 | `data-category-id` | `categoryId` |
 {.fields}
 
-The `mapping` decides which page corresponds to which Discussion. OINK defaults
-to `pathname`, which suits a site with stable published paths and one repository
-serving several domains or preview environments. Changing `mapping` or moving a
-page after comments have accumulated makes giscus look for a different
-Discussion: the existing comments are not deleted, but the page can no longer
-find them. Settle the mapping before launch; where a URL really must change,
-keep a redirect or rename the Discussion at the same time.
+The `mapping` determines which Discussion corresponds to each page. OINK
+defaults to `pathname`. This suits stable published paths and one repository
+that serves several domains or preview environments.
+
+If you change `mapping` or move a page after comments exist, giscus searches
+for a different Discussion. It does not delete existing comments, but the page
+can no longer find them. Choose the mapping before launch. If a URL must
+change, retain a redirect or rename the Discussion at the same time.
 
 ## Enabling it site-wide {#enable}
 
 Copy all four repository/category fields from the configuration generated for
-your own repository; replace every placeholder below before enabling comments:
+your repository. Before you enable comments, replace every placeholder below:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -97,11 +98,11 @@ switch takes either a YAML boolean or giscus-style `0` / `1`.
 
 ## Per-page control {#per-page}
 
-`comments` in front matter overrides the site switch in either direction, and
-the value nearest the page wins.
+The front matter `comments` value can enable or disable comments regardless of
+the site switch. The value nearest the page takes precedence.
 
-To enable comments on selected pages only, turn the site switch off while
-keeping the full repository configuration, then let chosen pages opt in:
+To enable comments only on selected pages, disable the site switch. Keep the
+complete repository configuration. Then enable comments on each selected page:
 
 ```yaml {title="content/blog/2026-roadmap.md"}
 ---
@@ -110,8 +111,8 @@ comments: true
 ---
 ```
 
-To disable them on selected pages, leave the site switch on and let unsuitable
-pages opt out:
+To disable comments on selected pages, keep the site switch enabled. Then
+disable comments on each selected page:
 
 ```yaml {title="content/about/security.md"}
 ---
@@ -120,9 +121,9 @@ comments: false
 ---
 ```
 
-Use a cascade to set a whole section at once. This site writes `comments: true`
-in the cascade of `content/docs/_index.md`, which is why a real giscus section
-sits at the bottom of this page.
+Use a cascade to configure an entire section. This site sets `comments: true`
+in the cascade of `content/docs/_index.md`. Therefore, a giscus section appears
+at the end of this page.
 
 ```yaml {title="content/docs/_index.md"}
 ---
@@ -133,20 +134,20 @@ cascade:
 ---
 ```
 
-Where a site also configures `services.disqus.shortname`, giscus wins: an active
-giscus suppresses Disqus, `comments: false` turns off both, and if a required
-giscus key is missing it warns, skips, and lets Disqus take over.
+If the site also configures `services.disqus.shortname`, active giscus suppresses
+Disqus. The setting `comments: false` disables both. If a required giscus key is
+missing, the theme warns and skips giscus. Disqus can then load.
 
 ## Multilingual text {#i18n}
 
-giscus's interface language follows the current Hugo language automatically:
-Simplified, Traditional and Hong Kong Traditional Chinese each map to the
-corresponding giscus locale, and an unsupported language falls back to English.
-Set `lang` explicitly only where the automatic choice is wrong.
+The giscus interface automatically uses the current Hugo language. Simplified,
+Traditional, and Hong Kong Traditional Chinese each use the corresponding
+giscus locale. Unsupported languages fall back to English. Set `lang` explicitly
+only if the automatic choice is incorrect.
 
-What does need translating is the two strings on OINK's side: the comment
-section's accessible label and the loading-failure message. They are configured
-per language and merged with the global repository configuration:
+Translate OINK's two comment strings: the section's accessible label and the
+loading-failure message. Configure them per language. The theme merges them with
+the global repository configuration:
 
 ```yaml {title="hugo.yml"}
 languages:
@@ -164,18 +165,17 @@ languages:
           errorMessage: 评论加载失败，请稍后重试。
 ```
 
-A language layer only needs the differences; `repo` / `repoId` / `category` /
-`categoryId` stay in `params.comments`.
+A language layer needs only the values that differ. Keep `repo` / `repoId` /
+`category` / `categoryId` in `params.comments`.
 
 ## Following light and dark {#theme}
 
 With `theme: auto`, the giscus iframe follows OINK's light/dark control and the
-browser's `prefers-color-scheme`, so the comment section changes with the rest
-of the page.
+browser's `prefers-color-scheme`. The comment section changes with the page.
 
-For a closer match to the site's palette, give `lightTheme` / `darkTheme` two
-giscus themes; each value is a built-in giscus theme name or CSS hosted by the
-site. This site does the latter:
+To match the site's palette more closely, set two giscus themes with
+`lightTheme` / `darkTheme`. Each value can be a built-in giscus theme name or
+CSS hosted by the site. This site uses hosted CSS:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -186,29 +186,29 @@ params:
       darkTheme: /css/giscus-oink-dark.css?v=0.4.0
 ```
 
-A fixed theme name in `theme` stops it following the toggle.
+If you set a fixed theme name in `theme`, giscus no longer follows the toggle.
 
 > [!NOTE]- A custom giscus theme has to be readable cross-origin
-> The giscus iframe loads from `giscus.app`, so reading a CSS file on your site
-> requires CORS to allow it. This site adds
-> `Access-Control-Allow-Origin: '*'` under `server.headers` in `hugo.yml` for
-> local preview; in production it is the host's response header configuration.
+> The giscus iframe loads from `giscus.app`. CORS must permit it to read a CSS
+> file from your site. For local preview, this site adds
+> `Access-Control-Allow-Origin: '*'` under `server.headers` in `hugo.yml`.
+> For production, configure this response header on the host.
 
 ## Privacy and CSP {#privacy}
 
-- OINK never asks for or stores a reader's GitHub password or access token; signing in and posting happen entirely on the giscus / GitHub side.
-- The comment initialization script is a same-origin asset shipped with the theme, added only to pages with comments enabled; a page without them has no such script.
+- OINK never requests or stores a reader's GitHub password or access token. All sign-in and posting operations occur on giscus / GitHub.
+- The theme ships the comment initialization script as a same-origin asset. It adds the script only to pages with comments enabled.
 - With `loading: lazy`, the iframe loads only as the reader scrolls near the comment section.
-- Where a site has a strict Content Security Policy, both `script-src` and `frame-src` must permit giscus — merged into the existing policy rather than replacing other directives (the general rules are in [Content Security Policy](/docs/admin/deploy/#csp)):
+- If the site has a strict Content Security Policy, both `script-src` and `frame-src` must permit giscus. Merge these permissions into the existing policy. Do not replace other directives. See [Content Security Policy](/docs/admin/deploy/#csp) for the general rules:
 
 ```text {title="CSP fragment"}
 script-src 'self' https://giscus.app;
 frame-src 'self' https://giscus.app;
 ```
 
-When the external script fails to load or no iframe is created, OINK ends the
-loading state and shows `errorMessage` in a live status region rather than
-leaving the page on "loading".
+If the external script fails to load or creates no iframe, OINK ends the loading
+state. It shows `errorMessage` in a live status region. The page does not remain
+on "loading".
 
 ## Verify {#verify}
 
@@ -217,23 +217,23 @@ hugo --minify # a missing required key warns and disables comments
 hugo server --disableFastRender
 ```
 
-Then confirm each of these:
+Then check the following items:
 
-1. Open a page that should have comments: giscus appears at the bottom, showing "Sign in with GitHub", with its interface in the current page's language.
-1. Toggle OINK's light/dark control and the comment section follows (with `theme: auto`).
-1. Open a page with `comments: false` and confirm there is neither giscus nor any other comment component.
-1. Post a test comment, return to GitHub, and confirm a Discussion appeared in the chosen category and can be managed there.
+1. Open a page that should have comments. Confirm that giscus appears at the end with "Sign in with GitHub". Its interface must use the current page's language.
+1. Toggle OINK's light/dark control. With `theme: auto`, confirm that the comment section follows it.
+1. Open a page with `comments: false`. Confirm that neither giscus nor another comment component appears.
+1. Post a test comment. Return to GitHub. Confirm that a Discussion appears in the selected category and that you can manage it there.
 {.steps}
 
 Before the first comment or reaction creates a Discussion, a browser console
 message saying the Discussion was not found is expected.
 
-When something is wrong, check in this order: WARNINGs in the build log (the
-four required keys) → `params.comments.enable` and `type` → the page's
-`comments` front matter → whether the repository is public, Discussions are
-enabled and the giscus App is installed → the browser console and response
-headers (whether a CSP blocked `giscus.app`). If existing threads have gone
-missing, restore the original `mapping` and page path first.
+If comments do not work, check WARNINGs in the build log for the four required
+keys. Then check `params.comments.enable` and `type`, followed by the page's
+`comments` front matter. Confirm that the repository is public, Discussions are
+enabled, and the giscus App is installed. Finally, check the browser console
+and response headers for a CSP block on `giscus.app`. If existing threads are
+missing, first restore the original `mapping` and page path.
 
 ## Related {#related}
 

@@ -1,19 +1,20 @@
 ---
 title: Analytics and SEO
 linkTitle: Analytics and SEO
-description: Connect an analytics service (or none), and pair up the canonical, hreflang, social cards, sitemap and robots the theme already generates.
+description: Configure an optional analytics service. Check the canonical URLs, hreflang links, social cards, sitemap, and robots output that the theme generates.
 weight: 40
 search_keywords: [analytics, Google Analytics, GA4, Plausible, Umami, SEO, search engines, sitemap, robots, canonical, hreflang, Open Graph]
 aliases:
   - /docs/advanced/analytics/
 ---
 
-The theme loads no analytics, form or advertising script by default, and makes
-no outbound request until configured. Connecting one takes explicit
-configuration, and that external data boundary belongs in the site's privacy
-statement. SEO is the opposite: canonical, hreflang, the `robots` meta, Open
-Graph and Twitter cards are generated per page by the theme, and what you have
-to get right is `baseURL` and each page's `description`.
+By default, the theme loads no analytics, form, or advertising script. It makes
+no outbound request until you configure one. You must explicitly configure each
+integration. Document this external data boundary in the site's privacy statement.
+
+The theme automatically generates canonical links, hreflang links, the `robots`
+meta tag, Open Graph cards, and Twitter cards for each page. Set `baseURL` and
+each page's `description` correctly.
 
 ## Connecting Google Analytics {#google-analytics}
 
@@ -26,10 +27,11 @@ services:
     id: G-YOUR_MEASUREMENT_ID
 ```
 
-The theme renders that script only in the production environment. A normal
-`hugo server` uses development and does not report, but a `hugo` build defaults
-to production even on a preview host. Select a non-production environment for
-PR and staging deployments, with `PREVIEW_URL` set to their actual address:
+The theme renders this script only in the production environment. A normal
+`hugo server` uses development and sends no analytics reports. A `hugo` build
+defaults to production, including on a preview host. For PR and staging
+deployments, select a non-production environment. Set `PREVIEW_URL` to the
+deployment's actual address:
 
 ```bash {title="Terminal"}
 hugo --environment staging --baseURL "$PREVIEW_URL"
@@ -37,25 +39,25 @@ hugo --environment staging --baseURL "$PREVIEW_URL"
 
 See [preview deployment settings](/docs/admin/deploy/#preview-builds).
 
-Do not also set the deprecated top-level `googleAnalytics` key. Where analytics
-is not wanted, delete the block rather than filling in a fake ID.
+Do not also set the deprecated top-level `googleAnalytics` key. If you do not
+want analytics, delete the block. Do not enter a fake ID.
 
 > [!WARNING] This is incompatible with a network-isolated environment
-> Once configured, page views and events go to Google. A strict same-origin
-> Content Security Policy also has to permit it — see
-> [Content Security Policy](/docs/admin/deploy/#csp). This is a site decision,
-> not a theme default.
+> When you configure this integration, it sends page views and events to Google.
+> A strict same-origin Content Security Policy must also permit it. See
+> [Content Security Policy](/docs/admin/deploy/#csp). The site must choose to
+> enable this integration. The theme does not enable it by default.
 
 ## Connecting another analytics service {#other-analytics}
 
-Plausible, Umami, Matomo and the like need only a script inserted. The theme
-provides two injection points; create a file of the same name in the site
-repository and no theme change is needed:
+To connect Plausible, Umami, Matomo, or a similar service, insert its script.
+The theme provides two injection points. Create a file with the corresponding
+name in the site repository. You do not need to change the theme:
 
 | File | Insertion point | What belongs there |
 | --- | --- | --- |
 | `layouts/_partials/hooks/head-end.html` | Before `</head>`, ahead of the Google Analytics template | Analytics scripts, cookie consent scripts, meta tags the theme does not provide |
-| `layouts/_partials/hooks/body-end.html` | Last among the page scripts | Third-party code affecting interaction rather than the first paint |
+| `layouts/_partials/hooks/body-end.html` | Last among the page scripts | Third-party code that affects interaction instead of the first paint |
 {.fields}
 
 For Plausible, replace `your-site.example` with the domain registered in your
@@ -68,15 +70,15 @@ own account before adding this hook:
 {{ end }}
 ```
 
-Do not omit the `hugo.IsProduction` guard: without it, everyone's local preview
-reports into your analytics.
+Do not omit the `hugo.IsProduction` guard. Without it, each local preview sends
+reports to your analytics service.
 
 > [!NOTE] head-end runs before Google Analytics
-> That is deliberate: a cookie consent script has to run before the analytics
-> script to actually hold it back.
+> A cookie consent script must run before the analytics script. This order lets
+> the consent script prevent analytics from running.
 
-The "was this page helpful?" feedback widget is a separate matter: off by
-default, making no network request, and configured in
+The "was this page helpful?" feedback widget is separate. It is off by default
+and makes no network request. Configure it as described in
 [Repository links and page info](/docs/customize/repository/).
 
 ## Page descriptions {#description}
@@ -88,9 +90,9 @@ default, making no network request, and configured in
 1. `params.description` in the site configuration
 {.steps}
 
-Writing one `description` per page is the only SEO action an author has to take.
-It serves three purposes at once: the search engine snippet, the card subtitle
-on a section index, and the result preview in site search.
+Authors need only write one `description` per page for SEO. It supplies the
+search engine snippet, the card subtitle on a section index, and the result
+preview in site search.
 
 ```yaml {title="content/docs/admin/analytics.md (this page)"}
 ---
@@ -99,8 +101,8 @@ description: Connect an analytics service (or none), and pair up the canonical, 
 ---
 ```
 
-A multilingual site writes one per language; do not copy the English
-description onto a Chinese page. The site-level default is per language too:
+For a multilingual site, write one description per language. Do not copy the
+English description to a Chinese page. Set the site-level default per language too:
 
 ```yaml {title="hugo.yml"}
 languages:
@@ -114,8 +116,8 @@ languages:
 
 ## canonical and hreflang {#canonical-hreflang}
 
-The theme emits one canonical per page and `hreflang` alternates for actual
-translations, with no configuration:
+The theme emits one canonical link per page and `hreflang` alternate links for
+actual translations. No configuration is required:
 
 ```html {title="rendered output (this page)" copy=false}
 <link rel="canonical" href="https://oink.pgsty.com/docs/admin/analytics/">
@@ -123,26 +125,25 @@ translations, with no configuration:
 <link rel="alternate" hreflang="zh-CN" href="https://oink.pgsty.com/zh/docs/admin/analytics/">
 ```
 
-The `hreflang` codes come from each language's `locale` (`en-US` / `zh-CN` on
-this site), and the links from Hugo's translation relationships. In the 1.2.0 implementation, a missing translation is omitted from both
-`hreflang` and `og:locale:alternate`. The visible language switcher may still
-lead to that language's home page; that navigation fallback is not a translation.
+The `hreflang` codes use each language's `locale` (`en-US` / `zh-CN` on this site).
+The links use Hugo's translation relationships. In the 1.2.0 implementation, missing translations have no `hreflang` or `og:locale:alternate`
+entry. The visible language switcher may still open that language's home page.
+This navigation fallback does not represent a translation.
 
-Each paginated Blog index has its own canonical URL. From page 2 onward,
-language alternates are omitted because pagination does not establish matching
+Each paginated Blog index has its own canonical URL. From page 2 onward, the
+theme omits language alternates. Pagination does not establish corresponding
 translated pages. OINK 1.2.0 includes these corrections; 1.1.0 retains the earlier behavior.
 
-The canonical is assembled from `baseURL`. A wrong `baseURL` points search
-engines at addresses that do not exist, which is harder to notice than a build
-failure. Run through the
-[deployment checklist](/docs/admin/deploy/#checklist) before launching.
+The canonical URL uses `baseURL`. An incorrect `baseURL` directs search engines
+to addresses that do not exist. This problem is less visible than a build failure.
+Complete the [deployment checklist](/docs/admin/deploy/#checklist) before launch.
 
 Full multilingual configuration is in [Languages](/docs/customize/i18n/).
 
 ## Social cards {#social-cards}
 
-The theme calls Hugo's built-in Open Graph and Twitter card templates, and the
-title, description, URL, language and site name are all automatic:
+The theme calls Hugo's built-in Open Graph and Twitter card templates. They
+automatically supply the title, description, URL, language, and site name:
 
 ```html {title="rendered output (this page)" copy=false}
 <meta property="og:title" content="Analytics and SEO">
@@ -169,13 +170,13 @@ params:
   images: [/images/oink.webp]
 ```
 
-With an image, `twitter:card` changes from `summary` to `summary_large_image`
-and `og:image` and `twitter:image` appear. This site sets neither, which is why
-the rendered output above has no image tags.
+When an image is present, `twitter:card` changes from `summary` to
+`summary_large_image`. The output also includes `og:image` and `twitter:image`.
+This site sets neither image key, so the output above has no image tags.
 
 ## Sitemap {#sitemap}
 
-Hugo generates it automatically, and a multilingual site gets an index:
+Hugo automatically generates the sitemap. For a multilingual site, it generates an index:
 
 ```text {title="the structure under public/" copy=false}
 sitemap.xml        ← the index, pointing at the two below
@@ -200,10 +201,9 @@ sitemap:
 ---
 ```
 
-`changefreq` and `priority` are hints rather than promises, and a search engine
-may ignore them. What is worth doing before publishing is confirming that
-drafts, private content and non-canonical copies stayed out of the sitemap, and
-that each language's file was generated.
+`changefreq` and `priority` are hints. A search engine may ignore them. Before
+publishing, confirm that the sitemap excludes drafts, private content, and
+non-canonical copies. Confirm that Hugo generated a file for each language.
 
 ## robots.txt and staying unindexed {#robots}
 
@@ -213,8 +213,8 @@ Hugo generates `robots.txt` only when the site configuration turns it on:
 enableRobotsTXT: true
 ```
 
-The template the theme supplies gives two results by build environment, with no
-content for you to write:
+The theme's template generates one of two results, based on the build
+environment. You do not need to write the content:
 
 ```text {title="a production build" copy=false}
 User-agent: *
@@ -228,31 +228,31 @@ User-agent: *
 Disallow: /
 ```
 
-The `robots` meta in the page follows the same switch: `index, follow` in
-production and outside print output, `noindex, nofollow` otherwise. Do not build
-preview deployments with `--environment production`; a non-production build
-declines indexing by itself.
+The page's `robots` meta tag uses the same switch. It emits `index, follow` in
+production, except in print output. Otherwise, it emits `noindex, nofollow`.
+Do not build preview deployments with `--environment production`. A
+non-production build automatically requests no indexing.
 
-The theme has no per-page `noindex` switch. Where a page should not be indexed,
-the reliable answer is not to publish it (`draft: true`, or Hugo's `_build`
-options). To publish it and still keep it out, emit your own tag through the
-`head-end.html` hook; the theme already emits one `robots` meta, and how a
-search engine reconciles two is its own decision.
+The theme has no per-page `noindex` switch. To reliably prevent indexing, do
+not publish the page. Use `draft: true` or Hugo's `_build` options. If you must
+publish it and request no indexing, emit your own tag through the
+`head-end.html` hook. The theme already emits one `robots` meta tag. Each search
+engine decides how to interpret two tags.
 
 ## Checking indexing {#indexing}
 
-A week or two after launch, confirm in this order that what search engines see
-matches what you think:
+One or two weeks after launch, check the following items in order. Confirm that
+search engines see the expected site:
 
-1. Crawl permission: open `<baseURL>/robots.txt` and confirm `Allow: /` rather than `Disallow: /`.
-1. Page inventory: open `<baseURL>/sitemap.xml`, follow into a language sitemap, and check the page count.
-1. Indexed count: search `site:yourdomain` and check the order of magnitude; a page-by-page reconciliation is not needed.
-1. Canonical addresses: results should land on the canonical URL, not a version with a `?` parameter or an old domain.
-1. Active submission: add the site in Google Search Console / Bing Webmaster Tools and submit the `sitemap.xml` address, which is faster than waiting to be crawled.
+1. Crawl permission: open `<baseURL>/robots.txt`. Confirm that it contains `Allow: /` instead of `Disallow: /`.
+1. Page inventory: open `<baseURL>/sitemap.xml`. Open a language sitemap from the index and check the page count.
+1. Indexed count: search `site:yourdomain`. Check the order of magnitude. You do not need to compare every page.
+1. Canonical addresses: confirm that results open the canonical URL. They should not use a `?` parameter or an old domain.
+1. Active submission: add the site in Google Search Console / Bing Webmaster Tools. Submit the `sitemap.xml` address to request crawling sooner.
 {.steps}
 
-Search metadata cannot compensate for the content itself: a thin, duplicated or
-stale page stays that way however well its `description` is written.
+Search metadata cannot improve the content itself. A good `description` does
+not correct insufficient, duplicated, or outdated content.
 
 ## Verify {#verify}
 
@@ -274,11 +274,11 @@ head -5 public/sitemap.xml
 grep -o '<script[^>]*googletagmanager[^>]*>' "$PAGE"
 ```
 
-In the browser's Network panel, check that any configured analytics request uses
-your own measurement ID or registered domain. Repeat on a deployment built with
-`--environment staging`: it should make no analytics request. If no analytics
-is configured, there should be no analytics request in either environment;
-other explicitly enabled integrations may still use their own remote services.
+In the browser's Network panel, confirm that configured analytics requests use
+your measurement ID or registered domain. Repeat this check on a deployment
+built with `--environment staging`. It should make no analytics request. If you
+configured no analytics, neither environment should make an analytics request.
+Other explicitly enabled integrations may still contact their remote services.
 
 ## Related {#related}
 

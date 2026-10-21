@@ -1,7 +1,7 @@
 ---
 title: OINK comprehensive review, 2026-08-26
 linkTitle: 2026-08-26 review
-description: An evidence-based review of OINK's post-v0.7.0 implementation, configuration, outputs, security, tests, performance, bilingual contracts, and real integration site.
+description: Evidence-based review of post-v0.7.0 implementation, configuration, outputs, security, tests, performance, bilingual contracts, and the real integration site.
 weight: 30
 icon: fa-solid fa-magnifying-glass-chart
 search_keywords: [OINK review, configuration validation, OpenAPI, Swagger, output contract, security, testing]
@@ -11,32 +11,30 @@ last_verified: 2026-08-26
 ---
 
 > [!WARNING] Review snapshot, not a new contract
-> This page records evidence collected against `github.com/pgsty/oink` and its integration site on 2026-08-26.
-> It changes no API and does not mean that any recommendation below is implemented. Current Design contracts,
-> implementation, and owning checkers remain authoritative.
+> This page records evidence from `github.com/pgsty/oink` and its integration site on 2026-08-26.
+> It changes no API and does not establish that recommendations below are implemented.
+> Current Design contracts, implementation, and owning checkers remain authoritative.
 >
-> **Superseded in part by OINK 0.7.1.** The code findings F01–F06 were fixed in that release — see the
-> [0.7.1 release notes](/blog/release/0.7.1/). Read the findings below as the evidence that motivated the fix,
-> not as the current state of the theme.
+> **Superseded in part by OINK 0.7.1.** That release fixed code findings F01–F06.
+> See the [0.7.1 release notes](/blog/release/0.7.1/).
+> Read these findings as evidence for those fixes, not as the theme's current state.
 
 ## Review verdict {#verdict}
 
-OINK's main-line quality is substantially above that of a typical Hugo theme. The default path builds, bilingual coverage is
-strong, component tests are broad, and the project treats output and trust boundaries seriously. The real site showed no
-general breakage across desktop, mobile, light/dark, and the primary accessibility paths. Theme and site worktrees were clean,
-their current remote checks were green, and every locally rerun first-party suite passed.
+OINK's main-line quality was substantially higher than that of a typical Hugo theme: the default path built successfully, bilingual coverage was strong, and component tests were broad.
+The project treated output and trust boundaries seriously.
+The real site showed no general breakage on desktop, mobile, light/dark modes, or primary accessibility paths.
+Theme and site worktrees were clean. Their latest remote checks succeeded, and every locally rerun first-party suite passed.
 
-Green checks do not prove that every published invariant holds. This review found **4 P1, 9 P2, and 5 P3 findings**.
-The recurring pattern is that OINK has a strong modern contract, while several early or peripheral surfaces have not joined it;
-the current gates are excellent at preserving selected positive scenarios but do not systematically cover configuration space,
-static-output degradation, or the semantic accuracy of public documentation.
+Successful checks did not prove every published invariant. This review found **4 P1, 9 P2, and 5 P3 findings**, where some early or peripheral features fell short of OINK's otherwise strong modern contract.
+The gates preserved selected positive scenarios very well, but did not systematically cover configuration combinations, static-output behavior, or the semantic accuracy of public documentation.
 
 Before the next release tag, at minimum:
 
-1. disable Swagger UI's default online validator and lock zero implicit egress with a non-localhost browser test;
-2. place all public configuration and Landing data behind common type, range, URL, and CSS-value validation;
-3. redesign Swagger, Redoc, and Asciinema output degradation and runtime gates; and
-4. repair generated schemas and bring the public configuration/front-matter references back to current behavior.
+1. Disable Swagger UI's default online validator. Verify no implicit outbound requests with a non-localhost browser test.
+2. Apply common type, range, URL, and CSS-value validation to all public configuration and Landing data.
+3. Redesign Swagger, Redoc, and Asciinema behavior in static outputs and their runtime gates.
+4. Repair generated schemas. Update public configuration and front matter references to match behavior.
 
 ## Baseline and method {#baseline-and-method}
 
@@ -52,20 +50,17 @@ Before the next release tag, at minimum:
 
 ### Validation executed {#executed-validation}
 
-- all 31 theme checkers passed;
-- all 85 migration unit tests passed;
-- all 38 theme browser-runtime unit tests passed;
-- all 40 HTML/Print/Markdown/RSS/LLMS golden surfaces passed;
-- the strict `tests/site` Hugo build passed;
-- the real bilingual site's `npm test` passed: 121/121 page pairs, 886 heading IDs, 24,860 internal links, and
-  3,172 fragments;
-- the full real-site Playwright suite passed: sitemap-wide axe, 29 accessibility cases, 45 responsive/navigation cases,
-  16 keyboard cases, 10 content-component cases, 18 code-block cases, 4 PRD5 cases, and 5 theme-color cases;
-- extra visual review at 320 CSS px covered the EN home, ZH configuration, ZH Book, and OpenAPI/Redoc pages with no
-  page-level horizontal overflow;
-- `npm audit` reported no advisory among the site's 79 npm dependencies; an
-  [OSV Query API](https://google.github.io/osv.dev/post-v1-querybatch/) batch for the 26 exact versions in `VENDOR.json`
-  returned no known advisory;
+- All 31 theme checkers passed.
+- All 85 migration unit tests passed.
+- All 38 theme browser-runtime unit tests passed.
+- All 40 HTML/Print/Markdown/RSS/LLMS golden surfaces passed.
+- The strict `tests/site` Hugo build passed.
+- The real bilingual site's `npm test` passed: 121/121 page pairs, 886 heading IDs, 24,860 internal links, and 3,172 fragments.
+- The full real-site Playwright suite passed: sitemap-wide axe, 29 accessibility cases, and 45 responsive/navigation cases.
+  It also passed 16 keyboard, 10 content-component, 18 code-block, 4 PRD5, and 5 theme-color cases.
+- Extra visual review at 320 CSS px covered EN Home, ZH configuration, ZH Book, and OpenAPI/Redoc, with no page-level horizontal overflow.
+- `npm audit` found no advisory among the site's 79 npm dependencies.
+  An [OSV Query API](https://google.github.io/osv.dev/post-v1-querybatch/) batch for 26 exact `VENDOR.json` versions found no known advisory.
 - `measure-baseline.py assets --fixture-site` passed its isolated strict build.
 
 ### Severity {#severity}
@@ -103,22 +98,22 @@ Before the next release tag, at minimum:
 
 ### F01 — Swagger UI implicitly contacts the online validator (P1) {#f01-swagger-validator}
 
-`layouts/_shortcodes/swagger.html` initializes `SwaggerUIBundle` without `validatorUrl: null`. The vendored
-`swagger-ui-bundle.js` defaults that option to `https://validator.swagger.io/validator` and suppresses the badge only when
-the specification URL contains `localhost` or `127.0.0.1`. On a deployed host it creates an online-validator badge whose
-request includes the specification URL.
+`layouts/_shortcodes/swagger.html` initializes `SwaggerUIBundle` without `validatorUrl: null`.
+Vendored `swagger-ui-bundle.js` defaults to `https://validator.swagger.io/validator`.
+It suppresses the badge only when specification URLs contain `localhost` or `127.0.0.1`.
+On deployed hosts, it creates an online-validator badge whose request includes the specification URL.
 
-This violates the promises that theme-owned network features are off by default, that same-origin specifications remain
-local, and that OINK is local-first. An intranet deployment can disclose its internal hostname/specification URL. The
-localhost exemption is also why every current local browser test misses the request.
+This violates the promises of disabled-by-default theme network features, local same-origin specifications, and local-first operation, and can disclose internal hostnames or specification URLs on intranet deployments.
+The localhost exemption explains why every local browser test missed the request.
 
-Set `validatorUrl: null` explicitly. Any future online validator should be an explicit opt-in URL, pass the shared URL policy,
-and be documented as a privacy/CSP integration. Test a production-like non-localhost origin while intercepting every request
-and require same-origin specifications to fetch first-party resources only.
+Set `validatorUrl: null` explicitly.
+Any future online validator should require an explicit opt-in URL, use the shared URL policy, and have privacy/CSP integration documentation.
+Test a production-like, non-localhost origin while intercepting every request.
+Require same-origin specifications to fetch only first-party resources.
 
 ### F02 — Invalid configuration does not consistently warn and fall back (P1) {#f02-config-validation}
 
-`ui-param.html` says callers validate types; several do not. Minimal builds produced the following results:
+`ui-param.html` says callers validate types. Some callers do not. Minimal builds produced these results:
 
 | Input | Actual result |
 | --- | --- |
@@ -133,38 +128,40 @@ and require same-origin specifications to fetch first-party resources only.
 | `ui.sidebar_menu_foldable: definitely` | the non-boolean string is truthy and enables folding |
 | `ui.blog_index_size: 0` | Hugo `default` silently converts it back to 12 |
 
-Landing `marquee.rows`/`capabilities.columns` and Asciinema numeric parameters also call `int`/`float` directly. Other bad
-types, such as `print.toc` or `offline_search_max_results`, silently change behavior.
+Landing `marquee.rows`/`capabilities.columns` and Asciinema numeric parameters also call `int`/`float` directly.
+Other invalid types, including `print.toc` and `offline_search_max_results`, silently change behavior.
 
-This directly contradicts the Diagnostics decision: ordinary `hugo server` may become unusable, while some bad input reaches
-a strict publishing gate without any warning. Add shared integer, positive-integer, range, paired-range, and grid-count
-validators. Normalize before arithmetic or output. Every public key needs legal site and page cases plus illegal ordinary
-(warn/fallback) and strict (failure) cases. Cross-field invariants such as `min <= max`, pager size `>= 1`, and integer grid
-counts belong in domain resolvers.
+This directly contradicts the Diagnostics decision: ordinary `hugo server` can become unusable, while some invalid input passes strict publishing gates without warnings.
+Add shared validators for integers, positive integers, ranges, paired ranges, and grid counts.
+Normalize values before arithmetic or output.
+For every public key, test valid site and page cases, invalid ordinary cases with warnings/fallbacks, and invalid strict cases with failures.
+Domain resolvers should enforce cross-field rules such as `min <= max`, pager size `>= 1`, and integer grid counts.
 
 ### F03 — OpenAPI and Asciinema remain HTML-only islands (P1) {#f03-static-output-leakage}
 
-Architecture and Components require Markdown/LLMS without theme component markup, static Print, and safe static RSS or explicit
-omission. Current behavior disagrees:
+Architecture and Components require Markdown/LLMS without theme markup, static Print, and safe static RSS or explicit omission.
+The observed behavior conflicts with these requirements:
 
-- Redoc emits `<style>`, `<div class="td-redoc">`, and `<redoc spec-url=...>` into generated `.md`;
-- Swagger places an executable inline initializer in its shortcode;
-- Asciinema `.md` contains the full `td-asciinema` tree and JSON script;
-- Asciinema Print loads about 185 KB of player JS/CSS and can print only an incidental frame;
-- Swagger/Redoc leave empty Print containers and can still select 1–2 MB runtimes; and
-- these shortcodes are absent from the Markdown/RSS/Print golden matrix.
+- Redoc emits `<style>`, `<div class="td-redoc">`, and `<redoc spec-url=...>` into generated `.md`.
+- Swagger puts an executable inline initializer in its shortcode.
+- Asciinema `.md` contains the complete `td-asciinema` tree and JSON script.
+- Asciinema Print loads about 185 KB of player JS/CSS and prints only an incidental frame.
+- Swagger/Redoc leave empty Print containers and can select 1–2 MB runtimes.
+- These shortcodes are absent from the Markdown/RSS/Print golden matrix.
 
-Agent output contains theme HTML, paper/EPUB readers receive empty shells, Print carries useless runtime, and Swagger breaks a
-strict CSP. Reader-facing guides currently document these defects as output behavior, contradicting the normative contracts.
+The result is theme HTML in agent output, empty shells for paper/EPUB readers, useless runtime in Print, and a strict-CSP violation from Swagger.
+Reader-facing guides describe these defects as output behavior, conflicting with normative contracts.
 
-Make all three branch on `tdOutputFormat`: full behavior in interactive HTML; a titled static link and spec/cast address in
-Print/Markdown/RSS, or explicit omission. Only interactive HTML should set capability flags. Move Swagger initialization into
-a stable chunk and Redoc styles into a stylesheet; add four-output goldens and runtime-absence assertions.
+Make all three branch on `tdOutputFormat`. Provide full behavior in interactive HTML.
+For Print/Markdown/RSS, provide a titled static link with the specification or cast address, or explicitly omit the component.
+Only interactive HTML should set capability flags.
+Move Swagger initialization to a stable chunk and Redoc styles to a stylesheet.
+Add four-output goldens and assertions that unwanted runtimes are absent.
 
 ### F04 — Landing CSS, URL, and numeric inputs do not share one trust boundary (P1) {#f04-landing-validation}
 
-`hero.html` validates `title_size` but concatenates `media.ratio` and `media.max_width` verbatim before marking the complete
-string `safeCSS`. This input:
+`hero.html` validates `title_size`, but concatenates `media.ratio` and `media.max_width` unchanged before marking the full string `safeCSS`.
+This input:
 
 ```yaml
 sections:
@@ -177,162 +174,174 @@ sections:
         max_width: "240px; color: red"
 ```
 
-builds strictly with no warning and emits:
+passes a strict build without warnings and emits:
 
 ```html
 style="--td-hero-columns: 1fr; background-image: url(https://example.invalid/x);
        --td-hero-media-max: 240px; color: red;"
 ```
 
-Landing permits inline `sections` in page front matter, so this is not merely an internal repository constant. Other section
-`columns`, `rules`, dimensions, styles, icons, and URLs are handled ad hoc. A `javascript:` URL often becomes `#ZgotmplZ`
-without warning; bad columns become `ZgotmplZ`; some direct integer casts abort the build.
+Landing accepts inline `sections` in page front matter, so this input is not merely an internal repository constant.
+Other sections handle `columns`, `rules`, dimensions, styles, icons, and URLs inconsistently.
+A `javascript:` URL often becomes `#ZgotmplZ` without warnings. Invalid columns become `ZgotmplZ`.
+Some direct integer casts abort builds.
 
-Add a section normalization layer with common class, icon, URL, CSS-length, grid-count, boolean, and enum handling.
-`hero.media.ratio` should be two constrained track values rather than arbitrary CSS; `max_width` should use the length
-validator. All Landing actions should reuse `content/url.html`, and each built-in section needs negative tests.
+Add section normalization with common handling for classes, icons, URLs, CSS lengths, grid counts, booleans, and enums.
+`hero.media.ratio` should accept two constrained track values, not arbitrary CSS.
+`max_width` should use the length validator. All Landing actions should use `content/url.html`.
+Each built-in section needs negative tests.
 
 ### F05 — Two configuration URL surfaces bypass shared policy (P2) {#f05-url-policy-bypass}
 
-`params.ui.page_context_menu.links` passes through `url-template.html` and directly into `safeURL`; `url_latest_version` is
-also treated as trusted configuration and marked `safeURL`. Neither path validates scheme, host, whitespace, or
-protocol-relative URLs. A warning-free build can produce:
+`params.ui.page_context_menu.links` passes through `url-template.html` directly to `safeURL`.
+`url_latest_version` is also treated as trusted configuration and marked `safeURL`.
+Neither path validates schemes, hosts, whitespace, or protocol-relative URLs. Warning-free builds can produce:
 
 ```html
 <a class="td-page-actions__item"
    href="javascript:document.body.dataset.pwned=1;undefined">
 ```
 
-Clicking executes JavaScript. Site configuration is high-trust input, so this is not a default remote exploit, but it violates
-the published safe-URL model and gives copied configuration unnecessary execution power.
+Clicking executes JavaScript. Site configuration is trusted input, so this is not a default remote exploit.
+It violates the published safe-URL model and gives copied configuration unnecessary execution capability.
 
-Allow only HTTP(S) and explicitly supported first-party relative URLs, using the shared resolver. Validate archived-version
-URLs too. The browser action registry's second check is good defense, but the progressive-enhancement anchor must not bypass it.
+Use the shared resolver to allow only HTTP(S) and explicitly supported first-party relative URLs.
+Also validate archived-version URLs.
+The browser action registry's second check provides useful defense, but progressive-enhancement anchors must not bypass it.
 
 ### F06 — Generated schemas disagree with actual YAML (P2) {#f06-schema-generation}
 
-The small parser in `generate-config-schema.py` does not strip inline comments. At least 11 defaults become strings, including
-`print.toc` (`"true # ..."` instead of boolean), `print.section_break_wordcount`, both index column counts, and enum defaults
-such as `footer_style`, `blog_index`, and `typography`.
+The small parser in `generate-config-schema.py` does not remove inline comments. At least 11 defaults become strings.
+These include `print.toc`, which becomes `"true # ..."` instead of a boolean, and `print.section_break_wordcount`.
+Both index column counts and enum defaults such as `footer_style`, `blog_index`, and `typography` are also affected.
 
-Comment association also drifts: breadcrumb commentary is attached to `section_index`; quick-link commentary to
-`sidebar_icon_policy`; taxonomy-icon commentary to `pager_types`; and local-chrome commentary to `image_zoom`.
+Comment association is also incorrect.
+Breadcrumb commentary attaches to `section_index`; quick-link commentary attaches to `sidebar_icon_policy`.
+Taxonomy-icon commentary attaches to `pager_types`; local-interface commentary attaches to `image_zoom`.
 
-The front-matter schema advertises removed detector keys (`release`, `upstream_attribution`, `downstream_modified`) and
-misclassifies navbar-menu `Params.columns` as page front matter. The drift check compares the same buggy generator with its
-committed output, so it reliably preserves the error.
+The front matter schema offers removed detector keys: `release`, `upstream_attribution`, and `downstream_modified`.
+It incorrectly treats navbar-menu `Params.columns` as page front matter.
+The drift check compares the same defective generator with committed output, preserving the error.
 
-Use a real comment-preserving parser or explicit machine metadata markers rather than extending the ad-hoc parser. The scanner
-must distinguish page, menu, shortcode, and legacy-detector contexts. Tests should compare each schema default to Hugo's actual
-parsed value and keep removed keys out of completion.
+Use a real comment-preserving parser or explicit machine metadata markers. Do not extend the ad hoc parser.
+The scanner must distinguish page, menu, shortcode, and legacy-detector contexts.
+Tests should compare schema defaults with Hugo's actual parsed values and exclude removed keys from completion.
 
 ### F07 — Public configuration and front-matter references are not current (P2) {#f07-public-doc-drift}
 
-Both reference pages claim to list every key the theme reads. Material drift includes:
+Both reference pages claim to list every key read by the theme. Material differences include:
 
-- long English date defaults where `hugo.yaml` now uses ISO `2006-01-02`;
-- Blog docs missing `hero`, `table`, toggle, size, `toc_style`, and `toc_taxonomies`;
-- the removed `release` map and release filters presented as current, while `release_url` is absent;
-- `images: []` described as disabling featured images even though bundle discovery continues;
-- `upstream_modified` described as adding a line, while current behavior changes the attribution verb;
-- inconsistent claims that invalid input directly fails versus warns in ordinary preview and fails only at a strict gate;
-- the Book guide saying OINK stops at Print HTML after v0.7 shipped BookManifest/EPUB/PDF tooling;
-- Asciinema/OpenAPI guides turning static-output defects into product contracts; and
-- Features saying 28 vendor dependencies when the authoritative manifest has 26.
+- Long English date defaults, although `hugo.yaml` uses ISO `2006-01-02`.
+- Blog docs omit `hero`, `table`, toggle, size, `toc_style`, and `toc_taxonomies`.
+- Removed `release` maps and filters are presented as current, while `release_url` is absent.
+- `images: []` is described as disabling featured images, although bundle discovery continues.
+- `upstream_modified` is described as adding a line, although it changes the attribution verb.
+- Invalid-input claims conflict: immediate failure versus warnings in ordinary previews and failure only at strict gates.
+- The Book guide says OINK stops at Print HTML, although v0.7 shipped BookManifest/EPUB/PDF tools.
+- Asciinema/OpenAPI guides present static-output defects as product contracts.
+- Features lists 28 vendor dependencies, although the authoritative manifest has 26.
 
-English and Chinese usually agree on the stale answer, so translation parity cannot detect the error. Treat the two references
-as a focused contract migration. Derive a comparable key inventory from implementation/schema, keep semantics reviewed by hand,
-and gate current-key coverage, removed-key placement, enums, and defaults.
+English and Chinese usually share the same outdated answer. Translation parity cannot detect that error.
+Treat both references as a focused contract migration.
+Derive comparable key inventories from implementation/schema. Review semantics manually.
+Check current-key coverage, placement of removed keys, enums, and defaults.
 
 ### F08 — The Design tree contains conflicting authorities and unretired proposals (P2) {#f08-design-governance}
 
-The clearest contradiction is that Shell retires navbar `columns`/mega panels and promises a warning plus one column, while
+Shell retires navbar `columns`/mega panels and promises a warning with one column.
 Landing still says navbar mega-menu columns accept 1–4. Implementation and tests follow Shell.
 
-Lifecycle is also incomplete. `config-schema` is marked implemented but remains an Active proposal. Book publication has shipped
-manifest, EPUB, PDF, and most CI work while a Draft proposal duplicates the Architecture contract. Media convergence retains
-implemented milestones and the open M4 in one original design record.
+The lifecycle is also incomplete. `config-schema` is marked implemented but remains an Active proposal.
+Book publication has shipped the manifest, EPUB, PDF, and most CI work, but a Draft proposal duplicates the Architecture contract.
+Media convergence keeps implemented milestones and open M4 in the original design record.
 
-Correct Landing, move stable config-schema facts into Architecture/Decision and retire the proposal, and reduce Book publication
-to the remaining consumer-migration question or replace it with a narrow follow-up. Active proposals should not contain a
-second current API.
+Correct Landing. Move stable config-schema facts to Architecture/Decision and retire the proposal.
+Reduce Book publication to the remaining consumer-migration question, or replace it with a focused follow-up.
+Active proposals should not define a second current API.
 
 ### F09 — OpenAPI accessibility claims conflict with test exclusions (P2) {#f09-openapi-accessibility}
 
-The axe suite excludes both `.td-swagger-ui` and `.td-redoc`. Its comments name Swagger's unnamed server selector and
-non-keyboard scrollable version stamp, plus Redoc operation-description contrast. The guide discloses only Swagger's defects and
-presents the rendered Redoc as the alternative, implying that Redoc meets the site's zero-violation gate.
+The axe suite excludes `.td-swagger-ui` and `.td-redoc`.
+Its comments identify Swagger's unnamed server selector and version stamp that cannot scroll by keyboard.
+They also identify Redoc operation-description contrast.
+The guide discloses only Swagger defects and presents rendered Redoc as the alternative.
+This implies that Redoc meets the site's zero-violation gate.
 
-Publish the real boundary in both languages. Fix Redoc contrast in theme CSS where possible; use a narrow post-render adapter
-for fixable Swagger DOM. Remaining upstream defects should have versioned waivers, upstream issue links, and a separate axe
-report instead of excluding the whole supported surface while claiming a site-wide zero.
+Publish the actual boundary in both languages. Fix Redoc contrast in theme CSS where possible.
+Use a narrow post-render adapter for fixable Swagger DOM.
+For remaining upstream defects, provide versioned waivers, upstream issue links, and a separate axe report.
+Do not exclude the entire supported feature while claiming zero site-wide violations.
 
 ### F10 — The current theme does not directly support a strict CSP (P2) {#f10-csp}
 
-Deployment guidance says strict CSP is workable but lists only author scripts, ECharts callbacks, analytics, remote specs or
-diagram services, and Giscus. A normal Docs page already emits two theme-owned executable inline scripts (theme first paint and
-shell prepaint) plus inline style. Markmap, Swagger, Algolia, and Google CSE add more theme-owned inline initializers. There is no
-nonce API, hash manifest, or complete sample policy.
+Deployment guidance says strict CSP is workable.
+It lists only author scripts, ECharts callbacks, analytics, remote specifications or diagram services, and Giscus.
+Ordinary Docs pages already emit two theme-owned inline scripts for initial theme display and shell prepaint, plus inline styles.
+Markmap, Swagger, Algolia, and Google CSE add more theme-owned inline initializers.
+There is no nonce API, hash manifest, or complete sample policy.
 
-`script-src 'self'` blocks theme first paint and shell-state restoration; `style-src 'self'` blocks theme color, font roles,
-Landing, and several inline custom properties. Consumers must add `'unsafe-inline'`, maintain hashes, or override templates,
-none of which the guide states.
+`script-src 'self'` blocks initial theme display and shell-state restoration.
+`style-src 'self'` blocks theme colors, font roles, Landing, and several inline custom properties.
+Consumers must add `'unsafe-inline'`, maintain hashes, or override templates. The guide states none of these requirements.
 
-Move stable initializers into same-origin chunks with data/JSON configuration. For unavoidable inline content, provide a
-generated hash manifest or one nonce hook. Publish minimal-core, Markmap/OpenAPI, and third-party-integration policies and state
-the `style-src` requirements.
+Move stable initializers to same-origin chunks with data/JSON configuration.
+For unavoidable inline content, provide a generated hash manifest or one nonce hook.
+Publish policies for minimal core, Markmap/OpenAPI, and third-party integrations. State the `style-src` requirements.
 
 ### F11 — Browser compatibility has no baseline or cross-engine proof (P2) {#f11-browser-compatibility}
 
-CI installs Chromium only, and product documentation names no minimum Chrome, Firefox, or Safari version. The implementation
-uses or enhances with `:has()`, `dialog`, `inert`, `color-mix()`, `@property`, logical properties, and discrete display
-transitions. Some paths have fallbacks, but there is no engine matrix.
+CI installs only Chromium. Product documentation gives no minimum Chrome, Firefox, or Safari version.
+The implementation uses or enhances content with `:has()`, `dialog`, `inert`, `color-mix()`, `@property`, logical properties, and discrete display transitions.
+Some paths have fallbacks, but there is no engine matrix.
 
-RTL assurance is mostly source markers, small JS tests, and one element-level geometry mutation rather than a full RTL-language
-site. Most forced-color assurance only checks that strings exist in SCSS rather than computed behavior.
+RTL checks mostly use source markers, small JS tests, and one element-level geometry change.
+They do not use a complete RTL-language site.
+Most forced-color checks verify SCSS strings instead of computed behavior.
 
-Publish a small support matrix and run core shell/navigation/content/dialog cases on Chromium, Firefox, and WebKit. Add a real
-`languageDirection: rtl` integration configuration plus forced-colors, reduced-motion, 320 px, and 200% zoom scenarios.
+Publish a small support matrix. Test core shell, navigation, content, and dialogs on Chromium, Firefox, and WebKit.
+Add a real `languageDirection: rtl` integration configuration.
+Also test forced colors, reduced motion, 320 px, and 200% zoom.
 
 ### F12 — Output-security and Markdown gates do not inspect every claimed surface (P2) {#f12-checker-blind-spots}
 
-For `.md`, `check-output-security.py` scans only Markdown-link syntax; it does not feed raw HTML through the HTML scanner, so
-Redoc/Asciinema scripts, `spec-url`, and raw `href` are invisible. It also ignores URLs in CSS and JSON configuration, while the
-fixture runs with a broad `--third-party` allowance.
+For `.md`, `check-output-security.py` checks only Markdown links. It does not send raw HTML through the HTML scanner.
+Redoc/Asciinema scripts, `spec-url`, and raw `href` are therefore invisible.
+It also ignores CSS and JSON URLs. The fixture uses a broad `--third-party` allowance.
 
-`check-rendered-markdown.mjs` is also misleadingly named: it scans generated HTML text nodes for leftover Markdown syntax; it
-does not read generated `.md`. The actual Markdown golden set covers 15 pages and omits OpenAPI/Asciinema.
+`check-rendered-markdown.mjs` has a misleading name. It scans generated HTML text for leftover Markdown syntax, not generated `.md`.
+The actual Markdown golden set covers 15 pages and omits OpenAPI/Asciinema.
 
-Separate HTML trust, machine-output purity, and rendered-text residue into clearly named gates. Give generated Markdown a very
-narrow raw-HTML allowlist; parse CSS URLs, form actions, JSON URLs, and non-executable JSON scripts deliberately. Every public
-shortcode should enter at least one Markdown/Print/RSS behavior case.
+Use clearly named gates for HTML trust, machine-output purity, and rendered-text residue.
+Give generated Markdown a narrow raw-HTML allowlist.
+Deliberately parse CSS URLs, form actions, JSON URLs, and non-executable JSON scripts.
+Every public shortcode should have at least one Markdown/Print/RSS behavior case.
 
 ### F13 — Candidate integration across the two repositories is manual (P2) {#f13-cross-repo-gate}
 
-Theme CI tests only synthetic `tests/site`; documentation-site CI tests only the public tag pinned by `go.mod`. Real EN/ZH and
-Playwright validation of a theme PR depends on a maintainer's local `HUGO_MODULE_REPLACEMENTS`, and changes in the two
-repositories cannot be committed atomically.
+Theme CI tests only synthetic `tests/site`. Documentation-site CI tests only the public tag in `go.mod`.
+Real EN/ZH and Playwright validation for theme PRs depends on local maintainer `HUGO_MODULE_REPLACEMENTS`.
+Changes in both repositories cannot be committed atomically.
 
-Both repositories can therefore be green while public references drift from implementation, as this review demonstrates.
-The written release-state separation is correct, but automation does not enforce the same-delivery rule for implementation,
-owning checker, and paired contract.
+Both repositories can pass checks while public references differ from implementation, as this review shows.
+The written separation of release states is correct, but automation does not enforce delivery of implementation, owning checker, and paired contract together.
 
-Add a read-only candidate workflow that checks out a theme PR SHA and a declared documentation-site SHA, applies a temporary
-module replacement, and runs `npm test` plus the critical browser suites. Allow a Design-contract PR to identify the candidate
-theme SHA too. Tag, pin, and deployment remain distinct, but the candidate pair gains one traceable joint verdict.
+Add a read-only candidate workflow. Check out a theme PR SHA and a declared documentation-site SHA.
+Apply a temporary module replacement, then run `npm test` and critical browser suites.
+Allow Design-contract PRs to identify candidate theme SHAs.
+Tag, pin, and deployment remain distinct. The candidate pair gains one traceable joint result.
 
 ### F14 — Checker maintenance cost and source coupling are high (P3) {#f14-checker-maintainability}
 
-The coverage is valuable, but 34 `check-*.py` files contain 546 `read_text()` calls. Many repeat `require`, temporary-site
-creation, file writes, Hugo invocation, and error aggregation. Numerous assertions freeze template/SCSS spelling, nearby
-comments, or whole-file equality instead of observable behavior.
+Coverage is valuable, but 34 `check-*.py` files contain 546 `read_text()` calls.
+Many repeat `require`, temporary-site creation, file writes, Hugo invocation, and error aggregation.
+Many assertions preserve template/SCSS spelling, nearby comments, or complete file equality instead of observable behavior.
 
-Some helpers hard-code `theme: oink` with `--themesDir <repo-parent>`, making the checkout/worktree basename an implicit
-precondition. There is no unified Python lint/type gate. This makes checkers quick to add but encourages shared blind spots.
+Some helpers hard-code `theme: oink` with `--themesDir <repo-parent>`, making the checkout or worktree basename an implicit requirement.
+Without a common Python lint/type gate, checkers are quick to add but can retain shared testing omissions.
 
-Create a common fixture builder and assertion library; move negative cases into table-driven data. Keep source checks for true
-topology invariants only and move the rest to parsed output or computed styles. Load the theme through an explicit symlink or
-module replacement rather than repository basename.
+Create a common fixture builder and assertion library. Put negative cases in table-driven data.
+Keep source checks only for actual topology rules. Move other checks to parsed output or computed styles.
+Load themes through explicit symlinks or module replacements instead of repository basenames.
 
 ### F15 — Runtime splitting succeeded, but baseline CSS/fonts dominate first visit (P3) {#f15-performance}
 
@@ -349,47 +358,49 @@ The isolated strict fixture baseline was:
 | Generated public | 26.2 MB |
 | v0.7.0 Go module zip | 7.8 MB (about 20.5 MB and 1,140 files expanded) |
 
-Stable first-party capability chunks correctly removed combinatorial bundles, and large third-party runtimes are page-local.
-The remaining common cost is Bootstrap/theme/Landing CSS and the complete Font Awesome distribution.
+Stable first-party capability chunks removed bundles for feature combinations correctly. Large third-party runtimes remain page-local.
+Bootstrap/theme/Landing CSS and the complete Font Awesome distribution are the remaining common cost.
 
-Do not prune Font Awesome by observed template usage; that would violate the authoring contract. Instead measure whether
-Landing, Book, or Swagger CSS can become independently cached/surface-local, inspect fonts actually requested on first visit,
-and maintain a trend report rather than an arbitrary hard threshold.
+Do not prune Font Awesome based on theme template usage. That would violate the authoring contract.
+Measure whether Landing, Book, or Swagger CSS can be independently cached and limited to relevant pages.
+Inspect fonts requested on first visits. Maintain a trend report instead of an arbitrary hard threshold.
 
 ### F16 — Vendor builds are reproducible, but advisory and CI supply-chain gates remain manual (P3) {#f16-supply-chain}
 
-Positive evidence: `VENDOR.json` pins 26 packages, 56 artifacts, 31 license files, and tree hashes; `check-vendor.py` passed;
-OSV and npm audit reported no known advisory in this snapshot.
+Positive evidence: `VENDOR.json` pins 26 packages, 56 artifacts, 31 license files, and tree hashes.
+`check-vendor.py` passed. OSV and npm audit found no known advisory in this snapshot.
 
-The custom manifest is not part of a common SBOM/advisory gate, and `npm audit` cannot see vendored browser packages.
-Two documentation-site workflows download a Hugo `.deb` and immediately install it with `sudo dpkg -i` without a checksum.
-Actions use movable major tags, and theme CI floats Python at `3.x`.
+The custom manifest is outside common SBOM/advisory gates. `npm audit` cannot inspect vendored browser packages.
+Two documentation-site workflows download Hugo `.deb` files and immediately run `sudo dpkg -i` without checking a checksum.
+Actions use movable major tags. Theme CI uses floating Python `3.x`.
 
-Generate CycloneDX/SPDX from `VENDOR.json`, schedule OSV scanning, pin Hugo archive/deb SHA-256, pin high-trust release actions
-to commit SHAs, and choose a specific Python version or matrix.
+Generate CycloneDX/SPDX from `VENDOR.json`. Schedule OSV scans.
+Pin Hugo archive/deb SHA-256 values and trusted release actions to commit SHAs.
+Select a specific Python version or matrix.
 
 ### F17 — Design and release records have lost signal (P3) {#f17-governance-noise}
 
-`CHANGELOG.md` has 1,768 lines; the v0.7.0 section alone is about 300 lines, and Unreleased spends about 20 lines on one checker
-retry. The narratives are useful engineering history but make breaking changes, migrations, and observable behavior harder for
-upgraders to find.
+`CHANGELOG.md` has 1,768 lines. Its v0.7.0 section has about 300 lines, and Unreleased uses about 20 lines for one checker retry.
+These narratives provide useful engineering history, but make breaking changes, migrations, and observable behavior harder for upgraders to find.
 
-`book_kind` and `book_part` are acknowledged by contract and repeated in content front matter while templates explicitly do not
-read them. They impose API-like authoring cost without behavior. Implemented proposals remaining active add another duplicate
-answer.
+Contracts recognize `book_kind` and `book_part`, and content front matter repeats them, but templates explicitly do not read them.
+They impose API-like authoring work without behavior. Implemented proposals that remain active provide another duplicate answer.
 
-Keep the changelog to observable changes, breaking/migration notes, and concise fixes; move long design stories to Blog/Research
-and link them. Give behaviorless metadata a consumer/schema or demote it to site-owned fields.
+Keep changelog entries focused on observable changes, breaking/migration notes, and concise fixes.
+Move long design accounts to Blog/Research and link them.
+Give metadata without behavior a consumer/schema, or make it site-owned.
 
 ### F18 — The Print `isHTML` FIXME is no longer accurate (P3) {#f18-print-ishtml}
 
-`hugo.yaml` says to leave `isHTML` unset until Hugo fixes issue #14381. Hugo closed that issue on 2026-01-17, and the fix shipped
-before OINK's 0.160.1 floor. Simply enabling `isHTML: true` still produces missing page/section/landing Print-layout warnings in
-the current theme, causing a strict build to fail.
+`hugo.yaml` says to leave `isHTML` unset until Hugo fixes issue #14381.
+Hugo closed it on 2026-01-17, and the fix shipped before OINK's 0.160.1 floor.
+Enabling `isHTML: true` still produces missing page/section/landing Print-layout warnings in this theme, which fail strict builds.
 
-The actual dependency has shifted from “waiting for an alias fix” to “the current Print template names rely on non-HTML lookup
-rules.” Do not simply delete the workaround. First complete the HTML-classified Print lookup matrix and alias/subpath tests; if
-false remains intentional, update the comment to the real reason and add a test that prevents cleanup based on a closed issue.
+The dependency changed from “waiting for an alias fix” to “the current Print template names rely on non-HTML lookup
+rules.” Do not simply remove the workaround.
+First complete the HTML-classified Print lookup matrix and alias/subpath tests.
+If false remains intentional, explain the actual reason in the comment.
+Add a test to prevent cleanup based only on the closed issue.
 
 ## Strengths {#strengths}
 
@@ -442,8 +453,8 @@ false remains intentional, update the comment to the real reason and add a test 
 
 ## Review limits {#limits}
 
-This pass did not individually audit every consumer repository, production response headers/CDN caches, real Firefox/Safari,
-or screen readers, and it did not manually reverse-engineer 13 MB of minified third-party source. Advisory checks are a
-2026-08-26 snapshot and may change. Existing CI/contract evidence was used for DDIA/TPME EPUB/PDF consumers; no site was
-republished or deployed during this review.
-
+This review did not individually audit consumer repositories, production response headers/CDN caches, real Firefox/Safari, or screen readers.
+It did not manually reverse-engineer 13 MB of minified third-party source.
+Advisory checks are a 2026-08-26 snapshot and may change.
+Existing CI/contract evidence covered DDIA/TPME EPUB/PDF consumers.
+No site was republished or deployed during this review.

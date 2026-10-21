@@ -1,24 +1,21 @@
 ---
 title: Tabs
 linkTitle: Tabs
-description: A `{tab=}` attribute on adjacent fences or tables makes a tab set; add a group and it becomes linkable, synchronized and remembered.
+description: Add `{tab=}` to adjacent fences or tables to create tabs. Add a group to enable links, synchronization, and saved selections.
 weight: 40
 search_keywords: [Tabs, tab, group, value, sync, persistence, localStorage, hash]
 ---
 
-Tabs put equivalent alternatives side by side: package managers, distributions,
-YAML / TOML / JSON, an environment variable versus a configuration key. Ordered
-steps and unrelated content do not belong in tabs — the reader sees only one
-panel at a time.
+Use tabs for equivalent alternatives, such as package managers, distributions, YAML / TOML / JSON, or environment variables and configuration keys.
+Do not use tabs for ordered steps or unrelated content. Readers see only one panel at a time.
 
-The native form is a `tab` attribute on adjacent blocks. Reach for the
-`tabs`/`tab` shortcode only when the panels hold running text: several
-paragraphs, lists, callouts. Both forms share one runtime, one DOM and the same
-keyboard behaviour.
+The native form uses a `tab` attribute on adjacent blocks.
+Use `tabs`/`tab` shortcodes for panels with prose, multiple paragraphs, lists, or callouts.
+Both forms share one runtime, one DOM, and the same keyboard behavior.
 
 ## Shortest form {#minimal}
 
-Write two fences carrying `tab` back to back, separated by a blank line only.
+Write two adjacent fences with `tab`, separated only by a blank line.
 
 ````markdown {title="Source"}
 ```bash {tab="Homebrew"}
@@ -36,16 +33,13 @@ brew install hugo
 sudo apt install hugo
 ```
 
-The server emits two titled code blocks with no panel hidden; after the page
-loads, the runtime regroups adjacent blocks of the same kind into a tab set. On
-GitHub, in print, and with JavaScript off, the reader sees two complete blocks
-one after the other.
+The server emits two complete titled code blocks. After page loading, the runtime combines adjacent blocks of the same kind into tabs.
+GitHub, print, and browsers without JavaScript display both complete blocks in sequence.
 
 ## Groups: links, sync and memory {#group}
 
-Write `group` on the first block only and the set gains a public URL hash
-`#<group>-<value>`, in-page synchronization and browser persistence. Every block
-in a group must carry `value`.
+Write `group` only on the first block. This enables the public URL hash `#<group>-<value>`, in-page synchronization, and browser persistence.
+Every block in the group must have `value`.
 
 ````markdown {title="Source"}
 ```bash {tab="npm" group="pkgmgr" value="npm"}
@@ -69,16 +63,13 @@ pnpm create hugo-site
 yarn create hugo-site
 ```
 
-`value` is the machine value (`^[a-z0-9][a-z0-9_-]*$`), `tab` is the human
-label; the two are independent. The pnpm panel above answers to
-`#pkgmgr-pnpm`, and visiting this page with that hash selects it.
+`value` is the machine identifier, matching `^[a-z0-9][a-z0-9_-]*$`. `tab` is the independent human label.
+The pnpm panel uses `#pkgmgr-pnpm`. Opening this page with that hash selects the panel.
 
 ## Groups move together {#sync}
 
-The set below reuses `group="pkgmgr"`. Switch the package manager above and this
-one follows; switch it here and the one above follows. The choice is written to
-`localStorage` under the key `td-tabs:v1:pkgmgr` and still applies to
-same-group tabs on other pages.
+The set below also uses `group="pkgmgr"`. Changing either set's package manager changes the other.
+The selection is saved in `localStorage` under `td-tabs:v1:pkgmgr`. It also applies to the same group on other pages.
 
 ````markdown {title="Source"}
 ```bash {tab="npm" group="pkgmgr" value="npm"}
@@ -96,16 +87,13 @@ npm run build
 pnpm build
 ```
 
-This set has no `yarn` panel. When a value is missing, that set simply stays
-where it is; a set is never left with nothing selected. The initial selection is
-decided in this order: URL hash, stored value, the shortcode's `default` or the
-first block, the first tab. Opening the page with a hash switches the set
-without overwriting a preference the reader already stored.
+This set has no `yarn` panel. If a value is missing, that set keeps its current selection. A set always has a selection.
+Initial selection follows this order: URL hash, stored value, shortcode `default` or first block, then first tab.
+Opening with a hash selects the panel without replacing the reader's stored preference.
 
 ## Tables can be tabs too {#tables}
 
-The same attributes on a table's attribute line group adjacent tables into a tab
-set.
+Use the same attributes on table attribute lines to combine adjacent tables into tabs.
 
 ```markdown {title="Source"}
 | Parameter | Default |
@@ -133,14 +121,12 @@ set.
 | `max_connections` | 100 |
 {tab="PostgreSQL 13" value="pg13"}
 
-Fences and tables are two block kinds and never merge into one set even when
-adjacent: a tab set is all fences or all tables. To mix them, use the shortcode
-form below.
+Fences and tables cannot form one set, even when adjacent. A native tab set contains only fences or only tables.
+To combine them, use the shortcode form below.
 
 ## A label and a filename together {#tab-with-title}
 
-A fence can carry both `tab` and `title`: the label goes in the tab bar, the
-filename title bar stays inside the panel.
+A fence can have both `tab` and `title`. The tab bar displays the label. The filename title bar remains inside the panel.
 
 ````markdown {title="Source"}
 ```yaml {tab="YAML" title="hugo.yml" group="conffmt" value="yaml"}
@@ -166,8 +152,8 @@ sidebar_menu_foldable = true
 
 ## A lone block is just a titled block {#single-block}
 
-A block needs a neighbour of the same kind to become a tab set. On its own it
-keeps its title rather than becoming a tab bar with one tab.
+A block needs an adjacent block of the same kind to form a tab set.
+A single block keeps its title instead of creating a one-tab bar.
 
 ````markdown {title="Source"}
 ```ini {tab="on its own"}
@@ -179,15 +165,13 @@ listen_addresses = '*'
 listen_addresses = '*'
 ```
 
-Only blank lines may sit between blocks. Three things break a set: running text
-in between (a paragraph, a heading or a list all count); an HTML comment in
-between, of which `<!-- prettier-ignore-end -->` is the common one; a later
-block writing its own `group`, since only the first block of a set may carry it.
+Only blank lines may separate blocks. Prose, headings, or lists between blocks break the set.
+HTML comments, commonly `<!-- prettier-ignore-end -->`, also break it.
+A later block with its own `group` starts a new set. Only the first block in a set may have this attribute.
 
 ## Tabs around running text {#shortcode}
 
-When a panel holds paragraphs, lists, callouts, or several blocks, use the
-`tabs`/`tab` shortcode. The body is full Markdown.
+For panels with paragraphs, lists, callouts, or multiple blocks, use `tabs`/`tab` shortcodes. Their bodies use full Markdown.
 
 `````markdown {title="Source"}
 {{</* tabs group="deploy" default="pages" label="Deployment target" */>}}
@@ -223,11 +207,10 @@ hugo --gc --minify
 {{< /tab >}}
 {{< /tabs >}}
 
-`default` names the initially selected panel; it must equal a child's `value`
-and it requires `group`. Without `group`, `value` is forbidden and the theme
-generates `tab1`, `tab2` and so on — such a set switches locally and touches
-neither the URL nor storage. The shortcode form is stricter than the attribute
-form: a mistake is reported at build time instead of in the browser.
+`default` sets the initial panel. It must match a child's `value` and requires `group`.
+Without `group`, `value` is forbidden. The theme generates `tab1`, `tab2`, and later identifiers.
+These ungrouped tabs switch locally without changing the URL or storage.
+The shortcode form reports mistakes at build time; the attribute form reports them in the browser.
 
 ## Output {#outputs}
 
@@ -268,13 +251,11 @@ The `tab` shortcode:
 | `value` | `^[a-z0-9][a-z0-9_-]*$` | when `group` is set | Forbidden without a group, where `tab1`, `tab2` … are generated |
 {.fields meta="type required"}
 
-Behavioural contract: in a group the panel ID is `<group>-<value>`; when the
-same `group` name appears a second time on one page, later sets get a `-2`,
-`-3` suffix and the deep-link target stays the first set. Ungrouped sets get
-theme-generated IDs. The storage key is `td-tabs:v1:<group>`. A click or a key
-press updates the hash with `replaceState` and writes storage; arriving with a
-hash only switches. Left and right arrows (RTL-aware) plus Home/End move and
-activate, and focus stays on the tab.
+In a group, panel IDs use `<group>-<value>`.
+If the same `group` appears again on one page, later sets receive `-2` and `-3` suffixes. Deep links still target the first set.
+Ungrouped sets have generated IDs. The storage key is `td-tabs:v1:<group>`.
+Clicks or keypresses update the hash through `replaceState` and write storage. Arriving with a hash only changes the selection.
+Left and right arrows follow RTL direction. These keys and Home/End move and activate tabs, while focus stays on the tab.
 
 ## Limits {#limits}
 

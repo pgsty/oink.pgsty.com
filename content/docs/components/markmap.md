@@ -1,20 +1,18 @@
 ---
 title: Markmap
 linkTitle: Markmap
-description: A `markmap` fence turns a Markdown outline into an expandable, zoomable mind map — and the source stays a readable outline.
+description: Use a `markmap` fence for an expandable mind map with zoom controls. Its source remains a readable Markdown outline.
 weight: 130
 search_keywords: [Markmap, mind map, outline, tree diagram]
 ---
 
-The body of a `markmap` fence is a plain Markdown outline: headings and lists
-give the hierarchy, and the browser draws it as a tree you can expand and
-collapse. It suits showing "what this section covers" at one glance. For flows
-with direction and conditions, use [Mermaid](/docs/components/mermaid/).
+A `markmap` fence contains a Markdown outline. Headings and lists define the hierarchy.
+The browser displays an expandable, collapsible tree. Use it to give an overview of a section.
+For flows with direction or conditions, use [Mermaid](/docs/components/mermaid/).
 
 ## Shortest form {#minimal}
 
-First enable Markmap in the site configuration; it is off by default. Without
-this setting, the fence remains a readable code block.
+Enable Markmap in site configuration first. It is off by default. Without this setting, the fence stays a readable code block.
 
 ```yaml {title="hugo.yml"}
 params:
@@ -55,15 +53,14 @@ Then put the outline in a `markmap` fence:
 - RSS
 ```
 
-The first-level heading is the root; other headings and list items hang under it
-by indentation. Click the dot on a node to fold or unfold that branch, scroll to
-zoom, drag to pan. The toolbar at the bottom right offers zoom, fit-to-window
-and download-as-SVG.
+The first-level heading is the root. Indentation places other headings and list items below it.
+Click a node's dot to expand or collapse its branch. Scroll to zoom, and drag to pan.
+The bottom-right toolbar has zoom, fit-to-window, and SVG download controls.
 
 ## Depth {#depth}
 
-Deeper levels are set smaller and the canvas lays itself out. Below are the six
-sections of this theme's documentation site and their page counts.
+Deeper levels use smaller text, and the canvas arranges itself.
+This example shows the theme documentation site's six sections and their page counts.
 
 ````markdown {title="Source"}
 ```markmap
@@ -133,8 +130,7 @@ sections of this theme's documentation site and their page counts.
 
 ## Links, code and emphasis {#inline-markdown}
 
-Nodes take inline Markdown: links are clickable, inline code is monospaced, bold
-and italic behave as usual.
+Nodes accept inline Markdown. Links are clickable, inline code is monospaced, and bold and italic text display normally.
 
 ````markdown {title="Source"}
 ```markmap
@@ -168,8 +164,7 @@ and italic behave as usual.
 
 ## Mathematics in nodes {#math}
 
-The Markmap runtime carries a local KaTeX, so `$…$` inside a node renders as a
-formula.
+The Markmap runtime includes local KaTeX. `$…$` in nodes renders as a formula.
 
 ````markdown {title="Source"}
 ```markmap
@@ -197,10 +192,9 @@ formula.
 
 ## Controlling the initial depth {#options}
 
-The top of a fence body may carry Markmap's own YAML header — not Hugo front
-matter. `initialExpandLevel` expands only the first few levels and leaves the
-rest for the reader; `colorFreezeLevel` says from which level a branch keeps one
-colour.
+The fence body can start with Markmap's YAML header. This is not Hugo front matter.
+`initialExpandLevel` initially expands only the first levels. Readers can open the rest.
+`colorFreezeLevel` sets the level from which a branch keeps one color.
 
 ````markdown {title="Source"}
 ```markmap
@@ -250,9 +244,9 @@ markmap:
 
 ## Folded into a disclosure {#in-details}
 
-Every map is a fixed 300 pixels tall, so three in a row eat a lot of page. Fold
-a panoramic one into `> [!DETAILS]` and let the reader open it. Every line
-inside the disclosure starts with `>`, fences included.
+Every map is 300 pixels tall. Three consecutive maps occupy considerable page space.
+Put a large overview in `> [!DETAILS]` so readers can open it.
+Start every disclosure line with `>`, including fence lines.
 
 ````markdown {title="Source"}
 > [!DETAILS] What the theme repository looks like
@@ -301,14 +295,12 @@ inside the disclosure starts with `>`, fences included.
 | Markdown | The `markmap` fence and its outline, kept as written |
 | RSS | The outline source only — a readable outline for subscribers |
 
-The outline is the content: wherever JavaScript does not reach, the full
-hierarchy is still legible.
+The outline supplies the content. Without JavaScript, the complete hierarchy remains readable.
 
 ## Parameter reference {#reference}
 
-Fence attributes: none. A `markmap` fence reads no attribute line; the height is
-fixed by the theme at 300px (`.markmap > svg`) and the width fills the reading
-column.
+A `markmap` fence reads no attribute line. The theme fixes its height at 300px through `.markmap > svg`.
+Its width fills the reading column.
 
 Site parameters (`hugo.yml`):
 
@@ -317,28 +309,19 @@ Site parameters (`hugo.yml`):
 | `params.markmap` | bool | `false` | With it off, the fence stays a code block and no runtime loads |
 {.fields meta="type default"}
 
-The key is defined in
-[Configuration](/docs/customize/config/). Per-map
-behaviour goes in the `markmap:` YAML header at the top of the fence body
-(`initialExpandLevel`, `colorFreezeLevel`, `maxWidth` …), which is Markmap
-syntax; the accepted keys are in the
-[Markmap documentation](https://markmap.js.org/docs/json-options).
+[Configuration](/docs/customize/config/) defines the site key.
+Put per-map behavior in the `markmap:` YAML header at the start of the body, such as `initialExpandLevel`, `colorFreezeLevel`, or `maxWidth`.
+This is Markmap syntax. See the [Markmap documentation](https://markmap.js.org/docs/json-options) for accepted keys.
 
 ## Limits {#limits}
 
-- The output is an inline SVG fixed at 300px tall: one `.markmap > svg` rule
-  decides it and the fence cannot change it. When a map has too many levels, use
-  `initialExpandLevel` or split it in two. Inline SVG also means `{#id num=}`
-  numbering and image zoom do not apply.
-- No colour-scheme awareness: link colours come from Markmap's own palette, so
-  check contrast in both modes.
-- Without `params.markmap` it is only a code block: sites that do not use the
-  component load no runtime.
-- "Download SVG" in the toolbar is a browser action and exports a snapshot of
-  the current expansion state.
-- Avoid `<`, `>`, `&` and `"` in the outline: the current theme version
-  double-escapes them and nodes show literal `&gt;` or `&#34;`. Write links as
-  `[text](URL)` rather than as autolinks in angle brackets.
+- Inline SVG output is fixed at 300px tall by one `.markmap > svg` rule. Fences cannot change this height.
+  For many levels, use `initialExpandLevel` or split the map. `{#id num=}` numbering and image zoom do not apply to inline SVG.
+- Markmap uses its own link-color palette and does not follow the site's color scheme. Check contrast in both modes.
+- Without `params.markmap`, the fence remains a code block. Sites that do not use Markmap load no runtime.
+- The toolbar's "Download SVG" action exports a browser snapshot of the current expansion state.
+- Avoid `<`, `>`, `&`, and `"` in outlines. The current theme double-escapes them, displaying literal `&gt;` or `&#34;`.
+  Use `[text](URL)` links instead of angle-bracket autolinks.
 
 ## Related {#related}
 

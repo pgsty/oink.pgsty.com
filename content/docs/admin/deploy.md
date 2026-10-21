@@ -1,7 +1,7 @@
 ---
 title: Deploy
 linkTitle: Deploy
-description: Publish public/ to GitHub Pages, Cloudflare Pages or any static host — matching baseURL, Content Security Policy, the acceptance checklist and rollback.
+description: Publish public/ to GitHub Pages, Cloudflare Pages, or another static host. Set baseURL, review Content Security Policy, verify deployment, and prepare rollback.
 weight: 20
 search_keywords: [deploy, publish, GitHub Pages, Cloudflare Pages, Netlify, Vercel, Nginx, object storage, hugo deploy, baseURL, subpath, CSP, hosting]
 aliases:
@@ -11,61 +11,61 @@ aliases:
   - /docs/deploy/other/
 ---
 
-An OINK site's output is a plain static directory, deployable anywhere that
-hosts static files, with no Node runtime, no server-side rendering and no build
-plugin. The host's side is three things: run one command with the right Hugo
-version, publish `public/`, and keep `baseURL` matching the final address.
+An OINK site produces a plain static directory. You can deploy it to any host
+that serves static files. It requires no Node runtime, server-side rendering,
+or build plugin. On the host, run one command with the correct Hugo version.
+Publish `public/` and set `baseURL` to match the final address.
 
 The prerequisite is a warning-free
 [production build](/docs/admin/preview/#production-build) locally.
 
 ## Getting baseURL right {#baseurl}
-`baseURL` is the commonest source of failure, and it fails quietly: the page
-opens, but the search index 404s, page action links point at the wrong place,
-and some assets do not load.
+An incorrect `baseURL` is the most common source of failure. The page can open
+without an obvious error. However, the search index 404s, page action
+links use incorrect addresses, and some assets do not load.
 
-Deploying at a domain root:
+For deployment at a domain root, use:
 
 ```yaml {title="hugo.yml"}
 baseURL: https://oink.pgsty.com
 ```
 
-Deploying to a subpath (`https://example.com/docs/`), the path must be in
+For deployment to a subpath (`https://example.com/docs/`), include that path in
 `baseURL`:
 
 ```yaml {title="hugo.yml"}
 baseURL: https://example.com/docs/
 ```
 
-It can also be overridden at build time, so one source deploys to several
-places:
+You can also override this value at build time. This lets you deploy one source to
+several locations:
 
 ```bash {title="Terminal"}
 hugo --gc --minify --baseURL "https://example.com/docs/"
 ```
 
 > [!WARNING] Do not fix a subpath with `canonifyURLs`
-> Hugo's `canonifyURLs` defaults to `false`; keep that default. OINK's templates
-> and content links all resolve against `baseURL`: a wrong path means a wrong
-> `baseURL`, and turning `canonifyURLs` on rewrites the relative links that were
-> already correct, making the problem harder to locate.
+> Keep Hugo's default value `false` for `canonifyURLs`. OINK's templates and content links
+> resolve against `baseURL`. If the path is incorrect, correct `baseURL`.
+> Enabling `canonifyURLs` rewrites relative links that were already correct.
+> This makes the problem harder to diagnose.
 
-With local search enabled, open search and inspect its index request in the
-browser's Network panel. It must use the correct language and deployment
-subpath and return 200. The page's `data-td-index-src` attribute supplies the
-actual URL: production filenames are
-`offline-search-index.<language>.<hash>.json`; development filenames have no
-hash. Do not test a guessed filename.
+If local search is enabled, open search. Inspect its index request in the
+browser's Network panel. The request must use the correct language and
+deployment subpath, and return 200. Read the actual URL from the page's
+`data-td-index-src` attribute. Production filenames are
+`offline-search-index.<language>.<hash>.json`. Development filenames have no
+hash. Do not guess the filename.
 
 ## Choosing a host {#hosts}
 
 {{< tabs group="host" default="ghpages" label="Host" >}}
 {{< tab label="GitHub Pages" value="ghpages" >}}
 
-With the source on GitHub, one Actions workflow is enough: the build runs in
-Actions and the output is published through the Pages deployment API, with no
-`gh-pages` branch to maintain. OINK Starter already includes the file below;
-copy it only when assembling a site manually.
+If the source is on GitHub, one Actions workflow is sufficient. Actions builds
+the site and publishes the output through the Pages deployment API. You do not
+need a `gh-pages` branch. OINK Starter includes the file below. Copy it only if
+you assemble a site manually.
 
 ```yaml {title=".github/workflows/github-pages.yaml" lineNos="inline" collapse=30}
 name: Deploy to GitHub Pages
@@ -145,7 +145,7 @@ jobs:
         uses: actions/deploy-pages@v5
 ```
 
-That is the workflow shipped by OINK Starter. Several pieces cannot be removed:
+OINK Starter ships this workflow. The following settings are required:
 
 - `fetch-depth: 0` — if `enableGitInfo` is enabled, "last modified" and contributor information require the complete Git history. A shallow clone leaves them empty.
 - `setup-go` plus `go mod download` — Hugo needs Go to resolve the theme as a Hugo Module. For a submodule installation, use `submodules: recursive` instead. For an offline archive, commit `themes/oink/`. With either alternative, remove both Go steps.
@@ -155,12 +155,12 @@ Warnings remain visible for review. Do not enable `--panicOnWarning` or
 `HUGO_PANICONWARNING`; the upstream LibSass deprecation warning is accepted.
 
 In the repository, set Settings → Pages → Build and deployment → Source to
-GitHub Actions, push to `main`, and watch the first run on the Actions tab.
+GitHub Actions. Push to `main`. Check the first run on the Actions tab.
 
-A custom domain goes in the Custom domain field on that same settings page, with
-DNS configured as prompted, after which `baseURL` in `hugo.yaml` becomes that
-domain. Where the publishing flow needs a `CNAME` file in the output, put it at
-`static/CNAME` and Hugo copies it into `public/` unchanged.
+For a custom domain, enter it in the Custom domain field on the same settings
+page. Configure DNS as prompted. Then set `baseURL` in `hugo.yaml` to that
+domain. If the publishing process requires a `CNAME` file, put it at
+`static/CNAME`. Hugo copies it unchanged into `public/`.
 
 {{< /tab >}}
 {{< tab label="Cloudflare Pages" value="cloudflare" >}}
@@ -169,12 +169,12 @@ OINK Starter ships `.github/workflows/cloudflare-pages.yaml`, a Direct Upload
 workflow. The production build stays in GitHub Actions and Wrangler uploads the
 same `public/` artifact to a Cloudflare Pages project.
 
-1. Create a **Direct Upload** Pages project. By default its name matches the
-   repository; override it with repository variable `CLOUDFLARE_PROJECT_NAME`.
+1. Create a **Direct Upload** Pages project. Its name defaults to the repository
+   name. To override it, set repository variable `CLOUDFLARE_PROJECT_NAME`.
 1. Add repository secrets `CLOUDFLARE_ACCOUNT_ID` and
    `CLOUDFLARE_API_TOKEN`. The token needs **Account → Cloudflare Pages → Edit**.
-1. Run **Deploy to Cloudflare Pages** manually once. Set repository variable
-   `CLOUDFLARE_PAGES_ENABLED=true` to deploy every push to `main`.
+1. Run **Deploy to Cloudflare Pages** manually once. To deploy every push to
+   `main`, set repository variable `CLOUDFLARE_PAGES_ENABLED=true`.
 1. The canonical URL defaults to `https://<project>.pages.dev/`. Set
    `CLOUDFLARE_SITE_URL` when a custom domain becomes production.
 {.steps}
@@ -207,13 +207,12 @@ publish = "public"
 HUGO_VERSION = "0.168.0"
 ```
 
-With the theme as a submodule, enable recursive submodule checkout; with a Hugo
-Module, the build environment needs Git and Go. Production and preview should
-use one Hugo version, unless the preview environment exists to test an upgrade.
+If the theme is a submodule, enable recursive submodule checkout. For a Hugo
+Module, install Git and Go in the build environment. Use the same Hugo version
+for production and preview, unless the preview tests an upgrade.
 
-**Vercel** — the same three things: build command `hugo --gc --minify`, output
-directory `public`, environment variable `HUGO_VERSION`. It likewise needs no
-npm install.
+**Vercel** — set the build command to `hugo --gc --minify`, the output directory
+to `public`, and environment variable `HUGO_VERSION`. No npm install is required.
 
 **Any static server (Nginx / Caddy)** — serve an unchanged copy of `public/`.
 The example below uses a `current` symlink to a release directory; create it
@@ -248,20 +247,21 @@ deployment:
       cloudFrontDistributionID: E9RZ8T1EXAMPLEID
 ```
 
-Run `hugo deploy` after a build: it compares the remote with `public/`, uploads
-only what changed, and invalidates the CDN cache when given a
-`cloudFrontDistributionID`. Without `--target` it uses the first target, and
-`--dryRun` shows what would change first. Two prerequisites: a Hugo binary built
-`withdeploy` (visible in `hugo version`), and cloud credentials supplied through
-the standard environment variables or configuration file (on AWS, confirm with
-`aws s3 ls` first).
+After a build, run `hugo deploy`. It compares the remote output with `public/`
+and uploads only changed files. If you supply `cloudFrontDistributionID`, it
+also invalidates the CDN cache. Without `--target`, it uses the first target.
+Use `--dryRun` first to inspect the proposed changes.
 
-**Offline packaging** — in a network-isolated environment, build on a connected
-machine and carry the output across as one package. Choose your own archive path
-and a new release name for every artifact. On the Linux host, these commands
-require write access to `/var/www/oink` and GNU `mv`; `current` must be absent or
-a symlink, and `current.next` must not already exist. Configure Nginx or Caddy to
-serve `current`, as above; this is a host setting, not a Hugo option.
+Two prerequisites apply. The Hugo binary must be built `withdeploy`, as shown
+by `hugo version`. Supply cloud credentials through the standard environment
+variables or configuration file. On AWS, first confirm access with `aws s3 ls`.
+
+**Offline packaging** — for a network-isolated environment, build on a connected
+machine. Transfer the output as one package. Choose your archive path and use a
+new release name for every artifact. On the Linux host, you need write access
+to `/var/www/oink` and GNU `mv`. The path `current` must be absent or a symlink.
+The path `current.next` must not already exist. Configure Nginx or Caddy to
+serve `current`, as shown above. Configure this on the host, not in Hugo.
 
 ```bash {title="Terminal"}
 hugo --cleanDestinationDir --gc --minify --baseURL "https://docs.internal.example.com/" &&
@@ -269,8 +269,8 @@ hugo --cleanDestinationDir --gc --minify --baseURL "https://docs.internal.exampl
 
 ```
 
-Only after the build and packaging succeed, transfer this archive to the Linux
-host and run the following there. Use a new release name for every artifact:
+After the build and packaging succeed, transfer the archive to the Linux host.
+Run the following commands there. Use a new release name for every artifact:
 
 ```bash {title="Linux host"}
 release_dir=/var/www/oink/releases/20260929-01
@@ -282,18 +282,18 @@ mkdir "$release_dir" &&
   mv -Tf /var/www/oink/current.next /var/www/oink/current
 ```
 
-The command chain switches `current` only after a new directory is created,
-extraction succeeds and `index.html` exists. Check the deployed pages afterward
-and retain the previous release directory for rollback. Never unpack a release
-over an existing release directory.
+The command chain switches `current` only after it creates a new directory,
+extracts the archive successfully, and confirms that `index.html` exists.
+Then check the deployed pages. Retain the previous release directory for
+rollback. Never unpack a release over an existing release directory.
 
-Build with the target environment's `baseURL` from the start; changing it requires
-a new build.
+Use the target environment's `baseURL` for the initial build. If you change it,
+build again.
 
-**A host without Go** — the Hugo Module method needs Go in the build
-environment. Where a platform does not provide it, switch to a Git submodule
-(running `git submodule update --init` before the build) or an offline archive
-(committing `themes/oink/`) — see
+**A host without Go** — the Hugo Module method requires Go in the build
+environment. If the platform does not provide Go, use a Git submodule or an
+offline archive. For a submodule, run `git submodule update --init` before the
+build. For an archive, commit `themes/oink/`. See
 [From scratch and other install methods](/docs/start/from-scratch/).
 
 {{< /tab >}}
@@ -301,11 +301,11 @@ environment. Where a platform does not provide it, switch to a Git submodule
 
 ## Keeping preview deployments unindexed {#preview-builds}
 
-Hugo's `-e` / `--environment` selects build-time behaviour and does not change
-the site's content, but three things in OINK follow it: only `production` emits
-`<meta name="robots" content="index, follow">`, only it makes `robots.txt` read
-`Allow: /`, and only it renders the Google Analytics template. Do not build PR
-previews and staging with `--environment production`:
+Hugo's `-e` / `--environment` selects build-time behavior. It does not change
+site content. Three OINK outputs depend on this setting. Only `production`
+emits `<meta name="robots" content="index, follow">`, writes `Allow: /` in
+`robots.txt`, and renders the Google Analytics template. Do not build PR
+previews or staging with `--environment production`:
 
 ```bash {title="Terminal"}
 hugo --gc --minify --environment staging --baseURL "$PREVIEW_URL"
@@ -316,42 +316,43 @@ nothing to an analytics service.
 
 ## Content Security Policy {#csp}
 
-The shipped runtimes, fonts and icons are same-origin assets, but
-`script-src 'self'; style-src 'self'` alone does not cover an ordinary OINK
-page. The theme emits inline theme initialization and shell prepaint scripts,
-inline styles for the initial canvas, theme colors and font roles, and style
-attributes in some components. Markmap adds inline configuration and styles.
-The theme provides neither a general policy nor automatic CSP hashes or nonce
-injection; the deployment owns a policy derived from its actual built output.
+The bundled runtimes, fonts, and icons are same-origin assets. However,
+`script-src 'self'; style-src 'self'` alone does not cover a normal OINK page.
+The theme emits inline theme initialization and shell prepaint scripts. It
+also emits inline styles for the initial canvas, theme colors, and font roles.
+Some components have style attributes. Markmap adds inline configuration and styles.
+
+The theme provides no general policy, automatic CSP hashes, or nonce injection.
+The deployment must define its policy from the actual built output.
 
 Additional features change the directives needed:
 
 - Inline HTML and inline scripts written by authors, which are the author's responsibility under `renderer.unsafe: true`.
-- [ECharts `$fn:` callbacks](/docs/components/echarts/#callbacks): the callback functions are registered by the site on `window.OinkEchartsFunctions`, and the registering script's origin belongs in `script-src`.
+- [ECharts `$fn:` callbacks](/docs/components/echarts/#callbacks): the site registers callback functions on `window.OinkEchartsFunctions`. Include the registering script's origin in `script-src`.
 - [Analytics scripts](/docs/admin/analytics/#other-analytics): the script the site inserts, and the destination it reports to.
-- [Remote API specifications](/docs/write/openapi/#spec-file) and [self-hosted diagram services](/docs/components/plantuml/#server): these land in `connect-src` and `img-src`.
+- [Remote API specifications](/docs/write/openapi/#spec-file) and [self-hosted diagram services](/docs/components/plantuml/#server): these require permissions in `connect-src` and `img-src`.
 - [giscus](/docs/admin/comments/#privacy): `script-src` and `frame-src` must both permit it.
 
-Hash each permitted inline script/style block from the final deployed bytes,
-or have the hosting layer inject a fresh nonce into both the response policy
-and the corresponding tags. A nonce on a style tag does not authorize style
-attributes; review those separately under `style-src-attr`. Recheck hashes when
-content, configuration, minification, or the theme changes. Begin with
-`Content-Security-Policy-Report-Only` and exercise light/dark startup, shell
-state, menus, and every enabled component before enforcing it. An origin scan
-alone cannot establish CSP compatibility.
+Hash each permitted inline script/style block from the final deployed bytes.
+Alternatively, have the host inject a fresh nonce into the response policy
+and corresponding tags. A nonce on a style tag does not authorize style
+attributes. Review those separately under `style-src-attr`. Recheck hashes
+after changes to content, configuration, minification, or the theme. Start with
+`Content-Security-Policy-Report-Only`. Before enforcement, test light/dark
+startup, shell state, menus, and every enabled component. An origin scan alone
+cannot establish CSP compatibility.
 
-Start from a minimal policy covering only reviewed features and permit things
-one at a time: keep ECharts options pure data where no callback is needed,
-review inline scripts written by authors, and add a remote origin only for an
-integration the site deliberately enabled. Subresource origins in the output can
-be swept first with the script in
+Start with a minimal policy that covers only reviewed features. Add permissions
+one at a time. If ECharts needs no callback, keep its options as pure data.
+Review inline scripts written by authors. Add a remote origin only for an
+integration that the site explicitly enabled. First, you can scan output
+subresource origins with the script in
 [Verifying an offline build](/docs/admin/preview/#air-gapped).
 
 ## Acceptance checklist {#checklist}
 
-Walk this table after deploying. The first four are build-time; the rest have to
-be checked on the real URL.
+After deployment, complete this table. The first four checks concern build-time
+output. Check the remaining items at the real URL.
 
 | Check | How to confirm |
 | --- | --- |
@@ -373,12 +374,12 @@ The switches for `sitemap.xml`, `robots.txt`, `.md` and `llms.txt` are in
 
 ## Rollback {#rollback}
 
-Rolling back a static site means republishing the last known-good commit; never
-edit files by hand in production.
+To roll back a static site, republish the last known-good commit. Never edit
+production files by hand.
 
-- GitHub Pages: find the last successful `Deploy to GitHub Pages` run in Actions and click Re-run all jobs; or `git revert` the offending commit and push again.
+- GitHub Pages: find the last successful `Deploy to GitHub Pages` run in Actions. Click Re-run all jobs. Alternatively, use `git revert` on the faulty commit and push again.
 - Cloudflare Pages / Netlify / Vercel: pick the last successful deployment from the list and use the platform's Rollback / Publish deploy to make it production again.
-- A self-hosted static server: point `current` back to the previous release directory from [offline packaging](#hosts). Do not overlay the old archive on the new files: paths added by the newer release would remain live.
+- A self-hosted static server: point `current` to the previous release directory from [offline packaging](#hosts). Do not extract the old archive over the new files. Paths added by the newer release would remain live.
 
 On the Linux host, replace the example path with the retained known-good release.
 The same symlink and GNU `mv` prerequisites apply:
@@ -393,9 +394,8 @@ test -d "$previous_release" &&
 Check a representative old page at the public URL and confirm that a path added
 only by the rejected release is no longer served.
 
-Where the problem is a theme upgrade rather than the content, what rolls back is
-the version pinned in `go.mod` — see
-[Upgrade](/docs/admin/upgrade/#rollback).
+If a theme upgrade caused the problem, roll back the version pin in `go.mod`.
+See [Upgrade](/docs/admin/upgrade/#rollback).
 
 ## Related {#related}
 

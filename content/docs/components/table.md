@@ -1,23 +1,21 @@
 ---
 title: Tables
 linkTitle: Tables
-description: A plain GFM table plus one attribute line becomes a captioned table, a compatibility matrix, a field list, a numbered table or a tab set; wide tables scroll on their own.
+description: Add attributes to a GFM table for captions, compatibility matrices, field lists, numbering, or tabs. Wide tables scroll within their own regions.
 weight: 50
 search_keywords: [Table, matrix, full-width, caption, numbered table, horizontal scroll, GFM]
 aliases:
   - /docs/components/tables/
 ---
 
-A table is an ordinary GFM pipe table. The theme's table render hook wraps every
-one in a horizontally scrollable region, and the `{…}` attribute line underneath
-decides which kind of table it is: captioned, a compatibility matrix, a field
-list, a numbered table, or a tab set. Merged cells, sorting and filtering are
-out of scope; when you need them, change how the data is presented.
+Tables use ordinary GFM pipe syntax. The table render hook wraps each table in a horizontally scrollable region.
+The `{…}` attribute line below selects captions, compatibility matrices, field lists, numbering, or tabs.
+Merged cells, sorting, and filtering are unsupported. If you need these features, change the presentation of the data.
 
 ## Shortest form {#minimal}
 
-Without an attribute line it is just a table. Alignment still comes from the
-delimiter row, and header cells are `th scope="col"`.
+Without an attribute line, the result is an ordinary table. The delimiter row controls alignment.
+Header cells use `th scope="col"`.
 
 ```markdown {title="Source"}
 | Component | Port | Purpose |
@@ -35,9 +33,9 @@ delimiter row, and header cells are `th scope="col"`.
 
 ## Wide tables scroll themselves {#scroll}
 
-A table with too many columns never widens the page; it scrolls inside its own
-region. That region is focusable: Tab into it and the arrow keys scroll, and its
-accessible name is the localized "Scrollable table".
+Wide tables scroll within their own region instead of widening the page.
+Press Tab to focus the region, then use arrow keys to scroll.
+Its accessible name is the localized "Scrollable table".
 
 ```markdown {title="Source"}
 | Cluster | Role | Version | State | Lag | Connections | Size | Backup |
@@ -53,8 +51,7 @@ accessible name is the localized "Scrollable table".
 
 ## Captions {#caption}
 
-`{caption="…"}` adds a visible `<caption>`. It is plain text and it does not
-number the table.
+`{caption="…"}` adds a visible `<caption>`. The caption is plain text and does not number the table.
 
 ```markdown {title="Source"}
 | Item | Value |
@@ -74,11 +71,9 @@ number the table.
 
 ## Compatibility matrices {#matrix}
 
-`{.matrix}` is for "row × column = supported or not" tables: the first column
-becomes a row header (`th scope="row"`), the header row and the first column
-stay pinned while scrolling, and the remaining cells are centred unless the
-delimiter row says otherwise. ✅ and ❌ are characters the author writes; the
-theme does not interpret them.
+Use `{.matrix}` for support matrices. The first column becomes a row header with `th scope="row"`.
+The header row and first column stay fixed while scrolling. Other cells are centered unless the delimiter row specifies another alignment.
+Authors write ✅ and ❌ characters. The theme does not interpret them.
 
 ```markdown {title="Source"}
 | OS / PG | PG18 | PG17 | PG16 | PG15 | PG14 |
@@ -100,8 +95,7 @@ theme does not interpret them.
 
 ## Using the whole canvas {#full-width}
 
-`{.full-width}` lets a table exceed the reading column and take the full width
-the article has. It suits tables with many short columns.
+`{.full-width}` removes the reading-column limit and uses the article's full width. Use it for many short columns.
 
 ```markdown {title="Source"}
 | Language | Code | Sidebar | Search | TOC | Print | Status |
@@ -119,10 +113,8 @@ the article has. It suits tables with many short columns.
 
 ## Field lists {#fields}
 
-`{.fields}` turns a table into a definition list: the first column is the name,
-the last is the description, and the columns in between are metadata. It is the
-shape for configuration keys, command flags and API fields; the full syntax is
-on the [Fields](/docs/components/fields/) page.
+`{.fields}` converts a table to a definition list. The first column is the name, the last is the description, and middle columns are metadata.
+Use it for configuration keys, command flags, and API fields. See [Fields](/docs/components/fields/) for the complete syntax.
 
 ```markdown {title="Source"}
 | Parameter | Type | Default | Description |
@@ -140,11 +132,10 @@ on the [Fields](/docs/components/fields/) page.
 
 ## Numbered tables {#numbered}
 
-In a book or a long manual, number the tables: `num` plus an optional `#id` and
-`caption`. The table is wrapped in a `<figure>` labelled with a localized
-"Table N." and registered as a Book target, so `xref` can reference it and it
-appears in the book-wide list of tables. The number is written by the author —
-the theme never counts — and `id` defaults to `tbl-<num>`.
+For books or long manuals, add `num`, with optional `#id` and `caption`.
+The theme wraps the table in a `<figure>` with a localized "Table N." label and registers it as a Book target.
+`xref` can reference it, and it appears in the book-wide table list.
+Authors provide numbers. The theme never counts. `id` defaults to `tbl-<num>`.
 
 ```markdown {title="Source"}
 | Isolation level | Dirty read | Non-repeatable read | Phantom read |
@@ -168,10 +159,9 @@ See {{< xref tbl="9-1" anchor="tbl-iso" />}}.
 
 ## Tables as tabs {#tabs}
 
-Adjacent tables carrying `{tab="…"}` form a tab set under the same rules as
-adjacent fences: `group` on the first table enables hash, sync and persistence,
-and every table after it needs `value`. The complete rules are on the
-[Tabs](/docs/components/tabs/) page.
+Adjacent tables with `{tab="…"}` form a tab set, using the same rules as adjacent fences.
+`group` on the first table enables URL hashes, synchronization, and saved selections. Each later table needs `value`.
+See [Tabs](/docs/components/tabs/) for the complete rules.
 
 ```markdown {title="Source"}
 | Directory | Contents |
@@ -232,18 +222,13 @@ The attribute line on the row below the table:
 
 ## Limits {#limits}
 
-- Mutual exclusions: `.fields` cannot combine with `.matrix`, `.full-width` or
-  `num`; `num` and `tab` are exclusive; `group`/`value` require `tab`; `meta`
-  requires `.fields`.
-- The attribute line must touch the table: leave a blank line and it becomes a
-  visible line of braces. Markdown formatters like to move it — wrap it in
-  `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->`.
-- No merged cells, no sorting, no filtering: what a GFM pipe table can express
-  is all there is. Split a complex table with a merged header into two tables,
-  or turn it into a matrix.
-- Block content does not fit in a cell: multi-paragraph descriptions, lists and
-  fences need the `fields`/`field` shortcode.
-- `.matrix` centring is CSS: an explicit alignment in the delimiter row wins.
+- `.fields` cannot be combined with `.matrix`, `.full-width`, or `num`.
+  `num` and `tab` are mutually exclusive. `group`/`value` require `tab`, and `meta` requires `.fields`.
+- The attribute line must immediately follow the table. A blank line makes the braces appear as text.
+  To prevent formatters moving the line, wrap it in `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->`.
+- GFM tables do not support merged cells, sorting, or filtering. Split complex tables with merged headers into two tables or use a matrix.
+- Cells cannot contain block content. Use `fields`/`field` shortcodes for multiple paragraphs, lists, or fences.
+- `.matrix` centering uses CSS. Explicit delimiter-row alignment takes precedence.
 
 ## Related {#related}
 

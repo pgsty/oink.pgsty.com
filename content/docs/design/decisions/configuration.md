@@ -1,7 +1,7 @@
 ---
 title: Configuration model
 linkTitle: Configuration
-description: OINK extends Hugo and Docsy-compatible configuration without creating a second namespace or a parallel global resolver.
+description: Hugo and Docsy-compatible configuration, with a narrow OINK interface and no parallel configuration namespace or global resolver.
 weight: 20
 icon: fa-solid fa-sliders
 search_keywords:
@@ -12,21 +12,21 @@ decision_date: 2026-08-20
 ---
 
 > [!IMPORTANT] Decision
-> OINK keeps Hugo's native keys and useful Docsy-compatible keys in place,
-> places theme presentation and behaviour under `params.ui.*`, and exposes a
-> matching top-level front-matter key for a page override. It does not add a
-> `params.oink.*` tree or a registry that shadows Hugo's configuration model.
+> OINK retains Hugo's native keys and useful Docsy-compatible keys.
+> Theme presentation and behavior use `params.ui.*`. A page override uses
+> the matching top-level front-matter key. OINK does not add a `params.oink.*`
+> tree or a second registry for Hugo configuration.
 
 ## Context {#context}
 
-OINK inherits a mature configuration surface and adds shells, content output,
-and local interaction. Earlier designs attempted to move every theme-owned key
-under a new namespace and resolve a complete configuration dictionary once per
-page. That produced a second language beside Hugo's own keys, complicated
-section cascades, and made migration larger than the behaviour it was meant to
-control.
+OINK extends existing configuration with shells, content output, and local
+interaction. Earlier designs attempted to move all theme-owned keys to a new
+namespace and resolve a complete configuration dictionary for each page.
+That approach added a second configuration language beside Hugo's keys,
+complicated section cascades, and required a large migration for limited
+behavior changes.
 
-The current model keeps ownership visible instead:
+The current model defines these responsibilities:
 
 | Layer                       | Responsibility                                                         | Examples                                                         |
 | --------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------- |
@@ -44,32 +44,33 @@ The configuration API follows these rules:
    under `params.ui.*`.
 2. A page override drops the `ui.` prefix and otherwise keeps the same name.
    A section `cascade` can apply that top-level key to its descendants.
-3. Boolean features use a scalar where that is the complete policy. A map is
-   reserved for features with real subordinate settings; an established map
-   may accept a boolean shorthand.
-4. Names are positive, snake_case, and grouped by function. Closely related
-   settings share a prefix instead of growing another nested resolver.
-5. Theme defaults are declared in the theme's `hugo.yaml`. Templates may add a
-   derived default only when one static value would erase a deliberate
-   shell-specific distinction.
-6. Each feature family owns its normalization and validation. A shared helper
-   supplies common shapes, but there is no global compatibility registry that
+3. If a scalar describes the complete policy, use it for a boolean feature.
+   Use a map only when a feature has subordinate settings. An established
+   map may accept a boolean shorthand.
+4. Use positive, snake_case names grouped by function. Closely related settings
+   share a prefix without requiring another nested resolver.
+5. Declare theme defaults in the theme's `hugo.yaml`. Templates may derive a
+   default only when one static value would remove a deliberate distinction
+   between shells.
+6. Each feature family owns its normalization and validation, using a shared
+   helper for common shapes. There is no global compatibility registry that
    silently rewrites arbitrary old keys.
 
-The complete current key list, types, and defaults live in the
+The complete current key list, types, and defaults are in the
 [configuration reference](/docs/customize/config/). This decision records the
-placement rules; it is not a second parameter catalogue.
+placement rules rather than maintaining a second parameter catalog.
 
 ## Compatibility {#compatibility}
 
-Public renames receive a targeted warning from the owning resolver, a migration
-note, and a negative test. Removed or misspelled keys do not justify a permanent
-alias layer. Hugo and third-party camelCase keys remain camelCase where changing
-them would break their native API; OINK-owned additions use snake_case.
+For each public rename, the owning resolver gives a targeted warning, supported
+by a migration note and a negative test.
+Removed or misspelled keys do not require a permanent alias layer.
+If a rename would break the native API, retain Hugo and third-party camelCase
+keys. OINK-owned additions use snake_case.
 
-Page values resolve through Hugo's ordinary front-matter and cascade model.
-OINK does not ask authors to put a nested `ui:` tree in front matter and does
-not promise to merge arbitrary nested page maps.
+Hugo's ordinary front-matter and cascade model resolves page values. OINK does
+not ask authors to build a nested `ui:` tree in front matter or promise to merge
+arbitrary nested page maps.
 
 ## Consequences {#consequences}
 
@@ -84,6 +85,6 @@ not promise to merge arbitrary nested page maps.
 
 ## Verification {#verification}
 
-`bin/check-params.py` audits declared defaults, page aliases, warning
-behaviour, and the no-`errorf` invariant. The public reference and its Chinese
-peer are checked in the integration site's bilingual and rendered-link suites.
+`bin/check-params.py` checks declared defaults, page aliases, warning behavior,
+and the no-`errorf` requirement. The integration site's bilingual and
+rendered-link suites check the public reference and its Chinese peer.

@@ -1,51 +1,50 @@
 ---
 title: Keyboard navigation
 linkTitle: Keyboard navigation
-description: Every single-key shortcut, when each stands down for typing, and how to turn them off per site or per page.
+description: Use single-key shortcuts and understand when typing disables them. Disable shortcuts for the site or individual pages.
 weight: 80
 search_keywords: [keyboard navigation, shortcuts, WASD, zen mode, keyboard_nav, accessibility, skip link]
 aliases:
   - /docs/advanced/keyboard/
 ---
 
-OINK's interactive pages come with a set of single-key shortcuts: WASD moves
-through the sidebar tree, {{< kbd "J" >}} {{< kbd "K" >}} jump between headings,
-{{< kbd "Q" >}} {{< kbd "E" >}} page back and forward, and a few more toggle the
-theme, the language and the command palette. They are on by default, every
-binding stands down for typing, and they can be turned off per site or per page.
+OINK's interactive pages have single-key shortcuts. WASD moves through the
+sidebar tree. {{< kbd "J" >}} {{< kbd "K" >}} move between headings.
+{{< kbd "Q" >}} {{< kbd "E" >}} open previous and next pages. Other shortcuts
+switch the theme, language, and command palette. Shortcuts are on by default.
+Typing disables every binding. You can disable shortcuts per site or per page.
 
-Keyboard navigation keeps no second copy of any state: expanding and collapsing
-reuses the sidebar's own arrow buttons, section jumps read the right-hand
-outline, and switching language and theme reuse the command palette's actions.
-Keyboard order and mouse order are therefore the same order.
+Keyboard navigation keeps no separate state. Expansion and collapse use the
+sidebar's arrow buttons. Section jumps use the right-hand outline. Language
+and theme switching use command palette actions. Keyboard and mouse navigation
+therefore use the same order.
 
 ## Sidebar {#sidebar}
 
 | Key | Behaviour |
 | --- | --- |
 | {{< kbd "W" >}} {{< kbd "S" >}} {{< kbd "↑" >}} {{< kbd "↓" >}} | Move focus to the previous / next visible entry |
-| {{< kbd "A" >}} {{< kbd "D" >}} {{< kbd "←" >}} {{< kbd "→" >}} | Collapse / expand a group; on a leaf, {{< kbd "A" >}} goes to the parent and {{< kbd "D" >}} does nothing |
+| {{< kbd "A" >}} {{< kbd "D" >}} {{< kbd "←" >}} {{< kbd "→" >}} | Collapse / expand a group. On a leaf, {{< kbd "A" >}} opens the parent and {{< kbd "D" >}} does nothing |
 | {{< kbd "Enter" >}} {{< kbd "Space" >}} {{< kbd "G" >}} | Activate the focused entry: open a page link or toggle a group button |
-| {{< kbd "Esc" >}} | Leave the tree; focus returns to the body |
+| {{< kbd "Esc" >}} | Leave the tree. Return focus to the body |
 
-The four letter keys need no prior entry into the tree: with focus still in the
-body, {{< kbd "S" >}} takes the current page's sidebar entry as its starting
-point, moves down one and takes focus. The focused row is shaded a step darker
-than the "current page" shading, so the two are distinguishable.
+You can use the four letter keys before entering the tree. With focus in the
+body, {{< kbd "S" >}} starts from the current page's sidebar entry. It moves
+down one entry and takes focus. The focused row is darker than the "current
+page" row. Readers can distinguish the two states.
 
-When the sidebar is in a drawer on a narrow screen, or collapsed on the desktop,
-the first press of one of these keys opens it first. On a page with no sidebar
-tree they are silent.
+If the sidebar is in a narrow-screen drawer or collapsed on desktop, the first
+key press opens it. If a page has no sidebar tree, these keys do nothing.
 
-The arrow keys act on the tree **only after focus has entered the sidebar**; in
-the body they keep native browser scrolling. In a right-to-left language
-{{< kbd "←" >}} {{< kbd "→" >}} swap with the reading direction, while
+Arrow keys control the tree **only after focus enters the sidebar**. In the
+body, they retain native browser scrolling. For a right-to-left language,
+{{< kbd "←" >}} {{< kbd "→" >}} swap with the reading direction.
 {{< kbd "A" >}} {{< kbd "D" >}} always mean "collapse / expand".
 
-Since OINK 1.1, a group without its own page participates through
-its disclosure button. From a child, {{< kbd "A" >}} first returns to that
-group; pressing it again folds the group. {{< kbd "D" >}} opens a folded group,
-or moves into its first visible child if already open. Page navigation with
+Since OINK 1.1, groups without their own pages use disclosure buttons for
+keyboard navigation. From a child, {{< kbd "A" >}} first returns to the group.
+Press it again to collapse the group. {{< kbd "D" >}} opens a collapsed group.
+If the group is open, it moves to the first visible child. Page navigation with
 {{< kbd "Q" >}} / {{< kbd "E" >}} skips group buttons.
 
 ## Reading {#reading}
@@ -57,28 +56,25 @@ or moves into its first visible child if already open. Page navigation with
 | {{< kbd "Q" >}} {{< kbd "E" >}} | Previous / next page |
 | {{< kbd "H" >}} | Focused reading: hide / restore the navigation shell |
 
-{{< kbd "J" >}} {{< kbd "K" >}} take their target sequence from the same source
-as the right-hand outline, so they land where clicking the outline lands. The
-jump is a fixed 100 ms ease regardless of distance, and successive presses need
-not wait for the previous animation. Once you have read some way into a section,
-{{< kbd "K" >}} returns to that section's start first and only jumps to the
-previous section on a second press. On a page with no headings it degrades to a
-short scroll.
+{{< kbd "J" >}} {{< kbd "K" >}} use the same target sequence as the right-hand
+outline. They reach the same location as an outline click. Each jump uses a
+100 ms ease, regardless of distance. You can press again before the animation
+finishes. If you have scrolled into a section, {{< kbd "K" >}} first returns
+to its start. A second press opens the previous section. Without headings,
+the keys perform a short scroll.
 
-{{< kbd "Q" >}} {{< kbd "E" >}} page in the **sidebar tree's visible order**, not
-by date. A section index is itself an entry in the tree, so a blog's section
-boundary reads as "last post of the previous section → next section's index →
-first post of the next section". A collapsed branch is not in that order:
-paging order and focus order are the same order. On a page with no sidebar tree
-it falls back to the page-end pager, and without one to `rel=prev/next` in
-`<head>`.
+{{< kbd "Q" >}} {{< kbd "E" >}} follow the **sidebar tree's visible order**.
+They do not sort by date. Section indexes are tree entries. At a blog section
+boundary, the sequence is "last post of the previous section → next section's index →
+first post of the next section". Collapsed branches are excluded. Paging and
+focus use the same order. Without a sidebar tree, paging uses the page-end
+pager. Without that pager, it uses `rel=prev/next` in `<head>`.
 
-{{< kbd "H" >}} hides only the navbar and footer on the home page, and on a
-documentation page hides the left and right columns and the floating buttons too.
-The state is kept in the tab's session and restored before the first frame, so
-paging through with {{< kbd "Q" >}} {{< kbd "E" >}} neither loses it nor
-flickers. While the shell is hidden, WASD will not send focus into an invisible
-sidebar.
+On the home page, {{< kbd "H" >}} hides only the navbar and footer. On a
+documentation page, it also hides the left and right columns and floating
+buttons. The tab session stores this state and restores it before the first
+frame. Paging with {{< kbd "Q" >}} {{< kbd "E" >}} preserves it without flicker.
+While the shell is hidden, WASD cannot focus the invisible sidebar.
 
 ## Appearance, language and routing {#appearance}
 
@@ -88,11 +84,12 @@ sidebar.
 | {{< kbd "T" >}} | Toggle light and dark |
 | {{< kbd "R" >}} | Cycle among same-origin top-level navbar entries |
 
-These three work on any interactive page, not only inside the documentation
-shell. {{< kbd "L" >}} on a single-language site, {{< kbd "T" >}} with the
-light/dark menu off, and {{< kbd "R" >}} with only one top-level entry are all
-silent. {{< kbd "R" >}} cycles only same-origin top-level menu items; external
-links and navbar utility controls take no part.
+These three shortcuts work on every interactive page, including pages outside
+the documentation shell. {{< kbd "L" >}} does nothing on a single-language site.
+{{< kbd "T" >}} does nothing if the light/dark menu is off. {{< kbd "R" >}}
+does nothing if there is only one top-level entry. {{< kbd "R" >}} cycles only
+same-origin top-level menu items. It excludes external links and navbar utility
+controls.
 
 ## Search and commands {#search}
 
@@ -102,12 +99,11 @@ links and navbar utility controls take no part.
 | {{< kbd "C" >}} or the backslash key | Open the command palette in command-only mode |
 | {{< kbd "⌘" "K" >}} or {{< kbd "Ctrl" "K" >}} | Open the palette; press again to close |
 
-{{< kbd "/" >}} and backslash belong to search itself and keep working with
-keyboard navigation off; {{< kbd "F" >}} {{< kbd "C" >}} are aliases keyboard
-navigation adds, pointing at the same palette instance. Backslash is awkward on
-some non-US layouts, and typing a `>` prefix in the palette reaches command-only
-mode just as well. What the palette holds is in
-[Command palette](/docs/customize/panel/).
+{{< kbd "/" >}} and backslash belong to search. They work when keyboard
+navigation is off. Keyboard navigation adds {{< kbd "F" >}} {{< kbd "C" >}}
+as aliases for the same palette. Backslash is difficult to use on some non-US
+layouts. You can also type a `>` prefix in the palette to select command-only
+mode. See [Command palette](/docs/customize/panel/) for its contents.
 
 ## Expo image viewer {#expo-viewer}
 
@@ -129,25 +125,25 @@ shortcuts; it does not disable the viewer controls. Expo is available in OINK 1.
 
 ## Keys deliberately left free {#reserved}
 
-{{< kbd "?" >}} is reserved and unbound. The cheatsheet hangs off the question
-mark button in the footer's bottom bar, opens on hover, keyboard focus or
-touch, and lists the keys actually available on the current page: a
-single-language site never sees the language row.
+{{< kbd "?" >}} is reserved and unbound. The cheatsheet uses the question mark
+button in the footer's bottom bar. It opens on hover, keyboard focus, or touch.
+It lists only keys available on the current page. A single-language site
+therefore has no language row.
 
 {{< kbd "G" >}} {{< kbd "G" >}}, {{< kbd "Shift" "G" >}} and the digits are
 likewise reserved, as possible future jump sequences.
 
 ## When shortcuts stand down {#stand-down}
-Every binding is a bare single key, and all of them are disabled wherever they
-could collide with typing or an overlay:
+Each binding is a bare single key. The following conditions disable all
+bindings to prevent conflicts with typing or overlays:
 
 - Focus is in an input, textarea, select or `contenteditable` region;
 - An input method is composing (a hard requirement on a Chinese site);
-- A modifier is held: {{< kbd "⌘" "C" >}} is still copy, {{< kbd "Shift" "↓" >}} still belongs to the browser;
+- A modifier is held. {{< kbd "⌘" "C" >}} still copies, and {{< kbd "Shift" "↓" >}} remains a browser action;
 - The command palette, another open native dialog, or a visible ARIA dialog owns the keyboard. This includes fixed-position ARIA dialogs; hidden ARIA dialogs do not block shortcuts.
 
-The comment section lives in an iframe, where key events do not bubble to the
-page, so no extra isolation is needed.
+The comment section uses an iframe. Its key events do not propagate to the
+page. No additional isolation is needed.
 
 ## Focus order and accessibility {#a11y}
 
@@ -157,10 +153,10 @@ longer produces a large outline after a later keypress. Keyboard focus remains
 visible: the skip link highlights the article title, and scrollable tables
 and code keep their own focus indication and keyboard scrolling.
 
-- **Skip link**: the first {{< kbd "Tab" >}} after landing on a page reveals "skip to main content", stepping past the navbar and sidebar in one move.
-- **Real focus**: navigating the tree moves actual DOM focus rather than a virtual cursor. A screen reader therefore announces the link name and the "current page" marker, {{< kbd "Enter" >}} is the link's native behaviour, and the Tab order is not rewritten.
-- **High contrast**: the focused row's background drops out under `forced-colors` and degrades to a system highlight outline.
-- **Reduced motion**: with `prefers-reduced-motion` on, section jumps and paging scroll become instant positioning rather than an ease.
+- **Skip link**: the first {{< kbd "Tab" >}} on a page reveals "skip to main content". It skips the navbar and sidebar in one action.
+- **Real focus**: tree navigation moves actual DOM focus instead of a virtual cursor. A screen reader announces the link name and "current page" marker. {{< kbd "Enter" >}} retains the link's native behavior. The Tab order remains unchanged.
+- **High contrast**: under `forced-colors`, the focused row's background is removed. A system highlight outline replaces it.
+- **Reduced motion**: with `prefers-reduced-motion` enabled, section jumps and paging scroll position instantly without an ease.
 - The key caps in the cheatsheet share their styling with the [Kbd](/docs/components/kbd/) component used in the body.
 
 ## Turning it off {#disable}
@@ -187,10 +183,9 @@ The key accepts only a boolean. In normal preview, `"false"` or any other
 value warns and uses the site default. Review the `params.ui.keyboard_nav must be a boolean` diagnostic and rendered fallback before publication. See the complete definition in
 [Configuration](/docs/customize/config/).
 
-Turned off, the runtime never enters the JavaScript bundle rather than loading
-and then checking. {{< kbd "/" >}}, backslash and {{< kbd "⌘" "K" >}} belong to
-search and keep working; the arrows on the footer's collapsible link grid are
-unaffected.
+If you disable keyboard navigation, its runtime is excluded from the JavaScript
+bundle. {{< kbd "/" >}}, backslash, and {{< kbd "⌘" "K" >}} belong to search
+and still work. The footer's collapsible link-grid arrows are unaffected.
 
 ## Verify {#verify}
 
@@ -209,13 +204,13 @@ page in your site (including a language prefix if needed).
    With keyboard navigation off and local search not enabled, the button is not
    generated at all.
 
-2. Open a documentation page, leave the cursor in the body and press {{< kbd "S" >}} repeatedly: the sidebar should step down from the current page's entry while the body stays put.
+2. Open a documentation page. Leave focus in the body and press {{< kbd "S" >}} repeatedly. Confirm that the sidebar moves down from the current page's entry. The body should not move.
 
-3. Press {{< kbd "E" >}} several times and check the paging order matches the sidebar top to bottom; collapse a group and page again — the collapsed pages should be skipped.
+3. Press {{< kbd "E" >}} several times. Confirm that paging follows the sidebar from top to bottom. Collapse a group and page again. Confirm that paging skips collapsed pages.
 
-4. Click into the search box and press {{< kbd "J" >}}: the page should **not** scroll, and the character should type normally. The same holds while typing with a Chinese input method.
+4. Click in the search box and press {{< kbd "J" >}}. The page should **not** scroll. The character should appear normally. Repeat with a Chinese input method.
 
-5. Turn on "reduce motion" in the system and press {{< kbd "J" >}}: it should position instantly with no glide.
+5. Enable "reduce motion" in the system and press {{< kbd "J" >}}. Confirm instant positioning without animation.
 
 6. For the 1.1 focus fixes, follow the skip link and check the title's focus
    indication. Collapse the sidebar and use {{< kbd "Tab" >}}: its hidden links

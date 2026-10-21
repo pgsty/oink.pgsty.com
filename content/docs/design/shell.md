@@ -138,47 +138,41 @@ setting does not disable the right outline or its relocation below `xl`.
 > OINK 1.1.0 provides this disclosure API and explicit hidden-content isolation.
 > Version 1.0.0 does not provide the API.
 
-`window.OinkSidebar` owns registered tree disclosures and movable TOC,
-backlink, and taxonomy groups, independent of their current DOM parent.
-`setExpanded(id, boolean, {source})` returns true for a valid target and false
-for unknown IDs or non-boolean values. `getState(id)` returns a fresh
-`{id, expanded}` snapshot or null. IDs are the existing `aria-controls` region
-IDs; arbitrary elements outside the registered OINK groups cannot be changed.
+`window.OinkSidebar` controls registered tree disclosures and movable TOC, backlink, and taxonomy groups, regardless of their current DOM parent.
+`setExpanded(id, boolean, {source})` returns true for valid targets. It returns false for unknown IDs or non-boolean values.
+`getState(id)` returns a new `{id, expanded}` snapshot or null.
+IDs are existing `aria-controls` region IDs. The API cannot change arbitrary elements outside registered OINK groups.
 
-Sources are `user`, `active-path`, `responsive`, and `api` (default). Every
-writer commits `aria-expanded`, `td-is-open`, the localized label, and the
-region's inert state before one `oink:sidebar-disclosure` document event with
-`detail: {id, expanded, source}`. Repeated state writes emit no event. API
-restoration keeps current-path ancestors expanded; explicit user disclosure
-can still collapse them. Closing a region containing focus returns it to the
-toggle before isolation.
+Sources are `user`, `active-path`, `responsive`, and `api`, the default.
+Each writer sets `aria-expanded`, `td-is-open`, the localized label, and region inert state before emitting one document event.
+The event is `oink:sidebar-disclosure` with `detail: {id, expanded, source}`.
+Repeated writes of the same state emit no event.
+API restoration keeps current-path ancestors expanded. Explicit user actions can still collapse them.
+Before isolating a closing region that contains focus, return focus to its toggle.
 
-`ready` is a Promise resolving to the API after initial hydration and responsive
-placement; `isReady` and `oink:sidebar-ready` also expose completion to late
-consumers. Optional persistence belongs to the site: await ready, read storage
-inside a try/catch, and restore valid region IDs through the setter. OINK owns
-whole-column collapse, width, and scroll persistence, not a version/locale
-schema for reader-selected branches.
+`ready` is a Promise that resolves to the API after initial hydration and responsive placement.
+`isReady` and `oink:sidebar-ready` also expose completion to late consumers.
+Sites own optional persistence. Await readiness, read storage inside try/catch, then restore valid region IDs through the setter.
+OINK owns whole-column collapse, width, and scroll persistence.
+It does not define a version or locale schema for reader-selected branches.
 
-Desktop collapse and a closed mobile drawer make panel content inert and mark
-the panel `aria-hidden`. Focus leaves before isolation; opening clears it
-before focus enters. The panel itself remains the 16px pointer sensor, and the
-external restore control remains active. Hover, Escape, backdrop dismissal,
-breakpoint cleanup, and scroll unlocking retain their existing behavior.
-These runtime attributes are not emitted into the no-JavaScript fallback.
+Desktop collapse and closed mobile drawers make panel content inert and mark the panel `aria-hidden`.
+Focus leaves before isolation. Opening clears isolation before focus enters.
+The panel remains the 16px pointer sensor. The external restore control remains active.
+Hover, Escape, backdrop dismissal, breakpoint cleanup, and scroll unlocking keep their existing behavior.
+No-JavaScript fallbacks omit these runtime attributes.
 
-Whole-column TOC collapse also isolates its hidden panel. If the collapsing
-control held focus, focus moves to the visible floating restore button; restoring
-the column returns focus to its visible column control. When the aside moves
-into the mobile sidebar, its former column isolation is cleared before the
-drawer owns interaction. The drawer's Tab trap includes only rendered,
-non-inert controls, excluding hidden or collapsed descendants.
+Whole-column TOC collapse also isolates hidden panels.
+If the collapsing control has focus, move focus to the visible floating restore button.
+Restoring the column returns focus to its visible column control.
+When the aside moves into the mobile sidebar, clear former column isolation
+before the drawer controls interaction.
+The drawer's Tab trap includes only rendered, non-inert controls. It excludes hidden and collapsed descendants.
 
 ## Immersive blog presentation {#immersive-blog-presentation}
 
-There is no article type or second shell. Immersive reading is four independent
-keys on the ordinary blog shell, set on a page or section cascade; the section
-index repeats values it also needs:
+There is no article type or second shell. Four independent keys enable immersive reading on the ordinary blog shell.
+Set them on pages or section cascades. Repeat values on the section index when it also needs them:
 
 ```yaml
 featured_image: hero
@@ -187,24 +181,21 @@ toc_taxonomies: false
 sidebar_enabled: false
 ```
 
-The blog shell renders no breadcrumb by default—an article reads as a
-standalone piece—so the recipe needs no key for it. `breadcrumb` remains an
-ordinary key a page or cascade may still set either way, on any shell.
+Blog shells omit breadcrumbs by default because articles are standalone pieces. The recipe therefore needs no breadcrumb key.
+`breadcrumb` remains an ordinary key that pages or cascades may enable or disable on any shell.
 
-`hero` uses the shared featured image as a decorative full-bleed backdrop on
-single pages and section indexes. With no image it renders the normal opening;
-`banner` and `wash` remain single-page modes. The navbar overlays a hero on a
-contrast scrim and scrolls with it.
+`hero` uses the shared featured image as a decorative full-width background on single pages and section indexes.
+Without an image, it renders the normal opening. `banner` and `wash` remain single-page modes.
+The navbar overlays a hero with a contrast scrim and scrolls with it.
 
-`toc_style` is `fixed` or `flow`; flow places a wider rail beside the article
-and pins it only after scrolling. Its resting place aligns with the article's
-info line, or its description where a page has no info line. `docs-shell.js`
-measures the offset because a title wraps to an unknown number of lines;
-without JavaScript the rail starts where the article starts.
-`toc_taxonomies: false` removes term clouds; a rail with neither TOC nor clouds
-renders nothing. `notoc` remains the page-level TOC opt-out. These switches do
-not change bylines, tags, series, pager order, feeds, or page-end composition,
-and the rail disappears below the `xl` breakpoint.
+`toc_style` accepts `fixed` or `flow`. Flow places a wider rail beside the article and fixes its position only after scrolling.
+Its resting position aligns with the article info line, or the description if no info line exists.
+`docs-shell.js` measures this offset because title wrapping is unpredictable.
+Without JavaScript, the rail starts at the article's start.
+`toc_taxonomies: false` removes term clouds. Rails with neither TOC nor clouds render nothing.
+`notoc` remains the page-level TOC opt-out.
+These switches do not change bylines, tags, series, pager order, feeds, or page-end composition.
+The rail disappears below the `xl` breakpoint.
 
 ## Search, actions, and runtime {#search-actions-and-runtime}
 
@@ -273,48 +264,41 @@ They emit no separate runtime and may be removed only in a future breaking relea
 > [!NOTE] Available since OINK 1.1
 > This API is included in OINK 1.1.0 and absent from version 1.0.0.
 
-Trusted site JavaScript may call
-`OinkCommandPalette.registerSearchTail({id, rows, activate})`; YAML and the
-action manifest remain data-only. The bundle stays conditional on local search.
-Registration requires a unique ID matching `[A-Za-z0-9][A-Za-z0-9_-]*` and two
-functions; invalid or duplicate registrations throw. The returned unregister
-function is idempotent and cannot remove a later registration reusing the ID.
-Live changes schedule one owned render; removal cancels that provider's pending action.
+Trusted site JavaScript may call `OinkCommandPalette.registerSearchTail({id, rows, activate})`.
+YAML and the action manifest remain data-only. The bundle loads only when local search is enabled.
+Registration requires a unique ID matching `[A-Za-z0-9][A-Za-z0-9_-]*` and two functions. Invalid or duplicate registrations throw.
+The returned unregister function is idempotent. It cannot remove later registrations that reuse the ID.
+Live changes schedule one owned render. Removal cancels the provider's pending action.
 
-`rows(context)` synchronously returns descriptors. Context is a frozen snapshot
-`{query, locale, phase, pageResultCount}`: query is trimmed; locale is the HTML
-language tag; phase is `results`, `empty`, or `error`; count covers only local
-page results after the limit. Providers run only for settled, non-empty text
-search, never empty, command, choice, or loading states. Rows follow all native
-results and actions in the localized Actions group, in registration order.
-Native empty/error messages and input-triggered index retry remain available.
+`rows(context)` returns descriptors synchronously. Context is a frozen `{query, locale, phase, pageResultCount}` snapshot.
+Query is trimmed. Locale is the HTML language tag. Phase is `results`, `empty`, or `error`.
+Count includes only local page results after the limit.
+Providers run only for settled, nonempty text searches. They never run in empty, command, choice, or loading states.
+Rows appear after native results and actions in the localized Actions group, in registration order.
+Native empty/error messages and input-triggered index retries remain available.
 
-Each descriptor requires a unique per-provider `id` with the same ID syntax and
-a non-empty string `title`. Optional `description`, `icon`, and `disabledReason`
-are strings; `available` is boolean, default true. OINK copies and freezes these
-fields and renders display strings as text. Invalid descriptors, duplicate IDs,
-an asynchronous return, or a thrown callback discard that provider for the
-render without affecting other providers. No callback-count promise is made.
+Each descriptor requires a unique per-provider `id` with the same ID syntax and a nonempty string `title`.
+Optional `description`, `icon`, and `disabledReason` values are strings. `available` is boolean and defaults to true.
+OINK copies and freezes these fields. Display strings render as text.
+Invalid descriptors, duplicate IDs, asynchronous returns, or thrown callbacks discard that provider for the render.
+Other providers remain unaffected. Callback counts are not guaranteed.
 
-`activate(row, context)` runs only through ordinary row activation. It receives
-the copied descriptor and its original context plus an `AbortSignal` and a
-`handoff()` function. Pending activation blocks all other row activations,
-including entry into native choice menus. Synchronous throws
-and rejected promises release pending state, keep the Palette open, and announce
-the localized action-failed message. Fulfillment values are ignored; success
-closes the Palette without stealing focus from another surface. Closing,
-reopening, changing the rendered query, or unregistering cancels pending work;
-late settlement cannot modify a newer session.
+`activate(row, context)` runs only through ordinary row activation.
+It receives the copied descriptor and original context, with an `AbortSignal` and `handoff()` function.
+While activation is pending, all other row activations are blocked, including entry into native choice menus.
+Synchronous throws and rejected promises clear pending state, keep the Palette open, and announce the localized action-failed message.
+Fulfillment values are ignored. Success closes the Palette without taking focus from another surface.
+Closing, reopening, changing the rendered query, or unregistering cancels pending work.
+Late settlement cannot modify newer sessions.
 
-Before opening another coordinated surface, call `context.handoff()`. It closes
-the Palette without returning focus or aborting that activation. The consumer
-then owns the new surface's focus and error UI. A later Palette session or
-unregistration can still cancel unfinished work; successful completion does not
-abort a handed-off operation. OINK imposes no timeout.
+Before opening another coordinated surface, call `context.handoff()`.
+It closes the Palette without returning focus or aborting the activation. The consumer then owns the new surface's focus and error interface.
+Later Palette sessions or unregistration can still cancel unfinished work.
+Successful completion does not abort handed-off operations. OINK sets no timeout.
 
-`rows()` must remain pure. This is a trusted-code contract, not a sandbox. The
-default query remains local, with no remote provider or telemetry bundled.
-Any extension network behavior and provider consent belong to the site.
+`rows()` must remain pure. This trusted-code contract is not a sandbox.
+Default queries remain local. No remote provider or telemetry is bundled.
+Sites own extension network behavior and provider consent.
 
 Desktop nonmodal Appearance permits search shortcuts; mobile modal Appearance
 and every other open dialog retain keyboard ownership. In the mobile drawer,
@@ -325,23 +309,20 @@ Choosing a visual preset in the Palette keeps it open for the next action.
 
 ## Share {#share}
 
-`params.ui.share` is empty by default and accepts any ordered subset of 16
-targets: `x`, `bluesky`, `mastodon`, `facebook`, `linkedin`, `reddit`,
-`hackernews`, `telegram`, `whatsapp`, `line`, `pinterest`, `weibo`, `chatgpt`,
-`claude`, `email`, and `copy`. A page list replaces its inherited list;
-`share: false` opts out. Unknown entries warn and are dropped. Only regular
-pages render the bar; print, Markdown, and RSS omit it.
+`params.ui.share` defaults to empty and accepts any ordered subset of 16 targets:
+`x`, `bluesky`, `mastodon`, `facebook`, `linkedin`, `reddit`, `hackernews`, `telegram`, `whatsapp`, `line`, `pinterest`, `weibo`, `chatgpt`, `claude`, `email`, and `copy`.
+Page lists replace inherited lists. `share: false` disables the share bar for that page.
+Unknown entries warn and are removed. Only regular pages display the bar.
+Print, Markdown, and RSS omit it.
 
-Targets are plain intent links carrying the page permalink/title, plus the
-local `copy_link` button. Pinterest media comes from the shared featured-image
-resolver. ChatGPT and Claude receive build-time permalink prompts and are
-independent of page-menu assistant actions. Discord has no public intent target
-and is deliberately absent.
+Targets are plain intent links containing the page permalink/title, plus a local `copy_link` button.
+Pinterest media uses the shared featured-image resolver.
+ChatGPT and Claude receive build-time permalink prompts independently of page-menu assistant actions.
+Discord has no public intent target and is deliberately absent.
 
-The bar loads no platform SDK, iframe, script, stylesheet, counter, or campaign
-parameter and makes no request until a reader activates a link. It is one
-accessible labeled glyph row. `share/items.html` resolves targets and
-`share/bar.html` renders them.
+The bar loads no platform SDK, iframe, script, stylesheet, counter, or campaign parameter.
+It sends no request until a reader activates a link. It displays one accessible labeled glyph row.
+`share/items.html` resolves targets. `share/bar.html` renders them.
 
 ## Annotation {#annotation}
 
@@ -370,131 +351,105 @@ Notices skip generated pages and pages without bodies. Natively authored pages c
 
 ## Authors and series {#authors-and-series}
 
-A blog article head is title, info line, term badges, byline, then the series
-strip; the description leads the body below them. The info line
-(`article-info.html`) always carries the date; with `reading_time` on it adds
-the word count and the minutes. Front matter `upstream_link`—the same per-page
-fact the annotation attributes—adds a localized link to the original, gated by
-the shared URL policy. Term rows are bare badge runs whose taxonomy name lives
-on the group label, not as a visible prefix. At rest a term badge is a pale
-neutral chip with muted ink, led by the taxonomy's term glyph; a linked badge
-picks up the current section's accent wash, border, and ink on hover or focus.
-`taxonomy-icon.html` owns the vocabulary—each taxonomy pairs a whole-taxonomy
-glyph with a term glyph (`folder-open`/`folder`, `tags`/`tag`, `cubes`/`cube`,
-`users`/`user-pen`, `book-bookmark`/`book` for series, generic `shapes`)—and
-`params.ui.taxonomy_icons` overrides a pair with one string for both surfaces
-or a `taxonomy`/`term` map; unusable input warns and keeps the built-in. The
-right-rail cloud wears the whole-taxonomy glyph on its head alone: cloud chips
-stay text plus count, because repeating the glyph beside an announced taxonomy
-is noise. A standalone taxonomy directory card carries one term glyph; the
-byline carries the people
-alone—portrait, name, and the profile's one-line bio—with no label and no date.
-List rows, cards, and term archives share one metadata line of the same shape:
-date, one localized author-and-section phrase, then word count and minutes
-behind the same `reading_time` switch. Under that sentence sits one wrapping
-badge line with every taxonomy's terms, taxonomies in alphabetical order, each
-badge wearing its term glyph; cards leave out `authors`, whom their sentence
-already names.
+Blog article heads show title, info line, term badges, byline, then series strip. The description starts the body below them.
+`article-info.html` always shows the date. With `reading_time` enabled, it also shows word count and minutes.
+Front matter `upstream_link` supplies the same per-page fact used by annotation.
+It adds a localized original-source link, validated by the shared URL policy.
+Term rows contain badge sequences. The taxonomy name appears on the group label, not as a visible prefix.
+Inactive badges use pale neutral backgrounds, muted text, and the taxonomy's term glyph.
+Linked badges use the current section's accent background, border, and text on hover or focus.
+`taxonomy-icon.html` defines taxonomy and term glyph pairs:
+`folder-open`/`folder`, `tags`/`tag`, `cubes`/`cube`, `users`/`user-pen`, `book-bookmark`/`book` for series, and generic `shapes`.
+`params.ui.taxonomy_icons` overrides a pair with one string for both uses, or a `taxonomy`/`term` map.
+Invalid values warn and keep built-ins.
+Right-rail clouds show the whole-taxonomy glyph only in their heading; repeating it on chips would add noise beside an already announced taxonomy.
+Their chips therefore contain only text and counts.
+Standalone taxonomy directory cards show one term glyph.
+Bylines show only portraits, names, and one-line profile bios. They have no label or date.
+List rows, cards, and term archives share a metadata line: date, localized author-and-section phrase, then word count and minutes.
+The same `reading_time` switch controls these last two values.
+A wrapping badge line follows, with terms from every taxonomy in alphabetical taxonomy order.
+Each badge has its term glyph. Cards omit `authors` because the metadata sentence already names them.
 
-Authors activate only through `taxonomies: {author: authors}`. The profile term
-page owns display name, summary, body, and featured-image avatar; an absent
-profile falls back to link title, initial, and archive. `authors-resolve.html`
-preserves front-matter order for article heads, list rows, and one RSS
-`dc:creator` per author. Legacy `author` remains unchanged when `authors` is
-absent; when both exist, `authors` wins without warning. Custom author taxonomy
-plurals behave as ordinary taxonomies.
+Authors activate only through `taxonomies: {author: authors}`.
+Profile term pages define display names, summaries, bodies, and featured-image avatars.
+Missing profiles use link titles, initials, and archives.
+`authors-resolve.html` keeps front matter order for article heads, list rows, and one RSS `dc:creator` per author.
+Legacy `author` stays unchanged when `authors` is absent.
+When both exist, `authors` takes precedence without warning. Custom author-taxonomy plurals remain ordinary taxonomies.
 
-Series activate only through `taxonomies: {series: series}`. Term pages own the
-introduction; no parameter, data file, cover model, or runtime is added. A page
-uses `series: [name]` and optional `series_weight`. `series-pages.html` orders
-weighted members first by weight, then unweighted members by ascending date,
-with `Path` tie-breaks; strip and term page share it. The first named series gets
-one HTML/print strip. The panel is translucent over a blur rather than an opaque
-card, because a `hero` article paints its featured image behind this band and an
-opaque ground would punch a hole through the picture; on a plain article the tint
-resolves to the page's own ground, so one treatment serves both. Its summary owns
-the full bar and trailing caret, while the series name -- its taxonomy icon
-included -- remains a sibling link laid over a hidden width reservation so the
-summary never contains a nested interactive control. Opening the bar rules a
-hairline under it and places the reading order in one adaptive grid on the same
-surface, preserving DOM order. Every member link owns its ordinal, set at the end
-of a fixed square track so the titles hold one edge at any list length; equal
-cells stay one column when narrow and add columns only while each title retains a
-readable measure, so a desktop panel uses its width without stretching one
-selected row across it. Hover and the reader's own place borrow the two grounds
-sidebar navigation already uses for those states, and the current member adds a
-filled ordinal and a heavier title, so the cue is never colour alone. Print shows the same list expanded in one column. Singleton
-series and non-HTML outputs omit it. Numbering, cross-references, and aggregate
-output remain Book concerns.
+Series activate only through `taxonomies: {series: series}`. Term pages own the introductions without adding a parameter, data file, cover model, or runtime.
+Pages use `series: [name]` with optional `series_weight`.
+`series-pages.html` puts weighted members first, ordered by weight. Unweighted members follow in ascending date order, with `Path` tie-breaks.
+The strip and term page share this order. The first named series gets one HTML/print strip.
+The panel uses translucency and background blur because an opaque surface would obscure the featured image behind the band in `hero` articles.
+On plain articles, the tint resolves to the page background, allowing one treatment to serve both.
 
-The default article taxonomy chips omit reserved `authors` and `series` because
-their dedicated surfaces already carry them. Explicit
-`params.taxonomy.page_header` restores either.
+The summary covers the full bar and trailing caret, while the series name and taxonomy icon remain a sibling link over a hidden width reservation.
+This keeps nested interactive controls out of the summary. Opening adds a thin rule below the bar and displays reading order in an adaptive grid on the same surface, preserving DOM order.
+
+Each member link aligns its ordinal at the end of a fixed square track so titles keep one edge at every list length.
+Equal cells stay in one column when narrow and add columns only while titles retain a readable width, allowing desktop panels to use their width without stretching one selected row across the panel.
+Hover and current-position states reuse the two backgrounds from sidebar navigation; current members also have filled ordinals and heavier titles, so color is not the only cue.
+Print expands the list in one column. Singleton series and non-HTML outputs omit the strip.
+Numbering, cross-references, and aggregate outputs remain Book features.
+
+Default article taxonomy chips omit reserved `authors` and `series` because dedicated features already show them.
+Explicit `params.taxonomy.page_header` restores either.
 
 ## Blog indexes and page composition {#blog-indexes-and-page-composition}
 
-Blog section indexes use `params.ui.blog_index`: `list` (default) and `cards`
-are one flat run, newest first, sharing `blog_index_size` pagination—the
-metadata line's dates make year headings redundant; `table` shows the whole
-section as date/title/tag rows without pagination. Cards use the shared lead
-image, localized date/author/section metadata, tags, and a three-line summary.
+Blog section indexes use `params.ui.blog_index`.
+`list`, the default, and `cards` show one flat sequence, newest first, with shared `blog_index_size` pagination; metadata dates make year headings unnecessary.
+`table` shows the complete section as date/title/tag rows without pagination.
+Cards use shared lead images, localized date/author/section metadata, tags, and three-line summaries.
 
-A taxonomy page (`/tags/`, `/authors/`) and its term pages share one head,
-`shell/taxonomy-head.html`. The taxonomy page opens with the whole-taxonomy
-glyph in a tinted tile, the localized name, and a count of terms. A term page
-opens with the term's title and its page count from `ui_taxonomy_pages`, using
-the current locale's CLDR plural form; where no breadcrumb is rendered, a kicker above the
-title names the taxonomy and links back to it, since an enabled trail already
-does both one line higher: a crumb standing for a generated taxonomy page
-borrows the same localized label the head renders, not Hugo's plural title.
-Under the head the taxonomy page lays its terms out as a grid of one-line
-cards, `shell/taxonomy-cards.html`, most-used first with alphabetical ties—the
-order the rail cloud already uses—filling equal columns by `auto-fill` so a
-short taxonomy never stretches two cards across the page. A card is the term
-glyph, the term, and its page count, and the whole card is the link; authors
-alone lead with the byline's small portrait through the same avatar partial.
-No card carries a description or a newest page: a term has nothing to say
-that its title and count do not, and the extra line only blurred the grid.
-There is no filter chip row and no "All" chip: the section root already lives
-in the sidebar and the navbar. Term pages stay row lists, and author profiles
-keep their own head.
+Taxonomy pages such as `/tags/` and `/authors/`, and their term pages, share `shell/taxonomy-head.html`.
+Taxonomy heads show a whole-taxonomy glyph in a tinted tile, the localized name, and term count.
+Term heads show the term title and page count from `ui_taxonomy_pages`, using the locale's CLDR plural form.
+If no breadcrumb appears, a label above the title names and links the taxonomy, since enabled breadcrumbs already provide this context.
+Generated taxonomy breadcrumbs use the head's localized label, not Hugo's plural title.
+Below the head, `shell/taxonomy-cards.html` lays out one-line term cards.
+They use the rail cloud's order: most-used first, with alphabetical ties.
+`auto-fill` creates equal columns, preventing short taxonomies from stretching two cards across the page.
+Each card contains the term glyph, term, and page count. The whole card is linked.
+Author cards instead lead with the byline's small portrait, using the same avatar partial.
+Cards include no description or newest page because the title and count already identify the term; another line only blurs the grid.
+There is no filter-chip row or "All" chip because the section root is already in the sidebar and navbar.
+Term pages stay row lists. Author profiles keep their own head.
 
-The rail on a taxonomy or term page leads with `shell/taxonomy-switcher.html`:
-one row per declared taxonomy—whole-taxonomy glyph, localized name, term
-count—linking to its index page, the current taxonomy on the selected ground.
-It is the way from one taxonomy's pages to another's, because cloud chips jump
-to terms and cloud heads only collapse; a site with one taxonomy renders no
-switcher. The group sits behind the same `toc_taxonomies` switch as the clouds.
-A taxonomy page scopes its clouds to the whole site (`taxonomy-root.html`
-returns no root for that kind) and omits its own cloud, whose terms are the
-cards beside it; term pages keep the section scope and the full set.
+Taxonomy and term rails start with `shell/taxonomy-switcher.html`.
+Each declared taxonomy has one row with its whole-taxonomy glyph, localized name, and term count, linking to its index.
+The current taxonomy uses the selected background.
+The switcher connects taxonomy pages because cloud chips link to terms and cloud headings only collapse.
+Sites with one taxonomy show no switcher. The switcher and clouds share the `toc_taxonomies` switch.
+Taxonomy pages scope clouds to the whole site (`taxonomy-root.html` returns no root for this page kind) and omit their own cloud because its terms already appear in the cards.
+Term pages keep section scope and all clouds.
 
-`params.ui.blog_index_toggle` renders all three forms for the current paginator
-slice and lets readers cycle them. The configured form controls first paint and
-hidden forms load no images. A reader's stored choice is scoped to indexes that
-publish all three forms: a section whose toggle is off publishes one form and
-always shows it. A front-matter value or cascade overrides the site mode per
-section. A table published without the toggle remains a complete, unpaginated
-archive.
+`params.ui.blog_index_toggle` renders all three forms for the current paginator slice and lets readers cycle between them.
+The configured form controls initial display. Hidden forms load no images.
+Stored reader preferences apply only to indexes that publish all three forms.
+Sections without toggles publish one form and always show it.
+Front matter or cascades override site mode per section.
+Tables published without toggles remain complete, unpaginated archives.
 
-`params.logo` is always the brand mark; `params.wordmark`, or the site title, is
-the text half hidden at compact widths. Docs, Book, Blog, and Swagger share one
-shell model. Page-end order is Share, Feedback, Annotation, Pager, Comments.
-Docs/Book pager follows sidebar preorder; Blog uses weight then reverse date;
-`pager: false` opts out. Static outputs omit pager UI.
+`params.logo` always supplies the brand mark. `params.wordmark`, or the site title, supplies text hidden at compact widths.
+Docs, Book, Blog, and Swagger share one shell model.
+Page-end order is Share, Feedback, Annotation, Pager, Comments.
+Docs/Book pagers follow sidebar preorder. Blog pagers use weight, then reverse date.
+`pager: false` disables the pager. Static outputs omit pager controls.
 
-Every rendered footer style keeps an icon-only utility dock at the end of its
-bottom line: version, language, theme, then keyboard help. Its menus open upward;
-the version trigger never exposes the current branch or release label. The fat
-footer's collapse chevron follows the dock. Below `lg` the bottom line gives up
-its copyright/center/dock columns and stacks them as three centered full-width
-rows, the dock last. These global controls do not render in the sidebar footer,
-and `footer_style: none` removes the whole bottom line.
+Every rendered footer has an icon-only utility dock at the end of its bottom line.
+Dock order is version, language, theme, then keyboard help. Menus open upward.
+The version control never shows the current branch or release label.
+The fat footer's collapse chevron follows the dock.
+Below `lg`, copyright, center content, and dock become three centered full-width rows, with the dock last.
+These global controls do not appear in sidebar footers.
+`footer_style: none` removes the whole bottom line.
 
-There is no archive shell, arbitrary-depth flyout, second navigation authority,
-query upload, or browser compatibility shim for removed config. Feedback emits
-only `docs_feedback` through an existing `gtag`, stores the choice locally, and
-does not replace Giscus.
+There is no archive shell, arbitrary-depth flyout, second navigation authority, query upload, or browser compatibility shim for removed configuration.
+Feedback sends only `docs_feedback` through an existing `gtag` and stores the selection locally.
+It does not replace Giscus.
 
 An explicit `params.ui.quick_links: []` disables quick links instead of restoring
 the defaults. Invalid `sidebar_root_link_self` values warn and keep the documented
@@ -503,10 +458,8 @@ including production builds with visible warnings.
 
 ## Verification {#verification}
 
-`bin/check-navigation-contract.py`, `bin/check-shell.py`, JS tests, output
-goldens, and the consumer browser suite cover navigation, language/subpath
-links, blog variants, page-end order, keyboard behavior, accessibility, and
-responsive layout.
+`bin/check-navigation-contract.py`, `bin/check-shell.py`, JS tests, output goldens, and consumer browser tests verify these contracts.
+They cover navigation, language/subpath links, blog variants, page-end order, keyboard behavior, accessibility, and responsive layout.
 
 ## Appearance control {#appearance-control}
 

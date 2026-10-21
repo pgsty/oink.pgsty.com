@@ -1,20 +1,20 @@
 ---
 title: Search
 linkTitle: Search
-description: Turn on local search, control index size and result ranking, and make CJK queries land.
+description: Enable local search. Control index size and result ranking, and configure useful CJK query matches.
 weight: 60
 search_keywords: [offline_search, full-text search, search, local search, index, Lunr, CJK, search_boost, search_keywords, search_exclude, Algolia, DocSearch, Google CSE]
 aliases:
   - /docs/advanced/search/
 ---
 
-OINK's search is local search: Hugo generates one JSON index per language at
-build time, the reader's browser downloads it, and the search runs in the
-browser. No crawler, no account, no CDN, and no network access. The theme leaves
-it off, and one line of configuration turns it on.
+OINK uses local search. Hugo generates one JSON index per language at build
+time. The reader's browser downloads the index and runs the search locally.
+Search requires no crawler, account, CDN, or external search service. It is off by
+default. Enable it with one configuration line.
 
-The entry point to search is the command palette; how to open it and what else
-it holds are in [Command palette](/docs/customize/panel/).
+Search opens through the command palette. See [Command palette](/docs/customize/panel/)
+for opening methods and its other contents.
 
 ## Turning on local search {#enable}
 
@@ -23,19 +23,19 @@ params:
   offline_search: true
 ```
 
-This one key decides whether the index, the Lunr runtime and the search dialog
-reach a page. Three conditions must hold together:
+This key controls the page's index reference, Lunr runtime, and search dialog.
+All three conditions must hold:
 
 - `params.offline_search` is true;
 - The page is the home page, or uses a shell layout (`docs` / `book` / `blog` / `swagger` — see [Layouts and page types](/docs/customize/layout/)), or is a landing page with `params.ui.landing_search` on;
 - The current output is not print.
 
-If any one fails, the build puts no dialog, no index reference and no Lunr into
-that page. Those resources are not hidden; they are never generated.
+If any condition fails, the build includes no dialog, index reference, or
+Lunr runtime on that page. The resources are not hidden. They are not generated.
 
-Under `hugo server` the index is generated **as well** by default, so the
-preview behaves like production. On a very large site, where rebuilding the
-whole index on every change slows the preview noticeably, turn it off:
+By default, `hugo server` **also** generates the index, so preview matches
+production. On a very large site, rebuilding the complete index can noticeably
+slow each preview change. To disable preview index generation, use:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -46,9 +46,9 @@ params:
 
 ## Controlling index size {#index-scope}
 
-`offline_search_index` decides how much of each page goes into the index, and so
-decides two things at once: whether a reader can find words from the body, and
-how large the first search's download is.
+The `offline_search_index` key sets how much page content the index contains.
+It determines whether readers can find body text and the download size for
+their first search.
 
 ```yaml {title="hugo.yml"}
 params:
@@ -62,19 +62,19 @@ params:
 | --- | --- | --- |
 | `title` | Title, tags, categories, `search_keywords` | A very large site where titles alone locate a page |
 | `heading` | The above plus every heading in the page | When headings are specific enough |
-| `summary` | The above plus description and summary | Sites in the thousands of pages; this site uses it |
+| `summary` | The above plus description and summary | Sites with thousands of pages. This site uses it |
 | `content` | The above plus the full plain text | The default, suitable up to a few hundred pages |
 
-Any other value warns and uses `content` during ordinary preview; a strict
+In normal preview, any other value warns and uses `content`. A strict
 publishing build fails on `invalid params.offline_search_index`.
 
-`offline_search_summary_length` is where a result row's excerpt is cut (default
-70), and `offline_search_max_results` caps the number of results (default 10).
+The `offline_search_summary_length` key limits result excerpts (default 70).
+The `offline_search_max_results` key limits result count (default 10).
 The full definitions are in [Configuration](/docs/customize/config/).
 
 > [!IMPORTANT] One index per language, budgeted at 2 MiB raw and 512 KiB gzipped.
-> The reader downloads the whole index before searching for a first word. Past
-> that size, step `offline_search_index` down from `content` to `summary`.
+> The browser downloads the complete index before the first search. If it
+> exceeds this budget, reduce `offline_search_index` from `content` to `summary`.
 
 ## Adjusting ranking {#ranking}
 
@@ -88,15 +88,15 @@ search_boost: 1.5
 ---
 ```
 
-`search_keywords` adds matching terms and takes either a string or an array. It
-is the more useful of the two: a reader searching `pg` or `GUC` reaches a page
-whose title only says "PostgreSQL parameters". In ranking, keywords weigh less
-than the title and more than the body.
+The `search_keywords` key adds matching terms as a string or array. It is more
+useful than the boost setting. Readers searching `pg` or `GUC` can find a page
+titled only "PostgreSQL parameters". Keywords have less ranking weight than
+the title and more than the body.
 
-`search_boost` is a positive multiplier on the final score, defaulting to `1.0`
-and applied on top of the text match score. `1.5` does not pin a page to first
-place; it moves the page up among results it already matched. Zero, a negative
-number and a non-number all warn and are treated as `1.0`.
+The `search_boost` key is a positive multiplier applied to the text match score.
+Its default is `1.0`. A value of `1.5` does not guarantee first place. It
+raises the rank only among results that already match. Zero, negative numbers,
+and non-numbers warn and use `1.0`.
 
 Set a section-wide default once with a cascade:
 
@@ -108,9 +108,9 @@ cascade:
 ---
 ```
 
-A page's own value overrides the inherited one. Pages under this site's `docs/`
-use `search_keywords` in exactly this way: each lists the Chinese phrasing, the
-English term and the configuration key name.
+A page's own value overrides its inherited value. Pages under this site's
+`docs/` use `search_keywords` for Chinese phrasing, English terms, and
+configuration key names.
 
 ## Keeping a page out of the index {#exclude}
 
@@ -121,9 +121,9 @@ search_exclude: true
 ---
 ```
 
-`search_exclude` is the only spelling. The removed `exclude_search` and
-`excludeSearch` keys are not read and therefore do not protect a page; the
-migration checker reports them. A page with an empty body is not indexed.
+Use only `search_exclude`. The theme ignores the removed `exclude_search`
+and `excludeSearch` keys, so they do not exclude a page. The migration checker
+reports them. The index also excludes pages with empty bodies.
 
 > [!WARNING] The index is a static JSON file anyone can download; it is not access control.
 > Do not put content that should stay private on the site, and do not use
@@ -131,33 +131,31 @@ migration checker reports them. A page with an empty body is not indexed.
 
 ## Chinese and CJK {#cjk}
 
-Lunr cannot reliably tokenize Chinese. When the palette detects a CJK character
-in the query, the whole query switches to substring matching: it compares title,
-keywords, in-page headings, description and body in turn, scores whichever layer
-matched, and finally multiplies by `search_boost` as usual. Both paths rank by
-the same rules.
+Lunr cannot reliably tokenize Chinese. If the palette detects a CJK character,
+it uses substring matching for the complete query. It compares title, keywords,
+in-page headings, description, and body in order. It scores the matching layer,
+then multiplies by `search_boost`. Both search paths use the same ranking rules.
 
-In the 1.2.0 working implementation, a keyword-only match displays the page
-description or excerpt, keeping synonym lists out of result summaries. A body
-match still displays surrounding text as context.
+In the 1.2.0 working implementation, a keyword-only match shows the page
+description or excerpt. Result summaries therefore omit synonym lists. Body
+matches still show surrounding text for context.
 
-Three things follow:
+This behavior has three effects:
 
-- A CJK query is a **substring** match. Searching 主从复制 finds only where those four characters appear consecutively; 复制主从 returns nothing.
-- `search_keywords` therefore pays off most on a Chinese site: write in the synonyms, English terms and abbreviations a reader might use.
-- While an input method is composing, the palette does not recompute; it searches once the text is committed, so typing Chinese does not refresh results character by character.
+- A CJK query uses **substring** matching. Searching 主从复制 matches only those four consecutive characters. The query 复制主从 returns nothing.
+- The `search_keywords` key is therefore especially useful for Chinese sites. Add synonyms, English terms, and abbreviations that readers might search.
+- During input-method composition, the palette does not recompute results. It searches after text is committed. Chinese typing therefore does not refresh results for each character.
 
-When a Chinese query finds nothing, first confirm the Chinese page reached the
-Chinese index (see Verify below) before suspecting tokenization.
+If a Chinese query finds nothing, first confirm that the Chinese index contains
+the page. See Verify below. Then investigate tokenization.
 
 ## Optional: hosted search {#hosted}
-Besides local search, the theme keeps two hosted integrations, both off by
-default. **Enable only one at a time**: with more than one configured the build
-warns `You have more than one site-search option configured`.
+The theme also provides two hosted search integrations. Both are off by default.
+**Enable only one at a time**. If more than one is configured,
+the build warns `You have more than one site-search option configured`.
 
-Enabling hosted search means accepting that service's crawling behaviour,
-availability and privacy boundary, all of which belong in the site's privacy
-statement.
+If you enable hosted search, you accept its crawling behavior, availability,
+and privacy boundary. Document these in the site's privacy statement.
 
 ### Algolia DocSearch {#algolia}
 
@@ -193,9 +191,9 @@ layout: search
 ---
 ```
 
-The search box submits the query to `<baseURL>/search/?q=…`, and Google's script
-renders the results on that page, which needs access to `cse.google.com`. It is
-likewise an external service and is not rendered here.
+The search box submits queries to `<baseURL>/search/?q=…`. Google's script
+renders results on that page, which requires access to `cse.google.com`. This
+integration uses an external service. This page renders no demonstration.
 
 ## Verify {#verify}
 
@@ -206,12 +204,12 @@ likewise an external service and is not rendered here.
    ls public/offline-search-index.*
    ```
 
-   In a development build the filename is `offline-search-index.zh.json`; a
-   production build fingerprints it, as in
-   `offline-search-index.zh.7ab….json`. One file per language, and a missing
-   one means that language's pages never reached an index.
+   A development build uses `offline-search-index.zh.json`. A production build
+   fingerprints the filename, such as `offline-search-index.zh.7ab….json`.
+   Confirm one file per language. If a file is missing, that language's pages
+   never reached an index.
 
-2. Look inside the index — the first step in diagnosing "Chinese finds nothing":
+2. Inspect the index first when diagnosing "Chinese finds nothing":
 
    ```bash
    python3 -c "import glob,json; f=sorted(glob.glob('public/offline-search-index.zh*.json'))[0]; \
@@ -221,9 +219,9 @@ likewise an external service and is not rendered here.
    The entry count should be close to the number of Chinese pages, and the
    `keywords` and `boost` fields should show what the front matter set.
 
-3. Open the site, press <kbd>/</kbd>, and search once with an English word and once with a Chinese one. Results are grouped by content root, each group named after the first breadcrumb segment.
+3. Open the site and press <kbd>/</kbd>. Search an English word, then a Chinese word. Confirm that results group by content root. Each group uses the first breadcrumb segment as its name.
 
-4. On a subpath deployment (the site under something like `https://example.com/docs/`), open the browser's network panel and confirm the index request carries the subpath. An index request hitting the domain root and returning 404, while the rest of the page works, is the most common cause of "search returns nothing".
+4. For a subpath deployment, such as `https://example.com/docs/`, open the browser's network panel. Confirm that the index request includes the subpath. An index request to the domain root can return 404 while the page works. This is the most common cause of "search returns nothing".
 
 ## Related {#related}
 

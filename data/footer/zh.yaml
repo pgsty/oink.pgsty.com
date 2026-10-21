@@ -10,12 +10,12 @@ columns:
       - { label: OINK 是什么, url: docs/about/ }
       - { label: 特性, url: docs/about/features/ }
       - { label: 示例站点, url: docs/about/showcase/ }
-      - { label: 开源许可与致谢, url: docs/about/license/ }
+      - { label: 许可与致谢, url: docs/about/license/ }
   - title: 文档
     links:
       - { label: 快速上手, url: docs/start/ }
       - { label: 创作内容, url: docs/write/ }
-      - { label: 组件, url: docs/components/ }
+      - { label: 组件介绍, url: docs/components/ }
       - { label: 定制站点, url: docs/customize/ }
   - title: 维护管理
     links:
@@ -25,9 +25,9 @@ columns:
       - { label: 配置总览, url: docs/customize/config/ }
   - title: "社区与知识"
     links:
-      - { label: 博客, url: blog/ }
+      - { label: "GitHub 仓库", url: "https://github.com/pgsty/oink", external: true }
+      - { label: Oink 博客, url: blog/ }
       - { label: 版本发布, url: blog/release/ }
-      - { label: "GitHub", url: "https://github.com/pgsty/oink", external: true }
-      - { label: "Docsy 讨论区", url: "https://github.com/google/docsy/discussions", external: true }
-      - { label: "PG 中文文档", url: "https://pgsql.cc/docs/", external: true }
-      - { label: "PG 知识图谱", url: "https://pg.center/docs/reference/", external: true }
+      - { label: "Docsy 讨论", url: "https://github.com/google/docsy/discussions", external: true }
+      - { label: "PG.Center", url: "https://pg.center/docs/reference/", external: true }
+      - { label: "PGSQL.CC", url: "https://pgsql.cc/docs/", external: true }

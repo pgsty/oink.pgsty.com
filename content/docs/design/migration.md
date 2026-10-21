@@ -13,20 +13,17 @@ contract_status: v1.3.0
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 
-This is source and configuration guidance, not a release ledger. Local source,
-commit, tag, push, consumer pin, deployment, and production parity remain
-separate states. For the reader-facing upgrade procedure, see
-[Upgrade](/docs/admin/upgrade/).
+This page gives source and configuration guidance. It is not a release record.
+Local source, commit, tag, push, consumer pin, deployment, and production parity remain separate states.
+See [Upgrade](/docs/admin/upgrade/) for the reader-facing procedure.
 
 ## Toolkit scope {#toolkit-scope}
 
-`bin/migrations/oink06.py` only scans and automatically rewrites Markdown files
-under a site's content directory, including supported YAML front matter. It
-does not rewrite Hugo configuration, data files, layouts, assets, modules, or
-generated output. TOML/JSON front matter and ambiguous Markdown are reported
-with positions for manual review.
+`bin/migrations/oink06.py` scans and automatically rewrites only Markdown in a site's content directory, including supported YAML front matter.
+It does not rewrite Hugo configuration, data, layouts, assets, modules, or generated output.
+It reports TOML/JSON front matter and ambiguous Markdown with source positions for manual review.
 
-Dry-run is the default and a completed migration is idempotent:
+Dry-run is the default. Completed migrations are idempotent:
 
 ```sh
 python3 bin/migrations/oink06.py report --sites <dir>... --md report.md --json report.json
@@ -35,17 +32,13 @@ python3 bin/migrations/oink06.py migrate --site <dir> --write
 python3 bin/migrations/oink06.py check --site <dir>
 ```
 
-Code-fence contents are not rewritten, including fences that begin on the
-same line as an ordered or unordered list marker, with optional blockquotes.
-An extra literal quote prefix inside a code example does not close that fence.
-`book_figures.py` retains narrow TPME, DDIA
-v1/v2, and pg-internal profiles; it is not a generic parser.
+Code-fence contents are not rewritten, including fences starting on the same line as ordered or unordered list markers, with optional blockquotes.
+An extra literal quote prefix within a code example does not close the fence.
+`book_figures.py` keeps narrow TPME, DDIA v1/v2, and pg-internal profiles. It is not a generic parser.
 
-The isolated validation tools `bin/measure-baseline.py` and
-`bin/sites/build-all.py` reject snapshot destinations that overlap any input
-site, the running tools checkout, the selected theme checkout, or another
-snapshot before deleting existing output. This includes `--keep` destinations
-reached through symlink aliases and an alternate `--theme` checkout.
+Before deleting existing output, `bin/measure-baseline.py` and `bin/sites/build-all.py` reject snapshot destinations that overlap protected locations.
+These locations include input sites, the running tools checkout, the selected theme checkout, and other snapshots.
+The check includes `--keep` destinations through symlink aliases and alternate `--theme` checkouts.
 
 ## Updating consumer repositories {#updating-consumers}
 
@@ -115,8 +108,7 @@ The tool does not edit content, commit, push, or deploy. Record each state separ
 
 ## Configuration and front matter {#configuration-and-front-matter}
 
-The following configuration changes are manual; the toolkit may report
-matching front-matter keys but never edits site configuration.
+Make these configuration changes manually. The toolkit may report matching front matter keys but never edits site configuration.
 
 | Old | Current |
 | --- | --- |
@@ -136,11 +128,10 @@ matching front-matter keys but never edits site configuration.
 | `ui.typography.preset` | `ui.typography` |
 | `print.disable_toc` | `print.toc` (inverted) |
 
-Prism, `rss_sections`, and `algolia_docsearch` are removed. Chroma is the only
-highlighter; Algolia configuration is `search.algolia`. Page overrides drop the
-`ui.` prefix. Legacy `hide_feedback`, `hide_readingtime`, `exclude_search`,
-`content_width`, camelCase manual links, and nested front-matter `ui` maps are
-reported with replacements.
+Prism, `rss_sections`, and `algolia_docsearch` are removed.
+Chroma is the only highlighter. Algolia configuration uses `search.algolia`.
+Page overrides omit `ui.`.
+Legacy `hide_feedback`, `hide_readingtime`, `exclude_search`, `content_width`, camelCase manual links, and nested front matter `ui` maps are reported with replacements.
 
 ## 0.5 to 0.6 {#from-05-to-06}
 
@@ -158,10 +149,8 @@ They add no content type. Immersive reading remains on the ordinary blog shell.
 
 ## Prerequisites and validation {#prerequisites-and-validation}
 
-Enable Goldmark unsafe rendering, block attributes, and standalone block images
-as shown in the [component contract](/docs/design/components/). Enable
-passthrough explicitly for `\(...\)`, `\[...\]`, or `$$...$$`; Hugo does not
-merge theme markup config.
+Enable Goldmark unsafe rendering, block attributes, and standalone block images as specified in the [component contract](/docs/design/components/).
+Enable passthrough explicitly for `\(...\)`, `\[...\]`, or `$$...$$`. Hugo does not merge theme markup configuration.
 
 Run the smallest source and output checks for the changed contract with pinned Hugo Extended 0.168.0.
 For runtime changes, also run JS tests. Run production root and subpath builds.

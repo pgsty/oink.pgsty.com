@@ -1,19 +1,17 @@
 ---
 title: Includes
 linkTitle: Includes
-description: Pull an external file in with include, print a site parameter with param, and write a note that reaches no output at all with comment.
+description: Use include to insert a file, param to print a site parameter, and comment to remove a note from every output.
 weight: 200
 search_keywords: [include, file, snippet, reuse, readfile, param, interpolation, comment]
 params:
   pigsty_pg_major: 18
 ---
 
-Three shortcodes, one job each: `include` puts another file's contents into this
-page, `param` prints a page or site parameter, and `comment` discards a passage.
-They are for fragments reused across pages and constants scattered over many:
-one set of install steps that appears on three pages is an `include`, a version
-number that appears on dozens is a `param`, and either way you edit one place.
-Content that appears on one page belongs on that page.
+`include` inserts another file's content into the page. `param` prints a page or site parameter. `comment` removes a passage.
+Use them for fragments or constants shared by multiple pages.
+For example, use `include` for installation steps on three pages and `param` for a version number on dozens of pages.
+You then edit one source. Keep content used by only one page on that page.
 
 ## Shortest form {#minimal}
 
@@ -23,7 +21,7 @@ Content that appears on one page belongs on that page.
 {{</* include file="parts/install-oink.md" */>}}
 ```
 
-The file it pulls in is ordinary Markdown living under `assets/`:
+The included file contains ordinary Markdown under `assets/`:
 
 ````markdown {title="assets/parts/install-oink.md"}
 Installing OINK into an existing Hugo site takes three commands:
@@ -40,17 +38,15 @@ hugo server
 The current release is {{</* param version */>}}.
 ````
 
-The result is what you would get by writing it here: the code block has its copy
-button and the callout is a callout.
+The result is the same as writing the content here. The code block has a copy button, and the callout displays normally.
 
 {{< include file="parts/install-oink.md" >}}
 
-The file that gets included is not a page of its own: it is absent from the
-sidebar, it takes no part in translation pairing, and it has no URL.
+An included file is not a separate page. It has no sidebar entry, translation pairing, or URL.
 
 ## Where the file comes from {#sources}
 
-`file` resolves in this order, first match wins:
+`file` resolves in this order. The first match takes precedence:
 
 | Order | Looked up as | Written as |
 | --- | --- | --- |
@@ -61,24 +57,20 @@ sidebar, it takes no part in translation pairing, and it has no URL.
 If no source matches, or the path contains `..`, the include warns and emits nothing. Review the warning and rendered fallback before publication.
 Include reads only from `content/` and `assets/`.
 
-A Markdown fragment is read as source, so write the file's real name on disk.
-One trap belongs to step 1 alone: Hugo attaches a language-suffixed page
-resource such as `notice.zh.md` under its stripped name, so asking a bundle for
-`notice.md` hands `include` already-rendered HTML instead of the source, and
-`<div class="td-code">` turns up in the Markdown output. Under `assets/` and
-`content/` the name you write is the file you get. Non-Markdown files
-(`.yaml`, `.sh`, `.txt`) never have this distinction.
+Markdown fragments are read as source. Use the file's actual disk name.
+Page resources in step 1 have one exception. Hugo attaches language-suffixed resources such as `notice.zh.md` under a name without the language suffix.
+Requesting `notice.md` from a bundle therefore gives `include` rendered HTML instead of source.
+The Markdown output can then contain `<div class="td-code">`.
+Under `assets/` and `content/`, the written name identifies the exact file. Non-Markdown files (`.yaml`, `.sh`, `.txt`) have no such distinction.
 
-Each language of this page includes its own fragment: English pulls
-`assets/parts/install-oink.md`, Chinese pulls `assets/parts/install-oink.zh.md`.
-Keeping them under `assets/` rather than in the page bundle is what lets both
-languages fetch the source under the name they write.
+Each language of this page includes its own fragment.
+English uses `assets/parts/install-oink.md`; Chinese uses `assets/parts/install-oink.zh.md`.
+Storing fragments under `assets/` instead of the page bundle lets both languages retrieve source with the written filename.
 
 ## Including code files {#code}
 
-`code=true` renders the file as a code block, and `lang=` sets the highlighting
-language. Point it at a real file in the repository and the documentation cannot
-drift from it.
+`code=true` displays the file as a code block. `lang=` sets its highlighting language.
+Use a real repository file to keep the documentation consistent with that file.
 
 ```markdown {title="Source"}
 {{</* include file="parts/module.yml" code=true lang="yaml" */>}}
@@ -86,30 +78,24 @@ drift from it.
 
 {{< include file="parts/module.yml" code=true lang="yaml" >}}
 
-Code blocks and fences share one pipeline: highlighting, line numbers and the
-copy button all work. Fence attributes (`title=`, `collapse`, `hl_lines=`)
-cannot be passed through; when you need them, write the content as an ordinary
-[code block](/docs/components/code/).
+Included code and fences share the same pipeline for highlighting, line numbers, and copying.
+You cannot pass fence attributes such as `title=`, `collapse`, or `hl_lines=` through include.
+If you need them, write an ordinary [code block](/docs/components/code/).
 
 ## What a fragment can contain {#snippet-content}
 
-A fragment is page-level Markdown rendered in the current page's context:
-callouts, tables, lists, images, steps and shortcodes all work. The last line of
-the fragment above — "The current release is v0.8.1" — is its
-`{{</* param version */>}}` expanded on this page.
+Fragments use page-level Markdown in the current page's context. They support callouts, tables, lists, images, steps, and shortcodes.
+The example fragment's last line, "The current release is v0.8.1", comes from `{{</* param version */>}}` expanded on this page.
 
-When two pages include one fragment, each renders it separately and each
-generates its own heading anchors and code-block IDs. They do not collide.
+If two pages include the same fragment, each renders it separately. Each generates its own heading anchors and code-block IDs without collisions.
 
 > [!TIP] What makes a good fragment
-> Install commands, connection strings, support matrices, legal notices:
-> content that changes, and that must change everywhere at once. Content that
-> appears on one page belongs on that page.
+> Use fragments for installation commands, connection strings, support matrices, and legal notices that must change on all pages together.
+> Keep content used by only one page on that page.
 
 ## Printing a site parameter {#param}
 
-`param` prints one parameter: this page's front matter first, then the site
-configuration — Hugo's `.Param` rule.
+`param` prints one parameter. It checks page front matter first, then site configuration, following Hugo's `.Param` rule.
 
 ```markdown {title="Source"}
 This site publishes {{</* param version */>}}, copyright from {{</* param copyright.from_year */>}},
@@ -124,8 +110,8 @@ Missing parameters and values that are maps or lists warn and print nothing. Rev
 
 ## Parameters inside commands, tables and links {#param-in-place}
 
-`param` emits escaped plain text, so it can sit in a code fence, a table cell or
-a link target. A version number in an install command is the obvious case:
+`param` emits escaped plain text. It can appear in code fences, table cells, or link targets.
+For example, use it for a version number in an installation command:
 
 ````markdown {title="Source"}
 ```sh
@@ -151,15 +137,12 @@ hugo mod get github.com/pgsty/oink@{{< param tdVersion.latest >}}
 
 [Release notes](https://github.com/pgsty/oink/releases/tag/{{< param tdVersion.latest >}})
 
-Where site parameters are defined and which exist is in
-[Configuration](/docs/customize/config/); page parameters
-are in [front matter](/docs/write/frontmatter/).
+[Configuration](/docs/customize/config/) defines site parameters. [Front matter](/docs/write/frontmatter/) defines page parameters.
 
 ## Notes deleted at build time {#comment}
 
-A `comment` body appears in none of the four outputs — HTML, print, Markdown,
-RSS. An HTML comment is different: it stays in the page source and reaches
-`llms.txt`.
+A `comment` body appears in none of the four outputs: HTML, print, Markdown, or RSS.
+HTML comments remain in page source and reach `llms.txt`.
 
 ```markdown {title="Source"}
 Since PostgreSQL 18, `pg_stat_io` breaks out WAL statistics.
@@ -181,8 +164,7 @@ This text reaches no output at all, llms.txt included.
 
 Verify the dashboards on a test database before upgrading.
 
-There is a comment between those two paragraphs, and viewing the page source
-will not find it.
+A comment exists between those paragraphs, but it does not appear in the page source.
 
 ## Output {#outputs}
 
@@ -193,10 +175,8 @@ will not find it.
 | Markdown | The fragment's source, as written | A source fence | The value itself | nothing |
 | RSS | As HTML | As HTML | As HTML | nothing |
 
-In Markdown output a fragment is source rather than HTML, and shortcodes inside
-it stay as `{{</* param version */>}}`. That is consistent with "Markdown output
-keeps the source"; it is not a missed render. None of the three shortcodes loads
-a script.
+Markdown output preserves fragment source instead of rendered HTML. Its shortcodes remain as `{{</* param version */>}}`.
+This is the intended source-preserving behavior. None of these three shortcodes loads a script.
 
 ## Parameter reference {#reference}
 
@@ -218,25 +198,19 @@ Other parameter names warn and are ignored. The message identifies the file and 
 | parameter name | string (required) | — | Nested keys join with `.`; page front matter first, then site `params`; missing or non-scalar values warn and print nothing |
 {.fields meta="type default"}
 
-`comment` takes no parameters. It is used in pairs, and everything between
-`{{</* comment */>}}` and `{{</* /comment */>}}` is discarded.
+`comment` takes no parameters. Use opening and closing shortcodes.
+All content between `{{</* comment */>}}` and `{{</* /comment */>}}` is discarded.
 
 ## Limits {#limits}
 
-- `include` is not a template: you cannot pass variables to a fragment, include
-  conditionally, or give the included code block fence attributes (`title=`,
-  `collapse`). For per-platform variants, write two fragments and use
-  [tabs](/docs/components/tabs/).
-- Fragment languages are yours to maintain: `include` does no language
-  fallback and takes the exact path you write. Share one fragment across
-  languages — this page's Chinese translation includes the same English file —
-  or write one per language and point each page at its own.
-- `param` prints scalars only: structured data — version matrices, download
-  lists — belongs in `data/` and is rendered by the matching component.
-- `comment` is not "unpublish for now": the content is discarded on every build.
-  To take a whole page down temporarily, use `draft: true`.
-- Do not use `include` to build an index page: a page that pulls in ten
-  fragments is a page where the reader wanted ten links.
+- `include` is not a template. You cannot pass variables, include conditionally, or supply code-block fence attributes such as `title=` or `collapse`.
+  For platform variants, create two fragments and use [tabs](/docs/components/tabs/).
+- You maintain fragment languages. `include` has no language fallback and uses the exact written path.
+  You can share a fragment across languages, as this page's Chinese translation includes the same English file.
+  Alternatively, write one fragment per language and use its path on the corresponding page.
+- `param` prints only scalars. Put structured data, such as version matrices or download lists, in `data/` and use the matching component.
+- `comment` discards content on every build. To temporarily unpublish a whole page, use `draft: true`.
+- Do not use `include` to create an index page. If a page needs ten fragments, give readers ten links instead.
 
 ## Related {#related}
 
