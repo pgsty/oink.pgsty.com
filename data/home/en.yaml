@@ -74,12 +74,10 @@ capabilities:
       url: docs/customize/brand/#visual-presets
       motto: Paper · Slate · Ink · Terminal
       bullets:
-        - '[Paper](docs/customize/brand/#visual-presets) brings warm pages and
-          quiet typography; Slate keeps the original technical look'
-        - 'Ink adds black, white and red; Terminal pairs mono headings with
-          readable sans-serif prose'
-        - 'Choose Style and Light independently in Appearance; your choices
-          stay with you across pages'
+        - '[Paper](docs/customize/brand/#visual-presets) feels warm and quiet;
+          Slate keeps its technical look'
+        - 'Ink uses black, white and red; Terminal pairs mono with sans'
+        - 'Set Style and Light separately; both stay set across pages'
       value: Same content, a different feel. Fonts and core scripts stay local.
       visual:
         type: components
@@ -141,8 +139,7 @@ capabilities:
         - '[Gallery](docs/components/gallery/), [Image
           Zoom](docs/components/image/), and diagrams for visual
           explanations'
-        - '[Components](docs/components/) define their Markdown and print output;
-          interactive views use source or static fallbacks where needed'
+        - '[Components](docs/components/) support Markdown and print with fallbacks'
       value: Component scripts load only on pages that use them.
       visual:
         type: components
@@ -262,10 +259,10 @@ content_types:
 
 components:
   eyebrow: Component reference
-  title: Twenty-one components, loaded on demand
+  title: 21 components, loaded on demand
   text:
-    Each component has its own page and a defined shape in HTML, print, Markdown
-    and RSS. Interactive runtimes ship only on pages that use them.
+    Each component has its own guide and HTML, print, Markdown and RSS output.
+    Scripts load only where needed.
   layout: grid
   columns: 3
   # Ordered by distinctiveness: the ones you rarely find elsewhere first,
