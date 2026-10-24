@@ -57,6 +57,13 @@ for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
             await expect(page.locator('body')).toHaveCSS('background-color', canvases[preset][mode]);
             await expectModeIcons(page, mode);
             expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+            if (preset === 'paper' && path !== '/') {
+              const headings = page.locator('.td-content > h2');
+              expect(await headings.count()).toBeGreaterThan(0);
+              for (const heading of await headings.all()) {
+                expect(await heading.evaluate(el => getComputedStyle(el, '::after').content)).toBe('none');
+              }
+            }
             if (path === '/' || path === docs) await page.screenshot({ path: info.outputPath(path === '/' ? 'home.png' : 'docs.png') });
           }
           const { trigger, panel } = await openAppearance(page);

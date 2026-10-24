@@ -38,6 +38,10 @@ JavaScript 时输出默认值，白名单内联脚本在 CSS 前恢复读者选�
 
 ## 后续工作 {#later-work}
 
+2026-10-24，维护者决定移除 Paper 标题右侧的尾随细线，减少视觉干扰。本地实现
+在浅色与深色模式下均移除这条线，保留标题字体与锚点。此修订尚未发布；上文的
+1.2.0 决策保留当时的外观记录。
+
 10 月 5 日随后开展的实验在显式配置后提供 Ink 与 Terminal，见
 [实验记录](/zh/docs/design/research/2026-10-05-ink-terminal-experiment/)。两者尚未成为
 稳定默认选项。`preset_menu: true` 提供 Paper/Slate 与站点默认值；显式列表可以

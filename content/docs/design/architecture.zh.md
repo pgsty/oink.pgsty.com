@@ -324,6 +324,10 @@ Ink 统一使用 Inter，配合红色标记、正文链接下划线、直角与�
 不支持的浏览器省略标记。显式 `fonts.ui` 仍控制主字体，除非设置了有效的
 `fonts.body`。参见[实验记录](/zh/docs/design/research/2026-10-05-ink-terminal-experiment/)。
 
+> [!NOTE] 尚未发布：Paper 章节标题
+> Paper 在浅色与深色模式下均不再绘制正文 `h2` 标题右侧的装饰横线。
+> 标题的字体、间距、锚点与正常换行保持原样，仍支持站点自定义的标题边框。
+
 Giscus 自动色板同时跟随风格与明暗；显式主题或浅深色样式表配置仍优先。打印使用
 当前预设的浅色配色与白纸背景，即使屏幕为深色。Mermaid 与 ECharts 继续只跟随
 明暗，API 组件保留供应商色板。参见[已接受决策](/zh/docs/design/decisions/visual-presets/)

@@ -334,6 +334,11 @@ are omitted in unsupported browsers. Explicit `fonts.ui` still supplies the
 main face unless a valid `fonts.body` overrides it. See the
 [experiment record](/docs/design/research/2026-10-05-ink-terminal-experiment/).
 
+> [!NOTE] Unreleased: Paper section headings
+> Paper no longer draws a decorative line to the right of content `h2` headings,
+> in either light or dark mode. Heading typography, spacing, anchors, and normal
+> wrapping are preserved. Site-authored heading borders remain supported.
+
 Giscus auto palettes follow both dimensions; explicit Giscus theme or
 light/dark stylesheet overrides remain authoritative. Print uses a light
 preset palette on white paper even when the screen is dark. Mermaid and

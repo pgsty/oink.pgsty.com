@@ -48,6 +48,12 @@ mode-only behavior. This keeps the first implementation bounded.
 
 ## Later work {#later-work}
 
+On 2026-10-24, the maintainer accepted removing Paper's trailing heading
+hairlines because the decoration adds visual clutter. The local implementation
+removes the line in both light and dark mode while retaining heading typography
+and anchors. This revision is unreleased; the 1.2.0 decision above records the
+original appearance.
+
 A subsequent October 5 experiment implements Ink and Terminal behind explicit
 configuration; see the [experiment record](/docs/design/research/2026-10-05-ink-terminal-experiment/).
 They are not stable defaults. `preset_menu: true` offers Paper/Slate and the site
