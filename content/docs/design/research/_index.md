@@ -39,6 +39,7 @@ paths as research records.
 | [OINK 1.2 pre-release review, 2026-10-05](/docs/design/research/2026-10-05-v1-2-release-review/) | Final local candidate checks, cleanup, local resources, compatibility and publication boundaries |
 | [CLI maintenance acceptance, 2026-10-03](/docs/design/research/2026-10-03-cli-maintenance-acceptance/) | Historical R1–R8 and A18 source-bound runtime and archive evidence |
 | [Theme review, 2026-10-13](/docs/design/research/2026-10-13-theme-review/) | Reproduced output and interaction defects, repairs, and local validation scope |
+| [Component refinement, 2026-10-25](/docs/design/research/2026-10-25-component-refinement/) | Four-preset component checks, bounded Chromium and visual review, CSS/JS size comparison, and gallery baseline failures |
 
 ## Publication rules {#publication-rules}
 

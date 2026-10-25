@@ -10,6 +10,10 @@ aliases:
 
 代码块是普通的 Markdown 围栏，高亮由 Hugo 内置的 Chroma 在构建期完成，浏览器里没有高亮器。用于命令、配置片段与源码：围栏信息行上的 `{…}` 属性决定标题栏、复制行为、行号与行锚点。图示类围栏（`mermaid`、`echarts`、`filetree` 等）不走这条路径，它们各有渲染钩子。
 
+## 可选呈现 {#presentation}
+
+单行围栏加上 `{class="td-code-command"}` 后显示为紧凑命令条，复制按钮独占一列。此变体已在本地开发 checkout 中提供，参见[示例与回退规则](/zh/docs/components/presentation/#tabs)。多行、带行号或可折叠代码块会给出警告并保留普通呈现。
+
 ## 最简例子 {#minimal}
 
 ````markdown {title="源码"}

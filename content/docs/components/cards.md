@@ -10,6 +10,10 @@ Cards provide related links. Each card has a linked title and a sentence. The gr
 Use cards for section landing pages, reading recommendations, or a few related entry points.
 Use paragraphs for prose and a [gallery](/docs/components/gallery/) for image collections.
 
+## Optional presentation {#presentation}
+
+Use `{.cards .td-cards-list}` for a single-column resource list with shared dividers, or `cards variant="list"` for the full form. These opt-in variants are available in the local development checkout; [compare the examples](/docs/components/presentation/#cards). The default remains a responsive grid.
+
 ## Shortest form {#minimal}
 
 Add `{.cards}` to a link list to make a card grid. The link becomes the title.

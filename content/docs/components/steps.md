@@ -13,6 +13,10 @@ Use plain lists or cards for unordered items.
 There are two forms. Use an ordered list with `{.steps}` by default.
 Use `{{%/* steps */%}}` when each step needs a heading in the table of contents.
 
+## Optional presentation {#presentation}
+
+Use `{.steps .td-steps-compact}` for a short procedure, or `steps variant="compact"` for the heading form. These opt-in variants are available in the local development checkout; [compare the examples](/docs/components/presentation/#steps). Numbering, nesting, and heading anchors retain their existing meaning.
+
 ## Shortest form {#minimal}
 
 Write `1.` for each item so Markdown counts automatically.
@@ -225,7 +229,7 @@ Steps load no script. Disabling JavaScript does not change the result.
 
 ## Parameter reference {#reference}
 
-Neither form accepts parameters. Follow these conventions:
+The local checkout supports the optional `variant="compact"` on the full form. Follow these conventions:
 
 | Spelling | Where | Description |
 | --- | --- | --- |

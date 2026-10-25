@@ -136,6 +136,7 @@ Backlinks:
 - [Highlights](/docs/about/features/)
 - [Cases](/docs/about/showcase/)
 - [Cards](/docs/components/cards/)
+- [Presentation](/docs/components/presentation/)
 - [Brand and appearance](/docs/customize/brand/)
 - [From scratch](/docs/start/from-scratch/)
 - [Writing pages](/docs/write/pages/)

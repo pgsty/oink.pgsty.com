@@ -125,3 +125,7 @@ The explicit Ink/Terminal experiments also remove the grid, glow and shadows.
 Ink uses heavy Inter headings, square cards and a red primary action. Terminal
 uses mono headings, 2 px corners and an amber primary action with a static
 cursor-shaped decoration. Neither adds animation or changes section columns.
+
+## Local action refinement {#action-refinement}
+
+In the local refinement candidate, button press feedback moves only the background; labels and hit targets stay fixed. Command-box copy labels reserve space for both idle and localized success text. The existing clipboard promise still controls success, and the copy action, live status, data model, and static-output boundary are unchanged. This candidate is not yet a published release.

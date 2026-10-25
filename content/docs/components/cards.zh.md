@@ -8,6 +8,10 @@ search_keywords: [卡片, Cards, card, 链接卡片, 导航卡片, 栏目首页,
 
 卡片（Cards）是一组并列的链接：每张卡片一个链接标题加一句描述，网格随容器宽度自适应。适合栏目首页、「接下来读什么」与几条并列路径的入口。不适合排版正文段落（用普通段落）或做图片墙（用[画廊](/zh/docs/components/gallery/)）。
 
+## 可选呈现 {#presentation}
+
+使用 `{.cards .td-cards-list}` 呈现共用分隔线的单列资源列表，完整形式使用 `cards variant="list"`。这些可选变体已在本地开发 checkout 中提供，参见[对照示例](/zh/docs/components/presentation/#cards)。默认仍是响应式网格。
+
 ## 最简例子 {#minimal}
 
 带 `{.cards}` 的链接列表就是卡片。链接是标题，` — ` 之后是描述。
@@ -212,7 +216,7 @@ section_index: list
 | 其余内容 | Markdown | — | 描述。紧凑列表里跟在 ` — ` 后面，松散列表里另起一段 |
 {.fields meta="type default"}
 
-`card` 的参数（`cards` 自身不接受任何参数）：
+`card` 的参数（本地 checkout 中，`cards` 另支持可选的 `variant="list"`）：
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |

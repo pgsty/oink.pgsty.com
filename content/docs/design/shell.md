@@ -545,3 +545,7 @@ navigation rows, while prose and mobile touch targets retain their sizes.
 
 The new `type: expo` reuses this shell and adds image-album presentation.
 The [Expo contract](/docs/design/expo/) owns its content model, controls, and outputs.
+
+## Local component surfaces {#component-surfaces}
+
+The local refinement candidate aligns search/command rows, sidebar corners, and Appearance controls with the component geometry. Selected and hovered rows remain distinct, keyboard focus remains immediate, and preference storage, navigation, and palette selection are unchanged. No moving-highlight runtime is added.

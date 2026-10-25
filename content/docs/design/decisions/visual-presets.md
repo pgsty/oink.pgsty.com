@@ -71,6 +71,16 @@ promote them into the stable set.
 
 ## Evidence {#evidence}
 
+On 2026-10-25, the maintainer authorized component refinement using the existing
+four presets. Shared surfaces, grouped rows, stable labels, and background-only
+press feedback reuse current tokens and CSS. Markdown remains the primary
+authoring path; the three local presentation variants are explicit opt-ins.
+Paper/Slate keep rounded surfaces, while Ink/Terminal retain flat, square/2px
+geometry. The moving selection trial is deferred: static states provide the
+needed feedback without a second geometry or runtime layer. These changes are
+local and unreleased; the [component contract](/docs/design/components/#component-refinement)
+owns their supported syntax and fallback behavior.
+
 The [architecture contract](/docs/design/architecture/#visual-presets) and
 [shell contract](/docs/design/shell/#appearance-control) own behavior.
 `check-presets.py` owns token parity, AA palette checks, the frozen Slate

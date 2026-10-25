@@ -10,6 +10,10 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 
 写法有两种：有序列表加 `{.steps}`（默认选它），以及 `{{%/* steps */%}}` shortcode，每一步要有自己的标题、标题还要进右侧目录时用它。
 
+## 可选呈现 {#presentation}
+
+简短流程使用 `{.steps .td-steps-compact}`，带标题的完整形式使用 `steps variant="compact"`。这些可选变体已在本地开发 checkout 中提供，参见[对照示例](/zh/docs/components/presentation/#steps)。编号、嵌套和标题锚点保留原有含义。
+
 ## 最简例子 {#minimal}
 
 每一项都写 `1.`，让 Markdown 自己数。这样插入、删除、调换步骤都不用手改编号，而且内容缩进恒定是三个空格。
@@ -210,7 +214,7 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 
 ## 参数参考 {#reference}
 
-两种形态都没有参数，只有写法约定：
+本地 checkout 的完整形式支持可选的 `variant="compact"`。其他写法约定如下：
 
 | 写法 | 位置 | 说明 |
 | --- | --- | --- |

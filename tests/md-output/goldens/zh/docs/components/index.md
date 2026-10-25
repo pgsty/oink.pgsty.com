@@ -97,6 +97,7 @@ markup:
 - [文件树](/zh/docs/components/filetree/): 用 `filetree` 围栏画带注释的目录结构：对齐的注释列、逐条目图标、可折叠目录、可拖动的分栏。
 - [公式](/zh/docs/components/math/): 用 KaTeX 写行内与块级数学公式，构建期渲染完毕，读者不下载任何脚本。
 - [Mermaid](/zh/docs/components/mermaid/): 用 `mermaid` 围栏把文本写成流程图、时序图、甘特图、类图与状态图，本地渲染、跟随深浅色、diff 友好。
+- [组件呈现](/zh/docs/components/presentation/): 在 OINK 四种视觉预设中查看卡片、折叠块、标签页和紧凑流程。
 - [PlantUML](/zh/docs/components/plantuml/): 用 `plantuml` 围栏写时序图、类图、组件图、活动图与用例图；渲染必须由你自己配置一个 PlantUML 服务。
 - [思维导图](/zh/docs/components/markmap/): 用 `markmap` 围栏把一段 Markdown 大纲变成可展开、可缩放的思维导图，源码本身就是能读的提纲。
 - [Draw.io](/zh/docs/components/drawio/): 把带着可编辑副本的 `.drawio.svg` 当普通图片放进页面，读者通过编辑按钮打开 Draw.io 编辑器改图。
@@ -121,6 +122,7 @@ markup:
 - [简介](/zh/docs/about/)
 - [特性](/zh/docs/about/features/)
 - [版本升级](/zh/docs/admin/upgrade/)
+- [组件呈现](/zh/docs/components/presentation/)
 - [组件](/zh/docs/design/components/)
 - [快速上手](/zh/docs/start/)
 - [创作内容](/zh/docs/write/)

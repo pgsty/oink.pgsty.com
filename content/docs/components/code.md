@@ -13,6 +13,10 @@ Use code blocks for commands, configuration snippets, and source code.
 The `{…}` attributes on the fence's info line control the title bar, copy behavior, line numbers, and line anchors.
 Diagram fences such as `mermaid`, `echarts`, and `filetree` use their own render hooks.
 
+## Optional presentation {#presentation}
+
+A one-line fence with `{class="td-code-command"}` becomes a compact command strip with a separate copy column. This variant is available in the local development checkout; [see examples and fallback rules](/docs/components/presentation/#tabs). Multiline, numbered, or collapsed blocks warn and retain regular presentation.
+
 ## Shortest form {#minimal}
 
 ````markdown {title="Source"}

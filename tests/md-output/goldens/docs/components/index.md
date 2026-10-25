@@ -105,6 +105,7 @@ Section pages:
 - [FileTree](/docs/components/filetree/): Write directory listings in a `filetree` fence. Use indentation for depth, trailing slashes for directories, and aligned comments for explanations.
 - [Math](/docs/components/math/): Use KaTeX for inline and display mathematics at build time. Readers download no script.
 - [Mermaid](/docs/components/mermaid/): Use a `mermaid` fence for flowcharts, sequence diagrams, Gantt charts, class diagrams, and state diagrams. Bundled Mermaid follows the color scheme; source diffs show changes.
+- [Component presentation](/docs/components/presentation/): Cards, disclosures, tabs, and compact procedures across OINK's four visual presets.
 - [PlantUML](/docs/components/plantuml/): Use a `plantuml` fence for sequence, class, component, activity, and use-case diagrams. Configure your own PlantUML rendering server.
 - [Markmap](/docs/components/markmap/): Use a `markmap` fence for an expandable mind map with zoom controls. Its source remains a readable Markdown outline.
 - [Draw.io](/docs/components/drawio/): Display a `.drawio.svg` with an embedded editable copy as an ordinary image. Its edit button opens the Draw.io editor.
@@ -129,6 +130,7 @@ Backlinks:
 - [Introduction](/docs/about/)
 - [Highlights](/docs/about/features/)
 - [Upgrade](/docs/admin/upgrade/)
+- [Presentation](/docs/components/presentation/)
 - [Components](/docs/design/components/)
 - [Get started](/docs/start/)
 - [Authoring](/docs/write/)

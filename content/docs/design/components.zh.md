@@ -63,6 +63,24 @@ OINK 有 29 个 shortcode：
 | 数学与化学公式 | passthrough、`math`、`chem` 围栏 | `eq` | 无；构建期渲染并加载本地样式 |
 | 图表与数据 | `mermaid`、`plantuml`、`markmap`、`echarts`、`infographic` 围栏 | 无 | 只加载选中的本地运行时 |
 
+## 本地组件精修 {#component-refinement}
+
+同级开发 checkout 新增以下呈现变体，它们尚不属于已发布的 v1.3.2 基线。示例见[组件呈现](/zh/docs/components/presentation/)。
+
+| 组件 | 原生修饰类 | 完整形式 |
+| --- | --- | --- |
+| 分隔卡片列表 | `{.cards .td-cards-list}` | `cards variant="list"` |
+| 紧凑步骤 | `{.steps .td-steps-compact}` | 百分号分隔的 `steps variant="compact"` |
+| 命令条 | 带 `{class="td-code-command"}` 的单行围栏 | 沿用代码渲染器，没有新增短代码 |
+
+未知 `variant` 值告警并回退到默认布局。命令条遇到多行、行号（包括站点默认行号）或折叠设置时，告警并使用普通代码块，保留所有源码。现有 `copy` 与 `wrap` 政策继续适用。不引入新运行时或组件注册表。
+
+原生与完整卡片共用表面和标题规则。只有带链接的卡片显示悬停强调；正文中的独立链接保持可用，不被标题的整卡链接覆盖。标签页的单个标签平时背景透明，支持悬停的设备上才显示淡底色，选中项以细下划线和链接色标识。文字在不同状态间保持相同字重和位置，键盘焦点另有清晰轮廓。原生折叠块保留独立操作的摘要行。复制控件保持点击区域尺寸和既有成功／失败语义。粗指针设备上的复制和标签页控件高度至少为 44px。
+
+预设颜色与字体角色继续生效。Ink／Terminal 保持平面表面以及直角／2px 圆角。打印、RSS、Markdown、LLMS 保留内容和既有输出语义，呈现变体不隐藏内容，也不向静态输出添加操作控件。
+
+参数名在四种预设中均使用无边框的加重等宽文字，Terminal 也遵循此规则；原生 Markdown 表格与完整短代码保持一致。
+
 ## 校验 {#validation}
 
 无效的作者输入遵循[架构契约](/zh/docs/design/architecture/)：发出警告，使用文档

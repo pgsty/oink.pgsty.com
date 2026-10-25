@@ -64,6 +64,24 @@ OINK has 29 shortcodes:
 | Math and chemistry | passthrough, `math`, `chem` fences | `eq` | none; build-time rendering and local styles |
 | Diagram/data | `mermaid`, `plantuml`, `markmap`, `echarts`, `infographic` fences | none | selected local runtime only |
 
+## Local component refinement {#component-refinement}
+
+The sibling development checkout additionally supports the following presentation variants; they are not part of the published v1.3.2 baseline. See the [presentation examples](/docs/components/presentation/).
+
+| Component | Native modifier | Full form |
+| --- | --- | --- |
+| Divided card list | `{.cards .td-cards-list}` | `cards variant="list"` |
+| Compact steps | `{.steps .td-steps-compact}` | `steps variant="compact"`, with percent delimiters |
+| Command strip | A one-line fence with `{class="td-code-command"}` | Existing code renderer; no new shortcode |
+
+Unrecognized `variant` values warn and fall back to the default layout. A command strip with multiple lines, line numbers (including site defaults), or collapse warns and uses the regular block, preserving every source line. Existing `copy` and `wrap` policies still apply. No new runtime or component registry is introduced.
+
+Native and full cards share surface and title rules. Only cards with links receive hover emphasis; secondary body links remain operable above a stretched title link. Tabs have transparent individual backgrounds at rest, a subtle hover fill on hover-capable devices, and a thin underline plus link color for selection. Labels keep the same weight and position between states; keyboard focus remains a distinct outline. Native disclosures retain an independently operable summary. Copy controls preserve their target geometry and existing success/error semantics. Coarse-pointer copy and tab controls have at least 44px height.
+
+Preset colors and font roles remain authoritative. Ink/Terminal keep flat surfaces and square/2px geometry. Print, RSS, Markdown, and LLMS keep the content and their existing output semantics; presentation adds no hidden content or extra controls to static output.
+
+Field names use unboxed, emphasized monospace text in all four presets, including Terminal, for both Markdown tables and full shortcodes.
+
 ## Validation {#validation}
 
 Invalid author input follows the [architecture contract](/docs/design/architecture/).

@@ -56,6 +56,13 @@ JavaScript 时输出默认值，白名单内联脚本在 CSS 前恢复读者选�
 
 ## 依据 {#evidence}
 
+2026-10-25，维护者授权在既有四种预设中精修组件。共用表面、分组行、稳定文字和
+仅背景移动的按压反馈，均复用现有变量与 CSS。Markdown 仍是主要写作方式，三个
+本地呈现变体均需显式启用。Paper/Slate 保留圆润表面，Ink/Terminal 保留扁平与
+直角／2px 几何。滑动选中背景试验暂缓：静态状态已经提供所需反馈，无需额外位置
+测量或运行时层。这些修改仅在本地，尚未发布；支持的写法与回退行为归属
+[组件契约](/zh/docs/design/components/#component-refinement)。
+
 [架构契约](/zh/docs/design/architecture/#visual-presets)与
 [外壳契约](/zh/docs/design/shell/#appearance-control)管理当前行为。
 `check-presets.py` 管理 token 对称、AA 色板、冻结的 Slate v1.1.0 色板及严格配置
