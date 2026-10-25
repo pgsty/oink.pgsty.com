@@ -97,6 +97,12 @@ Draw.io 只在渲染内容含 PNG 或 SVG 候选图片时加载，并且每个�
 > 编辑器 iframe 及其配置的源；无关或格式错误的消息会被忽略。图表数据只发送到
 > 该源。导出结果必须是 PNG 或 SVG 的 data URL。
 
+> [!NOTE] 尚未发布：图表按需加载
+> Mermaid 与本地 PlantUML 的小型调度器只出现在使用它们的 HTML 页面；大型
+> 引擎在可见图表接近视口时加载。同页共享引擎，主线程串行执行，未引入 Worker、
+> 新依赖或构建步骤。缺少 IntersectionObserver 时使用滚动与尺寸检查。
+> 普通浏览器打印不等待异步渲染：已有图显示图片，其余保留源码。独立输出不变。
+
 ## 界面本地化 {#interface-localization}
 
 > [!NOTE] 自 OINK 1.1 起提供
@@ -117,7 +123,7 @@ sr-cyrl sr-latn sv tr uk zh-cn zh-tw
 Docsy 以后增加的 locale 不会自动成为 OINK 支持项；它必须先补齐完整的 OINK
 词条，并接受与现有语言相同的审校。
 
-`i18n/en.yaml` 管理 218 条消息的 schema。OINK 的 32 份语言包都必须拥有完全相同
+`i18n/en.yaml` 管理消息 schema。OINK 的 32 份语言包都必须拥有完全相同
 的消息集与原生界面文本；只有经过审查的产品名、标点、通行缩写或目标语言真实
 同形词可以与英文保持相同，不再生成整段英文 fallback。`zh` 与 `zh-cn` 使用简体中文，
 `zh-tw` 使用繁体中文。

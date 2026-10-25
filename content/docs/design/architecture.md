@@ -101,6 +101,15 @@ Unsupported schemes, protocol-relative URLs, backslashes, whitespace, and same-s
 > configured origin; unrelated or malformed messages are ignored. Diagram
 > data is sent only to that origin. Exports must be PNG or SVG data URLs.
 
+> [!NOTE] Unreleased: diagram demand loading
+> The small Mermaid/local-PlantUML scheduler appears only on HTML pages using
+> these diagrams. Large engines load as visible diagrams approach the viewport.
+> Engines are shared, with serial main-thread rendering; no Worker, dependency
+> or build step is added. Scroll/size checks replace IntersectionObserver when
+> unavailable. Ordinary browser printing cannot wait for asynchronous rendering:
+> completed diagrams show images and the remainder retain source. Dedicated
+> outputs are unchanged.
+
 ## Interface localization {#interface-localization}
 
 > [!NOTE] Available since OINK 1.1
@@ -119,7 +128,7 @@ sr-cyrl sr-latn sv tr uk zh-cn zh-tw
 This defines compatibility scope without creating a runtime dependency on Docsy or making claims about translations of consumer content.
 New Docsy locales do not enter OINK automatically: they need a complete OINK catalog and the same review as existing locales.
 
-`i18n/en.yaml` defines the 218-message schema. Each of the 32 OINK bundles has exactly these keys and native interface text.
+`i18n/en.yaml` defines the message schema. Each of the 32 OINK bundles has exactly these keys and native interface text.
 An English value may remain only as a reviewed product name, punctuation token, conventional abbreviation, or word shared by the target language.
 There are no generated English fallback blocks.
 `zh` and `zh-cn` use Simplified Chinese. `zh-tw` uses Traditional Chinese.

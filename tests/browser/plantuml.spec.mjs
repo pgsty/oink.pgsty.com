@@ -3,6 +3,14 @@ import { expect, test } from '@playwright/test';
 const fixture = '/tests/plantuml/';
 const rendered = '.td-plantuml[data-td-plantuml-state="rendered"]';
 
+async function visitAll(page) {
+  for (const figure of await page.locator('.td-plantuml').all()) {
+    await figure.scrollIntoViewIfNeeded();
+    await expect(figure).toHaveAttribute('data-td-plantuml-state', /rendered|error/);
+  }
+}
+
+
 async function localOnly(page) {
   const external = [];
   const requests = [];
@@ -24,6 +32,7 @@ test('local engine renders multiple diagrams, preserves source, and recovers aft
   page.on('pageerror', error => errors.push(String(error)));
   await page.goto(fixture);
   await expect(page.locator('.td-plantuml')).toHaveCount(8);
+  await visitAll(page);
   await expect(page.locator('[data-td-plantuml-state="pending"]')).toHaveCount(0);
   const figures = page.locator('.td-plantuml');
   for (const i of [0, 1, 7]) {
@@ -49,6 +58,7 @@ test('local engine renders multiple diagrams, preserves source, and recovers aft
 
 test('theme changes redraw every diagram and release obsolete images', async ({ page }) => {
   await page.goto(fixture);
+  await visitAll(page);
   await expect(page.locator(rendered)).toHaveCount(3);
   const original = await page.locator(rendered).first().locator('img').getAttribute('src');
   await page.evaluate(() => {
@@ -56,20 +66,27 @@ test('theme changes redraw every diagram and release obsolete images', async ({ 
     document.documentElement.dataset.bsTheme = 'light';
     document.documentElement.dataset.bsTheme = 'dark';
   });
+  await visitAll(page);
+  for (const figure of await page.locator(rendered).all()) {
+    await figure.scrollIntoViewIfNeeded();
+    await expect(figure).toHaveAttribute('data-td-plantuml-theme', 'dark');
+  }
   await expect(page.locator(`${rendered}[data-td-plantuml-theme="dark"]`)).toHaveCount(3);
+  await visitAll(page);
   await expect(page.locator('[data-td-plantuml-state="pending"]')).toHaveCount(0);
   await expect(page.locator('[data-td-plantuml-state="error"]')).toHaveCount(5);
   await expect(page.locator(rendered).first().locator('img')).not.toHaveAttribute('src', original);
   expect(await page.evaluate(async url => {
     try { await fetch(url); return true; } catch { return false; }
   }, original)).toBe(false);
-  await expect(page.locator('.td-plantuml__image')).toHaveCount(3);
+  await expect(page.locator(`${rendered} .td-plantuml__image`)).toHaveCount(3);
 });
 
 test('missing local runtime keeps readable source without external fallback', async ({ page }) => {
   const network = await localOnly(page);
   await page.route('**/third_party/plantuml/plantuml*.js', route => route.abort());
   await page.goto(fixture);
+  await visitAll(page);
   await expect(page.locator('[data-td-plantuml-state="error"]')).toHaveCount(8);
   for (const pre of await page.locator('.td-plantuml pre').all()) await expect(pre).toBeVisible();
   await expect(page.locator('.td-plantuml img')).toHaveCount(0);
@@ -98,6 +115,7 @@ for (const locale of ['', '/zh']) {
       await page.emulateMedia({ colorScheme });
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto(`${locale}/docs/components/plantuml/`);
+      await visitAll(page);
       await expect(page.locator(rendered)).toHaveCount(5);
       await expect(page.locator('[data-td-plantuml-state="error"]')).toHaveCount(0);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);

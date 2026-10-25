@@ -119,8 +119,9 @@ Whole-section print and single-page browser print use the same rule:
 | [FileTree](/docs/components/filetree/) | A static panel with all directories expanded. The split retains its build-time width |
 | [Fields](/docs/components/fields/) | A complete definition list, identical in both forms |
 | [Math](/docs/components/math/) | Statically rendered KaTeX / MathML |
-| [Mermaid](/docs/components/mermaid/) · [Markmap](/docs/components/markmap/) | Renders diagrams. The print view is HTML, and these runtimes load normally |
-| [PlantUML](/docs/components/plantuml/) | Dedicated Print keeps source without a runtime; printing the ordinary HTML page retains rendered images |
+| [Mermaid](/docs/components/mermaid/) | Dedicated Print retains source without an engine; ordinary HTML printing shows rendered diagrams or source when not rendered |
+| [Markmap](/docs/components/markmap/) | The print view is HTML; its runtime renders normally |
+| [PlantUML](/docs/components/plantuml/) | Dedicated Print keeps source without a runtime; printing ordinary HTML retains rendered images or source when not rendered |
 | [ECharts](/docs/components/echarts/) · [Infographic](/docs/components/infographic/) | Shows the fence source block. Draws no chart |
 | [Asciinema](/docs/components/asciinema/) · [OpenAPI](/docs/write/openapi/) | A labeled static link to the recording or specification. None of the three runtimes loads |
 | Cards / steps / badges / keys | Static, with content unchanged |

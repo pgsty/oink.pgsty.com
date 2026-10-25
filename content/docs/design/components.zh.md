@@ -63,13 +63,17 @@ OINK 有 29 个 shortcode：
 | 数学与化学公式 | passthrough、`math`、`chem` 围栏 | `eq` | 无；构建期渲染并加载本地样式 |
 | 图表与数据 | `mermaid`、`plantuml`、`markmap`、`echarts`、`infographic` 围栏 | 无 | 只加载选中的本地运行时 |
 
-> [!NOTE] 尚未发布：PlantUML
-> 尚未发布的本地渲染器只对围栏源码做一次 HTML 转义，保留箭头、引号、和号与中文。
-> 同页共享一个引擎实例，依次渲染各图；配色模式切换时丢弃旧结果。失败或不支持的
-> 图表保留源码，不阻塞后续图表。SVG 图片在可键盘聚焦的横向滚动区域中保持原始
-> 尺寸，浏览器打印时按纸张宽度缩放。关闭 JavaScript 后源码仍然可读。
-> [PlantUML 指南](/zh/docs/components/plantuml/)定义随主题提供的库范围，
-> [架构契约](/zh/docs/design/architecture/#configuration-and-diagnostics)定义渲染器选择与网络行为。
+> [!NOTE] 尚未发布：统一图表阅读
+> Mermaid 与本地 PlantUML 共用查看器，支持平移、缩放、适应窗口、源码查看与
+> 复制、独立 SVG 下载。只有距离视口不超过 320px 且尺寸可用的图表才加载引擎
+> 并渲染。引擎各加载一次，在主线程串行执行；隐藏内容恢复后再处理，主题变化
+> 丢弃过期结果。查看器复用渲染结果，保留阅读位置，并支持触控、键盘、焦点恢复
+> 与减少动态效果偏好。PlantUML 保持 Blob 图片隔离，SVG 标记不进入页面 DOM。
+> 源码只经过一次 HTML 转义；箭头、引号、和号及中文保持准确。错误保留源码，
+> 不阻塞后续图表。复制或导出失败有明确提示；下载仅报告请求已发起。
+> 导出内含样式，不允许外部资源依赖。普通浏览器打印显示已渲染图或可读源码；
+> 独立 Print、Markdown、RSS 保留源码回退。详见 [Mermaid](/zh/docs/components/mermaid/#zoom)
+> 与 [PlantUML](/zh/docs/components/plantuml/)。显式服务端模式保持既有行为。
 
 ## 本地组件精修 {#component-refinement}
 

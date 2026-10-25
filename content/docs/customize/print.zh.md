@@ -98,8 +98,9 @@ no_print: true
 | [文件树](/zh/docs/components/filetree/) | 静态面板，目录全部展开，分栏停在构建期宽度 |
 | [参数表](/zh/docs/components/fields/) | 完整定义列表，两种形态一致 |
 | [公式](/zh/docs/components/math/) | 静态渲染的 KaTeX / MathML |
-| [Mermaid](/zh/docs/components/mermaid/) · [Markmap](/zh/docs/components/markmap/) | 照常渲染成图：打印视图仍是一张 HTML 页，这几个运行时照常加载 |
-| [PlantUML](/zh/docs/components/plantuml/) | 独立 Print 保留源码，不加载运行时；打印普通 HTML 页面时保留已渲染图片 |
+| [Mermaid](/zh/docs/components/mermaid/) | 独立 Print 保留源码且不加载引擎；打印普通 HTML 时显示已渲染图，未渲染时显示源码 |
+| [Markmap](/zh/docs/components/markmap/) | 打印视图是 HTML，运行时照常渲染 |
+| [PlantUML](/zh/docs/components/plantuml/) | 独立 Print 保留源码，不加载运行时；打印普通 HTML 页面时保留已渲染图片，未渲染时显示源码 |
 | [ECharts](/zh/docs/components/echarts/) · [Infographic](/zh/docs/components/infographic/) | 降级成围栏源码块，不渲染图表 |
 | [Asciinema](/zh/docs/components/asciinema/) · [OpenAPI](/zh/docs/write/openapi/) | 一行带标题的静态链接，录像或规范地址可见；三套运行时都不加载 |
 | 卡片 / 步骤 / 徽章 / 按键 | 静态呈现，内容不变 |

@@ -151,10 +151,35 @@ rectangle "Documentation site" {
 
 ## Dark mode {#dark-mode}
 
-Local diagrams redraw when the reader switches between light and dark mode.
-Authored `skinparam` settings still apply. Wide diagrams scroll horizontally
-at their natural size, including on phones; keyboard users can focus the image
-region to scroll it. Browser printing scales the rendered image to the page.
+Local diagrams follow light/dark mode; authored `skinparam` settings still apply.
+Obsolete render results are discarded when the mode changes. An open viewer
+retains its zoom and pan position.
+
+## Enlarge, source and download {#zoom}
+
+Local PlantUML uses [the same viewer as Mermaid](/docs/components/mermaid/#zoom).
+Use the corner button to open it, drag or arrow keys to pan, wheel/pinch/`+`/`-`
+to zoom, **Fit to window** or `0` to fit, and `Esc` to close and restore focus.
+The viewer reuses the Blob image without inserting PlantUML SVG markup or links
+into the page DOM, and without rendering again.
+
+**Source** and **Copy code** preserve arrows, quotes, ampersands and Chinese.
+**Download SVG** exports a styled standalone file; external resource dependencies
+prevent export. Failures show feedback, and download status confirms only that
+the browser received the request. The source disclosure below each diagram also
+supports viewing and copying. Explicit server mode keeps its legacy behavior.
+
+## Demand loading and printing {#loading}
+
+The two local engines load once when a diagram comes within 320px of the viewport.
+Hidden tabs, disclosures and zero-width containers wait until shown. Browsers
+without IntersectionObserver use scroll and size checks. Mermaid and PlantUML
+render serially on the main thread. No installation or build step is added.
+
+Ordinary browser printing retains rendered images and shows source for unrendered
+diagrams. It cannot wait for asynchronous engines; visit and expand the diagrams
+first when you need pictures throughout. Dedicated Print, Markdown and RSS keep
+source fallback.
 
 ## Optional rendering service {#server}
 
@@ -182,7 +207,7 @@ an image, so authored links and markup do not enter the page DOM.
 | Output | Result |
 | --- | --- |
 | HTML | Local SVG image when enabled; readable source until rendering succeeds |
-| Browser print of HTML | The rendered image, scaled to fit |
+| Browser print of HTML | Rendered image scaled to fit, or readable source if not rendered |
 | Dedicated Print output | Readable source, with no PlantUML runtime |
 | Markdown and RSS | Original diagram source; no rendering request |
 
@@ -211,15 +236,15 @@ explicit diagram delimiters are preserved.
   libraries are not downloaded. Unsupported resources leave the source visible.
   Use self-contained diagrams, pre-rendered images, or an explicit server for these.
 - The pinned engine is `@plantuml/core` 1.2026.9 with Viz.js 3.24.0. The two scripts
-  total about 4.8 MB before compression, or 1.7 MB with gzip. Only enabled pages
-  containing diagrams load them, and normal HTTP caching applies.
+  total about 4.8 MB before compression, or 1.7 MB with gzip. They load only as enabled diagrams approach the viewport; normal HTTP caching applies.
 - Rendering uses the browser's JavaScript and WebAssembly support. Sites with a
   restrictive CSP need to allow their own scripts, WebAssembly compilation
   (`wasm-unsafe-eval`) and `blob:` images. Blocked resources retain source.
 - Large diagrams still cost browser CPU and memory. Rendering proceeds one diagram
   at a time; this is not a background-worker renderer.
-- Diagrams are images: SVG hyperlinks are inactive. Numbering and the Mermaid
-  zoom dialog are not part of this integration.
+  After an uncancellable engine timeout, remaining PlantUML figures keep source
+  until the page is reloaded.
+- Diagrams are images: SVG hyperlinks are inactive. Numbering is not part of this integration.
 
 ## Related {#related}
 

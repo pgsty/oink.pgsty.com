@@ -425,6 +425,9 @@ or external endpoint:
 > The development version uses local rendering when enabled without an endpoint.
 > Published v1.3.2 still requires `svg_image_url`. Both modes and their limits are
 > described in [PlantUML](/docs/components/plantuml/).
+> Local-development Mermaid and local PlantUML load engines as diagrams approach
+> the viewport. Their shared viewer and source export need no new configuration.
+> Ordinary browser printing retains source for unrendered diagrams.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |

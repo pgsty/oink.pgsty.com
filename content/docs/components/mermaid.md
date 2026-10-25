@@ -329,7 +329,7 @@ See [Steps](/docs/components/steps/).
 
 | Output | Shape |
 | --- | --- |
-| HTML | A `figure` holding an empty stage and the fence source as JSON; the page's Mermaid runtime draws the SVG into it |
+| HTML | A `figure` retaining readable source; the runtime draws SVG as it approaches the viewport |
 | Print | The source inside `<pre class="td-mermaid-source">`, static — no runtime runs there |
 | Markdown | The `mermaid` fence and its source, kept as written |
 | RSS | The source inside `<pre class="td-mermaid-source">` — subscribers see text |
@@ -352,12 +352,38 @@ These are Mermaid keys, not theme parameters.
 
 ## Enlarging a diagram {#zoom}
 
-Mermaid centers diagrams and scales them to fit the column. Wide sequence diagrams can shrink to about one third on phones.
-Hover or focus a diagram to reveal its corner control. Open it to render it again at full size.
-Drag to pan. Zoom with the wheel, a pinch, or `+` and `-`. Press `0` to reset and `Esc` to close.
-If fitting would shrink a diagram below half size, it opens at 1:1 from its starting corner instead of as a thumbnail.
-Zooming out can always show the complete diagram, regardless of size.
-The viewer is bundled with the fence. It downloads nothing extra and needs no switch.
+> [!NOTE] Unreleased reading experience
+> This shared viewer and demand loading are implemented in the local development
+> version. They are not part of published v1.3.2.
+
+Mermaid and local PlantUML share the corner-button viewer. It reuses the rendered
+result without running the engine again. Drag or use arrow keys to pan; use the
+wheel, pinch, `+` or `-` to zoom. Choose **Fit to window** or press `0` to see the
+whole diagram. `Esc` closes the viewer and restores focus to its opener. Very wide
+pictures initially open at natural size for readable labels. Controls retain touch
+size on phones. Theme changes retain your position; reduced motion adds no animation.
+
+Choose **Source** to inspect the original text and **Copy code** to copy it.
+Arrows, quotes, ampersands and Chinese stay intact. **Download SVG** exports a
+styled, standalone image requiring no remote resources. Copy/export failures show
+feedback. “SVG download requested” means the browser received the request; the
+browser controls final saving. An SVG with external image or style dependencies
+cannot be exported. The source disclosure below each figure also supports copying.
+
+## Demand loading and printing {#loading}
+
+A visible diagram within 320px of the viewport loads its engine and renders.
+Multiple diagrams share engines and both types render serially. Hidden tabs,
+closed disclosures and zero-width containers wait until visible. Browsers without
+IntersectionObserver use scroll and size checks. Rapid theme changes discard
+obsolete results. Diagram-free pages load neither the viewer nor these engines.
+No installation dependency or build step is added.
+
+Disabled JavaScript, blocked engines and syntax errors retain readable source.
+Printing ordinary HTML scales completed diagrams to the page and shows source for
+unrendered diagrams, without waiting for an asynchronous engine. To print pictures
+throughout, first visit and expand the diagrams you need. Dedicated Print,
+Markdown and RSS continue to show source.
 
 ## Limits {#limits}
 
@@ -366,7 +392,7 @@ The viewer is bundled with the fence. It downloads nothing extra and needs no sw
 - Fence attributes have no effect. Control width through diagram syntax, such as flowchart direction or class-diagram layout, or CSS.
   There is no alignment attribute. Diagrams are always centered.
 - Syntax errors appear only in the browser because Hugo does not parse Mermaid.
-  Invalid diagrams display an alert with the parse error and source, but the build still passes. Check the browser before publishing.
+  Invalid diagrams display an alert and keep readable source, but the build still passes. Check the browser before publishing.
 - RSS, Markdown, and Print include source instead of pictures. State conclusions in prose as well as in diagrams.
 
 ## Related {#related}

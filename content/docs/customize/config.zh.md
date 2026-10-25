@@ -383,6 +383,8 @@ Mermaid、KaTeX、ECharts、Infographic、Asciinema、Swagger UI 与 Redoc 按�
 > [!NOTE] 尚未发布的 PlantUML 支持
 > 开发版本在启用且未配置端点时使用本地渲染。已发布的 v1.3.2 仍需要
 > `svg_image_url`。两种模式及其限制见 [PlantUML](/zh/docs/components/plantuml/)。
+> 本地开发版本的 Mermaid 与本地 PlantUML 按图表是否接近视口加载引擎；共用
+> 查看器和源码导出无需新配置。普通浏览器打印未渲染图时保留源码。
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |

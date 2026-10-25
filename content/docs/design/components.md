@@ -64,16 +64,21 @@ OINK has 29 shortcodes:
 | Math and chemistry | passthrough, `math`, `chem` fences | `eq` | none; build-time rendering and local styles |
 | Diagram/data | `mermaid`, `plantuml`, `markmap`, `echarts`, `infographic` fences | none | selected local runtime only |
 
-> [!NOTE] Unreleased: PlantUML
-> The unreleased local renderer preserves fence source through exactly one HTML
-> escaping pass, including arrows, quotes, ampersands and Chinese text. It shares
-> one engine instance, renders diagrams in order, and discards obsolete results
-> when the color mode changes. Failed or unsupported diagrams keep source without
-> blocking later diagrams. SVG images retain natural size in a keyboard-focusable
-> horizontal scroll region; browser printing scales them to the page. Source
-> remains available with JavaScript disabled. The [PlantUML guide](/docs/components/plantuml/)
-> defines the bundled-library boundary; the [architecture contract](/docs/design/architecture/#configuration-and-diagnostics)
-> defines renderer selection and network behavior.
+> [!NOTE] Unreleased: unified diagram reading
+> Mermaid and local PlantUML share pan/zoom, fit, source viewing/copy and standalone
+> SVG download. Engines load and render only for measurable diagrams within 320px
+> of the viewport. Each engine loads once; both render serially on the main thread.
+> Hidden content waits until revealed, and obsolete theme results are discarded.
+> The viewer reuses rendered results, retains reading position, and supports touch,
+> keyboard, focus restoration and reduced motion. PlantUML retains Blob-image
+> isolation: its SVG markup never enters the live DOM. Source is escaped exactly
+> once, preserving arrows, quotes, ampersands and Chinese. Errors keep source
+> without blocking subsequent diagrams. Copy/export failures show feedback;
+> downloads report initiation only. Exports embed styling and reject external
+> resource dependencies. Ordinary browser printing shows rendered diagrams or
+> readable source; dedicated Print, Markdown and RSS retain source fallback. See
+> [Mermaid](/docs/components/mermaid/#zoom) and [PlantUML](/docs/components/plantuml/).
+> Explicit server mode retains its existing behavior.
 
 ## Local component refinement {#component-refinement}
 

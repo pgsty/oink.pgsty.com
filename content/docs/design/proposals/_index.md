@@ -31,6 +31,7 @@ or the documentation repository.
 | [OINK CLI and the next product stage](/docs/design/proposals/oink-cli-roadmap/) | Independent Go repository and first-stage boundary accepted; local CLI candidate implemented, not publicly released; later theme, migration, adoption, versioning, OpenAPI, and platform stages remain proposals |
 | [Visual presets and appearance switching](/docs/design/proposals/visual-presets/) | Paper/Slate ship in v1.2.0; Ink/Terminal ship as explicit opt-in experiments awaiting design acceptance; see the accepted decision and dated acceptance record |
 | [Component refinement across four visual presets](/docs/design/proposals/component-refinement/) | Phases 0–3 and 5 accepted and committed locally with three optional Markdown variants; final validation recorded, moving-highlight trial deferred, no published release |
+| [Unified diagram reading](/docs/design/proposals/diagram-reading/) | Shared viewer, source export and demand rendering implemented locally; delivery records validation, no published release |
 | [Local search refinement](/docs/design/proposals/local-search/) | Mixed queries, real section anchors and compact scope controls implemented and reviewed locally; no published release |
 
 The bulk agent-index proposal was retired after its outputs were released.
