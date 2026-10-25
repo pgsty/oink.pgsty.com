@@ -11,13 +11,13 @@ proposal_date: 2026-10-25
 ---
 
 > [!NOTE] Local implementation — not released
-> Phases 0–3 are implemented locally. The three presentation variants are documented in the [component contract](/docs/design/components/#component-refinement) and the [comparison guide](/docs/components/presentation/). Phase 4's moving selection background is deferred. Local validation does not establish a published release or consumer adoption.
+> Phases 0–3 and phase 5 acceptance are complete locally. The three presentation variants are documented in the [component contract](/docs/design/components/#component-refinement) and the [comparison guide](/docs/components/presentation/). Phase 4's moving selection background is deferred. Local validation does not establish a published release or consumer adoption.
 
 ## Status and scope {#status}
 
 | Item | Boundary |
 | --- | --- |
-| Status | Phases 0–3 completed locally; [local validation recorded](/docs/design/research/2026-10-25-component-refinement/) with separate gallery baseline failures; no release assigned |
+| Status | Phases 0–3 and 5 accepted and committed locally; [final validation recorded](/docs/design/research/2026-10-25-component-refinement/) with separate gallery baseline failures; no release assigned |
 | Owner | OINK maintainers; theme implementation in `oink`, public documentation and integration acceptance in `oink.pgsty.com` |
 | Date | 2026-10-25; follows the Fluid Functionalism review of 2026-10-24 |
 | Contract baseline | OINK v1.3.2; Hugo Extended 0.168.0 with built-in LibSass; Go 1.27.3 |
@@ -244,3 +244,4 @@ The local implementation confirms the modifier names above. Shared controls use 
 | 2026-10-25 | Maintainer authorized implementation after the independent blog-gallery commit. Phases 0–3 are implemented locally; the three variants, shared surfaces, static selection, and background-only press feedback are documented in their owning contracts. Phase 4 is deferred; no JavaScript or dependency was added. |
 | 2026-10-25 | Recorded focused checks, real-site validation, bounded Chromium/visual evidence, and the same-build asset comparison in [Research](/docs/design/research/2026-10-25-component-refinement/). Final visual approval and release remain separate; known gallery namespace/golden failures reproduce in the implementation base. |
 | 2026-10-25 | Maintainer review rejected the raised-looking selected Tab. Replace its filled, outlined shape with transparent labels, a thin selected underline, and subtle hover-only fill. Keep label weight and geometry stable, distinct keyboard focus, and touch targets. |
+| 2026-10-25 | Maintainer requested unboxed Terminal field names; native and full Fields now agree across all presets. Final delegated acceptance passed the scoped checks, 409 browser tests and targeted three-engine review; fixed nested native-card links and the no-script command action column. Implementation and documentation were committed locally; phase 5 is complete, phase 4 remains deferred, and release work is separate. |

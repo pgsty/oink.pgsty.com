@@ -30,7 +30,7 @@ or the documentation repository.
 | [Media convergence](/docs/design/proposals/media-convergence/)           | Partially implemented; the media-result contract and Landing resource metadata shipped, M3 resolved for native-image processing, retirement (M4) open |
 | [OINK CLI and the next product stage](/docs/design/proposals/oink-cli-roadmap/) | Independent Go repository and first-stage boundary accepted; local CLI candidate implemented, not publicly released; later theme, migration, adoption, versioning, OpenAPI, and platform stages remain proposals |
 | [Visual presets and appearance switching](/docs/design/proposals/visual-presets/) | Paper/Slate ship in v1.2.0; Ink/Terminal ship as explicit opt-in experiments awaiting design acceptance; see the accepted decision and dated acceptance record |
-| [Component refinement across four visual presets](/docs/design/proposals/component-refinement/) | Phases 0–3 and three optional Markdown variants implemented locally; local validation recorded, moving-highlight trial deferred, no published release |
+| [Component refinement across four visual presets](/docs/design/proposals/component-refinement/) | Phases 0–3 and 5 accepted and committed locally with three optional Markdown variants; final validation recorded, moving-highlight trial deferred, no published release |
 
 The bulk agent-index proposal was retired after its outputs were released.
 [Architecture](/docs/design/architecture/#outputs-and-runtime) defines the accepted

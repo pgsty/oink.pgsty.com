@@ -35,7 +35,7 @@ design_status: active
 | [OINK 1.2 发布前审查，2026-10-05](/zh/docs/design/research/2026-10-05-v1-2-release-review/) | 本地候选版本最终检查、清理、本地资源、兼容性与发布边界 |
 | [CLI 维护验收，2026-10-03](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/) | 历史 R1–R8 与 A18 的源码绑定运行时及归档证据 |
 | [主题评审，2026-10-13](/zh/docs/design/research/2026-10-13-theme-review/) | 输出与交互缺陷复现、修复及本地验证范围 |
-| [组件精修验证，2026-10-25](/zh/docs/design/research/2026-10-25-component-refinement/) | 四种预设组件检查、有限范围的 Chromium 与视觉复查、CSS／JS 体积对照，以及画廊基线失败 |
+| [组件精修验证，2026-10-25](/zh/docs/design/research/2026-10-25-component-refinement/) | 最终组件验收、409 项 Chromium 测试、针对三个引擎的视觉复核、CSS／JS 体积对照，以及单独记录的画廊基线失败 |
 
 ## 发布规则 {#publication-rules}
 
