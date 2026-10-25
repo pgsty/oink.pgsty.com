@@ -409,8 +409,11 @@ Explicit `params.taxonomy.page_header` restores either.
 ## Blog indexes and page composition {#blog-indexes-and-page-composition}
 
 Blog section indexes use `params.ui.blog_index`.
-`list`, the default, and `cards` show one flat sequence, newest first, with shared `blog_index_size` pagination; metadata dates make year headings unnecessary.
-`table` shows the complete section as date/title/tag rows without pagination.
+`list`, the default, `cards`, and the unreleased `gallery` show one flat sequence,
+newest first, with shared `blog_index_size` pagination and no year headings.
+`table` shows date/title/tag rows; without a layout switch, it lists the complete
+section without pagination. With switching enabled, it uses the same page as
+the other layouts.
 Cards use shared lead images, localized date/author/section metadata, tags, and three-line summaries.
 
 Taxonomy pages such as `/tags/` and `/authors/`, and their term pages, share `shell/taxonomy-head.html`.

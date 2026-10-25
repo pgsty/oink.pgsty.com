@@ -214,6 +214,10 @@ the same name.
 
 The guide is [Blog posts](/docs/write/blog/).
 
+See [List layouts](/docs/write/blog/#list) for the four presentation choices.
+`gallery` and `blog_gallery` are unreleased development features;
+OINK v1.3.2 supports `list`, `cards`, and `table`.
+
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
 | `author` | string | — | Post byline. Inline Markdown is allowed. Ignored on a page that has `authors` |
@@ -225,12 +229,15 @@ The guide is [Blog posts](/docs/write/blog/).
 | `images` | string array | — | The first entry becomes the post's featured image and share card. Put it in a section `_index.md` cascade for a section-wide default. `images: []` opts the page out of an inherited cascade value. It does not suppress an image the page bundle already supplies under a `featured`, `cover` or `thumbnail` name |
 | `byline` | string | — | Credit shown with the resolved featured image when that image is rendered |
 | `featured_image` | `none` / `banner` / `wash` / `hero` | site value (`none`) | How this article renders its own featured image. `hero` creates a full-width image shell. An invalid value warns and falls back |
-| `blog_index` | `list` / `cards` / `table` | site value (`list`) | Written on a blog root, the index form for that section. A standalone `table` with `blog_index_toggle: false` lists the whole section without pagination. An invalid value warns and falls back |
+| `blog_index` | `list` / `cards` / `table` / `gallery` | site value (`list`) | Blog section index layout. A standalone `table` with `blog_index_toggle: false` lists the whole section without pagination. An invalid value warns and falls back |
 | `blog_index_columns` | positive integer | site value (`3`) | Card columns at wide breakpoints. Medium and narrow layouts retain their responsive limits |
-| `blog_index_size` | positive integer | site value (`12`) | Posts per page for `list`, `cards`, and all three views when the toggle is enabled. A standalone `table` ignores it |
-| `blog_index_toggle` | boolean | site value (`false`) | Publishes all three index forms and lets the reader switch among them. Hidden forms do not load images |
+| `blog_index_size` | positive integer | site value (`12`) | Posts per page for `list`, `cards`, `gallery`, and all four views when switching is enabled. A standalone `table` ignores it |
+| `blog_index_toggle` | boolean | site value (`false`) | Publishes all four layouts and remembers the reader's choice. When false, publishes only the configured layout and ignores saved layout choices |
+| `blog_gallery` | map | site block | Replaces the whole site gallery block. Omitted fields use built-in defaults; invalid fields warn and fall back. Reader choices for mode and size take precedence |
+| `blog_gallery.mode` | `wall` / `cards` / `seamless` | `wall` within a page block | Justified rows with 6px gaps, masonry with visible captions, or rows without gaps. Independent of the outer `blog_index` layout |
+| `blog_gallery.size` | integer 160–360 | `240` within a page block | Target gallery tile size in CSS pixels; independent of the posts-per-page setting |
 | `share` | string array or `false` | site `params.ui.share` (empty) | The page-end share targets. Replaces any inherited list. `false` opts this page out. See [Share](/docs/write/blog/#share). An unknown target warns and is dropped |
-| `summary` | string | — | Fallback excerpt for post rows on tag and category pages. `description` takes precedence |
+| `summary` | string | — | Fallback excerpt for gallery entries and post rows on tag and category pages. `description` takes precedence |
 {.fields meta="type default"}
 
 ## Book {#book}

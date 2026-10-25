@@ -366,10 +366,11 @@ term 图标；可点击徽章在 hover 或 focus 时才取得当前分区的强�
 
 ## 博客索引与页面组合 {#blog-indexes-and-page-composition}
 
-博客分区索引使用 `params.ui.blog_index`：默认的 `list` 与 `cards` 都是按最新优先
-排列的一段扁平结果，共享 `blog_index_size` 分页；元数据行已经显示日期，所以不再
-需要年份标题。`table` 把整个分区显示为日期、标题、标签行，不分页。卡片使用共享
-首图、本地化日期/作者/分区元数据、标签与三行摘要。
+博客分区索引使用 `params.ui.blog_index`：默认的 `list`、`cards` 与尚未发布的
+`gallery` 都按最新优先排列，共享 `blog_index_size` 分页，不按年分组。
+`table` 显示日期、标题、标签行；关闭布局切换时列出整个分区，不分页；开启时
+使用与其他布局相同的分页。卡片使用共享首图、本地化日期/作者/分区元数据、
+标签与三行摘要。
 
 分类法页（`/tags/`、`/authors/`）与其术语页共用一个页头
 `shell/taxonomy-head.html`。分类法页以整体分类法图标的着色方块、本地化名称与

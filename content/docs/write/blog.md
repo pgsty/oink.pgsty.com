@@ -3,14 +3,14 @@ title: Blog posts
 linkTitle: Blog posts
 description: Set up a blog section. Learn directory conventions, post front matter, featured images, the date-ordered list page, and RSS.
 weight: 40
-search_keywords: [blog, post, RSS, feed, featured image, author, date, pagination]
+search_keywords: [blog, post, RSS, feed, featured image, author, date, pagination, layout, gallery]
 ---
 
 Write a blog post's body like a documentation page. The shell differs. A post
 has a date, author, tags, and featured image. The list uses date order, newest
 first. The section has an RSS feed. This page
 covers creating the blog section, a post's front matter, featured images, list
-pagination and feeds.
+layouts, pagination and feeds.
 
 ## The blog directory {#layout}
 A blog is a section under `content/`, and `type: blog` gives it the blog shell.
@@ -136,14 +136,28 @@ cascade:
   featured_image: wash
 ```
 
-## List pages and pagination {#list}
+## List layouts and pagination {#list}
 
-After the section `_index.md` body, the theme appends the post list. It uses
-date order, newest first, without year groups. Each row shows the
-title, date, subsection, tags, thumbnail and the first 250 characters of the
-body as a summary.
+After the section `_index.md` body, the theme appends the post index, sorted
+by date, newest first, without year groups. Choose its layout with `blog_index`:
 
-List and card views show 12 posts per page by default. Set the theme's
+| Value | Layout | What the reader sees |
+| --- | --- | --- |
+| `list` | Horizontal entries (default) | Thumbnail, title, date, subsection, tags, and a summary |
+| `cards` | Regular card grid | A cropped 16:9 cover above the title, metadata, and summary |
+| `table` | Compact table | Date, title, and tags in one row per article |
+| `gallery` | Image gallery (unreleased) | Proportional covers with titles and descriptions; click to open the article |
+
+OINK v1.3.2 includes `list`, `cards`, and `table`. The development theme adds
+`gallery`, which has not yet been released in a tagged version.
+
+Set the site default with `params.ui.blog_index` in `hugo.yml`, or set
+`blog_index` in a blog section's `_index.md` front matter to override it.
+Use a section's `cascade` to apply it to descendant sections. These settings
+control native blog section indexes; term and taxonomy pages keep their own
+layouts, and custom homepages need their own template integration.
+
+List, card, and gallery views show 12 posts per page by default. Set the theme's
 `blog_index_size` in `hugo.yml` to change it:
 
 ```yaml {title="hugo.yml"}
@@ -169,32 +183,34 @@ params:
     blog_index_columns: 3
 ```
 
-List and card views share date ordering, pagination and `manual_link` behavior.
 The column count applies above the xl breakpoint. Between md and xl, the grid
-has two columns. Below md, it has one. Front matter `blog_index` on a blog root,
-or its `cascade`, sets the view per section. Term and taxonomy pages keep the
-row list.
+has two columns. Below md, it has one. If a card image resource supports
+processing, Hugo applies `.Fill`, so readers download cropped previews.
+
+### Table and layout switching {#list-switching}
 
 A standalone `blog_index: table` with `blog_index_toggle: false` lists the
-entire section without pagination. Set `blog_index_toggle: true` to let readers
-switch among list, cards and table (plus Gallery in the development checkout):
+entire section without pagination. Set `blog_index_toggle: true` to add the
+layout switch beside the title. In the development theme, it cycles through
+`list` → `cards` → `table` → `gallery` → `list`:
 
 ```yaml {title="content/blog/_index.md"}
 blog_index: cards
 blog_index_toggle: true
 ```
 
-With switching enabled, all views show the same current page of posts,
-using `blog_index_size`. Only the standalone table with
-`blog_index_toggle: false` shows the entire section. Hidden views do not load
-their images.
-
-If a card image resource supports processing, Hugo applies `.Fill`. The card
-grid then downloads cropped images rather than full-size originals.
+All layouts preserve date order and `manual_link` destinations. With switching
+enabled, all four views show the same current page of posts, using
+`blog_index_size`. Only the standalone table shows the entire section.
+The switch remembers the reader's choice. Set `blog_index_toggle: false` to
+publish only the configured layout, regardless of a saved reader preference.
+Hidden views use lazy images, although their markup and generated thumbnails
+still contribute to build work. In v1.3.2, the switch cycles through the first
+three layouts.
 
 ### Gallery form (unreleased) {#list-gallery}
 
-The development checkout adds `gallery`: each article becomes a linked cover,
+The development theme adds `gallery`: each article becomes a linked cover,
 using the existing `images` field or bundled featured image. The default wall
 joins images into rows while preserving their proportions. Hover or keyboard
 focus reveals the title and description; touch devices show them below the
@@ -208,12 +224,27 @@ blog_gallery:
   size: 240
 ```
 
-Readers can choose `wall` (6px gaps), `seamless` (no gaps), or `cards` (masonry
-with visible captions) and adjust the target image size from 160 to 360px.
-Their choices are remembered separately from Expo albums. Gallery shares the
-blog's date order and pagination. Site defaults use the same `blog_gallery`
-block under `params.ui`; a page block replaces it in full. These settings
-require the local development theme and are not available in v1.3.2.
+The gallery toolbar offers three arrangements:
+
+| `blog_gallery.mode` | Arrangement | Captions |
+| --- | --- | --- |
+| `wall` (default) | Justified rows with 6px gaps | On hover or keyboard focus; below images on touch devices |
+| `seamless` | The same rows without gaps | On hover or keyboard focus; below images on touch devices |
+| `cards` | Masonry columns | Always visible below images |
+
+`blog_index: cards` selects the regular card grid. `blog_index: gallery` with
+`blog_gallery.mode: cards` selects masonry inside the gallery.
+`blog_gallery.size` sets the target tile size, from 160 to 360 CSS pixels,
+with a default of 240. It is independent of `blog_index_size`, the number of
+posts per page. Readers can change the arrangement and size; their choices
+are remembered separately from Expo albums.
+
+Site defaults use the same `blog_gallery` block under `params.ui`; a page or
+cascade block replaces it in full. Omitted fields use `wall` and `240`;
+invalid values warn and use those defaults. These settings require the
+development theme and are not available in v1.3.2. See the
+[site parameters](/docs/customize/config/#blog) and
+[page parameters](/docs/write/frontmatter/#blog) for the reference tables.
 
 ## RSS {#rss}
 

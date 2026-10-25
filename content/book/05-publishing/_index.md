@@ -22,9 +22,14 @@ presentation inside that shell.
 
 ## Configure a Blog family {#blog-family}
 
-An ordinary Blog section can choose rows, cards, or a table. A section that
-needs an immersive opening keeps the same type and changes four independent
-presentation keys:
+An ordinary Blog section can use horizontal entries (`list`), regular cards
+(`cards`), a compact table (`table`), or a cover gallery (`gallery`). Gallery
+is an unreleased development feature; OINK v1.3.2 supports the first three.
+The [blog layout guide](/docs/write/blog/#list) covers selection, reader
+switching, and the gallery's three arrangements.
+
+A section that needs an immersive opening keeps the same type and changes
+four independent presentation keys:
 
 ```yaml
 type: blog

@@ -3,10 +3,10 @@ title: 博客与文章
 linkTitle: 博客与文章
 description: 开一个博客栏目：目录约定、文章的 front matter、封面图、按日期排序的列表页与 RSS。
 weight: 40
-search_keywords: [博客, 文章, blog, post, RSS, Feed, 封面图, featured image, 作者, 日期, 分页]
+search_keywords: [博客, 文章, blog, post, RSS, Feed, 封面图, featured image, 作者, 日期, 分页, 布局, 画廊, gallery]
 ---
 
-博客文章与文档页的正文写法相同，区别在外壳：文章带日期、作者、标签与封面图，列表按日期倒序排列，栏目带 RSS。本页覆盖博客栏目的建立、文章 front matter、封面图、列表分页与 Feed。
+博客文章与文档页的正文写法相同，区别在外壳：文章带日期、作者、标签与封面图，列表按日期倒序排列，栏目带 RSS。本页覆盖博客栏目的建立、文章 front matter、封面图、列表布局、分页与 Feed。
 
 ## 博客目录结构 {#layout}
 博客是 `content/` 下的一个栏目，`type: blog` 使它使用博客外壳。子目录按发布方与受众划分，文章平铺其中。无需建立年份目录，列表会按文章的 `date` 排序：
@@ -113,11 +113,27 @@ cascade:
   featured_image: wash
 ```
 
-## 列表页与分页 {#list}
+## 列表布局与分页 {#list}
 
-栏目 `_index.md` 的正文之后，主题自动接上文章列表：按日期倒序平铺，不按年份分组；每条显示标题、日期、所属子栏目、标签、缩略图与正文前 250 字的摘要。
+栏目 `_index.md` 的正文之后，主题自动接上文章索引，按日期倒序排列，不按年份
+分组。用 `blog_index` 选择布局：
 
-列表与卡片默认每页 12 篇，用主题的 `blog_index_size` 在 `hugo.yml` 里调整：
+| 值 | 布局 | 读者看到什么 |
+| --- | --- | --- |
+| `list` | 水平条目（默认） | 缩略图、标题、日期、所属子栏目、标签与摘要 |
+| `cards` | 规则卡片网格 | 上方是 16:9 裁切封面，下方是标题、元数据与摘要 |
+| `table` | 紧凑表格 | 每篇文章占一行，显示日期、标题与标签 |
+| `gallery` | 照片画廊（尚未发布） | 按比例排布封面，附带标题与描述；点击进入文章 |
+
+OINK v1.3.2 包含 `list`、`cards`、`table`。开发版本新增 `gallery`，尚未随标签
+版本发布。
+
+在 `hugo.yml` 中使用 `params.ui.blog_index` 设置站点默认布局，或在博客栏目的
+`_index.md` front matter 中使用 `blog_index` 覆盖它。栏目 `cascade` 可将设置
+传给下级栏目。这些配置控制原生博客栏目索引；分类法与分类项页保留自己的
+布局，自定义首页需要在模板中单独集成。
+
+列表、卡片与画廊默认每页 12 篇，用主题的 `blog_index_size` 在 `hugo.yml` 里调整：
 
 ```yaml {title="hugo.yml"}
 params:
@@ -138,22 +154,29 @@ params:
     blog_index_columns: 3
 ```
 
-列表与卡片共用日期排序、分页与 `manual_link` 的规则。列数只在 xl 断点以上生效；md 到 xl 之间为两列，md 以下一列。博客根目录的 front matter `blog_index` 或它的 `cascade` 可以按栏目设置。分类项页与分类法首页保持行列表。
+列数只在 xl 断点以上生效；md 到 xl 之间为两列，md 以下一列。卡片图片资源可
+处理时，Hugo 使用 `.Fill` 生成裁切预览，读者无需下载原图。
 
-单独使用 `blog_index: table` 且 `blog_index_toggle: false` 时，表格列出整个栏目，不分页。设置 `blog_index_toggle: true`，读者即可在列表、卡片、表格之间切换（开发 checkout 还包含画廊）：
+### 表格与布局切换 {#list-switching}
+
+单独使用 `blog_index: table` 且 `blog_index_toggle: false` 时，表格列出整个栏目，
+不分页。设置 `blog_index_toggle: true`，标题旁就会出现布局切换按钮。开发版本
+的切换顺序是 `list` → `cards` → `table` → `gallery` → `list`：
 
 ```yaml {title="content/blog/_index.zh.md"}
 blog_index: cards
 blog_index_toggle: true
 ```
 
-开启切换时，所有形态显示同一页文章，都使用 `blog_index_size`。只有 `blog_index_toggle: false` 的独立表格才显示整个栏目；隐藏形态不会加载图片。
-
-卡片题图只要资源可处理就走 Hugo 的 `.Fill`，一屏卡片不会为此下载一堆原图。
+所有布局都保留日期顺序与 `manual_link` 目标。开启切换时，四种布局显示同一页
+文章，都使用 `blog_index_size`；只有独立表格才显示整个栏目。切换器会记住
+读者的选择。设为 `blog_index_toggle: false` 时，只输出配置的布局，不受读者
+之前保存的选择影响。隐藏视图使用延迟加载，但输出标记与生成缩略图仍需要构建
+时间。v1.3.2 的切换器仅在前三种布局之间循环。
 
 ### 画廊形态（尚未发布） {#list-gallery}
 
-开发 checkout 新增 `gallery`：每篇文章成为一张可点击的封面，使用现有 `images`
+开发版本新增 `gallery`：每篇文章成为一张可点击的封面，使用现有 `images`
 字段或页面包中的特色图片。默认展墙将图片按比例拼成行；悬停或键盘聚焦时显示
 标题和描述，触屏设备则把文字放在图片下方。点击进入文章，没有封面的文章仍
 保留标题块。
@@ -166,11 +189,23 @@ blog_gallery:
   size: 240
 ```
 
-读者可选择 `wall`（6px 间隙）、`seamless`（无间隙）或 `cards`（始终显示文字的
-瀑布流），并在 160–360px 之间调整目标图片大小。选择独立于 Expo 相册记忆。
-画廊沿用博客的日期顺序和分页。站点默认值使用 `params.ui` 下的同名
-`blog_gallery` 块；页面块会整体替换它。这些配置需要本地开发主题，v1.3.2 尚不
-支持。
+画廊工具栏提供三种内部排布：
+
+| `blog_gallery.mode` | 排布 | 文字显示 |
+| --- | --- | --- |
+| `wall`（默认） | 等高拼接，保留 6px 间隙 | 悬停或键盘聚焦时显示；触屏上放在图片下方 |
+| `seamless` | 相同的行布局，去掉间隙 | 悬停或键盘聚焦时显示；触屏上放在图片下方 |
+| `cards` | 瀑布流 | 始终显示在图片下方 |
+
+`blog_index: cards` 选择规则卡片网格；`blog_index: gallery` 配合
+`blog_gallery.mode: cards` 才是画廊内的瀑布流。`blog_gallery.size` 设置目标格子
+大小，范围是 160–360 CSS 像素，默认 240；它与控制每页文章数的
+`blog_index_size` 相互独立。读者可以调整排布和大小，选择独立于 Expo 相册记忆。
+
+站点默认值使用 `params.ui` 下的同名 `blog_gallery` 块，页面或 cascade 块会
+整体替换它。未给出的字段使用 `wall` 与 `240`；无效值告警并回退到这些默认值。
+这些配置需要开发版本主题，v1.3.2 尚不支持。完整参数表见
+[站点参数](/zh/docs/customize/config/#blog)与[页面参数](/zh/docs/write/frontmatter/#blog)。
 
 ## RSS {#rss}
 

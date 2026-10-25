@@ -206,20 +206,31 @@ See [Expo defaults](/docs/write/expo/#defaults) for the complete rules.
 
 ## Blog {#blog}
 
-Seven keys shape a blog section. They apply to the section named by
+These settings shape a blog section. They apply to the section named by
 `params.ui.blog_section`, and each can be overridden per section through front
 matter or a `cascade` on the blog root.
+
+The [layout guide](/docs/write/blog/#list) compares rows, cards, tables, and
+galleries. The `gallery` layout and `blog_gallery` settings below are
+unreleased development additions; OINK v1.3.2 supports the first three layouts.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `params.ui.featured_image` | enum | none | Controls the article's featured image on single pages and section indexes. The mode `none` renders nothing. The mode `banner` shows a 16:9 figure above the title. The mode `wash` shows the image behind the article header at a tenth of its opacity. The mode `hero` uses a full-bleed shell background and moves the opening down. It uses the same image as the page card and `og:image`, so they cannot differ. Without an image, every mode renders nothing |
-| `params.ui.blog_index` | enum | list | Blog index form. The mode `list` shows rows. The mode `cards` shows image cards with dates and summaries. The mode `table` shows compact rows. All sort by date, newest first, without year groups. Only a standalone `table` with `blog_index_toggle: false` shows the complete section without pagination |
+| `params.ui.blog_index` | enum | list | `list` shows horizontal entries, `cards` shows regular image cards, `table` shows compact rows, and `gallery` shows linked covers. All sort by date, newest first. Only a standalone `table` with `blog_index_toggle: false` shows the complete section without pagination |
 | `params.ui.blog_index_columns` | integer | 3 | Column count for `blog_index: cards`. Regardless of this value, uses two columns between md and xl breakpoints and one below md |
-| `params.ui.blog_index_size` | integer | 12 | Posts per page for `list`, `cards`, and all three views when the toggle is enabled. A standalone `table` ignores it |
-| `params.ui.blog_index_toggle` | boolean | false | Lets readers cycle through list, cards, and table in the index toolbar. Off by default because it adds all three forms to the document. Hidden forms load no images, but their markup remains |
+| `params.ui.blog_index_size` | integer | 12 | Posts per page for `list`, `cards`, `gallery`, and all four views when switching is enabled. A standalone `table` ignores it |
+| `params.ui.blog_index_toggle` | boolean | false | Publishes all four layouts and lets readers cycle through `list` → `cards` → `table` → `gallery`, remembering their choice. When false, publishes only the configured layout |
+| `params.ui.blog_gallery.mode` | enum | wall | Gallery arrangement: `wall` has 6px gaps, `seamless` has no gaps, and `cards` uses masonry with visible captions. This is independent of the outer `blog_index` layout |
+| `params.ui.blog_gallery.size` | integer | 240 | Target gallery tile size, 160–360 CSS pixels. Does not set the number of posts per page |
 | `params.ui.toc_style` | enum | fixed | Right-rail presentation. The mode `fixed` pins a panel to the viewport. The mode `flow` uses a wider panel in content flow. It starts with the article and pins only on scroll |
 | `params.ui.toc_taxonomies` | boolean | true | Taxonomy term clouds in the right rail. If the rail has neither a table of contents nor clouds, it renders nothing |
 {.fields meta="type default"}
+
+A page or cascade `blog_gallery` block replaces the whole site block. Missing
+fields use `wall` and `240`; invalid values warn and fall back to those
+defaults. Saved gallery arrangement and size override the author defaults and
+are independent of Expo preferences. See [Gallery](/docs/write/blog/#list-gallery).
 
 Article authorship and series are taxonomies rather than parameters — see
 [Taxonomies](/docs/customize/taxonomy/#authors) and

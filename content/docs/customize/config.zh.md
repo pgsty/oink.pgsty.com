@@ -187,18 +187,29 @@ OINK 1.3.0 为默认 `shell_types` 列表添加了 `expo`，
 
 ## 博客 {#blog}
 
-七个键决定博客栏目的样子。它们作用于 `params.ui.blog_section` 指定的栏目，每一个都能通过博客根目录的 front matter 或 `cascade` 按栏目覆盖。
+以下设置控制博客栏目的呈现，作用于 `params.ui.blog_section` 指定的栏目，
+可通过博客根目录的 front matter 或 `cascade` 按栏目覆盖。
+
+[布局指南](/zh/docs/write/blog/#list)对比了水平条目、卡片、表格与画廊。
+下面的 `gallery` 布局与 `blog_gallery` 配置属于尚未发布的开发功能；
+OINK v1.3.2 支持前三种布局。
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
 | `params.ui.featured_image` | enum | none | 文章正文里怎么渲染自己的题图：`none` 不渲染，`banner` 在标题上方框出一张 16:9 的图，`wash` 把它铺在文章头部背后、只留十分之一的不透明度，`hero` 把它作为外壳自己的通栏背景铺开并把开头下移——单页与栏目列表页都一样。用的就是这一页在卡片与 `og:image` 里已经在用的那张图，两处不会打架。没有题图的文章在任何模式下都不渲染任何东西 |
-| `params.ui.blog_index` | enum | list | 博客索引形态：`list` 是行列表，`cards` 是带题图、日期与摘要的卡片，`table` 是紧凑表格。均按日期倒序排列，不按年分组；仅 `blog_index_toggle: false` 时的独立 `table` 不分页、列出整个栏目 |
+| `params.ui.blog_index` | enum | list | `list` 是水平条目，`cards` 是规则图文卡片，`table` 是紧凑表格，`gallery` 是可点击封面组成的画廊。均按日期倒序排列；仅 `blog_index_toggle: false` 时的独立 `table` 不分页、列出整个栏目 |
 | `params.ui.blog_index_columns` | integer | 3 | `blog_index: cards` 时的列数；md 到 xl 之间恒为两列，md 以下一列，不受此值影响 |
-| `params.ui.blog_index_size` | integer | 12 | `list`、`cards` 及启用切换时三种视图共享的每页文章数；独立 `table` 忽略此值 |
-| `params.ui.blog_index_toggle` | boolean | false | 让读者从索引工具栏在列表、卡片、表格之间切换。默认关闭，因为它会把三种形态都放进文档——隐藏的那些不加载图片，但标记是真实存在的 |
+| `params.ui.blog_index_size` | integer | 12 | `list`、`cards`、`gallery` 及启用切换时四种视图共享的每页文章数；独立 `table` 忽略此值 |
+| `params.ui.blog_index_toggle` | boolean | false | 输出四种布局，让读者按 `list` → `cards` → `table` → `gallery` 循环切换并记住选择；设为 false 时只输出配置的布局 |
+| `params.ui.blog_gallery.mode` | enum | wall | 画廊内部排布：`wall` 保留 6px 间隙，`seamless` 无间隙，`cards` 为始终显示文字的瀑布流；独立于外层 `blog_index` 布局 |
+| `params.ui.blog_gallery.size` | integer | 240 | 目标画廊格子大小，范围 160–360 CSS 像素；不控制每页文章数 |
 | `params.ui.toc_style` | enum | fixed | 右栏的呈现方式：`fixed` 是钉在视口上的面板，`flow` 是跟随内容流、从文章开头处开始、滚动后才钉住的宽面板 |
 | `params.ui.toc_taxonomies` | boolean | true | 右栏的分类词云。既没有目录也没有词云的右栏不会渲染任何东西 |
 {.fields meta="type default"}
+
+页面或 cascade 的 `blog_gallery` 块整体替换站点块。缺失字段使用 `wall` 与
+`240`；无效值告警并回退到这些默认值。读者保存的排布和大小优先于作者默认值，
+并独立于 Expo 偏好。详见[画廊形态](/zh/docs/write/blog/#list-gallery)。
 
 作者与系列是 taxonomy 而不是参数，见[分类法](/zh/docs/customize/taxonomy/#authors)与[写博客](/zh/docs/write/blog/)。
 

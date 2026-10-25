@@ -186,6 +186,9 @@ cascade:
 
 指南在[博客与文章](/zh/docs/write/blog/)。
 
+[列表布局](/zh/docs/write/blog/#list)对比了四种呈现方式。`gallery` 与
+`blog_gallery` 属于尚未发布的开发功能；OINK v1.3.2 支持 `list`、`cards`、`table`。
+
 | 键 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
 | `author` | 字符串 | — | 文章署名，支持行内 Markdown。页面写了 `authors` 时忽略它 |
@@ -197,12 +200,15 @@ cascade:
 | `images` | 字符串数组 | — | 第一项作为文章封面与分享卡片；写进栏目 `_index.md` 的 `cascade` 即为栏目级默认。`images: []` 让这一页不继承 cascade 里的值，但不会屏蔽页面 bundle 里已有的 `featured`、`cover` 或 `thumbnail` 图片 |
 | `byline` | 字符串 | — | 解析到的题图实际渲染时显示的图片署名 |
 | `featured_image` | `none` / `banner` / `wash` / `hero` | 站点值（`none`） | 本文正文里怎么渲染自己的题图；`hero` 使用沉浸式通栏外壳。非法值告警并回退 |
-| `blog_index` | `list` / `cards` / `table` | 站点值（`list`） | 写在博客根目录上，决定该栏目索引形态；仅 `blog_index_toggle: false` 时的独立 `table` 不分页、列出整个栏目。非法值告警并回退 |
+| `blog_index` | `list` / `cards` / `table` / `gallery` | 站点值（`list`） | 博客栏目索引布局；仅 `blog_index_toggle: false` 时的独立 `table` 不分页、列出整个栏目。非法值告警并回退 |
 | `blog_index_columns` | 正整数 | 站点值（`3`） | 宽视口下的卡片列数；中等与窄视口仍保留响应式限制 |
-| `blog_index_size` | 正整数 | 站点值（`12`） | `list`、`cards` 及启用切换时三种视图共享的每页文章数；独立 `table` 忽略此值 |
-| `blog_index_toggle` | 布尔 | 站点值（`false`） | 同时发布三种索引形态，让读者切换；隐藏形态不加载图片 |
+| `blog_index_size` | 正整数 | 站点值（`12`） | `list`、`cards`、`gallery` 及启用切换时四种视图共享的每页文章数；独立 `table` 忽略此值 |
+| `blog_index_toggle` | 布尔 | 站点值（`false`） | 输出四种布局并记住读者选择；设为 false 时只输出配置的布局，不受已保存布局选择影响 |
+| `blog_gallery` | 映射 | 站点块 | 整体替换站点画廊配置块；缺失字段使用内置默认值，无效字段告警并回退。读者保存的排布和大小优先 |
+| `blog_gallery.mode` | `wall` / `cards` / `seamless` | 页面块内为 `wall` | 保留 6px 间隙的等高拼接、始终显示文字的瀑布流或无间隙行布局；独立于外层 `blog_index` 布局 |
+| `blog_gallery.size` | 160–360 的整数 | 页面块内为 `240` | 目标画廊格子的 CSS 像素大小；独立于每页文章数设置 |
 | `share` | 字符串数组或 `false` | 站点 `params.ui.share`（空） | 页尾分享目标，整体替换继承来的列表；`false` 让本页退出，见[分享](/zh/docs/write/blog/#share)。未知目标告警并丢弃 |
-| `summary` | 字符串 | — | 标签 / 分类页上文章行的摘要回退来源，`description` 优先 |
+| `summary` | 字符串 | — | 画廊条目及标签 / 分类页文章行的摘要回退来源，`description` 优先 |
 {.fields meta="type default"}
 
 ## Book {#book}
