@@ -52,6 +52,16 @@ these fixes and credit their contributor.
 
 ## Read the release notes first {#release-notes}
 
+> [!NOTE] Unreleased: local PlantUML rendering
+> After adopting the development change, keep `params.plantuml: true` or
+> `plantuml.enable: true` and remove `svg_image_url` to use the two bundled
+> browser scripts. No additional software or rendering service is required.
+> Keep a nonempty endpoint to retain server mode. To disable rendering entirely,
+> set `params.plantuml: false` or `plantuml.enable: false`; an empty endpoint now
+> selects local mode. Published v1.3.2 still requires an endpoint. Review
+> [unsupported includes, libraries, and CSP requirements](/docs/components/plantuml/#limits)
+> before switching an existing diagram collection.
+
 Each version's release notes describe its changes, breaking changes, and
 upgrade steps. Before upgrading, read the target version's notes:
 
@@ -208,7 +218,7 @@ Hugo Extended 0.168.0, then verify the site:
   and numbered equations at narrow widths.
 - Run a production build for diagram endpoints and resource alt metadata;
   malformed values now produce a warning and use a safe fallback. To disable
-  a PlantUML or Draw.io endpoint intentionally, use `false` or an empty string.
+  rendering intentionally, use `params.plantuml: false` or `params.drawio.enable: false`.
 - Use the revised PDF and migration tools when testing publication or content
   conversion. Review PDF remote-resource opt-ins and migration diffs, including
   code examples nested in lists. The consumer-upgrade helper ships with

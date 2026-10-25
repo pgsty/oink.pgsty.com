@@ -44,7 +44,7 @@
   - [Math](http://localhost/docs/components/math/index.md): Use KaTeX for inline and display mathematics at build time. Readers download no script.
   - [Mermaid](http://localhost/docs/components/mermaid/index.md): Use a `mermaid` fence for flowcharts, sequence diagrams, Gantt charts, class diagrams, and state diagrams. Bundled Mermaid follows the color scheme; source diffs show changes.
   - [Presentation](http://localhost/docs/components/presentation/index.md): Cards, disclosures, tabs, and compact procedures across OINK's four visual presets.
-  - [PlantUML](http://localhost/docs/components/plantuml/index.md): Use a `plantuml` fence for sequence, class, component, activity, and use-case diagrams. Configure your own PlantUML rendering server.
+  - [PlantUML](http://localhost/docs/components/plantuml/index.md): Render sequence, class, component, activity and use-case diagrams in the browser with bundled assets and no rendering service.
   - [Markmap](http://localhost/docs/components/markmap/index.md): Use a `markmap` fence for an expandable mind map with zoom controls. Its source remains a readable Markdown outline.
   - [Draw.io](http://localhost/docs/components/drawio/index.md): Display a `.drawio.svg` with an embedded editable copy as an ordinary image. Its edit button opens the Draw.io editor.
   - [ECharts](http://localhost/docs/components/echarts/index.md): Write ECharts options as YAML or JSON in an `echarts` fence. Hugo validates them, and bundled ECharts draws charts that follow the color scheme.

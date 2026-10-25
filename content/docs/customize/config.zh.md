@@ -52,7 +52,7 @@ params:
 - **非法值告警并回退到文档里写明的默认值**。`params.ui.typography: solarized` 报 `invalid params.ui.typography "solarized" (allowed: technical | system) -- using "technical"`，站点照常构建；`footer_style: thin`、`page_width: huge`、`section_index: grid` 同理。一个笔误因此只降级一个设置，而不是让 `hugo server` 下每个 URL 都返回 HTTP 500。发布前应核对这些告警与降级产物。
 - **有一条警告保留取值而不是丢弃它**。主题读出的 `theme_color` 若在它自己的画布上低于 AA 正文对比度（4.5:1），颜色照常生效 —— 自定义画布或品牌强制色是作者的决定 —— 但会说出来，并打印可以让它闭嘴的 `ignoreLogs` id。把它当建议而不是拒绝：要么换个更深的颜色，要么加一行配置，发布前应确认实际对比度。只有解析不出来的十六进制才会被真正丢弃，那种情况和其他非法值一样回退到默认配色。
 
-- **主题自身从不中断构建**。它的模板里没有任何 `errorf`：每个非法值都走上面的告警并回退。需要外部端点的功能——PlantUML、Draw.io、Algolia——缺少端点时告警并保持关闭，因为主题不会代为连接公共服务；残缺的上游署名告警并略去整条声明，因为半条读起来和完整的一模一样。真正会中断构建的来自 Hugo 而非主题：解析不到目标的内容引用，以及低于 `module.hugoVersion.min` 的 Hugo 版本。
+- **主题自身从不中断构建**。它的模板里没有任何 `errorf`：每个非法值都走上面的告警并回退。Draw.io 与 Algolia 缺少必需的服务配置时告警并保持关闭。尚未发布的 PlantUML 本地渲染无需端点；显式填写的非法端点会告警并关闭渲染。主题不会代为连接公共服务。残缺的上游署名告警并略去整条声明，因为半条读起来和完整的一模一样。真正会中断构建的来自 Hugo 而非主题：解析不到目标的内容引用，以及低于 `module.hugoVersion.min` 的 Hugo 版本。
 
 ## 页面级覆盖优先级 {#overrides}
 
@@ -380,13 +380,18 @@ OINK v1.3.2 支持前三种布局。
 
 Mermaid、KaTeX、ECharts、Infographic、Asciinema、Swagger UI 与 Redoc 按内容自动检测，只有用到它们的页面、且只在该页的 HTML 输出里加载，没有站点开关。需要开关或外部端点的只有这几个：
 
+> [!NOTE] 尚未发布的 PlantUML 支持
+> 开发版本在启用且未配置端点时使用本地渲染。已发布的 v1.3.2 仍需要
+> `svg_image_url`。两种模式及其限制见 [PlantUML](/zh/docs/components/plantuml/)。
+
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `params.markmap` | boolean | false | 站点级启用思维导图围栏，见[思维导图](/zh/docs/components/markmap/) |
 | `params.mermaid` | map | | 透传给 `mermaid.initialize()` 的配置；键名全小写，深色模式自动覆盖 `theme` |
-| `params.plantuml.enable` | boolean | false | 启用 PlantUML 围栏，见 [PlantUML](/zh/docs/components/plantuml/) |
-| `params.plantuml.svg_image_url` | string | | PlantUML 服务的 SVG 端点，启用时必填，缺失则告警并保持 PlantUML 关闭 |
-| `params.plantuml.svg` | boolean | | 用内联 SVG 而不是 `<img>` 渲染 |
+| `params.plantuml` | boolean 或 map | 关闭 | `true` 启用本地渲染；`false` 关闭所有 PlantUML 渲染 |
+| `params.plantuml.enable` | boolean | false | 启用 PlantUML 本地渲染，见 [PlantUML](/zh/docs/components/plantuml/) |
+| `params.plantuml.svg_image_url` | string | | 可选 PlantUML 服务端点；省略时在浏览器本地渲染 |
+| `params.plantuml.svg` | boolean | false | 仅服务端模式有效：使用内联 SVG 而非 `<img>` |
 | `params.drawio.enable` | boolean | false | 启用 `.drawio.svg` 图片的编辑按钮，见 [Draw.io](/zh/docs/components/drawio/) |
 | `params.drawio.drawio_server` | string | | Draw.io 编辑器地址，启用时必填，缺失则告警并保持 Diagrams.net 关闭 |
 | `params.highlight_classes` | boolean | true | 代码高亮输出 Chroma class；设 `false` 回到 Hugo 的行内样式 |
@@ -513,7 +518,6 @@ hugo --printPathWarnings
 | `invalid page_width … (allowed: normal \| wide \| full)` | 页宽写错 |
 | `invalid params.ui.section_index … (allowed: list \| cards)` | 栏目首页样式写错 |
 | `invalid params.offline_search_index` | 索引范围只有 `title` `heading` `summary` `content` |
-| `params.plantuml.enable requires an explicit params.plantuml.svg_image_url` | 开了 PlantUML 却没给端点 |
 | `params.drawio.enable requires an explicit params.drawio.drawio_server` | 开了 Draw.io 却没给服务地址 |
 | `params.search.algolia requires explicit appId, apiKey, and indexName` | Algolia 三项必须齐全 |
 | `params.ui.image_zoom must be a boolean` | 写成了字符串 `"true"` |

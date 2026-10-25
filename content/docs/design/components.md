@@ -64,6 +64,17 @@ OINK has 29 shortcodes:
 | Math and chemistry | passthrough, `math`, `chem` fences | `eq` | none; build-time rendering and local styles |
 | Diagram/data | `mermaid`, `plantuml`, `markmap`, `echarts`, `infographic` fences | none | selected local runtime only |
 
+> [!NOTE] Unreleased: PlantUML
+> The unreleased local renderer preserves fence source through exactly one HTML
+> escaping pass, including arrows, quotes, ampersands and Chinese text. It shares
+> one engine instance, renders diagrams in order, and discards obsolete results
+> when the color mode changes. Failed or unsupported diagrams keep source without
+> blocking later diagrams. SVG images retain natural size in a keyboard-focusable
+> horizontal scroll region; browser printing scales them to the page. Source
+> remains available with JavaScript disabled. The [PlantUML guide](/docs/components/plantuml/)
+> defines the bundled-library boundary; the [architecture contract](/docs/design/architecture/#configuration-and-diagnostics)
+> defines renderer selection and network behavior.
+
 ## Local component refinement {#component-refinement}
 
 The sibling development checkout additionally supports the following presentation variants; they are not part of the published v1.3.2 baseline. See the [presentation examples](/docs/components/presentation/).

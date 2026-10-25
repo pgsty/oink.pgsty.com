@@ -98,14 +98,15 @@ no_print: true
 | [文件树](/zh/docs/components/filetree/) | 静态面板，目录全部展开，分栏停在构建期宽度 |
 | [参数表](/zh/docs/components/fields/) | 完整定义列表，两种形态一致 |
 | [公式](/zh/docs/components/math/) | 静态渲染的 KaTeX / MathML |
-| [Mermaid](/zh/docs/components/mermaid/) · [Markmap](/zh/docs/components/markmap/) · [PlantUML](/zh/docs/components/plantuml/) | 照常渲染成图：打印视图仍是一张 HTML 页，这几个运行时照常加载 |
+| [Mermaid](/zh/docs/components/mermaid/) · [Markmap](/zh/docs/components/markmap/) | 照常渲染成图：打印视图仍是一张 HTML 页，这几个运行时照常加载 |
+| [PlantUML](/zh/docs/components/plantuml/) | 独立 Print 保留源码，不加载运行时；打印普通 HTML 页面时保留已渲染图片 |
 | [ECharts](/zh/docs/components/echarts/) · [Infographic](/zh/docs/components/infographic/) | 降级成围栏源码块，不渲染图表 |
 | [Asciinema](/zh/docs/components/asciinema/) · [OpenAPI](/zh/docs/write/openapi/) | 一行带标题的静态链接，录像或规范地址可见；三套运行时都不加载 |
 | 卡片 / 步骤 / 徽章 / 按键 | 静态呈现，内容不变 |
 
 页面外壳不进纸：侧栏、目录、顶栏、页面操作菜单、反馈组件、标题旁的锚点链接、行内复制按钮。
 
-上表里靠浏览器端运行时绘制的那三种图（Mermaid、Markmap、PlantUML），触发打印前要确认它们已经绘制完成。
+打印含浏览器渲染图表的普通 HTML 页面时，应先确认图表已经绘制完成。
 
 ## 浏览器打印样式 {#print-css}
 

@@ -158,6 +158,6 @@ params:
 ## 相关 {#related}
 
 - [图片](/zh/docs/components/image/) — 图注、编号、尺寸、缩放的完整规则
-- [PlantUML](/zh/docs/components/plantuml/) — 另一个需要自建服务的图表集成
+- [PlantUML](/zh/docs/components/plantuml/) — UML 图表；渲染模式与版本要求见指南
 - [Mermaid](/zh/docs/components/mermaid/) — 不需要任何服务的文本画图
 - [配置总览](/zh/docs/customize/config/) — `params.drawio.*` 的完整定义

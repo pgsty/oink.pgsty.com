@@ -45,15 +45,15 @@ search_keywords: [徽章, Badge, 状态标签, tone, Beta, 已弃用, neutral, i
 
 ```markdown {title="源码"}
 `params.ui.image_zoom` {{</* badge text="默认关闭" tone="neutral" */>}} 打开后，
-有替代文字的块级图片可以点开看大图。PlantUML {{</* badge text="需自建服务" tone="warning" */>}}
-与 Draw.io {{</* badge text="需自建服务" tone="warning" */>}} 没有配置服务端点时告警并保持关闭，
-而不是连接公共服务。
+有替代文字的块级图片可以点开看大图。PlantUML {{</* badge text="按需启用" tone="info" */>}}
+使用独立的站点开关。Draw.io {{</* badge text="需自建服务" tone="warning" */>}}
+没有配置服务端点时告警并保持关闭。
 ```
 
 `params.ui.image_zoom` {{< badge text="默认关闭" tone="neutral" >}} 打开后，
-有替代文字的块级图片可以点开看大图。PlantUML {{< badge text="需自建服务" tone="warning" >}}
-与 Draw.io {{< badge text="需自建服务" tone="warning" >}} 没有配置服务端点时告警并保持关闭，
-而不是连接公共服务。
+有替代文字的块级图片可以点开看大图。PlantUML {{< badge text="按需启用" tone="info" >}}
+使用独立的站点开关。Draw.io {{< badge text="需自建服务" tone="warning" >}}
+没有配置服务端点时告警并保持关闭。
 
 ## 标题旁边 {#in-headings}
 
@@ -81,7 +81,7 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 | --- | --- | --- |
 | 提示块 | `> [!NOTE]` | {{</* badge text="稳定" tone="success" */>}} |
 | 画廊 | ` ```gallery ` 围栏 | {{</* badge text="稳定" tone="success" */>}} |
-| PlantUML | ` ```plantuml ` 围栏 | {{</* badge text="需自建服务" tone="warning" */>}} |
+| PlantUML | ` ```plantuml ` 围栏 | {{</* badge text="按需启用" tone="info" */>}} |
 | `image` shortcode | — | {{</* badge text="已移除" tone="danger" */>}} |
 ```
 
@@ -89,7 +89,7 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 | --- | --- | --- |
 | 提示块 | `> [!NOTE]` | {{< badge text="稳定" tone="success" >}} |
 | 画廊 | ` ```gallery ` 围栏 | {{< badge text="稳定" tone="success" >}} |
-| PlantUML | ` ```plantuml ` 围栏 | {{< badge text="需自建服务" tone="warning" >}} |
+| PlantUML | ` ```plantuml ` 围栏 | {{< badge text="按需启用" tone="info" >}} |
 | `image` shortcode | — | {{< badge text="已移除" tone="danger" >}} |
 
 ## 列表与步骤里 {#in-lists}

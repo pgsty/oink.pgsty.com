@@ -47,8 +47,12 @@ markup:
 - `parser.attribute.block: true` enables attribute lines. Without it, `{.steps}` and `{caption="…"}` appear as text.
 - `parser.wrapStandAloneImageWithinParagraph: false` prevents `<p>` wrappers around standalone images. This permits captioned figures and attribute lines after images.
 
-Some components need other settings. Mathematics needs Goldmark passthrough. PlantUML and Draw.io need a rendering server that you run yourself.
+Some components need other settings. Mathematics needs Goldmark passthrough. Draw.io needs an explicitly configured editor service.
 Each component page explains its requirements. [Configuration](/docs/customize/config/) lists all configuration keys.
+
+The unreleased development version renders PlantUML locally when enabled,
+using two bundled scripts. Published v1.3.2 still requires an endpoint;
+see the [PlantUML guide](/docs/components/plantuml/) for both modes.
 
 ## Cheatsheet {#cheatsheet}
 
@@ -69,7 +73,7 @@ The *Runtime* column shows whether the component loads JavaScript on the page.
 | [FileTree](/docs/components/filetree/) | Directory structure with an aligned comment column | ```` ```filetree ```` | fence | per page |
 | [Math](/docs/components/math/) | KaTeX inline and display formulas | `$$ … $$` | native | none |
 | [Mermaid](/docs/components/mermaid/) | Flowcharts, sequence diagrams, Gantt charts | ```` ```mermaid ```` | fence | per page |
-| [PlantUML](/docs/components/plantuml/) | UML diagrams; needs a rendering server | ```` ```plantuml ```` | fence | site switch |
+| [PlantUML](/docs/components/plantuml/) | UML diagrams; local rendering in the development version | ```` ```plantuml ```` | fence | site switch |
 | [Markmap](/docs/components/markmap/) | A Markdown outline becomes a mind map | ```` ```markmap ```` | fence | site switch |
 | [Draw.io](/docs/components/drawio/) | Diagrams that stay editable; needs a server | `![alt](arch.drawio.svg)` | native | site switch |
 | [ECharts](/docs/components/echarts/) | Declarative statistical charts | ```` ```echarts ```` | fence | per page |
@@ -106,7 +110,7 @@ Section pages:
 - [Math](/docs/components/math/): Use KaTeX for inline and display mathematics at build time. Readers download no script.
 - [Mermaid](/docs/components/mermaid/): Use a `mermaid` fence for flowcharts, sequence diagrams, Gantt charts, class diagrams, and state diagrams. Bundled Mermaid follows the color scheme; source diffs show changes.
 - [Component presentation](/docs/components/presentation/): Cards, disclosures, tabs, and compact procedures across OINK's four visual presets.
-- [PlantUML](/docs/components/plantuml/): Use a `plantuml` fence for sequence, class, component, activity, and use-case diagrams. Configure your own PlantUML rendering server.
+- [PlantUML](/docs/components/plantuml/): Render sequence, class, component, activity and use-case diagrams in the browser with bundled assets and no rendering service.
 - [Markmap](/docs/components/markmap/): Use a `markmap` fence for an expandable mind map with zoom controls. Its source remains a readable Markdown outline.
 - [Draw.io](/docs/components/drawio/): Display a `.drawio.svg` with an embedded editable copy as an ordinary image. Its edit button opens the Draw.io editor.
 - [ECharts](/docs/components/echarts/): Write ECharts options as YAML or JSON in an `echarts` fence. Hugo validates them, and bundled ECharts draws charts that follow the color scheme.

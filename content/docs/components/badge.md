@@ -47,15 +47,15 @@ A badge is an inline element after a name. It never occupies a separate line.
 
 ```markdown {title="Source"}
 With `params.ui.image_zoom` {{</* badge text="off by default" tone="neutral" */>}} enabled,
-block images that have alt text open full size. PlantUML {{</* badge text="needs a server" tone="warning" */>}}
-and Draw.io {{</* badge text="needs a server" tone="warning" */>}} warn and remain off when no
-endpoint is configured, rather than reaching for a public service.
+block images that have alt text open full size. PlantUML {{</* badge text="opt-in" tone="info" */>}}
+uses its own site switch. Draw.io {{</* badge text="needs a server" tone="warning" */>}}
+warns and remains off when no endpoint is configured.
 ```
 
 With `params.ui.image_zoom` {{< badge text="off by default" tone="neutral" >}} enabled,
-block images that have alt text open full size. PlantUML {{< badge text="needs a server" tone="warning" >}}
-and Draw.io {{< badge text="needs a server" tone="warning" >}} warn and remain off when no
-endpoint is configured, rather than reaching for a public service.
+block images that have alt text open full size. PlantUML {{< badge text="opt-in" tone="info" >}}
+uses its own site switch. Draw.io {{< badge text="needs a server" tone="warning" >}}
+warns and remains off when no endpoint is configured.
 
 ## Next to a heading {#in-headings}
 
@@ -83,7 +83,7 @@ Badges make a comparison table easier to scan than a column of "yes" and "no".
 | --- | --- | --- |
 | Callouts | `> [!NOTE]` | {{</* badge text="stable" tone="success" */>}} |
 | Galleries | ` ```gallery ` fence | {{</* badge text="stable" tone="success" */>}} |
-| PlantUML | ` ```plantuml ` fence | {{</* badge text="needs a server" tone="warning" */>}} |
+| PlantUML | ` ```plantuml ` fence | {{</* badge text="opt-in" tone="info" */>}} |
 | The `image` shortcode | — | {{</* badge text="removed" tone="danger" */>}} |
 ```
 
@@ -91,7 +91,7 @@ Badges make a comparison table easier to scan than a column of "yes" and "no".
 | --- | --- | --- |
 | Callouts | `> [!NOTE]` | {{< badge text="stable" tone="success" >}} |
 | Galleries | ` ```gallery ` fence | {{< badge text="stable" tone="success" >}} |
-| PlantUML | ` ```plantuml ` fence | {{< badge text="needs a server" tone="warning" >}} |
+| PlantUML | ` ```plantuml ` fence | {{< badge text="opt-in" tone="info" >}} |
 | The `image` shortcode | — | {{< badge text="removed" tone="danger" >}} |
 
 ## In lists and steps {#in-lists}

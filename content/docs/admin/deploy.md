@@ -341,6 +341,7 @@ Additional features change the directives needed:
 - Inline HTML and inline scripts written by authors, which are the author's responsibility under `renderer.unsafe: true`.
 - [ECharts `$fn:` callbacks](/docs/components/echarts/#callbacks): the site registers callback functions on `window.OinkEchartsFunctions`. Include the registering script's origin in `script-src`.
 - [Analytics scripts](/docs/admin/analytics/#other-analytics): the script the site inserts, and the destination it reports to.
+- [Local PlantUML rendering](/docs/components/plantuml/#limits), available in the unreleased development version, needs same-origin scripts, `wasm-unsafe-eval` in `script-src` for WebAssembly compilation, and `blob:` in `img-src`. It needs no rendering-service origin.
 - [Remote API specifications](/docs/write/openapi/#spec-file) and [self-hosted diagram services](/docs/components/plantuml/#server): these require permissions in `connect-src` and `img-src`.
 - [giscus](/docs/admin/comments/#privacy): `script-src` and `frame-src` must both permit it.
 

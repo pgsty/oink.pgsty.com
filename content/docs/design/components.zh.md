@@ -63,6 +63,14 @@ OINK 有 29 个 shortcode：
 | 数学与化学公式 | passthrough、`math`、`chem` 围栏 | `eq` | 无；构建期渲染并加载本地样式 |
 | 图表与数据 | `mermaid`、`plantuml`、`markmap`、`echarts`、`infographic` 围栏 | 无 | 只加载选中的本地运行时 |
 
+> [!NOTE] 尚未发布：PlantUML
+> 尚未发布的本地渲染器只对围栏源码做一次 HTML 转义，保留箭头、引号、和号与中文。
+> 同页共享一个引擎实例，依次渲染各图；配色模式切换时丢弃旧结果。失败或不支持的
+> 图表保留源码，不阻塞后续图表。SVG 图片在可键盘聚焦的横向滚动区域中保持原始
+> 尺寸，浏览器打印时按纸张宽度缩放。关闭 JavaScript 后源码仍然可读。
+> [PlantUML 指南](/zh/docs/components/plantuml/)定义随主题提供的库范围，
+> [架构契约](/zh/docs/design/architecture/#configuration-and-diagnostics)定义渲染器选择与网络行为。
+
 ## 本地组件精修 {#component-refinement}
 
 同级开发 checkout 新增以下呈现变体，它们尚不属于已发布的 v1.3.2 基线。示例见[组件呈现](/zh/docs/components/presentation/)。

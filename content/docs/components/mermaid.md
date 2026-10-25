@@ -371,7 +371,7 @@ The viewer is bundled with the fence. It downloads nothing extra and needs no sw
 
 ## Related {#related}
 
-- [PlantUML](/docs/components/plantuml/) — more complete UML, at the price of a rendering server
+- [PlantUML](/docs/components/plantuml/) — UML diagrams; see its rendering modes and version requirements
 - [Markmap](/docs/components/markmap/) — outline-shaped hierarchies
 - [ECharts](/docs/components/echarts/) — charts with numbers in them
 - [Images](/docs/components/image/) — hand-drawn SVG and numbering

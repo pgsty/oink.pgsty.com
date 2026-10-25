@@ -348,7 +348,7 @@ flowchart LR
 
 ## 相关 {#related}
 
-- [PlantUML](/zh/docs/components/plantuml/) — UML 更全，但需要一个渲染服务
+- [PlantUML](/zh/docs/components/plantuml/) — UML 图表；渲染模式与版本要求见指南
 - [思维导图](/zh/docs/components/markmap/) — 大纲式的层级图
 - [ECharts](/zh/docs/components/echarts/) — 有数值的统计图
 - [图片](/zh/docs/components/image/) — 手绘 SVG、需要编号的图

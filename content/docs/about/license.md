@@ -109,6 +109,11 @@ their own `NOTICE` or bundled-declaration files. Lunr is the only exception. Its
 code is in `assets/js/third_party/`. Its license is at
 `assets/third_party/lunr/LICENSE`.
 
+The unreleased local PlantUML integration adds `@plantuml/core` 1.2026.9 (MIT)
+and Viz.js 3.24.0 (MIT), including Graphviz 14.1.1 (EPL-1.0) and Expat (MIT).
+Their notices and upstream source links accompany the two scripts in
+`assets/third_party/plantuml/`; `VENDOR.json` records the exact artifacts.
+
 When you redistribute the theme, include all this license and notice material.
 When you update a runtime, update its artifact, license file, source, and checksum
 in the same change.

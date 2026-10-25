@@ -76,11 +76,24 @@ If a transition needs a migration diagnostic, add a targeted warning to its reso
 Never read removed keys as a compatibility path.
 
 Network-capable features require explicit configuration and remain disabled when that configuration is invalid.
-PlantUML requires `plantuml.svg_image_url`. Draw.io requires `drawio.drawio_server`. Algolia requires `appId`, `apiKey`, and `indexName`.
+Released v1.3.2 PlantUML requires `plantuml.svg_image_url`. Draw.io requires `drawio.drawio_server`. Algolia requires `appId`, `apiKey`, and `indexName`.
 Incomplete configuration warns and sends no request.
 Draw.io loads only if rendered content has PNG or SVG candidates. It inspects each distinct image URL once.
 Diagram endpoints must be strings with an HTTP(S) URL containing a host or a same-site path.
 Unsupported schemes, protocol-relative URLs, backslashes, whitespace, and same-site references without paths warn and disable the integration before runtime selection.
+
+> [!NOTE] Unreleased: self-contained PlantUML
+> In the unreleased development version, `plantuml: true` or `plantuml.enable: true`
+> without an endpoint selects browser rendering. The two pinned local assets
+> (`@plantuml/core` 1.2026.9 and Viz.js 3.24.0) load only on HTML pages with
+> PlantUML fences. Normal builds and readers need no Java, Graphviz executable,
+> npm installation, CDN or rendering service. A nonempty endpoint still selects
+> server mode and retains its validation and `svg` behavior; invalid endpoints
+> do not fall through to local mode. No optional libraries, themes, include files
+> or external resources are downloaded by local rendering. Generated SVG is
+> displayed as a Blob image, never inserted into the page DOM. Failed input or
+> loading keeps readable source; dedicated Print, Markdown and RSS keep source
+> without a runtime. This behavior is not part of the published v1.3.2 release.
 
 > [!NOTE] Fixed in OINK 1.3.0
 > Editor URLs retain their query parameters and fragments when embedding

@@ -47,6 +47,13 @@ OINK `v1.3.1` 修复 Markmap 文字对比度和固定 TOC 的页脚避让，并�
 
 ## 先看发布注记 {#release-notes}
 
+> [!NOTE] 尚未发布：PlantUML 本地渲染
+> 采用这项开发版本变更后，保留 `params.plantuml: true` 或 `plantuml.enable: true`，
+> 删除 `svg_image_url`，即可使用随主题提供的两份浏览器脚本，无需额外软件或渲染服务。
+> 保留非空端点则继续使用服务端模式。完全关闭渲染请设置 `params.plantuml: false`
+> 或 `plantuml.enable: false`；空端点现在会选择本地模式。已发布的 v1.3.2 仍需要端点。
+> 切换已有图表前，请核对[不支持的 include、库与 CSP 要求](/zh/docs/components/plantuml/#limits)。
+
 每个版本的变更、破坏性改动与升级要点都写在发布注记里，升级前先读一遍目标版本那篇：
 
 - 本站的 [项目博客](/zh/blog/) 里的 release 系列
@@ -177,7 +184,7 @@ OINK 1.2.0 已发布。除上面的默认外观变化外，无需迁移内容源
 - 检查 JavaScript 被禁用或阻断时的 Landing 内容、指标格式、弹窗与快捷键、
   复制回退、Draw.io 操作，以及窄屏上的编号公式。
 - 对图表端点与资源 alt 元数据执行保留告警的生产构建；非法值现在会警告并采用
-  安全回退。要有意禁用 PlantUML 或 Draw.io 端点，使用 `false` 或空字符串。
+  安全回退。要有意关闭渲染，设置 `params.plantuml: false` 或 `params.drawio.enable: false`。
 - 测试出版或内容转换时，使用修订后的 PDF 与迁移工具。审查 PDF 远程资源开关
   和迁移 diff，包括嵌套在列表中的代码示例。消费站升级工具也随 1.2.0
   一同发布，可用于批量清点、更新与验证模块版本。

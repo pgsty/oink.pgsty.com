@@ -1,54 +1,61 @@
 ---
 title: PlantUML
 linkTitle: PlantUML
-description: Use a `plantuml` fence for sequence, class, component, activity, and use-case diagrams. Configure your own PlantUML rendering server.
+description: Render sequence, class, component, activity and use-case diagrams in the browser with bundled assets and no rendering service.
 weight: 120
-search_keywords: [svg-image-url, PlantUML, UML, sequence, class, component, activity, usecase]
+comments: false
+search_keywords: [PlantUML, UML, local rendering, sequence, class, component, activity, usecase]
 ---
 
-A `plantuml` fence contains PlantUML source. The browser compresses and encodes it, appends it to a server URL, and retrieves SVG.
-Use it for sequence, class, component, activity, or use-case diagrams that need full UML features.
-Rendering needs a server. The theme supplies no default endpoint.
-`enable: true` without `svg_image_url` warns and leaves PlantUML disabled in ordinary previews. Review the warning and rendered fallback before publication.
-Without a server, use [Mermaid](/docs/components/mermaid/).
+Write PlantUML source in a `plantuml` fence. OINK renders it in the reader's
+browser with two bundled scripts. No Java, Graphviz executable, npm install,
+CDN or rendering service is needed. Diagram source stays in the browser when
+using local rendering.
 
-> [!WARNING] This page shows source only, not rendered diagrams
-> PlantUML needs a server that you run. This site does not assume an endpoint for readers.
-> The current theme also double-escapes `<`, `>`, `&`, and `"` in `plantuml` fences.
-> Sources with arrows or quotes therefore return a `Syntax Error?` image. See [Limits](#limits).
-> Each example below is valid PlantUML source.
+> [!NOTE] Unreleased development change
+> Local rendering is available in the development version of the theme.
+> The published v1.3.2 theme still requires an explicit rendering endpoint.
 
-> [!IMPORTANT] Diagrams leave the reader's browser
-> Encoded diagram source is sent to your configured endpoint.
-> Never include passwords, internal hostnames, or customer names in PlantUML fences.
-> Internal sites should run their own endpoint or use a pre-rendered [image](/docs/components/image/).
+Enable it in your site configuration:
 
-## Shortest form {#minimal}
+```yaml {title="hugo.yml"}
+params:
+  plantuml: true
+```
 
-Sequence diagrams are the most common type. `participant` declares a participant, `->` is a synchronous message, and `-->` is a return.
+`plantuml: { enable: true }` also works. The default remains disabled. Enabled
+pages without PlantUML fences do not load either engine script.
 
-````markdown {title="Source"}
+## Sequence diagram {#minimal}
+
+Wrap the source in a `plantuml` fence. This live example renders entirely locally:
+
+````markdown
 ```plantuml
 @startuml
 actor Reader
 participant Browser
-participant Endpoint as Server
 Reader -> Browser : open the page
-Browser -> Server : GET /plantuml/svg/{compressed source}
-Server --> Browser : SVG
-Browser -> Browser : replace the fence with an img element
+Browser -> Browser : render locally
+Browser --> Reader : SVG diagram
 @enduml
 ```
 ````
 
-This creates four lanes and four messages. The reader opens the page, and the browser sends encoded source to the endpoint.
-The endpoint returns SVG. The runtime replaces the fence with an image.
+```plantuml
+@startuml
+actor Reader
+participant Browser
+Reader -> Browser : open the page
+Browser -> Browser : render locally
+Browser --> Reader : SVG diagram
+@enduml
+```
 
-## Class diagrams {#class}
+## Class diagram {#class}
 
-`class` lists members. `"1" -- "0..*"` sets relationship cardinality. Use this form to explain data models.
+Declare classes, fields and relationship cardinalities.
 
-````markdown {title="Source"}
 ```plantuml
 @startuml
 class Publication {
@@ -70,16 +77,11 @@ Publication "1" -- "0..*" Subscription : subscribed by
 Subscription "1" -- "1" ReplicationSlot : bound to
 @enduml
 ```
-````
 
-The diagram has three boxes with fields and two annotated connectors.
-One publication can serve multiple subscriptions. Each subscription binds one replication slot.
+## Component diagram {#component}
 
-## Component diagrams {#component}
+Packages group components; arrows show their dependencies.
 
-`package` groups deployment units. `[component]` draws a box, and `-->` sets dependency direction.
-
-````markdown {title="Source"}
 ```plantuml
 @startuml
 package "Monitoring node" {
@@ -99,16 +101,11 @@ prom --> alert : rule fired
 grafana --> prom : PromQL
 @enduml
 ```
-````
 
-The diagram has two dashed boxes, each with three components. Five labeled arrows show the collection path.
+## Activity diagram {#activity}
 
-## Activity diagrams {#activity}
+Use decisions and branches to explain a workflow.
 
-`start` / `stop` with `if … then … else … endif` defines a branching procedure.
-Activity diagrams contain no arrow characters, so they are the only type that renders correctly in the current version.
-
-````markdown {title="Source"}
 ```plantuml
 @startuml
 start
@@ -129,16 +126,11 @@ else (no)
 endif
 @enduml
 ```
-````
 
-The diagram has one vertical flow line, two diamonds with yes / no branches, and four endpoints.
+## Use-case diagram {#usecase}
 
-## Use-case diagrams {#usecase}
+Actors and use cases describe what each reader can do.
 
-`actor` draws a stick figure, `(use case)` draws an ellipse, and `rectangle` draws the system boundary.
-Use this form to show who a system serves.
-
-````markdown {title="Source"}
 ```plantuml
 @startuml
 left to right direction
@@ -156,40 +148,17 @@ rectangle "Documentation site" {
 }
 @enduml
 ```
-````
 
-The diagram has three figures on the left and a box with seven ellipses on the right.
-Connectors show each actor's available actions.
+## Dark mode {#dark-mode}
 
-## Colours in dark mode {#dark-mode}
+Local diagrams redraw when the reader switches between light and dark mode.
+Authored `skinparam` settings still apply. Wide diagrams scroll horizontally
+at their natural size, including on phones; keyboard users can focus the image
+region to scroll it. Browser printing scales the rendered image to the page.
 
-The server does not know the site's color scheme. Its SVG uses a fixed white background.
-`skinparam backgroundColor transparent` removes that background. The diagram then uses the page background.
-Neutral lines and text make it readable in both modes.
+## Optional rendering service {#server}
 
-````markdown {title="Source"}
-```plantuml
-@startuml
-skinparam backgroundColor transparent
-skinparam defaultFontName sans-serif
-skinparam ArrowColor #7C7C7C
-skinparam ActivityBorderColor #7C7C7C
-skinparam ActivityBackgroundColor #B0BEC522
-start
-:hugo mod get -u github.com/pgsty/oink;
-:hugo --gc --minify;
-:upload public/;
-stop
-@enduml
-```
-````
-
-PlantUML's `!theme` directive also works, for example `!theme plain`.
-Themes come from the server. Self-hosted endpoints must have them installed.
-
-## The rendering server {#server}
-
-The fence has no switch. Site configuration controls rendering:
+Existing sites can keep an explicitly configured endpoint:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -199,61 +168,61 @@ params:
     svg: false
 ```
 
-- `enable: true` without `svg_image_url` warns and disables rendering with
-  `params.plantuml.enable requires an explicit params.plantuml.svg_image_url`.
-  Review the warning and rendered fallback before publication. The theme never selects a public service.
-- For self-hosting, use the official [`plantuml/plantuml-server`](https://github.com/plantuml/plantuml-server) image.
-  Set `svg_image_url` to its `/svg/` path and **keep the trailing slash**. The encoded source is appended to it.
-- Use an HTTP(S) URL or local path. Local paths honor the deployment subpath in `baseURL`.
-  Whitespace, control characters, raw backslashes, protocol-relative URLs (`//host/`), and other schemes warn.
-  The source block stays visible, and the PlantUML runtime does not load. Review the warning and rendered fallback before publication.
-- The endpoint's CORS policy and the site's CSP `img-src` must allow it.
-  When `svg: true`, `connect-src` must also allow it.
+A nonempty `svg_image_url` selects server rendering. Removing it selects local
+rendering. The server URL must end with the appropriate path separator and be
+an HTTP(S) URL with a host or a same-site path. Invalid endpoints warn and disable
+rendering; they do not silently switch modes. OINK supplies no public endpoint.
 
-These keys are defined in
-[Configuration](/docs/customize/config/).
+Server mode sends encoded diagram source to that endpoint and retains its
+existing `svg` option. Local mode ignores `svg`: generated SVG is displayed as
+an image, so authored links and markup do not enter the page DOM.
 
-## Output {#outputs}
+## Outputs {#outputs}
 
-| Output | Shape |
+| Output | Result |
 | --- | --- |
-| HTML | The source is emitted as `<pre><code class="language-plantuml">`; once enabled, the runtime replaces it with an `<img>` (with `svg: true`, an `<svg data-src>`) |
-| Print | Same as HTML: the print view loads the runtime and requests the endpoint too |
-| Markdown | The `plantuml` fence and its source, kept as written |
-| RSS | The fence source only — subscribers see text |
+| HTML | Local SVG image when enabled; readable source until rendering succeeds |
+| Browser print of HTML | The rendered image, scaled to fit |
+| Dedicated Print output | Readable source, with no PlantUML runtime |
+| Markdown and RSS | Original diagram source; no rendering request |
 
-If the feature is disabled or the runtime has not loaded, a readable source block remains. No broken-image icon appears.
+With JavaScript disabled, a failed engine download, unsupported input or a
+rendering error, the source remains readable. A failed diagram does not prevent
+other diagrams on the page from rendering.
 
-## Parameter reference {#reference}
+## Parameters {#reference}
 
-A `plantuml` fence reads no attribute line and bypasses OINK's code-block shell.
-`title`, `copy`, and [Code blocks](/docs/components/code/) line-number options have no effect.
-
-Site parameters (`hugo.yml`):
-
-| Parameter | Type | Default | Description |
+| Parameter | Type | Default | Meaning |
 | --- | --- | --- | --- |
-| `params.plantuml.enable` | bool | `false` | With it off, the fence stays a code block and no runtime loads |
-| `params.plantuml.svg_image_url` | string | none | The rendering endpoint; the encoded source is appended to it. Required when `enable: true`, otherwise PlantUML warns and stays off |
-| `params.plantuml.svg` | bool | `false` | `false` inserts `<img src>`; `true` inserts `<svg data-src>` and loads an external SVG loader, putting the SVG in the DOM where CSS can reach it |
+| `params.plantuml` | boolean or map | disabled | `true` enables local rendering |
+| `params.plantuml.enable` | boolean | `false` | Enables the map form |
+| `params.plantuml.svg_image_url` | string | absent | Optional endpoint selecting legacy server rendering |
+| `params.plantuml.svg` | boolean | `false` | Server mode only: inline SVG instead of an image |
 {.fields meta="type default"}
 
-The theme reads those three keys and nothing else.
+Fences do not accept code-block title, copy, line-number, numbering or zoom
+attributes. Source without `@startuml` / `@enduml` is wrapped for local rendering;
+explicit diagram delimiters are preserved.
 
 ## Limits {#limits}
 
-- The current theme double-escapes `<`, `>`, `&`, and `"` in fences.
-  Literal `--&gt;` and `&#34;` remain in the page, and the endpoint returns a `Syntax Error?` image.
-  Diagrams with arrows, including sequence, component, use-case, and state diagrams, do not render.
-  Activity diagrams without these characters do render. Until fixed, use [Mermaid](/docs/components/mermaid/) or a pre-rendered [image](/docs/components/image/).
-- A server is mandatory. The theme supplies and assumes no default endpoint.
-- Diagram source leaves the browser. Keep confidential information out of PlantUML fences.
-- The server does not know the reader's color scheme. Use `skinparam` to control appearance.
-- Runtime `<img>` elements bypass the image render hook. `{#id num=}` numbering and image zoom do not apply.
+- The browser bundle includes the core engine and Graphviz layout only.
+  `!include`, `!includeurl`, external themes, C4, AWS and other optional sprite
+  libraries are not downloaded. Unsupported resources leave the source visible.
+  Use self-contained diagrams, pre-rendered images, or an explicit server for these.
+- The pinned engine is `@plantuml/core` 1.2026.9 with Viz.js 3.24.0. The two scripts
+  total about 4.8 MB before compression, or 1.7 MB with gzip. Only enabled pages
+  containing diagrams load them, and normal HTTP caching applies.
+- Rendering uses the browser's JavaScript and WebAssembly support. Sites with a
+  restrictive CSP need to allow their own scripts, WebAssembly compilation
+  (`wasm-unsafe-eval`) and `blob:` images. Blocked resources retain source.
+- Large diagrams still cost browser CPU and memory. Rendering proceeds one diagram
+  at a time; this is not a background-worker renderer.
+- Diagrams are images: SVG hyperlinks are inactive. Numbering and the Mermaid
+  zoom dialog are not part of this integration.
 
 ## Related {#related}
 
-- [Mermaid](/docs/components/mermaid/) — no server, follows the colour scheme, the everyday choice
-- [Draw.io](/docs/components/drawio/) — the other integration that needs a server of your own
-- [Images](/docs/components/image/) — pre-rendered SVG: numberable, zoomable, no external dependency
-- [Configuration](/docs/customize/config/) — the full definition of `params.plantuml.*`
+- [Mermaid](/docs/components/mermaid/) — another bundled browser diagram engine
+- [Images](/docs/components/image/) — pre-rendered diagrams, numbering and zoom
+- [Configuration](/docs/customize/config/) — site settings

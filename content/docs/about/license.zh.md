@@ -83,6 +83,11 @@ OINK 由 PGSTY 维护。感谢 [@imbajin](https://github.com/imbajin) 报告并�
 | external-svg-loader           | 1.7.1   | MIT                           | 内联外部 SVG                  |
 | idb-keyval                    | 6.2.0   | Apache-2.0                    | 浏览器端缓存                  |
 
+尚未发布的本地 PlantUML 集成新增 `@plantuml/core` 1.2026.9（MIT）与
+Viz.js 3.24.0（MIT）；后者包含 Graphviz 14.1.1（EPL-1.0）与 Expat（MIT）。
+许可证、声明和上游源码链接随两份脚本放在 `assets/third_party/plantuml/`，
+`VENDOR.json` 记录具体产物。
+
 许可证原文与各资源放在一起：例如 `assets/third_party/bootstrap/LICENSE`、`assets/third_party/katex/LICENSE`；Swagger UI、Redoc 与 ECharts 还随包带了各自的 `NOTICE` 或打包声明文件。Lunr 是唯一的例外，代码在 `assets/js/third_party/`，许可证在 `assets/third_party/lunr/LICENSE`。
 
 再分发主题时，这些许可与声明材料必须一并保留。更新某个运行时意味着在同一次变更里同时更新产物、许可证文件、来源与校验值。

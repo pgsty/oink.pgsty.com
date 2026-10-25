@@ -290,6 +290,7 @@ CSP 哈希或注入 nonce；部署方需根据实际构建产物制定策略。
 - 作者写的行内 HTML 与行内脚本，`renderer.unsafe: true` 之下由作者负责。
 - [ECharts 的 `$fn:` 回调](/zh/docs/components/echarts/#callbacks)：回调函数由站点注册到 `window.OinkEchartsFunctions`，注册脚本的来源要进 `script-src`。
 - [分析脚本](/zh/docs/admin/analytics/#other-analytics)：站点自己插入的那段脚本与它上报的目标。
+- 尚未发布的开发版本提供 [PlantUML 本地渲染](/zh/docs/components/plantuml/#limits)，需要允许同源脚本、在 `script-src` 中允许 `wasm-unsafe-eval` 以编译 WebAssembly，并在 `img-src` 中允许 `blob:`，无需放行渲染服务来源。
 - [远程 API 规范](/zh/docs/write/openapi/#spec-file)与[自建图表服务](/zh/docs/components/plantuml/#server)：落在 `connect-src` 与 `img-src`。
 - [giscus](/zh/docs/admin/comments/#privacy)：`script-src` 与 `frame-src` 要一起放行。
 

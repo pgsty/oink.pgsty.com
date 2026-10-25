@@ -58,7 +58,7 @@ params:
 - **An invalid value warns and falls back to the documented default.** The setting `params.ui.typography: solarized` reports `invalid params.ui.typography "solarized" (allowed: technical | system) -- using "technical"`. The site still builds. The settings `footer_style: thin`, `page_width: huge`, and `section_index: grid` behave the same way. One typo therefore changes one setting instead of producing HTTP 500 on every URL under `hugo server`. Review the warning and fallback output before publication.
 - **One warning keeps the value instead of dropping it.** If `theme_color` is below AA body-text contrast (4.5:1) against the theme canvas, the color still appears in output. The author may choose it for a custom canvas or brand requirement. The warning includes the `ignoreLogs` id that can silence it. This is advice, not rejection. Use a darker color or silence the warning with one configuration line. Review the actual contrast before publication. Only an unparseable hex value is discarded. It falls back to the default palette, like other invalid values.
 
-- **The theme itself never stops the build.** Its templates contain no `errorf`. Every invalid value uses the warning and fallback behavior above. If an external endpoint is missing, PlantUML, Draw.io, or Algolia warns and stays off. The theme never chooses a public service for you. Incomplete upstream attribution produces a warning and omits the entire notice. A partial notice could appear complete. Hugo can still stop a build if a content reference resolves to nothing or its version is below `module.hugoVersion.min`.
+- **The theme itself never stops the build.** Its templates contain no `errorf`. Every invalid value uses the warning and fallback behavior above. Draw.io and Algolia warn and stay off when their required service configuration is missing. The unreleased PlantUML renderer needs no endpoint for local mode; an invalid explicit endpoint warns and disables rendering. The theme never chooses a public service for you. Incomplete upstream attribution produces a warning and omits the entire notice. A partial notice could appear complete. Hugo can still stop a build if a content reference resolves to nothing or its version is below `module.hugoVersion.min`.
 
 ## Page-level override precedence {#overrides}
 
@@ -421,13 +421,19 @@ and Redoc from content. They load only on pages that use them, and only in
 HTML output. They have no site switch. Only the features below need a switch
 or external endpoint:
 
+> [!NOTE] Unreleased PlantUML support
+> The development version uses local rendering when enabled without an endpoint.
+> Published v1.3.2 still requires `svg_image_url`. Both modes and their limits are
+> described in [PlantUML](/docs/components/plantuml/).
+
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `params.markmap` | boolean | false | Enables the mind map fence site-wide — see [Markmap](/docs/components/markmap/) |
 | `params.mermaid` | map | | Configuration passed to `mermaid.initialize()`. Keys are lowercase. Dark mode automatically overrides `theme` |
-| `params.plantuml.enable` | boolean | false | Enables the PlantUML fence — see [PlantUML](/docs/components/plantuml/) |
-| `params.plantuml.svg_image_url` | string | | PlantUML service SVG endpoint. Required when enabled. If absent, the theme warns and leaves PlantUML off |
-| `params.plantuml.svg` | boolean | | Renders inline SVG instead of an `<img>` |
+| `params.plantuml` | boolean or map | disabled | `true` enables local rendering; `false` disables all PlantUML rendering |
+| `params.plantuml.enable` | boolean | false | Enables local PlantUML rendering — see [PlantUML](/docs/components/plantuml/) |
+| `params.plantuml.svg_image_url` | string | | Optional PlantUML service endpoint; absent means local browser rendering |
+| `params.plantuml.svg` | boolean | false | Server mode only: inline SVG instead of an `<img>` |
 | `params.drawio.enable` | boolean | false | Enables the edit button on `.drawio.svg` images — see [Draw.io](/docs/components/drawio/) |
 | `params.drawio.drawio_server` | string | | Draw.io editor address. Required when enabled. If absent, the theme warns and leaves Diagrams.net off |
 | `params.highlight_classes` | boolean | true | Emits Chroma classes for highlighting; `false` returns to Hugo's inline styles |
@@ -564,7 +570,6 @@ Common errors and what they mean:
 | `invalid page_width … (allowed: normal \| wide \| full)` | A bad page width |
 | `invalid params.ui.section_index … (allowed: list \| cards)` | A bad section index style |
 | `invalid params.offline_search_index` | The scopes are `title`, `heading`, `summary`, `content` |
-| `params.plantuml.enable requires an explicit params.plantuml.svg_image_url` | PlantUML enabled with no endpoint |
 | `params.drawio.enable requires an explicit params.drawio.drawio_server` | Draw.io enabled with no server address |
 | `params.search.algolia requires explicit appId, apiKey, and indexName` | All three Algolia values are required |
 | `params.ui.image_zoom must be a boolean` | Written as the string `"true"` |

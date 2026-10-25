@@ -48,8 +48,12 @@ markup:
 - `parser.attribute.block: true` enables attribute lines. Without it, `{.steps}` and `{caption="…"}` appear as text.
 - `parser.wrapStandAloneImageWithinParagraph: false` prevents `<p>` wrappers around standalone images. This permits captioned figures and attribute lines after images.
 
-Some components need other settings. Mathematics needs Goldmark passthrough. PlantUML and Draw.io need a rendering server that you run yourself.
+Some components need other settings. Mathematics needs Goldmark passthrough. Draw.io needs an explicitly configured editor service.
 Each component page explains its requirements. [Configuration](/docs/customize/config/) lists all configuration keys.
+
+The unreleased development version renders PlantUML locally when enabled,
+using two bundled scripts. Published v1.3.2 still requires an endpoint;
+see the [PlantUML guide](/docs/components/plantuml/) for both modes.
 
 ## Cheatsheet {#cheatsheet}
 
@@ -70,7 +74,7 @@ The *Runtime* column shows whether the component loads JavaScript on the page.
 | [FileTree](/docs/components/filetree/) | Directory structure with an aligned comment column | ```` ```filetree ```` | fence | per page |
 | [Math](/docs/components/math/) | KaTeX inline and display formulas | `$$ … $$` | native | none |
 | [Mermaid](/docs/components/mermaid/) | Flowcharts, sequence diagrams, Gantt charts | ```` ```mermaid ```` | fence | per page |
-| [PlantUML](/docs/components/plantuml/) | UML diagrams; needs a rendering server | ```` ```plantuml ```` | fence | site switch |
+| [PlantUML](/docs/components/plantuml/) | UML diagrams; local rendering in the development version | ```` ```plantuml ```` | fence | site switch |
 | [Markmap](/docs/components/markmap/) | A Markdown outline becomes a mind map | ```` ```markmap ```` | fence | site switch |
 | [Draw.io](/docs/components/drawio/) | Diagrams that stay editable; needs a server | `![alt](arch.drawio.svg)` | native | site switch |
 | [ECharts](/docs/components/echarts/) | Declarative statistical charts | ```` ```echarts ```` | fence | per page |

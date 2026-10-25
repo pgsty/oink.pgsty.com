@@ -119,7 +119,8 @@ Whole-section print and single-page browser print use the same rule:
 | [FileTree](/docs/components/filetree/) | A static panel with all directories expanded. The split retains its build-time width |
 | [Fields](/docs/components/fields/) | A complete definition list, identical in both forms |
 | [Math](/docs/components/math/) | Statically rendered KaTeX / MathML |
-| [Mermaid](/docs/components/mermaid/) · [Markmap](/docs/components/markmap/) · [PlantUML](/docs/components/plantuml/) | Renders diagrams. The print view is HTML, and these runtimes load normally |
+| [Mermaid](/docs/components/mermaid/) · [Markmap](/docs/components/markmap/) | Renders diagrams. The print view is HTML, and these runtimes load normally |
+| [PlantUML](/docs/components/plantuml/) | Dedicated Print keeps source without a runtime; printing the ordinary HTML page retains rendered images |
 | [ECharts](/docs/components/echarts/) · [Infographic](/docs/components/infographic/) | Shows the fence source block. Draws no chart |
 | [Asciinema](/docs/components/asciinema/) · [OpenAPI](/docs/write/openapi/) | A labeled static link to the recording or specification. None of the three runtimes loads |
 | Cards / steps / badges / keys | Static, with content unchanged |
@@ -127,8 +128,8 @@ Whole-section print and single-page browser print use the same rule:
 Print excludes the page shell: sidebar, outline, navbar, page action menu,
 feedback widget, heading anchor links, and inline copy buttons.
 
-For the three diagram kinds above that a browser runtime draws (Mermaid, Markmap,
-PlantUML), confirm they have finished drawing before triggering print.
+When printing an ordinary HTML page with browser-rendered diagrams, confirm
+that they have finished drawing before triggering print.
 
 ## Browser print styles {#print-css}
 

@@ -43,7 +43,10 @@ markup:
 - `parser.attribute.block: true`：属性行的总开关。关闭时 `{.steps}`、`{caption="…"}` 只是正文里的一行字符串。
 - `parser.wrapStandAloneImageWithinParagraph: false`：独立成段的图片不再包进 `<p>`，图片才能成为带图注的 figure，属性行才跟得上去。
 
-个别组件另有前置条件：公式需要开启 Goldmark 的 passthrough，PlantUML 与 Draw.io 需要自建渲染服务，各页分别说明。完整的配置键见[配置总览](/zh/docs/customize/config/)。
+个别组件另有前置条件：公式需要开启 Goldmark 的 passthrough，Draw.io 需要显式配置编辑器服务，各页分别说明。完整的配置键见[配置总览](/zh/docs/customize/config/)。
+
+尚未发布的开发版本启用 PlantUML 后，使用两份随主题提供的脚本在浏览器内渲染。
+已发布的 v1.3.2 仍需要端点，两种模式见 [PlantUML 指南](/zh/docs/components/plantuml/)。
 
 ## 速查表 {#cheatsheet}
 
@@ -62,7 +65,7 @@ markup:
 | [文件树](/zh/docs/components/filetree/) | 目录结构与对齐的注释列 | ```` ```filetree ```` | 围栏 | 按页加载 |
 | [公式](/zh/docs/components/math/) | KaTeX 行内与块级公式 | `$$ … $$` | 原生 | 无 |
 | [Mermaid](/zh/docs/components/mermaid/) | 流程图、时序图、甘特图 | ```` ```mermaid ```` | 围栏 | 按页加载 |
-| [PlantUML](/zh/docs/components/plantuml/) | UML 图；需要自建渲染服务 | ```` ```plantuml ```` | 围栏 | 需站点开关 |
+| [PlantUML](/zh/docs/components/plantuml/) | UML 图；开发版本支持本地渲染 | ```` ```plantuml ```` | 围栏 | 需站点开关 |
 | [思维导图](/zh/docs/components/markmap/) | Markdown 列表变成思维导图 | ```` ```markmap ```` | 围栏 | 需站点开关 |
 | [Draw.io](/zh/docs/components/drawio/) | 可回编辑的图；需要自建服务 | `![说明](arch.drawio.svg)` | 原生 | 需站点开关 |
 | [ECharts](/zh/docs/components/echarts/) | 声明式数据图表 | ```` ```echarts ```` | 围栏 | 按页加载 |
@@ -98,7 +101,7 @@ markup:
 - [公式](/zh/docs/components/math/): 用 KaTeX 写行内与块级数学公式，构建期渲染完毕，读者不下载任何脚本。
 - [Mermaid](/zh/docs/components/mermaid/): 用 `mermaid` 围栏把文本写成流程图、时序图、甘特图、类图与状态图，本地渲染、跟随深浅色、diff 友好。
 - [组件呈现](/zh/docs/components/presentation/): 在 OINK 四种视觉预设中查看卡片、折叠块、标签页和紧凑流程。
-- [PlantUML](/zh/docs/components/plantuml/): 用 `plantuml` 围栏写时序图、类图、组件图、活动图与用例图；渲染必须由你自己配置一个 PlantUML 服务。
+- [PlantUML](/zh/docs/components/plantuml/): 使用随主题提供的资源，在浏览器中渲染时序图、类图、组件图、活动图与用例图，无需渲染服务。
 - [思维导图](/zh/docs/components/markmap/): 用 `markmap` 围栏把一段 Markdown 大纲变成可展开、可缩放的思维导图，源码本身就是能读的提纲。
 - [Draw.io](/zh/docs/components/drawio/): 把带着可编辑副本的 `.drawio.svg` 当普通图片放进页面，读者通过编辑按钮打开 Draw.io 编辑器改图。
 - [ECharts](/zh/docs/components/echarts/): 在 `echarts` 围栏里用 YAML 或 JSON 写图表选项，Hugo 构建期校验，浏览器用本地 ECharts 画出跟随深浅色的统计图。

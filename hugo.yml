@@ -416,8 +416,6 @@ params:
     reading_time: false
   plantuml:
     enable: true
-    svg_image_url: https://www.plantuml.com/plantuml/svg/
-    svg: false
   print:
     toc: true
   markmap: true

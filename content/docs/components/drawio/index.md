@@ -178,6 +178,6 @@ Site parameters (`hugo.yml`):
 ## Related {#related}
 
 - [Images](/docs/components/image/) — captions, numbering, sizing and zoom in full
-- [PlantUML](/docs/components/plantuml/) — the other integration that needs a server
+- [PlantUML](/docs/components/plantuml/) — UML diagrams; see its rendering modes and version requirements
 - [Mermaid](/docs/components/mermaid/) — diagrams from text with no server at all
 - [Configuration](/docs/customize/config/) — the full definition of `params.drawio.*`

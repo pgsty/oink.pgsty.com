@@ -44,7 +44,10 @@ markup:
 - `parser.attribute.block: true`：属性行的总开关。关闭时 `{.steps}`、`{caption="…"}` 只是正文里的一行字符串。
 - `parser.wrapStandAloneImageWithinParagraph: false`：独立成段的图片不再包进 `<p>`，图片才能成为带图注的 figure，属性行才跟得上去。
 
-个别组件另有前置条件：公式需要开启 Goldmark 的 passthrough，PlantUML 与 Draw.io 需要自建渲染服务，各页分别说明。完整的配置键见[配置总览](/zh/docs/customize/config/)。
+个别组件另有前置条件：公式需要开启 Goldmark 的 passthrough，Draw.io 需要显式配置编辑器服务，各页分别说明。完整的配置键见[配置总览](/zh/docs/customize/config/)。
+
+尚未发布的开发版本启用 PlantUML 后，使用两份随主题提供的脚本在浏览器内渲染。
+已发布的 v1.3.2 仍需要端点，两种模式见 [PlantUML 指南](/zh/docs/components/plantuml/)。
 
 ## 速查表 {#cheatsheet}
 
@@ -63,7 +66,7 @@ markup:
 | [文件树](/zh/docs/components/filetree/) | 目录结构与对齐的注释列 | ```` ```filetree ```` | 围栏 | 按页加载 |
 | [公式](/zh/docs/components/math/) | KaTeX 行内与块级公式 | `$$ … $$` | 原生 | 无 |
 | [Mermaid](/zh/docs/components/mermaid/) | 流程图、时序图、甘特图 | ```` ```mermaid ```` | 围栏 | 按页加载 |
-| [PlantUML](/zh/docs/components/plantuml/) | UML 图；需要自建渲染服务 | ```` ```plantuml ```` | 围栏 | 需站点开关 |
+| [PlantUML](/zh/docs/components/plantuml/) | UML 图；开发版本支持本地渲染 | ```` ```plantuml ```` | 围栏 | 需站点开关 |
 | [思维导图](/zh/docs/components/markmap/) | Markdown 列表变成思维导图 | ```` ```markmap ```` | 围栏 | 需站点开关 |
 | [Draw.io](/zh/docs/components/drawio/) | 可回编辑的图；需要自建服务 | `![说明](arch.drawio.svg)` | 原生 | 需站点开关 |
 | [ECharts](/zh/docs/components/echarts/) | 声明式数据图表 | ```` ```echarts ```` | 围栏 | 按页加载 |

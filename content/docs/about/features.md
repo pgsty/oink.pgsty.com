@@ -44,12 +44,13 @@ diagrams and tabs are page scripts. The theme includes those scripts. Each page 
 
 Everything the browser needs is committed to the theme repository: Bootstrap,
 Font Awesome, four fonts, Lunr, Mermaid, KaTeX, Markmap, Swagger UI, Redoc,
-Asciinema, ECharts, Infographic. `VENDOR.json` records the version, source,
-license file and SHA-256 checksum of each of the 26 dependencies. When you
+Asciinema, ECharts, Infographic, and the local PlantUML engine. `VENDOR.json` records the version, source,
+license file and SHA-256 checksum of each dependency. When you
 update a runtime, update its artifact, license, and checksum together.
 
 Features that could make network requests require explicit configuration.
-Without `params.plantuml.svg_image_url`, PlantUML warns and stays disabled.
+The unreleased development version renders PlantUML in the browser when enabled
+without an endpoint; the published v1.3.2 still requires one.
 Without `params.drawio.drawio_server`, Diagrams.net warns and stays disabled.
 Without `appId` / `apiKey` / `indexName`, Algolia warns and stays disabled.
 Review warnings and their safe fallbacks before publishing.
