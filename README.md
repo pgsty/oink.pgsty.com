@@ -43,7 +43,7 @@ project-specific configuration.
 
 ## Local development
 
-Use Go 1.27.2 and Hugo Extended 0.168.0 for development, CI, and production
+Use Go 1.27.3 and Hugo Extended 0.168.0 for development, CI, and production
 builds. Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Keep warnings
 visible, including the accepted upstream LibSass deprecation warning. No
 separate Sass installation is required. See the [architecture contract](content/docs/design/architecture.md#hugo-toolchain).

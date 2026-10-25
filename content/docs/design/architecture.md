@@ -29,9 +29,9 @@ SCSS hooks remain supported. Future upgrades must preserve this dependency
 boundary. Update requirements, checkers, CI pins, and both language contracts
 together; historical release and research records retain their original tools.
 
-The module minimum is Go **1.27.0**; current local release validation uses Go
-**1.27.2**. Go resolves Hugo Modules and is not needed for a prepared classic
-theme copy.
+The local development module requires Go **1.27.3**, also pinned for development
+and CI. This minimum applies to the unreleased checkout. Go resolves Hugo Modules
+and is not needed for a prepared classic theme copy.
 
 ## Repository and assembly {#repository-and-assembly}
 

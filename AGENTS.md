@@ -84,7 +84,7 @@ validation. Keep this baseline pinned. Never enable `--panicOnWarning` or
 `HUGO_PANICONWARNING`. Warnings remain visible and are reviewed; the upstream
 LibSass deprecation warning is accepted. SCSS uses Hugo's built-in LibSass,
 with no external Sass installation. Preserve project SCSS hooks and this
-dependency boundary. CI uses Node 24 and follows stable Go releases. Test
+dependency boundary. CI uses Node 24 and pins Go 1.27.3. Test
 overlays do not change the single-root-config rule for the production site.
 
 For published-pin acceptance, disable environment replacements and both

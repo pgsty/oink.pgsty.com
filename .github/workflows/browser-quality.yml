@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 env:
-  GO_VERSION: stable
+  GO_VERSION: 1.27.3
   HUGO_VERSION: "0.168.0"
   NODE_VERSION: 24
   HUGO_CACHEDIR: ${{ github.workspace }}/.hugo_cache
