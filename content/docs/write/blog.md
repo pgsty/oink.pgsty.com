@@ -177,20 +177,43 @@ row list.
 
 A standalone `blog_index: table` with `blog_index_toggle: false` lists the
 entire section without pagination. Set `blog_index_toggle: true` to let readers
-switch among list, cards and table:
+switch among list, cards and table (plus Gallery in the development checkout):
 
 ```yaml {title="content/blog/_index.md"}
 blog_index: cards
 blog_index_toggle: true
 ```
 
-With switching enabled, all three views show the same current page of posts,
+With switching enabled, all views show the same current page of posts,
 using `blog_index_size`. Only the standalone table with
 `blog_index_toggle: false` shows the entire section. Hidden views do not load
 their images.
 
 If a card image resource supports processing, Hugo applies `.Fill`. The card
 grid then downloads cropped images rather than full-size originals.
+
+### Gallery form (unreleased) {#list-gallery}
+
+The development checkout adds `gallery`: each article becomes a linked cover,
+using the existing `images` field or bundled featured image. The default wall
+joins images into rows while preserving their proportions. Hover or keyboard
+focus reveals the title and description; touch devices show them below the
+image. Clicking opens the article. Posts without a cover keep a title tile.
+
+```yaml {title="content/blog/_index.md"}
+blog_index: gallery
+blog_index_toggle: true
+blog_gallery:
+  mode: wall
+  size: 240
+```
+
+Readers can choose `wall` (6px gaps), `seamless` (no gaps), or `cards` (masonry
+with visible captions) and adjust the target image size from 160 to 360px.
+Their choices are remembered separately from Expo albums. Gallery shares the
+blog's date order and pagination. Site defaults use the same `blog_gallery`
+block under `params.ui`; a page block replaces it in full. These settings
+require the local development theme and are not available in v1.3.2.
 
 ## RSS {#rss}
 

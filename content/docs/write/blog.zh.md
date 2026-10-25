@@ -140,16 +140,37 @@ params:
 
 列表与卡片共用日期排序、分页与 `manual_link` 的规则。列数只在 xl 断点以上生效；md 到 xl 之间为两列，md 以下一列。博客根目录的 front matter `blog_index` 或它的 `cascade` 可以按栏目设置。分类项页与分类法首页保持行列表。
 
-单独使用 `blog_index: table` 且 `blog_index_toggle: false` 时，表格列出整个栏目，不分页。设置 `blog_index_toggle: true`，读者即可在列表、卡片、表格之间切换：
+单独使用 `blog_index: table` 且 `blog_index_toggle: false` 时，表格列出整个栏目，不分页。设置 `blog_index_toggle: true`，读者即可在列表、卡片、表格之间切换（开发 checkout 还包含画廊）：
 
 ```yaml {title="content/blog/_index.zh.md"}
 blog_index: cards
 blog_index_toggle: true
 ```
 
-开启切换时，三种形态显示同一页文章，都使用 `blog_index_size`。只有 `blog_index_toggle: false` 的独立表格才显示整个栏目；隐藏形态不会加载图片。
+开启切换时，所有形态显示同一页文章，都使用 `blog_index_size`。只有 `blog_index_toggle: false` 的独立表格才显示整个栏目；隐藏形态不会加载图片。
 
 卡片题图只要资源可处理就走 Hugo 的 `.Fill`，一屏卡片不会为此下载一堆原图。
+
+### 画廊形态（尚未发布） {#list-gallery}
+
+开发 checkout 新增 `gallery`：每篇文章成为一张可点击的封面，使用现有 `images`
+字段或页面包中的特色图片。默认展墙将图片按比例拼成行；悬停或键盘聚焦时显示
+标题和描述，触屏设备则把文字放在图片下方。点击进入文章，没有封面的文章仍
+保留标题块。
+
+```yaml {title="content/blog/_index.zh.md"}
+blog_index: gallery
+blog_index_toggle: true
+blog_gallery:
+  mode: wall
+  size: 240
+```
+
+读者可选择 `wall`（6px 间隙）、`seamless`（无间隙）或 `cards`（始终显示文字的
+瀑布流），并在 160–360px 之间调整目标图片大小。选择独立于 Expo 相册记忆。
+画廊沿用博客的日期顺序和分页。站点默认值使用 `params.ui` 下的同名
+`blog_gallery` 块；页面块会整体替换它。这些配置需要本地开发主题，v1.3.2 尚不
+支持。
 
 ## RSS {#rss}
 

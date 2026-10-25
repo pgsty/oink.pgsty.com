@@ -105,6 +105,7 @@
   - [2026-10-03 CLI maintenance](http://localhost/docs/design/research/2026-10-03-cli-maintenance-acceptance/index.md): Dated source and binary evidence for the local R1–R8/A18 program, preserving the initial audit, failed trials, and final acceptance scope.
   - [2026-09-29 CLI acceptance](http://localhost/docs/design/research/2026-09-29-cli-acceptance/index.md): Executed Starter, real-site, offline, upgrade, and reproducible-archive checks for the local CLI candidate, with acceptance and publication recorded separately.
   - [Expo albums](http://localhost/docs/design/decisions/expo/index.md): Record the reasons for album bundles, shared appearance, three display modes, and the image viewer.
+  - [Blog gallery](http://localhost/docs/design/decisions/blog-gallery/index.md): Keep articles as the content model while reusing Expo geometry for a fourth blog index view.
   - [2026-10-13 theme review](http://localhost/docs/design/research/2026-10-13-theme-review/index.md): Reproduced image escaping and interaction defects, their repairs, and local theme and consumer validation.
 - [CLI](http://localhost/docs/cli/index.md): An introduction to the optional OINK command-line companion for Hugo sites. The CLI is still a draft.
 

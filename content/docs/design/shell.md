@@ -435,12 +435,44 @@ Sites with one taxonomy show no switcher. The switcher and clouds share the `toc
 Taxonomy pages scope clouds to the whole site (`taxonomy-root.html` returns no root for this page kind) and omit their own cloud because its terms already appear in the cards.
 Term pages keep section scope and all clouds.
 
-`params.ui.blog_index_toggle` renders all three forms for the current paginator slice and lets readers cycle between them.
+`params.ui.blog_index_toggle` renders all four forms for the current paginator slice and lets readers cycle between them: `list`, `cards`, `table`, then `gallery`.
+The fourth form is an unreleased development addition; v1.3.2 has three forms.
 The configured form controls initial display. Hidden forms load no images.
-Stored reader preferences apply only to indexes that publish all three forms.
+Stored reader preferences apply only to indexes that publish all four forms.
 Sections without toggles publish one form and always show it.
 Front matter or cascades override site mode per section.
 Tables published without toggles remain complete, unpaginated archives.
+
+### Blog gallery (unreleased) {#blog-gallery}
+
+`blog_index: gallery` presents each post as a linked cover. It uses the shared
+featured-image resolver, the same date order and `blog_index_size` paginator as
+rows and cards, and preserves `manual_link`. It does not change the content
+type to Expo. Clicking a cover navigates to the article; no image viewer opens.
+
+`params.ui.blog_gallery` accepts `mode` (`wall`, `cards`, or `seamless`, default
+`wall`) and `size` (integer CSS pixels, 160–360, default 240). A page or cascade
+`blog_gallery` block replaces the site block. Missing or invalid fields use
+their built-in defaults; invalid values warn. The gallery toolbar changes
+mode and size independently of Expo albums, using `td-blog-gallery-mode` and
+`td-blog-gallery-size` storage keys. The outer view retains `td-blog-index`.
+
+Wall uses Expo's justified row geometry with 6px gaps; Seamless removes the
+gaps. Cards uses columns filled from the shortest column. Covers keep their
+proportions within bounded tile ratios and are contained rather than cropped.
+Below 500px of gallery width, Wall and Seamless bound tile ratios more tightly
+to keep the caption columns readable, including for very tall images.
+Processable covers larger than 960px receive a preview within a 960 × 960 box;
+GIF previews are still images. No build-time remote fetch is introduced.
+
+Wall and Seamless reveal titles and descriptions on hover or keyboard focus.
+Without hover, captions remain below images, and row spacing includes their
+height. Cards always shows captions. Covers without images retain a linked,
+named placeholder; failed images receive the same fallback after enhancement.
+The title names the link and the cover is decorative. Hidden forms use lazy
+images. Reappearing forms, resized sidebars, fonts, and late image dimensions
+trigger layout without overlapping items. Without JavaScript, a responsive
+grid keeps links and captions visible and hides the inactive controls.
 
 `params.logo` always supplies the brand mark. `params.wordmark`, or the site title, supplies text hidden at compact widths.
 Docs, Book, Blog, and Swagger share one shell model.

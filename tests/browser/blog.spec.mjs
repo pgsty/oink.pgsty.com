@@ -23,6 +23,7 @@ const blogArticles = {
     '0.1.0',
   ],
   oink: [
+    'blog-gallery',
     'immersive-reading',
     'oink-announcement',
     'oink-implementation-diary',
@@ -70,8 +71,9 @@ test('blog metadata links to the post section without changing resting color', a
   await openCleanBlog(page, 1024, '/blog/');
 
   // The migrated Blog defaults to cards; section metadata belongs to its
-  // richer list form. Cycle cards -> table -> list through the public control.
+  // richer list form. Cycle cards -> table -> gallery -> list through the public control.
   const indexToggle = page.locator('[data-td-blog-index-toggle]');
+  await indexToggle.click();
   await indexToggle.click();
   await indexToggle.click();
   await expect(page.locator('html')).toHaveAttribute(

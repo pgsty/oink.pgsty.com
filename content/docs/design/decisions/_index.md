@@ -31,6 +31,7 @@ contracts it supports, in the same bilingual, versioned site.
 | [Optional CLI and result contract](/docs/design/decisions/cli/) | Independent Go executable, versioned diagnostics, coverage, and explicit write boundaries for the local CLI candidate |
 | [Visual presets](/docs/design/decisions/visual-presets/) | Paper default, Slate compatibility, opt-in Appearance menu, independent mode and font boundaries |
 | [Expo albums](/docs/design/decisions/expo/) | Resource bundles, optional metadata, shared appearance, and album viewing |
+| [Blog gallery](/docs/design/decisions/blog-gallery/) | Article covers, shared Expo geometry, independent preferences, and readable captions |
 
 ## Record format {#record-format}
 

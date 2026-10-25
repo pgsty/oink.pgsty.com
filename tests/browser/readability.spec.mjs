@@ -69,7 +69,7 @@ for (const locale of ['', '/zh']) {
     const before = await footerGeometry(page);
     // A normal click would scroll the offscreen control into view and mask
     // the bug. Invoke its real click handler while preserving the viewport.
-    await toggle.evaluate(el => el.click()); // table -> list
+    await toggle.evaluate(el => { el.click(); el.click(); }); // table -> gallery -> list
     await expect(page.locator('html')).toHaveAttribute('data-td-blog-index', 'list');
     await expectFooterClearance(page);
     const after = await footerGeometry(page);
