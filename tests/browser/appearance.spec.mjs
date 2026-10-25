@@ -317,7 +317,7 @@ for (const preset of ['ink', 'terminal']) for (const mode of ['light', 'dark']) 
     await page.locator('[data-td-shell-search-open]:visible').first().click();
     const search = page.locator('#td-shell-search');
     await search.locator('.td-shell-search__input').fill('configuration');
-    await expect(search.getByRole('option').first()).toBeVisible();
+    await expect(search.getByRole('listbox').getByRole('option').first()).toBeVisible();
     await page.keyboard.press('ArrowDown');
     const scan = await new AxeBuilder({ page }).include('#td-shell-search').withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
     expect(scan.violations).toEqual([]);
