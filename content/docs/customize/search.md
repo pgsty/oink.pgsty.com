@@ -65,8 +65,8 @@ params:
 | `summary` | The above plus description and summary | Sites with thousands of pages. This site uses it |
 | `content` | The above plus the full plain text | The default, suitable up to a few hundred pages |
 
-In normal preview, any other value warns and uses `content`. A strict
-publishing build fails on `invalid params.offline_search_index`.
+Any other value warns with `invalid params.offline_search_index` and uses
+`content`. Review the warning and fallback output before publishing.
 
 The `offline_search_summary_length` key limits result excerpts (default 70).
 The `offline_search_max_results` key limits result count (default 10).
@@ -94,8 +94,8 @@ titled only "PostgreSQL parameters". Keywords have less ranking weight than
 the title and more than the body.
 
 The `search_boost` key is a positive multiplier applied to the text match score.
-Its default is `1.0`. A value of `1.5` does not guarantee first place. It
-raises the rank only among results that already match. Zero, negative numbers,
+Its default is `1.0`. A value of `1.5` does not guarantee first place. In the
+local candidate it raises rank within the same term-coverage and phrase tier. Zero, negative numbers,
 and non-numbers warn and use `1.0`.
 
 Set a section-wide default once with a cascade:
@@ -129,25 +129,58 @@ reports them. The index also excludes pages with empty bodies.
 > Do not put content that should stay private on the site, and do not use
 > `search_exclude` to protect it.
 
-## Chinese and CJK {#cjk}
+## Chinese, mixed queries, and identifiers {#cjk}
 
-Lunr cannot reliably tokenize Chinese. If the palette detects a CJK character,
-it uses substring matching for the complete query. It compares title, keywords,
-in-page headings, description, and body in order. It scores the matching layer,
-then multiplies by `search_boost`. Both search paths use the same ranking rules.
+> [!NOTE] Local candidate for the next release
+> The behavior below is implemented in the sibling development checkout. The
+> published v1.3.2 still uses whole-query CJK substring matching.
 
-In the 1.2.0 working implementation, a keyword-only match shows the page
-description or excerpt. Result summaries therefore omit synonym lists. Body
-matches still show surrounding text for context.
+Search splits whitespace and Latin/CJK boundaries: `PostgreSQL 备份` and
+`PostgreSQL备份` both search for `postgresql` and `备份`. A contiguous CJK run
+remains a literal substring, without a dictionary: `主从复制` does not imply
+`复制主从`. Use spaces to separate concepts, for example `连接池 超时`.
+`search_keywords` remains useful for synonyms and abbreviations.
 
-This behavior has three effects:
+The search preserves underscores, hyphens, dots, paths, and command options.
+Try `shared_buffers`, `pg_basebackup`, `--baseURL`, or `/pg/data`. These are
+literal identifiers, not query operators or spelling corrections. English
+words retain Lunr stemming. If no exact/stemmed English term exists, spelling
+fallback allows one edit for words of 5–7 characters and two for longer words.
+Shorter words and identifiers use literal substring matching. Case and Unicode
+width are normalized; at most 24 distinct terms participate in a query.
 
-- A CJK query uses **substring** matching. Searching 主从复制 matches only those four consecutive characters. The query 复制主从 returns nothing.
-- The `search_keywords` key is therefore especially useful for Chinese sites. Add synonyms, English terms, and abbreviations that readers might search.
-- During input-method composition, the palette does not recompute results. It searches after text is committed. Chinese typing therefore does not refresh results for each character.
+Terms may match different indexed fields. A title containing `PostgreSQL` and
+a description containing `备份` can satisfy both. Ranking follows these rules:
 
-If a Chinese query finds nothing, first confirm that the Chinese index contains
-the page. See Verify below. Then investigate tokenization.
+1. If any page covers every term, show only those pages. Otherwise, show partial matches, labeled with matched/total terms, in descending coverage order.
+2. Within equal coverage, a contiguous complete phrase ranks first.
+3. Apply `search_boost` to field scores within those tiers. Each term uses its strongest field: title, keywords, tags/categories, headings, description, then body. Ties use title and URL for stable ordering.
+
+Literal substrings also match while typing. A boost cannot promote a partial
+match over a complete one. Results stay grouped in the navbar's content-root
+order; ranking applies within those groups after the global result limit.
+Keyword-only matches show the description or excerpt, never the synonym list.
+
+Each page occupies one result row, even when several sections match. The row
+shows the best matching section title and nearby text, and opens its actual
+rendered heading ID. Explicit IDs, duplicate auto-generated headings, Chinese
+headings, and deployment subpaths are preserved. A metadata-only hit opens the
+page when no section matches. `heading` and `summary` scopes can target heading
+matches; body-only queries require `content`. No index setting silently grows
+to full text. Matched snippets use up to 160 characters around the hit; the
+configured summary length still controls fallback excerpts.
+
+The palette's **Search in** control shows two adjacent choices: all sections and the
+current top-level section (such as Docs, Blog, or Book). It defaults to all
+sections on each page load and retains the choice while reopening that page's
+palette. Home has no current section. Commands and page actions stay available;
+command mode hides the scope control. Use Tab to reach the selected scope and
+the arrow keys to switch. Press Tab again to return to the query; Shift+Tab
+from the query returns to the selected scope.
+
+During input-method composition, result updates and Enter activation pause.
+They resume after committed text. Empty, loading, unavailable, result-count,
+and partial-match states remain readable and are announced to screen readers.
 
 ## Optional: hosted search {#hosted}
 The theme also provides two hosted search integrations. Both are off by default.

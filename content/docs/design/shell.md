@@ -220,6 +220,45 @@ Sites may return extra strings from `hooks/search-keywords-extra.html`.
 Keywords affect matching and ranking. CJK matches found only through keywords display the description or excerpt, not the keyword list.
 Body matches keep surrounding text as context.
 
+> [!NOTE] Unreleased local search candidate, 2026-10-25
+> The following additions apply to the sibling checkout, not published v1.3.2.
+
+Queries normalize case/Unicode width and split whitespace and CJK/Latin boundaries,
+up to 24 unique terms, preserving identifier punctuation. A CJK run is a literal
+substring; no dictionary or remote dependency is added. Literal field matches and
+English Lunr stemming cover terms across fields; typo fallback applies only to
+ASCII words of at least five characters (one edit, or two from eight characters).
+All-term pages suppress partial results. Otherwise coverage is shown and sorted
+first. A contiguous whole phrase leads within equal coverage; the positive page
+boost multiplies the strongest-field sum within those tiers. Title/URL break ties.
+The global result limit precedes existing root grouping and menu group order.
+
+Optional `sections` entries carry actual rendered `id` and `title`; content scope
+also carries UTF-8 byte `start` offsets into the single stored body. Read IDs from
+rendered content, including h1/h6 and shortcodes, instead of reconstructing them
+from titles or the configured TOC. Index reads temporarily select HTML and
+restore the previous output context, so RSS/Print traversal cannot poison
+HTML content. Reduced scopes omit body offsets. Old indexes
+without sections remain usable. Return one result per page with its best matching
+section, encoded fragment and nearby text; metadata-only matches may target the
+page. Preserve language/subpath URLs, exclusions, and scope-specific content.
+Normalized matches retain the original text in excerpts and highlights. Heading
+extraction distinguishes `id` from `data-id` and ignores script/style content.
+
+The labeled native radio group shows all roots and the page's `FirstSection`
+root as two adjacent scope options, using the index's existing root authority.
+Each option has a 44 px hit area and a visible focus ring. Tab visits the selected
+option; arrow keys change scope, and Tab/Shift+Tab stay within the dialog.
+Filter before ranking/limiting; another root's match cannot suppress spelling
+fallback within the selected root.
+The default is all roots; the choice lasts only on the loaded page. Scope affects
+pages only and is hidden in command/choice mode. Counts and partial coverage are
+visible and live-announced in one footer, alongside desktop keyboard hints.
+Mobile hides only the hints. Composition suspends delayed and index-load renders
+as well as Enter activation. No new configuration authority or build step exists.
+The owning theme search checker and the site's real-corpus/browser tests cover
+these additions; the maintained summary indexes keep the 2 MiB / 512 KiB budgets.
+
 Built-in action IDs are `copy_markdown`, `copy_link`, `open_chatgpt`, `open_claude`, `view_markdown`, `view_history`, `edit_page`,
 `create_child_page`, `create_issue`, `create_project_issue`, `print_section`, `print`, `switch_preset`, `switch_theme`, `switch_language`, `switch_version`, and `open_github`.
 Outside the share bar, `copy_link` appears only in the Palette.

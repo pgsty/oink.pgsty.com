@@ -110,6 +110,7 @@
   - [Blog gallery](http://localhost/docs/design/decisions/blog-gallery/index.md): Keep articles as the content model while reusing Expo geometry for a fourth blog index view.
   - [Component refinement review](http://localhost/docs/design/research/2026-10-25-component-refinement/index.md): Local four-preset component validation, asset measurements, and separately reproduced gallery baseline failures.
   - [2026-10-13 theme review](http://localhost/docs/design/research/2026-10-13-theme-review/index.md): Reproduced image escaping and interaction defects, their repairs, and local theme and consumer validation.
+  - [Local search](http://localhost/docs/design/proposals/local-search/index.md): A local candidate for mixed-language queries, technical identifiers, section results, and palette scope.
 - [CLI](http://localhost/docs/cli/index.md): An introduction to the optional OINK command-line companion for Hugo sites. The CLI is still a draft.
 
 ## Full-text bundles

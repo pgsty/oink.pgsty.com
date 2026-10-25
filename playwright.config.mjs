@@ -20,7 +20,7 @@ export default defineConfig({
     ['list'],
     ['html', { outputFolder: 'tmp/playwright-report', open: 'never' }],
   ],
-  outputDir: 'tmp/playwright-results',
+  outputDir: process.env.PLAYWRIGHT_OUTPUT_DIR || 'tmp/playwright-results',
   use: {
     baseURL,
     launchOptions: executablePath ? { executablePath } : undefined,

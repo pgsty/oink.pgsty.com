@@ -27,7 +27,7 @@ test('Expo coordinates viewer closure and preserves focus during a handoff',asyn
  });
  await expect(viewer(page)).toBeHidden();
  await expect(page.locator('#td-shell-search')).toBeVisible();
- await expect(page.locator('#td-shell-search input')).toBeFocused();
+ await expect(page.locator('#td-shell-search').getByRole('combobox')).toBeFocused();
 });
 
 for(const locale of ['', '/zh']) for(const mobile of [false,true]) {

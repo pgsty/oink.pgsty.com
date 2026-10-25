@@ -61,6 +61,15 @@ If the theme can explain why an item is unavailable, the item remains listed.
 Without repository configuration, "edit this page" remains with an "unavailable"
 note.
 
+The unreleased local search candidate adds two adjacent **Search in** options for
+all sections or the current top-level section. It filters page results before the
+result limit, while commands and page actions remain available. The choice
+persists only while this page stays loaded. Matching sections appear beside
+page titles and open real heading anchors; multiple hits on one page share one
+row. Partial matches show their term coverage. See
+[query semantics](/docs/customize/search/#cjk). Tab focuses the selected scope;
+arrow keys switch it. The control disappears in command and preference-choice modes.
+
 ## Quick links {#quick-links}
 
 Select quick links from Hugo's main menu by identifier. You do not need to

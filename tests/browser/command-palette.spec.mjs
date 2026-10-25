@@ -224,16 +224,23 @@ test("built-in choice actions reuse theme, language, and version executors", asy
 
 test("Copy Markdown executes once through the shared registry", async ({
   page,
-  context,
 }) => {
-  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  // Observe the shared clipboard call in every engine; Playwright only supports
+  // granting clipboard-read/write permissions in Chromium.
+  await page.addInitScript(() => {
+    window.__paletteClipboardWrites = [];
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: { writeText: async (text) => window.__paletteClipboardWrites.push(text) },
+    });
+  });
   const { dialog, input } = await openPalette(page);
   await fillCommandAndWait(input, dialog, "> copy markdown", "Copy Markdown");
   await page.keyboard.press("Enter");
   await expect(dialog).toBeVisible();
   await expect
-    .poll(() => page.evaluate(() => navigator.clipboard.readText()))
-    .toContain("# Configuration");
+    .poll(() => page.evaluate(() => window.__paletteClipboardWrites))
+    .toEqual([expect.stringContaining("# Configuration")]);
 
   await expect(dialog).toBeVisible();
 });
@@ -323,7 +330,7 @@ test("preset choices retain the Palette for another action", async ({ page }) =>
   const { dialog, input } = await openPalette(page);
   const action = await fillCommandAndWait(input, dialog, '> style', '^Style');
   await action.click();
-  await dialog.getByRole('option', { name: /Slate/ }).click();
+  await dialog.getByRole('listbox').getByRole('option', { name: /Slate/ }).click();
   await expect(page.locator('html')).toHaveAttribute('data-td-preset', 'slate');
   await expect(dialog).toBeVisible();
   await expect(input).toBeFocused();
@@ -480,5 +487,125 @@ test("clipboard fallback restores a backward DOM selection on success and failur
       rejected: outcome !== "success", focused: true,
       anchor: 8, focus: 2, text: "234567",
     });
+  }
+});
+
+// Local candidate: same palette, real summaries/headings, current-root filter.
+const searchPrefix = new URL(process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173').pathname.replace(/\/$/, '');
+for (const language of ['en', 'zh']) {
+  for (const width of [390, 1440]) {
+    for (const theme of ['light', 'dark']) {
+      test(`local search ${language} ${width} ${theme}: mixed terms, anchors and accessible scope`, async ({page}, testInfo) => {
+        await page.addInitScript(mode => localStorage.setItem('td-color-theme', mode), theme);
+        const path = searchPrefix + (language === 'zh' ? zhDocsPath : docsPath);
+        const {dialog, input} = await openPalette(page, path, {width, height:900});
+        await expect(page.locator('html')).toHaveAttribute('data-bs-theme', theme);
+        const scopes = dialog.getByRole('radiogroup', {name: language === 'zh' ? '搜索范围' : 'Search in', exact:true});
+        const all = scopes.locator('input[value=""]');
+        const current = scopes.locator('input[value="docs"]');
+        await expect(all).toBeChecked();
+        for (const radio of await scopes.getByRole('radio').all())
+          expect((await radio.boundingBox()).height).toBeGreaterThanOrEqual(44);
+        const panel = dialog.locator('.td-shell-search__panel');
+        await expect(panel).toHaveCSS('transform', 'matrix(1, 0, 0, 1, 0, 0)');
+        const rect = await panel.boundingBox();
+        expect(rect.width).toBeLessThanOrEqual(Math.min(600, width - 16));
+        expect(rect.height).toBeLessThanOrEqual(width < 576 ? 640 : 520);
+        await testInfo.attach('search-empty', {body:await panel.screenshot(),contentType:'image/png'});
+        await input.fill(language === 'zh' ? '侧栏 标题' : 'sidebar headings');
+        await expect.poll(async () => page.evaluate(() => window.OinkCommandPalette.instance.rows().filter(r=>r.type==='page').length)).toBeGreaterThan(0);
+        let rows = await page.evaluate(() => window.OinkCommandPalette.instance.rows().filter(r=>r.type==='page'));
+        const target = rows.find(r => r.ref.endsWith('/docs/customize/layout/#sidebar-headings'));
+        expect(target).toBeTruthy();
+        expect(rows.every(r=> language === 'zh' ? r.ref.includes('/zh/') : !r.ref.includes('/zh/'))).toBeTruthy();
+        expect(new Set(rows.map(r=>r.sourceId)).size).toBe(rows.length);
+        expect(await dialog.locator('mark').count()).toBeGreaterThan(0);
+        await input.press('Tab');
+        // WebKit follows macOS tab preferences and may skip the close button.
+        if (!(await all.evaluate(el => el === document.activeElement)))
+          await page.keyboard.press('Tab');
+        await expect(all).toBeFocused();
+        await page.keyboard.press('ArrowRight');
+        await expect(current).toBeChecked();
+        await expect(current).toBeFocused();
+        await page.keyboard.press('Tab');
+        await expect(input).toBeFocused();
+        await input.press('Shift+Tab');
+        await expect(current).toBeFocused();
+        await page.keyboard.press('ArrowLeft');
+        await expect(all).toBeChecked();
+        await page.keyboard.press('Tab');
+        await expect(input).toBeFocused();
+        await current.check();
+        rows = await page.evaluate(() => window.OinkCommandPalette.instance.rows().filter(r=>r.type==='page'));
+        expect(rows.length).toBeGreaterThan(0);
+        expect(rows.every(r=>r.page.doc.root==='docs')).toBeTruthy();
+        await testInfo.attach('search-results', {body:await panel.screenshot(),contentType:'image/png'});
+        await input.fill(language === 'zh' ? '配置 qzxnomatchword' : 'config qzxnomatchword');
+        await expect(dialog.locator('[data-td-shell-search-status]')).toContainText(language === 'zh' ? '部分匹配' : 'partial matches');
+        await expect(dialog.locator('.td-shell-search__item-ref').first()).toContainText('1/2');
+        const violations = (await new AxeBuilder({page}).include('#td-shell-search').analyze()).violations;
+        expect(violations).toEqual([]);
+        await testInfo.attach('search-palette', {body:await panel.screenshot(),contentType:'image/png'});
+        await input.fill('>');
+        await expect(scopes).toBeHidden();
+        await expect(dialog.getByRole('group', {name: /^(Actions|操作)$/})).toBeVisible();
+        await page.keyboard.press('Escape');
+        await page.goto(new URL(target.ref, page.url()).href);
+        await expect(page.locator('[id="sidebar-headings"]').first()).toBeVisible();
+        expect(new URL(page.url()).hash).toBe('#sidebar-headings');
+      });
+    }
+  }
+}
+
+test('local search normalized matches keep original excerpts and safe highlighting', async ({page}) => {
+  await page.route('**/offline-search-index*.json', route => route.fulfill({
+    json: [{ref:searchPrefix+'/docs/customize/config/',root:'docs',title:'ＰｏｓｔｇｒｅＳＱＬ',
+      body:'Details '+ 'x'.repeat(180)+' cafe\u0301 backup <img src=x onerror=alert(1)>',
+      sections:[{id:'search',title:'Details',start:0}]}],
+  }));
+  const {dialog,input}=await openPalette(page, searchPrefix+docsPath);
+  await input.fill('postgresql café');
+  const row=dialog.getByRole('listbox').getByRole('option').first();
+  await expect(row).toContainText('cafe\u0301 backup');
+  await expect(row.locator('mark')).toHaveText(['ＰｏｓｔｇｒｅＳＱＬ','cafe\u0301']);
+  await expect(row.locator('img')).toHaveCount(0);
+  await expect(row).toContainText('<img src=x onerror=alert(1)>');
+});
+
+test('local search composition freezes pending results and Enter, then commits mixed text', async ({page}) => {
+  const {dialog,input} = await openPalette(page, searchPrefix + zhDocsPath);
+  await input.fill('配置');
+  await expect(dialog.getByRole('listbox').getByRole('option').first()).toContainText('配置');
+  const before = await dialog.locator('[role="listbox"]').textContent();
+  await input.evaluate(el => {
+    el.dispatchEvent(new CompositionEvent('compositionstart', {bubbles:true}));
+    el.value = 'offline_search 中文';
+    el.dispatchEvent(new InputEvent('input', {bubbles:true, isComposing:true}));
+    el.dispatchEvent(new KeyboardEvent('keydown', {key:'Enter', isComposing:true, bubbles:true}));
+  });
+  await page.waitForTimeout(180); // exceeds the controller debounce
+  expect(await dialog.locator('[role="listbox"]').textContent()).toBe(before);
+  await expect(dialog).toBeVisible();
+  await input.evaluate(el => el.dispatchEvent(new CompositionEvent('compositionend', {bubbles:true})));
+  await expect(dialog.getByRole('listbox').getByRole('option').first()).toContainText('全文检索');
+});
+
+test('local search scope follows Blog and Book roots and does not remove page actions', async ({page}) => {
+  for (const root of ['blog','book']) {
+    const {dialog,input} = await openPalette(page, searchPrefix + '/' + root + '/');
+    const current = dialog.locator(`[data-td-search-scope][value="${root}"]`);
+    await current.check();
+    await input.fill('OINK');
+    await expect.poll(async () => page.evaluate(() => window.OinkCommandPalette.instance.rows().filter(r=>r.type==='page').length)).toBeGreaterThan(0);
+    const rows = await page.evaluate(() => window.OinkCommandPalette.instance.rows().filter(r=>r.type==='page'));
+    expect(rows.every(r=>r.page.doc.root===root)).toBeTruthy();
+    await input.fill('');
+    await expect(dialog.getByRole('group',{name:'Page actions',exact:true})).toBeVisible();
+    await page.keyboard.press('Escape');
+    await page.keyboard.press('/');
+    await expect(current).toBeChecked();
+    await page.keyboard.press('Escape');
   }
 });

@@ -1,0 +1,269 @@
+[
+  {
+    "scope": "summary",
+    "lang": "en",
+    "query": "config",
+    "path": "/docs/customize/config/"
+  },
+  {
+    "scope": "summary",
+    "lang": "en",
+    "query": "search keywords",
+    "path": "/docs/customize/search/"
+  },
+  {
+    "scope": "summary",
+    "lang": "en",
+    "query": "offline_search",
+    "path": "/docs/customize/search/"
+  },
+  {
+    "scope": "summary",
+    "lang": "en",
+    "query": "command palette",
+    "path": "/docs/customize/panel/"
+  },
+  {
+    "scope": "summary",
+    "lang": "en",
+    "query": "Markdown output",
+    "path": "/docs/customize/agents/"
+  },
+  {
+    "scope": "summary",
+    "lang": "en",
+    "query": "local fonts",
+    "path": "/blog/release/1.2.0/"
+  },
+  {
+    "scope": "summary",
+    "lang": "en",
+    "query": "sidebar headings",
+    "path": "/docs/customize/layout/"
+  },
+  {
+    "scope": "summary",
+    "lang": "en",
+    "query": "--baseURL",
+    "empty": true
+  },
+  {
+    "scope": "content",
+    "lang": "en",
+    "query": "shared_buffers",
+    "path": "/docs/components/code/",
+    "anchor": "line-numbers"
+  },
+  {
+    "scope": "content",
+    "lang": "en",
+    "query": "pg_basebackup",
+    "path": "/docs/write/book/",
+    "anchor": "numbering-shortcodes"
+  },
+  {
+    "scope": "content",
+    "lang": "en",
+    "query": "/pg/data",
+    "path": "/docs/write/book/",
+    "anchor": "numbering-shortcodes"
+  },
+  {
+    "scope": "content",
+    "lang": "en",
+    "query": "offline_search_index",
+    "path": "/docs/customize/config/",
+    "anchor": "search"
+  },
+  {
+    "scope": "summary",
+    "lang": "zh",
+    "query": "配置 默认值",
+    "path": "/zh/docs/customize/config/"
+  },
+  {
+    "scope": "summary",
+    "lang": "zh",
+    "query": "offline_search 中文",
+    "path": "/zh/docs/customize/search/"
+  },
+  {
+    "scope": "summary",
+    "lang": "zh",
+    "query": "命令 面板",
+    "path": "/zh/docs/customize/panel/"
+  },
+  {
+    "scope": "summary",
+    "lang": "zh",
+    "query": "Markdown 输出",
+    "path": "/zh/docs/customize/agents/"
+  },
+  {
+    "scope": "summary",
+    "lang": "zh",
+    "query": "本地 字体",
+    "path": "/zh/blog/release/1.2.0/"
+  },
+  {
+    "scope": "summary",
+    "lang": "zh",
+    "query": "侧栏 标题",
+    "path": "/zh/docs/customize/layout/"
+  },
+  {
+    "scope": "summary",
+    "lang": "zh",
+    "query": "复制 Markdown",
+    "path": "/zh/docs/customize/agents/"
+  },
+  {
+    "scope": "summary",
+    "lang": "zh",
+    "query": "--baseURL",
+    "empty": true
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "shared_buffers",
+    "path": "/zh/docs/components/code/",
+    "anchor": "line-numbers"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "pg_basebackup",
+    "path": "/zh/docs/write/book/",
+    "anchor": "numbering-shortcodes"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "/pg/data",
+    "path": "/zh/docs/write/book/",
+    "anchor": "numbering-shortcodes"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "offline_search_index",
+    "path": "/zh/docs/customize/config/",
+    "anchor": "search"
+  },
+  {
+    "scope": "content",
+    "lang": "en",
+    "query": "search boost",
+    "path": "/docs/customize/search/"
+  },
+  {
+    "scope": "content",
+    "lang": "en",
+    "query": "Markdown output",
+    "path": "/docs/customize/agents/"
+  },
+  {
+    "scope": "content",
+    "lang": "en",
+    "query": "local fonts",
+    "path": "/docs/customize/brand/"
+  },
+  {
+    "scope": "content",
+    "lang": "en",
+    "query": "copy Markdown",
+    "path": "/docs/customize/agents/"
+  },
+  {
+    "scope": "content",
+    "lang": "en",
+    "query": "PostgreSQL backup",
+    "path": "/docs/customize/taxonomy/"
+  },
+  {
+    "scope": "content",
+    "lang": "en",
+    "query": "--baseURL",
+    "path": "/docs/admin/deploy/"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "PostgreSQL 备份",
+    "path": "/zh/docs/customize/taxonomy/"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "PostgreSQL备份",
+    "path": "/zh/docs/customize/taxonomy/"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "shared_buffers 配置",
+    "path": "/zh/docs/components/code/"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "pg_basebackup 从库",
+    "path": "/zh/docs/write/book/"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "--baseURL 子路径",
+    "path": "/zh/docs/admin/deploy/"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "搜索 关键词",
+    "path": "/zh/docs/customize/search/"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "配置 默认值",
+    "path": "/zh/docs/customize/config/"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "本地 字体",
+    "path": "/zh/docs/customize/brand/"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "代码 标签页",
+    "path": "/zh/docs/components/tabs/"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "复制 Markdown",
+    "path": "/zh/docs/customize/agents/"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "输入法 组字",
+    "path": "/zh/docs/customize/search/"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "部署 离线",
+    "path": "/zh/docs/start/from-scratch/"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "连接池 超时",
+    "path": "/zh/docs/write/book/",
+    "partial": true
+  }
+]

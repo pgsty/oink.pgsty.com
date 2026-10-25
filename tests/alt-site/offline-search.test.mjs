@@ -58,6 +58,12 @@ for (const [deployment, baseURL, prefix] of [
     const output = `${res.stdout ?? ''}${res.stderr ?? ''}`;
     assert.equal(res.status, 0, `Build failed:\n${output}`);
 
+    const corpus = spawnSync(process.execPath, [
+      join(siteDir, 'scripts/check-search-corpus.mjs'), '--scope', 'summary',
+      '--index-dir', outDir, '--prefix', prefix,
+    ], { cwd: siteDir, encoding: 'utf8' });
+    assert.equal(corpus.status, 0, `Real search query expectations failed:\n${corpus.stderr}`);
+
     for (const [language, ref] of [
       ['en', `${prefix}/docs/`],
       ['zh', `${prefix}/zh/docs/`],
@@ -93,6 +99,17 @@ for (const [deployment, baseURL, prefix] of [
         ),
         `${language} index contains another language`,
       );
+
+      for (const entry of entries) {
+        if (!entry.sections?.length) continue;
+        const htmlPath = join(outDir, decodeURIComponent(entry.ref.slice(prefix.length)), 'index.html');
+        const html = readFileSync(htmlPath, 'utf8');
+        for (const section of entry.sections) {
+          const escaped = section.id.replaceAll('&', '&amp;').replaceAll('"', '&#34;');
+          assert.ok(html.includes(`id="${escaped}"`), `Missing rendered anchor ${entry.ref}#${section.id}`);
+          assert.ok(!('start' in section), 'summary scope must not include body offsets');
+        }
+      }
 
       const payload = readFileSync(indexPath);
       assert.ok(
