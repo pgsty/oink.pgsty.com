@@ -52,6 +52,7 @@ Its accessible name is the localized "Scrollable table".
 ## Captions {#caption}
 
 `{caption="…"}` adds a visible `<caption>`. The caption is plain text and does not number the table.
+Its title has balanced padding inside the table frame and aligns with the column labels below it.
 
 ```markdown {title="Source"}
 | Item | Value |

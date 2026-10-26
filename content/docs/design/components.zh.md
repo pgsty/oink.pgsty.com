@@ -149,7 +149,8 @@ Print 给主题生成的标签页容器、面板 ID 加上来源页面的命名�
 参数锚点为 `field-<name>`，名称转小写，连续标点折叠为连字符，因此
 `params.ui.typography` 变成 `field-params-ui-typography`。重复锚点追加位置后缀。
 
-表格渲染钩子负责响应式包装与 caption。`.matrix` 把第一列变为行表头；
+表格渲染钩子负责响应式包装与 caption。标题在框内保留均衡留白，与单元格文字对齐；
+正文中存在角落入口时，标题末尾为按钮预留空间。`.matrix` 把第一列变为行表头；
 `.full-width` 加宽外层视口以占满文章可用宽度。在屏幕显示中，`.wide`
 让技术表格按内容尺寸排版，在容器内横向滚动；单元格使用 `overflow-wrap: break-word`
 与 `word-break: normal` 保留标识符，正文单元格以 `max-width: 40ch` 作为软宽度约束，

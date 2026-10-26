@@ -154,7 +154,10 @@ The full form accepts block descriptions. Use `card` and `field` only within the
 Field anchors use `field-<name>`, with lowercase punctuation runs replaced by hyphens.
 Thus `params.ui.typography` becomes `field-params-ui-typography`. Duplicate anchors get positional suffixes.
 
-The table hook owns responsive wrapping and captions. `.matrix` makes the first
+The table hook owns responsive wrapping and captions.
+Captions have balanced inset spacing inside the frame, aligned with cell text;
+an available corner action reserves space at the end of the inline caption.
+`.matrix` makes the first
 column row headers; `.full-width` widens the outer wrapper to the article width.
 On screens, `.wide` opts technical tables into intrinsic sizing inside
 that scrollable wrapper, preserving identifiers with `overflow-wrap: break-word`

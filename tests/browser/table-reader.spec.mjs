@@ -28,6 +28,22 @@ for (const locale of ['', '/zh']) {
     await page.evaluate(() => document.fonts.ready);
     const frame = frameFor(page, 'reader-main');
     const button = frame.getByRole('button', { name: label });
+    const titleGeometry = await frame.evaluate(el => {
+      const caption = el.querySelector('caption');
+      const header = el.querySelector('thead th');
+      const textBox = node => {
+        const range = document.createRange(); range.selectNodeContents(node);
+        return range.getBoundingClientRect();
+      };
+      return {
+        inset: textBox(caption).x - caption.getBoundingClientRect().x,
+        alignment: textBox(caption).x - textBox(header).x,
+        top: textBox(caption).y - caption.getBoundingClientRect().y,
+      };
+    });
+    expect(titleGeometry.inset).toBeGreaterThanOrEqual(8);
+    expect(titleGeometry.top).toBeGreaterThanOrEqual(8);
+    expect(Math.abs(titleGeometry.alignment)).toBeLessThanOrEqual(1);
     await expect(page.locator('#reader-plain').locator('..').locator('..').locator(':scope > .td-table-expand')).toHaveCount(0);
     await expect(frameFor(page, 'reader-reference').locator('.td-table-expand')).toHaveCount(0);
     await frame.scrollIntoViewIfNeeded();
