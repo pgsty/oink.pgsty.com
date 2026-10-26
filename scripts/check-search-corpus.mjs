@@ -1,10 +1,11 @@
 // Real documentation corpus acceptance and reproducible local CPU measurements.
 // Build with the desired search scope first. No consumer build step is added.
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
 import { performance } from 'node:perf_hooks';
 import { gzipSync } from 'node:zlib';
 import os from 'node:os';
@@ -16,11 +17,26 @@ function option(key, fallback) { const n = args.indexOf(key); return n < 0 ? fal
 const directory = resolve(option('--index-dir', resolve(site, 'public')));
 const scope = option('--scope', 'summary');
 const prefix = option('--prefix', '');
-const enginePath = resolve(option('--engine', resolve(site, '../oink/assets/js/search-engine.js')));
+// Resolve the same theme Hugo builds with, including its module cache and any
+// explicit development replacement. CI need not have a sibling checkout.
+const mounts = execFileSync(process.env.HUGO || 'hugo', ['config', 'mounts'], {
+  cwd: site, encoding: 'utf8',
+});
+const modules = mounts.slice(mounts.indexOf('{')).trim()
+  .split(/\n(?=\{)/).map(value => JSON.parse(value));
+const theme = modules.find(module => {
+  if (module.path === 'github.com/pgsty/oink') return true;
+  // Hugo reports filesystem replacements by their path instead of module name.
+  const manifest = resolve(module.dir, 'go.mod');
+  return existsSync(manifest) &&
+    /^module\s+github\.com\/pgsty\/oink\s*$/m.test(readFileSync(manifest, 'utf8'));
+});
+assert.ok(theme?.dir, 'Hugo did not resolve the OINK theme directory');
+const enginePath = resolve(option('--engine', resolve(theme.dir, 'assets/js/search-engine.js')));
 const baselinePath = option('--baseline-engine', '');
 const baselineDirectory = option('--baseline-index-dir', '');
 global.window = {};
-const lunr = require(resolve(site, '../oink/assets/js/third_party/lunr.min.js'));
+const lunr = require(resolve(theme.dir, 'assets/js/third_party/lunr.min.js'));
 const api = require(enginePath);
 const baselineApi = baselinePath ? require(resolve(baselinePath)) : null;
 const queries = JSON.parse(readFileSync(resolve(site, 'tests/search/queries.json'))).filter(q => q.scope === scope);
