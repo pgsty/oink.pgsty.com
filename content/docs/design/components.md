@@ -58,7 +58,7 @@ OINK has 29 shortcodes:
 | FileTree | `filetree` data fence | none | divider only with comments |
 | Gallery | `gallery` data fence | none | shared Image Zoom when eligible |
 | Image | Markdown image + block attributes | none | Image Zoom when eligible |
-| Table | attributes, caption, number, or tabs | `tbl` for compound Book tables | tabs when tabbed |
+| Table | attributes, caption, number, or tabs | `tbl` for compound Book tables | tabs when tabbed; reader with `.expand` (unreleased) |
 | Book target | image/table/passthrough/fence + `{num=}` | `fig`, `tbl`, `eq`, `eg` | none |
 | Release assets | `checksums` data fence | `release-assets` | copy in HTML |
 | Math and chemistry | passthrough, `math`, `chem` fences | `eq` | none; build-time rendering and local styles |
@@ -169,6 +169,35 @@ and tabs are also mutually exclusive.
 > published v1.3.2. It retains the technical-table layout introduced in 1.3.1
 > and compatibility with existing markup. It composes with `.matrix` and
 > `.full-width`; Markdown preserves the authored marker.
+
+### Table reading {#table-reading}
+
+> [!NOTE] Unreleased: `.expand`
+> Explicit opt-in for theme-rendered Markdown tables, independent of `.wide`.
+
+Only `.expand` tables receive an HTML reader frame and load `table-reader.js`.
+The runtime adds a direct top-right corner action, revealed on hover or keyboard
+focus and visible on touch and in forced colors. It adds no above-table toolbar,
+global setting, automatic size detection, or whole-table click handler.
+`.fields .expand` warns and ignores expansion; layout markers, captions, numbering,
+and tabs otherwise compose normally. Goldmark supports `{.wide .expand}` and
+`{class="wide expand"}` with block attributes enabled and no intervening blank line.
+
+One native modal moves the original table and scroll wrapper, keeping IDs, links,
+selection, text size, row order, and native table semantics. Its title receives
+initial focus; Tab stays inside; Escape and Close restore the original nodes,
+inline/page scroll positions, and entry focus. Coordinated closes suppress focus
+return. Plain captions remain native; numbered captions name the dialog and any
+otherwise unnamed table while open. Single-row headers stick inside the viewport;
+`.matrix` retains its existing row headers and pinned first column. There are no
+sorting, filtering, density, export, or virtualization controls.
+
+Missing JavaScript, blocked assets, or unsupported dialogs leave readable inline
+content with no dead entry. Tables with references outside their movable subtree
+stay inline; same-page links to outside targets restore the table before navigation.
+Before browser printing, restoration is synchronous. Dedicated Print, RSS, Markdown,
+and LLMS keep their existing content boundaries without reader UI/runtime. The
+[accepted decision](/docs/design/decisions/large-table-reading/) records the rationale.
 
 ### Images, Gallery, FileTree, and fences {#images-gallery-filetree-and-fences}
 

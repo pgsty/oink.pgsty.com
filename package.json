@@ -29,7 +29,7 @@
     "test:a11y": "playwright test tests/browser/accessibility.spec.mjs",
     "test:alt-site": "node --test 'tests/alt-site/**/*.test.mjs'",
     "test:base": "mkdir -p tmp && bash -o pipefail -c 'npm run build 2>&1 | tee tmp/hugo-build.log' && npm run _test:base",
-    "test:browser": "npm run seq -- test:a11y test:responsive-shell test:keyboard-nav test:content-components test:code-blocks test:prd5 test:theme-color test:community-feedback test:appearance test:expo test:blog-gallery test:plantuml test:diagrams",
+    "test:browser": "npm run seq -- test:a11y test:responsive-shell test:keyboard-nav test:content-components test:code-blocks test:prd5 test:theme-color test:community-feedback test:appearance test:expo test:blog-gallery test:plantuml test:diagrams test:table-reader",
     "test:community-feedback": "playwright test tests/browser/community-feedback.spec.mjs tests/browser/readability.spec.mjs tests/browser/filetree-wrap.spec.mjs",
     "test:command-palette": "playwright test tests/browser/command-palette.spec.mjs",
     "test:code-blocks": "playwright test tests/browser/code-blocks.spec.mjs tests/browser/landing-code-focus.spec.mjs tests/browser/landing-fixes.spec.mjs",
@@ -56,7 +56,8 @@
     "test:expo:engines": "playwright test tests/browser/expo.spec.mjs --browser all",
     "test:plantuml": "playwright test tests/browser/plantuml.spec.mjs",
     "test:blog-gallery": "playwright test tests/browser/blog-gallery.spec.mjs",
-    "test:diagrams": "playwright test tests/browser/diagrams.spec.mjs"
+    "test:diagrams": "playwright test tests/browser/diagrams.spec.mjs",
+    "test:table-reader": "playwright test tests/browser/table-reader.spec.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",

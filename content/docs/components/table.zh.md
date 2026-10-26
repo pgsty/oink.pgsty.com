@@ -145,6 +145,43 @@ aliases:
 - **静态输出**：此策略只作用于屏幕。Print 与 RSS 使用静态包装并保留原有布局；
   Markdown 保留作者的 GFM 表格及属性行。该标记对 `.fields` 定义列表没有作用。
 
+## 展开指定表格 {#expand}
+
+> [!NOTE] 未发布：`.expand`
+> 此功能在开发版本中可用，尚未包含在已发布的 v1.3.2 中。
+
+只给需要更大阅读空间的表格加 `.expand`。小展开图标位于表格右上角：桌面端
+悬停或键盘聚焦时显示，触屏设备常显。点击即可展开，使用关闭按钮或 Escape
+回到原来的阅读位置。字号、链接和文字选择保持不变；小屏幕上的宽内容仍可横向滚动。
+
+```markdown {title="源码"}
+| 扩展包 | 版本 | 用途 |
+| --- | --- | --- |
+| `pgvector` | `0.8.1` | 向量相似度检索 |
+| `pg_stat_statements` | `1.11` | 语句统计 |
+{.wide .expand}
+```
+
+| 扩展包 | 版本 | 用途 |
+| --- | --- | --- |
+| `pgvector` | `0.8.1` | 向量相似度检索 |
+| `pg_stat_statements` | `1.11` | 语句统计 |
+{.wide .expand caption="扩展包示例"}
+
+Goldmark 支持多个 class：`{.wide .expand}` 与 `{class="wide expand"}` 等价。
+需要开启 `markup.goldmark.parser.attribute.block: true`，属性行紧接表格最后一行，
+中间不要留空行。
+
+`.wide` 控制布局，`.expand` 提供阅读入口，两者均可独立使用。
+`.expand` 还可以与 `.full-width`、`.matrix`、标题、编号或标签页组合。
+没有自动判断大小的阈值，也没有全站开关。原有的 `.td-table--wide` 写法继续兼容 `.wide`。
+
+只有包含显式标记表格的页面才加载小型阅读脚本。没有 JavaScript、脚本未加载或
+浏览器不支持原生对话框时，保留完整的正文表格，不显示无效按钮。
+Print 和 RSS 保持静态表格，Markdown 保留作者语法；浏览器打印前会先将展开的表格
+还原到正文。`headers`、`aria-labelledby` 或 `aria-describedby` 引用了表格外节点时，
+保持正文阅读；依赖文章祖先元素的自定义样式，需要检查阅读器中的效果。
+
 ## 参数表 {#fields}
 
 `{.fields}` 把表格变成定义列表：第一列是名称，最后一列是说明，中间列是元数据。它是记录配置项、命令参数、API 字段的形态，写法见[参数表](/zh/docs/components/fields/)。
@@ -226,7 +263,7 @@ aliases:
 | Markdown | 原样输出源码表格与属性行 |
 | RSS | 完整静态表格 |
 
-表格不加载任何脚本。
+普通表格不加载脚本；`.expand` 仅在 HTML 中加载阅读器，标签页表格还会加载标签页运行时。
 
 ## 参数参考 {#reference}
 
@@ -236,6 +273,7 @@ aliases:
 | --- | --- | --- | --- |
 | `.full-width` | 标记 | 无 | 越出正文栏宽，占满文章画布 |
 | `.wide` | 标记 | 无 | 内部表格采用 max-content 宽度排版，适合配置项等技术宽表 |
+| `.expand` | 标记 | 无 | 在角落提供可选的表格阅读对话框入口 |
 | `.matrix` | 标记 | 无 | 第一列作行表头，表头与首列吸附，其余单元格居中 |
 | `.fields` | 标记 | 无 | 渲染成定义列表，见[参数表](/zh/docs/components/fields/) |
 | `caption` | 纯文本 | 无 | 可见表格标题；在 `.fields` 上是列表的标签 |
@@ -251,7 +289,7 @@ aliases:
 
 ## 限制与常见问题 {#limits}
 
-- 互斥规则：`.fields` 不能和 `.matrix`、`.full-width` 或 `num` 一起用；`num` 与 `tab` 互斥；`group`/`value` 需要 `tab`；`meta` 需要 `.fields`。
+- 互斥规则：`.fields` 不能和 `.matrix`、`.full-width`、`.expand` 或 `num` 一起用；`num` 与 `tab` 互斥；`group`/`value` 需要 `tab`；`meta` 需要 `.fields`。
 - 属性行必须紧贴表格：中间空一行，它就变成正文里一段可见的花括号。Markdown 格式化工具常移动这一行，把它包进 `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->`。
 - 没有合并单元格、没有排序、没有筛选：GFM 管道表格能表达的就是全部。需要合并表头的复杂表请拆成两张表或改成一张矩阵。
 - 单元格里放不下块内容：多段说明、列表、围栏要用 `fields`/`field` shortcode。

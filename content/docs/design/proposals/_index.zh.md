@@ -31,6 +31,10 @@ design_status: active
 | [统一图表阅读](/zh/docs/design/proposals/diagram-reading/) | 本地实现共用查看器、源码导出与按需渲染；验收记录随交付提供，尚未发布 |
 | [本地搜索改进](/zh/docs/design/proposals/local-search/) | 混合查询、真实小节锚点与紧凑范围控件已在本地实现并审查，尚未发布 |
 
+表格阅读草案也已退役：[接受的决策](/zh/docs/design/decisions/large-table-reading/)
+与[组件契约](/zh/docs/design/components/#table-reading)定义缩小范围后在本地实现的
+`.expand` 行为，已发布的 v1.3.2 尚不包含此功能。
+
 Agent 批量索引提案已在输出交付后退役。稳定行为现在归属
 [架构](/zh/docs/design/architecture/#outputs-and-runtime)，用户步骤归属
 [Agent 就绪输出](/zh/docs/customize/agents/)。Book 出版提案也在 `BookManifest` 与 EPUB/PDF

@@ -57,7 +57,7 @@ OINK 有 29 个 shortcode：
 | FileTree | `filetree` 数据围栏 | 无 | 只有注释存在时加载分隔条运行时 |
 | 画廊 | `gallery` 数据围栏 | 无 | 符合条件时共享图片缩放 |
 | 图片 | Markdown 图片加块属性 | 无 | 符合条件时加载图片缩放 |
-| 表格 | 属性、caption、编号或标签页 | 复合 Book 表格使用 `tbl` | 只有标签页表格加载 tabs |
+| 表格 | 属性、caption、编号或标签页 | 复合 Book 表格使用 `tbl` | 标签页表格加载 tabs；`.expand` 启用阅读器（未发布） |
 | Book 目标 | 图片、表格、passthrough、围栏加 `{num=}` | `fig`、`tbl`、`eq`、`eg` | 无 |
 | 发布资产 | `checksums` 数据围栏 | `release-assets` | HTML 中加载复制功能 |
 | 数学与化学公式 | passthrough、`math`、`chem` 围栏 | `eq` | 无；构建期渲染并加载本地样式 |
@@ -161,6 +161,29 @@ Print 给主题生成的标签页容器、面板 ID 加上来源页面的命名�
 > 这个简短的作者标记在开发版本中可用，尚未包含在已发布的 v1.3.2 中。
 > 它沿用 1.3.1 引入的技术宽表布局，继续兼容已有写法，可以与 `.matrix`、
 > `.full-width` 组合；Markdown 保留作者原本使用的标记。
+
+### 表格阅读 {#table-reading}
+
+> [!NOTE] 未发布：`.expand`
+> 为主题渲染的 Markdown 表格显式启用，独立于 `.wide`。
+
+只有 `.expand` 表格才生成 HTML 阅读容器并加载 `table-reader.js`。
+运行时在右上角添加直接展开入口，悬停或键盘聚焦时显示，触屏和强制颜色模式常显。
+不增加表格上方工具栏、全站开关、自动大小检测或整表点击事件。
+`.fields .expand` 会告警并忽略展开；其他布局标记、标题、编号和标签页可正常组合。
+开启 Goldmark 块属性后，`{.wide .expand}` 与 `{class="wide expand"}` 均可使用，
+属性行与表格之间不能留空行。
+
+一个原生模态对话框移动原表格与滚动容器，保留 ID、链接、选择、字号、行顺序和原生语义。
+初始焦点位于标题，Tab 保持在对话框内；Escape 和关闭按钮还原原节点、表格与页面滚动位置，
+并将焦点返回入口。协调器关闭时不抢回焦点。普通 caption 随表格移动，编号标题用于命名
+对话框，并在打开期间为原本无名称的表格提供名称。单行表头在视口内吸附；
+`.matrix` 保留原有行表头和固定首列行为。不增加排序、筛选、密度、导出或虚拟滚动控制。
+
+缺少 JavaScript、资源被阻止或对话框不受支持时，保留可读正文且不出现无效入口。
+引用移动子树外节点的表格保持正文阅读；指向表格外目标的同页链接先还原表格再导航。
+浏览器打印前同步还原。专用 Print、RSS、Markdown 与 LLMS 保留原有内容边界，
+不增加阅读器控件或运行时。[接受的决策](/zh/docs/design/decisions/large-table-reading/)记录设计理由。
 
 ### 图片、画廊、FileTree 与围栏 {#images-gallery-filetree-and-fences}
 

@@ -10,7 +10,7 @@ owner: OINK maintainers
 ---
 
 > [!NOTE] 带日期的研究；不是已实现功能
-> 负责人：OINK 维护者。研究日期：2026-10-26，Asia/Shanghai。此候选研究为可能的 1.4.0 方向提供依据，涉及组件、架构、阅读外壳与迁移，但不改变这些契约。未来验收门槛见[提案草案](/zh/docs/design/proposals/large-table-reading/)。
+> 负责人：OINK 维护者。研究日期：2026-10-26，Asia/Shanghai。此候选研究为可能的 1.4.0 方向提供依据，涉及组件、架构、阅读外壳与迁移，但不改变这些契约。后续[接受的决策](/zh/docs/design/decisions/large-table-reading/)已替代下文的入口与范围建议；本页保留为历史证据。
 
 **通过显式“阅读表格”操作打开大型原生对话框，是最值得继续评估的候选方案。** 它给桌面表格增加空间，同时保留文字大小、原表语义和简短的返回路径。许多表格只需在正文内拓宽；实测扩展包样本在桌面端采用这种模式就已能容纳全部列。在 390px 视口下，对话框仅增加 16px 宽度，不能消除横向滚动。五个文档框架共同支持的是原生表格与溢出处理这一较简单基线；更丰富的表格库提供数据操作，也增加集成成本。外部概念验证支持一个阅读方向，不代表版本验收、无障碍认证，也不意味着已经决定交付 TSV。
 
@@ -118,4 +118,8 @@ TanStack 测量来自本地构建，不是发布者预制 minified 文件。使�
 
 提议的格式使用 TAB 分隔列、LF 分隔行，末尾不加分隔符；把单元格内 TAB/换行规范化为空格；字面引号保持原样，不使用 CSV 引号规则。代码字符保留，但多行空白会变化。若跳过前导空白/控制字符后以 `= + - @` 开头，在整个值前加单引号；应明确这是会改写值的风险降低措施，不是对所有软件都安全的原始数据。目标电子表格粘贴路径尚未测试。等待 Clipboard API 成功后再礼貌报告状态；拒绝或不可用时提供可选择的规范化文本。DOM 文本无法重建原始 Markdown 或结构化源数据。依据见 [DOM 文本](https://dom.spec.whatwg.org/#dom-node-textcontent)、[Clipboard 2026-06-24 工作草案](https://www.w3.org/TR/2026/WD-clipboard-apis-20260624/#clipboard-interface)、[OWASP 电子表格注入限制](https://community.owasp.org/attacks/CSV_Injection)。
 
-下一项关键决策是：对话框对真实比较任务的改善，是否足以承担这些集成责任。聚焦原生表格的小型阅读器，既保留未来引入数据网格的可能，也避免立即建立第二套数据模型。[提案验收矩阵](/zh/docs/design/proposals/large-table-reading/#acceptance)定义了作出任何 1.4.0 承诺前所需的证据；本次带日期研究只建立了一个有限候选方向。
+下一项关键决策是：对话框对真实比较任务的改善，是否足以承担这些集成责任。聚焦原生表格的小型阅读器，既保留未来引入数据网格的可能，也避免立即建立第二套数据模型。原提案验收矩阵保留在 Git 历史中，[接受的决策](/zh/docs/design/decisions/large-table-reading/#validation)记录了缩小后的实现边界。本次带日期研究本身只建立候选方向，不代表版本承诺。
+
+## 审阅后接受的方向 {#accepted-direction}
+
+用户选择显式组合 `{.wide .expand}`，使用角落直接展开按钮，悬停或聚焦时显示，触屏常显。本次排除表格上方工具栏、省略号菜单和 TSV。[接受的决策](/zh/docs/design/decisions/large-table-reading/)与[当前契约](/zh/docs/design/components/#table-reading)定义最终行为。本页此前的建议和原型测量保留为当时证据，不代表最终 API。

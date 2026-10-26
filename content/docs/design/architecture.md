@@ -276,7 +276,7 @@ Promised remote URLs remain supported. They are never fetched at build time.
 > URL; they cannot introduce attributes or be decoded as HTML entities.
 
 Theme output uses `td-` classes, `data-td-*` attributes, and `--td-*` custom properties.
-Author markers such as `.steps`, `.cards`, `.full-width`, and `.wide` remain unprefixed.
+Author markers such as `.steps`, `.cards`, `.full-width`, `.wide`, and `.expand` remain unprefixed.
 CSS supports RTL, print, forced colors, reduced motion, long tokens, and narrow viewports.
 Theme decorative icons have `aria-hidden`. Only pages with task lists or raw authored Font Awesome elements load the authored accessibility repair.
 

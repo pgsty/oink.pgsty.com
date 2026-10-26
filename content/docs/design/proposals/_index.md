@@ -34,6 +34,10 @@ or the documentation repository.
 | [Unified diagram reading](/docs/design/proposals/diagram-reading/) | Shared viewer, source export and demand rendering implemented locally; delivery records validation, no published release |
 | [Local search refinement](/docs/design/proposals/local-search/) | Mixed queries, real section anchors and compact scope controls implemented and reviewed locally; no published release |
 
+The table-reading draft is also retired: the [accepted decision](/docs/design/decisions/large-table-reading/)
+and [component contract](/docs/design/components/#table-reading) define the narrower,
+locally implemented `.expand` behavior. It is not part of published v1.3.2.
+
 The bulk agent-index proposal was retired after its outputs were released.
 [Architecture](/docs/design/architecture/#outputs-and-runtime) defines the accepted
 behavior. [Agent-ready output](/docs/customize/agents/) gives the user steps.

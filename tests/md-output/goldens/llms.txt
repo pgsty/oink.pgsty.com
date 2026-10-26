@@ -109,7 +109,9 @@
   - [Expo albums](http://localhost/docs/design/decisions/expo/index.md): Record the reasons for album bundles, shared appearance, three display modes, and the image viewer.
   - [Blog gallery](http://localhost/docs/design/decisions/blog-gallery/index.md): Keep articles as the content model while reusing Expo geometry for a fourth blog index view.
   - [Component refinement review](http://localhost/docs/design/research/2026-10-25-component-refinement/index.md): Local four-preset component validation, asset measurements, and separately reproduced gallery baseline failures.
+  - [Table reading](http://localhost/docs/design/decisions/large-table-reading/index.md): Separate technical table layout from an optional corner action for reading in a larger viewport.
   - [2026-10-13 theme review](http://localhost/docs/design/research/2026-10-13-theme-review/index.md): Reproduced image escaping and interaction defects, their repairs, and local theme and consumer validation.
+  - [Large-table reading research](http://localhost/docs/design/research/2026-10-26-large-table-reading/index.md): Framework and component evidence, measured reading concepts, and a bounded direction for OINK technical tables.
   - [Unified diagram reading](http://localhost/docs/design/proposals/diagram-reading/index.md): Shared Mermaid and local PlantUML viewing, source export and demand loading.
   - [Local search](http://localhost/docs/design/proposals/local-search/index.md): A local candidate for mixed-language queries, technical identifiers, section results, and palette scope.
 - [CLI](http://localhost/docs/cli/index.md): An introduction to the optional OINK command-line companion for Hugo sites. The CLI is still a draft.

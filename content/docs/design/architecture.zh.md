@@ -272,7 +272,7 @@ CSS 或 SVG 发起的请求也受此限制。
 > 引号与 `&` 保持为 URL 的内容，不得生成新属性或被当作 HTML 实体解码。
 
 主题输出使用 `td-` class、`data-td-*` 属性与 `--td-*` 自定义属性；`.steps`、
-`.cards`、`.full-width`、`.wide` 等作者标记保持无前缀。CSS 支持 RTL、打印、强制颜色、
+`.cards`、`.full-width`、`.wide`、`.expand` 等作者标记保持无前缀。CSS 支持 RTL、打印、强制颜色、
 减少动画、超长 token 与窄视口。主题拥有的装饰图标带 `aria-hidden`；只有包含
 任务列表或原始 Font Awesome 元素的页面才加载作者内容无障碍修复。
 

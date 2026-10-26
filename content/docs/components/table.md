@@ -160,6 +160,49 @@ horizontally within its wrapper when it exceeds the available space.
   static wrappers and retain their existing layout; Markdown preserves the authored
   GFM table and attribute line. The marker has no effect on `.fields` definition lists.
 
+## Expand selected tables {#expand}
+
+> [!NOTE] Unreleased: `.expand`
+> Available in the development checkout, beyond published v1.3.2.
+
+Add `.expand` only to tables that benefit from a larger reading area. A small
+expand icon sits at the top-right corner: desktop hover or keyboard focus reveals
+it; touch devices keep it visible. Click once to open the table, then use Close
+or Escape to return to the same reading position. Text size, links, and selection
+stay intact; wide content still scrolls horizontally on small screens.
+
+```markdown {title="Source"}
+| Package | Version | Role |
+| --- | --- | --- |
+| `pgvector` | `0.8.1` | Vector similarity search |
+| `pg_stat_statements` | `1.11` | Statement statistics |
+{.wide .expand}
+```
+
+| Package | Version | Role |
+| --- | --- | --- |
+| `pgvector` | `0.8.1` | Vector similarity search |
+| `pg_stat_statements` | `1.11` | Statement statistics |
+{.wide .expand caption="Example extension packages"}
+
+Goldmark accepts multiple classes: `{.wide .expand}` and
+`{class="wide expand"}` are equivalent. Enable
+`markup.goldmark.parser.attribute.block: true` and put the attribute line
+immediately after the last row, without a blank line.
+
+`.wide` controls layout; `.expand` enables the reading action. Either works alone.
+You can also combine `.expand` with `.full-width`, `.matrix`, captions, numbering,
+or tabs. There is no automatic size threshold or site-wide switch. The existing
+`.td-table--wide` spelling remains compatible with `.wide`.
+
+Only pages with opted-in tables load the small reader script. Without JavaScript,
+a loaded script, or native dialog support, the complete inline table remains
+readable without a dead button. Print and RSS keep static tables; Markdown keeps
+the author syntax. Browser printing restores an open table to the article first.
+Tables whose `headers`, `aria-labelledby`, or `aria-describedby` reference nodes
+outside the table stay inline; custom styles depending on article ancestors
+should be reviewed in the reader.
+
 ## Field lists {#fields}
 
 `{.fields}` converts a table to a definition list. The first column is the name, the last is the description, and middle columns are metadata.
@@ -247,7 +290,7 @@ See [Tabs](/docs/components/tabs/) for the complete rules.
 | Markdown | The source table and its attribute line, emitted as written |
 | RSS | The complete static table |
 
-Tables load no script.
+Ordinary tables load no script; `.expand` loads its reader only in HTML, and tabbed tables load the tabs runtime.
 
 ## Parameter reference {#reference}
 
@@ -257,6 +300,7 @@ The attribute line on the row below the table:
 | --- | --- | --- | --- |
 | `.full-width` | marker | none | Exceed the reading column and use the article canvas |
 | `.wide` | marker | none | Sizes the inner table to max-content; suits technical tables with long identifiers |
+| `.expand` | marker | none | Add an optional corner action for reading the table in a larger dialog |
 | `.matrix` | marker | none | First column as row header, header and first column pinned, other cells centred |
 | `.fields` | marker | none | Render as a definition list, see [Fields](/docs/components/fields/) |
 | `caption` | plain text | none | Visible table caption; on `.fields` it labels the list |
@@ -272,7 +316,7 @@ The attribute line on the row below the table:
 
 ## Limits {#limits}
 
-- `.fields` cannot be combined with `.matrix`, `.full-width`, or `num`.
+- `.fields` cannot be combined with `.matrix`, `.full-width`, `.expand`, or `num`.
   `num` and `tab` are mutually exclusive. `group`/`value` require `tab`, and `meta` requires `.fields`.
 - The attribute line must immediately follow the table. A blank line makes the braces appear as text.
   To prevent formatters moving the line, wrap it in `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->`.
