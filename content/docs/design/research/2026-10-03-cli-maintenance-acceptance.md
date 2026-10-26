@@ -99,6 +99,7 @@ preserved. This initial research addition does not accept or overwrite them.
 | R6 | Explicit versioned site registry reuses single-site engine; per-site and aggregate completion; writes only to selected sites; configured preinstalled markdownlint/Vale/lychee adapters normalize findings and declare syntax/network coverage | Open: no workspace/adapter public command at initial audit | A07/A15/A18; direct/per-site parity; no sibling discovery, implicit installation or default formatting writes; required missing tool `2`, optional omission visible, external network uncertainty distinct |
 | R7 | Read-only loopback Studio with overview, issues, translation comparison, page relationships and publication views; filters, known sources, actual Hugo preview, comparisons and copied actions; CLI parity; prebuilt assets; explicit allowlist, separate preview origin, Host/Origin/session protection | Open: no Studio server or assets at initial audit | A16; browser/keyboard/screen-reader/mobile/light/dark/long-list flows; same underlying results as CLI; unauthorized hosts/origins/sessions and preview-to-management requests rejected; Node unnecessary for consumer runtime |
 | R8 | Markdown/text and front matter forms, selected components and collision-safe attachments reuse plans; authorized allowed writes with visible diff, hashes and candidate validation; no-op bytes and unknown fields/comments/order/encoding/whitespace retained; unsupported form syntax stays text | Open: editing follows accepted read-only R7; no editor API at initial audit | A17/A14; byte-identical no-op, surgical YAML field updates and text fallbacks; stale external-editor saves, traversal/symlink escapes and preview requests fail safely; attachments never overwrite; no management API in static publication |
+{.wide .expand}
 
 ## R1 local validation {#r1}
 
@@ -127,6 +128,7 @@ Earlier offline R1 trials returned `0` without diagnostics on three consumers:
 | OINK documentation | 421 | 1,139 | 512 | 74,689 | 341 | Exact before/after equality |
 | PIG project site | 858 | 1,392 | 424 | 64,440 | 248 | Exact before/after equality |
 | Repository catalog | 2,294 | 3,287 | 1,635 | 851,535 | 1,572 | Exact before/after equality |
+{.wide .expand}
 
 These earlier reports spell optional unselected coverage `not_selected`,
 outside the existing result-schema enum. The final code corrects it to
@@ -151,6 +153,7 @@ maintenance commit, public archive or published module.
 | OINK documentation | 421 | 1,139 | 512 | 74,755 | 341 | Exit `0`, valid result, complete page facts, exact source bytes/modes/Git preservation |
 | PIG project site | 858 | 1,392 | 424 | 64,440 | 248 | Exit `0`, valid result, complete page facts, exact source bytes/modes/Git preservation |
 | Repository catalog | 2,294 | 3,287 | 1,635 | 851,535 | 1,572 | Exit `0`, valid result, complete page facts, exact source bytes/modes/Git preservation |
+{.wide .expand}
 
 Each final result has required `check.links: complete` and `project.pages: complete`
 coverage. Unselected translation/style coverage is optional and reports `not_checked`.
@@ -224,6 +227,7 @@ returned `0`, with evidence in
 | Documentation | 0 | 341 | 1,139 | 74,755 | 144 | Complete; 421 source files/inventory unchanged |
 | PIG | 0 | 248 | 1,392 | 64,440 | 120 | Complete; 858 source files/inventory unchanged |
 | Repository catalog | 1 | 1,572 | 3,287 | 851,535 | 788 | Completed policy check: 10,462 actual `HTML_ID_DUPLICATE` findings in existing merged-print output; 2,294 source files/inventory unchanged |
+{.wide .expand}
 
 The repository catalog result records completed findings. It does not indicate
 a passing site or an implementation failure. No policy was weakened and no consumer source
@@ -244,6 +248,7 @@ equal before/after. These reports supersede preliminary public-command trials:
 | Documentation | 0 | 421 | 341 | 1,139 | 74,825 | 144 |
 | PIG | 0 | 858 | 248 | 1,392 | 64,440 | 120 |
 | Repository catalog | 1 | 2,294 | 1,572 | 3,287 | 851,535 | 788 |
+{.wide .expand}
 
 No final report has incomplete diagnostics. The repository catalog retains
 10,462 actual merged-print `HTML_ID_DUPLICATE` findings and 788 informational
@@ -348,6 +353,7 @@ zero incomplete diagnostics and zero required unfinished coverage.
 | Documentation | 0 | 421 | 427 | 341 | 1,139 | 74,825 | 1,140 | 0 |
 | PIG | 0 | 858 | 861 | 248 | 1,392 | 64,440 | 1,393 | 0 |
 | Repository catalog | 1 | 2,294 | 2,299 | 1,572 | 3,287 | 851,535 | None | Not exported |
+{.wide .expand}
 
 Both inventories compare exact bytes, modes and file types before/after; the
 primary inventory also compares logical Git state. Git sites include tracked
@@ -593,6 +599,7 @@ It links to the complete raw JSON/logs and per-move classifications.
 | Documentation | 421/427/109 | `0`/`0` | `0` | `0`: complete historical comparison | `1`: six candidate missing references |
 | PIG | 858/861/52 | `0`/`0` | `0` | `2`: historical foreign-input provenance incomplete | `1`: 32 candidate missing references |
 | Repository | 2294/2299/48 | `0`/`0` | `1`: 10,462 existing duplicate HTML IDs | `2`: unborn HEAD baseline unavailable | `1`: the same existing duplicate IDs |
+{.wide .expand}
 
 Starter and Repository impact retain known current facts without inventing
 prior pages or changes. PIG's actual baseline is complete (theme v1.0.0 versus
@@ -1598,6 +1605,7 @@ does not close later-stage scope.
 | A16 | Five useful CLI-parity views. Keyboard/mobile/light/dark. Source/preview isolation |Accepted R7 evidence retained. Historical source-bound R8 read-only 14 axe/screenshots and Editor 12 axe/screenshots with unchanged UI bytes. Current backend gates, ARM and corpus separately verified, native/API parity, preview isolation, four consumers and canonical render passed. Current eight owning gates/Linux qualification plus unchanged-runtime carry-forward of the preceding corpus in #a18 | Passed supported local views. Required partial-preview incompletion/native findings remain visible. No universal browser/platform claim |
 | A17 | No-op bytes. YAML unknown/comment/order preservation. Stale-save and attachment collisions rejected |Corrected frozen core/public/guarded-writer race, actual Hugo/tools, source-bound Editor/read-only browsers, exact-binary four-consumer proposal parity/preservation and guarded canonical source/render passed in #r8. Current eight owning gates/Linux qualification plus unchanged-runtime carry-forward of the preceding corpus in #a18 | Passed supported local editing scope. Required partial preview/native findings still block Apply. Final A18 separate |
 | A18 | Actual declared macOS/Linux runtimes. Child signals. Provisioned offline runs. Honest unsupported inputs | Current freeze/source and repeated five-archive reproduction. Darwin arm64, native Linux arm64 and emulated Linux amd64 nonroot ext4/full offline unit-vet/selected Hugo/native archive/signal smokes passed in #a18 | Passed current declared runtime/archive scope. Optional guest prerequisites remain explicit skips. Darwin amd64 is experimental/unverified and Windows outside scope |
+{.wide .expand}
 
 ## Candidate sites and source preservation {#sites}
 

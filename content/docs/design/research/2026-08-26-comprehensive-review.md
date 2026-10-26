@@ -93,6 +93,7 @@ Before the next release tag, at minimum:
 | F16 | P3 | Vendor integrity is strong, but vulnerability/SBOM and CI supply-chain gates are manual | Release maintainers |
 | F17 | P3 | Changelog, implemented proposals, and behaviorless metadata reduce signal | Maintainers and upgraders |
 | F18 | P3 | The Print `isHTML` FIXME no longer explains the real dependency | Print-template maintainers |
+{.wide .expand}
 
 ## Detailed findings {#detailed-findings}
 

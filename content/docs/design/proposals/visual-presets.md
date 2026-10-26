@@ -325,6 +325,7 @@ keeps crimson, Paper uses an ink chip). `theme_color` still never touches it.
 | Slate | Inter | Chakra Petch | Chakra Petch | IBM Plex Mono | IBM Plex Mono | none |
 | Ink | Inter | Inter | Inter | Inter (tabular) | IBM Plex Mono | none |
 | Terminal | Plex Mono chrome, Plex Sans prose | IBM Plex Mono | IBM Plex Mono | IBM Plex Mono | IBM Plex Mono | none after Paper |
+{.wide .expand}
 
 Paper vendors `@fontsource-variable/ibm-plex-sans` (OFL-1.1) into
 `third_party/` with a `VENDOR.json` entry: Latin, Latin Extended, Cyrillic, Cyrillic Extended, Greek and Vietnamese
@@ -476,6 +477,7 @@ blinking, or typing animation.
 | Inline code | ink chip | crimson | ink chip | ink chip, bordered |
 | Landing texture | none | grid + glow | none | none |
 | Chrome density | standard | standard | standard | compact |
+{.wide .expand}
 
 ## Page density {#page-density}
 

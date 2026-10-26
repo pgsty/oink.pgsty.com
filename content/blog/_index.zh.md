@@ -9,6 +9,7 @@ sidebar_root_link_self: true
 footer_style: fat
 comments: true
 blog_index: cards
+blog_index_toggle: true
 # 栏目根页是一份文章索引而不是落点：反向链接属于它列出的那些文章，所以这一页
 # 退出站点级默认。
 backlinks: false

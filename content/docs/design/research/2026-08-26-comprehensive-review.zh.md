@@ -93,6 +93,7 @@ Playwright 与 axe 也全部通过。
 | F16 | P3 | vendor 完整性强，但漏洞/SBOM 与 CI 供应链门禁不足 | 发布维护者 |
 | F17 | P3 | Changelog、已实现提案和无行为元数据造成治理噪音 | 维护者与升级读者 |
 | F18 | P3 | Print `isHTML` 的 FIXME 已不能准确说明真实依赖 | Print 模板维护者 |
+{.wide .expand}
 
 ## 详细发现 {#detailed-findings}
 

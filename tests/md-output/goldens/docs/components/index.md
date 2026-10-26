@@ -83,6 +83,7 @@ The *Runtime* column shows whether the component loads JavaScript on the page.
 | [Kbd](/docs/components/kbd/) | Key names and chords | `{{< kbd "Ctrl" "K" >}}` | shortcode | none |
 | [Includes](/docs/components/include/) | Pull in files, print site parameters, drop build-time notes | `{{< include file="parts/x.md" >}}` | shortcode | none |
 | [Asciinema](/docs/components/asciinema/) | Terminal recordings | `{{< asciinema file="images/x.cast" >}}` | shortcode | per page |
+{.wide .expand}
 
 Four notes on the *Runtime* column:
 

@@ -37,6 +37,7 @@ hugo --gc --minify --printPathWarnings --logLevel info
 | `invalid params.ui.page_width "widee" (allowed: normal \| wide \| full) -- using "normal"` | **配置或 front matter 的取值**，不在允许集合里 | 配置类的错误降级而不中断，一个笔误不会让 `hugo server` 下每个 URL 都返回 500。消息里带键名、收到的值和实际用的回退值。发布前修正无效取值 |
 | 某个页面设置不生效，也没有任何提示 | 键写在了 front matter 的 `ui:` 段里 | 页面键写在 front matter 顶层，键名是站点键去掉 `ui.`。写进 `ui:` 段的键没有人读，也没有人报错，见[页面参数](/zh/docs/write/frontmatter/) |
 | 构建通过但线上少东西 | 有 WARNING 没人看 | 审阅构建告警，修正非法配置取值、缺失的 giscus 必填键或不支持的 `comments.type`。上游 LibSass 弃用告警允许出现 |
+{.wide .expand}
 
 那三项 goldmark 配置：
 

@@ -6,6 +6,7 @@ description:
 weight: 10
 icon: fa-solid fa-clipboard-list
 blog_index: table
+blog_index_toggle: true
 # The whole section reads immersively: a hero opening drawn from the section
 # image, no sidebar or breadcrumb, and a clouds-free flow rail. The index
 # carries the keys itself (a cascade never applies to the page declaring it)

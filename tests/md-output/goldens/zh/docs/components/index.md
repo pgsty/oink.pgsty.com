@@ -75,6 +75,7 @@ OINK 1.4.0 启用 PlantUML 后，使用两份随主题提供的脚本在浏览�
 | [按键](/zh/docs/components/kbd/) | 键位与组合键 | `{{< kbd "Ctrl" "K" >}}` | shortcode | 无 |
 | [引用](/zh/docs/components/include/) | 引入文件、插入站点参数、构建期注释 | `{{< include file="parts/x.md" >}}` | shortcode | 无 |
 | [Asciinema](/zh/docs/components/asciinema/) | 终端录像 | `{{< asciinema file="images/x.cast" >}}` | shortcode | 按页加载 |
+{.wide .expand}
 
 「运行时」列的四条细则：
 

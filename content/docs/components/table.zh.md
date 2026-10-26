@@ -43,6 +43,7 @@ aliases:
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | pg-meta | primary | 18.1 | running | — | 42 | 12 GB | 2026-08-17 |
 | pg-test | replica | 18.1 | streaming | 12 ms | 8 | 12 GB | 2026-08-17 |
+{.wide .expand}
 
 ## 表格标题 {#caption}
 
@@ -85,7 +86,7 @@ aliases:
 | EL 8 | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Debian 13 | ✅ | ✅ | ✅ | ❌ | ❌ |
 | Ubuntu 24.04 | ✅ | ✅ | ✅ | ✅ | ❌ |
-{.matrix}
+{.matrix .wide .expand}
 
 ## 用整个画布 {#full-width}
 
@@ -103,7 +104,7 @@ aliases:
 | --- | --- | --- | --- | --- | --- | --- |
 | 简体中文 | `zh` | ✅ | ✅ | ✅ | ✅ | 已审校 |
 | English | `en` | ✅ | ✅ | ✅ | ✅ | 已审校 |
-{.full-width}
+{.full-width .wide .expand}
 
 ## 技术宽表格 {#wide}
 
@@ -111,7 +112,7 @@ aliases:
 > 这个简短标记随 v1.4.0 发布，沿用已有技术宽表样式并兼容旧写法。
 
 包含长配置键、环境变量或长标识符的技术表格，若默认压在正文列宽内排版，
-容易导致标识符异常断行或描述列被极度压缩。在属性行中显式添加 `{.wide}`，
+容易导致标识符异常断行或描述列被极度压缩。在属性行中显式添加 `{.wide .expand}`，
 内部表格会采用按内容最大尺寸（`width: max-content`）排版，并在超出视口时触发
 横向滚动。
 
@@ -121,7 +122,7 @@ aliases:
 | `HG_PD_GRPC_HOST` | 是 | 无 | `grpc.host` | 对外宣告的 gRPC 主机名或 IP 地址；容器网络内部应使用容器主机名。 |
 | `HG_PD_INITIAL_STORE_COUNT` | 否 | `1` | `pd.initial-store-count` | 集群可用时所需的最少存储节点数量。 |
 | `HG_PD_ACTUATOR_EXPOSURE` | 否 | `health,metrics,prometheus` | `management.endpoints.web.exposure.include` | 对外开放的监控端点白名单，不允许使用通配符。 |
-{.wide}
+{.wide .expand}
 ```
 
 | 变量 | 必填 | 默认值 | 对应配置项 | 描述 |
@@ -129,7 +130,7 @@ aliases:
 | `HG_PD_GRPC_HOST` | 是 | 无 | `grpc.host` | 对外宣告的 gRPC 主机名或 IP 地址；容器网络内部应使用容器主机名。 |
 | `HG_PD_INITIAL_STORE_COUNT` | 否 | `1` | `pd.initial-store-count` | 集群可用时所需的最少存储节点数量。 |
 | `HG_PD_ACTUATOR_EXPOSURE` | 否 | `health,metrics,prometheus` | `management.endpoints.web.exposure.include` | 对外开放的监控端点白名单，不允许使用通配符。 |
-{.wide}
+{.wide .expand}
 
 ### 与 .full-width 的区别 {#wide-vs-full-width}
 

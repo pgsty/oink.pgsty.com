@@ -9,6 +9,7 @@ sidebar_root_link_self: true
 footer_style: fat
 comments: true
 blog_index: cards
+blog_index_toggle: true
 # The section root is a feed index, not a destination: backlinks belong on
 # the posts it lists, so it opts out of the site-wide default.
 backlinks: false

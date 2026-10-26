@@ -48,6 +48,7 @@ Its accessible name is the localized "Scrollable table".
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | pg-meta | primary | 18.1 | running | — | 42 | 12 GB | 2026-08-17 |
 | pg-test | replica | 18.1 | streaming | 12 ms | 8 | 12 GB | 2026-08-17 |
+{.wide .expand}
 
 ## Captions {#caption}
 
@@ -92,7 +93,7 @@ Authors write ✅ and ❌ characters. The theme does not interpret them.
 | EL 8 | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Debian 13 | ✅ | ✅ | ✅ | ❌ | ❌ |
 | Ubuntu 24.04 | ✅ | ✅ | ✅ | ✅ | ❌ |
-{.matrix}
+{.matrix .wide .expand}
 
 ## Using the whole canvas {#full-width}
 
@@ -110,7 +111,7 @@ Authors write ✅ and ❌ characters. The theme does not interpret them.
 | --- | --- | --- | --- | --- | --- | --- |
 | 简体中文 | `zh` | ✅ | ✅ | ✅ | ✅ | Reviewed |
 | English | `en` | ✅ | ✅ | ✅ | ✅ | Reviewed |
-{.full-width}
+{.full-width .wide .expand}
 
 ## Technical wide tables {#wide}
 
@@ -120,7 +121,7 @@ Authors write ✅ and ❌ characters. The theme does not interpret them.
 
 Technical tables containing long configuration keys, environment variables, or
 identifiers can produce awkward token breaks and very tall rows when forced into
-the reading column. Adding `{.wide}` to the attribute line opts the
+the reading column. Adding `{.wide .expand}` to the attribute line opts the
 inner table into natural intrinsic sizing (`width: max-content`), scrolling
 horizontally within its wrapper when it exceeds the available space.
 
@@ -130,7 +131,7 @@ horizontally within its wrapper when it exceeds the available space.
 | `HG_PD_GRPC_HOST` | Yes | None | `grpc.host` | Advertised gRPC hostname/IP; use container hostnames within a container network. |
 | `HG_PD_INITIAL_STORE_COUNT` | No | `1` | `pd.initial-store-count` | Minimum Store count needed for cluster availability. |
 | `HG_PD_ACTUATOR_EXPOSURE` | No | `health,metrics,prometheus` | `management.endpoints.web.exposure.include` | Public Actuator endpoint allowlist; `*` is forbidden. |
-{.wide}
+{.wide .expand}
 ```
 
 | Variable | Required | Default | Configuration key | Description |
@@ -138,7 +139,7 @@ horizontally within its wrapper when it exceeds the available space.
 | `HG_PD_GRPC_HOST` | Yes | None | `grpc.host` | Advertised gRPC hostname/IP; use container hostnames within a container network. |
 | `HG_PD_INITIAL_STORE_COUNT` | No | `1` | `pd.initial-store-count` | Minimum Store count needed for cluster availability. |
 | `HG_PD_ACTUATOR_EXPOSURE` | No | `health,metrics,prometheus` | `management.endpoints.web.exposure.include` | Public Actuator endpoint allowlist; `*` is forbidden. |
-{.wide}
+{.wide .expand}
 
 ### Difference from .full-width {#wide-vs-full-width}
 

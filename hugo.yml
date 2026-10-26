@@ -373,8 +373,8 @@ params:
     # Blog section roots opt out in their own front matter -- an index is read
     # as a way in, not as a destination worth tracing links back to.
     backlinks: true
-    # The blog index toolbar gets the form cycle (list, cards, table) beside
-    # its feed button, on the root and on every child section index.
+    # The blog index toolbar gets the four-form cycle (list, cards, table,
+    # gallery) beside its feed button, on the root and on every child section index.
     blog_index_toggle: true
     # Section indexes (`_index.md` without `no_list`) render their children as
     # cards; a section can override with front matter `section_index: list`.

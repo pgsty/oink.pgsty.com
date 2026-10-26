@@ -101,6 +101,7 @@ npm registry (`https://registry.npmjs.org/…`).
 | pako                          | 3.0.1   | MIT AND Zlib                  | Decompression (diagram data)             |
 | external-svg-loader           | 1.7.1   | MIT                           | Inlining external SVG                    |
 | idb-keyval                    | 6.2.0   | Apache-2.0                    | Browser-side caching                     |
+{.wide .expand}
 
 License texts accompany their assets. Examples include
 `assets/third_party/bootstrap/LICENSE` and

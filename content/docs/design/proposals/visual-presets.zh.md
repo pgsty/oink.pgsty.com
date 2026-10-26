@@ -275,6 +275,7 @@ Paper 之前（第一阶段）需要的新共享 token：`--td-shell-scrim`、La
 | Slate | Inter | Chakra Petch | Chakra Petch | IBM Plex Mono | IBM Plex Mono | 无 |
 | Ink | Inter | Inter | Inter | Inter（等宽数字） | IBM Plex Mono | 无 |
 | Terminal | 界面用 Plex Mono，正文用 Plex Sans | IBM Plex Mono | IBM Plex Mono | IBM Plex Mono | IBM Plex Mono | Paper 之后无 |
+{.wide .expand}
 
 Paper 将 `@fontsource-variable/ibm-plex-sans`（OFL-1.1）vendor 到 `third_party/`
 并登记 `VENDOR.json`：拉丁、扩展拉丁、西里尔、扩展西里尔、希腊与越南语子集，正体与斜体，字重 100–700。PG.CENTER
@@ -409,6 +410,7 @@ h2 上方 2 px 黑线；h1 800 / −0.035em；h4、表头与提示块标题大�
 | 行内代码 | 墨色底片 | 深红 | 墨色底片 | 带框墨色底片 |
 | Landing 纹理 | 无 | 网格 + 光晕 | 无 | 无 |
 | 界面密度 | 标准 | 标准 | 标准 | 紧凑 |
+{.wide .expand}
 
 ## 页面密度 {#page-density}
 

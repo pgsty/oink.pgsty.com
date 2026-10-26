@@ -82,6 +82,7 @@ OINK 由 PGSTY 维护。感谢 [@imbajin](https://github.com/imbajin) 报告并�
 | pako                          | 3.0.1   | MIT AND Zlib                  | 解压（图表数据）              |
 | external-svg-loader           | 1.7.1   | MIT                           | 内联外部 SVG                  |
 | idb-keyval                    | 6.2.0   | Apache-2.0                    | 浏览器端缓存                  |
+{.wide .expand}
 
 OINK 1.4.0 的本地 PlantUML 集成包含 `@plantuml/core` 1.2026.9（MIT）与
 Viz.js 3.24.0（MIT）；后者包含 Graphviz 14.1.1（EPL-1.0）与 Expat（MIT）。

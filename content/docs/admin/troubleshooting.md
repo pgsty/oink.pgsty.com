@@ -41,6 +41,7 @@ for your symptom. You do not need to read every row.
 | `invalid params.ui.page_width "widee" (allowed: normal \| wide \| full) -- using "normal"` | A *configuration* or front matter value is not one of the accepted ones | The theme uses a fallback instead of stopping. One typo therefore does not produce HTTP 500 on every URL under `hugo server`. The message identifies the key, value, and fallback. Correct the value before publication |
 | A page setting has no effect and nothing is reported | The key was written inside a `ui:` block in front matter | Put page keys at the top level of front matter. Remove `ui.` from the site key. The theme ignores a front matter `ui:` block without reporting it. See [Page parameters](/docs/write/frontmatter/) |
 | The build passes but production is missing something | An unreviewed WARNING | Review the build warnings and correct invalid configuration values, missing required giscus keys, or unsupported `comments.type` values. The upstream LibSass deprecation warning is accepted |
+{.wide .expand}
 
 The three Goldmark settings:
 
