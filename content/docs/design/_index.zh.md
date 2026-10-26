@@ -6,14 +6,14 @@ weight: 70
 icon: fa-solid fa-compass-drafting
 no_list: true
 search_keywords: [OINK 设计, 维护者契约, 架构, 决策, 研究, 提案, PRD]
-contract_status: v1.3.2
+contract_status: v1.4.0
 cascade:
   search_boost: 0.6
   categories: [设计契约]
 ---
 
-> [!NOTE] OINK 1.3.2 契约
-> 本契约描述 OINK v1.3.2。主题开发使用同级 checkout；发布验收在关闭替换与
+> [!NOTE] OINK 1.4.0 契约
+> 本契约描述 OINK v1.4.0。主题开发使用同级 checkout；发布验收在关闭替换与
 > 工作区后验证公开模块。消费站升级与部署分别检查。
 
 本专栏是 OINK 可长期维护的设计记录。站内其它专栏按任务讲解如何搭建站点；
@@ -52,7 +52,7 @@ cascade:
 `proposal/` 目录。提案被接受后，应同步更新实现、对应检查器与相关契约，把稳定
 理由沉淀到“设计决策”，并通过 Git 历史与变更日志退出草案。
 
-## Expo 契约 {#unreleased-contracts}
+## Expo 契约 {#expo-contract}
 
 [Expo 契约](/zh/docs/design/expo/) 描述 OINK 1.3.0 新增的图片相册布局，
 [已接受决策](/zh/docs/design/decisions/expo/) 记录内容模型和对早期 Muse 实验的修订。

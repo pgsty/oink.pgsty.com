@@ -146,10 +146,9 @@ by date, newest first, without year groups. Choose its layout with `blog_index`:
 | `list` | Horizontal entries (default) | Thumbnail, title, date, subsection, tags, and a summary |
 | `cards` | Regular card grid | A cropped 16:9 cover above the title, metadata, and summary |
 | `table` | Compact table | Date, title, and tags in one row per article |
-| `gallery` | Image gallery (unreleased) | Proportional covers with titles and descriptions; click to open the article |
+| `gallery` | Image gallery | Proportional covers with titles and descriptions; click to open the article |
 
-OINK v1.3.2 includes `list`, `cards`, and `table`. The development theme adds
-`gallery`, which has not yet been released in a tagged version.
+OINK v1.4.0 includes `list`, `cards`, `table`, and `gallery`.
 
 Set the site default with `params.ui.blog_index` in `hugo.yml`, or set
 `blog_index` in a blog section's `_index.md` front matter to override it.
@@ -191,7 +190,7 @@ processing, Hugo applies `.Fill`, so readers download cropped previews.
 
 A standalone `blog_index: table` with `blog_index_toggle: false` lists the
 entire section without pagination. Set `blog_index_toggle: true` to add the
-layout switch beside the title. In the development theme, it cycles through
+layout switch beside the title. In OINK 1.4.0, it cycles through
 `list` → `cards` → `table` → `gallery` → `list`:
 
 ```yaml {title="content/blog/_index.md"}
@@ -205,12 +204,12 @@ enabled, all four views show the same current page of posts, using
 The switch remembers the reader's choice. Set `blog_index_toggle: false` to
 publish only the configured layout, regardless of a saved reader preference.
 Hidden views use lazy images, although their markup and generated thumbnails
-still contribute to build work. In v1.3.2, the switch cycles through the first
-three layouts.
+still contribute to build work. In v1.4.0, the switch cycles through all four
+layouts.
 
-### Gallery form (unreleased) {#list-gallery}
+### Gallery form {#list-gallery}
 
-The development theme adds `gallery`: each article becomes a linked cover,
+`gallery` makes each article a linked cover,
 using the existing `images` field or bundled featured image. The default wall
 joins images into rows while preserving their proportions. Hover or keyboard
 focus reveals the title and description; touch devices show them below the
@@ -241,8 +240,8 @@ are remembered separately from Expo albums.
 
 Site defaults use the same `blog_gallery` block under `params.ui`; a page or
 cascade block replaces it in full. Omitted fields use `wall` and `240`;
-invalid values warn and use those defaults. These settings require the
-development theme and are not available in v1.3.2. See the
+invalid values warn and use those defaults. These settings are available in
+v1.4.0. See the
 [site parameters](/docs/customize/config/#blog) and
 [page parameters](/docs/write/frontmatter/#blog) for the reference tables.
 

@@ -260,7 +260,7 @@ data
             desc libraries shipped with the theme
 ```
 
-`theme` belongs to the DSL. In the development checkout, each diagram has its own
+`theme` belongs to the DSL. In OINK 1.4.0, each diagram has its own
 canvas: transparent default and hand-drawn diagrams use white, and an authored
 background takes priority. A `type dark` diagram keeps its dark background even
 on a light page. Site mode changes preserve the palette, text colors, and drawing

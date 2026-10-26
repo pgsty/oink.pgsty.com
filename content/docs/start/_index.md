@@ -34,7 +34,7 @@ contains only neutral project content and deployment workflows.
 > from an older Starter snapshot, update its Hugo workflow pins to this baseline;
 > older Hugo compatibility is no longer maintained.
 
-> [!NOTE] OINK 1.3.2 build requirements
+> [!NOTE] OINK 1.4.0 build requirements
 > Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass.
 > No external Sass installation is required. Keep the upstream LibSass warning
 > visible and review it; do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
@@ -51,12 +51,12 @@ contains only neutral project content and deployment workflows.
 
 1. ### Install the tools {#tools}
 
-   Install Git, Go 1.27 or newer, and Hugo Extended 0.168.0 or newer. The Hugo
+   Install Git, Go 1.27.3 or newer, and Hugo Extended 0.168.0 or newer. The Hugo
    output must contain `extended`:
 
    ```console
    $ go version
-   go version go1.27.2 darwin/arm64
+   go version go1.27.3 darwin/arm64
    $ hugo version
    hugo v0.168.0+extended+withdeploy darwin/arm64
    ```

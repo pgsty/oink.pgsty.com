@@ -187,7 +187,7 @@ cascade:
 指南在[博客与文章](/zh/docs/write/blog/)。
 
 [列表布局](/zh/docs/write/blog/#list)对比了四种呈现方式。`gallery` 与
-`blog_gallery` 属于尚未发布的开发功能；OINK v1.3.2 支持 `list`、`cards`、`table`。
+`blog_gallery` 随 OINK v1.4.0 提供；博客索引支持 `list`、`cards`、`table` 与 `gallery`。
 
 | 键 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |

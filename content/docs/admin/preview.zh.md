@@ -122,7 +122,7 @@ hugo --minify --environment staging --baseURL "$PREVIEW_URL"
 FROM debian:bookworm-slim
 
 ARG HUGO_VERSION=0.168.0
-ARG GO_VERSION=1.27.2
+ARG GO_VERSION=1.27.3
 ARG TARGETARCH
 
 RUN apt-get update \

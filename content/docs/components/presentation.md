@@ -9,8 +9,8 @@ search_keywords: [component styles, card list, compact steps, command strip, pre
 
 Use the Appearance menu to compare Paper, Slate, Ink, and Terminal in light or dark mode. These examples use the same content and preserve the normal Markdown authoring model.
 
-> [!NOTE] Local development
-> The optional variants on this page are available in the sibling theme checkout. They have not yet been assigned a published release.
+> [!NOTE] Available in OINK 1.4.0
+> The optional variants on this page ship in OINK 1.4.0.
 
 ## Related pages {#cards}
 

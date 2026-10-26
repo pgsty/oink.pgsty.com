@@ -5,11 +5,11 @@ description: The maintainer contract for OINK authoring primitives, validation, 
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK component contract, shortcode API, Markdown components, Book, release, validation]
-contract_status: v1.3.2
+contract_status: v1.4.0
 ---
 
-> [!NOTE] OINK 1.3.2 contract
-> This contract describes OINK v1.3.2. Theme development uses the sibling
+> [!NOTE] OINK 1.4.0 contract
+> This contract describes OINK v1.4.0. Theme development uses the sibling
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 
@@ -58,13 +58,13 @@ OINK has 29 shortcodes:
 | FileTree | `filetree` data fence | none | divider only with comments |
 | Gallery | `gallery` data fence | none | shared Image Zoom when eligible |
 | Image | Markdown image + block attributes | none | Image Zoom when eligible |
-| Table | attributes, caption, number, or tabs | `tbl` for compound Book tables | tabs when tabbed; reader with `.expand` (unreleased) |
+| Table | attributes, caption, number, or tabs | `tbl` for compound Book tables | tabs when tabbed; reader with `.expand` |
 | Book target | image/table/passthrough/fence + `{num=}` | `fig`, `tbl`, `eq`, `eg` | none |
 | Release assets | `checksums` data fence | `release-assets` | copy in HTML |
 | Math and chemistry | passthrough, `math`, `chem` fences | `eq` | none; build-time rendering and local styles |
 | Diagram/data | `mermaid`, `plantuml`, `markmap`, `echarts`, `infographic` fences | none | selected local runtime only |
 
-> [!NOTE] Unreleased: unified diagram reading
+> [!NOTE] Unified diagram reading in OINK 1.4.0
 > Mermaid and local PlantUML share pan/zoom, fit, source viewing/copy and standalone
 > SVG download. Engines load and render only for measurable diagrams within 320px
 > of the viewport. Each engine loads once; both render serially on the main thread.
@@ -83,9 +83,10 @@ OINK has 29 shortcodes:
 > [Mermaid](/docs/components/mermaid/#zoom) and [PlantUML](/docs/components/plantuml/).
 > Explicit server mode retains its existing behavior.
 
-## Local component refinement {#component-refinement}
+## Optional component presentation {#component-refinement}
 
-The sibling development checkout additionally supports the following presentation variants; they are not part of the published v1.3.2 baseline. See the [presentation examples](/docs/components/presentation/).
+OINK 1.4.0 supports the following opt-in presentation variants. See the
+[presentation examples](/docs/components/presentation/).
 
 | Component | Native modifier | Full form |
 | --- | --- | --- |
@@ -131,7 +132,7 @@ Unknown types render as plain blockquotes, with their markers preserved and no J
 
 Adjacent tabs group only when consecutive and of the same block kind.
 `group` enables the hash `#<group>-<value>` and storage `td-tabs:v1:<group>`. Ungrouped tabs use neither.
-In the sibling checkout, an initial fragment or `hashchange` targeting a panel
+In OINK 1.4.0, an initial fragment or `hashchange` targeting a panel
 or a heading within it opens all ancestor panels from outside in before scrolling
 to the target. Hash selection takes priority over saved preferences and
 synchronizes named peers, but does not overwrite storage. Only explicit reader
@@ -167,15 +168,14 @@ on `.fields`, which renders a definition list, or on static and print output.
 `.fields` cannot combine with matrix, full-width, numbering, or tabs; numbering
 and tabs are also mutually exclusive.
 
-> [!NOTE] Unreleased: `.wide`
-> The short author marker is available in the development checkout, beyond
-> published v1.3.2. It retains the technical-table layout introduced in 1.3.1
+> [!NOTE] `.wide` in OINK 1.4.0
+> The short author marker retains the technical-table layout introduced in 1.3.1
 > and compatibility with existing markup. It composes with `.matrix` and
 > `.full-width`; Markdown preserves the authored marker.
 
 ### Table reading {#table-reading}
 
-> [!NOTE] Unreleased: `.expand`
+> [!NOTE] `.expand` in OINK 1.4.0
 > Explicit opt-in for theme-rendered Markdown tables, independent of `.wide`.
 
 Only `.expand` tables receive an HTML reader frame and load `table-reader.js`.
@@ -240,7 +240,7 @@ Mermaid palettes follow light/dark mode, independently of visual preset. The def
 
 ECharts uses declarative JSON/YAML. Callbacks use `$fn:<name>` from `window.OinkEchartsFunctions`. Embedded scripts are never executed.
 
-In the sibling checkout, Infographic SVGs scale with their container width,
+In OINK 1.4.0, Infographic SVGs scale with their container width,
 including orientation and shell layout changes, without repeated DSL rendering.
 Initially hidden containers wait until measurable. Fence `height` and `full`
 keep their existing meanings.
@@ -257,7 +257,7 @@ retains Markmap's default dark text on the white canvas. This mapping is scoped
 to article content across both the wrapper and generated SVG, and can still be
 overridden by site CSS of equal specificity or SVG inline tokens. (Added in OINK 1.3.1.)
 
-In the sibling checkout, Markmap fits on first measurable display and container
+In OINK 1.4.0, Markmap fits on first measurable display and container
 resize, including hidden panels when revealed. Reader pan/zoom suspends automatic
 fitting so layout changes preserve their view. The keyboard-accessible **Fit to
 window** button restores the whole map and resumes automatic fitting. Layout fits
@@ -269,7 +269,7 @@ Mathematics uses Hugo's build-time KaTeX output and local CSS, without a browser
 HTML and Print use the vendored stylesheet and preserve MathML and authored TeX.
 Validate mathematics with the current Hugo baseline defined in the [architecture contract](/docs/design/architecture/#hugo-toolchain).
 Markmap uses the matching vendored KaTeX runtime.
-In the sibling checkout, numbered equations reserve readable formula space based
+In OINK 1.4.0, numbered equations reserve readable formula space based
 on the available column width, including columns narrowed by a sidebar or TOC.
 Captions move below the formula when they do not fit beside it; long words wrap.
 Number-only captions, MathML, and TeX remain available. Print gives the formula

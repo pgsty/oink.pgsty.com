@@ -1,7 +1,7 @@
 ---
 title: 版本升级
 linkTitle: 版本升级
-description: 固定主题版本、升级到 1.3.2、迁移旧内容或 Docsy 站点，并保留回滚路径。
+description: 固定主题版本、升级到 1.4.0、迁移旧内容或 Docsy 站点，并保留回滚路径。
 weight: 50
 search_keywords: [升级, 迁移, 版本, Hugo Module, hugo mod get, oink06, Docsy, jQuery, 破坏性变更, upgrade, migration]
 aliases:
@@ -22,23 +22,24 @@ aliases:
 > Hugo workflow 固定版本，不再维护旧 Hugo 兼容性。下方旧版本章节中的要求仅说明
 > 当时的发布状态。
 
-> [!NOTE] OINK 1.3.2 构建要求
+> [!NOTE] OINK 1.4.0 构建要求
 > 维护中的站点使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
 > 上游 LibSass 弃用告警保持可见并接受审阅；不要启用 `--panicOnWarning`
 > 或 `HUGO_PANICONWARNING`。
 
-## 升级到 1.3.2 {#preparing-1-3}
+## 升级到 1.4.0 {#preparing-1-4}
 
-OINK `v1.3.2` 恢复内置 LibSass，移除外部 Sass 依赖。维护中的站点统一使用
+OINK `v1.4.0` 保持仅依赖 Hugo 的构建方式，新增本地 PlantUML、统一图表阅读、
+更完善的本地搜索、按需开启的表格阅读器与博客画廊。维护中的站点统一使用
 Hugo Extended 0.168.0，保留并审阅上游 LibSass 弃用告警。详情参见
-[1.3.2 发布说明](/zh/blog/release/1.3.2/)。
+[1.4.0 发布说明](/zh/blog/release/1.4.0/)。
 
 OINK `v1.3.1` 修复 Markmap 文字对比度和固定 TOC 的页脚避让，并为技术表格与
 文件树长注释提供显式开启的布局。已有内容保留默认外观，仅在需要完整技术信息时
 开启[技术宽表布局](/zh/docs/components/table/#wide)或文件树的 `wrap=true`。
 
 更新模块前，先安装 Hugo Extended 0.168.0，无需安装 Dart Sass。在关闭替换与
-工作区的环境中验证公开模块解析，固定 `github.com/pgsty/oink@v1.3.2`，构建并审阅
+工作区的环境中验证公开模块解析，固定 `github.com/pgsty/oink@v1.4.0`，构建并审阅
 告警与产物。源码副本方式的消费站还需要刷新固定主题文件；修改 `go.mod` 不会升级
 已有的 vendor 副本。
 
@@ -47,12 +48,11 @@ OINK `v1.3.1` 修复 Markmap 文字对比度和固定 TOC 的页脚避让，并�
 
 ## 先看发布注记 {#release-notes}
 
-> [!NOTE] 尚未发布：PlantUML 本地渲染
-> 采用这项开发版本变更后，保留 `params.plantuml: true` 或 `plantuml.enable: true`，
-> 删除 `svg_image_url`，即可使用随主题提供的两份浏览器脚本，无需额外软件或渲染服务。
-> 保留非空端点则继续使用服务端模式。完全关闭渲染请设置 `params.plantuml: false`
-> 或 `plantuml.enable: false`；空端点现在会选择本地模式。已发布的 v1.3.2 仍需要端点。
-> 切换已有图表前，请核对[不支持的 include、库与 CSP 要求](/zh/docs/components/plantuml/#limits)。
+> [!NOTE] OINK 1.4.0 的本地 PlantUML
+> 保留 `params.plantuml: true` 或 `plantuml.enable: true`，删除 `svg_image_url`，即可使用
+> 随主题提供的两份浏览器脚本，无需额外软件或渲染服务。保留非空端点则继续使用
+> 服务端模式。完全关闭渲染请设置 `params.plantuml: false` 或 `plantuml.enable: false`；
+> 空端点现在会选择本地模式。切换已有图表前，请核对[不支持的 include、库与 CSP 要求](/zh/docs/components/plantuml/#limits)。
 
 每个版本的变更、破坏性改动与升级要点都写在发布注记里，升级前先读一遍目标版本那篇：
 
@@ -64,11 +64,11 @@ OINK `v1.3.1` 修复 Markmap 文字对比度和固定 TOC 的页脚避让，并�
 ## 升级 Hugo Module {#hugo-module}
 
 生产站点固定已发布标签或主动选定的不可变 commit，不跟随分支，也不用 `@latest`。
-下面升级到已发布的 `v1.3.2` 标签；选择后续版本时，先确认已经发布且模块可以解析，
+下面升级到已发布的 `v1.4.0` 标签；选择后续版本时，先确认已经发布且模块可以解析，
 再替换示例中的版本。
 
 ```bash {title="终端"}
-hugo mod get github.com/pgsty/oink@v1.3.2   # 已发布的版本标签
+hugo mod get github.com/pgsty/oink@v1.4.0   # 已发布的版本标签
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -80,9 +80,9 @@ hugo mod graph | grep github.com/pgsty/oink
 ```go {title="go.mod"}
 module github.com/pgsty/oink.pgsty.com
 
-go 1.27.0
+go 1.27.3
 
-require github.com/pgsty/oink v1.3.2
+require github.com/pgsty/oink v1.4.0
 ```
 
 > [!DANGER] 本地模块替换会盖掉这个固定版本
@@ -97,7 +97,7 @@ require github.com/pgsty/oink v1.3.2
 
 ```bash {title="终端"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.3.2
+git -C themes/oink checkout --detach v1.4.0
 git add themes/oink
 ```
 

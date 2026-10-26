@@ -15,14 +15,14 @@ search_keywords:
     proposal,
     PRD,
   ]
-contract_status: v1.3.2
+contract_status: v1.4.0
 cascade:
   search_boost: 0.6
   categories: [Design]
 ---
 
-> [!NOTE] OINK 1.3.2 contract
-> This contract describes OINK v1.3.2. Theme development uses the sibling
+> [!NOTE] OINK 1.4.0 contract
+> This contract describes OINK v1.4.0. Theme development uses the sibling
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 
@@ -65,7 +65,7 @@ implementation, its checker, and the applicable contract, then record the
 accepted rationale under Decisions. Retire the draft from active use while
 preserving it in Git history and the changelog.
 
-## Expo contract {#unreleased-contracts}
+## Expo contract {#expo-contract}
 
 The [Expo contract](/docs/design/expo/) describes the image-album layout
 introduced in OINK 1.3.0. Its [accepted decision](/docs/design/decisions/expo/) records the

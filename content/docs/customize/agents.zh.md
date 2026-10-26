@@ -79,7 +79,7 @@ LLMS index: [llms.txt](/zh/llms.txt)
 
 shortcode 形态各有确定的降级：[徽章](/zh/docs/components/badge/)变成强调文本或链接，[按键](/zh/docs/components/kbd/)变成 `Ctrl + K`，[标签页](/zh/docs/components/tabs/)变成一段段 `**标签名**` 小节，[参数表](/zh/docs/components/fields/)变成条目列表。每个组件页的「输出形态」小节写了它自己那一行。
 
-站点没有开 `LLMS` 输出时，上面那条 `LLMS index:` 不会出现：主题不指向未发布的文件。
+站点没有开 `LLMS` 输出时，上面那条 `LLMS index:` 不会出现：主题不指向不存在的文件。
 
 ## `llms.txt` {#llms-txt}
 

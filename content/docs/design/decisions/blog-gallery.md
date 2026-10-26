@@ -9,9 +9,9 @@ design_status: accepted
 decision_date: 2026-10-25
 ---
 
-> [!NOTE] Implemented, unreleased
-> This decision describes the development implementation. OINK v1.3.2 does
-> not include the gallery blog view.
+> [!NOTE] Accepted in OINK 1.4.0
+> This decision records the released gallery blog view and its compatibility
+> boundaries.
 
 The [shell contract](/docs/design/shell/#blog-gallery) defines the behavior.
 The [design blog](/blog/oink/blog-gallery/) explains the reading experience,

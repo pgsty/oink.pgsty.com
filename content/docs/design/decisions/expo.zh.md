@@ -7,7 +7,7 @@ icon: fa-solid fa-images
 design_kind: decision
 design_status: accepted
 decision_date: 2026-10-13
-aliases: [/zh/docs/design/proposals/muse-gallery/]
+aliases: [/docs/design/proposals/muse-gallery/]
 ---
 
 > [!NOTE] OINK 1.3.0 新增

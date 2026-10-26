@@ -61,7 +61,7 @@ If the theme can explain why an item is unavailable, the item remains listed.
 Without repository configuration, "edit this page" remains with an "unavailable"
 note.
 
-The unreleased local search candidate adds two adjacent **Search in** options for
+OINK 1.4.0 adds two adjacent **Search in** options for
 all sections or the current top-level section. It filters page results before the
 result limit, while commands and page actions remain available. The choice
 persists only while this page stays loaded. Matching sections appear beside

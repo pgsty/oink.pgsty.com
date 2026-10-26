@@ -94,8 +94,8 @@ titled only "PostgreSQL parameters". Keywords have less ranking weight than
 the title and more than the body.
 
 The `search_boost` key is a positive multiplier applied to the text match score.
-Its default is `1.0`. A value of `1.5` does not guarantee first place. In the
-local candidate it raises rank within the same term-coverage and phrase tier. Zero, negative numbers,
+Its default is `1.0`. A value of `1.5` does not guarantee first place. In
+OINK 1.4.0, it raises rank within the same term-coverage and phrase tier. Zero, negative numbers,
 and non-numbers warn and use `1.0`.
 
 Set a section-wide default once with a cascade:
@@ -131,9 +131,8 @@ reports them. The index also excludes pages with empty bodies.
 
 ## Chinese, mixed queries, and identifiers {#cjk}
 
-> [!NOTE] Local candidate for the next release
-> The behavior below is implemented in the sibling development checkout. The
-> published v1.3.2 still uses whole-query CJK substring matching.
+> [!NOTE] OINK 1.4.0 local search
+> The behavior below is included in the current release.
 
 Search splits whitespace and Latin/CJK boundaries: `PostgreSQL 备份` and
 `PostgreSQL备份` both search for `postgresql` and `备份`. A contiguous CJK run

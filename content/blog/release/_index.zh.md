@@ -1,7 +1,7 @@
 ---
 title: OINK 发布注记
 linkTitle: 发布
-description: OINK 1.3.2 发布说明、仅依赖 Hugo 的构建要求与历次升级记录
+description: OINK 1.4.0 发布说明、仅依赖 Hugo 的构建要求与历次升级记录
 weight: 10
 icon: fa-solid fa-clipboard-list
 blog_index: table
@@ -25,8 +25,9 @@ cascade:
 > Hugo Extended 0.168.0，默认基线保持固定。旧发布说明不构成当前支持要求，
 > 请遵循[工具链契约](/zh/docs/design/architecture/#hugo-toolchain)。
 
-当前版本为 [OINK 1.3.2](/zh/blog/release/1.3.2/)：恢复仅依赖 Hugo 的构建，
-保留阅读体验修复与显式开启的 FileTree 注释换行。统一使用 **Hugo Extended 0.168.0**，
-保留可见告警，禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`，无需额外安装 Sass 编译器。
+当前版本为 [OINK 1.4.0](/zh/blog/release/1.4.0/)：加入更强的本地搜索、本地
+PlantUML、统一图表阅读、按需开启的表格阅读、博客画廊和组件精修。统一使用
+**Hugo Extended 0.168.0**，保留可见告警，禁止启用 `--panicOnWarning` 或
+`HUGO_PANICONWARNING`，无需额外安装 Sass 编译器。
 
 1.3.1 引入的改动及其作者见[阅读修复与贡献者致谢](/zh/blog/release/1.3.1/#thanks)。

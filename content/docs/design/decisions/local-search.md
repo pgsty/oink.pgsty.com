@@ -1,25 +1,27 @@
 ---
 title: Local search refinement
 linkTitle: Local search
-description: A local candidate for mixed-language queries, technical identifiers, section results, and palette scope.
-design_kind: proposal
-design_status: implemented
-search_exclude: true
+description: Mixed-language queries, technical identifiers, section results, and palette scope in OINK 1.4.0.
+design_kind: decision
+design_status: accepted
+decision_date: 2026-10-26
+aliases:
+  - /docs/design/proposals/local-search/
 ---
 
-> [!NOTE] Local implementation candidate, 2026-10-25
+> [!NOTE] Accepted in OINK 1.4.0
 > Owner: OINK maintainers. Affected contract: [Shell](/docs/design/shell/#search-actions-and-runtime).
-> This work is unreleased; the public baseline remains v1.3.2.
+> This search behavior ships in OINK 1.4.0.
 
 ## Evidence and scope {#scope}
 
-The existing CJK path requires one contiguous query in one field. English uses
+The previous CJK path required one contiguous query in one field. English uses
 Lunr, and both return page links without section context. Preserve the one local
 index per language, existing commands, input-method composition, exclusions,
 keyword weights, and positive page boosts. No dictionary, service, account,
 external executable, configuration key, or extra build step is introduced.
 
-## Proposed behavior {#behavior}
+## Accepted behavior {#behavior}
 
 Split whitespace and Latin/CJK boundaries while preserving technical identifiers
 such as `shared_buffers`, `pg_basebackup`, `--baseURL`, and `/pg/data`. Match terms
@@ -78,7 +80,7 @@ Browser acceptance covers EN/ZH, 390/1440 px, light/dark, real anchor navigation
 visible/announced partial states, native scope selection, Blog/Book roots,
 composition and command retention. The artifact directory for this local run is
 `/Users/vonng/tmp/oink-search-20261025/`; it contains exact commands, JSON timings,
-logs and screenshots. No commit, tag, consumer upgrade, or deployment is implied.
+logs and screenshots. These dated measurements describe that corpus; 1.4.0 includes the accepted behavior.
 
 2026-10-26: Fixed cross-output contamination during index reads, added multi-output
 owner coverage, and completed the failed-route accessibility and file-tree retries.

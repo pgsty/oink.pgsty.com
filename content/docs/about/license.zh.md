@@ -23,7 +23,7 @@ OINK 由三层材料组成：主题源码、文档内容、随主题分发的第
 
 OINK 由 PGSTY 维护。感谢 [@imbajin](https://github.com/imbajin) 报告并贡献以下
 阅读体验修复，同时提供夹具、回归测试与双语文档。这些改动在 1.3.1 引入，
-**1.3.2** 继续保留。
+**1.4.0** 继续保留。
 
 | 贡献 | Pull request |
 | --- | --- |
@@ -51,7 +51,7 @@ OINK 由 PGSTY 维护。感谢 [@imbajin](https://github.com/imbajin) 报告并�
 
 主题把浏览器要用的资源全部提交在仓库里（`assets/third_party/`、`assets/js/third_party/`、`static/webfonts/`）。这些资源无需 npm 步骤或构建期下载；Hugo Module 解析仍需要 Go 与可用的模块来源。`VENDOR.json` 是这批资源的机器可读清单，逐项记录名称、固定版本、来源 URL、许可证文件路径，以及每个选取产物的 SHA-256；清单里还有三棵资源目录的整体校验值。
 
-下表对应 [OINK v1.3.2 清单](https://github.com/pgsty/oink/blob/v1.3.2/VENDOR.json)（`VENDOR.json` 生成于 2026-10-05，schema 1，共 27 项）。版本会随主题发布变动，**以所固定主题版本的清单为准**。全部来源都是 npm registry（`https://registry.npmjs.org/…`）。
+下表对应 [OINK v1.4.0 清单](https://github.com/pgsty/oink/blob/v1.4.0/VENDOR.json)（`VENDOR.json` 生成于 2026-10-25，schema 1，共 29 项）。版本会随主题发布变动，**以所固定主题版本的清单为准**。全部来源都是 npm registry（`https://registry.npmjs.org/…`）。
 
 | 项目                          | 版本    | 许可证                        | 在主题里做什么                |
 |-------------------------------|---------|-------------------------------|-------------------------------|
@@ -83,7 +83,7 @@ OINK 由 PGSTY 维护。感谢 [@imbajin](https://github.com/imbajin) 报告并�
 | external-svg-loader           | 1.7.1   | MIT                           | 内联外部 SVG                  |
 | idb-keyval                    | 6.2.0   | Apache-2.0                    | 浏览器端缓存                  |
 
-尚未发布的本地 PlantUML 集成新增 `@plantuml/core` 1.2026.9（MIT）与
+OINK 1.4.0 的本地 PlantUML 集成包含 `@plantuml/core` 1.2026.9（MIT）与
 Viz.js 3.24.0（MIT）；后者包含 Graphviz 14.1.1（EPL-1.0）与 Expat（MIT）。
 许可证、声明和上游源码链接随两份脚本放在 `assets/third_party/plantuml/`，
 `VENDOR.json` 记录具体产物。
@@ -94,7 +94,7 @@ Viz.js 3.24.0（MIT）；后者包含 Graphviz 14.1.1（EPL-1.0）与 Expat（MI
 
 ## 字体与图标 {#fonts-and-icons}
 
-Inter、IBM Plex Sans、Chakra Petch 与 IBM Plex Mono 四种字体采用 SIL Open Font License 1.1。OINK 1.3.2 在 `static/webfonts/` 下包含 33 个文件：14 个 Inter 子集、12 个 IBM Plex Sans 子集、4 个品牌字体文件，以及 3 个 Font Awesome 文件。Font Awesome Free 7.3.1 是复合许可：图标图形 CC BY 4.0、字体文件 SIL OFL 1.1、代码 MIT，原文在 `assets/third_party/Font-Awesome/LICENSE.txt`。
+Inter、IBM Plex Sans、Chakra Petch 与 IBM Plex Mono 四种字体采用 SIL Open Font License 1.1。OINK 1.4.0 在 `static/webfonts/` 下包含 33 个文件：14 个 Inter 子集、12 个 IBM Plex Sans 子集、4 个品牌字体文件，以及 3 个 Font Awesome 文件。Font Awesome Free 7.3.1 是复合许可：图标图形 CC BY 4.0、字体文件 SIL OFL 1.1、代码 MIT，原文在 `assets/third_party/Font-Awesome/LICENSE.txt`。
 
 主题不向远程字体服务发请求：仓库里没有 Google Fonts 之类的外链，字体一律由站点自身 `baseURL` 下发。更换字体或改用系统字体栈见[品牌外观](/zh/docs/customize/brand/)。
 

@@ -613,7 +613,7 @@ CLI 不下载 Go 工具链，不安装软件包，不修改全局配置，也不
 测试。
 
 当前开发与验收基线是 Hugo Extended 0.168.0；版本门禁要求 0.168.0 或更新版本，
-新建站点使用公开 OINK v1.3.2。禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；
+新建站点使用 CLI 独立维护的 Starter 快照，主题升级遵循[升级指南](/zh/docs/admin/upgrade/)。禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；
 告警保持可见，上游 LibSass 弃用告警允许出现。兼容性声明需要绑定明确源码与二进制的
 执行证据。初始化站点保留普通 Hugo 输入，移除 CLI 后只需要站点文档要求的依赖。
 

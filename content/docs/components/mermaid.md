@@ -352,9 +352,8 @@ These are Mermaid keys, not theme parameters.
 
 ## Enlarging a diagram {#zoom}
 
-> [!NOTE] Unreleased reading experience
-> This shared viewer and demand loading are implemented in the local development
-> version. They are not part of published v1.3.2.
+> [!NOTE] OINK 1.4.0 reading experience
+> This shared viewer and demand loading are part of OINK 1.4.0.
 
 Mermaid and local PlantUML share the corner-button viewer. It reuses the rendered
 result without running the engine again. Drag or use arrow keys to pan; use the
@@ -380,7 +379,7 @@ obsolete results. Diagram-free pages load neither the viewer nor these engines.
 No installation dependency or build step is added.
 
 Disabled JavaScript, blocked engines and syntax errors retain readable source.
-In the development checkout, ordinary HTML printing scales completed light
+In OINK 1.4.0, ordinary HTML printing scales completed light
 diagrams to the page. Dark diagrams and unrendered diagrams print black-on-white
 source with wrapping, without waiting for an asynchronous engine or requiring
 background printing. To print pictures throughout, switch to light mode, then

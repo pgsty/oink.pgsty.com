@@ -49,10 +49,10 @@ mode-only behavior. This keeps the first implementation bounded.
 ## Later work {#later-work}
 
 On 2026-10-24, the maintainer accepted removing Paper's trailing heading
-hairlines because the decoration adds visual clutter. The local implementation
+hairlines because the decoration adds visual clutter. The OINK 1.4.0 implementation
 removes the line in both light and dark mode while retaining heading typography
-and anchors. This revision is unreleased; the 1.2.0 decision above records the
-original appearance.
+and anchors. This revision ships in OINK 1.4.0; the 1.2.0 decision above records
+the original appearance.
 
 A subsequent October 5 experiment implements Ink and Terminal behind explicit
 configuration; see the [experiment record](/docs/design/research/2026-10-05-ink-terminal-experiment/).
@@ -77,8 +77,7 @@ press feedback reuse current tokens and CSS. Markdown remains the primary
 authoring path; the three local presentation variants are explicit opt-ins.
 Paper/Slate keep rounded surfaces, while Ink/Terminal retain flat, square/2px
 geometry. The moving selection trial is deferred: static states provide the
-needed feedback without a second geometry or runtime layer. These changes are
-local and unreleased; the [component contract](/docs/design/components/#component-refinement)
+needed feedback without a second geometry or runtime layer. These changes ship in OINK 1.4.0; the [component contract](/docs/design/components/#component-refinement)
 owns their supported syntax and fallback behavior.
 
 The [architecture contract](/docs/design/architecture/#visual-presets) and

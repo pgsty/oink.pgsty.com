@@ -15,7 +15,7 @@ Use `{{%/* steps */%}}` when each step needs a heading in the table of contents.
 
 ## Optional presentation {#presentation}
 
-Use `{.steps .td-steps-compact}` for a short procedure, or `steps variant="compact"` for the heading form. These opt-in variants are available in the local development checkout; [compare the examples](/docs/components/presentation/#steps). Numbering, nesting, and heading anchors retain their existing meaning.
+Use `{.steps .td-steps-compact}` for a short procedure, or `steps variant="compact"` for the heading form. OINK 1.4.0 supports these opt-in variants; [compare the examples](/docs/components/presentation/#steps). Numbering, nesting, and heading anchors retain their existing meaning.
 
 ## Shortest form {#minimal}
 

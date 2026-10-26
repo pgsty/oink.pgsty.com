@@ -42,7 +42,7 @@ for structured reports.
 ## Try the local candidate {#try-locally}
 
 From an available `oink-cli` source checkout, build the executable with Go
-1.26 or later and Make:
+1.27.3 or later and Make:
 
 ```sh
 cd oink-cli
@@ -56,7 +56,9 @@ make build
 Replace `../my-docs` with an existing site. Site operations require Hugo
 Extended 0.168.0 or later; the fixed Starter's module workflow needs Go 1.27
 or later. Development and validation use Hugo Extended 0.168.0, with the
-default baseline kept pinned. New sites use OINK v1.3.2. Do not enable
+default baseline kept pinned. Generated sites use the CLI's separately maintained
+Starter snapshot; follow the [upgrade guide](/docs/admin/upgrade/) to adopt
+OINK v1.4.0. Do not enable
 `--panicOnWarning` or `HUGO_PANICONWARNING`. Warnings remain visible; the upstream
 LibSass deprecation warning is accepted. No external Sass tool is required.
 

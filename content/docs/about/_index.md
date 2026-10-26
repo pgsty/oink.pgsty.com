@@ -15,7 +15,7 @@ technical documentation sites. It evolved from
 multilingual behavior while replacing the shell, navigation, search, and
 content components.
 
-Current sites use **OINK v1.3.2** and **Hugo Extended 0.168.0**, with its
+Current sites use **OINK v1.4.0** and **Hugo Extended 0.168.0**, with its
 built-in Sass compiler. Hugo Module installations also need Go to resolve
 modules. The initial download needs access to the module source. Theme assets need no Node.js, npm, PostCSS, or CDN request. Bootstrap, Font Awesome, the
 fonts, local search, the diagram runtimes and the API reference runtimes are all
@@ -82,5 +82,5 @@ links to its guide.
 
 To report a problem or submit a correction, follow the
 [contribution guide](/docs/about/contributing/). The
-[1.3.2 release notes](/blog/release/1.3.2/) cover the current build requirements
+[1.4.0 release notes](/blog/release/1.4.0/) cover the current build requirements
 and recent community fixes.

@@ -123,10 +123,9 @@ cascade:
 | `list` | 水平条目（默认） | 缩略图、标题、日期、所属子栏目、标签与摘要 |
 | `cards` | 规则卡片网格 | 上方是 16:9 裁切封面，下方是标题、元数据与摘要 |
 | `table` | 紧凑表格 | 每篇文章占一行，显示日期、标题与标签 |
-| `gallery` | 照片画廊（尚未发布） | 按比例排布封面，附带标题与描述；点击进入文章 |
+| `gallery` | 照片画廊 | 按比例排布封面，附带标题与描述；点击进入文章 |
 
-OINK v1.3.2 包含 `list`、`cards`、`table`。开发版本新增 `gallery`，尚未随标签
-版本发布。
+OINK v1.4.0 包含 `list`、`cards`、`table` 与 `gallery`。
 
 在 `hugo.yml` 中使用 `params.ui.blog_index` 设置站点默认布局，或在博客栏目的
 `_index.md` front matter 中使用 `blog_index` 覆盖它。栏目 `cascade` 可将设置
@@ -160,8 +159,8 @@ params:
 ### 表格与布局切换 {#list-switching}
 
 单独使用 `blog_index: table` 且 `blog_index_toggle: false` 时，表格列出整个栏目，
-不分页。设置 `blog_index_toggle: true`，标题旁就会出现布局切换按钮。开发版本
-的切换顺序是 `list` → `cards` → `table` → `gallery` → `list`：
+不分页。设置 `blog_index_toggle: true`，标题旁就会出现布局切换按钮。切换顺序是
+`list` → `cards` → `table` → `gallery` → `list`：
 
 ```yaml {title="content/blog/_index.zh.md"}
 blog_index: cards
@@ -172,11 +171,11 @@ blog_index_toggle: true
 文章，都使用 `blog_index_size`；只有独立表格才显示整个栏目。切换器会记住
 读者的选择。设为 `blog_index_toggle: false` 时，只输出配置的布局，不受读者
 之前保存的选择影响。隐藏视图使用延迟加载，但输出标记与生成缩略图仍需要构建
-时间。v1.3.2 的切换器仅在前三种布局之间循环。
+时间。v1.4.0 的切换器在四种布局之间循环。
 
-### 画廊形态（尚未发布） {#list-gallery}
+### 画廊形态 {#list-gallery}
 
-开发版本新增 `gallery`：每篇文章成为一张可点击的封面，使用现有 `images`
+OINK 1.4.0 的 `gallery`：每篇文章成为一张可点击的封面，使用现有 `images`
 字段或页面包中的特色图片。默认展墙将图片按比例拼成行；悬停或键盘聚焦时显示
 标题和描述，触屏设备则把文字放在图片下方。点击进入文章，没有封面的文章仍
 保留标题块。
@@ -204,7 +203,7 @@ blog_gallery:
 
 站点默认值使用 `params.ui` 下的同名 `blog_gallery` 块，页面或 cascade 块会
 整体替换它。未给出的字段使用 `wall` 与 `240`；无效值告警并回退到这些默认值。
-这些配置需要开发版本主题，v1.3.2 尚不支持。完整参数表见
+这些配置随 OINK v1.4.0 提供。完整参数表见
 [站点参数](/zh/docs/customize/config/#blog)与[页面参数](/zh/docs/write/frontmatter/#blog)。
 
 ## RSS {#rss}

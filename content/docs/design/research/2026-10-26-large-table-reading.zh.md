@@ -9,14 +9,14 @@ research_date: 2026-10-26
 owner: OINK maintainers
 ---
 
-> [!NOTE] 带日期的研究；不是已实现功能
-> 负责人：OINK 维护者。研究日期：2026-10-26，Asia/Shanghai。此候选研究为可能的 1.4.0 方向提供依据，涉及组件、架构、阅读外壳与迁移，但不改变这些契约。后续[接受的决策](/zh/docs/design/decisions/large-table-reading/)已替代下文的入口与范围建议；本页保留为历史证据。
+> [!NOTE] 历史研究；当前行为见 1.4.0 决策
+> 负责人：OINK 维护者。研究日期：2026-10-26，Asia/Shanghai。本研究为 OINK 1.4.0 的表格阅读设计提供了依据。[接受的决策](/zh/docs/design/decisions/large-table-reading/)与[表格指南](/zh/docs/components/table/)描述已发布行为，并替代下文的入口与范围建议。本页保留当时的证据和备选方案。
 
 **通过显式“阅读表格”操作打开大型原生对话框，是最值得继续评估的候选方案。** 它给桌面表格增加空间，同时保留文字大小、原表语义和简短的返回路径。许多表格只需在正文内拓宽；实测扩展包样本在桌面端采用这种模式就已能容纳全部列。在 390px 视口下，对话框仅增加 16px 宽度，不能消除横向滚动。五个文档框架共同支持的是原生表格与溢出处理这一较简单基线；更丰富的表格库提供数据操作，也增加集成成本。外部概念验证支持一个阅读方向，不代表版本验收、无障碍认证，也不意味着已经决定交付 TSV。
 
 ## 分清布局、内容与发布状态的证据 {#method}
 
-公开标签快照为 [v1.3.2](https://github.com/pgsty/oink/releases/tag/v1.3.2)，所记录的标签引用为 `68cfbbdc177064e2c28277c09c385d78e5363ffd`。研究开始时，主题 HEAD 为 `7bc8658bc1be13ef0ad3050b9d9f6862f8f1f65f`，站点 HEAD 为 `99751179eefada3fa7a91318c792ddac46d7e6bf`，两个工作树均有未提交修改。站点固定使用 v1.3.2。这些身份描述输入，不代表某个干净提交包含了实验，也不代表线上生产输出。尤其是短标记 `.wide`，按[组件契约](/zh/docs/design/components/#steps-cards-fields-and-tables)所述，仍属尚未发布的本地工作。
+当时的公开标签快照为 [v1.3.2](https://github.com/pgsty/oink/releases/tag/v1.3.2)，所记录的标签引用为 `68cfbbdc177064e2c28277c09c385d78e5363ffd`。研究开始时，主题 HEAD 为 `7bc8658bc1be13ef0ad3050b9d9f6862f8f1f65f`，站点 HEAD 为 `99751179eefada3fa7a91318c792ddac46d7e6bf`，两个工作树均有未提交修改，站点固定使用 v1.3.2。这些身份描述研究输入，不代表某个干净提交包含了实验，也不代表线上生产输出。短标记 `.wide` 当时属于本地实验；它已纳入 OINK 1.4.0，当前行为见[组件契约](/zh/docs/design/components/#steps-cards-fields-and-tables)。
 
 本地检查的归属源包括 `oink/layouts/_partials/content/table-render.html`、`table-body.html`、`assets/scss/td/_content.scss`、`_table.scss`、预设与字体令牌，以及界面协调器。`.wide`/`.td-table--wide` 控制内在尺寸和标识符换行；`.full-width` 使用文章可用画布。`.matrix` 提供首列行表头、受限高度的双轴滚动，以及现有粘性表头/首列 CSS。该 CSS 给每个表头设置 `top:0`，没有多行累计偏移，也没有移动端首列宽度保护。`.fields` 输出定义列表。这些含义都不等于全屏阅读器。普通题注位于表格内部，编号 Book 表格题注位于外层 figure。依据见[表格指南](/zh/docs/components/table/)和[输出契约](/zh/docs/design/architecture/#outputs-and-runtime)。
 

@@ -58,7 +58,7 @@ params:
 - **An invalid value warns and falls back to the documented default.** The setting `params.ui.typography: solarized` reports `invalid params.ui.typography "solarized" (allowed: technical | system) -- using "technical"`. The site still builds. The settings `footer_style: thin`, `page_width: huge`, and `section_index: grid` behave the same way. One typo therefore changes one setting instead of producing HTTP 500 on every URL under `hugo server`. Review the warning and fallback output before publication.
 - **One warning keeps the value instead of dropping it.** If `theme_color` is below AA body-text contrast (4.5:1) against the theme canvas, the color still appears in output. The author may choose it for a custom canvas or brand requirement. The warning includes the `ignoreLogs` id that can silence it. This is advice, not rejection. Use a darker color or silence the warning with one configuration line. Review the actual contrast before publication. Only an unparseable hex value is discarded. It falls back to the default palette, like other invalid values.
 
-- **The theme itself never stops the build.** Its templates contain no `errorf`. Every invalid value uses the warning and fallback behavior above. Draw.io and Algolia warn and stay off when their required service configuration is missing. The unreleased PlantUML renderer needs no endpoint for local mode; an invalid explicit endpoint warns and disables rendering. The theme never chooses a public service for you. Incomplete upstream attribution produces a warning and omits the entire notice. A partial notice could appear complete. Hugo can still stop a build if a content reference resolves to nothing or its version is below `module.hugoVersion.min`.
+- **The theme itself never stops the build.** Its templates contain no `errorf`. Every invalid value uses the warning and fallback behavior above. Draw.io and Algolia warn and stay off when their required service configuration is missing. OINK 1.4.0's PlantUML renderer needs no endpoint for local mode; an invalid explicit endpoint warns and disables rendering. The theme never chooses a public service for you. Incomplete upstream attribution produces a warning and omits the entire notice. A partial notice could appear complete. Hugo can still stop a build if a content reference resolves to nothing or its version is below `module.hugoVersion.min`.
 
 ## Page-level override precedence {#overrides}
 
@@ -211,8 +211,8 @@ These settings shape a blog section. They apply to the section named by
 matter or a `cascade` on the blog root.
 
 The [layout guide](/docs/write/blog/#list) compares rows, cards, tables, and
-galleries. The `gallery` layout and `blog_gallery` settings below are
-unreleased development additions; OINK v1.3.2 supports the first three layouts.
+galleries. OINK v1.4.0 supports all four layouts and the `blog_gallery` settings
+below.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -421,9 +421,9 @@ and Redoc from content. They load only on pages that use them, and only in
 HTML output. They have no site switch. Only the features below need a switch
 or external endpoint:
 
-> [!NOTE] Unreleased PlantUML support
-> The development version uses local rendering when enabled without an endpoint.
-> Published v1.3.2 still requires `svg_image_url`. Both modes and their limits are
+> [!NOTE] PlantUML in OINK 1.4.0
+> Local rendering is used when enabled without an endpoint. An explicit
+> `svg_image_url` selects server mode. Both modes and their limits are
 > described in [PlantUML](/docs/components/plantuml/).
 > Local-development Mermaid and local PlantUML load engines as diagrams approach
 > the viewport. Their shared viewer and source export need no new configuration.
@@ -536,13 +536,13 @@ regenerates the schemas and fails if they differ. Use the schema from the same
 release tag as your theme pin.
 
 With the VS Code YAML extension, map the site schema in your settings. This
-example matches OINK v1.3.2; replace that tag with the one in your `go.mod`.
+example matches OINK v1.4.0; replace that tag with the one in your `go.mod`.
 Both common YAML configuration filenames are covered:
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/v1.3.2/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
+    "https://raw.githubusercontent.com/pgsty/oink/v1.4.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```

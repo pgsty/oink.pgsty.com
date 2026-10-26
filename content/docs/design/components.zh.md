@@ -5,11 +5,11 @@ description: OINK 创作原语、校验、Book、发布行为与输出降级的�
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK 组件契约, shortcode API, Markdown 组件, Book, 发布, 校验]
-contract_status: v1.3.2
+contract_status: v1.4.0
 ---
 
-> [!NOTE] OINK 1.3.2 契约
-> 本契约描述 OINK v1.3.2。主题开发使用同级 checkout；发布验收在关闭替换与
+> [!NOTE] OINK 1.4.0 契约
+> 本契约描述 OINK v1.4.0。主题开发使用同级 checkout；发布验收在关闭替换与
 > 工作区后验证公开模块。消费站升级与部署分别检查。
 
 教程与完整示例位于面向读者的[组件](/zh/docs/components/)专栏。本页定义这些
@@ -57,13 +57,13 @@ OINK 有 29 个 shortcode：
 | FileTree | `filetree` 数据围栏 | 无 | 只有注释存在时加载分隔条运行时 |
 | 画廊 | `gallery` 数据围栏 | 无 | 符合条件时共享图片缩放 |
 | 图片 | Markdown 图片加块属性 | 无 | 符合条件时加载图片缩放 |
-| 表格 | 属性、caption、编号或标签页 | 复合 Book 表格使用 `tbl` | 标签页表格加载 tabs；`.expand` 启用阅读器（未发布） |
+| 表格 | 属性、caption、编号或标签页 | 复合 Book 表格使用 `tbl` | 标签页表格加载 tabs；`.expand` 启用阅读器 |
 | Book 目标 | 图片、表格、passthrough、围栏加 `{num=}` | `fig`、`tbl`、`eq`、`eg` | 无 |
 | 发布资产 | `checksums` 数据围栏 | `release-assets` | HTML 中加载复制功能 |
 | 数学与化学公式 | passthrough、`math`、`chem` 围栏 | `eq` | 无；构建期渲染并加载本地样式 |
 | 图表与数据 | `mermaid`、`plantuml`、`markmap`、`echarts`、`infographic` 围栏 | 无 | 只加载选中的本地运行时 |
 
-> [!NOTE] 尚未发布：统一图表阅读
+> [!NOTE] OINK 1.4.0 的统一图表阅读
 > Mermaid 与本地 PlantUML 共用查看器，支持平移、缩放、适应窗口、源码查看与
 > 复制、独立 SVG 下载。只有距离视口不超过 320px 且尺寸可用的图表才加载引擎
 > 并渲染。引擎各加载一次，在主线程串行执行；隐藏内容恢复后再处理，主题变化
@@ -77,9 +77,9 @@ OINK 有 29 个 shortcode：
 > 独立 Print、Markdown、RSS 保留源码回退。详见 [Mermaid](/zh/docs/components/mermaid/#zoom)
 > 与 [PlantUML](/zh/docs/components/plantuml/)。显式服务端模式保持既有行为。
 
-## 本地组件精修 {#component-refinement}
+## 可选组件呈现 {#component-refinement}
 
-同级开发 checkout 新增以下呈现变体，它们尚不属于已发布的 v1.3.2 基线。示例见[组件呈现](/zh/docs/components/presentation/)。
+OINK 1.4.0 支持以下可选呈现变体。示例见[组件呈现](/zh/docs/components/presentation/)。
 
 | 组件 | 原生修饰类 | 完整形式 |
 | --- | --- | --- |
@@ -125,7 +125,7 @@ URL 使用 `content/url.html`；不允许原始反斜杠，因为浏览器可能
 
 只有连续且区块类型相同的相邻标签页才会分组。`group` 启用
 `#<group>-<value>` hash 与 `td-tabs:v1:<group>` 存储键；未分组标签页两者都不用。
-同级开发 checkout 中，初始片段或 `hashchange` 指向面板或面板内标题时，会先由外
+OINK 1.4.0 中，初始片段或 `hashchange` 指向面板或面板内标题时，会先由外
 至内展开所有祖先面板，再滚动到目标。片段选择优先于已保存的偏好，并同步同名组，
 但不改写存储；只有读者主动选择才持久化。标签页外的普通标题仍使用原生跳转。
 HTML 在 JavaScript 运行前暴露所有面板，打印输出展开面板，Markdown 保留作者
@@ -158,14 +158,14 @@ Print 给主题生成的标签页容器、面板 ID 加上来源页面的命名�
 也不影响静态与打印输出。`.fields` 不能与 matrix、full-width、编号或标签页组合；
 编号与标签页也互斥。
 
-> [!NOTE] 未发布：`.wide`
-> 这个简短的作者标记在开发版本中可用，尚未包含在已发布的 v1.3.2 中。
+> [!NOTE] OINK 1.4.0 的 `.wide`
+> 这个简短的作者标记随 v1.4.0 发布。
 > 它沿用 1.3.1 引入的技术宽表布局，继续兼容已有写法，可以与 `.matrix`、
 > `.full-width` 组合；Markdown 保留作者原本使用的标记。
 
 ### 表格阅读 {#table-reading}
 
-> [!NOTE] 未发布：`.expand`
+> [!NOTE] OINK 1.4.0 的 `.expand`
 > 为主题渲染的 Markdown 表格显式启用，独立于 `.wide`。
 
 只有 `.expand` 表格才生成 HTML 阅读容器并加载 `table-reader.js`。
@@ -226,7 +226,7 @@ FileTree 围栏参数 `wrap` 接受 `true` 或 `false`，默认 `false`；设置
 ECharts 输入是声明式 JSON/YAML；回调使用
 `window.OinkEchartsFunctions` 中的 `$fn:<name>`，绝不执行嵌入脚本。
 
-同级开发 checkout 中，Infographic SVG 跟随容器宽度缩放，覆盖横竖屏及外壳布局
+OINK 1.4.0 中，Infographic SVG 跟随容器宽度缩放，覆盖横竖屏及外壳布局
 变化，无须重复渲染 DSL。初始隐藏的容器等到可测量时再渲染；围栏 `height` 与
 `full` 的含义保持不变。
 透明的 Infographic 产物默认使用白色底面；显式 DSL 背景优先设置该底面。
@@ -240,7 +240,7 @@ Markmap 节点文字在屏幕显示下通过 `--markmap-text-color` 继承页面
 容器及生成的 SVG，站点仍可通过同优先级的自定义 CSS 或 SVG 内联属性进行覆盖。
 （OINK 1.3.1 新增。）
 
-同级开发 checkout 中，Markmap 在首次可测量显示和容器尺寸变化时适配，也覆盖
+OINK 1.4.0 中，Markmap 在首次可测量显示和容器尺寸变化时适配，也覆盖
 隐藏面板展开的情况。读者平移或缩放后暂停自动适配，布局变化保留当前视图。
 可用键盘操作的 **适应窗口** 按钮恢复完整导图并重新启用自动适配。布局适配不加
 动画，减少动态效果偏好也会关闭节点过渡。打印时隐藏该按钮。解析前会移除首尾
@@ -250,7 +250,7 @@ Markmap 节点文字在屏幕显示下通过 `--markmap-text-color` 继承页面
 HTML 和 Print 使用本地样式表，并保留 MathML 与作者的 TeX 源文。
 数学公式按[架构契约](/zh/docs/design/architecture/#hugo-toolchain)中的当前 Hugo
 基线验证。Markmap 使用与样式配套的本地 KaTeX 运行时。
-同级开发 checkout 按阅读列的实际可用宽度为编号公式保留阅读空间，也覆盖侧栏
+OINK 1.4.0 按阅读列的实际可用宽度为编号公式保留阅读空间，也覆盖侧栏
 或目录挤窄的正文列。标题无法与公式并排时移到下一行，连续长词允许换行。
 仅含编号的标题、MathML 与 TeX 仍然可用。打印时公式独占阅读列全宽，标题排列在
 公式下方。长标题既不得把公式挤到零宽，也不得撑宽整页。

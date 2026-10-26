@@ -53,6 +53,21 @@ jobs:
           - name: Visual presets and appearance controls
             target: test:appearance
             artifact: appearance
+          - name: Expo albums
+            target: test:expo
+            artifact: expo
+          - name: Blog gallery
+            target: test:blog-gallery
+            artifact: blog-gallery
+          - name: Local PlantUML
+            target: test:plantuml
+            artifact: plantuml
+          - name: Unified diagram reading
+            target: test:diagrams
+            artifact: diagrams
+          - name: Table reader
+            target: test:table-reader
+            artifact: table-reader
     steps:
       - uses: actions/checkout@v7
         with:

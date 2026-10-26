@@ -74,7 +74,7 @@ test("empty Palette exposes shared quick links, page actions, and preferences", 
   const preferences = group(dialog, "Preferences");
   await expect(preferences).toContainText("Toggle color theme");
   await expect(preferences).toContainText("Switch language");
-  await expect(preferences).toContainText("v1.3.2");
+  await expect(preferences).toContainText("v1.4.0");
   const commands = group(dialog, "Commands");
   await expect(commands).toContainText("OINK issues");
   await expect(commands).not.toContainText("Copy Markdown");
@@ -217,9 +217,9 @@ test("built-in choice actions reuse theme, language, and version executors", asy
   await page.keyboard.press(
     process.platform === "darwin" ? "Meta+k" : "Control+k",
   );
-  await fillCommandAndWait(input, dialog, "> version", "v1.3.2");
+  await fillCommandAndWait(input, dialog, "> version", "v1.4.0");
   await page.keyboard.press("Enter");
-  await expect(dialog).toContainText("v1.3.2");
+  await expect(dialog).toContainText("v1.4.0");
 });
 
 test("Copy Markdown executes once through the shared registry", async ({
@@ -490,7 +490,7 @@ test("clipboard fallback restores a backward DOM selection on success and failur
   }
 });
 
-// Local candidate: same palette, real summaries/headings, current-root filter.
+// Local search: same palette, real summaries/headings, current-root filter.
 const searchPrefix = new URL(process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173').pathname.replace(/\/$/, '');
 for (const language of ['en', 'zh']) {
   for (const width of [390, 1440]) {
@@ -509,8 +509,9 @@ for (const language of ['en', 'zh']) {
         const panel = dialog.locator('.td-shell-search__panel');
         await expect(panel).toHaveCSS('transform', 'matrix(1, 0, 0, 1, 0, 0)');
         const rect = await panel.boundingBox();
-        expect(rect.width).toBeLessThanOrEqual(Math.min(600, width - 16));
-        expect(rect.height).toBeLessThanOrEqual(width < 576 ? 640 : 520);
+        // Chromium can report fractional layout noise after the transform settles.
+        expect(rect.width).toBeLessThanOrEqual(Math.min(600, width - 16) + 0.5);
+        expect(rect.height).toBeLessThanOrEqual((width < 576 ? 640 : 520) + 0.5);
         await testInfo.attach('search-empty', {body:await panel.screenshot(),contentType:'image/png'});
         await input.fill(language === 'zh' ? '侧栏 标题' : 'sidebar headings');
         await expect.poll(async () => page.evaluate(() => window.OinkCommandPalette.instance.rows().filter(r=>r.type==='page').length)).toBeGreaterThan(0);

@@ -10,7 +10,7 @@ research_date: 2026-10-25
 ---
 
 > [!IMPORTANT] Local acceptance only
-> [Phases 0–3 and final acceptance in phase 5](/docs/design/proposals/component-refinement/) are complete for this component change. The implementation and documentation are committed locally. This does not establish a public release, consumer upgrade, or deployment. The moving selection trial remains deferred.
+> [Phases 0–3 and final acceptance in phase 5](/docs/design/decisions/component-refinement/) are complete for this component change. The implementation and documentation are committed locally. This does not establish a public release, consumer upgrade, or deployment. The moving selection trial remains deferred.
 
 ## Inputs and method {#inputs}
 

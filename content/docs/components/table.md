@@ -114,9 +114,9 @@ Authors write ✅ and ❌ characters. The theme does not interpret them.
 
 ## Technical wide tables {#wide}
 
-> [!NOTE] Unreleased: `.wide`
-> The short marker is available in the development checkout, beyond published
-> v1.3.2. Existing technical-table markup remains supported.
+> [!NOTE] `.wide` in OINK 1.4.0
+> The short marker is included in the release. Existing technical-table markup
+> remains supported.
 
 Technical tables containing long configuration keys, environment variables, or
 identifiers can produce awkward token breaks and very tall rows when forced into
@@ -163,8 +163,8 @@ horizontally within its wrapper when it exceeds the available space.
 
 ## Expand selected tables {#expand}
 
-> [!NOTE] Unreleased: `.expand`
-> Available in the development checkout, beyond published v1.3.2.
+> [!NOTE] `.expand` in OINK 1.4.0
+> The opt-in reader is included in the release.
 
 Add `.expand` only to tables that benefit from a larger reading area. A small
 expand icon sits at the top-right corner: desktop hover or keyboard focus reveals

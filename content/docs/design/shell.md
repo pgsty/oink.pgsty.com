@@ -5,11 +5,11 @@ description: Navigation authorities, immersive blog presentation, search, action
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK shell, navigation contract, search, actions, blog presentation, authors, series, pager]
-contract_status: v1.3.2
+contract_status: v1.4.0
 ---
 
-> [!NOTE] OINK 1.3.2 contract
-> This contract describes OINK v1.3.2. Theme development uses the sibling
+> [!NOTE] OINK 1.4.0 contract
+> This contract describes OINK v1.4.0. Theme development uses the sibling
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 
@@ -220,8 +220,7 @@ Sites may return extra strings from `hooks/search-keywords-extra.html`.
 Keywords affect matching and ranking. CJK matches found only through keywords display the description or excerpt, not the keyword list.
 Body matches keep surrounding text as context.
 
-> [!NOTE] Unreleased local search candidate, 2026-10-25
-> The following additions apply to the sibling checkout, not published v1.3.2.
+> [!NOTE] Local search in OINK 1.4.0
 
 Queries normalize case/Unicode width and split whitespace and CJK/Latin boundaries,
 up to 24 unique terms, preserving identifier punctuation. A CJK run is a literal
@@ -266,7 +265,7 @@ Site commands under `languages.<lang>.params.ui.command_palette.commands` may op
 The legacy clipboard fallback restores previous focus and selection, including selection direction.
 It does not reclaim focus if another control acquired it during copying.
 
-In the sibling checkout, breadcrumbs and page actions wrap onto separate rows
+In OINK 1.4.0, breadcrumbs and page actions wrap onto separate rows
 when the reading column or enlarged text requires it. Long unbroken path labels
 wrap without clipping; all breadcrumb links stay available. The action menu is
 bounded by the viewport and retains keyboard focus and dismissal behavior at
@@ -454,7 +453,7 @@ Explicit `params.taxonomy.page_header` restores either.
 ## Blog indexes and page composition {#blog-indexes-and-page-composition}
 
 Blog section indexes use `params.ui.blog_index`.
-`list`, the default, `cards`, and the unreleased `gallery` show one flat sequence,
+`list`, the default, `cards`, and `gallery` show one flat sequence,
 newest first, with shared `blog_index_size` pagination and no year headings.
 `table` shows date/title/tag rows; without a layout switch, it lists the complete
 section without pagination. With switching enabled, it uses the same page as
@@ -484,14 +483,14 @@ Taxonomy pages scope clouds to the whole site (`taxonomy-root.html` returns no r
 Term pages keep section scope and all clouds.
 
 `params.ui.blog_index_toggle` renders all four forms for the current paginator slice and lets readers cycle between them: `list`, `cards`, `table`, then `gallery`.
-The fourth form is an unreleased development addition; v1.3.2 has three forms.
+The fourth form is included in OINK 1.4.0.
 The configured form controls initial display. Hidden forms load no images.
 Stored reader preferences apply only to indexes that publish all four forms.
 Sections without toggles publish one form and always show it.
 Front matter or cascades override site mode per section.
 Tables published without toggles remain complete, unpaginated archives.
 
-### Blog gallery (unreleased) {#blog-gallery}
+### Blog gallery {#blog-gallery}
 
 `blog_index: gallery` presents each post as a linked cover. It uses the shared
 featured-image resolver, the same date order and `blog_index_size` paginator as
@@ -593,4 +592,4 @@ The [Expo contract](/docs/design/expo/) owns its content model, controls, and ou
 
 ## Local component surfaces {#component-surfaces}
 
-The local refinement candidate aligns search/command rows, sidebar corners, and Appearance controls with the component geometry. Selected and hovered rows remain distinct, keyboard focus remains immediate, and preference storage, navigation, and palette selection are unchanged. No moving-highlight runtime is added.
+OINK 1.4.0 aligns search/command rows, sidebar corners, and Appearance controls with the component geometry. Selected and hovered rows remain distinct, keyboard focus remains immediate, and preference storage, navigation, and palette selection are unchanged. No moving-highlight runtime is added.

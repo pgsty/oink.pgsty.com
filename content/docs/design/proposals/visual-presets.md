@@ -37,7 +37,7 @@ proposal_date: 2026-10-04
 | Status | Phase 1 released in 1.2.0; Ink/Terminal explicit opt-ins |
 | Owner | OINK maintainers |
 | Date | 2026-10-04 |
-| Baseline | Theme `main` after `v1.1.0` with unreleased `1.2.0` work; documentation site pinned to `v1.1.0` |
+| Baseline | OINK v1.4.0 theme and documentation site; this row preserves the proposal's October 4 research starting point |
 | Affected contracts | [Architecture: Trust, CSS, and accessibility](/docs/design/architecture/#trust-css-and-accessibility) (font roles, accent roles, inline-code colour), [Shell](/docs/design/shell/) (theme control), [Landing](/docs/design/landing/), [Configuration decision](/docs/design/decisions/configuration/), [Brand guide](/docs/customize/brand/) |
 | Phase 1 | Paper preset, Slate preset, default changed to Paper, reader switching between Paper and Slate |
 | Later phases | Ink/Terminal design acceptance; Folio and Canvas names reserved only |

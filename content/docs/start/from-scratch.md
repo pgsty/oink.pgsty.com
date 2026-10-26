@@ -32,9 +32,9 @@ below. For an existing Docsy site, see [Upgrade](/docs/admin/upgrade/).
 
 The second half compares four install methods: Hugo Module, Git submodule,
 offline archive, and pinned source copy. Current development and validation use
-Go 1.27 and Hugo Extended 0.168.0. The default Hugo version stays pinned; older-Hugo compatibility testing and adaptation are discontinued.
+Go 1.27.3 and Hugo Extended 0.168.0. The default Hugo version stays pinned; older-Hugo compatibility testing and adaptation are discontinued.
 
-> [!NOTE] OINK 1.3.2 build requirements
+> [!NOTE] OINK 1.4.0 build requirements
 > Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass.
 > No external Sass installation is required. Keep the upstream LibSass warning
 > visible and review it; do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.

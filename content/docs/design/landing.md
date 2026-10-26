@@ -5,11 +5,11 @@ description: The maintainer contract for landing data, the built-in section regi
 weight: 40
 icon: fa-solid fa-panorama
 search_keywords: [OINK landing contract, landing sections, homepage data, progressive enhancement, landing outputs]
-contract_status: v1.3.2
+contract_status: v1.4.0
 ---
 
-> [!NOTE] OINK 1.3.2 contract
-> This contract describes OINK v1.3.2. Theme development uses the sibling
+> [!NOTE] OINK 1.4.0 contract
+> This contract describes OINK v1.4.0. Theme development uses the sibling
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 
@@ -128,4 +128,8 @@ cursor-shaped decoration. Neither adds animation or changes section columns.
 
 ## Local action refinement {#action-refinement}
 
-In the local refinement candidate, button press feedback moves only the background; labels and hit targets stay fixed. Command-box copy labels reserve space for both idle and localized success text. The existing clipboard promise still controls success, and the copy action, live status, data model, and static-output boundary are unchanged. This candidate is not yet a published release.
+In OINK 1.4.0, button press feedback moves only the background; labels and hit
+targets stay fixed. Command-box copy labels reserve space for both idle and
+localized success text. The existing clipboard promise still controls success,
+and the copy action, live status, data model, and static-output boundary are
+unchanged.

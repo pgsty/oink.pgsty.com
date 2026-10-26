@@ -1,16 +1,16 @@
 ---
 title: Contributing to OINK
 linkTitle: Contributing
-description: Where to report bugs and contribute theme changes, documentation, translations, and regression tests for OINK 1.3.2.
+description: Where to report bugs and contribute theme changes, documentation, translations, and regression tests for OINK 1.4.0.
 weight: 40
 icon: fa-solid fa-code-pull-request
-search_keywords: [contributing, contributors, pull request, bug report, translation, OINK 1.3.2]
+search_keywords: [contributing, contributors, pull request, bug report, translation, OINK 1.4.0]
 ---
 
 Corrections, translations, bug reports, and focused pull requests are welcome.
-OINK **v1.3.2** is the current theme release. Its
-[release notes](/blog/release/1.3.2/) describe the Hugo-only build and the reading
-repairs contributed by the community.
+OINK **v1.4.0** is the current theme release. Its
+[release notes](/blog/release/1.4.0/) describe the new readers, local rendering,
+search improvements, presentation variants, and reading repairs.
 
 ## Where to contribute {#where-to-contribute}
 
@@ -33,8 +33,8 @@ from reports and reproductions.
 
 ## Build and check {#build-and-check}
 
-The maintained baseline is **OINK v1.3.2**, **Hugo Extended 0.168.0**, and
-**Go 1.27.2**; the module's Go minimum is 1.27.0. Hugo uses its built-in LibSass.
+The maintained baseline is **OINK v1.4.0**, **Hugo Extended 0.168.0**, and
+**Go 1.27.3**; the module's Go minimum is 1.27.3. Hugo uses its built-in LibSass.
 Ordinary site builds require no external Sass compiler, Node.js, or npm.
 
 Never enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Keep warnings visible
@@ -77,7 +77,7 @@ faithful to their original evidence.
 The [acknowledgements](/docs/about/license/#community-contributors) link
 community fixes to their authors and pull requests. The
 [1.3.1 notes](/blog/release/1.3.1/#thanks) record the recent reading repairs;
-1.3.2 keeps those fixes while removing the external Sass dependency.
+1.4.0 keeps those fixes and the Hugo-only build restored in 1.3.2.
 
 Theme code and site tooling use Apache-2.0; original documentation uses
 CC BY 4.0. Retain third-party licence and notice files. See

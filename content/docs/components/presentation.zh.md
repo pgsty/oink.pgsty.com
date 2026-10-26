@@ -9,8 +9,8 @@ search_keywords: [组件样式, 卡片列表, 紧凑步骤, 命令条, 预设]
 
 使用外观菜单切换 Paper、Slate、Ink、Terminal 及明暗模式，比较同一批内容的呈现。以下示例继续沿用通常的 Markdown 写作方式。
 
-> [!NOTE] 本地开发
-> 本页的可选变体已在同级主题 checkout 中提供，尚未安排公开发布版本。
+> [!NOTE] OINK 1.4.0 已提供
+> 本页的可选变体已随 OINK 1.4.0 发布。
 
 ## 相关页面 {#cards}
 

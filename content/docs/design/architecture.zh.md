@@ -5,16 +5,16 @@ description: 仓库装配、配置、诊断、本地化、输出、性能、安�
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK 架构, 仓库边界, 运行时, i18n, Docsy 语言, 输出格式, 安全, 无障碍, 性能]
-contract_status: v1.3.2
+contract_status: v1.4.0
 ---
 
-> [!NOTE] OINK 1.3.2 契约
-> 本契约描述 OINK v1.3.2。主题开发使用同级 checkout；发布验收在关闭替换与
+> [!NOTE] OINK 1.4.0 契约
+> 本契约描述 OINK v1.4.0。主题开发使用同级 checkout；发布验收在关闭替换与
 > 工作区后验证公开模块。消费站升级与部署分别检查。
 
 ## Hugo 工具链 {#hugo-toolchain}
 
-维护中的站点、开发、CI 与发布验收统一使用 **OINK v1.3.2** 和
+维护中的站点、开发、CI 与发布验收统一使用 **OINK v1.4.0** 和
 **Hugo Extended 0.168.0**，固定这套工具链。
 
 禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。告警保持可见并接受审阅；
@@ -26,7 +26,7 @@ Sass 程序。项目变量与项目样式的 SCSS 钩子保持可用。后续升
 边界，并同步修改要求、检查器、CI 固定版本与双语契约；历史发布和研究记录保留
 当时的工具版本。
 
-本地开发模块要求 Go **1.27.3**，开发与 CI 也固定使用此版本；该最低要求适用于尚未发布的 checkout。
+OINK v1.4.0 模块要求 Go **1.27.3**，开发与 CI 也固定使用此版本。
 Go 用于解析 Hugo Modules；已准备好传统主题副本的站点无需 Go。
 
 ## 仓库与装配 {#repository-and-assembly}
@@ -73,35 +73,34 @@ Hugo 的查找优先级，即使几个基础模板看起来相似，也应保持
 OINK 没有通用的键名重命名注册表。仍需给出迁移诊断的过渡，应在所属解析器中
 添加针对性警告，并配严格的反向测试；已经移除的键绝不能作为兼容路径继续读取。
 
-可能联网的功能必须显式启用，并以关闭方式降级。已发布的 v1.3.2 中，PlantUML 需要
-`plantuml.svg_image_url`，Draw.io 需要 `drawio.drawio_server`，Algolia 需要
+可能联网的功能必须显式启用，并以关闭方式降级。OINK 1.4.0 启用 PlantUML 且未配置端点时
+使用本地渲染，显式 `plantuml.svg_image_url` 才选择服务端模式。Draw.io 需要
+`drawio.drawio_server`，Algolia 需要
 `appId`、`apiKey` 与 `indexName`；配置不完整时发出警告，而且不产生网络请求。
 Draw.io 只在渲染内容含 PNG 或 SVG 候选图片时加载，并且每个不同的图片 URL
 只检查一次。
 图表端点必须是字符串，内容为带主机的 HTTP(S) URL 或同站路径。不支持的协议、
 省略协议的 URL、反斜杠、空白字符及缺少路径的同站引用都会告警，并在选择运行时前关闭该集成。
 
-> [!NOTE] 尚未发布：自包含 PlantUML
-> 尚未发布的开发版本中，`plantuml: true` 或未配置端点的
-> `plantuml.enable: true` 选择浏览器渲染。固定的两份本地资源
-> （`@plantuml/core` 1.2026.9 与 Viz.js 3.24.0）仅在包含 PlantUML 围栏的
-> HTML 页面加载。普通构建和读者无需安装 Java、Graphviz 可执行程序或 npm 包，
-> 也不依赖 CDN 或渲染服务。非空端点继续选择服务端模式，保留地址校验与 `svg`
-> 行为；非法端点不回退到本地模式。本地渲染不会下载可选库、主题、include 文件
-> 或外部资源。生成的 SVG 以 Blob 图片显示，不插入页面 DOM。输入错误或资源加载
-> 失败时保留可读源码；独立 Print、Markdown 与 RSS 保留源码，不加载运行时。
-> 以上行为不属于已发布的 v1.3.2 版本。
+> [!NOTE] OINK 1.4.0 的自包含 PlantUML
+> `plantuml: true` 或未配置端点的 `plantuml.enable: true` 选择浏览器渲染。固定的两份本地
+> 资源（`@plantuml/core` 1.2026.9 与 Viz.js 3.24.0）仅在包含 PlantUML 围栏的 HTML 页面
+> 加载。普通构建和读者无需安装 Java、Graphviz 可执行程序或 npm 包，也不依赖 CDN 或
+> 渲染服务。非空端点继续选择服务端模式，保留地址校验与 `svg` 行为；非法端点不回退到
+> 本地模式。本地渲染不会下载可选库、主题、include 文件或外部资源。生成的 SVG 以 Blob
+> 图片显示，不插入页面 DOM。输入错误或资源加载失败时保留可读源码；独立 Print、Markdown
+> 与 RSS 保留源码，不加载运行时。
 
 > [!NOTE] OINK 1.3.0 修复
 > 添加嵌入参数时保留编辑器 URL 原有的查询参数与片段。消息必须同时来自当前
 > 编辑器 iframe 及其配置的源；无关或格式错误的消息会被忽略。图表数据只发送到
 > 该源。导出结果必须是 PNG 或 SVG 的 data URL。
 
-> [!NOTE] 尚未发布：图表按需加载
-> Mermaid 与本地 PlantUML 的小型调度器只出现在使用它们的 HTML 页面；大型
-> 引擎在可见图表接近视口时加载。同页共享引擎，主线程串行执行，未引入 Worker、
-> 新依赖或构建步骤。缺少 IntersectionObserver 时使用滚动与尺寸检查。
-> 普通浏览器打印不等待异步渲染：已有图显示图片，其余保留源码。独立输出不变。
+> [!NOTE] OINK 1.4.0 的图表按需加载
+> Mermaid 与本地 PlantUML 的小型调度器只出现在使用它们的 HTML 页面；大型引擎
+> 在可见图表接近视口时加载。同页共享引擎，主线程串行执行，未引入 Worker、新依赖
+> 或构建步骤。缺少 IntersectionObserver 时使用滚动与尺寸检查。普通浏览器打印不等待
+> 异步渲染：已有图显示图片，其余保留源码。独立输出不变。
 
 ## 界面本地化 {#interface-localization}
 
@@ -341,7 +340,7 @@ Ink 统一使用 Inter，配合红色标记、正文链接下划线、直角与�
 不支持的浏览器省略标记。显式 `fonts.ui` 仍控制主字体，除非设置了有效的
 `fonts.body`。参见[实验记录](/zh/docs/design/research/2026-10-05-ink-terminal-experiment/)。
 
-> [!NOTE] 尚未发布：Paper 章节标题
+> [!NOTE] OINK 1.4.0 的 Paper 章节标题
 > Paper 在浅色与深色模式下均不再绘制正文 `h2` 标题右侧的装饰横线。
 > 标题的字体、间距、锚点与正常换行保持原样，仍支持站点自定义的标题边框。
 

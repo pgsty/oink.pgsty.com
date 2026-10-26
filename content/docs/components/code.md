@@ -15,7 +15,7 @@ Diagram fences such as `mermaid`, `echarts`, and `filetree` use their own render
 
 ## Optional presentation {#presentation}
 
-A one-line fence with `{class="td-code-command"}` becomes a compact command strip with a separate copy column. This variant is available in the local development checkout; [see examples and fallback rules](/docs/components/presentation/#tabs). Multiline, numbered, or collapsed blocks warn and retain regular presentation.
+A one-line fence with `{class="td-code-command"}` becomes a compact command strip with a separate copy column. OINK 1.4.0 supports this variant; [see examples and fallback rules](/docs/components/presentation/#tabs). Multiline, numbered, or collapsed blocks warn and retain regular presentation.
 
 ## Shortest form {#minimal}
 

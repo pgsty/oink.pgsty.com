@@ -12,7 +12,7 @@ aliases:
 
 ## 可选呈现 {#presentation}
 
-单行围栏加上 `{class="td-code-command"}` 后显示为紧凑命令条，复制按钮独占一列。此变体已在本地开发 checkout 中提供，参见[示例与回退规则](/zh/docs/components/presentation/#tabs)。多行、带行号或可折叠代码块会给出警告并保留普通呈现。
+单行围栏加上 `{class="td-code-command"}` 后显示为紧凑命令条，复制按钮独占一列。此变体随 OINK 1.4.0 提供，参见[示例与回退规则](/zh/docs/components/presentation/#tabs)。多行、带行号或可折叠代码块会给出警告并保留普通呈现。
 
 ## 最简例子 {#minimal}
 

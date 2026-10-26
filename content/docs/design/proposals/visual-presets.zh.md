@@ -26,7 +26,7 @@ proposal_date: 2026-10-04
 | 状态 | 第一阶段随 1.2.0 发布；Ink/Terminal 显式启用 |
 | 负责人 | OINK 维护者 |
 | 日期 | 2026-10-04 |
-| 基线 | 主题 `main`（`v1.1.0` 之后，含未发布的 `1.2.0` 工作）；文档站固定 `v1.1.0` |
+| 基线 | OINK v1.4.0 主题与文档站；本行保留 10 月 4 日提案研究的起始背景 |
 | 受影响契约 | [架构：信任、CSS 与无障碍](/zh/docs/design/architecture/#trust-css-and-accessibility)（字体角色、强调色角色、行内代码颜色）、[外壳](/zh/docs/design/shell/)（主题控件）、[Landing](/zh/docs/design/landing/)、[配置决策](/zh/docs/design/decisions/configuration/)、[品牌指南](/zh/docs/customize/brand/) |
 | 第一阶段 | Paper 预设、Slate 预设、默认改为 Paper、读者在 Paper 与 Slate 间切换 |
 | 后续阶段 | Ink/Terminal 视觉定稿；Folio 与 Canvas 只保留名称 |

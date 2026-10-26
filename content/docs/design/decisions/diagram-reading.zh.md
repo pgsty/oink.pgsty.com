@@ -1,19 +1,21 @@
 ---
 title: 统一图表阅读体验
 description: Mermaid 与本地 PlantUML 共用查看器、源码导出与按需加载。
-design_kind: proposal
-design_status: implemented-local
+design_kind: decision
+design_status: accepted
+decision_date: 2026-10-26
+aliases:
+  - /docs/design/proposals/diagram-reading/
 date: 2026-10-25
 ---
 
-> [!WARNING] 本地已实现，等待维护者审阅
-> 负责人：OINK 维护者。日期：2026-10-25。影响契约：组件、架构和浏览器打印。
-> 公开基线仍为 v1.3.2。
+> [!NOTE] OINK 1.4.0 已接受
+> 统一图表查看、源码导出与按需加载随 1.4.0 发布，行为归属组件、架构与浏览器打印契约。
 
 ## 背景 {#context}
 
-Mermaid 已有平移和缩放弹窗，但页面打开时就加载引擎，并为弹窗再次渲染 SVG。
-本地 PlantUML 在页面打开时加载两份引擎，仅支持横向滚动。两者都保留作者源码。
+此前 Mermaid 已有平移和缩放弹窗，但页面打开时就加载引擎，并为弹窗再次渲染 SVG。
+此前本地 PlantUML 在页面打开时加载两份引擎，仅支持横向滚动。两者都保留作者源码。
 
 ## 范围 {#scope}
 
@@ -50,4 +52,4 @@ PlantUML 始终通过 Blob 图片展示，SVG 不进入页面 DOM。导出的 SV
 
 - 2026-10-25：初始有限设计。保留主线程串行执行和 Blob 隔离；立即打印时，
   未渲染图表显示源码。本地实现与图表浏览器验收已完成，完整站点验证随交付证据
-  记录，不代表公开发布。
+  记录，相关行为随 OINK 1.4.0 发布。

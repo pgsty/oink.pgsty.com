@@ -13,7 +13,7 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 1.3.2 · Local-first · Built with Hugo
+  eyebrow: OINK 1.4.0 · Local-first · Built with Hugo
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -28,8 +28,8 @@ hero:
       url: docs/start/starter/
       icon: fa-solid fa-rocket
       style: primary
-    - label: What's new in 1.3.2
-      url: blog/release/1.3.2/
+    - label: What's new in 1.4.0
+      url: blog/release/1.4.0/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -81,7 +81,7 @@ capabilities:
       value: Same content, a different feel. Fonts and core scripts stay local.
       visual:
         type: components
-        aria_label: Four visual styles in OINK 1.3.2
+        aria_label: Four visual styles in OINK 1.4.0
         items:
           - {
               icon: fa-solid fa-file-lines,
@@ -302,17 +302,18 @@ faq:
   eyebrow: Before you commit
   title: Questions worth asking first
   items:
-    - question: What's new in OINK 1.3.2?
+    - question: What's new in OINK 1.4.0?
       answer: >-
-        [OINK 1.3.2](blog/release/1.3.2/) restores builds with Hugo's built-in
-        Sass compiler and keeps the community fixes for Markmap text, TOC footer
-        clearance, technical tables, and opt-in FileTree comment wrapping.
-        Use Hugo Extended 0.168.0; no separate Sass installation is needed.
+        [OINK 1.4.0](blog/release/1.4.0/) adds local PlantUML rendering, a
+        shared Mermaid/PlantUML reader, richer mixed-language search, an opt-in
+        `.expand` table reader, `.wide` technical tables, a blog gallery, and
+        compact Cards, Steps, and command presentations. Use Hugo Extended
+        0.168.0; no separate Sass installation is needed.
     - question: Do I need Node.js, npm or a bundler anywhere?
       answer: >-
         No. Site builds use Hugo Extended and its built-in Sass compiler; no
         external Sass installation is required. Maintained sites use
-        OINK 1.3.2 and the pinned Hugo Extended 0.168.0 baseline. Go resolves the
+        OINK 1.4.0 and the pinned Hugo Extended 0.168.0 baseline. Go resolves the
         theme as a module; an offline
         archive or Git submodule works without it. Browser scripts ship
         with the theme and load only where they are used.
@@ -363,11 +364,12 @@ faq:
         The [contribution guide](docs/about/contributing/) explains where to
         report bugs, improve translations, or submit theme and test changes.
         Thank you to [@imbajin](docs/about/license/#community-contributors)
-        for the reading repairs included in 1.3.1 and 1.3.2.
+        for the earlier reading repairs; the current release carries those fixes
+        forward with the 1.4.0 reader and layout work.
 
 cta:
   title: Start from a repository that already works.
-  text: Start with OINK 1.3.2, replace the identity and content, then build with Hugo Extended 0.168.0, review its diagnostics, and publish.
+  text: Start with OINK 1.4.0, replace the identity and content, then build with Hugo Extended 0.168.0, review its diagnostics, and publish.
   label: Use OINK Starter
   url: docs/start/starter/
   style: primary

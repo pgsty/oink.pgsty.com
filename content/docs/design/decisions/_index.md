@@ -34,6 +34,10 @@ contracts it supports, in the same bilingual, versioned site.
 | [Blog gallery](/docs/design/decisions/blog-gallery/) | Article covers, shared Expo geometry, independent preferences, and readable captions |
 | [Table reading](/docs/design/decisions/large-table-reading/) | Explicit `.expand`, independent `.wide`, and a direct corner action with native table restoration |
 
+| [Component refinement](/docs/design/decisions/component-refinement/) | Shared styling, divided cards, compact steps and command strips |
+| [Unified diagram reading](/docs/design/decisions/diagram-reading/) | Shared Mermaid and local PlantUML viewing, source export and demand loading |
+| [Local search refinement](/docs/design/decisions/local-search/) | Mixed queries, real section anchors, partial matches and section scope |
+
 ## Record format {#record-format}
 
 An accepted decision records its context, choice, consequences, and evidence

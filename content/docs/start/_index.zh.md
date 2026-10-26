@@ -19,10 +19,10 @@ aliases:
 
 > [!IMPORTANT] 当前 Hugo 基线
 > 开发、CI 与发布测试统一使用 Hugo Extended {{% param hugoMinVersion %}} 和
-> Go 1.27，Hugo 默认基线保持固定。使用旧 Starter 快照时，同步更新它的 Hugo
+> Go 1.27.3，Hugo 默认基线保持固定。使用旧 Starter 快照时，同步更新它的 Hugo
 > workflow 固定版本；不再维护旧 Hugo 兼容性。
 
-> [!NOTE] OINK 1.3.2 构建要求
+> [!NOTE] OINK 1.4.0 构建要求
 > 维护中的站点使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
 > 上游 LibSass 弃用告警保持可见并接受审阅；不要启用 `--panicOnWarning`
 > 或 `HUGO_PANICONWARNING`。
@@ -39,12 +39,12 @@ aliases:
 
 1. ### 安装工具 {#tools}
 
-   安装 Git、Go 1.27 或更新版本，以及 Hugo Extended 0.168.0 或更新版本。Hugo
+   安装 Git、Go 1.27.3 或更新版本，以及 Hugo Extended 0.168.0 或更新版本。Hugo
    输出必须包含 `extended`：
 
    ```console
    $ go version
-   go version go1.27.2 darwin/arm64
+   go version go1.27.3 darwin/arm64
    $ hugo version
    hugo v0.168.0+extended+withdeploy darwin/arm64
    ```

@@ -37,7 +37,7 @@ aliases:
 
 ## 本地试用 {#try-locally}
 
-从已有的 `oink-cli` 源码 checkout 构建，需要 Go 1.26 或更高版本及 Make：
+从已有的 `oink-cli` 源码 checkout 构建，需要 Go 1.27.3 或更高版本及 Make：
 
 ```sh
 cd oink-cli
@@ -50,8 +50,8 @@ make build
 
 将 `../my-docs` 替换为既有站点路径。站点操作需要 Hugo Extended 0.168.0 或更新
 版本；固定 Starter 的模块流程需要 Go 1.27 或更新版本。开发与验收使用 Hugo
-Extended 0.168.0，新建站点使用 OINK v1.3.2。默认基线保持固定，不再维护旧 Hugo
-兼容性。禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；告警保持可见，
+Extended 0.168.0。新建站点使用 CLI 独立维护的 Starter 快照；采用 OINK v1.4.0
+请按[升级指南](/zh/docs/admin/upgrade/)更新。默认基线保持固定，不再维护旧 Hugo 兼容性。禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；告警保持可见，
 上游 LibSass 弃用告警允许出现。
 
 `make deps` 会下载构建依赖。CLI 命令默认离线，当前调用需要未缓存的输入时

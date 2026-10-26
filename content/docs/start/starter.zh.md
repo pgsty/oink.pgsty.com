@@ -11,11 +11,11 @@ search_keywords: [OINK Starter, GitHub 模板, Use this template, 定制 Starter
 站点的正式起点。它刻意小于 `oink.pgsty.com`：不会把主题文档、分析账号、评论仓库、
 浏览器回归套件或 PGSTY 品牌复制进你的项目。
 
-本流程使用 Git、Go 1.27 或更新版本，以及 Hugo Extended 0.168.0。
+本流程使用 Git、Go 1.27.3 或更新版本，以及 Hugo Extended 0.168.0。
 所选语言 profile 统一使用这套工具链验证，旧 Starter 的 workflow 固定版本也应
 同步更新。Hugo 默认基线保持固定，不再测试或适配旧版本。
 
-> [!NOTE] OINK 1.3.2 构建要求
+> [!NOTE] OINK 1.4.0 构建要求
 > 维护中的站点使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
 > 上游 LibSass 弃用告警保持可见并接受审阅；不要启用 `--panicOnWarning`
 > 或 `HUGO_PANICONWARNING`。

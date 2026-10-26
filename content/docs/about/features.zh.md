@@ -30,7 +30,7 @@ Hugo Extended 0.168.0 或更新版本负责构建站点资源。SCSS 由 Hugo �
 
 浏览器需要的资源全部提交在主题仓库里：Bootstrap、Font Awesome、四款字体、Lunr、Mermaid、KaTeX、Markmap、Swagger UI、Redoc、Asciinema、ECharts、Infographic，以及本地 PlantUML 引擎。`VENDOR.json` 逐项记录各依赖的版本、来源、许可证文件与 SHA-256 校验值，更新某个运行时要同时更新产物、许可证与校验值。
 
-尚未发布的开发版本启用 PlantUML 后，无需端点即可在浏览器内渲染；已发布的 v1.3.2 仍需要端点。
+OINK 1.4.0 启用 PlantUML 后，无需端点即可在浏览器内渲染；显式配置端点时继续使用服务端模式。
 
 对可能引起网络请求的功能，主题让它保持关闭而不是静默连出去：Diagrams.net 缺 `params.drawio.drawio_server`、Algolia 缺 `appId` / `apiKey` / `indexName`，都会告警并保持禁用；发布前应审阅告警并补齐服务配置。
 

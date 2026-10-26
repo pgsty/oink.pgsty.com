@@ -1,6 +1,6 @@
 # OINK Release Notes
 
-> OINK 1.3.2 release notes, Hugo-only build requirements, and versioned upgrade history
+> OINK 1.4.0 release notes, Hugo-only build requirements, and versioned upgrade history
 
 ---
 
@@ -13,10 +13,11 @@ LLMS index: [llms.txt](/llms.txt)
 > development, CI, and release tests use Hugo Extended 0.168.0 as the pinned default. Older requirements below do not define
 > current support; follow the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
 
-The current release is [OINK 1.3.2](/blog/release/1.3.2/): Hugo-only builds,
-readability repairs, and opt-in FileTree comment wrapping. Use Hugo Extended
-**0.168.0**, keep warnings visible, and never enable `--panicOnWarning` or
-`HUGO_PANICONWARNING`. No external Sass compiler is required.
+The current release is [OINK 1.4.0](/blog/release/1.4.0/): richer local search,
+local PlantUML, shared diagram reading, an opt-in table reader, the blog gallery,
+and component refinements. Use Hugo Extended **0.168.0**, keep warnings visible,
+and never enable `--panicOnWarning` or `HUGO_PANICONWARNING`. No external Sass
+compiler is required.
 
 For the changes contributed in 1.3.1, see its
 [reading repairs and contributor credits](/blog/release/1.3.1/#thanks).
@@ -25,6 +26,7 @@ For the changes contributed in 1.3.1, see its
 
 Section pages:
 
+- [OINK 1.4.0 — Easier reading, better search](/blog/release/1.4.0/): Expand selected tables, render and read diagrams locally, search across languages, and browse posts in a gallery.
 - [OINK 1.3.2 — Hugo-only builds restored](/blog/release/1.3.2/): Remove the mandatory Dart Sass dependency and use Hugo Extended 0.168.0 with visible warnings for all maintained sites.
 - [OINK 1.3.1 — Readability repairs](/blog/release/1.3.1/): Readable Markmap labels, reliable TOC footer clearance, opt-in technical tables and FileTree comment wrapping, with Hugo 0.168 and Dart Sass.
 - [OINK 1.3.0 — Expo image albums](/blog/release/1.3.0/): Expo brings resource-backed image albums, three layouts and an original-image viewer to OINK, with more reliable navigation, dialogs and focus.

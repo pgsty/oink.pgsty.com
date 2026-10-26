@@ -18,8 +18,8 @@ need it.
 
 ## Build and review
 
-Use OINK **v1.3.2**, Hugo Extended **0.168.0**, and Go **1.27.2**. The module's
-Go minimum is 1.27.0. Hugo's built-in LibSass compiles theme and project SCSS;
+Use OINK **v1.4.0**, Hugo Extended **0.168.0**, and Go **1.27.3**. The module's
+Go minimum is 1.27.3. Hugo's built-in LibSass compiles theme and project SCSS;
 do not add an external Sass compiler. Never enable `--panicOnWarning` or
 `HUGO_PANICONWARNING`. Keep diagnostics visible and review them; the upstream
 LibSass deprecation warning is accepted. There is no legacy Hugo test matrix.

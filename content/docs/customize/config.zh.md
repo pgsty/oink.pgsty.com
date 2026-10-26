@@ -52,7 +52,7 @@ params:
 - **非法值告警并回退到文档里写明的默认值**。`params.ui.typography: solarized` 报 `invalid params.ui.typography "solarized" (allowed: technical | system) -- using "technical"`，站点照常构建；`footer_style: thin`、`page_width: huge`、`section_index: grid` 同理。一个笔误因此只降级一个设置，而不是让 `hugo server` 下每个 URL 都返回 HTTP 500。发布前应核对这些告警与降级产物。
 - **有一条警告保留取值而不是丢弃它**。主题读出的 `theme_color` 若在它自己的画布上低于 AA 正文对比度（4.5:1），颜色照常生效 —— 自定义画布或品牌强制色是作者的决定 —— 但会说出来，并打印可以让它闭嘴的 `ignoreLogs` id。把它当建议而不是拒绝：要么换个更深的颜色，要么加一行配置，发布前应确认实际对比度。只有解析不出来的十六进制才会被真正丢弃，那种情况和其他非法值一样回退到默认配色。
 
-- **主题自身从不中断构建**。它的模板里没有任何 `errorf`：每个非法值都走上面的告警并回退。Draw.io 与 Algolia 缺少必需的服务配置时告警并保持关闭。尚未发布的 PlantUML 本地渲染无需端点；显式填写的非法端点会告警并关闭渲染。主题不会代为连接公共服务。残缺的上游署名告警并略去整条声明，因为半条读起来和完整的一模一样。真正会中断构建的来自 Hugo 而非主题：解析不到目标的内容引用，以及低于 `module.hugoVersion.min` 的 Hugo 版本。
+- **主题自身从不中断构建**。它的模板里没有任何 `errorf`：每个非法值都走上面的告警并回退。Draw.io 与 Algolia 缺少必需的服务配置时告警并保持关闭。OINK 1.4.0 的 PlantUML 本地渲染无需端点；显式填写的非法端点会告警并关闭渲染。主题不会代为连接公共服务。残缺的上游署名告警并略去整条声明，因为半条读起来和完整的一模一样。真正会中断构建的来自 Hugo 而非主题：解析不到目标的内容引用，以及低于 `module.hugoVersion.min` 的 Hugo 版本。
 
 ## 页面级覆盖优先级 {#overrides}
 
@@ -191,8 +191,8 @@ OINK 1.3.0 为默认 `shell_types` 列表添加了 `expo`，
 可通过博客根目录的 front matter 或 `cascade` 按栏目覆盖。
 
 [布局指南](/zh/docs/write/blog/#list)对比了水平条目、卡片、表格与画廊。
-下面的 `gallery` 布局与 `blog_gallery` 配置属于尚未发布的开发功能；
-OINK v1.3.2 支持前三种布局。
+下面的 `gallery` 布局与 `blog_gallery` 配置已随 OINK v1.4.0 发布；
+四种布局都可以配置和切换。
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
@@ -380,11 +380,10 @@ OINK v1.3.2 支持前三种布局。
 
 Mermaid、KaTeX、ECharts、Infographic、Asciinema、Swagger UI 与 Redoc 按内容自动检测，只有用到它们的页面、且只在该页的 HTML 输出里加载，没有站点开关。需要开关或外部端点的只有这几个：
 
-> [!NOTE] 尚未发布的 PlantUML 支持
-> 开发版本在启用且未配置端点时使用本地渲染。已发布的 v1.3.2 仍需要
-> `svg_image_url`。两种模式及其限制见 [PlantUML](/zh/docs/components/plantuml/)。
-> 本地开发版本的 Mermaid 与本地 PlantUML 按图表是否接近视口加载引擎；共用
-> 查看器和源码导出无需新配置。普通浏览器打印未渲染图时保留源码。
+> [!NOTE] OINK 1.4.0 的 PlantUML 与图表阅读
+> 启用 PlantUML 且不配置端点时使用本地渲染；填写 `svg_image_url` 才选择服务端模式。
+> Mermaid 与本地 PlantUML 按图表是否接近视口加载引擎，共用查看器和源码导出，
+> 无需新增配置。普通浏览器打印未渲染图时保留源码。
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
@@ -486,13 +485,13 @@ outputs:
 与参数扫描注册表的投影；主题 CI 会重新生成并检查漂移。使用时应选择与主题固定版本
 相同标签下的 Schema。
 
-配合 VS Code YAML 扩展，在设置中映射站点 Schema。下面以 OINK v1.3.2 为例，
+配合 VS Code YAML 扩展，在设置中映射站点 Schema。下面以 OINK v1.4.0 为例，
 请将标签换成 `go.mod` 中固定的版本；两种常见 YAML 配置文件名都已覆盖：
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/v1.3.2/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
+    "https://raw.githubusercontent.com/pgsty/oink/v1.4.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```

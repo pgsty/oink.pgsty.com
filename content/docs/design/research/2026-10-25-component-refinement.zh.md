@@ -10,7 +10,7 @@ research_date: 2026-10-25
 ---
 
 > [!IMPORTANT] 仅为本地验收
-> 本轮组件修改的[第 0–3 阶段与第 5 阶段最终验收](/zh/docs/design/proposals/component-refinement/)已完成，实现与文档已在本地提交。这不代表公开发布、下游升级或部署。滑动选中背景试验继续暂缓。
+> 本轮组件修改的[第 0–3 阶段与第 5 阶段最终验收](/zh/docs/design/decisions/component-refinement/)已完成，实现与文档已在本地提交。这不代表公开发布、下游升级或部署。滑动选中背景试验继续暂缓。
 
 ## 输入与方法 {#inputs}
 

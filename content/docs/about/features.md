@@ -49,8 +49,8 @@ license file and SHA-256 checksum of each dependency. When you
 update a runtime, update its artifact, license, and checksum together.
 
 Features that could make network requests require explicit configuration.
-The unreleased development version renders PlantUML in the browser when enabled
-without an endpoint; the published v1.3.2 still requires one.
+OINK 1.4.0 renders PlantUML in the browser when enabled without an endpoint;
+an explicit endpoint keeps server mode.
 Without `params.drawio.drawio_server`, Diagrams.net warns and stays disabled.
 Without `appId` / `apiKey` / `indexName`, Algolia warns and stays disabled.
 Review warnings and their safe fallbacks before publishing.

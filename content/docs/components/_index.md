@@ -51,9 +51,9 @@ markup:
 Some components need other settings. Mathematics needs Goldmark passthrough. Draw.io needs an explicitly configured editor service.
 Each component page explains its requirements. [Configuration](/docs/customize/config/) lists all configuration keys.
 
-The unreleased development version renders PlantUML locally when enabled,
-using two bundled scripts. Published v1.3.2 still requires an endpoint;
-see the [PlantUML guide](/docs/components/plantuml/) for both modes.
+OINK 1.4.0 renders PlantUML locally when enabled without an endpoint, using two
+bundled scripts. An explicit endpoint keeps server mode; see the
+[PlantUML guide](/docs/components/plantuml/) for both modes.
 
 ## Cheatsheet {#cheatsheet}
 
@@ -67,14 +67,14 @@ The *Runtime* column shows whether the component loads JavaScript on the page.
 | [Images](/docs/components/image/) | Captions, sizing, zoom, numbering and build-time processing | `![alt](oink.webp)` | native | site switch |
 | [Code Blocks](/docs/components/code/) | Highlighting, titles, copy, folding, linkable lines | ```` ```sh ```` | fence | per page |
 | [Tabs](/docs/components/tabs/) | One thing, several platforms or languages | attribute `{tab="Linux"}` | native + shortcode | per page |
-| [Tables](/docs/components/table/) | Plain tables plus full-width, matrix, caption and numbering | `{.full-width}` | native | none |
+| [Tables](/docs/components/table/) | Plain tables plus full-width, matrix, caption and numbering | `{.full-width}` | native | tabs or `.expand` only |
 | [Fields](/docs/components/fields/) | Parameter lists with type / required / default chips | `{.fields meta="type default"}` | native + shortcode | none |
 | [Steps](/docs/components/steps/) | A procedure with an order | `{.steps}` | native + shortcode | none |
 | [Cards](/docs/components/cards/) | A set of parallel destinations | `{.cards}` | native + shortcode | none |
 | [FileTree](/docs/components/filetree/) | Directory structure with an aligned comment column | ```` ```filetree ```` | fence | per page |
 | [Math](/docs/components/math/) | KaTeX inline and display formulas | `$$ … $$` | native | none |
 | [Mermaid](/docs/components/mermaid/) | Flowcharts, sequence diagrams, Gantt charts | ```` ```mermaid ```` | fence | per page |
-| [PlantUML](/docs/components/plantuml/) | UML diagrams; local rendering in the development version | ```` ```plantuml ```` | fence | site switch |
+| [PlantUML](/docs/components/plantuml/) | UML diagrams; local rendering in OINK 1.4.0 | ```` ```plantuml ```` | fence | site switch |
 | [Markmap](/docs/components/markmap/) | A Markdown outline becomes a mind map | ```` ```markmap ```` | fence | site switch |
 | [Draw.io](/docs/components/drawio/) | Diagrams that stay editable; needs a server | `![alt](arch.drawio.svg)` | native | site switch |
 | [ECharts](/docs/components/echarts/) | Declarative statistical charts | ```` ```echarts ```` | fence | per page |

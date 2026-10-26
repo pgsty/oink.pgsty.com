@@ -2,7 +2,7 @@
 title: OINK Release Notes
 linkTitle: Releases
 description:
-  OINK 1.3.2 release notes, Hugo-only build requirements, and versioned upgrade history
+  OINK 1.4.0 release notes, Hugo-only build requirements, and versioned upgrade history
 weight: 10
 icon: fa-solid fa-clipboard-list
 blog_index: table
@@ -27,10 +27,11 @@ cascade:
 > development, CI, and release tests use Hugo Extended 0.168.0 as the pinned default. Older requirements below do not define
 > current support; follow the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
 
-The current release is [OINK 1.3.2](/blog/release/1.3.2/): Hugo-only builds,
-readability repairs, and opt-in FileTree comment wrapping. Use Hugo Extended
-**0.168.0**, keep warnings visible, and never enable `--panicOnWarning` or
-`HUGO_PANICONWARNING`. No external Sass compiler is required.
+The current release is [OINK 1.4.0](/blog/release/1.4.0/): richer local search,
+local PlantUML, shared diagram reading, an opt-in table reader, the blog gallery,
+and component refinements. Use Hugo Extended **0.168.0**, keep warnings visible,
+and never enable `--panicOnWarning` or `HUGO_PANICONWARNING`. No external Sass
+compiler is required.
 
 For the changes contributed in 1.3.1, see its
 [reading repairs and contributor credits](/blog/release/1.3.1/#thanks).

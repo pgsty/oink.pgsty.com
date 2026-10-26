@@ -27,13 +27,12 @@ design_status: active
 | [媒体收敛](/zh/docs/design/proposals/media-convergence/)         | 部分已实现；media-result 契约与 Landing 资源元数据已交付，M3 决议为原生图片处理，退役（M4）保持开放 |
 | [OINK CLI 与下一阶段产品路线](/zh/docs/design/proposals/oink-cli-roadmap/) | 独立 Go 仓库与首期边界已接受，本地 CLI 候选已实现、尚未公开发布；后续主题、迁移、采用、版本管理、OpenAPI 与平台阶段保持提案 |
 | [视觉预设与外观切换](/zh/docs/design/proposals/visual-presets/) | Paper/Slate 已随 v1.2.0 发布；Ink/Terminal 已提供显式启用的实验，等待视觉定稿；当前行为与证据见已接受决策和带日期验收记录 |
-| [四种视觉预设的组件精修计划](/zh/docs/design/proposals/component-refinement/) | 第 0–3 与第 5 阶段及三个可选 Markdown 变体已在本地验收并提交；最终验证已有记录，滑动高亮试验暂缓，尚未公开发布 |
-| [统一图表阅读](/zh/docs/design/proposals/diagram-reading/) | 本地实现共用查看器、源码导出与按需渲染；验收记录随交付提供，尚未发布 |
-| [本地搜索改进](/zh/docs/design/proposals/local-search/) | 混合查询、真实小节锚点与紧凑范围控件已在本地实现并审查，尚未发布 |
+
+组件精修、统一图表阅读与本地搜索改进已随 1.4.0 发布，现归入[已接受决策](/zh/docs/design/decisions/)。
 
 表格阅读草案也已退役：[接受的决策](/zh/docs/design/decisions/large-table-reading/)
-与[组件契约](/zh/docs/design/components/#table-reading)定义缩小范围后在本地实现的
-`.expand` 行为，已发布的 v1.3.2 尚不包含此功能。
+与[组件契约](/zh/docs/design/components/#table-reading)定义缩小范围后随 OINK 1.4.0 发布的
+`.expand` 行为。
 
 Agent 批量索引提案已在输出交付后退役。稳定行为现在归属
 [架构](/zh/docs/design/architecture/#outputs-and-runtime)，用户步骤归属

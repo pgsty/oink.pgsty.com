@@ -129,7 +129,7 @@ module:
 ```go-mod {title="go.mod"}
 module github.com/OWNER/PROJECT-DOCS
 
-go 1.27.0
+go 1.27.3
 
 require github.com/pgsty/oink v1.0.0
 ```

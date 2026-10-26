@@ -1,18 +1,21 @@
 ---
 title: Unified diagram reading
 description: Shared Mermaid and local PlantUML viewing, source export and demand loading.
-design_kind: proposal
-design_status: implemented-local
+design_kind: decision
+design_status: accepted
+decision_date: 2026-10-26
+aliases:
+  - /docs/design/proposals/diagram-reading/
 date: 2026-10-25
 ---
 
-> [!WARNING] Implemented locally, awaiting maintainer review
-> Owner: OINK maintainers. Date: 2026-10-25. Affected contracts: Components,
-> Architecture and browser printing. The public baseline remains v1.3.2.
+> [!NOTE] Accepted in OINK 1.4.0
+> Shared diagram viewing, source export and demand loading ship in 1.4.0.
+> Components, Architecture and browser printing own the behavior.
 
 ## Context {#context}
 
-Mermaid already has a pan/zoom dialog but loads its engine at page startup and
+Before this change, Mermaid had a pan/zoom dialog but loads its engine at page startup and
 renders a second SVG for the dialog. Local PlantUML loads both engines at startup
 and offers only horizontal scrolling. Both preserve authored source.
 
@@ -60,4 +63,4 @@ Compare requests before/after. Keep logs and previews outside Git.
 - 2026-10-25: Initial bounded design. Main-thread serialization and Blob isolation
   are retained. Immediate browser printing uses source for unrendered figures.
   Local implementation and focused browser acceptance are complete; broader site
-  validation is recorded with the delivery evidence. No public release is implied.
+  validation is recorded with the delivery evidence. This behavior ships in OINK 1.4.0.

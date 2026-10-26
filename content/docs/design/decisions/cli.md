@@ -799,8 +799,9 @@ system network sandbox. Qualification records distinguish ordinary offline
 execution from tests that actually deny outbound access at the OS boundary.
 
 The current development and validation baseline is Hugo Extended 0.168.0;
-the version gate requires 0.168.0 or newer and initialized sites use public
-OINK v1.3.2. Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
+the version gate requires 0.168.0 or newer. Initialized sites use the CLI's
+separately maintained Starter snapshot; theme upgrades follow the
+[upgrade guide](/docs/admin/upgrade/). Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
 Warnings stay visible, including Hugo's accepted upstream LibSass notice.
 Compatibility claims require executed evidence on the identified source and
 binary. Initialized sites retain ordinary Hugo inputs and need only their

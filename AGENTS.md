@@ -8,9 +8,9 @@ not a projection of a second theme-local document tree.
 
 ## Current baseline
 
-The documentation target is OINK `v1.3.2`. Verify the actual published theme
+The documentation target is OINK `v1.4.0`. Verify the actual published theme
 version in `go.mod` and public tags before claiming release or deployment.
-The Design contracts and release notes describe the 1.3.2 behavior. Use
+The Design contracts and release notes describe the 1.4.0 behavior. Use
 sibling-checkout Make targets for development; validate the
 published pin separately with replacements and both workspaces disabled.
 CLI documentation describes the separate local `0.1.0-dev` candidate. Recheck
@@ -79,7 +79,7 @@ themselves; use the Make targets for local theme acceptance. The local `check`,
 do not clear inherited replacements or workspaces; use the published-pin
 commands below to establish release identity. Node >= 24 and npm >= 11.16.0
 are contributor test dependencies, not ordinary Hugo consumer requirements.
-Use OINK v1.3.2 and Hugo Extended 0.168.0 for development, CI, and release
+Use OINK v1.4.0 and Hugo Extended 0.168.0 for development, CI, and release
 validation. Keep this baseline pinned. Never enable `--panicOnWarning` or
 `HUGO_PANICONWARNING`. Warnings remain visible and are reviewed; the upstream
 LibSass deprecation warning is accepted. SCSS uses Hugo's built-in LibSass,

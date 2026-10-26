@@ -45,8 +45,8 @@ markup:
 
 个别组件另有前置条件：公式需要开启 Goldmark 的 passthrough，Draw.io 需要显式配置编辑器服务，各页分别说明。完整的配置键见[配置总览](/zh/docs/customize/config/)。
 
-尚未发布的开发版本启用 PlantUML 后，使用两份随主题提供的脚本在浏览器内渲染。
-已发布的 v1.3.2 仍需要端点，两种模式见 [PlantUML 指南](/zh/docs/components/plantuml/)。
+OINK 1.4.0 启用 PlantUML 后，使用两份随主题提供的脚本在浏览器内本地渲染；
+填写端点则继续使用服务端模式。两种模式见 [PlantUML 指南](/zh/docs/components/plantuml/)。
 
 ## 速查表 {#cheatsheet}
 
@@ -58,14 +58,14 @@ markup:
 | [图片](/zh/docs/components/image/) | 图注、尺寸、缩放、编号与构建期图片处理 | `![说明](oink.webp)` | 原生 | 需站点开关 |
 | [代码块](/zh/docs/components/code/) | 高亮、标题、复制、折叠、行链接 | ```` ```sh ```` | 围栏 | 按页加载 |
 | [标签页](/zh/docs/components/tabs/) | 同一件事的多个平台或语言版本 | 属性行 `{tab="Linux"}` | 原生 + shortcode | 按页加载 |
-| [表格](/zh/docs/components/table/) | 普通表格，加满宽、矩阵、标题与编号 | `{.full-width}` | 原生 | 无 |
+| [表格](/zh/docs/components/table/) | 普通表格，加满宽、矩阵、标题与编号 | `{.full-width}` | 原生 | 标签页或 `.expand` 时加载 |
 | [参数表](/zh/docs/components/fields/) | 参数清单，带类型 / 必填 / 默认值芯片 | `{.fields meta="type default"}` | 原生 + shortcode | 无 |
 | [步骤](/zh/docs/components/steps/) | 有先后的流程 | `{.steps}` | 原生 + shortcode | 无 |
 | [卡片](/zh/docs/components/cards/) | 一组并列的去处 | `{.cards}` | 原生 + shortcode | 无 |
 | [文件树](/zh/docs/components/filetree/) | 目录结构与对齐的注释列 | ```` ```filetree ```` | 围栏 | 按页加载 |
 | [公式](/zh/docs/components/math/) | KaTeX 行内与块级公式 | `$$ … $$` | 原生 | 无 |
 | [Mermaid](/zh/docs/components/mermaid/) | 流程图、时序图、甘特图 | ```` ```mermaid ```` | 围栏 | 按页加载 |
-| [PlantUML](/zh/docs/components/plantuml/) | UML 图；开发版本支持本地渲染 | ```` ```plantuml ```` | 围栏 | 需站点开关 |
+| [PlantUML](/zh/docs/components/plantuml/) | UML 图；OINK 1.4.0 支持本地渲染 | ```` ```plantuml ```` | 围栏 | 需站点开关 |
 | [思维导图](/zh/docs/components/markmap/) | Markdown 列表变成思维导图 | ```` ```markmap ```` | 围栏 | 需站点开关 |
 | [Draw.io](/zh/docs/components/drawio/) | 可回编辑的图；需要自建服务 | `![说明](arch.drawio.svg)` | 原生 | 需站点开关 |
 | [ECharts](/zh/docs/components/echarts/) | 声明式数据图表 | ```` ```echarts ```` | 围栏 | 按页加载 |

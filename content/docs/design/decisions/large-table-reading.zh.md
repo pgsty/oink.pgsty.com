@@ -7,11 +7,11 @@ design_kind: decision
 design_status: accepted
 decision_date: 2026-10-26
 aliases:
-  - /zh/docs/design/proposals/large-table-reading/
+  - /docs/design/proposals/large-table-reading/
 ---
 
-> [!NOTE] 开发实现，尚未发布
-> 本决策记录已接受的 `.expand` 方向，OINK v1.3.2 尚不包含此功能。
+> [!NOTE] 已随 OINK 1.4.0 发布
+> 本决策记录正式发布的 `.expand` 表格阅读行为。
 
 [组件契约](/zh/docs/design/components/#table-reading)定义行为，[表格指南](/zh/docs/components/table/#expand)说明作者语法，[日期研究](/zh/docs/design/research/2026-10-26-large-table-reading/)保留此前的方案比较。
 

@@ -12,7 +12,7 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 
 ## 可选呈现 {#presentation}
 
-简短流程使用 `{.steps .td-steps-compact}`，带标题的完整形式使用 `steps variant="compact"`。这些可选变体已在本地开发 checkout 中提供，参见[对照示例](/zh/docs/components/presentation/#steps)。编号、嵌套和标题锚点保留原有含义。
+简短流程使用 `{.steps .td-steps-compact}`，带标题的完整形式使用 `steps variant="compact"`。这些可选变体随 OINK 1.4.0 提供，参见[对照示例](/zh/docs/components/presentation/#steps)。编号、嵌套和标题锚点保留原有含义。
 
 ## 最简例子 {#minimal}
 

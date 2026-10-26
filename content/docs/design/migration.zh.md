@@ -1,15 +1,15 @@
 ---
 title: OINK 迁移边界
 linkTitle: 迁移边界
-description: OINK 迁移所支持的源码、配置与验证边界，包含 1.3.1 变化。
+description: OINK 迁移所支持的源码、配置与验证边界，包含 1.4.0 升级。
 weight: 50
 icon: fa-solid fa-code-compare
 search_keywords: [OINK 迁移契约, 0.4 迁移, 0.5 迁移, 配置重命名, 迁移工具]
-contract_status: v1.3.2
+contract_status: v1.4.0
 ---
 
-> [!NOTE] OINK 1.3.2 契约
-> 本契约描述 OINK v1.3.2。主题开发使用同级 checkout；发布验收在关闭替换与
+> [!NOTE] OINK 1.4.0 契约
+> 本契约描述 OINK v1.4.0。主题开发使用同级 checkout；发布验收在关闭替换与
 > 工作区后验证公开模块。消费站升级与部署分别检查。
 
 这是源码与配置指南，不是版本发布流水账。本地源码、提交、标签、推送、消费站点
@@ -51,8 +51,8 @@ pg-internal profile；它不是通用解析器。
 此工具随 OINK 1.2.0 发布。在主题 checkout 中执行，先清点，再升级到正式标签。
 
 ```sh
-python3 bin/update-consumers.py v1.3.2 --roots ~/www ~/pgsty
-python3 bin/update-consumers.py v1.3.2 --roots ~/www ~/pgsty --write --check --check-appearance
+python3 bin/update-consumers.py v1.4.0 --roots ~/www ~/pgsty
+python3 bin/update-consumers.py v1.4.0 --roots ~/www ~/pgsty --write --check --check-appearance
 ```
 
 第一条命令只报告版本采用情况。第二条更新 `go.mod` 和 `go.sum` 中的 OINK

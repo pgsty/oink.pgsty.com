@@ -12,9 +12,9 @@ browser with two bundled scripts. No Java, Graphviz executable, npm install,
 CDN or rendering service is needed. Diagram source stays in the browser when
 using local rendering.
 
-> [!NOTE] Unreleased development change
-> Local rendering is available in the development version of the theme.
-> The published v1.3.2 theme still requires an explicit rendering endpoint.
+> [!NOTE] Local rendering in OINK 1.4.0
+> Local rendering is available when PlantUML is enabled without an endpoint.
+> An explicit rendering endpoint continues to select server mode.
 
 Enable it in your site configuration:
 

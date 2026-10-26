@@ -10,7 +10,7 @@ search_keywords: [卡片, Cards, card, 链接卡片, 导航卡片, 栏目首页,
 
 ## 可选呈现 {#presentation}
 
-使用 `{.cards .td-cards-list}` 呈现共用分隔线的单列资源列表，完整形式使用 `cards variant="list"`。这些可选变体已在本地开发 checkout 中提供，参见[对照示例](/zh/docs/components/presentation/#cards)。默认仍是响应式网格。
+使用 `{.cards .td-cards-list}` 呈现共用分隔线的单列资源列表，完整形式使用 `cards variant="list"`。这些可选变体随 OINK 1.4.0 提供，参见[对照示例](/zh/docs/components/presentation/#cards)。默认仍是响应式网格。
 
 ## 最简例子 {#minimal}
 

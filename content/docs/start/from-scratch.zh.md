@@ -30,10 +30,10 @@ aliases:
 已有 Hugo 站点时，按下方[接入现有站点](#existing-site)操作；已有 Docsy 站点见[版本升级](/zh/docs/admin/upgrade/)。
 
 后半部分是四种安装方式的取舍：Hugo Module、Git submodule、离线归档、固定版本源码副本。
-当前开发与验收统一使用 Go 1.27 与 Hugo Extended 0.168.0。
+当前开发与验收统一使用 Go 1.27.3 与 Hugo Extended 0.168.0。
 Hugo 默认基线保持固定，不再测试或适配旧版本。
 
-> [!NOTE] OINK 1.3.2 构建要求
+> [!NOTE] OINK 1.4.0 构建要求
 > 维护中的站点使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
 > 上游 LibSass 弃用告警保持可见并接受审阅；不要启用 `--panicOnWarning`
 > 或 `HUGO_PANICONWARNING`。

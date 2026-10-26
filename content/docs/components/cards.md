@@ -12,7 +12,7 @@ Use paragraphs for prose and a [gallery](/docs/components/gallery/) for image co
 
 ## Optional presentation {#presentation}
 
-Use `{.cards .td-cards-list}` for a single-column resource list with shared dividers, or `cards variant="list"` for the full form. These opt-in variants are available in the local development checkout; [compare the examples](/docs/components/presentation/#cards). The default remains a responsive grid.
+Use `{.cards .td-cards-list}` for a single-column resource list with shared dividers, or `cards variant="list"` for the full form. OINK 1.4.0 supports these opt-in variants; [compare the examples](/docs/components/presentation/#cards). The default remains a responsive grid.
 
 ## Shortest form {#minimal}
 

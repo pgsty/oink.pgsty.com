@@ -32,6 +32,10 @@ OINK 过去把评审、PRD 与执行记录放在本地 `plan/` 目录中。这�
 | [博客画廊](/zh/docs/design/decisions/blog-gallery/) | 文章封面、共享 Expo 排布、独立偏好与可读的文字说明 |
 | [表格阅读](/zh/docs/design/decisions/large-table-reading/) | 显式 `.expand`、独立 `.wide`，以及可还原原表格的角落直接展开入口 |
 
+| [组件精修](/zh/docs/design/decisions/component-refinement/) | 共用样式、分隔式卡片、紧凑步骤与命令条 |
+| [统一图表阅读](/zh/docs/design/decisions/diagram-reading/) | Mermaid 与本地 PlantUML 共用查看器、源码导出与按需加载 |
+| [本地搜索改进](/zh/docs/design/decisions/local-search/) | 混合查询、真实小节锚点、部分匹配与栏目范围 |
+
 ## 记录格式 {#record-format}
 
 一份已接受决策应记录背景、选择、后果，以及证明该选择仍然成立的证据。它不重复参数

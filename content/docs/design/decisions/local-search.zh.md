@@ -1,23 +1,25 @@
 ---
 title: 本地搜索改进
 linkTitle: 本地搜索
-description: 支持中英混合查询、技术标识符、小节结果与命令面板范围限定的本地候选。
-design_kind: proposal
-design_status: implemented
-search_exclude: true
+description: OINK 1.4.0 的中英混合查询、技术标识符、小节结果与命令面板范围限定。
+design_kind: decision
+design_status: accepted
+decision_date: 2026-10-26
+aliases:
+  - /docs/design/proposals/local-search/
 ---
 
-> [!NOTE] 本地实现候选，2026-10-25
+> [!NOTE] OINK 1.4.0 已接受
 > 负责人：OINK 维护者。受影响契约：[Shell](/zh/docs/design/shell/#search-actions-and-runtime)。
-> 本次工作尚未发布；公开基线仍为 v1.3.2。
+> 本文描述的搜索行为随 OINK 1.4.0 发布。
 
 ## 证据与范围 {#scope}
 
-现有 CJK 路径要求整条查询连续出现在同一字段中。英文使用 Lunr，两者都只返回页面链接，
+此前 CJK 路径要求整条查询连续出现在同一字段中。英文使用 Lunr，两者都只返回页面链接，
 没有小节上下文。保留每语言一个本地索引、现有命令、输入法组字、排除规则、关键词权重和
 正数页面加权。不引入词典、服务、账号、外部可执行程序、配置键或额外构建步骤。
 
-## 拟议行为 {#behavior}
+## 已接受的行为 {#behavior}
 
 按空白及拉丁文字与 CJK 边界拆分查询，保留 `shared_buffers`、`pg_basebackup`、
 `--baseURL` 和 `/pg/data` 等技术标识符。关键词可以分布在不同索引字段中。优先返回
@@ -64,7 +66,7 @@ gzip 为 536,971/578,674 字节，超过 gzip 预算。维护中的站点保留 
 浏览器验收覆盖中英文、390/1440 px、深浅色、真实锚点跳转、可见且可播报的部分匹配、
 原生范围选择、博客与书籍根栏目、组字和命令保留。本地验收制品目录为
 `/Users/vonng/tmp/oink-search-20261025/`，保存准确命令、JSON 计时、日志与截图。
-这些记录不代表提交、标签、消费站升级或部署。
+这些带日期的测量仅针对当时语料；已接受的行为随 1.4.0 发布。
 
 2026-10-26：修复索引读取时的跨输出上下文污染，增加多输出归属检查，
 完成此前失败路由的无障碍与文件树复验。

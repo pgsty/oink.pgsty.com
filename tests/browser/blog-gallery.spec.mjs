@@ -36,7 +36,7 @@ for (const locale of ['', '/zh']) {
       await expect(page.locator('[data-td-expo-viewer]')).toHaveCount(0);
       for (const mode of ['wall', 'seamless', 'cards']) {
         await choose(page, mode);
-        await expect(gallery(page)).toHaveAttribute('data-mode', mode);
+        await expect(gallery(page)).toHaveAttribute('data-td-mode', mode);
         await geometry(page);
         if (touch) {
           const widths = await tiles(page).locator('.td-blog-gallery__caption').evaluateAll(nodes => nodes.map(n => n.clientWidth));
@@ -81,7 +81,7 @@ test('gallery switching, settings, pagination and resize preserve the posts', as
   await geometry(page);
   await page.reload();
   await expect(gallery(page)).toBeVisible();
-  await expect(gallery(page)).toHaveAttribute('data-mode', 'cards');
+  await expect(gallery(page)).toHaveAttribute('data-td-mode', 'cards');
   await expect(gallery(page).locator('[data-gallery-size]')).toHaveValue('260');
   await page.locator('.td-blog-posts__pagination a').filter({ hasText: /^2$/ }).click();
   await expect(tiles(page)).toHaveCount(1);
@@ -119,7 +119,7 @@ test('fixed gallery ignores a stored outer form, and Expo settings are independe
     localStorage.setItem('td-expo-size', '360');
   });
   await page.goto('/tests/blog-gallery/');
-  await expect(gallery(page)).toHaveAttribute('data-mode', 'wall');
+  await expect(gallery(page)).toHaveAttribute('data-td-mode', 'wall');
   await expect(gallery(page).locator('[data-gallery-size]')).toHaveValue('240');
   await page.goto('/tests/blog-gallery-fixed/');
   await expect(gallery(page)).toBeVisible();

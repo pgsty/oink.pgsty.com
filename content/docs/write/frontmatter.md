@@ -215,8 +215,8 @@ the same name.
 The guide is [Blog posts](/docs/write/blog/).
 
 See [List layouts](/docs/write/blog/#list) for the four presentation choices.
-`gallery` and `blog_gallery` are unreleased development features;
-OINK v1.3.2 supports `list`, `cards`, and `table`.
+`gallery` and `blog_gallery` are available in OINK v1.4.0;
+the supported layouts are `list`, `cards`, `table`, and `gallery`.
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |

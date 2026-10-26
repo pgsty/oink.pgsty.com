@@ -5,17 +5,17 @@ description: Repository assembly, configuration, diagnostics, localization, outp
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK architecture, repository boundary, runtime, i18n, Docsy locales, output formats, security, accessibility, performance]
-contract_status: v1.3.2
+contract_status: v1.4.0
 ---
 
-> [!NOTE] OINK 1.3.2 contract
-> This contract describes OINK v1.3.2. Theme development uses the sibling
+> [!NOTE] OINK 1.4.0 contract
+> This contract describes OINK v1.4.0. Theme development uses the sibling
 > checkout; release acceptance verifies the published module with replacements
 > and workspaces disabled. Consumer adoption and deployment have their own checks.
 
 ## Hugo toolchain {#hugo-toolchain}
 
-Use **OINK v1.3.2** and **Hugo Extended 0.168.0** for maintained sites,
+Use **OINK v1.4.0** and **Hugo Extended 0.168.0** for maintained sites,
 development, CI, and release validation. Keep this toolchain pinned.
 
 Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Warnings remain
@@ -29,9 +29,8 @@ SCSS hooks remain supported. Future upgrades must preserve this dependency
 boundary. Update requirements, checkers, CI pins, and both language contracts
 together; historical release and research records retain their original tools.
 
-The local development module requires Go **1.27.3**, also pinned for development
-and CI. This minimum applies to the unreleased checkout. Go resolves Hugo Modules
-and is not needed for a prepared classic theme copy.
+The module requires Go **1.27.3**, also pinned for development and CI. Go resolves
+Hugo Modules and is not needed for a prepared classic theme copy.
 
 ## Repository and assembly {#repository-and-assembly}
 
@@ -76,14 +75,16 @@ If a transition needs a migration diagnostic, add a targeted warning to its reso
 Never read removed keys as a compatibility path.
 
 Network-capable features require explicit configuration and remain disabled when that configuration is invalid.
-Released v1.3.2 PlantUML requires `plantuml.svg_image_url`. Draw.io requires `drawio.drawio_server`. Algolia requires `appId`, `apiKey`, and `indexName`.
+OINK 1.4.0 renders PlantUML locally when it is enabled without an endpoint;
+an explicit `plantuml.svg_image_url` keeps server mode. Draw.io requires
+`drawio.drawio_server`. Algolia requires `appId`, `apiKey`, and `indexName`.
 Incomplete configuration warns and sends no request.
 Draw.io loads only if rendered content has PNG or SVG candidates. It inspects each distinct image URL once.
 Diagram endpoints must be strings with an HTTP(S) URL containing a host or a same-site path.
 Unsupported schemes, protocol-relative URLs, backslashes, whitespace, and same-site references without paths warn and disable the integration before runtime selection.
 
-> [!NOTE] Unreleased: self-contained PlantUML
-> In the unreleased development version, `plantuml: true` or `plantuml.enable: true`
+> [!NOTE] Self-contained PlantUML in OINK 1.4.0
+> `plantuml: true` or `plantuml.enable: true`
 > without an endpoint selects browser rendering. The two pinned local assets
 > (`@plantuml/core` 1.2026.9 and Viz.js 3.24.0) load only on HTML pages with
 > PlantUML fences. Normal builds and readers need no Java, Graphviz executable,
@@ -93,7 +94,7 @@ Unsupported schemes, protocol-relative URLs, backslashes, whitespace, and same-s
 > or external resources are downloaded by local rendering. Generated SVG is
 > displayed as a Blob image, never inserted into the page DOM. Failed input or
 > loading keeps readable source; dedicated Print, Markdown and RSS keep source
-> without a runtime. This behavior is not part of the published v1.3.2 release.
+> without a runtime. This behavior is part of the v1.4.0 release.
 
 > [!NOTE] Fixed in OINK 1.3.0
 > Editor URLs retain their query parameters and fragments when embedding
@@ -101,7 +102,7 @@ Unsupported schemes, protocol-relative URLs, backslashes, whitespace, and same-s
 > configured origin; unrelated or malformed messages are ignored. Diagram
 > data is sent only to that origin. Exports must be PNG or SVG data URLs.
 
-> [!NOTE] Unreleased: diagram demand loading
+> [!NOTE] Lazy diagram loading in OINK 1.4.0
 > The small Mermaid/local-PlantUML scheduler appears only on HTML pages using
 > these diagrams. Large engines load as visible diagrams approach the viewport.
 > Engines are shared, with serial main-thread rendering; no Worker, dependency
@@ -356,7 +357,7 @@ are omitted in unsupported browsers. Explicit `fonts.ui` still supplies the
 main face unless a valid `fonts.body` overrides it. See the
 [experiment record](/docs/design/research/2026-10-05-ink-terminal-experiment/).
 
-> [!NOTE] Unreleased: Paper section headings
+> [!NOTE] Paper section headings in OINK 1.4.0
 > Paper no longer draws a decorative line to the right of content `h2` headings,
 > in either light or dark mode. Heading typography, spacing, anchors, and normal
 > wrapping are preserved. Site-authored heading borders remain supported.

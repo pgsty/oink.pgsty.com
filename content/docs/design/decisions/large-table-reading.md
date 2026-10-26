@@ -10,8 +10,8 @@ aliases:
   - /docs/design/proposals/large-table-reading/
 ---
 
-> [!NOTE] Development implementation; unreleased
-> This decision records the accepted `.expand` direction. OINK v1.3.2 does not include it.
+> [!NOTE] Accepted in OINK 1.4.0
+> This decision records the released `.expand` table-reader behavior.
 
 The [component contract](/docs/design/components/#table-reading) defines the behavior. The [table guide](/docs/components/table/#expand) gives author syntax; the [dated research](/docs/design/research/2026-10-26-large-table-reading/) retains the earlier comparisons.
 

@@ -15,14 +15,14 @@ Sometimes the cover is the quickest way to recognize a post. A travel journal,
 a collection of sketches, or a set of project notes can be easier to browse
 as images than as a column of titles.
 
-OINK's development theme now has a fourth blog view, `gallery`. Each post
+OINK 1.4.0 adds a fourth blog view, `gallery`. Each post
 becomes a linked cover. The default arrangement joins images into rows;
 hovering or focusing a cover reveals its title and description. Clicking it
 opens the article.
 
-> [!NOTE] Development feature
-> This feature is implemented in the development checkout and has not been
-> released in a tagged version. OINK v1.3.2 does not include it.
+> [!NOTE] Released in OINK 1.4.0
+> Gallery is part of the released theme. It keeps the ordinary blog article
+> model and adds a cover-based way to browse the same posts.
 
 ## Four ways to browse the same posts {#four-views}
 

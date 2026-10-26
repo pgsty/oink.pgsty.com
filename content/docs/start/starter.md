@@ -12,11 +12,11 @@ starting point for a new OINK site. It is smaller than
 `oink.pgsty.com`. It copies no theme documentation, analytics account, comment
 repository, browser regression suite, or PGSTY-specific brand into your project.
 
-Use Git, Go 1.27 or newer, and Hugo Extended 0.168.0 for this workflow.
+Use Git, Go 1.27.3 or newer, and Hugo Extended 0.168.0 for this workflow.
 Validate the selected language profiles with this toolchain and update older
 Starter workflow pins to match. The default Hugo version stays pinned; older versions receive no compatibility testing or adaptation.
 
-> [!NOTE] OINK 1.3.2 build requirements
+> [!NOTE] OINK 1.4.0 build requirements
 > Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass.
 > No external Sass installation is required. Keep the upstream LibSass warning
 > visible and review it; do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.

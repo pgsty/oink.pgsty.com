@@ -9,8 +9,8 @@ design_status: accepted
 decision_date: 2026-10-25
 ---
 
-> [!NOTE] 已实现，尚未发布
-> 本决策描述开发中的实现。OINK v1.3.2 不包含博客画廊视图。
+> [!NOTE] 已随 OINK 1.4.0 发布
+> 本决策记录正式发布的博客画廊视图及其兼容边界。
 
 [外壳契约](/zh/docs/design/shell/#blog-gallery)定义行为；
 [设计博客](/zh/blog/oink/blog-gallery/)介绍阅读体验；
