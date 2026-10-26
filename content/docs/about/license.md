@@ -36,7 +36,7 @@ Introduced in 1.3.1, these fixes remain included in **1.3.2**.
 | Markmap node text across light/dark modes and visual presets | [Theme #48](https://github.com/pgsty/oink/pull/48) |
 | Fixed TOC clearance above the footer | [Theme #50](https://github.com/pgsty/oink/pull/50) |
 | Complete FileTree comments, integrated behind `wrap=true` | [Theme #52](https://github.com/pgsty/oink/pull/52) |
-| Readable technical tables, integrated through `.td-table--wide` | [Theme #54](https://github.com/pgsty/oink/pull/54) |
+| Readable technical tables with an opt-in layout | [Theme #54](https://github.com/pgsty/oink/pull/54) |
 | Bilingual contracts, release documentation, and companion regression coverage | [Documentation #11](https://github.com/pgsty/oink.pgsty.com/pull/11) |
 
 The [release notes](/blog/release/1.3.1/#thanks) record the integration details.

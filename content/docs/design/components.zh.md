@@ -150,12 +150,17 @@ Print 给主题生成的标签页容器、面板 ID 加上来源页面的命名�
 `params.ui.typography` 变成 `field-params-ui-typography`。重复锚点追加位置后缀。
 
 表格渲染钩子负责响应式包装与 caption。`.matrix` 把第一列变为行表头；
-`.full-width` 加宽外层视口以占满文章可用宽度。在屏幕显示中，`.td-table--wide`
+`.full-width` 加宽外层视口以占满文章可用宽度。在屏幕显示中，`.wide`
 让技术表格按内容尺寸排版，在容器内横向滚动；单元格使用 `overflow-wrap: break-word`
 与 `word-break: normal` 保留标识符，正文单元格以 `max-width: 40ch` 作为软宽度约束，
 让长描述适当换行。普通表格保持现有布局。该标记不影响定义列表形式的 `.fields`，
 也不影响静态与打印输出。`.fields` 不能与 matrix、full-width、编号或标签页组合；
-编号与标签页也互斥。此宽度标记从 OINK 1.3.1 起可用。
+编号与标签页也互斥。
+
+> [!NOTE] 未发布：`.wide`
+> 这个简短的作者标记在开发版本中可用，尚未包含在已发布的 v1.3.2 中。
+> 它沿用 1.3.1 引入的技术宽表布局，继续兼容已有写法，可以与 `.matrix`、
+> `.full-width` 组合；Markdown 保留作者原本使用的标记。
 
 ### 图片、画廊、FileTree 与围栏 {#images-gallery-filetree-and-fences}
 

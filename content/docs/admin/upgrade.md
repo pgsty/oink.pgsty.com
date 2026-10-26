@@ -43,8 +43,8 @@ refresh their fixed theme files; changing `go.mod` does not update a vendored co
 
 OINK `v1.3.1` repairs Markmap text contrast and fixed-TOC footer clearance, and
 adds opt-in layouts for technical tables and long FileTree comments. Existing
-content keeps its default appearance. Add `.td-table--wide` or `wrap=true` only
-where complete technical text is needed.
+content keeps its default appearance. Enable [technical table layout](/docs/components/table/#wide)
+or FileTree `wrap=true` only where complete technical text is needed.
 
 Keep `preset: paper` and the explicit `[paper, slate, ink, terminal]` menu when
 the site offers all four styles. The [1.3.1 notes](/blog/release/1.3.1/) describe

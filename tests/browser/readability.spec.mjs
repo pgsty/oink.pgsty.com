@@ -86,6 +86,29 @@ for (const locale of ['', '/zh']) {
       await page.setViewportSize({ width, height: 900 });
       await page.goto(`${locale}/tests/readable-tables/`);
       const table = page.locator('#wide-technical-table');
+      const legacy = page.locator('#legacy-technical-table');
+      await expect(table).toHaveClass('wide td-table--wide');
+      await expect(legacy).toHaveClass('td-table--wide');
+      await page.evaluate(() => document.fonts.ready);
+      for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+        for (const color of ['light', 'dark']) {
+          const layouts = await page.evaluate(({ preset, color }) => {
+            document.documentElement.setAttribute('data-td-preset', preset);
+            document.documentElement.setAttribute('data-bs-theme', color);
+            return ['wide-technical-table', 'legacy-technical-table'].map(id => {
+              const el = document.getElementById(id);
+              return [...el.querySelectorAll('th, td')].map(cell => {
+                const rect = cell.getBoundingClientRect();
+                const style = getComputedStyle(cell);
+                return { width: rect.width, height: rect.height,
+                  wrap: style.overflowWrap, break: style.wordBreak,
+                  maxWidth: style.maxWidth };
+              });
+            });
+          }, { preset, color });
+          expect(layouts[0], `${preset}/${color}: short and legacy markers must render alike`).toEqual(layouts[1]);
+        }
+      }
       const sizes = await table.evaluate(el => {
         const row = el.tBodies[0].rows[0];
         const wrapper = el.parentElement;
@@ -115,13 +138,16 @@ for (const locale of ['', '/zh']) {
 
       await page.emulateMedia({ media: 'print' });
       await expect(table.locator('tbody td').first()).toHaveCSS('max-width', 'none');
+      await expect(legacy.locator('tbody td').first()).toHaveCSS('max-width', 'none');
       // Paper layout has its own minimum sheet width, independent of a
       // narrow screen viewport; print must expose the complete table.
       await expect(wrapper).toHaveCSS('overflow-x', 'visible');
       await page.emulateMedia({ media: 'screen' });
       await page.goto(`${locale}/_print/tests/readable-tables/`);
-      await expect(page.locator('.td-table--wide').first().locator('..')).toHaveClass(/td-table-scroll--static/);
-      await expect(page.locator('.td-table--wide tbody td').first()).toHaveCSS('overflow-wrap', 'anywhere');
+      for (const id of ['wide-technical-table', 'legacy-technical-table']) {
+        await expect(page.locator(`#${id}`).locator('..')).toHaveClass(/td-table-scroll--static/);
+        await expect(page.locator(`#${id} tbody td`).first()).toHaveCSS('overflow-wrap', 'anywhere');
+      }
     });
   }
 }

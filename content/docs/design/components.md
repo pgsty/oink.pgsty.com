@@ -156,13 +156,19 @@ Thus `params.ui.typography` becomes `field-params-ui-typography`. Duplicate anch
 
 The table hook owns responsive wrapping and captions. `.matrix` makes the first
 column row headers; `.full-width` widens the outer wrapper to the article width.
-On screens, `.td-table--wide` opts technical tables into intrinsic sizing inside
+On screens, `.wide` opts technical tables into intrinsic sizing inside
 that scrollable wrapper, preserving identifiers with `overflow-wrap: break-word`
 and `word-break: normal`. Body cells have a soft `max-width: 40ch` bound so prose
 wraps. Ordinary tables retain their existing layout. The modifier has no effect
 on `.fields`, which renders a definition list, or on static and print output.
 `.fields` cannot combine with matrix, full-width, numbering, or tabs; numbering
-and tabs are also mutually exclusive. This width modifier is available in OINK 1.3.1.
+and tabs are also mutually exclusive.
+
+> [!NOTE] Unreleased: `.wide`
+> The short author marker is available in the development checkout, beyond
+> published v1.3.2. It retains the technical-table layout introduced in 1.3.1
+> and compatibility with existing markup. It composes with `.matrix` and
+> `.full-width`; Markdown preserves the authored marker.
 
 ### Images, Gallery, FileTree, and fences {#images-gallery-filetree-and-fences}
 

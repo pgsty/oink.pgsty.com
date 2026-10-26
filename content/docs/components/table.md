@@ -3,7 +3,7 @@ title: Tables
 linkTitle: Tables
 description: Add attributes to a GFM table for captions, compatibility matrices, field lists, numbering, or tabs. Wide tables scroll within their own regions.
 weight: 50
-search_keywords: [Table, matrix, full-width, td-table--wide, technical tables, caption, numbered table, horizontal scroll, GFM]
+search_keywords: [Table, matrix, full-width, wide, technical tables, caption, numbered table, horizontal scroll, GFM]
 aliases:
   - /docs/components/tables/
 ---
@@ -113,11 +113,15 @@ Authors write ✅ and ❌ characters. The theme does not interpret them.
 
 ## Technical wide tables {#wide}
 
+> [!NOTE] Unreleased: `.wide`
+> The short marker is available in the development checkout, beyond published
+> v1.3.2. Existing technical-table markup remains supported.
+
 Technical tables containing long configuration keys, environment variables, or
 identifiers can produce awkward token breaks and very tall rows when forced into
-the reading column. Adding `{.td-table--wide}` to the attribute line opts the
+the reading column. Adding `{.wide}` to the attribute line opts the
 inner table into natural intrinsic sizing (`width: max-content`), scrolling
-horizontally within its wrapper when it exceeds the available space. (Added in OINK 1.3.1.)
+horizontally within its wrapper when it exceeds the available space.
 
 ```markdown {title="Source"}
 | Variable | Required | Default | Configuration key | Description |
@@ -125,7 +129,7 @@ horizontally within its wrapper when it exceeds the available space. (Added in O
 | `HG_PD_GRPC_HOST` | Yes | None | `grpc.host` | Advertised gRPC hostname/IP; use container hostnames within a container network. |
 | `HG_PD_INITIAL_STORE_COUNT` | No | `1` | `pd.initial-store-count` | Minimum Store count needed for cluster availability. |
 | `HG_PD_ACTUATOR_EXPOSURE` | No | `health,metrics,prometheus` | `management.endpoints.web.exposure.include` | Public Actuator endpoint allowlist; `*` is forbidden. |
-{.td-table--wide}
+{.wide}
 ```
 
 | Variable | Required | Default | Configuration key | Description |
@@ -133,23 +137,23 @@ horizontally within its wrapper when it exceeds the available space. (Added in O
 | `HG_PD_GRPC_HOST` | Yes | None | `grpc.host` | Advertised gRPC hostname/IP; use container hostnames within a container network. |
 | `HG_PD_INITIAL_STORE_COUNT` | No | `1` | `pd.initial-store-count` | Minimum Store count needed for cluster availability. |
 | `HG_PD_ACTUATOR_EXPOSURE` | No | `health,metrics,prometheus` | `management.endpoints.web.exposure.include` | Public Actuator endpoint allowlist; `*` is forbidden. |
-{.td-table--wide}
+{.wide}
 
 ### Difference from .full-width {#wide-vs-full-width}
 
 - `.full-width` controls the **outer canvas**: it expands the table container to
   break out of the reading column into the full width of the article layout.
   It suits tables with many short columns.
-- `.td-table--wide` controls the **inner table sizing**: it sets the table to its
+- `.wide` controls the **inner table sizing**: it sets the table to its
   natural intrinsic width (`width: max-content`), using horizontal scrolling to
   accommodate wide content. It suits tables with long technical identifiers.
-- Both can be combined: `{.full-width .td-table--wide}` expands the container to
+- Both can be combined: `{.full-width .wide}` expands the container to
   the full canvas while allowing the inner table to keep its natural wide measure.
 
 ### Applicability boundaries {#wide-boundaries}
 
 - **Explicit opt-in**: Ordinary tables keep their existing layout. Only tables
-  marked `.td-table--wide` use `overflow-wrap: break-word`, `word-break: normal`,
+  marked `.wide` use `overflow-wrap: break-word`, `word-break: normal`,
   and a soft `max-width: 40ch` body-cell bound. Very long tokens may still wrap;
   the bound is not a fixed column width.
 - **Static outputs**: This policy applies only on screen. Print and RSS use
@@ -252,7 +256,7 @@ The attribute line on the row below the table:
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `.full-width` | marker | none | Exceed the reading column and use the article canvas |
-| `.td-table--wide` | marker | none | Sizes the inner table to max-content; suits technical tables with long identifiers |
+| `.wide` | marker | none | Sizes the inner table to max-content; suits technical tables with long identifiers |
 | `.matrix` | marker | none | First column as row header, header and first column pinned, other cells centred |
 | `.fields` | marker | none | Render as a definition list, see [Fields](/docs/components/fields/) |
 | `caption` | plain text | none | Visible table caption; on `.fields` it labels the list |

@@ -30,7 +30,7 @@ OINK 由 PGSTY 维护。感谢 [@imbajin](https://github.com/imbajin) 报告并�
 | Markmap 节点文字适配明暗模式与视觉预设 | [主题 #48](https://github.com/pgsty/oink/pull/48) |
 | 固定 TOC 的页脚避让 | [主题 #50](https://github.com/pgsty/oink/pull/50) |
 | 完整 FileTree 注释，最终通过 `wrap=true` 显式开启 | [主题 #52](https://github.com/pgsty/oink/pull/52) |
-| 技术表格可读宽度，最终通过 `.td-table--wide` 显式开启 | [主题 #54](https://github.com/pgsty/oink/pull/54) |
+| 显式开启的技术表格可读宽度布局 | [主题 #54](https://github.com/pgsty/oink/pull/54) |
 | 双语契约、发布文档与伴生站回归覆盖 | [文档 #11](https://github.com/pgsty/oink.pgsty.com/pull/11) |
 
 [发布说明](/zh/blog/release/1.3.1/#thanks)记录了集成细节。参与纠错、翻译或修复，

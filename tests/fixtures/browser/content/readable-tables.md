@@ -19,7 +19,7 @@ outputs: [HTML, Markdown, print]
 | `HG_PD_GRPC_HOST` | Yes | None | `grpc.host` | Advertised gRPC hostname/IP; use container hostnames within a container network. |
 | `HG_PD_INITIAL_STORE_COUNT` | No | `1` | `pd.initial-store-count` | Minimum Store count needed for cluster availability. |
 | `HG_PD_ACTUATOR_EXPOSURE` | No | `health,metrics,prometheus` | `management.endpoints.web.exposure.include` | Public Actuator endpoint allowlist; `*` is forbidden. |
-{#wide-technical-table .td-table--wide}
+{#wide-technical-table .wide}
 
 ## Three-column configuration identifiers
 
@@ -27,7 +27,7 @@ outputs: [HTML, Markdown, print]
 | --- | --- | --- |
 | rocksdb.data_path | `rocksdb-data/data` | RocksDB data directory; must not be empty. |
 | rocksdb.data_disks | `[]` | Assign separate disks using STORE/TABLE: /path/disk. Supported keys include g/vertex, g/edge_out, g/edge_in, g/vertex_label_index, g/edge_label_index, g/range_int_index, g/range_float_index, g/range_long_index, g/range_double_index, g/secondary_index, g/search_index, g/shard_index, g/unique_index, and g/olap. Do not reuse rocksdb.data_path. |
-{#configuration-keys-table .td-table--wide}
+{#configuration-keys-table .wide}
 
 ## Short ordinary table
 
@@ -42,4 +42,13 @@ outputs: [HTML, Markdown, print]
 | Component | Read | Write |
 | --- | --- | --- |
 | A long component identifier | Yes | No |
-{#wide-matrix-table .matrix .full-width .td-table--wide caption="Existing modifiers remain independent"}
+{#wide-matrix-table .matrix .full-width .wide caption="Existing modifiers remain independent"}
+
+## Legacy width compatibility
+
+| Variable | Required | Default | Configuration key | Description |
+| --- | --- | --- | --- | --- |
+| `HG_PD_GRPC_HOST` | Yes | None | `grpc.host` | Advertised gRPC hostname/IP; use container hostnames within a container network. |
+| `HG_PD_INITIAL_STORE_COUNT` | No | `1` | `pd.initial-store-count` | Minimum Store count needed for cluster availability. |
+| `HG_PD_ACTUATOR_EXPOSURE` | No | `health,metrics,prometheus` | `management.endpoints.web.exposure.include` | Public Actuator endpoint allowlist; `*` is forbidden. |
+{#legacy-technical-table .td-table--wide}

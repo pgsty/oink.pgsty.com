@@ -3,7 +3,7 @@ title: 表格
 linkTitle: 表格
 description: 普通 GFM 表格加一行属性，就得到标题、兼容矩阵、参数表、编号表或标签页；宽表格自己横向滚动，不撑宽页面。
 weight: 50
-search_keywords: [表格, Table, matrix, 矩阵, full-width, 全宽, td-table--wide, 技术表格, caption, 表格标题, 编号表, 横向滚动, GFM]
+search_keywords: [表格, Table, matrix, 矩阵, full-width, 全宽, wide, 技术表格, caption, 表格标题, 编号表, 横向滚动, GFM]
 aliases:
   - /docs/components/tables/
 ---
@@ -106,10 +106,14 @@ aliases:
 
 ## 技术宽表格 {#wide}
 
+> [!NOTE] 未发布：`.wide`
+> 这个简短标记在开发版本中可用，尚未包含在已发布的 v1.3.2 中。
+> 已有技术宽表写法继续兼容。
+
 包含长配置键、环境变量或长标识符的技术表格，若默认压在正文列宽内排版，
-容易导致标识符异常断行或描述列被极度压缩。在属性行中显式添加 `{.td-table--wide}`，
+容易导致标识符异常断行或描述列被极度压缩。在属性行中显式添加 `{.wide}`，
 内部表格会采用按内容最大尺寸（`width: max-content`）排版，并在超出视口时触发
-平滑横向滚动。（OINK 1.3.1 新增。）
+横向滚动。
 
 ```markdown {title="源码"}
 | 变量 | 必填 | 默认值 | 对应配置项 | 描述 |
@@ -117,7 +121,7 @@ aliases:
 | `HG_PD_GRPC_HOST` | 是 | 无 | `grpc.host` | 对外宣告的 gRPC 主机名或 IP 地址；容器网络内部应使用容器主机名。 |
 | `HG_PD_INITIAL_STORE_COUNT` | 否 | `1` | `pd.initial-store-count` | 集群可用时所需的最少存储节点数量。 |
 | `HG_PD_ACTUATOR_EXPOSURE` | 否 | `health,metrics,prometheus` | `management.endpoints.web.exposure.include` | 对外开放的监控端点白名单，不允许使用通配符。 |
-{.td-table--wide}
+{.wide}
 ```
 
 | 变量 | 必填 | 默认值 | 对应配置项 | 描述 |
@@ -125,17 +129,17 @@ aliases:
 | `HG_PD_GRPC_HOST` | 是 | 无 | `grpc.host` | 对外宣告的 gRPC 主机名或 IP 地址；容器网络内部应使用容器主机名。 |
 | `HG_PD_INITIAL_STORE_COUNT` | 否 | `1` | `pd.initial-store-count` | 集群可用时所需的最少存储节点数量。 |
 | `HG_PD_ACTUATOR_EXPOSURE` | 否 | `health,metrics,prometheus` | `management.endpoints.web.exposure.include` | 对外开放的监控端点白名单，不允许使用通配符。 |
-{.td-table--wide}
+{.wide}
 
 ### 与 .full-width 的区别 {#wide-vs-full-width}
 
 - `.full-width` 控制「外层画布」：让表格外层容器突破正文栏宽限制，扩展至整页可用宽度；适合列数较多但各列内容较短的表格。
-- `.td-table--wide` 控制「内部表格排版」：让内部 `<table>` 以自身内容的最大自然宽度（`width: max-content`）排版，依靠横向滚动容纳长内容；适合包含长代码标识符的技术表格。
-- 两者可以结合使用：例如 `{.full-width .td-table--wide}` 既让外层容器占满全宽画布，又让内部列保持宽松的自然宽度。
+- `.wide` 控制「内部表格排版」：让内部 `<table>` 以自身内容的最大自然宽度（`width: max-content`）排版，依靠横向滚动容纳长内容；适合包含长代码标识符的技术表格。
+- 两者可以结合使用：例如 `{.full-width .wide}` 既让外层容器占满全宽画布，又让内部列保持宽松的自然宽度。
 
 ### 适用边界与排版策略 {#wide-boundaries}
 
-- **显式开启**：普通表格保持现有布局。只有 `.td-table--wide` 表格使用
+- **显式开启**：普通表格保持现有布局。只有 `.wide` 表格使用
   `overflow-wrap: break-word`、`word-break: normal`，并以 `max-width: 40ch`
   作为正文单元格的软宽度约束。特别长的标识符仍可换行，该约束不是固定列宽。
 - **静态输出**：此策略只作用于屏幕。Print 与 RSS 使用静态包装并保留原有布局；
@@ -231,7 +235,7 @@ aliases:
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
 | `.full-width` | 标记 | 无 | 越出正文栏宽，占满文章画布 |
-| `.td-table--wide` | 标记 | 无 | 内部表格采用 max-content 宽度排版，适合配置项等技术宽表 |
+| `.wide` | 标记 | 无 | 内部表格采用 max-content 宽度排版，适合配置项等技术宽表 |
 | `.matrix` | 标记 | 无 | 第一列作行表头，表头与首列吸附，其余单元格居中 |
 | `.fields` | 标记 | 无 | 渲染成定义列表，见[参数表](/zh/docs/components/fields/) |
 | `caption` | 纯文本 | 无 | 可见表格标题；在 `.fields` 上是列表的标签 |

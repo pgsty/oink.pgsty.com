@@ -35,7 +35,7 @@ Hugo Extended 0.168.0，保留并审阅上游 LibSass 弃用告警。详情参�
 
 OINK `v1.3.1` 修复 Markmap 文字对比度和固定 TOC 的页脚避让，并为技术表格与
 文件树长注释提供显式开启的布局。已有内容保留默认外观，仅在需要完整技术信息时
-添加 `.td-table--wide` 或 `wrap=true`。
+开启[技术宽表布局](/zh/docs/components/table/#wide)或文件树的 `wrap=true`。
 
 更新模块前，先安装 Hugo Extended 0.168.0，无需安装 Dart Sass。在关闭替换与
 工作区的环境中验证公开模块解析，固定 `github.com/pgsty/oink@v1.3.2`，构建并审阅
