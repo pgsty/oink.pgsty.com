@@ -264,13 +264,57 @@ test('shared queue serializes mixed renderers and discards an in-flight result a
   expect(await page.evaluate(() => ({ max: diagramRace.max, disposed: diagramRace.disposed }))).toEqual({ max: 1, disposed: [['mermaid', false]] });
 });
 
-test('browser print keeps a picture or source for every diagram, including hidden content', async ({ page }) => {
+for (const language of ['', '/zh']) {
+  for (const colorScheme of ['light', 'dark']) {
+    test(`sequence print is readable and restores reading state: ${language || 'en'} ${colorScheme}`, async ({ page }) => {
+      await page.addInitScript(mode => localStorage.setItem('td-color-theme', mode), colorScheme);
+      await page.goto(`${language}/docs/components/mermaid/`);
+      const block = page.locator('.td-diagram--mermaid').filter({ has: page.locator('code', { hasText: 'sequenceDiagram' }) }).first();
+      await ready(block);
+      await expect(block).toHaveAttribute('data-td-diagram-theme', colorScheme);
+      const drawing = await block.locator('svg').evaluate(el => el.outerHTML);
+      const source = block.locator('pre');
+      await expect(source).toBeHidden();
+      await page.evaluate(() => {
+        window.printRenders = 0;
+        const render = window.mermaid.render;
+        window.mermaid.render = (...args) => { window.printRenders++; return render(...args); };
+        dispatchEvent(new Event('beforeprint'));
+      });
+      await page.emulateMedia({ media: 'print' });
+      if (colorScheme === 'dark') {
+        await expect(source).toBeVisible();
+        await expect(block.locator('.td-diagram__stage')).toBeHidden();
+        await expect(source).toHaveCSS('color', 'rgb(17, 17, 17)');
+        await expect(source).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+        await expect(source.locator('code')).toHaveCSS('color', 'rgb(17, 17, 17)');
+        expect(await source.textContent()).toContain('sequenceDiagram');
+      } else {
+        await expect(block.locator('svg')).toBeVisible();
+        await expect(source).toBeHidden();
+      }
+      expect(await page.evaluate(() => window.printRenders)).toBe(0);
+      await page.emulateMedia({ media: 'screen' });
+      await page.evaluate(() => dispatchEvent(new Event('afterprint')));
+      await expect(source).toBeHidden();
+      await expect(block.locator('svg')).toBeVisible();
+      expect(await block.locator('svg').evaluate(el => el.outerHTML)).toBe(drawing);
+      expect(await page.evaluate(() => localStorage.getItem('td-color-theme'))).toBe(colorScheme);
+    });
+  }
+}
+
+for (const mode of ['light', 'dark']) {
+test(`browser print keeps a readable picture or source including hidden content: ${mode}`, async ({ page }) => {
+  await page.addInitScript(value => localStorage.setItem('td-color-theme', value), mode);
   await page.goto(path);
   await ready(figure(page, 'mermaid'));
   await page.evaluate(() => dispatchEvent(new Event('beforeprint')));
   await page.emulateMedia({ media: 'print' });
   for (const block of await page.locator('.td-diagram').all()) {
-    if (await block.getAttribute('data-td-diagram-rendered') === 'true') {
+    const sourceForDark = (await block.getAttribute('class')).includes('td-diagram--mermaid') &&
+      await block.getAttribute('data-td-diagram-theme') === 'dark';
+    if (await block.getAttribute('data-td-diagram-rendered') === 'true' && !sourceForDark) {
       await expect(block.locator('.td-diagram__stage')).toBeVisible();
       await expect(block.locator('pre')).toBeHidden();
     } else {
@@ -284,6 +328,7 @@ test('browser print keeps a picture or source for every diagram, including hidde
   await page.evaluate(() => dispatchEvent(new Event('afterprint')));
   await expect(figure(page, 'mermaid').locator('pre')).toBeHidden();
 });
+}
 
 test('a stalled engine load times out and the other engine can still render', async ({ page }) => {
   let release;

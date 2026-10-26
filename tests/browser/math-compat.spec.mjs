@@ -2,6 +2,37 @@ import { expect, test } from '@playwright/test';
 
 for (const language of ['', '/zh']) {
   for (const colorScheme of ['light', 'dark']) {
+    test(`Numbered equations retain space beside captions: ${language || 'en'} ${colorScheme}`, async ({ page }) => {
+      await page.emulateMedia({ colorScheme });
+      await page.goto(`${language}/docs/components/math/`);
+      await page.evaluate(() => document.fonts.ready);
+      for (const width of [320, 390, 576, 600, 768, 820, 1024, 1200, 1440]) {
+        await page.setViewportSize({ width, height: 900 });
+        const equations = await page.locator('.td-book-figure--eq').evaluateAll((nodes) => nodes.map((node) => {
+          const body = node.querySelector('.td-book-equation__body').getBoundingClientRect();
+          const caption = node.querySelector('figcaption').getBoundingClientRect();
+          return { width: node.clientWidth, body: body.width, caption: caption.width,
+            separate: caption.top >= body.bottom, number: node.dataset.tdBookNum };
+        }));
+        for (const equation of equations) {
+          expect(equation.number).toBeTruthy();
+          expect(equation.body, `formula at ${width}px`).toBeGreaterThanOrEqual(Math.min(240, equation.width));
+          expect(equation.caption).toBeLessThanOrEqual(equation.width + 1);
+        }
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      }
+      await page.emulateMedia({ media: 'print' });
+      for (const equation of await page.locator('.td-book-figure--eq').all()) {
+        const body = equation.locator('.td-book-equation__body');
+        await expect(body).toBeVisible();
+        const figureBox = await equation.boundingBox();
+        const bodyBox = await body.boundingBox();
+        const captionBox = await equation.locator('figcaption').boundingBox();
+        expect(bodyBox.width).toBeGreaterThanOrEqual(figureBox.width - 1);
+        expect(captionBox.y).toBeGreaterThanOrEqual(bodyBox.y + bodyBox.height - 1);
+      }
+    });
+
     test(`MathML and KaTeX layout remain compatible: ${language || 'en'} ${colorScheme}`, async ({ page }) => {
       await page.emulateMedia({ colorScheme });
       await page.setViewportSize({ width: 390, height: 844 });

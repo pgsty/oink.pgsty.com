@@ -93,14 +93,14 @@ async function waitForStableMarkmaps(page) {
   await page.waitForFunction(
     () => {
       const sourceBlocks = document.querySelectorAll('.language-markmap');
-      const maps = [...document.querySelectorAll('.markmap')];
-      const labels = [...document.querySelectorAll('.markmap svg foreignObject')];
+      // Hidden maps deliberately defer rendering until their panel is shown.
+      const maps = [...document.querySelectorAll('.markmap')].filter(map =>
+        map.getClientRects().length && getComputedStyle(map).visibility !== 'hidden');
+      const labels = maps.flatMap(map => [...map.querySelectorAll('foreignObject')]);
 
       return (
         sourceBlocks.length === 0 &&
-        maps.length > 0 &&
         maps.every((map) => map.querySelector('svg foreignObject')) &&
-        labels.length > 0 &&
         labels.every(
           (label) => Number.parseFloat(getComputedStyle(label).opacity) >= 0.999,
         )

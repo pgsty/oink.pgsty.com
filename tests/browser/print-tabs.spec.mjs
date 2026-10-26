@@ -9,8 +9,39 @@ async function expectUniqueIDs(page) {
 }
 
 for (const language of ['', '/zh']) {
+  test(`nested HTML fragments reveal every ancestor: ${language || 'en'}`, async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('td-tabs:v1:example-syntax', 'example');
+      localStorage.setItem('td-tabs:v1:platform', 'unix');
+    });
+    await page.goto(`${language}/tests/print-tabs/a/#platform-windows`);
+    const outer = page.locator('#example-syntax-syntax');
+    const inner = page.locator('#platform-windows');
+    await expect(outer).toBeVisible();
+    await expect(inner).toBeVisible();
+    await expect(inner).toBeInViewport();
+    const preferences = () => page.evaluate(() => [
+      localStorage.getItem('td-tabs:v1:example-syntax'),
+      localStorage.getItem('td-tabs:v1:platform'),
+    ]);
+    expect(await preferences()).toEqual(['example', 'unix']);
+    await page.locator('[aria-controls="example-syntax-example"]').click();
+    await expect(outer).toBeHidden();
+    await page.evaluate(() => { location.hash = encodeURIComponent('嵌套打印标题'); });
+    await expect(outer).toBeVisible();
+    await expect(page.locator('[id="嵌套打印标题"]')).toBeInViewport();
+    expect(await preferences()).toEqual(['example', 'unix']);
+    await page.evaluate(() => { location.hash = 'platform-unix'; });
+    await expect(page.locator('#platform-unix')).toBeVisible();
+    await page.evaluate(() => { location.hash = encodeURIComponent('打印片段'); });
+    await expect(page.locator('[id="打印片段"]')).toBeInViewport();
+    expect(await preferences()).toEqual(['example', 'unix']);
+  });
+
   for (const width of [360, 1440]) {
     test(`grouped tab links stay in their Print chapter: ${language || 'en'} ${width}`, async ({ page }) => {
+      // Link contracts do not depend on clicking during smooth fragment scrolling.
+      await page.emulateMedia({ reducedMotion: 'reduce' });
       await page.setViewportSize({ width, height: 900 });
       const route = `${language}/tests/print-tabs`;
       const syntax = language ? '章节 b 语法.' : 'Chapter b syntax.';
