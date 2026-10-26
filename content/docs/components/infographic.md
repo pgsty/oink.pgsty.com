@@ -260,8 +260,12 @@ data
             desc libraries shipped with the theme
 ```
 
-`theme` is part of the DSL, not a fence attribute. It does not follow the site's color scheme.
-A diagram with `type dark` stays dark on light pages. Check contrast in both modes.
+`theme` belongs to the DSL. In the development checkout, each diagram has its own
+canvas: transparent default and hand-drawn diagrams use white, and an authored
+background takes priority. A `type dark` diagram keeps its dark background even
+on a light page. Site mode changes preserve the palette, text colors, and drawing
+style without rerendering. Explicit transparency or custom text colors still
+require checking contrast in both modes.
 
 ## Picking a template {#templates}
 

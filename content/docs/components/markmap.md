@@ -55,7 +55,10 @@ Then put the outline in a `markmap` fence:
 
 The first-level heading is the root. Indentation places other headings and list items below it.
 Click a node's dot to expand or collapse its branch. Scroll to zoom, and drag to pan.
-The bottom-right toolbar has zoom, fit-to-window, and SVG download controls.
+In the development checkout, **Fit to window** below the map restores the whole
+outline and resumes automatic fitting when the column changes width. Dragging or
+zooming suspends automatic fitting to preserve your reading position. The button
+also works with Tab and Enter.
 
 ## Depth {#depth}
 
@@ -317,9 +320,9 @@ This is Markmap syntax. See the [Markmap documentation](https://markmap.js.org/d
 
 - Inline SVG output is fixed at 300px tall by one `.markmap > svg` rule. Fences cannot change this height.
   For many levels, use `initialExpandLevel` or split the map. `{#id num=}` numbering and image zoom do not apply to inline SVG.
-- Markmap uses its own link-color palette and does not follow the site's color scheme. Check contrast in both modes.
+- Node text follows the site's text color; connecting lines retain Markmap's own palette. Check custom colors in both modes.
 - Without `params.markmap`, the fence remains a code block. Sites that do not use Markmap load no runtime.
-- The toolbar's "Download SVG" action exports a browser snapshot of the current expansion state.
+- The development checkout provides a fit control below each map; it is hidden in print.
 - Avoid `<`, `>`, `&`, and `"` in outlines. The current theme double-escapes them, displaying literal `&gt;` or `&#34;`.
   Use `[text](URL)` links instead of angle-bracket autolinks.
 

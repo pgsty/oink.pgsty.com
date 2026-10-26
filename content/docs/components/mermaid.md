@@ -380,10 +380,13 @@ obsolete results. Diagram-free pages load neither the viewer nor these engines.
 No installation dependency or build step is added.
 
 Disabled JavaScript, blocked engines and syntax errors retain readable source.
-Printing ordinary HTML scales completed diagrams to the page and shows source for
-unrendered diagrams, without waiting for an asynchronous engine. To print pictures
-throughout, first visit and expand the diagrams you need. Dedicated Print,
-Markdown and RSS continue to show source.
+In the development checkout, ordinary HTML printing scales completed light
+diagrams to the page. Dark diagrams and unrendered diagrams print black-on-white
+source with wrapping, without waiting for an asynchronous engine or requiring
+background printing. To print pictures throughout, switch to light mode, then
+visit and expand the diagrams you need before printing. Printing restores source
+disclosures afterward and does not change your appearance preference.
+Dedicated Print, Markdown and RSS continue to show source.
 
 ## Limits {#limits}
 

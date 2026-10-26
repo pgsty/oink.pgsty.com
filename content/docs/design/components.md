@@ -75,8 +75,11 @@ OINK has 29 shortcodes:
 > once, preserving arrows, quotes, ampersands and Chinese. Errors keep source
 > without blocking subsequent diagrams. Copy/export failures show feedback;
 > downloads report initiation only. Exports embed styling and reject external
-> resource dependencies. Ordinary browser printing shows rendered diagrams or
-> readable source; dedicated Print, Markdown and RSS retain source fallback. See
+> resource dependencies. Ordinary browser printing keeps light Mermaid and
+> PlantUML pictures; dark Mermaid and unfinished diagrams use black-on-white
+> wrapped source, ready without asynchronous print-time rendering. Source
+> disclosures return to their reading state after printing; rendered results and
+> preferences are preserved. Dedicated Print, Markdown and RSS retain source fallback. See
 > [Mermaid](/docs/components/mermaid/#zoom) and [PlantUML](/docs/components/plantuml/).
 > Explicit server mode retains its existing behavior.
 
@@ -128,6 +131,11 @@ Unknown types render as plain blockquotes, with their markers preserved and no J
 
 Adjacent tabs group only when consecutive and of the same block kind.
 `group` enables the hash `#<group>-<value>` and storage `td-tabs:v1:<group>`. Ungrouped tabs use neither.
+In the sibling checkout, an initial fragment or `hashchange` targeting a panel
+or a heading within it opens all ancestor panels from outside in before scrolling
+to the target. Hash selection takes priority over saved preferences and
+synchronizes named peers, but does not overwrite storage. Only explicit reader
+selection persists; ordinary headings outside tabs retain native navigation.
 HTML exposes all panels before JS. Print expands them. Markdown keeps authored source. RSS provides the rendered text summary.
 Grouped tab IDs and local links remain unchanged in HTML and single-page Print.
 Repeated groups and nested tab containers keep unique IDs within each page.
@@ -194,6 +202,16 @@ Mermaid palettes follow light/dark mode, independently of visual preset. The def
 
 ECharts uses declarative JSON/YAML. Callbacks use `$fn:<name>` from `window.OinkEchartsFunctions`. Embedded scripts are never executed.
 
+In the sibling checkout, Infographic SVGs scale with their container width,
+including orientation and shell layout changes, without repeated DSL rendering.
+Initially hidden containers wait until measurable. Fence `height` and `full`
+keep their existing meanings.
+Transparent Infographic output receives a white canvas; an explicit DSL background
+sets the canvas instead. Site light/dark changes leave authored `light`, `dark`,
+`hand-drawn`, palettes, and SVG styles intact. The default dark text therefore
+remains readable without recoloring author content. Authors remain responsible for
+contrast when explicitly choosing transparent backgrounds or custom text colors.
+
 Markmap node text on screens follows the article text color (`--bs-body-color`)
 via `--markmap-text-color`, dynamically adapting to light/dark mode changes,
 style presets, and restored user preferences to maintain contrast. Printing
@@ -201,11 +219,24 @@ retains Markmap's default dark text on the white canvas. This mapping is scoped
 to article content across both the wrapper and generated SVG, and can still be
 overridden by site CSS of equal specificity or SVG inline tokens. (Added in OINK 1.3.1.)
 
+In the sibling checkout, Markmap fits on first measurable display and container
+resize, including hidden panels when revealed. Reader pan/zoom suspends automatic
+fitting so layout changes preserve their view. The keyboard-accessible **Fit to
+window** button restores the whole map and resumes automatic fitting. Layout fits
+do not animate; reduced motion also disables node transitions. The control is
+omitted from print. Source normalization removes surrounding blank lines and
+common indentation before parsing, preserving YAML options and outline levels.
+
 Mathematics uses Hugo's build-time KaTeX output and local CSS, without a browser mathematics runtime.
 HTML and Print use the vendored stylesheet and preserve MathML and authored TeX.
 Validate mathematics with the current Hugo baseline defined in the [architecture contract](/docs/design/architecture/#hugo-toolchain).
 Markmap uses the matching vendored KaTeX runtime.
-On narrow screens, numbered-equation captions wrap within the reading column. Long captions must not widen the page.
+In the sibling checkout, numbered equations reserve readable formula space based
+on the available column width, including columns narrowed by a sidebar or TOC.
+Captions move below the formula when they do not fit beside it; long words wrap.
+Number-only captions, MathML, and TeX remain available. Print gives the formula
+the full reading width and places the caption below it. Long captions must
+neither squeeze the formula to zero nor widen the page.
 
 Swagger and Redoc accept HTTP(S) specification URLs or paths rooted under `static/`. Neither resolves page resources.
 Redoc handles paths with or without leading slashes identically and joins local paths to `baseURL`.

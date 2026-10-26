@@ -266,6 +266,12 @@ Site commands under `languages.<lang>.params.ui.command_palette.commands` may op
 The legacy clipboard fallback restores previous focus and selection, including selection direction.
 It does not reclaim focus if another control acquired it during copying.
 
+In the sibling checkout, breadcrumbs and page actions wrap onto separate rows
+when the reading column or enlarged text requires it. Long unbroken path labels
+wrap without clipping; all breadcrumb links stay available. The action menu is
+bounded by the viewport and retains keyboard focus and dismissal behavior at
+200% text size, including a 320px viewport.
+
 > [!NOTE] Fixed in OINK 1.3.0
 > The page-action disclosure closes when keyboard focus leaves its containing
 > controls, including Tab and Shift+Tab. Moving between its controls keeps it
