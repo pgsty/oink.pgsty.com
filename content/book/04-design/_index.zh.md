@@ -45,8 +45,11 @@ sections:
   - cta
 
 hero:
+  align: center
   eyebrow: Acme · 开源工程文档
-  title: 清晰可靠的 Acme 运维指南。
+  title_lines:
+    - words: [{ text: 清晰可靠的 }]
+    - words: [{ text: Acme 运维指南。 }]
   lead: 通过可直接复制的示例，在生产环境中安装、配置并运行 Acme。
   actions:
     - label: 验证本地预览

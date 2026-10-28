@@ -8,19 +8,19 @@ weight: 60
 ---
 
 Shipping a documentation site moves through four stages: previewing locally,
-building the repository in production mode, updating the pinned theme module
-when needed, and deploying to your hosting provider. Checking each stage in
-order makes build or deployment problems easy to isolate.
+pinning or updating the theme module, running a clean production build, and
+deploying to your hosting provider. Checking each stage in order makes build or
+deployment problems easy to isolate.
 
 ## Check each stage in order {#delivery-states}
 
-| Stage | What to check | Next step |
+| Stage | What it verifies | What still needs checking |
 | --- | --- | --- |
-| Local preview | Pages, navigation, and edits render cleanly in `hugo server` | Run a clean production build |
-| Repository build | Content, configuration, and `go.mod` build cleanly in `--environment production` | Push or open a pull request |
-| Theme upgrade | `hugo mod graph` resolves the target public tag and updates `go.sum` | Review release notes and visual layout |
-| Live deployment | CI workflow succeeds and key public URLs load as expected | Spot-check desktop and mobile pages |
-{#tbl-delivery-states num="6-1" caption="A four-stage checklist from local preview to live deployment."}
+| Local preview | Pages, navigation, and edits render cleanly in `hugo server` | Production base URL, draft exclusion, and clean module state |
+| Theme module pin | `hugo mod graph` resolves the target public tag in `go.mod` and `go.sum` | Whether site content and overrides build cleanly against that tag |
+| Production build | Content, configuration, and `go.mod` build cleanly in `--environment production` | Hosting workflow, CDN caching, and live public routes |
+| Live deployment | CI workflow succeeds and key public URLs load as expected | Desktop and mobile layout across representative pages |
+{#tbl-delivery-states num="6-1" caption="Four verification stages from local preview to live deployment, and what each stage leaves to the next step."}
 
 ## Validate the smallest useful surface {#validate}
 

@@ -68,7 +68,7 @@ The product form is intentional: visual polish cannot compensate for an
 incorrect command, and accurate prose still fails when readers cannot find or
 follow it.
 
-## Connect the evidence {#connect-evidence}
+## Cross-reference the example and check {#connect-evidence}
 
 Use {{< xref eg="3-1" anchor="eg-page-contract" />}} as the source pattern,
 and use {{< xref eq="3.1" anchor="eq-page-quality" />}} as the review question.

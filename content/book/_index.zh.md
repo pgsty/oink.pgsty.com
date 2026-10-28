@@ -1,5 +1,5 @@
 ---
-title: 使用 Oink 创作优美的内容
+title: 使用 OINK 创作优美的内容
 linkTitle: 教程
 description: 一本实战教程：用 OINK 创作清晰、优美且易于维护的技术内容。
 type: book
@@ -25,7 +25,7 @@ cascade:
   book_draft_banner: true
 ---
 
-《使用 Oink 创作优美的内容》是与 OINK 参考文档配套的动手实战教程。参考文档说明每个参数和组件的用法；
+《使用 OINK 创作优美的内容》是与 OINK 参考文档配套的动手实战教程。参考文档说明每个参数和组件的用法；
 本书则围绕同一个 Starter 站点，从首次本地预览一步步带你完成双语内容创作、外观定制与生产发布。
 
 ## 阅读方式 {#reading-path}

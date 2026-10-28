@@ -54,13 +54,12 @@ OINK 特性，再附上线上链接，方便读者在访问外部站点前先了
 title: Acme 0.2.0
 date: 2026-10-28
 description: 新增本地预览校验指南与中英双语首页直达入口。
-categories: [Release]
-tags: [release, preview]
+tags: [发布, 预览]
 ---
 
 Acme 0.2.0 在生产构建流程前加入了可重复执行的本地预览检查。
 
-## 主要变更 {#changes}
+## 主要内容 {#highlights}
 
 - 新增[验证本地预览](/zh/docs/preview-check/)操作指南。
 - 更新中英文首页首屏按钮，支持一键直达验证流程。

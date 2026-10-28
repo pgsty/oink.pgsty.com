@@ -63,13 +63,12 @@ and link it directly to the guide you created in Chapter 3:
 title: Acme 0.2.0
 date: 2026-10-28
 description: Adds local preview verification and bilingual home-page navigation.
-categories: [Release]
 tags: [release, preview]
 ---
 
 Acme 0.2.0 adds a repeatable local preview check before production builds.
 
-## What changed {#changes}
+## Highlights {#highlights}
 
 - Added the [Verify a local preview](/docs/preview-check/) guide.
 - Updated the English and Chinese home pages to link directly to the workflow.

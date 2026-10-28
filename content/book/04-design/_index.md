@@ -54,8 +54,11 @@ sections:
   - cta
 
 hero:
+  align: center
   eyebrow: Acme · Open Source Documentation
-  title: Clear operational guides for Acme.
+  title_lines:
+    - words: [{ text: Clear operational guides }]
+    - words: [{ text: for Acme. }]
   lead: Install, configure, and run Acme in production with copy-ready examples.
   actions:
     - label: Verify Local Preview
