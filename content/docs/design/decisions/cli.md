@@ -18,9 +18,8 @@ implementation_status: local-candidate-not-released
 > upgrades, and guarded maintenance plans. Cobra provides command help;
 > colored English text is the default, with JSON/YAML results available.
 > Studio, general editing, context, snippets, editor setup, and CI generation
-> are retired. Historical R1–R8 acceptance applies only to its recorded source
-> and binaries; it does not replace validation of the current implementation.
-> No public CLI release, Homebrew distribution, or deployment is established.
+> are retired. The CLI is currently a local candidate and is not yet published
+> as a standalone release or Homebrew package.
 
 ## Context and ownership {#ownership}
 
@@ -94,7 +93,7 @@ Default text shows status, counts, up to eight active findings, and explicit
 coverage omissions. Detailed facts and reviewed findings remain available in
 structured results. Plan and upgrade previews retain their complete diffs.
 Cobra owns command dispatch and focused help. CLI messages use short, active
-English sentences inspired by ASD-STE100, without asserting certification.
+English sentences inspired by ASD-STE100.
 User content and external tool evidence retain their original language.
 
 | Field | Type and meaning |
@@ -119,8 +118,7 @@ schema version. Command-specific facts and raw tool output serve as evidence,
 not an SDK for importing internal Go packages.
 
 The machine-readable schema is shipped in the CLI repository as
-`schema/result.v1.schema.json`. Its identifier is not evidence that a schema
-endpoint or public CLI release has been deployed.
+`schema/result.v1.schema.json`.
 
 Each evidence record has `command` (an argument array), optional `directory`,
 `stdout`, `stderr`, and the subprocess's `exit_code`. Captured inspection and
@@ -193,8 +191,9 @@ The rendered-reference scope includes supported HTML URLs and anchors and
 supported emitted machine contracts. Coverage explicitly excludes browser
 interaction, accessibility, visual presentation, external URL availability,
 hosting redirects, and production deployment. It also identifies uninspected
-dynamic resources and content semantics. Static output evidence does not prove
-undeclared translation coverage, semantic translation equivalence or browser execution.
+dynamic resources and content semantics. Static output checks inspect declared
+translation pairs and rendered files; browser execution and semantic translation
+review remain separate.
 
 Hugo's public `Page.OutputFormats` supplies expected artifact names and URLs
 per page and per enabled language. The isolated copy adds an unlisted probe
@@ -291,9 +290,9 @@ heading counts, translated prose or all code blocks by default.
 bind Hugo source/target IDs, source language, complete source/translation byte
 SHA-256 values, reviewer, reason, and RFC 3339 time. An absent record is `unknown`.
 Equal hashes are `current`. Source-only, target-only, or both changes are
-`source_changed`, `translation_changed` or `both_changed`. These are evidence
-of changes since review. They are not semantic judgments. File modification time never
-establishes review. Unproven sources stay unknown. If a recorded review or
+`source_changed`, `translation_changed` or `both_changed`. These states track
+byte changes since the recorded review rather than file modification times.
+Unproven sources stay unknown. If a recorded review or
 protected constraint cannot be verified, required work is incomplete.
 
 ## Native content rules and coverage {#native-content}
@@ -317,8 +316,7 @@ The catalog runs only when the actual mounted public v1.1.0 or v1.2.0
 module-cache inputs match that release's recorded hashes. Later releases need
 an explicit source audit before they gain native-rule coverage. A replacement, vendor copy, other version or unknown source
 does not select a latest-theme fallback. `native-theme-rules` is optional
-`not_checked`. Generic syntax checks still run. This catalog does not
-certify every custom component or theme feature.
+`not_checked`. Generic syntax checks still run.
 
 ## Baselines and reviewed file plans {#review-plans}
 
@@ -380,8 +378,8 @@ When the required baseline is unavailable, the result returns `2`, retains all
 known current pages/attachments/references/outputs and expands full scope. It
 creates no prior pages or invented changes. Only an actually resolved commit
 is recorded. `check [GROUP] --since REF` deliberately performs the full
-current check and declares `data.check_scope: full`. No incremental speed or
-partial validation claim is made. `data.impact.full_scope` describes causal
+current check and declares `data.check_scope: full` so validation coverage
+stays complete. `data.impact.full_scope` describes causal
 uncertainty separately from that validation scope.
 
 Completed `inspect` and `impact` fact queries return `0` even when
@@ -515,8 +513,7 @@ original site inputs and returns a readable module diff with full mode changes.
 Its comparison records actual Hugo pages/outputs/language settings, emitted
 file hashes/sizes/modes, raw alias declarations and separately observed alias
 redirect files. It reports removed/added URLs, proven redirects, alias target/
-byte changes and enabled language/output/search changes. A clean candidate
-build alone does not prove route or capability preservation.
+byte changes and enabled language/output/search changes.
 
 A previous URL is preserved only when an observed redirect at its exact old
 output file targets the corresponding actual candidate page. Unknown/relative
@@ -525,8 +522,7 @@ emitted routes or outputs are blocking findings (`1`). Both resolved theme
 versions must match the explicitly selected pins. Unknown/substituted pins,
 unknown/different normalized Hugo versions or environments, or unexpected
 other input changes remain incomplete. Comparison supports one HTTP(S) base
-origin/path. Multihost inputs stay incomplete. The command claims no
-configuration migration transform or universal browser/theme compatibility.
+origin/path. Multihost inputs stay incomplete.
 Manual review remains explicit optional unchecked coverage. Observed aliases that retarget a different
 unique Hugo page are blocking independently of same-page URL moves.
 
@@ -612,7 +608,7 @@ HTML. Hugo language keys remain separate. Unknown Git state stays unknown.
 Original input bytes and modes are captured before temporary probe overlays
 or workspace/replacement path rebasing. The public manifest omits absolute
 local paths, arbitrary arguments, process logs and free-form coverage details.
-Hashes prove byte identity. They do not prove a signature or publication of a local checkout.
+Hashes record file byte identity.
 
 Managed builds accept only the boolean Hugo flags `--minify`, `--gc`,
 `--ignoreCache` and `--noTimes` after `--`, including `=true`/`=false` forms.
@@ -620,7 +616,6 @@ Other passthrough flags are unsupported inputs. Ordinary `build` keeps its
 existing transparent passthrough behavior. Effective example/local addresses
 are warnings during ordinary diagnosis and errors for checked release builds.
 `--release` still requires separate evidence for actual public theme resolution.
-A local Git revision or declared pin does not attest to vendor/replacement bytes.
 
 ## Local and deployed verification {#artifact-verification}
 
@@ -648,8 +643,7 @@ a later verification request or an upload.
 
 ## Retired CI generation {#ci-generation}
 
-`ci init` is removed. Keep CI configuration in the site or Starter.
-Local CLI validation does not execute hosted CI or deploy a site. Previously
+`ci init` is removed. Keep CI configuration in the site or Starter. Previously
 saved CI plans are rejected by `plans apply`.
 
 ## Explicit workspace registry {#workspace-registry}
@@ -659,8 +653,6 @@ saved CI plans are rejected by `plans apply`.
 > protocol, four-consumer parity/preservation and canonical source/render gates.
 > A07 adapter and A15 workspace supported scope is accepted locally in the
 > [maintenance record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6).
-> The recorded R1–R8 and A18 scope passed for its historical source and binaries;
-> changes to the current CLI require new evidence.
 
 A workspace is one explicitly supplied YAML registry, independently versioned
 as `oink.workspace/v1`. It contains only site names and directories:
@@ -775,8 +767,7 @@ line is invented from an external URL.
 
 Child processes do not receive caller proxy-URL/credential settings or Node
 preload variables. Literal `NO_PROXY`/`no_proxy` host-list data may be forwarded
-for the qualified runtime. This is not a promise that every operating-system
-proxy route is disabled, or an OS network sandbox. Tool preparation and any
+for the qualified runtime. Tool preparation and any
 network operation remain separate explicit actions. No tool is installed by
 these commands.
 
@@ -794,17 +785,12 @@ remote-resource builds. Required resources must be available as local inputs,
 or that operation must explicitly enable network access.
 
 The CLI does not download a Go toolchain, install packages, alter global
-configuration, or enable telemetry. Its process policy is not an operating
-system network sandbox. Qualification records distinguish ordinary offline
-execution from tests that actually deny outbound access at the OS boundary.
+configuration, or enable telemetry.
 
 The current development and validation baseline is Hugo Extended 0.168.0;
 the version gate requires 0.168.0 or newer. Initialized sites use the CLI's
 separately maintained Starter snapshot; theme upgrades follow the
-[upgrade guide](/docs/admin/upgrade/). Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
-Warnings stay visible, including Hugo's accepted upstream LibSass notice.
-Compatibility claims require executed evidence on the identified source and
-binary. Initialized sites retain ordinary Hugo inputs and need only their
+[upgrade guide](/docs/admin/upgrade/). Initialized sites retain ordinary Hugo inputs and need only their
 documented dependencies after removing the CLI.
 
 ## Retired local Studio {#studio}
@@ -847,8 +833,6 @@ The CLI does not serve an editor or accept browser Apply requests.
 
 Use `make test` for offline Go tests and vet. Use `make test-hugo` for actual
 Hugo integration and `make test-tools` for configured optional tools.
-Skipped integration cases are not passing runtime evidence. Current changes
-need new source/binary-bound evidence. An older record does not qualify them.
 
 > [!NOTE] Local integration gate rechecked on 2026-10-14
 > `make test` (offline Go tests and vet) and `make test-hugo` passed on macOS
@@ -862,6 +846,4 @@ need new source/binary-bound evidence. An older record does not qualify them.
 The dated [maintenance acceptance record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/)
 preserves earlier R1–R8 and A18 evidence. Declared targets are macOS arm64 and
 Linux arm64/amd64. Darwin amd64 is experimental and unqualified. Windows is
-unsupported. Archive creation, signing, distribution, consumer adoption, and
-deployment are separate states. This contract authorizes no automatic commit,
-push, publication, or deployment.
+unsupported.

@@ -134,8 +134,7 @@ navigation without network access or browser state.
 Acceptance requires a focused graph checker, extraction fixtures, and
 HTML/Print/Markdown goldens. It also requires strict-build negative cases,
 browser accessibility and responsive tests, and a real bilingual-site build.
-Measure performance on a representative large site. A dated prototype timing
-does not establish a permanent performance budget.
+Measure performance on a representative large site.
 
 ## Open decisions {#open-decisions}
 

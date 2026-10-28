@@ -591,7 +591,7 @@ limits are recorded separately in the [October 5 acceptance record](/docs/design
   reports no new violations.
 - All palettes meet the contrast table in both modes.
 - Presets add no external font or script dependency; explicitly configured
-  services such as Giscus remain separate. `--panicOnWarning` builds pass.
+  services such as Giscus remain separate.
 
 ## Open decisions {#open-decisions}
 
@@ -621,6 +621,6 @@ geometry/density tokens and preset-colored charts require a separate decision.
 | Date | Change |
 | --- | --- |
 | 2026-10-04 | Draft created with Paper/Slate phase-1 scope, Ink/Terminal research specs, Appearance menu choice, and token architecture |
-| 2026-10-05 | Phase 1 implemented locally; defaults, brand role and mode-only chart scope accepted; release version undecided and no publication performed |
+| 2026-10-05 | Phase 1 implemented locally; defaults, brand role and mode-only chart scope accepted |
 | 2026-10-05 | Subsequent explicit Ink/Terminal experiments implemented; stable menu policy retained; design acceptance remains open |
-| 2026-10-05 | Release preparation targets 1.2.0; simplified Style/Light controls and current-state icons replace the earlier swatch proposal; no tag or deployment created |
+| 2026-10-05 | Release preparation targets 1.2.0; simplified Style/Light controls and current-state icons replace the earlier swatch proposal |

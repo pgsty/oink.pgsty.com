@@ -64,5 +64,4 @@ verify the four-form cycle and saved preferences.
 The documentation site's `tests/browser/blog-gallery.spec.mjs` owns browser
 acceptance with synthetic, bilingual content. It covers layout changes,
 resizing, independent preferences, keyboard navigation, touch captions,
-failed images, no-JavaScript output, and gallery accessibility. Local checks
-do not publish the theme or update a hosted site.
+failed images, no-JavaScript output, and gallery accessibility.

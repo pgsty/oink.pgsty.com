@@ -37,4 +37,4 @@ The dialog inherits existing preset and light/dark tokens. Paper is the reviewed
 
 The theme owns table rendering, the capability-gated runtime, localization, and scoped SCSS. `bin/check-content-primitives.py` covers opt-in, invalid combinations, localization, and static outputs. The documentation site's `tests/browser/table-reader.spec.mjs` owns keyboard, touch, links, selection, focus/scroll restoration, printing, failures, and accessibility checks. Runtime checks and both site Make suites remain delivery gates.
 
-The original draft is retired from active proposals and retained in Git history. The research describes dated experiments, including features intentionally excluded here. Local acceptance and merging do not publish a module or deploy a site.
+The original draft is retired from active proposals and retained in Git history. The research describes dated experiments, including features intentionally excluded here.

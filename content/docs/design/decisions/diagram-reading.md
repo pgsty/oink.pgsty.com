@@ -47,7 +47,7 @@ retain their existing source fallback.
 No configuration or build step is added. Local PlantUML remains opt-in; explicit
 endpoints retain the legacy renderer. Without IntersectionObserver, bounded
 scroll/resize checks perform the same visibility test. Source survives disabled
-JavaScript and blocked assets. No background-worker claim is made.
+JavaScript and blocked assets.
 
 ## Implementation and acceptance {#acceptance}
 
@@ -56,7 +56,7 @@ adapters and the existing dialog partial. Update focused output checkers, runtim
 tests, real EN/ZH documentation and browser tests. Verify multiple and wide
 diagrams, hidden tabs/disclosures, rapid themes, errors, blocked resources,
 source fidelity, standalone exports, touch, keyboard, accessibility and printing.
-Compare requests before/after. Keep logs and previews outside Git.
+Compare requests before/after.
 
 ## Decision log {#decisions}
 

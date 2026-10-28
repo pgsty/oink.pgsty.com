@@ -69,8 +69,7 @@ Editing and publication share the warning and fallback behavior:
   test must check build success, warning text, and the rendered fallback or
   omission. A warning alone must not fail the Hugo build.
 - Checkers must test rejected output directly. For example, a URL security
-  test must confirm that the unsafe URL is absent. Any build failure alone
-  is insufficient proof.
+  test must confirm that the unsafe URL is absent and that the warning is emitted.
 - Rendered markup checks verify the DOM, attributes, order, and emitted tokens,
   while the browser suite checks computed color, size, spacing, breakpoints,
   and interaction. When the public result is directly observable, a checker

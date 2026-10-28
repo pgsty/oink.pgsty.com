@@ -14,16 +14,12 @@ proposal_date: 2026-10-03
 ---
 
 > [!NOTE] Implemented requirements record
-> The finite R1–R8 supported local implementation and A18 runtime/archive
-> scope passed for the historical source and binaries recorded in the acceptance
-> supplement. The current reduced CLI requires its own validation. This dated
-> requirements record is retained at its original URL
-> and anchors, with historical planning text and failed trials preserved. Stable
-> behavior belongs to the [CLI contract](/docs/design/decisions/cli/) and
-> [CLI introduction](/docs/cli/). Historical evidence belongs to the
+> This dated requirements record preserves the original R1–R8 planning scope
+> and anchors. Current CLI behavior belongs to the
+> [CLI contract](/docs/design/decisions/cli/) and [CLI introduction](/docs/cli/),
+> and historical acceptance evidence belongs to the
 > [2026-10-04 supplement](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#a18).
-> It retires from active navigation. Uninvoked E1–E4 are separate inactive scope.
-> Rendered navigation/URL verification requires its own receipt for these exact promoted bytes.
+> Conditional extensions E1–E4 remain inactive.
 
 The proposed product should complete documentation maintenance before adding a
 local visual interface. It should help maintainers check changes, understand
@@ -32,13 +28,13 @@ passed checks. Studio should expose those same capabilities.
 
 | Record | Value |
 | --- | --- |
-| Status | Implemented. R1–R8 supported local scope and current A18 runtime/archive qualification passed. Rendered lifecycle verification has a separate exact-byte receipt boundary |
-| Owner | OINK maintainers. Implementation and review assignments remain to be confirmed |
+| Status | Implemented locally for R1–R8 and A18 |
+| Owner | OINK maintainers |
 | Date | 2026-10-03 |
 | Baseline | Local CLI `0.1.0-dev`, commit `e623d93`. Hugo Extended 0.166.0 and Go 1.27.1 on macOS arm64 |
 | Completion scope | R1–R8 and the acceptance cases below. Conditional extensions have separate entry criteria |
 | Affected surfaces | CLI command/result contract, Starter projection, consumer CI, translation policy, maintenance operations, local Studio, EN/ZH guides |
-| Schedule assumption | One full-time developer with scheduled documentation and review support. Estimates are planning judgments |
+| Schedule assumption | One full-time developer with scheduled documentation and review support |
 
 ## Background and evidence {#background}
 
@@ -51,9 +47,7 @@ lifecycle, OpenAPI generation, and theme 1.2 retain their own scopes.
 The 2026-10-03 local audit reran the Go suite and actual Hugo integration tests.
 A bilingual initialized site passed checks over 223 files and 4,461 references.
 The PIG consumer site passed over 1,392 files and 64,440 references, with 858
-source files and its Git state unchanged. These observations establish local
-validation without establishing public distribution, independent adoption, or
-deployment.
+source files and its Git state unchanged.
 
 The audit also reproduced four limits. A missing rendered link failed `check`
 while `build` succeeded. Ordinary HTML references outside the configured base
@@ -311,8 +305,7 @@ Guarded canonical EN/ZH source/rendered checks passed, and supported R6/A07/A15
 scope is accepted locally in the
 [R6 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6).
 Current A18 runtime/archive qualification passed. Darwin amd64 remains
-experimental/unverified. Focused tests do not establish a release, consumer adoption, source write,
-or deployment.
+experimental/unverified.
 
 ## Read-only Oink Studio {#read-only-studio}
 
@@ -342,9 +335,7 @@ qualify the supported read-only scope, including explicit partial-preview
 incompletion. They exercise native `0`/`1`/`2` parity, keyboard/mobile/light/dark
 flows, literal source data and separate-origin preview attacks. R7/A16
 passed guarded canonical promotion/rendered gates and is accepted locally.
-R1–R8 supported scope and current A18 runtime/archive qualification passed. No
-consumer Node requirement, implicit installation, source writes, public
-release/adoption or deployment is introduced.
+R1–R8 supported scope and current A18 runtime/archive qualification passed.
 
 ## Safe Markdown editing {#safe-markdown-editing}
 
@@ -380,18 +371,15 @@ accessibility/mobile and exact-binary four-consumer preservation gates passed.
 R8/A17 supported local scope also passed guarded canonical source/render gates
 and is accepted in the
 [R8 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r8).
-Earlier failed browser/preparation trials provide evidence for their inputs.
-They do not qualify later bytes. R1–R8 supported scope and current A18 runtime/archive qualification passed.
-Darwin amd64 stays experimental/unverified. Public release, adoption and
-deployment are separate unperformed states.
+R1–R8 supported scope and current A18 runtime/archive qualification passed.
+Darwin amd64 stays experimental/unverified.
 
 ## Delivery sequence and schedule {#delivery-sequence}
 
-The following estimate assumes one developer and is a planning judgment rather
-than a productivity measurement. T0 is the implementation start after scope
-approval; no calendar start date has been committed. Dependencies are sequential
+The following estimate assumes one developer. T0 is the implementation start after scope
+approval. Dependencies are sequential
 acceptance gates, which additional staff can support through independent tests
-and UI work but cannot remove.
+and UI work.
 
 | Stage | Effective weeks | Delivery | Acceptance gate |
 | --- | --- | --- | --- |
@@ -406,14 +394,12 @@ and UI work but cannot remove.
 
 Allow another 4–6 weeks for integration, false-positive review, cross-platform
 execution, and repairs, distributed across the gates. The total planning range is
-28–30 effective weeks. At roughly half-time availability, elapsed calendar time
-may be roughly twice that. This is an assumption to revisit, not a promise.
+28–30 effective weeks (or roughly twice that elapsed calendar time at half-time availability).
 
 R1–R3 yield a proposed `0.2` quality/publication candidate around weeks 9–10
 including early reserve. R4–R6 yield a proposed `0.3` maintenance candidate
 around weeks 19–20 cumulatively. R7–R8 yield a proposed `0.4` local Studio
-candidate around weeks 28–30 cumulatively. Public publication is a separate
-authorized action. Local candidates do not require releasing every stage.
+candidate around weeks 28–30 cumulatively.
 
 ## Conditional extensions {#conditional-extensions}
 
@@ -487,19 +473,12 @@ current-site baseline. Functional correctness takes priority over check counts.
 
 For each stage, record implemented behavior, known limits, focused tests, and
 actual integration results. Provide updated EN/ZH contracts/guides and a
-reviewable diff. Track individual requirement/case statuses. Passing an aggregate command
-does not automatically close every requirement. This PRD is complete only when
+reviewable diff. Track individual requirement/case statuses. This PRD is complete only when
 R1–R8 and their required acceptance cases are satisfied.
-
-Keep implementation, local validation, commits, archive/runtime qualification,
-public distribution, consumer adoption, provider deployment, and public content
-verification separate. Cross-compilation is not runtime acceptance. Missing
-credentials or an unpublished download URL do not justify claiming remote
-delivery, nor require building a hosting control plane.
 
 After supported behavior is accepted, move it into the owning CLI contract,
 usage guides, and durable decisions. Retire the corresponding proposal sections
-through the existing lifecycle. Do not use this PRD as a permanent second manual.
+through the existing lifecycle.
 
 ## Decisions and stop conditions {#decisions-and-stop-conditions}
 
@@ -520,23 +499,18 @@ critical path.
 
 | Date | Record |
 | --- | --- |
-| 2026-10-03 | Created from the current CLI audit and the supplied feature goals. Proposed R1–R8, optional extension gates, resource assumptions and executable acceptance cases. No new CLI capability, release, consumer adoption or deployment is claimed by this document. |
-| 2026-10-03 | R1 shared Hugo facts and check policy passed local owning/actual-Hugo checks. Stable behavior moved into the [CLI contract](/docs/design/decisions/cli/#project-policy). The [acceptance record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r1) tracks final refreshed reports and rendered EN/ZH evidence separately. R2–R8 and conditional extensions remain open. No public distribution, adoption or deployment is claimed. |
+| 2026-10-03 | Created from the current CLI audit and the supplied feature goals. Proposed R1–R8, optional extension gates, resource assumptions and executable acceptance cases. |
+| 2026-10-03 | R1 shared Hugo facts and check policy passed local owning/actual-Hugo checks. Stable behavior moved into the [CLI contract](/docs/design/decisions/cli/#project-policy). The [acceptance record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r1) tracks final refreshed reports and rendered EN/ZH evidence separately. R2–R8 and conditional extensions remain open. |
 | 2026-10-03 | R2 translation scopes/hash reviews, syntax-bounded native rules and visible baselines now use shared guarded file plans. Local owning, actual-Hugo and focused race gates passed. Final refreshed consumer and EN/ZH documentation acceptance remains pending in the [record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r2). Implemented behavior is in the [contract](/docs/design/decisions/cli/#translations). R3–R8 remain open. |
-| 2026-10-03 | R2 final corpus and bilingual documentation gates passed. R3 one-render checked export, exact file identity, guarded CI plans for both providers, release diagnosis and explicit-network HTTP verification passed their scoped local gates, including custom-workflow discovery. Stable behavior moved to the [contract](/docs/design/decisions/cli/#checked-artifacts). Exact evidence and A08–A10 outcomes belong to the [maintenance record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r3). R4–R8, final A18 runtime/archive refresh and Darwin amd64 remain open. No public distribution, hosted CI execution, adoption or deployment is claimed. |
-| 2026-10-03 | R4 supported local scope passed frozen Go/vet, actual Hugo/race and exact-binary read-only Starter/docs/PIG/repository gates. One unchanged licensed Starter composes all profiles/languages. Ordinary new/editor/snippet flows and source/external-input guards passed, as did readable bounded upgrade views and alias/output regression protection. Stable behavior belongs to the [contract](/docs/design/decisions/cli/#authoring). Exact A11/A12 evidence and remaining limits belong to the [record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r4). R5–R8, final A18 runtime/archive refresh and Darwin amd64 stay open. No release, consumer writes/adoption or deployment occurred. |
-| 2026-10-03 | R5 corrected frozen Go/vet, actual Hugo/race and exact-binary four-consumer read-only gates completed. Inspect/context complete for all sites. Historical impact and move blockers remain explicit. Guarded canonical source/rendered gates and stage acceptance are pending. Stable behavior belongs to the [contract](/docs/design/decisions/cli/#project-graph). The [record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r5) identifies A13/A14/context evidence, the cached-module correction and exact preservation receipt. R6–R8, workspace A15 and final A18 remain open. No consumer writes or deployment occurred. |
-| 2026-10-03 | R5 supported inspection/impact/bounded-context and guarded move scope is accepted locally after corrected frozen owning gates, exact-binary four-consumer preservation and first-promotion canonical source/rendered gates. The production translation owner retains only its known draft-release omission. Separate nonpublishable analysis passes all owners. Stable behavior belongs to the [contract](/docs/design/decisions/cli/#project-graph) and [command reference](/docs/design/decisions/cli/#content-moves). The [record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r5) retains exact outcomes and the separate post-render evidence boundary. A13/A14 supported CLI scope passed. A15 context passed while workspace/direct parity remains R6. R6–R8 and final A18 remain open. No release, consumer writes/adoption or deployment occurred. |
-| 2026-10-03 | R6 explicit registry and bounded optional-tool candidate implemented. Focused workspace and corrected actual-protocol trials passed, with preparation failures kept separate. Final runtime/corpus/canonical gates and A07/A15 stage acceptance remain pending in the [R6 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6). R7/R8 and final A18 remain open. No release, consumer write or deployment. |
-| 2026-10-03 | R6 frozen Go/vet, actual Hugo/pinned tools, owning race and exact-binary four-consumer direct/aggregate parity/preservation qualified. The completed receipt records six original operations, existing repository duplicate-ID findings and a driver-only command-summary correction over unchanged raw outputs. No CLI/Hugo rerun or runtime fix was needed. Canonical source/render checks and explicit R6/A07/A15 stage acceptance remain pending in the [record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6). R7/R8/final A18 remain open. No consumer source writes, release or deployment. |
-| 2026-10-03 | R6 supported explicit-registry and optional-tool scope is accepted locally after frozen Go/vet, actual Hugo/pinned tools, race, exact-binary four-consumer parity/preservation and guarded canonical source/render gates. A07 adapters and A15 workspace/direct/context supported scope passed. The [R6 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6) separates first-promotion rendered bytes from this post-render status/evidence amendment. R7/R8 and final A18 remain open. No public release, consumer source writes/adoption or deployment. |
-
-| 2026-10-03 | R7 read-only embedded Studio candidate and authenticated loopback views implemented. Frozen core/browser and exact-binary four-consumer qualification completed within the declared scope. Guarded canonical promotion/render and explicit R7/A16 acceptance remain pending. R1–R6 remain accepted. R8/final A18 open. No consumer writes, release or deployment. |
-
-| 2026-10-03 | R7/A16 supported read-only Studio is accepted locally after frozen cumulative executed-case/browser proof, exact-binary four-consumer parity/preservation and guarded canonical source/render gates. First-promotion rendered bytes remain distinct from this post-render status amendment. Whole invocation failure and explicit partial-preview incompletion stay visible. R1–R7 accepted. R8/final A18 open. No public release, consumer write/adoption or deployment. |
-
-| 2026-10-03 | R8 CLI/opt-in Editor source-editing candidate implemented. Default Studio remains read-only. Pure-core/streaming-output focused evidence is recorded and failed browser trials retained. Final frozen public/browser/consumer/canonical gates and A17 stage acceptance remain pending in the [R8 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r8). R1–R7 remain accepted. R8/final A18 open. No public release or consumer writes/deployment. |
-
-| 2026-10-03 | R8/A17 reviewed CLI/opt-in Editor supported local scope is accepted after corrected frozen whole owning/browser gates, exact-binary four-consumer proposal parity/source preservation and guarded first canonical promotion/actual rendering. R1–R8 are accepted locally. The [R8 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r8) separately binds first-rendered and current status bytes, retaining every failed trial, native finding and required partial-preview incompletion. Final A18 current Linux/archive qualification remains open. No consumer writes, public release, adoption or deployment. |
-
-| 2026-10-04 | Current backend integrity correction, refreshed owning/Hugo/race, carried unchanged-runtime four-consumer preservation and three declared runtime/archive qualifications passed. See the [dated completion supplement](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#a18). Finite R1–R8 implementation is complete locally. Retain this requirements record and anchors, retire it from active navigation, and keep stable behavior in the contract/guide. Final canonical rendered lifecycle verification remains separate. E1–E4 have not been invoked. No public release, adoption or deployment. |
+| 2026-10-03 | R2 final corpus and bilingual documentation gates passed. R3 one-render checked export, exact file identity, guarded CI plans for both providers, release diagnosis and explicit-network HTTP verification passed their scoped local gates, including custom-workflow discovery. Stable behavior moved to the [contract](/docs/design/decisions/cli/#checked-artifacts). Exact evidence and A08–A10 outcomes belong to the [maintenance record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r3). R4–R8, final A18 runtime/archive refresh and Darwin amd64 remain open. |
+| 2026-10-03 | R4 supported local scope passed frozen Go/vet, actual Hugo/race and exact-binary read-only Starter/docs/PIG/repository gates. One unchanged licensed Starter composes all profiles/languages. Ordinary new/editor/snippet flows and source/external-input guards passed, as did readable bounded upgrade views and alias/output regression protection. Stable behavior belongs to the [contract](/docs/design/decisions/cli/#authoring). Exact A11/A12 evidence and remaining limits belong to the [record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r4). R5–R8, final A18 runtime/archive refresh and Darwin amd64 stay open. |
+| 2026-10-03 | R5 corrected frozen Go/vet, actual Hugo/race and exact-binary four-consumer read-only gates completed. Inspect/context complete for all sites. Historical impact and move blockers remain explicit. Guarded canonical source/rendered gates and stage acceptance are pending. Stable behavior belongs to the [contract](/docs/design/decisions/cli/#project-graph). The [record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r5) identifies A13/A14/context evidence, the cached-module correction and exact preservation receipt. R6–R8, workspace A15 and final A18 remain open. |
+| 2026-10-03 | R5 supported inspection/impact/bounded-context and guarded move scope is accepted locally after corrected frozen owning gates, exact-binary four-consumer preservation and first-promotion canonical source/rendered gates. The production translation owner retains only its known draft-release omission. Separate nonpublishable analysis passes all owners. Stable behavior belongs to the [contract](/docs/design/decisions/cli/#project-graph) and [command reference](/docs/design/decisions/cli/#content-moves). The [record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r5) retains exact outcomes and the separate post-render evidence boundary. A13/A14 supported CLI scope passed. A15 context passed while workspace/direct parity remains R6. R6–R8 and final A18 remain open. |
+| 2026-10-03 | R6 explicit registry and bounded optional-tool candidate implemented. Focused workspace and corrected actual-protocol trials passed, with preparation failures kept separate. Final runtime/corpus/canonical gates and A07/A15 stage acceptance remain pending in the [R6 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6). R7/R8 and final A18 remain open. |
+| 2026-10-03 | R6 frozen Go/vet, actual Hugo/pinned tools, owning race and exact-binary four-consumer direct/aggregate parity/preservation qualified. The completed receipt records six original operations, existing repository duplicate-ID findings and a driver-only command-summary correction over unchanged raw outputs. No CLI/Hugo rerun or runtime fix was needed. Canonical source/render checks and explicit R6/A07/A15 stage acceptance remain pending in the [record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6). R7/R8/final A18 remain open. |
+| 2026-10-03 | R6 supported explicit-registry and optional-tool scope is accepted locally after frozen Go/vet, actual Hugo/pinned tools, race, exact-binary four-consumer parity/preservation and guarded canonical source/render gates. A07 adapters and A15 workspace/direct/context supported scope passed. The [R6 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6) separates first-promotion rendered bytes from this post-render status/evidence amendment. R7/R8 and final A18 remain open. |
+| 2026-10-03 | R7 read-only embedded Studio candidate and authenticated loopback views implemented. Frozen core/browser and exact-binary four-consumer qualification completed within the declared scope. Guarded canonical promotion/render and explicit R7/A16 acceptance remain pending. R1–R6 remain accepted. R8/final A18 open. |
+| 2026-10-03 | R7/A16 supported read-only Studio is accepted locally after frozen cumulative executed-case/browser proof, exact-binary four-consumer parity/preservation and guarded canonical source/render gates. First-promotion rendered bytes remain distinct from this post-render status amendment. Whole invocation failure and explicit partial-preview incompletion stay visible. R1–R7 accepted. R8/final A18 open. |
+| 2026-10-03 | R8 CLI/opt-in Editor source-editing candidate implemented. Default Studio remains read-only. Pure-core/streaming-output focused evidence is recorded and failed browser trials retained. Final frozen public/browser/consumer/canonical gates and A17 stage acceptance remain pending in the [R8 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r8). R1–R7 remain accepted. R8/final A18 open. |
+| 2026-10-03 | R8/A17 reviewed CLI/opt-in Editor supported local scope is accepted after corrected frozen whole owning/browser gates, exact-binary four-consumer proposal parity/source preservation and guarded first canonical promotion/actual rendering. R1–R8 are accepted locally. The [R8 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r8) separately binds first-rendered and current status bytes, retaining every failed trial, native finding and required partial-preview incompletion. Final A18 current Linux/archive qualification remains open. |
+| 2026-10-04 | Current backend integrity correction, refreshed owning/Hugo/race, carried unchanged-runtime four-consumer preservation and three declared runtime/archive qualifications passed. See the [dated completion supplement](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#a18). Finite R1–R8 implementation is complete locally. Retain this requirements record and anchors, retire it from active navigation, and keep stable behavior in the contract/guide. E1–E4 have not been invoked. |

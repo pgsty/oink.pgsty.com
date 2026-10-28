@@ -53,4 +53,4 @@ decision_date: 2026-10-25
 
 文档站的 `tests/browser/blog-gallery.spec.mjs` 使用中英文合成内容承担浏览器
 验收，覆盖排布切换、调整宽度、独立偏好、键盘导航、触屏文字、图片加载失败、
-禁用 JavaScript 与画廊无障碍。通过本地检查不等于发布主题或更新线上站点。
+禁用 JavaScript 与画廊无障碍。

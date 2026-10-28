@@ -99,5 +99,4 @@ Focused theme checks cover components, content primitives, code blocks,
 reading, shell, presets and namespace boundaries. The real site's component
 presentation and appearance suites cover EN/ZH, light/dark, desktop/mobile,
 keyboard, touch, reduced motion and printing. The three variants and shared
-styling are included in 1.4.0; downstream pin updates and deployment are
-separate site operations.
+styling ship in 1.4.0.

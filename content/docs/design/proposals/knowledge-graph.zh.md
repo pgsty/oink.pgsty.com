@@ -107,8 +107,7 @@ G3 可以新增专用图谱页与 opt-in JSON 输出。JSON schema 包含版本�
 ## 验收标准 {#acceptance-criteria}
 
 验收需要专项 graph 检查器、提取夹具、HTML/Print/Markdown golden、严格构建负向用例、浏览器无障碍
-与响应式测试，以及真实双语站构建。性能在有代表性的大站上测量，但带日期的原型耗时不能自动成为
-永久预算。
+与响应式测试，以及真实双语站构建，并在有代表性的大站上测量性能。
 
 ## 待决问题 {#open-decisions}
 

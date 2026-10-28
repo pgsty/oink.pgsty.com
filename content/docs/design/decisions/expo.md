@@ -109,5 +109,4 @@ source collection. Personal image data, generated output, and screenshots remain
 outside the theme and documentation source repositories.
 
 Use the commands in the [Expo contract](/docs/design/expo/#acceptance-and-release-boundary)
-for current acceptance. A successful local check does not publish a module or
-update a deployed site.
+for current acceptance.

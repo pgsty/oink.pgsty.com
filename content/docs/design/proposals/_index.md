@@ -57,11 +57,10 @@ records the accepted rationale, and Git history retains the draft text.
 ## CLI workspaces and adapters {#cli-maintenance-candidate}
 
 Explicit workspaces and optional adapters remain in the current reduced CLI.
-The [current contract](/docs/design/decisions/cli/#workspace-registry) defines the command boundary.
-The dated R1–R8 and A18 record applies only to its historical source and binaries.
-It does not qualify later command or output changes. The finite maintenance
-roadmap remains retired from active navigation; no public CLI release or
-deployment has been established.
+The [current contract](/docs/design/decisions/cli/#workspace-registry) defines the command boundary,
+and the [R1–R8 and A18 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/)
+preserves the historical acceptance evidence. The finite maintenance
+roadmap remains retired from active navigation.
 
 ## Where a new PRD goes {#where-a-new-prd-goes}
 
@@ -104,8 +103,6 @@ draft proposal
 Acceptance does not make the PRD a second contract. Move accepted behavior
 to the owning contract, stable rationale to Decisions, and user steps to the
 applicable guide, then retire the proposal from active navigation.
-A local build, commit, tag, public module, consumer pin, and deployment are
-separate completion states.
 
 ## Review gate {#review-gate}
 

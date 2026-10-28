@@ -11,12 +11,12 @@ proposal_date: 2026-09-29
 ---
 
 > [!WARNING] Local first-stage candidate; later roadmap remains draft
-> The independent Go repository `pgsty/oink-cli` and first-stage development were authorized on 2026-09-29. Its six commands now have a local `0.1.0-dev` implementation, with final local acceptance recorded separately. Current behavior belongs to the [CLI decision and result contract](/docs/design/decisions/cli/) and [CLI introduction](/docs/cli/). This is not a public CLI release or independent-user adoption record. Theme 1.2, its tooling descriptor, Docsy migration, version lifecycle, OpenAPI, MCP, and Studio remain proposals.
+> The independent Go repository `pgsty/oink-cli` and first-stage development were authorized on 2026-09-29. Its six commands now have a local `0.1.0-dev` implementation, with final local acceptance recorded separately. Current behavior belongs to the [CLI decision and result contract](/docs/design/decisions/cli/) and [CLI introduction](/docs/cli/). Theme 1.2, its tooling descriptor, Docsy migration, version lifecycle, OpenAPI, MCP, and Studio remain proposals.
 
 | Record | Value |
 | --- | --- |
 | Status | Repository choice and first-stage scope accepted. Local candidate implemented and validated. Later roadmap remains draft |
-| Owner | OINK maintainers. Final local acceptance and public release remain separate |
+| Owner | OINK maintainers |
 | Date | 2026-09-29 |
 | Scope | OINK theme, independent CLI, existing Starter, and documentation site |
 | Affected contracts | Architecture, configuration/diagnostics, outputs, migration, and later version navigation/API content |
@@ -26,7 +26,7 @@ proposal_date: 2026-09-29
 
 Create a separate **`oink-cli` repository**, publish one executable named **`oink`**, and keep **OINK** as the single product identity. The theme renders content. The CLI helps users initialize, inspect, validate, upgrade, and eventually migrate their sites. The documentation site continues to own public guides, bilingual design records, and integration acceptance.
 
-The repository choice and Go implementation are now accepted and exist locally, with public publication remaining a separate action. The [CLI contract](/docs/design/decisions/cli/) owns first-stage behavior, while the [dated acceptance record](/docs/design/research/2026-09-29-cli-acceptance/) identifies executed checks and remaining limits. This roadmap stays active for its later stages and adoption targets.
+The [CLI contract](/docs/design/decisions/cli/) owns first-stage behavior, while the [dated acceptance record](/docs/design/research/2026-09-29-cli-acceptance/) lists executed checks and remaining limits. This roadmap stays active for its later stages and adoption targets.
 
 The first release should improve the path from an existing repository to a reliable publication. Its four main workflows are **doctor, check, init, and upgrade**. `dev` and `build` may provide small, transparent Hugo shortcuts. A supported Docsy migration path follows evidence from actual input repositories. Version lifecycle and OpenAPI generation come after that first usable release, with one major content-model project active at a time.
 
@@ -38,35 +38,34 @@ Recommended public description:
 
 > OINK is a local-first documentation toolkit built on Hugo, publishing engineering knowledge for readers and agents.
 
-Retain “Hugo theme” in installation and discovery pages because it describes what users install. “Knowledge compiler” is a useful architectural direction, but it is not yet evidence that OINK owns a new product category. A new name should keep the current Markdown/Hugo workflow clear.
+Retain “Hugo theme” in installation and discovery pages because it describes what users install, while “knowledge compiler” describes the internal architecture. A new name should keep the current Markdown/Hugo workflow clear.
 
-Prioritize Git-oriented maintainers of open-source infrastructure, developer tools, and multilingual technical documentation. They need to get a site working, diagnose failures, upgrade safely, and move content without losing URLs or meaning. Existing maintained sites provide regression coverage, while independent teams provide adoption evidence; the two answer different questions.
+Prioritize Git-oriented maintainers of open-source infrastructure, developer tools, and multilingual technical documentation. They need to get a site working, diagnose failures, upgrade safely, and move content without losing URLs or meaning.
 
 For the first stage, non-goals include a visual CMS, hosted accounts, a deployment control plane, a package marketplace, an LLM runtime, a semantic-search service, and a new rendering engine. Books, blogs, and landing pages remain supported, but their feature catalogs do not drive this roadmap.
 
 ## Evidence and changes to the research recommendation {#evidence}
 
-This proposal considers the supplied strategy report and checks it against the local implementation, bilingual Design section, Starter, and current primary documentation. It does not treat the report's star counts, effort estimates, commercial prices, or market claims as verified demand.
+This proposal considers the supplied strategy report and checks it against the local implementation, bilingual Design section, Starter, and current primary documentation.
 
 | Observation | Product consequence |
 | --- | --- |
 | OINK already has a public Starter, generated configuration schemas, migration scripts, publication tools, and focused theme checkers | Provide selected workflows as product features. Do not create a second implementation of every tool |
-| The front-matter schema deliberately omits type constraints | It is not a complete executable validator. Strict checks must follow the owning resolvers and actual Hugo output |
-| Existing version support includes a cross-site menu, archive banners, and optional path concatenation | The gap is lifecycle and reliable page correspondence, not another menu or banner |
+| The front-matter schema deliberately omits type constraints | Strict checks must follow the owning resolvers and actual Hugo output |
+| Existing version support includes a cross-site menu, archive banners, and optional path concatenation | Focus on lifecycle and reliable page correspondence |
 | Current version documentation explicitly uses independent Hugo builds | Preserve that model initially. Do not silently add a multi-version renderer to one build |
 | OpenAPI widgets become specification links outside HTML and have documented accessibility exclusions | Static, accessible endpoint content is a concrete future improvement |
-| Backlinks are implemented. G2/G3 remain draft | A graph visualization is not an already-accepted commitment |
-| `bin/update-consumers.py` exists in this working tree as uncommitted local work | Its release-resolution and preservation rules are useful design input, not a claim of shipped CLI functionality |
-| The theme and documentation trees contain substantial unrelated local changes | This proposal records recommendations. It does not certify or release that work |
+| Backlinks are implemented. G2/G3 remain draft | Graph visualization remains a draft proposal |
+| `bin/update-consumers.py` exists in this working tree as local maintenance tooling | Its release-resolution and preservation rules serve as design input for `oink upgrade` |
 
 The supplied report emphasizes adoption and an optional tools layer. Four changes make its recommendations implementable:
 
 1. Put safe upgrades alongside initialization and diagnosis. Existing users have an immediate, testable maintenance need.
 2. Separate maintainer regression checkers from consumer checks. A synthetic-fixture checker is not automatically a general-purpose site validator.
-3. Treat migrations as supported input profiles, not a promise of complete Docsy or arbitrary MDX conversion.
-4. Replace the simultaneous versioning/OpenAPI/graph/platform program with sequential decisions. A feature list and hour estimates are not a staffed delivery plan.
+3. Treat migrations as supported input profiles with explicit boundaries rather than complete Docsy or arbitrary MDX conversion.
+4. Replace the simultaneous versioning/OpenAPI/graph/platform program with sequential decisions.
 
-Current competitors validate the workflow direction, not demand for OINK itself. [Mintlify's CLI](https://www.mintlify.com/docs/cli/commands) exposes preview, validation, and link checking. [Nimbus](https://github.com/cloudflare/nimbus) combines scaffolding and agent-readable output while remaining pre-1.0. [Docusaurus](https://docusaurus.io/docs/versioning) makes version snapshots explicit and warns about their maintenance/build cost. Copying Nimbus's full source-owned UI model would move upgrade work to OINK consumers. Use that pattern for small generated recipes. Keep the upgradable theme module.
+Existing tools illustrate the workflow tradeoffs. [Mintlify's CLI](https://www.mintlify.com/docs/cli/commands) exposes preview, validation, and link checking. [Nimbus](https://github.com/cloudflare/nimbus) combines scaffolding and agent-readable output while remaining pre-1.0. [Docusaurus](https://docusaurus.io/docs/versioning) makes version snapshots explicit and warns about their maintenance/build cost. Copying Nimbus's full source-owned UI model would move upgrade work to OINK consumers. Use that pattern for small generated recipes. Keep the upgradable theme module.
 
 ## Why a separate repository {#repository-choice}
 
@@ -133,7 +132,7 @@ No new visual component family is required for 1.2. Correctness, accessibility, 
 
 ## First CLI release: proposed 0.1 {#cli-first}
 
-The commands below are implemented in the local `0.1.0-dev` candidate. Their current flags, result semantics, and limits are defined by the [CLI contract](/docs/design/decisions/cli/) and [CLI introduction](/docs/cli/). Public distribution and final acceptance are separate states.
+The commands below are implemented in the local `0.1.0-dev` candidate. Their current flags, result semantics, and limits are defined by the [CLI contract](/docs/design/decisions/cli/) and [CLI introduction](/docs/cli/).
 
 | Command | User outcome | First-release boundary |
 | --- | --- | --- |
@@ -149,41 +148,41 @@ The commands below are implemented in the local `0.1.0-dev` candidate. Their cur
 
 Start with failures that users can act on and that checks can identify reliably: wrong toolchain, unresolved theme, malformed required configuration, missing local link targets/anchors/assets, and inconsistent enabled output references. Resolve routing and anchor truth from Hugo's output, including language and base-path handling. Do not label a valid custom front-matter key as invalid merely because an editor schema does not list it.
 
-Disabled optional outputs are not missing-output errors. The local candidate does not check translation completeness. Any future completeness rule must use the site's declared languages and coverage policies. Duplicate titles, orphan pages, missing descriptions, prose style, and freshness remain later optional observations after real false-positive review. Static inspection is not a claim that browser accessibility or interaction tests passed.
+Disabled optional outputs are not missing-output errors. The local candidate does not check translation completeness. Any future completeness rule must use the site's declared languages and coverage policies. Duplicate titles, orphan pages, missing descriptions, prose style, and freshness remain later optional observations after real false-positive review. Browser accessibility and interaction checks remain in the site Playwright/axe suite.
 
 The local candidate freezes `oink.result/v1`. Structured diagnostics have stable rule IDs, severity, known locations, explanations, actions, and explicit coverage. JSON stdout contains only the result. Logs go to stderr. No command waits for input. Exit meanings are `0` for completed work with no blocking findings, `1` for policy findings, and `2` for required incomplete work. Required unsupported checks cannot succeed. The [result contract](/docs/design/decisions/cli/#result) owns the detailed fields. Build-derived findings never receive invented line numbers.
 
-Keep raw Hugo errors available as subprocess evidence. Their translated wording is not the CLI protocol. A future SARIF export can project from the same result without changing rule semantics.
+Keep raw Hugo errors available as subprocess evidence. A future SARIF export can project from the same result without changing rule semantics.
 
 ### Upgrade and file preservation {#upgrade-preservation}
 
-The existing consumer-upgrade script provides local precedents: distinguish declared pin from resolved version, disable both workspace mechanisms for release verification, recognize module replacements, and inspect `_vendor`. Port those behaviors with focused tests. Do not call unpublished Python files while describing the executable as a standalone Go binary.
+The existing consumer-upgrade script provides local precedents: distinguish declared pin from resolved version, disable both workspace mechanisms for release verification, recognize module replacements, and inspect `_vendor`. Port those behaviors with focused tests inside the standalone Go binary.
 
 For 0.1, upgrade one explicitly selected site. Multi-site fleet discovery stays with the maintainer script until a consumer need is demonstrated. A normal `check` may examine an intentional local theme replacement. `check --release` must verify the declared published release without those replacements. It should report a conflicting `go.mod` replacement rather than edit it away.
 
-Preview the proposed touched files and verify the prospective upgrade before applying it. Back up only those files, refuse changes to files that changed since the preview, and preserve unrelated dirty work. A failed operation must describe what was and was not applied, with a recovery path that does not overwrite subsequent edits. A dirty repository is not a reason to block read-only diagnosis. Refreshing vendor content requires a separate explicit action. Changing only `go.mod` does not upgrade vendored output.
+Preview the proposed touched files and verify the prospective upgrade before applying it. Back up only those files, refuse changes to files that changed since the preview, and preserve unrelated dirty work. A failed operation must describe what was and was not applied, with a recovery path that does not overwrite subsequent edits. A dirty repository is not a reason to block read-only diagnosis. Refreshing vendor content requires a separate explicit action.
 
-Do not commit, push, deploy, alter global agent settings, or install system packages as side effects of initialization or repair. Initialization creates the requested named directory. Changes to existing files default to a preview. Do not build a generic workflow engine to implement these bounded operations.
+Do not commit, push, deploy, alter global agent settings, or install system packages as side effects of initialization or repair. Initialization creates the requested named directory. Changes to existing files default to a preview.
 
 ### Distribution and offline behavior {#distribution-offline}
 
-The local candidate currently provides a tested source/Make installation path and archive preparation. A published Homebrew formula and public download/tag installation remain future distribution work. Runtime qualification at this stage covers macOS arm64. Other archive targets are cross-compiled candidates. They have not been tested as runtime platforms.
+The local candidate currently provides a tested source/Make installation path and archive preparation on macOS arm64, with other archive targets cross-compiled. A published Homebrew formula and public download/tag installation remain future distribution work.
 
 Use a Go executable with release archives/checksums and a Homebrew installation path. Initially qualify macOS and Linux on tested architectures. Mark other targets experimental until you validate their filesystem and process behavior. The installed CLI itself needs no installed Go toolchain, Python, Node, or account. Hugo remains an external renderer. Initial module resolution still needs the site's documented Git/Go/Hugo toolchain.
 
 Embed or ship an exact, licensed Starter snapshot for deterministic initialization. Do not fetch a moving `main` branch on every invocation, and do not maintain handwritten CLI copies of Starter configuration. Check embedded/template drift during CLI release.
 
-Distinguish a cold installation from offline operation. Downloading Hugo, the theme, or an uncached template requires connectivity unless supplied locally. Once dependencies are present, local diagnosis/check/build paths must work without external services. On a cache miss, an offline request must fail clearly. It must never fetch silently. External URL checking, remote specifications, and other network actions are separate opt-ins. No default telemetry or background update check is required.
+Distinguish a cold installation from offline operation. Downloading Hugo, the theme, or an uncached template requires connectivity unless supplied locally. Once dependencies are present, local diagnosis/check/build paths must work without external services. On a cache miss, an offline request must fail clearly without fetching silently. External URL checking, remote specifications, and other network actions are separate opt-ins. No default telemetry or background update check is required.
 
 ## Migration: the first expansion {#migration}
 
-Start with a **documented Docsy input profile** selected from actual candidate sites, reusing the current migration fixtures and report model as evidence. Existing OINK 0.4/0.6 transformations are not proof that arbitrary Docsy sites can already migrate. Validate configuration, navigation, assets, languages, and routes as well as Markdown syntax.
+Start with a **documented Docsy input profile** selected from actual candidate sites, reusing the current migration fixtures and report model as evidence. Validate configuration, navigation, assets, languages, and routes as well as Markdown syntax.
 
 Proposed workflow: `oink migrate --from docsy --source <site> --output <new-site>`. Assess the migration before writing. Apply it only with an explicit flag and a separate destination. Every source item receives one primary status: unchanged-compatible, transformed, manual-review, or unsupported. Counts must reconcile, with reasons and source locations. Custom templates and dynamic behavior remain visible manual work.
 
-Acceptance means source preservation, idempotent supported transforms, no edits inside literal code examples, valid local references, and an explicit old-to-new route report. Prefer unchanged URLs. URL changes require a redirect plan for the hosting target. HTML build success alone does not establish semantic parity or production redirects.
+Acceptance means source preservation, idempotent supported transforms, no edits inside literal code examples, valid local references, and an explicit old-to-new route report. Prefer unchanged URLs. URL changes require a redirect plan for the hosting target.
 
-Do not promise “one command migrates any Docusaurus site.” Arbitrary JSX, imports, and embedded React/Vue are programs. Do not execute untrusted source to infer their meaning or silently drop unsupported constructs. Start a second framework only after the first profile is reused successfully without maintainer rescue. Full MDX migration is a later product investment, not an MVP parser task.
+Arbitrary JSX, imports, and embedded React/Vue are programs. Do not execute untrusted source to infer their meaning or silently drop unsupported constructs. Start a second framework only after the first profile is reused successfully without maintainer rescue. Full MDX migration is a later product investment.
 
 ## Next content capability: version lifecycle {#version-lifecycle}
 
@@ -223,9 +222,7 @@ No CLI configuration file is required initially. Hugo retains rendering configur
 
 ## Roadmap and staffing assumption {#roadmap}
 
-The planning envelope below is retained as the original proposal, not as an execution log. Stages 0 and 1 have a local first-stage candidate. This does not complete publication, independent-user studies, migration, or later content-model outcomes. Actual evidence belongs in the [acceptance record](/docs/design/research/2026-09-29-cli-acceptance/).
-
-The following is an **8–12 week first-stage planning envelope**, assuming roughly one full-time implementation owner plus part-time documentation/review help. It is not a commitment or a claim about actual staffing. Toolchain qualification, recruitment, and bilingual review take time. Reduce scope before adding planned parallel work.
+Stages 0 and 1 have a local first-stage candidate, with validation details in the [acceptance record](/docs/design/research/2026-09-29-cli-acceptance/). The **8–12 week first-stage planning envelope** below assumes roughly one full-time implementation owner plus part-time documentation/review help. Toolchain qualification, recruitment, and bilingual review take time; reduce scope before adding parallel work.
 
 | Stage | Timing from approval | Deliverable | Exit evidence |
 | --- | --- | --- | --- |
@@ -233,7 +230,7 @@ The following is an **8–12 week first-stage planning envelope**, assuming roug
 | 1: complete the daily workflow | Weeks 3–6 | Doctor/check, pinned init, thin dev/build; prospective single-site upgrade and file-preservation tests | New users can diagnose a seeded failure; ordinary Hugo still builds generated sites; no unexplained source changes |
 | 2: release a bounded product | Weeks 7–12 | Proposed theme 1.2 + CLI 0.1; compatibility record; docs; qualified installation; limited Docsy migration assessment/pilot | First-run study and repeat upgrade use; migration limitations are explicit; published pins and consumer adoption checked separately |
 | 3: validate migration and one content model | Months 4–6 | Harden the first migrator; choose version lifecycle or OpenAPI based on users; propose theme 1.3 / CLI 0.2 as needed | At least two real repositories use the chosen workflow; accepted contract precedes compatibility promises |
-| 4: earn expansion | After month 6 | The other content capability, then optional recipes/provenance or agent transport where justified | Repeated use and maintenance capacity; no automatic commitment to a SaaS product |
+| 4: earn expansion | After month 6 | The other content capability, then optional recipes/provenance or agent transport where justified | Repeated use and maintenance capacity |
 
 If stage 2 overruns, remove migration writing from that release and keep its assessment report. Do not cut upgrade preservation, truthful diagnostics, or independence from the CLI. If no independent team wants the migration profile, stop expanding framework coverage and investigate onboarding/positioning instead.
 
@@ -241,22 +238,20 @@ Freshness/ownership is a later optional quality feature, initially a report whos
 
 ## Acceptance and product measures {#acceptance}
 
-The user/adoption measures below remain targets. Local pilots run by maintainers validate implementation and preservation. They do not establish independent teams, first-user success rates, retention, or production adoption.
-
 | Area | Initial target or required property |
 | --- | --- |
 | First successful use | With prerequisites already installed, at least 4 of 5 unfamiliar target users reach local preview and a passing strict check within 15 minutes without maintainer intervention; Record cold installation separately |
 | Maintenance value | At least three real sites use diagnosis/checks and repeat a supported upgrade; Every failure has an actionable report |
-| Diagnostic precision | Triage all blocking findings in the pilot; aim for less than 5% false positives in an explicitly counted labeled sample, rather than an unmeasured headline claim |
+| Diagnostic precision | Triage all blocking findings in the pilot; aim for less than 5% false positives in an explicitly counted labeled sample |
 | Integrity | Zero silent content loss; every migration input is accounted for; repeat transforms have no diff; user edits and unrelated dependencies survive |
 | Independence | Initialized/generated sites build through ordinary Hugo with provisioned dependencies; optional CLI and output features remain optional |
 | Offline behavior | Run the qualified local workflow with outbound access denied after provisioning; record cache misses and explicitly networked features separately |
-| Compatibility | Current tested theme baseline and candidate release, pinned site regression toolchain, root/subpath, and EN/ZH cases; do not imply that every Hugo version above the floor was tested |
-| Adoption | Seek five independent pilot teams within the first stage, and track which reach production and continue using the result at 30/90 days; This is a validation target. It is not observed adoption |
+| Compatibility | Current tested theme baseline and candidate release, pinned site regression toolchain, root/subpath, and EN/ZH cases |
+| Adoption | Seek five independent pilot teams within the first stage, and track which reach production and continue using the result at 30/90 days |
 
-Use independently maintained production sites as the main adoption measure, verified through public references or voluntary user confirmation. A stable documentation site should not stop counting merely because it has no commit in 60 days. Track theme upgrade recency separately from retention. Stars, download counts, internal consumer count, and agent-generated volume are supporting signals, not proof of independent adoption.
+Use independently maintained production sites as the main adoption measure, verified through public references or voluntary user confirmation. A stable documentation site should not stop counting merely because it has no commit in 60 days. Track theme upgrade recency separately from retention. Stars, download counts, internal consumer count, and agent-generated volume serve as supporting signals.
 
-Track time to first local success, time to production, upgrade effort, and manual migration effort separately. Deployment can depend on accounts and providers outside the CLI, so do not equate successful local validation with publication. Do not add default telemetry to obtain these measures.
+Track time to first local success, time to production, upgrade effort, and manual migration effort separately. Do not add default telemetry to obtain these measures.
 
 ## Implementation ownership and validation {#implementation-validation}
 
@@ -269,15 +264,15 @@ Track time to first local success, time to production, upgrade effort, and manua
 | Migration | Ported/extended transform cases, source-preservation and repeat-run checks; reviewed real-site route/content evidence |
 | Future version/API presentation | Theme output checks plus bilingual documentation-site integration, browser, accessibility, responsive, and visual review |
 
-Run the smallest owning check first. Public behavior changes still require implementation, checker, and both language contracts in one coordinated delivery. Use the sibling site's `make check`, `make browser`, and `make dev` workflow for actual integration and visual acceptance. Do not move public regression scenarios into the theme's synthetic fixture tree, or force consumer installations to install the maintainer Node test stack.
+Run the smallest owning check first. Public behavior changes still require implementation, checker, and both language contracts in one coordinated delivery. Use the sibling site's `make check`, `make browser`, and `make dev` workflow for actual integration and visual acceptance.
 
-For a release, separately record local checks, commits, tags, published module/binary resolution, consumer pins, and deployment. Theme release adoption continues through the maintained consumer inventory procedure. Use a coordinated issue/checklist to connect the repositories. No new orchestration framework is needed.
+For a release, separately record local checks, commits, tags, published module/binary resolution, consumer pins, and deployment. Theme release adoption continues through the maintained consumer inventory procedure. Use a coordinated issue/checklist to connect the repositories.
 
 ## Open decisions and stop conditions {#open-decisions}
 
-Repository selection and first-stage implementation are settled locally. Remaining release decisions include qualified platforms, the public distribution channel, compatibility claims justified by executed evidence, and independent pilot recruitment. The acceptance record identifies the actual local toolchain and selected sites. It does not validate future platforms or users.
+Repository selection and first-stage implementation are settled locally. Remaining release decisions include qualified platforms, the public distribution channel, compatibility claims justified by executed evidence, and independent pilot recruitment.
 
-Result and exit semantics are frozen for the local candidate in the CLI contract. The minimal theme descriptor and stable theme warning identifiers remain separate proposals, not prerequisites retroactively added to this first CLI. Before a versioning beta, settle manifest projections, archive retention, and page correspondence. Before an OpenAPI beta, settle the supported spec subset and generated-source ownership.
+Result and exit semantics are frozen for the local candidate in the CLI contract. The minimal theme descriptor and stable theme warning identifiers remain separate proposals. Before a versioning beta, settle manifest projections, archive retention, and page correspondence. Before an OpenAPI beta, settle the supported spec subset and generated-source ownership.
 
 Reconsider the separate CLI investment if pilots only need a tiny maintenance script, if rules must repeatedly duplicate template semantics, or if maintaining distribution consumes more effort than the measured user benefit. Keep successful standalone scripts in that case. If evidence changes, reorder versioning and OpenAPI. Do not expand the total concurrent scope.
 
@@ -285,9 +280,9 @@ Reconsider the separate CLI investment if pilots only need a tiny maintenance sc
 
 | Date | Record |
 | --- | --- |
-| 2026-09-29 | Draft created from the supplied strategy research and local source review. Recommends a separate optional CLI, a small adoption release, bounded migrations, and sequential content capabilities. No implementation or repository creation accepted by this document. |
-| 2026-09-29 | Subsequent user authorization accepted the independent Go repository and first-stage development. A local `0.1.0-dev` candidate implements doctor/check/init/upgrade/dev/build. Stable behavior moved to the CLI decision and usage guide. Local acceptance passed for CLI commit `e623d93`. Public release, independent adoption, and all later-stage proposals retain separate states. |
+| 2026-09-29 | Draft created from the supplied strategy research and local source review. Recommends a separate optional CLI, a small adoption release, bounded migrations, and sequential content capabilities. |
+| 2026-09-29 | Subsequent user authorization accepted the independent Go repository and first-stage development. A local `0.1.0-dev` candidate implements doctor/check/init/upgrade/dev/build. Stable behavior moved to the CLI decision and usage guide. Local acceptance passed for CLI commit `e623d93`. |
 
-Local authorities consulted: [Architecture](/docs/design/architecture/), [generated schema decision](/docs/design/decisions/config-schema/), [migration boundary](/docs/design/migration/), [version behavior](/docs/customize/versions/), [OpenAPI limits](/docs/write/openapi/#limits), and [graph proposal status](/docs/design/proposals/knowledge-graph/). The source inspection also covered theme `bin/`, `schema/nav.v1.schema.json`, the existing Starter, and documentation-site build/check commands. Local in-progress changes are not represented as published release evidence.
+Local authorities consulted: [Architecture](/docs/design/architecture/), [generated schema decision](/docs/design/decisions/config-schema/), [migration boundary](/docs/design/migration/), [version behavior](/docs/customize/versions/), [OpenAPI limits](/docs/write/openapi/#limits), and [graph proposal status](/docs/design/proposals/knowledge-graph/). The source inspection also covered theme `bin/`, `schema/nav.v1.schema.json`, the existing Starter, and documentation-site build/check commands.
 
-External primary sources were checked on 2026-09-29: the linked Mintlify command reference, Nimbus repository, Docusaurus versioning guide, and Hugo config/module documentation. They inform comparisons. They do not validate OINK market demand or the proposed schedule.
+External primary sources were checked on 2026-09-29: the linked Mintlify command reference, Nimbus repository, Docusaurus versioning guide, and Hugo config/module documentation.

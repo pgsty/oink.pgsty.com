@@ -16,8 +16,7 @@ implementation_status: local-candidate-not-released
 > 本契约描述 2026-10-04 收缩后的本地 `0.1.0-dev` 命令界面。保留站点诊断、
 > 真实 Hugo 检查、初始化、构建、升级及有保护的维护计划；使用 Cobra、默认彩色
 > 英文文本与 JSON/YAML 结果。Studio、通用编辑、context、snippets、editor 与
-> CI 生成已撤下。历史 R1–R8 验收只对记录中的源码和二进制成立，不能替代当前验证。
-> 尚未建立公开 CLI 发布、Homebrew 分发或部署。
+> CI 生成已撤下。CLI 目前为本地候选版本，尚未作为独立版本或 Homebrew 软件包发布。
 
 ## 背景与归属 {#ownership}
 
@@ -83,7 +82,7 @@ implementation_status: local-candidate-not-released
 
 默认文本展示状态、计数、最多八条活动发现及明确的未检查覆盖。详细事实与已审阅
 发现保留在结构化结果中。计划与升级预览展示完整 diff。Cobra 管理命令分发与各级
-帮助。CLI 提示采用 ASD-STE100 风格的简短主动英文句，不宣称认证；用户内容与
+帮助。CLI 提示采用 ASD-STE100 风格的简短主动英文句；用户内容与
 外部工具证据保留原语言。
 
 | 字段 | 类型与含义 |
@@ -103,7 +102,6 @@ implementation_status: local-candidate-not-released
 与原始工具输出属于证据，不是供用户导入内部 Go 包的 SDK。
 
 机器可读 Schema 随 CLI 仓库提供，路径为 `schema/result.v1.schema.json`。
-其标识符不证明 Schema 端点或 CLI 公开版本已经部署。
 
 每份证据记录包含 `command`（参数数组）、可选的 `directory`、`stdout`、
 `stderr` 和子进程自己的 `exit_code`。捕获的诊断与构建输出保留在结果中。
@@ -166,8 +164,8 @@ Hugo 构建失败时保留原始证据并停止产物验收，不会把旧产物
 
 渲染引用范围包括受支持的 HTML URL、锚点和已输出的机器契约。覆盖声明明确排除
 浏览器交互、无障碍、视觉呈现、外部 URL 可访问性、托管重定向及生产部署，也列出
-未检查的动态资源与内容语义。静态产物证据不能证明未声明的翻译覆盖、翻译语义等价
-或浏览器执行结果。
+未检查的动态资源与内容语义。静态产物检查覆盖已声明的翻译配对与渲染文件；浏览器
+执行与译文语义审校仍需独立完成。
 
 Hugo 公共 `Page.OutputFormats` 按页面和启用语言给出预期产物名称与 URL。隔离
 副本添加带有本次运行唯一标识、不会进入普通列表的探针；每个启用语言都必须输出
@@ -239,8 +237,8 @@ Hugo 公共 `Page.OutputFormats` 按页面和启用语言给出预期产物名�
 `.oink/translations.json` 使用 `oink.translations/v1`。显式审阅记录绑定 Hugo
 源/目标 ID、源语言、完整源文件/译文的字节 SHA-256、审阅人、理由和 RFC 3339
 时间。无记录为 `unknown`；哈希相等为 `current`；仅源、仅译文或双方改变分别为
-`source_changed`、`translation_changed`、`both_changed`。这些状态只证明审阅后
-发生变化，不判断翻译语义。文件修改时间不能建立审阅状态。来源未证实则保持未知；
+`source_changed`、`translation_changed`、`both_changed`。这些状态按字节比对审阅后的
+变化，不依赖文件修改时间。来源未证实则保持未知；
 已有审阅或受保护约束无法验证时，返回必需工作未完成。
 
 ## 原生内容规则与覆盖 {#native-content}
@@ -261,7 +259,6 @@ Hugo 公共 `Page.OutputFormats` 按页面和启用语言给出预期产物名�
 才运行该目录。后续版本必须经过明确的源码审计，才能启用原生主题规则。
 replacement、vendor 副本、其他版本或未知来源不选择最新主题回退：
 `native-theme-rules` 为可选 `not_checked`，通用语法检查仍运行。
-这份目录不保证覆盖每个自定义组件或主题功能。
 
 ## 基线与经审阅文件计划 {#review-plans}
 
@@ -308,8 +305,8 @@ replacement/workspace 字节不能替代历史证据。
 `data.impact.baseline_state` 为 `complete`、`incomplete` 或 `unavailable`。
 必需基线不可用时返回 `2`，保留全部已知当前页面、附件、引用与输出，并扩大范围。
 不虚构旧页面或变更；只记录实际解析出的 commit。`check [GROUP] --since REF`
-有意执行完整当前检查，并声明 `data.check_scope: full`，不承诺增量提速或部分
-验证。`data.impact.full_scope` 单独描述因果不确定性，与验证范围分别表达。
+有意执行完整当前检查，并声明 `data.check_scope: full`，保持完整的验证覆盖。
+`data.impact.full_scope` 单独描述因果不确定性，与验证范围分别表达。
 
 完成的 `inspect`、`impact` 事实查询返回 `0`，即使单独报告的
 `data.current_check` 含已完成质量发现 `1`。必需捕获失败仍为顶层 `2`。
@@ -403,14 +400,13 @@ Hugo 叶子包。主语言默认采用生效默认语言，选定译文必须是
 `upgrade --to TAG` 现根据同一原始站点输入捕获基线与候选视图，返回可读模块 diff
 及完整模式变化。比较记录实际 Hugo 页面/输出/语言设置、生成文件哈希/大小/模式，
 以及原始 alias 声明和单独观察的重定向文件。报告删除/新增 URL、已证明重定向、
-alias 目标/字节变化及启用语言/输出/搜索变化。候选构建正常本身不能证明路由或能力
-得到保留。
+alias 目标/字节变化及启用语言/输出/搜索变化。
 
 只有在确切旧输出文件处观察到指向对应实际候选页面的重定向，才能证明旧 URL 被保留。
 未知/相对定制 alias 身份仍为必需未完成 `2`；删除此前生成路由或输出为阻断发现 `1`。
 两个实际解析主题版本必须匹配明确选择的 pin；未知/替换 pin、未知/不同的规范 Hugo
 版本或环境、意外其他输入变化均保持未完成。比较支持单个 HTTP(S) base origin/path，
-多主机输入保持未完成。不宣称配置迁移转换或普遍浏览器/主题兼容，人工审阅保持
+多主机输入保持未完成。人工审阅保持
 明确的可选未检查覆盖。观察到 alias 改指向另一个唯一 Hugo 页面时，独立于同页 URL
 移动而阻断。
 
@@ -470,13 +466,12 @@ dirty 状态、实际解析的主题身份、CLI/Hugo 版本、生效环境/base
 SHA-256。规范 URL 和 HTML 语言来自实际 HTML；Hugo 语言键单独保留。
 未知 Git 状态仍是未知。原始输入字节和模式在添加临时探针、重定位 workspace 或
 replacement 路径之前捕获。公开清单不包含本机绝对路径、任意参数、进程日志或
-覆盖条目的自由文本。哈希证明字节身份，不是签名，也不证明本地 checkout 已公开发布。
+覆盖条目的自由文本。哈希用于记录文件字节身份。
 
 受管理构建仅接受 `--` 后的布尔 Hugo 参数 `--minify`、`--gc`、`--ignoreCache`
 和 `--noTimes`，包括 `=true`/`=false` 形式。其他透传参数属于不支持的输入。
 普通 `build` 保持既有透明透传行为。生效的示例/本地地址在普通诊断中是警告，
-在已检查发布构建中是错误。`--release` 仍需独立的实际公开主题解析证据；本地
-Git revision 或声明 pin 不能证明 vendor/replacement 字节的公开身份。
+在已检查发布构建中是错误。`--release` 仍需独立的实际公开主题解析证据。
 
 ## 本地产物与部署验证 {#artifact-verification}
 
@@ -497,8 +492,7 @@ Git revision 或声明 pin 不能证明 vendor/replacement 字节的公开身份
 
 ## 已撤下 CI 生成 {#ci-generation}
 
-移除 `ci init`。CI 配置保留在站点或 Starter 中。
-本地 CLI 验证不执行托管 CI，也不部署站点。`plans apply` 拒绝旧 CI 计划。
+移除 `ci init`。CI 配置保留在站点或 Starter 中。`plans apply` 拒绝旧 CI 计划。
 
 ## 显式工作区登记 {#workspace-registry}
 
@@ -506,7 +500,6 @@ Git revision 或声明 pin 不能证明 vendor/replacement 字节的公开身份
 > 登记与可选工具边界通过冻结归属/运行时、实际协议、四消费者一致性/保护及
 > 规范源码/渲染门禁。A07 适配器与 A15 工作区受支持范围已在
 > [维护记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6)中本地接受。
-> 记录中的 R1–R8 与 A18 范围通过其历史源码与二进制的验收；当前 CLI 的后续修改需要新证据。
 
 工作区是一份显式指定的 YAML 登记文件，独立版本为 `oink.workspace/v1`。
 它只包含站点名称与目录：
@@ -594,8 +587,7 @@ HTTP(S) 引用；本地链接仍归原生检查。确定失败的 `4xx` 响应�
 Markdown 行号。
 
 子进程不接收调用者的代理 URL/凭据设置或 Node 预加载变量。已验证运行时可以传入
-字面的 `NO_PROXY`/`no_proxy` 主机列表数据。这不保证所有操作系统代理路由都被
-禁用，也不是操作系统网络沙箱。工具预备与任何联网操作仍是独立显式动作；这些
+字面的 `NO_PROXY`/`no_proxy` 主机列表数据。工具预备与任何联网操作仍是独立显式动作；这些
 命令不安装工具。
 
 ## 离线与兼容性边界 {#offline}
@@ -608,14 +600,10 @@ Markdown 行号。
 `GetRemote` 缓存来承诺远程资源构建可离线运行。必需资源应作为本地输入提供，或为
 该次操作显式启用联网。
 
-CLI 不下载 Go 工具链，不安装软件包，不修改全局配置，也不启用遥测。进程政策不是
-操作系统网络沙箱。兼容验证记录应区分普通离线执行与确实在操作系统边界禁止出站的
-测试。
+CLI 不下载 Go 工具链，不安装软件包，不修改全局配置，也不启用遥测。
 
 当前开发与验收基线是 Hugo Extended 0.168.0；版本门禁要求 0.168.0 或更新版本，
-新建站点使用 CLI 独立维护的 Starter 快照，主题升级遵循[升级指南](/zh/docs/admin/upgrade/)。禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；
-告警保持可见，上游 LibSass 弃用告警允许出现。兼容性声明需要绑定明确源码与二进制的
-执行证据。初始化站点保留普通 Hugo 输入，移除 CLI 后只需要站点文档要求的依赖。
+新建站点使用 CLI 独立维护的 Starter 快照，主题升级遵循[升级指南](/zh/docs/admin/upgrade/)。初始化站点保留普通 Hugo 输入，移除 CLI 后只需要站点文档要求的依赖。
 
 ## 已撤下本地 Studio {#studio}
 
@@ -651,8 +639,7 @@ CLI 不提供编辑器，也不接受浏览器 Apply 请求。
 ## 验证与剩余范围 {#verification}
 
 使用 `make test` 验证离线 Go 测试与 vet；使用 `make test-hugo` 验证真实 Hugo，
-并为已配置可选工具运行 `make test-tools`。跳过集成不等于通过。
-当前实现修改需要绑定新的源码与二进制证据；历史记录不自动赋予当前版本运行资格。
+并为已配置可选工具运行 `make test-tools`。
 
 > [!NOTE] 2026-10-14 重新核验本地集成门禁
 > 在 macOS arm64、Go 1.27.1 与 Hugo Extended 0.166.0 上，`make test`
@@ -664,5 +651,4 @@ CLI 不提供编辑器，也不接受浏览器 Apply 请求。
 
 带日期[维护验收记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/)
 保留旧 R1–R8 与 A18 证据。声明目标为 macOS arm64、Linux arm64/amd64，
-Darwin amd64 是未取得资格的实验目标，Windows 不受支持。归档生成、签名、
-分发、消费者采用与部署是不同状态。此契约不授权自动提交、推送、发布或部署。
+Darwin amd64 是未取得资格的实验目标，Windows 不受支持。

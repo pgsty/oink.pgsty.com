@@ -30,7 +30,7 @@ proposal_date: 2026-10-26
 
 Ink and Terminal already exist as explicit experiments. Their shared shell is an advantage: readers retain navigation, search, appearance controls and content semantics when changing style. Their remaining problems are repeated decoration, typography outside ordinary prose, inconsistent owned geometry, and incomplete acceptance. Ink is already **neutral sans editorial**; making it serif would consume Folio's separate territory. Terminal should become a **readable engineering handbook**, retaining mono technical roles alongside proportional explanations.
 
-The [dated research](/docs/design/research/2026-10-26-ink-terminal-stabilization/) distinguishes source facts, measurements, design judgments and a limited CSS overlay. Normal-size measurements, spacing probes and focused checks are encouraging, but the whole-document footer failure survives them. A 32px native-default-font probe is actual font-preference evidence, not completed manual 200% text-resize or 400% browser-zoom acceptance. Historical October 5 and October 25 records explain prior decisions; they do not accept this candidate.
+The [dated research](/docs/design/research/2026-10-26-ink-terminal-stabilization/) distinguishes source facts, measurements, design judgments and a limited CSS overlay. Normal-size measurements, spacing probes and focused checks are encouraging, but the whole-document footer failure survives them. Manual 200% text-resize and 400% browser-zoom checks remain separate from the 32px font-preference probe.
 
 ## Goals and explicit exclusions {#goals}
 
@@ -76,7 +76,7 @@ Retain these source colors initially. Values below are light/dark pairs, not a n
 
 Success, warning, error and information retain their semantic tones, icons and labels. Red is not every Ink status; mint is not every Terminal status. Keep neutral badges distinguishable from success. Decorative separators may remain subtle; required control boundaries need independent contrast measurements.
 
-Authored `theme_color` remains authoritative for accent surfaces. Actual documentation uses blue `#245f94/#5da2dd`, Book orange `#9a3412/#fb923c`, and Blog violet `#6d28d9/#a78bfa`. These do not replace the link/code text roles. Review both authored accents and preset defaults; an injected palette probe is not unmodified site output.
+Authored `theme_color` remains authoritative for accent surfaces. Actual documentation uses blue `#245f94/#5da2dd`, Book orange `#9a3412/#fb923c`, and Blog violet `#6d28d9/#a78bfa`. These do not replace the link/code text roles. Review both authored accents and preset defaults.
 
 ### Keep reading roles and verify actual fallback {#typography}
 
@@ -101,7 +101,7 @@ Compare Ink article `h1` at weight 750/tracking `-.025em`, `h2/h3` at 700/`-.012
 
 Ink prose links remain natively underlined at rest, including lists, notes and citations. Terminal retains a persistent non-color link distinction; verify its existing semibold cue in real prose and use native underlines where that cue is insufficient. Navigation relies on its location and persistent current-state marks. Hover must not change layout, weight or hit area. ([GOV.UK links](https://design-system.service.gov.uk/styles/links/))
 
-Underline geometry remains a review decision. The overlay uses `max(1px, .06em)` thickness, `.22em` offset, with a Chinese `.25em`/`skip-ink: none` comparison. **A blanket `.25em` rule is not accepted.** Compare English `.12–.18em` and Chinese `text-underline-position: under` with only `0–.06em` extra offset, starting with `skip-ink: auto`. Scope by actual language, including Chinese blocks inside English pages. Test mixed glyphs, punctuation, descenders, inline code and wrapped links; no line may collide with glyphs or adjacent lines. The CSS specification explains the issue, not a universally supported optimum. ([CSS Text Decoration draft](https://www.w3.org/TR/css-text-decor-4/#text-underline-position-property))
+Underline geometry remains a review decision. The overlay uses `max(1px, .06em)` thickness, `.22em` offset, with a Chinese `.25em`/`skip-ink: none` comparison. **A blanket `.25em` rule is not accepted.** Compare English `.12–.18em` and Chinese `text-underline-position: under` with only `0–.06em` extra offset, starting with `skip-ink: auto`. Scope by actual language, including Chinese blocks inside English pages. Test mixed glyphs, punctuation, descenders, inline code and wrapped links; no line may collide with glyphs or adjacent lines. ([CSS Text Decoration draft](https://www.w3.org/TR/css-text-decor-4/#text-underline-position-property))
 
 ### Make component states coherent {#components}
 
@@ -135,7 +135,7 @@ Mermaid/ECharts remain **mode-only**; API widgets retain vendor palettes and the
 
 Keep preset names, independent mode/style state, shell columns, breakpoints, content syntax and author overrides. Retain Paper as default and maintained consumers' explicit `[paper, slate, ink, terminal]` menu. A refinement can ship while a preset remains experimental.
 
-Promotion changes the meaning of `preset_menu: true`: it offers stable presets plus the site default, so promoting either experiment expands that automatic set. Make that change explicit in `layouts/_partials/preset-config.html`, its checker and bilingual configuration/release guidance. Explicit lists retain their chosen membership. Promotion requires per-preset maintainer acceptance, not a status-label edit. Preserve reserved Folio/Canvas warning/fallback behavior. Consumer upgrades, public module resolution and deployment remain separate steps.
+Promotion changes the meaning of `preset_menu: true`: it offers stable presets plus the site default, so promoting either experiment expands that automatic set. Make that change explicit in `layouts/_partials/preset-config.html`, its checker and bilingual configuration/release guidance. Explicit lists retain their chosen membership. Promotion requires per-preset maintainer acceptance, not a status-label edit. Preserve reserved Folio/Canvas warning/fallback behavior.
 
 ## Implementation and owning-checker plan {#implementation}
 
@@ -146,13 +146,13 @@ Promotion changes the meaning of `preset_menu: true`: it offers stable presets p
 | Integration / documentation maintainer | Extend appearance, font, component and text-reflow suites on real EN/ZH pages; include full-page checks and annotated visual review. Run sibling-source `make check`, `make browser`, and `make dev` review. |
 | Promotion / maintainers and reviewers | Close the gates below; update owning implementation/checker and affected EN/ZH contracts together, then record durable rationale and user-facing migration guidance. |
 
-Use Hugo Extended 0.168.0, Go 1.27.3 and built-in LibSass. Record actual versions; keep the accepted warning visible and never enable panic-on-warning. Runtime edits additionally require `node --test 'tests/js/**/*.test.js'`; schema edits require `python3 bin/generate-config-schema.py --check`. This draft itself authorizes neither implementation nor release.
+Runtime edits additionally require `node --test 'tests/js/**/*.test.js'`; schema edits require `python3 bin/generate-config-schema.py --check`.
 
 ## Acceptance gates and open decisions {#acceptance}
 
 ### Distinguish accessibility requirements from project targets {#accessibility}
 
-WCAG 2.2 A/AA is the baseline; this focused checklist is not a whole-site conformance certificate. References were accessed on **2026-10-26**.
+WCAG 2.2 A/AA is the baseline (references accessed on **2026-10-26**).
 
 | Gate | Required assessment |
 | --- | --- |
@@ -165,11 +165,11 @@ WCAG 2.2 A/AA is the baseline; this focused checklist is not a whole-site confor
 
 ### Record complete tasks before promotion {#promotion}
 
-Require both languages and modes at **320/390/768/1440px**, with normal, enlarged and overridden text. Review long pages at top/middle/footer, heading/Book numbering, URLs, Fields, tables, code, search, appearance, media and Landing. Inspect rest/hover/current/selected/focus/text-selection, forced colors, reduced motion and no-JavaScript/print/Markdown/RSS. Record actual color pairs and human review of axe incompletes; automated token passes are not all-state contrast acceptance.
+Require both languages and modes at **320/390/768/1440px**, with normal, enlarged and overridden text. Review long pages at top/middle/footer, heading/Book numbering, URLs, Fields, tables, code, search, appearance, media and Landing. Inspect rest/hover/current/selected/focus/text-selection, forced colors, reduced motion and no-JavaScript/print/Markdown/RSS. Record actual color pairs and human review of axe incompletes.
 
-Actual Windows Chrome/Edge and Android Chrome font/rendering work remains pending, as do branded macOS/iOS Safari checks. Record device/OS/browser/font conditions. Pending manual tasks use NVDA on Windows, VoiceOver with actual Safari, and TalkBack on Android: traverse headings and meaningful numbers, read tables/field errors, search with Chinese input, hear concise status feedback, open/close dialogs and regain focus. Browser-engine automation cannot substitute for these records.
+Actual Windows Chrome/Edge and Android Chrome font/rendering work remains pending, as do branded macOS/iOS Safari checks. Record device/OS/browser/font conditions. Pending manual tasks use NVDA on Windows, VoiceOver with actual Safari, and TalkBack on Android: traverse headings and meaningful numbers, read tables/field errors, search with Chinese input, hear concise status feedback, open/close dialogs and regain focus.
 
-Open decisions are the Chinese underline treatment, stronger project targets, any state-specific color repair, and the promotion of each preset. If gates remain incomplete, retain experimental status or defer refinement; unrelated 1.4 work need not wait for new styles. Release verification must separately identify the published module with replacements/workspaces disabled, consumer pins and deployment.
+Open decisions are the Chinese underline treatment, stronger project targets, any state-specific color repair, and the promotion of each preset. If gates remain incomplete, retain experimental status or defer refinement; unrelated 1.4 work need not wait for new styles.
 
 ## Decision log {#decision-log}
 
