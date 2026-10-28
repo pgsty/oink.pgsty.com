@@ -19,9 +19,8 @@ Docsy theme with one canonical product shell, a Hugo-only consumer build,
 local-first browser dependencies, a general multilingual framework, and a set of
 reusable content components drawn from PGSTY documentation sites.
 
-This is an implementation and documentation milestone, not a public versioned
-release. The final public brand, module and package identities, first version,
-and production Cloudflare Pages deployment remain explicit release gates.
+This preview marks the implementation and documentation milestone ahead of the
+first tagged release and production Cloudflare Pages deployment.
 
 ## Why OINK exists
 
@@ -142,19 +141,13 @@ The implementation includes automated coverage for:
 - vendor licenses and checksums;
 - non-mutating migration rehearsals for SILO, PGSTY, SOW, and Pigsty.
 
-The latest four-site rehearsal built temporary copies successfully. It did not
-modify or deploy those production repositories.
+The latest four-site rehearsal built temporary copies of all four sites cleanly.
 
 ## What remains before release
 
-The public identity and first version must be approved and applied consistently
-to the module, package, source tags, nested theme tag, archive, and
-documentation. The target Cloudflare Pages project must then be connected to the
-source branch, built with the pinned Hugo version, published, and verified at
-its hosted URL.
-
-Until those gates close, use the preview for evaluation and migration rehearsal,
-not as an unversioned production dependency.
+Before tagging the first public release, we will finalize the module and package
+identities, apply the initial version across source tags and archives, and
+connect the production Cloudflare Pages deployment to the pinned Hugo baseline.
 
 ## Read next
 

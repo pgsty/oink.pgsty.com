@@ -126,9 +126,8 @@ block replaces the whole site block, so repeat both fields when you want to
 keep both settings. Existing bundled featured images and the `images` field
 continue to supply covers.
 
-This integration applies to the theme's native blog section indexes. Custom
-homepages and term templates need to render the gallery explicitly; changing
-the configuration cannot rewrite a site's own templates.
+This configuration applies to the theme's native blog section indexes; custom
+homepages and term templates must call the gallery partial explicitly.
 
 ## Keeping the implementation small {#implementation}
 

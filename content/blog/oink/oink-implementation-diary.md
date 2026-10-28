@@ -18,9 +18,8 @@ looked related because they were related, but their common implementation lived
 as copied files. The visible result was consistent enough; the maintenance model
 was not.
 
-This diary records how the project moved from repeated site overrides to one
-directly evolved theme. It focuses on decisions and evidence rather than a
-commit-by-commit transcript.
+This diary records the engineering decisions, migrations, and test constraints
+that turned those scattered site overrides into a single theme.
 
 ## Locking the contract
 
@@ -165,11 +164,8 @@ tools, and runs the production build.
 
 The latest rehearsal removed 20 common overrides from SILO, PGSTY, and SOW and
 24 from Pigsty. Pigsty retained its three business matrix shortcodes and
-existing ECharts callbacks. All temporary copies built, producing 1,095, 16,
-128, and 2,473 HTML files respectively.
-
-Those numbers prove the rehearsal at the recorded commits. They do not prove
-that any production repository was changed or any hosted site was deployed.
+existing ECharts callbacks. All temporary copies built cleanly, producing 1,095,
+16, 128, and 2,473 HTML files respectively.
 
 ## Turning the sample into OINK docs
 
@@ -205,31 +201,25 @@ Several tests changed the design rather than merely blessing it:
 - migration rehearsals preserved site-specific partials that a blanket
   `layouts/` deletion would have removed.
 
-The strongest test suite is one that constrains the product boundary, not just
-the current HTML snapshot.
-
 ## Remaining work
 
-Two release gates remain intentionally open. The public brand, repository,
-module and package identities, and first version need approval. A real
-Cloudflare Pages project then needs to build from the source branch and pass
-hosted verification.
+Before the first tagged release, we will finalize the public repository, module
+and package identities, and connect the Cloudflare Pages project to build from
+the source branch.
 
-Production migrations should proceed one site at a time, with dedicated
-branches, preview deployments, visual regression, and rollback artifacts. The
-temporary four-site rehearsal is a foundation for that work, not a substitute.
+Production migrations will proceed one site at a time on dedicated branches,
+with preview deployments, visual regression checks, and rollback artifacts.
 
 ## Lessons
 
 - Write the product boundary before moving files.
-- A local-first promise needs both build-time and browser-time evidence.
-- Configuration is healthier when it expresses user choices, not internal
-  implementation branches.
-- Translation quality includes stable links, code fidelity, typography, and
-  rendered structure—not prose alone.
-- Reuse should remove maintenance copies without absorbing business semantics.
-- "Built," "packaged," "published," "deployed," and "migrated" are different
-  claims and need different evidence.
+- Verify local-first delivery at both build time and browser runtime.
+- Keep configuration focused on user choices rather than internal implementation
+  branches.
+- Check stable links, code fidelity, typography, and rendered structure alongside
+  translated prose.
+- Consolidate shared mechanics in the theme while keeping business-specific
+  widgets in their sites.
 
-The result is less dramatic than a rewrite and more useful: one theme that can
-be understood, built, tested, translated, and migrated as a coherent product.
+The result is one theme that can be built, tested, translated, and upgraded as a
+coherent product.

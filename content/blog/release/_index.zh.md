@@ -22,9 +22,7 @@ cascade:
 ---
 
 > [!NOTE] 按版本保留的历史记录
-> 每篇发布说明记录对应版本当时的要求与验收结果。当前开发、CI 与发布测试统一使用
-> Hugo Extended 0.168.0，默认基线保持固定。旧发布说明不构成当前支持要求，
-> 请遵循[工具链契约](/zh/docs/design/architecture/#hugo-toolchain)。
+> 每篇发布说明记录对应版本发布时的要求与验收结果。当前开发、CI 与发布测试统一使用 Hugo Extended 0.168.0，详见[工具链契约](/zh/docs/design/architecture/#hugo-toolchain)。
 
 当前版本为 [OINK 1.4.0](/zh/blog/release/1.4.0/)：加入更强的本地搜索、本地
 PlantUML、统一图表阅读、按需开启的表格阅读、博客画廊和组件精修。统一使用

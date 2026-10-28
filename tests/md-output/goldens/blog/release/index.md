@@ -9,9 +9,7 @@ LLMS index: [llms.txt](/llms.txt)
 ---
 
 > [!NOTE] Versioned history
-> Each release note records that release's requirements and validation. Current
-> development, CI, and release tests use Hugo Extended 0.168.0 as the pinned default. Older requirements below do not define
-> current support; follow the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
+> Each release note records the requirements and validation of that version at release time. Current development, CI, and release tests use Hugo Extended 0.168.0; see the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
 
 The current release is [OINK 1.4.0](/blog/release/1.4.0/): richer local search,
 local PlantUML, shared diagram reading, an opt-in table reader, the blog gallery,
