@@ -9,8 +9,7 @@ contract_status: v1.4.0
 ---
 
 > [!NOTE] OINK 1.4.0 契约
-> 本契约描述 OINK v1.4.0。主题开发使用同级 checkout；发布验收在关闭替换与
-> 工作区后验证公开模块。消费站升级与部署分别检查。
+> 本契约描述 OINK v1.4.0。
 
 共享规则见[架构契约](/zh/docs/design/architecture/)与
 [组件契约](/zh/docs/design/components/)；迁移行为属于
@@ -42,7 +41,7 @@ contract_status: v1.4.0
 
 条目可以是类型字符串，也可以是包含 `type`、`key`、`id`、`enabled`、内联
 `data` 或有意指定的本地 `partial` 的 map。作者提供唯一 ID，OINK 把它规范为
-锚点安全值。未知类型遵循共享的警告与安全回退策略，绝不静默消失，发布前应审阅对应告警。内置区块由 `landing/` partial 负责；已经移除的
+锚点安全值。未知类型遵循共享的警告与安全回退策略，绝不静默消失。内置区块由 `landing/` partial 负责；已经移除的
 `home/` partial 名称不是 API。
 
 `preview` 通过站点渲染钩子，把 Markdown `source` 放在 `RenderString` 输出旁，
@@ -65,7 +64,7 @@ i18n。
 每次内置 Markdown 渲染都有稳定的区块、条目和字段作用域。重复正文和跑马灯
 副本使用不同的自动代码 ID，复制按钮、标题、视口和行链接也随之对应。作用域
 不依赖渲染次序或输出次序。显式代码 ID 保持不变；整页出现重复显式 ID 时会
-警告，构建继续并保留告警；作者 ID 保持原样，发布前必须修正冲突。自定义 partial 重复调用 Markdown 辅助模板时，应为
+警告，构建继续并保留告警。自定义 partial 重复调用 Markdown 辅助模板时，应为
 每个渲染位置传入不同且稳定的 `scope`。
 
 区块 Markdown 正文使用共享 `.td-content` 组件作用域，并登记实际内容所需的

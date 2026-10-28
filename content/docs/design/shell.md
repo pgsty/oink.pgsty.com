@@ -9,9 +9,7 @@ contract_status: v1.4.0
 ---
 
 > [!NOTE] OINK 1.4.0 contract
-> This contract describes OINK v1.4.0. Theme development uses the sibling
-> checkout; release acceptance verifies the published module with replacements
-> and workspaces disabled. Consumer adoption and deployment have their own checks.
+> This contract describes OINK v1.4.0.
 
 ## Authorities and navigation {#authorities-and-navigation}
 
@@ -395,7 +393,6 @@ Other facts resolve from site params → `data/upstreams[upstream_source]` → f
 `upstream_name`, `upstream_copyright`, `upstream_license`, `upstream_notice`, optional `upstream_ref`, and `upstream_modified`.
 A link requires the first four facts.
 Invalid or incomplete attribution warns and emits no legal notice. Unsupported URLs are refused.
-Review the warning and rendered attribution before publication.
 
 `upstream_modified` changes the credit verb and links commit history within the existing attribution sentence.
 The notice page includes complete license and warranty text.
@@ -541,8 +538,7 @@ It does not replace Giscus.
 
 An explicit `params.ui.quick_links: []` disables quick links instead of restoring
 the defaults. Invalid `sidebar_root_link_self` values warn and keep the documented
-`true` fallback. Taxonomy and term pages use the shared `page_width` validator,
-including production builds with visible warnings.
+`true` fallback. Taxonomy and term pages use the shared `page_width` validator.
 
 ## Verification {#verification}
 
@@ -579,7 +575,7 @@ The `t` shortcut still toggles light/dark through `switch_theme`;
 > A queued close event from an earlier appearance dialog must not clear the
 > expanded state of a newly reopened dialog.
 
-The local Ink/Terminal experiments require explicit configuration;
+The Ink and Terminal experimental presets require explicit configuration;
 `preset_menu: true` continues
 to offer Paper/Slate plus the site default. Both reuse the same state, keyboard,
 command-palette and bottom-sheet mechanisms. Terminal compacts desktop

@@ -9,8 +9,7 @@ contract_status: v1.4.0
 ---
 
 > [!NOTE] OINK 1.4.0 契约
-> 本契约描述 OINK v1.4.0。主题开发使用同级 checkout；发布验收在关闭替换与
-> 工作区后验证公开模块。消费站升级与部署分别检查。
+> 本契约描述 OINK v1.4.0。
 
 ## 权威来源与导航 {#authorities-and-navigation}
 
@@ -345,7 +344,7 @@ Pinterest 图片来自共享特色图片解析器。ChatGPT 与 Claude 接收构
 其它上游事实按站点参数 → `data/upstreams[upstream_source]` → front matter 解析：
 `upstream_name`、`upstream_copyright`、`upstream_license`、`upstream_notice`，
 以及可选的 `upstream_ref`、`upstream_modified`。存在链接时，前四项必填。无效或
-残缺的署名会警告，而且不渲染法律声明；不支持的 URL 会被拒绝。发布前应核对告警与署名输出。
+残缺的署名会警告，而且不渲染法律声明；不支持的 URL 会被拒绝。
 
 `upstream_modified` 改变署名动词并链接提交历史，不增加新行。notice 页面承载
 完整的许可证与免责声明。翻译说明通过 `params.ui.translation_notice` 选择启用，
@@ -476,7 +475,7 @@ OINK 没有归档外壳、任意深度飞出菜单、第二个导航权威、查
 
 显式设置 `params.ui.quick_links: []` 会关闭快速链接，不恢复默认值。
 无效的 `sidebar_root_link_self` 会告警并采用文档规定的 `true` 回退。
-分类法总览页与 term 页使用共享的 `page_width` 校验器，发布前同样需要审阅其诊断与回退结果。
+分类法总览页与 term 页使用共享的 `page_width` 校验器。
 
 ## 验证 {#verification}
 
@@ -505,7 +504,7 @@ golden 与消费站点浏览器套件覆盖导航、语言与子路径链接、�
 > [!NOTE] OINK 1.3.0 修复
 > 快速关闭并重新打开外观面板时，先前排队的关闭事件不得清除新面板的展开状态。
 
-本地 Ink/Terminal 实验仍需显式配置；`preset_menu: true`
+Ink 与 Terminal 实验预设需显式配置；`preset_menu: true`
 继续提供 Paper/Slate 与站点默认值。两者复用同一套状态、键盘、命令面板与底部表单
 机制。Terminal 压紧桌面导航行，保留正文与手机触控目标尺寸。
 

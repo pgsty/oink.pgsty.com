@@ -9,9 +9,7 @@ contract_status: v1.4.0
 ---
 
 > [!NOTE] OINK 1.4.0 contract
-> This contract describes OINK v1.4.0. Theme development uses the sibling
-> checkout; release acceptance verifies the published module with replacements
-> and workspaces disabled. Consumer adoption and deployment have their own checks.
+> This contract describes OINK v1.4.0.
 
 The [architecture](/docs/design/architecture/) and [component](/docs/design/components/) contracts define shared rules.
 The [migration contract](/docs/design/migration/) defines migration rules.
@@ -38,7 +36,7 @@ The registry has exactly 22 built-ins:
 
 An entry is a type string or a map with `type`, `key`, `id`, `enabled`, inline `data`, or an explicit local `partial`.
 Authors provide unique IDs. OINK converts them to anchor-safe values.
-Unknown types warn and use safe fallbacks. They never disappear silently. Review their diagnostics before publication.
+Unknown types warn and use safe fallbacks. They never disappear silently.
 `landing/` partials define built-ins. Removed `home/` partial names are not an API.
 
 `preview` displays Markdown `source` beside its `RenderString` output using site hooks.
@@ -64,7 +62,6 @@ Repeated bodies and marquee copies therefore get distinct generated code IDs,
 including their copy controls, titles, viewports, and line links. The scope does
 not depend on render order or output order. Explicit code IDs remain unchanged;
 repeating one in the assembled Landing output warns and keeps the page available.
-Authored IDs remain unchanged; correct the collision before publication.
 Custom partials that reuse the Markdown helpers should pass a distinct stable
 `scope` for each rendered position.
 

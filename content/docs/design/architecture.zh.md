@@ -9,8 +9,7 @@ contract_status: v1.4.0
 ---
 
 > [!NOTE] OINK 1.4.0 契约
-> 本契约描述 OINK v1.4.0。主题开发使用同级 checkout；发布验收在关闭替换与
-> 工作区后验证公开模块。消费站升级与部署分别检查。
+> 本契约描述 OINK v1.4.0。
 
 ## Hugo 工具链 {#hugo-toolchain}
 
@@ -118,7 +117,7 @@ ar az bg bn de en es et fa fi fr he hi hu it ja ko nl no oc pl pt-br ro ru
 sr-cyrl sr-latn sv tr uk zh-cn zh-tw
 ```
 
-这是一项兼容范围，不代表运行时依赖 Docsy，也不声称消费站点编写的正文已经翻译。
+这些语言包覆盖主题界面文案，站点正文仍由站点自行翻译。
 Docsy 以后增加的 locale 不会自动成为 OINK 支持项；它必须先补齐完整的 OINK
 词条，并接受与现有语言相同的审校。
 
@@ -178,7 +177,7 @@ front matter 覆盖。`banner` 在单页标题上方渲染图片，`wash` 用图
 | LLMSFULL | 按顶层 section 选择启用：每个启用 section、每种语言一份 `llms-full.txt`，按阅读顺序拼接同一份 Markdown |
 | RSS | 安全的静态摘要，或明确省略 |
 | NAVJSON | 按站点选择启用：每种语言一份 `navigation.json`，序列化侧栏与 pager 已经在读的导航权威 |
-| BookManifest | 选择启用、供出版打包器消费的有序 JSON 交接；绝不冒充 EPUB 或 PDF |
+| BookManifest | 选择启用、供 EPUB/PDF 打包工具消费的有序 JSON 交接 |
 
 各输出格式按既定顺序执行；可变格式状态并不存在跨格式竞态。但在 Print 内，Hugo
 可能并行渲染同一 Book 页面与相互重叠的聚合。因此每页由一个缓存 coordinator 按
@@ -223,7 +222,7 @@ Print 保留操作层，并且只加载渲染打印功能所需的运行时。�
 
 只有 Book 根在 `outputs` 中明确列出 `BookManifest` 时才会生成它。它引用该 Book
 既有的逐页 Markdown，并记录派生出的页面顺序、标题、编号目标与 xref；主题不会在
-其中猜测出版元数据，它也不是可分发的电子书。
+其中猜测出版元数据。
 
 主题仓库提供 `bin/book-epub.py` 与 `bin/book-pdf.py` 作为显式出版步骤，并用
 `bin/check-book-epub.py` 与 `bin/check-book-pdf.py` 承担产物门禁。EPUB 打包器组合
@@ -351,5 +350,4 @@ Giscus 自动色板同时跟随风格与明暗；显式主题或浅深色样式�
 
 ## 发布状态 {#release-states}
 
-源码完成、本地验证、提交、打标签、推送、消费站点固定版本、部署与生产一致是彼此
-独立的状态。一次本地 Hugo 构建只能证明本地验证通过。
+发布流程中应分别跟踪本地验证、模块打标、消费站版本更新与站点部署。

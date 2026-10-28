@@ -8,9 +8,7 @@ contract_status: v1.4.0
 ---
 
 > [!NOTE] OINK 1.4.0 contract
-> This contract describes OINK v1.4.0. Theme development uses the sibling
-> checkout; release acceptance verifies the published module with replacements
-> and workspaces disabled. Consumer adoption and deployment have their own checks.
+> This contract describes OINK v1.4.0.
 
 This page defines required behavior. Use [Expo albums](/docs/write/expo/) to
 create content. Read the [design decision](/docs/design/decisions/expo/) for
@@ -68,10 +66,13 @@ The build does not fetch remote album images.
 | Explicit ID | Start with an ASCII letter or digit; subsequent characters can also be `_` or `-` |
 | Image anchor | Prefix the ID with `img-`; without an ID, use a hash of the resource name |
 
-IDs must be unique within the album. Invalid or duplicate IDs produce a warning
-and use a filename hash. Renaming a file changes its fallback anchor. Keep an
-explicit ID and the album URL unchanged when a citation must remain valid.
-An ID may be a string or a YAML integer. If a fallback hash is also occupied, append the first unused numeric suffix so development output still has unique anchors. Review the warning and generated fallback anchors before publication.
+IDs must be unique within the album. An ID may be a string or a YAML integer.
+Invalid or duplicate IDs produce a warning and use a filename hash; if that
+hash is also occupied, the fallback appends the first unused numeric suffix.
+Renaming a file changes its fallback anchor. Keep an explicit ID and the album
+URL unchanged when a citation must remain valid. `expo.images` must be a
+nonempty resource glob, and `params.original` must name a bundled image even
+when its value is false or empty.
 
 Processable images larger than 960 pixels receive previews within a 960 × 960
 pixel box. GIFs also receive still previews for pause and reduced motion.
@@ -81,12 +82,6 @@ Album cards use the first sorted image as the cover. A section without its own
 images uses the first available image from its descendant albums. Cover frames
 use a 4:3 ratio and can crop the preview. Authors divide large collections into
 albums; Expo does not paginate image resources automatically.
-
-Explicit image IDs accept strings or YAML integers. Invalid or duplicate IDs
-warn; if the filename hash is occupied too, the fallback uses its first unused
-numeric suffix. `expo.images` must be a nonempty resource glob, and
-`params.original` must name a bundled image even when its value is false or empty.
-Strict publication rejects these diagnostics.
 
 ## Layout and controls {#layout-and-controls}
 
@@ -267,5 +262,3 @@ HUGO_MODULE_REPLACEMENTS="github.com/pgsty/oink -> $(cd ../oink && pwd)" \
 ```
 
 The separate Graph copy supplies additional large-collection evidence.
-It does not replace the documentation site's acceptance tests. Local acceptance,
-a theme release, downstream upgrades, and deployment are separate steps.

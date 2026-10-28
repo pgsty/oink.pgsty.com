@@ -9,9 +9,7 @@ contract_status: v1.4.0
 ---
 
 > [!NOTE] OINK 1.4.0 contract
-> This contract describes OINK v1.4.0. Theme development uses the sibling
-> checkout; release acceptance verifies the published module with replacements
-> and workspaces disabled. Consumer adoption and deployment have their own checks.
+> This contract describes OINK v1.4.0.
 
 ## Hugo toolchain {#hugo-toolchain}
 
@@ -66,7 +64,7 @@ Page overrides omit the `ui.` prefix. Thus `params.ui.image_zoom` becomes `image
 `hugo.yaml` declares published defaults. The owning resolver and checker define optional configuration shapes or ranges.
 
 For invalid input, warn with the value, allowed shape, and safe fallback. Then apply the fallback or omit the unsafe feature.
-Ordinary builds and previews remain usable. Review warnings and validate the rendered fallback.
+Ordinary builds and previews remain usable.
 The theme never calls `errorf`. `check-params.py` enforces this rule.
 Do not add speculative validation for unreachable states.
 
@@ -126,7 +124,7 @@ ar az bg bn de en es et fa fi fr he hi hu it ja ko nl no oc pl pt-br ro ru
 sr-cyrl sr-latn sv tr uk zh-cn zh-tw
 ```
 
-This defines compatibility scope without creating a runtime dependency on Docsy or making claims about translations of consumer content.
+These catalogs cover theme UI strings; sites translate their own content.
 New Docsy locales do not enter OINK automatically: they need a complete OINK catalog and the same review as existing locales.
 
 `i18n/en.yaml` defines the message schema. Each of the 32 OINK bundles has exactly these keys and native interface text.
@@ -184,7 +182,7 @@ Every base template sets `Page.Store.tdOutputFormat`:
 | LLMSFULL | Opt-in per top-level section: one `llms-full.txt` per enabled section per language, that same Markdown concatenated in reading order |
 | RSS | Safe static summary or explicit omission |
 | NAVJSON | Opt-in per site: one `navigation.json` per language, serializing the navigation authority the sidebar and pager already read |
-| BookManifest | Opt-in ordered JSON handoff for a publication packager; never presented as an EPUB or PDF |
+| BookManifest | Opt-in ordered JSON handoff for EPUB/PDF packaging tools |
 
 Output formats run in their defined order. Mutable format state does not create a cross-format race.
 Within Print, Hugo can render Book pages and overlapping aggregates in parallel.
@@ -229,7 +227,7 @@ Both outputs default off. Sites that enable neither build byte-identically. `bin
 
 `BookManifest` is disabled unless a Book root explicitly lists it in `outputs`.
 It references existing per-page Markdown and records derived page order, headings, numbered targets, and xrefs.
-The theme guesses no publication metadata. The manifest is not a distributable ebook.
+The theme guesses no publication metadata.
 
 The theme repository provides `bin/book-epub.py` and `bin/book-pdf.py` for explicit publication steps.
 `bin/check-book-epub.py` and `bin/check-book-pdf.py` validate their artifacts.
@@ -371,5 +369,4 @@ See the [accepted decision](/docs/design/decisions/visual-presets/) and
 
 ## Release states {#release-states}
 
-Source completion, local validation, commit, tag, push, consumer pin, deployment, and production parity are separate states.
-A local Hugo build proves only local validation.
+Keep local validation, module tagging, consumer pin updates, and site deployment distinct during release workflows.

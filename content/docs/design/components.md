@@ -9,9 +9,7 @@ contract_status: v1.4.0
 ---
 
 > [!NOTE] OINK 1.4.0 contract
-> This contract describes OINK v1.4.0. Theme development uses the sibling
-> checkout; release acceptance verifies the published module with replacements
-> and workspaces disabled. Consumer adoption and deployment have their own checks.
+> This contract describes OINK v1.4.0.
 
 The reader-facing [Components](/docs/components/) section provides tutorials and complete examples.
 This page defines the API and behavior used by those guides.
@@ -105,7 +103,7 @@ Field names use unboxed, emphasized monospace text in all four presets, includin
 ## Validation {#validation}
 
 Invalid author input follows the [architecture contract](/docs/design/architecture/).
-Warn, then use the documented safe fallback or omit the component. Review the diagnostic and rendered fallback before publication.
+Warn, then use the documented safe fallback or omit the component.
 Do not combine named and positional forms.
 Book target IDs match `[A-Za-z][A-Za-z0-9_.:-]*`. Book numbers match `[0-9A-Za-z.-]+`. Classes use token validation.
 Hooks and shortcodes share one page target registry so collisions cannot produce duplicate output IDs.
@@ -229,7 +227,7 @@ wraps comments, including unbroken tokens, while rows grow from their existing
 minimum height. Filenames retain ellipsis. Missing or false values preserve
 compact desktop/tablet rows; mobile stacking, divider controls, directory
 folding, and expanded Print output keep their existing behavior. Invalid values
-warn and fall back to false; review the warning and fallback before publication. Markdown
+warn and fall back to false. Markdown
 preserves explicit wrap values and tree source; Print renders expanded static
 figures and trees.
 

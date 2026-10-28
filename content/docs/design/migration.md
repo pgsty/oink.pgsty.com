@@ -9,13 +9,10 @@ contract_status: v1.4.0
 ---
 
 > [!NOTE] OINK 1.4.0 contract
-> This contract describes OINK v1.4.0. Theme development uses the sibling
-> checkout; release acceptance verifies the published module with replacements
-> and workspaces disabled. Consumer adoption and deployment have their own checks.
+> This contract describes OINK v1.4.0.
 
-This page gives source and configuration guidance. It is not a release record.
-Local source, commit, tag, push, consumer pin, deployment, and production parity remain separate states.
-See [Upgrade](/docs/admin/upgrade/) for the reader-facing procedure.
+This page defines the maintainer migration toolkit and configuration boundaries.
+See [Upgrade](/docs/admin/upgrade/) for the reader-facing upgrade guide.
 
 ## Toolkit scope {#toolkit-scope}
 
@@ -85,7 +82,7 @@ The maintainer checkout also supports `--check-appearance` together with `--chec
 
 Preserve unrelated work. Update current theme-version references in site READMEs and configuration.
 Run each site's owning checks and visual review.
-The tool does not edit content, commit, push, or deploy. Record each state separately, including consumers already at the target tag.
+The tool updates module pins and runs build checks without editing content or committing.
 
 ## 0.4 content to current forms {#content-to-current-forms}
 
@@ -143,7 +140,7 @@ Legacy `hide_feedback`, `hide_readingtime`, `exclude_search`, `content_width`, c
 - Blog and default dates now default to ISO `2006-01-02`; retain explicit
   `time_format_blog` or `time_format_default` for prose dates.
 
-Removed names warn and use the documented safe fallback or render nothing, allowing ordinary previews to continue. Review these warnings and their rendered fallbacks before publication.
+Removed names warn and use the documented safe fallback or render nothing, allowing ordinary previews to continue.
 `blog_index_toggle`, `featured_image: hero`, `toc_style`, and `toc_taxonomies` are additional opt-ins.
 They add no content type. Immersive reading remains on the ordinary blog shell.
 
@@ -155,4 +152,3 @@ Enable passthrough explicitly for `\(...\)`, `\[...\]`, or `$$...$$`. Hugo does 
 Run the smallest source and output checks for the changed contract with pinned Hugo Extended 0.168.0.
 For runtime changes, also run JS tests. Run production root and subpath builds.
 For maintained sites, inspect representative EN/ZH Docs and Blog routes at desktop and narrow widths.
-Record pin, deployment, and hosted parity separately.
