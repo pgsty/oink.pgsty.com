@@ -14,12 +14,8 @@ template that pins a published OINK release, builds out of the box, and
 includes neutral project content and deployment workflows without this repository's
 regression test harness.
 
-> [!IMPORTANT] Current Hugo baseline
-> Maintained sites use Hugo Extended 0.168.0 (with its
-> built-in LibSass) and Go 1.27.3. If you start from an older Starter snapshot,
-> update its workflow pins to match. Do not enable `--panicOnWarning` or
-> `HUGO_PANICONWARNING`; keep warnings visible and review them (the upstream
-> LibSass deprecation warning is expected).
+> [!NOTE] Requirements
+> OINK sites build with Git, Go 1.27.3 or newer, and Hugo Extended 0.168.0 or newer (using Hugo's built-in Sass compiler — no Node.js, npm, or external Sass installation required).
 
 ## Choose a path {#choose}
 
@@ -104,7 +100,9 @@ hugo --cleanDestinationDir --gc --minify --environment production \
 
 Confirm that the build exits cleanly with `Total in …` and that `public/`
 contains the language roots along with representative Docs, Blog, and Book
-routes. After pushing, check the CI workflow and the live URL as well.
+routes. Keep warnings visible for review and do not enable `--panicOnWarning`
+or `HUGO_PANICONWARNING` (Hugo's built-in LibSass deprecation notice is
+expected). After pushing, check the CI workflow and the live URL as well.
 
 ## Next {#next}
 

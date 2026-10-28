@@ -72,8 +72,8 @@ follow it.
 
 Use {{< xref eg="3-1" anchor="eg-page-contract" />}} as the source pattern,
 and use {{< xref eq="3.1" anchor="eq-page-quality" />}} as the review question.
-Chapter 4 outlines the next visual-design stage; for a complete next task now,
-continue with [Starter customization](/docs/start/starter/#customize).
+Continue to [Chapter 4: Shape the reading experience](/book/04-design/) to
+customize the site's identity, visual preset, and home page.
 
 The component reference begins at [Components](/docs/components/). Read the
 individual page for a component only when the tutorial introduces a need for

@@ -272,7 +272,7 @@ components:
     - { title: Infographic, icon: fa-solid fa-chart-pie,            desc: 'declarative data fence',         url: docs/components/infographic/ }
     - { title: Markmap,     icon: fa-solid fa-sitemap,              desc: 'mind maps from headings',        url: docs/components/markmap/ }
     - { title: Asciinema,   icon: fa-solid fa-terminal,             desc: 'terminal casts, local player',   url: docs/components/asciinema/ }
-    - { title: PlantUML,    icon: fa-solid fa-project-diagram,      desc: 'UML through your own server',    url: docs/components/plantuml/ }
+    - { title: PlantUML,    icon: fa-solid fa-project-diagram,      desc: 'local or server UML',            url: docs/components/plantuml/ }
     - { title: Draw.io,     icon: fa-solid fa-pen-ruler,            desc: 'diagrams that stay editable',    url: docs/components/drawio/ }
     - { title: Mermaid,     icon: fa-solid fa-diagram-project,      desc: 'local diagram runtime',          url: docs/components/mermaid/ }
     - { title: Math,        icon: fa-solid fa-square-root-variable, desc: 'KaTeX at build time',            url: docs/components/math/ }
@@ -369,7 +369,7 @@ faq:
 
 cta:
   title: Start from a repository that already works.
-  text: Start with OINK 1.4.0, replace the identity and content, then build with Hugo Extended 0.168.0, review its diagnostics, and publish.
+  text: Clone the OINK 1.4.0 Starter, customize your site identity and content, and deploy with GitHub Pages or Cloudflare Pages in minutes.
   label: Use OINK Starter
   url: docs/start/starter/
   style: primary

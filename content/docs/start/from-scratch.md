@@ -32,10 +32,8 @@ below. For an existing Docsy site, see [Upgrade](/docs/admin/upgrade/).
 
 The second half compares four install methods: Hugo Module, Git submodule,
 offline archive, and pinned source copy. Current development and builds use
-Go 1.27.3 and Hugo Extended 0.168.0 (with built-in LibSass, no external Sass
-needed). Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`; keep
-warnings visible and review them (the upstream LibSass deprecation warning is
-expected).
+Go 1.27.3 and Hugo Extended 0.168.0 (with built-in Sass — no external Sass
+needed).
 
 ## Add OINK to an existing site {#existing-site}
 
@@ -413,8 +411,10 @@ hugo mod graph                                       # which theme version actua
 hugo --gc --minify --printPathWarnings
 ```
 
-It passes when the build ends with `Total in …` and no `WARN` or `ERROR`. Then
-confirm:
+It passes when the build ends with `Total in …` and no unexpected `WARN` or
+`ERROR` (the upstream LibSass deprecation warning is expected; keep warnings
+visible for review and do not enable `--panicOnWarning` or
+`HUGO_PANICONWARNING`). Then confirm:
 
 - `/docs/` opens and the sidebar holds the page you wrote
 - The navbar has a search box that finds the heading you just wrote

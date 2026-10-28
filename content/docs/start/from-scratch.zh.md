@@ -30,7 +30,7 @@ aliases:
 已有 Hugo 站点时，按下方[接入现有站点](#existing-site)操作；已有 Docsy 站点见[版本升级](/zh/docs/admin/upgrade/)。
 
 后半部分对比四种安装方式：Hugo Module、Git submodule、离线归档、固定版本源码副本。
-当前开发与构建统一使用 Go 1.27.3 与 Hugo Extended 0.168.0（使用内置 LibSass，无需外部 Sass）。请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`，保持告警可见并审阅（上游 LibSass 弃用告警属预期提示）。
+当前开发与构建统一使用 Go 1.27.3 与 Hugo Extended 0.168.0（内置 Sass 编译器，无需外部 Sass）。
 
 ## 接入现有站点 {#existing-site}
 
@@ -349,7 +349,7 @@ hugo mod graph                                       # 主题实际解析到哪�
 hugo --gc --minify --printPathWarnings
 ```
 
-构建以 `Total in …` 结束、没有 `WARN` / `ERROR` 即通过。再确认：
+构建以 `Total in …` 结束且无意外 `WARN` / `ERROR` 即通过（上游 LibSass 弃用提示属预期现象；请保持告警可见并审阅，请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`）。再确认：
 
 - `/docs/` 打得开，侧栏里有你写的页面
 - 顶栏有搜索框，搜得到刚写的标题

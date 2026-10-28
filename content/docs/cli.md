@@ -15,10 +15,11 @@ aliases:
 sites, inspect Hugo output, and review content or theme changes. Hugo still
 renders the site, and the project remains a standard Hugo repository.
 
-> [!NOTE] Draft · not yet released
-> OINK CLI is developed in the independent `oink-cli` repository. This page
-> introduces the local `0.1.0-dev` candidate, which has no public release or
-> installer yet; commands may still change.
+> [!NOTE] Optional draft · not needed for ordinary sites
+> Everyday OINK sites build and preview with standard `hugo` and `hugo server`
+> commands—you do not need to install or build `oink-cli`. OINK CLI is
+> developed in the independent `oink-cli` repository as a local `0.1.0-dev`
+> candidate with no public release or installer yet; commands may still change.
 
 ## What it does {#capabilities}
 

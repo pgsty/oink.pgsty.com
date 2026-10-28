@@ -319,7 +319,7 @@ curl -fsS "${BASE_URL}docs/llms-full.txt" | head -3
 
 ## 限制 {#limits}
 
-- 主题产出的机器可读表面是四种构建期文件：每页 `.md`、`llms.txt`，以及需要显式打开的、每个顶层栏目一份的 `llms-full.txt` 与每种语言一份的 `navigation.json`。站点地图仍是 Hugo 自己的 `sitemap.xml`。
+- 主题生成的机器可读输出共有四种构建期文件：每页 `.md`、`llms.txt`，以及需要显式打开的、每个顶层栏目一份的 `llms-full.txt` 与每种语言一份的 `navigation.json`。站点地图仍是 Hugo 自己的 `sitemap.xml`。
 - 全文包属于顶层栏目，没有整站一份的 `llms-full.txt`：想读全站的 agent 按栏目逐个读，清单在 `llms.txt` 里。
 - `LLMS`、`LLMSFULL`、`NAVJSON` 都声明为非替代格式，所以它们都不会出现在 `<head>` 的 `alternate` 链接里，也没有对应的页面操作；它们靠约定俗成的路径与 `llms.txt` 里的条目被发现。
 - 服务端内容协商（同一个 URL 按 `Accept: text/markdown` 返回 Markdown）不属于主题范围，要做在托管层。

@@ -4,7 +4,6 @@ linkTitle: 附录：模式
 description: 可复制调整的 Book 根页、章节、沉浸式 Blog 文章与整书输出契约。
 book_kind: appendix
 book_number: A
-book_status: draft
 weight: 70
 ---
 

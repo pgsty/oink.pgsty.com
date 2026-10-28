@@ -4,7 +4,6 @@ linkTitle: "Appendix: Patterns"
 description: Copy-and-adapt contracts for Book roots, chapters, immersive Blog posts, and generated Book outputs.
 book_kind: appendix
 book_number: A
-book_status: draft
 weight: 70
 ---
 

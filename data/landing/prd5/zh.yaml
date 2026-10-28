@@ -1,7 +1,7 @@
 sections:
   - type: hero
     data:
-      eyebrow: PRD 5 回归夹具
+      eyebrow: PRD 5 回归测试页
       title: 场景组件无需自定义模板即可完成装配
       lead: 此非首页页面复用共享导航栏、命令面板、Landing 注册表与页脚。
       actions:
@@ -17,7 +17,7 @@ sections:
       direction: left
       speed: fast
       rows: 1
-      link_label: 打开夹具
+      link_label: 打开示例
       items:
         - title: 顺序阅读
           desc: 与侧栏一致的 Pager

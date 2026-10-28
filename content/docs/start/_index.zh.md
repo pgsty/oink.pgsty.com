@@ -15,8 +15,8 @@ aliases:
 新建站点推荐从公开的 GitHub 模板
 [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter) 开始。该模板固定了已发布的 OINK 版本，开箱即可构建，仅包含干净的示例内容与部署 workflow，不夹带本站的回归测试套件。
 
-> [!IMPORTANT] 当前 Hugo 基线
-> 维护中的站点统一使用 Hugo Extended {{% param hugoMinVersion %}}（使用内置 LibSass，无需安装外部 Sass）和 Go 1.27.3。若从较早的 Starter 快照起步，请同步更新 workflow 中的固定版本。请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`，保持告警可见并审阅（上游 LibSass 弃用告警属预期提示）。
+> [!NOTE] 环境要求
+> OINK 站点使用 Git、Go 1.27.3 或更高版本，以及 Hugo Extended {{% param hugoMinVersion %}} 或更高版本构建（使用 Hugo 内置 Sass 编译器，无需安装 Node.js、npm 或外部 Sass）。
 
 ## 选择起点 {#choose}
 
@@ -91,7 +91,7 @@ hugo --cleanDestinationDir --gc --minify --environment production \
   --printPathWarnings
 ```
 
-确认命令正常退出并输出 `Total in …`，且 `public/` 下已生成各语言根目录以及代表性的 Docs、Blog、Book 页面。推送后，再进一步核对 CI workflow 状态与线上公开地址的渲染结果。
+确认命令正常退出并输出 `Total in …`，且 `public/` 下已生成各语言根目录以及代表性的 Docs、Blog、Book 页面。构建时请保持告警可见以便审阅，请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`（Hugo 内置 LibSass 的弃用提示属预期现象）。推送后，再进一步核对 CI workflow 状态与线上公开地址的渲染结果。
 
 ## 下一步 {#next}
 

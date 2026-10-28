@@ -26,22 +26,20 @@ cascade:
   book_draft_banner: true
 ---
 
-*Write Beautiful Docs* is the tutorial companion to the OINK reference. The
-reference tells you what each parameter and component does; this book is being developed around one Starter site, from its first local
-preview toward a reviewed, published result.
-
-The first three chapters contain working material. Later chapters deliberately
-show the Book draft state while their full walkthroughs are being written.
+*Write Beautiful Docs* is the hands-on tutorial companion to the OINK
+reference. While the reference documents every parameter and component, this
+book walks through one Starter site from its first local preview to a reviewed,
+published bilingual site.
 
 ## How to read this book {#reading-path}
 
-Start with [Chapter 1: Start with a working site](/book/01-start/). Chapters
-1–3 use the same Starter to preview the site, add bilingual pages, and improve
-their content. Chapters 4–6 and the appendix are still draft outlines. To
-finish customization and deployment now, continue with the
-[Starter tutorial](/docs/start/starter/) and [Deploy](/docs/admin/deploy/).
-The object indexes below also demonstrate Book publishing features; use them
-when you need to locate a figure, table, or example.
+Start with [Chapter 1: Start with a working site](/book/01-start/). Each
+chapter builds on the same Starter checkout: previewing locally, adding
+bilingual pages, composing clear prose and components, shaping the site's
+brand and home page, choosing publishing layouts, and verifying the production
+build before shipping. The object indexes below also demonstrate Book
+publishing features; use them to locate any figure, table, equation, or code
+example in the book.
 
 ## Contents {#contents}
 

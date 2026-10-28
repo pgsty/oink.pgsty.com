@@ -64,7 +64,7 @@ $$
 ## 串联引用与检查 {#connect-evidence}
 
 用 {{< xref eg="3-1" anchor="eg-page-contract" />}} 作为源码模式，
-再用 {{< xref eq="3.1" anchor="eq-page-quality" />}} 作为评审问题。第 4 章概述下一阶段的视觉设计；现在需要继续操作时，按[Starter 分层定制](/zh/docs/start/starter/#customize)完成下一步。
+再用 {{< xref eq="3.1" anchor="eq-page-quality" />}} 作为评审问题。接下来进入[第 4 章：塑造阅读体验](/zh/book/04-design/)，继续定制站点身份、视觉预设与首页布局。
 
 组件参考的起点是[组件](/zh/docs/components/)。只有当教程引入了某项真实需求时，
 才需要阅读对应组件的独立页面。

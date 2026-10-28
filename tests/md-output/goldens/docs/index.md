@@ -21,7 +21,7 @@ The current release is v1.4.0. See the
 
 - [Get started](/docs/start/) — Create an OINK Starter repository. Verify the local site, customize one part at a time, then deploy it.
 - [Components](/docs/components/) — Each component has one page. The source appears first, followed by the rendered result.
-- [Write Beautiful Docs](/book/) — This tutorial is in progress. The first three chapters cover preview, structure, and page composition.
+- [Write Beautiful Docs](/book/) — Follow a six-chapter hands-on walkthrough from cloning the Starter to publishing a polished bilingual site.
 - [Case studies](/case/) — Learn reusable design and migration patterns from production sites.
 - [Design and development](/docs/design/) — Read contracts, accepted decisions, research evidence, and active proposals for OINK maintainers.
   {.cards}
@@ -35,18 +35,20 @@ The current release is v1.4.0. See the
 | Write a documentation page                            | [Writing pages](/docs/write/pages/)            |
 | Turn a directory tree into a sidebar                  | [Organizing content](/docs/write/organize/)    |
 | Look up a component's syntax                          | [Components](/docs/components/)                |
+| Build an image album or browse the live gallery       | [Expo albums](/docs/write/expo/) · [Live Expo](/expo/) |
 | Change the name, logo, colors, and fonts              | [Brand and appearance](/docs/customize/brand/) |
 | Look up a configuration key's default                 | [Configuration](/docs/customize/config/)       |
 | Run a bilingual or multilingual site                  | [Languages](/docs/customize/i18n/)             |
-| Practice building and writing                                 | [Write Beautiful Docs](/book/)                 |
+| Practice building and writing                         | [Write Beautiful Docs](/book/)                 |
 | Study a production implementation                     | [Case studies](/case/)                         |
 | Deploy                                                | [Deploy](/docs/admin/deploy/)                  |
 | Upgrade, or migrate from Docsy                        | [Upgrade](/docs/admin/upgrade/)                |
 | Maintain the theme, review a contract, or write a PRD | [Design and development](/docs/design/)        |
 
-The seven Docs sections follow the reading sequence. First understand and
-install OINK. Then write content, find components, adjust the site, and release
-it. Finally, study or maintain its contracts and design records.
+The first six sections in the sidebar (**Introduction**, **Get started**,
+**Authoring**, **Components**, **Site customization**, and **Operations**) are
+for site authors and operators. **Design and development** and **CLI** at the
+bottom are reference material for OINK theme contributors.
 
 ---
 

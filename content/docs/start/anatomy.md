@@ -138,11 +138,10 @@ module github.com/OWNER/PROJECT-DOCS
 
 go 1.27.3
 
-require github.com/pgsty/oink v1.0.0
+require github.com/pgsty/oink v1.4.0
 ```
 
-This example shows the `137843b` Starter snapshot (`v1.0.0`); newer Starter
-checkouts pin a newer tag in `go.mod`.
+The current Starter pins `v1.4.0` in `go.mod`.
 
 `hugo mod graph` displays the resolved version. Production builds use the exact
 tag in `go.mod`, while `HUGO_MODULE_REPLACEMENTS` can point to a local checkout

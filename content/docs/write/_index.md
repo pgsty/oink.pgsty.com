@@ -12,16 +12,17 @@ aliases:
   - /docs/scenarios/
 ---
 
-This section covers the content types OINK supports: documentation pages, blog
-posts, books, release and download pages, and OpenAPI references. They share one
-Markdown dialect and one front matter schema. Each type adds its own conventions.
+This section covers all content types supported by OINK: documentation pages,
+blog posts, books, Expo image albums, release and download pages, and OpenAPI
+references. They share a single Markdown dialect and front matter schema, while
+each content type adds its own layout conventions.
 
 ## What a documentation page is made of {#anatomy}
 
-A documentation page is one Markdown file. Front matter appears between the
-two `---` lines at the top. It contains page metadata: title, short sidebar
-name, description, and order. The body follows. It uses ordinary Markdown and
-OINK's native components. This is a complete page:
+Every documentation page is a single Markdown file. YAML front matter between
+the opening `---` lines sets the page metadata (`title`, `linkTitle`,
+`description`, and `weight`), followed by standard Markdown and OINK's native
+components:
 
 ```markdown {title="content/docs/install.md"}
 ---
@@ -40,8 +41,24 @@ newer.
 > The installer rewrites `/etc/yum.repos.d/`. Back it up first.
 ```
 
-Save it as `content/docs/install.md`. Run `hugo server`. The page appears at
-`/docs/install/` with an "Install" entry in the sidebar.
+Save the file as `content/docs/install.md` and run `hugo server`. The page is
+served at `/docs/install/` with an **Install** entry in the left sidebar.
+
+## Common Markdown patterns {#quick-syntax}
+
+Most everyday components use standard Markdown plus a Goldmark attribute block
+rather than custom shortcodes:
+
+| Pattern | Syntax | Guide |
+| --- | --- | --- |
+| Explicit heading anchor | `## Prerequisites {#prerequisites}` | [Writing pages](/docs/write/pages/#headings) |
+| Callout / admonition | `> [!NOTE]` (`TIP`, `IMPORTANT`, `WARNING`, `CAUTION`, `DETAILS`) | [Callouts](/docs/components/callout/) |
+| Code tabs | Adjacent code fences with ```` ```bash {tab="macOS"} ```` | [Tabs](/docs/components/tabs/) |
+| Numbered steps | An ordered list followed by `{.steps}` on the next line | [Steps](/docs/components/steps/) |
+| Navigation cards | A bullet list of links followed by `{.cards}` on the next line | [Cards](/docs/components/cards/) |
+| Parameter / field table | A Markdown table followed by `{.fields}` on the next line | [Fields](/docs/components/fields/) |
+| Captioned or sized image | `![alt](/img.webp)` followed by `{width="800" caption="..."}` | [Images](/docs/components/image/) |
+| File tree | A ```` ```filetree ```` fenced block using a YAML-like list | [FileTree](/docs/components/filetree/) |
 
 ## Content types and where they are covered {#map}
 

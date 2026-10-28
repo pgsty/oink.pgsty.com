@@ -4,7 +4,6 @@ linkTitle: Choose a publishing surface
 description: Use Docs, Blog, Case, Book, and release pages as distinct answers to distinct reader needs.
 book_kind: chapter
 book_number: 5
-book_status: draft
 weight: 50
 ---
 
@@ -55,6 +54,28 @@ Reference pages remain exhaustive and independently searchable. A tutorial
 selects a path through that reference, introduces one decision at a time, and
 links back when a reader needs the full parameter table.
 
-The complete walkthrough will add a new article, one Case study, and a short
-Book chapter from the same source facts, then compare their reader experience.
+To see how a dated release announcement complements your documentation tree,
+add `content/blog/release/0.2.0.md` (and `0.2.0.zh.md`) in your Starter checkout
+and link it directly to the guide you created in Chapter 3:
+
+```markdown {title="content/blog/release/0.2.0.md"}
+---
+title: Acme 0.2.0
+date: 2026-10-28
+description: Adds local preview verification and bilingual home-page navigation.
+categories: [Release]
+tags: [release, preview]
+---
+
+Acme 0.2.0 adds a repeatable local preview check before production builds.
+
+## What changed {#changes}
+
+- Added the [Verify a local preview](/docs/preview-check/) guide.
+- Updated the English and Chinese home pages to link directly to the workflow.
+```
+
+Open `http://localhost:1313/blog/release/0.2.0/`. The release post announces
+*when* and *why* the change shipped, while `/docs/preview-check/` stays the
+evergreen *how-to* reference.
 

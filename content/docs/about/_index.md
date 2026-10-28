@@ -15,16 +15,17 @@ technical documentation sites. It evolved from
 multilingual behavior while replacing the shell, navigation, search, and
 content components.
 
-Current sites use **OINK v1.4.0** and **Hugo Extended 0.168.0**, with its
-built-in Sass compiler. Hugo Module installations also need Go to resolve
-modules. The initial download needs access to the module source. Theme assets need no Node.js, npm, PostCSS, or CDN request. Bootstrap, Font Awesome, the
-fonts, local search, the diagram runtimes and the API reference runtimes are all
-committed to the theme repository. Only pages that use them receive them.
+Current sites use **OINK v1.4.0** and **Hugo Extended 0.168.0** (with its
+built-in Sass compiler), plus Go when resolving the theme as a Hugo Module.
+No Node.js, npm, PostCSS, or CDN requests are needed: Bootstrap, Font Awesome,
+fonts, local search, diagram runtimes, and API reference runtimes all ship in
+the theme repository and load only on pages that use them.
 
-Components use Markdown rather than a second template language. `> [!NOTE]`
-creates a callout. A table with a `{.fields}` line creates a parameter list.
-An image followed by `{caption=}` has a caption.
-[Fifteen production sites](/docs/about/showcase/) use OINK today, including this site.
+Components are written in clean Markdown rather than a custom template
+language: `> [!NOTE]` creates a callout, a table followed by `{.fields}`
+renders as a parameter list, and an image followed by `{caption="..."}` becomes
+a captioned figure. [Fifteen production sites](/docs/about/showcase/) run on
+OINK today, including this one.
 
 ![OINK turns Markdown content, configuration and local assets into one static documentation site](/images/hero-light.webp)
 {width="900" height="600" caption="One Hugo build produces a static site ready to host"}

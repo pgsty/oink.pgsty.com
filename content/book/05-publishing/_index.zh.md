@@ -4,7 +4,6 @@ linkTitle: 选择内容类型
 description: 用 Docs、Blog、Case、Book 与发布页面分别回答读者的不同需求。
 book_kind: chapter
 book_number: 5
-book_status: draft
 weight: 50
 ---
 
@@ -48,6 +47,24 @@ OINK 特性，再附上线上链接，方便读者在访问外部站点前先了
 参考页面保持完备，并能独立搜索。教程则从参考中选出一条路径，每次只引入一项决策，
 在读者需要完整参数表时再链接回参考文档。
 
-完整演练将使用同一组源事实，新增一篇文章、一个 Case 案例与一篇短 Book 章节，
-再比较三者的阅读体验。
+为了体会版本发布公告与常青文档树如何分工协作，可以在 Starter 仓库中新建 `content/blog/release/0.2.0.zh.md`（及对应的英文 `0.2.0.md`），并直接链接到第 3 章编写的操作指南：
+
+```markdown {title="content/blog/release/0.2.0.zh.md"}
+---
+title: Acme 0.2.0
+date: 2026-10-28
+description: 新增本地预览校验指南与中英双语首页直达入口。
+categories: [Release]
+tags: [release, preview]
+---
+
+Acme 0.2.0 在生产构建流程前加入了可重复执行的本地预览检查。
+
+## 主要变更 {#changes}
+
+- 新增[验证本地预览](/zh/docs/preview-check/)操作指南。
+- 更新中英文首页首屏按钮，支持一键直达验证流程。
+```
+
+打开 `http://localhost:1313/zh/blog/release/0.2.0/`：发布公告负责交代变更在 **何时**、**为何** 上线，而 `/zh/docs/preview-check/` 则始终作为读者随时查阅的 **操作手册**。
 

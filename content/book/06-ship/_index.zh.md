@@ -4,7 +4,6 @@ linkTitle: 校验与交付
 description: 用一套可重复的发布清单，依次检查本地预览、生产构建、主题升级与线上部署。
 book_kind: chapter
 book_number: 6
-book_status: draft
 weight: 60
 ---
 

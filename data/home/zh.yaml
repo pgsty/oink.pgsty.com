@@ -249,7 +249,7 @@ components:
     - { title: 信息图,    icon: fa-solid fa-chart-pie,            desc: '声明式数据围栏',              url: docs/components/infographic/ }
     - { title: 思维导图,  icon: fa-solid fa-sitemap,              desc: '大纲变成导图',                url: docs/components/markmap/ }
     - { title: Asciinema, icon: fa-solid fa-terminal,             desc: '终端录像，本地播放',          url: docs/components/asciinema/ }
-    - { title: PlantUML,  icon: fa-solid fa-project-diagram,      desc: 'UML，需自建渲染服务',          url: docs/components/plantuml/ }
+    - { title: PlantUML,  icon: fa-solid fa-project-diagram,      desc: 'UML 图，支持本地渲染',          url: docs/components/plantuml/ }
     - { title: Draw.io,   icon: fa-solid fa-pen-ruler,            desc: '可回编辑的图',                  url: docs/components/drawio/ }
     - { title: Mermaid,   icon: fa-solid fa-diagram-project,      desc: '本地图示运行时',              url: docs/components/mermaid/ }
     - { title: 数学公式,  icon: fa-solid fa-square-root-variable, desc: 'KaTeX 构建期渲染',            url: docs/components/math/ }
@@ -331,7 +331,7 @@ faq:
 
 cta:
   title: 从一个已经能运行的仓库开始。
-  text: 从 OINK 1.4.0 开始，替换身份与内容，使用 Hugo Extended 0.168.0 构建，审阅诊断后发布。
+  text: 克隆 OINK 1.4.0 Starter 模板，替换站点身份与内容，几分钟内即可通过 GitHub Pages 或 Cloudflare Pages 发布上线。
   label: 使用 OINK Starter
   url: docs/start/starter/
   style: primary

@@ -10,7 +10,7 @@ search_keywords: [OINK Starter, GitHub 模板, Use this template, 定制 Starter
 [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter) 是新建 OINK
 站点的官方模板。它保持精简干净，不夹带 `oink.pgsty.com` 的主题文档、统计账号、评论仓库、浏览器回归套件或 PGSTY 品牌资产。
 
-本流程使用 Git、Go 1.27.3+ 以及 Hugo Extended 0.168.0（使用内置 LibSass，无需安装外部 Sass）。若基于旧版 Starter 快照创建项目，请同步更新 workflow 中的固定版本。请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`，保持告警可见并审阅（上游 LibSass 弃用告警属预期提示）。
+你只需准备 Git、Go 1.27.3+ 以及 Hugo Extended 0.168.0+（内置 Sass 编译器，无需安装 Node.js 或外部 Sass）。
 
 ## 模板包含什么 {#contents}
 
@@ -71,10 +71,12 @@ hugo server
 hugo mod graph | grep github.com/pgsty/oink
 ```
 
-本文记录的模板快照 `137843b` 固定 `github.com/pgsty/oink@v1.0.0`；
-如果模板后来更新，以你克隆出的 `go.mod` 为准。这份未修改的预览是后续改动的基线。
-先完成首次预览，再单独按[1.0 → 1.1 升级核对项](/zh/docs/admin/upgrade/#from-1-0)
-升级仍使用 1.0 的站点，不要把主题升级与首次内容定制混在一次操作里。
+当前 Starter 在 `go.mod` 中固定 `github.com/pgsty/oink@v1.4.0`。如果仓库基于较早的 Starter 快照创建，建议在定制内容前先更新到当前版本：
+
+```bash
+hugo mod get github.com/pgsty/oink@v1.4.0
+hugo mod tidy
+```
 
 ## 分层定制 {#customize}
 
@@ -204,7 +206,7 @@ hugo --cleanDestinationDir --gc --minify --environment production \
   --printPathWarnings
 ```
 
-提交 `hugo.yaml`、`go.mod` 与 `go.sum`；不要提交生成的 `public/`、`resources/`、模块
+构建时请保持告警可见以便审阅，请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`（上游 LibSass 弃用提示属预期现象）。提交 `hugo.yaml`、`go.mod` 与 `go.sum`；不要提交生成的 `public/`、`resources/`、模块
 缓存或本地模块替换。
 
 ### GitHub Pages {#github-pages}

@@ -9,15 +9,16 @@ aliases:
   - /docs/configure/overview/
 ---
 
-This page defines site parameters. Each key that the theme reads has a table
-row below. The row gives its type, default, short description, and related
-guide. The guides provide examples that you can copy. They do not repeat these
-definitions. For page-level front matter parameters, see
+This page is the complete reference for site-level parameters in `hugo.yml`.
+Every key that the theme reads appears in a table below with its type, default,
+short description, and a link to its dedicated guide for copy-ready examples.
+For page-level front matter parameters, see
 [Page parameters](/docs/write/frontmatter/).
 
-The tables are grouped by function, with one `##` per group. You can link to
-their anchors, such as `/docs/customize/config/#sidebar`. **An empty default
-column means the theme has no default**. If you omit the key, the feature is off.
+The tables are grouped by function, with one `##` heading per group (so you can
+link directly to anchors such as `/docs/customize/config/#sidebar`). **An empty
+default column means the theme has no default**—if you omit the key, that
+feature stays off.
 
 ## The layers of hugo.yml {#layers}
 
@@ -31,13 +32,25 @@ controls the feature you want to change:
 | `params.ui.*` | `navbar_enabled` `sidebar_width_min` `typography` `pager_types` | The shell, navigation and reading interface |
 | `params.<runtime>` | `mermaid` `plantuml` `drawio` `markmap` | Each content runtime's own switch and endpoint |
 
-A minimal working configuration needs only the first two layers:
+A minimal working configuration needs only the first two layers (including the
+three Goldmark settings that power OINK's native Markdown components):
 
 ```yaml {title="hugo.yml"}
 title: Product Docs
 baseURL: https://docs.example.com/
 defaultContentLanguage: en
 enableGitInfo: true
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+    parser:
+      attribute:
+        block: true
+      wrapStandAloneImageWithinParagraph: false
+  highlight:
+    noClasses: false
 
 module:
   imports:

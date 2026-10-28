@@ -12,11 +12,8 @@ template for new OINK sites. It stays lean and clean, without this site's theme
 reference docs, analytics IDs, comment repo settings, browser test harness, or
 PGSTY branding.
 
-Use Git, Go 1.27.3+, and Hugo Extended 0.168.0 (with built-in LibSass) for this
-workflow. If you start from an older Starter snapshot, update its workflow pins
-to match. Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`; keep
-warnings visible and review them (the upstream LibSass deprecation warning is
-expected).
+You only need Git, Go 1.27.3+, and Hugo Extended 0.168.0+ (which includes its
+built-in Sass compiler — no Node.js or external Sass installation required).
 
 ## What the template contains {#contents}
 
@@ -79,11 +76,14 @@ Also record the resolved module:
 hugo mod graph | grep github.com/pgsty/oink
 ```
 
-The template snapshot `137843b` documented here pins
-`github.com/pgsty/oink@v1.0.0`. If the template has changed, use the version
-in your clone's `go.mod`. Use this unchanged preview as your baseline. After that
-first success, upgrade a site still using 1.0 as a separate step with the
-[1.0-to-1.1 checklist](/docs/admin/upgrade/#from-1-0), before customizing content.
+The current Starter pins `github.com/pgsty/oink@v1.4.0` in `go.mod`. If you
+created your repository from an older Starter snapshot, update it to the
+current release before customizing content:
+
+```bash
+hugo mod get github.com/pgsty/oink@v1.4.0
+hugo mod tidy
+```
 
 ## Customize in layers {#customize}
 
@@ -228,6 +228,8 @@ hugo --cleanDestinationDir --gc --minify --environment production \
   --printPathWarnings
 ```
 
+Keep build warnings visible for review and do not enable `--panicOnWarning` or
+`HUGO_PANICONWARNING` (the upstream LibSass deprecation warning is expected).
 Commit `hugo.yaml`, `go.mod`, and `go.sum`. Never commit generated `public/`,
 `resources/`, module caches, or a local module replacement.
 

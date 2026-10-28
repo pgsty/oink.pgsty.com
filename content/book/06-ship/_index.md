@@ -4,7 +4,6 @@ linkTitle: Validate and ship
 description: Verify local previews, production builds, theme upgrades, and live deployments with a repeatable release checklist.
 book_kind: chapter
 book_number: 6
-book_status: draft
 weight: 60
 ---
 

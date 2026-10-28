@@ -212,7 +212,7 @@ capabilities:
 ```
 
 > [!DETAILS] 另外十种场景分区的最小 YAML
-> 这些片段摘自主题仓库的可执行回归夹具
+> 这些片段摘自主题仓库的可执行测试样例
 > [`tests/site/data/landing/demo/en.yaml`](https://github.com/pgsty/oink/blob/main/tests/site/data/landing/demo/en.yaml)，字段名可照抄。
 >
 > ```yaml

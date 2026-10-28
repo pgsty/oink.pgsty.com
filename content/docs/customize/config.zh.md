@@ -25,13 +25,24 @@ OINK 站点配置有四类键，改哪一层取决于改动目标：
 | `params.ui.*` | `navbar_enabled` `sidebar_width_min` `typography` `pager_types` | 外壳、导航与阅读界面 |
 | `params.<运行时>` | `mermaid` `plantuml` `drawio` `markmap` | 各内容运行时自己的开关与端点 |
 
-最小的可用配置只需要前两层：
+最小的可用配置只需要前两层（包含支撑 OINK 原生 Markdown 组件的三项 Goldmark 设置）：
 
 ```yaml {title="hugo.yml"}
 title: 产品文档
 baseURL: https://docs.example.com/
 defaultContentLanguage: zh
 enableGitInfo: true
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+    parser:
+      attribute:
+        block: true
+      wrapStandAloneImageWithinParagraph: false
+  highlight:
+    noClasses: false
 
 module:
   imports:
