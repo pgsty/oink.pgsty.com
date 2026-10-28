@@ -23,11 +23,9 @@ columns:
       - { label: 发布上线, url: docs/admin/deploy/ }
       - { label: 版本升级, url: docs/admin/upgrade/ }
       - { label: 配置总览, url: docs/customize/config/ }
-  - title: "社区与知识"
+  - title: 社区
     links:
-      - { label: "GitHub 仓库", url: "https://github.com/pgsty/oink", external: true }
-      - { label: Oink 博客, url: blog/ }
+      - { label: OINK 博客, url: blog/ }
       - { label: 版本发布, url: blog/release/ }
+      - { label: "GitHub 仓库", url: "https://github.com/pgsty/oink", external: true }
       - { label: "Docsy 讨论", url: "https://github.com/google/docsy/discussions", external: true }
-      - { label: "PG.Center", url: "https://pg.center/docs/reference/", external: true }
-      - { label: "PGSQL.CC", url: "https://pgsql.cc/docs/", external: true }

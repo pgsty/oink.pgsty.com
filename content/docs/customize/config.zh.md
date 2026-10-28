@@ -523,10 +523,10 @@ hugo --printPathWarnings
 
 输出 `Total in …` 且没有 ERROR 即可。常见告警与原因：
 
-| 报错片段 | 原因 |
+| 告警片段 | 原因 |
 | --- | --- |
 | `invalid params.ui.typography` | 预设只有 `technical` 与 `system` |
-| `invalid footer_style … (allowed: fat \| slim \| none)` | 页脚形态写错，报错会指出是哪个页面 |
+| `invalid footer_style … (allowed: fat \| slim \| none)` | 页脚形态写错，告警会指出是哪个页面 |
 | `invalid page_width … (allowed: normal \| wide \| full)` | 页宽写错 |
 | `invalid params.ui.section_index … (allowed: list \| cards)` | 栏目首页样式写错 |
 | `invalid params.offline_search_index` | 索引范围只有 `title` `heading` `summary` `content` |

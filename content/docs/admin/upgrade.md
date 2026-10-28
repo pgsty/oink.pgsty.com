@@ -21,9 +21,10 @@ You can discard that branch if you cancel the upgrade.
 
 > [!IMPORTANT] Current Hugo baseline
 > Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass. No
-> external Sass installation is required. Update Hugo workflow pins when
-> upgrading; older-Hugo requirements in the sections below describe those
-> historical releases only.
+> external Sass installation is required. Do not enable `--panicOnWarning` or
+> `HUGO_PANICONWARNING`; Hugo's built-in LibSass deprecation warning is
+> expected. Update Hugo workflow pins when upgrading; older-Hugo requirements
+> in the sections below describe those historical releases only.
 
 ## Upgrade to 1.4.0 {#preparing-1-4}
 

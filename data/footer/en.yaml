@@ -23,11 +23,9 @@ columns:
       - { label: Deploy, url: docs/admin/deploy/ }
       - { label: Upgrade, url: docs/admin/upgrade/ }
       - { label: Configuration, url: docs/customize/config/ }
-  - title: "Community & knowledge"
+  - title: Community
     links:
       - { label: Blog, url: blog/ }
       - { label: Releases, url: blog/release/ }
       - { label: "GitHub", url: "https://github.com/pgsty/oink", external: true }
       - { label: "Docsy discussions", url: "https://github.com/google/docsy/discussions", external: true }
-      - { label: "PG Center", url: "https://pg.center/docs/reference/", external: true }
-      - { label: "PGSQL.CC", url: "https://pgsql.cc/docs/", external: true }

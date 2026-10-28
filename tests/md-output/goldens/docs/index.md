@@ -46,9 +46,9 @@ The current release is v1.4.0. See the
 | Maintain the theme, review a contract, or write a PRD | [Design and development](/docs/design/)        |
 
 The first six sections in the sidebar (**Introduction**, **Get started**,
-**Authoring**, **Components**, **Site customization**, and **Operations**) are
-for site authors and operators. **Design and development** and **CLI** at the
-bottom are reference material for OINK theme contributors.
+**Authoring**, **Components**, **Customization**, and **Operations**) are for
+site authors and operators. **Design** and **CLI** at the bottom are reference
+material for OINK theme contributors.
 
 ---
 

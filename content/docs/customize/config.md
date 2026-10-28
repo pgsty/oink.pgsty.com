@@ -578,10 +578,10 @@ hugo --printPathWarnings
 It passes when the output reads `Total in …` with no ERROR.
 Common warnings and what they mean:
 
-| Error fragment | Cause |
+| Warning fragment | Cause |
 | --- | --- |
 | `invalid params.ui.typography` | The presets are `technical` and `system` |
-| `invalid footer_style … (allowed: fat \| slim \| none)` | A bad footer style; the error names the page |
+| `invalid footer_style … (allowed: fat \| slim \| none)` | A bad footer style; the warning names the page |
 | `invalid page_width … (allowed: normal \| wide \| full)` | A bad page width |
 | `invalid params.ui.section_index … (allowed: list \| cards)` | A bad section index style |
 | `invalid params.offline_search_index` | The scopes are `title`, `heading`, `summary`, `content` |

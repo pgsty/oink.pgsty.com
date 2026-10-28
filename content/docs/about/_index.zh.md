@@ -13,7 +13,7 @@ OINK 是一款独立的 [Hugo](https://gohugo.io/) 主题，用于搭建中大�
 
 当前站点统一使用 **OINK v1.4.0** 和 **Hugo Extended 0.168.0**，通过内置 Sass 编译器构建。采用 Hugo Module 时还需要 Go 解析模块，首次下载需要可访问的模块来源。主题资源不依赖 Node.js、npm、PostCSS 或 CDN。Bootstrap、Font Awesome、字体、本地搜索、图表与 API 文档运行时都提交在主题仓库里，只在页面用到时下发。
 
-组件不是另一套模板语言：`> [!NOTE]` 是提示块，表格加一行 `{.fields}` 是参数表，图片下面加 `{caption=}` 就有图注。当前有[十五个生产站点](/zh/docs/about/showcase/)在用它，本站是其中之一。
+组件不是另一套模板语言：`> [!NOTE]` 是提示块，表格加一行 `{.fields}` 是参数表，图片下面加 `{caption="..."}` 就有图注。当前有[十五个生产站点](/zh/docs/about/showcase/)在用它，本站是其中之一。
 
 ![OINK 把 Markdown 内容、配置与本地资源汇成一个静态文档站](/images/hero-light.webp)
 {width="900" height="600" caption="一次 Hugo 构建，产出可直接托管的静态站点"}

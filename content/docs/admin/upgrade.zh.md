@@ -19,7 +19,8 @@ aliases:
 
 > [!IMPORTANT] 当前 Hugo 基线
 > 维护中的站点统一使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
-> 升级时同步更新 Hugo workflow 固定版本；下方旧版本章节中的要求仅说明当时的发布状态。
+> 不要启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；Hugo 内置 LibSass 的弃用告警属于预期输出。
+> 升级时请同步更新 Hugo workflow 固定版本；下方旧版本章节中的要求仅说明当时的发布状态。
 
 ## 升级到 1.4.0 {#preparing-1-4}
 
