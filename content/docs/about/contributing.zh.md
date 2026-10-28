@@ -8,8 +8,8 @@ search_keywords: [参与贡献, 贡献者, pull request, 问题报告, 翻译, O
 ---
 
 欢迎纠错、翻译、报告问题和提交范围明确的 pull request。当前主题版本为
-**OINK v1.4.0**。[发布说明](/zh/blog/release/1.4.0/)介绍仅依赖 Hugo 的构建方式，
-以及本版本保留的社区阅读体验修复。
+**OINK v1.4.0**。[发布说明](/zh/blog/release/1.4.0/)介绍新增的阅读器、本地渲染、
+搜索改进、展示变体及阅读体验修复。
 
 ## 选择贡献仓库 {#where-to-contribute}
 

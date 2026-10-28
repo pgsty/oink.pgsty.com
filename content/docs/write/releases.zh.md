@@ -9,7 +9,7 @@ aliases:
   - /docs/scenarios/releases/
 ---
 
-OINK 把发布事实集中在两处本地数据：页面 front matter 的 `release_url` 指明这一页对应哪个 GitHub 发布，`data/download/<key>.yaml` 记录安装方式。发布卡片、资产表、下载区块与索引页都从这两处推导。构建期不访问 GitHub，也不声称某个标签或资产已经存在。
+OINK 将发布元数据存放在两处本地文件中：页面 front matter 的 `release_url` 指明对应的 GitHub Release，`data/download/<key>.yaml` 记录安装渠道。发布卡片、资产表、下载区块与索引页均从这两份本地记录生成链接，构建期不请求 GitHub。
 
 > [!NOTE] 本页自带演示用的发布事实
 > front matter 里放了一个 `release_url`（OINK v0.4.0），下面的卡片、资产表与下载区块都是真实渲染。校验和与资产文件名是构造的：URL 由组件按仓库与标签本地推导，指向的文件在真实发布里不存在，不要用这里的哈希校验产物。
@@ -82,10 +82,7 @@ layout: releases
 7b3d9e0c145a8f26d0b7e93c48156aa2f0d9c7b31e846a5029df1b6c7a3e8250 *oink-0.4.0-darwin-arm64.tar.gz
 ```
 
-只接受两种行：`<十六进制><两个空格><文件名>` 与 `<十六进制><空格>*<文件名>`。空行
-与以 `#` 开头的行忽略。哈希长度决定算法（MD5 / SHA-1 / SHA-256 / SHA-512），一个块
-里只能有一种算法。格式错误的行带行号告警并跳过；发布前应审阅告警并检查回退结果。文件名
-必须是单个路径段。类型、操作系统与架构徽章由文件名推断，属于装饰，推断不出时不显示。
+只接受两种行格式：`<十六进制><两个空格><文件名>` 与 `<十六进制><空格>*<文件名>`，空行与 `#` 开头的注释行会被忽略。算法由哈希长度自动识别（MD5 / SHA-1 / SHA-256 / SHA-512），同一个代码块内只允许使用同一种算法；格式错误的行会输出带行号的警告并跳过。文件名必须是单个路径段；包类型、操作系统与架构徽章根据文件名自动推断，未命中时不显示徽章。
 
 资产链接的基址：页面有 `release_url` front matter 时推导为 `https://github.com/<repo>/releases/download/<tag>/`；没有发布事实的页面必须显式写 `base=`。两者同时存在时报错。
 
@@ -152,9 +149,7 @@ channels:
       aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  oink-0.4.0.tar.gz
 ```
 
-记录级字段只有 `version` `repo` `tag` `published` `channels` 五个。多写一个键时告警并
-跳过记录，发布前应审阅告警并检查回退结果。`version` 也可以不写在这里，改由站点的
-`params.version` 提供。
+顶层记录只允许 `version`、`repo`、`tag`、`published`、`channels` 五个字段（出现未知字段时会告警并跳过整条记录）。`version` 也可省略，改由站点的 `params.version` 统一提供。
 
 | 字段 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |

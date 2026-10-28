@@ -18,11 +18,11 @@ need it.
 
 ## Build and review
 
-Use OINK **v1.4.0**, Hugo Extended **0.168.0**, and Go **1.27.3**. The module's
-Go minimum is 1.27.3. Hugo's built-in LibSass compiles theme and project SCSS;
-do not add an external Sass compiler. Never enable `--panicOnWarning` or
-`HUGO_PANICONWARNING`. Keep diagnostics visible and review them; the upstream
-LibSass deprecation warning is accepted. There is no legacy Hugo test matrix.
+Use OINK **v1.4.0**, Hugo Extended **0.168.0**, and Go **1.27.3** (the module's
+minimum Go version). Hugo's built-in LibSass compiles theme and project SCSS
+without an external Sass compiler. Do not enable `--panicOnWarning` or
+`HUGO_PANICONWARNING`; keep diagnostics visible and review them (the upstream
+LibSass deprecation warning is expected).
 
 Read `AGENTS.md`, `TRANSLATION.md`, and the relevant bilingual contract under
 `content/docs/design/`. Clone the theme and site as siblings for theme work.

@@ -265,9 +265,9 @@ instead.
 hugo --printPathWarnings
 ```
 
-It must reach `Total in …` with no ERROR; review warnings and accept only the known upstream LibSass notice. `--printPathWarnings`
-reports two pages resolving to the same output path, which happens most often
-while changing the directory structure.
+The build must complete with `Total in …` and no ERROR. `--printPathWarnings`
+flags any two pages that resolve to the same output path when restructuring
+directories.
 
 Then confirm each of these in the browser:
 

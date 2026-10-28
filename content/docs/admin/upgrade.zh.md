@@ -18,30 +18,22 @@ aliases:
 升级会改变渲染结果。先建一个升级分支再动手，回退的代价就是丢弃一个分支。
 
 > [!IMPORTANT] 当前 Hugo 基线
-> 当前开发与验收统一使用 Hugo Extended 0.168.0。升级时同步更新
-> Hugo workflow 固定版本，不再维护旧 Hugo 兼容性。下方旧版本章节中的要求仅说明
-> 当时的发布状态。
-
-> [!NOTE] OINK 1.4.0 构建要求
-> 维护中的站点使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
-> 上游 LibSass 弃用告警保持可见并接受审阅；不要启用 `--panicOnWarning`
-> 或 `HUGO_PANICONWARNING`。
+> 维护中的站点统一使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
+> 升级时同步更新 Hugo workflow 固定版本；下方旧版本章节中的要求仅说明当时的发布状态。
 
 ## 升级到 1.4.0 {#preparing-1-4}
 
 OINK `v1.4.0` 保持仅依赖 Hugo 的构建方式，新增本地 PlantUML、统一图表阅读、
-更完善的本地搜索、按需开启的表格阅读器与博客画廊。维护中的站点统一使用
-Hugo Extended 0.168.0，保留并审阅上游 LibSass 弃用告警。详情参见
+更完善的本地搜索、按需开启的表格阅读器与博客画廊。详情参见
 [1.4.0 发布说明](/zh/blog/release/1.4.0/)。
+
+在关闭替换与工作区的环境中验证公开模块解析，固定 `github.com/pgsty/oink@v1.4.0`，
+用 `--printPathWarnings` 构建，并检查导航、图片查看器与阅读器设置。源码副本方式的
+消费站还需要刷新固定主题文件；修改 `go.mod` 不会升级已有的 vendor 副本。
 
 OINK `v1.3.1` 修复 Markmap 文字对比度和固定 TOC 的页脚避让，并为技术表格与
 文件树长注释提供显式开启的布局。已有内容保留默认外观，仅在需要完整技术信息时
 开启[技术宽表布局](/zh/docs/components/table/#wide)或文件树的 `wrap=true`。
-
-更新模块前，先安装 Hugo Extended 0.168.0，无需安装 Dart Sass。在关闭替换与
-工作区的环境中验证公开模块解析，固定 `github.com/pgsty/oink@v1.4.0`，构建并审阅
-告警与产物。源码副本方式的消费站还需要刷新固定主题文件；修改 `go.mod` 不会升级
-已有的 vendor 副本。
 
 提供四套风格的站点继续使用 `preset: paper` 和显式 `[paper, slate, ink, terminal]`
 菜单。[1.3.1 发布说明](/zh/blog/release/1.3.1/)列出修复细节与贡献者致谢。
@@ -73,9 +65,9 @@ hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
 
-选择标签时，确认模块图显示的就是该版本。主动选定的不可变 commit 通常会记录为 Go
-伪版本；只要它解析到预期提交就是有效固定，但不能作为某个命名版本已发布的证据。
-提交生成的 `go.mod` 与 `go.sum`。使用上面的公开标签时，`go.mod` 包含：
+选择标签时，确认模块图显示的就是该版本。主动选定的不可变 commit 在 `go.mod`
+中通常记录为 Go 伪版本。提交生成的 `go.mod` 与 `go.sum`。使用上面的公开标签时，
+`go.mod` 包含：
 
 ```go {title="go.mod"}
 module github.com/pgsty/oink.pgsty.com
@@ -87,9 +79,8 @@ require github.com/pgsty/oink v1.4.0
 
 > [!DANGER] 本地模块替换会盖掉这个固定版本
 > `make dev` 和 `make check` 只为当次命令设置 `HUGO_MODULE_REPLACEMENTS`，
-> 使用同级主题 checkout。判定发布标签是否可用时，移除该环境变量替换，同时禁用
-> `GOWORK` 和 `HUGO_MODULE_WORKSPACE`。还要检查持久替换与 `_vendor/`；仅执行
-> `make build` 无法证明实际解析的是哪个主题版本。参见
+> 使用同级主题 checkout。验证发布标签时，移除该环境变量替换，禁用 `GOWORK`
+> 和 `HUGO_MODULE_WORKSPACE`，并检查是否存在持久 `replace` 指令或 `_vendor/`。参见
 > [本地预览指南](/zh/docs/admin/preview/#theme-workspace)。
 
 使用 Git submodule 时，先确认没有本地修改，再拉取标签并检出精确的公开版本，
@@ -121,10 +112,6 @@ env -u HUGO_MODULE_REPLACEMENTS GOWORK=off HUGO_MODULE_WORKSPACE=off \
 构建通过之后，人眼再过一遍：首页、一个文档页、一个博客页、404、两种语言、两种配色、打印视图，以及站点自己定制过的地方。
 
 ## 从 1.0 升到 1.1 {#from-1-0}
-
-> [!IMPORTANT] OINK 1.1.0 升级清单
-> 本清单对应已发布的 v1.1.0。各消费站仍需更新依赖固定版本、重新构建和部署；
-> 主题发布不会自动升级既有站点。
 
 从 1.0.0 升级到 1.1.0 不需要迁移源码，模块的 Go 1.27.0 声明与 1.0.0 相同。
 当前升级统一使用 Hugo Extended 0.168.0 验证；历史工具链信息保留在
@@ -306,7 +293,7 @@ OINK 是 Docsy 的硬分支：内容模型、`td-` 命名、Sass 变量、大部
 - 顶栏在所有布局上都显示。紧凑状态只有一行图标导航，没有第二套移动端手风琴菜单，依赖旧移动菜单的本地脚本与测试要删掉。整个分区不要顶栏时用 cascade 里的 `navbar_enabled: false`。
 - 页脚默认 `fat` 且全站生效。只接受 `fat` / `slim` / `none`；页脚数据必须放在
   `data/footer/<语言>.yaml`（单语言站点用 `data/footer.yaml`），`data/home` 里残留的
-  `footer` 键会告警并提示新位置，发布前应审阅告警并检查回退结果。
+  `footer` 键会告警并提示新位置。
 - 单键导航默认开启：`/` 打开完整搜索，`\` 只进命令模式。培训材料里描述旧行为的地方要改。页面操作也挪到了面包屑旁边的拆分按钮上。
 - 代码块的 DOM 变了。`.td-code` 外壳套在原来的 `.highlight` 外面（`.highlight` 与 `.chroma` 都保留），站点 CSS 里 `.td-content > .highlight` 这类直接子选择器要改成后代选择器 `.td-content .highlight`。
 - 两个 ICP 页脚参数被移除：`footer_icp` 与 `footer_icp_url` 换成一个支持行内 Markdown 的字符串。
@@ -344,10 +331,6 @@ make build     # go.mod 固定的公开主题，不带本地替换
 ```
 
 其它站点跑等价的构建、链接、输出与浏览器检查即可，细节见[排错与检查](/zh/docs/admin/troubleshooting/#site-checks)。
-
-> [!IMPORTANT] 本地构建成功不等于发布完成
-> 源码提交通过验收、公开标签能通过模块代理解析、消费站固定版本及校验和、生产部署
-> 通过验证，是彼此独立的状态。一次绿色的本地构建不能代替其它证据。
 
 最后一步在真实环境上做：先部署一份预览，在真实 URL 上验证页面与浏览器的网络请求，评审通过再合并，合并后在生产上做一次冒烟测试。
 

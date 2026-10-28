@@ -250,7 +250,7 @@ rm -rf public resources/_gen
 hugo --gc --minify --printPathWarnings
 ```
 
-看到 `Total in …` 且没有 ERROR，并完成告警审阅才算通过；上游 LibSass 弃用告警允许出现。然后确认：
+看到 `Total in …` 且无 ERROR 即表示构建通过。随后确认：
 
 - 日志里没有 npm、PostCSS、Autoprefixer 或下载浏览器资源的步骤。出现了说明配置里混进了上游 Docsy 的流程。
 - `public/` 下有 `sitemap.xml`、`robots.txt`，`robots.txt` 是 `Allow: /`。

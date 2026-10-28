@@ -128,7 +128,7 @@ intact in all four outputs.
 
 - Both components derive their container ID from the page address and the shortcode's ordinal, so several on one page never collide.
 - The two can coexist on one page, but the page becomes long and its HTML output loads both runtimes. Pick one for a production site.
-- Neither interface is fully accessible. Swagger UI has unnamed server controls and scrollable regions without keyboard access. Redoc's operation descriptions have insufficient color contrast. Assess these limitations against your site's accessibility requirements. Excluding a widget from an automated check does not make it conformant. If an embedded widget is unsuitable, provide readable endpoint documentation.
+- Both embedded third-party widgets have upstream accessibility limitations: Swagger UI renders unnamed server controls and scrollable regions without keyboard access, and Redoc's operation descriptions fall below AA contrast ratios. Evaluate these trade-offs against your site's accessibility requirements, or document key endpoints directly in Markdown prose when strict conformance is required.
 - `redoc` accepts no attribute parameter. A second positional argument warns and the shortcode renders nothing.
 - A local `redoc` path starts under `static/`. A leading `/` is optional. Page resources are not resolved.
 - The browser must be able to fetch the specification. Put it in `static/`. After a build, confirm that the file exists under `public/`.

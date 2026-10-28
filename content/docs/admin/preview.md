@@ -295,7 +295,7 @@ rm -rf public resources/_gen
 hugo --gc --minify --printPathWarnings
 ```
 
-The build passes when it reports `Total in …` with no ERROR; review warnings and accept only the known upstream LibSass noticeING.
+The build passes when it reports `Total in …` with no ERROR.
 Then check the following items:
 
 - Confirm that the log has no npm, PostCSS, Autoprefixer, or browser-asset download step. Such a step indicates upstream Docsy configuration.

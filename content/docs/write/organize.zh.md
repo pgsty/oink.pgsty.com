@@ -209,7 +209,7 @@ sidebar_root_for: self   # self | children
 hugo --printPathWarnings
 ```
 
-必须 `Total in …`，没有 ERROR，并完成告警审阅；上游 LibSass 弃用告警允许出现。`--printPathWarnings` 报出两个页面指向同一输出路径的情况，改目录结构时较常出现。
+构建应以 `Total in …` 结束且无 ERROR。调整目录结构时，`--printPathWarnings` 可以及时发现两个页面指向同一输出路径的冲突。
 
 在浏览器里逐项确认：
 

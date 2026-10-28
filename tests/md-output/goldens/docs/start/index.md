@@ -8,22 +8,18 @@ LLMS index: [llms.txt](/llms.txt)
 
 ---
 
-For a new site, the recommended path starts with
-[`pgsty/oink-starter`](https://github.com/pgsty/oink-starter), instead of a copy
-of this documentation and regression repository. The Starter is a public GitHub
-template. It pins a published OINK release and builds without changes. It
-contains only neutral project content and deployment workflows.
+For a new site, start from
+[`pgsty/oink-starter`](https://github.com/pgsty/oink-starter), a public GitHub
+template that pins a published OINK release, builds out of the box, and
+includes neutral project content and deployment workflows without this repository's
+regression test harness.
 
 > [!IMPORTANT] Current Hugo baseline
-> Development, CI, and release tests use Hugo Extended 0.168.0
-> and Go 1.27. The Hugo baseline remains pinned. When starting
-> from an older Starter snapshot, update its Hugo workflow pins to this baseline;
-> older Hugo compatibility is no longer maintained.
-
-> [!NOTE] OINK 1.4.0 build requirements
-> Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass.
-> No external Sass installation is required. Keep the upstream LibSass warning
-> visible and review it; do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
+> Maintained sites use Hugo Extended 0.168.0 (with its
+> built-in LibSass) and Go 1.27.3. If you start from an older Starter snapshot,
+> update its workflow pins to match. Do not enable `--panicOnWarning` or
+> `HUGO_PANICONWARNING`; keep warnings visible and review them (the upstream
+> LibSass deprecation warning is expected).
 
 ## Choose a path {#choose}
 
@@ -92,24 +88,23 @@ contains only neutral project content and deployment workflows.
   Pages workflow, then verify the real public routes.
 {.cards}
 
-Verify the build and content tree first. This makes the site easier to debug.
-Changing languages, navigation, CSS, analytics, and hosting together makes it
-harder to identify a failure.
+Verify the build and content tree before customizing languages, navigation,
+CSS, analytics, and hosting; changing one layer at a time makes failures easy
+to isolate.
 
 ## Publication gate {#publication-gate}
 
-Before the first push, run the production build that the Starter workflows use.
-This build keeps warnings visible for review:
+Before your first push, run the same production build command used by the
+Starter workflows:
 
 ```bash
 hugo --cleanDestinationDir --gc --minify --environment production \
   --printPathWarnings
 ```
 
-The command must exit successfully and report `Total in …`. Review all
-diagnostics; the known upstream LibSass deprecation warning is accepted. `public/` must contain the language roots and representative Docs, Blog,
-and Book routes. This does not prove deployment. A local build, commit, push,
-successful workflow, and correct public rendering are separate checks.
+Confirm that the build exits cleanly with `Total in …` and that `public/`
+contains the language roots along with representative Docs, Blog, and Book
+routes. After pushing, check the CI workflow and the live URL as well.
 
 ## Next {#next}
 

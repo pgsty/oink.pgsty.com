@@ -16,13 +16,10 @@ that serves static files. It requires no Node runtime, server-side rendering,
 or build plugin. On the host, run one command with the correct Hugo version.
 Publish `public/` and set `baseURL` to match the final address.
 
-First complete a local [production build](/docs/admin/preview/#production-build)
-and review its diagnostics, including the accepted upstream LibSass warning.
-
-> [!NOTE] OINK 1.4.0 build requirements
-> Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass.
-> No external Sass installation is required. Keep the upstream LibSass warning
-> visible and review it; do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
+First run a local [production build](/docs/admin/preview/#production-build)
+with Hugo Extended 0.168.0 (using its built-in LibSass). Do not enable
+`--panicOnWarning` or `HUGO_PANICONWARNING`; keep warnings visible and review
+them (the upstream LibSass deprecation warning is expected).
 
 ## Getting baseURL right {#baseurl}
 An incorrect `baseURL` is the most common source of failure. The page can open
@@ -198,9 +195,9 @@ recommended reproducible path for Starter users.
 You can also use Cloudflare Git integration as a separate mode. Set the build
 command to `hugo --gc --minify --printPathWarnings`, the output
 directory to `public`, Hugo to `0.168.0`, and Go to `1.27`. For one project,
-use either Git integration **or** the Direct Upload workflow. Do not use both.
-A preview deployment does not verify production. Rebuild the preview with its
-own URL and keep it unindexed.
+use either Git integration **or** the Direct Upload workflow, and build preview
+deployments with their own preview URL and a non-production environment so they
+remain unindexed.
 
 {{< /tab >}}
 {{< tab label="Others" value="other" >}}
@@ -345,14 +342,14 @@ Additional features change the directives needed:
 - [Remote API specifications](/docs/write/openapi/#spec-file) and [self-hosted diagram services](/docs/components/plantuml/#server): these require permissions in `connect-src` and `img-src`.
 - [giscus](/docs/admin/comments/#privacy): `script-src` and `frame-src` must both permit it.
 
-Hash each permitted inline script/style block from the final deployed bytes.
-Alternatively, have the host inject a fresh nonce into the response policy
-and corresponding tags. A nonce on a style tag does not authorize style
-attributes. Review those separately under `style-src-attr`. Recheck hashes
-after changes to content, configuration, minification, or the theme. Start with
-`Content-Security-Policy-Report-Only`. Before enforcement, test light/dark
-startup, shell state, menus, and every enabled component. An origin scan alone
-cannot establish CSP compatibility.
+Hash each permitted inline script/style block from the final deployed bytes, or
+have the host inject a fresh nonce into the response policy and corresponding
+tags. Because a `<style>` nonce does not authorize `style="..."` attributes,
+handle inline style attributes separately under `style-src-attr`. Recheck
+hashes after changes to content, configuration, minification, or the theme.
+Start with `Content-Security-Policy-Report-Only` and verify light/dark startup,
+shell state, menus, and every enabled component in the browser before enforcing
+the policy.
 
 Start with a minimal policy that covers only reviewed features. Add permissions
 one at a time. If ECharts needs no callback, keep its options as pure data.

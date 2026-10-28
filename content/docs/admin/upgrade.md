@@ -20,25 +20,19 @@ An upgrade changes rendered output. Before you start, create an upgrade branch.
 You can discard that branch if you cancel the upgrade.
 
 > [!IMPORTANT] Current Hugo baseline
-> Current development and validation use Hugo Extended 0.168.0.
-> Update Hugo workflow pins when upgrading; older-Hugo compatibility is no
-> longer maintained. Version requirements in the older release sections below
-> describe those releases only.
-
-> [!NOTE] OINK 1.4.0 build requirements
-> Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass.
-> No external Sass installation is required. Keep the upstream LibSass warning
-> visible and review it; do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
+> Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass. No
+> external Sass installation is required. Update Hugo workflow pins when
+> upgrading; older-Hugo requirements in the sections below describe those
+> historical releases only.
 
 ## Upgrade to 1.4.0 {#preparing-1-4}
 
 OINK `v1.4.0` keeps the Hugo-only build boundary and adds local PlantUML,
 unified diagram reading, richer local search, the opt-in table reader, and the
-gallery blog layout. Use Hugo Extended 0.168.0 for maintained sites and review
-the visible upstream LibSass warning. See the [1.4.0 release notes](/blog/release/1.4.0/).
+gallery blog layout. See the [1.4.0 release notes](/blog/release/1.4.0/).
 
 Verify public module resolution with replacements and workspaces disabled.
-Pin `github.com/pgsty/oink@v1.4.0`, build with reviewed diagnostics, and review
+Pin `github.com/pgsty/oink@v1.4.0`, build with `--printPathWarnings`, and review
 navigation, image viewing, and reader settings. Source-copy consumers must also
 refresh their fixed theme files; changing `go.mod` does not update a vendored copy.
 
@@ -86,9 +80,8 @@ hugo mod graph | grep github.com/pgsty/oink
 ```
 
 When selecting a tag, confirm that the module graph shows that exact version.
-An explicitly selected immutable commit normally uses a Go pseudo-version.
-This is valid if it resolves to the intended commit. It does not prove that a
-named release exists. Commit the resulting `go.mod` and `go.sum`.
+An explicitly selected immutable commit normally uses a Go pseudo-version
+in `go.mod`. Commit the resulting `go.mod` and `go.sum`.
 For the published tag in this example, `go.mod` contains:
 
 ```go {title="go.mod"}
@@ -101,10 +94,9 @@ require github.com/pgsty/oink v1.4.0
 
 > [!DANGER] A local module replacement overrides that pin
 > `make dev` and `make check` set `HUGO_MODULE_REPLACEMENTS` for that command
-> only, using the sibling theme checkout. To judge whether a release tag works,
-> remove that environment replacement and disable both `GOWORK` and
-> `HUGO_MODULE_WORKSPACE`. Inspect persistent replacements and `_vendor/` too;
-> `make build` by itself does not prove which theme was resolved. See the
+> only, using the sibling theme checkout. To verify a release tag, remove
+> environment replacements, disable `GOWORK` and `HUGO_MODULE_WORKSPACE`, and
+> check for persistent `replace` directives or `_vendor/`. See the
 > [preview guide](/docs/admin/preview/#theme-workspace).
 
 For a Git submodule, first confirm that it has no local edits. Fetch the tags.
@@ -143,11 +135,6 @@ a blog page, and the 404. Check both languages, both color schemes, the print
 view, and every site customization.
 
 ## Upgrading from 1.0 to 1.1 {#from-1-0}
-
-> [!IMPORTANT] OINK 1.1.0 upgrade checklist
-> This checklist covers the published v1.1.0 release. Each consumer still needs
-> to update its dependency pin, rebuild and deploy; theme publication does not
-> upgrade an existing site automatically.
 
 No source migration was required from 1.0.0 to 1.1.0. Its Go 1.27.0 module
 directive was unchanged from 1.0.0. Validate current upgrades with Hugo Extended
@@ -355,7 +342,7 @@ check these settings first:
 
 - Sequential paging is on by default. `docs`, `book`, and `blog` pages have previous / next links at the page end. Documentation follows the sidebar tree. Blog pages follow time. For a page intentionally outside a sequence, set `pager: false`.
 - The navbar appears on every layout. Its compact state has one row of icon navigation and no second mobile accordion menu. Remove local scripts and tests that depend on the old mobile menu. To disable the navbar for a section, set `navbar_enabled: false` in a cascade.
-- The footer defaults to `fat` for the site. It accepts only `fat` / `slim` / `none`. Store footer data in `data/footer/<language>.yaml`, or `data/footer.yaml` for a single-language site. A remaining `footer` key in `data/home` produces a warning with the new location. Review the warning and rendered fallback before publication.
+- The footer defaults to `fat` for the site. It accepts only `fat` / `slim` / `none`. Store footer data in `data/footer/<language>.yaml`, or `data/footer.yaml` for a single-language site. A remaining `footer` key in `data/home` produces a warning with the new location.
 - Single-key navigation is on by default. `/` opens full search, and `\` opens command-only mode. Update training material that describes the old behavior. Page actions now use a split button beside the breadcrumbs.
 - The code block DOM changed. A `.td-code` wrapper now encloses the original `.highlight`. Both `.highlight` and `.chroma` remain. In site CSS, replace a direct child selector such as `.td-content > .highlight` with the descendant selector `.td-content .highlight`.
 - Two ICP footer parameters were removed. The keys `footer_icp` and `footer_icp_url` became one string that accepts inline Markdown.
@@ -397,11 +384,6 @@ make build     # published theme pinned in go.mod, without a local replacement
 Another site runs the equivalent build, link, output and browser checks; the
 details are in
 [Troubleshooting](/docs/admin/troubleshooting/#site-checks).
-
-> [!IMPORTANT] A successful local build is not a completed release
-> A validated source commit, a published tag that resolves through the module
-> proxy, a consumer pin with its checksum, and a verified production deployment
-> are separate states. One green local build does not prove the others.
 
 Complete the final checks in the real environment. Deploy a preview. Verify its
 pages and browser network requests at the real URL. After review, merge the

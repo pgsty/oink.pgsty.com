@@ -12,20 +12,11 @@ aliases:
   - /docs/tutorial/project-site/
 ---
 
-新站点的推荐起点是
-[`pgsty/oink-starter`](https://github.com/pgsty/oink-starter)，而不是复制本站这个
-文档与回归测试仓库。Starter 是公开的 GitHub 模板：它固定一个已发布的 OINK
-版本，默认即可构建，只包含中性的项目示例与部署 workflow。
+新建站点推荐从公开的 GitHub 模板
+[`pgsty/oink-starter`](https://github.com/pgsty/oink-starter) 开始。该模板固定了已发布的 OINK 版本，开箱即可构建，仅包含干净的示例内容与部署 workflow，不夹带本站的回归测试套件。
 
 > [!IMPORTANT] 当前 Hugo 基线
-> 开发、CI 与发布测试统一使用 Hugo Extended {{% param hugoMinVersion %}} 和
-> Go 1.27.3，Hugo 默认基线保持固定。使用旧 Starter 快照时，同步更新它的 Hugo
-> workflow 固定版本；不再维护旧 Hugo 兼容性。
-
-> [!NOTE] OINK 1.4.0 构建要求
-> 维护中的站点使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
-> 上游 LibSass 弃用告警保持可见并接受审阅；不要启用 `--panicOnWarning`
-> 或 `HUGO_PANICONWARNING`。
+> 维护中的站点统一使用 Hugo Extended {{% param hugoMinVersion %}}（使用内置 LibSass，无需安装外部 Sass）和 Go 1.27.3。若从较早的 Starter 快照起步，请同步更新 workflow 中的固定版本。请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`，保持告警可见并审阅（上游 LibSass 弃用告警属预期提示）。
 
 ## 选择起点 {#choose}
 
@@ -89,21 +80,18 @@ aliases:
   workflow，再验证真实公开路由。
 {.cards}
 
-这个顺序是有意的。先证明构建与内容树，再逐项增加定制，比同时修改语言、导航、
-CSS、分析与托管更容易定位问题。
+先跑通基础构建与内容树，再逐层修改语言、导航、CSS、统计与托管配置，遇到问题时更容易排查。
 
 ## 发布门禁 {#publication-gate}
 
-第一次推送前，执行与 Starter workflow 相同的生产构建：
+首次推送前，先在本地执行与 Starter workflow 一致的生产构建：
 
 ```bash
 hugo --cleanDestinationDir --gc --minify --environment production \
   --printPathWarnings
 ```
 
-命令成功退出并输出 `Total in …`，完成告警审阅，而且 `public/` 中存在各语言根与
-代表性的 Docs、Blog、Book 路由，才算通过。上游 LibSass 弃用告警允许出现。此时仍只证明本地构建：本地构建、提交、推送、
-workflow 变绿与公开站点正确，是彼此独立的关卡。
+确认命令正常退出并输出 `Total in …`，且 `public/` 下已生成各语言根目录以及代表性的 Docs、Blog、Book 页面。推送后，再进一步核对 CI workflow 状态与线上公开地址的渲染结果。
 
 ## 下一步 {#next}
 

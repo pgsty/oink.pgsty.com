@@ -171,12 +171,11 @@ use the `eq` shortcode below, which goes through local server-side KaTeX.
 
 A code fence with `num=` and `caption=` is a numbered example, and the default
 ID is `eg-<num>`. An `#id` on the fence names the enclosing `<figure>`, which
-is the reference target. It does not name the code block. The caption is
-required. A caption without a number is ignored. A number without a caption
-is dropped with a warning. Review the warning and rendered fallback before publication. A numbered
-example renders in one frame. The caption is the frame header. The body sits
-inside it. If the body is one code block, it uses the frame border without
-a second border.
+is the reference target. The caption is required: a caption without a number is
+ignored, and a number without a caption is dropped with a warning. A numbered
+example renders in one frame where the caption forms the header and the body
+sits inside; a single code block shares the frame border without adding a
+second border.
 
 ````markdown {title="Source"}
 ```sql {num="2-1" caption="Daily write volume on the primary." #eg-2-1}
@@ -262,17 +261,18 @@ pg_basebackup -h primary -U replicator -D /pg/data -Fp -Xs -P -R
 ```
 {{< /eg >}}
 
-IDs must be unique within a page, and within one kind a number maps to exactly
-one ID. A duplicate warns and keeps the first registration. Review the warning and rendered fallback before publication. The warning names the first registration's line.
+IDs must be unique within a page, and within one kind a number maps to a single
+ID. A duplicate logs a warning with the first registration's line number and
+keeps the first registration.
 
 > [!IMPORTANT] Footnotes cannot appear in a shortcode body
-> Hugo renders each shortcode body as a separate Goldmark document. Footnotes
-> belong to the page. A `[^label]` inside the body of `tbl`, `eg`, `fig`, `card`, `tab`,
-> `field` or `include` warns, naming the file, line, and label. Review the warning and rendered fallback before publication.
-> With the definition on the page, the reference would print literally as
-> `[^label]`. With the definition in the body, it would build a second footnote
-> list. Its `fn:N` IDs would collide with the page's IDs. Neither belongs in
-> published output.
+> Hugo renders each shortcode body as a separate Goldmark document, whereas
+> footnotes belong to the page. A `[^label]` inside the body of `tbl`, `eg`,
+> `fig`, `card`, `tab`, `field`, or `include` logs a warning naming the file,
+> line, and label: if the definition sits on the page, the reference would print
+> literally as `[^label]`; if the definition sits inside the shortcode body, it
+> would generate a second footnote list whose `fn:N` IDs collide with the page's
+> own footnotes.
 >
 > If a table or code block needs footnotes, use the native form. A table,
 > image, or fence with `{num=… caption=…}` keeps its content in the page
@@ -518,7 +518,7 @@ parameters.
 - The attribute line must touch its block, with no blank line between. If a tool such as Prettier moves an attribute line, it fails silently. The figure becomes a plain image.
 - `book_kind` and `book_part` are metadata keys the contract acknowledges but the current templates do not render. The ones with a visible effect are `book_number` and `book_status`.
 - The index shortcodes trigger descendant content rendering, which noticeably lengthens the build on a very large tree. The same reason is why whole-book `print` has to be requested explicitly.
-- A footnote reference cannot appear in a shortcode body. It warns and identifies the native form to use instead. Review the warning and rendered fallback before publication. See [Numbering: the shortcode form](#numbering-shortcodes).
+- A footnote reference cannot appear inside a shortcode body; the theme logs a warning and points to the native form instead (see [Numbering: the shortcode form](#numbering-shortcodes)).
 - Packaging requires explicit selection and runs outside the build. `BookManifest` plus `bin/book-epub.py` / `bin/book-pdf.py` produce EPUB and PDF. Hugo alone emits neither file. Typeset pagination, font embedding, and index compilation remain outside the contract.
 
 ## Related {#related}

@@ -53,15 +53,13 @@ OINK 1.4.0 renders PlantUML in the browser when enabled without an endpoint;
 an explicit endpoint keeps server mode.
 Without `params.drawio.drawio_server`, Diagrams.net warns and stays disabled.
 Without `appId` / `apiKey` / `indexName`, Algolia warns and stays disabled.
-Review warnings and their safe fallbacks before publishing.
 
 Local-first does not cover content that an author adds. Explicit network
 choices include external links, remote images and video, iframes, and remote
 API specifications. They also include hosted search, such as Algolia or Google
 Programmable Search, and analytics, comments, or other SaaS integrations.
 PlantUML and Diagrams.net use the network if the author configures a remote
-renderer. Pages with these features remain valid. The site should not claim
-that those pages work fully offline.
+renderer. Pages that enable these features require network access at runtime.
 
 → [License and acknowledgements](/docs/about/license/) · [Configuration](/docs/customize/config/)
 

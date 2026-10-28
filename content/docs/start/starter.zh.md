@@ -8,17 +8,9 @@ search_keywords: [OINK Starter, GitHub 模板, Use this template, 定制 Starter
 ---
 
 [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter) 是新建 OINK
-站点的正式起点。它刻意小于 `oink.pgsty.com`：不会把主题文档、分析账号、评论仓库、
-浏览器回归套件或 PGSTY 品牌复制进你的项目。
+站点的官方模板。它保持精简干净，不夹带 `oink.pgsty.com` 的主题文档、统计账号、评论仓库、浏览器回归套件或 PGSTY 品牌资产。
 
-本流程使用 Git、Go 1.27.3 或更新版本，以及 Hugo Extended 0.168.0。
-所选语言 profile 统一使用这套工具链验证，旧 Starter 的 workflow 固定版本也应
-同步更新。Hugo 默认基线保持固定，不再测试或适配旧版本。
-
-> [!NOTE] OINK 1.4.0 构建要求
-> 维护中的站点使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
-> 上游 LibSass 弃用告警保持可见并接受审阅；不要启用 `--panicOnWarning`
-> 或 `HUGO_PANICONWARNING`。
+本流程使用 Git、Go 1.27.3+ 以及 Hugo Extended 0.168.0（使用内置 LibSass，无需安装外部 Sass）。若基于旧版 Starter 快照创建项目，请同步更新 workflow 中的固定版本。请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`，保持告警可见并审阅（上游 LibSass 弃用告警属预期提示）。
 
 ## 模板包含什么 {#contents}
 
@@ -133,7 +125,7 @@ params:
 
 ### 第三层：首页 {#home}
 
-首页是数据，不是难以维护的整页模板覆盖：
+首页内容保存在 `data/home/` 下的数据文件中：
 
 ```text
 data/home/en.yaml
@@ -141,12 +133,9 @@ data/home/zh.yaml
 data/home/fr.yaml
 ```
 
-先改一种语言。每个文件里的 `sections` 决定顺序，`hero`、`cards`、`cta` 提供内容。
-保持结构，替换项目承诺、目标 URL 与示例卡片。第一种语言确认无误后，再把同一组事实
-翻译到已启用语言。
+先修改一种语言。每个文件中的 `sections` 决定区块顺序，`hero`、`cards`、`cta` 提供具体内容。保留原有结构，替换标语、目标 URL 与示例卡片文案；待第一种语言定稿后，再同步翻译到其他已启用语言。
 
-需要其它组合时，使用[首页与落地页](/zh/docs/customize/home/)中的完整注册表；不要复制
-Starter 的首页 partial，因为这里本来就没有站点自有模板。
+需要更多区块类型时，请参考[首页与落地页](/zh/docs/customize/home/)中的完整区块列表；主题直接读取数据文件渲染首页，无需覆盖模板。
 
 ### 第四层：内容与导航 {#content-navigation}
 

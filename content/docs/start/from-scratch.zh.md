@@ -29,14 +29,8 @@ aliases:
 
 已有 Hugo 站点时，按下方[接入现有站点](#existing-site)操作；已有 Docsy 站点见[版本升级](/zh/docs/admin/upgrade/)。
 
-后半部分是四种安装方式的取舍：Hugo Module、Git submodule、离线归档、固定版本源码副本。
-当前开发与验收统一使用 Go 1.27.3 与 Hugo Extended 0.168.0。
-Hugo 默认基线保持固定，不再测试或适配旧版本。
-
-> [!NOTE] OINK 1.4.0 构建要求
-> 维护中的站点使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
-> 上游 LibSass 弃用告警保持可见并接受审阅；不要启用 `--panicOnWarning`
-> 或 `HUGO_PANICONWARNING`。
+后半部分对比四种安装方式：Hugo Module、Git submodule、离线归档、固定版本源码副本。
+当前开发与构建统一使用 Go 1.27.3 与 Hugo Extended 0.168.0（使用内置 LibSass，无需外部 Sass）。请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`，保持告警可见并审阅（上游 LibSass 弃用告警属预期提示）。
 
 ## 接入现有站点 {#existing-site}
 
@@ -72,7 +66,7 @@ Hugo 默认基线保持固定，不再测试或适配旧版本。
    /.hugo_cache/
    ```
 
-   最新版本号在 [GitHub Releases](https://github.com/pgsty/oink/releases)；本页出现的 `{{< param tdVersion.latest >}}` 是本站当前固定的版本。生产站点固定到发布标签，不要跟随 `main`：`@latest` 是一次性解析动作，不是版本策略。
+   最新版本号可在 [GitHub Releases](https://github.com/pgsty/oink/releases) 查看；本页显示的 `{{< param tdVersion.latest >}}` 是本站当前固定的版本。生产站点应在 `go.mod` 中固定明确的发布标签，避免直接跟踪 `main` 分支。
 
 1. ### 写 `hugo.yml` {#config}
 
@@ -279,9 +273,7 @@ mkdir -p themes
 tar -xzf oink-{{< param tdVersion.latest >}}.tar.gz -C themes
 ```
 
-这样得到的归档是自建产物，不是项目发行物。某个标签的发行页面是否附带归档与校验文件按发布而定，使用公开附件时独立验证其校验值。
-
-断网构建之前确认归档内容完整，这十一项都要在：
+离线构建前，请确认以下 11 项顶层文件与目录完整无缺：
 
 ```filetree {title="themes/oink/"}
 - oink/

@@ -435,7 +435,7 @@ is configured.
 hugo --printPathWarnings
 ```
 
-It must reach `Total in …` with no ERROR; review warnings and accept only the known upstream LibSass notice. Then confirm:
+The build must complete with `Total in …` and no ERROR. Then confirm:
 
 1. The post appears in the right date order at `/blog/`, with the date in the expected format.
 2. `public/blog/index.xml` exists, contains the post, and its links are complete absolute addresses.

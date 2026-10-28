@@ -7,19 +7,16 @@ icon: fa-solid fa-wand-magic-sparkles
 search_keywords: [OINK Starter, GitHub template, use this template, customize starter, starter repository]
 ---
 
-[`pgsty/oink-starter`](https://github.com/pgsty/oink-starter) is the supported
-starting point for a new OINK site. It is smaller than
-`oink.pgsty.com`. It copies no theme documentation, analytics account, comment
-repository, browser regression suite, or PGSTY-specific brand into your project.
+[`pgsty/oink-starter`](https://github.com/pgsty/oink-starter) is the official
+template for new OINK sites. It stays lean and clean, without this site's theme
+reference docs, analytics IDs, comment repo settings, browser test harness, or
+PGSTY branding.
 
-Use Git, Go 1.27.3 or newer, and Hugo Extended 0.168.0 for this workflow.
-Validate the selected language profiles with this toolchain and update older
-Starter workflow pins to match. The default Hugo version stays pinned; older versions receive no compatibility testing or adaptation.
-
-> [!NOTE] OINK 1.4.0 build requirements
-> Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass.
-> No external Sass installation is required. Keep the upstream LibSass warning
-> visible and review it; do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
+Use Git, Go 1.27.3+, and Hugo Extended 0.168.0 (with built-in LibSass) for this
+workflow. If you start from an older Starter snapshot, update its workflow pins
+to match. Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`; keep
+warnings visible and review them (the upstream LibSass deprecation warning is
+expected).
 
 ## What the template contains {#contents}
 
@@ -142,7 +139,7 @@ artwork. Review the text identity first.
 
 ### Layer 3: home page {#home}
 
-Home-page content is stored in data rather than a layout override:
+Home-page content lives in language data files under `data/home/`:
 
 ```text
 data/home/en.yaml
@@ -150,14 +147,13 @@ data/home/zh.yaml
 data/home/fr.yaml
 ```
 
-Edit one language first. In each file, `sections` determines the order. `hero`,
-`cards`, and `cta` provide the content. Replace the promise, destination URLs,
-and sample card text. Keep the structure. After you approve the first language,
-translate the same information into each enabled peer.
+Edit one language first. In each file, `sections` sets the section order while
+`hero`, `cards`, and `cta` supply the content. Replace the tagline, destination
+URLs, and sample card text while keeping the structure intact, then translate
+the updated copy into each enabled language.
 
-For another composition, use the full registry in
-[Home and landing pages](/docs/customize/home/). Do not copy the Starter home
-partial. There is no site-specific template to copy.
+For additional section types, see [Home and landing pages](/docs/customize/home/).
+The theme renders these data files directly—no layout override is needed.
 
 ### Layer 4: content and navigation {#content-navigation}
 

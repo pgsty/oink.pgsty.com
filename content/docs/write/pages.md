@@ -225,8 +225,8 @@ After writing a page, run a production build:
 hugo --printPathWarnings
 ```
 
-- The output must end with `Total in …` and no ERROR; review warnings and accept only the known upstream LibSass notice. A disallowed attribute key or invalid component parameter produces a warning with a source position and uses a safe fallback. Review that output. A `ref` whose target is missing still causes a Hugo error.
-- `--printPathWarnings` reports two pages resolving to the same output path, which occurs most often in multilingual sites or after changing `permalinks`.
+- The build must exit with `Total in …` and no ERROR. An invalid attribute key or component parameter logs a warning with a source position and renders a safe fallback, whereas a `ref` pointing to a missing target fails the build.
+- `--printPathWarnings` flags any two pages that resolve to the same output path, which is most common in multilingual sites or after editing `permalinks`.
 
 Then confirm three things in the browser:
 

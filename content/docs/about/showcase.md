@@ -15,8 +15,8 @@ they distinguish site-owned code from theme features.
 
 If you know the type of site you want to build, use this guide. Read a
 case to understand its architecture and trade-offs. Then use the linked
-documentation for exact configuration. Counts in cases describe the audited
-snapshot. They are not permanent properties of live sites.
+documentation for exact configuration. Counts in each case reflect the audited
+snapshot.
 
 ## Distribution documentation {#pigsty-sites}
 

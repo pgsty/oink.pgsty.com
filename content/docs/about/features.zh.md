@@ -32,9 +32,9 @@ Hugo Extended 0.168.0 或更新版本负责构建站点资源。SCSS 由 Hugo �
 
 OINK 1.4.0 启用 PlantUML 后，无需端点即可在浏览器内渲染；显式配置端点时继续使用服务端模式。
 
-对可能引起网络请求的功能，主题让它保持关闭而不是静默连出去：Diagrams.net 缺 `params.drawio.drawio_server`、Algolia 缺 `appId` / `apiKey` / `indexName`，都会告警并保持禁用；发布前应审阅告警并补齐服务配置。
+对可能引起网络请求的功能，主题让它保持关闭而不是静默连出去：Diagrams.net 缺 `params.drawio.drawio_server`、Algolia 缺 `appId` / `apiKey` / `indexName`，都会告警并保持禁用。
 
-本地优先不覆盖作者自己添加的内容。以下都是显式的网络选择：外部链接、远程图片与视频、iframe、远程 API 规范；Algolia、Google 自定义搜索这类托管搜索；分析、评论与其它 SaaS 集成；作者主动配置远程渲染器的 PlantUML 与 Diagrams.net。用到它们的页面仍然是有效页面，但站点不应再宣称这些页面可以完全离线使用。
+本地优先不覆盖作者自己添加的内容。以下都是显式的网络选择：外部链接、远程图片与视频、iframe、远程 API 规范；Algolia、Google 自定义搜索这类托管搜索；分析、评论与其它 SaaS 集成；作者主动配置远程渲染器的 PlantUML 与 Diagrams.net。启用这些功能的页面在运行时需要访问网络。
 
 → [开源许可与致谢](/zh/docs/about/license/) · [配置总览](/zh/docs/customize/config/)
 

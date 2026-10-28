@@ -31,13 +31,11 @@ For an existing Hugo site, use the short [integration path](#existing-site)
 below. For an existing Docsy site, see [Upgrade](/docs/admin/upgrade/).
 
 The second half compares four install methods: Hugo Module, Git submodule,
-offline archive, and pinned source copy. Current development and validation use
-Go 1.27.3 and Hugo Extended 0.168.0. The default Hugo version stays pinned; older-Hugo compatibility testing and adaptation are discontinued.
-
-> [!NOTE] OINK 1.4.0 build requirements
-> Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass.
-> No external Sass installation is required. Keep the upstream LibSass warning
-> visible and review it; do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
+offline archive, and pinned source copy. Current development and builds use
+Go 1.27.3 and Hugo Extended 0.168.0 (with built-in LibSass, no external Sass
+needed). Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`; keep
+warnings visible and review them (the upstream LibSass deprecation warning is
+expected).
 
 ## Add OINK to an existing site {#existing-site}
 
@@ -84,11 +82,11 @@ Skip `hugo new site` and keep the existing configuration filename.
    /.hugo_cache/
    ```
 
-   The newest version number is on
-   [GitHub Releases](https://github.com/pgsty/oink/releases). The
-   `{{< param tdVersion.latest >}}` on this page is this site's current pin.
-   A production site pins a release tag instead of following `main`.
-   `@latest` resolves a version once. It is not a version policy.
+   Find the latest release tag on
+   [GitHub Releases](https://github.com/pgsty/oink/releases);
+   `{{< param tdVersion.latest >}}` on this page reflects this site's current
+   pin. Production sites should pin an explicit release tag in `go.mod` rather
+   than tracking `main`.
 
 1. ### Writing `hugo.yml` {#config}
 
@@ -318,8 +316,8 @@ shasum -a 256 oink-{{< param tdVersion.latest >}}.tar.gz \
   > oink-{{< param tdVersion.latest >}}.tar.gz.sha256
 ```
 
-Carry the archive and its `.sha256` into the isolated environment, verify, then
-unpack:
+Carry the archive and its `.sha256` into the isolated environment, verify the
+checksum, and unpack:
 
 ```bash
 shasum -a 256 -c oink-{{< param tdVersion.latest >}}.tar.gz.sha256
@@ -327,12 +325,7 @@ mkdir -p themes
 tar -xzf oink-{{< param tdVersion.latest >}}.tar.gz -C themes
 ```
 
-An archive produced this way is your own artifact, not a project release.
-Release pages do not all provide an archive and checksum file. If you use a
-public attachment, verify its checksum independently.
-
-Before building offline, confirm the archive is complete. All eleven of these
-must be present:
+Before building offline, confirm that all eleven top-level entries are present:
 
 ```filetree {title="themes/oink/"}
 - oink/

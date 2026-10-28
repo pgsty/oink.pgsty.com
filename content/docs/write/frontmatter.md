@@ -51,16 +51,14 @@ cascade:
   section_index: list
 ```
 
-An invalid value does not stop an ordinary build. The theme warns and names
-the key, supplied value, and fallback. It renders the page with the table's
-default. One typo affects one setting rather than serving HTTP 500 on every
-URL under `hugo server`. Review the warning and rendered fallback before publication.
+An invalid value does not abort the build: the theme logs a warning naming the
+key, supplied value, and fallback, then renders the page with the default listed
+below so a single typo does not return HTTP 500 across `hugo server`.
 
-No front matter key stops the build. The theme's templates never raise an
-error. If continuing would publish incorrect information, the theme warns and
-omits the whole block. It does not use a fallback. For example, a partial
-upstream attribution can appear complete, so the theme omits it. An unresolved
-reference can stop a build. Hugo controls that failure.
+When continuing with a default would publish misleading metadata—such as an
+incomplete upstream attribution—the theme logs a warning and omits the block
+entirely. Unresolved content references (`ref` / `relref`) still fail the build
+through Hugo.
 
 ## Basics {#basic}
 

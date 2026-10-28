@@ -182,8 +182,8 @@ draft: true
 hugo --printPathWarnings
 ```
 
-- 输出必须以 `Total in …` 结束，没有 ERROR；审阅所有告警，上游 LibSass 弃用告警允许出现。属性行写了不允许的键或组件参数非法时，主题会带源码位置告警并安全回退，应检查对应产物；`ref` 目标不存在时，Hugo 仍会报错。
-- `--printPathWarnings` 报出两个页面指向同一输出路径的情况，多语言站或改过 `permalinks` 时较常出现。
+- 构建应以 `Total in …` 结束且无 ERROR。属性行包含非法键或组件参数无效时，主题会输出带源码位置的警告并使用安全回退；若 `ref` 指向不存在的目标，Hugo 会直接报错。
+- `--printPathWarnings` 会提示两个页面指向同一输出路径的冲突（多见于多语言站点或修改 `permalinks` 之后）。
 
 在浏览器里确认三项：
 

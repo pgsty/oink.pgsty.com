@@ -8,11 +8,10 @@ aliases:
   - /docs/about/architecture/
 ---
 
-This page describes the repository created from
-[`pgsty/oink-starter`](https://github.com/pgsty/oink-starter). It does not describe
-the much larger `oink.pgsty.com` documentation and regression repository.
-Neither site contains a copy of the theme source. `go.mod` pins the theme as
-a Hugo Module. Hugo stores the resolved source in the Go module cache.
+This page walks through the repository layout created from
+[`pgsty/oink-starter`](https://github.com/pgsty/oink-starter). `go.mod` pins the
+OINK theme as a Hugo Module, and Hugo caches the resolved theme source in the Go
+module cache rather than copying it into your repository.
 
 ## Top-level map {#layout}
 
@@ -142,12 +141,12 @@ go 1.27.3
 require github.com/pgsty/oink v1.0.0
 ```
 
-This example uses the tutorial's `137843b` Starter snapshot. It does not use
-the latest OINK release. For a newer template, read its own `go.mod`.
+This example shows the `137843b` Starter snapshot (`v1.0.0`); newer Starter
+checkouts pin a newer tag in `go.mod`.
 
-`hugo mod graph` shows the resolved version. Production uses the exact tag
-in `go.mod`. A local `HUGO_MODULE_REPLACEMENTS` value overrides it for
-development. Never commit this override or use it as release proof.
+`hugo mod graph` displays the resolved version. Production builds use the exact
+tag in `go.mod`, while `HUGO_MODULE_REPLACEMENTS` can point to a local checkout
+during theme development. Keep local module replacements out of Git.
 
 ## Deployment files {#deployment}
 

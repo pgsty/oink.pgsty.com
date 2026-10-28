@@ -32,9 +32,9 @@ npm run _check:rendered-markdown
 npm run _check:rendered-links
 ```
 
-`make build` 直接使用 Hugo，验证 `go.mod` 中固定的公开主题标签。
-`make check` 通过一次性的 Hugo 模块替换使用同级主题 checkout 做开发验收，
-不会生成 `go.work` 或修改 `go.mod`；两种构建证据不能互相替代。
+`make build` 直接调用 Hugo，使用 `go.mod` 中固定的已发布主题版本构建；
+`make check` 通过单次命令级的 Hugo 模块替换指向同级 `../oink` 目录做本地开发验收，
+不会生成 `go.work` 或修改 `go.mod`。
 
 ## 文件与元数据
 

@@ -337,7 +337,7 @@ cascade:
 hugo --printPathWarnings
 ```
 
-必须 `Total in …`，没有 ERROR，并完成告警审阅；上游 LibSass 弃用告警允许出现。随后确认：
+构建应以 `Total in …` 结束且无 ERROR。随后确认：
 
 1. 文章在 `/zh/blog/` 中按正确的日期顺序排列，日期显示为中文格式；
 2. `public/zh/blog/index.xml` 存在，里面有这篇文章，链接是完整的绝对地址；

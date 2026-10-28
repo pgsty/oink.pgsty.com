@@ -8,10 +8,8 @@ aliases:
   - /docs/about/architecture/
 ---
 
-本页说明从 [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter)
-创建的仓库，不再介绍大得多的 `oink.pgsty.com` 文档与回归测试仓库。主题源码不会
-复制进任何一个站点：`go.mod` 以 Hugo Module 形式固定版本，Hugo 把解析结果存进
-Go 模块缓存。
+本页梳理从 [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter)
+初始化后的仓库目录结构。`go.mod` 以 Hugo Module 方式固定 OINK 主题版本，Hugo 会将解析后的主题源码保存在 Go 模块缓存中，不会复制进站点仓库。
 
 ## 顶层地图 {#layout}
 
@@ -134,10 +132,9 @@ go 1.27.3
 require github.com/pgsty/oink v1.0.0
 ```
 
-这里展示教程采用的 Starter 快照 `137843b`，不是 OINK 最新版本；更新模板应以自己的 `go.mod` 为准。
+上方示例对应 Starter 快照 `137843b`（`v1.0.0`）；更新的模板以仓库内实际的 `go.mod` 为准。
 
-`hugo mod graph` 显示实际解析版本。生产使用 `go.mod` 中的精确标签；本地
-`HUGO_MODULE_REPLACEMENTS` 只是开发覆盖，绝不能提交，也不能当成发布证明。
+`hugo mod graph` 显示实际解析的版本。生产构建使用 `go.mod` 中固定的标签；联调主题时可通过环境变量 `HUGO_MODULE_REPLACEMENTS` 临时指向本地目录，切勿将该覆盖配置提交进 Git。
 
 ## 部署文件 {#deployment}
 

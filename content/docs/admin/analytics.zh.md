@@ -102,13 +102,9 @@ languages:
 <link rel="alternate" hreflang="en-US" href="https://oink.pgsty.com/docs/admin/analytics/">
 ```
 
-`hreflang` 的语言代码来自各语言的 `locale`（本站是 `en-US` / `zh-CN`），链接来自
-Hugo 的译文关系。1.2.0 实现会从 `hreflang` 和 `og:locale:alternate` 中省略
-缺失的译文。可见的语言切换器仍可跳到目标语言首页，但这种导航回退不代表译文关系。
+`hreflang` 的语言代码来自各语言的 `locale`（本站是 `en-US` / `zh-CN`），链接依据 Hugo 的译文配对关系生成。自 OINK 1.2.0 起，未翻译的页面不再输出缺失语言的 `hreflang` 与 `og:locale:alternate` 标签（尽管页面顶部的语言切换器仍可回退至目标语言首页）。
 
-博客索引的每一分页使用自身的 canonical URL。从第 2 页起不输出语言备用链接，
-因为分页不代表各语言存在一一对应的译文页。这些修正已随 1.2.0 发布；
-1.1.0 仍保留之前的行为。
+博客索引的各个分页均使用其自身的 canonical URL，且从第 2 页起不再输出多语言备用链接，以避免不同语言文章数量不同造成分页错位（1.1.0 仍保留旧行为）。
 
 canonical 由 `baseURL` 拼出。`baseURL` 配错时 canonical 会把搜索引擎指向不存在的地址，比构建失败更难发现。上线前照[发布上线的验收清单](/zh/docs/admin/deploy/#checklist)查一遍。
 
@@ -210,8 +206,6 @@ Disallow: /
 1. 规范地址：搜索结果应当落在 canonical 指向的 URL 上，而不是带 `?` 参数或旧域名的版本。
 1. 主动提交：在 Google Search Console / Bing Webmaster Tools 里加上站点并提交 `sitemap.xml` 的地址，比等着被爬快。
 {.steps}
-
-搜索元数据补不了内容本身的问题：单薄、重复、过时的页面，写再好的 `description` 也一样。
 
 ## 验证 {#verify}
 

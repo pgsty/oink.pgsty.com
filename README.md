@@ -9,11 +9,10 @@ canonical prose source for OINK architecture, components, reading shells,
 Landing pages, and migration boundaries.
 
 The site documents OINK `v1.4.0`. The bilingual release notes cover table and
-diagram reading, local search, blog galleries and component refinement. Local
-development uses the sibling checkout. Published module resolution, consumer
-pins, and hosted deployment require separate validation.
-`content/docs/cli{,.zh}.md` is a one-page introduction to the separate,
-unreleased OINK CLI.
+diagram reading, local search, blog galleries, and component refinements. Local
+theme development uses a sibling `../oink` checkout, while `make build` and
+`make serve` use the published version pinned in `go.mod`.
+`content/docs/cli{,.zh}.md` introduces the separate, unreleased OINK CLI.
 
 ## OINK 1.4.0
 
@@ -33,13 +32,11 @@ release notes retain the toolchain facts of their own versions.
 
 ## Starting a new OINK site
 
-Do not clone this regression repository as a project template. Use the small,
-public GitHub template at
-[`pgsty/oink-starter`](https://github.com/pgsty/oink-starter), then follow the
-[Starter tutorial](https://oink.pgsty.com/docs/start/starter/). It pins a
-published release and includes neutral Docs, Blog, Book, language profiles, and
-GitHub Pages / Cloudflare Pages workflows without this site's test harness or
-project-specific configuration.
+Start new sites from the [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter)
+template repository and follow the [Starter tutorial](https://oink.pgsty.com/docs/start/starter/).
+The starter pins a published release and includes neutral Docs, Blog, Book,
+language profiles, and GitHub Pages / Cloudflare Pages workflows without this
+repository's regression test suite.
 
 ## Local development
 

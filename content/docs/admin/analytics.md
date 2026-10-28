@@ -125,14 +125,14 @@ actual translations. No configuration is required:
 <link rel="alternate" hreflang="zh-CN" href="https://oink.pgsty.com/zh/docs/admin/analytics/">
 ```
 
-The `hreflang` codes use each language's `locale` (`en-US` / `zh-CN` on this site).
-The links use Hugo's translation relationships. In the 1.2.0 implementation, missing translations have no `hreflang` or `og:locale:alternate`
-entry. The visible language switcher may still open that language's home page.
-This navigation fallback does not represent a translation.
+The `hreflang` codes use each language's `locale` (`en-US` / `zh-CN` on this
+site) and follow Hugo's translation graph. Since OINK 1.2.0, untranslated pages
+omit `hreflang` and `og:locale:alternate` tags even when the visible language
+switcher links back to the target language's home page.
 
-Each paginated Blog index has its own canonical URL. From page 2 onward, the
-theme omits language alternates. Pagination does not establish corresponding
-translated pages. OINK 1.2.0 includes these corrections; 1.1.0 retains the earlier behavior.
+Each paginated Blog index page uses its own canonical URL, and pages 2 and
+above omit `hreflang` alternate links because pagination boundaries can differ
+between languages. (OINK 1.1.0 retained the earlier behavior.)
 
 The canonical URL uses `baseURL`. An incorrect `baseURL` directs search engines
 to addresses that do not exist. This problem is less visible than a build failure.
@@ -250,9 +250,6 @@ search engines see the expected site:
 1. Canonical addresses: confirm that results open the canonical URL. They should not use a `?` parameter or an old domain.
 1. Active submission: add the site in Google Search Console / Bing Webmaster Tools. Submit the `sitemap.xml` address to request crawling sooner.
 {.steps}
-
-Search metadata cannot improve the content itself. A good `description` does
-not correct insufficient, duplicated, or outdated content.
 
 ## Verify {#verify}
 

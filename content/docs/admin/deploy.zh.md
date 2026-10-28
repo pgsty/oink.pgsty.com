@@ -13,12 +13,7 @@ aliases:
 
 OINK 站点的产物是一个纯静态目录，任何能托管静态文件的地方都能部署，不需要 Node 运行时、服务端渲染或构建插件。托管商一侧只有三件事：用正确的 Hugo 版本执行一条命令、发布 `public/`、让 `baseURL` 与最终访问地址一致。
 
-先在本机完成[生产构建](/zh/docs/admin/preview/#production-build)并审阅告警；上游 LibSass 弃用告警允许出现。
-
-> [!NOTE] OINK 1.4.0 构建要求
-> 维护中的站点使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
-> 上游 LibSass 弃用告警保持可见并接受审阅；不要启用 `--panicOnWarning`
-> 或 `HUGO_PANICONWARNING`。
+先使用 Hugo Extended 0.168.0（内置 LibSass，无需安装外部 Sass）在本机完成[生产构建](/zh/docs/admin/preview/#production-build)。请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`，保持告警可见并审阅（上游 LibSass 弃用告警属预期提示）。
 
 ## 确定 baseURL {#baseurl}
 `baseURL` 是最常见的故障源，失败方式也隐蔽：页面能打开，但搜索索引 404、页面操作链接指向错误位置、部分资源加载失败。
@@ -176,10 +171,10 @@ Pages 项目。
 workflow 固定 Hugo Extended 0.168.0，从 `go.mod` 读取 Go 版本，关闭本地模块
 workspace，并在上传前使用 Hugo Extended 0.168.0 构建，保留可见告警。这是 Starter 用户最可复现的推荐路径。
 
-Cloudflare Git integration 仍然是另一种有效模式：构建命令设为
+Cloudflare Git integration 仍然是另一种可选模式：构建命令设为
 `hugo --gc --minify --printPathWarnings`，输出目录 `public`，Hugo
-固定 `0.168.0`，Go 固定 `1.27`。同一个项目只用 Git integration 或 Direct Upload
-workflow 其中一种。预览部署仍不等于生产证明；它要按自己的 URL 重建并保持不收录。
+固定 `0.168.0`，Go 固定 `1.27`。同一个项目只选 Git integration 或 Direct Upload
+workflow 其中一种；预览部署应按预览 URL 和非生产环境构建，避免被搜索引擎收录。
 
 {{< /tab >}}
 {{< tab label="其它" value="other" >}}
@@ -294,11 +289,7 @@ CSP 哈希或注入 nonce；部署方需根据实际构建产物制定策略。
 - [远程 API 规范](/zh/docs/write/openapi/#spec-file)与[自建图表服务](/zh/docs/components/plantuml/#server)：落在 `connect-src` 与 `img-src`。
 - [giscus](/zh/docs/admin/comments/#privacy)：`script-src` 与 `frame-src` 要一起放行。
 
-对允许执行的行内脚本和样式块，按最终部署字节计算哈希；或者由托管层为每次响应
-同时向策略和对应标签注入新的 nonce。style 标签上的 nonce 不会授权 style 属性，
-后者要在 `style-src-attr` 下单独审查。正文、配置、压缩方式或主题变更后，都要重新
-核对哈希。先以 `Content-Security-Policy-Report-Only` 观察，再验证明暗主题启动、
-外壳状态、菜单和所有启用的组件，之后再强制执行。仅扫描资源来源不能证明 CSP 兼容。
+对允许执行的行内脚本和样式块，按最终部署字节计算哈希，或由托管层在每次响应时向策略头和对应标签注入新的 nonce。`<style>` 标签上的 nonce 不会授权行内 `style="..."` 属性，后者需在 `style-src-attr` 下单独配置。正文、配置、压缩方式或主题更新后，请重新核对哈希。建议先以 `Content-Security-Policy-Report-Only` 模式上线观察，在浏览器中验证深浅色启动、外壳状态、菜单及全部已启用组件无误后，再切换为强制执行。
 
 从只覆盖已审查功能的最小策略起步，逐项放行：不需要回调时让 ECharts 选项保持纯数据，审查作者写的行内脚本，只为站点主动启用的集成添加远程来源。产物里的子资源来源可以先用[断网构建验证](/zh/docs/admin/preview/#air-gapped)里的脚本扫一遍。
 

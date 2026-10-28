@@ -11,33 +11,28 @@ aliases:
   - /docs/start/cli-overview/
 ---
 
-`oink` 是 OINK 站点的可选命令行工具，帮助创建站点、检查 Hugo 产物，以及
-审阅内容或主题变更。Hugo 仍负责渲染，站点仍是普通 Hugo 项目。
+`oink` 是面向 OINK 站点的可选命令行辅助工具，用于初始化站点、检查 Hugo 构建产物，以及审阅内容或主题变更。站点渲染仍由 Hugo 完成，项目本身保持标准的 Hugo 目录结构。
 
 > [!NOTE] 草案 · 尚未正式发布
-> OINK CLI 正在独立的 `oink-cli` 仓库中开发。本页介绍本地 `0.1.0-dev` 候选，
-> 目前没有正式发行版或公开安装入口，命令接口仍可能调整。
+> OINK CLI 在独立的 `oink-cli` 仓库中开发。本页介绍本地 `0.1.0-dev` 候选版，目前尚未发布正式版本或公开安装入口，命令接口仍可能调整。
 
 ## 能做什么 {#capabilities}
 
 | 命令                      | 用途                                          |
 |---------------------------|-----------------------------------------------|
-| `oink init`               | 从固定 Starter 创建站点，选择站点类型与语言。 |
-| `oink doctor`             | 检查工具、配置和实际解析的主题来源。          |
-| `oink check`              | 检查渲染后的链接、翻译关系与源码风格政策。    |
-| `oink dev` / `oink build` | 调用 Hugo 的预览服务或生产构建。              |
-| `oink new` / `oink move`  | 预览页面创建或移动，再应用保存的计划。        |
-| `oink translations`       | 查看翻译状态与差异，记录人工审阅结果。        |
-| `oink upgrade`            | 对比主题升级，审阅后显式写入模块变更。        |
+| `oink init`               | 从固定 Starter 创建站点，选择站点配置与语言。 |
+| `oink doctor`             | 检查工具链、配置及实际解析的主题来源。        |
+| `oink check`              | 检查渲染后的链接、翻译配对与源码排版规范。    |
+| `oink dev` / `oink build` | 调用 Hugo 的本地预览服务或生产构建。          |
+| `oink new` / `oink move`  | 先预览页面新建或迁移计划，确认后再应用。      |
+| `oink translations`       | 查看翻译状态与差异，并记录人工审阅结果。      |
+| `oink upgrade`            | 对比主题版本差异，审阅后再写入模块变更。      |
 
-本地候选还提供 JSON/YAML 结果、显式多站点工作区，以及经过检查的构建产物。
-
-当前 CLI 已移除 Studio 与通用源码编辑。使用 `oink dev` 预览，普通编辑器修改，
-再用 `inspect`/`check` 查看结构化报告。
+此外，CLI 支持输出 JSON/YAML 结构化报告、管理多站点工作区，以及生成带校验结果的构建产物。早期草案中的 Studio 界面与通用源码编辑命令已移除：日常写作请用 `oink dev` 预览、用常规编辑器改稿，并通过 `inspect` 或 `check` 获取结构化诊断。
 
 ## 本地试用 {#try-locally}
 
-从已有的 `oink-cli` 源码 checkout 构建，需要 Go 1.27.3 或更高版本及 Make：
+在 `oink-cli` 源码仓库中使用 Go 1.27.3+ 和 Make 构建可执行文件：
 
 ```sh
 cd oink-cli
@@ -48,15 +43,9 @@ make build
 ./bin/oink check --site ../my-docs
 ```
 
-将 `../my-docs` 替换为既有站点路径。站点操作需要 Hugo Extended 0.168.0 或更新
-版本；固定 Starter 的模块流程需要 Go 1.27 或更新版本。开发与验收使用 Hugo
-Extended 0.168.0。新建站点使用 CLI 独立维护的 Starter 快照；采用 OINK v1.4.0
-请按[升级指南](/zh/docs/admin/upgrade/)更新。默认基线保持固定，不再维护旧 Hugo 兼容性。禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；告警保持可见，
-上游 LibSass 弃用告警允许出现。
+将 `../my-docs` 替换为目标站点路径。执行站点命令需要 Hugo Extended 0.168.0+，模块操作需要 Go 1.27+。`oink init` 使用 CLI 内置的 Starter 快照初始化项目；若需升级至 OINK v1.4.0，请参考[升级指南](/zh/docs/admin/upgrade/)。
 
-`make deps` 会下载构建依赖。CLI 命令默认离线，当前调用需要未缓存的输入时
-加入 `--network`。检查与变更预览保留站点源文件，写入经审阅变更需要显式应用；
-普通 `dev` 和 `build` 可以写入 Hugo 产物与缓存。
+`make deps` 会下载 Go 编译依赖。CLI 命令默认离线运行，需要拉取未缓存的远程依赖时请显式传入 `--network`。检查与变更预览命令（`new`、`move`、`upgrade`）不会直接修改站点源文件，只有执行显式应用步骤时才会落盘；`dev` 与 `build` 则会正常写入 Hugo 构建产物与缓存。
 
 ## 延伸阅读 {#further-reading}
 

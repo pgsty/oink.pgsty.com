@@ -32,9 +32,9 @@ hugo --gc --minify --printPathWarnings --logLevel info
 | `\(…\)` `$$…$$` 原样显示 | 站点没启用 goldmark passthrough | 见[公式](/zh/docs/components/math/)；`math: true` 不是启用开关 |
 | `shortcode "tabs" must be closed or self-closed` | 有 `{{</* tabs */>}}` 没写对应的 `{{</* /tabs */>}}` | 报错里带 `文件:行:列`，去那一行补上闭合标记 |
 | `template for shortcode "tabs" not found` | 正文里写了一个不存在的 shortcode，或引用 shortcode 语法时没有转义 | 文档里讲解 shortcode 语法时必须转义：在开标记与闭标记的内侧各加一对 `/*` 与 `*/`，Hugo 才会把它当文字而不是调用。名字打错就改回正确的名字 |
-| `... attributes: unknown attribute "witdh" at ...` | 属性行里的键拼错或不被允许 | 警告列出允许键并忽略坏属性；`style` 与 `on*` 同样丢弃。审阅告警并修正属性 |
-| `shortcode "field": unsupported parameter "colour" at ...` | shortcode 参数名不对 | 警告指出 shortcode、参数、文件与行号，再忽略不支持的参数或组件。普通预览保持可用，发布前核对降级产物 |
-| `invalid params.ui.page_width "widee" (allowed: normal \| wide \| full) -- using "normal"` | **配置或 front matter 的取值**，不在允许集合里 | 配置类的错误降级而不中断，一个笔误不会让 `hugo server` 下每个 URL 都返回 500。消息里带键名、收到的值和实际用的回退值。发布前修正无效取值 |
+| `... attributes: unknown attribute "witdh" at ...` | 属性行里的键拼错或不被允许 | 警告列出允许键并忽略坏属性；`style` 与 `on*` 同样丢弃。按提示修正属性名 |
+| `shortcode "field": unsupported parameter "colour" at ...` | shortcode 参数名不对 | 警告指出 shortcode、参数、文件与行号，并忽略不支持的参数以保证本地预览可用；按提示修正参数名 |
+| `invalid params.ui.page_width "widee" (allowed: normal \| wide \| full) -- using "normal"` | **配置或 front matter 的取值**，不在允许集合里 | 配置类错误降级而不中断，避免一个笔误导致 `hugo server` 下每个 URL 都返回 500。消息列出键名、收到的值和回退值 |
 | 某个页面设置不生效，也没有任何提示 | 键写在了 front matter 的 `ui:` 段里 | 页面键写在 front matter 顶层，键名是站点键去掉 `ui.`。写进 `ui:` 段的键没有人读，也没有人报错，见[页面参数](/zh/docs/write/frontmatter/) |
 | 构建通过但线上少东西 | 有 WARNING 没人看 | 审阅构建告警，修正非法配置取值、缺失的 giscus 必填键或不支持的 `comments.type`。上游 LibSass 弃用告警允许出现 |
 {.wide .expand}

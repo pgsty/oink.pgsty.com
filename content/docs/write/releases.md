@@ -9,11 +9,11 @@ aliases:
   - /docs/scenarios/releases/
 ---
 
-OINK stores release facts in two local places. A page's front matter
-`release_url` identifies its GitHub release. `data/download/<key>.yaml` records
-installation instructions. Release cards, asset tables, download blocks, and
-index pages use those records. Nothing contacts GitHub at build time. Nothing
-claims that a tag or asset already exists.
+OINK stores release metadata in two local places: a page's front matter
+`release_url` identifies its GitHub release, and `data/download/<key>.yaml`
+records installation instructions. Release cards, asset tables, download blocks,
+and index pages derive their links from those records without contacting GitHub
+at build time.
 
 > [!NOTE] This page carries demonstration release facts
 > Its front matter holds a `release_url` (OINK v0.4.0), and the card, asset
@@ -102,11 +102,11 @@ verbatim output of a `sha*sum` command:
 
 Only two line shapes are accepted: `<hex><two spaces><filename>` and
 `<hex><space>*<filename>`. Blank lines and lines starting with `#` are ignored.
-The hash length decides the algorithm (MD5 / SHA-1 / SHA-256 / SHA-512), and one
-block holds one algorithm. A malformed line warns and is skipped with its line
-number. Review the warning and rendered fallback before publication. A filename must be a single path segment. The type, operating system and
-architecture badges are inferred from the filename. They are decorative.
-If inference fails, no badge appears.
+The hash length determines the algorithm (MD5 / SHA-1 / SHA-256 / SHA-512), and
+each block holds a single algorithm. Malformed lines log a warning with the
+line number and are skipped. Each filename must be a single path segment;
+package type, OS, and architecture badges are inferred from the filename when
+recognized.
 
 If the page has `release_url` front matter, the base for asset links is derived
 as `https://github.com/<repo>/releases/download/<tag>/`. A page without release
@@ -183,9 +183,10 @@ channels:
       aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  oink-0.4.0.tar.gz
 ```
 
-The record has exactly five top-level fields: `version`, `repo`, `tag`,
-`published`, and `channels`. An extra key warns and skips the record. Review the warning and rendered fallback before publication. `version` may be omitted here and supplied by
-the site's `params.version` instead.
+The record has five top-level fields: `version`, `repo`, `tag`, `published`,
+and `channels` (any unknown top-level key logs a warning and skips the record).
+`version` may be omitted here and supplied by the site's `params.version`
+instead.
 
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
