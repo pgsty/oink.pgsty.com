@@ -21,12 +21,12 @@ last_verified: 2026-08-16
 The probe used a minimal Hugo site without OINK templates, with render hooks
 printing their context fields and `.Attributes` as visible markers.
 The site enabled Goldmark block attributes and passthrough delimiters for inline
-and block math, deliberately allowed unsafe rendering to inspect raw HTML, and
+and block math, allowed unsafe rendering to inspect raw HTML, and
 set `wrapStandAloneImageWithinParagraph: false`.
 
 Each source shape was rendered with the minimum supported Hugo and the then
-current Hugo version, comparing relevant output byte for byte. The findings
-below record platform behavior rather than visual styling.
+current Hugo version, comparing relevant output byte for byte to record
+Goldmark's structural behavior.
 
 ## Findings {#findings}
 
@@ -34,7 +34,7 @@ below record platform behavior rather than visual styling.
 | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
 | Ordered list with paragraphs, fences, callouts, nested lists, and `{.steps}` | The class attaches to the outer `<ol>` and rich list-item blocks survive | A Markdown list is the native Steps form                                      |
 | Heading inside a list item                                                   | The heading remains inside `<li>` and enters `.TableOfContents`          | Native Steps can carry navigable headings                                     |
-| Nested list with `{.filetree}`                                               | The class attaches to the outer `<ul>`                                   | FileTree needs no wrapper merely to preserve hierarchy                        |
+| Nested list with `{.filetree}`                                               | The class attaches to the outer `<ul>`                                   | FileTree needs no outer wrapper to preserve hierarchy                         |
 | Standalone image plus `{#id num= caption= .class}`                           | `render-image` receives `IsBlock=true` and all attributes                | A Book figure can have a native image form                                    |
 | Inline image inside a paragraph                                              | `IsBlock=false`; the image receives no block attributes                  | Inline images cannot use the block-figure contract                            |
 | Block math plus `{#id num=}`                                                 | `render-passthrough` receives block type and attributes                  | A numbered equation can use the native passthrough form                       |
@@ -64,20 +64,17 @@ shared scoped block renderer.
 
 ## Attribute ownership {#attribute-ownership}
 
-An available attribute is not automatically a public attribute.
-Each hook has a documented allowlist. Hooks reject `style` and inline `on*`
-handlers. URL-bearing values must pass the shared URL policy.
+Each hook enforces an explicit attribute allowlist, rejects `style` and inline
+`on*` handlers, and validates URL-bearing values through the shared URL policy.
 A hook retains a site class only where downstream CSS is an established
 extension mechanism.
 
 The experiment showed that gallery images inside list items can be block images,
 but the image hook still does not receive their parent list's marker. A runtime
-may therefore need a theme-emitted marker or a specific structural fallback,
-rather than assuming that the image hook sees arbitrary ancestors.
+therefore relies on a theme-emitted marker or a structural fallback.
 
 ## Limits and verification {#limits-and-verification}
 
 These results cover Hugo 0.160.1 and 0.164.0 with the stated Goldmark settings.
-They do not promise identical behavior with different settings or a later Hugo
-release. Before updating this snapshot for a minimum-version change, rerun the
+Before updating this snapshot for a minimum-version change, rerun the
 focused component, Book, table, gallery, and Markdown-output checks.

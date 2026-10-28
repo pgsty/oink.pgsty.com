@@ -12,16 +12,15 @@ last_verified: 2026-08-16
 
 > [!NOTE] 已验证快照
 > 这些探针在 Hugo Extended 0.160.1 与 0.164.0 上得到字节一致的相关输出。它们解释
-> OINK 的原生组件形态；当前[组件契约](/zh/docs/design/components/)仍是权威。
+> OINK 的原生组件形态；当前 [组件契约](/zh/docs/design/components/) 定义现行规范。
 
 ## 方法 {#method}
 
 探针使用一个不带 OINK 模板的最小 Hugo 站点。渲染钩子把上下文字段与 `.Attributes` 输出为
 可见标记。站点开启 Goldmark 块属性、行内与块级数学 passthrough 分隔符，以及为检查原始 HTML
-而刻意启用的 unsafe 渲染，并设置 `wrapStandAloneImageWithinParagraph: false`。
+启用的 unsafe 渲染，并设置 `wrapStandAloneImageWithinParagraph: false`。
 
-每种源码形态分别用兼容下限版本和当时的当前 Hugo 版本渲染，再逐字节比较相关产物。以下结论
-记录平台行为，不涉及视觉样式。
+每种源码形态分别用兼容下限版本和当时的当前 Hugo 版本渲染，再逐字节比较相关产物，记录 Goldmark 的结构行为。
 
 ## 结论 {#findings}
 
@@ -29,7 +28,7 @@ last_verified: 2026-08-16
 | ------------------------------------------------------------- | --------------------------------------------------- | ---------------------------------------------- |
 | 含段落、围栏、callout、嵌套列表并以 `{.steps}` 结尾的有序列表 | class 落在最外层 `<ol>`，列表项中的富块内容完整保留 | Markdown 列表可以成为 Steps 原生形态           |
 | 列表项内标题                                                  | 标题保留在 `<li>` 内，并进入 `.TableOfContents`     | 原生 Steps 可以携带可导航标题                  |
-| 以 `{.filetree}` 结尾的嵌套列表                               | class 落在最外层 `<ul>`                             | FileTree 不需要只为保持层级再包 wrapper        |
+| 以 `{.filetree}` 结尾的嵌套列表                               | class 落在最外层 `<ul>`                             | FileTree 无需外层 wrapper 即可保持层级         |
 | 独占图片加 `{#id num= caption= .class}`                       | `render-image` 收到 `IsBlock=true` 和全部属性       | Book 图可以有原生图片形态                      |
 | 段落中的行内图片                                              | `IsBlock=false`，图片收不到块属性                   | 行内图片不能使用块级 figure 契约               |
 | 块级公式加 `{#id num=}`                                       | `render-passthrough` 收到 block 类型与属性          | 编号公式可以使用原生 passthrough 形态          |
@@ -53,15 +52,10 @@ Markdown 的收集器应使用 `<` delimiter，再通过共享的作用域块渲
 
 ## 属性归属 {#attribute-ownership}
 
-钩子能看到某个属性，并不等于它自动成为公开属性。每个钩子拥有文档明确的白名单。`style` 与内联
-`on*` 处理器会被拒绝；携带 URL 的值必须经过共享 URL 策略。只有下游 CSS 已属于既有扩展机制的
-表面，才保留站点 class。
+每个钩子执行明确的属性白名单，拒绝 `style` 与内联 `on*` 处理器，并通过共享 URL 策略校验携带 URL 的值。只有下游 CSS 已属于既有扩展机制的界面，才保留站点 class。
 
-实验还表明：gallery 列表项中的图片可以被视为块图，却仍不知道父列表带有什么 marker。因此运行时
-要么依赖主题显式输出的标记，要么保留一条窄的结构兜底，不能假设图片钩子能看到任意祖先。
+实验还表明：gallery 列表项中的图片可以被视为块图，但图片钩子不会收到父列表的 marker。因此运行时需要依赖主题显式输出的标记或特定的结构回退。
 
 ## 边界与验证 {#limits-and-verification}
 
-这些结果只覆盖 Hugo 0.160.1、0.164.0 与上述 Goldmark 设置。修改设置的站点或未来 Hugo 版本不在
-承诺范围内。调整 Hugo 兼容下限时，应先重跑组件、Book、表格、gallery 与 Markdown 输出检查，再更新
-这份快照。
+这些结果覆盖 Hugo 0.160.1、0.164.0 与上述 Goldmark 设置。调整 Hugo 兼容下限时，应先重跑组件、Book、表格、gallery 与 Markdown 输出检查，再更新这份快照。

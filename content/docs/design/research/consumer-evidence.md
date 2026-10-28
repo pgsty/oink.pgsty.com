@@ -11,9 +11,8 @@ last_verified: 2026-08-24
 ---
 
 > [!NOTE] Dated corpus snapshot
-> These counts describe repositories inspected in August 2026.
-> They support design decisions. They are not current product metrics or
-> compatibility promises.
+> These counts describe repositories inspected in August 2026 to inform OINK's
+> shell, component, and Book migration design.
 
 ## Corpus {#corpus}
 
@@ -22,7 +21,7 @@ and found 5,325 Markdown files, of which 5,293 had YAML front matter.
 The survey included single-language English and Chinese references, bilingual
 product sites, release archives, custom landing pages, and separate Book consumers.
 
-The survey measured source Markdown rather than generated HTML, counting
+The survey measured source Markdown, counting
 shortcode calls, fenced-code attributes, callouts, table markers,
 raw HTML, front-matter keys, content types, and site-local layouts.
 A later Book-focused survey added five long-form consumers.
@@ -38,10 +37,10 @@ A later Book-focused survey added five long-form consumers.
 | Sites mixed single-language, peer-file bilingual, and generated-language content                       | Language authority and generation boundaries must be explicit; a migration never treats an untracked generated tree as source                    |
 | Rich HTML pages still needed print, Markdown, feeds, and agent output                                  | Every component declares its output degradation before its interactive HTML is accepted                                                          |
 
-The evidence also argued against several additions: documentation sites did not
+The evidence also ruled out several additions: documentation sites did not
 require a second Landing system, Book sites did not need a new cover component,
 and a serial archive did not require a new shell type. Remote API collection
-belonged in site-side CI, outside a Hugo theme that promises local builds.
+belongs in site-side CI, outside a Hugo theme built for local rendering.
 
 ## Block and table evidence {#block-and-table-evidence}
 
@@ -55,7 +54,7 @@ The same survey found eighteen Steps blocks in the eleven-site corpus, all
 using the full form with headings and rich content. Platform probes showed that
 a native ordered list could contain most of that content, but not another full
 `%` container inside a list item. OINK keeps both forms because their technical
-capabilities differ, rather than treating the choice as a style preference.
+capabilities differ.
 
 ## Deterministic Book migration {#book-migration}
 
@@ -87,12 +86,10 @@ path with two consumers:
 | DDIA     | 23 ordered pages, 131 typed targets, and 292 resolved cross-references; EPUBCheck, internal, and PDF checks passed | At this snapshot it still retained a semantic preprocessor pending independent acceptance of the new gate |
 | TPME     | 18 ordered pages, 41 typed targets, and 1,062 resolved cross-references; the same generic checks passed     | A second consumer confirmed portability; it created no upstream migration gate                            |
 
-These results record downstream adoption without leaving an upstream design
-decision open.
+These results record downstream adoption of the generic publication pipeline.
 
 ## Limits {#limits}
 
-These counts should not be copied into product marketing or used as a current
-site inventory. Repeating the research requires a new repository list and dated
-report. This public record excludes paths, uncommitted content, private
-repository names, raw agent transcripts, and generated build artifacts.
+Repeating this survey requires a fresh repository list and a new dated
+snapshot. This public record omits local filesystem paths, uncommitted content,
+private repository names, and generated build artifacts.

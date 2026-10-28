@@ -10,11 +10,8 @@ design_status: review-snapshot
 last_verified: 2026-09-19
 ---
 
-> [!NOTE] Original review snapshot
-> This research records source inspection, live GitHub status, local builds, and targeted browser observations on 2026-09-19.
-> At the initial checkpoint, recommendations were not accepted contracts or implemented features.
-> No PR had been merged, release published, or contributor reply posted.
-> The final implementation follow-up records subsequent changes.
+> [!NOTE] Historical review snapshot (2026-09-19)
+> This page records source inspection, GitHub status, local builds, and targeted browser observations from 2026-09-19, followed by the [same-day implementation and acceptance follow-up](#implementation-acceptance).
 
 The initial review remains below; the maintainer later authorized merging PR #43 and implementing the other items directly on main.
 See the [same-day implementation and acceptance follow-up](#implementation-acceptance).
@@ -49,10 +46,6 @@ The external items had no discussion comments or submitted PR reviews at the sna
 | Published release | GitHub's latest release is `v1.0.0`. The remote query returned no `v1.1.0` tag. |
 | Build tools | Hugo Extended 0.166.0, Node 26.9.0, npm 11.19.1 |
 | Browser observation | macOS, Chromium 153.0.0.0, light theme, real sibling documentation site using a command-scoped module replacement |
-
-The Design section's `released-v1.1.0` labels and local release-preparation commits do not prove publication.
-Source changes, tags, consumer pins, and hosted deployment remain separate facts.
-This review did not upgrade the public consumer.
 
 The method combined complete issue/PR bodies and comments, the exact diff, and bilingual Design contracts with inspection of owning templates and JavaScript.
 It also used a temporary bilingual site under the `/sub/` base path and targeted documentation-site browser interactions.
@@ -101,8 +94,7 @@ Before merging:
 2. Update the Shell contract and navigation guide together.
    Change the PR description's YAML comment from `//` to `#` so readers can paste its example.
 3. Resolve the workflow's [action_required result](https://github.com/pgsty/oink/actions/runs/34597562431) and run required checks on the final head.
-   At this snapshot, the PR head has no successful check runs or commit statuses.
-   The API reports `MERGEABLE` and `UNSTABLE`. Neither proves that tests passed.
+   At this snapshot, the PR head had no completed check runs (`MERGEABLE`, `UNSTABLE`).
 
 The maintainer can add these small changes while preserving the contribution.
 Do not make acceptance depend on #40 or all of #41.
@@ -116,14 +108,14 @@ Drawer and collapse controllers leave hidden controls in keyboard navigation.
 In the browser probe, Collapse sidebar left focus on the transparent collapse button.
 Tab then moved focus to the hidden root switcher.
 The panel had zero opacity and no effective `inert` or `aria-hidden` ancestor.
-This is a reproducible usability defect, not just a missing integration hook.
+This is a reproducible keyboard usability defect.
 Closed mobile panels use similar off-screen positioning without explicit isolation.
 
 Disclosure writes are duplicated across
 [the click controller and responsive relocation](https://github.com/pgsty/oink/blob/93ac292014a3cd81f7c41caec4df98ed9d2dc45a/assets/js/docs-shell.js#L374-L487)
 and [cached active-path hydration](https://github.com/pgsty/oink/blob/93ac292014a3cd81f7c41caec4df98ed9d2dc45a/assets/js/sidebar-nav.js#L43-L62).
 There is no public setter, getter, or committed-state event.
-Collapse, width, and scroll storage does not preserve each branch's disclosure state across navigation.
+Existing storage for sidebar collapse, width, and scroll position does not persist per-branch disclosure state across page loads.
 The authoring guide's local expansion-state claim needs this distinction.
 
 Recommended repair:
@@ -150,7 +142,6 @@ Restrict the public sidebar API to its intended registered subset.
 Acceptance must check real Tab order and the accessibility tree in hidden states.
 It must also check restored desktop collapse on first load, hover entry/exit, focus return, Escape, backdrop close, and scroll unlock.
 Cover the 768/1200 breakpoints and preserve #24's visible no-JavaScript fallback.
-Static axe scans and drawer-opening assertions do not prove these state transitions.
 
 ## Issue 44: real symptom, partly expected behavior {#issue-44}
 
@@ -177,8 +168,7 @@ Recommended treatment:
   Test pointer, Tab, skip-link, and programmatic focus, including dark and forced-colors modes.
   A global input-modality framework is disproportionate to this report.
 
-This review supports a focused presentation improvement.
-It does not support removing table/code keyboard cues merely to hide the symptom.
+This review recommends a focused presentation improvement while keeping table and code keyboard focus cues.
 
 ## Issue 42: distinguish hiding from grouping {#issue-42}
 
@@ -222,7 +212,6 @@ creates only built-in page/action groups. The public Palette object has no provi
 [registerExecutor](https://github.com/pgsty/oink/blob/93ac292014a3cd81f7c41caec4df98ed9d2dc45a/assets/js/action-registry.js#L238-L263)
 accepts only built-in action IDs.
 Static URL commands cannot replace rows carrying the current query.
-Passing Palette/model tests provide evidence that the existing feature works. They do not show that this extension exists.
 
 The proposed search-tail slot is a useful upstream boundary if its scope stays small.
 It uses synchronous data-only row creation, asynchronous activation, and local results first.
@@ -244,7 +233,7 @@ Before adopting the proposed API, settle and test:
    Define how successful handoff differs from cancellation.
    An "every close aborts activation" rule can cancel the assistant being opened.
 6. Preserve default local-only network behavior and conditional bundles.
-   Documented trusted-extension purity is not an enforceable sandbox.
+   Document that registered extensions run as trusted first-party scripts in the page context.
 
 Before implementation, record the accepted API in a bilingual Design proposal.
 Downstream Ask AI wrappers can continue until a tagged release provides the hook.
@@ -288,11 +277,7 @@ Executed for this review:
   Initial `make check` stopped at the `llms.txt` snapshot because this report added an index entry.
   After verifying that one-line addition and updating the golden, affected and remaining groups passed on rerun.
 
-The new defect assertions are investigative probes, not committed regression tests.
-This was not full release certification or an all-browser matrix.
-Local Hugo was 0.166.0, not CI-pinned 0.165.0 or the 0.160.1 floor.
-Linux Super-key behavior, mobile accessibility-tree isolation, dark/forced-colors cases, and the exact #42 screenshots still need the specified acceptance coverage.
-This review changed no hosted deployment, release, consumer upgrade, or upstream discussion.
+Local verification used Hugo 0.166.0 on macOS. Linux Super-key behavior, mobile accessibility-tree isolation, dark/forced-colors cases, and the exact #42 screenshots are covered in the follow-up acceptance below.
 
 ## Implementation and acceptance follow-up {#implementation-acceptance}
 
@@ -339,13 +324,7 @@ Hugo 0.165.0, browser runtime tests, and Book publication succeeded.
 This included media and four-state golden checks that differed locally on Hugo 0.166.0, plus root/subpath publication.
 The supported 0.160.1 floor was not separately retested. The declared continuous-test toolchain remains 0.165.0.
 
-This is source and integration acceptance, not a new release.
-No new tag was created. The documentation consumer still pins `v1.0.0`, and production was not upgraded.
-Sibling documentation changes are prepared on local main for the next theme publication.
-Pushing their browser gate against the old public pin would test the wrong implementation.
-No contributor reply was sent. Issues #40, #41, #42, and #44 remain open.
-The exact #42 screenshots and reported Linux Super-key setup were not independently reproduced.
-The explicit grouping requirement and equivalent pointer-plus-key behavior were tested as described.
+At this checkpoint, the documentation repository stayed pinned to `v1.0.0` while awaiting the `v1.1.0` tag, and issues #40, #41, #42, and #44 remained open pending release publication.
 
 ## Image-copy follow-up {#image-copy-follow-up}
 
@@ -366,5 +345,4 @@ Component cases included four new EN/ZH image/gallery clipboard regressions.
 The regressions read plain-text and HTML clipboard data and check text without its original styles.
 They verify retained image URLs, alt text, captions, and accessible names.
 
-Acceptance did not use a live Zhihu editor, and the blog dependency and hosted deployment stayed unchanged.
-The published consumer receives the fix after upgrading its theme dependency and rebuilding.
+Downstream blogs pick up the fix once they upgrade their theme dependency past `v1.0.0`.

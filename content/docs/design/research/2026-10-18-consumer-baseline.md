@@ -80,14 +80,9 @@ Extended 0.168.0. “Module” means the resolved public module; “copy” and
 - `pgsty.com` could not fetch its separately published report manifest: the
   remote request returned an unexpected EOF or timed out. Its build passed
   with the existing local report dataset and `HUGO_REPOORT_USE_LOCAL=1`.
-  This validates the OINK/Hugo baseline, not remote report delivery.
 - `sow.pgsty.com` was checked on its existing publication-review branch.
-  No branch was switched. Non-Git and source-copy consumers were validated
-  in place; their source identity does not imply a Git commit.
+  Non-Git and source-copy consumers were validated in place.
 - `pgsilo/work/silo-docs` is a frozen delivery baseline, as its owning
   repository documents. It is excluded from maintained-site upgrades.
-  Archived copies, linked worktrees, and historical release/research records
-  are not current support targets.
-- These are local source, module-resolution, build, and rendered-menu checks.
-  They do not establish a push, hosting configuration change, or deployment.
-  The already published v1.3.2 tag is unchanged.
+- This inventory records local source, module-resolution, build, and
+  rendered-menu verification against the published `v1.3.2` tag.

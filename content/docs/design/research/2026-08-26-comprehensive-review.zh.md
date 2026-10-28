@@ -10,12 +10,9 @@ design_status: verified-review-snapshot
 last_verified: 2026-08-26
 ---
 
-> [!WARNING] 审查快照，不是新契约
+> [!NOTE] 历史审查快照（2026-08-26）
 > 本文记录 2026-08-26 对 `github.com/pgsty/oink` 主线与本站集成面的审查证据。
-> 它不会改变既有 API，也不表示文中建议已经实现。当前行为仍以 Design 契约、实现与 owning checker 为准。
->
-> **其中一部分已被 OINK 0.7.1 取代。** F01–F06 这些代码问题已在该版本修复，见
-> [0.7.1 发布说明](/zh/blog/release/0.7.1/)。下面的发现应当读作促成修复的证据，而不是主题当前的状态。
+> **OINK 0.7.1 随后修复了代码发现 F01–F06**（见 [0.7.1 发布说明](/zh/blog/release/0.7.1/)）。当前行为以 [Design 契约](/zh/docs/design/)为准。
 
 ## 审查结论 {#verdict}
 
@@ -24,7 +21,7 @@ OINK 的主干质量明显高于一般 Hugo 主题：默认路径可构建、双
 主题 CI 和本站 CI 都是绿色；本次重新执行的主题检查、迁移单测、浏览器单测、全站链接、
 Playwright 与 axe 也全部通过。
 
-但「全部绿色」不能等价为「契约全部成立」。本次审查发现 **4 项 P1、9 项 P2、5 项 P3**。
+尽管现有检查全部通过，本次审查仍发现 **4 项 P1、9 项 P2、5 项 P3**。
 最重要的共同原因是：项目已经建立了一套很强的原则，却仍有若干早期/边缘实现没有接入这套原则；
 而现有门禁主要证明已选中的正向场景不回归，不能系统发现配置空间、静态输出和公开文档的语义漂移。
 
@@ -180,7 +177,7 @@ style="--td-hero-columns: 1fr; background-image: url(https://example.invalid/x);
        --td-hero-media-max: 240px; color: red;"
 ```
 
-Landing 允许把 `sections` 直接写进 front matter，因此这不是只属于仓库管理员的内部常量。
+Landing 允许把 `sections` 直接写进页面 front matter，因此作者可以直接传入这些值。
 其它 section 的 `columns`、`rules`、宽高、style、icon 与 URL 也各自处理；非法 `javascript:` 通常被 Go template
 变成 `#ZgotmplZ`，但没有 warning，严格门禁仍通过；字符串列数会变成 `ZgotmplZ`，某些 `int` 转换则直接终止构建。
 
@@ -200,8 +197,7 @@ boolean、enum 解析；section partial 只消费规范化结果。`hero.media.r
    href="javascript:document.body.dataset.pwned=1;undefined">
 ```
 
-点击该 URL 会执行 JavaScript。站点配置本身是高信任输入，因此这不是默认远程攻击面，但它与公开的「safe URL」配置模型不一致，
-也让复制来的配置片段拥有不必要的执行能力。
+点击该 URL 会执行 JavaScript，违反了公开的「safe URL」配置模型，也让复制来的配置片段拥有不必要的执行能力。
 
 **建议。** 自定义动作只允许 `http`/`https` 与明确支持的站内相对 URL，并复用 `content/url.html`；
 归档版本 URL 也应验证。浏览器 action registry 的二次检查值得保留，但 progressive-enhancement 的 `<a>` 不能绕过它。
@@ -437,5 +433,5 @@ forced-colors 多数只检查 SCSS 中是否出现字符串，没有浏览器 co
 
 本次没有逐一审查全部消费站仓库、真实生产响应头/CDN 缓存、Firefox/Safari 实机、读屏器，
 也没有人工逆向 13 MB minified 第三方源代码。漏洞查询是 2026-08-26 的快照，之后可能变化。
-DDIA/TPME 的 EPUB/PDF 真实消费站结果引用现有 CI/契约，本次没有重新发布或部署任何站点。
+DDIA/TPME 的 EPUB/PDF 真实消费站结果引用自现有 CI 与契约记录。
 

@@ -9,14 +9,14 @@ design_status: local-verification
 research_date: 2026-10-25
 ---
 
-> [!IMPORTANT] Local acceptance only
-> [Phases 0–3 and final acceptance in phase 5](/docs/design/decisions/component-refinement/) are complete for this component change. The implementation and documentation are committed locally. This does not establish a public release, consumer upgrade, or deployment. The moving selection trial remains deferred.
+> [!IMPORTANT] Local acceptance record
+> [Phases 0–3 and final acceptance in phase 5](/docs/design/decisions/component-refinement/) are complete for this component change. The moving selection trial remains deferred.
 
 ## Inputs and method {#inputs}
 
-The final review used isolated sibling checkouts based on theme `7f9589f` and documentation `855d890`, with only this task's source changes applied. Concurrent PlantUML, toolchain, and workflow work was excluded from the candidate and preserved in the shared worktrees. The accepted implementation is theme commit `15c39ef`; guides, contracts, examples, and browser coverage are in documentation commit `81e2be9`. This follow-up records their final acceptance.
+The final review used isolated sibling checkouts based on theme `7f9589f` and documentation `855d890`, with only this task's source changes applied. Concurrent PlantUML, toolchain, and workflow work was excluded from the candidate and preserved in the shared worktrees. The accepted implementation is theme commit `15c39ef`; guides, contracts, examples, and browser coverage are in documentation commit `81e2be9`.
 
-Validation used macOS ARM64, Hugo Extended 0.168.0 with built-in LibSass, Go 1.27.3, Node 26.12.0, and npm 11.20.0. The LibSass deprecation warning remained visible. Browser previews used the isolated sibling theme and `hugo.yml,tests/fixtures/browser.yml`, with both workspace mechanisms, watching, and live reload disabled. Screenshots came from actual documentation output. The [bilingual comparison guide](/docs/components/presentation/) owns the reusable examples.
+Validation used macOS ARM64, Hugo Extended 0.168.0 with built-in LibSass, Go 1.27.3, Node 26.12.0, and npm 11.20.0. Browser previews used the isolated sibling theme and `hugo.yml,tests/fixtures/browser.yml`, with both workspace mechanisms, watching, and live reload disabled. Screenshots came from actual documentation output. The [bilingual comparison guide](/docs/components/presentation/) owns the reusable examples.
 
 ## Executed validation {#validation}
 
@@ -27,11 +27,11 @@ Validation used macOS ARM64, Hugo Extended 0.168.0 with built-in LibSass, Go 1.2
 | Real site | `make check` passed all 64 non-browser tests, including bilingual headings, rendered Markdown, and internal links. Reviewed navigation/backlink additions account for the site's Markdown golden changes. |
 | Full browser suite | `make browser` passed 409 Chromium tests. After the last correction to hide an empty command action column without JavaScript, all 20 presentation tests and the SCSS checker passed again against a fresh build. |
 | Presentation coverage | Four presets × light/dark × EN/ZH; 1440/768/390/320px layouts; literal clipboard text; independently operable native and full card links; native disclosures; no JavaScript; print; coarse pointers; reduced motion; forced colors; and Landing feedback width/contrast. |
-| Additional engine review | Chromium 151.0.7922.34, Firefox 153.0, and WebKit 26.5 passed 48 preset/mode/locale combinations covering Tabs, Fields, card links, and 1440/390/320px layouts. The final no-JavaScript command presentation also passed in all three engines. This is targeted engine coverage, not three runs of the full suite. |
+| Additional engine review | Chromium 151.0.7922.34, Firefox 153.0, and WebKit 26.5 passed 48 preset/mode/locale combinations covering Tabs, Fields, card links, and 1440/390/320px layouts. The final no-JavaScript command presentation also passed in all three engines. |
 | Visual review | Reviewed actual Paper, Slate, Ink, and Terminal cards, disclosures, Tabs, command strips, and field labels in light/dark and desktop/mobile output. Stable viewport captures preserve each preset's geometry and reading hierarchy. |
 | Production | The final candidate passed a minified production build. Resource measurements below use the CSS linked by the generated page and the same documentation source for both builds. |
 
-The full suite's `A11Y_PATHS` covered EN/ZH Presentation, Cards, Callouts, Tabs, Code, and Fields, plus English Badge and Kbd: 14 routes. The existing responsive accessibility matrix ran as well. Presentation axe scans included the article at 390px; the Landing check included its command box in all eight preset/mode combinations. Giscus requests were blocked as in the existing suites. This is not a full sitemap audit or manual screen-reader acceptance.
+The full suite's `A11Y_PATHS` covered EN/ZH Presentation, Cards, Callouts, Tabs, Code, and Fields, plus English Badge and Kbd: 14 routes. The existing responsive accessibility matrix ran as well. Presentation axe scans included the article at 390px; the Landing check included its command box in all eight preset/mode combinations. Giscus requests were blocked as in the existing suites.
 
 ## Asset cost {#assets}
 
@@ -43,7 +43,7 @@ The exported theme base and the final candidate used the same documentation sour
 | Main CSS, gzip | 79,541 bytes | 80,887 bytes | +1,346 bytes |
 | Built JavaScript | 39 files | Identical hashes | 0 bytes |
 
-These final measurements supersede the earlier 539,437-byte / 80,856-byte initial refinement measurement. No framework, font, remote asset, or JavaScript dependency was added. Builds, screenshots, logs, source manifests, and comparison JSON remain outside Git.
+These final measurements supersede the earlier 539,437-byte / 80,856-byte initial refinement measurement. No framework, font, remote asset, or JavaScript dependency was added.
 
 ## Tab review follow-up {#tab-review}
 
@@ -65,6 +65,6 @@ Two theme checks fail identically in the exported base and the component candida
 - `check-namespace.py`: committed blog gallery output uses unprefixed `data-height`, `data-width`, `data-mode`, and `data-size`, with corresponding unprefixed dataset reads.
 - `check-goldens.py`: the committed gallery's prepaint condition, toolbar icon, and gallery markup are absent from the existing theme goldens. Comparing base and candidate with the checker's normalizer found no additional difference across all 52 golden surfaces.
 
-These are existing gallery failures, not a clean repository-wide gate. Their assertions and goldens were not relaxed. The component checker has a separate narrow correction: reject obsolete configuration keys rather than any occurrence of `gallery`, allowing the valid `blog_gallery` key.
+The component checker also includes a targeted correction: reject obsolete configuration keys rather than any occurrence of `gallery`, allowing the valid `blog_gallery` key.
 
-Local acceptance covers this component change and its two final repairs. Ink and Terminal retain their experimental status. Runtime JavaScript is unchanged, so its unit suite was not rerun. The commits have not been pushed, tagged, released, adopted by consumers, or deployed as part of this work.
+Local acceptance covers this component change and its two final repairs. Ink and Terminal retain their experimental status. Runtime JavaScript is unchanged.

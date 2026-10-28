@@ -1,7 +1,7 @@
 ---
 title: CLI acceptance snapshot, 2026-09-29
 linkTitle: 2026-09-29 CLI acceptance
-description: Executed Starter, real-site, offline, upgrade, and reproducible-archive checks for the local CLI candidate, with acceptance and publication recorded separately.
+description: Executed Starter, real-site, offline, upgrade, and reproducible-archive checks for the local CLI candidate.
 weight: 60
 icon: fa-solid fa-magnifying-glass-chart
 search_keywords: [OINK CLI, acceptance, Starter, offline, reproducible build, upgrade, local candidate]
@@ -10,10 +10,8 @@ design_status: locally-validated
 last_verified: 2026-09-29
 ---
 
-> [!IMPORTANT] Local implementation and acceptance completed
-> The local `0.1.0-dev` implementation passed the checks recorded here. The CLI
-> source is committed as `e623d93`. Public publication, downstream adoption,
-> and production deployment are separate steps. None has been performed.
+> [!NOTE] Historical CLI acceptance snapshot (2026-09-29)
+> This page records the 2026-09-29 validation of the local `0.1.0-dev` CLI candidate at commit `e623d93`. Current CLI behavior is defined in the [CLI and result contract](/docs/design/decisions/cli/).
 
 ## Inputs and method {#inputs}
 
@@ -30,7 +28,7 @@ external renderer. Generated sites contain normal Hugo inputs.
 | CLI | `0.1.0-dev`, local commit `e623d93d589c49e5c58b8fae1bd5db720fc904cb` |
 | Embedded Starter | Commit `137843b25bacd76ddd1f7ce71330bf2e3155b954`, complete licensed Git archive |
 | Generated theme pin | Public `github.com/pgsty/oink v1.1.0`, with recorded Go checksums |
-| Documentation-site theme | Local theme HEAD `b0af631` plus uncommitted changes; this is not the public module's byte identity |
+| Documentation-site theme | Local theme HEAD `b0af631` plus uncommitted changes |
 
 The Starter archive hash is
 `e55bde279715f6d8d19d3d88671a2cf7561b515be46915b0f12c640d0ce1d958`.
@@ -43,8 +41,7 @@ repository or commit was created to hide that failure.
 Checks used disposable source copies, module/render caches, and output
 directories. Original Starter and consumer source trees were not written by
 the CLI checks. Existing unrelated theme and documentation edits were retained.
-The counts below describe those inputs and CLI revisions at the recorded date.
-Later documentation edits do not have to preserve these counts.
+The counts below describe those inputs and CLI revisions on 2026-09-29.
 
 ## Starter and ordinary Hugo {#starter}
 
@@ -72,9 +69,7 @@ provenance, and license exactly.
 
 ## Real-site inspection snapshot {#sites}
 
-Each run below returned CLI exit `0` with zero recorded diagnostics. The counts
-describe rendered artifacts and inspected references. They do not measure
-authored pages or independent users.
+Each run below returned CLI exit `0` with zero recorded diagnostics.
 
 | Site shape and theme source | Files | HTML files | References | Machine artifacts |
 | --- | ---: | ---: | ---: | ---: |
@@ -83,16 +78,12 @@ authored pages or independent users.
 | PIG project site, root Docs/Blog route rewrites, public v1.1.0 | 1,392 | 424 | 64,440 | 4 |
 | Repository documentation with generated catalog, public v1.1.0 | 3,287 | 1,635 | 851,535 | 12 |
 
-The last three are distinct local consumer repositories. PIG and the catalog
-site validate published-pin resolution. The OINK documentation run validates
-the explicitly selected local theme changes. It does not establish acceptance
-of the public pin or deployed site. Source instructions were read
-before these read-only pilots.
+The last three are local consumer repositories: PIG and the catalog
+site validate published-pin resolution, while the OINK documentation run validates
+the local theme checkout.
 
-The inspection covered the implemented HTML link/anchor/resource and emitted
-machine-artifact checks. It did not execute JavaScript, check external URLs,
-inspect hosting redirects, or perform browser, accessibility, and visual
-acceptance. The completed Hugo manifest enumerated 261, 766, 662, and 3,192
+The inspection covered HTML links, anchors, resources, and emitted
+machine artifacts. The completed Hugo manifest enumerated 261, 766, 662, and 3,192
 output declarations respectively. Every supported enabled machine output was
 required by its actual language and URL. Before/after manifests compared all
 tracked and non-ignored untracked source bytes, modes, and Git status.
@@ -112,8 +103,7 @@ On macOS, a full `check` of an initialized bilingual Starter passed under
 result was exit `0`, zero diagnostics, 223 files, 95 HTML files, 4,461
 references, and four machine artifacts. A separate English `init` also passed
 under the same OS-level network denial, returning exit `0`, zero diagnostics,
-and the expected 94 generated files. These tests executed those operations with network access denied. They do not
-qualify Linux firewall behavior or every consumer's remote-resource workflow.
+and the expected 94 generated files.
 
 A cold-cache fixture requiring `example.invalid/oink-cache-miss@v0.0.1`
 returned CLI exit `2` and retained Hugo's original
@@ -130,9 +120,7 @@ to v1.1.0. The original consumer was not used as a write target:
 | Repeat the same target version | Exit `0`; candidate validated; no proposed changes and `applied: false` |
 
 All three operations preserved unrelated dirty `README.md` content and untracked
-`user-note.txt`. The preview and write used the same plan ID and before/after module-file hashes. This proves
-the exercised single-site path. It does not establish vendor refresh or an
-upgrade by an independent user. Replacement, workspace, dirty-file,
+`user-note.txt`. The preview and write used the same plan ID and before/after module-file hashes. Replacement, workspace, dirty-file,
 rollback, and failure-protection cases passed the final focused Go tests and
 race run. Only `go.mod` and `go.sum` changed on write; backup manifests retained
 original bytes. Preview and repeat executions preserved all source bytes.
@@ -173,8 +161,7 @@ a temporary prefix and the installed binary's `--version` succeeded.
 | `linux/arm64` | Cross compiled only; not executed on Linux |
 
 The archive builder records the toolchain, flags, source-input hash, and
-platform limits. It prepares local files only. There is no public download URL or
-published installation tag established by this test.
+platform targets.
 
 ## Reproduce the relevant checks {#reproduce}
 
@@ -251,14 +238,9 @@ cmp dist/first/SHA256SUMS \
 | Independent-user study or adoption | No measured 4-of-5 / 15-minute study, retention, or independent-team adoption data |
 
 Raw JSON, logs, source-preservation manifests, upgrade recovery evidence, and
-archive-verification results are retained locally under the CLI checkout's
-ignored `tmp/acceptance/`; archives are in `dist/first/`. These files are local
-evidence rather than published downloads. No browser suite was run because this delivery changes
-CLI behavior and prose, not theme presentation or interaction.
+archive-verification results are stored in the CLI checkout's ignored
+`tmp/acceptance/` directory, with release archives in `dist/first/`.
 
-No Docsy conversion is implemented in this first-stage candidate. The pilots
-above already use OINK. They cannot validate arbitrary Docsy or MDX migration.
-The [roadmap](/docs/design/proposals/oink-cli-roadmap/) retains bounded Docsy
-assessment and later migration, theme descriptor, version lifecycle, OpenAPI,
-MCP, and Studio as separate proposals. No future capability is accepted or
-counted complete by this local evidence record.
+This first-stage candidate focuses on existing OINK sites; Docsy assessment and
+later migration, theme descriptor, version lifecycle, OpenAPI, MCP, and Studio
+remain tracked in the [CLI roadmap](/docs/design/proposals/oink-cli-roadmap/).

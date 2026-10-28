@@ -10,14 +10,9 @@ design_status: verified-review-snapshot
 last_verified: 2026-08-26
 ---
 
-> [!WARNING] Review snapshot, not a new contract
-> This page records evidence from `github.com/pgsty/oink` and its integration site on 2026-08-26.
-> It changes no API and does not establish that recommendations below are implemented.
-> Current Design contracts, implementation, and owning checkers remain authoritative.
->
-> **Superseded in part by OINK 0.7.1.** That release fixed code findings F01–F06.
-> See the [0.7.1 release notes](/blog/release/0.7.1/).
-> Read these findings as evidence for those fixes, not as the theme's current state.
+> [!NOTE] Historical review snapshot (2026-08-26)
+> This page records the 2026-08-26 audit of `github.com/pgsty/oink` and its integration site.
+> **OINK 0.7.1 subsequently fixed code findings F01–F06** (see the [0.7.1 release notes](/blog/release/0.7.1/)). Current behavior is defined by the [Design contracts](/docs/design/).
 
 ## Review verdict {#verdict}
 
@@ -26,7 +21,7 @@ The project treated output and trust boundaries seriously.
 The real site showed no general breakage on desktop, mobile, light/dark modes, or primary accessibility paths.
 Theme and site worktrees were clean. Their latest remote checks succeeded, and every locally rerun first-party suite passed.
 
-Successful checks did not prove every published invariant. This review found **4 P1, 9 P2, and 5 P3 findings**, where some early or peripheral features fell short of OINK's otherwise strong modern contract.
+While those checks passed, this review found **4 P1, 9 P2, and 5 P3 findings**, where some early or peripheral features fell short of OINK's modern contract.
 The gates preserved selected positive scenarios very well, but did not systematically cover configuration combinations, static-output behavior, or the semantic accuracy of public documentation.
 
 Before the next release tag, at minimum:
@@ -182,7 +177,7 @@ style="--td-hero-columns: 1fr; background-image: url(https://example.invalid/x);
        --td-hero-media-max: 240px; color: red;"
 ```
 
-Landing accepts inline `sections` in page front matter, so this input is not merely an internal repository constant.
+Landing accepts inline `sections` in page front matter, so authors can supply these values directly.
 Other sections handle `columns`, `rules`, dimensions, styles, icons, and URLs inconsistently.
 A `javascript:` URL often becomes `#ZgotmplZ` without warnings. Invalid columns become `ZgotmplZ`.
 Some direct integer casts abort builds.
@@ -203,8 +198,7 @@ Neither path validates schemes, hosts, whitespace, or protocol-relative URLs. Wa
    href="javascript:document.body.dataset.pwned=1;undefined">
 ```
 
-Clicking executes JavaScript. Site configuration is trusted input, so this is not a default remote exploit.
-It violates the published safe-URL model and gives copied configuration unnecessary execution capability.
+Clicking executes JavaScript, which violates the published safe-URL model and gives copied configuration fragments unnecessary execution capability.
 
 Use the shared resolver to allow only HTTP(S) and explicitly supported first-party relative URLs.
 Also validate archived-version URLs.
@@ -458,4 +452,3 @@ This review did not individually audit consumer repositories, production respons
 It did not manually reverse-engineer 13 MB of minified third-party source.
 Advisory checks are a 2026-08-26 snapshot and may change.
 Existing CI/contract evidence covered DDIA/TPME EPUB/PDF consumers.
-No site was republished or deployed during this review.

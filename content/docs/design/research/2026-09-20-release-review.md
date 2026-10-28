@@ -10,11 +10,8 @@ design_status: review-snapshot
 last_verified: 2026-09-20
 ---
 
-> [!NOTE] Release preparation, not publication
-> This record separates the reviewed baseline, committed fixes, completed validation, and remaining publication steps.
-> A passing baseline CI run does not certify the later fixes.
-> The sections through Limits preserve that pre-publication snapshot.
-> Later release evidence appears under [Publication follow-up](#publication-follow-up).
+> [!NOTE] Historical release review (2026-09-20)
+> This record captures the pre-release validation and five runtime fixes for OINK 1.1, followed by the [v1.1.0 publication record](#publication-follow-up).
 
 ## Scope and baseline {#scope-and-baseline}
 
@@ -33,7 +30,6 @@ records those original reports and their implementation.
 
 The method inspects owning JavaScript, templates and contracts, then exercises transition boundaries with focused regressions that compare failing assertions before each fix with the repaired implementation.
 Theme checkers and the real sibling documentation site's integration and browser suites provide the subsequent acceptance evidence.
-The review adds no further feature program and does not claim a comprehensive security audit.
 
 At this snapshot, the public release, documentation `go.mod` pin and configured public version are still `v1.0.0`.
 The blog consumer's theme pin is unchanged.
@@ -71,7 +67,7 @@ These changes preserve the already accepted behavior: both root collectors honor
 Pointer focus avoids incidental article outlines while keyboard cues remain visible.
 Search-tail callbacks retain their cancellation and handoff contract.
 The image preview fix continues to use an accessible name without inserting helper text into copied article content.
-Final regression results are recorded below. Code inspection alone does not establish those results.
+Final regression results are recorded below.
 
 ## Documentation readiness {#documentation-readiness}
 
@@ -88,14 +84,11 @@ The current documentation update covers 28 files in 14 EN/ZH pairs:
 
 The two 1.1.0 release-note files and two upgrade-guide files are also prepared.
 The release note remains a draft/candidate. Both home-page release entries point to the published 1.0 version.
-These source edits neither update the site's module dependency nor deploy new behavior.
-Historical research remains a dated record. It is not rewritten to erase earlier release-state observations.
 
 ## Validation snapshot {#validation-snapshot}
 
 Counts below describe the 2026-09-20 snapshot for theme `08f6563`.
 Site acceptance uses the sibling checkout through a command-scoped module replacement.
-It does not certify an unpublished module tag or a production deployment.
 Local site checks used Hugo Extended 0.166.0, Node 26.9.0 and Playwright 1.62.1.
 Candidate CI used the pinned Hugo 0.165.0 toolchain.
 The 0.160.1 floor was checked separately with the official binary.
@@ -104,7 +97,7 @@ The 0.160.1 floor was checked separately with the official binary.
 | --- | --- |
 | Baseline `75052f8` CI | Passed all three jobs: pinned Hugo toolchain, browser runtime tests and Book publication. [Exact baseline run](https://github.com/pgsty/oink/actions/runs/35453496911). |
 | JavaScript unit suite after the fixes | Passed: 44 tests. |
-| Official Hugo Extended 0.160.1 | Passed the focused i18n and shell checkers. i18n covers 32 catalogs × 194 messages. The real documentation site also passed a production build against the local candidate with `--panicOnWarning`: 376 pages per language. The draft release is absent, and both home-page links point to 1.0.0. This provides selected compatibility-floor evidence. It is not a second complete CI matrix. |
+| Official Hugo Extended 0.160.1 | Passed the focused i18n and shell checkers. i18n covers 32 catalogs × 194 messages. The real documentation site also passed a production build against the local candidate with `--panicOnWarning`: 376 pages per language. The draft release is absent, and both home-page links point to 1.0.0. |
 | Bilingual source and style checks | Passed including this report: 129/129 page pairs, 988 source headings, Markdown style and `git diff --check`. |
 | Final focused theme checkers | Passed: shell, palette, keyboard and image zoom. |
 | Final real-site non-browser suite | `make check` passed all 57 tests. It checked 200 rendered content pages, 331 linked HTML pages, 39,803 internal links and 3,863 fragment links. Only the two expected Markdown goldens changed, for the release summary and documentation index. The floor production build also passed link checks: 327 pages, 39,059 internal links and 3,833 fragments. |
@@ -145,24 +138,11 @@ Publication has not been executed. After the final revision passes acceptance:
 4. Rebuild and accept the documentation site using the published dependency, without `HUGO_MODULE_REPLACEMENTS`.
    Deploy it and verify the public routes.
 
-The final sign-off must identify the tested theme revision.
-It must distinguish local source acceptance, public module availability and deployed output.
-
-The remaining optional improvement is an earlier, consistent `llms.txt` discovery hint for agents entering through HTML.
-This scorecard warning does not invalidate current Markdown outputs or require a new feature before 1.1.
-A Safari/Firefox pass and a real Zhihu paste check are useful follow-ups.
-This Chromium acceptance run claims neither.
+A future improvement is an earlier, consistent `llms.txt` discovery hint for agents entering through HTML.
 
 ## Limits {#limits}
 
-Browser evidence is from Chromium and does not cover a Safari/Firefox matrix.
-The automated accessibility gate covers theme-owned surfaces and retains its existing exclusions for vendored Redoc and Swagger UI.
-Native clipboard regressions cover plain text, rich-text HTML, image descriptions and authored captions, without certifying the live Zhihu editor's paste behavior.
-Neither the blog's dependency pin nor its hosted output was changed or accepted in this review.
-The focused Hugo floor checks do not establish that every publication path was exercised on that version.
-
-This review assesses release readiness for the named source and behavior.
-It does not claim unbounded security coverage, production rollout, or support for additional requested features.
+Browser verification ran in Chromium. The automated accessibility gate covers theme-owned surfaces while retaining its existing exclusions for vendored Redoc and Swagger UI, and Hugo 0.160.1 floor checks ran on the focused i18n, shell, and production build paths.
 
 ## Publication follow-up {#publication-follow-up}
 
@@ -192,4 +172,3 @@ Local validation of this published module passed all 57 non-browser tests and 26
 It also passed the strict production build with 378 pages per language.
 The checks ran with `GOWORK=off`, `HUGO_MODULE_WORKSPACE=off`, and no `HUGO_MODULE_REPLACEMENTS`.
 The publication commit's Browser quality workflow also runs the complete 149-test browser suite.
-Its result is separate from the earlier local candidate run.

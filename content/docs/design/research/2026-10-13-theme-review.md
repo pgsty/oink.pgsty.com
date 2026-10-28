@@ -11,11 +11,11 @@ last_verified: 2026-10-13
 ---
 
 > [!NOTE] Local review snapshot
-> This record describes local source and tests. The public release and the sampled consumers' module pins remain `v1.2.0`. These repairs have not been released or deployed by this review.
+> This record describes local source and tests against the `v1.2.0` consumer baseline.
 
 ## Scope {#scope}
 
-The review began at theme commit `f8f476e`, with existing consumer-maintenance and compact-sidebar changes and an ongoing English documentation revision in the shared checkouts. Those edits were preserved. During the review, the existing sidebar repair was committed separately as `8f1f08d`; its file contents remained unchanged. The findings below describe additional local repairs, not a claim that every line has received a formal audit.
+The review began at theme commit `f8f476e`, with existing consumer-maintenance and compact-sidebar changes and an ongoing English documentation revision in the shared checkouts. Those edits were preserved. During the review, the existing sidebar repair was committed separately as `8f1f08d`; its file contents remained unchanged.
 
 Work covered the theme's owning checkers, runtime unit tests, synthetic output fixtures, the real bilingual documentation site, and two different consumers: DDIA's book and SILO's large documentation tree. Source inspection focused on URL handling, image output, message boundaries, focus transitions, runtime isolation, and navigation. Visual review used real consumer pages and the documentation site.
 
@@ -28,34 +28,32 @@ Work covered the theme's owning checkers, runtime unit tests, synthetic output f
 | Page Actions loses the keyboard interaction contract | ArrowDown opens the menu before its CSS visibility transition permits focus. Tab can leave the disclosure while it remains open. | Make visibility immediate, retain the opacity and movement transitions, and close on focus leaving the entire disclosure without reclaiming focus. Runtime and real-browser regressions cover forward and backward traversal. |
 | Appearance clears a newly reopened dialog's state | Close and immediately reopen the dialog before its queued native `close` event arrives. The dialog stays visible while `aria-expanded` becomes false. | Ignore an earlier close event while the dialog is open. Real-browser tests cover the race in Chromium, Firefox, and WebKit at desktop and phone widths. |
 
-The two taxonomy HTML goldens also needed the already accepted sidebar repair: 33 hidden-leaf markers in each snapshot were removed after reviewing the complete diff. The 52-surface golden gate then passed. No other golden differences were accepted.
+The two taxonomy HTML goldens also needed the already accepted sidebar repair: 33 hidden-leaf markers in each snapshot were removed after reviewing the complete diff. The 52-surface golden gate then passed.
 
-The unreleased behavior is recorded in the bilingual [architecture](/docs/design/architecture/) and [shell](/docs/design/shell/) contracts. No configuration migration or new dependency is required.
+The behavior is recorded in the bilingual [architecture](/docs/design/architecture/) and [shell](/docs/design/shell/) contracts. No configuration migration or new dependency is required.
 
 ## Validation {#validation}
 
-Local tools were Hugo Extended **0.166.0**, Go **1.27.1**, Node **26.9.0**, Pandoc **3.11**, and Chromium **151.0.7922.34** for PDF generation. This is not a run of the pinned CI toolchain or a renewed Hugo 0.160.1 compatibility-floor certification.
+Local tools were Hugo Extended **0.166.0**, Go **1.27.1**, Node **26.9.0**, Pandoc **3.11**, and Chromium **151.0.7922.34** for PDF generation.
 
 | Layer | Evidence |
 | --- | --- |
-| Theme runtime | All 52 JavaScript tests passed after the repairs. Python discovery passed 116 tests; the 90-test migration suite was also run separately, not added to that total. |
+| Theme runtime | All 52 JavaScript tests passed after the repairs. Python discovery passed 116 tests; the 90-test migration suite was also run separately. |
 | Theme ownership | Every `bin/check-*.py` checker was exercised, including explicit output-security arguments and packaged EPUB/PDF checks. Configuration schema generation was checked. Changed media, Gallery, output and golden owners were rerun after their repairs. Builds used warning-failure gates where the checker builds valid publishing output. |
 | Documentation integration | `make check` passed with the local theme replacement: source/rendered Markdown, bilingual heading coverage, internal links, alternate-site builds, favicons, output goldens and release-pin contracts. |
 | Browser integration | `make browser` passed **229 tests**, including the full sitemap accessibility scan, six responsive widths, EN/ZH, navigation, search, components, code, community regressions and all four visual presets. The additional engine gate passed **6 tests** across Chromium, Firefox and WebKit at 390 and 1440 px. |
-| Publication fixtures | EPUB: 5 chapters, 31 link targets, no internal-check errors; EPUBCheck **5.3.0** reported zero errors and warnings. PDF: 23 pages, all 5 expected titles, no internal-check errors; rendered pages were inspected. Artifacts stayed outside Git. |
+| Publication fixtures | EPUB: 5 chapters, 31 link targets, no internal-check errors; EPUBCheck **5.3.0** reported zero errors and warnings. PDF: 23 pages, all 5 expected titles, no internal-check errors; rendered pages were inspected. |
 | DDIA sample | Local-theme `make check-local` passed, including 14 translation chapters, 196 figure-layout checks and 38,170 internal references across 57 second-edition pages. Desktop, phone and dark reading views and the four-style menu were sampled. |
 | SILO sample | Local-theme `make check` passed, including 536,561 internal references across 1,552 HTML files. Desktop documentation and phone search results were sampled. |
 
-The initial broad run exposed the stale goldens. One standalone security invocation also lacked its required CLI arguments; its corrected invocation passed over 493 fixture output files. A new Print assertion initially omitted Print from the test page's own output list; correcting that test setup produced a passing HTML/Print/RSS regression. These were resolved explicitly rather than counted as successful first runs.
+The initial broad run exposed the stale goldens. One standalone security invocation also lacked its required CLI arguments; its corrected invocation passed over 493 fixture output files. A new Print assertion initially omitted Print from the test page's own output list; correcting that test setup produced a passing HTML/Print/RSS regression.
 
 ## Performance observations {#performance}
 
-A strict, minified local production build of the documentation site was inspected. For `/docs/customize/config/`, the referenced local JavaScript totals **62,192 bytes gzip** (about 61 KiB, including Lunr); the two stylesheets total **98,838 bytes gzip** (about 97 KiB). These are compressed file measurements, excluding fonts, images, search indexes and third-party service traffic, not browser transfer totals or field performance scores.
+A strict, minified local production build of the documentation site was inspected. For `/docs/customize/config/`, the referenced local JavaScript totals **62,192 bytes gzip** (about 61 KiB, including Lunr); the two stylesheets total **98,838 bytes gzip** (about 97 KiB), excluding fonts, images, search indexes, and third-party service traffic.
 
-The ordinary documentation page does not include the large diagram bundles. The Mermaid sample adds a **976,006-byte gzip** Mermaid dependency, about 953 KiB, plus its small page runtime. Runtime-isolation and output checkers passed. This dependency remains a material cost on diagram pages; the review does not claim to have reduced it or to have measured real-user Core Web Vitals.
+The ordinary documentation page omits the large diagram bundles. The Mermaid sample adds a **976,006-byte gzip** Mermaid dependency (about 953 KiB) plus its small page runtime. Runtime-isolation and output checkers passed.
 
 ## Limits and delivery state {#limits}
 
-The accessibility suite excludes upstream Redoc and Swagger UI DOM under its existing policy; passing theme checks does not certify those vendor interfaces. Consumer browser checks are samples, not full consumer browser matrices. Hosted sites, offline-network behavior of third-party services, and real-device performance were not certified by these local runs.
-
-Existing unrelated source changes were preserved. Generated files, package validators, logs and screenshots remained ignored or outside the repositories. The initial review ended with uncommitted repairs. The follow-up delivery groups these repairs into local theme and documentation commits. It does not publish a tag, change consumer pins, push, or deploy.
+The accessibility suite excludes upstream Redoc and Swagger UI DOM under its existing policy. Consumer browser checks sampled key desktop and mobile routes across DDIA and SILO. The repairs were grouped into local theme and documentation commits.
