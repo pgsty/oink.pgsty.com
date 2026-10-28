@@ -31,11 +31,8 @@ includes `customizer` in `params.ui.shell_types`.
 [`content/customizer.md`](https://github.com/Vonng/caps.vonng.com/blob/25f5a2940208cad12df56ea9993e7b6d27860577/content/customizer.md)
 selects `type: customizer` and `layout: customizer`, then invokes the site's
 [`capslock-configurator` shortcode](https://github.com/Vonng/caps.vonng.com/blob/25f5a2940208cad12df56ea9993e7b6d27860577/layouts/_shortcodes/capslock-configurator.html).
-The configurator, JavaScript, and keyboard data are site code; OINK does not
-include this application.
-
-Reuse this boundary when a small custom tool needs the documentation shell.
-You must maintain its interaction code yourself; a two-page site does not make
-that application maintenance disappear.
+The configurator template, JavaScript, and keyboard data live in the site
+repository, while OINK provides the surrounding shell, navigation, and theme
+controls.
 
 → [Layout configuration](/docs/customize/layout/) · [All OINK cases](/case/)

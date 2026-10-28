@@ -38,16 +38,16 @@ toc_taxonomies: false
 sidebar_enabled: false
 ```
 
-This is the same contract demonstrated by
-[Immersive reading](/blog/oink/immersive-reading/). There is no second Article
-type and no duplicated publishing pipeline.
+This is the same configuration used by
+[Immersive reading](/blog/oink/immersive-reading/), sharing the standard `blog`
+templates, feeds, and taxonomy pages.
 
 ## Turn examples into Case studies {#case-studies}
 
 A Case index uses the Blog card form, while each internal page documents the
 site, source, language model, scale, and OINK features before linking to the
-live result. Keeping an internal explanation page makes the showcase part of
-the documentation rather than a wall of outbound logos.
+live result. Giving each case its own overview page lets readers inspect how the
+site is structured before visiting the live URL.
 
 ## Keep Book and Docs complementary {#book-and-docs}
 

@@ -44,9 +44,9 @@ weight: 25
 hugo --environment production
 ```
 
-The command should exit successfully with reviewed diagnostics. Refresh this page at
-`http://localhost:1313/docs/preview-check/` and confirm the new note and command
-are visible. A successful build and a visible edit are two separate checks.
+The command should exit cleanly. Refresh this page at
+`http://localhost:1313/docs/preview-check/` and confirm that the new note and command
+are visible in the browser.
 ````
 
 Update `preview-check.zh.md` with the same task and command in Chinese. Keep

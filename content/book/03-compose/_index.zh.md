@@ -41,9 +41,8 @@ weight: 25
 hugo --environment production
 ```
 
-命令应成功退出并完成告警审阅。刷新本页
-`http://localhost:1313/zh/docs/preview-check/`，确认新提示块与命令已显示。
-构建成功与可见内容已更新，需要分别确认。
+命令应正常退出。刷新本页
+`http://localhost:1313/zh/docs/preview-check/`，确认新提示块与命令已显示在浏览器中。
 ````
 
 在 `preview-check.md` 中用英文补上相同任务与命令，保留 `weight: 25` 和
@@ -62,7 +61,7 @@ $$
 这里刻意使用乘法：视觉精美无法弥补错误命令，准确的正文在读者找不到或无法按步骤执行时，
 同样会失败。
 
-## 连接证据 {#connect-evidence}
+## 串联引用与检查 {#connect-evidence}
 
 用 {{< xref eg="3-1" anchor="eg-page-contract" />}} 作为源码模式，
 再用 {{< xref eq="3.1" anchor="eq-page-quality" />}} 作为评审问题。第 4 章概述下一阶段的视觉设计；现在需要继续操作时，按[Starter 分层定制](/zh/docs/start/starter/#customize)完成下一步。

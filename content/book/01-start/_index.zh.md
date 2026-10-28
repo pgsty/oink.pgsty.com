@@ -15,15 +15,14 @@ weight: 10
 完成本章时，你应该拥有英文、中文、法语首页，可用的 Docs、Blog、Book 路由，本地搜索，
 以及颜色模式控件。这条小基线足以在后续工作中区分内容问题、主题问题与部署问题。
 
-![OINK 文档站的主题效果示意，并非 Starter 预览截图](/images/oink.webp)
+![OINK 文档站首页示意](/images/oink.webp)
 {#fig-first-preview num="1-1" caption="文档站效果示意。你的 Starter 预览使用中性示例内容；第一个里程碑是能打开并修改的站点。" width=600 height=300}
 
 ## 安装前置工具 {#prerequisite}
 
-本教程使用 Git、Go 1.27 或更新版本，以及 Hugo Extended 0.168.0。
-开发、CI 与发布测试统一使用这条 Hugo 基线，并保持固定。采用旧 Starter 时，
-先更新其 Hugo workflow 固定版本再验证，不再维护旧 Hugo 兼容性。SCSS 使用 Hugo 内置 LibSass，无需安装外部 Sass 编译器。
-不需要 Node.js。
+安装 Git、Go 1.27 或更高版本，以及 Hugo Extended 0.168.0。样式通过 Hugo Extended 内置的
+LibSass 编译，无需额外安装 Sass 编译器或 Node.js。如果基于较早的 Starter 模板创建仓库，
+请一并将 GitHub Actions workflow 中的 Hugo 版本更新到 0.168.0。
 
 ```console
 $ go version

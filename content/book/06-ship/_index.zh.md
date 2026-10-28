@@ -1,29 +1,29 @@
 ---
 title: 有把握地交付
 linkTitle: 校验与交付
-description: 区分本地预览、仓库集成、主题发布与站点部署，并用对应证据验证每一种状态。
+description: 用一套可重复的发布清单，依次检查本地预览、生产构建、主题升级与线上部署。
 book_kind: chapter
 book_number: 6
 book_status: draft
 weight: 60
 ---
 
-发布是一串可以分别验证的状态。本地预览成功，只能证明内容与主题可以在当前工作区共同渲染；
-它并不能证明远端模块标签已经存在，也不能证明公开站点已经部署了这一版本。
+文档站点的交付通常包含四个阶段：本地预览、仓库生产构建、按需升级固定的主题模块，以及推送到托管平台上线。
+按顺序检查每个阶段，能在构建或部署出错时快速定位原因。
 
-## 为每种交付状态命名 {#delivery-states}
+## 按阶段检查发布流程 {#delivery-states}
 
-| 状态 | 证据 | 不能证明什么 |
+| 阶段 | 检查内容 | 下一步 |
 | --- | --- | --- |
-| 本地预览 | 站点可以使用指定的本地主题检出完成渲染 | 公开主题版本已经发布 |
-| 站点集成 | 内容、配置与依赖变更已经一起审阅 | 托管平台已经部署这些变更 |
-| 主题发布 | 不使用本地替换时，公开标签与模块校验和可以解析 | 消费站点已经升级 |
-| 站点部署 | 公开版本与代表性路由可以访问 | 每种语言和视口都正确 |
-{#tbl-delivery-states num="6-1" caption="每种交付状态都有自己的证据与交接要求。"}
+| 本地预览 | 页面、导航与内容修改可在 `hugo server` 中正常渲染 | 执行干净的生产构建 |
+| 仓库构建 | 内容、配置与 `go.mod` 在 `--environment production` 下构建通过 | 推送分支或发起 Pull Request |
+| 主题升级 | `hugo mod graph` 解析到目标公开标签并更新 `go.sum` | 查阅版本发布说明并检查页面排版 |
+| 线上部署 | CI 工作流成功完成，主要公开路由均可正常访问 | 抽查桌面端与窄屏页面表现 |
+{#tbl-delivery-states num="6-1" caption="从本地预览到线上部署的四阶段检查清单。"}
 
 ## 验证最小且有效的范围 {#validate}
 
-在自己的 Starter 仓库中，先执行普通生产构建，再使用已选定的部署 workflow：
+在自己的 Starter 仓库中，先执行一次干净的生产构建，再触发部署工作流：
 
 ```bash
 hugo --cleanDestinationDir --gc --minify --environment production \
@@ -31,21 +31,20 @@ hugo --cleanDestinationDir --gc --minify --environment production \
 ```
 
 确认 `hugo mod graph` 解析到 `go.mod` 中预期的公开版本，再按[Starter 部署步骤](/zh/docs/start/starter/#build-deploy)操作。
-普通 Starter 站点不需要 npm 构建脚本或同级主题 checkout。如果同时修改 OINK 主题本身，
-另按[主题开发流程](/zh/docs/start/from-scratch/#local-theme-checkout)验证。
-分别记录本地构建、workflow 结果与公开 URL 检查。
+普通 Starter 站点不需要 npm 构建脚本或同级主题目录。如果同时在修改 OINK 主题本身，
+可按[主题开发流程](/zh/docs/start/from-scratch/#local-theme-checkout)进行联调。
 
 ## 审阅真正渲染出的结果 {#visual-review}
 
-自动检查可以发现坏链接、重复 ID、无效短代码与无障碍回归，却无法判断 Hero 裁切是否合适，
-也无法判断密集表格在手机上是否仍然易读。请在桌面与窄屏下抽查具有代表性的中英文路由，
-覆盖导航、主题控件、代码块以及整书输出。
+自动检查能发现坏链接、重复 ID、无效短代码与无障碍回归，而版面与可读性仍需肉眼审阅。
+请在桌面与窄屏宽度下抽查具有代表性的中英文页面，涵盖 Hero 裁切、宽表格、导航、主题切换控件、
+代码块以及整书打印视图。
 
-## 交接事实，而不是暗示 {#handoff}
+## 整理发布记录 {#handoff}
 
-有效的交接应列出变更文件、命令与结果、已知限制，以及尚未发生的下一种状态。引用
-{{< xref tbl="6-1" anchor="tbl-delivery-states" />}}，准确说明当前到达了哪一步，
-不要用一个“完成”混淆验证、发布与部署。
+发起 Pull Request 或升级主题版本时，对照 {{< xref tbl="6-1" anchor="tbl-delivery-states" />}}
+记录当前使用的 Hugo 版本、`go.mod` 中的主题版本、构建输出以及抽查过的页面路由。
+在变更说明中附上这份简短清单，方便团队审阅与回滚排查。
 
 完整的运维参考见[预览站点](/zh/docs/admin/preview/)、
 [部署站点](/zh/docs/admin/deploy/)与[排查构建问题](/zh/docs/admin/troubleshooting/)。

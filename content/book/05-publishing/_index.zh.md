@@ -35,13 +35,13 @@ toc_taxonomies: false
 sidebar_enabled: false
 ```
 
-这就是[沉浸式阅读](/zh/blog/oink/immersive-reading/)所演示的契约。没有第二种 Article 类型，
-也没有被复制的发布流水线。
+这与[沉浸式阅读](/zh/blog/oink/immersive-reading/)使用的是同一套配置，共享标准的 `blog`
+模板、订阅源与分类页面。
 
 ## 把样例变成 Case 案例 {#case-studies}
 
-Case 索引使用 Blog 卡片形式，每个内部页面则先说明站点、源码、语言模式、规模与 OINK 能力，
-再链接到线上成果。保留内部说明页，能让 showcase 成为文档的一部分，而不只是一面外链标识墙。
+Case 索引采用 Blog 卡片布局；每篇案例页先介绍站点定位、源码仓库、多语言结构、内容规模与所用到的
+OINK 特性，再附上线上链接，方便读者在访问外部站点前先了解其实现方式。
 
 ## 让 Book 与 Docs 相互补充 {#book-and-docs}
 

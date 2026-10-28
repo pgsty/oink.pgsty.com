@@ -35,8 +35,8 @@ params:
     docs_section: ''
 ```
 
-这让共享外壳聚焦于书籍，并采用系统字体；它不会自动把任意页面转换为章节。
-手稿、语言配置与 Book front matter 仍由站点维护。从[Book 根页模式](/zh/docs/write/book/)开始，
-只有新增独立文档或其它内容栏目时，再加入对应外壳类型。
+这让共享外壳专注于书籍布局并采用系统字体栈。配合 `content/book/_index.md` 中的
+[Book 根页模式](/zh/docs/write/book/)即可完成配置；后续若新增独立文档或博客栏目，
+再按需加入对应的外壳类型。
 
 → [创作书籍](/zh/docs/write/book/) · [DDIA 案例](/zh/case/ddia/)

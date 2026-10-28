@@ -23,7 +23,7 @@ accent color, and fonts while keeping both color modes legible.
 
 ## Compose the home page {#home}
 
-The home page is data, not a one-off template. Its YAML registry should tell a
+The home page is driven by data files in `data/home/`. Its YAML section list should tell a
 short story: what the project is, who it serves, what readers can do next, and
 where they can see the theme in production.
 
@@ -38,7 +38,7 @@ and ensure the same content order remains visible in both languages.
 
 ## Design both languages at once {#languages}
 
-Translations are peers, not a finishing pass. Preserve route meaning, explicit
+Treat translations as full peers from the start. Preserve route meaning, explicit
 heading IDs, menu order, images, and functional parameters while translating
 reader-facing text into natural Chinese.
 

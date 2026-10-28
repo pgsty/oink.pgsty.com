@@ -29,9 +29,6 @@ tags: [工具, 双语, 小型站点]
 [`content/customizer.md`](https://github.com/Vonng/caps.vonng.com/blob/25f5a2940208cad12df56ea9993e7b6d27860577/content/customizer.md)
 选择 `type: customizer` 与 `layout: customizer`，再调用站点自有的
 [`capslock-configurator` 短代码](https://github.com/Vonng/caps.vonng.com/blob/25f5a2940208cad12df56ea9993e7b6d27860577/layouts/_shortcodes/capslock-configurator.html)。
-配置器、JavaScript 与键盘数据都属于站点代码，OINK 不内置这个应用。
-
-小型自定义工具需要文档外壳时，可以复用这条职责边界。交互代码仍需自己维护；
-只有两页内容，并不意味着应用本身没有维护成本。
+配置器模板、JavaScript 与键盘数据保存在站点仓库中，由 OINK 提供外围页面外壳、导航与主题切换控件。
 
 → [布局配置](/zh/docs/customize/layout/) · [全部 OINK 案例](/zh/case/)

@@ -37,10 +37,9 @@ params:
     docs_section: ''
 ```
 
-This keeps the shared shell focused on a book and uses system fonts. It does
-not convert arbitrary pages into chapters: the site still owns its manuscript,
-language configuration, and Book front matter. Start from the
-[Book root pattern](/docs/write/book/) and add another shell type only when a
-separate documentation or publishing section needs it.
+This keeps the shared shell focused on the book layout and uses the system font
+stack. Pair it with the [Book root pattern](/docs/write/book/) in
+`content/book/_index.md`, and add other shell types only when the site grows a
+separate documentation or blog section.
 
 → [Writing a book](/docs/write/book/) · [DDIA case](/case/ddia/)

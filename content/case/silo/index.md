@@ -28,13 +28,10 @@ site needs its own navigation, language peers, and product surfaces.
 
 The committed [`data/docs_nav.json`](https://github.com/pgsty/silo.pgsty.com/blob/6acbbe552a0dde62b08f64d7c231a0dbdfed9df8/data/docs_nav.json)
 records its inputs in `meta.generated_from` (`migration/reports/navigation.csv`)
-and `meta.manifest` (`migration/minio-docs-manifest.csv`). The migration process
-owns those inputs and the generated navigation; OINK consumes the resulting
-tree. Those input paths describe provenance, not a generator bundled with OINK.
-
-This trades a second, site-maintained navigation artifact for control over an
-imported manual's order. Use the ordinary content tree for a small original
-manual; adopt generated navigation only when you also maintain its source and
-regeneration procedure.
+and `meta.manifest` (`migration/minio-docs-manifest.csv`). The site's migration
+scripts generate `data/docs_nav.json` from those CSV manifests, and OINK renders
+the resulting navigation tree. Use the ordinary content tree for original
+manuals, and reserve `data/docs_nav.json` for imported corpora where an external
+manifest controls sidebar ordering.
 
 → [Navigation](/docs/customize/navigation/) · [All OINK cases](/case/)

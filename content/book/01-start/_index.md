@@ -18,17 +18,15 @@ pages; working Docs, Blog, and Book routes; local search; and a color-mode
 control. That small baseline is enough to distinguish a content mistake from a
 theme or deployment problem later.
 
-![The OINK documentation site illustrates the theme; this is not the Starter preview](/images/oink.webp)
+![The OINK documentation site home page](/images/oink.webp)
 {#fig-first-preview num="1-1" caption="Documentation-site illustration. Your Starter preview uses neutral sample content; the first milestone is a site you can open and edit." width=600 height=300}
 
 ## Install the prerequisite {#prerequisite}
 
-Use Git, Go 1.27 or newer, and Hugo Extended 0.168.0 for this tutorial.
-Development, CI, and release tests use this single Hugo baseline, which
-remains pinned. Update an older Starter's Hugo workflow pins
-before validation. Older Hugo compatibility is no longer maintained.
-Styles use Hugo Extended's built-in LibSass; no external Sass compiler is needed.
-Node.js is not required.
+Install Git, Go 1.27 or newer, and Hugo Extended 0.168.0 for this tutorial.
+Styles compile with Hugo Extended's built-in LibSass, so no external Sass compiler
+or Node.js installation is required. If you started from an older Starter template,
+update its GitHub Actions workflow to Hugo Extended 0.168.0 as well.
 
 ```console
 $ go version

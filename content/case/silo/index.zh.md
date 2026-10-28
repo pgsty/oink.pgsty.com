@@ -26,10 +26,8 @@ tags: [文档, 双语, 迁移]
 
 已提交的 [`data/docs_nav.json`](https://github.com/pgsty/silo.pgsty.com/blob/6acbbe552a0dde62b08f64d7c231a0dbdfed9df8/data/docs_nav.json)
 通过 `meta.generated_from`（`migration/reports/navigation.csv`）与
-`meta.manifest`（`migration/minio-docs-manifest.csv`）记录输入来源。迁移流程负责这些输入
-和生成导航，OINK 读取结果树。这些路径说明数据来历，不代表 OINK 内置了对应生成器。
-
-这一做法以额外维护一份导航产物为代价，保留导入手册的顺序。小型原创手册先用普通内容树；
-只有能够同时维护导航源与重新生成流程时，再采用生成导航。
+`meta.manifest`（`migration/minio-docs-manifest.csv`）记录输入来源。站点的迁移脚本根据上述
+CSV 清单生成 `data/docs_nav.json`，再由 OINK 渲染侧栏导航树。原创手册直接使用普通内容树即可；
+当导入的大型语料需要由外部清单控制侧栏顺序时，再采用 `data/docs_nav.json`。
 
 → [导航定制](/zh/docs/customize/navigation/) · [全部 OINK 案例](/zh/case/)
