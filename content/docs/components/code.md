@@ -81,7 +81,6 @@ markup:
 ```
 
 `filename` is a historical alias for `title`. If you provide both, the theme warns and uses `filename`.
-Review the warning and rendered fallback before publication.
 
 ## Line numbers, start line and highlighting {#line-numbers}
 
@@ -146,7 +145,6 @@ CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 
 `wrap=true` cannot be combined with table line numbers. Wrapping misaligns the separate number and code cells.
 If you provide both, the theme warns and disables wrapping. It suggests `lineNos="inline"` or removing wrapping.
-Review the warning and rendered fallback before publication.
 
 ## Folding long code {#collapse}
 
@@ -217,8 +215,7 @@ INFO installing pg_duckdb
 ```
 
 To include prompts and output, use `copy="all"`.
-On ordinary lexers such as `bash` or `sh`, `copy="command"` warns and uses `copy="all"`.
-Those lexers cannot distinguish prompts, commands, and output. Review the warning and rendered fallback before publication.
+On ordinary lexers such as `bash` or `sh`, `copy="command"` warns and uses `copy="all"`, because those lexers cannot distinguish prompts, commands, and output.
 For multiline commands, put a continuation prompt, usually `>`, on each continuation line. Otherwise, those lines are treated as output and excluded.
 
 If a session-lexer block has no prompt, copying fails. The icon shows an error, and an error is logged to the console.
@@ -275,7 +272,7 @@ Jump to [line 4](#ex-explain-4).
 Without an `id`, the theme generates an ID that is unique on the page. It depends on the fence's position.
 Adding another fence above it changes the ID. Only an author-provided `id` is a permanent link.
 IDs must contain no whitespace or control characters. They must not duplicate viewport, tab, panel, title, or line-anchor IDs on the page.
-Invalid or duplicate IDs warn. Review the warning and rendered fallback before publication.
+Invalid or duplicate IDs warn and use a generated fallback.
 
 ## Numbered examples {#numbered}
 
@@ -302,7 +299,7 @@ WHERE n_dead_tup > n_live_tup * 0.2;
 See {{< xref eg="4-1" anchor="eg-bloat" />}}.
 
 `num` and `caption` must appear together. A caption without a number is ignored. A number without a caption is removed with a warning.
-Review the warning and rendered fallback before publication. `num` cannot be combined with the tab attribute `tab`.
+`num` cannot be combined with the tab attribute `tab`.
 For figure, table, and equation numbering and indexing, see [publishing books](/docs/write/book/).
 
 ## A set of fences as tabs {#tabs}
@@ -342,8 +339,8 @@ See [Tabs](/docs/components/tabs/) for group syntax, URL hashes, synchronization
 - Attributes go on the info line: a fence's attributes follow the language on
   the opening line. Only tables and images take their attributes on the line
   below. Put them on the next line and you get a visible line of braces.
-- Unknown, unsafe, and theme-reserved attributes warn and are ignored in
-  ordinary preview; the message lists the allowed names. Review the warning and rendered fallback before publication.
+- Unknown, unsafe, and theme-reserved attributes warn and are ignored;
+  the message lists the allowed names.
 - Fences in list items: indent them to line up with the item's content (three
   spaces after `1.`), or the fence leaves the list.
 
@@ -383,7 +380,7 @@ Inside the `{…}` after the language on the opening line, OINK's own attributes
 
 `title`, `filename`, and `label` give the block an accessible name and `role="group"`.
 If you also provide `aria-label`, `aria-labelledby`, or `role`, the theme warns and ignores the conflicting attribute.
-Review the warning and rendered fallback before publication. These three attributes pass through only if the block has neither a title nor `label`.
+These three attributes pass through only if the block has neither a title nor `label`.
 
 The same line accepts Chroma options. The theme passes them to Hugo unchanged:
 
@@ -400,7 +397,7 @@ The same line accepts Chroma options. The theme passes them to Hugo unchanged:
 
 - The highlighter cannot be replaced. There is no Shiki, Twoslash, browser highlighting, or runnable playground.
   For patches, use a `diff` fence. Chroma's `.gi`/`.gd` style added and removed lines.
-- `copy="command"` supports only session lexers. Other languages warn and copy everything. Review the warning and rendered fallback before publication.
+- `copy="command"` supports only session lexers. Other languages warn and copy everything.
 - Generated IDs are not permanent links. Write `id` for a link that you plan to share.
 - `mermaid`, `math`, `chem`, `markmap`, `plantuml`, `echarts`, `infographic`, `checksums`, `filetree`, and `gallery` are not code blocks.
   Each has its own render hook, without a code shell or copy button.

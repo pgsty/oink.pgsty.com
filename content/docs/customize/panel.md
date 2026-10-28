@@ -104,9 +104,8 @@ params:
           keywords: [bug, support, roadmap]
 ```
 
-This site uses the command above. Commands have seven fields. In normal
-preview, an unsupported key or invalid record warns and discards that command.
-Review the warning and rendered fallback before publication:
+This site uses the command above. Commands have seven fields. An unsupported
+key or invalid record warns and discards that command:
 
 - `id` is required. It must start with a lowercase letter and contain only lowercase letters, digits, underscores, and hyphens. It must not duplicate a built-in action ID.
 - `title` supplies the displayed title. The `description` supplies the smaller line below it. The `icon` is one Font Awesome class pair.

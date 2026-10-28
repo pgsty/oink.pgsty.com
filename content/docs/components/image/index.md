@@ -121,8 +121,8 @@ The rendered `src` points to the derivative. With zoom enabled, the dialog opens
 {command="Fill" options="300x150 Left" caption="Fill 300x150 Left: fills the box, cropped from the left"}
 
 Static paths, remote URLs, and SVG do not support processing.
-Using `command` for these sources warns and preserves the unprocessed image. Review the warning and rendered fallback before publication.
-[Hugo image processing](https://gohugo.io/content-management/image-processing/) documents anchors, quality, and format conversion, such as`300x150 webp q80`.
+Using `command` for these sources warns and preserves the unprocessed image.
+[Hugo image processing](https://gohugo.io/content-management/image-processing/) documents anchors, quality, and format conversion, such as `300x150 webp q80`.
 
 ## Linked images {#link}
 Two forms, for different purposes:
@@ -142,8 +142,7 @@ Two forms, for different purposes:
 ![Release card](release-note.webp)
 {caption="Click the image for the releases and downloads guide" link="/docs/write/releases/"}
 
-Linked images never zoom. Using `link=` without a caption warns and removes the link.
-The warning recommends `[![…](…)](…)`. Review the warning and rendered fallback before publication.
+Linked images never zoom. Using `link=` without a caption warns and removes the link, recommending `[![…](…)](…)`.
 
 ## Numbered figures {#numbered}
 
@@ -247,7 +246,7 @@ The attribute line `{…}` (the line immediately after a block image):
 {.fields meta="type default"}
 
 `style`, `on*`, `alt`, `title`, `src`, and unsupported attribute-line keys warn and are ignored.
-Review the warning and rendered fallback before publication. Write alt, title, and src in the Markdown image itself.
+Write alt, title, and src in the Markdown image itself.
 
 ## Limits {#limits}
 

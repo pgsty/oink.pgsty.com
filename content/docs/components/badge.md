@@ -145,7 +145,7 @@ for the upgrade steps see {{</* badge text="Upgrading" tone="neutral" link="/doc
 Current version {{< badge text="v0.5" tone="info" link="/blog/" >}};
 for the upgrade steps see {{< badge text="Upgrading" tone="neutral" link="/docs/admin/upgrade/" >}}.
 
-An invalid link warns and is removed. Ordinary previews show a plain badge. Review the warning and rendered fallback before publication.
+An invalid link warns and is removed, rendering a plain badge.
 
 ## Output {#outputs}
 
@@ -168,8 +168,8 @@ Badges load no JavaScript. A badge is not a live region, so adding one does not 
 {.fields meta="type default"}
 
 Use named parameters only. There is no `icon`, `class`, `color`, `outline`, or `size` parameter.
-Invalid input warns and uses a safe fallback. Unknown parameters are ignored. Empty `text` renders nothing.
-Invalid `tone` uses `neutral`, and unsafe links are removed. Review the warning and rendered fallback before publication.
+Invalid input warns and uses a safe fallback: unknown parameters are ignored, empty `text` renders nothing,
+invalid `tone` uses `neutral`, and unsafe links are removed.
 
 ## Limits {#limits}
 

@@ -55,7 +55,7 @@ params:
 | `summary` | 上面这些 + 描述与摘要 | 千页级站点；本站使用这一档 |
 | `content` | 上面这些 + 全文纯文本 | 默认值，几百页以内适用 |
 
-其它取值在普通预览中告警并使用 `content`；发布前应审阅 `invalid params.offline_search_index` 诊断并检查回退结果。
+其它取值会报 `invalid params.offline_search_index` 告警并使用 `content`。
 
 `offline_search_summary_length` 是结果行里摘要的截断长度（默认 70），`offline_search_max_results` 是结果条数上限（默认 10）。这几个键的完整定义在[配置总览](/zh/docs/customize/config/)。
 
@@ -162,7 +162,7 @@ params:
       indexName: YOUR_INDEX
 ```
 
-三个值必须都显式写出。缺任意一项都会告警并停用 Algolia：普通预览继续，发布前应核对告警与停用结果。OINK 不会回退到其它项目的公共索引。DocSearch 的 JS 与 CSS 随主题内置，不从 CDN 加载，但每次检索请求都发到 Algolia。需要真实的密钥与索引才能工作，此处不渲染。
+三个值必须都显式写出。缺任意一项都会告警并停用 Algolia。OINK 不会回退到其它项目的公共索引。DocSearch 的 JS 与 CSS 随主题内置，不从 CDN 加载，但每次检索请求都发到 Algolia。需要真实的密钥与索引才能工作，此处不渲染。
 
 ### Google 可编程搜索 {#google-cse}
 

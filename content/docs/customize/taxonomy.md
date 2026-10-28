@@ -285,10 +285,6 @@ ls "$TAXONOMY_DIR"
 test -f "$PAGE" && grep -o 'taxonomy-term' "$PAGE"
 ```
 
-The theme's `bin/check-taxonomy.py` is a maintainer regression check using
-synthetic fixtures. It does not inspect your site's content. Use the checks
-above to validate your configuration.
-
 ## Limits {#limits}
 
 - `page_header: []` does **not** hide the term line. An empty list is treated as unset and lists every taxonomy. To remove the line, stop tagging those pages. Alternatively, hide `.taxonomy-terms-article` in `assets/scss/_styles_project.scss`.

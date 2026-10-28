@@ -314,7 +314,7 @@ The attribute line on the row below the table:
 | `data-*` / `aria-*` | string | none | Passed through |
 {.fields meta="type default"}
 
-`style`, `on*`, and other keys warn and are ignored. Review the warning and rendered fallback before publication.
+`style`, `on*`, and other keys warn and are ignored.
 
 ## Limits {#limits}
 

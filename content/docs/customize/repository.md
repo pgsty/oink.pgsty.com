@@ -83,9 +83,9 @@ cascade:
 `content/reference/api/client.md` therefore maps to the upstream's
 `docs/api/client.md`.
 
-The 1.2.0 working implementation normalizes Windows and Unix source paths to
-`/` before matching. It preserves filename case. For a physical mount outside
-the site, match its absolute source path. Do not match Hugo's virtual mount target:
+Since OINK 1.2.0, the theme normalizes Windows and Unix source paths to
+`/` before matching and preserves filename case. For a physical mount outside
+the site, match its absolute source path rather than Hugo's virtual mount target:
 
 ```yaml {title="External source at /srv/upstream/docs/"}
 path_base_for_github_subdir: '^/srv/upstream/docs/'
@@ -170,8 +170,7 @@ of `lastmod_commit`:
 | `hash` | `commit a1b2c3d` |
 | `none` | The date only, with no commit link |
 
-In normal preview, any other value warns and uses `subject`. A strict
-publishing build fails on `invalid params.ui.lastmod_commit`.
+Any other value warns (`invalid params.ui.lastmod_commit`) and uses `subject`.
 
 Check these two conditions:
 
@@ -281,7 +280,7 @@ items:
 ```
 
 The `github` field is required and must be a valid GitHub username. A duplicate
-produces a warning and skips the repeated entry. Review the warning and rendered fallback before publication. The `name` defaults to `github`. The `role` is optional. The `url`
+produces a warning and skips the repeated entry. The `name` defaults to `github`. The `role` is optional. The `url`
 defaults to `https://github.com/<github>`. The `avatar` is optional. Without it,
 the shortcode renders an initial placeholder and makes no network request.
 If present, its value must be `http(s)://` or a site-root-relative path.

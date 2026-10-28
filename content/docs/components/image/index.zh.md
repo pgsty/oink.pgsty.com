@@ -105,8 +105,7 @@ Markdown 里的 `"标题"` 保持原义（悬停提示），不会成为图注�
 ![文档外壳左半边](oink-shell.webp)
 {command="Fill" options="300x150 Left" caption="Fill 300x150 Left：填满框，从左侧裁"}
 
-静态路径、远程 URL 与 SVG 不能处理。对它们写 `command` 时告警并保留未处理图片；
-发布前应审阅告警并检查回退结果。选项语法（锚点、质量、格式转换，如
+静态路径、远程 URL 与 SVG 不能处理。对它们写 `command` 时告警并保留未处理图片。选项语法（锚点、质量、格式转换，如
 `300x150 webp q80`）见 [Hugo 图片处理](https://gohugo.io/content-management/image-processing/)。
 
 ## 链接图片 {#link}
@@ -127,8 +126,7 @@ Markdown 里的 `"标题"` 保持原义（悬停提示），不会成为图注�
 ![发布卡片](release-note.webp)
 {caption="点击图片查看发布与下载页的说明" link="/zh/docs/write/releases/"}
 
-带链接的图不参与缩放。没有图注只写 `link=` 时告警并丢弃链接，消息提示改用
-`[![…](…)](…)`；发布前应审阅告警并检查回退结果。
+带链接的图不参与缩放。没有图注只写 `link=` 时告警并丢弃链接，消息提示改用 `[![…](…)](…)`。
 
 ## 编号图 {#numbered}
 
@@ -220,8 +218,7 @@ html:not([data-bs-theme="dark"]) .only-dark { display: none; }
 | `data-*` / `aria-*` | 字符串 | — | 透传 |
 {.fields meta="type default"}
 
-`style`、`on*`、`alt`、`title`、`src` 与不支持的键出现在属性行时告警并忽略；
-发布前应审阅告警并检查回退结果。alt、title、src 属于 Markdown 图片本身。
+`style`、`on*`、`alt`、`title`、`src` 与不支持的键出现在属性行时告警并忽略。alt、title、src 属于 Markdown 图片本身。
 
 ## 限制与常见问题 {#limits}
 

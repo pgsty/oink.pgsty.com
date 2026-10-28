@@ -9,8 +9,7 @@ search_keywords: [ECharts, 图表, 统计图, 柱状图, 折线图, 饼图, char
 `echarts` 围栏的正文是一段 YAML 或 JSON 的 ECharts 选项对象，不是代码。适用于需要
 坐标轴、序列与图例的定量图表；只表达关系与流程时用
 [Mermaid](/zh/docs/components/mermaid/)，只表达顺序与层级时用
-[Infographic](/zh/docs/components/infographic/)。Hugo 在构建期解析选项；无效输入在
-普通预览中告警并保留可读源码，发布前应审阅告警并检查回退结果。浏览器用随主题分发的
+[Infographic](/zh/docs/components/infographic/)。Hugo 在构建期解析选项，无效输入会告警并保留可读源码。浏览器用随主题分发的
 ECharts 绘图，只有用到它的页面加载运行时。
 
 ## 最简例子 {#minimal}
@@ -49,7 +48,7 @@ series:
     data: [4, 4, 8, 22, 15, 7]
 ```
 
-两种格式都接受，YAML 不需要引号与逗号，写起来更短。缩进写错、正文解析成数组而不是映射时，普通预览告警并保留源码，不输出空白图；发布前应审阅告警并检查回退结果。
+两种格式都接受，YAML 不需要引号与逗号，写起来更短。缩进写错、正文解析成数组而不是映射时，会告警并保留源码，不输出空白图。
 
 ## 多序列折线 {#line}
 
@@ -215,7 +214,7 @@ series:
     data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ```
 
-无效高度（`360`、`36pt`）在普通预览中告警并使用默认值；发布前应审阅告警并检查回退结果。
+无效高度（`360`、`36pt`）会告警并使用默认值 `400px`。
 
 ## 深浅色 {#theme}
 
@@ -332,7 +331,7 @@ series:
 {.fields meta="type default"}
 
 `style`、`on*` 与未知属性会告警并忽略。围栏正文不能解析成 YAML/JSON 映射时告警
-并渲染为源码；发布前应审阅告警并检查回退结果。选项键本身是 ECharts 的，以
+并渲染为源码。选项键本身是 ECharts 的，以
 [官方选项手册](https://echarts.apache.org/zh/option.html)为准。
 
 没有站点级参数：ECharts 不需要在 `hugo.yml` 里开关，用到时才加载。

@@ -77,7 +77,7 @@ Draw.io 图片走的是普通图片渲染钩子，[图片](/zh/docs/components/i
 ![Hugo 构建流水线（PNG 导出）](pipeline.drawio.png)
 {width="620" height="140"}
 
-文档里优先用 SVG：缩放不失真，文字是真实文本（可被搜索、可被读屏器读取），改动的 diff 也读得懂。图特别复杂、或目标平台不支持 SVG 时用 PNG。只有 PNG 能走 Hugo 的图片处理；SVG 上的处理操作会告警并保留原图，发布前应审阅告警并检查回退结果。
+文档里优先用 SVG：缩放不失真，文字是真实文本（可被搜索、可被读屏器读取），改动的 diff 也读得懂。图特别复杂、或目标平台不支持 SVG 时用 PNG。只有 PNG 能走 Hugo 的图片处理；SVG 上的处理操作会告警并保留原图。
 
 ## 编辑流程 {#editing}
 
@@ -116,10 +116,10 @@ params:
     drawio_server: https://drawio.internal.example/
 ```
 
-- `enable: true` 却没写 `drawio_server` 时会告警并关闭编辑；构建会保留该告警。主题不代替站点选择公共服务。
+- `enable: true` 却没写 `drawio_server` 时会告警并关闭编辑；主题不代替站点选择公共服务。
 - 地址必须是 HTTP(S) URL 或本地路径；本地路径遵循 `baseURL` 中的部署子路径。
   空白、控制字符、原始反斜杠、协议相对 URL（`//host/`）与其他 scheme 会告警并
-  关闭编辑；发布前应审阅告警并检查回退结果。
+  关闭编辑。
 - 编辑过程必须留在组织内部时，部署一份[自托管编辑器](https://github.com/jgraph/docker-drawio)，把地址指向它。
 - 公共端点 `https://embed.diagrams.net/` 可用，读者的图会进入第三方页面。
 

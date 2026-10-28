@@ -137,8 +137,7 @@ hero:
 不写 `title_lines` 时用 `title`，两者都没有时用站点标题。配图是 CSS 背景图，`alt` 有值时容器带 `role="img"`，无值时对辅助技术隐藏。
 
 `align: center` 是纯文字的居中首屏：文案块加宽居中，标题自动平衡换行，`note`
-挪到按钮下方。两者同时出现时，普通预览会告警并回退到 `start` 以保留图片；严格
-发布构建拒绝这条警告。
+挪到按钮下方。两者同时出现时，主题会告警并回退到 `start` 以保留图片。
 
 ## 分区注册表 {#registry}
 
@@ -169,7 +168,7 @@ hero:
 | `download` | 一个或多个 `data/download/` 记录 |
 | `bar-chart` | 不用图表 JS 的数值对比 |
 
-写错类型名不会静默消失：构建时给一条 `unknown section type` 警告并跳过该分区。发布前检查告警，并确认该分区已跳过。
+写错类型名不会静默消失：构建时给一条 `unknown section type` 警告并跳过该分区。
 
 ## 常用分区的最小写法 {#section-examples}
 
@@ -331,8 +330,8 @@ landing: pricing
       - zh.yaml
 ```
 
-非首页落地页按这个顺序查找数据。全部找不到时，普通预览告警并渲染没有分区的
-Landing 外壳；发布前应审阅告警并检查回退结果：
+非首页落地页按这个顺序查找数据。全部找不到时，主题告警并渲染没有分区的
+Landing 外壳：
 
 1. 页面 front matter 里的 `sections`；
 2. `data/landing/<key>/<精确语言>.yaml`；
@@ -409,7 +408,7 @@ params:
 
 ## 验证 {#verify}
 
-1. 构建生产：`hugo --printPathWarnings`。确认构建成功并审阅告警，上游 LibSass 弃用告警允许出现。类型写错、数据键不存在、`landing` 与 `sections` 同时出现都在这一步暴露。
+1. 构建生产：`hugo --printPathWarnings`。类型写错、数据键不存在、`landing` 与 `sections` 同时出现都在这一步暴露。
 2. 打开首页与落地页，逐个分区对照数据文件，每种语言各看一遍。
 3. 禁用 JavaScript 后刷新：内容仍在，只是没有动效。
 4. 深浅色各看一遍，确认 `image.light` / `image.dark` 都给对。

@@ -216,7 +216,7 @@ section_index: list
 | 其余内容 | Markdown | — | 描述。紧凑列表里跟在 ` — ` 后面，松散列表里另起一段 |
 {.fields meta="type default"}
 
-`card` 的参数（本地 checkout 中，`cards` 另支持可选的 `variant="list"`）：
+`card` 的参数（`cards` 另支持可选的 `variant="list"`）：
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
@@ -230,15 +230,13 @@ section_index: list
 | 正文 | Markdown | — | 卡片描述 |
 {.fields meta="type default"}
 
-没有 `cols`、`columns`、`accent`、`desc`、`color` 参数。未知参数在普通预览中告警
-并忽略；发布前应审阅告警并检查回退结果。
+没有 `cols`、`columns`、`accent`、`desc`、`color` 参数。未知参数会告警并忽略。
 
 ## 限制与常见问题 {#limits}
 
 - `{.cards}` 只认无序列表：有序列表加了这个标记不会变成卡片。
 - `{.cards}` 必须紧贴列表：中间空一行、或缩进进列表项，标记被静默丢弃，构建不报错，列表仍是列表。渲染结果不是卡片时先检查这一行。
-- `card` 只能待在 `cards` 里：单独使用、或放进别的 shortcode 时告警并跳过；严格
-  发布构建拒绝这条警告。
+- `card` 只能待在 `cards` 里：单独使用、或放进别的 shortcode 时告警并跳过。
 - 列数不可配：网格按容器宽度自适应，只有栏目首页的自动卡片能用 `params.ui.section_index_columns` 指定列数。
 - 卡片不放长文：描述超过两行时改用正文段落或[提示块](/zh/docs/components/callout/)。
 

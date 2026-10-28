@@ -214,7 +214,7 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 
 ## 参数参考 {#reference}
 
-本地 checkout 的完整形式支持可选的 `variant="compact"`。其他写法约定如下：
+OINK 1.4.0 的完整形式支持可选的 `variant="compact"`。其他写法约定如下：
 
 | 写法 | 位置 | 说明 |
 | --- | --- | --- |

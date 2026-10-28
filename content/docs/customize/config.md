@@ -55,8 +55,8 @@ params:
 
 - **The theme's defaults are conservative; write only the keys you change.** Local search, image zoom, comments, feedback, and the light/dark menu are off by default. The site chooses its policy for these interactive features. Add keys as needed. Reducing a "complete configuration" can leave unnecessary keys.
 - **There is no theme master switch.** There is no `oink.enabled` or `params.oink.*` namespace. No option switches between a "Docsy shell" and an "OINK shell". A switch that is absent from this page does not exist.
-- **An invalid value warns and falls back to the documented default.** The setting `params.ui.typography: solarized` reports `invalid params.ui.typography "solarized" (allowed: technical | system) -- using "technical"`. The site still builds. The settings `footer_style: thin`, `page_width: huge`, and `section_index: grid` behave the same way. One typo therefore changes one setting instead of producing HTTP 500 on every URL under `hugo server`. Review the warning and fallback output before publication.
-- **One warning keeps the value instead of dropping it.** If `theme_color` is below AA body-text contrast (4.5:1) against the theme canvas, the color still appears in output. The author may choose it for a custom canvas or brand requirement. The warning includes the `ignoreLogs` id that can silence it. This is advice, not rejection. Use a darker color or silence the warning with one configuration line. Review the actual contrast before publication. Only an unparseable hex value is discarded. It falls back to the default palette, like other invalid values.
+- **An invalid value warns and falls back to the documented default.** The setting `params.ui.typography: solarized` reports `invalid params.ui.typography "solarized" (allowed: technical | system) -- using "technical"`. The site still builds. The settings `footer_style: thin`, `page_width: huge`, and `section_index: grid` behave the same way. One typo therefore changes one setting instead of producing HTTP 500 on every URL under `hugo server`.
+- **One warning keeps the value instead of dropping it.** If `theme_color` is below AA body-text contrast (4.5:1) against the theme canvas, the color still appears in output. The author may choose it for a custom canvas or brand requirement. The warning includes the `ignoreLogs` id that can silence it. Use a darker color or silence the warning with one configuration line. Only an unparseable hex value is discarded and falls back to the default palette.
 
 - **The theme itself never stops the build.** Its templates contain no `errorf`. Every invalid value uses the warning and fallback behavior above. Draw.io and Algolia warn and stay off when their required service configuration is missing. OINK 1.4.0's PlantUML renderer needs no endpoint for local mode; an invalid explicit endpoint warns and disables rendering. The theme never chooses a public service for you. Incomplete upstream attribution produces a warning and omits the entire notice. A partial notice could appear complete. Hugo can still stop a build if a content reference resolves to nothing or its version is below `module.hugoVersion.min`.
 
@@ -394,8 +394,7 @@ lower-level typography, use the SCSS/CSS entry points. See
 {.fields meta="type default"}
 
 If a required giscus value is missing, the theme warns and skips the comment
-section. Normal preview continues. Review the warning and confirm comments are disabled.
-See [Comments](/docs/admin/comments/#enable) for the required fields.
+section. See [Comments](/docs/admin/comments/#enable) for the required fields.
 
 ## Repository links and page information {#repository}
 
@@ -563,8 +562,8 @@ Run a production build after changing configuration:
 hugo --printPathWarnings
 ```
 
-It passes only when the output reads `Total in …` with no ERROR; review warnings and accept only the known upstream LibSass notice.
-Common errors and what they mean:
+It passes when the output reads `Total in …` with no ERROR.
+Common warnings and what they mean:
 
 | Error fragment | Cause |
 | --- | --- |
@@ -586,8 +585,8 @@ After a configuration change, perform at least three checks. Open one page in
 each language. Open a page without a translation to check fallback. Check
 links under the production `baseURL`, including any deployment subpath.
 
-The theme's minimum and single test baseline are Hugo Extended `0.168.0`.
-Validate configuration changes with this version. Keep the default baseline pinned; do not run older-Hugo compatibility tests or add adaptation:
+The theme requires Hugo Extended `0.168.0` or newer.
+Validate configuration changes with the pinned baseline:
 
 ```bash
 # require v0.168.0+extended in this output
@@ -596,8 +595,7 @@ hugo --printPathWarnings
 ```
 
 The theme declares the minimum in `hugo.yaml` and `theme.toml`. The site's
-`module.hugoVersion.min` should match it. Update these declarations, CI pins,
-and current documentation together when advancing the baseline.
+`module.hugoVersion.min` should match it.
 
 ## Related {#related}
 

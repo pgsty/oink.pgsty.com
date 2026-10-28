@@ -208,8 +208,7 @@ aliases:
 
 - 正文与标题合并：经过 Prettier 等格式化工具的文件，在标题行下保留一个空的 `>` 行，否则工具会把标题并入正文。
 - 属性行被格式化工具移动：把 `{icon=…}` 这类标记行放在 `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->` 之间。
-- `style`、`onclick` 与不支持的属性会告警并忽略：属性行只接受 `icon` 与 `class`；
-  发布前应审阅告警并检查回退结果（见下表）。
+- `style`、`onclick` 与不支持的属性会告警并忽略：属性行只接受 `icon` 与 `class`（见下表）。
 
 ## 输出形态 {#outputs}
 
@@ -241,7 +240,7 @@ aliases:
 | `class` | 空格分隔的 class | — | 原样透传给站点 CSS |
 {.fields meta="type default"}
 
-`style`、`on*` 与其它键会告警并忽略；发布前应审阅告警并检查回退结果。
+`style`、`on*` 与其它键会告警并忽略。
 
 ## 限制与常见问题 {#limits}
 

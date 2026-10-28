@@ -87,8 +87,7 @@ The runtime uses the same detection test.
 {width="620" height="140"}
 
 Prefer SVG for documentation. It scales without quality loss, contains searchable text accessible to screen readers, and has readable diffs.
-Use PNG for very complex diagrams or platforms without SVG support. Only PNG supports Hugo image processing.
-Processing an SVG warns and preserves the source. Review the warning and rendered fallback before publication.
+Use PNG for very complex diagrams or platforms without SVG support. Only PNG supports Hugo image processing; processing an SVG warns and preserves the source.
 
 ## What the button does {#editing}
 
@@ -130,11 +129,10 @@ params:
     drawio_server: https://drawio.internal.example/
 ```
 
-- `enable: true` without `drawio_server` warns and disables editing. Review the warning and rendered fallback before publication.
+- `enable: true` without `drawio_server` warns and disables editing.
   The theme does not select a public service.
 - The address must be an HTTP(S) URL or local path. Local paths honor the `baseURL` deployment subpath.
   Whitespace, control characters, raw backslashes, protocol-relative URLs (`//host/`), and other schemes warn and disable editing.
-  Review the warning and rendered fallback before publication.
 - If editing must stay within your organization, deploy a [self-hosted editor](https://github.com/jgraph/docker-drawio) and configure its address.
 - The public endpoint `https://embed.diagrams.net/` works. With this endpoint, the reader's diagram is sent to a third-party page.
 

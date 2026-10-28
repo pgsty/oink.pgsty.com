@@ -226,9 +226,6 @@ ls "$TAXONOMY_DIR"
 test -f "$PAGE" && grep -o 'taxonomy-term' "$PAGE"
 ```
 
-主题的 `bin/check-taxonomy.py` 是维护者使用的回归检查，运行合成夹具，不检查消费站点
-内容。验证自己的配置时，使用上面的页面与产物检查即可。
-
 ## 限制 {#limits}
 
 - `page_header: []` **不会** 隐藏术语行：空列表被当作未设置，回落到「列出全部分类法」。要去掉这行，就不要给这些页面打标签，或在 `assets/scss/_styles_project.scss` 里隐藏 `.taxonomy-terms-article`。

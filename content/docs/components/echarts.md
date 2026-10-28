@@ -9,7 +9,7 @@ search_keywords: [ECharts, chart, bar, line, pie, height, theme, OinkEchartsFunc
 An `echarts` fence contains an ECharts option object in YAML or JSON. It contains data, not code.
 Use it for quantitative charts with axes, series, and a legend.
 Use [Mermaid](/docs/components/mermaid/) for relationships and flows. Use [Infographic](/docs/components/infographic/) for order and hierarchy.
-Hugo parses options at build time. Invalid input warns and preserves readable source in ordinary previews. Review the warning and rendered fallback before publication.
+Hugo parses options at build time. Invalid input warns and preserves readable source.
 The browser draws charts with the theme's bundled ECharts. Only pages that use it load the runtime.
 
 ## Shortest form {#minimal}
@@ -49,8 +49,7 @@ series:
 ```
 
 Both formats are supported. YAML is shorter because it needs no quotes or commas.
-Incorrect indentation or an array instead of a map warns and identifies the source line.
-The result shows the source instead of a blank chart. Review the warning and rendered fallback before publication.
+Incorrect indentation or an array instead of a map warns, identifies the source line, and shows the source instead of a blank chart.
 
 ## Multiple line series {#line}
 
@@ -219,7 +218,7 @@ series:
     data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ```
 
-Invalid heights such as `360` and `36pt` warn and use the default in ordinary previews. Review the warning and rendered fallback before publication.
+Invalid heights such as `360` and `36pt` warn and use the default `400px`.
 
 ## Light and dark {#theme}
 
@@ -345,7 +344,7 @@ The fence attribute line (```` ```echarts {…} ````):
 {.fields meta="type default"}
 
 `style`, `on*`, and unknown attributes warn and are ignored.
-If a fence body does not parse to a YAML/JSON map, it warns and displays the source. Review the warnings and rendered fallback before publication.
+If a fence body does not parse to a YAML/JSON map, it warns and displays the source.
 ECharts defines the option keys in its [official option manual](https://echarts.apache.org/en/option.html).
 
 ECharts has no site-level parameter. It needs no switch in `hugo.yml` and loads only on pages that use it.

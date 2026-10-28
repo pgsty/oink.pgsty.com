@@ -161,7 +161,7 @@ image_zoom: true
 {.fields meta="type default"}
 
 没有 `columns`、`caption`、`title` 属性。坏行或坏属性会告警，只丢弃无效部分或该行，
-并给出围栏内行号；发布前应审阅告警并检查回退结果。
+并给出围栏内行号。
 
 ## 限制与常见问题 {#limits}
 

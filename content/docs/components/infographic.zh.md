@@ -84,7 +84,7 @@ data
 
 ## 漏斗 {#funnel}
 
-`sequence-funnel-simple` 画逐步收窄的阶段。下面是主题的五个发布状态：互不等价，走完最后一个才是上线。
+`sequence-funnel-simple` 画逐步收窄的阶段。下面是主题发布的五个阶段。
 
 ````markdown {title="源码"}
 ```infographic {height="420px"}
@@ -299,7 +299,7 @@ data
 | `class` | 空格分隔的 class | — | 透传给容器 |
 {.fields meta="type default"}
 
-`style`、`on*` 与未知属性会告警并忽略；空 DSL 正文告警并不渲染。发布前应审阅告警并检查回退结果。
+`style`、`on*` 与未知属性会告警并忽略；空 DSL 正文告警并不渲染。
 
 DSL 的顶层键（属于 AntV，不是主题）：
 

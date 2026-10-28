@@ -229,7 +229,7 @@ Steps load no script. Disabling JavaScript does not change the result.
 
 ## Parameter reference {#reference}
 
-The local checkout supports the optional `variant="compact"` on the full form. Follow these conventions:
+OINK 1.4.0 supports the optional `variant="compact"` on the full form. Follow these conventions:
 
 | Spelling | Where | Description |
 | --- | --- | --- |

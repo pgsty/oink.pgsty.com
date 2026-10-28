@@ -142,7 +142,7 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 当前版本 {{< badge text="v0.5" tone="info" link="/zh/blog/" >}}，
 升级步骤见 {{< badge text="版本升级" tone="neutral" link="/zh/docs/admin/upgrade/" >}}。
 
-链接非法时普通预览告警并丢弃链接，保留普通徽章；发布前应审阅告警并检查回退结果。
+链接非法时告警并丢弃链接，保留普通徽章。
 
 ## 输出形态 {#outputs}
 
@@ -165,8 +165,8 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 {.fields meta="type default"}
 
 只接受命名参数。没有 `icon`、`class`、`color`、`outline`、`size` 参数。无效输入
-会告警并采用安全结果：未知参数忽略，空 `text` 不渲染，非法 `tone` 回退
-`neutral`，不安全链接被丢弃。发布前应审阅告警并检查回退结果。
+会告警并采用安全回退：未知参数忽略，空 `text` 不渲染，非法 `tone` 回退
+`neutral`，不安全链接被丢弃。
 
 ## 限制与常见问题 {#limits}
 

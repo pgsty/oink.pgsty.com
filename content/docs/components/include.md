@@ -189,7 +189,7 @@ This is the intended source-preserving behavior. None of these three shortcodes 
 | `lang` | string | — | Code language; without `code=true` it warns and is ignored |
 {.fields meta="type default"}
 
-Other parameter names warn and are ignored. The message identifies the file and line. Review the warning and rendered fallback before publication.
+Other parameter names warn and are ignored. The message identifies the file and line.
 
 `param` (one positional parameter):
 

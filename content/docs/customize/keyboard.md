@@ -179,8 +179,8 @@ keyboard_nav: false
 ---
 ```
 
-The key accepts only a boolean. In normal preview, `"false"` or any other
-value warns and uses the site default. Review the `params.ui.keyboard_nav must be a boolean` diagnostic and rendered fallback before publication. See the complete definition in
+The key accepts only a boolean. Passing `"false"` or any other non-boolean
+value warns (`params.ui.keyboard_nav must be a boolean`) and uses the site default. See the complete definition in
 [Configuration](/docs/customize/config/).
 
 If you disable keyboard navigation, its runtime is excluded from the JavaScript

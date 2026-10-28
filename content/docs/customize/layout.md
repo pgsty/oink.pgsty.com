@@ -75,8 +75,7 @@ params:
     docs_sidebar_root: home # home | section
 ```
 
-Only these two values are valid. In normal preview, any other value warns and
-uses `section`. Review the warning and rendered fallback before publication.
+Only these two values are valid. Any other value warns and uses `section`.
 
 ### Documentation at the site root {#docs-at-root}
 
@@ -246,7 +245,7 @@ absent from the manifest uses its content tree.
 
 This tree also sets paging order and navigation JSON. The sidebar and previous
 / next links therefore agree. An empty `sections` array warns and falls back to the content
-tree. A nonexistent `page` warns and skips that entry. Review the warning and rendered fallback before publication. Placeholder nodes with `manual_link` and
+tree. A nonexistent `page` warns and skips that entry. Placeholder nodes with `manual_link` and
 `sidebar_divider` rows stay in the sidebar without becoming paging targets.
 In 1.1, a divider section retains its children in this explicit tree too; use
 the same [group-only front matter](/docs/write/organize/#group-only) as for the
@@ -289,7 +288,7 @@ params:
 
 An integer sets the deepest expanded level (2–4). The value `true` means 2,
 or h2 only. The value `false` disables the branch. An out-of-range value warns
-and disables it in normal preview. Review the warning and rendered fallback before publication.
+and disables it.
 This feature applies only to `type: book` pages. It expands only below the
 current sidebar row. Page front matter or a section cascade can set the same
 key; `sidebar_headings: false` turns off an inherited opt-in. The right outline
@@ -314,9 +313,9 @@ separate switch is required. Readers can collapse the right column. The browser
 stores that state locally. Below `xl`, the right column hides, and its content
 moves to the sidebar drawer.
 
-The 1.2.0 working implementation decodes valid URL fragments when tracking
-headings. A malformed percent sequence falls back to the literal heading ID,
-including when following a link to a heading near the page end.
+Since OINK 1.2.0, heading tracking decodes valid URL fragments. A malformed
+percent sequence falls back to the literal heading ID, including when following
+a link to a heading near the page end.
 
 The old `params.ui.scroll_spy` site key and `scroll_spy` page key remain accepted
 as quiet compatibility no-ops throughout 1.x. Either boolean value produces the
@@ -345,7 +344,7 @@ params:
 - `cards`: a grid of cards reading each child's `title` (or `linkTitle`), `description` and `icon`.
 
 You can override this setting per section. An invalid value warns and uses a
-fallback in normal preview. Review the warning and rendered fallback before publication:
+fallback:
 
 ```yaml {title="content/docs/components/_index.md"}
 ---
@@ -381,7 +380,7 @@ page_width: wide
 
 Book pages also support `reading_width` (`slim` / `normal` / `wide`). This
 changes body reading width without changing the shell. An invalid value in
-either key warns and uses a fallback in normal preview. Review the warning and rendered fallback before publication.
+either key warns and uses a fallback.
 
 ## Navbar and footer switches {#chrome}
 
@@ -409,7 +408,7 @@ in [Page parameters](/docs/write/frontmatter/).
 hugo --printPathWarnings
 ```
 
-- The build prints `Total in …` with no ERROR; review warnings and accept only the known upstream LibSass notice;
+- The build prints `Total in …` with no ERROR;
 - Confirm that a new `type: docs` page has a left sidebar. If it does not, check its cascade and `shell_types`;
 - Drag the sidebar divider and reload. Confirm that the width persists. Double-click to restore the default;
 - Below `md` the sidebar becomes a closable drawer, and below `xl` the outline moves into the drawer;

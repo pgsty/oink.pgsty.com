@@ -286,7 +286,7 @@ Print 和 RSS 保持静态表格，Markdown 保留作者语法；浏览器打印
 | `data-*` / `aria-*` | 字符串 | 无 | 透传 |
 {.fields meta="type default"}
 
-`style`、`on*` 与其它键会告警并忽略；发布前应审阅告警并检查回退结果。
+`style`、`on*` 与其它键会告警并忽略。
 
 ## 限制与常见问题 {#limits}
 

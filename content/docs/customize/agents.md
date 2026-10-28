@@ -205,8 +205,8 @@ Source: https://oink.pgsty.com/docs/customize/agents/index.md
 where the page publishes no `.md`.
 
 Only a top-level section can publish a bundle. If you list `LLMSFULL` further
-down the tree, the theme warns: "LLMSFULL output requires a top-level section".
-It emits nothing. The `hugo server` preview continues to work. Review the diagnostic and confirm the unsupported output is absent.
+down the tree, the theme warns ("LLMSFULL output requires a top-level section")
+and emits nothing.
 
 If at least one section has a bundle, `llms.txt` includes a `## Full-text
 bundles` list for that language. An agent can discover bundles in the file it

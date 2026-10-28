@@ -198,7 +198,7 @@ erDiagram
 ## State diagrams {#state}
 
 `stateDiagram-v2` displays states and transition conditions.
-This example shows five OINK release states. They are not interchangeable. A successful local build establishes none of them.
+This example shows the five stages of a theme release.
 
 ````markdown {title="Source"}
 ```mermaid
@@ -364,9 +364,8 @@ size on phones. Theme changes retain your position; reduced motion adds no anima
 
 Choose **Source** to inspect the original text and **Copy code** to copy it.
 Arrows, quotes, ampersands and Chinese stay intact. **Download SVG** exports a
-styled, standalone image requiring no remote resources. Copy/export failures show
-feedback. “SVG download requested” means the browser received the request; the
-browser controls final saving. An SVG with external image or style dependencies
+styled, standalone image requiring no remote resources. Copy and export failures show
+feedback. An SVG with external image or style dependencies
 cannot be exported. The source disclosure below each figure also supports copying.
 
 ## Demand loading and printing {#loading}

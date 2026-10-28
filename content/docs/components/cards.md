@@ -235,7 +235,7 @@ The native form:
 | Everything else | Markdown | — | The description: after ` — ` in a tight list, its own paragraph in a loose one |
 {.fields meta="type default"}
 
-`card` parameters (`cards` itself takes none):
+`card` parameters (`cards` also accepts an optional `variant="list"`):
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -250,14 +250,14 @@ The native form:
 {.fields meta="type default"}
 
 There is no `cols`, `columns`, `accent`, `desc`, or `color` parameter.
-Unknown parameters warn and are ignored in ordinary previews. Review the warning and rendered fallback before publication.
+Unknown parameters warn and are ignored.
 
 ## Limits {#limits}
 
 - `{.cards}` supports only unordered lists. It has no effect on ordered lists.
 - `{.cards}` must immediately follow the list. A blank line or indentation inside a list item silently removes the marker.
   The build succeeds, but the result stays a list. Check this line first if no card grid appears.
-- A `card` must be inside `cards`. Alone or inside another shortcode, it warns and is skipped. Review the warning and rendered fallback before publication.
+- A `card` must be inside `cards`. Alone or inside another shortcode, it warns and is skipped.
 - The grid adapts to its container. Its column count cannot be configured.
   Only automatic section cards accept a count, through `params.ui.section_index_columns`.
 - If a description exceeds two lines, use a paragraph or a [callout](/docs/components/callout/).

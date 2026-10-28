@@ -416,9 +416,8 @@ params:
 
 The `page_width` key controls the overall shell width. Override it per page or
 per section through a cascade. Book pages also support `reading_width` (`slim` /
-`normal` / `wide`). This changes the body's reading width instead of the shell.
-If either key has an invalid value, normal preview warns and uses a fallback.
-Review the warning and rendered widths before publication.
+`normal` / `wide`), which changes the body's reading width instead of the shell.
+If either key has an invalid value, the theme warns and uses a fallback.
 
 ## Footer {#footer}
 
@@ -438,8 +437,8 @@ params:
 - `none`: no footer at all.
 
 Page front matter, including a section cascade, can override the footer style.
-This site's documentation section uses `footer_style: slim`. In normal preview,
-an unrecognized value warns and falls back to `fat`. Review the warning and rendered fallback before publication.
+This site's documentation section uses `footer_style: slim`. An unrecognized
+value warns and falls back to `fat`.
 
 Store grid data in `data/footer/<language>.yaml`. See
 [Navigation and menus](/docs/customize/navigation/#footer). If `fat` is configured
@@ -490,7 +489,7 @@ For additional third-party CSS, publish a local resource through
 hugo --printPathWarnings
 ```
 
-- The build prints `Total in …` with no ERROR; review warnings and accept only the known upstream LibSass notice;
+- The build prints `Total in …` with no ERROR;
 - The page source has `data-td-typography="technical"` (or your chosen preset) on `<html>`;
 - In the browser the navbar shows your logo and site name, and the tab shows your favicon;
 - Switch to dark mode. Check body text, tables, callouts, code blocks, and focus rings again. Verify every color change in both modes;

@@ -165,8 +165,7 @@ into the page DOM, and without rendering again.
 
 **Source** and **Copy code** preserve arrows, quotes, ampersands and Chinese.
 **Download SVG** exports a styled standalone file; external resource dependencies
-prevent export. Failures show feedback, and download status confirms only that
-the browser received the request. The source disclosure below each diagram also
+prevent export. Failures show feedback in the toolbar. The source disclosure below each diagram also
 supports viewing and copying. Explicit server mode keeps its legacy behavior.
 
 ## Demand loading and printing {#loading}

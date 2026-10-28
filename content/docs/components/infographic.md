@@ -89,7 +89,7 @@ data
 ## Funnels {#funnel}
 
 `sequence-funnel-simple` displays narrowing stages.
-This example shows the theme's five release states. They are not interchangeable. Only the last state is live.
+This example shows the five stages of a theme release.
 
 ````markdown {title="Source"}
 ```infographic {height="420px"}
@@ -309,7 +309,6 @@ The fence attribute line (```` ```infographic {…} ````):
 {.fields meta="type default"}
 
 `style`, `on*`, and unknown attributes warn and are ignored. Empty DSL bodies warn and render nothing.
-Review the warning and rendered fallback before publication.
 
 AntV defines these top-level DSL keys:
 

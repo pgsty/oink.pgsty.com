@@ -174,7 +174,6 @@ content/docs
 ```
 
 Returning to an unopened indentation level warns and skips that line. The warning identifies the line inside the fence.
-Review the warning and rendered fallback before publication.
 
 ## Folding and explicit types {#dir-file}
 
@@ -345,7 +344,7 @@ The line syntax itself:
 {.fields}
 
 Unknown attributes or values, `open` on files, malformed `{…}`, and dedents to unopened levels warn.
-The theme uses a safe fallback or skips the invalid line. The message identifies the line. Review the warning and rendered fallback before publication.
+The theme uses a safe fallback or skips the invalid line. The message identifies the line.
 
 ## Limits {#limits}
 

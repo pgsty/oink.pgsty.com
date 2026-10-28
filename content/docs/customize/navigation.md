@@ -425,7 +425,7 @@ raw `<a href>` elements do not become edges. Unresolved destinations are
 discarded without a warning. Backlinks enhance navigation. They do not check
 links. Continue using a link checker to find broken links.
 
-A non-boolean value warns and falls back to off. The `hugo server` preview continues to work.
+A non-boolean value warns and falls back to off.
 
 The page's Markdown output carries the same list, introduced by "Backlinks:".
 RSS omits it, and the `print` output format omits it with the rest of the rail.

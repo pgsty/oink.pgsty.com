@@ -171,9 +171,8 @@ Offline readers, consumers of `llms.txt`, and readers of printed pages receive t
 {.fields meta="type default"}
 
 Boolean-like parameters compare their value with the text `true`. Both `loop="true"` and `loop=true` enable the option. Other values disable it.
-Other invalid values warn and use a fallback. Invalid `fit` uses `width`; nonnumeric `speed` uses `1`; nonnumeric `startAt` uses `0`.
-Nonnumeric `cols`, `rows`, `idleTimeLimit`, and marker times are ignored.
-These warnings do not stop ordinary builds. Review each warning and the rendered player fallback before publication.
+Other invalid values warn and use a fallback: invalid `fit` uses `width`, nonnumeric `speed` uses `1`, nonnumeric `startAt` uses `0`,
+and nonnumeric `cols`, `rows`, `idleTimeLimit`, and marker times are ignored.
 
 ## Limits {#limits}
 

@@ -78,7 +78,7 @@ cascade:
 
 `content/reference/api/client.md` 因此映射到上游的 `docs/api/client.md`。
 
-1.2.0 工作实现会在匹配前将 Windows 与 Unix 源码路径统一为 `/`，保留文件名
+自 OINK 1.2.0 起，主题会在匹配前将 Windows 与 Unix 源码路径统一为 `/`，并保留文件名
 大小写。物理挂载位于站点外部时，需要匹配绝对源码路径，不能使用 Hugo 的虚拟
 挂载目标：
 
@@ -152,7 +152,7 @@ params:
 | `hash` | `commit a1b2c3d` |
 | `none` | 只有日期，不链 commit |
 
-写别的值时普通预览告警并使用 `subject`；发布前应审阅 `invalid params.ui.lastmod_commit` 诊断并检查回退结果。
+写别的值时会报 `invalid params.ui.lastmod_commit` 告警并使用 `subject`。
 
 两点注意：
 
@@ -246,7 +246,7 @@ items:
 {{</* contributors */>}}
 ```
 
-字段：`github` 必填并校验为合法 GitHub 用户名；重复时告警并跳过后项，发布前应审阅告警并检查回退结果。`name` 缺省等于 `github`；`role` 可选；`url` 缺省是
+字段：`github` 必填并校验为合法 GitHub 用户名；重复时告警并跳过后项。`name` 缺省等于 `github`；`role` 可选；`url` 缺省是
 `https://github.com/<github>`；`avatar` 可选，不填时渲染成首字母占位块，不发任何
 网络请求，填写时必须是 `http(s)://` 或站内根相对路径。
 

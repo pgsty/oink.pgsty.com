@@ -175,7 +175,6 @@ Fence attributes:
 
 There is no `columns`, `caption`, or `title` attribute.
 Malformed lines or attributes warn and remove only the invalid part or line. The warning identifies the line inside the fence.
-Review the warning and rendered fallback before publication.
 
 ## Limits {#limits}
 

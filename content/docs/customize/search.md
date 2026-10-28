@@ -66,7 +66,7 @@ params:
 | `content` | The above plus the full plain text | The default, suitable up to a few hundred pages |
 
 Any other value warns with `invalid params.offline_search_index` and uses
-`content`. Review the warning and fallback output before publishing.
+`content`.
 
 The `offline_search_summary_length` key limits result excerpts (default 70).
 The `offline_search_max_results` key limits result count (default 10).
@@ -201,7 +201,7 @@ params:
 ```
 
 You must supply all three values explicitly. A missing value warns and disables
-Algolia. Normal preview continues. Review the warning and confirm Algolia is disabled.
+Algolia.
 OINK never falls back to another project's public index. The theme bundles
 DocSearch JS and CSS locally. They do not load from a CDN. However, every
 query sends a request to Algolia. The integration requires real credentials

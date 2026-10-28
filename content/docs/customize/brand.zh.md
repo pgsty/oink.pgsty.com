@@ -37,7 +37,7 @@ params:
 风格与明暗分别保存；选择站点默认项（悬停提示中注明）恢复跟随站点。所有风格共用一个
 样式表，字体全部本地加载。
 
-本地主题已提供 Ink 与 Terminal 实验版，需要显式开启：
+OINK 1.2.0 起提供 Ink 与 Terminal 实验预设，需要显式开启：
 
 ```yaml
 params:
@@ -238,7 +238,7 @@ params:
 - 实验字体：Ink 的界面、正文与标题使用 Inter；Terminal 的控件与标题使用 IBM Plex Mono，正文使用 Plex Sans。两者复用现有代码字体。显式 `fonts.ui` 仍控制主字体；需要独立正文字体时设置 `fonts.body`。
 - `system`：界面、展示、元数据、打印与等宽角色全部回到平台字体栈，浏览器不请求品牌字体。字体文件仍随主题分发，只是不被引用。
 
-非法取值告警并回落到 `technical`，普通 `hugo server` 照常可用，发布前应审阅告警与降级结果。选中的值写入 `<html data-td-typography="…">`，可在浏览器中确认。
+非法取值告警并回落到 `technical`。选中的值写入 `<html data-td-typography="…">`，可在浏览器中确认。
 
 ### 自定义字体 {#custom-fonts}
 字体角色是八个 CSS 自定义属性，覆盖它们即可，不必查找组件选择器：
@@ -337,7 +337,7 @@ params:
 
 `page_width` 控制外壳整体宽度，可逐页或按分区 cascade 覆盖。Book 页另有一个
 `reading_width`（`slim` / `normal` / `wide`），改的是正文阅读行宽，不是外壳。
-两个键取值非法都会在普通预览中告警并回退，发布前应核对告警与实际宽度。
+两个键取值非法都会告警并回退。
 
 ## 页脚 {#footer}
 
@@ -357,7 +357,7 @@ params:
 - `none`：不渲染页脚。
 
 页面 front matter（含分区 cascade）可以覆盖它，本站的文档栏目用的是
-`footer_style: slim`。无法识别的取值在普通预览中告警并回退到 `fat`，发布前应审阅告警并检查回退结果。
+`footer_style: slim`。无法识别的取值会告警并回退到 `fat`。
 
 多列网格的数据在 `data/footer/<语言>.yaml`，写法见[导航与菜单](/zh/docs/customize/navigation/#footer)。配了 `fat` 但没有数据时自动降级成 `slim`，可以先开启再补内容。
 
@@ -392,7 +392,7 @@ CSS 接口有明确边界。[字体](#fonts)那一节的八个字体角色与 `-
 hugo --printPathWarnings
 ```
 
-- 构建输出 `Total in …`，没有 ERROR，并完成告警审阅；上游 LibSass 弃用告警允许出现；
+- 构建输出 `Total in …` 且没有 ERROR；
 - 页面源码里 `<html>` 上有 `data-td-typography="technical"`（或所选的预设）；
 - 浏览器中顶栏显示自己的 Logo 与站名，标签页图标是自己的 favicon；
 - 切到深色模式再看一遍正文、表格、提示块、代码块与焦点框。配色改动容易只在一种模式下验证过；

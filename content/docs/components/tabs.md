@@ -261,7 +261,7 @@ Left and right arrows follow RTL direction. These keys and Home/End move and act
 
 - Invalid grouping or composition warns during Hugo builds and uses a safe fallback.
   The theme removes unusable group/value/default settings, ignores stray content, keeps later duplicates, or omits empty sets.
-  Warnings identify the source position. Review the warning and rendered fallback before publication.
+  Warnings identify the source position.
 - In the attribute form, a sequence without usable `value` loses synchronization and remains local tabs.
   Grouping never silently creates an identity.
 - Fences and tables cannot form one set. Use shortcodes to combine prose and code.

@@ -154,8 +154,8 @@ container has `role="img"`. Otherwise, the image is hidden from assistive techno
 
 The setting `align: center` creates a text-only centered first screen. It widens
 and centers the text block, balances title line breaks, and moves `note` below
-the buttons. If an image is also present, normal preview warns and falls back
-to `start`. This preserves the image. A production build keeps the warning visible.
+the buttons. If an image is also present, the theme warns and falls back
+to `start` so the image is preserved.
 
 ## The section registry {#registry}
 
@@ -189,7 +189,7 @@ fields, `eyebrow` / `title` / `desc` (or `text`), and a `class`.
 | `bar-chart` | Numeric comparison without chart JavaScript |
 
 If a type is misspelled, the build emits an `unknown section type` warning
-and skips the section. Review the warning and confirm the invalid section is skipped.
+and skips the section.
 
 ## The commonest sections, minimally {#section-examples}
 
@@ -361,7 +361,7 @@ language:
 ```
 
 A non-home landing page searches for data in this order. If it finds no data,
-normal preview warns and renders the landing shell without sections. Review the warning and rendered fallback before publication:
+the theme warns and renders the landing shell without sections:
 
 1. `sections` in the page's front matter;
 2. `data/landing/<key>/<exact language>.yaml`;
@@ -428,8 +428,8 @@ params:
 
 The footer uses separate data in `data/footer/<language>.yaml`, or
 `data/footer.yaml` for a single-language site. This site has one file per
-language. If `data/home/<language>.yaml` still contains a `footer` key, normal
-preview warns and ignores it. The warning identifies the new location; review the output before publication. See
+language. If `data/home/<language>.yaml` still contains a `footer` key, the
+theme warns, ignores it, and points to the new location. See
 [Navigation and menus](/docs/customize/navigation/) for authoring instructions.
 
 ## Output {#outputs}
@@ -450,7 +450,7 @@ movement and reveal are disabled.
 
 ## Verify {#verify}
 
-1. Run `hugo --printPathWarnings`. Confirm a successful build and review its diagnostics; the upstream LibSass warning is accepted. This detects misspelled types, missing data keys, and simultaneous `landing` and `sections`.
+1. Run `hugo --printPathWarnings`. This detects misspelled types, missing data keys, and simultaneous `landing` and `sections`.
 2. Open the home page and any landing page. Compare sections with their data files. Check every language.
 3. Reload with JavaScript disabled. Confirm that content remains visible without motion.
 4. Check light and dark modes. Confirm that `image.light` and `image.dark` show the correct images.

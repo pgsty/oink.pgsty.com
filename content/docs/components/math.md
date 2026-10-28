@@ -128,7 +128,7 @@ See [Equation 3-1](#eq-wal): multiply by the retention period for the floor on
 archive disk size.
 
 `caption` is optional plain text. `#id` and `caption` require `num`.
-Incomplete or duplicate targets warn. The theme removes unusable parts or keeps the first target. Review the warning and rendered fallback before publication.
+Incomplete or duplicate targets warn and remove unusable parts or keep the first target.
 On narrow screens, long captions wrap within the reading column without widening the page.
 
 ## Cross references {#xref}

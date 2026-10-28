@@ -230,7 +230,7 @@ The `field` shortcode:
 ## Limits {#limits}
 
 - The first column must be nonempty and unique within each table.
-  Empty or duplicate names warn and skip the row. Review the warning and rendered fallback before publication.
+  Empty or duplicate names warn and skip the row.
 - `.fields` cannot be combined with `.matrix`, `.full-width`, or `num`. `meta` requires a table with `.fields`.
 - Table cells cannot contain block content. Use shortcodes for paragraphs, lists, and fences.
 - `required` and `default` remain untranslated English API terms in every language. They are contract terms, not interface text.

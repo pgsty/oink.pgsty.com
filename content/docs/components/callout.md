@@ -222,7 +222,7 @@ Other common problems:
 - Formatters such as Prettier can merge titles into the body. Keep an empty `>` line below the title to prevent this.
 - Formatters can move attribute lines. Wrap marker lines such as `{icon=…}` in `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->`.
 - `style`, `onclick`, and unsupported attributes warn and are ignored. The attribute line accepts only `icon` and `class`.
-  Review the warning and rendered fallback before publication. See the table below.
+  See the table below.
 
 ## Output {#outputs}
 
@@ -254,7 +254,7 @@ The attribute line `{…}`, immediately after the blockquote:
 | `class` | space-separated classes | — | Passed through verbatim for site CSS |
 {.fields meta="type default"}
 
-`style`, `on*`, and other keys warn and are ignored. Review the warning and rendered fallback before publication.
+`style`, `on*`, and other keys warn and are ignored.
 
 ## Limits {#limits}
 
