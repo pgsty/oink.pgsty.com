@@ -13,7 +13,7 @@ last_verified: 2026-10-04
 > [!NOTE] 历史源码与二进制证据
 > 本记录保留 2026-10-03 至 2026-10-04 的 R1–R8/A18 本地验收证据，含初始审计、
 > 中间试验及三个支持目标的运行时与归档验证。2026-10-04 的 CLI 精简与 Cobra/文本/JSON/YAML
-> 界面以[当前契约](/zh/docs/design/decisions/cli/)和[CLI 简介](/zh/docs/cli/)为准。
+> 界面以[当前契约](/zh/docs/design/decisions/cli/)和[CLI 简介](/zh/docs/cli/)为准。这些结果仅对应当时记录的源码与二进制，后续精简 CLI 的改动需独立验证。
 
 ## 范围与证据规则 {#scope}
 

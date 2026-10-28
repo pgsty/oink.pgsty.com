@@ -18,8 +18,10 @@ implementation_status: local-candidate-not-released
 > upgrades, and guarded maintenance plans. Cobra provides command help;
 > colored English text is the default, with JSON/YAML results available.
 > Studio, general editing, context, snippets, editor setup, and CI generation
-> are retired. The CLI is currently a local candidate and is not yet published
-> as a standalone release or Homebrew package.
+> are retired. Historical R1–R8 acceptance applies only to its recorded source
+> and binaries; it does not replace validation of the current implementation.
+> The CLI is currently a local candidate and is not yet published as a
+> standalone release or Homebrew package.
 
 ## Context and ownership {#ownership}
 
@@ -788,10 +790,12 @@ The CLI does not download a Go toolchain, install packages, alter global
 configuration, or enable telemetry.
 
 The current development and validation baseline is Hugo Extended 0.168.0;
-the version gate requires 0.168.0 or newer. Initialized sites use the CLI's
-separately maintained Starter snapshot; theme upgrades follow the
-[upgrade guide](/docs/admin/upgrade/). Initialized sites retain ordinary Hugo inputs and need only their
-documented dependencies after removing the CLI.
+the version gate requires 0.168.0 or newer. Do not enable `--panicOnWarning` or
+`HUGO_PANICONWARNING`; warnings stay visible, including Hugo's accepted upstream
+LibSass notice. Initialized sites use the CLI's separately maintained Starter
+snapshot; theme upgrades follow the [upgrade guide](/docs/admin/upgrade/).
+Initialized sites retain ordinary Hugo inputs and need only their documented
+dependencies after removing the CLI.
 
 ## Retired local Studio {#studio}
 

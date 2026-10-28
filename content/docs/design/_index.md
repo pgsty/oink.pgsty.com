@@ -22,7 +22,9 @@ cascade:
 ---
 
 > [!NOTE] OINK 1.4.0 contract
-> The contracts in this section describe OINK v1.4.0.
+> The contracts in this section describe OINK v1.4.0. Theme development uses the
+> sibling checkout; release acceptance verifies the published module with
+> replacements and workspaces disabled.
 
 This section explains how OINK works and why it has its present shape. It brings
 together current contracts, the reasoning behind accepted decisions, evidence

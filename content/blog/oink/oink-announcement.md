@@ -146,8 +146,9 @@ The latest four-site rehearsal built temporary copies of all four sites cleanly.
 ## What remains before release
 
 Before tagging the first public release, we will finalize the module and package
-identities, apply the initial version across source tags and archives, and
-connect the production Cloudflare Pages deployment to the pinned Hugo baseline.
+identities, apply the initial version across source tags, archives, and
+documentation, and connect the production Cloudflare Pages deployment to the
+pinned Hugo baseline.
 
 ## Read next
 

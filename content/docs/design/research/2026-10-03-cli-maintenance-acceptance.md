@@ -11,7 +11,7 @@ last_verified: 2026-10-04
 ---
 
 > [!NOTE] Historical CLI maintenance acceptance ledger (2026-10-03 to 2026-10-04)
-> This record preserves the initial audit, intermediate trials, and local R1–R8 and A18 runtime/archive acceptance for the CLI maintenance roadmap. On 2026-10-04, the CLI surface was simplified to the Cobra/text/JSON/YAML command set defined in the [current CLI contract](/docs/design/decisions/cli/) and [CLI introduction](/docs/cli/).
+> This record preserves the initial audit, intermediate trials, and local R1–R8 and A18 runtime/archive acceptance for the CLI maintenance roadmap. On 2026-10-04, the CLI surface was simplified to the Cobra/text/JSON/YAML command set defined in the [current CLI contract](/docs/design/decisions/cli/) and [CLI introduction](/docs/cli/). These results apply only to the recorded historical source and binaries; later changes to the reduced CLI require separate validation.
 
 ## Scope and evidence rules {#scope}
 

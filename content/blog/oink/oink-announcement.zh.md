@@ -74,7 +74,7 @@ matter、文档与博客 section、菜单、taxonomy、打印输出、仓库链�
 
 ## 体验 starter {#try-the-starter}
 
-> [!NOTE] 使用说明更新于 2026-10-15
+> [!NOTE] 使用说明更新于 2026-10-17
 > 本文记录最初的实现预览。当前搭建与验收统一使用 Hugo Extended 0.168.0，基线随
 > 稳定版更新，不再测试或适配旧 Hugo。
 
@@ -98,7 +98,7 @@ hugo server
 - 统一使用 Hugo Extended 0.168.0 构建；
 - 禁止消费端 Node/npm/PostCSS/Autoprefixer 路径；
 - LTR、RTL、子路径、打印、颜色模式与生产资源；
-- 完整的一种/两种/三种/四种及以上语言选择器矩阵；
+- 语言选择器的隐藏、点击轮换、悬停菜单、缺失译文回退与 RTL 行为；
 - 本地按页运行时与重复组件实例；
 - ECharts 结构化选项与回调集成；
 - 离线双语 starter 与离线发行归档；

@@ -64,7 +64,8 @@ summary query gate runs in root and subpath integration builds.
 On the frozen documentation source `ab2747a` (149 pages and 1,321 headings per
 language), the 43-query set includes two negative summary cases. Top-five
 expected-page hits are EN summary 7/7 → 7/7, ZH summary 2/7 → 7/7, EN content
-10/10 → 10/10, and ZH content 6/17 → 17/17. `连接池 超时` has no full match in
+10/10 → 10/10, and ZH content 6/17 → 17/17. These are curated regression
+expectations, not general relevance scores. `连接池 超时` has no full match in
 this corpus and deliberately checks labeled partial results; a synthetic owner
 case checks the full match.
 
