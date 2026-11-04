@@ -15,7 +15,7 @@ technical documentation sites. It evolved from
 multilingual behavior while replacing the shell, navigation, search, and
 content components.
 
-Current sites use **OINK v1.4.0** and **Hugo Extended 0.168.0** (with its
+The current release is **OINK v1.5.0**, built with **Hugo Extended 0.168.0** (with its
 built-in Sass compiler), plus Go when resolving the theme as a Hugo Module.
 No Node.js, npm, PostCSS, or CDN requests are needed: Bootstrap, Font Awesome,
 fonts, local search, diagram runtimes, and API reference runtimes all ship in
@@ -32,7 +32,7 @@ OINK today, including this one.
 
 ## What the theme provides {#what-oink-provides}
 - The documentation and blog shell provides navigation, a sidebar tree, a table of contents, breadcrumbs, a pager, dark mode, print view, and accessible interaction.
-- The multilingual structure provides translation routing, fallback for untranslated pages, language weighting, RTL, and 32 complete interface catalogs.
+- The multilingual structure provides translation routing, fallback for untranslated pages, language weighting, RTL, 32 complete interface catalogs, and an opt-in bilingual view (`params.ui.compare: true`) for side-by-side reading.
 - Local browser features include Mermaid, Markmap, Swagger UI, Redoc, Asciinema, ECharts, Infographic, and full-text search. Mathematics is rendered by Hugo at build time and uses local KaTeX styles.
 - Content components include callouts, tabs, steps, cards, field lists, file trees, galleries, badges, keys, and more. Most have a native Markdown form.
 - Additional content types provide built-in book numbering and cross-references, release and download pages, data-driven landing pages, and OpenAPI reference pages.
@@ -83,5 +83,5 @@ links to its guide.
 
 To report a problem or submit a correction, follow the
 [contribution guide](/docs/about/contributing/). The
-[1.4.0 release notes](/blog/release/1.4.0/) cover the current build requirements
-and recent community fixes.
+[1.5.0 release notes](/blog/release/1.5.0/) cover Bilingual View, synchronized
+scrolling, responsive reading, and the current build requirements.

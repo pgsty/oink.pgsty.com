@@ -11,7 +11,7 @@ cascade:
 
 OINK 是一款独立的 [Hugo](https://gohugo.io/) 主题，用于搭建中大型技术文档站。它从 [Docsy](https://github.com/google/docsy) 演化而来：保留 Docsy 的内容模型与多语言行为，替换外壳、导航、搜索与内容组件。
 
-当前站点统一使用 **OINK v1.4.0** 和 **Hugo Extended 0.168.0**，通过内置 Sass 编译器构建。采用 Hugo Module 时还需要 Go 解析模块，首次下载需要可访问的模块来源。主题资源不依赖 Node.js、npm、PostCSS 或 CDN。Bootstrap、Font Awesome、字体、本地搜索、图表与 API 文档运行时都提交在主题仓库里，只在页面用到时下发。
+当前发布版本为 **OINK v1.5.0**，使用 **Hugo Extended 0.168.0** 及其内置 Sass 编译器构建。采用 Hugo Module 时还需要 Go 解析模块，首次下载需要可访问的模块来源。主题资源不依赖 Node.js、npm、PostCSS 或 CDN。Bootstrap、Font Awesome、字体、本地搜索、图表与 API 文档运行时都提交在主题仓库里，只在页面用到时下发。
 
 组件不是另一套模板语言：`> [!NOTE]` 是提示块，表格加一行 `{.fields}` 是参数表，图片下面加 `{caption="..."}` 就有图注。当前有[十五个生产站点](/zh/docs/about/showcase/)在用它，本站是其中之一。
 
@@ -20,7 +20,7 @@ OINK 是一款独立的 [Hugo](https://gohugo.io/) 主题，用于搭建中大�
 
 ## 主题的职责 {#what-oink-provides}
 - 文档与博客外壳：导航、侧栏树、目录、面包屑、翻页、深色模式、打印视图与无障碍交互。
-- 多语言框架：译文路由、缺译回退、语言权重、RTL，以及 32 份完整界面语言包。
+- 多语言框架：译文路由、缺译回退、语言权重、RTL、32 份完整界面语言包，以及按需开启的双语并排阅读视图（`params.ui.compare: true`）。
 - 本地浏览器功能：Mermaid、Markmap、Swagger UI、Redoc、Asciinema、ECharts、Infographic 与全文检索。数学公式由 Hugo 在构建时渲染，使用本地 KaTeX 样式。
 - 内容组件：提示块、标签页、步骤、卡片、参数表、文件树、画廊、徽章、按键等，多数有 Markdown 原生形态。
 - 内容类型：普通文档之外，还内置书籍编号与交叉引用、发布与下载页、数据驱动的 Landing 首页、OpenAPI 文档页。
@@ -61,4 +61,4 @@ OINK 不是叠在 Docsy 上的皮肤，而是 fork 之后独立演化的主题�
 [特性](/zh/docs/about/features/)按能力逐条列出主题提供的东西，每条链接到讲它的指南页。
 
 报告问题或提交修改请参阅[贡献指南](/zh/docs/about/contributing/)；
-[1.4.0 发布说明](/zh/blog/release/1.4.0/)介绍当前构建要求与近期社区修复。
+[1.5.0 发布说明](/zh/blog/release/1.5.0/)介绍双语视图、同步滚动、响应式阅读与当前构建要求。

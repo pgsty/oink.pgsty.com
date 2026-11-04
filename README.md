@@ -8,21 +8,21 @@ The bilingual maintainer contracts under `content/docs/design/` are the
 canonical prose source for OINK architecture, components, reading shells,
 Landing pages, and migration boundaries.
 
-The site documents OINK `v1.4.0`. The bilingual release notes cover table and
-diagram reading, local search, blog galleries, and component refinements. Local
+The site documents OINK `v1.5.0`. The bilingual release notes cover the opt-in
+Bilingual View, synchronized scrolling, responsive reading, and accessibility. Local
 theme development uses a sibling `../oink` checkout, while `make build` and
 `make serve` use the published version pinned in `go.mod`.
 `content/docs/cli{,.zh}.md` introduces the separate, unreleased OINK CLI.
 
-## OINK 1.4.0
+## OINK 1.5.0
 
-[OINK v1.4.0](https://github.com/pgsty/oink/releases/tag/v1.4.0) was released on
-2026-10-26. It adds opt-in table reading, local PlantUML, a shared diagram viewer,
-mixed-language search, blog galleries and compact component variants. Builds
+[OINK v1.5.0](https://github.com/pgsty/oink/releases/tag/v1.5.0) was released on
+2026-11-04. It adds an opt-in Bilingual View for Docs, Book, and blog pages,
+with shared-heading scroll sync, compact mobile controls, and RTL support. Builds
 continue to use Hugo Extended with built-in LibSass.
 
-- Release notes: [English](https://oink.pgsty.com/blog/release/1.4.0/) /
-  [简体中文](https://oink.pgsty.com/zh/blog/release/1.4.0/)
+- Release notes: [English](https://oink.pgsty.com/blog/release/1.5.0/) /
+  [简体中文](https://oink.pgsty.com/zh/blog/release/1.5.0/)
 - Contribution guide: [English](https://oink.pgsty.com/docs/about/contributing/) /
   [简体中文](https://oink.pgsty.com/zh/docs/about/contributing/)
 - [Upgrade and migration](https://oink.pgsty.com/docs/admin/upgrade/)
@@ -79,10 +79,10 @@ checker and the English/Chinese Design contract.
 
 Thank you to [@imbajin](https://github.com/imbajin) for the reading repairs,
 fixtures, tests, and bilingual documentation delivered in 1.3.1 and retained in
-1.4.0. [Acknowledgements](https://oink.pgsty.com/docs/about/license/#community-contributors)
+1.5.0. [Acknowledgements](https://oink.pgsty.com/docs/about/license/#community-contributors)
 link each contribution to its pull request. OINK preserves Docsy's history and
 notices; bundled runtimes, fonts, and icons keep their own licences, recorded in
-the theme's [v1.4.0 VENDOR.json](https://github.com/pgsty/oink/blob/v1.4.0/VENDOR.json).
+the theme's [v1.5.0 VENDOR.json](https://github.com/pgsty/oink/blob/v1.5.0/VENDOR.json).
 
 ## License
 

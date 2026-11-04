@@ -13,7 +13,7 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 1.4.0 · 本地优先 · Hugo 构建
+  eyebrow: OINK 1.5.0 · 本地优先 · Hugo 构建
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -28,8 +28,8 @@ hero:
       url: docs/start/starter/
       icon: fa-solid fa-rocket
       style: primary
-    - label: 查看 1.4.0 新特性
-      url: blog/release/1.4.0/
+    - label: 查看 1.5.0 新特性
+      url: blog/release/1.5.0/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -45,8 +45,8 @@ capabilities:
       motto: 从可运行的模板开始，逐步完善自己的站点
       bullets:
         - '[Starter 与部署指南](docs/start/)帮助你完成第一个站点'
-        - '自带[全文检索](docs/customize/search/)、[i18n](docs/customize/i18n/)
-          与[多版本支持](docs/customize/versions/)'
+        - '自带[全文检索](docs/customize/search/)、[i18n](docs/customize/i18n/)、
+          [双语视图](docs/customize/i18n/#bilingual-view)与[多版本支持](docs/customize/versions/)'
         - '自带
           [RSS](docs/write/blog/)、[SEO](docs/admin/analytics/)
           与 [Google Analytics](docs/admin/analytics/) 集成'
@@ -78,7 +78,7 @@ capabilities:
       value: 内容不变，风格自选。字体与核心脚本均由本地提供。
       visual:
         type: components
-        aria_label: OINK 1.4.0 的四套视觉风格
+        aria_label: OINK 的四套视觉风格
         items:
           - {
               icon: fa-solid fa-file-lines,
@@ -279,23 +279,23 @@ faq:
   eyebrow: 选型之前
   title: 值得先问的几个问题
   items:
-    - question: OINK 1.4.0 有哪些变化？
+    - question: OINK 1.5.0 有哪些变化？
       answer: >-
-        [OINK 1.4.0](blog/release/1.4.0/)加入本地 PlantUML、Mermaid 与 PlantUML
-        共用的图表阅读器、更强的中英混合搜索、显式开启的 `.expand` 表格阅读器、
-        `.wide` 技术表格、博客画廊，以及紧凑卡片、步骤和命令条。统一使用 Hugo
-        Extended 0.168.0，无需另外安装 Sass。
+        [OINK 1.5.0](blog/release/1.5.0/)新增按需开启的双语视图，支持 Docs、Book
+        和博客页面按共同标题同步滚动，提供紧凑的手机控件、RTL、强制颜色支持与刷新恢复。
+        1.4 的阅读器、本地渲染、搜索和组件变体继续可用。统一使用 Hugo Extended 0.168.0，
+        无需另外安装 Sass。
     - question: 哪里需要 Node.js、npm 或打包器吗？
       answer: >-
         不需要。站点使用 Hugo Extended 及其内置 Sass 编译器构建，不需要另外安装 Sass。
-        维护中的站点统一使用 OINK 1.4.0 与固定的 Hugo Extended 0.168.0 基线。
+        推荐使用 OINK 1.5.0 与固定的 Hugo Extended 0.168.0 基线。
         Go 用来把主题解析为模块；使用离线归档或
         Git submodule 时不需要 Go。浏览器脚本随主题分发，只在用到时加载。
       open: true
     - question: 我有一个 Docsy 站，迁移有多难？
       answer: >-
-        内容与 front matter 大多可以直接沿用，替换的是外壳、导航、检索与组件。改名的配置键会让
-        构建失败并给出新名字，`bin/migrations/oink06.py` 在改写之前先报告它会改什么。
+        内容与 front matter 大多可以直接沿用，替换的是外壳、导航、检索与组件。改名的配置键会告警
+        并使用安全回退，`bin/migrations/oink06.py` 在改写之前先报告它会改什么。
         见[升级与迁移](docs/admin/upgrade/)。
     - question: OINK 只适合大型文档树吗？
       answer: >-
@@ -327,11 +327,11 @@ faq:
       answer: >-
         [贡献指南](docs/about/contributing/)说明在哪里报告问题、改进翻译，以及提交主题与测试改动。
         感谢 [@imbajin](docs/about/license/#community-contributors)
-        为早期版本贡献阅读体验修复；当前 1.4.0 继续保留这些修复，并加入新的阅读器与布局。
+        为早期版本贡献阅读体验修复；当前版本继续保留这些修复，并加入双语阅读器。
 
 cta:
   title: 从一个已经能运行的仓库开始。
-  text: 克隆 OINK 1.4.0 Starter 模板，替换站点身份与内容，几分钟内即可通过 GitHub Pages 或 Cloudflare Pages 发布上线。
+  text: 从 OINK Starter 开始，固定 OINK 1.5.0，替换站点身份与内容，通过 GitHub Pages 或 Cloudflare Pages 发布上线。
   label: 使用 OINK Starter
   url: docs/start/starter/
   style: primary

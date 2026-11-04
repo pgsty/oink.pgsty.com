@@ -18,7 +18,7 @@ need it.
 
 ## Build and review
 
-Use OINK **v1.4.0**, Hugo Extended **0.168.0**, and Go **1.27.3** (the module's
+Use OINK **v1.5.0**, Hugo Extended **0.168.0**, and Go **1.27.3** (the module's
 minimum Go version). Hugo's built-in LibSass compiles theme and project SCSS
 without an external Sass compiler. Do not enable `--panicOnWarning` or
 `HUGO_PANICONWARNING`; keep diagnostics visible and review them (the upstream

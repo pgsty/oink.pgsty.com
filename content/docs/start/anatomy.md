@@ -138,10 +138,11 @@ module github.com/OWNER/PROJECT-DOCS
 
 go 1.27.3
 
-require github.com/pgsty/oink v1.4.0
+require github.com/pgsty/oink v1.5.0
 ```
 
-The current Starter pins `v1.4.0` in `go.mod`.
+This example pins the current release, `v1.5.0`. Check the pin in your Starter
+snapshot and follow the [upgrade guide](/docs/admin/upgrade/) if it is older.
 
 `hugo mod graph` displays the resolved version. Production builds use the exact
 tag in `go.mod`, while `HUGO_MODULE_REPLACEMENTS` can point to a local checkout

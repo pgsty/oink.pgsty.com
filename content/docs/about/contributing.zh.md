@@ -1,15 +1,15 @@
 ---
 title: 参与 OINK 贡献
 linkTitle: 参与贡献
-description: 为 OINK 1.4.0 报告问题，贡献主题修复、文档、翻译与回归测试。
+description: 为 OINK 1.5.0 报告问题，贡献主题修复、文档、翻译与回归测试。
 weight: 40
 icon: fa-solid fa-code-pull-request
-search_keywords: [参与贡献, 贡献者, pull request, 问题报告, 翻译, OINK 1.4.0]
+search_keywords: [参与贡献, 贡献者, pull request, 问题报告, 翻译, OINK 1.5.0]
 ---
 
 欢迎纠错、翻译、报告问题和提交范围明确的 pull request。当前主题版本为
-**OINK v1.4.0**。[发布说明](/zh/blog/release/1.4.0/)介绍新增的阅读器、本地渲染、
-搜索改进、展示变体及阅读体验修复。
+**OINK v1.5.0**。[发布说明](/zh/blog/release/1.5.0/)介绍双语视图、同步滚动、
+响应式阅读与无障碍支持。
 
 ## 选择贡献仓库 {#where-to-contribute}
 
@@ -29,7 +29,7 @@ CLI 拥有独立版本与发布周期，普通 Hugo 站点不需要安装。请�
 
 ## 构建与检查 {#build-and-check}
 
-维护基线统一为 **OINK v1.4.0**、**Hugo Extended 0.168.0** 和 **Go 1.27.3**；
+维护基线统一为 **OINK v1.5.0**、**Hugo Extended 0.168.0** 和 **Go 1.27.3**；
 模块声明的 Go 最低版本为 1.27.3。Hugo 使用内置 LibSass，普通站点构建无需额外安装
 Sass 编译器、Node.js 或 npm。
 
@@ -64,7 +64,7 @@ make browser
 
 [致谢页](/zh/docs/about/license/#community-contributors)将社区修复与作者和 pull request
 关联起来。[1.3.1 发布说明](/zh/blog/release/1.3.1/#thanks)记录了近期阅读体验修复；
-1.4.0 继续保留这些修复，以及 1.3.2 恢复的仅依赖 Hugo 的构建方式。
+1.5.0 继续保留这些修复，以及 1.3.2 恢复的仅依赖 Hugo 的构建方式。
 
 主题代码与站点工具使用 Apache-2.0，原创文档使用 CC BY 4.0。请保留第三方许可证和
 NOTICE 文件，具体范围见[开源许可与致谢](/zh/docs/about/license/)。

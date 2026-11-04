@@ -81,12 +81,14 @@ them for the site.
 Multilingual support uses Hugo's own mechanism: translation routing, a language
 picker ordered by weight, fallback for untranslated pages, RTL, and canonical
 and alternate metadata. Interface strings come in 32 language packs sharing one
-218-message schema. These include all 31 locale filenames that Docsy supports,
+235-message schema. These include all 31 locale filenames that Docsy supports,
 plus generic `zh`. Every pack contains native OINK interface text instead of
 English placeholder blocks. `zh` and `zh-cn` use Simplified Chinese. `zh-tw`
-uses Traditional Chinese.
+uses Traditional Chinese. Setting `params.ui.compare: true` adds an opt-in
+bilingual view so readers can open an existing translation beside the current
+page and scroll both versions together.
 
-→ [Languages](/docs/customize/i18n/)
+→ [Languages](/docs/customize/i18n/) · [Bilingual view](/docs/customize/i18n/#bilingual-view)
 
 ## Full-text search that stays on the site {#search}
 
@@ -112,7 +114,7 @@ Keyboard navigation is on by default. You can turn it off per site or section.
 `w` and `s` move up and down the sidebar tree. `a` and `d` collapse and expand
 it. `q` and `e` go to the previous and next page. `j` and `k` move through the
 page's table of contents. `t` toggles light and dark mode. `l` switches
-language. `h` hides the reading shell. Single-key shortcuts are inactive while
+language. `b` opens the bilingual view when a translation is available. `h` hides the reading shell. Single-key shortcuts are inactive while
 an input or textarea has focus, or while an input method is composing. The question-mark button in the
 footer's bottom bar opens the cheatsheet.
 

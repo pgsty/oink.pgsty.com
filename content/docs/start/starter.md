@@ -76,12 +76,12 @@ Also record the resolved module:
 hugo mod graph | grep github.com/pgsty/oink
 ```
 
-The current Starter pins `github.com/pgsty/oink@v1.4.0` in `go.mod`. If you
-created your repository from an older Starter snapshot, update it to the
-current release before customizing content:
+Check the version supplied by your Starter snapshot in `go.mod`. To use the
+current release, update it to `github.com/pgsty/oink@v1.5.0` before customizing
+content:
 
 ```bash
-hugo mod get github.com/pgsty/oink@v1.4.0
+hugo mod get github.com/pgsty/oink@v1.5.0
 hugo mod tidy
 ```
 

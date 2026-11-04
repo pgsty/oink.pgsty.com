@@ -43,7 +43,7 @@ make build
 ./bin/oink check --site ../my-docs
 ```
 
-将 `../my-docs` 替换为目标站点路径。执行站点命令需要 Hugo Extended 0.168.0+，模块操作需要 Go 1.27+。`oink init` 使用 CLI 内置的 Starter 快照初始化项目；若需升级至 OINK v1.4.0，请参考[升级指南](/zh/docs/admin/upgrade/)。
+将 `../my-docs` 替换为目标站点路径。执行站点命令需要 Hugo Extended 0.168.0+，模块操作需要 Go 1.27+。`oink init` 使用 CLI 内置的 Starter 快照初始化项目；若需升级至 OINK v1.5.0，请参考[升级指南](/zh/docs/admin/upgrade/)。
 
 `make deps` 会下载 Go 编译依赖。CLI 命令默认离线运行，需要拉取未缓存的远程依赖时请显式传入 `--network`。检查与变更预览命令（`new`、`move`、`upgrade`）不会直接修改站点源文件，只有执行显式应用步骤时才会落盘；`dev` 与 `build` 则会正常写入 Hugo 构建产物与缓存。
 

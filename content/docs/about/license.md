@@ -29,7 +29,7 @@ Apache-2.0 license does not change the licenses of its bundled dependencies.
 OINK is maintained by PGSTY. Thank you to
 [@imbajin](https://github.com/imbajin) for reporting and contributing the
 following reading repairs, with fixtures, regression tests, and bilingual docs.
-Introduced in 1.3.1, these fixes remain included in **1.4.0**.
+Introduced in 1.3.1, these fixes remain included in **1.5.0**.
 
 | Contribution | Pull request |
 | --- | --- |
@@ -67,7 +67,7 @@ is the machine-readable manifest for these assets. Each entry records the name,
 pinned version, source URL, license file path, and SHA-256 of every selected
 artifact. It also records an aggregate checksum for each of the three asset trees.
 
-The table below matches the [OINK v1.4.0 manifest](https://github.com/pgsty/oink/blob/v1.4.0/VENDOR.json)
+The table below matches the [OINK v1.5.0 manifest](https://github.com/pgsty/oink/blob/v1.5.0/VENDOR.json)
 (`VENDOR.json` generated 2026-10-25, schema 1, 29 entries). Versions change
 with each theme release. **Use the manifest from your pinned theme version**. Every source is the
 npm registry (`https://registry.npmjs.org/…`).
@@ -122,7 +122,7 @@ in the same change.
 ## Fonts and icons {#fonts-and-icons}
 
 Inter, IBM Plex Sans, Chakra Petch, and IBM Plex Mono use the SIL Open Font
-License 1.1. OINK 1.4.0 includes 33 files under `static/webfonts/`: fourteen
+License 1.1. OINK 1.5.0 includes 33 files under `static/webfonts/`: fourteen
 Inter subsets, twelve IBM Plex Sans subsets, four brand-font files, and three
 Font Awesome files. Font Awesome Free 7.3.1 uses a composite license. Its icon artwork uses
 CC BY 4.0, its font files use SIL OFL 1.1, and its code uses MIT. The text is
