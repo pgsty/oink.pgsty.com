@@ -9,6 +9,7 @@ const moduleWorkspace =
 
 export default defineConfig({
   testDir: './tests/browser',
+  testIgnore: 'document-compare-languages.spec.mjs',
   timeout: 60_000,
   expect: {
     timeout: 10_000,

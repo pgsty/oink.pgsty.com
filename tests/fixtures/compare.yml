@@ -1,0 +1,38 @@
+module:
+  mounts:
+    - source: content
+      target: content
+    - source: tests/fixtures/browser/content
+      target: content/tests
+    - source: tests/fixtures/compare/content
+      target: content/tests
+    - source: layouts
+      target: layouts
+    - source: tests/fixtures/browser/layouts
+      target: layouts
+languages:
+  de:
+    label: Deutsch
+    locale: de-DE
+    weight: 3
+  ru:
+    label: Русский
+    locale: ru-RU
+    weight: 4
+  fr:
+    label: Français
+    locale: fr-FR
+    weight: 5
+  es:
+    label: Español
+    locale: es-ES
+    weight: 6
+  ja:
+    label: 日本語
+    locale: ja-JP
+    weight: 7
+  ar:
+    label: العربية
+    locale: ar
+    direction: rtl
+    weight: 8

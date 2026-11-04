@@ -68,6 +68,9 @@ jobs:
           - name: Table reader
             target: test:table-reader
             artifact: table-reader
+          - name: Bilingual view
+            target: test:compare
+            artifact: compare
     steps:
       - uses: actions/checkout@v7
         with:
