@@ -33,6 +33,7 @@ contracts it supports, in the same bilingual, versioned site.
 | [Expo albums](/docs/design/decisions/expo/) | Resource bundles, optional metadata, shared appearance, and album viewing |
 | [Blog gallery](/docs/design/decisions/blog-gallery/) | Article covers, shared Expo geometry, independent preferences, and readable captions |
 | [Table reading](/docs/design/decisions/large-table-reading/) | Explicit `.expand`, independent `.wide`, and a direct corner action with native table restoration |
+| [Translation comparison](/docs/design/decisions/document-comparison/) | One switch, real same-origin translations, a lazy two-pane reader, and heading-based sync |
 
 | [Component refinement](/docs/design/decisions/component-refinement/) | Shared styling, divided cards, compact steps and command strips |
 | [Unified diagram reading](/docs/design/decisions/diagram-reading/) | Shared Mermaid and local PlantUML viewing, source export and demand loading |

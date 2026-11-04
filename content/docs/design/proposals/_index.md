@@ -31,7 +31,7 @@ or the documentation repository.
 | [OINK CLI and the next product stage](/docs/design/proposals/oink-cli-roadmap/) | Independent Go repository and first-stage boundary accepted; local CLI candidate implemented, not publicly released; later theme, migration, adoption, versioning, OpenAPI, and platform stages remain proposals |
 | [Visual presets and appearance switching](/docs/design/proposals/visual-presets/) | Paper/Slate ship in v1.2.0; Ink/Terminal ship as explicit opt-in experiments awaiting design acceptance; see the accepted decision and dated acceptance record |
 
-Component refinement, unified diagram reading and local search refinement ship in 1.4.0 and now live under [accepted decisions](/docs/design/decisions/).
+Component refinement, unified diagram reading and local search refinement ship in 1.4.0 and now live under [accepted decisions](/docs/design/decisions/). Translation comparison ships in 1.5.0 as an [accepted decision](/docs/design/decisions/document-comparison/); its draft is retired.
 
 The table-reading draft is also retired: the [accepted decision](/docs/design/decisions/large-table-reading/)
 and [component contract](/docs/design/components/#table-reading) define the narrower,

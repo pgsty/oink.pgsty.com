@@ -1,0 +1,42 @@
+---
+title: 译文对照
+linkTitle: 译文对照
+description: 在按需加载的双栏阅读器中，将页面与同源的现有译文并排阅读。
+weight: 70
+design_kind: decision
+design_status: accepted
+decision_date: 2026-11-04
+aliases:
+  - /docs/design/proposals/document-comparison/
+---
+
+> [!NOTE] 已随 OINK 1.5.0 发布
+> 本决策记录正式发布的 `params.ui.compare` 译文对照阅读器。
+
+[外壳契约](/zh/docs/design/shell/#translation-comparison)定义阅读器及其控件，[架构契约](/zh/docs/design/architecture/#translation-reader-runtime)定义浏览器边界。[多语言指南](/zh/docs/customize/i18n/#bilingual-view)说明站点设置，[日期研究](/zh/docs/design/research/2026-10-29-document-comparison/)保留此前的源码调研。
+
+## 背景 {#context}
+
+翻译文档常常需要并排阅读和审校。缺少原生支持时，读者只能同时打开两个浏览器标签页并分别手动滚动。如果为此设计专门的布局或在构建期预生成语言配对页面，会导致页面数量成倍膨胀、内容重复。由于 OINK 站点原本就将每篇译文发布为独立的标准 HTML 页面并共享标题 ID，浏览器端可以直接复用这些已发布页面完成双栏并排对照。
+
+## 决策 {#decision}
+
+只用一个布尔站点参数 `params.ui.compare`（默认 `false`）开启对照。Hugo 仅列出 Docs、Book 和博客页面真实存在的同源 HTML 译文；草稿、非 HTML 输出格式、外部域名以及语言导航回退到首页的链接都不计入。在 `languages.<lang>.params.ui` 下将该参数设为 `false` 的语言既不显示入口，也不作为目标译文。作者无需添加任何 front matter、新布局或额外输出格式。
+
+阅读器按需打开：可通过页面动作旁的图标按钮、开启键盘导航时的 `B` 快捷键，或命令面板动作 `compare_translations` 触发。它在模态对话框中用两个同源 frame 加载现有页面。当前页面固定在阅读起始侧，因此从右向左（RTL）书写的宿主页会自动镜像左右顺序。界面统一称为「双语视图」，入口按钮标签为「打开双语视图」。
+
+「同步滚动」按共同的可见标题 ID 建立映射，并在相邻标题之间平滑插值。部分匹配时使用可用锚点并给出近似对齐提示；没有共同标题时，改按全文阅读进度估算位置。若标题 ID 重复或顺序交叉，则自动禁用同步，两栏仍可独立滚动。点击关闭、按 `Escape` 或使用浏览器后退都会恢复宿主页的滚动位置和键盘焦点。在阅读器打开时刷新页面或通过历史记录返回，会在当前历史记录上重新打开阅读器，因此一次后退即可关闭。
+
+屏幕宽度小于 900 CSS 像素时，阅读器改为单窗格切换布局，顶部保留一行紧凑工具栏和一行语言切换栏（同时承载目标语言菜单）。在 320 × 256 CSS 像素（约 400% 缩放）下，正文仍至少保留 160 CSS 像素的可视高度。
+
+窗格文档会停用外壳导航运行时、搜索、评论和主题内置统计。开启对照后，主题会使用自带的窗格感知模板输出 Google Analytics，避免把窗格重复计入访问量；站点覆盖的 Hugo `google_analytics.html` partial 不再生效。`head-end.html` 中的自定义脚本可读取 `window.OinkComparePane` 判断当前是否处于对照窗格。
+
+## 边界 {#boundaries}
+
+本次发布不包含跨版本差异对比、手工页面映射、逐段锁定行高、文本 diff 视图或跨源目标。窗格要求 `frame-src 'self'` 并允许同源嵌入：若响应头带有 `X-Frame-Options: DENY` 或 `frame-ancestors 'none'`，窗格将无法嵌入并回退为直接打开原页面链接。阅读器打开期间，宿主页加上两个窗格共有三个活动文档；未打开阅读器时不会发起任何额外请求。
+
+## 归属与验证 {#validation}
+
+主题负责发现译文、按需加载的入口与阅读器运行时、32 个界面语言目录和限定作用域的 SCSS。`bin/check-compare.py` 覆盖发现规则、Docs/Book/博客页面、按语言关闭、键盘提示、统计、输出隔离，以及每个运行时在窗格中的行为。`tests/js/compare-scroll.test.js` 覆盖滚动几何。文档站的 `test:compare` 测试负责同步、生命周期、刷新、窄屏与缩放布局、从右到左顺序、八种语言、失败处理和无障碍。
+
+提案草稿已从活动提案中移除，保留在 Git 历史中。

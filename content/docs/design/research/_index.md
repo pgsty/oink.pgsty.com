@@ -36,6 +36,7 @@ of research records.
 | [CLI maintenance acceptance, 2026-10-03](/docs/design/research/2026-10-03-cli-maintenance-acceptance/) | Historical R1–R8 and A18 source-bound runtime and archive evidence |
 | [Theme review, 2026-10-13](/docs/design/research/2026-10-13-theme-review/) | Reproduced output and interaction defects, repairs, and local validation scope |
 | [Component refinement, 2026-10-25](/docs/design/research/2026-10-25-component-refinement/) | Final component acceptance, 409 Chromium tests, targeted three-engine visual review, CSS/JS size comparison, and separate gallery baseline failures |
+| [Document comparison, 2026-10-29](/docs/design/research/2026-10-29-document-comparison/) | Dated source review behind the [translation comparison decision](/docs/design/decisions/document-comparison/); historical, not the released contract |
 
 ## Publication rules {#publication-rules}
 

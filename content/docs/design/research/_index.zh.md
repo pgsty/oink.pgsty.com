@@ -34,6 +34,7 @@ design_status: active
 | [CLI 维护验收，2026-10-03](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/) | 历史 R1–R8 与 A18 的源码绑定运行时及归档证据 |
 | [主题评审，2026-10-13](/zh/docs/design/research/2026-10-13-theme-review/) | 输出与交互缺陷复现、修复及本地验证范围 |
 | [组件精修验证，2026-10-25](/zh/docs/design/research/2026-10-25-component-refinement/) | 最终组件验收、409 项 Chromium 测试、针对三个引擎的视觉复核、CSS／JS 体积对照，以及单独记录的画廊基线失败 |
+| [文档对照研究，2026-10-29](/zh/docs/design/research/2026-10-29-document-comparison/) | 支撑[译文对照决策](/zh/docs/design/decisions/document-comparison/)的带日期源码研究；属于历史记录，不是已发布契约 |
 
 ## 发布规则 {#publication-rules}
 

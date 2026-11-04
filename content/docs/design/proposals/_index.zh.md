@@ -28,7 +28,7 @@ design_status: active
 | [OINK CLI 与下一阶段产品路线](/zh/docs/design/proposals/oink-cli-roadmap/) | 独立 Go 仓库与首期边界已接受，本地 CLI 候选已实现、尚未公开发布；后续主题、迁移、采用、版本管理、OpenAPI 与平台阶段保持提案 |
 | [视觉预设与外观切换](/zh/docs/design/proposals/visual-presets/) | Paper/Slate 已随 v1.2.0 发布；Ink/Terminal 已提供显式启用的实验，等待视觉定稿；当前行为与证据见已接受决策和带日期验收记录 |
 
-组件精修、统一图表阅读与本地搜索改进已随 1.4.0 发布，现归入[已接受决策](/zh/docs/design/decisions/)。
+组件精修、统一图表阅读与本地搜索改进已随 1.4.0 发布，现归入[已接受决策](/zh/docs/design/decisions/)。译文对照随 1.5.0 发布，记录为[已接受决策](/zh/docs/design/decisions/document-comparison/)，草案已退役。
 
 表格阅读草案也已退役：[接受的决策](/zh/docs/design/decisions/large-table-reading/)
 与[组件契约](/zh/docs/design/components/#table-reading)定义缩小范围后随 OINK 1.4.0 发布的
