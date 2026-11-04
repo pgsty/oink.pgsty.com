@@ -5,15 +5,15 @@ description: Repository assembly, configuration, diagnostics, localization, outp
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK architecture, repository boundary, runtime, i18n, Docsy locales, output formats, security, accessibility, performance]
-contract_status: v1.4.0
+contract_status: v1.5.0
 ---
 
-> [!NOTE] OINK 1.4.0 contract
-> This contract describes OINK v1.4.0.
+> [!NOTE] OINK 1.5.0 contract
+> This contract describes OINK v1.5.0.
 
 ## Hugo toolchain {#hugo-toolchain}
 
-Use **OINK v1.4.0** and **Hugo Extended 0.168.0** for maintained sites,
+Use **OINK v1.5.0** and **Hugo Extended 0.168.0** for maintained sites,
 development, CI, and release validation. Keep this toolchain pinned.
 
 Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Warnings remain
@@ -366,6 +366,45 @@ preset palette on white paper even when the screen is dark. Mermaid and
 ECharts continue to follow mode only; API widgets retain vendor palettes.
 See the [accepted decision](/docs/design/decisions/visual-presets/) and
 [local acceptance record](/docs/design/research/2026-10-05-visual-presets-acceptance/).
+
+## Translation reader runtime {#translation-reader-runtime}
+
+The sole setting is the boolean `params.ui.compare`, default `false`; a language
+may override it. Invalid values warn and leave it off. Hugo derives candidates
+from actual translation pages whose language also enables comparison, and emits
+a small descriptor. The entry chunk loads the reader on demand; the reader uses
+two same-origin HTML frames. No language combinations or new content outputs
+are generated. The retained host makes three live documents.
+
+`oink_compare_pane=1` activates the internal pane state only in a frame owned by
+an open reader. Visiting that URL at top level leaves the normal page intact.
+`window.OinkComparePane` is available before head hooks for custom scripts.
+Pane state suppresses shell runtimes and shortcuts, search initialization,
+comments and theme-managed analytics, while keeping content runtimes and styles.
+`bin/check-compare.py` classifies every browser runtime as suppressed in panes,
+running in panes, or host-only, so a new runtime must declare its pane behavior.
+With comparison on, production builds render Google Analytics through the
+theme's pane-aware template instead of Hugo's embedded partial; a site override
+of `google_analytics.html` therefore does not apply. Frames isolate document IDs;
+same-origin content remains trusted site content. Panes need `frame-src 'self'`
+and same-origin framing. Normal canonical links remain the page identity. Print
+and machine outputs contain no comparison controls or comparison runtime.
+
+Browser geometry is measured after load and invalidated on resize, font/image
+readiness and disclosure/component layout changes. User input assigns the
+active pane; programmatic follower scrolls cannot take ownership. Animation
+frames coalesce updates, allowed motion uses smooth follower scrolling, and
+reduced-motion or bookmark restoration uses instant positioning. Closing or
+replacing a pane aborts its listeners, observers and load timeout. Native
+dialog inertness contains host focus; child keyboard handling preserves nested
+component dialogs. The reader's history entry survives a reload or a
+back/forward restore. The entry runtime binds restoration to that entry's token
+and verifies it again after loading the reader; leaving the entry cancels the
+pending restore. Reopening preserves the token and does not write history.
+History traversal finishes processing an explicit close or queued user reopen
+before automatic restoration runs. Moving the language menu across the narrow
+breakpoint preserves its focused control and open state after updating pane
+visibility and inertness.
 
 ## Release states {#release-states}
 

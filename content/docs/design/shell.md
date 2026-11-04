@@ -5,11 +5,11 @@ description: Navigation authorities, immersive blog presentation, search, action
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK shell, navigation contract, search, actions, blog presentation, authors, series, pager]
-contract_status: v1.4.0
+contract_status: v1.5.0
 ---
 
-> [!NOTE] OINK 1.4.0 contract
-> This contract describes OINK v1.4.0.
+> [!NOTE] OINK 1.5.0 contract
+> This contract describes OINK v1.5.0.
 
 ## Authorities and navigation {#authorities-and-navigation}
 
@@ -256,7 +256,7 @@ as well as Enter activation. No new configuration authority or build step exists
 The owning theme search checker and the site's real-corpus/browser tests cover
 these additions; the maintained summary indexes keep the 2 MiB / 512 KiB budgets.
 
-Built-in action IDs are `copy_markdown`, `copy_link`, `open_chatgpt`, `open_claude`, `view_markdown`, `view_history`, `edit_page`,
+Built-in action IDs are `compare_translations`, `copy_markdown`, `copy_link`, `open_chatgpt`, `open_claude`, `view_markdown`, `view_history`, `edit_page`,
 `create_child_page`, `create_issue`, `create_project_issue`, `print_section`, `print`, `switch_preset`, `switch_theme`, `switch_language`, `switch_version`, and `open_github`.
 Outside the share bar, `copy_link` appears only in the Palette.
 Site commands under `languages.<lang>.params.ui.command_palette.commands` may open safe URLs or invoke built-in IDs. They never inject JavaScript.
@@ -539,6 +539,63 @@ It does not replace Giscus.
 An explicit `params.ui.quick_links: []` disables quick links instead of restoring
 the defaults. Invalid `sidebar_root_link_self` values warn and keep the documented
 `true` fallback. Taxonomy and term pages use the shared `page_width` validator.
+
+## Translation comparison {#translation-comparison}
+
+`params.ui.compare: true` adds an icon-only **Open bilingual view** entry beside
+the page actions and a localized **Bilingual View** action (`compare_translations`)
+in the Command Palette on Docs, Book, and blog pages that have an actual HTML
+translation on the same origin. The reader title, its Sync Scroll control, close
+icon and warning tooltip use the same catalog. The entry exposes its label as its
+tooltip and accessible name. When keyboard navigation is enabled, `B` opens the
+reader, the entry declares `aria-keyshortcuts`, and the help panel lists the
+shortcut only on pages with a real target. The default is `false`. This is one
+site setting; there is no page-pair data, new layout, or output format. A
+language that sets it to `false` offers no entry and is never a target.
+Navigation's language-home fallback is never a comparison target.
+
+The reader fills the viewport with two ordinary pages. The current page is fixed
+on the reading-start side, so a right-to-left host mirrors the pane order. The
+target selector uses existing language order and the same icon, rounded trigger,
+and floating menu style as the site's language bar. Its menu supports pointer and
+keyboard selection. Only the selected sibling is loaded, and replacing it
+preserves the synchronization preference. Each pane keeps its language,
+direction, footnotes and content components.
+
+Below 900 CSS pixels, one toolbar row and one switcher row show one retained pane
+at a time. The title truncates while Sync Scroll and Close stay at the end. The
+switcher row holds the language buttons and an icon-only target-language menu,
+so pane headings are not repeated. Short viewports tighten both rows: at
+320 × 256 CSS pixels (400% zoom) at least 160 pixels of text remain. Forced-colors
+mode marks the selected pane with a border. Crossing the breakpoint moves the
+language menu while preserving its keyboard focus, open state and selected pane.
+
+Shared visible heading IDs determine linked scrolling, using interpolation
+between matched headings. Unmatched headings are skipped. If there are no
+usable common headings, the reader falls back to a bounded beginning-to-end
+document-progress estimate; an inline warning beside Sync Scroll explains that
+the result is approximate. A single common heading or a partial match can still
+anchor the estimate, with the same warning. Duplicate or reordered matches are
+ambiguous, so the checkbox is disabled and the warning explains why; the two
+panes remain independently readable. The follower uses smooth scrolling when
+motion is allowed and switches to instant positioning when the reader prefers
+reduced motion or is restoring a bookmark.
+Turning off **Sync Scroll** restores independent scrolling; synchronized
+scrolling aligns sections by heading anchors rather than locking individual
+paragraph rows. Opening resumes the current passage after reflow. Closing,
+Escape or Back restores host scroll and focus. A reload, or a back/forward
+restore, onto the reader's history entry reopens the reader without adding a
+record, so one Back closes it and Forward can reopen it. Back also cancels a
+reload restore whose reader script is still loading. A pane-local modal consumes
+Escape before the outer reader does. Fragment
+links stay in the pane without adding history; another document exits
+comparison; external links open outside it. Failed pages expose a direct link.
+
+The [accepted decision](/docs/design/decisions/document-comparison/) records the
+rationale and boundaries. `bin/check-compare.py`, the theme's scroll geometry
+tests, and the site's `test:compare` browser suite own verification. The
+dedicated eight-language fixture is synthetic evidence, not a downstream
+adoption claim.
 
 ## Verification {#verification}
 

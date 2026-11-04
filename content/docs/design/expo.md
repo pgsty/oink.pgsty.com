@@ -4,11 +4,11 @@ linkTitle: Expo
 description: Define album resources, display modes, image viewing, shared appearance, and static outputs.
 weight: 45
 icon: fa-solid fa-images
-contract_status: v1.4.0
+contract_status: v1.5.0
 ---
 
-> [!NOTE] OINK 1.4.0 contract
-> This contract describes OINK v1.4.0.
+> [!NOTE] OINK 1.5.0 contract
+> This contract describes OINK v1.5.0.
 
 This page defines required behavior. Use [Expo albums](/docs/write/expo/) to
 create content. Read the [design decision](/docs/design/decisions/expo/) for
