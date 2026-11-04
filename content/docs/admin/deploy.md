@@ -341,6 +341,7 @@ Additional features change the directives needed:
 - [Local PlantUML rendering](/docs/components/plantuml/#limits) in OINK 1.4.0 needs same-origin scripts, `wasm-unsafe-eval` in `script-src` for WebAssembly compilation, and `blob:` in `img-src`. It needs no rendering-service origin.
 - [Remote API specifications](/docs/write/openapi/#spec-file) and [self-hosted diagram services](/docs/components/plantuml/#server): these require permissions in `connect-src` and `img-src`.
 - [giscus](/docs/admin/comments/#privacy): `script-src` and `frame-src` must both permit it.
+- [Bilingual view](/docs/customize/i18n/#bilingual-view): panes are same-origin frames, so `frame-src` (or `child-src`) must allow `'self'`, and responses must allow same-origin framing (no `X-Frame-Options: DENY` or `frame-ancestors 'none'`). Enabling it adds one inline bootstrap script to every HTML page, which changes the script hashes.
 
 Hash each permitted inline script/style block from the final deployed bytes, or
 have the host inject a fresh nonce into the response policy and corresponding

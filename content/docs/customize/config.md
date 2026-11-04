@@ -318,6 +318,7 @@ beside the table of contents.
 | `params.ui.pager_types` | list | [docs, book, blog] | Types that show previous / next links. To disable them on a page, use front matter `pager: false`. An unknown type warns and is discarded |
 | `params.ui.annotation` | boolean | true | The "last modified" and provenance block at the end of the body; the upstream attribution line is driven by the page's `upstream_link` family — see [Page parameters](/docs/write/frontmatter/#upstream) |
 | `params.ui.backlinks` | boolean | false | Lists the pages that link to this one as a "Backlinks" group in the right rail beside the table of contents, derived at build time from ordinary links — see [Navigation and menus](/docs/customize/navigation/#backlinks) |
+| `params.ui.compare` | boolean | false | Adds a two-pane Bilingual View to Docs, Book, and blog pages that have a same-origin HTML translation. A language can set it to `false` to opt out — see [Bilingual view](/docs/customize/i18n/#bilingual-view) |
 | `params.ui.translation_notice` | language code or false | false | The language code of the authoritative version, so a translated page shows a line pointing back at it; a page opts out with `translation_notice: false` |
 | `params.ui.reading_time` | boolean | false | Shows a reading time under the page title |
 | `params.ui.book_draft_banner` | boolean | false | Adds a banner at the top of a draft Book page |
@@ -548,13 +549,13 @@ regenerates the schemas and fails if they differ. Use the schema from the same
 release tag as your theme pin.
 
 With the VS Code YAML extension, map the site schema in your settings. This
-example matches OINK v1.4.0; replace that tag with the one in your `go.mod`.
+example matches OINK v1.5.0; replace that tag with the one in your `go.mod`.
 Both common YAML configuration filenames are covered:
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/v1.4.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
+    "https://raw.githubusercontent.com/pgsty/oink/v1.5.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```

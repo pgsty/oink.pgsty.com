@@ -55,6 +55,7 @@ If the group is open, it moves to the first visible child. Page navigation with
 | {{< kbd "N" >}} | Home page only: jump to the next top-level section (a mnemonic alias for {{< kbd "J" >}} there) |
 | {{< kbd "Q" >}} {{< kbd "E" >}} | Previous / next page |
 | {{< kbd "H" >}} | Focused reading: hide / restore the navigation shell |
+| {{< kbd "B" >}} | Open the [bilingual view](/docs/customize/i18n/#bilingual-view) when the site enables `params.ui.compare` and the page has a translation |
 
 {{< kbd "J" >}} {{< kbd "K" >}} use the same target sequence as the right-hand
 outline. They reach the same location as an outline click. Each jump uses a

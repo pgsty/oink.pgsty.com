@@ -41,7 +41,7 @@ With nothing typed, the palette lists four groups in a fixed order:
 | Group | Contents | Decided by |
 | --- | --- | --- |
 | Quick links | A few entry points chosen from the navbar's top-level menu | `params.ui.quick_links` |
-| Page actions | Copy Markdown, view Markdown source, edit this page, view history, create a child page, open an issue, print the section | Repository configuration and whether this page has a Markdown output |
+| Page actions | Copy Markdown, view Markdown source, edit this page, view history, create a child page, open an issue, print the section, open the bilingual view (`compare_translations`) | Repository configuration, whether this page has a Markdown output, and for the bilingual view `params.ui.compare` plus a same-origin translation |
 | Preferences | Switch version → switch language → switch theme | Whether the site configures versions, languages and the light/dark menu |
 | Commands | Open the GitHub repository, then the site's own commands | `params.github_project_repo` (falling back to `github_repo`) and `ui.command_palette.commands` |
 

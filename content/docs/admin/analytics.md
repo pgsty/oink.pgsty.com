@@ -81,6 +81,37 @@ The "was this page helpful?" feedback widget is separate. It is off by default
 and makes no network request. Configure it as described in
 [Repository links and page info](/docs/customize/repository/).
 
+## Bilingual view panes {#bilingual-view}
+
+With [`params.ui.compare`](/docs/customize/i18n/#bilingual-view) enabled, opening
+the bilingual view loads both pages inside same-origin frames. Theme-managed
+analytics (`services.googleAnalytics.id` and `params.analytics.*`) skips those
+panes automatically so opening the reader does not double-count page views.
+When `params.ui.compare: true` is active, OINK renders the Google Analytics
+snippet through its own pane-aware template rather than Hugo's built-in partial,
+so a site override at `layouts/_partials/google_analytics.html` will not take
+effect.
+
+Custom scripts in `head-end.html` still execute on every frame load. Guard them
+with `window.OinkComparePane` before recording a page view:
+
+```go-html-template {title="layouts/_partials/hooks/head-end.html"}
+{{ if hugo.IsProduction }}
+<script>
+  if (!window.OinkComparePane) {
+    var script = document.createElement('script');
+    script.defer = true;
+    script.dataset.domain = 'your-site.example';
+    script.src = 'https://plausible.io/js/script.js';
+    document.head.appendChild(script);
+  }
+</script>
+{{ end }}
+```
+
+Server and CDN analytics also see pane requests. They carry the query
+`oink_compare_pane=1` and can be filtered out.
+
 ## Page descriptions {#description}
 
 `<meta name="description">` takes the first non-empty value of:

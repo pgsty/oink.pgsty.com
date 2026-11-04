@@ -288,6 +288,7 @@ CSP 哈希或注入 nonce；部署方需根据实际构建产物制定策略。
 - OINK 1.4.0 提供 [PlantUML 本地渲染](/zh/docs/components/plantuml/#limits)，需要允许同源脚本、在 `script-src` 中允许 `wasm-unsafe-eval` 以编译 WebAssembly，并在 `img-src` 中允许 `blob:`，无需放行渲染服务来源。
 - [远程 API 规范](/zh/docs/write/openapi/#spec-file)与[自建图表服务](/zh/docs/components/plantuml/#server)：落在 `connect-src` 与 `img-src`。
 - [giscus](/zh/docs/admin/comments/#privacy)：`script-src` 与 `frame-src` 要一起放行。
+- [双语视图](/zh/docs/customize/i18n/#bilingual-view)：窗格是同源 frame，`frame-src`（或 `child-src`）需要允许 `'self'`，响应也要允许同源嵌入（不能有 `X-Frame-Options: DENY` 或 `frame-ancestors 'none'`）。开启后每个 HTML 页面多一段内联启动脚本，脚本 hash 随之变化。
 
 对允许执行的行内脚本和样式块，按最终部署字节计算哈希，或由托管层在每次响应时向策略头和对应标签注入新的 nonce。`<style>` 标签上的 nonce 不会授权行内 `style="..."` 属性，后者需在 `style-src-attr` 下单独配置。正文、配置、压缩方式或主题更新后，请重新核对哈希。建议先以 `Content-Security-Policy-Report-Only` 模式上线观察，在浏览器中验证深浅色启动、外壳状态、菜单及全部已启用组件无误后，再切换为强制执行。
 

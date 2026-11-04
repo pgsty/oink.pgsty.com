@@ -285,6 +285,7 @@ OINK 1.3.0 为默认 `shell_types` 列表添加了 `expo`，
 | `params.ui.pager_types` | list | [docs, book, blog] | 哪些 type 显示上一页/下一页；单页用 front matter `pager: false` 退出。未知 type 告警并丢弃 |
 | `params.ui.annotation` | boolean | true | 正文末尾的「最后修改」与出处区块；上游署名由页面的 `upstream_link` 一族键驱动，见[页面参数](/zh/docs/write/frontmatter/#upstream) |
 | `params.ui.backlinks` | boolean | false | 在右栏目录旁以「反链」组列出链接到本页的页面，构建时从普通链接派生，见[导航与菜单](/zh/docs/customize/navigation/#backlinks) |
+| `params.ui.compare` | boolean | false | 为存在同源 HTML 译文的 Docs、Book 和博客页面提供双栏双语视图；单个语言可设为 `false` 退出，见[双语视图](/zh/docs/customize/i18n/#bilingual-view) |
 | `params.ui.translation_notice` | 语言代码或 false | false | 权威版本的语言代码，译文页据此显示一条指回原文的说明；页面写 `translation_notice: false` 退出 |
 | `params.ui.reading_time` | boolean | false | 页面标题下显示阅读时长 |
 | `params.ui.book_draft_banner` | boolean | false | Book 草稿页开头额外加一条横幅 |
@@ -496,13 +497,13 @@ outputs:
 与参数扫描注册表的投影；主题 CI 会重新生成并检查漂移。使用时应选择与主题固定版本
 相同标签下的 Schema。
 
-配合 VS Code YAML 扩展，在设置中映射站点 Schema。下面以 OINK v1.4.0 为例，
+配合 VS Code YAML 扩展，在设置中映射站点 Schema。下面以 OINK v1.5.0 为例，
 请将标签换成 `go.mod` 中固定的版本；两种常见 YAML 配置文件名都已覆盖：
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/v1.4.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
+    "https://raw.githubusercontent.com/pgsty/oink/v1.5.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```

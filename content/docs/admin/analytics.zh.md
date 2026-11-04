@@ -62,6 +62,35 @@ Plausible、Umami、Matomo 这类服务只要求插入一段脚本。主题提�
 
 「这篇文档解决了你的问题吗」反馈组件是另一件事：默认关闭，不发网络请求，配置见[仓库与页面信息](/zh/docs/customize/repository/)。
 
+## 双语视图窗格 {#bilingual-view}
+
+开启 [`params.ui.compare`](/zh/docs/customize/i18n/#bilingual-view) 后，每次打开
+双语视图都会在同源 frame 中加载两侧页面。主题内置统计（`services.googleAnalytics.id`
+与 `params.analytics.*`）会自动跳过对照窗格，避免打开双语阅读器时重复计算浏览量。启用
+`params.ui.compare: true` 后，OINK 会改用自带的窗格感知模板输出 Google Analytics
+代码，不再调用 Hugo 内置模板，因此站点覆盖的 `layouts/_partials/google_analytics.html`
+不会生效。
+
+写在 `head-end.html` 中的自定义脚本仍会在每次窗格加载时执行，上报浏览前请通过
+`window.OinkComparePane` 跳过窗格：
+
+```go-html-template {title="layouts/_partials/hooks/head-end.html"}
+{{ if hugo.IsProduction }}
+<script>
+  if (!window.OinkComparePane) {
+    var script = document.createElement('script');
+    script.defer = true;
+    script.dataset.domain = 'your-site.example';
+    script.src = 'https://plausible.io/js/script.js';
+    document.head.appendChild(script);
+  }
+</script>
+{{ end }}
+```
+
+服务器和 CDN 统计同样会看到窗格请求。这些请求带有查询参数 `oink_compare_pane=1`，
+可以据此过滤。
+
 ## 页面描述 {#description}
 
 `<meta name="description">` 按这个顺序取值，取到第一个非空的就停：
