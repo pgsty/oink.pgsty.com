@@ -500,7 +500,7 @@ replacement 路径之前捕获。公开清单不包含本机绝对路径、任�
 > [!NOTE] R6 受支持本地范围已接受
 > 登记与可选工具边界通过冻结归属/运行时、实际协议、四消费者一致性/保护及
 > 规范源码/渲染门禁。A07 适配器与 A15 工作区受支持范围已在
-> [维护记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6)中本地接受。
+> [维护记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#r6)中本地接受。
 
 工作区是一份显式指定的 YAML 登记文件，独立版本为 `oink.workspace/v1`。
 它只包含站点名称与目录：

@@ -16,7 +16,7 @@ proposal_date: 2026-10-03
 > [!NOTE] 已实现需求记录
 > 本记录保留 R1–R8 的原始需求排期与锚点。当前 CLI 行为归属
 > [CLI 契约](/zh/docs/design/decisions/cli/)与[CLI 简介](/zh/docs/cli/)，历史验收证据归属
-> [2026-10-04 增补](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#a18)。
+> [2026-10-04 增补](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#a18)。
 > 条件性扩展 E1–E4 尚未启动。
 
 先完成文档维护，再建立本地可视化工作台。产品应当帮助维护者检查修改、理解影响、
@@ -240,7 +240,7 @@ markdownlint-cli `0.49.1`、Vale `3.24.0` 与 lychee `0.24.2` 扩展各站政策
 目录保护。初次预备失败仍不计作验证通过证据；仅验收驱动命令元数据的收据修正
 独立记录，没有 CLI 运行时修正或重跑。受保护规范中英文源码/渲染检查通过，
 R6/A07/A15 受支持范围已本地接受，见
-[R6 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6)。
+[R6 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#r6)。
 当前 A18 运行时/归档验证通过；Darwin amd64 保持实验/未验证。
 
 ## 只读 Oink Studio {#read-only-studio}
@@ -290,7 +290,7 @@ Markdown、准确源码哈希、支持顶层 YAML 标量/文本回退、原生�
 
 已接受本地接口见[契约](/zh/docs/design/decisions/cli/#editing)。修正冻结公共/Go/race/vet、实际/普通
 Hugo、Editor 浏览器/无障碍/移动端及精确二进制四消费者保护门禁已通过。
-R8/A17 受支持本地范围也通过受保护规范源码/渲染门禁并已接受，记录于 [R8 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r8)。
+R8/A17 受支持本地范围也通过受保护规范源码/渲染门禁并已接受，记录于 [R8 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#r8)。
 R1–R8 受支持范围已接受；当前 A18 运行时/归档验证通过。Darwin amd64 保持实验/未验证。
 
 ## 交付顺序与排期 {#delivery-sequence}
@@ -398,17 +398,17 @@ R1–R3 形成拟议 `0.2` 质量与发布候选，计入早期预留后约在�
 | 日期 | 记录 |
 | --- | --- |
 | 2026-10-03 | 根据当前 CLI 盘点与提供的功能目标创建草案，提出 R1–R8、可选扩展门禁、投入假设及可执行验收用例。 |
-| 2026-10-03 | R1 共享 Hugo 事实与检查政策通过本地归属/真实 Hugo 检查。稳定行为移入 [CLI 契约](/zh/docs/design/decisions/cli/#project-policy)；[验收记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r1)分别跟踪最终报告刷新与中英文产物证据。R2–R8 及条件性扩展仍未完成。 |
-| 2026-10-03 | R2 翻译范围/哈希审阅、有界原生规则和可见基线已使用共享保护文件计划。本地归属、真实 Hugo 与聚焦 race 门禁通过，最终消费站刷新和中英文文档验收仍在[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r2)中待完成。已实现行为见[契约](/zh/docs/design/decisions/cli/#translations)。R3–R8 仍未完成。 |
-| 2026-10-03 | R2 最终语料与中英文文档门禁通过。R3 一次渲染的已检查导出、准确文件身份、两种服务商的保护 CI 计划、发布诊断和显式联网 HTTP 验证已通过各自本地门禁，包括自定义 workflow 发现。稳定行为移入[契约](/zh/docs/design/decisions/cli/#checked-artifacts)；准确证据与 A08–A10 结果归[维护记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r3)所有。R4–R8、最终 A18 运行时/归档刷新及 Darwin amd64 仍未完成。 |
-| 2026-10-03 | R4 受支持本地范围通过冻结 Go/vet、真实 Hugo/race 及准确二进制只读 Starter/文档站/PIG/repository 门禁。同一未修改许可证 Starter 组合全部配置/语言；普通 new/editor/snippet 流程与源码/外部输入保护，以及可读有界升级视图和 alias/输出回归保护均通过。稳定行为归[契约](/zh/docs/design/decisions/cli/#authoring)，准确 A11/A12 证据和边界归[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r4)。R5–R8、最终 A18 运行时/归档刷新及 Darwin amd64 仍未完成。 |
-| 2026-10-03 | R5 修正冻结 Go/vet、实际 Hugo/race 及精确二进制四消费者只读门禁已完成。全部站点 inspect/context 完成；历史影响与移动阻断保持明确。受保护规范源码/渲染门禁及阶段接受仍待完成。稳定行为归[契约](/zh/docs/design/decisions/cli/#project-graph)所有；[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r5)标识 A13/A14/context 证据、缓存模块修正及精确保护记录。R6–R8、workspace A15 与最终 A18 保持未完成。 |
-| 2026-10-03 | R5 受支持检查/影响/有界上下文与受保护移动范围在修正冻结归属门禁、精确二进制四消费者保护及首次晋升规范源码/渲染门禁后已本地接受。生产翻译检查仅保留已知 draft 发布文档缺失；独立不可发布分析的全部归属检查通过。稳定行为归[契约](/zh/docs/design/decisions/cli/#project-graph)与[命令契约](/zh/docs/design/decisions/cli/#content-moves)所有；[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r5)保留精确结果及单独渲染后证据边界。A13/A14 受支持 CLI 范围通过；A15 context 通过，workspace/direct 一致仍归 R6。R6–R8 与最终 A18 未完成。 |
-| 2026-10-03 | R6 显式登记与有界可选工具候选已实现；聚焦工作区与修正实际协议试验通过，预备失败独立记录。最终运行时/语料/规范门禁及 A07/A15 阶段接受仍待完成，见 [R6 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6)。R7/R8 与最终 A18 未完成。 |
-| 2026-10-03 | R6 冻结 Go/vet、实际 Hugo/固定工具、归属 race 及精确二进制四消费者直接/汇总一致性与保护已验证。完成收据记录六个原始操作、repository 已有重复 ID 发现，以及不变原始输出上的驱动命令摘要修正；无需 CLI/Hugo 重跑或运行时修正。规范源码/渲染检查和显式 R6/A07/A15 阶段接受仍在[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6)中待完成。R7/R8/最终 A18 未完成。 |
-| 2026-10-03 | R6 受支持显式登记与可选工具范围在冻结 Go/vet、实际 Hugo/固定工具、race、精确二进制四消费者一致性/保护及受保护规范源码/渲染门禁后已本地接受。A07 适配器与 A15 工作区/直接/context 受支持范围通过；[R6 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6)区分首次晋升渲染字节与本次渲染后状态/证据修订。R7/R8 与最终 A18 仍未完成。 |
+| 2026-10-03 | R1 共享 Hugo 事实与检查政策通过本地归属/真实 Hugo 检查。稳定行为移入 [CLI 契约](/zh/docs/design/decisions/cli/#project-policy)；[验收记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r1-r5/#r1)分别跟踪最终报告刷新与中英文产物证据。R2–R8 及条件性扩展仍未完成。 |
+| 2026-10-03 | R2 翻译范围/哈希审阅、有界原生规则和可见基线已使用共享保护文件计划。本地归属、真实 Hugo 与聚焦 race 门禁通过，最终消费站刷新和中英文文档验收仍在[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r1-r5/#r2)中待完成。已实现行为见[契约](/zh/docs/design/decisions/cli/#translations)。R3–R8 仍未完成。 |
+| 2026-10-03 | R2 最终语料与中英文文档门禁通过。R3 一次渲染的已检查导出、准确文件身份、两种服务商的保护 CI 计划、发布诊断和显式联网 HTTP 验证已通过各自本地门禁，包括自定义 workflow 发现。稳定行为移入[契约](/zh/docs/design/decisions/cli/#checked-artifacts)；准确证据与 A08–A10 结果归[维护记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r1-r5/#r3)所有。R4–R8、最终 A18 运行时/归档刷新及 Darwin amd64 仍未完成。 |
+| 2026-10-03 | R4 受支持本地范围通过冻结 Go/vet、真实 Hugo/race 及准确二进制只读 Starter/文档站/PIG/repository 门禁。同一未修改许可证 Starter 组合全部配置/语言；普通 new/editor/snippet 流程与源码/外部输入保护，以及可读有界升级视图和 alias/输出回归保护均通过。稳定行为归[契约](/zh/docs/design/decisions/cli/#authoring)，准确 A11/A12 证据和边界归[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r1-r5/#r4)。R5–R8、最终 A18 运行时/归档刷新及 Darwin amd64 仍未完成。 |
+| 2026-10-03 | R5 修正冻结 Go/vet、实际 Hugo/race 及精确二进制四消费者只读门禁已完成。全部站点 inspect/context 完成；历史影响与移动阻断保持明确。受保护规范源码/渲染门禁及阶段接受仍待完成。稳定行为归[契约](/zh/docs/design/decisions/cli/#project-graph)所有；[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r1-r5/#r5)标识 A13/A14/context 证据、缓存模块修正及精确保护记录。R6–R8、workspace A15 与最终 A18 保持未完成。 |
+| 2026-10-03 | R5 受支持检查/影响/有界上下文与受保护移动范围在修正冻结归属门禁、精确二进制四消费者保护及首次晋升规范源码/渲染门禁后已本地接受。生产翻译检查仅保留已知 draft 发布文档缺失；独立不可发布分析的全部归属检查通过。稳定行为归[契约](/zh/docs/design/decisions/cli/#project-graph)与[命令契约](/zh/docs/design/decisions/cli/#content-moves)所有；[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r1-r5/#r5)保留精确结果及单独渲染后证据边界。A13/A14 受支持 CLI 范围通过；A15 context 通过，workspace/direct 一致仍归 R6。R6–R8 与最终 A18 未完成。 |
+| 2026-10-03 | R6 显式登记与有界可选工具候选已实现；聚焦工作区与修正实际协议试验通过，预备失败独立记录。最终运行时/语料/规范门禁及 A07/A15 阶段接受仍待完成，见 [R6 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#r6)。R7/R8 与最终 A18 未完成。 |
+| 2026-10-03 | R6 冻结 Go/vet、实际 Hugo/固定工具、归属 race 及精确二进制四消费者直接/汇总一致性与保护已验证。完成收据记录六个原始操作、repository 已有重复 ID 发现，以及不变原始输出上的驱动命令摘要修正；无需 CLI/Hugo 重跑或运行时修正。规范源码/渲染检查和显式 R6/A07/A15 阶段接受仍在[记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#r6)中待完成。R7/R8/最终 A18 未完成。 |
+| 2026-10-03 | R6 受支持显式登记与可选工具范围在冻结 Go/vet、实际 Hugo/固定工具、race、精确二进制四消费者一致性/保护及受保护规范源码/渲染门禁后已本地接受。A07 适配器与 A15 工作区/直接/context 受支持范围通过；[R6 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#r6)区分首次晋升渲染字节与本次渲染后状态/证据修订。R7/R8 与最终 A18 仍未完成。 |
 | 2026-10-03 | R7 只读内嵌 Studio 候选及鉴权回环视图已实现；冻结核心/浏览器及精确二进制四消费者验收在声明范围内完成；受保护规范晋升/渲染及显式 R7/A16 接受仍待完成。R1–R6 保持已接受；R8/最终 A18 未完成。 |
 | 2026-10-03 | R7/A16 受支持只读 Studio 在冻结累计已执行案例/浏览器证明、精确二进制四消费者一致性/保护及受保护规范源码/渲染门禁后已本地接受。首次晋升渲染字节与本次渲染后状态修订保持不同；完整调用失败与明确局部预览未完成保持可见。R1–R7 已接受；R8/最终 A18 未完成。 |
-| 2026-10-03 | R8 CLI/显式 Editor 源码编辑候选已实现；默认 Studio 保持只读。纯核心/流式输出复制聚焦证据已记录，失败浏览器试验保留。最终冻结公共/浏览器/消费者/规范门禁及 A17 阶段接受仍待完成，见 [R8 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r8)。R1–R7 保持已接受，R8/最终 A18 未完成。 |
-| 2026-10-03 | R8/A17 受审阅 CLI/显式 Editor 受支持本地范围在修正冻结完整归属/浏览器、精确二进制四消费者提议一致性与源码保护，以及受保护首次规范晋升/实际渲染后接受。R1–R8 已本地接受；[R8 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r8)独立绑定首次渲染与本次状态字节，并保留所有失败试验、原生发现与必需局部预览未完成。最终 A18 当前 Linux/归档验证仍未完成。 |
-| 2026-10-04 | 当前后端完整性修正、刷新归属/Hugo/race、未变运行时复用的四消费者保护与三个声明运行时/归档验证通过，见[带日期完成增补](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#a18)。有限 R1–R8 实现本地完成；需求记录/锚点保留，退出活动导航，稳定行为归属契约/指南。E1–E4 未启动。 |
+| 2026-10-03 | R8 CLI/显式 Editor 源码编辑候选已实现；默认 Studio 保持只读。纯核心/流式输出复制聚焦证据已记录，失败浏览器试验保留。最终冻结公共/浏览器/消费者/规范门禁及 A17 阶段接受仍待完成，见 [R8 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#r8)。R1–R7 保持已接受，R8/最终 A18 未完成。 |
+| 2026-10-03 | R8/A17 受审阅 CLI/显式 Editor 受支持本地范围在修正冻结完整归属/浏览器、精确二进制四消费者提议一致性与源码保护，以及受保护首次规范晋升/实际渲染后接受。R1–R8 已本地接受；[R8 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#r8)独立绑定首次渲染与本次状态字节，并保留所有失败试验、原生发现与必需局部预览未完成。最终 A18 当前 Linux/归档验证仍未完成。 |
+| 2026-10-04 | 当前后端完整性修正、刷新归属/Hugo/race、未变运行时复用的四消费者保护与三个声明运行时/归档验证通过，见[带日期完成增补](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#a18)。有限 R1–R8 实现本地完成；需求记录/锚点保留，退出活动导航，稳定行为归属契约/指南。E1–E4 未启动。 |

@@ -117,12 +117,12 @@ responsive review.
 
 Studio is removed from the current CLI on 2026-10-04. Use `oink dev`,
 an ordinary editor, and structured `inspect`/`check` reports. The
-[R7 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r7)
+[R7 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#r7)
 preserves historical acceptance of the earlier browser implementation.
 
 ## Reviewed editing {#cli-editing-candidate}
 
 General source editing is removed from the current CLI. Guarded `new`,
 `move`, review records, and baseline plans remain. Old editing plans are
-rejected. The [R8 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r8)
+rejected. The [R8 record](/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#r8)
 remains historical evidence rather than the current command API.

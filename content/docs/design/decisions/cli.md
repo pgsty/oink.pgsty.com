@@ -654,7 +654,7 @@ saved CI plans are rejected by `plans apply`.
 > The registry and optional-tool boundaries passed frozen owning/runtime, actual
 > protocol, four-consumer parity/preservation and canonical source/render gates.
 > A07 adapter and A15 workspace supported scope is accepted locally in the
-> [maintenance record](/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r6).
+> [maintenance record](/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#r6).
 
 A workspace is one explicitly supplied YAML registry, independently versioned
 as `oink.workspace/v1`. It contains only site names and directories:

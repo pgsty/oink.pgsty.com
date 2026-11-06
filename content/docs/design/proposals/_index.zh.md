@@ -100,11 +100,11 @@ content/docs/design/proposals/<slug>.zh.md
 ## 只读 Studio 候选 {#cli-studio-candidate}
 
 2026-10-04 当前 CLI 移除 Studio。使用 `oink dev`、普通编辑器与
-`inspect`/`check` 结构化报告。[R7 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r7)
+`inspect`/`check` 结构化报告。[R7 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#r7)
 保留此前浏览器实现的历史验收。
 
 ## 受审阅编辑 {#cli-editing-candidate}
 
 当前 CLI 移除通用源码编辑，保留受保护的 `new`、`move`、审阅记录与基线计划。
-旧编辑计划会被拒绝。[R8 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance/#r8)
+旧编辑计划会被拒绝。[R8 记录](/zh/docs/design/research/2026-10-03-cli-maintenance-acceptance-r6-r8/#r8)
 继续作为历史证据，不是当前命令 API。
