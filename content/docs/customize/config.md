@@ -318,7 +318,7 @@ beside the table of contents.
 | `params.ui.pager_types` | list | [docs, book, blog] | Types that show previous / next links. To disable them on a page, use front matter `pager: false`. An unknown type warns and is discarded |
 | `params.ui.annotation` | boolean | true | The "last modified" and provenance block at the end of the body; the upstream attribution line is driven by the page's `upstream_link` family — see [Page parameters](/docs/write/frontmatter/#upstream) |
 | `params.ui.backlinks` | boolean | false | Lists the pages that link to this one as a "Backlinks" group in the right rail beside the table of contents, derived at build time from ordinary links — see [Navigation and menus](/docs/customize/navigation/#backlinks) |
-| `params.ui.compare` | boolean | false | Adds a two-pane Bilingual View to Docs, Book, and blog pages that have a same-origin HTML translation. A language can set it to `false` to opt out — see [Bilingual view](/docs/customize/i18n/#bilingual-view) |
+| `params.ui.compare` | boolean | false | Adds a two-pane Duo View to Docs, Book, and blog pages that have a same-origin HTML translation. A language can set it to `false` to opt out — see [Duo view](/docs/customize/i18n/#bilingual-view) |
 | `params.ui.translation_notice` | language code or false | false | The language code of the authoritative version, so a translated page shows a line pointing back at it; a page opts out with `translation_notice: false` |
 | `params.ui.reading_time` | boolean | false | Shows a reading time under the page title |
 | `params.ui.book_draft_banner` | boolean | false | Adds a banner at the top of a draft Book page |

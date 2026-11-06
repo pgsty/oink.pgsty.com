@@ -32,7 +32,7 @@ OINK today, including this one.
 
 ## What the theme provides {#what-oink-provides}
 - The documentation and blog shell provides navigation, a sidebar tree, a table of contents, breadcrumbs, a pager, dark mode, print view, and accessible interaction.
-- The multilingual structure provides translation routing, fallback for untranslated pages, language weighting, RTL, 32 complete interface catalogs, and an opt-in bilingual view (`params.ui.compare: true`) for side-by-side reading.
+- The multilingual structure provides translation routing, fallback for untranslated pages, language weighting, RTL, 32 complete interface catalogs, and an opt-in duo view (`params.ui.compare: true`) for side-by-side reading.
 - Local browser features include Mermaid, Markmap, Swagger UI, Redoc, Asciinema, ECharts, Infographic, and full-text search. Mathematics is rendered by Hugo at build time and uses local KaTeX styles.
 - Content components include callouts, tabs, steps, cards, field lists, file trees, galleries, badges, keys, and more. Most have a native Markdown form.
 - Additional content types provide built-in book numbering and cross-references, release and download pages, data-driven landing pages, and OpenAPI reference pages.

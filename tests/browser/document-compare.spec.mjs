@@ -82,19 +82,108 @@ test('compare: opening preserves the current passage and closing restores host p
   expect(await page.evaluate(() => scrollY)).toBe(original);
 });
 
-test('compare: B opens the localized bilingual view and the toolbar stays icon-only where requested', async ({ page }) => {
+test('compare: closing returns focus to the reading place, and one target needs no menu', async ({ page }) => {
   await page.goto('/tests/compare-reader/');
-  await expect(page.locator('.td-shell-keyboard-help')).toContainText('B');
+  const link = page.locator('.td-content a', { hasText: 'Documentation home' }).first();
+  await link.focus();
   await page.keyboard.press('b');
-  await expect(page.locator(`${reader}[open]`)).toBeVisible();
-  await expect(page.locator('.td-compare__title')).toHaveText('Bilingual View');
-  await expect(page.locator('.td-compare__sync')).toHaveText(/Sync Scroll/);
-  await expect(page.locator('[data-td-compare-close]')).toHaveText('');
-  await expect(page.locator('[data-td-compare-close]')).toHaveAttribute('aria-label', 'Close');
+  await expect(page.locator(sync)).toBeEnabled();
+  // A single translation is a plain label, not a one-option menu.
+  await expect(page.locator('[data-td-compare-language]')).toHaveCount(0);
+  await expect(page.locator('.td-compare__pane-heading')).toHaveText(['English', '简体中文']);
+  await page.keyboard.press('Escape');
+  await closed(page);
+  await expect(link).toBeFocused();
+});
+
+test('compare: scroll keys scroll the reading pane right after opening', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const [left, right] = await open(page);
+  // Focus stays on the title so the dialog is announced; keys still scroll.
+  await expect(page.locator('.td-compare__title')).toBeFocused();
+  await page.keyboard.press('PageDown');
+  await expect.poll(() => left.evaluate(() => scrollY)).toBeGreaterThan(300);
+  await expect.poll(() => right.evaluate(() => scrollY)).toBeGreaterThan(100);
+  await page.keyboard.press('End');
+  await expect.poll(() => left.evaluate(() => Math.abs(document.documentElement.scrollHeight - innerHeight - scrollY))).toBeLessThan(2);
+  await page.keyboard.press('Home');
+  await expect.poll(() => left.evaluate(() => scrollY)).toBe(0);
+  // Space on the Sync switch still toggles it rather than scrolling.
+  await page.locator(sync).focus();
+  await page.keyboard.press('Space');
+  await expect(page.locator(sync)).not.toBeChecked();
+});
+
+test('compare: a pane navigated to another document by script fails safely', async ({ page }) => {
+  const [left] = await open(page);
+  await left.evaluate(() => { setTimeout(() => location.assign('/docs/'), 0); });
+  await expect(page.locator('[data-td-compare-side="0"] .td-compare__failure')).toBeVisible();
+  await expect(page.locator('[data-td-compare-side="0"] .td-compare__retry')).toBeVisible();
+  await expect(page.locator(sync)).toBeDisabled();
+});
+
+test('compare: the Sync choice is remembered for the next opening', async ({ page }) => {
+  await open(page);
+  await page.locator(sync).click();
+  await expect(page.locator(sync)).not.toBeChecked();
   await page.locator('[data-td-compare-close]').click();
   await closed(page);
-  await expect(page.locator('[data-td-compare-open]')).toHaveAttribute('aria-label', 'Open bilingual view');
+  await page.locator('[data-td-compare-open]').click();
+  await expect(page.locator(sync)).toBeEnabled();
+  await expect(page.locator(sync)).not.toBeChecked();
+});
+
+test('compare: continuous owner scrolling keeps the follower in step', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await open(page);
+  const error = await page.evaluate(async () => {
+    const geometry = window.OinkCompareScroll;
+    const [left, right] = [...document.querySelectorAll('[data-td-compare-frame]')].map(frame => frame.contentWindow);
+    const rows = win => [...win.document.querySelectorAll('#td-main-content .td-content :is(h2,h3,h4,h5,h6)[id]')]
+      .filter(node => node.getClientRects().length)
+      .map(node => ({ id: node.id, y: node.getBoundingClientRect().top + win.scrollY - 24 }));
+    const max = win => win.document.documentElement.scrollHeight - win.innerHeight;
+    const map = geometry.create(rows(left), rows(right), max(left), max(right));
+    const frame = () => new Promise(resolve => requestAnimationFrame(resolve));
+    left.document.dispatchEvent(new left.WheelEvent('wheel'));
+    const errors = [];
+    // Trackpads and momentum deliver a scroll step on every frame.
+    for (let step = 0; step < 40; step++) {
+      left.scrollBy({ top: 25, behavior: 'instant' });
+      await frame(); await frame();
+      errors.push(Math.abs(geometry.project(map, left.scrollY, 0) - right.scrollY));
+    }
+    return errors.sort((a, b) => a - b)[Math.floor(errors.length * 0.9)];
+  });
+  expect(error).toBeLessThan(30);
+});
+
+test('compare: B toggles the localized duo view and the toolbar stays icon-only where requested', async ({ page }) => {
+  await page.goto('/tests/compare-reader/');
+  await expect(page.locator('.td-shell-keyboard-help')).toContainText('B');
+  await expect(page.locator('.td-shell-keyboard-help')).toContainText('Duo View');
+  await page.keyboard.press('b');
+  await expect(page.locator(`${reader}[open]`)).toBeVisible();
+  await expect(page.locator('.td-compare__title')).toHaveText('Duo View');
+  await expect(page.getByRole('switch', { name: 'Sync Scroll' })).toBeChecked();
+  await expect(page.locator('[data-td-compare-close]')).toHaveText('');
+  await expect(page.locator('[data-td-compare-close]')).toHaveAttribute('aria-label', 'Close');
+  await expect(page.locator('[data-td-compare-close]')).toHaveAttribute('aria-keyshortcuts', 'Escape B');
+  // B in the toolbar returns to the page and leaves no reader history entry.
+  await expect(page.locator(sync)).toBeEnabled();
+  await page.keyboard.press('b');
+  await closed(page);
+  await expect(page).toHaveURL(/\/tests\/compare-reader\/$/);
+  expect(await page.evaluate(() => history.state?.oinkCompareReader ?? null)).toBeNull();
+  await expect(page.locator('[data-td-compare-open]')).toHaveAttribute('aria-label', 'Open duo view');
   await expect(page.locator('[data-td-compare-open]')).toHaveAttribute('aria-keyshortcuts', 'B');
+  // B inside a pane closes it too, but not while typing or with a modifier.
+  const [left] = await open(page);
+  await left.locator('.td-content h1').click();
+  await page.keyboard.press('Shift+B');
+  await expect(page.locator(`${reader}[open]`)).toBeVisible();
+  await page.keyboard.press('b');
+  await closed(page);
 });
 
 test('compare: a reload reopens the reader and Back still closes it', async ({ page }) => {
@@ -185,6 +274,27 @@ test('compare: content components, fragment history and nested Escape keep worki
   await closed(page);
 });
 
+test('compare: a fragment link into a hidden tab reveals its panel without adding history', async ({ page }) => {
+  const [left] = await open(page);
+  const length = await page.evaluate(() => history.length);
+  const id = await left.evaluate(() => {
+    const panel = [...document.querySelectorAll('.td-tabs__panel')].find(candidate => candidate.hidden);
+    const target = panel.querySelector('p') || panel;
+    target.id ||= 'compare-hidden-tab-target';
+    const link = document.createElement('a');
+    link.href = `#${target.id}`;
+    link.textContent = 'Jump into the hidden tab';
+    document.querySelector('.td-content').prepend(link);
+    return target.id;
+  });
+  await expect(left.locator(`#${id}`)).toBeHidden();
+  await left.getByRole('link', { name: 'Jump into the hidden tab', exact: true }).click();
+  await expect(left.locator(`#${id}`)).toBeVisible();
+  expect(await page.evaluate(() => history.length)).toBe(length);
+  await page.goBack();
+  await closed(page);
+});
+
 test('compare: a changed layout is remeasured without losing the reading section', async ({ page }) => {
   const [left, right] = await open(page);
   await scrollTo(left, 'transactions');
@@ -237,12 +347,14 @@ test('compare: 400% zoom keeps the reading area dominant and the controls in rea
   const body = await page.locator('[data-td-compare-side="0"] .td-compare__body').boundingBox();
   expect(body.height).toBeGreaterThanOrEqual(160);
   await expect(page.locator('[data-td-compare-side="0"] .td-compare__pane-heading')).toBeHidden();
-  await expect(page.locator('.td-compare__mobile [data-td-compare-language]')).toBeVisible();
+  // One target: the switcher tabs name both panes and no extra menu is shown.
+  await expect(page.locator('.td-compare__mobile [data-td-compare-language]')).toHaveCount(0);
   const close = await page.locator('[data-td-compare-close]').boundingBox();
   expect(320 - (close.x + close.width)).toBeLessThan(24);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320);
   await page.setViewportSize({ width: 1200, height: 800 });
-  await expect(page.locator('[data-td-compare-side="1"] .td-compare__pane-heading [data-td-compare-language]')).toBeVisible();
+  await expect(page.locator('[data-td-compare-side="1"] .td-compare__pane-heading')).toBeVisible();
+  await expect(page.locator('[data-td-compare-side="1"] .td-compare__pane-heading [data-td-compare-language]')).toHaveCount(0);
   await page.locator('[data-td-compare-close]').click();
   await closed(page);
 });
@@ -254,8 +366,21 @@ test('compare: unmatched headings and failed loads retain independent reading or
   await expect(page.locator('.td-compare__status')).toHaveCount(0);
   await expect(page.locator(sync)).toBeEnabled();
   await expect(page.locator(sync)).toBeChecked();
-  await expect(page.locator('.td-compare__sync-warning')).toBeVisible();
-  await expect(page.locator('.td-compare__sync-warning')).toHaveAttribute('title', /Headings do not fully match/);
+  const warning = page.locator('.td-compare__sync-warning');
+  const tip = page.locator('.td-compare__sync-tip');
+  await expect(warning).toBeVisible();
+  await expect(warning).toHaveAccessibleName(/No usable shared heading/);
+  await expect(tip).toBeHidden();
+  // The note appears on hover; Escape dismisses it before it closes the reader.
+  await warning.hover();
+  await expect(tip).toBeVisible();
+  await expect(tip).toHaveText(/No usable shared heading/);
+  await page.keyboard.press('Escape');
+  await expect(tip).toBeHidden();
+  await expect(page.locator(`${reader}[open]`)).toBeVisible();
+  await page.mouse.move(1, 400);
+  await warning.click();
+  await expect(tip).toBeVisible();
   await page.locator('[data-td-compare-close]').click();
   await closed(page);
   await page.goto('/tests/compare-reader/');
@@ -263,6 +388,33 @@ test('compare: unmatched headings and failed loads retain independent reading or
   await page.locator('[data-td-compare-open]').click();
   await expect(page.locator('.td-compare__failure a')).toHaveAttribute('href', /\/zh\/tests\/compare-reader\/$/);
   await expect(page.locator(sync)).toBeDisabled();
+  await expect(page.locator(sync)).not.toBeChecked();
+  // Retry reloads the pane in place once the page is reachable again.
+  await page.unroute('**/zh/tests/compare-reader/?oink_compare_pane=1');
+  await page.locator('.td-compare__retry').click();
+  await expect(page.locator('[data-td-compare-frame]')).toHaveCount(2);
+  await expect(page.locator(sync)).toBeEnabled();
+  await expect(page.locator('.td-compare__failure')).toHaveCount(0);
+});
+
+test('compare: a slow image does not block a readable pane or discard it', async ({ page }) => {
+  await page.setViewportSize({ width: 1200, height: 700 });
+  // Serve the target promptly but give it an eager image that never arrives,
+  // so the frame's load event stays pending.
+  await page.route('**/zh/tests/compare-reader/?oink_compare_pane=1', async route => {
+    const response = await route.fetch();
+    const body = (await response.text()).replace('<body', '<img src="/compare-never.png" alt="" width="1" height="1"><body');
+    await route.fulfill({ response, body });
+  });
+  await page.route('**/compare-never.png', () => {});
+  await page.goto('/tests/compare-reader/');
+  await page.locator('[data-td-compare-open]').click();
+  await expect(page.locator(sync)).toBeEnabled({ timeout: 8000 });
+  await expect(page.locator('.td-compare__loading')).toHaveCount(0);
+  await expect(page.locator('[data-td-compare-frame]')).toHaveCount(2);
+  await expect(page.locator('.td-compare__failure')).toHaveCount(0);
+  await page.locator('[data-td-compare-close]').click();
+  await closed(page);
 });
 
 test('compare: heading-less pages use whole-document progress with one inline warning', async ({ page }) => {

@@ -46,7 +46,7 @@ capabilities:
       bullets:
         - '[Starter 与部署指南](docs/start/)帮助你完成第一个站点'
         - '自带[全文检索](docs/customize/search/)、[i18n](docs/customize/i18n/)、
-          [双语视图](docs/customize/i18n/#bilingual-view)与[多版本支持](docs/customize/versions/)'
+          [双列视图](docs/customize/i18n/#bilingual-view)与[多版本支持](docs/customize/versions/)'
         - '自带
           [RSS](docs/write/blog/)、[SEO](docs/admin/analytics/)
           与 [Google Analytics](docs/admin/analytics/) 集成'

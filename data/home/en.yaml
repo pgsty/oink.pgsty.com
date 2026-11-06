@@ -46,7 +46,7 @@ capabilities:
       bullets:
         - '[Starter and deployment guides](docs/start/) for your first site'
         - '[Full-text search](docs/customize/search/),
-          [i18n](docs/customize/i18n/), [Bilingual View](docs/customize/i18n/#bilingual-view), and
+          [i18n](docs/customize/i18n/), [Duo View](docs/customize/i18n/#bilingual-view), and
           [versioning](docs/customize/versions/)
           built in'
         - '[RSS](docs/write/blog/),

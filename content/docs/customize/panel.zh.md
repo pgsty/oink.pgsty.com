@@ -31,7 +31,7 @@ search_keywords: [命令面板, command palette, Cmd+K, Ctrl+K, 快捷键, 页�
 | 分组 | 内容 | 谁决定 |
 | --- | --- | --- |
 | 快速链接 | 顶栏一级菜单里选出的几个入口 | `params.ui.quick_links` |
-| 页面操作 | 复制 Markdown、查看 Markdown 源码、编辑本页、查看修改历史、新建子页、提 issue、打印整节、打开双语视图（`compare_translations`） | 仓库配置、本页是否有 Markdown 输出；双语视图还取决于 `params.ui.compare` 与同源译文 |
+| 页面操作 | 复制 Markdown、查看 Markdown 源码、编辑本页、查看修改历史、新建子页、提 issue、打印整节、打开双列视图（`compare_translations`） | 仓库配置、本页是否有 Markdown 输出；双列视图还取决于 `params.ui.compare` 与同源译文 |
 | 偏好设置 | 切换版本 → 切换语言 → 切换主题 | 站点是否配了多版本、多语言、深浅色菜单 |
 | 命令 | 打开 GitHub 仓库，之后是站点自定义命令 | `params.github_project_repo`（缺省回退到 `github_repo`）与 `ui.command_palette.commands` |
 

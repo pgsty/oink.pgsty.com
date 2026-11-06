@@ -81,10 +81,10 @@ The "was this page helpful?" feedback widget is separate. It is off by default
 and makes no network request. Configure it as described in
 [Repository links and page info](/docs/customize/repository/).
 
-## Bilingual view panes {#bilingual-view}
+## Duo view panes {#bilingual-view}
 
 With [`params.ui.compare`](/docs/customize/i18n/#bilingual-view) enabled, opening
-the bilingual view loads both pages inside same-origin frames. Theme-managed
+the duo view loads both pages inside same-origin frames. Theme-managed
 analytics (`services.googleAnalytics.id` and `params.analytics.*`) skips those
 panes automatically so opening the reader does not double-count page views.
 When `params.ui.compare: true` is active, OINK renders the Google Analytics

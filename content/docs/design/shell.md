@@ -542,54 +542,84 @@ the defaults. Invalid `sidebar_root_link_self` values warn and keep the document
 
 ## Translation comparison {#translation-comparison}
 
-`params.ui.compare: true` adds an icon-only **Open bilingual view** entry beside
-the page actions and a localized **Bilingual View** action (`compare_translations`)
+`params.ui.compare: true` adds an icon-only **Open duo view** entry, whose glyph
+differs from every shell control's, beside
+the page actions and a localized **Duo View** action (`compare_translations`)
 in the Command Palette on Docs, Book, and blog pages that have an actual HTML
-translation on the same origin. The reader title, its Sync Scroll control, close
-icon and warning tooltip use the same catalog. The entry exposes its label as its
-tooltip and accessible name. When keyboard navigation is enabled, `B` opens the
-reader, the entry declares `aria-keyshortcuts`, and the help panel lists the
-shortcut only on pages with a real target. The default is `false`. This is one
+translation on the same origin. The reader title, its Sync Scroll switch, close
+icon and sync notes use the same catalog. The entry exposes its label as its
+tooltip and accessible name. When keyboard navigation is enabled, `B` toggles the
+reader: it opens it from the page and closes it from the toolbar or either pane,
+under the page shortcut's guards (no modifier, composition or editable target).
+The entry and Close declare `aria-keyshortcuts`, and the help panel lists the
+shortcut under the view's name only on pages with a real target. The default is `false`. This is one
 site setting; there is no page-pair data, new layout, or output format. A
 language that sets it to `false` offers no entry and is never a target.
-Navigation's language-home fallback is never a comparison target.
+Navigation's language-home fallback is never a comparison target, nor is a
+translation whose build policy writes no HTML (`build.render: link` or `never`,
+including cascaded policy). Blog archive pages after the first offer no entry,
+palette action or shortcut, because they have no counterpart.
 
 The reader fills the viewport with two ordinary pages. The current page is fixed
 on the reading-start side, so a right-to-left host mirrors the pane order. The
 target selector uses existing language order and the same icon, rounded trigger,
-and floating menu style as the site's language bar. Its menu supports pointer and
+floating menu style and selected and hover option states as the site's language bar. Its menu supports pointer and
 keyboard selection. Only the selected sibling is loaded, and replacing it
 preserves the synchronization preference. Each pane keeps its language,
 direction, footnotes and content components.
 
 Below 900 CSS pixels, one toolbar row and one switcher row show one retained pane
 at a time. The title truncates while Sync Scroll and Close stay at the end. The
-switcher row holds the language buttons and an icon-only target-language menu,
-so pane headings are not repeated. Short viewports tighten both rows: at
+switcher row holds the language buttons and, with more than one target, an
+icon-only target-language menu, so pane headings are not repeated. A single
+target is a plain label in the pane heading and the switcher, never a
+one-option menu. Short viewports tighten both rows: at
 320 × 256 CSS pixels (400% zoom) at least 160 pixels of text remain. Forced-colors
 mode marks the selected pane with a border. Crossing the breakpoint moves the
 language menu while preserving its keyboard focus, open state and selected pane.
 
 Shared visible heading IDs determine linked scrolling, using interpolation
-between matched headings. Unmatched headings are skipped. If there are no
-usable common headings, the reader falls back to a bounded beginning-to-end
-document-progress estimate; an inline warning beside Sync Scroll explains that
-the result is approximate. A single common heading or a partial match can still
-anchor the estimate, with the same warning. Duplicate or reordered matches are
-ambiguous, so the checkbox is disabled and the warning explains why; the two
-panes remain independently readable. The follower uses smooth scrolling when
-motion is allowed and switches to instant positioning when the reader prefers
-reduced motion or is restoring a bookmark.
+between matched headings. Unmatched headings are skipped. **Sync Scroll** is a
+labelled switch (`role="switch"`): while panes load it keeps the reader's
+preference and is disabled, and it reads off when sync is unavailable or a pane
+fails. A partial match anchors the estimate between matching headings; with no
+common headings the reader falls back to a bounded beginning-to-end
+document-progress estimate. In either case an orange exclamation mark beside the
+switch, without a badge, names the case in a note shown on hover, keyboard focus
+or tap; Escape dismisses a visible note before it closes the reader. Matching and
+usable geometry are separate facts: a matched heading that cannot scroll to the
+reading line adds no anchor without counting as a mismatch, so it never raises
+the partial-match note. When no shared heading can anchor the map at all, the
+note says that sync follows overall reading progress.
+Duplicate or reordered matches are ambiguous, so the switch is disabled and the
+note explains why; the two panes remain independently readable. While the owner scrolls continuously
+(trackpad, momentum, a held key), the follower tracks it instantly on every
+frame; a single discrete jump eases when motion is allowed. Reduced motion and
+bookmark restoration always position instantly.
 Turning off **Sync Scroll** restores independent scrolling; synchronized
 scrolling aligns sections by heading anchors rather than locking individual
-paragraph rows. Opening resumes the current passage after reflow. Closing,
-Escape or Back restores host scroll and focus. A reload, or a back/forward
+paragraph rows. Opening resumes the current passage after reflow. Focus starts
+on the dialog title so the view is announced; until the reader Tabs into a pane,
+PageUp, PageDown, Space, the arrow keys, Home and End pressed there scroll the
+reading pane (the visible one below 900 pixels) and sync follows. Closing,
+Escape, `B` or Back restores host scroll and returns focus to the element that
+had it when the reader opened, such as the reading link where `B` was pressed,
+falling back to the entry when that element is gone or hidden. Only an open
+language menu or a visible sync note consumes Escape before the reader does. A reload, or a back/forward
 restore, onto the reader's history entry reopens the reader without adding a
-record, so one Back closes it and Forward can reopen it. Back also cancels a
+record, so one Back closes it and Forward can reopen it. That restore brings back
+the selected target, Sync Scroll, the visible pane and both reading positions,
+which the reader keeps on its own history entry once scrolling settles. The last
+explicitly chosen target language and Sync setting are also remembered in this
+browser for later openings; without storage the first target and Sync on apply. Back also cancels a
 reload restore whose reader script is still loading. A pane-local modal consumes
 Escape before the outer reader does. Fragment
-links stay in the pane without adding history; another document exits
-comparison; external links open outside it. Failed pages expose a direct link.
+links stay in the pane without adding history and, like a native fragment
+jump, reveal the hidden tab panels that contain their target; another document exits
+comparison; external links open outside it. A localized loading note covers a
+pane until its article is readable. A page that cannot be loaded shows a
+localized Retry button and a direct link; choosing the same language again also
+retries it.
 
 The [accepted decision](/docs/design/decisions/document-comparison/) records the
 rationale and boundaries. `bin/check-compare.py`, the theme's scroll geometry

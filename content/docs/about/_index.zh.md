@@ -20,7 +20,7 @@ OINK 是一款独立的 [Hugo](https://gohugo.io/) 主题，用于搭建中大�
 
 ## 主题的职责 {#what-oink-provides}
 - 文档与博客外壳：导航、侧栏树、目录、面包屑、翻页、深色模式、打印视图与无障碍交互。
-- 多语言框架：译文路由、缺译回退、语言权重、RTL、32 份完整界面语言包，以及按需开启的双语并排阅读视图（`params.ui.compare: true`）。
+- 多语言框架：译文路由、缺译回退、语言权重、RTL、32 份完整界面语言包，以及按需开启的双列视图（`params.ui.compare: true`）。
 - 本地浏览器功能：Mermaid、Markmap、Swagger UI、Redoc、Asciinema、ECharts、Infographic 与全文检索。数学公式由 Hugo 在构建时渲染，使用本地 KaTeX 样式。
 - 内容组件：提示块、标签页、步骤、卡片、参数表、文件树、画廊、徽章、按键等，多数有 Markdown 原生形态。
 - 内容类型：普通文档之外，还内置书籍编号与交叉引用、发布与下载页、数据驱动的 Landing 首页、OpenAPI 文档页。

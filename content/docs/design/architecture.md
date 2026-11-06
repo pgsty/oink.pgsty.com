@@ -374,7 +374,11 @@ may override it. Invalid values warn and leave it off. Hugo derives candidates
 from actual translation pages whose language also enables comparison, and emits
 a small descriptor. The entry chunk loads the reader on demand; the reader uses
 two same-origin HTML frames. No language combinations or new content outputs
-are generated. The retained host makes three live documents.
+are generated. The retained host makes three live documents. Per-viewer
+preferences (last target and Sync) live in `localStorage` under
+`td-compare-reader`, read and written inside `try`/`catch`; the restorable
+session (target, Sync, visible pane, semantic bookmarks) lives in
+`history.state.oinkCompareSession` on the reader entry only.
 
 `oink_compare_pane=1` activates the internal pane state only in a frame owned by
 an open reader. Visiting that URL at top level leaves the normal page intact.
@@ -390,11 +394,17 @@ same-origin content remains trusted site content. Panes need `frame-src 'self'`
 and same-origin framing. Normal canonical links remain the page identity. Print
 and machine outputs contain no comparison controls or comparison runtime.
 
-Browser geometry is measured after load and invalidated on resize, font/image
-readiness and disclosure/component layout changes. User input assigns the
+A pane is ready when its bootstrap reports DOMContentLoaded, not when every
+image or embed has loaded; a slow resource never holds back or discards a
+readable pane, and only an absent or invalid pane document fails after its load
+event or a 15-second timeout. Browser geometry is measured at readiness and
+invalidated on resize, the frame load event, font/image readiness and
+disclosure/component layout changes (including `td:tab-shown`). User input assigns the
 active pane; programmatic follower scrolls cannot take ownership. Animation
-frames coalesce updates, allowed motion uses smooth follower scrolling, and
-reduced-motion or bookmark restoration uses instant positioning. Closing or
+frames coalesce updates. Continuous owner scrolling is mirrored instantly per
+frame, because restarting an eased scroll on every frame stalls the follower; a
+single discrete jump eases when motion is allowed, and reduced-motion or
+bookmark restoration uses instant positioning. Closing or
 replacing a pane aborts its listeners, observers and load timeout. Native
 dialog inertness contains host focus; child keyboard handling preserves nested
 component dialogs. The reader's history entry survives a reload or a
