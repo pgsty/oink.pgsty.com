@@ -12,19 +12,24 @@ env:
   GO_VERSION: 1.27.3
   HUGO_VERSION: "0.168.0"
   NODE_VERSION: 24
-  # Resolve the published pin, never a workspace or filesystem replace: the
-  # gate is only meaningful if CI builds against the module a reader would get.
+  # Never a workspace. The regression job then points the module at the theme
+  # under test, exactly as `make check` does with the sibling checkout; the
+  # published-pin job keeps the module a reader would get.
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
   HUGO_CACHEDIR: ${{ github.workspace }}/.hugo_cache
   GOMODCACHE:
     ${{ github.workspace }}/.hugo_cache/modules/filecache/modules/pkg/mod
+  # The theme ref the regression suites follow (a branch or tag of pgsty/oink).
+  # This site documents and tests the theme's next release, so it tracks main
+  # unless the OINK_THEME_REF repository variable says otherwise.
+  OINK_THEME_REF: ${{ vars.OINK_THEME_REF || 'main' }}
 
 jobs:
   # `npm test` covers formatting, Markdown style, bilingual coverage, rendered
   # links, Hugo build assertions, alternate-config builds, and the Markdown and
-  # favicon goldens. None of it needs a browser, so it runs separately from the
-  # Playwright matrix in browser-quality.yml.
+  # favicon goldens against the theme under test. None of it needs a browser,
+  # so it runs separately from the Playwright matrix in browser-quality.yml.
   checks:
     name: Formatting, goldens, and build assertions
     runs-on: ubuntu-latest
@@ -50,21 +55,52 @@ jobs:
           go version
           hugo version
 
-      - name: Download Hugo module
-        run: go mod download github.com/pgsty/oink
+      # Outside the workspace, so repository scans never see the theme's files.
+      - name: Check out the theme under test
+        run: |
+          git clone --quiet --depth 1 --branch "$OINK_THEME_REF" \
+            https://github.com/pgsty/oink.git "$RUNNER_TEMP/oink"
+          git -C "$RUNNER_TEMP/oink" log -1 --format='Theme under test: %H %s'
+          echo "HUGO_MODULE_REPLACEMENTS=github.com/pgsty/oink -> $RUNNER_TEMP/oink" >> "$GITHUB_ENV"
       - run: npm ci --ignore-scripts
       - run: npm test
-      # Both steps below used to live in the GitHub Pages deploy workflow,
-      # which was the site's second, unused publication target -- Cloudflare
-      # Pages serves oink.pgsty.com. Deleting that workflow would have taken
-      # its only two unique gates with it, so they moved here.
-      #
+
+  # What readers get: the module pinned in go.mod, with no replacement. These
+  # gates used to live in the GitHub Pages deploy workflow, the site's second,
+  # unused publication target (Cloudflare Pages serves oink.pgsty.com).
+  published-pin:
+    name: Published pin and production build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v7
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          check-latest: true
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - name: Install Hugo Extended
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+      - name: Record build tool versions
+        run: |
+          go version
+          hugo version
+
+      - name: Download the pinned Hugo module
+        run: go mod download github.com/pgsty/oink
+      - run: npm ci --ignore-scripts
       # The pin gate: go.mod and the version the site advertises in hugo.yml
       # must name the same release, or a bump lands half-applied.
       - name: Verify advertised and pinned release match
         run: node scripts/check-release-pin.mjs
-      # The production build: `npm test` builds with `-e dev`, so this is the
-      # production-environment check; warnings remain visible.
+      # The production build; warnings remain visible.
       - name: Build as production with visible warnings
         run: |
           hugo --cleanDestinationDir --gc --minify --environment production \

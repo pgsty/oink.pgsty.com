@@ -75,6 +75,15 @@ select different theme sources:
 | `make build`   | Published pin; minified Hugo build                           |
 | `make serve`   | Published pin; production preview without fast/live reload   |
 
+CI follows the same split. `Site checks › Formatting, goldens, and build
+assertions` and every `Browser quality` suite clone `pgsty/oink` at
+`OINK_THEME_REF` (a repository variable, default `main`) outside the workspace
+and set `HUGO_MODULE_REPLACEMENTS`, as `make check` and `make browser` do.
+`Site checks › Published pin and production build` keeps the module pinned in
+`go.mod` and runs the release-pin gate, the production build and the agent docs
+scorecard: that job is what readers get. A red regression suite means the site's
+tests and the theme under test disagree; it says nothing about the published pin.
+
 Direct `npm test` and `npm run test:browser` do not select the sibling theme
 themselves; use the Make targets for local theme acceptance. The local `check`,
 `browser`, and `dev` targets disable both workspace mechanisms. `build` and `serve`

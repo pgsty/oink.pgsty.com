@@ -15,6 +15,13 @@ env:
   HUGO_CACHEDIR: ${{ github.workspace }}/.hugo_cache
   GOMODCACHE:
     ${{ github.workspace }}/.hugo_cache/modules/filecache/modules/pkg/mod
+  # The browser suites are the theme's integration regressions, so they run
+  # against the theme under test, exactly as `make browser` does with the
+  # sibling checkout: never a workspace, and pgsty/oink main unless the
+  # OINK_THEME_REF repository variable names another branch or tag.
+  GOWORK: off
+  HUGO_MODULE_WORKSPACE: off
+  OINK_THEME_REF: ${{ vars.OINK_THEME_REF || 'main' }}
 
 jobs:
   # One matrix entry per Playwright suite. The `name` values are the published
@@ -68,7 +75,7 @@ jobs:
           - name: Table reader
             target: test:table-reader
             artifact: table-reader
-          - name: Bilingual view
+          - name: Duo View
             target: test:compare
             artifact: compare
     steps:
@@ -93,8 +100,13 @@ jobs:
           go version
           hugo version
 
-      - name: Download Hugo module
-        run: go mod download github.com/pgsty/oink
+      # Outside the workspace, so repository scans never see the theme's files.
+      - name: Check out the theme under test
+        run: |
+          git clone --quiet --depth 1 --branch "$OINK_THEME_REF" \
+            https://github.com/pgsty/oink.git "$RUNNER_TEMP/oink"
+          git -C "$RUNNER_TEMP/oink" log -1 --format='Theme under test: %H %s'
+          echo "HUGO_MODULE_REPLACEMENTS=github.com/pgsty/oink -> $RUNNER_TEMP/oink" >> "$GITHUB_ENV"
       - run: npm ci --ignore-scripts
       - run: npx playwright install --with-deps chromium
       - run: npm run ${{ matrix.suite.target }}
