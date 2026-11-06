@@ -35,6 +35,7 @@ design_status: active
 | [主题评审，2026-10-13](/zh/docs/design/research/2026-10-13-theme-review/) | 输出与交互缺陷复现、修复及本地验证范围 |
 | [组件精修验证，2026-10-25](/zh/docs/design/research/2026-10-25-component-refinement/) | 最终组件验收、409 项 Chromium 测试、针对三个引擎的视觉复核、CSS／JS 体积对照，以及单独记录的画廊基线失败 |
 | [文档对照研究，2026-10-29](/zh/docs/design/research/2026-10-29-document-comparison/) | 支撑[译文对照决策](/zh/docs/design/decisions/document-comparison/)的带日期源码研究；属于历史记录，不是已发布契约 |
+| [审查修复，2026-11-06](/zh/docs/design/research/2026-11-06-review-repairs/) | v1.5.0 缺陷复现、本轮开发修复、验证及剩余工作 |
 
 ## 发布规则 {#publication-rules}
 

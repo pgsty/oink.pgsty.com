@@ -67,6 +67,8 @@ test.describe('Enhanced code blocks', () => {
     const commands = page.locator('#console-commands [data-td-code-copy]');
     await commands.focus();
     await commands.press('Enter');
+    await expect(commands).toBeFocused();
+    expect(await commands.evaluate(button => button.disabled)).toBe(false);
     await expect
       .poll(() => clipboardText(page))
       .toBe(

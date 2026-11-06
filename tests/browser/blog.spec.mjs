@@ -53,6 +53,8 @@ test('RSS stays in page actions when the right rail is collapsed', async ({
 
   await expect(contentRSS).toBeVisible();
   await expect(floatingControls).toBeHidden();
+  await expect(page.locator('.td-shell-toc .td-shell-tags-cloud').first()).toBeVisible();
+  await expect(page.locator('.td-shell-toc__title-btn')).toHaveAttribute('aria-label', '收起侧栏');
 
   await page.locator('.td-shell-toc__title-btn').click();
   await expect(page.locator('html')).toHaveAttribute(

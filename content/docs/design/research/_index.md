@@ -37,6 +37,7 @@ of research records.
 | [Theme review, 2026-10-13](/docs/design/research/2026-10-13-theme-review/) | Reproduced output and interaction defects, repairs, and local validation scope |
 | [Component refinement, 2026-10-25](/docs/design/research/2026-10-25-component-refinement/) | Final component acceptance, 409 Chromium tests, targeted three-engine visual review, CSS/JS size comparison, and separate gallery baseline failures |
 | [Document comparison, 2026-10-29](/docs/design/research/2026-10-29-document-comparison/) | Dated source review behind the [translation comparison decision](/docs/design/decisions/document-comparison/); historical, not the released contract |
+| [Review repairs, 2026-11-06](/docs/design/research/2026-11-06-review-repairs/) | Reproduced v1.5.0 defects, bounded development repairs, validation and remaining work |
 
 ## Publication rules {#publication-rules}
 

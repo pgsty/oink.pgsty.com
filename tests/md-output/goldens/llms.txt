@@ -112,6 +112,7 @@
   - [Blog gallery](http://localhost/docs/design/decisions/blog-gallery/index.md): Keep articles as the content model while reusing Expo geometry for a fourth blog index view.
   - [Component refinement review](http://localhost/docs/design/research/2026-10-25-component-refinement/index.md): Local four-preset component validation, asset measurements, and separately reproduced gallery baseline failures.
   - [Table reading](http://localhost/docs/design/decisions/large-table-reading/index.md): Separate technical table layout from an optional corner action for reading in a larger viewport.
+  - [v1.5.0 review repairs](http://localhost/docs/design/research/2026-11-06-review-repairs/index.md): Reproduced build, feed, navigation and interaction defects, bounded repairs, and remaining review work.
   - [Ink and Terminal review](http://localhost/docs/design/research/2026-10-26-ink-terminal-stabilization/index.md): Source review, bounded visual evidence, current failures and promotion limits for Ink and Terminal on 2026-10-26.
   - [Translation comparison](http://localhost/docs/design/decisions/document-comparison/index.md): Compare a page with an existing same-origin translation in a two-pane reader that loads only when asked.
   - [2026-10-13 theme review](http://localhost/docs/design/research/2026-10-13-theme-review/index.md): Reproduced image escaping and interaction defects, their repairs, and local theme and consumer validation.

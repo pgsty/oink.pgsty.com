@@ -70,7 +70,7 @@ for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
           expect(await panel.evaluate(el => el.matches(':modal'))).toBe(width < 768);
           await expect(panel.locator(`[data-td-preset-value="${preset}"]`)).toBeChecked();
           await expect(panel.locator(`[data-bs-theme-value="${mode}"]`)).toBeChecked();
-          await expect(panel.locator('legend')).toHaveText(locale ? ['风格', '明暗'] : ['Style', 'Light']);
+          await expect(panel.locator('legend')).toHaveText(locale ? ['风格', '明暗'] : ['Style', 'Color mode']);
           await expect(panel.locator('.td-appearance__swatch, .td-appearance__experimental')).toHaveCount(0);
           const buttons = panel.locator('.td-appearance__card');
           await expect(buttons).toHaveCount(4);

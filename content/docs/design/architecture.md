@@ -409,3 +409,24 @@ visibility and inertness.
 ## Release states {#release-states}
 
 Keep local validation, module tagging, consumer pin updates, and site deployment distinct during release workflows.
+
+## Unreleased review corrections {#unreleased-review-corrections}
+
+Development after v1.5.0 retains Hugo Extended 0.168.0 and Go 1.27.3.
+Validation reports must identify the actual toolchain and local module source.
+
+Feeds sort by descending date before applying `services.rss.limit`, and undated
+items omit `pubDate`. Scoped RSS rendering restores the previous output context
+and preserves manual summary dividers.
+
+Focus indicators use the current preset's opaque link color. Navbar controls
+and clipped code/FAQ containers retain visible keyboard focus. Forced colors
+expose current navigation entries and the footer wordmark. Heading and field
+self-links remain keyboard-reachable; print links retain their underlines.
+The local Bootstrap RTL artifact supplies directional rules without replacing
+the theme's font roles. Prose list spacing does not apply to component lists.
+
+The configuration schema accepts `translation_notice` as `false` or a nonempty
+language-code string; the owning resolver checks that the language exists.
+Pagination and breadcrumb labels are translated in all 32 locales. Thumbnail
+alternative text uses the page title without an English prefix.

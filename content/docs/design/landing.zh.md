@@ -120,3 +120,18 @@ Slate 保留技术网格、光晕、Chakra Petch 标题与原有主按钮颜色�
 ## 本地操作控件精修 {#action-refinement}
 
 OINK 1.4.0 中，按钮按压仅移动背景，文字和点击区域保持固定。命令框为默认标签和本地化复制成功文字预留空间，复制结果仍由原有剪贴板 Promise 决定。复制动作、实时状态、数据模型和静态输出边界保持不变。
+
+## 未发布的审查修正 {#unreleased-review-corrections}
+
+以下修正属于 v1.5.0 之后的本地开发变更。
+
+HTML 与文本输出共用 items、actions、定价 tiers 的记录数组校验，格式错误的
+记录警告后跳过。可选的定价 features 缺失、对比 cells 无效，不再中断 Markdown 构建。
+
+Landing 链接在添加语言及部署前缀前使用共享内容 URL 策略。仅含片段或查询的
+链接保留当前页面语义。不支持的协议警告后丢弃链接目标，HTML 和 Markdown
+遵循相同的链接语义。
+
+Marquee 仅向辅助技术暴露第一行，重复行及副本组使用 inert 并从无障碍树隐藏。
+Landing section 保留流式内边距，不再被旧的默认页 section 间距覆盖。
+FAQ 焦点指示器位于会裁剪内容的 summary 内侧。

@@ -330,3 +330,23 @@ Markdown and RSS set no browser runtime flags. Print keeps only flags required b
 Source checks cover parameters, hook policy, runtime isolation, and migration.
 Output checks compare HTML, print, Markdown, RSS, and LLMS goldens. Browser tests cover interactive features.
 See the [migration contract](/docs/design/migration/) for migration rules.
+
+## Unreleased review corrections {#unreleased-review-corrections}
+
+The following corrections are implemented in the local development tree after
+v1.5.0; they are not a published release claim.
+
+- Named-parameter shortcodes reject positional arguments with warnings and
+  continue the ordinary build. Invalid input checks require a successful build
+  and verify the safe output, rather than accepting either exit status.
+- Invalid or missing Book numbers retain unnumbered readable content, without
+  empty `fig-`, `tbl-`, `eg-`, or `eq-` targets or figure-index registration.
+- Generated IDs include the complete shortcode ancestry. Independently rendered
+  Markdown bodies namespace generated code, chart, FileTree, and field IDs along
+  with their references; authored code IDs remain intact.
+- RSS renders static HTML for Book figures, tables, equations, examples, links,
+  contributors, specification links, recordings, and checksum tables. It does
+  not expose their Markdown source or browser controls. Release assets retain
+  their documented RSS omission. The RSS check uses the ordinary section feed.
+- Copy feedback uses `aria-disabled` with an operation guard, preserving keyboard
+  focus while preventing duplicate clipboard writes.

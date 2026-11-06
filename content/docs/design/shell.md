@@ -646,3 +646,34 @@ The [Expo contract](/docs/design/expo/) owns its content model, controls, and ou
 ## Local component surfaces {#component-surfaces}
 
 OINK 1.4.0 aligns search/command rows, sidebar corners, and Appearance controls with the component geometry. Selected and hovered rows remain distinct, keyboard focus remains immediate, and preference storage, navigation, and palette selection are unchanged. No moving-highlight runtime is added.
+
+## Unreleased review corrections {#unreleased-review-corrections}
+
+These changes follow v1.5.0 in the development tree and require a later release
+before consumers receive them.
+
+- Invalid `manual_link_relref` values warn and use the page permalink. Sidebar,
+  section index, and navigation JSON share resolution, including deployment
+  subpaths. Missing references must not stop an ordinary build.
+- Navigation JSON IDs and section-index lookup keys remove the deployment prefix
+  before the language prefix. Explicit section order and cross-language identity
+  remain stable with or without a directory for the default language. Published
+  links retain both prefixes.
+- Version menus and commands share URL resolution. Page links remove the current
+  deployment prefix before joining the target version URL, retaining the language
+  path without duplicating the old version directory.
+- Blog indexes own their pagination: localized navigation contains ordinary
+  links with `aria-current`, and head `prev`/`next` point to list pages. The
+  article-sequence pager is omitted on blog lists.
+- All navbar-only pages, including immersive blog articles, expose the mobile
+  site drawer. Language, version, and repository links remain reachable there.
+  Closed sidebar drawers cast no shadow into the viewport.
+- The `groups` icon policy includes the navigation root, top-level entries, and
+  entries with children in both tree walkers. Deeper leaves omit icons.
+- A rail with no TOC, taxonomy output, or backlinks renders no empty panel or
+  controls. Taxonomy-only rails retain collapse/expand controls labelled as
+  sidebar actions, rather than TOC actions. Book TOCs suppress the browser's
+  list counter alongside authored numbering.
+- Escape dismisses language, version, and utility hover menus and returns focus
+  to the trigger without reopening the menu. Copy, feedback, comparison loading,
+  and Expo boundary controls preserve the focused element.

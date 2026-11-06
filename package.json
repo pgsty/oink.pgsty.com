@@ -41,7 +41,7 @@
     "test:md-output": "node --test 'tests/md-output/**/*.test.mjs'",
     "test:prd5": "playwright test tests/browser/prd5-scenarios.spec.mjs",
     "test:theme-color": "playwright test tests/browser/theme-color.spec.mjs",
-    "test:responsive-shell": "playwright test tests/browser/responsive-shell.spec.mjs tests/browser/book-navigation.spec.mjs tests/browser/blog.spec.mjs tests/browser/command-palette.spec.mjs tests/browser/text-reflow.spec.mjs",
+    "test:responsive-shell": "playwright test tests/browser/responsive-shell.spec.mjs tests/browser/book-navigation.spec.mjs tests/browser/blog.spec.mjs tests/browser/command-palette.spec.mjs tests/browser/text-reflow.spec.mjs tests/browser/review-regressions.spec.mjs",
     "test:release-pin-contract": "node --test 'tests/release-pin/**/*.test.mjs'",
     "test:rendered-links": "node --test 'tests/rendered-links/**/*.test.mjs'",
     "test:release-pin": "npm run _check:release-pin",

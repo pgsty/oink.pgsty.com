@@ -91,9 +91,12 @@ params:
       }
       assert.deepEqual(links(documentAt('book/chapter')), ['book', 'book/chapter'].map((route) => `${prefix}${route}/`));
       const navigation = JSON.parse(readFileSync(join(output, language, 'navigation.json'), 'utf8'));
-      const docs = navigation.root.children.find((node) => node.id === `${prefix}docs/`);
-      assert.deepEqual(docs.children.map((node) => node.id), [`${prefix}intro/`, `${prefix}config/`]);
-      assert.equal(docs.children[1].children[0].id, `${prefix}api/`);
+      const docs = navigation.root.children.find((node) => node.id === '/docs/');
+      assert.ok(docs, 'navigation IDs must omit deployment and language prefixes');
+      assert.equal(docs.url, `https://example.test${prefix}docs/`);
+      assert.deepEqual(docs.children.map((node) => node.id), ['/intro/', '/config/']);
+      assert.equal(docs.children[1].children[0].id, '/api/');
+      assert.equal(docs.children[1].children[0].url, `https://example.test${prefix}api/`);
     }
   });
 }

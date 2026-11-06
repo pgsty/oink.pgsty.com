@@ -130,3 +130,21 @@ targets stay fixed. Command-box copy labels reserve space for both idle and
 localized success text. The existing clipboard promise still controls success,
 and the copy action, live status, data model, and static-output boundary are
 unchanged.
+
+## Unreleased review corrections {#unreleased-review-corrections}
+
+These corrections are local development changes after v1.5.0.
+
+HTML and text outputs share validation of record arrays for items, actions,
+and pricing tiers. Malformed records warn and are skipped. Missing optional
+pricing features and invalid comparison cells do not stop Markdown builds.
+
+Landing links use the shared content URL policy before language and deployment
+prefixes are applied. Fragment-only and query-only links remain on the current
+page. Unsupported schemes warn and lose their link target. HTML and Markdown
+follow the same link semantics.
+
+Only the first marquee row is exposed to assistive technology; repeated rows
+and duplicate groups are inert and hidden from the accessibility tree.
+Landing sections keep their fluid padding without legacy default-page section
+padding overriding it. FAQ focus indicators remain inside the clipped summary.
