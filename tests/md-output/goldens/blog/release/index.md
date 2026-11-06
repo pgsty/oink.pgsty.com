@@ -1,6 +1,6 @@
 # OINK Release Notes
 
-> OINK 1.5.0 release notes, Hugo-only build requirements, and versioned upgrade history
+> OINK 1.5.1 release notes, Hugo-only build requirements, and versioned upgrade history
 
 ---
 
@@ -11,11 +11,12 @@ LLMS index: [llms.txt](/llms.txt)
 > [!NOTE] Versioned history
 > Each release note records the requirements and validation of that version at release time. Current development, CI, and release tests use Hugo Extended 0.168.0; see the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
 
-The current release is [OINK 1.5.0](/blog/release/1.5.0/): an opt-in Bilingual
-View with shared-heading scroll sync, responsive pane switching, RTL support,
-and browser history integration. It carries forward the local search, local
-diagram reading, table reader, blog gallery, and component refinements from
-1.4.0. Use Hugo Extended **0.168.0**, keep warnings visible, and never enable
+The current release is [OINK 1.5.1](/blog/release/1.5.1/): Duo View repairs,
+correct RSS and Print aggregation, stable navigation identity, safer fallbacks,
+search ranking fixes, and 32-locale terminology. It carries forward the
+translation reader, local search, local diagram reading, table reader, blog
+gallery, and component refinements from 1.4.0. Use Hugo Extended **0.168.0**,
+keep warnings visible, and never enable
 `--panicOnWarning` or `HUGO_PANICONWARNING`. No external Sass compiler is required.
 
 For the changes contributed in 1.3.1, see its
@@ -25,6 +26,7 @@ For the changes contributed in 1.3.1, see its
 
 Section pages:
 
+- [OINK 1.5.1 — Duo View repairs and publishing correctness](/blog/release/1.5.1/): Stabilize Duo View, correct RSS and Print output, and harden navigation, validation, search, and accessibility after the 1.5.0 review.
 - [OINK 1.5.0 — Read translations side by side](/blog/release/1.5.0/): Compare a page with its translation in an opt-in bilingual view, with scroll sync by shared headings.
 - [OINK 1.4.0 — Easier reading, better search](/blog/release/1.4.0/): Expand selected tables, render and read diagrams locally, search across languages, and browse posts in a gallery.
 - [OINK 1.3.2 — Hugo-only builds restored](/blog/release/1.3.2/): Remove the mandatory Dart Sass dependency and use Hugo Extended 0.168.0 with visible warnings for all maintained sites.

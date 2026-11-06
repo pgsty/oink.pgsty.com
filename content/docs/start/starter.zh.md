@@ -71,10 +71,10 @@ hugo server
 hugo mod graph | grep github.com/pgsty/oink
 ```
 
-先检查所用 Starter 快照在 `go.mod` 中固定的版本。要使用当前发布版本，请在定制内容前更新到 `github.com/pgsty/oink@v1.5.0`：
+先检查所用 Starter 快照在 `go.mod` 中固定的版本。要使用当前发布版本，请在定制内容前更新到 `github.com/pgsty/oink@v1.5.1`：
 
 ```bash
-hugo mod get github.com/pgsty/oink@v1.5.0
+hugo mod get github.com/pgsty/oink@v1.5.1
 hugo mod tidy
 ```
 

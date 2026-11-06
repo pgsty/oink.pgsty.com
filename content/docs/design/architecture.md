@@ -5,15 +5,15 @@ description: Repository assembly, configuration, diagnostics, localization, outp
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK architecture, repository boundary, runtime, i18n, Docsy locales, output formats, security, accessibility, performance]
-contract_status: v1.5.0
+contract_status: v1.5.1
 ---
 
-> [!NOTE] OINK 1.5.0 contract
-> This contract describes OINK v1.5.0.
+> [!NOTE] OINK 1.5.1 contract
+> This contract describes OINK v1.5.1.
 
 ## Hugo toolchain {#hugo-toolchain}
 
-Use **OINK v1.5.0** and **Hugo Extended 0.168.0** for maintained sites,
+Use **OINK v1.5.1** and **Hugo Extended 0.168.0** for maintained sites,
 development, CI, and release validation. Keep this toolchain pinned.
 
 Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Warnings remain
@@ -423,9 +423,9 @@ visibility and inertness.
 
 Keep local validation, module tagging, consumer pin updates, and site deployment distinct during release workflows.
 
-## Unreleased review corrections {#unreleased-review-corrections}
+## v1.5.1 review corrections {#unreleased-review-corrections}
 
-Development after v1.5.0 retains Hugo Extended 0.168.0 and Go 1.27.3.
+The v1.5.1 release retains Hugo Extended 0.168.0 and Go 1.27.3.
 Validation reports must identify the actual toolchain and local module source.
 
 Feeds sort by descending date before applying `services.rss.limit`, and undated

@@ -13,7 +13,7 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 1.5.0 · 本地优先 · Hugo 构建
+  eyebrow: OINK 1.5.1 · 本地优先 · Hugo 构建
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -28,8 +28,8 @@ hero:
       url: docs/start/starter/
       icon: fa-solid fa-rocket
       style: primary
-    - label: 查看 1.5.0 新特性
-      url: blog/release/1.5.0/
+    - label: 查看 1.5.1 新特性
+      url: blog/release/1.5.1/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -279,16 +279,16 @@ faq:
   eyebrow: 选型之前
   title: 值得先问的几个问题
   items:
-    - question: OINK 1.5.0 有哪些变化？
+    - question: OINK 1.5.1 有哪些变化？
       answer: >-
-        [OINK 1.5.0](blog/release/1.5.0/)新增按需开启的双语视图，支持 Docs、Book
-        和博客页面按共同标题同步滚动，提供紧凑的手机控件、RTL、强制颜色支持与刷新恢复。
-        1.4 的阅读器、本地渲染、搜索和组件变体继续可用。统一使用 Hugo Extended 0.168.0，
+        [OINK 1.5.1](blog/release/1.5.1/)修复双列视图，纠正 RSS 与 Print 聚合输出，
+        并强化导航、搜索排序、安全回退、无障碍与本地化。1.4 的阅读器、本地渲染、搜索和组件变体
+        继续可用。统一使用 Hugo Extended 0.168.0，
         无需另外安装 Sass。
     - question: 哪里需要 Node.js、npm 或打包器吗？
       answer: >-
         不需要。站点使用 Hugo Extended 及其内置 Sass 编译器构建，不需要另外安装 Sass。
-        推荐使用 OINK 1.5.0 与固定的 Hugo Extended 0.168.0 基线。
+        推荐使用 OINK 1.5.1 与固定的 Hugo Extended 0.168.0 基线。
         Go 用来把主题解析为模块；使用离线归档或
         Git submodule 时不需要 Go。浏览器脚本随主题分发，只在用到时加载。
       open: true
@@ -331,7 +331,7 @@ faq:
 
 cta:
   title: 从一个已经能运行的仓库开始。
-  text: 从 OINK Starter 开始，固定 OINK 1.5.0，替换站点身份与内容，通过 GitHub Pages 或 Cloudflare Pages 发布上线。
+  text: 从 OINK Starter 开始，固定 OINK 1.5.1，替换站点身份与内容，通过 GitHub Pages 或 Cloudflare Pages 发布上线。
   label: 使用 OINK Starter
   url: docs/start/starter/
   style: primary

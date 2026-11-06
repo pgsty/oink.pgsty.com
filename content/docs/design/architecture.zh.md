@@ -5,15 +5,15 @@ description: 仓库装配、配置、诊断、本地化、输出、性能、安�
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK 架构, 仓库边界, 运行时, i18n, Docsy 语言, 输出格式, 安全, 无障碍, 性能]
-contract_status: v1.5.0
+contract_status: v1.5.1
 ---
 
-> [!NOTE] OINK 1.5.0 契约
-> 本契约描述 OINK v1.5.0。
+> [!NOTE] OINK 1.5.1 契约
+> 本契约描述 OINK v1.5.1。
 
 ## Hugo 工具链 {#hugo-toolchain}
 
-维护中的站点、开发、CI 与发布验收统一使用 **OINK v1.5.0** 和
+维护中的站点、开发、CI 与发布验收统一使用 **OINK v1.5.1** 和
 **Hugo Extended 0.168.0**，固定这套工具链。
 
 禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。告警保持可见并接受审阅；
@@ -25,7 +25,7 @@ Sass 程序。项目变量与项目样式的 SCSS 钩子保持可用。后续升
 边界，并同步修改要求、检查器、CI 固定版本与双语契约；历史发布和研究记录保留
 当时的工具版本。
 
-OINK v1.5.0 模块要求 Go **1.27.3**，开发与 CI 也固定使用此版本。
+OINK v1.5.1 模块要求 Go **1.27.3**，开发与 CI 也固定使用此版本。
 Go 用于解析 Hugo Modules；已准备好传统主题副本的站点无需 Go。
 
 ## 仓库与装配 {#repository-and-assembly}
@@ -387,9 +387,9 @@ Giscus 自动色板同时跟随风格与明暗；显式主题或浅深色样式�
 
 发布流程中应分别跟踪本地验证、模块打标、消费站版本更新与站点部署。
 
-## 未发布的审查修正 {#unreleased-review-corrections}
+## v1.5.1 审查修正 {#unreleased-review-corrections}
 
-v1.5.0 之后的开发继续使用 Hugo Extended 0.168.0 和 Go 1.27.3。
+v1.5.1 继续使用 Hugo Extended 0.168.0 和 Go 1.27.3。
 验证报告必须注明实际工具链和本地模块来源。
 
 Feed 在应用 `services.rss.limit` 前按日期倒序排列，无日期条目省略 `pubDate`。

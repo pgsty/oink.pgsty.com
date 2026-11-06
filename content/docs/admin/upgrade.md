@@ -1,7 +1,7 @@
 ---
 title: Upgrade
 linkTitle: Upgrade
-description: Pin a theme version, upgrade to 1.5.0, migrate legacy content or a Docsy site, and keep a rollback path.
+description: Pin a theme version, upgrade to 1.5.1, migrate legacy content or a Docsy site, and keep a rollback path.
 weight: 50
 search_keywords: [upgrade, migration, version, Hugo Module, hugo mod get, oink06, Docsy, jQuery, breaking changes]
 aliases:
@@ -26,14 +26,15 @@ You can discard that branch if you cancel the upgrade.
 > expected. Update Hugo workflow pins when upgrading; older-Hugo requirements
 > in the sections below describe those historical releases only.
 
-## Upgrade to 1.5.0 {#preparing-1-5}
+## Upgrade to 1.5.1 {#preparing-1-5}
 
-OINK `v1.5.0` adds the opt-in [bilingual view](/docs/customize/i18n/#bilingual-view).
-Sites that leave `params.ui.compare` unset build the exact same pages and outputs
-as before. See the [1.5.0 release notes](/blog/release/1.5.0/).
+OINK `v1.5.1` stabilizes the opt-in [Duo View](/docs/customize/i18n/#bilingual-view)
+introduced in 1.5.0 and corrects RSS, Print, navigation, validation, search, and
+accessibility behavior. Sites that leave `params.ui.compare` unset build the exact
+same pages and outputs as before. See the [1.5.1 release notes](/blog/release/1.5.1/).
 
 Verify public module resolution with replacements and workspaces disabled, pin
-`github.com/pgsty/oink@v1.5.0`, and build with `--printPathWarnings`. If you
+`github.com/pgsty/oink@v1.5.1`, and build with `--printPathWarnings`. If you
 enable `params.ui.compare: true`:
 
 - Keep explicit `{#id}` heading anchors aligned across translations so **Sync Scroll** can match sections accurately.
@@ -87,11 +88,11 @@ changed default behavior. Read them to understand differences in the upgraded pa
 
 For a production site, pin a published release tag or an explicitly selected
 immutable commit. Do not follow a branch or use `@latest`. The example below
-upgrades to the published `v1.5.0` tag. Before you select a later tag, verify
+upgrades to the published `v1.5.1` tag. Before you select a later tag, verify
 that the release is published and its module resolves:
 
 ```bash {title="Terminal"}
-hugo mod get github.com/pgsty/oink@v1.5.0   # the published release tag
+hugo mod get github.com/pgsty/oink@v1.5.1   # the published release tag
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -106,7 +107,7 @@ module github.com/pgsty/oink.pgsty.com
 
 go 1.27.3
 
-require github.com/pgsty/oink v1.5.0
+require github.com/pgsty/oink v1.5.1
 ```
 
 > [!DANGER] A local module replacement overrides that pin
@@ -121,7 +122,7 @@ Check out the exact published version. Do not follow its remote branch:
 
 ```bash {title="Terminal"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.5.0
+git -C themes/oink checkout --detach v1.5.1
 git add themes/oink
 ```
 

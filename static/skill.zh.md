@@ -5,7 +5,7 @@ description: "Oink 建站：用 OINK 主题（github.com/pgsty/oink，文档 oin
 
 # Oink 建站
 
-> OINK 建站技能的公开版。地址：<https://oink.pgsty.com/skill.zh.md> · English：<https://oink.pgsty.com/skill.md>。保存为技能目录 `oink-site/` 下的 `SKILL.md`，或直接把地址交给任何 agent。本快照对应 OINK v1.5.0，日期 2026-11-06。
+> OINK 建站技能的公开版。地址：<https://oink.pgsty.com/skill.zh.md> · English：<https://oink.pgsty.com/skill.md>。保存为技能目录 `oink-site/` 下的 `SKILL.md`，或直接把地址交给任何 agent。本快照对应 OINK v1.5.1，日期 2026-11-06。
 
 OINK 是本地优先的 Hugo 模块主题，硬分叉自 Docsy。站点就是普通的 Hugo 仓库：`hugo.yaml`、固定 `github.com/pgsty/oink@<tag>` 的 `go.mod`、`content/`、`data/`，以及可选的 `assets/` 和 `layouts/` 钩子。用 Hugo Extended 构建，以模块方式安装时还需要 Go。不需要 Node、npm、Dart Sass、PostCSS 或 CDN。它提供 Docs、Book、Blog 和 Swagger 阅读外壳，Expo 相册，Landing 区块，本地搜索，内置字体与图标，32 种界面语言，外观预设，打印，以及 Markdown/LLMS 输出。它不提供 CMS、身份认证、数据库或自动翻译。
 
@@ -22,7 +22,7 @@ OINK 是本地优先的 Hugo 模块主题，硬分叉自 Docsy。站点就是普
 - 文档：<https://oink.pgsty.com/docs/>（中文在 `/zh/docs/` 下）。在任意页面 URL 后加 `index.md` 即可读取 Markdown；`https://oink.pgsty.com/llms.txt` 列出了全部页面。源码：<https://github.com/pgsty/oink.pgsty.com>（`content/docs/`）。
 - 合同在 `docs/design/` 下。主题的默认值（`hugo.yaml`）和检查器（`bin/`）在 <https://github.com/pgsty/oink>；模板是 <https://github.com/pgsty/oink-starter>。
 - 按需查阅：`start/`（starter、from-scratch、anatomy）· `write/`（organize、pages、frontmatter、blog、book、expo、releases、openapi）· `components/` · `customize/`（home、brand、navigation、layout、i18n、search、config、print、agents）· `admin/`（preview、deploy、upgrade、troubleshooting、analytics、comments）· `design/`（landing、shell、components、architecture）。
-- 本快照的基线：OINK v1.5.0、Hugo Extended 0.168.0、Go 1.27.3。到 GitHub Releases 查看最新的已发布版本，读它的发布说明，并用 `hugo mod graph` 确认实际解析到的版本。较新的文档优先于本文。
+- 本快照的基线：OINK v1.5.1、Hugo Extended 0.168.0、Go 1.27.3。到 GitHub Releases 查看最新的已发布版本，读它的发布说明，并用 `hugo mod graph` 确认实际解析到的版本。较新的文档优先于本文。
 - 目标站点自己的 `AGENTS.md`/`CLAUDE.md`、`README.md` 和 `Makefile` 对该站点有约束力。
 - 旧教程和旧站点里有已经过时的做法。以下内容只能说明当时的意图：OINK 0.4–1.4 的键名、`exampleSite`、`type: landing`、Docsy `blocks/*`、`--panicOnWarning`、“零警告”、Dart Sass。
 

@@ -8,7 +8,7 @@ description: "Oink 建站: build, migrate, and polish Hugo sites on the OINK the
 > Public edition of the OINK site-building skill. Source:
 > <https://oink.pgsty.com/skill.md> · 中文：<https://oink.pgsty.com/skill.zh.md>.
 > Save it as `SKILL.md` in an `oink-site/` skills directory, or hand the URL to
-> any agent. Snapshot 2026-11-06 for OINK v1.5.0.
+> any agent. Snapshot 2026-11-06 for OINK v1.5.1.
 
 OINK is a local-first Hugo Module theme, a hard fork of Docsy. A site is an
 ordinary Hugo repository: `hugo.yaml`, a `go.mod` pinning
@@ -47,7 +47,7 @@ or material can justify a different shape; when you depart from them, say why.
   config, print, agents) · `admin/` (preview, deploy, upgrade,
   troubleshooting, analytics, comments) · `design/` (landing, shell,
   components, architecture).
-- Baseline of this snapshot: OINK v1.5.0, Hugo Extended 0.168.0, Go 1.27.3.
+- Baseline of this snapshot: OINK v1.5.1, Hugo Extended 0.168.0, Go 1.27.3.
   Check GitHub releases for the newest published version, read its notes, and
   confirm what resolved with `hugo mod graph`. Newer docs win over this file.
 - The target site's `AGENTS.md`/`CLAUDE.md`, `README.md`, and `Makefile` are

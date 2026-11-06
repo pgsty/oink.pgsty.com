@@ -5,11 +5,11 @@ description: 落地页数据、内置区块注册表、语言解析、运行时�
 weight: 40
 icon: fa-solid fa-panorama
 search_keywords: [OINK 落地页契约, 落地页区块, 首页数据, 渐进增强, 落地页输出]
-contract_status: v1.5.0
+contract_status: v1.5.1
 ---
 
-> [!NOTE] OINK 1.5.0 契约
-> 本契约描述 OINK v1.5.0。
+> [!NOTE] OINK 1.5.1 契约
+> 本契约描述 OINK v1.5.1。
 
 共享规则见[架构契约](/zh/docs/design/architecture/)与
 [组件契约](/zh/docs/design/components/)；迁移行为属于
@@ -121,9 +121,9 @@ Slate 保留技术网格、光晕、Chakra Petch 标题与原有主按钮颜色�
 
 OINK 1.4.0 中，按钮按压仅移动背景，文字和点击区域保持固定。命令框为默认标签和本地化复制成功文字预留空间，复制结果仍由原有剪贴板 Promise 决定。复制动作、实时状态、数据模型和静态输出边界保持不变。
 
-## 未发布的审查修正 {#unreleased-review-corrections}
+## v1.5.1 审查修正 {#unreleased-review-corrections}
 
-以下修正属于 v1.5.0 之后的本地开发变更。
+以下修正已随 v1.5.1 发布。
 
 HTML 与文本输出共用 items、actions、定价 tiers 的记录数组校验，格式错误的
 记录警告后跳过。可选的定价 features 缺失、对比 cells 无效，不再中断 Markdown 构建。

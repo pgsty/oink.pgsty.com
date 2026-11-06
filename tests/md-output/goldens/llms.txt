@@ -17,7 +17,7 @@
   - [Highlights](http://localhost/docs/about/features/index.md): Compare OINK with an ordinary Hugo theme. Each feature links to its guide.
   - [Cases](http://localhost/docs/about/showcase/index.md): Find the OINK production case closest to your documentation, book, landing page, or interactive tool.
   - [License](http://localhost/docs/about/license/index.md): The theme uses Apache-2.0. The documentation uses CC BY 4.0. Each bundled third-party runtime keeps its own license terms.
-  - [Contributing](http://localhost/docs/about/contributing/index.md): Where to report bugs and contribute theme changes, documentation, translations, and regression tests for OINK 1.5.0.
+  - [Contributing](http://localhost/docs/about/contributing/index.md): Where to report bugs and contribute theme changes, documentation, translations, and regression tests for OINK 1.5.1.
 - [Get started](http://localhost/docs/start/index.md): Start from the official OINK Starter. Verify the local site, then customize content, language, brand, integrations, and deployment in that order.
   - [OINK Starter](http://localhost/docs/start/starter/index.md): Create your project site from the official Starter. Change one part at a time: languages, identity, home page, content, navigation, brand, integrations, and deployment.
   - [Repository tour](http://localhost/docs/start/anatomy/index.md): Find the oink-starter files that control identity, languages, home, content, navigation, brand, deployment, and the pinned theme.
@@ -74,7 +74,7 @@
   - [Deploy](http://localhost/docs/admin/deploy/index.md): Publish public/ to GitHub Pages, Cloudflare Pages, or another static host. Set baseURL, review Content Security Policy, verify deployment, and prepare rollback.
   - [Comments](http://localhost/docs/admin/comments/index.md): Use giscus for page comments through GitHub Discussions. Control comments for the site or a page, and match light and dark themes.
   - [Analytics and SEO](http://localhost/docs/admin/analytics/index.md): Configure an optional analytics service. Check the canonical URLs, hreflang links, social cards, sitemap, and robots output that the theme generates.
-  - [Upgrade](http://localhost/docs/admin/upgrade/index.md): Pin a theme version, upgrade to 1.5.0, migrate legacy content or a Docsy site, and keep a rollback path.
+  - [Upgrade](http://localhost/docs/admin/upgrade/index.md): Pin a theme version, upgrade to 1.5.1, migrate legacy content or a Docsy site, and keep a rollback path.
   - [Troubleshooting](http://localhost/docs/admin/troubleshooting/index.md): Diagnose build, language, search, and platform problems by symptom, cause, and fix. Run checks on your site.
 - [Design](http://localhost/docs/design/index.md): OINK's contracts, accepted decisions, dated research, and active proposals in one bilingual section.
   - [Architecture](http://localhost/docs/design/architecture/index.md): Repository assembly, configuration, diagnostics, localization, output, performance, security, CSS, accessibility, and release-state boundaries.
@@ -102,7 +102,7 @@
   - [2026-09-20 release review](http://localhost/docs/design/research/2026-09-20-release-review/index.md): Five reproduced runtime defects, documentation corrections, validation evidence, and the OINK 1.1 publication follow-up.
   - [CLI contract](http://localhost/docs/design/decisions/cli/index.md): Executable ownership, versioned diagnostics, isolated validation, and guarded maintenance plans for the current local CLI candidate.
   - [Component refinement](http://localhost/docs/design/decisions/component-refinement/index.md): Consistent component surfaces and controls, with three optional Markdown presentation variants.
-  - [Migration boundary](http://localhost/docs/design/migration/index.md): Supported source, configuration, and validation boundaries for OINK migration, including the 1.5.0 upgrade.
+  - [Migration boundary](http://localhost/docs/design/migration/index.md): Supported source, configuration, and validation boundaries for OINK migration, including the 1.5.1 upgrade.
   - [Visual presets](http://localhost/docs/design/decisions/visual-presets/index.md): Accepted phase-one visual identity and appearance controls, with separate reader style and mode state.
   - [2026-10-03 CLI maintenance](http://localhost/docs/design/research/2026-10-03-cli-maintenance-acceptance/index.md): Dated source and binary evidence for the local R1–R8/A18 program, preserving the initial audit, failed trials, and final acceptance scope.
   - [2026-10-03 CLI maintenance · R1–R5](http://localhost/docs/design/research/2026-10-03-cli-maintenance-acceptance-r1-r5/index.md): R1–R5 local validation and acceptance evidence from the dated CLI maintenance record.

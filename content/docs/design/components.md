@@ -5,11 +5,11 @@ description: The maintainer contract for OINK authoring primitives, validation, 
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK component contract, shortcode API, Markdown components, Book, release, validation]
-contract_status: v1.5.0
+contract_status: v1.5.1
 ---
 
-> [!NOTE] OINK 1.5.0 contract
-> This contract describes OINK v1.5.0.
+> [!NOTE] OINK 1.5.1 contract
+> This contract describes OINK v1.5.1.
 
 The reader-facing [Components](/docs/components/) section provides tutorials and complete examples.
 This page defines the API and behavior used by those guides.
@@ -331,10 +331,9 @@ Source checks cover parameters, hook policy, runtime isolation, and migration.
 Output checks compare HTML, print, Markdown, RSS, and LLMS goldens. Browser tests cover interactive features.
 See the [migration contract](/docs/design/migration/) for migration rules.
 
-## Unreleased review corrections {#unreleased-review-corrections}
+## v1.5.1 review corrections {#unreleased-review-corrections}
 
-The following corrections are implemented in the local development tree after
-v1.5.0; they are not a published release claim.
+The following corrections shipped in v1.5.1 and are part of the current consumer contract.
 
 - Named-parameter shortcodes reject positional arguments with warnings and
   continue the ordinary build. Invalid input checks require a successful build

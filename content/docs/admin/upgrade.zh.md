@@ -1,7 +1,7 @@
 ---
 title: 版本升级
 linkTitle: 版本升级
-description: 固定主题版本、升级到 1.5.0、迁移旧内容或 Docsy 站点，并保留回滚路径。
+description: 固定主题版本、升级到 1.5.1、迁移旧内容或 Docsy 站点，并保留回滚路径。
 weight: 50
 search_keywords: [升级, 迁移, 版本, Hugo Module, hugo mod get, oink06, Docsy, jQuery, 破坏性变更, upgrade, migration]
 aliases:
@@ -22,13 +22,13 @@ aliases:
 > 不要启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；Hugo 内置 LibSass 的弃用告警属于预期输出。
 > 升级时请同步更新 Hugo workflow 固定版本；下方旧版本章节中的要求仅说明当时的发布状态。
 
-## 升级到 1.5.0 {#preparing-1-5}
+## 升级到 1.5.1 {#preparing-1-5}
 
-OINK `v1.5.0` 新增按需开启的[双语视图](/zh/docs/customize/i18n/#bilingual-view)。
-未设置 `params.ui.compare` 的站点生成的页面与输出保持不变。详情参见
-[1.5.0 发布说明](/zh/blog/release/1.5.0/)。
+OINK `v1.5.1` 稳定了 1.5.0 引入的按需开启[双列视图](/zh/docs/customize/i18n/#bilingual-view)，
+并修正 RSS、Print、导航、校验、搜索与无障碍行为。未设置 `params.ui.compare` 的站点生成的页面
+与输出保持不变，详情参见[1.5.1 发布说明](/zh/blog/release/1.5.1/)。
 
-在关闭替换与工作区的环境中验证公开模块解析，固定 `github.com/pgsty/oink@v1.5.0`，
+在关闭替换与工作区的环境中验证公开模块解析，固定 `github.com/pgsty/oink@v1.5.1`，
 并用 `--printPathWarnings` 构建。开启 `params.ui.compare: true` 时请注意：
 
 - 在译文中保持与原文一致的 `{#id}` 标题锚点，以便「同步滚动」准确对齐章节。
@@ -72,11 +72,11 @@ OINK `v1.3.1` 修复 Markmap 文字对比度和固定 TOC 的页脚避让，并�
 ## 升级 Hugo Module {#hugo-module}
 
 生产站点固定已发布标签或主动选定的不可变 commit，不跟随分支，也不用 `@latest`。
-下面升级到已发布的 `v1.5.0` 标签；选择后续版本时，先确认已经发布且模块可以解析，
+下面升级到已发布的 `v1.5.1` 标签；选择后续版本时，先确认已经发布且模块可以解析，
 再替换示例中的版本。
 
 ```bash {title="终端"}
-hugo mod get github.com/pgsty/oink@v1.5.0   # 已发布的版本标签
+hugo mod get github.com/pgsty/oink@v1.5.1   # 已发布的版本标签
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -90,7 +90,7 @@ module github.com/pgsty/oink.pgsty.com
 
 go 1.27.3
 
-require github.com/pgsty/oink v1.5.0
+require github.com/pgsty/oink v1.5.1
 ```
 
 > [!DANGER] 本地模块替换会盖掉这个固定版本
@@ -104,7 +104,7 @@ require github.com/pgsty/oink v1.5.0
 
 ```bash {title="终端"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.5.0
+git -C themes/oink checkout --detach v1.5.1
 git add themes/oink
 ```
 

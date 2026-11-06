@@ -5,11 +5,11 @@ description: OINK 创作原语、校验、Book、发布行为与输出降级的�
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK 组件契约, shortcode API, Markdown 组件, Book, 发布, 校验]
-contract_status: v1.5.0
+contract_status: v1.5.1
 ---
 
-> [!NOTE] OINK 1.5.0 契约
-> 本契约描述 OINK v1.5.0。
+> [!NOTE] OINK 1.5.1 契约
+> 本契约描述 OINK v1.5.1。
 
 教程与完整示例位于面向读者的[组件](/zh/docs/components/)专栏。本页定义这些
 指南所依赖的 API 与行为。
@@ -312,9 +312,9 @@ Markdown 与 RSS 不设置浏览器运行时标志；Print 只保留渲染打印
 Markdown、RSS 与 LLMS golden；浏览器测试覆盖交互界面。迁移行为见
 [迁移边界](/zh/docs/design/migration/)。
 
-## 未发布的审查修正 {#unreleased-review-corrections}
+## v1.5.1 审查修正 {#unreleased-review-corrections}
 
-以下修正已实现在 v1.5.0 之后的本地开发树中，不代表已发布新版本。
+以下修正已随 v1.5.1 发布，并属于当前消费站契约。
 
 - 只接受命名参数的短代码遇到位置参数时警告并继续普通构建。无效输入检查必须
   验证构建成功及安全输出，不再同时接受成功与失败退出码。

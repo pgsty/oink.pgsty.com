@@ -45,7 +45,7 @@ with its built-in Sass compiler. Hugo Modules also require Go to resolve the the
 no CDN or npm build step.
 
 The current release is {{% param version %}}. See the
-[1.5.0 release notes](/blog/release/1.5.0/) or the
+[1.5.1 release notes](/blog/release/1.5.1/) or the
 [upgrade guide](/docs/admin/upgrade/#preparing-1-5) for an existing site.
 
 ## Five ways in {#five-entries}

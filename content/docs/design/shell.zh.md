@@ -5,11 +5,11 @@ description: 导航权威、沉浸式博客、搜索、操作、分类法、索�
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK 外壳, 导航契约, 搜索, 操作, 博客展示, 作者, 系列, 翻页]
-contract_status: v1.5.0
+contract_status: v1.5.1
 ---
 
-> [!NOTE] OINK 1.5.0 契约
-> 本契约描述 OINK v1.5.0。
+> [!NOTE] OINK 1.5.1 契约
+> 本契约描述 OINK v1.5.1。
 
 ## 权威来源与导航 {#authorities-and-navigation}
 
@@ -576,9 +576,9 @@ Ink 与 Terminal 实验预设需显式配置；`preset_menu: true`
 
 OINK 1.4.0 统一搜索／命令行、侧栏圆角与外观控件的尺寸规则。选中与悬停保持可区分，键盘焦点即时可见，偏好存储、导航和预设选择不变。不增加滑动高亮运行时。
 
-## 未发布的审查修正 {#unreleased-review-corrections}
+## v1.5.1 审查修正 {#unreleased-review-corrections}
 
-这些变更位于 v1.5.0 之后的开发树中，消费者需要等待后续版本才能获得。
+这些修正已随 v1.5.1 发布，并属于当前消费站契约。
 
 - `manual_link_relref` 无效时警告并回退到页面永久链接。侧栏、分区索引及导航
   JSON 共用解析，包括部署子路径处理。引用缺失不得中断普通构建。

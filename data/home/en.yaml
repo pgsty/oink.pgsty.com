@@ -13,7 +13,7 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 1.5.0 · Local-first · Built with Hugo
+  eyebrow: OINK 1.5.1 · Local-first · Built with Hugo
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -28,8 +28,8 @@ hero:
       url: docs/start/starter/
       icon: fa-solid fa-rocket
       style: primary
-    - label: What's new in 1.5.0
-      url: blog/release/1.5.0/
+    - label: What's new in 1.5.1
+      url: blog/release/1.5.1/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -302,19 +302,18 @@ faq:
   eyebrow: Before you commit
   title: Questions worth asking first
   items:
-    - question: What's new in OINK 1.5.0?
+    - question: What's new in OINK 1.5.1?
       answer: >-
-        [OINK 1.5.0](blog/release/1.5.0/) adds an opt-in Bilingual View for
-        translated Docs, Book, and blog pages, with shared-heading scroll sync,
-        compact mobile controls, RTL and forced-colors support, and recovery
-        after a page refresh. The readers, local rendering, search, and component
-        variants from 1.4 remain available. Use Hugo Extended 0.168.0;
+        [OINK 1.5.1](blog/release/1.5.1/) stabilizes Duo View, corrects RSS and
+        Print aggregation, and hardens navigation, search ranking, safe fallbacks,
+        accessibility, and localization. The reader, local rendering, search,
+        and component variants from 1.4 remain available. Use Hugo Extended 0.168.0;
         no separate Sass installation is needed.
     - question: Do I need Node.js, npm or a bundler anywhere?
       answer: >-
         No. Site builds use Hugo Extended and its built-in Sass compiler; no
         external Sass installation is required. The recommended baseline is
-        OINK 1.5.0 and the pinned Hugo Extended 0.168.0 baseline. Go resolves the
+        OINK 1.5.1 and the pinned Hugo Extended 0.168.0 baseline. Go resolves the
         theme as a module; an offline
         archive or Git submodule works without it. Browser scripts ship
         with the theme and load only where they are used.
@@ -370,7 +369,7 @@ faq:
 
 cta:
   title: Start from a repository that already works.
-  text: Start with OINK Starter, pin OINK 1.5.0, customize your site identity and content, and deploy with GitHub Pages or Cloudflare Pages.
+  text: Start with OINK Starter, pin OINK 1.5.1, customize your site identity and content, and deploy with GitHub Pages or Cloudflare Pages.
   label: Use OINK Starter
   url: docs/start/starter/
   style: primary

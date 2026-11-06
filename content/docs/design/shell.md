@@ -5,11 +5,11 @@ description: Navigation authorities, immersive blog presentation, search, action
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK shell, navigation contract, search, actions, blog presentation, authors, series, pager]
-contract_status: v1.5.0
+contract_status: v1.5.1
 ---
 
-> [!NOTE] OINK 1.5.0 contract
-> This contract describes OINK v1.5.0.
+> [!NOTE] OINK 1.5.1 contract
+> This contract describes OINK v1.5.1.
 
 ## Authorities and navigation {#authorities-and-navigation}
 
@@ -682,10 +682,9 @@ The [Expo contract](/docs/design/expo/) owns its content model, controls, and ou
 
 OINK 1.4.0 aligns search/command rows, sidebar corners, and Appearance controls with the component geometry. Selected and hovered rows remain distinct, keyboard focus remains immediate, and preference storage, navigation, and palette selection are unchanged. No moving-highlight runtime is added.
 
-## Unreleased review corrections {#unreleased-review-corrections}
+## v1.5.1 review corrections {#unreleased-review-corrections}
 
-These changes follow v1.5.0 in the development tree and require a later release
-before consumers receive them.
+These corrections shipped in v1.5.1 and are part of the current consumer contract.
 
 - Invalid `manual_link_relref` values warn and use the page permalink. Sidebar,
   section index, and navigation JSON share resolution, including deployment

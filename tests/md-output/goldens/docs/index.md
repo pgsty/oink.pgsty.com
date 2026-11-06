@@ -13,8 +13,8 @@ then replace its sample content. Write in Markdown and build with Hugo Extended
 with its built-in Sass compiler. Hugo Modules also require Go to resolve the theme. Bundled theme assets require
 no CDN or npm build step.
 
-The current release is v1.5.0. See the
-[1.5.0 release notes](/blog/release/1.5.0/) or the
+The current release is v1.5.1. See the
+[1.5.1 release notes](/blog/release/1.5.1/) or the
 [upgrade guide](/docs/admin/upgrade/#preparing-1-5) for an existing site.
 
 ## Five ways in {#five-entries}

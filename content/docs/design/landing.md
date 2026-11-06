@@ -5,11 +5,11 @@ description: The maintainer contract for landing data, the built-in section regi
 weight: 40
 icon: fa-solid fa-panorama
 search_keywords: [OINK landing contract, landing sections, homepage data, progressive enhancement, landing outputs]
-contract_status: v1.5.0
+contract_status: v1.5.1
 ---
 
-> [!NOTE] OINK 1.5.0 contract
-> This contract describes OINK v1.5.0.
+> [!NOTE] OINK 1.5.1 contract
+> This contract describes OINK v1.5.1.
 
 The [architecture](/docs/design/architecture/) and [component](/docs/design/components/) contracts define shared rules.
 The [migration contract](/docs/design/migration/) defines migration rules.
@@ -131,9 +131,9 @@ localized success text. The existing clipboard promise still controls success,
 and the copy action, live status, data model, and static-output boundary are
 unchanged.
 
-## Unreleased review corrections {#unreleased-review-corrections}
+## v1.5.1 review corrections {#unreleased-review-corrections}
 
-These corrections are local development changes after v1.5.0.
+These corrections shipped in v1.5.1.
 
 HTML and text outputs share validation of record arrays for items, actions,
 and pricing tiers. Malformed records warn and are skipped. Missing optional

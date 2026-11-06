@@ -129,10 +129,10 @@ module github.com/OWNER/PROJECT-DOCS
 
 go 1.27.3
 
-require github.com/pgsty/oink v1.5.0
+require github.com/pgsty/oink v1.5.1
 ```
 
-此示例固定当前发布版本 `v1.5.0`。请检查所用 Starter 快照的固定版本；若版本较早，按
+此示例固定当前发布版本 `v1.5.1`。请检查所用 Starter 快照的固定版本；若版本较早，按
 [升级指南](/zh/docs/admin/upgrade/)更新。
 
 `hugo mod graph` 显示实际解析的版本。生产构建使用 `go.mod` 中固定的标签；联调主题时可通过环境变量 `HUGO_MODULE_REPLACEMENTS` 临时指向本地目录，切勿将该覆盖配置提交进 Git。

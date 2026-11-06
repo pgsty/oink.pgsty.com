@@ -77,11 +77,11 @@ hugo mod graph | grep github.com/pgsty/oink
 ```
 
 Check the version supplied by your Starter snapshot in `go.mod`. To use the
-current release, update it to `github.com/pgsty/oink@v1.5.0` before customizing
+current release, update it to `github.com/pgsty/oink@v1.5.1` before customizing
 content:
 
 ```bash
-hugo mod get github.com/pgsty/oink@v1.5.0
+hugo mod get github.com/pgsty/oink@v1.5.1
 hugo mod tidy
 ```
 

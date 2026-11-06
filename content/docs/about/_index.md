@@ -15,7 +15,7 @@ technical documentation sites. It evolved from
 multilingual behavior while replacing the shell, navigation, search, and
 content components.
 
-The current release is **OINK v1.5.0**, built with **Hugo Extended 0.168.0** (with its
+The current release is **OINK v1.5.1**, built with **Hugo Extended 0.168.0** (with its
 built-in Sass compiler), plus Go when resolving the theme as a Hugo Module.
 No Node.js, npm, PostCSS, or CDN requests are needed: Bootstrap, Font Awesome,
 fonts, local search, diagram runtimes, and API reference runtimes all ship in
@@ -83,5 +83,5 @@ links to its guide.
 
 To report a problem or submit a correction, follow the
 [contribution guide](/docs/about/contributing/). The
-[1.5.0 release notes](/blog/release/1.5.0/) cover Bilingual View, synchronized
-scrolling, responsive reading, and the current build requirements.
+[1.5.1 release notes](/blog/release/1.5.1/) cover Duo View repairs, output
+correctness, responsive reading, and the current build requirements.
