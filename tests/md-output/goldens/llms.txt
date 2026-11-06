@@ -117,6 +117,7 @@
   - [v1.5.0 review repairs](http://localhost/docs/design/research/2026-11-06-review-repairs/index.md): Reproduced build, feed, navigation and interaction defects, bounded repairs, and remaining review work.
   - [Ink and Terminal review](http://localhost/docs/design/research/2026-10-26-ink-terminal-stabilization/index.md): Source review, bounded visual evidence, current failures and promotion limits for Ink and Terminal on 2026-10-26.
   - [Translation comparison](http://localhost/docs/design/decisions/document-comparison/index.md): Compare a page with an existing same-origin translation in a two-pane reader that loads only when asked.
+  - [1.5.1 readiness review](http://localhost/docs/design/research/2026-11-06-v1-5-1-release-review/index.md): Three reproduced candidate regressions, complete browser acceptance, and remaining publication gates.
   - [2026-10-13 theme review](http://localhost/docs/design/research/2026-10-13-theme-review/index.md): Reproduced image escaping and interaction defects, their repairs, and local theme and consumer validation.
   - [Large-table reading research](http://localhost/docs/design/research/2026-10-26-large-table-reading/index.md): Framework and component evidence, measured reading concepts, and a bounded direction for OINK technical tables.
   - [Unified diagram reading](http://localhost/docs/design/decisions/diagram-reading/index.md): Shared Mermaid and local PlantUML viewing, source export and demand loading.

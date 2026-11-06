@@ -38,6 +38,7 @@ of research records.
 | [Component refinement, 2026-10-25](/docs/design/research/2026-10-25-component-refinement/) | Final component acceptance, 409 Chromium tests, targeted three-engine visual review, CSS/JS size comparison, and separate gallery baseline failures |
 | [Document comparison, 2026-10-29](/docs/design/research/2026-10-29-document-comparison/) | Dated source review behind the [translation comparison decision](/docs/design/decisions/document-comparison/); historical, not the released contract |
 | [Review repairs, 2026-11-06](/docs/design/research/2026-11-06-review-repairs/) | Reproduced v1.5.0 defects, bounded development repairs, validation and remaining work |
+| [OINK 1.5.1 readiness, 2026-11-06](/docs/design/research/2026-11-06-v1-5-1-release-review/) | Three repaired candidate regressions, owning checks, browser acceptance, publication evidence and release gates |
 
 ## Publication rules {#publication-rules}
 

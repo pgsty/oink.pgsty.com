@@ -184,7 +184,9 @@ Every base template sets `Page.Store.tdOutputFormat`:
 | NAVJSON | Opt-in per site: one `navigation.json` per language, serializing the navigation authority the sidebar and pager already read |
 | BookManifest | Opt-in ordered JSON handoff for EPUB/PDF packaging tools |
 
-Output formats run in their defined order. Mutable format state does not create a cross-format race.
+Output formats run in their defined order. A render keeps its mutable format state
+stable for the whole output; summary helpers do not restore an earlier format
+value into an RSS render.
 Within Print, Hugo can render Book pages and overlapping aggregates in parallel.
 A cached coordinator for each page creates plain and Book variants in a fixed order. Each caller selects its required form.
 Plain Print keeps page-local headings and routed xref URLs. Book aggregates keep namespaced headings and in-document xrefs.
@@ -396,8 +398,9 @@ and machine outputs contain no comparison controls or comparison runtime.
 
 A pane is ready when its bootstrap reports DOMContentLoaded, not when every
 image or embed has loaded; a slow resource never holds back or discards a
-readable pane, and only an absent or invalid pane document fails after its load
-event or a 15-second timeout. Browser geometry is measured at readiness and
+readable pane. An invalid document fails at its load event or the 15-second
+document timeout. The iframe's initial `about:blank` load is ignored, but a
+document still blank at timeout fails. Browser geometry is measured at readiness and
 invalidated on resize, the frame load event, font/image readiness and
 disclosure/component layout changes (including `td:tab-shown`). User input assigns the
 active pane; programmatic follower scrolls cannot take ownership. Animation
@@ -426,8 +429,9 @@ Development after v1.5.0 retains Hugo Extended 0.168.0 and Go 1.27.3.
 Validation reports must identify the actual toolchain and local module source.
 
 Feeds sort by descending date before applying `services.rss.limit`, and undated
-items omit `pubDate`. Scoped RSS rendering restores the previous output context
-and preserves manual summary dividers.
+items omit `pubDate`. RSS summaries and page feeds can share a page Store within
+the RSS pass. Summary rendering keeps that Store in RSS format state instead of
+restoring stale HTML state, and preserves manual summary dividers.
 
 Focus indicators use the current preset's opaque link color. Navbar controls
 and clipped code/FAQ containers retain visible keyboard focus. Forced colors

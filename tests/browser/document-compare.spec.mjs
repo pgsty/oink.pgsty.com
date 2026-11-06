@@ -417,6 +417,32 @@ test('compare: a slow image does not block a readable pane or discard it', async
   await closed(page);
 });
 
+test('compare: a stalled document reaches the localized retry state', async ({ page }) => {
+  await page.setViewportSize({ width: 1200, height: 700 });
+  // Hold the target's main document itself. A pending image is a different
+  // case: the article is already readable and must remain usable.
+  let stalled = true;
+  await page.route('**/zh/tests/compare-reader/?oink_compare_pane=1', route => {
+    if (!stalled) return route.continue();
+  });
+  await page.goto('/tests/compare-reader/');
+  await page.locator('[data-td-compare-open]').click();
+  await expect(page.locator(`${reader}[open]`)).toBeVisible();
+  await expect(page.locator('[data-td-compare-side="0"] .td-compare__loading')).toHaveCount(0);
+  await expect(page.locator('[data-td-compare-side="1"] .td-compare__retry')).toBeVisible({ timeout: 20000 });
+  await expect(page.locator('[data-td-compare-side="1"] .td-compare__retry')).toHaveText('Retry');
+  await expect(page.locator('[data-td-compare-side="1"] .td-compare__failure a')).toHaveAttribute(
+    'href',
+    /\/zh\/tests\/compare-reader\/$/,
+  );
+  await expect(page.locator(sync)).toBeDisabled();
+  await expect(page.locator('[data-td-compare-side="1"] .td-compare__loading')).toHaveCount(0);
+  stalled = false;
+  await page.locator('[data-td-compare-side="1"] .td-compare__retry').click();
+  await expect(page.locator(sync)).toBeEnabled();
+  await expect(page.locator('.td-compare__failure')).toHaveCount(0);
+});
+
 test('compare: heading-less pages use whole-document progress with one inline warning', async ({ page }) => {
   await page.setViewportSize({ width: 1200, height: 600 });
   await page.goto('/tests/compare-plain/');

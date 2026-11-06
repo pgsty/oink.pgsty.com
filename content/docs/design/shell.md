@@ -620,7 +620,9 @@ Escape before the outer reader does. Fragment
 links stay in the pane without adding history and, like a native fragment
 jump, reveal the hidden tab panels that contain their target; another document exits
 comparison; external links open outside it. A localized loading note covers a
-pane until its article is readable. A page that cannot be loaded shows a
+pane until its article is readable. The iframe's initial `about:blank` load is
+ignored while the target request is pending; a document still blank at the
+15-second timeout is treated as failed. A page that cannot be loaded shows a
 localized Retry button and a direct link; choosing the same language again also
 retries it.
 
@@ -697,7 +699,9 @@ before consumers receive them.
   path without duplicating the old version directory.
 - Blog indexes own their pagination: localized navigation contains ordinary
   links with `aria-current`, and head `prev`/`next` point to list pages. The
-  article-sequence pager is omitted on blog lists.
+  article-sequence pager is omitted on blog lists. Archive pagination and its
+  head links apply only to HTML. Print emits one complete section aggregate,
+  without repeating it for each HTML archive page.
 - All navbar-only pages, including immersive blog articles, expose the mobile
   site drawer. Language, version, and repository links remain reachable there.
   Closed sidebar drawers cast no shadow into the viewport.
