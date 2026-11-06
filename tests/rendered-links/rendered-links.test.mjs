@@ -100,3 +100,27 @@ test('intentional opt-outs and generated HTML sources remain excluded', () => {
     assert.match(result.stdout, /1 pages; 0 internal links; 0 fragments/);
   });
 });
+
+test('named anchors, self-ignored links and template content match the DOM rules', () => {
+  fixture((publicRoot) => {
+    writeHtml(
+      publicRoot,
+      'target/index.html',
+      '<a name="legacy">Legacy anchor</a><template><h2 id="inert">Template only</h2></template>',
+    );
+    writeHtml(
+      publicRoot,
+      'index.html',
+      '<a href="/target/#legacy">Named anchor</a>' +
+        '<a href="/self-ignored/" data-proofer-ignore>Self-ignored link</a>' +
+        '<template><a href="/missing-template/">Template link</a></template>' +
+        '<a href="/target/#inert">Template fragment</a>',
+    );
+
+    const result = check(publicRoot);
+    assert.equal(result.status, 1);
+    assert.match(result.stdout, /2 pages; 2 internal links; 2 fragments/);
+    assert.doesNotMatch(result.stderr, /legacy|self-ignored|missing-template/);
+    assert.match(result.stderr, /missing fragment: \/target\/#inert/);
+  });
+});

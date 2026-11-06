@@ -3,7 +3,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
-import { JSDOM } from 'jsdom';
+import { parse } from 'parse5';
 
 const publicRoot = path.resolve(process.argv[2] ?? 'public');
 const failures = new Map();
@@ -87,32 +87,57 @@ const pages = walk(publicRoot)
 let contentPages = 0;
 let textNodes = 0;
 
+// Text inside these elements is code or chrome, not rendered prose. This is
+// the former `closest()` selector: pre, code, samp, kbd, script, style,
+// textarea, annotation, [data-td-code-group-tab], and three classes.
+const exemptTags = new Set(['pre', 'code', 'samp', 'kbd', 'script', 'style', 'textarea', 'annotation']);
+const exemptClasses = ['td-code-group__print-title', 'td-code-group__static-title', 'td-page-annotation'];
+
+function classesOf(node) {
+  return (node.attrs?.find(({ name }) => name === 'class')?.value ?? '').split(/\s+/);
+}
+
+function exempt(node) {
+  return exemptTags.has(node.tagName) ||
+    Boolean(node.attrs?.some(({ name }) => name === 'data-td-code-group-tab')) ||
+    classesOf(node).some((name) => exemptClasses.includes(name));
+}
+
+// Depth-first in document order. `exempt` is inherited from every ancestor,
+// including those above a content root, exactly as `closest()` searched.
+function* walkTree(root, exemptAbove) {
+  const stack = [{ node: root, exempted: exemptAbove }];
+  while (stack.length) {
+    const { node, exempted } = stack.pop();
+    const inherited = exempted || Boolean(node.tagName && exempt(node));
+    yield { node, exempted, inherited };
+    const children = node.childNodes ?? [];
+    for (let index = children.length - 1; index >= 0; index -= 1) {
+      stack.push({ node: children[index], exempted: inherited });
+    }
+  }
+}
+
 for (const sourceFile of pages) {
   const source = pageUrl(sourceFile);
-  const document = new JSDOM(readFileSync(sourceFile, 'utf8')).window.document;
-  const contentRoots = document.querySelectorAll('.td-content');
+  // parse5 builds a plain tree that is dropped after each page; a JSDOM window
+  // per page kept several megabytes each and exhausted the CI heap.
+  const document = parse(readFileSync(sourceFile, 'utf8'), { scriptingEnabled: false });
+  const contentRoots = [];
+  for (const { node, exempted } of walkTree(document, false)) {
+    if (node.tagName && classesOf(node).includes('td-content')) contentRoots.push({ node, exempted });
+  }
   if (!contentRoots.length) continue;
   contentPages += 1;
 
   for (const content of contentRoots) {
-    const iterator = document.createNodeIterator(
-      content,
-      document.defaultView.NodeFilter.SHOW_TEXT,
-    );
-
-    for (let node = iterator.nextNode(); node; node = iterator.nextNode()) {
-      if (
-        node.parentElement?.closest(
-          'pre, code, samp, kbd, script, style, textarea, annotation, [data-td-code-group-tab], .td-code-group__print-title, .td-code-group__static-title, .td-page-annotation',
-        )
-      ) {
-        continue;
-      }
-      if (!node.data.trim()) continue;
+    for (const { node, exempted } of walkTree(content.node, content.exempted)) {
+      if (node.nodeName !== '#text' || exempted) continue;
+      if (!node.value.trim()) continue;
       textNodes += 1;
 
       for (const { kind, pattern } of rules) {
-        if (pattern.test(node.data)) record(kind, source, node.data);
+        if (pattern.test(node.value)) record(kind, source, node.value);
       }
     }
   }

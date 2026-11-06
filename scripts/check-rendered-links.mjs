@@ -3,11 +3,15 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
-import { JSDOM } from 'jsdom';
+import { parse } from 'parse5';
 
 const publicRoot = path.resolve(process.argv[2] ?? 'public');
 const localOrigin = 'https://oink.invalid';
-const documentCache = new Map();
+// Each page is parsed once and reduced to strings: its link targets, element
+// IDs and names, and whether it is a redirect. parse5 builds a plain tree that
+// is dropped right after, so peak memory is one page rather than every page of
+// the site at once. (A JSDOM window kept about 8 MB per page even after close.)
+const summaries = new Map();
 const failures = new Map();
 
 function walk(dir) {
@@ -21,30 +25,51 @@ function relative(file) {
   return path.relative(publicRoot, file).split(path.sep).join('/');
 }
 
+// Mirrors the DOM queries this check used to run: `a[href]` outside any
+// `[data-proofer-ignore]` ancestor (or the link itself), every `[id]` and
+// `[name]`, and `meta[http-equiv=refresh]`. Template content is not part of
+// the document tree, so it is not walked.
+function summaryFor(file) {
+  if (!summaries.has(file)) {
+    const summary = { redirect: false, hrefs: [], ids: new Set(), names: new Set() };
+    // jsdom parsed with scripting off, so <noscript> content is markup here too.
+    const stack = [{ node: parse(readFileSync(file, 'utf8'), { scriptingEnabled: false }), ignored: false }];
+    while (stack.length) {
+      const { node, ignored } = stack.pop();
+      let skip = ignored;
+      let href;
+      let httpEquiv;
+      for (const { name, value } of node.attrs ?? []) {
+        if (name === 'id') summary.ids.add(value);
+        else if (name === 'name') summary.names.add(value);
+        else if (name === 'href') href = value;
+        else if (name === 'http-equiv') httpEquiv = value;
+        else if (name === 'data-proofer-ignore') skip = true;
+      }
+      if (node.tagName === 'meta' && httpEquiv?.toLowerCase() === 'refresh') summary.redirect = true;
+      if (node.tagName === 'a' && href !== undefined && !skip) summary.hrefs.push(href);
+      const children = node.childNodes ?? [];
+      for (let index = children.length - 1; index >= 0; index -= 1) {
+        stack.push({ node: children[index], ignored: skip });
+      }
+    }
+    summaries.set(file, summary);
+  }
+  return summaries.get(file);
+}
+
 function inScope(file) {
   const name = relative(file);
   if (name.split('/').includes('_print') || /(^|\/)404\.html$/.test(name)) {
     return false;
   }
-  return !Array.from(documentFor(file).querySelectorAll('meta[http-equiv]')).some(
-    (meta) => meta.getAttribute('http-equiv')?.toLowerCase() === 'refresh',
-  );
+  return !summaryFor(file).redirect;
 }
 
 function pageUrl(file) {
   const name = relative(file);
   if (name === 'index.html') return '/';
   return `/${name.replace(/index\.html$/, '')}`;
-}
-
-function documentFor(file) {
-  if (!documentCache.has(file)) {
-    documentCache.set(
-      file,
-      new JSDOM(readFileSync(file, 'utf8')).window.document,
-    );
-  }
-  return documentCache.get(file);
 }
 
 function localFile(pathname) {
@@ -85,11 +110,9 @@ let fragments = 0;
 
 for (const sourceFile of pages) {
   const source = pageUrl(sourceFile);
-  const sourceDocument = documentFor(sourceFile);
 
-  for (const anchor of sourceDocument.querySelectorAll('a[href]')) {
-    if (anchor.closest('[data-proofer-ignore]')) continue;
-    const href = anchor.getAttribute('href')?.trim();
+  for (const rawHref of summaryFor(sourceFile).hrefs) {
+    const href = rawHref?.trim();
     if (!href || href === '#' || href.includes('link-check=no')) continue;
 
     let url;
@@ -122,11 +145,8 @@ for (const sourceFile of pages) {
       record('invalid fragment', target, source);
       continue;
     }
-    const targetDocument = documentFor(targetFile);
-    if (
-      !targetDocument.getElementById(fragment) &&
-      targetDocument.getElementsByName(fragment).length === 0
-    ) {
+    const targetSummary = summaryFor(targetFile);
+    if (!targetSummary.ids.has(fragment) && !targetSummary.names.has(fragment)) {
       record('missing fragment', target, source);
     }
   }
