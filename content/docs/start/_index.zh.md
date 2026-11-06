@@ -5,7 +5,7 @@ description: 从官方 OINK Starter 建立可运行的本地基线，再依次�
 weight: 20
 icon: fa-solid fa-rocket
 no_list: true
-search_keywords: [快速上手, OINK Starter, 模板, 安装, Hugo, 本地预览, 部署]
+search_keywords: [快速上手, agent 技能, AI agent, OINK Starter, 模板, 安装, Hugo, 本地预览, 部署]
 aliases:
   - /docs/tutorial/
   - /docs/tutorial/prerequisites/
@@ -92,6 +92,27 @@ hugo --cleanDestinationDir --gc --minify --environment production \
 ```
 
 确认命令正常退出并输出 `Total in …`，且 `public/` 下已生成各语言根目录以及代表性的 Docs、Blog、Book 页面。构建时请保持告警可见以便审阅，请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`（Hugo 内置 LibSass 的弃用提示属预期现象）。推送后，再进一步核对 CI workflow 状态与线上公开地址的渲染结果。
+
+## 用 AI agent 建站 {#agent-skill}
+
+OINK 发布了一个 agent 技能 **Oink 建站**（`oink-site`）：一个 Markdown 文件，汇集了建站流程、OINK 自家站点的审阅标准，以及[案例库](/zh/case/)中的经验。语法以本文档为准，并要求 agent 在浏览器中验证自己的工作。
+
+- English：<https://oink.pgsty.com/skill.md>
+- 简体中文：<https://oink.pgsty.com/skill.zh.md>
+
+保存为技能后，开启一个新的 agent 会话：
+
+```bash {tab="Claude Code"}
+mkdir -p ~/.claude/skills/oink-site
+curl -fsSL https://oink.pgsty.com/skill.zh.md -o ~/.claude/skills/oink-site/SKILL.md
+```
+
+```bash {tab="Codex"}
+mkdir -p ~/.codex/skills/oink-site
+curl -fsSL https://oink.pgsty.com/skill.zh.md -o ~/.codex/skills/oink-site/SKILL.md
+```
+
+然后描述你想要的站点，例如“用 oink-site 技能为这个项目搭建一个中英双语文档站”。没有技能目录的 agent，把地址交给它即可直接按文件执行。想要英文版，把地址换成 `skill.md`。重新下载即可更新；文件中写明了它对应的 OINK 版本。
 
 ## 下一步 {#next}
 

@@ -38,6 +38,15 @@ The starter pins a published release and includes neutral Docs, Blog, Book,
 language profiles, and GitHub Pages / Cloudflare Pages workflows without this
 repository's regression test suite.
 
+## Building with an AI agent
+
+The **Oink 建站** agent skill packages the site-building workflow and review
+standards in one file: [English](https://oink.pgsty.com/skill.md) /
+[简体中文](https://oink.pgsty.com/skill.zh.md). Its sources are
+`static/skill.md` and `static/skill.zh.md`; keep them free of local paths and
+private repositories. Installation is described in
+[Build with an AI agent](https://oink.pgsty.com/docs/start/#agent-skill).
+
 ## Local development
 
 Use Go 1.27.3 and Hugo Extended 0.168.0 for development, CI, and production

@@ -8,6 +8,8 @@ no_list: true
 search_keywords:
   [
     get started,
+    agent skill,
+    AI agent,
     quick start,
     OINK Starter,
     template,
@@ -117,6 +119,33 @@ contains the language roots along with representative Docs, Blog, and Book
 routes. Keep warnings visible for review and do not enable `--panicOnWarning`
 or `HUGO_PANICONWARNING` (Hugo's built-in LibSass deprecation notice is
 expected). After pushing, check the CI workflow and the live URL as well.
+
+## Build with an AI agent {#agent-skill}
+
+OINK publishes an agent skill, **Oink 建站** (`oink-site`): one Markdown file
+that packages the site-building workflow, the review standards of OINK's own
+sites, and lessons from the [case library](/case/). It defers to this
+documentation for syntax and asks the agent to verify its work in a browser.
+
+- English: <https://oink.pgsty.com/skill.md>
+- 简体中文: <https://oink.pgsty.com/skill.zh.md>
+
+Save it as a skill, then start a new agent session:
+
+```bash {tab="Claude Code"}
+mkdir -p ~/.claude/skills/oink-site
+curl -fsSL https://oink.pgsty.com/skill.md -o ~/.claude/skills/oink-site/SKILL.md
+```
+
+```bash {tab="Codex"}
+mkdir -p ~/.codex/skills/oink-site
+curl -fsSL https://oink.pgsty.com/skill.md -o ~/.codex/skills/oink-site/SKILL.md
+```
+
+Then describe the site you want, for example "Use the oink-site skill to build
+a bilingual documentation site for this project." An agent without a skills
+directory can follow the file directly when you give it the URL. Run the
+download again to update; the file states the OINK release it was written for.
 
 ## Next {#next}
 
