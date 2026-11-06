@@ -153,7 +153,7 @@ a description containing `备份` can satisfy both. Ranking follows these rules:
 
 1. If any page covers every term, show only those pages. Otherwise, show partial matches, labeled with matched/total terms, in descending coverage order.
 2. Within equal coverage, a contiguous complete phrase ranks first.
-3. Apply `search_boost` to field scores within those tiers. Each term uses its strongest field: title, keywords, tags/categories, headings, description, then body. Ties use title and URL for stable ordering.
+3. Apply `search_boost` to field scores within those tiers. Each term uses its strongest field: title, keywords, tags/categories, headings, description, then body. A term repeated in that field ranks the page above one that mentions it once in the same field, but never above a page with a stronger field. Remaining ties use title and URL for stable ordering.
 
 Literal substrings also match while typing. A boost cannot promote a partial
 match over a complete one. Results stay grouped in the navbar's content-root

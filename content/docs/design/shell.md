@@ -227,7 +227,10 @@ English Lunr stemming cover terms across fields; typo fallback applies only to
 ASCII words of at least five characters (one edit, or two from eight characters).
 All-term pages suppress partial results. Otherwise coverage is shown and sorted
 first. A contiguous whole phrase leads within equal coverage; the positive page
-boost multiplies the strongest-field sum within those tiers. Title/URL break ties.
+boost multiplies the strongest-field sum within those tiers. Repeated occurrences
+of a term in its strongest field add a bonus below 20%, which orders pages within
+that field without letting them outrank a stronger field; a single occurrence
+scores the plain field weight. Title/URL break remaining ties.
 The global result limit precedes existing root grouping and menu group order.
 
 Optional `sections` entries carry actual rendered `id` and `title`; content scope
