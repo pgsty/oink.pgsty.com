@@ -328,7 +328,7 @@ params:
       kind: latest
       url: https://oink.pgsty.com
 
-  hugoMinVersion: &hugoMinVersion 0.168.0
+  hugoMinVersion: &hugoMinVersion 0.169.0
   productionURL: &productionURL https://oink.pgsty.com
   copyright:
     authors: >-

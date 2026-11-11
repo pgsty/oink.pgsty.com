@@ -9,7 +9,7 @@ const moduleWorkspace =
 
 export default defineConfig({
   testDir: './tests/browser',
-  testIgnore: 'document-compare-languages.spec.mjs',
+  testIgnore: ['document-compare-languages.spec.mjs', 'dependency-services.spec.mjs'],
   timeout: 60_000,
   expect: {
     timeout: 10_000,
@@ -32,7 +32,7 @@ export default defineConfig({
     ? undefined
     : {
         command:
-          'npm run _serve -- --config hugo.yml,tests/fixtures/browser.yml --bind 127.0.0.1 --port 4173 --noBuildLock --disableLiveReload --watch=false',
+          'npm run _serve -- --config hugo.yml,tests/fixtures/browser.yml --bind 127.0.0.1 --baseURL http://127.0.0.1:4173/ --port 4173 --noBuildLock --disableLiveReload --watch=false',
         env: moduleWorkspace
           ? { HUGO_MODULE_WORKSPACE: moduleWorkspace }
           : undefined,

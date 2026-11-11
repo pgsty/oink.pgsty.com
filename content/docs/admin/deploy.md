@@ -17,7 +17,7 @@ or build plugin. On the host, run one command with the correct Hugo version.
 Publish `public/` and set `baseURL` to match the final address.
 
 First run a local [production build](/docs/admin/preview/#production-build)
-with Hugo Extended 0.168.0 (using its built-in LibSass). Do not enable
+with Hugo Extended 0.169.0 (using its built-in LibSass). Do not enable
 `--panicOnWarning` or `HUGO_PANICONWARNING`; keep warnings visible and review
 them (the upstream LibSass deprecation warning is expected).
 
@@ -88,7 +88,7 @@ concurrency:
 
 env:
   GO_VERSION: stable
-  HUGO_VERSION: "0.168.0"
+  HUGO_VERSION: "0.169.0"
   # a workspace from a sibling checkout must never take part in a CI build
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
@@ -187,14 +187,14 @@ same `public/` artifact to a Cloudflare Pages project.
    `CLOUDFLARE_SITE_URL` when a custom domain becomes production.
 {.steps}
 
-The workflow pins Hugo Extended 0.168.0, reads Go from `go.mod`, disables local
-module workspaces, and builds with Hugo Extended 0.168.0 and visible warnings
+The workflow pins Hugo Extended 0.169.0, reads Go from `go.mod`, disables local
+module workspaces, and builds with Hugo Extended 0.169.0 and visible warnings
 before upload. It is the
 recommended reproducible path for Starter users.
 
 You can also use Cloudflare Git integration as a separate mode. Set the build
 command to `hugo --gc --minify --printPathWarnings`, the output
-directory to `public`, Hugo to `0.168.0`, and Go to `1.27`. For one project,
+directory to `public`, Hugo to `0.169.0`, and Go to `1.27`. For one project,
 use either Git integration **or** the Direct Upload workflow, and build preview
 deployments with their own preview URL and a non-production environment so they
 remain unindexed.
@@ -212,7 +212,7 @@ command = "hugo --gc --minify --printPathWarnings "
 publish = "public"
 
 [build.environment]
-HUGO_VERSION = "0.168.0"
+HUGO_VERSION = "0.169.0"
 ```
 
 If the theme is a submodule, enable recursive submodule checkout. For a Hugo

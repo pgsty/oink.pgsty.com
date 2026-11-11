@@ -29,7 +29,7 @@ cards with icons and images, and field entries with several Markdown paragraphs.
 
 ## Build with Hugo {#hugo-only}
 
-Hugo Extended 0.168.0 or newer compiles the site's assets. SCSS is compiled by
+Hugo Extended 0.169.0 or newer compiles the site's assets. SCSS is compiled by
 Hugo's embedded Sass transpiler. The theme never invokes `postCSS`. It requires
 neither npm nor webpack. Installing the theme as a Hugo Module also needs Go
 and access to the module dependencies, either over the network or from a local

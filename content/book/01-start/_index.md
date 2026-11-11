@@ -23,16 +23,16 @@ theme or deployment problem later.
 
 ## Install the prerequisite {#prerequisite}
 
-Install Git, Go 1.27.3 or newer, and Hugo Extended 0.168.0 for this tutorial.
+Install Git, Go 1.27.4 or newer, and Hugo Extended 0.169.0 for this tutorial.
 Styles compile with Hugo Extended's built-in LibSass, so no external Sass compiler
 or Node.js installation is required. If you started from an older Starter template,
-update its GitHub Actions workflow to Hugo Extended 0.168.0 as well.
+update its GitHub Actions workflow to Hugo Extended 0.169.0 as well.
 
 ```console
 $ go version
-go version go1.27.3 darwin/arm64
+go version go1.27.4 darwin/arm64
 $ hugo version
-hugo v0.168.0+extended+withdeploy darwin/arm64
+hugo v0.169.0+extended+withdeploy darwin/arm64
 ```
 
 ## Run the preview {#preview}

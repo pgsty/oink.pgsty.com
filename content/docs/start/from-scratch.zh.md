@@ -30,7 +30,7 @@ aliases:
 已有 Hugo 站点时，按下方[接入现有站点](#existing-site)操作；已有 Docsy 站点见[版本升级](/zh/docs/admin/upgrade/)。
 
 后半部分对比四种安装方式：Hugo Module、Git submodule、离线归档、固定版本源码副本。
-当前开发与构建统一使用 Go 1.27.3 与 Hugo Extended 0.168.0（内置 Sass 编译器，无需外部 Sass）。
+当前开发与构建统一使用 Go 1.27.4 与 Hugo Extended 0.169.0（内置 Sass 编译器，无需外部 Sass）。
 
 ## 接入现有站点 {#existing-site}
 

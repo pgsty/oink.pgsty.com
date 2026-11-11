@@ -10,7 +10,7 @@ search_keywords: [OINK Starter, GitHub 模板, Use this template, 定制 Starter
 [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter) 是新建 OINK
 站点的官方模板。它保持精简干净，不夹带 `oink.pgsty.com` 的主题文档、统计账号、评论仓库、浏览器回归套件或 PGSTY 品牌资产。
 
-你只需准备 Git、Go 1.27.3+ 以及 Hugo Extended 0.168.0+（内置 Sass 编译器，无需安装 Node.js 或外部 Sass）。
+你只需准备 Git、Go 1.27.4+ 以及 Hugo Extended 0.169.0+（内置 Sass 编译器，无需安装 Node.js 或外部 Sass）。
 
 ## 模板包含什么 {#contents}
 

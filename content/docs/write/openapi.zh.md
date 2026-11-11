@@ -59,7 +59,19 @@ search_keywords: [API, OpenAPI, Swagger, Swagger UI, Redoc, 接口文档, swagge
 `https://example.com/preview/openapi/docs-demo.yaml`。与 `swagger` 不同，Redoc
 接收的是这个基于 `baseURL` 的绝对 URL。
 
-主题固定了 `hide-hostname` `hide-logo` `suppress-warnings` `lazy-rendering` `native-scrollbars` 五个属性，并用 CSS 隐藏 Redocly 品牌图标。Redoc 的其余属性目前不开放给作者，需要它们时在站点里覆盖 `layouts/_shortcodes/redoc.html`。
+> [!NOTE] 尚未发布的 ReDoc 3
+> OINK v1.5.1 之后的依赖升级将 ReDoc 3.1.0 作为本地 ES 模块加载，每个阅读器
+> 使用独立文档和自己的片段导航，不影响文章锚点或其他阅读器。框架使用上游的
+> 浅色配色和独立滚动区域，下方保留规范链接。
+
+遥测已关闭，两张上游品牌图片改为内嵌，阅读器不请求主题自带的 CDN 资源。
+远程规范及规范中显式引用的图片仍可能联网；直接访问本地阅读器文档只接受同源规范。随着 v2 API 退役，原先固定的
+`hide-hostname`、`hide-logo`、`suppress-warnings`、`lazy-rendering` 与
+`native-scrollbars` 已移除；覆盖过 shortcode 或样式的站点需要迁移这些覆盖。
+如果站点的内容安全策略限制了框架，需要通过 `frame-src 'self'` 允许本地阅读器文档。
+ReDoc 3 支持 OpenAPI、AsyncAPI 与 GraphQL；规范扩展 `x-code-samples` 应改为
+`x-codeSamples`。旧操作链接由上游重定向，但 v2 的 schema 与单独安全方案片段
+没有等价路由。独立 Print、Markdown 与 RSS 继续只保留规范链接。
 
 ## 专用页面外壳 {#shell}
 

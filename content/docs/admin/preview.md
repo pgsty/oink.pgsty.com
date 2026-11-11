@@ -97,7 +97,7 @@ source tree. The four switches have these functions:
 | `--printPathWarnings` | Warns when two pages use the same output path. This is the most common silent error on multilingual sites |
 {.fields}
 
-Use Hugo Extended 0.168.0 and leave warnings visible. Do not enable
+Use Hugo Extended 0.169.0 and leave warnings visible. Do not enable
 `--panicOnWarning` or `HUGO_PANICONWARNING`: Hugo's upstream LibSass deprecation
 warning is accepted. Invalid giscus settings or unsupported theme values also
 warn and fall back; review these diagnostics and the rendered output before
@@ -145,8 +145,8 @@ or does not want to install Hugo on every developer's machine.
 ```dockerfile {title="Dockerfile" collapse=16}
 FROM debian:bookworm-slim
 
-ARG HUGO_VERSION=0.168.0
-ARG GO_VERSION=1.27.3
+ARG HUGO_VERSION=0.169.0
+ARG GO_VERSION=1.27.4
 ARG TARGETARCH
 
 RUN apt-get update \

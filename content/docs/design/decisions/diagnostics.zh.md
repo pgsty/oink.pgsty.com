@@ -13,7 +13,7 @@ decision_date: 2026-08-19
 > [!IMPORTANT] 决策
 > OINK 不调用 Hugo 的 `errorf`。作者或站点输入无效时，主题发出警告，并使用文档中
 > 明确的安全回退，或者省略无效片段。开发、CI、发布与部署统一使用 Hugo Extended
-> 0.168.0，禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。告警保持可见，
+> 0.169.0，禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。告警保持可见，
 > 检查器验证具体诊断与回退后的产物。
 
 ## 背景 {#context}
@@ -67,6 +67,6 @@ Hugo 把整座站点作为一次事务构建。编辑一页时触发的 `errorf`
 
 本决策的归属参考包括
 [架构契约](/zh/docs/design/architecture/#configuration-and-diagnostics)、
-`bin/check-params.py`，以及主题夹具与本站使用 Hugo Extended 0.168.0 的生产构建。
+`bin/check-params.py`，以及主题夹具与本站使用 Hugo Extended 0.169.0 的生产构建。
 
 本告警策略于 2026-10-18 更新。不得恢复遇到告警就中断的发布门禁。

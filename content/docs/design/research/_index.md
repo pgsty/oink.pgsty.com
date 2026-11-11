@@ -39,6 +39,7 @@ of research records.
 | [Document comparison, 2026-10-29](/docs/design/research/2026-10-29-document-comparison/) | Dated source review behind the [translation comparison decision](/docs/design/decisions/document-comparison/); historical, not the released contract |
 | [Review repairs, 2026-11-06](/docs/design/research/2026-11-06-review-repairs/) | Reproduced v1.5.0 defects, bounded development repairs, validation and remaining work |
 | [OINK 1.5.1 readiness, 2026-11-06](/docs/design/research/2026-11-06-v1-5-1-release-review/) | Three repaired candidate regressions, owning checks, browser acceptance, publication evidence and release gates |
+| [Dependency acceptance, 2026-11-11](/docs/design/research/2026-11-11-dependency-acceptance/) | Dependency migration, interaction and failure-path repairs, three-engine acceptance and publication boundaries |
 
 ## Publication rules {#publication-rules}
 

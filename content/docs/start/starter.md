@@ -12,7 +12,7 @@ template for new OINK sites. It stays lean and clean, without this site's theme
 reference docs, analytics IDs, comment repo settings, browser test harness, or
 PGSTY branding.
 
-You only need Git, Go 1.27.3+, and Hugo Extended 0.168.0+ (which includes its
+You only need Git, Go 1.27.4+, and Hugo Extended 0.169.0+ (which includes its
 built-in Sass compiler — no Node.js or external Sass installation required).
 
 ## What the template contains {#contents}

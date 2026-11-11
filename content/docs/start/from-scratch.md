@@ -32,7 +32,7 @@ below. For an existing Docsy site, see [Upgrade](/docs/admin/upgrade/).
 
 The second half compares four install methods: Hugo Module, Git submodule,
 offline archive, and pinned source copy. Current development and builds use
-Go 1.27.3 and Hugo Extended 0.168.0 (with built-in Sass — no external Sass
+Go 1.27.4 and Hugo Extended 0.169.0 (with built-in Sass — no external Sass
 needed).
 
 ## Add OINK to an existing site {#existing-site}

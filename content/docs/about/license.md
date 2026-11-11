@@ -115,6 +115,16 @@ and Viz.js 3.24.0 (MIT), including Graphviz 14.1.1 (EPL-1.0) and Expat (MIT).
 Their notices and upstream source links accompany the two scripts in
 `assets/third_party/plantuml/`; `VENDOR.json` records the exact artifacts.
 
+> [!NOTE] Unreleased dependency inventory
+> The upgrade after v1.5.1 has 27 top-level entries in `VENDOR.json`, generated
+> 2026-11-11. Markmap's scoped 1.1.0 packages replace the legacy packages above;
+> bundled modules, including MathJax, have complete version and license lists in
+> `assets/third_party/markmap/PACKAGES.json` and `LICENSES.txt`.
+> Viz.js 3.31.0 includes Graphviz 16.1.0 under **EPL-2.0**, replacing EPL-1.0.
+> ReDoc 3 retains bundled license comments inside its distribution. The
+> [dependency contract](/docs/design/architecture/#unreleased-dependencies)
+> describes the migration; the table above remains the published v1.5.1 inventory.
+
 When you redistribute the theme, include all this license and notice material.
 When you update a runtime, update its artifact, license file, source, and checksum
 in the same change.

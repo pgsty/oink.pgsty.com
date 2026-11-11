@@ -33,8 +33,9 @@ from reports and reproductions.
 
 ## Build and check {#build-and-check}
 
-The maintained baseline is **OINK v1.5.1**, **Hugo Extended 0.168.0**, and
-**Go 1.27.3**; the module's Go minimum is 1.27.3. Hugo uses its built-in LibSass.
+Development after **OINK v1.5.1** uses **Hugo Extended 0.169.0** and
+**Go 1.27.4**; the current theme checkout's Go minimum is 1.27.4.
+The published v1.5.1 module retains its original requirements. Hugo uses its built-in LibSass.
 Ordinary site builds require no external Sass compiler, Node.js, or npm.
 
 Never enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Keep warnings visible
@@ -43,8 +44,8 @@ Development and CI use the pinned Hugo baseline, without a legacy-version matrix
 
 For theme work, clone the theme and this site as siblings. Read each
 repository's `AGENTS.md`, this site's `TRANSLATION.md`, and the relevant
-[Design contract](/docs/design/). This site's regression tests need Node >= 24
-and npm >= 11.16.0:
+[Design contract](/docs/design/). This site's regression tests need Node >= 26.13.0
+and npm >= 12.2.2:
 
 ```sh
 npm ci

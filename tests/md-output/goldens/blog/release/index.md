@@ -9,14 +9,14 @@ LLMS index: [llms.txt](/llms.txt)
 ---
 
 > [!NOTE] Versioned history
-> Each release note records the requirements and validation of that version at release time. Current development, CI, and release tests use Hugo Extended 0.168.0; see the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
+> Each release note records the requirements and validation of that version at release time. Current development, CI, and release tests use Hugo Extended 0.169.0; see the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
 
 The current release is [OINK 1.5.1](/blog/release/1.5.1/): Duo View repairs,
 correct RSS and Print aggregation, stable navigation identity, safer fallbacks,
 search ranking fixes, and 32-locale terminology. It carries forward the
 translation reader, local search, local diagram reading, table reader, blog
-gallery, and component refinements from 1.4.0. Use Hugo Extended **0.168.0**,
-keep warnings visible, and never enable
+gallery, and component refinements from 1.4.0. That release was validated with
+Hugo Extended **0.168.0**. Keep warnings visible, and never enable
 `--panicOnWarning` or `HUGO_PANICONWARNING`. No external Sass compiler is required.
 
 For the changes contributed in 1.3.1, see its

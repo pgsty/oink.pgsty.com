@@ -18,7 +18,7 @@ aliases:
 升级会改变渲染结果。先建一个升级分支再动手，回退的代价就是丢弃一个分支。
 
 > [!IMPORTANT] 当前 Hugo 基线
-> 维护中的站点统一使用 Hugo Extended 0.168.0 及其内置 LibSass，无需安装外部 Sass。
+> 维护中的站点统一使用 Hugo Extended 0.169.0 及其内置 LibSass，无需安装外部 Sass。
 > 不要启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；Hugo 内置 LibSass 的弃用告警属于预期输出。
 > 升级时请同步更新 Hugo workflow 固定版本；下方旧版本章节中的要求仅说明当时的发布状态。
 
@@ -88,7 +88,7 @@ hugo mod graph | grep github.com/pgsty/oink
 ```go {title="go.mod"}
 module github.com/pgsty/oink.pgsty.com
 
-go 1.27.3
+go 1.27.4
 
 require github.com/pgsty/oink v1.5.1
 ```
@@ -130,7 +130,7 @@ env -u HUGO_MODULE_REPLACEMENTS GOWORK=off HUGO_MODULE_WORKSPACE=off \
 ## 从 1.0 升到 1.1 {#from-1-0}
 
 从 1.0.0 升级到 1.1.0 不需要迁移源码，模块的 Go 1.27.0 声明与 1.0.0 相同。
-当前升级统一使用 Hugo Extended 0.168.0 验证；历史工具链信息保留在
+当前升级统一使用 Hugo Extended 0.169.0 验证；历史工具链信息保留在
 [1.1 发布说明](/zh/blog/release/1.1.0/)中。
 
 选择新固定版本前，检查这些受影响的页面与行为：
@@ -176,7 +176,7 @@ make dev
 > 自定义深色品牌选择器的兼容处理见[品牌外观](/zh/docs/customize/brand/#visual-presets)。
 
 OINK 1.2.0 已发布。除上面的默认外观变化外，无需迁移内容源码。
-当前升级统一使用 Hugo Extended 0.168.0 验证，并按以下清单验收站点：
+当前升级统一使用 Hugo Extended 0.169.0 验证，并按以下清单验收站点：
 
 - 检查所选预设、明暗图标、键盘与手机菜单、保存的偏好，以及自定义字体和强调色覆盖。
   太阳表示亮色，月亮表示暗色；切换风格不得改变保存的明暗偏好。

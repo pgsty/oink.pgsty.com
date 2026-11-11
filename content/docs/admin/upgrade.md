@@ -20,7 +20,7 @@ An upgrade changes rendered output. Before you start, create an upgrade branch.
 You can discard that branch if you cancel the upgrade.
 
 > [!IMPORTANT] Current Hugo baseline
-> Maintained sites use Hugo Extended 0.168.0 and its built-in LibSass. No
+> Maintained sites use Hugo Extended 0.169.0 and its built-in LibSass. No
 > external Sass installation is required. Do not enable `--panicOnWarning` or
 > `HUGO_PANICONWARNING`; Hugo's built-in LibSass deprecation warning is
 > expected. Update Hugo workflow pins when upgrading; older-Hugo requirements
@@ -105,7 +105,7 @@ For the published tag in this example, `go.mod` contains:
 ```go {title="go.mod"}
 module github.com/pgsty/oink.pgsty.com
 
-go 1.27.3
+go 1.27.4
 
 require github.com/pgsty/oink v1.5.1
 ```
@@ -156,7 +156,7 @@ view, and every site customization.
 
 No source migration was required from 1.0.0 to 1.1.0. Its Go 1.27.0 module
 directive was unchanged from 1.0.0. Validate current upgrades with Hugo Extended
-0.168.0. Historical toolchain details remain in the [1.1 release note](/blog/release/1.1.0/).
+0.169.0. Historical toolchain details remain in the [1.1 release note](/blog/release/1.1.0/).
 
 Review the affected surfaces before choosing the new pin:
 
@@ -209,7 +209,7 @@ the [sidebar contract](/docs/design/shell/#sidebar-runtime),
 
 OINK 1.2.0 is available as a published tag. Apart from the default appearance
 change above, no content migration is required. Validate current upgrades with
-Hugo Extended 0.168.0, then verify the site:
+Hugo Extended 0.169.0, then verify the site:
 
 - Check the chosen preset, light/dark icons, keyboard and mobile menus, saved
   preferences, and custom font/accent overrides. Sun means light; moon means

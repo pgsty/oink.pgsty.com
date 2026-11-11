@@ -11,7 +11,7 @@ They load no JavaScript and contact no remote mathematics service.
 Use `\(…\)` for inline formulas, `$$…$$` or `\[…\]` for display formulas, or `math` and `chem` fences.
 For TikZ or macro packages unsupported by KaTeX, use a pre-rendered [image](/docs/components/image/).
 
-Validate generated formulas with Hugo Extended 0.168.0 and the bundled stylesheet.
+Validate generated formulas with Hugo Extended 0.169.0 and the bundled stylesheet.
 TeX and MathML remain unchanged. No browser mathematics runtime or extra site switch is needed.
 
 ## Site prerequisites {#config}

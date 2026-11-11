@@ -57,7 +57,7 @@ module:
     - path: github.com/pgsty/oink
   hugoVersion:
     extended: true
-    min: 0.168.0
+    min: 0.169.0
 
 params:
   offline_search: true
@@ -535,7 +535,7 @@ Version parameters:
 | `taxonomies` | map | | Hugo's own: enables `tag: tags` / `category: categories` — see [Taxonomies](/docs/customize/taxonomy/) |
 | `params.taxonomy.page_header` | list | | Shows only listed taxonomies in a post header. If unset, shows all |
 | `services.googleAnalytics.id` | string | | Hugo's own: the analytics script is injected in production builds only — see [Analytics and SEO](/docs/admin/analytics/) |
-| `module.hugoVersion.min` | string | 0.168.0 | The theme's declared Hugo floor. An older version fails the build |
+| `module.hugoVersion.min` | string | 0.169.0 | The theme's declared Hugo floor. An older version fails the build |
 | `module.hugoVersion.extended` | boolean | true | Hugo Extended is required (SCSS has to be compiled) |
 {.fields meta="type default"}
 
@@ -599,11 +599,11 @@ After a configuration change, perform at least three checks. Open one page in
 each language. Open a page without a translation to check fallback. Check
 links under the production `baseURL`, including any deployment subpath.
 
-The theme requires Hugo Extended `0.168.0` or newer.
+The theme requires Hugo Extended `0.169.0` or newer.
 Validate configuration changes with the pinned baseline:
 
 ```bash
-# require v0.168.0+extended in this output
+# require v0.169.0+extended in this output
 hugo version
 hugo --printPathWarnings
 ```

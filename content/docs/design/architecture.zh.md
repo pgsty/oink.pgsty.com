@@ -13,8 +13,9 @@ contract_status: v1.5.1
 
 ## Hugo 工具链 {#hugo-toolchain}
 
-维护中的站点、开发、CI 与发布验收统一使用 **OINK v1.5.1** 和
-**Hugo Extended 0.168.0**，固定这套工具链。
+已发布的 **OINK v1.5.1** 使用 **Hugo Extended 0.168.0** 完成验证。
+当前 checkout 及其开发、CI 检查使用 **Hugo Extended 0.169.0** 与 **Go 1.27.4**，
+详见[尚未发布的依赖迁移](#unreleased-dependencies)。所选工具链须固定版本。
 
 禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。告警保持可见并接受审阅；
 上游 LibSass 弃用告警允许出现，不会让成功的构建失败。无效输入测试直接检查对应
@@ -25,7 +26,7 @@ Sass 程序。项目变量与项目样式的 SCSS 钩子保持可用。后续升
 边界，并同步修改要求、检查器、CI 固定版本与双语契约；历史发布和研究记录保留
 当时的工具版本。
 
-OINK v1.5.1 模块要求 Go **1.27.3**，开发与 CI 也固定使用此版本。
+已发布的 OINK v1.5.1 模块要求 Go **1.27.3**。
 Go 用于解析 Hugo Modules；已准备好传统主题副本的站点无需 Go。
 
 ## 仓库与装配 {#repository-and-assembly}
@@ -56,6 +57,64 @@ Hugo 类型 `docs`、`book`、`blog` 与 `swagger` 选择阅读外壳；
 `content/render.html` 渲染，再执行 `scripts.html`，因为渲染钩子与 shortcode
 会在 Page Store 中登记能力标志。覆盖时应选择范围最窄的 partial；若合并会改变
 Hugo 的查找优先级，即使几个基础模板看起来相似，也应保持分离。
+
+## 1.5.1 之后的依赖迁移 {#unreleased-dependencies}
+
+> [!NOTE] 尚未发布
+> 本节描述 v1.5.1 之后同级主题工作树中的实现，不代表已发布的 v1.5.1 模块或
+> 文档站当前固定版本已经包含这些变化。
+
+当前 checkout 要求 **Go 1.27.4** 和 **Hugo Extended 0.169.0**，开发与 CI
+使用相同版本。主样式与 ReDoc 样式仍由内置 LibSass 编译，并保留消费站点的
+SCSS 钩子。上文 v1.5.1 的要求保留为历史发布事实。贡献者浏览器检查使用
+Node 26.13.0 与 npm 12.2.2；它们不是普通消费站点的构建依赖。
+博客卡片、图库和外链列表通过 `RawSummary` 读取作者提供的后备摘要。
+Hugo 0.169.0 的 `plainify` 改进了 HTML 块之间的空白，摘要与字数统计遵循该行为。
+出版 CI 固定 Pandoc 3.13、EPUBCheck 5.4.0 和 Chrome headless shell
+157.0.8103.50，Java 使用 27。
+搜索关闭按钮的本地化无障碍名称包含可见的 `Esc` 标签，并通过
+`aria-keyshortcuts="Escape"` 声明快捷键，支持语音与键盘操作。
+
+更新后的运行时包括 DocSearch 5.2.0、Mermaid 12.3.0、KaTeX 0.19.1、
+Markmap 1.1.0、Swagger UI 5.34.1、ReDoc 3.1.0、Asciinema 3.18.0、
+Infographic 0.2.20、Pako 3.0.3、idb-keyval 6.3.0 与 Viz.js 3.31.0
+（Graphviz 16.1.0、Expat 2.8.5）。Font Awesome 7.3.1、Bootstrap 5.3.8、
+Popper 2.11.8、ECharts 6.1.0、字体包与 PlantUML core 1.2026.9 已是当前稳定版。
+精确清单仍以 `VENDOR.json` 为准。
+
+Mermaid 显式保留 `layout: dagre`、`theme: default`、`look: classic`，不会因为
+上游改用 ELK、neo 与新颜色主题而默默改变已有图表。Mermaid 12 要求浏览器支持
+ES2024（Safari 至少 17.4）；加载或渲染失败时保留源码。KaTeX 0.19.1 的样式与
+字体保留对 Hugo 0.169.0 内置公式渲染器的类名归一化。DocSearch 使用关键词搜索包，
+把现有 `indexName` 设置转换为上游的 `indices` API，不启用 Ask AI。
+
+Markmap 的本地 ESM 资源由 `@markmap/core`、`parse`、`render`、`view` 与
+`plugin-math` 1.1.0 构建，内置所需 D3 模块、高亮与按需加载的 MathJax。旧的全局
+自动加载器、独立 D3 包与 WebFontLoader 已退役。所有相对路径 chunk 一同发布。
+更新内容前请阅读 [Markmap 迁移说明](/zh/docs/components/markmap/#migration)。
+适配层从 Markdown 链接文字生成 SVG 链接的无障碍名称，并在动画折叠与重绘期间保留名称与可见键盘焦点。
+通过 `include` 引入的 Markmap 围栏在宿主页面登记运行时能力。
+注释支持键盘打开，Escape 关闭后恢复焦点，即使原 SVG 标记已在重绘中被替换。字体加载完成后使用文档内 Canvas
+测量文字，避免 Firefox 的 OffscreenCanvas 系统字体度量偏差。
+打开注释前先完成焦点引起的页面滚动，避免平滑滚动立即将浮层关闭。已打开的
+注释随明暗模式与预设实时更新，浏览器打印时隐藏浮层。注释 chunk 加载
+失败时，对应导图恢复完整 Markdown 源码并接收键盘焦点，不影响其他导图。
+注释链接使用正文的链接颜色，并保留下划线。打印结束后恢复注释中原有控件的
+焦点；若浮层已关闭，则恢复到注释标记。
+
+每个 ReDoc 阅读器使用独立的本地 HTML 文档、ES 模块与 hash 路由，多个阅读器不会
+接管文章锚点或彼此的导航。遥测明确关闭，两张上游品牌图片改为内嵌，消除默认 CDN
+请求。规范地址仍由作者显式提供，在同源 `.td-redoc__frame` 中且与页面嵌入地址一致时支持远程 URL；直接访问本地阅读器文档只接受同源规范。框架外始终保留规范链接。
+框架允许读者主动下载文件或通过链接打开新标签页。静态输出只保留该链接，
+参见 [API 写作说明](/zh/docs/write/openapi/#redoc)。Asciinema
+在 JavaScript 增强前、运行时资源不可用，或初始化、录像获取、解析失败时保留
+录像链接；播放器拥有焦点时，失败后将焦点交给链接，不阻断其他组件的初始化。
+
+维护者构建脚本位于 `bin/vendor/`。将该目录复制到主题仓库之外，执行
+`npm ci --ignore-scripts` 和 `node build.mjs`，审阅资源、内嵌依赖清单、许可证与
+校验值后再导入。`import-redoc.py` 只对原始 npm 包做两处已记录的图片替换。
+lockfile 固定传递依赖，也覆盖 SVG loader 内嵌的 idb-keyval。普通 Hugo 构建
+不会执行这些工具。
 
 ## 配置与诊断 {#configuration-and-diagnostics}
 
@@ -376,12 +435,13 @@ Giscus 自动色板同时跟随风格与明暗；显式主题或浅深色样式�
 按动画帧合并。主动窗格连续滚动时，跟随窗格逐帧即时跟随，因为每帧重新开始平滑滚动会
 让跟随窗格停滞；单次跳转在允许动画时平滑过渡，偏好减少动态效果或恢复阅读位置时直接
 定位。关闭或替换窗格时会终止对应的事件监听器、观察器和加载超时计时器。原生
-`dialog` 的 inert 机制将焦点限制在阅读器内，子文档键盘事件处理则保留窗格内组件弹窗
-的交互。阅读器的历史记录在页面刷新或前进/后退恢复后仍然保留：入口脚本将恢复状态
+`dialog` 的 inert 机制将焦点限制在阅读器内，子文档键盘事件处理保留窗格内组件对话框与 ARIA 对话框
+的交互，窗格链接处理同时支持 SVG 锚点。阅读器的历史记录在页面刷新或前进/后退恢复后仍然保留：入口脚本将恢复状态
 绑定到该历史记录的 token，并在阅读器脚本加载完成后再次校验；若加载期间已离开该
 记录，则取消恢复。在原记录上重新打开时保留既有 token 且不重复写入历史。历史记录
 跳转会先处理显式关闭或用户排队触发的重开，再执行自动恢复。跨越窄屏断点迁移语言
 菜单时，会先更新窗格可见性与不可交互状态，再恢复菜单的键盘焦点与展开状态。
+运行时在改变菜单容器的可见性之前捕获焦点；媒体查询样式不得在回调之前隐藏该容器。
 
 ## 发布状态 {#release-states}
 

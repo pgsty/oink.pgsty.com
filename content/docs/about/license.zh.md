@@ -89,6 +89,14 @@ Viz.js 3.24.0（MIT）；后者包含 Graphviz 14.1.1（EPL-1.0）与 Expat（MI
 许可证、声明和上游源码链接随两份脚本放在 `assets/third_party/plantuml/`，
 `VENDOR.json` 记录具体产物。
 
+> [!NOTE] 尚未发布的依赖清单
+> v1.5.1 之后的升级在 2026-11-11 生成的 `VENDOR.json` 中包含 27 个顶层条目。
+> Markmap 的 scoped 1.1.0 包替代了上表中的旧包；包含 MathJax 在内的内嵌模块，
+> 其完整版本与许可清单位于 `assets/third_party/markmap/PACKAGES.json` 和 `LICENSES.txt`。
+> Viz.js 3.31.0 内含 Graphviz 16.1.0，许可改为 **EPL-2.0**，替代原 EPL-1.0。
+> ReDoc 3 的内嵌依赖许可注释保留在分发文件中。迁移细节见
+> [依赖契约](/zh/docs/design/architecture/#unreleased-dependencies)，上表仍记录已发布的 v1.5.1 清单。
+
 许可证原文与各资源放在一起：例如 `assets/third_party/bootstrap/LICENSE`、`assets/third_party/katex/LICENSE`；Swagger UI、Redoc 与 ECharts 还随包带了各自的 `NOTICE` 或打包声明文件。Lunr 是唯一的例外，代码在 `assets/js/third_party/`，许可证在 `assets/third_party/lunr/LICENSE`。
 
 再分发主题时，这些许可与声明材料必须一并保留。更新某个运行时意味着在同一次变更里同时更新产物、许可证文件、来源与校验值。

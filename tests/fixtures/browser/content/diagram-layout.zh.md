@@ -29,8 +29,8 @@ title: 图表布局
 
 ---
 markmap:
-  initialExpandLevel: 1
-  maxWidth: 120
+  foldLevel: 0
+  wrapWidth: 120
 ---
 # 开头有空行且标题很长的根节点
 ## 子节点
@@ -42,8 +42,8 @@ markmap:
 
     ---
     markmap:
-      initialExpandLevel: 1
-      maxWidth: 120
+      foldLevel: 0
+      wrapWidth: 120
     ---
     # 整体缩进且标题很长的根节点
     ## 子节点

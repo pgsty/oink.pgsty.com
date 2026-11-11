@@ -81,6 +81,23 @@ OINK has 29 shortcodes:
 > [Mermaid](/docs/components/mermaid/#zoom) and [PlantUML](/docs/components/plantuml/).
 > Explicit server mode retains its existing behavior.
 
+> [!NOTE] Unreleased dependency migration
+> Markmap 1 renders SVG text, with local MathJax for formulas and notes for
+> paragraphs, code and tables. Its renamed options warn instead of being silently
+> accepted. Dedicated Print retains source; ordinary browser print keeps rendered
+> SVG with black text. ReDoc 3 uses isolated local documents with telemetry off.
+> Mermaid 12 retains the previous theme/layout/look defaults. See the
+> [dependency contract](/docs/design/architecture/#unreleased-dependencies).
+> The text/background tokens become `--mm-text` and `--mm-bg`. SVG links have
+> accessible names; notes support keyboard opening and Escape with focus return.
+> Open notes follow appearance changes and stay out of browser print. A failed
+> note chunk restores that map's complete source and focus without affecting others.
+> Note links use the article's link color and have an underline.
+> Printing restores note focus afterwards, falling back to its marker if closed.
+> Asciinema keeps a recording link until its player mounts, including with
+> JavaScript disabled or an unavailable player bundle. Recording fetch/parse
+> failures restore the link and any focus held by the player.
+
 ## Optional component presentation {#component-refinement}
 
 OINK 1.4.0 supports the following opt-in presentation variants. See the
@@ -266,7 +283,8 @@ common indentation before parsing, preserving YAML options and outline levels.
 Mathematics uses Hugo's build-time KaTeX output and local CSS, without a browser mathematics runtime.
 HTML and Print use the vendored stylesheet and preserve MathML and authored TeX.
 Validate mathematics with the current Hugo baseline defined in the [architecture contract](/docs/design/architecture/#hugo-toolchain).
-Markmap uses the matching vendored KaTeX runtime.
+Published OINK v1.5.1 uses the matching vendored KaTeX runtime inside Markmap;
+the unreleased Markmap 1 migration uses local MathJax for maps instead.
 In OINK 1.4.0, numbered equations reserve readable formula space based
 on the available column width, including columns narrowed by a sidebar or TOC.
 Captions move below the formula when they do not fit beside it; long words wrap.

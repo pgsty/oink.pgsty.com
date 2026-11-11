@@ -80,11 +80,25 @@ example, `openapi/docs-demo.yaml` and `/openapi/docs-demo.yaml` both become
 `https://example.com/preview/`. Unlike `swagger`, Redoc receives this absolute
 URL based on `baseURL`.
 
-The theme pins five attributes — `hide-hostname`, `hide-logo`,
-`suppress-warnings`, `lazy-rendering`, `native-scrollbars` — and hides the
-Redocly brand mark with CSS. Redoc's remaining attributes are not exposed to
-authors. If a site needs them, override
-`layouts/_shortcodes/redoc.html`.
+> [!NOTE] ReDoc 3, unreleased
+> The dependency upgrade after OINK v1.5.1 loads ReDoc 3.1.0 as a local ES module
+> in a separate document for each reader. Its navigation uses its own fragment;
+> article anchors and other readers stay independent. The frame has a light
+> vendor palette and its own scrolling area. A specification link stays below it.
+
+Telemetry is disabled. The vendor's two brand images are inlined, so the
+reader fetches no theme-owned CDN resources. Remote specifications and images
+explicitly referenced by a specification can still make network requests;
+direct navigation to the local reader asset accepts only same-origin specifications.
+The old `hide-hostname`, `hide-logo`, `suppress-warnings`, `lazy-rendering`, and
+`native-scrollbars` defaults are removed with the v2 API. Sites overriding the
+shortcode or styles must migrate those overrides.
+If a site's Content Security Policy restricts frames, it must allow the local
+reader document through `frame-src 'self'`.
+ReDoc 3 supports OpenAPI, AsyncAPI and GraphQL; rename specification extension `x-code-samples` to
+`x-codeSamples`. Legacy operation links redirect upstream, but v2 schema and
+individual security-scheme fragments have no equivalent route. Dedicated
+Print, Markdown and RSS retain the plain specification link.
 
 ## The dedicated page shell {#shell}
 

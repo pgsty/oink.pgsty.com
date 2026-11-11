@@ -13,7 +13,7 @@ aliases:
 
 OINK 站点的产物是一个纯静态目录，任何能托管静态文件的地方都能部署，不需要 Node 运行时、服务端渲染或构建插件。托管商一侧只有三件事：用正确的 Hugo 版本执行一条命令、发布 `public/`、让 `baseURL` 与最终访问地址一致。
 
-先使用 Hugo Extended 0.168.0（内置 LibSass，无需安装外部 Sass）在本机完成[生产构建](/zh/docs/admin/preview/#production-build)。请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`，保持告警可见并审阅（上游 LibSass 弃用告警属预期提示）。
+先使用 Hugo Extended 0.169.0（内置 LibSass，无需安装外部 Sass）在本机完成[生产构建](/zh/docs/admin/preview/#production-build)。请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`，保持告警可见并审阅（上游 LibSass 弃用告警属预期提示）。
 
 ## 确定 baseURL {#baseurl}
 `baseURL` 是最常见的故障源，失败方式也隐蔽：页面能打开，但搜索索引 404、页面操作链接指向错误位置、部分资源加载失败。
@@ -71,7 +71,7 @@ concurrency:
 
 env:
   GO_VERSION: stable
-  HUGO_VERSION: "0.168.0"
+  HUGO_VERSION: "0.169.0"
   # 同级 checkout 的 workspace 绝不能参与 CI 构建
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
@@ -168,12 +168,12 @@ Pages 项目。
    `CLOUDFLARE_SITE_URL`。
 {.steps}
 
-workflow 固定 Hugo Extended 0.168.0，从 `go.mod` 读取 Go 版本，关闭本地模块
-workspace，并在上传前使用 Hugo Extended 0.168.0 构建，保留可见告警。这是 Starter 用户最可复现的推荐路径。
+workflow 固定 Hugo Extended 0.169.0，从 `go.mod` 读取 Go 版本，关闭本地模块
+workspace，并在上传前使用 Hugo Extended 0.169.0 构建，保留可见告警。这是 Starter 用户最可复现的推荐路径。
 
 Cloudflare Git integration 仍然是另一种可选模式：构建命令设为
 `hugo --gc --minify --printPathWarnings`，输出目录 `public`，Hugo
-固定 `0.168.0`，Go 固定 `1.27`。同一个项目只选 Git integration 或 Direct Upload
+固定 `0.169.0`，Go 固定 `1.27`。同一个项目只选 Git integration 或 Direct Upload
 workflow 其中一种；预览部署应按预览 URL 和非生产环境构建，避免被搜索引擎收录。
 
 {{< /tab >}}
@@ -187,7 +187,7 @@ command = "hugo --gc --minify --printPathWarnings "
 publish = "public"
 
 [build.environment]
-HUGO_VERSION = "0.168.0"
+HUGO_VERSION = "0.169.0"
 ```
 
 用 submodule 安装主题就打开递归 submodule 检出；用 Hugo Module 就要求构建环境有 Git 和 Go。生产与预览应使用同一个 Hugo 版本，除非预览环境本来就是用来测升级的。

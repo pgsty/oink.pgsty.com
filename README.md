@@ -27,7 +27,7 @@ accessibility. Builds continue to use Hugo Extended with built-in LibSass.
   [简体中文](https://oink.pgsty.com/zh/docs/about/contributing/)
 - [Upgrade and migration](https://oink.pgsty.com/docs/admin/upgrade/)
 
-Current development and maintained sites use Hugo Extended **0.168.0**. Historical
+Current development and maintained sites use Hugo Extended **0.169.0**. Historical
 release notes retain the toolchain facts of their own versions.
 
 ## Starting a new OINK site
@@ -49,7 +49,7 @@ private repositories. Installation is described in
 
 ## Local development
 
-Use Go 1.27.3 and Hugo Extended 0.168.0 for development, CI, and production
+Use Go 1.27.4 and Hugo Extended 0.169.0 for development, CI, and production
 builds. Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Keep warnings
 visible, including the accepted upstream LibSass deprecation warning. No
 separate Sass installation is required. See the [architecture contract](content/docs/design/architecture.md#hugo-toolchain).

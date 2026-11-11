@@ -49,7 +49,7 @@ module:
     - path: github.com/pgsty/oink
   hugoVersion:
     extended: true
-    min: 0.168.0
+    min: 0.169.0
 
 params:
   offline_search: true
@@ -485,7 +485,7 @@ outputs:
 | `taxonomies` | map | | Hugo 原生：启用 `tag: tags` / `category: categories`，见[分类体系](/zh/docs/customize/taxonomy/) |
 | `params.taxonomy.page_header` | list | | 只在文章头部显示这几种分类；不设则显示全部 |
 | `services.googleAnalytics.id` | string | | Hugo 原生：分析脚本只在生产构建注入，见[分析与 SEO](/zh/docs/admin/analytics/) |
-| `module.hugoVersion.min` | string | 0.168.0 | 主题声明的 Hugo 下限，低于它构建失败 |
+| `module.hugoVersion.min` | string | 0.169.0 | 主题声明的 Hugo 下限，低于它构建失败 |
 | `module.hugoVersion.extended` | boolean | true | 必须是 Hugo Extended（要编译 SCSS） |
 {.fields meta="type default"}
 
@@ -542,10 +542,10 @@ hugo --printPathWarnings
 
 配置改动还要至少验证三件事：每种语言各一页、缺译页的回退、生产 `baseURL` 下的链接（子路径部署容易漏）。
 
-主题要求 Hugo Extended `0.168.0` 及以上版本。配置改动请使用固定基线验证：
+主题要求 Hugo Extended `0.169.0` 及以上版本。配置改动请使用固定基线验证：
 
 ```bash
-# 输出必须包含 v0.168.0+extended
+# 输出必须包含 v0.169.0+extended
 hugo version
 hugo --printPathWarnings
 ```

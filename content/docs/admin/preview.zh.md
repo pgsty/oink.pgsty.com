@@ -82,7 +82,7 @@ hugo --gc --minify --printPathWarnings
 | `--printPathWarnings` | 两个页面撞到同一个输出路径时告警，多语言站点最常见的静默错误 |
 {.fields}
 
-统一使用 Hugo Extended 0.168.0，告警保持可见。禁止启用 `--panicOnWarning`
+统一使用 Hugo Extended 0.169.0，告警保持可见。禁止启用 `--panicOnWarning`
 或 `HUGO_PANICONWARNING`，上游 LibSass 弃用告警允许出现。giscus 配置缺失或主题
 取值无效时也会告警并降级；发布前应核对这些诊断与实际产物。
 
@@ -121,8 +121,8 @@ hugo --minify --environment staging --baseURL "$PREVIEW_URL"
 ```dockerfile {title="Dockerfile" collapse=16}
 FROM debian:bookworm-slim
 
-ARG HUGO_VERSION=0.168.0
-ARG GO_VERSION=1.27.3
+ARG HUGO_VERSION=0.169.0
+ARG GO_VERSION=1.27.4
 ARG TARGETARCH
 
 RUN apt-get update \

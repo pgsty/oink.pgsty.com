@@ -20,15 +20,15 @@ weight: 10
 
 ## 安装前置工具 {#prerequisite}
 
-安装 Git、Go 1.27.3 或更高版本，以及 Hugo Extended 0.168.0。样式通过 Hugo Extended 内置的
+安装 Git、Go 1.27.4 或更高版本，以及 Hugo Extended 0.169.0。样式通过 Hugo Extended 内置的
 LibSass 编译，无需额外安装 Sass 编译器或 Node.js。如果基于较早的 Starter 模板创建仓库，
-请一并将 GitHub Actions workflow 中的 Hugo 版本更新到 0.168.0。
+请一并将 GitHub Actions workflow 中的 Hugo 版本更新到 0.169.0。
 
 ```console
 $ go version
-go version go1.27.3 darwin/arm64
+go version go1.27.4 darwin/arm64
 $ hugo version
-hugo v0.168.0+extended+withdeploy darwin/arm64
+hugo v0.169.0+extended+withdeploy darwin/arm64
 ```
 
 ## 启动本地预览 {#preview}

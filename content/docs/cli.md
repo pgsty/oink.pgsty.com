@@ -40,7 +40,7 @@ retired: use `oink dev` for live preview, a regular editor for authoring, and
 
 ## Try the local candidate {#try-locally}
 
-From an `oink-cli` source checkout, build the binary with Go 1.27.3+ and Make:
+From an `oink-cli` source checkout, build the binary with Go 1.27.4+ and Make:
 
 ```sh
 cd oink-cli
@@ -52,7 +52,7 @@ make build
 ```
 
 Replace `../my-docs` with your site path. Site commands require Hugo Extended
-0.168.0+ and Go 1.27+ for module operations. `oink init` uses the CLI's
+0.169.0+ and Go 1.27+ for module operations. `oink init` uses the CLI's
 bundled Starter snapshot; follow the [upgrade guide](/docs/admin/upgrade/) to
 update a generated site to OINK v1.5.1.
 

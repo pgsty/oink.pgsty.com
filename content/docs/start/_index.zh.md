@@ -16,7 +16,7 @@ aliases:
 [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter) 开始。该模板固定了已发布的 OINK 版本，开箱即可构建，仅包含干净的示例内容与部署 workflow，不夹带本站的回归测试套件。
 
 > [!NOTE] 环境要求
-> OINK 站点使用 Git、Go 1.27.3 或更高版本，以及 Hugo Extended {{% param hugoMinVersion %}} 或更高版本构建（使用 Hugo 内置 Sass 编译器，无需安装 Node.js、npm 或外部 Sass）。
+> OINK 站点使用 Git、Go 1.27.4 或更高版本，以及 Hugo Extended {{% param hugoMinVersion %}} 或更高版本构建（使用 Hugo 内置 Sass 编译器，无需安装 Node.js、npm 或外部 Sass）。
 
 ## 选择起点 {#choose}
 
@@ -30,14 +30,14 @@ aliases:
 
 1. ### 安装工具 {#tools}
 
-   安装 Git、Go 1.27.3 或更新版本，以及 Hugo Extended 0.168.0 或更新版本。Hugo
+   安装 Git、Go 1.27.4 或更新版本，以及 Hugo Extended 0.169.0 或更新版本。Hugo
    输出必须包含 `extended`：
 
    ```console
    $ go version
-   go version go1.27.3 darwin/arm64
+   go version go1.27.4 darwin/arm64
    $ hugo version
-   hugo v0.168.0+extended+withdeploy darwin/arm64
+   hugo v0.169.0+extended+withdeploy darwin/arm64
    ```
 
    macOS 可以执行 `brew install git go hugo`。Linux 与 Windows 请按官方

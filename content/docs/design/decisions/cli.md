@@ -789,8 +789,8 @@ or that operation must explicitly enable network access.
 The CLI does not download a Go toolchain, install packages, alter global
 configuration, or enable telemetry.
 
-The current development and validation baseline is Hugo Extended 0.168.0;
-the version gate requires 0.168.0 or newer. Do not enable `--panicOnWarning` or
+The current development and validation baseline is Hugo Extended 0.169.0;
+the version gate requires 0.169.0 or newer. Do not enable `--panicOnWarning` or
 `HUGO_PANICONWARNING`; warnings stay visible, including Hugo's accepted upstream
 LibSass notice. Initialized sites use the CLI's separately maintained Starter
 snapshot; theme upgrades follow the [upgrade guide](/docs/admin/upgrade/).

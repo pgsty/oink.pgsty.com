@@ -29,8 +29,9 @@ CLI 拥有独立版本与发布周期，普通 Hugo 站点不需要安装。请�
 
 ## 构建与检查 {#build-and-check}
 
-维护基线统一为 **OINK v1.5.1**、**Hugo Extended 0.168.0** 和 **Go 1.27.3**；
-模块声明的 Go 最低版本为 1.27.3。Hugo 使用内置 LibSass，普通站点构建无需额外安装
+**OINK v1.5.1** 之后的开发使用 **Hugo Extended 0.169.0** 和 **Go 1.27.4**；
+当前主题 checkout 声明的 Go 最低版本为 1.27.4，已发布的 v1.5.1 模块保留原有要求。
+Hugo 使用内置 LibSass，普通站点构建无需额外安装
 Sass 编译器、Node.js 或 npm。
 
 禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。告警保持可见并接受审阅；
@@ -38,7 +39,7 @@ Sass 编译器、Node.js 或 npm。
 
 开发主题时，把主题与本站克隆到同级目录。阅读各仓库的 `AGENTS.md`、本站
 `TRANSLATION.md` 及相关[设计契约](/zh/docs/design/)。本站回归测试需要
-Node >= 24 和 npm >= 11.16.0：
+Node >= 26.13.0 和 npm >= 12.2.2：
 
 ```sh
 npm ci

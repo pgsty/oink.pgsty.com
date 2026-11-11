@@ -11,16 +11,17 @@ for (const language of ['', '/zh']) {
       : ['Blank line root with a long label', 'Indented root with a long label'];
     for (let index = 0; index < roots.length; index++) {
       const svg = maps.nth(index).locator('svg');
-      const nodes = svg.locator('foreignObject');
-      await expect(nodes).toHaveText([roots[index]]);
-      await expect.poll(() => nodes.first().evaluate(node => node.width.baseVal.value)).toBe(120);
-      await svg.locator('.markmap-node > circle').click();
+      const nodes = svg.locator('text');
+      await expect(nodes).toHaveCount(1);
+      await expect.poll(async () => (await nodes.first().textContent()).replace(/\s/g, '')).toBe(roots[index].replace(/\s/g, ''));
+      await expect.poll(() => nodes.first().evaluate(node => node.getBBox().width)).toBeLessThanOrEqual(120);
+      await svg.locator('g[data-key="node:root"] > rect').click();
       await expect(nodes).toHaveCount(2);
-      await expect(svg.locator('.markmap-node[data-depth="2"] foreignObject')).toHaveText(language ? '子节点' : 'Child');
+      await expect(svg.locator('text').filter({ hasText: language ? '子节点' : 'Child' })).toHaveText(language ? '子节点' : 'Child');
       await maps.nth(index).getByRole('button', { name: language ? '适应窗口' : 'Fit to window' }).click();
-      await svg.locator('.markmap-fold > circle').click();
+      await svg.locator('g[data-key^="node:"]:not([data-key="node:root"]) > rect').click();
       await expect(nodes).toHaveCount(3);
-      await expect(svg.locator('.markmap-node[data-depth="3"] foreignObject')).toHaveText(language ? '叶节点' : 'Leaf');
+      await expect(svg.locator('text').filter({ hasText: language ? '叶节点' : 'Leaf' })).toHaveText(language ? '叶节点' : 'Leaf');
     }
   });
 
@@ -77,7 +78,7 @@ for (const language of ['', '/zh']) {
     const svg = map.locator('svg');
     const fitted = () => svg.evaluate((el) => {
       const bounds = el.getBoundingClientRect();
-      const labels = [...el.querySelectorAll('foreignObject')];
+      const labels = [...el.querySelectorAll('text')];
       return labels.length > 5 && labels.every((label) => {
         const rect = label.getBoundingClientRect();
         return rect.left >= bounds.left - 1 && rect.right <= bounds.right + 1 &&
@@ -85,6 +86,13 @@ for (const language of ['', '/zh']) {
       });
     });
     await expect(svg).toBeVisible();
+    await expect.poll(fitted).toBe(true);
+    // Clicking a fold control is not panning. Automatic fitting must remain
+    // active when the reader opens the branch and later resizes the column.
+    const rootToggle = svg.locator('g[data-key="node:root"] > rect');
+    await rootToggle.click();
+    await expect(svg.locator('text')).toHaveCount(1);
+    await rootToggle.click();
     await expect.poll(fitted).toBe(true);
     for (const width of [390, 820, 320, 1440]) {
       await page.setViewportSize({ width, height: 900 });
@@ -119,7 +127,7 @@ for (const language of ['', '/zh']) {
     await page.goto(`${language}/tests/diagram-layout/`);
     const disclosure = page.locator('details').filter({ has: page.locator('.language-markmap, .markmap') });
     await disclosure.locator('summary').click();
-    await expect(disclosure.locator('svg foreignObject').first()).toBeVisible();
+    await expect(disclosure.locator('svg text').first()).toBeVisible();
     expect(await disclosure.locator('svg > g').first().getAttribute('transform')).not.toMatch(/NaN|Infinity/);
   });
 

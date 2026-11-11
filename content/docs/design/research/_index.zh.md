@@ -37,6 +37,7 @@ design_status: active
 | [文档对照研究，2026-10-29](/zh/docs/design/research/2026-10-29-document-comparison/) | 支撑[译文对照决策](/zh/docs/design/decisions/document-comparison/)的带日期源码研究；属于历史记录，不是已发布契约 |
 | [审查修复，2026-11-06](/zh/docs/design/research/2026-11-06-review-repairs/) | v1.5.0 缺陷复现、本轮开发修复、验证及剩余工作 |
 | [OINK 1.5.1 发布就绪审查，2026-11-06](/zh/docs/design/research/2026-11-06-v1-5-1-release-review/) | 三个已修复的候选版本回归、归属检查、浏览器验收、出版证据与发布关卡 |
+| [依赖升级验收，2026-11-11](/zh/docs/design/research/2026-11-11-dependency-acceptance/) | 依赖迁移、交互与故障回退修复、三个引擎验收及发布边界 |
 
 ## 发布规则 {#publication-rules}
 

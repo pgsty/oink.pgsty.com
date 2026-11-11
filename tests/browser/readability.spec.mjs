@@ -36,9 +36,9 @@ for (const locale of ['', '/zh']) {
       localStorage.setItem('td-preset', 'terminal');
     });
     await page.goto(`${locale}/docs/components/markmap/`);
-    const label = page.locator('.td-content .markmap svg foreignObject div').first();
+    const label = page.locator('.td-content .markmap svg text tspan').first();
     await expect(label).toBeVisible();
-    expect(await label.evaluate(el => getComputedStyle(el).color === getComputedStyle(el.closest('.td-content')).color)).toBe(true);
+    expect(await label.evaluate(el => getComputedStyle(el).fill === getComputedStyle(el.closest('.td-content')).color)).toBe(true);
     for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
       for (const color of ['light', 'dark']) {
         await page.evaluate(({ preset, color }) => {
@@ -48,12 +48,12 @@ for (const locale of ['', '/zh']) {
         }, { preset, color });
         await expect.poll(async () => label.evaluate(el => {
           const body = el.closest('.td-content');
-          return getComputedStyle(el).color === getComputedStyle(body).color;
+          return getComputedStyle(el).fill === getComputedStyle(body).color;
         })).toBe(true);
       }
     }
     await page.emulateMedia({ media: 'print' });
-    await expect(label).toHaveCSS('color', 'rgb(51, 51, 51)');
+    await expect(label).toHaveCSS('fill', 'rgb(0, 0, 0)');
   });
 
   test(`${locale || 'en'}: fixed TOC clears the footer and resets after blog reflow without scrolling`, async ({ page }) => {

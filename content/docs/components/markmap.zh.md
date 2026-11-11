@@ -8,6 +8,10 @@ search_keywords: [思维导图, Markmap, mind map, 大纲, outline, 脑图, 树�
 
 `markmap` 围栏的正文是一段普通的 Markdown 大纲：标题与列表决定层级，浏览器把它画成一棵可展开、可折叠的树。适合把「这一节讲了什么」的层级一次呈现。节点之间有方向、有条件的流程用 [Mermaid](/zh/docs/components/mermaid/)。
 
+> [!NOTE] 尚未发布的依赖升级
+> 本页示例面向 OINK v1.5.1 之后主题源码中的 Markmap 1。
+> 已发布的 v1.5.1 仍使用 Markmap 0.18，差异见[迁移说明](#migration)。
+
 ## 最简例子 {#minimal}
 
 先在站点配置中启用 Markmap，默认关闭；未启用时，围栏保留为可读的代码块。
@@ -58,7 +62,7 @@ Tab 和 Enter 操作。
 
 ## 多层级 {#depth}
 
-层级越深字号越小，画布自动排布。下面是本站文档的六个栏目与它们的页数。
+渲染器自动排布各层节点，并将整棵树适配到画布。下面是本站文档的六个栏目与它们的页数。
 
 ````markdown {title="源码"}
 ```markmap
@@ -162,7 +166,8 @@ Tab 和 Enter 操作。
 
 ## 节点里的公式 {#math}
 
-Markmap 运行时带了一份本地 KaTeX，节点里的 `$…$` 会被渲染成公式。
+节点中出现 `$…$` 时，Markmap 运行时按需加载本地 MathJax 来渲染公式。
+普通正文公式继续使用 KaTeX。
 
 ````markdown {title="源码"}
 ```markmap
@@ -190,14 +195,14 @@ Markmap 运行时带了一份本地 KaTeX，节点里的 `$…$` 会被渲染成
 
 ## 控制初始展开层数 {#options}
 
-围栏正文最前面可以写一段 Markmap 自己的 YAML 头，它不是 Hugo front matter。`initialExpandLevel` 只展开前几层，其余分支由读者点开。`colorFreezeLevel` 指定从第几层起同一分支使用同一种颜色。
+围栏正文最前面可以写一段 Markmap 自己的 YAML 头，它不是 Hugo front matter。`foldLevel` 只展开前几层，其余分支由读者点开。`colorDepth` 指定从第几层起同一分支使用同一种颜色。
 
 ````markdown {title="源码"}
 ```markmap
 ---
 markmap:
-  initialExpandLevel: 2
-  colorFreezeLevel: 2
+  foldLevel: 1
+  colorDepth: 2
 ---
 
 # 主题仓库的检查脚本
@@ -219,8 +224,8 @@ markmap:
 ```markmap
 ---
 markmap:
-  initialExpandLevel: 2
-  colorFreezeLevel: 2
+  foldLevel: 1
+  colorDepth: 2
 ---
 
 # 主题仓库的检查脚本
@@ -285,7 +290,7 @@ markmap:
 | 输出 | 呈现 |
 | --- | --- |
 | HTML | 先输出 `<pre><code class="language-markmap">`，运行时把它换成 `<div class="markmap">` 并画出 SVG |
-| 打印 | 与 HTML 相同：打印视图同样加载运行时 |
+| 打印 | 保留大纲源码，不加载运行时 |
 | Markdown | 原样保留 `markmap` 围栏与它的大纲源码 |
 | RSS | 只有大纲源码，订阅端看到的是一段可读的提纲 |
 
@@ -302,15 +307,42 @@ markmap:
 | `params.markmap` | bool | `false` | 关闭时围栏保持为代码块，不加载任何运行时 |
 {.fields meta="type default"}
 
-键的完整定义见[配置总览](/zh/docs/customize/config/)。每张图的行为写在围栏正文最前面的 `markmap:` YAML 头里（`initialExpandLevel`、`colorFreezeLevel`、`maxWidth` 等），属于 Markmap 语法，可用键以 [Markmap 文档](https://markmap.js.org/docs/json-options)为准。
+键的完整定义见[配置总览](/zh/docs/customize/config/)。每张图的行为写在围栏正文最前面的 `markmap:` YAML 头里（`foldLevel`、`colorDepth`、`wrapWidth` 等），属于 Markmap 语法，可用键以 [Markmap 文档](https://markmap.js.org/docs/options)为准。
 
 ## 限制与常见问题 {#limits}
 
-- 输出是固定 300px 高的内联 SVG：高度由一条 `.markmap > svg` 规则统一，围栏改不了，层级太多时用 `initialExpandLevel` 收起或拆成两张图；内联 SVG 也不适用 `{#id num=}` 编号与图片缩放。
+- 输出是固定 300px 高的内联 SVG：高度由一条 `.markmap > svg` 规则统一，围栏改不了，层级太多时用 `foldLevel` 收起或拆成两张图；内联 SVG 也不适用 `{#id num=}` 编号与图片缩放。
 - 节点文字跟随站点正文颜色，连线保留 Markmap 自己的调色板；自定义颜色需在两种模式下检查对比度。
 - 没开 `params.markmap` 就只是代码块：不用这个组件的站点不加载任何运行时。
 - OINK 1.4.0 在每张导图下提供适配按钮，打印时隐藏该按钮。
-- 大纲里避开 `<`、`>`、`&`、`"`：当前主题版本的 `markmap` 围栏会把这几个字符二次转义，节点上会出现 `&gt;`、`&#34;` 这样的字面文本；写链接用 `[文字](URL)`，不要用尖括号自动链接。
+- 标点只转义一次；Markmap 1 不再把原始 HTML 作为节点格式。
+
+## 迁移到 Markmap 1 {#migration}
+
+> [!NOTE] 尚未发布
+> 本页示例面向 OINK v1.5.1 之后的依赖升级。
+
+| 旧选项 | Markmap 1 选项 |
+| --- | --- |
+| `initialExpandLevel: N` | 正整数改为 `foldLevel: N-1`；`-1` 则省略该项 |
+| `maxWidth` | `wrapWidth` |
+| `spacingHorizontal` | `levelGap` |
+| `spacingVertical` | `siblingGap` |
+| `colorFreezeLevel` | `colorDepth` |
+
+根节点现在的深度为 0。旧键会触发构建告警并被忽略，升级前应检查每个围栏中的
+选项。`paddingX`、`lineWidth`、`extraJs`、`extraCss`、`embedAssets`、
+`htmlParser` 与 `activeNode` 已移除，请改用受支持的主题与布局，不再注入资源。
+
+标题与列表项继续构成节点，段落、表格与代码块改为节点注释。除受支持的图片标签
+和魔法注释外，原始 HTML 会被丢弃。图内公式改用本地 MathJax，普通正文公式仍由
+KaTeX 处理。注释与公式只在需要时加载相应的本地 chunk。适应窗口按钮、实时外观
+切换与源码降级继续可用。独立 Print、Markdown 与 RSS 保留大纲，不加载引擎。
+SVG 链接使用 Markdown 链接文字作为无障碍名称，折叠与重绘后仍然保留。
+按 Tab 聚焦注释标记后，用 Enter 或空格打开注释；Escape 关闭注释并将焦点
+恢复到原标记。
+已打开的注释会随外观变化更新，浏览器打印时隐藏浮层。注释加载失败时，
+对应导图恢复完整 Markdown 源码并接收焦点，其他导图仍可使用。
 
 ## 相关 {#related}
 

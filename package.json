@@ -33,7 +33,7 @@
     "test:community-feedback": "playwright test tests/browser/community-feedback.spec.mjs tests/browser/readability.spec.mjs tests/browser/filetree-wrap.spec.mjs",
     "test:command-palette": "playwright test tests/browser/command-palette.spec.mjs",
     "test:code-blocks": "playwright test tests/browser/code-blocks.spec.mjs tests/browser/landing-code-focus.spec.mjs tests/browser/landing-fixes.spec.mjs",
-    "test:content-components": "playwright test tests/browser/content-components.spec.mjs tests/browser/component-presentation.spec.mjs tests/browser/math-compat.spec.mjs tests/browser/print-tabs.spec.mjs tests/browser/print-releases.spec.mjs tests/browser/diagram-layout.spec.mjs",
+    "test:content-components": "playwright test tests/browser/content-components.spec.mjs tests/browser/component-presentation.spec.mjs tests/browser/math-compat.spec.mjs tests/browser/print-tabs.spec.mjs tests/browser/print-releases.spec.mjs tests/browser/diagram-layout.spec.mjs tests/browser/dependencies.spec.mjs && playwright test --config playwright.dependencies.config.mjs",
     "test:extra": "npm run seq -- test:hugo-build test:alt-site test:md-output test:favicons test:rendered-links test:release-pin-contract",
     "test:favicons": "node --test 'tests/favicons/**/*.test.mjs'",
     "test:hugo-build": "node --test 'tests/hugo-build/**/*.test.mjs'",
@@ -61,17 +61,17 @@
     "test:compare": "playwright test tests/browser/document-compare.spec.mjs tests/browser/document-compare-bfcache.spec.mjs && playwright test --config playwright.compare.config.mjs"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.13.0",
-    "@playwright/test": "^1.62.1",
-    "afdocs": "^0.20.0",
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.65.0",
+    "afdocs": "^0.23.0",
     "cross-env": "^10.1.0",
-    "jsdom": "^30.0.1",
-    "npm-check-updates": "^23.1.0",
-    "parse5": "^8.0.1"
+    "jsdom": "^31.0.0",
+    "npm-check-updates": "^23.1.1",
+    "parse5": "^8.1.1"
   },
   "engines": {
-    "node": ">=24",
-    "npm": ">=11.16.0"
+    "node": ">=26.13.0",
+    "npm": ">=12.2.2"
   },
   "cSpell:ignore": "- favicons goldens -",
   "allowScripts": {

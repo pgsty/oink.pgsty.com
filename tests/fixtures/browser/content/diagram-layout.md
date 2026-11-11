@@ -29,8 +29,8 @@ title: Diagram layout
 
 ---
 markmap:
-  initialExpandLevel: 1
-  maxWidth: 120
+  foldLevel: 0
+  wrapWidth: 120
 ---
 # Blank line root with a long label
 ## Child
@@ -42,8 +42,8 @@ markmap:
 
     ---
     markmap:
-      initialExpandLevel: 1
-      maxWidth: 120
+      foldLevel: 0
+      wrapWidth: 120
     ---
     # Indented root with a long label
     ## Child

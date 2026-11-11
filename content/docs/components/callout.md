@@ -33,7 +33,7 @@ The first five types match GitHub. OINK adds five semantic types. Each type has 
 > `hugo server -D` previews drafts.
 
 > [!IMPORTANT]
-> The floor is Hugo Extended 0.168.0; anything older fails the build outright.
+> The floor is Hugo Extended 0.169.0; anything older fails the build outright.
 
 > [!WARNING]
 > `hugo --cleanDestinationDir` empties `public/`.
@@ -61,7 +61,7 @@ The first five types match GitHub. OINK adds five semantic types. Each type has 
 > `hugo server -D` previews drafts.
 
 > [!IMPORTANT]
-> The floor is Hugo Extended 0.168.0; anything older fails the build outright.
+> The floor is Hugo Extended 0.169.0; anything older fails the build outright.
 
 > [!WARNING]
 > `hugo --cleanDestinationDir` empties `public/`.
@@ -162,13 +162,13 @@ Use it for long output, complete configuration files, or other content that must
 ````markdown {title="Source"}
 > [!DETAILS] Full `hugo version` output
 > ```text
-> hugo v0.168.0+extended+withdeploy darwin/arm64
+> hugo v0.169.0+extended+withdeploy darwin/arm64
 > ```
 ````
 
 > [!DETAILS] Full `hugo version` output
 > ```text
-> hugo v0.168.0+extended+withdeploy darwin/arm64
+> hugo v0.169.0+extended+withdeploy darwin/arm64
 > ```
 
 ## Custom icon {#icon}

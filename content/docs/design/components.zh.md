@@ -76,6 +76,20 @@ OINK 有 29 个 shortcode：
 > 独立 Print、Markdown、RSS 保留源码回退。详见 [Mermaid](/zh/docs/components/mermaid/#zoom)
 > 与 [PlantUML](/zh/docs/components/plantuml/)。显式服务端模式保持既有行为。
 
+> [!NOTE] 尚未发布的依赖迁移
+> Markmap 1 使用 SVG 文本与本地 MathJax，段落、代码和表格作为节点注释；旧配置键
+> 会告警，不会被静默接受。独立 Print 保留源码，普通浏览器打印保留已有 SVG 并使用
+> 黑色文字。ReDoc 3 使用隔离的本地文档且关闭遥测；Mermaid 12 保留原有主题、布局
+> 与外观默认值。参见[依赖契约](/zh/docs/design/architecture/#unreleased-dependencies)。
+> 文字与背景 token 改为 `--mm-text` 和 `--mm-bg`。SVG 链接具备无障碍名称，
+> 注释支持键盘打开，Escape 关闭后恢复焦点。
+> 已打开的注释随外观变化更新，浏览器打印时隐藏。注释 chunk 加载失败时恢复
+> 对应导图的完整源码与焦点，不影响其他导图。
+> 注释链接使用正文链接颜色，并带有下划线。
+> 打印结束后恢复注释焦点；若浮层已关闭，则恢复到对应标记。
+> Asciinema 在播放器挂载前保留录像链接，禁用 JavaScript 或播放器资源不可用时
+> 也能访问原始录像。录像获取或解析失败时恢复链接，并转移播放器原有的焦点。
+
 ## 可选组件呈现 {#component-refinement}
 
 OINK 1.4.0 支持以下可选呈现变体。示例见[组件呈现](/zh/docs/components/presentation/)。
@@ -247,7 +261,8 @@ OINK 1.4.0 中，Markmap 在首次可测量显示和容器尺寸变化时适配�
 数学公式使用 Hugo 构建时生成的 KaTeX 产物和本地 CSS，不加载浏览器数学运行时。
 HTML 和 Print 使用本地样式表，并保留 MathML 与作者的 TeX 源文。
 数学公式按[架构契约](/zh/docs/design/architecture/#hugo-toolchain)中的当前 Hugo
-基线验证。Markmap 使用与样式配套的本地 KaTeX 运行时。
+基线验证。已发布的 OINK v1.5.1 在 Markmap 内使用配套的本地 KaTeX 运行时；
+尚未发布的 Markmap 1 迁移则改用本地 MathJax 渲染导图公式。
 OINK 1.4.0 按阅读列的实际可用宽度为编号公式保留阅读空间，也覆盖侧栏
 或目录挤窄的正文列。标题无法与公式并排时移到下一行，连续长词允许换行。
 仅含编号的标题、MathML 与 TeX 仍然可用。打印时公式独占阅读列全宽，标题排列在

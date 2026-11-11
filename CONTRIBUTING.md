@@ -18,7 +18,7 @@ need it.
 
 ## Build and review
 
-Use OINK **v1.5.1**, Hugo Extended **0.168.0**, and Go **1.27.3** (the module's
+Use OINK **v1.5.1**, Hugo Extended **0.169.0**, and Go **1.27.4** (the module's
 minimum Go version). Hugo's built-in LibSass compiles theme and project SCSS
 without an external Sass compiler. Do not enable `--panicOnWarning` or
 `HUGO_PANICONWARNING`; keep diagnostics visible and review them (the upstream
@@ -26,7 +26,7 @@ LibSass deprecation warning is expected).
 
 Read `AGENTS.md`, `TRANSLATION.md`, and the relevant bilingual contract under
 `content/docs/design/`. Clone the theme and site as siblings for theme work.
-Install Node >= 24 and npm >= 11.16.0 only when running this repository's tests.
+Install Node >= 26.13.0 and npm >= 12.2.2 only when running this repository's tests.
 
 ```sh
 npm ci

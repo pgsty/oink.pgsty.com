@@ -1,0 +1,12 @@
+# Test-only explicit network opt-ins. Browser tests intercept both services.
+params:
+  offline_search: false
+  search:
+    algolia:
+      appId: OINKTEST
+      apiKey: public-test-search-key
+      indexName: oink-test
+  plantuml:
+    enable: true
+    svg: true
+    svg_image_url: https://plantuml.invalid/svg/

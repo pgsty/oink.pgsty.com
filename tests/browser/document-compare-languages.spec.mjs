@@ -51,7 +51,11 @@ test('eight languages: Escape on the closed language trigger closes the reader a
 
 test('eight languages: Escape right after choosing a language closes the reader', async ({ page }) => {
   await page.goto('/tests/compare-reader/');
-  await page.locator('[data-td-compare-open]').click();
+  const entry = page.locator('[data-td-compare-open]');
+  // Pointer activation does not focus buttons in every engine. Establish the
+  // keyboard origin whose focus the reader must restore after Escape.
+  await entry.focus();
+  await page.keyboard.press('Enter');
   await expect(page.locator('[data-td-compare-sync]')).toBeEnabled();
   const language = page.locator('[data-td-compare-language]');
   await language.click();
@@ -64,7 +68,7 @@ test('eight languages: Escape right after choosing a language closes the reader'
   await expect(language).toHaveAttribute('aria-expanded', 'false');
   await page.keyboard.press('Escape');
   await expect(page.locator('dialog[data-td-compare]')).toHaveCount(0);
-  await expect(page.locator('[data-td-compare-open]')).toBeFocused();
+  await expect(entry).toBeFocused();
 });
 
 test('eight languages: a reload restores the session and the language is remembered', async ({ page }) => {
@@ -127,7 +131,9 @@ for (const locale of ['', '/ar']) {
       await page.keyboard.press('Enter');
       await page.keyboard.press('ArrowDown');
       await expect(options.nth(1)).toBeFocused();
-      for (const width of [1200, 390]) {
+      // Cross both sides of the exact breakpoint as well as wide/mobile sizes.
+      // Native CSS visibility updates may precede matchMedia's change event.
+      for (const width of [1200, 390, 900, 899, 1200, 390]) {
         await page.setViewportSize({ width, height: 844 });
         // Include the focusout/pointerleave close delay in the observation.
         await page.waitForTimeout(180);
@@ -144,7 +150,7 @@ for (const locale of ['', '/ar']) {
       await expect(page.locator('[data-td-compare-sync]')).toBeEnabled();
       // A selected language returns focus to a closed trigger; resizing
       // preserves that state as well as focus within an open menu.
-      for (const width of [1200, 390]) {
+      for (const width of [1200, 390, 900, 899, 1200, 390]) {
         await page.setViewportSize({ width, height: 844 });
         await page.waitForTimeout(180);
         await expect(language).toBeFocused();

@@ -88,14 +88,14 @@ Direct `npm test` and `npm run test:browser` do not select the sibling theme
 themselves; use the Make targets for local theme acceptance. The local `check`,
 `browser`, and `dev` targets disable both workspace mechanisms. `build` and `serve`
 do not clear inherited replacements or workspaces; use the published-pin
-commands below to establish release identity. Node >= 24 and npm >= 11.16.0
+commands below to establish release identity. Node >= 26.13.0 and npm >= 12.2.2
 are contributor test dependencies, not ordinary Hugo consumer requirements.
-Use OINK v1.5.1 and Hugo Extended 0.168.0 for development, CI, and release
+Use OINK v1.5.1 and Hugo Extended 0.169.0 for development, CI, and release
 validation. Keep this baseline pinned. Never enable `--panicOnWarning` or
 `HUGO_PANICONWARNING`. Warnings remain visible and are reviewed; the upstream
 LibSass deprecation warning is accepted. SCSS uses Hugo's built-in LibSass,
 with no external Sass installation. Preserve project SCSS hooks and this
-dependency boundary. CI uses Node 24 and pins Go 1.27.3. Test
+dependency boundary. CI uses Node 26.13.0 and pins Go 1.27.4. Test
 overlays do not change the single-root-config rule for the production site.
 
 For published-pin acceptance, disable environment replacements and both

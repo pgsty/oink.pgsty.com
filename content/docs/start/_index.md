@@ -31,7 +31,7 @@ includes neutral project content and deployment workflows without this repositor
 regression test harness.
 
 > [!NOTE] Requirements
-> OINK sites build with Git, Go 1.27.3 or newer, and Hugo Extended {{% param hugoMinVersion %}} or newer (using Hugo's built-in Sass compiler — no Node.js, npm, or external Sass installation required).
+> OINK sites build with Git, Go 1.27.4 or newer, and Hugo Extended {{% param hugoMinVersion %}} or newer (using Hugo's built-in Sass compiler — no Node.js, npm, or external Sass installation required).
 
 ## Choose a path {#choose}
 
@@ -45,14 +45,14 @@ regression test harness.
 
 1. ### Install the tools {#tools}
 
-   Install Git, Go 1.27.3 or newer, and Hugo Extended 0.168.0 or newer. The Hugo
+   Install Git, Go 1.27.4 or newer, and Hugo Extended 0.169.0 or newer. The Hugo
    output must contain `extended`:
 
    ```console
    $ go version
-   go version go1.27.3 darwin/arm64
+   go version go1.27.4 darwin/arm64
    $ hugo version
-   hugo v0.168.0+extended+withdeploy darwin/arm64
+   hugo v0.169.0+extended+withdeploy darwin/arm64
    ```
 
    On macOS, `brew install git go hugo` supplies them. On Linux and Windows,

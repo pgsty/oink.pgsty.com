@@ -9,9 +9,10 @@ permissions:
   contents: read
 
 env:
-  GO_VERSION: 1.27.3
-  HUGO_VERSION: "0.168.0"
-  NODE_VERSION: 24
+  GO_VERSION: 1.27.4
+  HUGO_VERSION: "0.169.0"
+  NODE_VERSION: "26.13.0"
+  NPM_VERSION: "12.2.2"
   # Never a workspace. The regression job then points the module at the theme
   # under test, exactly as `make check` does with the sibling checkout; the
   # published-pin job keeps the module a reader would get.
@@ -62,6 +63,8 @@ jobs:
             https://github.com/pgsty/oink.git "$RUNNER_TEMP/oink"
           git -C "$RUNNER_TEMP/oink" log -1 --format='Theme under test: %H %s'
           echo "HUGO_MODULE_REPLACEMENTS=github.com/pgsty/oink -> $RUNNER_TEMP/oink" >> "$GITHUB_ENV"
+      - name: Install pinned npm
+        run: npm install --global npm@${{ env.NPM_VERSION }} --ignore-scripts
       - run: npm ci --ignore-scripts
       - run: npm test
 
@@ -95,6 +98,8 @@ jobs:
 
       - name: Download the pinned Hugo module
         run: go mod download github.com/pgsty/oink
+      - name: Install pinned npm
+        run: npm install --global npm@${{ env.NPM_VERSION }} --ignore-scripts
       - run: npm ci --ignore-scripts
       # The pin gate: go.mod and the version the site advertises in hugo.yml
       # must name the same release, or a bump lands half-applied.
