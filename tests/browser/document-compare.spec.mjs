@@ -101,6 +101,12 @@ test('compare: scroll keys scroll the reading pane right after opening', async (
   const [left, right] = await open(page);
   // Focus stays on the title so the dialog is announced; keys still scroll.
   await expect(page.locator('.td-compare__title')).toBeFocused();
+  // Opening a disclosure queues a pane measurement while the first scroll is starting.
+  await left.evaluate(() => {
+    parent.document.addEventListener('keydown', () => {
+      document.querySelector('.td-content details').open = true;
+    }, { once: true });
+  });
   await page.keyboard.press('PageDown');
   await expect.poll(() => left.evaluate(() => scrollY)).toBeGreaterThan(300);
   await expect.poll(() => right.evaluate(() => scrollY)).toBeGreaterThan(100);

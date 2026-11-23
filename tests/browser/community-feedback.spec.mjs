@@ -23,6 +23,18 @@ async function expectIsolated(page, isolated) {
   }
 }
 
+test('a pointer moved to the RTL edge during collapse can reopen the sidebar', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openDocs(page);
+  await page.locator('html').evaluate(root => { root.dir = 'rtl'; });
+  await page.locator('.td-shell-sidebar__collapse').click();
+  await page.mouse.move(1430, 300);
+  await expect(page.locator('#td-shell-sidebar')).toHaveClass(/td-shell-sidebar--overlay/);
+  await expectIsolated(page, false);
+  await page.mouse.move(700, 300);
+  await expectIsolated(page, true);
+});
+
 for (const locale of ['', '/zh']) {
   for (const color of ['light', 'dark']) {
     test(`${locale || 'en'} ${color}: sidebar isolation preserves restore, hover, drawer and breakpoint behavior`, async ({ page }) => {

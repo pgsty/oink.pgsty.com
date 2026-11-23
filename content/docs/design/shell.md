@@ -163,6 +163,7 @@ It does not define a version or locale schema for reader-selected branches.
 Desktop collapse and closed mobile drawers make panel content inert and mark the panel `aria-hidden`.
 Focus leaves before isolation. Opening clears isolation before focus enters.
 The panel remains the 16px pointer sensor. The external restore control remains active.
+Moving the pointer onto that edge during collapse opens the overlay after the brief hover delay.
 Hover, Escape, backdrop dismissal, breakpoint cleanup, and scroll unlocking keep their existing behavior.
 No-JavaScript fallbacks omit these runtime attributes.
 
@@ -664,7 +665,8 @@ scrolling aligns sections by heading anchors rather than locking individual
 paragraph rows. Opening resumes the current passage after reflow. Focus starts
 on the dialog title so the view is announced; until the reader Tabs into a pane,
 PageUp, PageDown, Space, the arrow keys, Home and End pressed there scroll the
-reading pane (the visible one below 900 pixels) and sync follows. Closing,
+reading pane (the visible one below 900 pixels) and sync follows. A late image
+or font load preserves the first keystroke when the reading position already matches its bookmark. Closing,
 Escape, `B` or Back restores host scroll and returns focus to the element that
 had it when the reader opened, such as the reading link where `B` was pressed,
 falling back to the entry when that element is gone or hidden. Only an open
