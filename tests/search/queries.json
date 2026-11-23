@@ -73,7 +73,7 @@
     "lang": "en",
     "query": "offline_search_index",
     "path": "/docs/customize/config/",
-    "anchor": "search"
+    "anchor": "field-params-offline_search_index"
   },
   {
     "scope": "summary",
@@ -149,7 +149,7 @@
     "lang": "zh",
     "query": "offline_search_index",
     "path": "/zh/docs/customize/config/",
-    "anchor": "search"
+    "anchor": "field-params-offline_search_index"
   },
   {
     "scope": "content",
@@ -263,7 +263,39 @@
     "scope": "content",
     "lang": "zh",
     "query": "连接池 超时",
+    "path": "/zh/docs/customize/search/",
+    "anchor": "cjk"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "连接池超时",
+    "path": "/zh/docs/customize/search/",
+    "anchor": "cjk"
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "连接池 熔断",
     "path": "/zh/docs/write/book/",
     "partial": true
+  },
+  {
+    "scope": "content",
+    "lang": "zh",
+    "query": "本地搜索配置",
+    "path": "/zh/docs/customize/search/"
+  },
+  {
+    "scope": "summary",
+    "lang": "zh",
+    "query": "命令面板快捷键",
+    "path": "/zh/docs/customize/panel/"
+  },
+  {
+    "scope": "summary",
+    "lang": "en",
+    "query": "serach keywords",
+    "path": "/docs/customize/search/"
   }
 ]

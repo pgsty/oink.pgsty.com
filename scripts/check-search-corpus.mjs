@@ -35,10 +35,12 @@ assert.ok(theme?.dir, 'Hugo did not resolve the OINK theme directory');
 const enginePath = resolve(option('--engine', resolve(theme.dir, 'assets/js/search-engine.js')));
 const baselinePath = option('--baseline-engine', '');
 const baselineDirectory = option('--baseline-index-dir', '');
+// An engine older than OINK 1.6 takes the Lunr build it shipped with.
+const baselineLunrPath = option('--baseline-lunr', '');
 global.window = {};
-const lunr = require(resolve(theme.dir, 'assets/js/third_party/lunr.min.js'));
 const api = require(enginePath);
 const baselineApi = baselinePath ? require(resolve(baselinePath)) : null;
+const baselineLunr = baselineLunrPath ? require(resolve(baselineLunrPath)) : null;
 const queries = JSON.parse(readFileSync(resolve(site, 'tests/search/queries.json'))).filter(q => q.scope === scope);
 const report = { scope, environment: { node: process.version, platform: process.platform,
   arch: process.arch, cpu: os.cpus()[0].model, timing: 'performance.now, Node CPU only; no network, debounce, or DOM',
@@ -52,9 +54,9 @@ function load(dir, lang) {
   return { docs, pages: docs.length, sections: docs.reduce((n, d) => n + (d.sections?.length || 0), 0),
     raw: bytes.length, gzip: gzipSync(bytes, { level: 9, mtime: 0 }).length };
 }
-function measure(module, docs, cases) {
+function measure(module, docs, cases, lunr) {
   const start = performance.now();
-  const engine = module.create(docs, lunr, 10);
+  const engine = lunr ? module.create(docs, lunr, 10) : module.create(docs, 10);
   const initMs = performance.now() - start;
   const coldStart = performance.now();
   const coldQuery = cases.find(c => c.query.split(/\s+/).some(t => /^[a-z]{3,}$/i.test(t)))?.query || cases[0].query;
@@ -78,7 +80,7 @@ for (const lang of ['en', 'zh']) {
   const cases = queries.filter(q => q.lang === lang);
   const { engine, ...timing } = measure(api, current.docs, cases);
   const previous = baselineDirectory ? load(baselineDirectory, lang) : current;
-  const old = baselineApi ? measure(baselineApi, previous.docs, cases) : null;
+  const old = baselineApi ? measure(baselineApi, previous.docs, cases, baselineLunr) : null;
   const results = cases.map(c => {
     const hits = engine.query(c.query, c.root ? {root:c.root} : undefined);
     const rank = hits.findIndex(r => r.doc.ref === prefix + c.path) + 1;
