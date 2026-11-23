@@ -170,6 +170,16 @@ The full form accepts block descriptions. Use `card` and `field` only within the
 Field anchors use `field-<name>`, with lowercase punctuation runs replaced by hyphens.
 Thus `params.ui.typography` becomes `field-params-ui-typography`. Duplicate anchors get positional suffixes.
 
+> [!NOTE] Unreleased
+> The two rules below follow 1.5.1 on the theme's main branch. No published
+> tag contains them yet.
+
+`field` accepts `id`, which replaces the generated anchor.
+An empty value, a non-string, or a value holding whitespace, quotes, `<`, `>` or `&` warns and keeps the generated anchor.
+So does an `id` that another field on the page already uses.
+Each anchored field carries `data-td-search-entry` with its plain name, from the shortcode and from a `{.fields}` table alike.
+[Local search](/docs/design/shell/#search-engine) records it as an entry of its page and opens it by name.
+
 The table hook owns responsive wrapping and captions.
 Captions have balanced inset spacing inside the frame, aligned with cell text;
 an available corner action reserves space at the end of the inline caption.

@@ -81,6 +81,40 @@ selectors for those lists. The version trigger exposes its state through
 `aria-expanded`. Sites listening for `*.bs.dropdown` on this control should
 observe that attribute.
 
+## Local search without Lunr {#search-engine}
+
+> [!NOTE] Unreleased
+> This change follows 1.5.1 on the theme's main branch. No published tag
+> contains it yet.
+
+Local search needs no configuration change. The index files and front matter
+keys are the same. After upgrading, check three things:
+
+1. The theme no longer ships Lunr. If your own layouts or scripts used
+   `window.lunr` from the theme's copy, load Lunr yourself.
+2. If you call `OinkSearchEngine.create` directly, drop the Lunr argument:
+   `create(documents, maxResults)`.
+3. Results rank differently. A short word no longer matches inside another
+   word, so `port` does not return pages that only say "support". Chinese,
+   Japanese, and Korean queries no longer need spaces between words. Review the
+   searches your readers use most.
+
+A `content` index larger than 2 MiB is now published as two files. The index
+keeps titles, headings and keywords, and `offline-search-body.<lang>.json`
+holds the page text, which the palette loads after the first results. If you
+set `offline_search_index: summary` only to stay within the size budget, you
+can return to `content`. A script of your own that read `body` from a large
+index must read the second file and join it by `ref`. An index within 2 MiB
+is unchanged.
+
+Fields are now search results: a query for a parameter name opens its entry
+in a `fields` list or `{.fields}` table. This needs no change. To keep an
+established anchor, give the field an `id`. To make your own markup
+searchable the same way, give the element an `id` and
+`data-td-search-entry="Title"`.
+
+The [Shell contract](/docs/design/shell/#search-engine) lists the rules.
+
 ## Upgrade to 1.5.1 {#preparing-1-5}
 
 OINK `v1.5.1` stabilizes the opt-in [Duo View](/docs/customize/i18n/#bilingual-view)

@@ -265,6 +265,72 @@ as well as Enter activation. No new configuration authority or build step exists
 The owning theme search checker and the site's real-corpus/browser tests cover
 these additions; the maintained summary indexes keep the 2 MiB / 512 KiB budgets.
 
+### Local search engine after 1.5.1 {#search-engine}
+
+> [!NOTE] Unreleased
+> This change follows 1.5.1 on the theme's main branch. No published tag
+> contains it yet. It replaces the matching and ranking rules above. The index,
+> dialog, scope, composition, and section rules are unchanged.
+
+No page loads Lunr, and the theme ships no copy.
+One engine scans the folded index text and builds no index of its own.
+A character's Unicode script decides how it is read; the page language does not.
+A query is cut into words, identifiers, symbol runs of two or more characters, and CJK runs.
+It is cut again where a CJK character meets a letter or digit.
+A CJK run matches as its overlapping bigrams, without a dictionary. A run of one character is one term.
+A page must cover atoms: each word, identifier, and symbol run, and each character of a CJK run, up to 30.
+A short list of English function words and six Chinese question words is scored at a tenth and never required.
+A query made only of such words is searched as written.
+
+A word matches exactly as a whole word.
+It matches loosely as the beginning of a longer word, as another inflection, and as one part of an underscore name.
+It also matches loosely inside a compound when it has five or more characters, and as a correction.
+Inflection uses Porter's suffix rules for `a`–`z` words.
+Words of other alphabets share four leading characters and differ by at most three trailing ones.
+Spelling fallback applies only when the selected scope holds no form of the word.
+It covers `a`–`z0`–`9` words of five or more characters with one edit, or two from eight. A transposition is one edit.
+Identifiers and symbol runs are literal and are never corrected.
+One found inside a longer identifier or operator is a loose match.
+
+A page is a complete match when it covers 90% of the atoms by weight.
+An atom weighs the inverse document frequency of its commonest covering term.
+A bigram absent from the scope is not required while other bigrams cover its characters.
+Complete matches hide partial ones.
+A page covered within one section and its own page fields precedes a page that needs several sections.
+Strength is next. Each atom takes its strongest match: title 10, keywords 8, tags and categories 6, headings 5, description 3, body 1.
+A loose match counts 0.7 of its field.
+Strength is the weighted mean over atoms, times 1.5 when the pieces are adjacent and in order, times the page boost.
+The best section's BM25 score times the boost follows, then title and URL.
+Repetition changes only the BM25 score, so it reorders only pages of equal strength.
+Partial matches sort by coverage in tenths before those keys and keep the matched/total label.
+In that label a CJK run counts by pairs of characters.
+
+BM25 runs per section with `k1` 1.2 and `b` 0.5 over length in characters.
+Occurrences carry field weights and match quality, capped at 24 per field.
+The excerpt is the 160-character passage of the best section that shows the most different matches.
+A result carries the strings found, so inflections and corrections are highlighted as the page writes them.
+`OinkSearchEngine.create` takes `(documents, maxResults)`.
+
+The index template writes every document with its body. Output up to 2 MiB is published as the index, unchanged.
+Larger output is split: the index keeps every field except `body`, and `offline-search-body.<lang>.json` holds a list of `{ref, body}` entries.
+Section `start` offsets stay in the index and address the separated text.
+The dialog then carries `data-td-body-src` and `data-td-body-bytes`.
+The 2 MiB / 512 KiB budget applies to the index that is fetched first.
+The palette requests the index on the first search keystroke and shows its results at once.
+Page text up to 8 MiB follows by itself. Larger text, or any size under Save-Data, waits for the "Search page text" row, which shows its size.
+While the text loads, the status says so, and an empty result reads as loading.
+When it arrives the engine is created again and the selected row is kept. A failed download returns that row.
+Opening the palette, command mode, and an unsplit index request nothing more than before.
+
+Besides headings, the index records search entries: any rendered element with an `id` and a non-empty `data-td-search-entry` title.
+Every anchored [field](/docs/design/components/#steps-cards-fields-and-tables) is one.
+Entries join `sections` in document order with the same `id`, `title`, and `start`.
+The page text is divided among headings and entries in that order, so text inside an entry opens that entry.
+The `headings` field lists headings only.
+An entry without an id or a title warns and is skipped.
+An entry is scored and opened like a section, and its title counts as a heading.
+The [proposal](/docs/design/proposals/local-search-engine/) keeps the evidence and the later stage.
+
 Built-in action IDs are `compare_translations`, `copy_markdown`, `copy_link`, `open_chatgpt`, `open_claude`, `view_markdown`, `view_history`, `edit_page`,
 `create_child_page`, `create_issue`, `create_project_issue`, `print_section`, `print`, `switch_preset`, `switch_theme`, `switch_language`, `switch_version`, and `open_github`.
 Outside the share bar, `copy_link` appears only in the Palette.

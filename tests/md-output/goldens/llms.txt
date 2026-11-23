@@ -83,6 +83,7 @@
   - [Knowledge graph](http://localhost/docs/design/proposals/knowledge-graph/index.md): A draft three-stage design to generate backlinks and local or global graph views from ordinary Hugo links.
   - [2026-10-18 build baseline](http://localhost/docs/design/research/2026-10-18-consumer-baseline/index.md): Local inventory of 37 maintained OINK sites using v1.3.2 and Hugo Extended 0.168.0, with visible warnings and separate publication evidence.
   - [Ink / Terminal experiment](http://localhost/docs/design/research/2026-10-05-ink-terminal-experiment/index.md): Explicit experimental presets in real theme output, their design tradeoffs, checks and remaining work.
+  - [Local search engine](http://localhost/docs/design/proposals/local-search-engine/index.md): A draft that replaces Lunr with one scanning engine, ranks by BM25, and reads CJK text by script instead of by language tag.
   - [OINK 1.2 pre-release review](http://localhost/docs/design/research/2026-10-05-v1-2-release-review/index.md): Local 1.2.0 candidate review, cleanup, compatibility, resource provenance and publication checks, with release boundaries.
   - [Preset acceptance](http://localhost/docs/design/research/2026-10-05-visual-presets-acceptance/index.md): Local Paper and Slate verification, real theme output, and bounded browser evidence.
   - [Components](http://localhost/docs/design/components/index.md): The maintainer contract for OINK authoring primitives, validation, Book and release behavior, and output degradation.

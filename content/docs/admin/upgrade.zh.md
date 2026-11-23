@@ -48,6 +48,23 @@ aliases:
 
 监听 OINK Landing 下载渠道切换时，请将 `shown.bs.tab` 换成 `td:tab-shown`。事件从刚显示的渠道面板向上冒泡。底栏和抽屉里的版本列表使用 `.td-version-menu__list`，为这些列表定制的 `.dropdown-menu` 选择器需要更新。如果原先监听 `*.bs.dropdown` 事件来判断菜单是否展开，可以观察触发按钮的 `aria-expanded` 属性。
 
+## 去掉 Lunr 的本地搜索 {#search-engine}
+
+> [!NOTE] 尚未发布
+> 这项变更位于主题 main 分支，在 1.5.1 之后。目前没有任何已发布的标签包含它。
+
+本地搜索不需要改任何配置，索引文件和前言键都不变。升级后请确认三件事：
+
+1. 主题不再附带 Lunr。如果站点自己的模板或脚本用到了主题这份副本提供的 `window.lunr`，请自行加载 Lunr。
+2. 如果直接调用了 `OinkSearchEngine.create`，请去掉 Lunr 参数：`create(documents, maxResults)`。
+3. 结果的排序有变化。短词不再匹配另一个词的内部，所以 `port` 不会再返回只写着 “support” 的页面；中文、日文、韩文查询不再需要用空格分隔词语。请检查读者最常用的几个查询。
+
+超过 2 MiB 的 `content` 索引现在发布成两个文件：索引保留标题、小节标题和关键词，`offline-search-body.<lang>.json` 存放正文，命令面板在给出首批结果之后再加载它。如果当初只是为了不超出体积预算才设置 `offline_search_index: summary`，现在可以改回 `content`。站点自己的脚本若从大索引里读取 `body`，需要改读第二个文件，并按 `ref` 对应。2 MiB 以内的索引没有变化。
+
+参数现在也是搜索结果：搜索参数名会直接打开它在 `fields` 列表或 `{.fields}` 表格中的那一条，不需要任何改动。想保留已有的锚点，给这个参数加上 `id`。想让自己的标记同样可以被搜索到，给元素加上 `id` 和 `data-td-search-entry="标题"`。
+
+具体规则见 [Shell 契约](/zh/docs/design/shell/#search-engine)。
+
 ## 升级到 1.5.1 {#preparing-1-5}
 
 OINK `v1.5.1` 稳定了 1.5.0 引入的按需开启[双列视图](/zh/docs/customize/i18n/#bilingual-view)，
