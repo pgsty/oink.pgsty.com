@@ -1,7 +1,7 @@
 ---
 title: 版本升级
 linkTitle: 版本升级
-description: 固定主题版本、升级到 1.5.1、迁移旧内容或 Docsy 站点，并保留回滚路径。
+description: 固定主题版本、升级到 1.6.0、迁移旧内容或 Docsy 站点，并保留回滚路径。
 weight: 50
 search_keywords: [升级, 迁移, 版本, Hugo Module, hugo mod get, oink06, Docsy, jQuery, 破坏性变更, upgrade, migration]
 aliases:
@@ -18,15 +18,38 @@ aliases:
 升级会改变渲染结果。先建一个升级分支再动手，回退的代价就是丢弃一个分支。
 
 > [!IMPORTANT] 当前 Hugo 要求
-> 1.5.1 之后的主题可用 Hugo 0.169.0 或更新版本构建，不限 edition，站点构建不做任何编译。
+> OINK 1.6.0 及更新版本可用 Hugo 0.169.0 或更新版本构建，不限 edition，站点构建不做任何编译。
 > OINK 1.5.1 及更早版本需要 Hugo 的 Extended 版，而 Extended 版止于 Hugo 0.169。
 > 不要启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。
 > 升级时请同步更新 workflow 中的 Hugo 版本；下方旧版本章节中的要求仅说明当时的发布状态。
 
-## 已退役的 SCSS 钩子 {#sass-hooks}
+## 升级到 1.6.0 {#preparing-1-6}
 
-> [!NOTE] 尚未发布
-> 这项变更位于主题 main 分支，在 1.5.1 之后。目前没有任何已发布的标签包含它。
+OINK `v1.6.0` 仍保持在 `v1` Go 模块路径（`github.com/pgsty/oink`），同时为了适配
+Hugo 0.170+ 并移除 Sass、Bootstrap JavaScript 与 Lunr，引入了明确的破坏性变更。
+升级前请阅读[1.6.0 发布说明](/zh/blog/release/1.6.0/)并逐项检查：
+
+- **工具链**：将 Go 升级至 **1.27.4** 或更高版本，Hugo 升级至 **0.169.0** 或更高版本
+  （不限 edition，已在 Hugo 0.170.1 上验证）。所有分支切到 1.6.0+ 后可移除 CI 中的
+  `extended: true`。
+- **样式表与 SCSS 钩子**：将已退役的 `assets/scss/_*_project*.scss` 迁移为纯 CSS 到
+  `assets/css/project.css`，将模板里写死的 `/scss/*.css` 路径更新为 `/css/*.css`，
+  站点自有外壳改用 `partial "css/bundle.html"`。见[已退役的 SCSS 钩子](#sass-hooks)。
+- **Bootstrap JavaScript**：清理依赖主题提供 `window.bootstrap` 或 `data-bs-toggle` 的
+  站点代码；Landing 下载渠道监听从 `shown.bs.tab` 改为 `td:tab-shown`；版本列表上的
+  `.dropdown-menu` 选择器改为 `.td-version-menu__list`。见[Bootstrap 的 JavaScript](#bootstrap-script)。
+- **去掉 Lunr 的本地搜索**：移除站点脚本对 `window.lunr` 的依赖，自定义调用
+  `OinkSearchEngine.create` 时去掉 Lunr 参数改为 `(documents, maxResults)`；超过
+  2 MiB 的 `content` 索引会自动将正文拆到 `offline-search-body.<lang>.json`。见
+  [去掉 Lunr 的本地搜索](#search-engine)。
+- **Markmap 1.1.0 与 ReDoc 3.1.0**：迁移 Markmap 0.18 旧 YAML 选项（`foldLevel`、
+  `wrapWidth`、`levelGap`、`siblingGap`、`colorDepth`，见
+  [Markmap 迁移说明](/zh/docs/components/markmap/#migration)）；使用 ReDoc 3 时在
+  CSP 中允许 `frame-src 'self'`，并将 `x-code-samples` 改名为 `x-codeSamples`。
+- **组件按需接近加载**：Asciinema、ECharts、Infographic、Markmap 与 Giscus 现在在读者
+  滚动接近时加载；断言图表、导图或播放器渲染结果的浏览器测试需先将其滚入视口。
+
+## 已退役的 SCSS 钩子 {#sass-hooks}
 
 主题的样式表现在是纯 CSS，站点构建不再运行 Sass 编译器。因此 `assets/scss/` 下的三个文件会被忽略，并各产生一条构建告警：`_variables_project.scss`、`_variables_project_after_bs.scss` 与 `_styles_project.scss`。在转换之前，站点只带主题的默认样式构建。
 
@@ -41,17 +64,11 @@ aliases:
 
 ## Bootstrap 的 JavaScript {#bootstrap-script}
 
-> [!NOTE] 尚未发布
-> 这项变更位于主题 main 分支，在 1.5.1 之后。目前没有任何已发布的标签包含它。
-
-从 1.5.1 升级后，只有站点自行加载 Bootstrap 脚本，才会提供 `window.bootstrap` 并启用它的脚本钩子。如果站点的模板、shortcode 或内容用到了 Bootstrap 的下拉菜单、标签页、模态框等脚本组件，请搜索 `bootstrap.`、`data-bs-toggle`、`data-bs-dismiss`、`data-bs-target` 和监听 `.bs.` 事件的代码。可以改用 OINK 组件，也可以在 `layouts/_partials/hooks/body-end.html` 中加载站点自己的 Bootstrap bundle。深浅色模式的 `data-bs-theme` 和 `data-bs-theme-value` 仍然有效。
+从 OINK 1.6.0 起，只有站点自行加载 Bootstrap 脚本，才会提供 `window.bootstrap` 并启用它的脚本钩子。如果站点的模板、shortcode 或内容用到了 Bootstrap 的下拉菜单、标签页、模态框等脚本组件，请搜索 `bootstrap.`、`data-bs-toggle`、`data-bs-dismiss`、`data-bs-target` 和监听 `.bs.` 事件的代码。可以改用 OINK 组件，也可以在 `layouts/_partials/hooks/body-end.html` 中加载站点自己的 Bootstrap bundle。深浅色模式的 `data-bs-theme` 和 `data-bs-theme-value` 仍然有效。
 
 监听 OINK Landing 下载渠道切换时，请将 `shown.bs.tab` 换成 `td:tab-shown`。事件从刚显示的渠道面板向上冒泡。底栏和抽屉里的版本列表使用 `.td-version-menu__list`，为这些列表定制的 `.dropdown-menu` 选择器需要更新。如果原先监听 `*.bs.dropdown` 事件来判断菜单是否展开，可以观察触发按钮的 `aria-expanded` 属性。
 
 ## 去掉 Lunr 的本地搜索 {#search-engine}
-
-> [!NOTE] 尚未发布
-> 这项变更位于主题 main 分支，在 1.5.1 之后。目前没有任何已发布的标签包含它。
 
 本地搜索不需要改任何配置，索引文件和前言键都不变。升级后请确认三件事：
 
@@ -115,11 +132,10 @@ OINK `v1.3.1` 修复 Markmap 文字对比度和固定 TOC 的页脚避让，并�
 ## 升级 Hugo Module {#hugo-module}
 
 生产站点固定已发布标签或主动选定的不可变 commit，不跟随分支，也不用 `@latest`。
-下面升级到已发布的 `v1.5.1` 标签；选择后续版本时，先确认已经发布且模块可以解析，
-再替换示例中的版本。
+下面升级到 `v1.6.0` 标签；选择标签前，先确认已经发布且模块可以解析：
 
 ```bash {title="终端"}
-hugo mod get github.com/pgsty/oink@v1.5.1   # 已发布的版本标签
+hugo mod get github.com/pgsty/oink@v1.6.0   # 已发布的版本标签
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -133,7 +149,7 @@ module github.com/pgsty/oink.pgsty.com
 
 go 1.27.4
 
-require github.com/pgsty/oink v1.5.1
+require github.com/pgsty/oink v1.6.0
 ```
 
 > [!DANGER] 本地模块替换会盖掉这个固定版本
@@ -147,7 +163,7 @@ require github.com/pgsty/oink v1.5.1
 
 ```bash {title="终端"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.5.1
+git -C themes/oink checkout --detach v1.6.0
 git add themes/oink
 ```
 
@@ -314,7 +330,7 @@ OINK 是 Docsy 的硬分支：内容模型、`td-` 命名、大部分 front matt
 
    Docsy 的驼峰式检索键在 OINK 中已改名：`offlineSearch`、`offlineSearchIndex`、`offlineSearchMaxResults`、`offlineSearchOnServe`、`offlineSearchSummaryLength` 一律改为下划线形式。这一步要自己盯着改——那份「中断构建并报出新键名」的迁移登记表已经删除，旧键现在只是一个没人读的键，检索会一声不响地保持关闭。
 
-1. 字体与样式。Docsy 放在 `assets/scss/` 下的 SCSS 钩子不再被编译，其中的 Sass 变量（包括字体变量和 Google Fonts 开关）都不再生效。请按[已退役的 SCSS 钩子](#sass-hooks)转换。OINK 自带 Inter、Chakra Petch 与 IBM Plex Mono，任何预设都不向 Google Fonts 发请求。想换字体走 token 层，见[品牌外观](/zh/docs/customize/brand/)。
+1. 字体与样式。Docsy 放在 `assets/scss/` 下的 SCSS 钩子不再被编译，其中的 Sass 变量（包括字体变量和 Google Fonts 开关）都不再生效。请按[已退役的 SCSS 钩子](#sass-hooks)转换。OINK 自带 IBM Plex Sans、Inter、Chakra Petch 与 IBM Plex Mono，任何预设都不向 Google Fonts 发请求。想换字体走 token 层，见[品牌外观](/zh/docs/customize/brand/)。
 
 1. 换 shortcode。Docsy 的 `alert`、`pageinfo`、`tabpane`、`card` 系列都有当前对应
    形态，用上面的[迁移工具](#migration-toolkit)批量转，`--only` 一类一类来。

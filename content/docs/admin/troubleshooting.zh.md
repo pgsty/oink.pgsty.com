@@ -24,7 +24,7 @@ hugo --gc --minify --printPathWarnings --logLevel info
 | 症状 | 原因 | 修法 |
 | --- | --- | --- |
 | 构建报要求更高的 Hugo 版本 | 版本低于 {{< param hugoMinVersion >}}；或者站点固定在 OINK 1.5.1 或更早版本，而装的是标准版而不是 Extended | 先看 `hugo version`。当前主题不限 edition；OINK 1.5.1 或更早版本要求输出里必须有 `extended`。多个 Hugo 共存时先查 `PATH` 与版本固定配置，而不是再装一份 |
-| `TOCSS-DART: … You need to install Dart Sass` | 站点固定在 OINK 1.5.1 或更早版本，而 Hugo 是 0.170 或更新版本，其中已没有内置的 Sass 编译器 | 用 0.169 或更早的 Hugo Extended 版构建这个站点。1.5.1 之后的主题不含任何 Sass，可用任何当前的 Hugo 构建 |
+| `TOCSS-DART: … You need to install Dart Sass` | 站点固定在 OINK 1.5.1 或更早版本，而 Hugo 是 0.170 或更新版本，其中已没有内置的 Sass 编译器 | 用 0.169 或更早的 Hugo Extended 版构建这个站点，或升级到使用纯 CSS 的 OINK 1.6.0+（可用任何当前 Hugo 构建） |
 | `module "github.com/pgsty/oink" not found` | 主题没解析出来 | Hugo Module：看 `hugo mod graph`、`go.mod`、`go.sum`，以及有没有多余的 workspace / replace。submodule：CI 有没有在 Hugo 之前跑 `git submodule update --init`。归档 / 克隆：`theme:` 的值要与 `themes/` 下的目录名一致 |
 | 模块下载卡住或超时 | Go 的模块代理不通 | Hugo 通过 Go 拉模块，所以走 `GOPROXY`。国内网络可以 `export GOPROXY=https://goproxy.cn,direct`；隔离环境改用离线归档或提交 `themes/oink/` |
 | 页面上出现 `{.cards}`、`{.steps}`、`{caption=…}` 这类原样文字 | 站点没开 goldmark 的块级属性 | 站点的 `hugo.yml` 里必须有下面那三项，主题的 `markup` 配置不会被 Hugo 合并进来 |
@@ -83,7 +83,7 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 | 搜索框有但一直没结果 | 索引没生成 | 检查 `params.offline_search` 并打开搜索，在 Network 中查看页面 `data-td-index-src` 指定的请求。生产文件名为 `offline-search-index.<语言>.<hash>.json`，开发环境不带 hash；`hugo server` 未生成索引时还要检查 `offline_search_on_serve` |
 | 索引文件请求 404 | `baseURL` 不对 | 子路径部署下 `baseURL` 配错是索引 404 最常见的原因。先在浏览器网络面板看它去哪里取索引，见[发布上线](/zh/docs/admin/deploy/#baseurl) |
 | `hugo server` 下搜不了，构建出来就正常 | 站点把预览期的索引关掉了 | `params.offline_search_on_serve` 默认为 `true`，预览与线上行为一致；配置里显式写成 `false` 时预览不生成索引，删掉或改回 `true` |
-| 中文搜不到 | 多数不是分词问题 | 中文查询走主题的 CJK 子串回退。先确认那个中文页面的内容进了中文索引（打开中文页面 `data-td-index-src` 指定的实际 URL），再看分词 |
+| 中文搜不到 | 通常是页面未进索引或正文范围受限 | OINK 1.6.0 使用扫描式 BM25 引擎与重叠二元组匹配中日韩文本。先打开中文页面 `data-td-index-src`（拆分索引时一并看 `data-td-body-src`）确认该页已入库，并核对 `offline_search_index` 范围 |
 | 新页面搜不到，旧页面正常 | 索引是构建产物 | 重新构建。`hugo server` 下改了页面要等它重建完 |
 | `params.search.algolia requires explicit appId, apiKey, and indexName values` | Algolia 三个键没配全 | 三个键必须显式给全，主题不会替你用别的项目的 DocSearch 凭据。不用 Algolia 就把这段配置删掉 |
 | 命令面板搜不到内容 | 它与全文检索是两件事 | 索引不可用时命令面板仍然能打开，只是提示索引不可用，页面操作与命令照常，见[命令面板](/zh/docs/customize/panel/) |
@@ -100,7 +100,7 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 | 预览部署被搜索引擎收录了 | 预览也用了 production 环境构建 | 预览构建不要带 `--environment production`，非 production 自带 `noindex` 与 `Disallow: /`，见[分析与 SEO](/zh/docs/admin/analytics/#robots) |
 | macOS 报打开文件过多 | 实时预览监视的文件超过了 shell 限制 | 先把生成目录与无关目录排除出监视范围，这通常才是根因；再考虑 `ulimit -n` |
 | WSL 下很慢或漏掉改动 | 跨 Windows 挂载点工作 | 让 Hugo 处理 Linux 文件系统里的路径，跨文件系统的变更通知和权限行为会让实时重载失效 |
-| 缺 Bootstrap / Font Awesome / Lunr / Mermaid 之类资源 | 发行物不完整 | 不要用 CDN URL 掩盖。确认 `assets/third_party/`、`assets/js/third_party/`、`static/webfonts/`、`VENDOR.json` 都在；确实缺就重新获取同一个固定版本 |
+| 缺 Bootstrap / Font Awesome / Mermaid 之类资源 | 发行物不完整 | 不要用 CDN URL 掩盖。确认 `assets/third_party/`、`static/webfonts/`、`VENDOR.json` 都在；确实缺就重新获取同一个固定版本 |
 
 ## 站点自带检查 {#site-checks}
 

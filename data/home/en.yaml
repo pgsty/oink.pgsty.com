@@ -13,7 +13,7 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 1.5.1 · Local-first · Built with Hugo
+  eyebrow: OINK 1.6.0 · Local-first · Built with Hugo
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -28,8 +28,8 @@ hero:
       url: docs/start/starter/
       icon: fa-solid fa-rocket
       style: primary
-    - label: What's new in 1.5.1
-      url: blog/release/1.5.1/
+    - label: What's new in 1.6.0
+      url: blog/release/1.6.0/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -106,10 +106,10 @@ capabilities:
     - ref: 03 / LOCAL FIRST
       title: Build with Hugo
       url: docs/about/features/
-      motto: Hugo 0.168.0, built-in Sass, bundled assets
+      motto: Plain CSS, bundled assets, Hugo 0.169+
       bullets:
         - 'One [**hugo**](https://gohugo.io/) command builds everything'
-        - '[No **npm install**, external Sass compiler, or
+        - '[No **npm install**, Sass compiler, or
           PostCSS.](docs/about/features/)'
         - '[Bundled assets stay local](docs/about/features/);
           [prepare dependencies for offline builds](docs/start/from-scratch/)'
@@ -140,7 +140,7 @@ capabilities:
           Zoom](docs/components/image/), and diagrams for visual
           explanations'
         - '[Components](docs/components/) support Markdown and print with fallbacks'
-      value: Component scripts load only on pages that use them.
+      value: Heavy component engines load on approach, and only on pages that use them.
       visual:
         type: components
         aria_label: Browse shortcodes and content components
@@ -302,21 +302,21 @@ faq:
   eyebrow: Before you commit
   title: Questions worth asking first
   items:
-    - question: What's new in OINK 1.5.1?
+    - question: What's new in OINK 1.6.0?
       answer: >-
-        [OINK 1.5.1](blog/release/1.5.1/) stabilizes Duo View, corrects RSS and
-        Print aggregation, and hardens navigation, search ranking, safe fallbacks,
-        accessibility, and localization. The reader, local rendering, search,
-        and component variants from 1.4 remain available. Use Hugo Extended 0.168.0;
-        no separate Sass installation is needed.
+        [OINK 1.6.0](blog/release/1.6.0/) moves the stylesheet to plain CSS for
+        Hugo 0.170+ compatibility, removes Bootstrap JS and Lunr, introduces
+        scanning BM25 local search with unspaced CJK queries, automatic split
+        indexes, and field anchors, and upgrades Markmap, ReDoc, Mermaid, KaTeX,
+        and the rest of the bundled runtimes. Any Hugo edition (0.169.0+) builds
+        it with no Sass compiler.
     - question: Do I need Node.js, npm or a bundler anywhere?
       answer: >-
-        No. Site builds use Hugo Extended and its built-in Sass compiler; no
-        external Sass installation is required. The recommended baseline is
-        OINK 1.5.1 and the pinned Hugo Extended 0.168.0 baseline. Go resolves the
-        theme as a module; an offline
-        archive or Git submodule works without it. Browser scripts ship
-        with the theme and load only where they are used.
+        No. Site builds use Hugo alone (0.169.0 or newer, any edition) and plain
+        CSS; no Sass compiler, Node.js, npm, or bundler is required. Go 1.27.4+
+        resolves the theme as a module; an offline archive or Git submodule
+        works without it. Browser scripts ship with the theme and load only
+        where they are used.
       open: true
     - question: I have a Docsy site. How hard is the move?
       answer: >-
@@ -332,8 +332,9 @@ faq:
         landing pages alone. The shell scales down as well as up.
     - question: How does it handle Chinese and other non-Latin content?
       answer: >-
-        Local search uses Lunr for Latin scripts and a substring fallback for
-        CJK, so those pages are searchable without a hosted service. OINK
+        Local search uses a single scanning BM25 engine with overlapping
+        bigrams for unspaced CJK queries and word-boundary matching with
+        stemming for Latin scripts, without Lunr or any hosted service. OINK
         ships 32 native interface catalogs with locale-aware plurals and
         translated appearance controls, including English, Simplified Chinese (`zh-cn`,
         `zh`) and Traditional Chinese (`zh-tw`). RTL layouts are supported.
@@ -369,7 +370,7 @@ faq:
 
 cta:
   title: Start from a repository that already works.
-  text: Start with OINK Starter, pin OINK 1.5.1, customize your site identity and content, and deploy with GitHub Pages or Cloudflare Pages.
+  text: Start with OINK Starter, pin OINK 1.6.0, customize your site identity and content, and deploy with GitHub Pages or Cloudflare Pages.
   label: Use OINK Starter
   url: docs/start/starter/
   style: primary

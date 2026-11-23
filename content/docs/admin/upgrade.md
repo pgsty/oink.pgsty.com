@@ -1,7 +1,7 @@
 ---
 title: Upgrade
 linkTitle: Upgrade
-description: Pin a theme version, upgrade to 1.5.1, migrate legacy content or a Docsy site, and keep a rollback path.
+description: Pin a theme version, upgrade to 1.6.0, migrate legacy content or a Docsy site, and keep a rollback path.
 weight: 50
 search_keywords: [upgrade, migration, version, Hugo Module, hugo mod get, oink06, Docsy, jQuery, breaking changes]
 aliases:
@@ -20,18 +20,48 @@ An upgrade changes rendered output. Before you start, create an upgrade branch.
 You can discard that branch if you cancel the upgrade.
 
 > [!IMPORTANT] Current Hugo requirements
-> The theme after 1.5.1 builds with Hugo 0.169.0 or newer, in any edition, and
+> OINK 1.6.0 and newer build with Hugo 0.169.0 or newer, in any edition, and
 > a site build compiles nothing. OINK 1.5.1 and older need Hugo's Extended
 > edition, which ended with Hugo 0.169. Do not enable `--panicOnWarning` or
 > `HUGO_PANICONWARNING`. Update the Hugo release in your workflows when
 > upgrading; older-Hugo requirements in the sections below describe those
 > historical releases only.
 
-## Retired SCSS hooks {#sass-hooks}
+## Upgrade to 1.6.0 {#preparing-1-6}
 
-> [!NOTE] Unreleased
-> This change follows 1.5.1 on the theme's main branch. No published tag
-> contains it yet.
+OINK `v1.6.0` remains on the `v1` Go module path (`github.com/pgsty/oink`) while
+introducing deliberate breaking changes to remove Sass (for Hugo 0.170+
+compatibility), Bootstrap's JavaScript bundle, and Lunr. Read the
+[1.6.0 release notes](/blog/release/1.6.0/) and review these items before
+upgrading:
+
+- **Toolchain.** Upgrade Go to **1.27.4** or newer and Hugo to **0.169.0** or
+  newer in any edition (validated on Hugo 0.170.1). Remove `extended: true` from
+  CI workflows once every branch uses OINK 1.6.0+.
+- **Stylesheets and SCSS hooks.** Convert retired `assets/scss/_*_project*.scss`
+  files to plain CSS in `assets/css/project.css`, update any hardcoded
+  `/scss/*.css` paths to `/css/*.css`, and switch custom-shell layouts to
+  `partial "css/bundle.html"`. See [Retired SCSS hooks](#sass-hooks).
+- **Bootstrap JavaScript.** Remove dependencies on theme-provided
+  `window.bootstrap` or `data-bs-toggle` hooks, migrate Landing download tab
+  listeners from `shown.bs.tab` to `td:tab-shown`, and update `.dropdown-menu`
+  selectors on version lists to `.td-version-menu__list`. See
+  [Bootstrap's JavaScript](#bootstrap-script).
+- **Local search without Lunr.** Remove any site script dependency on
+  `window.lunr`, update custom `OinkSearchEngine.create` calls to
+  `(documents, maxResults)`, and note that `content` indexes larger than 2 MiB
+  automatically split page text into `offline-search-body.<lang>.json`. See
+  [Local search without Lunr](#search-engine).
+- **Markmap 1.1.0 and ReDoc 3.1.0.** Migrate legacy Markmap 0.18 YAML keys
+  (`foldLevel`, `wrapWidth`, `levelGap`, `siblingGap`, `colorDepth`; see
+  [Markmap migration](/docs/components/markmap/#migration)), allow
+  `frame-src 'self'` in CSP if using ReDoc 3, and rename `x-code-samples` to
+  `x-codeSamples`.
+- **On-approach component loading.** Asciinema, ECharts, Infographic, Markmap,
+  and Giscus now load as the reader approaches them. Browser tests that assert
+  rendered charts, maps, or players must scroll the component into view first.
+
+## Retired SCSS hooks {#sass-hooks}
 
 The theme's stylesheet is now plain CSS, and a site build runs no Sass compiler.
 Three files under `assets/scss/` are therefore ignored, and each produces one
@@ -62,11 +92,7 @@ for a [theme stylesheet by name](/docs/customize/brand/#bundles) instead.
 
 ## Bootstrap's JavaScript {#bootstrap-script}
 
-> [!NOTE] Unreleased
-> This change follows 1.5.1 on the theme's main branch. No published tag
-> contains it yet.
-
-After upgrading from 1.5.1, sites must load Bootstrap themselves to provide
+Starting in OINK 1.6.0, sites must load Bootstrap themselves to provide
 `window.bootstrap` or activate Bootstrap's script hooks. If your layouts, shortcodes or content
 use Bootstrap's dropdown, tab, modal or other JavaScript components, search for
 `bootstrap.`, `data-bs-toggle`, `data-bs-dismiss`, `data-bs-target` and `.bs.`
@@ -82,10 +108,6 @@ selectors for those lists. The version trigger exposes its state through
 observe that attribute.
 
 ## Local search without Lunr {#search-engine}
-
-> [!NOTE] Unreleased
-> This change follows 1.5.1 on the theme's main branch. No published tag
-> contains it yet.
 
 Local search needs no configuration change. The index files and front matter
 keys are the same. After upgrading, check three things:
@@ -177,11 +199,11 @@ changed default behavior. Read them to understand differences in the upgraded pa
 
 For a production site, pin a published release tag or an explicitly selected
 immutable commit. Do not follow a branch or use `@latest`. The example below
-upgrades to the published `v1.5.1` tag. Before you select a later tag, verify
+upgrades to the `v1.6.0` tag. Before you select a tag, verify
 that the release is published and its module resolves:
 
 ```bash {title="Terminal"}
-hugo mod get github.com/pgsty/oink@v1.5.1   # the published release tag
+hugo mod get github.com/pgsty/oink@v1.6.0   # the published release tag
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -196,7 +218,7 @@ module github.com/pgsty/oink.pgsty.com
 
 go 1.27.4
 
-require github.com/pgsty/oink v1.5.1
+require github.com/pgsty/oink v1.6.0
 ```
 
 > [!DANGER] A local module replacement overrides that pin
@@ -211,7 +233,7 @@ Check out the exact published version. Do not follow its remote branch:
 
 ```bash {title="Terminal"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.5.1
+git -C themes/oink checkout --detach v1.6.0
 git add themes/oink
 ```
 
@@ -410,7 +432,7 @@ You do not need to rewrite the prose.
    replacement. That registry was removed. The theme now ignores an old key,
    so search remains off without a message.
 
-1. Fonts and styles. Docsy's SCSS hooks in `assets/scss/` are no longer compiled, so its Sass variables, including the font variables and the Google Fonts switches, have no effect. Convert the hooks as described in [Retired SCSS hooks](#sass-hooks). OINK bundles Inter, Chakra Petch, and IBM Plex Mono. No preset requests Google Fonts. To change fonts, use the token layer. See [Brand and appearance](/docs/customize/brand/).
+1. Fonts and styles. Docsy's SCSS hooks in `assets/scss/` are no longer compiled, so its Sass variables, including the font variables and the Google Fonts switches, have no effect. Convert the hooks as described in [Retired SCSS hooks](#sass-hooks). OINK bundles IBM Plex Sans, Inter, Chakra Petch, and IBM Plex Mono. No preset requests Google Fonts. To change fonts, use the token layer. See [Brand and appearance](/docs/customize/brand/).
 
 1. Convert the shortcodes. Docsy's `alert`, `pageinfo`, `tabpane` and `card` families all have a current counterpart; convert them in bulk with the [migration toolkit](#migration-toolkit) above, one `--only` class at a time.
 

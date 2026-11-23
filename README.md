@@ -8,27 +8,32 @@ The bilingual maintainer contracts under `content/docs/design/` are the
 canonical prose source for OINK architecture, components, reading shells,
 Landing pages, and migration boundaries.
 
-The site documents OINK `v1.5.1`. The bilingual release notes cover Duo View
-repairs, publishing correctness, responsive reading, and accessibility. Local
-theme development uses a sibling `../oink` checkout, while `make build` and
-`make serve` use the published version pinned in `go.mod`.
+The site documents OINK `v1.6.0`. The bilingual release notes cover the plain
+CSS architecture, Bootstrap JS and Lunr removal, scanning BM25 search, runtime
+upgrades, and upgrade steps. Local theme development uses a sibling `../oink`
+checkout, while `make build` and `make serve` use the published version pinned
+in `go.mod`.
 `content/docs/cli{,.zh}.md` introduces the separate, unreleased OINK CLI.
 
-## OINK 1.5.1
+## OINK 1.6.0
 
-[OINK v1.5.1](https://github.com/pgsty/oink/releases/tag/v1.5.1) was released on
-2026-11-06. It stabilizes Duo View, corrects RSS and Print aggregation, and
-hardens navigation identity, safe fallbacks, search ranking, localization, and
-accessibility. Builds continue to use Hugo Extended with built-in LibSass.
+[OINK v1.6.0](https://github.com/pgsty/oink/releases/tag/v1.6.0) is dated
+2026-11-23. It moves the stylesheet to plain CSS assembled by Hugo (supporting
+Hugo 0.170+ in any edition with no Sass compiler), removes Bootstrap's
+JavaScript bundle and Lunr, replaces local search with a scanning BM25 engine
+supporting unspaced CJK queries, field anchors, and automatic split indexes,
+and upgrades Markmap, ReDoc, Mermaid, KaTeX, DocSearch, and the rest of the
+vendored runtime set.
 
-- Release notes: [English](https://oink.pgsty.com/blog/release/1.5.1/) /
-  [简体中文](https://oink.pgsty.com/zh/blog/release/1.5.1/)
+- Release notes: [English](https://oink.pgsty.com/blog/release/1.6.0/) /
+  [简体中文](https://oink.pgsty.com/zh/blog/release/1.6.0/)
 - Contribution guide: [English](https://oink.pgsty.com/docs/about/contributing/) /
   [简体中文](https://oink.pgsty.com/zh/docs/about/contributing/)
 - [Upgrade and migration](https://oink.pgsty.com/docs/admin/upgrade/)
 
-Current development and maintained sites use Hugo Extended **0.169.0**. Historical
-release notes retain the toolchain facts of their own versions.
+OINK `v1.6.0` builds with Hugo **0.169.0** or newer in any edition (validated
+on **0.170.1**) and Go **1.27.4**. Historical release notes retain the
+toolchain facts of their own versions.
 
 ## Starting a new OINK site
 
@@ -49,10 +54,11 @@ private repositories. Installation is described in
 
 ## Local development
 
-Use Go 1.27.4 and Hugo Extended 0.169.0 for development, CI, and production
-builds. Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Keep warnings
-visible, including the accepted upstream LibSass deprecation warning. No
-separate Sass installation is required. See the [architecture contract](content/docs/design/architecture.md#hugo-toolchain).
+Use Go 1.27.4 and Hugo 0.169.0+ (any edition; validated on 0.170.1) for sibling
+theme development and checks. No Sass compiler is required (published-pin
+builds on `v1.5.1` still need Hugo Extended 0.169.0 until `go.mod` pins
+`v1.6.0`). Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Keep
+warnings visible. See the [architecture contract](content/docs/design/architecture.md#hugo-toolchain).
 
 For theme development, clone both repositories as siblings:
 
@@ -88,10 +94,10 @@ checker and the English/Chinese Design contract.
 
 Thank you to [@imbajin](https://github.com/imbajin) for the reading repairs,
 fixtures, tests, and bilingual documentation delivered in 1.3.1 and retained in
-1.5.1. [Acknowledgements](https://oink.pgsty.com/docs/about/license/#community-contributors)
+1.6.0. [Acknowledgements](https://oink.pgsty.com/docs/about/license/#community-contributors)
 link each contribution to its pull request. OINK preserves Docsy's history and
 notices; bundled runtimes, fonts, and icons keep their own licences, recorded in
-the theme's [v1.5.1 VENDOR.json](https://github.com/pgsty/oink/blob/v1.5.1/VENDOR.json).
+the theme's [VENDOR.json](https://github.com/pgsty/oink/blob/main/VENDOR.json).
 
 ## License
 

@@ -8,7 +8,7 @@ weight: 10
 ---
 
 A good tutorial begins with a result the reader can see. For OINK, that result
-is the official Starter served locally by Hugo Extended—before any logo,
+is the official Starter served locally by Hugo—before any logo,
 palette, language set, or content architecture is changed.
 
 ## Define the outcome {#outcome}
@@ -23,16 +23,16 @@ theme or deployment problem later.
 
 ## Install the prerequisite {#prerequisite}
 
-Install Git, Go 1.27.4 or newer, and Hugo Extended 0.169.0 for this tutorial.
-The theme ships its compiled CSS, so no Sass compiler or Node.js installation is
-required. If you started from an older Starter template,
-update its GitHub Actions workflow to Hugo Extended 0.169.0 as well.
+Install Git, Go 1.27.4 or newer, and Hugo 0.169.0 or newer (any edition;
+validated on 0.170.1) for this tutorial. The theme's stylesheet is plain CSS,
+so no Sass compiler or Node.js installation is required. If your Starter still
+pins OINK 1.5.1 or older, use Hugo Extended 0.169.0 until you upgrade the pin.
 
 ```console
 $ go version
 go version go1.27.4 darwin/arm64
 $ hugo version
-hugo v0.169.0+extended+withdeploy darwin/arm64
+hugo v0.170.1+withdeploy darwin/arm64
 ```
 
 ## Run the preview {#preview}

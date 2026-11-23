@@ -234,8 +234,8 @@ explicit diagram delimiters are preserved.
   `!include`, `!includeurl`, external themes, C4, AWS and other optional sprite
   libraries are not downloaded. Unsupported resources leave the source visible.
   Use self-contained diagrams, pre-rendered images, or an explicit server for these.
-- The pinned engine is `@plantuml/core` 1.2026.9 with Viz.js 3.24.0. The two scripts
-  total about 4.8 MB before compression, or 1.7 MB with gzip. They load only as enabled diagrams approach the viewport; normal HTTP caching applies.
+- The pinned engine is `@plantuml/core` 1.2026.9 with Viz.js 3.31.0. The two scripts
+  total about 4.7 MB before compression, or 1.6 MB with gzip. They load only as enabled diagrams approach the viewport; normal HTTP caching applies.
 - Rendering uses the browser's JavaScript and WebAssembly support. Sites with a
   restrictive CSP need to allow their own scripts, WebAssembly compilation
   (`wasm-unsafe-eval`) and `blob:` images. Blocked resources retain source.

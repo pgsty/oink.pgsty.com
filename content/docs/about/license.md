@@ -29,7 +29,7 @@ Apache-2.0 license does not change the licenses of its bundled dependencies.
 OINK is maintained by PGSTY. Thank you to
 [@imbajin](https://github.com/imbajin) for reporting and contributing the
 following reading repairs, with fixtures, regression tests, and bilingual docs.
-Introduced in 1.3.1, these fixes remain included in **1.5.1**.
+Introduced in 1.3.1, these fixes remain included in **1.6.0**.
 
 | Contribution | Pull request |
 | --- | --- |
@@ -60,71 +60,60 @@ a modification notice, as Apache-2.0 requires.
 ## Third-party runtimes shipped with the theme {#vendored-runtimes}
 
 The theme commits everything the browser needs to the repository
-(`assets/third_party/`, `assets/js/third_party/`, `static/webfonts/`). These
+(`assets/third_party/`, `static/webfonts/`). These
 assets need no npm step or build-time download. Hugo Module resolution still
 needs Go and an available module source. `VENDOR.json`
 is the machine-readable manifest for these assets. Each entry records the name,
 pinned version, source URL, license file path, and SHA-256 of every selected
-artifact. It also records an aggregate checksum for each of the three asset trees.
+artifact. It also records an aggregate checksum for each of the two asset trees.
 
-The table below matches the [OINK v1.5.1 manifest](https://github.com/pgsty/oink/blob/v1.5.1/VENDOR.json)
-(`VENDOR.json` generated 2026-10-25, schema 1, 29 entries). Versions change
+The table below matches the [OINK v1.6.0 manifest](https://github.com/pgsty/oink/blob/main/VENDOR.json)
+(`VENDOR.json` generated 2026-11-23, schema 1, 25 entries). Versions change
 with each theme release. **Use the manifest from your pinned theme version**. Every source is the
 npm registry (`https://registry.npmjs.org/…`).
 
-| Package                       | Version | Licence                       | What it does in the theme                |
-|-------------------------------|---------|-------------------------------|------------------------------------------|
-| bootstrap                     | 5.3.8   | MIT                           | Grid, components and the RTL stylesheet  |
-| @popperjs/core                | 2.11.8  | MIT                           | Overlay positioning for Bootstrap        |
-| @fortawesome/fontawesome-free | 7.3.1   | CC-BY-4.0 AND OFL-1.1 AND MIT | Icons throughout the site                |
-| @fontsource-variable/inter    | 5.3.0   | OFL-1.1                       | Interface and body font                  |
-| @fontsource-variable/ibm-plex-sans | 5.3.0 | OFL-1.1                    | Body font for Paper and Terminal    |
-| @fontsource/chakra-petch      | 5.3.0   | OFL-1.1                       | Brand display font                       |
-| @fontsource/ibm-plex-mono     | 5.3.0   | OFL-1.1                       | Code font                                |
-| lunr                          | 2.3.9   | MIT                           | Local full-text search                   |
-| @docsearch/js                 | 5.0.4   | MIT                           | The optional Algolia DocSearch front end |
-| @docsearch/css                | 5.0.4   | MIT                           | Its stylesheet                           |
-| mermaid                       | 11.17.2 | MIT                           | Mermaid diagrams                         |
-| katex                         | 0.18.4  | MIT                           | Mathematics                              |
-| markmap-autoloader            | 0.18.12 | MIT                           | Mind maps                                |
-| markmap-lib                   | 0.18.12 | MIT                           | Mind maps                                |
-| markmap-view                  | 0.18.12 | MIT                           | Mind maps                                |
-| markmap-toolbar               | 0.18.12 | MIT                           | Mind map toolbar                         |
-| d3                            | 7.9.0   | ISC                           | Markmap dependency                       |
-| @highlightjs/cdn-assets       | 11.12.0 | BSD-3-Clause                  | Markmap dependency                       |
-| webfontloader                 | 1.6.28  | Apache-2.0                    | Markmap dependency                       |
-| swagger-ui-dist               | 5.32.14 | Apache-2.0                    | OpenAPI reference pages                  |
-| redoc                         | 2.5.3   | MIT                           | OpenAPI reference pages                  |
-| asciinema-player              | 3.17.0  | Apache-2.0                    | Terminal recording playback              |
-| echarts                       | 6.1.0   | Apache-2.0                    | Charts                                   |
-| @antv/infographic             | 0.2.19  | MIT                           | Infographics                             |
-| pako                          | 3.0.1   | MIT AND Zlib                  | Decompression (diagram data)             |
-| external-svg-loader           | 1.7.1   | MIT                           | Inlining external SVG                    |
-| idb-keyval                    | 6.2.0   | Apache-2.0                    | Browser-side caching                     |
+| Package                            | Version  | Licence                       | What it does in the theme                |
+|------------------------------------|----------|-------------------------------|------------------------------------------|
+| bootstrap                          | 5.3.8    | MIT                           | Grid, component styles, and RTL bundle   |
+| @fortawesome/fontawesome-free      | 7.3.1    | CC-BY-4.0 AND OFL-1.1 AND MIT | Icons throughout the site                |
+| @fontsource-variable/inter         | 5.3.0    | OFL-1.1                       | Interface and body font                  |
+| @fontsource-variable/ibm-plex-sans | 5.3.0    | OFL-1.1                       | Body font for Paper and Terminal         |
+| @fontsource/chakra-petch           | 5.3.0    | OFL-1.1                       | Brand display font                       |
+| @fontsource/ibm-plex-mono          | 5.3.0    | OFL-1.1                       | Code font                                |
+| @docsearch/js                      | 5.2.0    | MIT                           | The optional Algolia DocSearch front end |
+| @docsearch/css                     | 5.2.0    | MIT                           | Its stylesheet                           |
+| mermaid                            | 12.3.0   | MIT                           | Mermaid diagrams                         |
+| katex                              | 0.19.1   | MIT                           | Mathematics styles and fonts             |
+| swagger-ui-dist                    | 5.34.1   | Apache-2.0                    | OpenAPI reference pages                  |
+| redoc                              | 3.1.0    | MIT                           | OpenAPI reference pages                  |
+| asciinema-player                   | 3.18.0   | Apache-2.0                    | Terminal recording playback              |
+| echarts                            | 6.1.0    | Apache-2.0                    | Charts                                   |
+| @antv/infographic                  | 0.2.20   | MIT                           | Infographics                             |
+| pako                               | 3.0.3    | MIT AND Zlib                  | Decompression (diagram data)             |
+| external-svg-loader                | 1.7.1    | MIT                           | Inlining external SVG                    |
+| idb-keyval                         | 6.3.0    | Apache-2.0                    | Browser-side caching                     |
+| @plantuml/core                     | 1.2026.9 | MIT                           | Local PlantUML diagram engine            |
+| @viz-js/viz                        | 3.31.0   | MIT AND EPL-2.0               | Graphviz layout for local PlantUML       |
+| @markmap/core                      | 1.1.0    | MIT                           | Mind maps (core model)                   |
+| @markmap/parse                     | 1.1.0    | MIT                           | Mind maps (Markdown parser)              |
+| @markmap/render                    | 1.1.0    | MIT                           | Mind maps (SVG renderer)                 |
+| @markmap/view                      | 1.1.0    | MIT                           | Mind maps (interactive view)             |
+| @markmap/plugin-math               | 1.1.0    | MIT                           | Mind map formula rendering (MathJax)     |
 {.wide .expand}
 
-License texts accompany their assets. Examples include
+License texts accompany their assets under `assets/third_party/`, such as
 `assets/third_party/bootstrap/LICENSE` and
-`assets/third_party/katex/LICENSE`. Swagger UI, Redoc, and ECharts also include
-their own `NOTICE` or bundled-declaration files. Lunr is the only exception. Its
-code is in `assets/js/third_party/`. Its license is at
-`assets/third_party/lunr/LICENSE`.
-
-The OINK 1.4.0 local PlantUML integration adds `@plantuml/core` 1.2026.9 (MIT)
-and Viz.js 3.24.0 (MIT), including Graphviz 14.1.1 (EPL-1.0) and Expat (MIT).
-Their notices and upstream source links accompany the two scripts in
-`assets/third_party/plantuml/`; `VENDOR.json` records the exact artifacts.
-
-> [!NOTE] Unreleased dependency inventory
-> The 2026-11-23 `VENDOR.json` lists 26 top-level dependencies. Bootstrap
-> supplies CSS, and removing its JavaScript bundle also removed Popper.
-> Markmap's scoped 1.1.0 packages replace the legacy packages above;
-> bundled modules, including MathJax, have complete version and license lists in
-> `assets/third_party/markmap/PACKAGES.json` and `LICENSES.txt`.
-> Viz.js 3.31.0 includes Graphviz 16.1.0 under **EPL-2.0**, replacing EPL-1.0.
-> ReDoc 3 retains bundled license comments inside its distribution. The
-> [dependency contract](/docs/design/architecture/#unreleased-dependencies)
-> describes the migration; the table above remains the published v1.5.1 inventory.
+`assets/third_party/katex/LICENSE`. Swagger UI, ReDoc, and ECharts include
+their own `NOTICE` or bundled-declaration files. `@viz-js/viz` 3.31.0 embeds
+Graphviz 16.1.0 (**EPL-2.0**, replacing EPL-1.0) and Expat 2.8.5 (MIT), with
+notices and upstream source links beside the scripts in
+`assets/third_party/plantuml/`. Markmap's scoped 1.1.0 packages record all
+bundled sub-packages (including MathJax and D3 primitives) in
+`assets/third_party/markmap/PACKAGES.json` and `LICENSES.txt`. OINK 1.6.0
+removed Bootstrap's JavaScript bundle, `@popperjs/core`, `lunr` (along with
+`assets/js/third_party/`), and the legacy Markmap 0.18 / D3 / highlight.js /
+WebFontLoader packages. See the
+[dependency contract](/docs/design/architecture/#unreleased-dependencies).
 
 When you redistribute the theme, include all this license and notice material.
 When you update a runtime, update its artifact, license file, source, and checksum
@@ -133,7 +122,7 @@ in the same change.
 ## Fonts and icons {#fonts-and-icons}
 
 Inter, IBM Plex Sans, Chakra Petch, and IBM Plex Mono use the SIL Open Font
-License 1.1. OINK 1.5.1 includes 33 files under `static/webfonts/`: fourteen
+License 1.1. OINK 1.6.0 includes 33 files under `static/webfonts/`: fourteen
 Inter subsets, twelve IBM Plex Sans subsets, four brand-font files, and three
 Font Awesome files. Font Awesome Free 7.3.1 uses a composite license. Its icon artwork uses
 CC BY 4.0, its font files use SIL OFL 1.1, and its code uses MIT. The text is

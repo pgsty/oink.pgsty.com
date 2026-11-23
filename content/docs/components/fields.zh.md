@@ -98,7 +98,10 @@ search_keywords: [参数表, Fields, field, 配置项, 参数, API 字段, meta,
 
 每个条目获得一个 `field-<名称>` 形式的锚点，鼠标移上去时名称右边出现自链接图标。上面第一张表里的 `page_width` 就是 [#field-page_width](#field-page_width)，回答问题时可以把这一行的链接单独发出去。
 
-同一页里重名的字段按 `-2`、`-3` 顺延，规则与 Goldmark 处理重名标题一致。锚点只在 HTML 里生成：打印和 RSS 会把很多页拼成一个文档，页内锚点在那里会冲突。
+同一页里重名的字段按 `-2`、`-3` 顺延，规则与 Goldmark 处理重名标题一致。
+从 OINK 1.6.0 起，`field` 短代码支持可选的 `id` 参数（例如 `id="guc-work-mem"`）来保留既有的锚点，替代自动生成的 `field-<名称>`；值为空、重复或包含非法字符时会告警并回退到自动锚点。
+每个带锚点的条目还会带上纯文本名称的 `data-td-search-entry`，让[本地搜索](/zh/docs/customize/search/)可以直接定位到该参数。
+锚点只在 HTML 里生成：打印和 RSS 会把很多页拼成一个文档，页内锚点在那里会冲突。
 
 ## shortcode 形态 {#shortcode}
 
@@ -166,7 +169,7 @@ pig ext install pg_duckdb --dry-run
 
 | 输出 | 呈现 |
 | --- | --- |
-| HTML | `<div class="td-fields">` + 语义 `<dl>`；条目带 `#field-<名称>` 锚点与自链接 |
+| HTML | `<div class="td-fields">` + 语义 `<dl>`；条目带 `#field-<名称>`（或显式 `id`）锚点、自链接与 `data-td-search-entry` |
 | 打印 | 完整定义列表，不带条目锚点 |
 | Markdown | 表格形态保留源码表格；shortcode 形态输出「`名称` — 类型；required；default: 值」加缩进说明的项目符号列表 |
 | RSS | 完整静态 `<dl>`，不带条目锚点 |
@@ -201,6 +204,7 @@ pig ext install pg_duckdb --dry-run
 | 参数 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
 | `name` | 非空字符串 | 是 | 字段名 |
+| `id` | 标识符 | | 替换自动生成的 `field-<名称>` 锚点（1.6.0 起）；不能含空白、引号、`<`、`>`、`&`，且在同页参数中保持唯一 |
 | `type` | 非空字符串 | | 类型标签，如 `boolean` `string[]` `duration` |
 | `required` | 布尔 | | `true` 时显示不翻译的 `required` 标签，默认 `false` |
 | `default` | 标量 | | 字符串 / 布尔 / 整数 / 浮点；`false`、`0`、`""` 都会显示 |

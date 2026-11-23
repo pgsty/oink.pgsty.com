@@ -99,7 +99,8 @@ menus:
 3. 按 identifier / 分区名匹配的内置默认值（`docs` `blog` `examples` `community` `about` `download` `github` 等）；
 4. 都没有时用 `fa-solid fa-link`。
 
-图标写成一对 Font Awesome class，主题本地提供免费版字体：
+图标写成一对 Font Awesome class，主题本地提供免费版字体。将 `params.icon` 设为
+`false` 或 `"none"` 可以显式关闭图标，让该条目在空间变窄时仍保留单行文字标签：
 
 ```yaml {title="hugo.yml"}
 menus:
@@ -140,6 +141,11 @@ menus:
 | `lg` 及以上 | 品牌、居中的文字菜单，以及搜索、版本、语言、主题和 GitHub 控件；没有抽屉按钮 |
 | `md` 至小于 `lg` | 菜单以图标居中，工具控件留在末端；没有抽屉按钮 |
 | 小于 `md` | 保留居中的菜单图标，末端只留搜索与相应的抽屉按钮；版本、语言、主题与快捷键帮助仍可在页脚最底层栏使用 |
+
+自 OINK 1.6.0 起，顶栏菜单在任意宽度下都保持单行。当品牌区、固定桌面侧栏与右侧工具
+控件之间的可用空间变窄时，带图标的条目会优先收束为纯图标模式（使用 `params.icon: false`
+或 `"none"` 退出图标的条目保留单行文字）；若仍放不下全部条目，超出项会按序收拢到尾部的
+`…` 溢出展开面板（`ui_nav_more`）中，以完整图标、标题与子项展示。
 
 各控件的开关不在这里：搜索图标要 `params.offline_search`（见[全文检索](/zh/docs/customize/search/)），版本菜单要 `params.versions`（见[多版本](/zh/docs/customize/versions/)），语言菜单在配置了两种及以上语言时自动出现（见[多语言](/zh/docs/customize/i18n/)），主题控件要 `params.ui.dark_mode`（见[品牌外观](/zh/docs/customize/brand/#dark-mode)）。
 

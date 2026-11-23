@@ -18,7 +18,7 @@ search_keywords:
 ```yaml {title="hugo.yml"}
 params:
   ui:
-    shell_types: [docs, book, blog, swagger]
+    shell_types: [docs, book, blog, swagger, expo]
 ```
 
 | type | 外壳 |
@@ -27,11 +27,8 @@ params:
 | `book` | 文档外壳，另加编号目标、`reading_width` 阅读行宽与草稿横幅 |
 | `blog` | 文档外壳，侧栏默认展开，标题行左半边是 RSS |
 | `swagger` | 文档外壳，正文交给 Swagger UI 或 Redoc，见 [API 文档](/zh/docs/write/openapi/) |
+| `expo` | 共享侧栏加全宽图片相册，没有右侧大纲，见 [Expo 相册](/zh/docs/write/expo/) |
 | 其它 type | 普通页面：顶栏 + 单栏正文 + 页脚，没有侧栏 |
-
-OINK 1.3.0 新增 `expo` 类型：共享侧栏加图片相册，默认全宽且没有右侧大纲。
-默认 `shell_types` 列表包含 `expo`；若使用上面的显式列表，请将其加入。
-配置与示例见 [Expo 相册](/zh/docs/write/expo/)。
 
 分类页与标签页（`taxonomy` / `term`）不在这张表里，但也走同一套外壳。
 
@@ -145,7 +142,8 @@ params:
 - `sidebar_width_min` / `sidebar_width_max` 是桌面端拖拽调宽的上下限（像素）。读者调整后的宽度存在浏览器本地，双击分隔条恢复默认。
 - `sidebar_item_overflow` 默认 `ellipsis`（长标题省略），中文长标题多的站点可以改 `wrap` 换行。
 
-达到 `sidebar_cache_limit` 后，有相同有效设置的页面可以共享一份中性渲染树。没有
+页数低于 `sidebar_cache_limit` 时，OINK 1.6.0 会在每次构建中缓存当前页面之外的侧栏分支，
+同时仍于构建期渲染激活状态。达到 `sidebar_cache_limit` 后，有相同有效设置的页面可以共享一份中性渲染树。没有
 JavaScript 时它仍然可见且可导航；外壳运行时只补当前路径并展开其祖先。页面或
 cascade 覆盖会选择对应的缓存变体；启用 `sidebar_headings` 的 Book 页面仍使用自己
 的页面专属树。

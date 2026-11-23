@@ -5,38 +5,34 @@ description: Repository assembly, configuration, diagnostics, localization, outp
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK architecture, repository boundary, runtime, i18n, Docsy locales, output formats, security, accessibility, performance]
-contract_status: v1.5.1
+contract_status: v1.6.0
 ---
 
-> [!NOTE] OINK 1.5.1 contract
-> This contract describes OINK v1.5.1.
+> [!NOTE] OINK 1.6.0 contract
+> This contract describes OINK v1.6.0.
 
 ## Hugo toolchain {#hugo-toolchain}
 
-Published **OINK v1.5.1** was validated with **Hugo Extended 0.168.0**.
-The current checkout pins no Hugo release: development and checks use the
-installed Hugo, the theme's CI installs the current release, and any edition
-builds it. `theme.toml` and `hugo.yaml` declare **0.169.0** as the oldest
-supported release, and the module requires **Go 1.27.4**; see the
-[unreleased migration](#unreleased-dependencies).
+**OINK v1.6.0** requires **Hugo 0.169.0** or newer in any edition (validated on
+**Hugo 0.170.1**) and **Go 1.27.4**. Development and checks pin no Hugo
+release: they use the installed Hugo, and the theme's CI installs the current
+release. `theme.toml` and `hugo.yaml` declare **0.169.0** as the oldest
+supported release. See [Runtime dependencies and 1.6.0 baseline](#unreleased-dependencies).
 
 Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Warnings remain
 visible and are reviewed. Invalid-input tests verify their specific warning
 and safe fallback output directly.
 
-Published v1.5.1 compiles main and ReDoc styles with Hugo's built-in LibSass
-in every site build, including the consumer SCSS hooks, and prints Hugo's
-accepted LibSass deprecation warning; that release therefore needs Hugo's
-Extended edition. The current checkout contains no Sass: its stylesheet is
-plain CSS that Hugo concatenates; see
-[Plain CSS stylesheet delivery](#stylesheet-delivery). In both, ordinary
-consumers need no Dart Sass or other Sass executable. Later changes must
-preserve this dependency boundary: a site build needs only the Hugo binary.
-Update requirements, checkers, and both language contracts together;
-historical release and research records retain their original tools.
+OINK v1.6.0 contains no Sass: its stylesheet is plain CSS that Hugo
+concatenates; see [Plain CSS stylesheet delivery](#stylesheet-delivery).
+Ordinary consumers need no Dart Sass, LibSass, or other Sass executable—a site
+build needs only the Hugo binary. Releases up to v1.5.1 compiled main and ReDoc
+styles with Hugo's built-in LibSass (requiring Hugo Extended 0.168.0 and Go
+1.27.3). Later changes must preserve this Hugo-only dependency boundary. Update
+requirements, checkers, and both language contracts together; historical release
+and research records retain their original tools.
 
-The published v1.5.1 module requires Go **1.27.3**. Go resolves
-Hugo Modules and is not needed for a prepared classic theme copy.
+Go resolves Hugo Modules and is not needed for a prepared classic theme copy.
 
 ## Repository and assembly {#repository-and-assembly}
 
@@ -64,18 +60,13 @@ The [shell contract](/docs/design/shell/) defines immersive pages as a blog pres
 Layouts must render through `content/render.html` before `scripts.html` because render hooks and shortcodes register capability flags in the Page Store.
 Override the narrowest partial. Keep similar base templates separate when merging them would change Hugo lookup precedence.
 
-## Dependency migration after 1.5.1 {#unreleased-dependencies}
+## Runtime dependencies and 1.6.0 baseline {#unreleased-dependencies}
 
-> [!NOTE] Unreleased
-> These changes describe the sibling theme checkout after v1.5.1. They are not
-> included in the published v1.5.1 module or this site's published pin.
-
-The current checkout requires **Go 1.27.4** and **Hugo 0.169.0** or newer, in
+OINK v1.6.0 requires **Go 1.27.4** and **Hugo 0.169.0** or newer, in
 any edition. No Hugo release is pinned: development and checks use the
 installed one, and the theme's CI installs the current release. The stylesheet
 is plain CSS that Hugo concatenates, and the consumer SCSS hooks are retired;
-see [Plain CSS stylesheet delivery](#stylesheet-delivery). The published v1.5.1
-requirements above remain historical release facts. Contributor browser checks
+see [Plain CSS stylesheet delivery](#stylesheet-delivery). Contributor browser checks
 use Node 26.13.0 and npm 12.2.2; these are not consumer build dependencies.
 Blog cards, galleries and external rows read authored fallback summaries through
 `RawSummary`. Hugo 0.169.0's `plainify` supplies improved spacing between HTML
@@ -84,12 +75,13 @@ Pandoc 3.13, EPUBCheck 5.4.0 and Chrome headless shell 157.0.8103.50, with Java 
 The search close button's localized accessible name includes its visible
 `Esc` label and exposes `aria-keyshortcuts="Escape"` for speech and keyboard access.
 
-The refreshed runtime set is DocSearch 5.2.0, Mermaid 12.3.0, KaTeX 0.19.1,
+The refreshed runtime set (25 vendored dependencies in `VENDOR.json`) includes
+DocSearch 5.2.0, Mermaid 12.3.0, KaTeX 0.19.1,
 Markmap 1.1.0, Swagger UI 5.34.1, ReDoc 3.1.0, Asciinema 3.18.0,
 Infographic 0.2.20, Pako 3.0.3, idb-keyval 6.3.0 and Viz.js 3.31.0
 (Graphviz 16.1.0 and Expat 2.8.5). Font Awesome 7.3.1, Bootstrap 5.3.8,
-ECharts 6.1.0, the font packages and PlantUML core 1.2026.9 were already
-current stable releases. `VENDOR.json` remains the exact inventory.
+ECharts 6.1.0, the font packages and PlantUML core 1.2026.9 remain current
+stable releases. `VENDOR.json` remains the exact inventory.
 
 The `main` stylesheet retains Bootstrap's component CSS, including modals,
 offcanvas panels and carousels, for use in site-owned markup. A site that uses its JavaScript components
@@ -248,10 +240,10 @@ Draw.io loads only if rendered content has PNG or SVG candidates. It inspects ea
 Diagram endpoints must be strings with an HTTP(S) URL containing a host or a same-site path.
 Unsupported schemes, protocol-relative URLs, backslashes, whitespace, and same-site references without paths warn and disable the integration before runtime selection.
 
-> [!NOTE] Self-contained PlantUML in OINK 1.4.0
+> [!NOTE] Self-contained PlantUML (since OINK 1.4.0)
 > `plantuml: true` or `plantuml.enable: true`
 > without an endpoint selects browser rendering. The two pinned local assets
-> (`@plantuml/core` 1.2026.9 and Viz.js 3.24.0) load only on HTML pages with
+> (`@plantuml/core` 1.2026.9 and Viz.js 3.31.0 in 1.6.0) load only on HTML pages with
 > PlantUML fences. Normal builds and readers need no Java, Graphviz executable,
 > npm installation, CDN or rendering service. A nonempty endpoint still selects
 > server mode and retains its validation and `svg` behavior; invalid endpoints
@@ -259,7 +251,7 @@ Unsupported schemes, protocol-relative URLs, backslashes, whitespace, and same-s
 > or external resources are downloaded by local rendering. Generated SVG is
 > displayed as a Blob image, never inserted into the page DOM. Failed input or
 > loading keeps readable source; dedicated Print, Markdown and RSS keep source
-> without a runtime. This behavior is part of the v1.4.0 release.
+> without a runtime.
 
 > [!NOTE] Fixed in OINK 1.3.0
 > Editor URLs retain their query parameters and fragments when embedding
@@ -476,7 +468,7 @@ Forced colors retain keyboard focus indication. No global focus-outline reset is
 Font roles are `ui`, `body`, `heading`, `code`, `display`, `meta`, `brand`, and `print`. They use `--td-*-font-family` properties.
 `ui` is the primary face, with `body` resolving through it and `heading` through `body`, so one assignment changes interface text, prose, and headings together.
 `params.ui.typography` accepts `technical` or `system`. Both are part of the one stylesheet and need no runtime.
-Published v1.5.1 lets legacy Bootstrap/Docsy Sass variables initialize these roles; the current stylesheet is plain CSS and reads no consumer Sass variable.
+OINK 1.6.0's stylesheet is plain CSS and reads no consumer Sass variable (1.5.1 and older let legacy Bootstrap/Docsy Sass variables initialize these roles).
 
 `params.ui.fonts` configures the same roles without an added stylesheet.
 It names faces without loading them, so readers must have the family or the site must declare it through its own `@font-face`.

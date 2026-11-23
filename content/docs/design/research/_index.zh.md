@@ -13,7 +13,7 @@ design_status: active
 ---
 
 > [!NOTE] 带日期的研究记录
-> 研究记录保存特定实验的测量结果、输入与工具版本。当前行为以 [Design 契约](/zh/docs/design/)为准，并按[工具链契约](/zh/docs/design/architecture/#hugo-toolchain)在 Hugo Extended 0.168.0 上验证。
+> 研究记录保存特定实验的测量结果、输入与工具版本。当前行为以 [Design 契约](/zh/docs/design/)与[工具链契约](/zh/docs/design/architecture/#hugo-toolchain)为准。
 
 只有其他维护者能够检查方法、理解范围并复现相关检查时，研究才适合进入公开 Design 内容树。
 请勿将原始 Agent 对话、临时构建日志和本机绝对路径写入研究记录。

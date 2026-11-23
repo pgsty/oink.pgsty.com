@@ -6,7 +6,7 @@ weight: 70
 search_keywords: [命令面板, command palette, Cmd+K, Ctrl+K, 快捷键, 页面动作, page actions, 自定义命令, command-palette, quick-links, page-context-menu, 动作注册表]
 ---
 
-命令面板是站点唯一的模态入口：搜索页面、复制本页 Markdown、切换语言、切换版本、跳转到站点自定义链接，都在这一个对话框里完成。它随本地搜索一起装配：`params.offline_search` 关闭时，面板连同索引与 Lunr 都不进入页面，见[全文检索](/zh/docs/customize/search/)。
+命令面板是站点唯一的模态入口：搜索页面、复制本页 Markdown、切换语言、切换版本、跳转到站点自定义链接，都在这一个对话框里完成。它随本地搜索一起装配：`params.offline_search` 关闭时，面板连同索引与搜索引擎都不进入页面，见[全文检索](/zh/docs/customize/search/)。
 
 ## 打开面板 {#open}
 

@@ -8,13 +8,13 @@ description: "Oink 建站: build, migrate, and polish Hugo sites on the OINK the
 > Public edition of the OINK site-building skill. Source:
 > <https://oink.pgsty.com/skill.md> · 中文：<https://oink.pgsty.com/skill.zh.md>.
 > Save it as `SKILL.md` in an `oink-site/` skills directory, or hand the URL to
-> any agent. Snapshot 2026-11-06 for OINK v1.5.1.
+> any agent. Snapshot 2026-11-23 for OINK v1.6.0.
 
 OINK is a local-first Hugo Module theme, a hard fork of Docsy. A site is an
 ordinary Hugo repository: `hugo.yaml`, a `go.mod` pinning
 `github.com/pgsty/oink@<tag>`, `content/`, `data/`, and optional `assets/` and
-`layouts/` hooks. Hugo Extended builds it, plus Go for module installs. There
-is no Node, npm, Dart Sass, PostCSS, or CDN. It provides Docs, Book, Blog and
+`layouts/` hooks. Hugo builds it in any edition (plain CSS, no Sass compiler),
+plus Go for module installs. There is no Node, npm, Dart Sass, PostCSS, or CDN. It provides Docs, Book, Blog and
 Swagger reading shells, Expo albums, Landing sections, local search, bundled
 fonts and icons, 32 interface locales, appearance presets, print, and
 Markdown/LLMS outputs. It has no CMS, authentication, database, or automatic
@@ -47,7 +47,7 @@ or material can justify a different shape; when you depart from them, say why.
   config, print, agents) · `admin/` (preview, deploy, upgrade,
   troubleshooting, analytics, comments) · `design/` (landing, shell,
   components, architecture).
-- Baseline of this snapshot: OINK v1.5.1, Hugo Extended 0.168.0, Go 1.27.3.
+- Baseline of this snapshot: OINK v1.6.0, Hugo 0.169.0+ (any edition; validated on 0.170.1), Go 1.27.4.
   Check GitHub releases for the newest published version, read its notes, and
   confirm what resolved with `hugo mod graph`. Newer docs win over this file.
 - The target site's `AGENTS.md`/`CLAUDE.md`, `README.md`, and `Makefile` are
@@ -335,12 +335,14 @@ complete.
 Design for the material in front of you; these orders are not quotas.
 
 **CSS rules.**
-- Site styles go in `assets/scss/_styles_project.scss`, scoped under a site
-  prefix or a section `class`.
+- Site styles go in `assets/css/project.css` (and `assets/css/project/*.css` in
+  path order) as plain CSS, scoped under a site prefix or a section `class`.
+  The legacy `assets/scss/_*_project*.scss` hooks are retired and ignored.
 - Never restyle `.td-*` globally or use a global `!important`.
 - Check every preset in the menu in both light and dark, plus RTL, print, and
   narrow screens.
-- LibSass needs `unquote()` around CSS `min()`/`max()`.
+- For site-owned shells that do not load `main`, request `chrome`, `landing`,
+  `search`, or `compare` through `partial "css/bundle.html"`.
 
 ## Extensions
 
@@ -372,7 +374,9 @@ git status --short
 ```
 
 - **Pass criteria.** The build prints `Total in …` with no ERROR, and you have
-  read every WARN. The LibSass deprecation notice is expected.
+  read every WARN. OINK 1.6.0+ uses plain CSS and emits no LibSass notice (sites
+  still pinned to 1.5.1 or older still see the upstream LibSass deprecation
+  notice on Hugo 0.169).
   - Never use `--panicOnWarning` or `HUGO_PANICONWARNING`.
   - Most bad input warns and falls back. Unresolved `ref`/`relref` and leftover
     `blocks/*` fail the build.

@@ -10,12 +10,12 @@ design_status: draft
 proposal_date: 2026-11-21
 ---
 
-> [!WARNING] Draft roadmap; only R0 is implemented
-> This page proposes an order of work and records the evidence behind it. R0 is implemented on the theme's main branch and unreleased: the stylesheet is plain CSS that Hugo assembles, with no compiler and nothing generated in Git; see [R0](#sass-design). Beyond that, the page defines no configuration key, output, or component. Every name below is provisional until its stage is accepted and moved to the owning contract.
+> [!WARNING] Draft roadmap for R1–R3; R0 accepted for v1.6.0
+> This page proposes an order of work and records the evidence behind it. R0 is accepted for OINK v1.6.0: the stylesheet is plain CSS that Hugo assembles, with no compiler and nothing generated in Git; see [R0](#sass-design). Beyond that, the page defines no configuration key, output, or component. Every name below is provisional until its stage is accepted and moved to the owning contract.
 
 | Record | Value |
 | --- | --- |
-| Status | Draft. The owner decided R0's compiled-CSS delivery on 2026-11-22. The source then became plain CSS, verified on 2026-11-23, which removed the compiler. R0 is implemented and unreleased. No other stage is accepted |
+| Status | R0 accepted for v1.6.0 (compiled-CSS delivery decided 2026-11-22, plain CSS verified 2026-11-23, Bootstrap JS removed 2026-11-23). R1–R3 remain draft and unaccepted |
 | Owner | OINK maintainers |
 | Date | 2026-11-21 |
 | Scope | OINK theme and documentation site; the CLI only where a stage names it |
@@ -148,8 +148,8 @@ hooks, and adjust the sites that compiled theme SCSS themselves. That first
 delivery kept SCSS as the source and committed the compiled bundles, so a
 maintainer still needed LibSass. The source was then converted to plain CSS,
 which is option D taken as the next step, and the compiler was removed. Both
-steps are implemented on the theme's main branch and are not released. The
-contract is [Plain CSS stylesheet delivery](/docs/design/architecture/#stylesheet-delivery).
+steps are accepted for OINK v1.6.0. The contract is
+[Plain CSS stylesheet delivery](/docs/design/architecture/#stylesheet-delivery).
 
 | Item | State |
 | --- | --- |
@@ -175,7 +175,9 @@ they gained selectors, but no rule or declaration changed.
 ### Compatibility and migration {#sass-migration}
 
 The three SCSS hooks were public surface, so retiring them is a breaking
-change. Whether that makes the release a major version is still open.
+change. This release ships as `v1.6.0` on the `v1` module path
+(`github.com/pgsty/oink`) with the breaking changes documented upfront in the
+changelog and upgrade guide.
 
 - Hooks are converted by hand; the [upgrade guide](/docs/admin/upgrade/#sass-hooks) lists the steps. A site's rules now load after the theme, so they beat later theme rules of equal specificity, most visibly the visual presets. A converted site is therefore compared page by page.
 - A one-time converter was written during this delivery and then removed, together with the Sass override layer it compiled through, so the theme keeps no legacy Sass path. Before its removal, on 2026-11-22, a dry run over the 46 inventoried hook files reported no failed check, and each of the 51 inventoried checkouts was copied, converted where it still had hooks, and built against the new theme on Hugo 0.170.1 with only the Hugo binary: 50 built, 55,020 pages in all, with no stylesheet warning. The remaining one, pgsty.com, timed out fetching its own remote report manifest in that harness and built completely in a separate run.
@@ -253,8 +255,8 @@ A hosted MCP server and a built-in assistant stay out of scope. The existing [se
 | --- | --- | --- |
 | 1 | R0 compiled CSS delivery, since superseded by the plain CSS source in row 3 | Done on Hugo 0.169.0 and 0.170.1 with no Sass executable on `PATH`: theme checkers, the documentation site's checks and browser suite, and a file-by-file comparison of the regression fixture |
 | 2 | R0 migration tool, run dry on the 51 inventoried checkouts | Done, then removed: every hook file converted, with no failed declaration check and one site to review. The tool was deleted with the Sass override layer it needed; hooks are now converted by hand |
-| 3 | R0 plain CSS source, implemented and unreleased | Done on 2026-11-23 with Hugo 0.170.1: the production `main` stylesheet is byte-identical to the last one compiled from Sass, and the regression fixture is identical apart from the stylesheet path. No compiler and no generated file remain |
-| 4 | The release that retires the hooks, with consumer adoption | Published pin verified; consumers build with Hugo alone |
+| 3 | R0 plain CSS source, accepted for v1.6.0 | Done on 2026-11-23 with Hugo 0.170.1: the production `main` stylesheet is byte-identical to the last one compiled from Sass, and the regression fixture is identical apart from the stylesheet path. No compiler and no generated file remain |
+| 4 | OINK v1.6.0 release and consumer adoption | Tag `v1.6.0` verified on Go proxy; consumers upgrade pins and build with Hugo alone |
 | 5 | R1 items, each on its own | Owning checker, goldens for every output, bilingual contract |
 | 6 | R2 evaluation, then one accepted design | Two real repositories use it before compatibility promises |
 | 7 | R3 comparison, then one accepted design | A real specification is fully accounted for |
@@ -281,7 +283,7 @@ Each stage moves its accepted behavior to the owning contract in both languages 
 
 ## Open decisions {#open-decisions}
 
-1. Does the Sass exit justify a major version, or can 1.x carry a transition release?
+1. Resolved on 2026-11-23: ship as `v1.6.0` on the `v1` Go module path (`github.com/pgsty/oink`) with deliberate breaking changes documented in `CHANGELOG.md` and the upgrade guide, keeping module paths stable for existing consumers.
 2. Closed: the theme source is plain CSS, verified on 2026-11-23. There is no maintainer build, so no Dart Sass release has to be chosen and its 11 selector changes do not arise.
 3. Resolved on 2026-11-22: no legacy path for sites that install Dart Sass themselves.
 4. Resolved for now: brand and semantic colors are custom properties in site CSS. A configuration key remains possible later.

@@ -106,7 +106,7 @@ params:
     featured_image: banner
 ```
 
-页面键是 `featured_image`，所以某个子栏目的 `cascade` 可以只为那棵树打开它，单篇文章也可以退出。没有图片的文章在任何模式下都不显示题图，因此只有部分文章配图的栏目也可以整体开启。这些模式无需额外脚本。
+页面键是 `featured_image`，所以某个子栏目的 `cascade` 可以只为那棵树打开它，单篇文章也可以退出。没有图片的文章在任何模式下都不显示题图，因此只有部分文章配图的栏目也可以整体开启。这些模式无需额外脚本。在 OINK 1.6.0 中，`banner`、`hero` 与 `wash` 模式下的本地位图会自动重编码为 WebP 并带上 `fetchpriority="high"`；动图保留原有帧。
 
 ```yaml {title="content/blog/release/_index.md"}
 cascade:

@@ -59,8 +59,8 @@ search_keywords: [API, OpenAPI, Swagger, Swagger UI, Redoc, 接口文档, swagge
 `https://example.com/preview/openapi/docs-demo.yaml`。与 `swagger` 不同，Redoc
 接收的是这个基于 `baseURL` 的绝对 URL。
 
-> [!NOTE] 尚未发布的 ReDoc 3
-> OINK v1.5.1 之后的依赖升级将 ReDoc 3.1.0 作为本地 ES 模块加载，每个阅读器
+> [!NOTE] OINK 1.6.0 中的 ReDoc 3
+> OINK v1.6.0 将 ReDoc 3.1.0 作为本地 ES 模块加载，每个阅读器
 > 使用独立文档和自己的片段导航，不影响文章锚点或其他阅读器。框架使用上游的
 > 浅色配色和独立滚动区域，下方保留规范链接。
 
@@ -87,7 +87,7 @@ cascade:
 ---
 ```
 
-`swagger` 是主题默认的外壳类型之一（`params.ui.shell_types` 默认是 `[docs, book, blog, swagger]`，站点覆盖这个列表时需要保留它）。它与 `docs` 外壳的差别只有两处：`<body>` 上多一个 `td-swagger` class 供样式挂钩，以及不显示版本横幅。侧栏、目录、面包屑、翻页器与页尾都照常。
+`swagger` 是主题默认的外壳类型之一（`params.ui.shell_types` 默认是 `[docs, book, blog, swagger, expo]`，站点覆盖这个列表时需要保留它）。它与 `docs` 外壳的差别只有两处：`<body>` 上多一个 `td-swagger` class 供样式挂钩，以及不显示版本横幅。侧栏、目录、面包屑、翻页器与页尾都照常。
 
 外壳与页宽的完整说明见[布局与页面类型](/zh/docs/customize/layout/)。
 

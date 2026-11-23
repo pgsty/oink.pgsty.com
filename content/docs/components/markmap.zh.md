@@ -8,9 +8,9 @@ search_keywords: [思维导图, Markmap, mind map, 大纲, outline, 脑图, 树�
 
 `markmap` 围栏的正文是一段普通的 Markdown 大纲：标题与列表决定层级，浏览器把它画成一棵可展开、可折叠的树。适合把「这一节讲了什么」的层级一次呈现。节点之间有方向、有条件的流程用 [Mermaid](/zh/docs/components/mermaid/)。
 
-> [!NOTE] 尚未发布的依赖升级
-> 本页示例面向 OINK v1.5.1 之后主题源码中的 Markmap 1。
-> 已发布的 v1.5.1 仍使用 Markmap 0.18，差异见[迁移说明](#migration)。
+> [!NOTE] OINK 1.6.0 中的 Markmap 1
+> 本页示例面向 OINK v1.6.0 引入的 Markmap 1.1.0。
+> 从 v1.5.1（Markmap 0.18）升级的站点请查阅[迁移说明](#migration)。
 
 ## 最简例子 {#minimal}
 
@@ -319,8 +319,7 @@ markmap:
 
 ## 迁移到 Markmap 1 {#migration}
 
-> [!NOTE] 尚未发布
-> 本页示例面向 OINK v1.5.1 之后的依赖升级。
+OINK v1.6.0 将 Markmap 从 0.18 升级至 1.1.0：
 
 | 旧选项 | Markmap 1 选项 |
 | --- | --- |

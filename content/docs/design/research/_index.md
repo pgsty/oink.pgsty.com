@@ -13,7 +13,7 @@ design_status: active
 ---
 
 > [!NOTE] Dated research records
-> Research records capture measurements, inputs, and tool versions from specific studies. Current behavior is defined by the [Design contracts](/docs/design/) and validated on Hugo Extended 0.168.0 per the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
+> Research records capture measurements, inputs, and tool versions from specific studies. Current behavior is defined by the [Design contracts](/docs/design/) and the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
 
 Publish research in the Design tree only when another maintainer can inspect
 its method, understand its scope, and repeat the applicable check.

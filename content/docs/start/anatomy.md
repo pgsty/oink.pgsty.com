@@ -137,10 +137,10 @@ module github.com/OWNER/PROJECT-DOCS
 
 go 1.27.4
 
-require github.com/pgsty/oink v1.5.1
+require github.com/pgsty/oink v1.6.0
 ```
 
-This example pins the current release, `v1.5.1`. Check the pin in your Starter
+This example pins `v1.6.0`. Check the pin in your Starter
 snapshot and follow the [upgrade guide](/docs/admin/upgrade/) if it is older.
 
 `hugo mod graph` displays the resolved version. Production builds use the exact

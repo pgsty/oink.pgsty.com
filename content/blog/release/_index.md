@@ -2,7 +2,7 @@
 title: OINK Release Notes
 linkTitle: Releases
 description:
-  OINK 1.5.1 release notes, Hugo-only build requirements, and versioned upgrade history
+  OINK 1.6.0 release notes, Hugo-only build requirements, and versioned upgrade history
 weight: 10
 icon: fa-solid fa-clipboard-list
 blog_index: table
@@ -24,15 +24,14 @@ cascade:
 ---
 
 > [!NOTE] Versioned history
-> Each release note records the requirements and validation of that version at release time. Current development, CI, and release tests use Hugo Extended 0.169.0; see the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
+> Each release note records the requirements and validation of that version at release time. OINK 1.6.0+ builds with Hugo 0.169.0+ in any edition and Go 1.27.4; see the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
 
-The current release is [OINK 1.5.1](/blog/release/1.5.1/): Duo View repairs,
-correct RSS and Print aggregation, stable navigation identity, safer fallbacks,
-search ranking fixes, and 32-locale terminology. It carries forward the
-translation reader, local search, local diagram reading, table reader, blog
-gallery, and component refinements from 1.4.0. That release was validated with
-Hugo Extended **0.168.0**. Keep warnings visible, and never enable
-`--panicOnWarning` or `HUGO_PANICONWARNING`. No external Sass compiler is required.
+The current release is [OINK 1.6.0](/blog/release/1.6.0/): plain CSS assembled
+by Hugo for Hugo 0.170+ compatibility, Bootstrap JS and Lunr removal, scanning
+BM25 local search with split indexes and field anchors, Markmap 1.1.0, ReDoc
+3.1.0, on-approach component loading, single-line navbar overflow, and 32
+tightened locale catalogs. Keep warnings visible, and never enable
+`--panicOnWarning` or `HUGO_PANICONWARNING`. No Sass compiler is required.
 
 For the changes contributed in 1.3.1, see its
 [reading repairs and contributor credits](/blog/release/1.3.1/#thanks).

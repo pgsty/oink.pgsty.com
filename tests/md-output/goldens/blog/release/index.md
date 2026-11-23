@@ -1,6 +1,6 @@
 # OINK Release Notes
 
-> OINK 1.5.1 release notes, Hugo-only build requirements, and versioned upgrade history
+> OINK 1.6.0 release notes, Hugo-only build requirements, and versioned upgrade history
 
 ---
 
@@ -9,15 +9,14 @@ LLMS index: [llms.txt](/llms.txt)
 ---
 
 > [!NOTE] Versioned history
-> Each release note records the requirements and validation of that version at release time. Current development, CI, and release tests use Hugo Extended 0.169.0; see the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
+> Each release note records the requirements and validation of that version at release time. OINK 1.6.0+ builds with Hugo 0.169.0+ in any edition and Go 1.27.4; see the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
 
-The current release is [OINK 1.5.1](/blog/release/1.5.1/): Duo View repairs,
-correct RSS and Print aggregation, stable navigation identity, safer fallbacks,
-search ranking fixes, and 32-locale terminology. It carries forward the
-translation reader, local search, local diagram reading, table reader, blog
-gallery, and component refinements from 1.4.0. That release was validated with
-Hugo Extended **0.168.0**. Keep warnings visible, and never enable
-`--panicOnWarning` or `HUGO_PANICONWARNING`. No external Sass compiler is required.
+The current release is [OINK 1.6.0](/blog/release/1.6.0/): plain CSS assembled
+by Hugo for Hugo 0.170+ compatibility, Bootstrap JS and Lunr removal, scanning
+BM25 local search with split indexes and field anchors, Markmap 1.1.0, ReDoc
+3.1.0, on-approach component loading, single-line navbar overflow, and 32
+tightened locale catalogs. Keep warnings visible, and never enable
+`--panicOnWarning` or `HUGO_PANICONWARNING`. No Sass compiler is required.
 
 For the changes contributed in 1.3.1, see its
 [reading repairs and contributor credits](/blog/release/1.3.1/#thanks).
@@ -26,6 +25,7 @@ For the changes contributed in 1.3.1, see its
 
 Section pages:
 
+- [OINK 1.6.0 — Plain CSS, BM25 local search, and leaner runtimes](/blog/release/1.6.0/): Replace Sass with plain CSS for Hugo 0.170+ compatibility, remove Bootstrap JS and Lunr, introduce scanning BM25 local search with split indexes and field anchors, and upgrade bundled runtimes.
 - [OINK 1.5.1 — Duo View repairs and publishing correctness](/blog/release/1.5.1/): Stabilize Duo View, correct RSS and Print output, and harden navigation, validation, search, and accessibility after the 1.5.0 review.
 - [OINK 1.5.0 — Read translations side by side](/blog/release/1.5.0/): Compare a page with its translation in an opt-in bilingual view, with scroll sync by shared headings.
 - [OINK 1.4.0 — Easier reading, better search](/blog/release/1.4.0/): Expand selected tables, render and read diagrams locally, search across languages, and browse posts in a gallery.

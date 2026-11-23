@@ -80,8 +80,8 @@ example, `openapi/docs-demo.yaml` and `/openapi/docs-demo.yaml` both become
 `https://example.com/preview/`. Unlike `swagger`, Redoc receives this absolute
 URL based on `baseURL`.
 
-> [!NOTE] ReDoc 3, unreleased
-> The dependency upgrade after OINK v1.5.1 loads ReDoc 3.1.0 as a local ES module
+> [!NOTE] ReDoc 3 in OINK 1.6.0
+> OINK v1.6.0 loads ReDoc 3.1.0 as a local ES module
 > in a separate document for each reader. Its navigation uses its own fragment;
 > article anchors and other readers stay independent. The frame has a light
 > vendor palette and its own scrolling area. A specification link stays below it.
@@ -116,7 +116,7 @@ cascade:
 ```
 
 `swagger` is one of the theme's default shell types (`params.ui.shell_types`
-defaults to `[docs, book, blog, swagger]`, and a site that overrides the list
+defaults to `[docs, book, blog, swagger, expo]`, and a site that overrides the list
 needs to keep it). It differs from the `docs` shell in exactly two ways. It
 adds a `td-swagger` class to `<body>` for styling hooks. It omits the version banner.
 Sidebar, table of contents, breadcrumbs, pager and page end all behave normally.

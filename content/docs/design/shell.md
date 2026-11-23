@@ -5,11 +5,11 @@ description: Navigation authorities, immersive blog presentation, search, action
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK shell, navigation contract, search, actions, blog presentation, authors, series, pager]
-contract_status: v1.5.1
+contract_status: v1.6.0
 ---
 
-> [!NOTE] OINK 1.5.1 contract
-> This contract describes OINK v1.5.1.
+> [!NOTE] OINK 1.6.0 contract
+> This contract describes OINK v1.6.0.
 
 ## Authorities and navigation {#authorities-and-navigation}
 
@@ -215,7 +215,7 @@ print visibility are unchanged. (Added in OINK 1.3.1.)
 `params.offline_search` enables a local index per language.
 When enabled, it also builds under `hugo server` by default. Use `offline_search_on_serve: false` for large editing cycles.
 HTML search appears on Home, shell pages, and Landing pages with `landing_search` enabled.
-Other non-shell pages and Print omit the dialog, Lunr, and Palette.
+Other non-shell pages and Print omit the dialog and Palette.
 
 Search metadata uses `search_keywords`, `search_boost`, default 1, and `search_exclude`.
 The index includes URL, title, taxonomies, excerpt, headings, description, body/summary, root, section, type, keywords, boost, breadcrumb, and icon.
@@ -224,24 +224,9 @@ Sites may return extra strings from `hooks/search-keywords-extra.html`.
 Keywords affect matching and ranking. CJK matches found only through keywords display the description or excerpt, not the keyword list.
 Body matches keep surrounding text as context.
 
-> [!NOTE] Local search in OINK 1.4.0
-
-Queries normalize case/Unicode width and split whitespace and CJK/Latin boundaries,
-up to 24 unique terms, preserving identifier punctuation. A CJK run is a literal
-substring; no dictionary or remote dependency is added. Literal field matches and
-English Lunr stemming cover terms across fields; typo fallback applies only to
-ASCII words of at least five characters (one edit, or two from eight characters).
-All-term pages suppress partial results. Otherwise coverage is shown and sorted
-first. A contiguous whole phrase leads within equal coverage; the positive page
-boost multiplies the strongest-field sum within those tiers. Repeated occurrences
-of a term in its strongest field add a bonus below 20%, which orders pages within
-that field without letting them outrank a stronger field; a single occurrence
-scores the plain field weight. Title/URL break remaining ties.
-The global result limit precedes existing root grouping and menu group order.
-
 Optional `sections` entries carry actual rendered `id` and `title`; content scope
 also carries UTF-8 byte `start` offsets into the single stored body. Read IDs from
-rendered content, including h1/h6 and shortcodes, instead of reconstructing them
+rendered content, including h1/h6, shortcodes, and `data-td-search-entry` elements, instead of reconstructing them
 from titles or the configured TOC. Index reads temporarily select HTML and
 restore the previous output context, so RSS/Print traversal cannot poison
 HTML content. Reduced scopes omit body offsets. Old indexes
@@ -262,15 +247,11 @@ pages only and is hidden in command/choice mode. Counts and partial coverage are
 visible and live-announced in one footer, alongside desktop keyboard hints.
 Mobile hides only the hints. Composition suspends delayed and index-load renders
 as well as Enter activation. No new configuration authority or build step exists.
+The global result limit precedes existing root grouping and menu group order.
 The owning theme search checker and the site's real-corpus/browser tests cover
 these additions; the maintained summary indexes keep the 2 MiB / 512 KiB budgets.
 
-### Local search engine after 1.5.1 {#search-engine}
-
-> [!NOTE] Unreleased
-> This change follows 1.5.1 on the theme's main branch. No published tag
-> contains it yet. It replaces the matching and ranking rules above. The index,
-> dialog, scope, composition, and section rules are unchanged.
+### Local search engine {#search-engine}
 
 No page loads Lunr, and the theme ships no copy.
 One engine scans the folded index text and builds no index of its own.
@@ -324,12 +305,15 @@ Opening the palette, command mode, and an unsplit index request nothing more tha
 
 Besides headings, the index records search entries: any rendered element with an `id` and a non-empty `data-td-search-entry` title.
 Every anchored [field](/docs/design/components/#steps-cards-fields-and-tables) is one.
+The entry title accepts both quoted and unquoted HTML attribute values.
+A heading that contains an entry keeps its full visible title. Both anchors appear
+in document order and share a byte offset when their text starts at the same place.
 Entries join `sections` in document order with the same `id`, `title`, and `start`.
 The page text is divided among headings and entries in that order, so text inside an entry opens that entry.
 The `headings` field lists headings only.
 An entry without an id or a title warns and is skipped.
 An entry is scored and opened like a section, and its title counts as a heading.
-The [proposal](/docs/design/proposals/local-search-engine/) keeps the evidence and the later stage.
+The [proposal](/docs/design/proposals/local-search-engine/) records the design rationale and evaluation evidence.
 
 Built-in action IDs are `compare_translations`, `copy_markdown`, `copy_link`, `open_chatgpt`, `open_claude`, `view_markdown`, `view_history`, `edit_page`,
 `create_child_page`, `create_issue`, `create_project_issue`, `print_section`, `print`, `switch_preset`, `switch_theme`, `switch_language`, `switch_version`, and `open_github`.

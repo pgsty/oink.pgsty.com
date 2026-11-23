@@ -28,7 +28,7 @@ Hugo 0.169.0 或更新版本负责构建站点，不限 edition。主题的样�
 
 ## 本地优先 {#local-first}
 
-浏览器需要的资源全部提交在主题仓库里：Bootstrap、Font Awesome、四款字体、Lunr、Mermaid、KaTeX、Markmap、Swagger UI、Redoc、Asciinema、ECharts、Infographic，以及本地 PlantUML 引擎。`VENDOR.json` 逐项记录各依赖的版本、来源、许可证文件与 SHA-256 校验值，更新某个运行时要同时更新产物、许可证与校验值。
+浏览器需要的资源全部提交在主题仓库里：Bootstrap 样式、Font Awesome、四款字体、Mermaid、KaTeX、Markmap、Swagger UI、Redoc、Asciinema、ECharts、Infographic，以及本地 PlantUML 引擎。`VENDOR.json` 逐项记录各依赖的版本、来源、许可证文件与 SHA-256 校验值，更新某个运行时要同时更新产物、许可证与校验值。
 
 OINK 1.4.0 启用 PlantUML 后，无需端点即可在浏览器内渲染；显式配置端点时继续使用服务端模式。
 
@@ -49,7 +49,7 @@ OINK 1.4.0 启用 PlantUML 后，无需端点即可在浏览器内渲染；显�
 ## 双语与 32 个界面语言 {#multilingual}
 
 多语言走 Hugo 原生机制：译文路由、按权重排序的语言选择器、缺译回退、RTL，
-以及 canonical 与 alternate 元数据。界面文案有 32 份语言包，共用 235 条消息
+以及 canonical 与 alternate 元数据。界面文案有 32 份语言包，共用 242 条消息
 schema：Docsy 支持的 31 个 locale 文件名，再加通用 `zh`。每份语言包都使用目标
 语言覆盖完整 OINK 界面，不再保留英文占位块；`zh` 与 `zh-cn` 使用简体中文，
 `zh-tw` 使用繁体中文。开启 `params.ui.compare: true` 后，读者还可以在当前页面旁打开已有译文，并排同步阅读两个语言版本。
@@ -58,7 +58,7 @@ schema：Docsy 支持的 31 个 locale 文件名，再加通用 `zh`。每份语
 
 ## 全文检索不出站 {#search}
 
-打开 `params.offline_search` 后，Hugo 为每种语言生成一份索引，浏览器用本地 Lunr 检索拉丁文字、用子串回退检索中日韩文本，查询内容不发给任何第三方。页面可以用 `search_boost` 调权重、用 `search_keywords` 补同义词。
+打开 `params.offline_search` 后，Hugo 为每种语言生成一份索引。浏览器使用单一的扫描式 BM25 引擎检索拉丁词（支持词干还原与拼写纠错）、标识符、符号串，以及不加空格的中日韩查询（重叠二元组），不依赖 Lunr 或任何第三方服务；超过 2 MiB 的索引自动将正文拆分分级加载，参数表条目可直接按名定位。页面可以用 `search_boost` 调权重、用 `search_keywords` 补同义词。
 
 → [全文检索](/zh/docs/customize/search/)
 

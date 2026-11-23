@@ -43,8 +43,8 @@ diagrams and tabs are page scripts. The theme includes those scripts. Each page 
 
 ## Local-first {#local-first}
 
-Everything the browser needs is committed to the theme repository: Bootstrap,
-Font Awesome, four fonts, Lunr, Mermaid, KaTeX, Markmap, Swagger UI, Redoc,
+Everything the browser needs is committed to the theme repository: Bootstrap
+styles, Font Awesome, four fonts, Mermaid, KaTeX, Markmap, Swagger UI, Redoc,
 Asciinema, ECharts, Infographic, and the local PlantUML engine. `VENDOR.json` records the version, source,
 license file and SHA-256 checksum of each dependency. When you
 update a runtime, update its artifact, license, and checksum together.
@@ -82,7 +82,7 @@ them for the site.
 Multilingual support uses Hugo's own mechanism: translation routing, a language
 picker ordered by weight, fallback for untranslated pages, RTL, and canonical
 and alternate metadata. Interface strings come in 32 language packs sharing one
-235-message schema. These include all 31 locale filenames that Docsy supports,
+242-message schema. These include all 31 locale filenames that Docsy supports,
 plus generic `zh`. Every pack contains native OINK interface text instead of
 English placeholder blocks. `zh` and `zh-cn` use Simplified Chinese. `zh-tw`
 uses Traditional Chinese. Setting `params.ui.compare: true` adds an opt-in
@@ -93,10 +93,13 @@ page and scroll both versions together.
 
 ## Full-text search that stays on the site {#search}
 
-With `params.offline_search` on, Hugo generates one index per language. The
-browser searches Latin text with a local Lunr index and falls back to substring
-matching for CJK text. It sends no query to a third party. A page can adjust its
-weight with `search_boost` and add synonyms with `search_keywords`.
+With `params.offline_search` on, Hugo generates one index per language. A
+single scanning BM25 engine searches Latin words (with Porter stemming and
+spelling fallback), identifiers, symbol runs, and unspaced CJK queries via
+overlapping bigrams—without Lunr or any third-party service. Indexes larger
+than 2 MiB split page text automatically into a separate file loaded in stages,
+and anchored fields open directly by name. A page can adjust its weight with
+`search_boost` and add synonyms with `search_keywords`.
 
 → [Search](/docs/customize/search/)
 

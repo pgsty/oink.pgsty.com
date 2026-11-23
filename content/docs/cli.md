@@ -51,10 +51,11 @@ make build
 ./bin/oink check --site ../my-docs
 ```
 
-Replace `../my-docs` with your site path. Site commands require Hugo Extended
-0.169.0+ and Go 1.27+ for module operations. `oink init` uses the CLI's
+Replace `../my-docs` with your site path. Site commands require Hugo 0.169.0+
+(any edition for OINK 1.6.0+; Hugo Extended 0.169.0 for OINK 1.5.1 and older)
+and Go 1.27+ for module operations. `oink init` uses the CLI's
 bundled Starter snapshot; follow the [upgrade guide](/docs/admin/upgrade/) to
-update a generated site to OINK v1.5.1.
+update a generated site to OINK v1.6.0.
 
 `make deps` downloads Go build dependencies. CLI commands run offline by
 default; pass `--network` when a command needs uncached remote inputs.

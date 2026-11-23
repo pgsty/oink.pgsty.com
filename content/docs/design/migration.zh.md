@@ -1,15 +1,15 @@
 ---
 title: OINK 迁移边界
 linkTitle: 迁移边界
-description: OINK 迁移所支持的源码、配置与验证边界，包含 1.5.1 升级。
+description: OINK 迁移所支持的源码、配置与验证边界，包含 1.6.0 升级。
 weight: 50
 icon: fa-solid fa-code-compare
 search_keywords: [OINK 迁移契约, 0.4 迁移, 0.5 迁移, 配置重命名, 迁移工具]
-contract_status: v1.5.1
+contract_status: v1.6.0
 ---
 
-> [!NOTE] OINK 1.5.1 契约
-> 本契约描述 OINK v1.5.1。
+> [!NOTE] OINK 1.6.0 契约
+> 本契约描述 OINK v1.6.0。
 
 本页定义维护者迁移工具与配置边界；面向读者的升级步骤见
 [版本升级](/zh/docs/admin/upgrade/)。
@@ -49,11 +49,11 @@ pg-internal profile；它不是通用解析器。
 此工具随 OINK 1.2.0 发布。在主题 checkout 中执行，先清点，再升级到正式标签。
 
 ```sh
-python3 bin/update-consumers.py v1.5.1 --roots ~/www ~/pgsty
-python3 bin/update-consumers.py v1.5.1 --roots ~/www ~/pgsty --write --check --check-appearance
+python3 bin/update-consumers.py v1.6.0 --roots ~/www ~/pgsty
+python3 bin/update-consumers.py v1.6.0 --roots ~/www ~/pgsty --write --check --check-appearance
 ```
 
-第一条命令只报告版本采用情况。第二条更新 `go.mod` 和 `go.sum` 中的 OINK
+第一条命令只报告版本采用情况。第二条更新 `go.mod`（含新版本所需的最低 Go 版本指令同步）和 `go.sum` 中的 OINK
 条目，核对精确的模块解析图，并对每个选中站点运行保留告警的生产构建。
 执行时禁用 `GOWORK`、Hugo 模块 workspace 和环境变量中的模块替换。日志与
 原始模块文件保存在临时报告目录，也可通过 `--report-dir` 指定目录。

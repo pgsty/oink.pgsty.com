@@ -5,11 +5,11 @@ description: 导航权威、沉浸式博客、搜索、操作、分类法、索�
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK 外壳, 导航契约, 搜索, 操作, 博客展示, 作者, 系列, 翻页]
-contract_status: v1.5.1
+contract_status: v1.6.0
 ---
 
-> [!NOTE] OINK 1.5.1 契约
-> 本契约描述 OINK v1.5.1。
+> [!NOTE] OINK 1.6.0 契约
+> 本契约描述 OINK v1.6.0。
 
 ## 权威来源与导航 {#authorities-and-navigation}
 
@@ -181,7 +181,7 @@ sidebar_enabled: false
 `params.offline_search` 选择启用各语言的本地索引。启用后默认也在 `hugo server`
 期间构建；大型编辑循环可以设置 `offline_search_on_serve: false`。HTML 搜索出现
 在首页、外壳页面，以及启用 `landing_search` 的落地页上。其它非外壳页面与 Print
-不包含对话框、Lunr 或命令面板。
+不包含对话框或命令面板。
 
 搜索元数据包括 `search_keywords`、默认值为 1 的 `search_boost`，以及
 `search_exclude`。索引携带 URL、标题、分类法、摘录、小标题、description、
@@ -190,21 +190,9 @@ sidebar_enabled: false
 字符串。关键词用于匹配与排序；CJK 查询仅命中关键词时，结果显示页面描述或
 摘录，不展示关键词列表。正文命中仍使用匹配位置附近的文字作为摘要。
 
-> [!NOTE] OINK 1.4.0 的本地搜索
-> 以下行为已随 v1.4.0 发布。
-
-查询统一大小写与 Unicode 全半角，按空白和 CJK/拉丁边界拆分，最多保留 24 个不同词，
-并保留标识符标点。连续 CJK 字串按字面子串处理，不增加词典或远程依赖。
-字面字段匹配与英文 Lunr 词干匹配支持跨字段覆盖；拼写回退仅适用于至少五个字符的
-ASCII 词，允许一次编辑，八个字符起允许两次。有完整覆盖时不显示部分匹配；
-否则显示覆盖数量并优先按覆盖率排序。同覆盖率中完整连续短语优先，正数页面加权
-作用于各词最强字段得分之和。同一个词在其最强字段中重复出现时，最多获得不到 20% 的加分，
-只在同一字段层级内调整次序，不会越过更强的字段；只出现一次时按该字段原本的权重计分。
-仍然同分时按标题与 URL 排序。
-先应用全局结果上限，再沿用栏目分组与菜单组序。
-
 可选的 `sections` 条目包含真实渲染的 `id`、`title`；content 范围还包含指向唯一
-正文的 UTF-8 字节 `start` 偏移。直接读取渲染内容，包括 h1/h6 与短代码标题，不从
+正文的 UTF-8 字节 `start` 偏移。直接读取渲染内容，包括 h1/h6、短代码标题与
+`data-td-search-entry` 元素，不从
 标题或配置后的目录推导 ID。索引读取时临时选择 HTML，再恢复此前的输出上下文，
 避免 RSS/Print 遍历污染 HTML 内容。精简范围不包含正文偏移。没有小节字段的旧索引仍可使用。
 同页只返回一条结果，附带最相关小节、编码后的片段与附近文字；仅元数据命中时可指向
@@ -219,14 +207,11 @@ Tab/Shift+Tab 的焦点始终留在对话框内。
 范围仅影响页面，在命令与偏好选择模式隐藏。结果数量和部分覆盖在统一底栏中显示并实时播报，
 桌面端的键盘提示也放在同一底栏；手机端仅隐藏键盘提示。
 输入法组字暂停延迟查询、索引加载引起的刷新及 Enter 激活。不引入新配置权威或构建步骤。
+先应用全局结果上限，再沿用栏目分组与菜单组序。
 主题搜索归属检查器与站点真实语料、浏览器测试验证这些增量；维护中的 summary 索引
 继续遵守 2 MiB / 512 KiB 预算。
 
-### 1.5.1 之后的本地搜索引擎 {#search-engine}
-
-> [!NOTE] 尚未发布
-> 这项变更位于主题 main 分支，在 1.5.1 之后。目前没有任何已发布的标签包含它。
-> 它替换上文的匹配与排序规则；索引、对话框、范围、输入法组字和小节规则不变。
+### 本地搜索引擎 {#search-engine}
 
 页面不再加载 Lunr，主题也不再附带它。
 单一的引擎扫描规整后的索引文本，自己不建索引。
@@ -280,12 +265,14 @@ BM25 以小节为单位，`k1` 为 1.2，`b` 为 0.5，长度按字符数计。
 
 除标题之外，索引还记录搜索条目：任何带有 `id` 和非空 `data-td-search-entry` 标题的渲染元素。
 每个带锚点的[参数](/zh/docs/design/components/#steps-cards-fields-and-tables)都是一个条目。
+条目标题支持带引号和不带引号的 HTML 属性值。标题内嵌条目时保留完整的可见标题。
+两个锚点按文档顺序收录；两者的文字从同一处开始时，字节偏移相同。
 条目按文档顺序加入 `sections`，字段同样是 `id`、`title` 和 `start`。
 正文按这个顺序在标题和条目之间划分，所以条目内部的文字命中时打开的是这个条目。
 `headings` 字段只列标题。
 没有 id 或标题的条目给出告警并被跳过。
 条目像小节一样参与打分和跳转，它的标题按小节标题计。
-依据和后续阶段见[提案](/zh/docs/design/proposals/local-search-engine/)。
+设计依据与评估证据见[提案](/zh/docs/design/proposals/local-search-engine/)。
 
 内置操作 ID 包括 `compare_translations`、`copy_markdown`、`copy_link`、`open_chatgpt`、`open_claude`、
 `view_markdown`、`view_history`、`edit_page`、`create_child_page`、`create_issue`、

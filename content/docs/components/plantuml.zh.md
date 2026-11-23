@@ -220,8 +220,8 @@ JavaScript 关闭、引擎下载失败、输入不受支持或渲染出错时，
 - 浏览器资源只包含核心引擎与 Graphviz 布局库，不会下载 `!include`、`!includeurl`、
   外部主题、C4、AWS 或其它可选图标库。不支持的资源会保留源码。
   此类内容请改写为自包含图表、使用预渲染图片，或显式配置服务端。
-- 固定引擎为 `@plantuml/core` 1.2026.9，布局库为 Viz.js 3.24.0。两份脚本未压缩时
-  合计约 4.8 MB，gzip 后约 1.7 MB；只在启用且图表接近视口时加载，可正常使用 HTTP 缓存。
+- 固定引擎为 `@plantuml/core` 1.2026.9，布局库为 Viz.js 3.31.0。两份脚本未压缩时
+  合计约 4.7 MB，gzip 后约 1.6 MB；只在启用且图表接近视口时加载，可正常使用 HTTP 缓存。
 - 渲染使用浏览器的 JavaScript 和 WebAssembly。设有严格 CSP 的站点需要允许
   同站脚本、WebAssembly 编译（`wasm-unsafe-eval`）与 `blob:` 图片；资源被拦截时保留源码。
 - 大图仍然会消耗浏览器 CPU 和内存。运行时逐张渲染，不在后台 Worker 中执行。

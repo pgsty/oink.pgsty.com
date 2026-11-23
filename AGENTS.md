@@ -10,9 +10,9 @@ not a projection of a second theme-local document tree.
 
 ## Current baseline
 
-The documentation target is OINK `v1.5.1`. Verify the actual published theme
+The documentation target is OINK `v1.6.0`. Verify the actual published theme
 version in `go.mod` and public tags before claiming release or deployment.
-The Design contracts and release notes describe the 1.5.1 behavior. Use
+The Design contracts and release notes describe the 1.6.0 behavior. Use
 sibling-checkout Make targets for development; validate the
 published pin separately with replacements and both workspaces disabled.
 CLI documentation describes the separate local `0.1.0-dev` candidate. Recheck
@@ -90,12 +90,13 @@ themselves; use the Make targets for local theme acceptance. The local `check`,
 do not clear inherited replacements or workspaces; use the published-pin
 commands below to establish release identity. Node >= 26.13.0 and npm >= 12.2.2
 are contributor test dependencies, not ordinary Hugo consumer requirements.
-Use OINK v1.5.1 and Hugo Extended 0.169.0 for development, CI, and release
-validation. Keep this baseline pinned. Never enable `--panicOnWarning` or
-`HUGO_PANICONWARNING`. Warnings remain visible and are reviewed; the upstream
-LibSass deprecation warning is accepted. SCSS uses Hugo's built-in LibSass,
-with no external Sass installation. Preserve project SCSS hooks and this
-dependency boundary. CI uses Node 26.13.0 and pins Go 1.27.4. Test
+Theme development against OINK `v1.6.0` uses any installed Hugo `0.169.0+`
+(validated on `0.170.1`) and Go `1.27.4`; the stylesheet is plain CSS in
+`assets/css/project.css` with no Sass compiler. While `go.mod` still pins
+`v1.5.1` before `v1.6.0` is tagged and published, published-pin checks require
+Hugo Extended `0.169.0`. Never enable `--panicOnWarning` or
+`HUGO_PANICONWARNING`. Warnings remain visible and are reviewed. CI uses Node
+26.13.0 and pins Go 1.27.4. Test
 overlays do not change the single-root-config rule for the production site.
 
 For published-pin acceptance, disable environment replacements and both

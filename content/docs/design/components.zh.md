@@ -5,11 +5,11 @@ description: OINK 创作原语、校验、Book、发布行为与输出降级的�
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK 组件契约, shortcode API, Markdown 组件, Book, 发布, 校验]
-contract_status: v1.5.1
+contract_status: v1.6.0
 ---
 
-> [!NOTE] OINK 1.5.1 契约
-> 本契约描述 OINK v1.5.1。
+> [!NOTE] OINK 1.6.0 契约
+> 本契约描述 OINK v1.6.0。
 
 教程与完整示例位于面向读者的[组件](/zh/docs/components/)专栏。本页定义这些
 指南所依赖的 API 与行为。
@@ -76,7 +76,7 @@ OINK 有 29 个 shortcode：
 > 独立 Print、Markdown、RSS 保留源码回退。详见 [Mermaid](/zh/docs/components/mermaid/#zoom)
 > 与 [PlantUML](/zh/docs/components/plantuml/)。显式服务端模式保持既有行为。
 
-> [!NOTE] 尚未发布的依赖迁移
+> [!NOTE] OINK 1.6.0 中的组件运行时
 > Markmap 1 使用 SVG 文本与本地 MathJax，段落、代码和表格作为节点注释；旧配置键
 > 会告警，不会被静默接受。独立 Print 保留源码，普通浏览器打印保留已有 SVG 并使用
 > 黑色文字。ReDoc 3 使用隔离的本地文档且关闭遥测；Mermaid 12 保留原有主题、布局
@@ -162,11 +162,9 @@ Print 给主题生成的标签页容器、面板 ID 加上来源页面的命名�
 参数锚点为 `field-<name>`，名称转小写，连续标点折叠为连字符，因此
 `params.ui.typography` 变成 `field-params-ui-typography`。重复锚点追加位置后缀。
 
-> [!NOTE] 尚未发布
-> 下面两条规则位于主题 main 分支，在 1.5.1 之后。目前没有任何已发布的标签包含它们。
-
 `field` 接受 `id`，用它替换自动生成的锚点。
 值为空、不是字符串，或含有空白、引号、`<`、`>`、`&` 时，给出告警并保留自动生成的锚点。
+首尾空格以及值中任意位置的 Unicode 空白字符都会触发这一回退。
 同一页面上已有其他参数使用了这个 `id` 时同样如此。
 每个带锚点的参数都带有 `data-td-search-entry`，值是它的纯文本名称；来自短代码和来自 `{.fields}` 表格的参数都一样。
 [本地搜索](/zh/docs/design/shell/#search-engine)把它记为所在页面的条目，可以按名称直接打开。
@@ -270,8 +268,7 @@ OINK 1.4.0 中，Markmap 在首次可测量显示和容器尺寸变化时适配�
 数学公式使用 Hugo 构建时生成的 KaTeX 产物和本地 CSS，不加载浏览器数学运行时。
 HTML 和 Print 使用本地样式表，并保留 MathML 与作者的 TeX 源文。
 数学公式用满足[架构契约](/zh/docs/design/architecture/#hugo-toolchain)最低版本要求的 Hugo
-验证。已发布的 OINK v1.5.1 在 Markmap 内使用配套的本地 KaTeX 运行时；
-尚未发布的 Markmap 1 迁移则改用本地 MathJax 渲染导图公式。
+验证。OINK 1.6.0 在 Markmap 中按需使用本地 MathJax 渲染导图公式（1.5.1 及更早版本使用 KaTeX）。
 OINK 1.4.0 按阅读列的实际可用宽度为编号公式保留阅读空间，也覆盖侧栏
 或目录挤窄的正文列。标题无法与公式并排时移到下一行，连续长词允许换行。
 仅含编号的标题、MathML 与 TeX 仍然可用。打印时公式独占阅读列全宽，标题排列在
@@ -299,7 +296,7 @@ Swagger 与 Redoc 接受 HTTP(S) 规范 URL 或以 `static/` 为根的路径，�
 单页 Print 与普通 HTML 保持完全相同的普通标题、脚注与标签页 ID。只有多页分区
 Print 与整书 Print 会改写跨页链接，并给页面局部标题、脚注和主题生成的标签页 ID 增加命名
 空间，避免聚合后冲突。本地标题链接在匹配前按 URL 规则解码一次片段，因此指向
-Unicode 标题的普通 Markdown 链接在聚合后仍能到达原目标。显式目标 ID 保持不变。
+Unicode 标题的普通 Markdown 链接在聚合后仍能到达原目标。编号图、表、公式和示例在章节 HTML、单页 Print 和整书 Print 中保留同一个 ID，短代码正文中的编号目标也遵循此规则。同一页的两处定义使用相同 ID 时，构建会发出警告，首处定义保留该 ID。
 消费站点自行选择是否启用这些潜在成本较高的聚合输出。消费站手写的 HTML 锚点和
 自定义短代码 ID 默认仍是全局 ID。给带 `id` 的元素增加布尔属性
 `data-td-print-local`，可将其声明为页内锚点。聚合输出会给该 ID 和同页链接增加

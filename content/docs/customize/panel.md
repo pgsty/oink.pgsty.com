@@ -9,7 +9,7 @@ search_keywords: [command palette, Cmd+K, Ctrl+K, shortcuts, page actions, custo
 The command palette provides one modal dialog for page search and site actions.
 Use it to copy page Markdown, switch language or version, and open site links.
 The theme assembles it with local search. If `params.offline_search` is off,
-the page has no palette, index, or Lunr runtime. See [Search](/docs/customize/search/).
+the page has no palette, index, or search engine. See [Search](/docs/customize/search/).
 
 ## Opening the palette {#open}
 

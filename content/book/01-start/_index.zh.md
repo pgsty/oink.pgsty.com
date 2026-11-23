@@ -7,7 +7,7 @@ book_number: 1
 weight: 10
 ---
 
-好的教程首先要给读者一个看得见的结果。对 OINK 而言，这个结果是由 Hugo Extended
+好的教程首先要给读者一个看得见的结果。对 OINK 而言，这个结果是由 Hugo
 在本地提供的官方 Starter——此时还没有改标识、配色、语言组合或内容架构。
 
 ## 明确结果 {#outcome}
@@ -20,15 +20,15 @@ weight: 10
 
 ## 安装前置工具 {#prerequisite}
 
-安装 Git、Go 1.27.4 或更高版本，以及 Hugo Extended 0.169.0。主题随带编译好的 CSS，
-无需安装 Sass 编译器或 Node.js。如果基于较早的 Starter 模板创建仓库，
-请一并将 GitHub Actions workflow 中的 Hugo 版本更新到 0.169.0。
+安装 Git、Go 1.27.4 或更高版本，以及 Hugo 0.169.0 或更高版本（不限 edition；已在
+0.170.1 上验证）。主题的样式表是纯 CSS，无需安装 Sass 编译器或 Node.js。如果所用的
+Starter 仍固定在 OINK 1.5.1 或更早版本，在升级固定版本前请继续使用 Hugo Extended 0.169.0。
 
 ```console
 $ go version
 go version go1.27.4 darwin/arm64
 $ hugo version
-hugo v0.169.0+extended+withdeploy darwin/arm64
+hugo v0.170.1+withdeploy darwin/arm64
 ```
 
 ## 启动本地预览 {#preview}

@@ -116,7 +116,8 @@ have one. Icons resolve in this order:
 4. `fa-solid fa-link` when none matched.
 
 An icon is one Font Awesome class pair, with the free faces supplied locally by
-the theme:
+the theme. Set `params.icon: false` or `"none"` to opt an entry out of icons and
+keep its single-line text label when space tightens:
 
 ```yaml {title="hugo.yml"}
 menus:
@@ -160,6 +161,13 @@ The navbar has a full desktop tier and a compact icon tier:
 | `lg` and above | Brand, centered menu text, and search, version, language, theme, and GitHub controls. No drawer button |
 | `md` to below `lg` | Centered menu icons and utility controls at the end. No drawer button |
 | Below `md` | Centered menu icons remain. Search and the appropriate drawer button remain at the end. Version, language, theme, and keyboard help remain in the footer's bottom bar |
+
+In OINK 1.6.0, top navbar entries always stay on a single line at every width.
+When horizontal space runs tight beside the brand, fixed desktop sidebar, and
+utility controls, icon-bearing entries collapse to icon-only mode first (while
+entries that opt out with `params.icon: false` or `"none"` keep their text
+label). Any entries that still do not fit fold into a trailing `…` overflow
+disclosure panel (`ui_nav_more`) with their full icon, label, and child links.
 
 Enable individual controls through their settings. The search icon requires
 `params.offline_search`; see [Search](/docs/customize/search/). The version menu

@@ -168,7 +168,7 @@ favicon 没有参数：主题按约定名扫描 `static/`（`favicon.ico` `favic
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `params.ui.shell_types` | list | [docs, book, blog, swagger] | 哪些 type 使用带侧栏的阅读外壳，见[布局与页面类型](/zh/docs/customize/layout/#shell-types) |
+| `params.ui.shell_types` | list | [docs, book, blog, swagger, expo] | 哪些 type 使用带侧栏的阅读外壳，见[布局与页面类型](/zh/docs/customize/layout/#shell-types) |
 | `params.ui.docs_section` | string | docs | 文档栏目的根目录名，只用于导航解析 |
 | `params.ui.blog_section` | string | blog | 博客栏目的根目录名 |
 | `params.ui.docs_sidebar_root` | enum | section | `section` 时 docs 页的侧栏根是文档栏目；`home` 时是站点首页。非法值告警并回退 |
@@ -300,7 +300,7 @@ OINK 1.3.0 为默认 `shell_types` 列表添加了 `expo`，
 | `params.offline_search_on_serve` | boolean | true | `hugo server` 预览时也构建索引，预览行为与线上一致；站点极大时设 `false` 跳过以加快本地重建 |
 | `params.offline_search_index` | enum | content | 索引范围，逐级累加：`title` `heading` `summary` `content`。非法值告警并使用 `content` |
 | `params.offline_search_summary_length` | integer | 70 | `summary` 档摘录截断的字数 |
-| `params.offline_search_max_results` | integer | 10 | 结果条数上限，同时约束 Lunr 与中文子串兜底 |
+| `params.offline_search_max_results` | integer | 10 | 本地搜索返回的页面结果条数上限 |
 | `params.ui.landing_search` | boolean | true | `layout: landing` 页面是否保留搜索入口 |
 | `params.ui.command_palette.commands` | list | [] | 自定义命令，每条二选一：`url` 或内置 `action`；见[命令面板](/zh/docs/customize/panel/#custom-commands) |
 | `params.gcs_engine_id` | string | | Google 可编程搜索引擎 ID，启用后引入外部服务 |
@@ -360,7 +360,7 @@ OINK 1.3.0 为默认 `shell_types` 列表添加了 `expo`，
 | `params.comments.giscus.theme` | string | auto | giscus 主题，`auto` 跟随站点深浅色 |
 | `params.comments.giscus.lightTheme` | string | light | 浅色模式下使用的 giscus 主题或自定义 CSS URL |
 | `params.comments.giscus.darkTheme` | string | dark | 深色模式下使用的 giscus 主题或自定义 CSS URL |
-| `params.comments.giscus.loading` | string | lazy | iframe 加载策略 |
+| `params.comments.giscus.loading` | string | lazy | 加载策略：`lazy` 等读者滚动接近评论区时才请求 giscus 脚本（从 GitHub 登录返回时除外）；`eager` 立即加载 |
 | `params.comments.giscus.lang` | string | 按站点语言推导 | giscus 界面语言。不设置时中文站解析为 `zh-CN` / `zh-TW` / `zh-HK`，其它语言取主语言代码，giscus 不支持则回落 `en` |
 | `params.comments.giscus.ariaLabel` | string | Comments | 评论区容器的 `aria-label`；默认值是英文，多语言站点需按语言各写一份 |
 | `params.comments.giscus.errorMessage` | string | Comments could not be loaded. | 加载失败时显示的文字；默认值是英文，多语言站点需按语言各写一份 |
@@ -495,13 +495,13 @@ outputs:
 与参数扫描注册表的投影；主题 CI 会重新生成并检查漂移。使用时应选择与主题固定版本
 相同标签下的 Schema。
 
-配合 VS Code YAML 扩展，在设置中映射站点 Schema。下面以 OINK v1.5.1 为例，
+配合 VS Code YAML 扩展，在设置中映射站点 Schema。下面以 OINK v1.6.0 为例，
 请将标签换成 `go.mod` 中固定的版本；两种常见 YAML 配置文件名都已覆盖：
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/v1.5.1/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
+    "https://raw.githubusercontent.com/pgsty/oink/v1.6.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```

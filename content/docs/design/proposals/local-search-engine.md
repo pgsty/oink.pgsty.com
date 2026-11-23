@@ -18,28 +18,29 @@ search_keywords:
     command palette,
   ]
 design_kind: proposal
-design_status: partially-implemented
+design_status: accepted
 proposal_date: 2026-11-23
 ---
 
-> [!IMPORTANT] Implemented, not accepted
+> [!IMPORTANT] Accepted for v1.6.0
 > Owner: OINK maintainers. Affected contracts: [Shell](/docs/design/shell/#search-engine)
 > and [Components](/docs/design/components/#steps-cards-fields-and-tables).
-> All three stages are implemented in the theme's working tree after 1.5.1.
-> No published tag contains them.
+> All three stages are accepted for OINK v1.6.0 and defined normatively in the
+> owning contracts. This page preserves the design rationale, benchmark
+> evidence, and open follow-up questions.
 
 ## Status and scope {#status}
 
 Local search stays what it is: Hugo writes one JSON index per language, and the
 reader's browser searches it. A site still turns it on with `offline_search: true`
 and needs nothing but the Hugo binary. This proposal changes the engine inside
-that boundary, in three stages that ship separately.
+that boundary, in three stages delivered together in OINK v1.6.0.
 
 | Stage | Change | State |
 | ----- | ------ | ----- |
-| 1 | One scanning engine replaces Lunr and the substring fallback | Implemented, unreleased |
-| 2 | A large index is split: a small navigation index loads first, page text follows by size | Implemented, unreleased |
-| 3 | Definitions below heading level become searchable entries | Implemented, unreleased |
+| 1 | One scanning engine replaces Lunr and the substring fallback | Accepted for v1.6.0 |
+| 2 | A large index is split: a small navigation index loads first, page text follows by size | Accepted for v1.6.0 |
+| 3 | Definitions below heading level become searchable entries | Accepted for v1.6.0 |
 
 A database-backed search is a separate, later design. [A database backend later](#backend)
 states only what this proposal keeps open for it.
@@ -303,18 +304,18 @@ keeps its fields. Indexes written by earlier releases still load.
 | Site | `tests/search/queries.json` with `scripts/check-search-corpus.mjs`, which can time an older engine with `--baseline-engine` and `--baseline-lunr` |
 | Site | Palette browser tests for composition, scope, partial state and keyboard use |
 
-User guides and the license table describe 1.5.1 until the release that
-contains this stage. They are rewritten with that release.
+User guides and the license table have been updated for v1.6.0 alongside the
+normative contracts.
 
 ## Acceptance and open decisions {#acceptance}
 
-The stages are accepted when the theme checks and this site's `check` and
-`browser` targets pass against them, and a maintainer has reviewed results on
-real EN and ZH content at desktop and phone widths. This site's index is
-within the budget, so stage 2 is exercised by the theme's probe and unit tests
-and by a larger consumer site.
+The stages are accepted for OINK v1.6.0: the theme checks, real-corpus checks in
+both `summary` and `content` scopes, and the documentation site's `check` and
+`browser` targets pass against them. This site's index is within the 2 MiB
+budget, so stage 2 is exercised by the theme's probe and unit tests and by
+larger consumer corpora.
 
-Open decisions:
+Open decisions (deferred beyond v1.6.0):
 
 1. Are the weights right? Field worth, the loose factor, the phrase multiplier, and `b` come from a 48-query set and one large manual, not from labeled relevance.
 2. Should partial matches follow complete ones when few pages are complete?
@@ -326,6 +327,7 @@ Open decisions:
 
 ## Decision log {#decision-log}
 
+- 2026-11-23: Accepted all three stages for OINK v1.6.0; promoted behavior into the Shell and Components contracts and updated user guides and license inventory.
 - 2026-11-23: Drafted. Chose scanning over an inverted index after measuring 1–8 ms per term over 12 MB of text. Chose bigrams over `Intl.Segmenter`, which split `数据库连接池超时` into six fragments and varies by browser, and over a dictionary, whose 5 MB cannot ship with a theme. Rejected segmenting the query against the site's own text after it proved unstable.
 - 2026-11-23: Implemented stage 3. An entry is one more item of `sections`, so neither the index format nor the engine changed. The marker is an attribute any markup can carry; fields set it themselves. The planned `kind` was left out because nothing would read it.
 - 2026-11-23: Implemented stage 2. The split happens at the existing 2 MiB budget, so compliant sites publish the same bytes. The index template stays the only author of documents, because five consumer sites override it; the split is derived from its output. Page text is not requested when the palette opens, which keeps the rule that commands never cost a download.

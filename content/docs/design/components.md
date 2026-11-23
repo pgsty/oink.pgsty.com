@@ -5,11 +5,11 @@ description: The maintainer contract for OINK authoring primitives, validation, 
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK component contract, shortcode API, Markdown components, Book, release, validation]
-contract_status: v1.5.1
+contract_status: v1.6.0
 ---
 
-> [!NOTE] OINK 1.5.1 contract
-> This contract describes OINK v1.5.1.
+> [!NOTE] OINK 1.6.0 contract
+> This contract describes OINK v1.6.0.
 
 The reader-facing [Components](/docs/components/) section provides tutorials and complete examples.
 This page defines the API and behavior used by those guides.
@@ -81,7 +81,7 @@ OINK has 29 shortcodes:
 > [Mermaid](/docs/components/mermaid/#zoom) and [PlantUML](/docs/components/plantuml/).
 > Explicit server mode retains its existing behavior.
 
-> [!NOTE] Unreleased dependency migration
+> [!NOTE] Runtime behavior in OINK 1.6.0
 > Markmap 1 renders SVG text, with local MathJax for formulas and notes for
 > paragraphs, code and tables. Its renamed options warn instead of being silently
 > accepted. Dedicated Print retains source; ordinary browser print keeps rendered
@@ -170,12 +170,9 @@ The full form accepts block descriptions. Use `card` and `field` only within the
 Field anchors use `field-<name>`, with lowercase punctuation runs replaced by hyphens.
 Thus `params.ui.typography` becomes `field-params-ui-typography`. Duplicate anchors get positional suffixes.
 
-> [!NOTE] Unreleased
-> The two rules below follow 1.5.1 on the theme's main branch. No published
-> tag contains them yet.
-
 `field` accepts `id`, which replaces the generated anchor.
 An empty value, a non-string, or a value holding whitespace, quotes, `<`, `>` or `&` warns and keeps the generated anchor.
+This includes leading and trailing spaces and Unicode whitespace anywhere in the value.
 So does an `id` that another field on the page already uses.
 Each anchored field carries `data-td-search-entry` with its plain name, from the shortcode and from a `{.fields}` table alike.
 [Local search](/docs/design/shell/#search-engine) records it as an entry of its page and opens it by name.
@@ -293,8 +290,8 @@ common indentation before parsing, preserving YAML options and outline levels.
 Mathematics uses Hugo's build-time KaTeX output and local CSS, without a browser mathematics runtime.
 HTML and Print use the vendored stylesheet and preserve MathML and authored TeX.
 Validate mathematics with a Hugo release that meets the minimum in the [architecture contract](/docs/design/architecture/#hugo-toolchain).
-Published OINK v1.5.1 uses the matching vendored KaTeX runtime inside Markmap;
-the unreleased Markmap 1 migration uses local MathJax for maps instead.
+OINK 1.6.0 renders Markmap formulas on demand with local MathJax (1.5.1 and
+older used KaTeX inside Markmap).
 In OINK 1.4.0, numbered equations reserve readable formula space based
 on the available column width, including columns narrowed by a sidebar or TOC.
 Captions move below the formula when they do not fit beside it; long words wrap.
@@ -324,7 +321,8 @@ The check ignores text that has code syntax.
 Single-page Print keeps ordinary heading, footnote, and tab IDs exactly as regular HTML renders them.
 Multi-page section and whole-Book Print rewrite cross-page links and namespace page-local headings, footnotes, and generated tab IDs to prevent collisions.
 Local heading links match after one URL-fragment decoding step, so ordinary Markdown links to Unicode headings retain their target in an aggregate.
-Explicit target IDs remain intact. Consumers opt into these potentially expensive aggregate outputs.
+Each numbered figure, table, equation and example keeps its ID in chapter HTML, single-page Print and whole-Book Print, including targets inside shortcode bodies. If two definitions on the same page use the same ID, the build warns and the first definition keeps it.
+Consumers opt into these potentially expensive aggregate outputs.
 Consumer-authored raw HTML anchors and custom shortcode IDs remain global by default.
 Add the boolean `data-td-print-local` attribute to an element with an `id` to declare a page-local anchor.
 An aggregate namespaces that ID and its same-page links; ordinary HTML and single-page Print retain the original ID.

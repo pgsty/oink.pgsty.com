@@ -13,7 +13,7 @@ sections:
   - cta
 
 hero:
-  eyebrow: OINK 1.5.1 · 本地优先 · Hugo 构建
+  eyebrow: OINK 1.6.0 · 本地优先 · Hugo 构建
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -28,8 +28,8 @@ hero:
       url: docs/start/starter/
       icon: fa-solid fa-rocket
       style: primary
-    - label: 查看 1.5.1 新特性
-      url: blog/release/1.5.1/
+    - label: 查看 1.6.0 新特性
+      url: blog/release/1.6.0/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -103,10 +103,10 @@ capabilities:
     - ref: 03 / 本地优先
       title: 使用 Hugo 构建
       url: docs/about/features/
-      motto: Hugo 0.168.0，Sass 与资源均内置
+      motto: 纯 CSS，内置资源，Hugo 0.169+
       bullets:
         - '一条 [**hugo**](https://gohugo.io/) 命令完成全部构建'
-        - '[无需 **npm install**、外部 Sass 编译器或 PostCSS
+        - '[无需 **npm install**、Sass 编译器或 PostCSS
           构建](docs/about/features/)'
         - '[内置资源本地提供](docs/about/features/)；[备齐依赖后可离线构建](docs/start/from-scratch/)'
       value: Hugo Modules 需要 Go 解析模块，外部服务由站点按需接入。
@@ -132,7 +132,7 @@ capabilities:
           Zoom](docs/components/image/) 与图表组件用于视觉化说明'
         - '[组件](docs/components/)明确说明 Markdown 与打印输出；
           交互内容按需保留源码或静态说明'
-      value: 组件脚本只在使用该组件的页面加载。
+      value: 重型组件引擎只在用到它们的页面按需接近加载。
       visual:
         type: components
         aria_label: 浏览短代码与内容组件
@@ -279,17 +279,16 @@ faq:
   eyebrow: 选型之前
   title: 值得先问的几个问题
   items:
-    - question: OINK 1.5.1 有哪些变化？
+    - question: OINK 1.6.0 有哪些变化？
       answer: >-
-        [OINK 1.5.1](blog/release/1.5.1/)修复双列视图，纠正 RSS 与 Print 聚合输出，
-        并强化导航、搜索排序、安全回退、无障碍与本地化。1.4 的阅读器、本地渲染、搜索和组件变体
-        继续可用。统一使用 Hugo Extended 0.168.0，
-        无需另外安装 Sass。
+        [OINK 1.6.0](blog/release/1.6.0/) 将样式表改为纯 CSS 以兼容 Hugo 0.170+，
+        移除 Bootstrap JS 与 Lunr，引入支持无空格中文查询、大索引自动拆分与参数锚点的
+        扫描式 BM25 本地搜索，并升级 Markmap、ReDoc、Mermaid、KaTeX 等全部随包运行时。
+        任意 edition 的 Hugo（0.169.0+）即可构建，无需 Sass 编译器。
     - question: 哪里需要 Node.js、npm 或打包器吗？
       answer: >-
-        不需要。站点使用 Hugo Extended 及其内置 Sass 编译器构建，不需要另外安装 Sass。
-        推荐使用 OINK 1.5.1 与固定的 Hugo Extended 0.168.0 基线。
-        Go 用来把主题解析为模块；使用离线归档或
+        不需要。站点只依赖任意 edition 的 Hugo（0.169.0+）与纯 CSS 构建，无需 Sass 编译器、
+        Node.js、npm 或打包器。Go 1.27.4+ 用来把主题解析为模块；使用离线归档或
         Git submodule 时不需要 Go。浏览器脚本随主题分发，只在用到时加载。
       open: true
     - question: 我有一个 Docsy 站，迁移有多难？
@@ -303,7 +302,8 @@ faq:
         还有一个只用 OINK 做落地页的公司站。外壳向下缩放和向上扩展一样自然。
     - question: 中文与其它非拉丁文字的内容怎么处理？
       answer: >-
-        本地检索对拉丁文字用 Lunr、对中日韩文本用子串回退，无需托管服务也能搜索。OINK
+        本地检索采用单一的扫描式 BM25 引擎，对无空格中日韩查询使用重叠二元组、对拉丁词
+        支持词边界与词干匹配，不依赖 Lunr 或任何托管服务。OINK
         提供 32 份原生界面语言包、符合当地语言规则的复数形式与已翻译的外观控件，包括英语、
         简体中文（`zh-cn`、`zh`）和繁体中文（`zh-tw`）。支持 RTL 布局。
     - question: 怎样选择风格？可以保留旧版外观吗？
@@ -331,7 +331,7 @@ faq:
 
 cta:
   title: 从一个已经能运行的仓库开始。
-  text: 从 OINK Starter 开始，固定 OINK 1.5.1，替换站点身份与内容，通过 GitHub Pages 或 Cloudflare Pages 发布上线。
+  text: 从 OINK Starter 开始，固定 OINK 1.6.0，替换站点身份与内容，通过 GitHub Pages 或 Cloudflare Pages 发布上线。
   label: 使用 OINK Starter
   url: docs/start/starter/
   style: primary

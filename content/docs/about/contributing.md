@@ -1,16 +1,16 @@
 ---
 title: Contributing to OINK
 linkTitle: Contributing
-description: Where to report bugs and contribute theme changes, documentation, translations, and regression tests for OINK 1.5.1.
+description: Where to report bugs and contribute theme changes, documentation, translations, and regression tests for OINK 1.6.0.
 weight: 40
 icon: fa-solid fa-code-pull-request
-search_keywords: [contributing, contributors, pull request, bug report, translation, OINK 1.5.1]
+search_keywords: [contributing, contributors, pull request, bug report, translation, OINK 1.6.0]
 ---
 
 Corrections, translations, bug reports, and focused pull requests are welcome.
-OINK **v1.5.1** is the current theme release. Its
-[release notes](/blog/release/1.5.1/) describe Duo View repairs, publishing
-correctness, responsive reading, and accessibility.
+OINK **v1.6.0** is the current theme release. Its
+[release notes](/blog/release/1.6.0/) describe the plain CSS stylesheet,
+Bootstrap JS and Lunr removal, scanning BM25 search, and runtime upgrades.
 
 ## Where to contribute {#where-to-contribute}
 
@@ -33,11 +33,11 @@ from reports and reproductions.
 
 ## Build and check {#build-and-check}
 
-Development after **OINK v1.5.1** uses the Hugo that is installed, **0.169.0**
-at the oldest and in any edition, and **Go 1.27.4**; the current theme
-checkout's Go minimum is 1.27.4. The published v1.5.1 module retains its
-original requirements, including Hugo's Extended edition. After v1.5.1 the
-theme contains no Sass: its stylesheet is the plain CSS layer files under
+Development for **OINK v1.6.0** uses the Hugo that is installed, **0.169.0**
+at the oldest and in any edition, and **Go 1.27.4** (the module's minimum Go
+version). Older releases up to v1.5.1 retain their original requirements,
+including Hugo's Extended edition. Starting in v1.6.0, the theme contains no
+Sass: its stylesheet is the plain CSS layer files under
 `assets/css/td/`, which Hugo concatenates. A site build needs no compiler,
 Node.js or npm. Editing a layer is the whole change: there is no build step and
 no generated file to commit. `python3 bin/check-stylesheets.py` checks the
@@ -82,8 +82,8 @@ faithful to their original evidence.
 
 The [acknowledgements](/docs/about/license/#community-contributors) link
 community fixes to their authors and pull requests. The
-[1.3.1 notes](/blog/release/1.3.1/#thanks) record the recent reading repairs;
-1.5.1 keeps those fixes and the Hugo-only build restored in 1.3.2.
+[1.3.1 notes](/blog/release/1.3.1/#thanks) record the reading repairs;
+1.6.0 keeps those fixes and eliminates the Sass compiler dependency entirely.
 
 Theme code and site tooling use Apache-2.0; original documentation uses
 CC BY 4.0. Retain third-party licence and notice files. See

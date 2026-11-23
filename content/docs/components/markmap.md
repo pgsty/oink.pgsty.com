@@ -10,9 +10,9 @@ A `markmap` fence contains a Markdown outline. Headings and lists define the hie
 The browser displays an expandable, collapsible tree. Use it to give an overview of a section.
 For flows with direction or conditions, use [Mermaid](/docs/components/mermaid/).
 
-> [!NOTE] Unreleased dependency upgrade
-> These examples target Markmap 1 in the theme checkout after OINK v1.5.1.
-> Published v1.5.1 still uses Markmap 0.18; see the [migration notes](#migration).
+> [!NOTE] Markmap 1 in OINK 1.6.0
+> These examples target Markmap 1.1.0, introduced in OINK v1.6.0.
+> Sites upgrading from v1.5.1 (Markmap 0.18) should review the [migration notes](#migration).
 
 ## Shortest form {#minimal}
 
@@ -332,8 +332,7 @@ This is Markmap syntax. See the [Markmap documentation](https://markmap.js.org/d
 
 ## Migrating to Markmap 1 {#migration}
 
-> [!NOTE] Unreleased
-> These examples target the dependency upgrade after OINK v1.5.1.
+OINK v1.6.0 upgrades Markmap from 0.18 to 1.1.0:
 
 | Previous option | Markmap 1 option |
 | --- | --- |

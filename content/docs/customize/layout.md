@@ -22,7 +22,7 @@ sidebar:
 ```yaml {title="hugo.yml"}
 params:
   ui:
-    shell_types: [docs, book, blog, swagger]
+    shell_types: [docs, book, blog, swagger, expo]
 ```
 
 | type | Shell |
@@ -31,12 +31,8 @@ params:
 | `book` | The documentation shell, plus numbered targets, the `reading_width` measure and the draft banner |
 | `blog` | The documentation shell, with the sidebar expanded by default and RSS as the left half of the title row |
 | `swagger` | The documentation shell, with Swagger UI or Redoc rendering the body. See [API reference pages](/docs/write/openapi/) |
+| `expo` | Shared sidebar and full-width image album with no right-hand outline. See [Expo albums](/docs/write/expo/) |
 | Any other type | An ordinary page: navbar + single-column body + footer, with no sidebar |
-
-OINK 1.3.0 adds `expo`: a shared sidebar and an image album,
-with full page width and no right-hand outline. Its default `shell_types`
-list includes `expo`. If you set the explicit list above, add `expo` to it.
-See [Expo albums](/docs/write/expo/).
 
 Taxonomy and term pages are not in this table but use the same shell.
 
@@ -168,7 +164,9 @@ params:
 - `sidebar_width_min` / `sidebar_width_max` set desktop drag-resizing limits in pixels. The browser stores the adjusted width locally. Double-click the divider to restore the default.
 - `sidebar_item_overflow` defaults to `ellipsis`, which truncates long titles. For many long titles, use `wrap`.
 
-At `sidebar_cache_limit`, pages with the same effective settings may share a
+Below `sidebar_cache_limit`, OINK 1.6.0 caches off-path sidebar branches once per
+build while still rendering the active state at build time. At
+`sidebar_cache_limit`, pages with the same effective settings may share a
 neutral rendered tree. It remains visible and navigable without JavaScript.
 The shell runtime only adds the current path and opens its ancestors. Page or
 cascade overrides select the matching cached variant. A Book page with

@@ -3,7 +3,7 @@ title: Search
 linkTitle: Search
 description: Enable local search. Control index size and result ranking, and configure useful CJK query matches.
 weight: 60
-search_keywords: [offline_search, full-text search, search, local search, index, Lunr, CJK, search_boost, search_keywords, search_exclude, Algolia, DocSearch, Google CSE]
+search_keywords: [offline_search, full-text search, search, local search, index, BM25, CJK, search_boost, search_keywords, search_exclude, Algolia, DocSearch, Google CSE]
 aliases:
   - /docs/advanced/search/
 ---
@@ -23,15 +23,15 @@ params:
   offline_search: true
 ```
 
-This key controls the page's index reference, Lunr runtime, and search dialog.
+This key controls the page's index reference, local search engine, and search dialog.
 All three conditions must hold:
 
 - `params.offline_search` is true;
-- The page is the home page, or uses a shell layout (`docs` / `book` / `blog` / `swagger` — see [Layouts and page types](/docs/customize/layout/)), or is a landing page with `params.ui.landing_search` on;
+- The page is the home page, or uses a shell layout (`docs` / `book` / `blog` / `swagger` / `expo` — see [Layouts and page types](/docs/customize/layout/)), or is a landing page with `params.ui.landing_search` on;
 - The current output is not print.
 
 If any condition fails, the build includes no dialog, index reference, or
-Lunr runtime on that page. The resources are not hidden. They are not generated.
+search engine on that page. The resources are not hidden. They are not generated.
 
 By default, `hugo server` **also** generates the index, so preview matches
 production. On a very large site, rebuilding the complete index can noticeably
@@ -72,9 +72,15 @@ The `offline_search_summary_length` key limits result excerpts (default 70).
 The `offline_search_max_results` key limits result count (default 10).
 The full definitions are in [Configuration](/docs/customize/config/).
 
-> [!IMPORTANT] One index per language, budgeted at 2 MiB raw and 512 KiB gzipped.
-> The browser downloads the complete index before the first search. If it
-> exceeds this budget, reduce `offline_search_index` from `content` to `summary`.
+> [!IMPORTANT] Automatic split above 2 MiB (since OINK 1.6.0)
+> The initial navigation index is budgeted at 2 MiB raw and 512 KiB gzipped per
+> language. When a `content` index stays within 2 MiB, Hugo publishes it as one
+> file. When it exceeds 2 MiB, Hugo automatically splits page text into
+> `offline-search-body.<lang>.json`: the palette answers immediately from titles,
+> headings, field entries, and keywords, then loads page text up to 8 MiB
+> automatically—or waits for the reader to choose **Search page text** when the
+> body file exceeds 8 MiB or the browser sets `Save-Data`. You can still lower
+> `offline_search_index` to `summary` to omit body text completely.
 
 ## Adjusting ranking {#ranking}
 
@@ -93,10 +99,10 @@ useful than the boost setting. Readers searching `pg` or `GUC` can find a page
 titled only "PostgreSQL parameters". Keywords have less ranking weight than
 the title and more than the body.
 
-The `search_boost` key is a positive multiplier applied to the text match score.
-Its default is `1.0`. A value of `1.5` does not guarantee first place. In
-OINK 1.4.0, it raises rank within the same term-coverage and phrase tier. Zero, negative numbers,
-and non-numbers warn and use `1.0`.
+The `search_boost` key is a positive multiplier applied to both field strength
+and section BM25 score. Its default is `1.0`. A value of `1.5` raises a page's
+rank without letting a partial match beat a complete match. Zero, negative
+numbers, and non-numbers warn and use `1.0`.
 
 Set a section-wide default once with a cascade:
 
@@ -131,43 +137,63 @@ reports them. The index also excludes pages with empty bodies.
 
 ## Chinese, mixed queries, and identifiers {#cjk}
 
-> [!NOTE] OINK 1.4.0 local search
-> The behavior below is included in the current release.
+OINK 1.6.0 replaces Lunr and the old substring fallback with a single scanning
+BM25 engine that builds no index in the browser. A character's Unicode script
+decides how it is analyzed rather than the page language:
 
-Search splits whitespace and Latin/CJK boundaries: `PostgreSQL 备份` and
-`PostgreSQL备份` both search for `postgresql` and `备份`. A contiguous CJK run
-remains a literal substring, without a dictionary: `主从复制` does not imply
-`复制主从`. Use spaces to separate concepts, for example `连接池 超时`.
-`search_keywords` remains useful for synonyms and abbreviations.
+- **Unspaced CJK queries.** Contiguous Chinese, Japanese, and Korean runs are
+  matched via overlapping bigrams without a dictionary, so queries such as
+  `数据库连接池超时` or `PostgreSQL备份` work without manual spaces. A single
+  CJK character stays one term; CJK/Latin boundaries split automatically.
+  `search_keywords` remains useful for synonyms and abbreviations.
+- **Identifiers and symbol runs.** Underscores, hyphens, dots, paths, command
+  options, and symbol runs of two or more characters (`shared_buffers`,
+  `pg_basebackup`, `--baseURL`, `/pg/data`, `->>`) are matched literally and
+  never spelling-corrected.
+- **Word boundaries, stemming, and typo fallback.** Ordinary words match
+  exactly on word boundaries (`port` no longer matches `support`). Prefixes of
+  longer words, Porter inflections for ASCII words, four-character stems for
+  other alphabets, matches inside underscore names or compounds (five or more
+  characters), and spelling fallback count as loose matches (0.7 of the field
+  weight). Spelling fallback runs only when the selected scope has no form of
+  an ASCII word of 5+ characters (1 edit for 5–7 characters, 2 edits from 8;
+  transpositions count as 1 edit).
+- **Atoms and stop words.** Case and Unicode width are normalized, and up to
+  30 atoms participate in a query. A short list of English function words and
+  six Chinese question words (`如何`, `怎么`, `什么`, `为什么`, `哪个`, `哪些`)
+  are scored at 0.1 and not required unless the entire query consists of them.
 
-The search preserves underscores, hyphens, dots, paths, and command options.
-Try `shared_buffers`, `pg_basebackup`, `--baseURL`, or `/pg/data`. These are
-literal identifiers, not query operators or spelling corrections. English
-words retain Lunr stemming. If no exact/stemmed English term exists, spelling
-fallback allows one edit for words of 5–7 characters and two for longer words.
-Shorter words and identifiers use literal substring matching. Case and Unicode
-width are normalized; at most 24 distinct terms participate in a query.
+Terms may match across indexed fields. Ranking follows these rules:
 
-Terms may match different indexed fields. A title containing `PostgreSQL` and
-a description containing `备份` can satisfy both. Ranking follows these rules:
+1. Pages covering at least 90% of query atom weight are complete matches and
+   hide partial matches. Otherwise, partial matches appear in descending tenths
+   of coverage with a matched/total label.
+2. Complete matches covered within a single section (plus page-level fields)
+   precede matches that span multiple sections.
+3. Field strength takes the weighted mean of each atom's strongest field
+   (title 10, keywords 8, tags/categories 6, headings and search entries 5,
+   description 3, body 1; loose matches × 0.7), multiplied by 1.5 when the
+   pieces appear adjacent and in order, and multiplied by `search_boost`.
+4. The best section's BM25 score (`k1 = 1.2`, `b = 0.5`) multiplied by
+   `search_boost` breaks ties within equal strength; title and URL break any
+   remaining ties.
 
-1. If any page covers every term, show only those pages. Otherwise, show partial matches, labeled with matched/total terms, in descending coverage order.
-2. Within equal coverage, a contiguous complete phrase ranks first.
-3. Apply `search_boost` to field scores within those tiers. Each term uses its strongest field: title, keywords, tags/categories, headings, description, then body. A term repeated in that field ranks the page above one that mentions it once in the same field, but never above a page with a stronger field. Remaining ties use title and URL for stable ordering.
-
-Literal substrings also match while typing. A boost cannot promote a partial
-match over a complete one. Results stay grouped in the navbar's content-root
-order; ranking applies within those groups after the global result limit.
-Keyword-only matches show the description or excerpt, never the synonym list.
+A boost cannot promote a partial match over a complete one. Results stay
+grouped in the navbar's content-root order; ranking applies within those groups
+after the global result limit. Keyword-only matches show the description or
+excerpt, never the synonym list.
 
 Each page occupies one result row, even when several sections match. The row
-shows the best matching section title and nearby text, and opens its actual
-rendered heading ID. Explicit IDs, duplicate auto-generated headings, Chinese
-headings, and deployment subpaths are preserved. A metadata-only hit opens the
-page when no section matches. `heading` and `summary` scopes can target heading
-matches; body-only queries require `content`. No index setting silently grows
-to full text. Matched snippets use up to 160 characters around the hit; the
-configured summary length still controls fallback excerpts.
+shows the best matching section or entry title and up to 160 characters around
+the hits, highlighting inflections and spelling corrections as written on the
+page, and opens the actual rendered anchor. Every anchored [field](/docs/components/fields/)
+(from `{.fields}` or `fields`/`field`) automatically carries
+`data-td-search-entry`, so querying a parameter name jumps straight to its
+definition; custom markup with an `id` and non-empty `data-td-search-entry`
+works the same way. A metadata-only hit opens the page when no section or entry
+matches. `heading` and `summary` scopes target headings and field entries;
+body-only queries require `content`. The configured summary length still
+controls fallback excerpts.
 
 The palette's **Search in** control shows two adjacent choices: all sections and the
 current top-level section (such as Docs, Blog, or Book). It defaults to all
@@ -184,7 +210,7 @@ and partial-match states remain readable and are announced to screen readers.
 ## Optional: hosted search {#hosted}
 The theme also provides two hosted search integrations. Both are off by default.
 **Enable only one at a time**. If more than one is configured,
-the build warns `You have more than one site-search option configured`.
+the build warns `params: more than one site-search backend is configured`.
 
 If you enable hosted search, you accept its crawling behavior, availability,
 and privacy boundary. Document these in the site's privacy statement.

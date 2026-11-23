@@ -130,6 +130,9 @@ params:
 The page key is `featured_image`. A subsection's `cascade` enables it for that
 tree. An individual post can opt out. A post without an image shows none in
 any mode. A section can therefore enable it even if only some posts have images. These modes need no additional script.
+In OINK 1.6.0, local raster images in `banner`, `hero`, and `wash` modes are
+re-encoded as WebP and requested with `fetchpriority="high"`; animated images
+retain their frames.
 
 ```yaml {title="content/blog/release/_index.md"}
 cascade:

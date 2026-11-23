@@ -5,32 +5,27 @@ description: 仓库装配、配置、诊断、本地化、输出、性能、安�
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK 架构, 仓库边界, 运行时, i18n, Docsy 语言, 输出格式, 安全, 无障碍, 性能]
-contract_status: v1.5.1
+contract_status: v1.6.0
 ---
 
-> [!NOTE] OINK 1.5.1 契约
-> 本契约描述 OINK v1.5.1。
+> [!NOTE] OINK 1.6.0 契约
+> 本契约描述 OINK v1.6.0。
 
 ## Hugo 工具链 {#hugo-toolchain}
 
-已发布的 **OINK v1.5.1** 使用 **Hugo Extended 0.168.0** 完成验证。
-当前 checkout 不固定任何 Hugo 版本：开发与检查使用本机安装的 Hugo，主题 CI
-安装当前版本，任何 edition（标准版或 Extended 版）都能构建。`theme.toml` 与 `hugo.yaml`
-声明支持的最低版本为 **0.169.0**，模块要求 **Go 1.27.4**，
-详见[尚未发布的依赖迁移](#unreleased-dependencies)。
+**OINK v1.6.0** 要求 **Hugo 0.169.0** 或更新版本（不限 edition，已在 **Hugo 0.170.1** 上验证）以及 **Go 1.27.4**。
+开发与检查不固定任何 Hugo 版本：直接使用本机安装的 Hugo，主题 CI 安装当前版本。
+`theme.toml` 与 `hugo.yaml` 声明支持的最低版本为 **0.169.0**。
+详见[运行时依赖与 1.6.0 基线](#unreleased-dependencies)。
 
 禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。告警保持可见并接受审阅。
 无效输入测试直接检查对应告警和安全降级产物。
 
-已发布的 v1.5.1 在每次站点构建中用 Hugo 内置 LibSass 编译主样式与 ReDoc 样式
-（包括消费站的 SCSS 钩子），并输出 Hugo 允许出现的 LibSass 弃用告警，因此该版本
-需要 Hugo 的 Extended 版。当前 checkout 不含任何 Sass：样式表是纯 CSS，由 Hugo
-拼接，见[纯 CSS 样式表的交付](#stylesheet-delivery)。两者下普通用户都无需安装
-Dart Sass 或其他 Sass 程序。后续变更必须保持这条依赖边界：站点构建只需要 Hugo
-这一个程序。要求、检查器与双语契约须同步修改；历史发布和研究记录保留当时的
-工具版本。
+OINK v1.6.0 不含任何 Sass：样式表是纯 CSS，由 Hugo 拼接，见[纯 CSS 样式表的交付](#stylesheet-delivery)。
+普通用户无需安装 Dart Sass、LibSass 或其他 Sass 程序，站点构建只需要 Hugo 这一个程序。
+1.5.1 及更早版本曾用 Hugo 内置 LibSass 编译主样式与 ReDoc 样式（需要 Hugo Extended 0.168.0 与 Go 1.27.3）。
+后续变更必须保持仅依赖 Hugo 的边界；要求、检查器与双语契约须同步修改，历史发布和研究记录保留当时的工具版本。
 
-已发布的 OINK v1.5.1 模块要求 Go **1.27.3**。
 Go 用于解析 Hugo Modules；已准备好传统主题副本的站点无需 Go。
 
 ## 仓库与装配 {#repository-and-assembly}
@@ -62,16 +57,12 @@ Hugo 类型 `docs`、`book`、`blog` 与 `swagger` 选择阅读外壳；
 会在 Page Store 中登记能力标志。覆盖时应选择范围最窄的 partial；若合并会改变
 Hugo 的查找优先级，即使几个基础模板看起来相似，也应保持分离。
 
-## 1.5.1 之后的依赖迁移 {#unreleased-dependencies}
+## 运行时依赖与 1.6.0 基线 {#unreleased-dependencies}
 
-> [!NOTE] 尚未发布
-> 本节描述 v1.5.1 之后同级主题工作树中的实现，不代表已发布的 v1.5.1 模块或
-> 文档站当前固定版本已经包含这些变化。
-
-当前 checkout 要求 **Go 1.27.4** 和 **Hugo 0.169.0** 或更新版本，不限 edition。
+OINK v1.6.0 要求 **Go 1.27.4** 和 **Hugo 0.169.0** 或更新版本，不限 edition。
 不再固定任何 Hugo 版本：开发与检查使用本机安装的版本，主题 CI 安装当前版本。
 样式表是由 Hugo 拼接的纯 CSS，消费站点的 SCSS 钩子已退役，
-见[纯 CSS 样式表的交付](#stylesheet-delivery)。上文 v1.5.1 的要求保留为历史发布事实。贡献者浏览器检查使用
+见[纯 CSS 样式表的交付](#stylesheet-delivery)。贡献者浏览器检查使用
 Node 26.13.0 与 npm 12.2.2；它们不是普通消费站点的构建依赖。
 博客卡片、图库和外链列表通过 `RawSummary` 读取作者提供的后备摘要。
 Hugo 0.169.0 的 `plainify` 改进了 HTML 块之间的空白，摘要与字数统计遵循该行为。
@@ -80,11 +71,11 @@ Hugo 0.169.0 的 `plainify` 改进了 HTML 块之间的空白，摘要与字数�
 搜索关闭按钮的本地化无障碍名称包含可见的 `Esc` 标签，并通过
 `aria-keyshortcuts="Escape"` 声明快捷键，支持语音与键盘操作。
 
-更新后的运行时包括 DocSearch 5.2.0、Mermaid 12.3.0、KaTeX 0.19.1、
+更新后的运行时集合（`VENDOR.json` 共收录 25 项内置依赖）包括 DocSearch 5.2.0、Mermaid 12.3.0、KaTeX 0.19.1、
 Markmap 1.1.0、Swagger UI 5.34.1、ReDoc 3.1.0、Asciinema 3.18.0、
 Infographic 0.2.20、Pako 3.0.3、idb-keyval 6.3.0 与 Viz.js 3.31.0
 （Graphviz 16.1.0、Expat 2.8.5）。Font Awesome 7.3.1、Bootstrap 5.3.8、
-ECharts 6.1.0、字体包与 PlantUML core 1.2026.9 已是当前稳定版。
+ECharts 6.1.0、字体包与 PlantUML core 1.2026.9 维持当前稳定版。
 精确清单仍以 `VENDOR.json` 为准。
 
 `main` 样式表保留 Bootstrap 的组件样式，包括模态框、侧滑面板和轮播图，供站点自己的模板使用。
@@ -215,9 +206,9 @@ Draw.io 只在渲染内容含 PNG 或 SVG 候选图片时加载，并且每个�
 图表端点必须是字符串，内容为带主机的 HTTP(S) URL 或同站路径。不支持的协议、
 省略协议的 URL、反斜杠、空白字符及缺少路径的同站引用都会告警，并在选择运行时前关闭该集成。
 
-> [!NOTE] OINK 1.4.0 的自包含 PlantUML
+> [!NOTE] 自包含 PlantUML（自 OINK 1.4.0 起）
 > `plantuml: true` 或未配置端点的 `plantuml.enable: true` 选择浏览器渲染。固定的两份本地
-> 资源（`@plantuml/core` 1.2026.9 与 Viz.js 3.24.0）仅在包含 PlantUML 围栏的 HTML 页面
+> 资源（`@plantuml/core` 1.2026.9 与 1.6.0 的 Viz.js 3.31.0）仅在包含 PlantUML 围栏的 HTML 页面
 > 加载。普通构建和读者无需安装 Java、Graphviz 可执行程序或 npm 包，也不依赖 CDN 或
 > 渲染服务。非空端点继续选择服务端模式，保留地址校验与 `svg` 行为；非法端点不回退到
 > 本地模式。本地渲染不会下载可选库、主题、include 文件或外部资源。生成的 SVG 以 Blob
@@ -433,7 +424,7 @@ CSS 或 SVG 发起的请求也受此限制。
 通过 `--td-*-font-family` 暴露。`ui` 是主字体：`body` 经它解析，`heading` 又经
 `body` 解析，因此赋一次值即同时移动界面、正文与标题。`params.ui.typography`
 可取 `technical` 或 `system`；两者都在同一份样式表中，不加载运行时。已发布的
-v1.5.1 中旧 Bootstrap/Docsy Sass 变量为这些角色提供初值；当前的样式表是纯 CSS，不读取消费站的任何 Sass 变量。
+OINK 1.6.0 的样式表是纯 CSS，不读取消费站的任何 Sass 变量（1.5.1 及更早版本曾由旧 Bootstrap/Docsy Sass 变量提供初值）。
 
 `params.ui.fonts` 让配置层触达同一组角色，供不愿新增样式表的站点
 使用。它只写字体族名，绝不加载字体文件：所写字体族必须是读者已有的，或站点

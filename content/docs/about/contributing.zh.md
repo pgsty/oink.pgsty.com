@@ -1,15 +1,14 @@
 ---
 title: 参与 OINK 贡献
 linkTitle: 参与贡献
-description: 为 OINK 1.5.1 报告问题，贡献主题修复、文档、翻译与回归测试。
+description: 为 OINK 1.6.0 报告问题，贡献主题修复、文档、翻译与回归测试。
 weight: 40
 icon: fa-solid fa-code-pull-request
-search_keywords: [参与贡献, 贡献者, pull request, 问题报告, 翻译, OINK 1.5.1]
+search_keywords: [参与贡献, 贡献者, pull request, 问题报告, 翻译, OINK 1.6.0]
 ---
 
 欢迎纠错、翻译、报告问题和提交范围明确的 pull request。当前主题版本为
-**OINK v1.5.1**。[发布说明](/zh/blog/release/1.5.1/)介绍双列视图修复、输出正确性、
-响应式阅读与无障碍支持。
+**OINK v1.6.0**。[发布说明](/zh/blog/release/1.6.0/)介绍纯 CSS 样式表、移除 Bootstrap JS 与 Lunr、BM25 本地搜索以及运行时依赖升级。
 
 ## 选择贡献仓库 {#where-to-contribute}
 
@@ -29,9 +28,9 @@ CLI 拥有独立版本与发布周期，普通 Hugo 站点不需要安装。请�
 
 ## 构建与检查 {#build-and-check}
 
-**OINK v1.5.1** 之后的开发使用本机安装的 Hugo（最低 **0.169.0**，不限 edition）
-和 **Go 1.27.4**；当前主题 checkout 声明的 Go 最低版本为 1.27.4。已发布的 v1.5.1
-模块保留原有要求，包括 Hugo 的 Extended 版。v1.5.1 之后主题不含任何 Sass：样式表
+**OINK v1.6.0** 的开发使用本机安装的 Hugo（最低 **0.169.0**，不限 edition）
+和 **Go 1.27.4**（模块声明的最低 Go 版本）。1.5.1 及更早版本保留原有要求，包括
+Hugo 的 Extended 版。从 v1.6.0 起主题不含任何 Sass：样式表
 是 `assets/css/td/` 下的纯 CSS 分层文件，由 Hugo 拼接。站点构建不需要编译器，
 也无需 Node.js 或 npm。修改某一层就是全部改动：没有构建步骤，也没有需要提交的
 生成文件。`python3 bin/check-stylesheets.py` 检查各层及其拼接。
@@ -67,8 +66,8 @@ make browser
 ## 署名与许可 {#credit-and-licenses}
 
 [致谢页](/zh/docs/about/license/#community-contributors)将社区修复与作者和 pull request
-关联起来。[1.3.1 发布说明](/zh/blog/release/1.3.1/#thanks)记录了近期阅读体验修复；
-1.5.1 继续保留这些修复，以及 1.3.2 恢复的仅依赖 Hugo 的构建方式。
+关联起来。[1.3.1 发布说明](/zh/blog/release/1.3.1/#thanks)记录了阅读体验修复；
+1.6.0 继续保留这些修复，并彻底移除 Sass 编译器依赖。
 
 主题代码与站点工具使用 Apache-2.0，原创文档使用 CC BY 4.0。请保留第三方许可证和
 NOTICE 文件，具体范围见[开源许可与致谢](/zh/docs/about/license/)。

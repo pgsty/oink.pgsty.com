@@ -189,7 +189,7 @@ directory, with a cascade giving it `type: docs`.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.shell_types` | list | [docs, book, blog, swagger] | Which types use the reading shell with a sidebar — see [Layouts and page types](/docs/customize/layout/#shell-types) |
+| `params.ui.shell_types` | list | [docs, book, blog, swagger, expo] | Which types use the reading shell with a sidebar — see [Layouts and page types](/docs/customize/layout/#shell-types) |
 | `params.ui.docs_section` | string | docs | The documentation section's root directory name, used for navigation resolution only |
 | `params.ui.blog_section` | string | blog | The blog section's root directory name |
 | `params.ui.docs_sidebar_root` | enum | section | With `section`, a docs sidebar starts at the documentation section. With `home`, it starts at the site home. An invalid value warns and uses a fallback |
@@ -334,7 +334,7 @@ on (the navbar magnifier, {{< kbd "Cmd/Ctrl" "K" >}}, `/`, `\`).
 | `params.offline_search_on_serve` | boolean | true | Also builds the index under `hugo server`, so preview matches production. For a very large site, set `false` to reduce local rebuild time |
 | `params.offline_search_index` | enum | content | Index scope, cumulative: `title`, `heading`, `summary`, `content`. An invalid value warns and uses `content` |
 | `params.offline_search_summary_length` | integer | 70 | Word cut-off for the `summary` scope's excerpt |
-| `params.offline_search_max_results` | integer | 10 | Result cap, bounding both Lunr and the CJK substring fallback |
+| `params.offline_search_max_results` | integer | 10 | Maximum number of page results returned by local search |
 | `params.ui.landing_search` | boolean | true | Whether a `layout: landing` page keeps a search entry point |
 | `params.ui.command_palette.commands` | list | [] | Custom commands, each with either `url` or a built-in `action` — see [Command palette](/docs/customize/panel/#custom-commands) |
 | `params.gcs_engine_id` | string | | A Google Programmable Search engine ID; enabling it brings in an external service |
@@ -398,7 +398,7 @@ lower-level typography, use the project stylesheet. See
 | `params.comments.giscus.theme` | string | auto | The giscus theme; `auto` follows the site's light/dark state |
 | `params.comments.giscus.lightTheme` | string | light | The giscus theme or custom CSS URL used in light mode |
 | `params.comments.giscus.darkTheme` | string | dark | The giscus theme or custom CSS URL used in dark mode |
-| `params.comments.giscus.loading` | string | lazy | The iframe loading strategy |
+| `params.comments.giscus.loading` | string | lazy | Loading strategy: `lazy` waits until the reader approaches the comments (except when returning from GitHub sign-in); `eager` requests the giscus script immediately |
 | `params.comments.giscus.lang` | string | derived from the site language | The giscus interface language. If unset, Chinese sites resolve `zh-CN` / `zh-TW` / `zh-HK`. Other languages use the base language code. Unsupported languages fall back to `en` |
 | `params.comments.giscus.ariaLabel` | string | Comments | The comment container's `aria-label`. The default is English. For a multilingual site, write one per language |
 | `params.comments.giscus.errorMessage` | string | Comments could not be loaded. | Text shown after loading fails. The default is English. For a multilingual site, write one per language |
@@ -547,13 +547,13 @@ regenerates the schemas and fails if they differ. Use the schema from the same
 release tag as your theme pin.
 
 With the VS Code YAML extension, map the site schema in your settings. This
-example matches OINK v1.5.1; replace that tag with the one in your `go.mod`.
+example matches OINK v1.6.0; replace that tag with the one in your `go.mod`.
 Both common YAML configuration filenames are covered:
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/v1.5.1/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
+    "https://raw.githubusercontent.com/pgsty/oink/v1.6.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```

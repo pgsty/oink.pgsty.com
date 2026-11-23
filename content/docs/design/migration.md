@@ -1,15 +1,15 @@
 ---
 title: OINK migration boundary
 linkTitle: Migration boundary
-description: Supported source, configuration, and validation boundaries for OINK migration, including the 1.5.1 upgrade.
+description: Supported source, configuration, and validation boundaries for OINK migration, including the 1.6.0 upgrade.
 weight: 50
 icon: fa-solid fa-code-compare
 search_keywords: [OINK migration contract, 0.4 migration, 0.5 migration, configuration rename, migration toolkit]
-contract_status: v1.5.1
+contract_status: v1.6.0
 ---
 
-> [!NOTE] OINK 1.5.1 contract
-> This contract describes OINK v1.5.1.
+> [!NOTE] OINK 1.6.0 contract
+> This contract describes OINK v1.6.0.
 
 This page defines the maintainer migration toolkit and configuration boundaries.
 See [Upgrade](/docs/admin/upgrade/) for the reader-facing upgrade guide.
@@ -47,12 +47,12 @@ The tool ships with OINK 1.2.0. Run it from the theme checkout to inventory
 consumers and upgrade them to the published tag.
 
 ```sh
-python3 bin/update-consumers.py v1.5.1 --roots ~/www ~/pgsty
-python3 bin/update-consumers.py v1.5.1 --roots ~/www ~/pgsty --write --check --check-appearance
+python3 bin/update-consumers.py v1.6.0 --roots ~/www ~/pgsty
+python3 bin/update-consumers.py v1.6.0 --roots ~/www ~/pgsty --write --check --check-appearance
 ```
 
 The first command only reports adoption.
-The second updates `go.mod` and OINK's `go.sum` entries, verifies the exact module graph, and builds selected sites with fatal warnings.
+The second updates `go.mod` (including any required minimum Go directive bump) and OINK's `go.sum` entries, verifies the exact module graph, and builds selected sites with warnings visible.
 It disables `GOWORK`, Hugo's module workspace, and environment module replacements.
 Logs and original module files go to a temporary report directory or the explicit `--report-dir`.
 Failed updates restore module files. Failed builds keep the new pin for diagnosis and return failure.

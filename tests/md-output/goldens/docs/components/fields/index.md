@@ -112,6 +112,8 @@ Each entry has a `field-<name>` anchor. A self-link icon appears beside the name
 For example, `page_width` in the first table has [#field-page_width](#field-page_width). Share this link to refer to that entry.
 
 Duplicate names on a page receive `-2` and `-3` suffixes, as Goldmark does for duplicate headings.
+In OINK 1.6.0, the `field` shortcode accepts an optional `id` parameter (for example `id="guc-work-mem"`) to preserve an established anchor instead of generating `field-<name>`; an empty, duplicate, or unsafe value warns and falls back to the generated anchor.
+Every anchored entry also carries `data-td-search-entry` with its plain name so [local search](/docs/customize/search/) opens the parameter directly.
 Only HTML generates these anchors. Print and RSS combine pages into one document, where these anchors would collide.
 
 ## The shortcode form {#shortcode}
@@ -187,7 +189,7 @@ The table form stays readable on GitHub and remains a table in OINK's Markdown o
 
 | Output | Shape |
 | --- | --- |
-| HTML | `<div class="td-fields">` around a semantic `<dl>`; entries carry `#field-<name>` anchors and self-links |
+| HTML | `<div class="td-fields">` around a semantic `<dl>`; entries carry `#field-<name>` (or explicit `id`) anchors, self-links, and `data-td-search-entry` |
 | Print | The complete definition list, without entry anchors |
 | Markdown | The table form keeps the source table; the shortcode form emits a bulleted list of "`name` — type; required; default: value" plus the indented description |
 | RSS | The complete static `<dl>`, without entry anchors |
@@ -222,6 +224,7 @@ The `field` shortcode:
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
 | `name` | non-empty string | yes | The field name |
+| `id` | identifier | | Replaces the generated `field-<name>` anchor (since 1.6.0); no whitespace, quotes, `<`, `>`, or `&`, and must be unique among fields on the page |
 | `type` | non-empty string | | Type label such as `boolean`, `string[]`, `duration` |
 | `required` | boolean | | `true` shows the untranslated `required` chip; defaults to `false` |
 | `default` | scalar | | String / boolean / integer / float; `false`, `0` and `""` all display |
@@ -252,4 +255,5 @@ Backlinks:
 - [Tables](/docs/components/table/)
 - [AI-agent support](/docs/customize/agents/)
 - [Print](/docs/customize/print/)
+- [Search](/docs/customize/search/)
 - [Writing pages](/docs/write/pages/)
