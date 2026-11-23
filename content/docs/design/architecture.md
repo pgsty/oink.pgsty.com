@@ -335,6 +335,11 @@ List thumbnails, Open Graph/Twitter/schema helpers, author avatars, Pinterest me
 `hero` fills the shell background on single pages and section indexes.
 Missing images and non-HTML outputs render no image.
 
+An article mode re-encodes a processable image as WebP: `banner` crops it to 1600×900, `hero` resizes it to 1800 pixels wide and `wash` to 1200.
+That image is the page's largest paint, so it is requested with high fetch priority and is never lazy.
+A row on a list or term page loads its thumbnail lazily, and a processable image is cropped to the row's frame instead of sent as the original.
+A term row keeps an image that is already no larger than its frame.
+
 ## Outputs and runtime {#outputs-and-runtime}
 
 Every base template sets `Page.Store.tdOutputFormat`:
