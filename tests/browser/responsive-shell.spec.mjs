@@ -447,7 +447,7 @@ test('bottom bar utilities keep their order and open upward', async ({ page }) =
   ).toEqual(['version', 'language', 'theme', 'help', 'collapse']);
 
   for (const [triggerSelector, menuSelector] of [
-    ['.td-version-menu__title', '.td-version-menu .dropdown-menu'],
+    ['.td-version-menu__title', '.td-version-menu__list'],
     ['.td-language-selector__trigger', '.td-language-selector > ul'],
     ['[data-td-appearance-trigger]', '.td-shell-footline__theme dialog'],
     ['.td-shell-keyboard__trigger', '.td-shell-keyboard-help'],
@@ -661,9 +661,9 @@ test('page actions localize AI labels and prompts', async ({ page }) => {
   const context = page.locator('[data-td-page-context]');
   await expect(context).toContainText('在 ChatGPT 中打开');
   await expect(context).toContainText('在 Claude 中打开');
-  await expect(context).toContainText('复制 Markdown 文本');
-  await expect(context).toContainText('查阅 Markdown 源码');
-  await expect(context).toContainText('查阅编辑历史');
+  await expect(context).toContainText('复制 Markdown');
+  await expect(context).toContainText('查看 Markdown 源码');
+  await expect(context).toContainText('查看编辑历史');
 
   const prompt = new URL(
     await context
@@ -879,3 +879,156 @@ for (const prefix of ['', '/zh']) {
     await expect(page.locator('html')).toHaveAttribute('data-td-shell-drawer', 'open');
   });
 }
+
+test('desktop navbar never wraps, collapses icons automatically, and folds overflow into ellipsis', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await openCleanPage(page, '/');
+
+  // Inject 7 realistic multi-word items (including one iconless entry) into the navbar.
+  await page.locator('.td-nav-menu-zone').evaluate((zone) => {
+    const template = zone.querySelector('a.nav-link');
+    const labels = [
+      ['Getting Started', true],
+      ['Architecture Guide', true],
+      ['Deployment Handbook', true],
+      ['Release Notes', true],
+      ['Community Forum', true],
+      ['Plain Link', false],
+      ['Cloud Status', true],
+    ];
+    const items = labels.map(([label, withIcon], index) => {
+      const link = template.cloneNode(true);
+      for (const attr of ['aria-controls', 'aria-expanded', 'aria-haspopup']) link.removeAttribute(attr);
+      link.className = 'nav-link';
+      link.href = '/docs/';
+      link.setAttribute('aria-label', label);
+      link.setAttribute('title', label);
+      link.setAttribute('data-td-navbar-label', label);
+      link.setAttribute('data-td-navbar-icon', withIcon ? 'true' : 'false');
+      const icon = link.querySelector('i');
+      if (!withIcon && icon) icon.remove();
+      const span = link.querySelector('.td-navbar-entry__label');
+      if (span) span.textContent = label;
+      if (index === labels.length - 1) link.classList.add('active');
+      return link;
+    });
+    const overflow = zone.querySelector('[data-td-nav-overflow]');
+    zone.replaceChildren(...items, ...(overflow ? [overflow] : []));
+  });
+  await page.evaluate(() => document.fonts.ready);
+
+  // At 1280px, 7 multi-word labels exceed desktop text space -> auto icon mode!
+  await expect(page.locator('.td-site-nav')).toHaveAttribute('data-td-nav-compact', 'icons');
+  // Icon-bearing items hide their labels, while the iconless item keeps its single-line label.
+  await expect(page.locator('.td-nav-menu-zone > a[data-td-navbar-label="Getting Started"] .td-navbar-entry__label')).toBeHidden();
+  const plainLabel = page.locator('.td-nav-menu-zone > a[data-td-navbar-label="Plain Link"] .td-navbar-entry__label');
+  await expect(plainLabel).toBeVisible();
+
+  // No visible navbar entry may wrap onto two lines or overlap brand/util controls.
+  const desktopCheck = await page.evaluate(() => {
+    const brand = document.querySelector('.td-nav-brand').getBoundingClientRect();
+    const zone = document.querySelector('.td-nav-menu-zone').getBoundingClientRect();
+    const util = document.querySelector('.td-nav-util-zone').getBoundingClientRect();
+    const visible = Array.from(document.querySelectorAll('.td-nav-menu-zone > a:not([data-td-nav-overflowed])'));
+    const maxHeight = Math.max(...visible.map((el) => el.getBoundingClientRect().height));
+    return {
+      maxHeight,
+      clearsBrand: zone.left >= brand.right - 1,
+      clearsUtil: zone.right <= util.left + 1,
+    };
+  });
+  expect(desktopCheck.maxHeight).toBeLessThanOrEqual(42);
+  expect(desktopCheck.clearsBrand).toBe(true);
+  expect(desktopCheck.clearsUtil).toBe(true);
+
+  // Add enough items to exceed even icon-only width at 1024px -> trailing items fold into "…".
+  await page.setViewportSize({ width: 1024, height: 900 });
+  await page.locator('.td-nav-menu-zone').evaluate((zone) => {
+    const template = zone.querySelector('a[data-td-navbar-icon="true"]');
+    const overflow = zone.querySelector('[data-td-nav-overflow]');
+    const items = Array.from({ length: 16 }, (_, idx) => {
+      const link = template.cloneNode(true);
+      link.className = idx === 15 ? 'nav-link active' : 'nav-link';
+      link.href = `/docs/#item-${idx + 1}`;
+      link.setAttribute('aria-label', `Section ${idx + 1}`);
+      link.setAttribute('title', `Section ${idx + 1}`);
+      link.setAttribute('data-td-navbar-label', `Section ${idx + 1}`);
+      const span = link.querySelector('.td-navbar-entry__label');
+      if (span) span.textContent = `Section ${idx + 1}`;
+      return link;
+    });
+    zone.replaceChildren(...items, ...(overflow ? [overflow] : []));
+  });
+
+  const overflowTrigger = page.locator('[data-td-nav-overflow-toggle]');
+  const overflowPanel = page.locator('[data-td-nav-overflow-panel]');
+  await expect(overflowTrigger).toBeVisible();
+  await expect(overflowTrigger).toHaveClass(/active/);
+  await expect(overflowPanel).toBeHidden();
+
+  await overflowTrigger.click();
+  await expect(overflowTrigger).toHaveAttribute('aria-expanded', 'true');
+  await expect(overflowPanel).toBeVisible();
+  await expect(overflowPanel.locator('a', { hasText: 'Section 16' })).toBeVisible();
+  const [triggerBox, desktopPanelBox] = await Promise.all([
+    overflowTrigger.boundingBox(),
+    overflowPanel.boundingBox(),
+  ]);
+  expect(desktopPanelBox.x).toBeGreaterThanOrEqual(0);
+  expect(desktopPanelBox.x + desktopPanelBox.width).toBeLessThanOrEqual(1024);
+  expect(Math.abs((desktopPanelBox.x + desktopPanelBox.width) - (triggerBox.x + triggerBox.width))).toBeLessThanOrEqual(2);
+
+  await page.keyboard.press('Escape');
+  await expect(overflowPanel).toBeHidden();
+  await expect(overflowTrigger).toBeFocused();
+});
+
+test('phone navbar folds 9+ icon entries into ellipsis without overlapping search', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 900 });
+  await openCleanPage(page, '/');
+
+  await page.locator('.td-nav-menu-zone').evaluate((zone) => {
+    const template = zone.querySelector('a.nav-link');
+    const links = Array.from({ length: 10 }, (_, index) => {
+      const link = template.cloneNode(true);
+      for (const attr of ['aria-controls', 'aria-expanded', 'aria-haspopup']) link.removeAttribute(attr);
+      link.className = 'nav-link';
+      link.href = `/docs/#p-${index + 1}`;
+      link.setAttribute('aria-label', `Entry ${index + 1}`);
+      link.setAttribute('data-td-navbar-label', `Entry ${index + 1}`);
+      const span = link.querySelector('.td-navbar-entry__label');
+      if (span) span.textContent = `Entry ${index + 1}`;
+      return link;
+    });
+    zone.replaceChildren(...links);
+  });
+
+  const overflowTrigger = page.locator('[data-td-nav-overflow-toggle]');
+  const overflowPanel = page.locator('[data-td-nav-overflow-panel]');
+  await expect(overflowTrigger).toBeVisible();
+
+  const bounds = await page.evaluate(() => {
+    const brand = document.querySelector('.td-nav-brand').getBoundingClientRect();
+    const zone = document.querySelector('.td-nav-menu-zone').getBoundingClientRect();
+    const search = document.querySelector('.td-nav-search-box').getBoundingClientRect();
+    const visibleIcons = document.querySelectorAll('.td-nav-menu-zone > a:not([data-td-nav-overflowed])').length;
+    const hiddenIcons = document.querySelectorAll('.td-nav-menu-zone > a[data-td-nav-overflowed]').length;
+    return {
+      clearsBrand: zone.left >= brand.right - 1,
+      clearsSearch: zone.right <= search.left + 1,
+      visibleIcons,
+      hiddenIcons,
+    };
+  });
+  expect(bounds.clearsBrand).toBe(true);
+  expect(bounds.clearsSearch).toBe(true);
+  expect(bounds.visibleIcons).toBeGreaterThanOrEqual(5);
+  expect(bounds.hiddenIcons).toBeGreaterThanOrEqual(3);
+
+  await overflowTrigger.click();
+  await expect(overflowPanel).toBeVisible();
+  await expect(overflowPanel.locator('a', { hasText: 'Entry 10' })).toBeVisible();
+  const panelBox = await overflowPanel.boundingBox();
+  expect(panelBox.x).toBeGreaterThanOrEqual(0);
+  expect(panelBox.x + panelBox.width).toBeLessThanOrEqual(360);
+});

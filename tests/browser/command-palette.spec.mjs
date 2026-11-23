@@ -125,9 +125,9 @@ test("command mode is index-free and localizes configured commands", async ({
   });
   const { dialog, input } = await openPalette(page, zhDocsPath);
   expect(indexRequests).toEqual([]);
-  await fillCommandAndWait(input, dialog, "> 暗色", "切换配色");
+  await fillCommandAndWait(input, dialog, "> 深色", "切换主题");
   await expect(dialog.locator('[role="option"]')).toHaveCount(1);
-  await expect(dialog.locator('[role="option"]')).toContainText("切换配色");
+  await expect(dialog.locator('[role="option"]')).toContainText("切换主题");
   expect(indexRequests).toEqual([]);
 
   await fillCommandAndWait(input, dialog, "> OINK 问题", "OINK 问题反馈");

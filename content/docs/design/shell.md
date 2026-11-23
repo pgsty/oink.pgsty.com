@@ -28,9 +28,11 @@ External links use `target="_blank" rel="noopener noreferrer"`. Internal links r
 Desktop and drawer navbar views use the same tree. Every dropdown has one moderate-width column of icon and title rows.
 The mega panel and its `columns` menu parameter are retired. Configured `columns` warns and keeps one column.
 Menu descriptions remain configuration data only.
-The link tree stays centered when space allows. At phone widths it reserves the
-brand and utility controls' widths before centering, so a longer menu cannot
-overlap the search control. It uses text links from lg and icon links below lg.
+The link tree stays on a single line and never wraps; it stays centered when space allows.
+From lg upward, entries show icons and labels while horizontal space permits.
+When the row cannot fit every entry beside the brand, fixed desktop sidebar, and utility controls, entries that define an icon automatically collapse to icon-only mode (`data-td-nav-compact="icons"`), while entries that opt out of icons (`params.icon: false` or `"none"`) keep their single-line labels.
+Below lg, icon-bearing entries use icon mode by default, and at phone widths the bar reserves the brand and utility controls' widths before centering, so a longer menu cannot overlap the search control.
+At any width where even collapsed entries do not fit, trailing entries fold into a `…` overflow disclosure (`ui_nav_more`) whose panel restores their full icon, label, and child hierarchy.
 Between lg and md, the end edge keeps search, version, language, theme, and GitHub controls without a menu button.
 Below md, appearance stays beside search and the drawer entry; version, language, and GitHub move to the footer dock.
 Home and explicit Landing pages add a drawer control beside search, opening the complete labeled tree.
@@ -297,12 +299,12 @@ Each surface controls focus restoration and Escape.
 Already closed Appearance menus do not restore focus when the coordinator closes them.
 Keyboard navigation ignores editable controls and modals. The desktop nonmodal Appearance panel permits search shortcuts; its mobile modal sheet and other open dialogs, including fixed-position ARIA dialogs, retain keyboard ownership.
 Inside the mobile drawer, Escape closes the root switcher first and returns focus to its trigger. A subsequent Escape closes the drawer. Moving focus outside the root switcher dismisses its popover.
-`/`, `\`, `f`, and `c` open search or commands. `j`/`k` move between headings. `q`/`e` move between pages.
-`h` changes presentation. `l`/`y`, `t`, and `r` open language, theme, and root choices.
 The version disclosure opens on hover, focus or tap. Tab and the up/down arrows reach the version links.
 Escape dismisses the list even when a touch browser leaves focus on the page body. A second Escape closes the drawer.
 The list wraps long labels and scrolls above the bottom bar. In the phone drawer it expands in the flow so the drawer can scroll to its last link.
 A press outside a floating list closes it at once, because iOS sends no click for a tap on plain content. The drawer's list closes on the click, so the row under the finger stays in place.
+`/`, `\`, `f`, and `c` open search or commands. `j`/`k` move between headings. `q`/`e` move between pages.
+`h` changes presentation. `l`/`y`, `t`, and `r` open language, theme, and root choices.
 Sidebar WASD/Arrow navigation uses real focus without changing Tab order.
 Non-link divider buttons participate in tree navigation.
 From a child, Left/`a` focuses its parent group. A second press collapses it.

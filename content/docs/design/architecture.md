@@ -303,10 +303,10 @@ Neither choice changes the `i18n/zh.yaml` filename.
 
 Runtime placeholders such as `%s`, `{count}`, and `{{ .Count }}` may move for natural grammar. Their bytes must stay identical.
 Values are strings or Hugo plural-message maps. Plural maps use supported locale categories: `zero`, `one`, `two`, `few`, `many`, and `other`.
-`other` is required. Each form must be a string with the same placeholders.
+`other` is required. Each form must be a string with the same placeholders (except reviewed lexical plural forms such as Arabic dual `two`, which express the count natively without repeating the raw digit).
 Catalogs contain no hidden bidirectional controls.
-Arabic, Persian, and Hebrew direction comes from consumer language configuration (`direction: rtl`), not injected translation characters.
-`bin/check-i18n.py` checks locales, schema, value shapes, placeholders, directional controls, and the small reviewed set of English-identical terms.
+Arabic, Persian, and Hebrew direction comes from consumer language configuration (`direction: rtl`), not injected translation characters; cursive RTL locales (`ar`, `fa`) also reset positive `letter-spacing` on tracked display labels to preserve glyph joining.
+`bin/check-i18n.py` checks locales, schema, template key references, value shapes, placeholders, directional controls, and the small reviewed set of English-identical terms.
 Translate every new visible string in every bundle in the same change. Do not generate fallback text.
 
 ## Featured images {#featured-images}
