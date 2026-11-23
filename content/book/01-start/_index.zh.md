@@ -20,8 +20,8 @@ weight: 10
 
 ## 安装前置工具 {#prerequisite}
 
-安装 Git、Go 1.27.4 或更高版本，以及 Hugo Extended 0.169.0。样式通过 Hugo Extended 内置的
-LibSass 编译，无需额外安装 Sass 编译器或 Node.js。如果基于较早的 Starter 模板创建仓库，
+安装 Git、Go 1.27.4 或更高版本，以及 Hugo Extended 0.169.0。主题随带编译好的 CSS，
+无需安装 Sass 编译器或 Node.js。如果基于较早的 Starter 模板创建仓库，
 请一并将 GitHub Actions workflow 中的 Hugo 版本更新到 0.169.0。
 
 ```console

@@ -41,7 +41,7 @@ search_keywords: [文件树, FileTree, 目录树, tree, 目录结构, 仓库结�
 - content/          # 全部页面，中英双语同目录
   - docs/          # 你正在读的这棵文档树
   - blog/           # 发布说明与文章
-- assets/scss/      # 站点自己的 SCSS，覆盖主题变量
+- assets/css/       # 站点自己的 CSS，在主题样式表之后加载
 - layouts/          # 站点级模板覆盖，越少越好
 - static/images/    # 不需要构建期处理的图
 - hugo.yml          # 站点配置：语言、菜单、params.ui
@@ -52,7 +52,7 @@ search_keywords: [文件树, FileTree, 目录树, tree, 目录结构, 仓库结�
 - content/          # 全部页面，中英双语同目录
   - docs/          # 你正在读的这棵文档树
   - blog/           # 发布说明与文章
-- assets/scss/      # 站点自己的 SCSS，覆盖主题变量
+- assets/css/       # 站点自己的 CSS，在主题样式表之后加载
 - layouts/          # 站点级模板覆盖，越少越好
 - static/images/    # 不需要构建期处理的图
 - hugo.yml          # 站点配置：语言、菜单、params.ui

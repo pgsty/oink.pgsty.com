@@ -299,6 +299,10 @@ Keyboard navigation ignores editable controls and modals. The desktop nonmodal A
 Inside the mobile drawer, Escape closes the root switcher first and returns focus to its trigger. A subsequent Escape closes the drawer. Moving focus outside the root switcher dismisses its popover.
 `/`, `\`, `f`, and `c` open search or commands. `j`/`k` move between headings. `q`/`e` move between pages.
 `h` changes presentation. `l`/`y`, `t`, and `r` open language, theme, and root choices.
+The version disclosure opens on hover, focus or tap. Tab and the up/down arrows reach the version links.
+Escape dismisses the list even when a touch browser leaves focus on the page body. A second Escape closes the drawer.
+The list wraps long labels and scrolls above the bottom bar. In the phone drawer it expands in the flow so the drawer can scroll to its last link.
+A press outside a floating list closes it at once, because iOS sends no click for a tap on plain content. The drawer's list closes on the click, so the row under the finger stays in place.
 Sidebar WASD/Arrow navigation uses real focus without changing Tab order.
 Non-link divider buttons participate in tree navigation.
 From a child, Left/`a` focuses its parent group. A second press collapses it.

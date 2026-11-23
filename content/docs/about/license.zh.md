@@ -12,7 +12,7 @@ OINK 由三层材料组成：主题源码、文档内容、随主题分发的第
 
 | 范围                                                       | 许可证                                         | 权威文件                                                                                                                                          |
 |------------------------------------------------------------|------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| OINK 主题源码（布局、partial、 shortcode、SCSS、JS、i18n） | Apache License 2.0                             | 主题 [`LICENSE`](https://github.com/pgsty/oink/blob/main/LICENSE)、[`NOTICE`](https://github.com/pgsty/oink/blob/main/NOTICE)                     |
+| OINK 主题源码（布局、partial、 shortcode、CSS、JS、i18n）  | Apache License 2.0                             | 主题 [`LICENSE`](https://github.com/pgsty/oink/blob/main/LICENSE)、[`NOTICE`](https://github.com/pgsty/oink/blob/main/NOTICE)                     |
 | 本站的站点代码、构建脚本与源自 Docsy 的材料                | Apache License 2.0                             | 站点 [`LICENSE`](https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE)、[`NOTICE`](https://github.com/pgsty/oink.pgsty.com/blob/main/NOTICE) |
 | 本站的原创文档内容（另有声明的除外）                       | Creative Commons Attribution 4.0 International | 站点 [`LICENSE-CC-BY-4.0`](https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE-CC-BY-4.0)                                                   |
 | 随主题分发的浏览器库、字体与图标                           | 各组件自己的许可证                             | 主题 [`VENDOR.json`](https://github.com/pgsty/oink/blob/main/VENDOR.json) 与资源旁的许可证文件                                                    |
@@ -90,7 +90,8 @@ Viz.js 3.24.0（MIT）；后者包含 Graphviz 14.1.1（EPL-1.0）与 Expat（MI
 `VENDOR.json` 记录具体产物。
 
 > [!NOTE] 尚未发布的依赖清单
-> v1.5.1 之后的升级在 2026-11-11 生成的 `VENDOR.json` 中包含 27 个顶层条目。
+> 2026-11-23 生成的 `VENDOR.json` 列有 26 个顶层依赖。Bootstrap 提供 CSS，
+> 移除其 JavaScript bundle 时也移除了 Popper。
 > Markmap 的 scoped 1.1.0 包替代了上表中的旧包；包含 MathJax 在内的内嵌模块，
 > 其完整版本与许可清单位于 `assets/third_party/markmap/PACKAGES.json` 和 `LICENSES.txt`。
 > Viz.js 3.31.0 内含 Graphviz 16.1.0，许可改为 **EPL-2.0**，替代原 EPL-1.0。

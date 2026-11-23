@@ -282,7 +282,7 @@ common indentation before parsing, preserving YAML options and outline levels.
 
 Mathematics uses Hugo's build-time KaTeX output and local CSS, without a browser mathematics runtime.
 HTML and Print use the vendored stylesheet and preserve MathML and authored TeX.
-Validate mathematics with the current Hugo baseline defined in the [architecture contract](/docs/design/architecture/#hugo-toolchain).
+Validate mathematics with a Hugo release that meets the minimum in the [architecture contract](/docs/design/architecture/#hugo-toolchain).
 Published OINK v1.5.1 uses the matching vendored KaTeX runtime inside Markmap;
 the unreleased Markmap 1 migration uses local MathJax for maps instead.
 In OINK 1.4.0, numbered equations reserve readable formula space based

@@ -48,7 +48,6 @@ module:
   imports:
     - path: github.com/pgsty/oink
   hugoVersion:
-    extended: true
     min: 0.169.0
 
 params:
@@ -339,7 +338,7 @@ OINK 1.3.0 为默认 `shell_types` 列表添加了 `expo`，
 {.fields meta="type default"}
 
 读者系统已有字体，或者站点已经用 `@font-face` 声明时，可以直接写
-`params.ui.fonts`。随站点分发字体文件与更底层的排版调整仍走 SCSS/CSS 入口，见
+`params.ui.fonts`。随站点分发字体文件与更底层的排版调整写在项目样式表里，见
 [品牌外观](/zh/docs/customize/brand/#fonts)。
 
 ## 评论与反馈 {#comments-feedback}
@@ -486,7 +485,6 @@ outputs:
 | `params.taxonomy.page_header` | list | | 只在文章头部显示这几种分类；不设则显示全部 |
 | `services.googleAnalytics.id` | string | | Hugo 原生：分析脚本只在生产构建注入，见[分析与 SEO](/zh/docs/admin/analytics/) |
 | `module.hugoVersion.min` | string | 0.169.0 | 主题声明的 Hugo 下限，低于它构建失败 |
-| `module.hugoVersion.extended` | boolean | true | 必须是 Hugo Extended（要编译 SCSS） |
 {.fields meta="type default"}
 
 ## 通过生成式 Schema 获得编辑器补全 {#editor-schema}
@@ -542,10 +540,10 @@ hugo --printPathWarnings
 
 配置改动还要至少验证三件事：每种语言各一页、缺译页的回退、生产 `baseURL` 下的链接（子路径部署容易漏）。
 
-主题要求 Hugo Extended `0.169.0` 及以上版本。配置改动请使用固定基线验证：
+主题要求 Hugo `0.169.0` 及以上版本，不限 edition：样式表是纯 CSS，站点构建不做任何编译。OINK 1.5.1 及更早版本需要 Hugo 的 Extended 版。配置改动请用构建站点的那个 Hugo 验证：
 
 ```bash
-# 输出必须包含 v0.169.0+extended
+# 输出中的版本必须不低于 v0.169.0
 hugo version
 hugo --printPathWarnings
 ```

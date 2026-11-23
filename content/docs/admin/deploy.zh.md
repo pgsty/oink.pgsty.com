@@ -13,7 +13,7 @@ aliases:
 
 OINK 站点的产物是一个纯静态目录，任何能托管静态文件的地方都能部署，不需要 Node 运行时、服务端渲染或构建插件。托管商一侧只有三件事：用正确的 Hugo 版本执行一条命令、发布 `public/`、让 `baseURL` 与最终访问地址一致。
 
-先使用 Hugo Extended 0.169.0（内置 LibSass，无需安装外部 Sass）在本机完成[生产构建](/zh/docs/admin/preview/#production-build)。请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`，保持告警可见并审阅（上游 LibSass 弃用告警属预期提示）。
+先使用 Hugo {{< param hugoMinVersion >}} 或更新版本在本机完成[生产构建](/zh/docs/admin/preview/#production-build)。当前主题不限 edition，构建过程不做任何编译；固定在 OINK 1.5.1 或更早版本的站点需要 Hugo 的 Extended 版。请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`，保持告警可见并审阅。
 
 ## 确定 baseURL {#baseurl}
 `baseURL` 是最常见的故障源，失败方式也隐蔽：页面能打开，但搜索索引 404、页面操作链接指向错误位置、部分资源加载失败。
@@ -71,7 +71,6 @@ concurrency:
 
 env:
   GO_VERSION: stable
-  HUGO_VERSION: "0.169.0"
   # 同级 checkout 的 workspace 绝不能参与 CI 构建
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
@@ -98,11 +97,10 @@ jobs:
         id: pages
         uses: actions/configure-pages@v6
 
-      - name: Install Hugo Extended
+      - name: Install Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: ${{ env.HUGO_VERSION }}
-          extended: true
+          hugo-version: latest
 
       - name: Record build tool versions
         run: |
@@ -141,9 +139,9 @@ jobs:
 - `fetch-depth: 0` — 站点开了 `enableGitInfo` 时，「最后修改时间」和贡献者信息要读完整 Git 历史，浅克隆会让它们为空。
 - `setup-go` + `go mod download` — Hugo Module 方式引入主题时，Hugo 需要 Go 才能解析模块。用 submodule 安装主题的站点改成 `submodules: recursive`，用离线归档的站点把 `themes/oink/` 提交进仓库，这两步都可以去掉。
 - `GOWORK: off` 与 `HUGO_MODULE_WORKSPACE: off` — 防止本地开发用的 `go.work` 意外参与 CI 构建，保证 CI 验证的是 `go.mod` 里固定的那个公开标签。
+- `hugo-version: latest` — 当前主题可用 {{< param hugoMinVersion >}} 及以上的任何 edition 构建，因此工作流安装当前版本。固定在 OINK 1.5.1 或更早版本的站点必须改装 Extended 版：加上 `extended: true`，并把 `hugo-version` 设为不高于 0.169 的版本，因为那个主题版本在 Hugo 0.170 上构建失败。
 - `--baseURL "${{ steps.pages.outputs.base_url }}/"` — 项目站点的 URL 形如 `https://<OWNER>.github.io/<REPO>/`，`configure-pages` 会把它算出来，不用手写。
-告警保持可见并接受审阅。禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；
-上游 LibSass 弃用告警允许出现。
+告警保持可见并接受审阅。禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。
 
 在仓库 Settings → Pages → Build and deployment 里把 Source 设为 GitHub Actions，推一次 `main`，在 Actions 标签页查看第一次运行。
 
@@ -168,12 +166,12 @@ Pages 项目。
    `CLOUDFLARE_SITE_URL`。
 {.steps}
 
-workflow 固定 Hugo Extended 0.169.0，从 `go.mod` 读取 Go 版本，关闭本地模块
-workspace，并在上传前使用 Hugo Extended 0.169.0 构建，保留可见告警。这是 Starter 用户最可复现的推荐路径。
+workflow 安装当前的 Hugo 版本，从 `go.mod` 读取 Go 版本，关闭本地模块
+workspace，并在上传前完成构建，保留可见告警。这是推荐 Starter 用户使用的路径。
 
 Cloudflare Git integration 仍然是另一种可选模式：构建命令设为
 `hugo --gc --minify --printPathWarnings`，输出目录 `public`，Hugo
-固定 `0.169.0`，Go 固定 `1.27`。同一个项目只选 Git integration 或 Direct Upload
+设为 {{< param hugoMinVersion >}} 或更新版本，Go 设为 `1.27`。同一个项目只选 Git integration 或 Direct Upload
 workflow 其中一种；预览部署应按预览 URL 和非生产环境构建，避免被搜索引擎收录。
 
 {{< /tab >}}
@@ -187,6 +185,7 @@ command = "hugo --gc --minify --printPathWarnings "
 publish = "public"
 
 [build.environment]
+# 平台需要显式指定版本；0.169.0 是主题要求的最低版本
 HUGO_VERSION = "0.169.0"
 ```
 

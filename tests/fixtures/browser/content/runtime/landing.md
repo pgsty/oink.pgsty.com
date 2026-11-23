@@ -28,4 +28,8 @@ sections:
         - { value: 2189, compact: true, label: Stars }
         - { value: 32, suffix: '+', label: Languages }
         - { value: '12.50', prefix: '$', suffix: '/day', label: Cost }
+  - type: download
+    data:
+      title: Download channels
+      key: prd5
 ---

@@ -14,20 +14,26 @@ contract_status: v1.5.1
 ## Hugo toolchain {#hugo-toolchain}
 
 Published **OINK v1.5.1** was validated with **Hugo Extended 0.168.0**.
-The current checkout and its development/CI checks use **Hugo Extended 0.169.0**
-and **Go 1.27.4**; see the [unreleased migration](#unreleased-dependencies).
-Keep the selected toolchain pinned.
+The current checkout pins no Hugo release: development and checks use the
+installed Hugo, the theme's CI installs the current release, and any edition
+builds it. `theme.toml` and `hugo.yaml` declare **0.169.0** as the oldest
+supported release, and the module requires **Go 1.27.4**; see the
+[unreleased migration](#unreleased-dependencies).
 
 Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Warnings remain
-visible and are reviewed. The upstream LibSass deprecation warning is accepted;
-it does not make a successful build fail. Invalid-input tests verify their
-specific warning and safe fallback output directly.
+visible and are reviewed. Invalid-input tests verify their specific warning
+and safe fallback output directly.
 
-OINK uses Hugo's built-in LibSass for main and ReDoc styles. Ordinary consumers
-need no Dart Sass or other Sass executable. Project-variable and project-style
-SCSS hooks remain supported. Future upgrades must preserve this dependency
-boundary. Update requirements, checkers, CI pins, and both language contracts
-together; historical release and research records retain their original tools.
+Published v1.5.1 compiles main and ReDoc styles with Hugo's built-in LibSass
+in every site build, including the consumer SCSS hooks, and prints Hugo's
+accepted LibSass deprecation warning; that release therefore needs Hugo's
+Extended edition. The current checkout contains no Sass: its stylesheet is
+plain CSS that Hugo concatenates; see
+[Plain CSS stylesheet delivery](#stylesheet-delivery). In both, ordinary
+consumers need no Dart Sass or other Sass executable. Later changes must
+preserve this dependency boundary: a site build needs only the Hugo binary.
+Update requirements, checkers, and both language contracts together;
+historical release and research records retain their original tools.
 
 The published v1.5.1 module requires Go **1.27.3**. Go resolves
 Hugo Modules and is not needed for a prepared classic theme copy.
@@ -35,7 +41,7 @@ Hugo Modules and is not needed for a prepared classic theme copy.
 ## Repository and assembly {#repository-and-assembly}
 
 The repository root is a complete Hugo Module theme. It is not a site or npm workspace.
-Hugo Extended compiles SCSS and templates. Committed browser runtimes and third-party assets need no network fetch during normal builds.
+Hugo renders templates and publishes the theme's stylesheets. Committed browser runtimes and third-party assets need no network fetch during normal builds.
 Public bilingual documentation, examples, and browser tests belong to the sibling `oink.pgsty.com` repository.
 The theme keeps only narrow internal regression fixtures under `tests/site/`. It has no separate public example site.
 
@@ -45,7 +51,7 @@ Vendored runtimes, font families, and Font Awesome glyph definitions are support
 OINK includes the complete supported Font Awesome distribution because consumer content can use icons absent from theme templates.
 
 The official compiled Font Awesome CSS is a stable, fingerprinted vendor stylesheet.
-It loads before fingerprinted `main.css`, which is compiled from theme and consumer SCSS.
+It loads before fingerprinted `main.css`, the theme's stylesheet, and the site's own styles.
 Site style changes therefore preserve the icon distribution's fingerprint, while cascade order still lets sites override its styles.
 Capability styles, including KaTeX, DocSearch, Swagger, and Asciinema, stay separate and load only when used.
 Fingerprints permit immutable URLs. The deployment host controls their HTTP cache headers.
@@ -64,9 +70,11 @@ Override the narrowest partial. Keep similar base templates separate when mergin
 > These changes describe the sibling theme checkout after v1.5.1. They are not
 > included in the published v1.5.1 module or this site's published pin.
 
-The current checkout requires **Go 1.27.4** and **Hugo Extended 0.169.0**;
-development and CI use those versions. Main and ReDoc styles still compile
-with built-in LibSass, including consumer SCSS hooks. The published v1.5.1
+The current checkout requires **Go 1.27.4** and **Hugo 0.169.0** or newer, in
+any edition. No Hugo release is pinned: development and checks use the
+installed one, and the theme's CI installs the current release. The stylesheet
+is plain CSS that Hugo concatenates, and the consumer SCSS hooks are retired;
+see [Plain CSS stylesheet delivery](#stylesheet-delivery). The published v1.5.1
 requirements above remain historical release facts. Contributor browser checks
 use Node 26.13.0 and npm 12.2.2; these are not consumer build dependencies.
 Blog cards, galleries and external rows read authored fallback summaries through
@@ -80,8 +88,16 @@ The refreshed runtime set is DocSearch 5.2.0, Mermaid 12.3.0, KaTeX 0.19.1,
 Markmap 1.1.0, Swagger UI 5.34.1, ReDoc 3.1.0, Asciinema 3.18.0,
 Infographic 0.2.20, Pako 3.0.3, idb-keyval 6.3.0 and Viz.js 3.31.0
 (Graphviz 16.1.0 and Expat 2.8.5). Font Awesome 7.3.1, Bootstrap 5.3.8,
-Popper 2.11.8, ECharts 6.1.0, the font packages and PlantUML core 1.2026.9
-were already current stable releases. `VENDOR.json` remains the exact inventory.
+ECharts 6.1.0, the font packages and PlantUML core 1.2026.9 were already
+current stable releases. `VENDOR.json` remains the exact inventory.
+
+The `main` stylesheet retains Bootstrap's component CSS, including modals,
+offcanvas panels and carousels, for use in site-owned markup. A site that uses its JavaScript components
+loads its own bundle. The theme no longer vendors `bootstrap.bundle.js` or
+Popper. `base.js` owns the version disclosure and both `main` and `chrome`
+include its styles. `landing.js` enhances the server-rendered download
+channels. See the [upgrade guide](/docs/admin/upgrade/#bootstrap-script) for
+changes to site event listeners and CSS selectors.
 
 Mermaid explicitly defaults to `layout: dagre`, `theme: default`, `look: classic`;
 the new ELK/neo/color-theme defaults do not silently redraw existing content.
@@ -131,6 +147,79 @@ assets, bundled-package inventory, licenses and hashes before importing them.
 `import-redoc.py` makes the two documented image substitutions in the original
 npm bundle. The lockfile pins transitive dependencies, including idb-keyval
 inside the SVG loader. None of these tools run in an ordinary Hugo build.
+
+### Plain CSS stylesheet delivery {#stylesheet-delivery}
+
+The theme contains no Sass, and nothing compiles its stylesheet. The source is
+the plain CSS layer files under `assets/css/td/`. `assets/css/td/bootstrap/`
+holds Bootstrap 5.3.8 as built for the theme, split by Bootstrap component: it
+carries the theme's palette, and theme selectors that share a Bootstrap rule
+are written into that rule. The font-face layers are
+`assets/third_party/inter/{normal,italic}.css` and
+`assets/third_party/ibm-plex-sans/{normal,italic}.css`.
+
+`layouts/_partials/css/layers.html` lists the layers of each stylesheet in
+cascade order; a later layer wins a tie in specificity.
+`layouts/_partials/css/bundle.html` takes a name and returns that stylesheet as
+a Hugo resource: its layers concatenated with `resources.Concat` and published
+as `css/<name>.css`. An unknown name warns.
+
+| Stylesheet | Consumer |
+| --- | --- |
+| `main` | Every theme page; 118 layers. `head-css.html` publishes it as `css/main.css`, or minified, fingerprinted and with an integrity attribute in production |
+| `redoc.css` | Pages that register ReDoc. It is the single file `assets/css/td/redoc.css`, outside the layer lists, published the same way as `css/redoc.css` |
+| `chrome` | A site-owned shell that does not load `main`: tokens, typography, the four palettes, the site navbar, and the language, theme and appearance controls |
+| `landing` | Landing sections for a site-owned shell, loaded after `chrome`. It repeats the palettes, because they restyle Landing sections at equal specificity and must follow them |
+| `search`, `compare` | The command palette with local search, and Duo View, for a site-owned shell |
+
+The four smaller stylesheets have no source of their own: each lists layers
+that `main` also loads. A site layout asks for one by name and applies its own
+minification and fingerprint:
+
+```go-html-template
+{{ with partial "css/bundle.html" "chrome" }}<link rel="stylesheet" href="{{ (. | minify | fingerprint).RelPermalink }}">{{ end }}
+```
+
+There is no compiler, no build step and no generated file in Git; editing a
+layer is the whole change. A layer is flat CSS that concatenates: no `@import`,
+no `//` comment, and every value written out. A value that was a Sass variable,
+such as the 50px navbar height, is repeated where it is used, so change every
+occurrence together. No layout may call `toCSS`, `css.Sass` or PostCSS.
+
+The layers reference fonts as `../webfonts/…`, so every stylesheet is published
+under `css/`, one directory below the site root. Font Awesome's stylesheet is
+published there as `css/fontawesome.css`. Releases up to 1.5.1 publish
+`scss/main.css`, `scss/fontawesome.css` and `scss/redoc.css`; a site layout
+that names those paths must follow.
+
+A site's own rules are plain CSS: `assets/css/project.css`, then every
+`assets/css/project/*.css` in path order. The theme concatenates them into one
+stylesheet, published as `css/project.css` after `main.css` and before the RTL
+artifact, and minified and fingerprinted in production. Hugo does not transform
+it. The three SCSS hooks, `_variables_project.scss`,
+`_variables_project_after_bs.scss` and `_styles_project.scss`, are ignored;
+each present file warns once per build and the page keeps the theme's styles.
+Consumer Sass variables no longer reach Bootstrap, the font roles or any other
+theme rule.
+
+`bin/check-stylesheets.py` owns this contract. It fails when a `.scss` file
+exists under `assets/`, when a layout calls a stylesheet compiler, or when the
+layer lists and the layer files disagree: every listed layer must exist, and
+every layer file must be listed. It then builds probe sites with an empty
+`PATH` and checks that they publish the layers in their listed order, that
+production output is minified, fingerprinted and carries an integrity
+attribute, that each retired SCSS hook warns and reaches no output, and that
+the four smaller stylesheets are published for a site-owned shell.
+
+The conversion changed no rule. On 2026-11-23, with Hugo 0.170.1, the
+production `main` stylesheet was byte-identical (556,437 bytes) to the last one
+compiled from Sass, and the regression fixture's 683 output files were
+identical apart from the stylesheet path. The four smaller stylesheets now
+reuse `main`'s layers, so they gained selectors (Bootstrap's heading, `.small`
+and `.mark` class variants, and a few `.td-content` ones); no rule or
+declaration changed. Published v1.5.1 fails on Hugo 0.170, because Hugo then
+requires Dart Sass. The [upgrade guide](/docs/admin/upgrade/#sass-hooks)
+describes how to convert existing hooks.
 
 ## Configuration and diagnostics {#configuration-and-diagnostics}
 
@@ -208,7 +297,7 @@ An English value may remain only as a reviewed product name, punctuation token, 
 There are no generated English fallback blocks.
 `zh` and `zh-cn` use Simplified Chinese. `zh-tw` uses Traditional Chinese.
 
-The current Hugo baseline accepts `locale: zh` for the generic `zh` language
+Every Hugo release the theme supports accepts `locale: zh` for the generic `zh` language
 alongside regional Chinese catalogs. A site may also select `locale: zh-CN`.
 Neither choice changes the `i18n/zh.yaml` filename.
 
@@ -366,10 +455,10 @@ Forced colors retain keyboard focus indication. No global focus-outline reset is
 
 Font roles are `ui`, `body`, `heading`, `code`, `display`, `meta`, `brand`, and `print`. They use `--td-*-font-family` properties.
 `ui` is the primary face, with `body` resolving through it and `heading` through `body`, so one assignment changes interface text, prose, and headings together.
-`params.ui.typography` accepts `technical` or `system`. Both compile into one stylesheet and need no runtime.
-Legacy Bootstrap/Docsy Sass variables still initialize these roles.
+`params.ui.typography` accepts `technical` or `system`. Both are part of the one stylesheet and need no runtime.
+Published v1.5.1 lets legacy Bootstrap/Docsy Sass variables initialize these roles; the current stylesheet is plain CSS and reads no consumer Sass variable.
 
-`params.ui.fonts` configures the same roles without mounted SCSS or an added stylesheet.
+`params.ui.fonts` configures the same roles without an added stylesheet.
 It names faces without loading them, so readers must have the family or the site must declare it through its own `@font-face`.
 This key remains outside the network contract.
 Values must use plain font-family syntax. The emitted `:root` block is reconstructed from matched parts.
@@ -414,12 +503,12 @@ Mode remains independent: `data-bs-theme`, `td-color-theme`, and
 resolved mode and preset. Without JavaScript, the site default light palette
 renders; appearance controls require JavaScript.
 
-All four presets compile into one stylesheet. Slate retains the v1.1.0 base
+All four presets are part of the one stylesheet. Slate retains the v1.1.0 base
 palette selectors and values. Paper changes palette and selected component
 rules without changing shell columns, breakpoints, or global spacing. Dark
 Paper redeclares every light palette token, including nested dark islands.
 Font roles have equal selector specificity: preset, then `typography: system`,
-then head-emitted `params.ui.fonts`. Site `_styles_project.scss` remains last.
+then the site's own styles, then head-emitted `params.ui.fonts`.
 `brand` controls the wordmark independently from display headings. Paper uses
 local IBM Plex Sans; Slate keeps Inter; both retain Chakra Petch for the
 wordmark and IBM Plex Mono for code. System typography requests no bundled

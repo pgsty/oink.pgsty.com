@@ -129,7 +129,6 @@ module:
   imports:
     - path: github.com/pgsty/oink
   hugoVersion:
-    extended: true
     min: '{{< param hugoMinVersion >}}'
 ```
 
@@ -185,7 +184,7 @@ git status --short
 ```
 
 Confirm that the module graph names the pinned release. The build must succeed
-and its diagnostics must be reviewed; the upstream LibSass warning is accepted. Git status must contain source edits but no `public/` or
+and its diagnostics must be reviewed. Git status must contain source edits but no `public/` or
 cache files. Before deployment, open each enabled language root and one route
 from each of Docs, Blog, and Book.
 

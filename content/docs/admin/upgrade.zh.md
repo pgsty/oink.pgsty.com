@@ -17,10 +17,36 @@ aliases:
 
 升级会改变渲染结果。先建一个升级分支再动手，回退的代价就是丢弃一个分支。
 
-> [!IMPORTANT] 当前 Hugo 基线
-> 维护中的站点统一使用 Hugo Extended 0.169.0 及其内置 LibSass，无需安装外部 Sass。
-> 不要启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；Hugo 内置 LibSass 的弃用告警属于预期输出。
-> 升级时请同步更新 Hugo workflow 固定版本；下方旧版本章节中的要求仅说明当时的发布状态。
+> [!IMPORTANT] 当前 Hugo 要求
+> 1.5.1 之后的主题可用 Hugo 0.169.0 或更新版本构建，不限 edition，站点构建不做任何编译。
+> OINK 1.5.1 及更早版本需要 Hugo 的 Extended 版，而 Extended 版止于 Hugo 0.169。
+> 不要启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。
+> 升级时请同步更新 workflow 中的 Hugo 版本；下方旧版本章节中的要求仅说明当时的发布状态。
+
+## 已退役的 SCSS 钩子 {#sass-hooks}
+
+> [!NOTE] 尚未发布
+> 这项变更位于主题 main 分支，在 1.5.1 之后。目前没有任何已发布的标签包含它。
+
+主题的样式表现在是纯 CSS，站点构建不再运行 Sass 编译器。因此 `assets/scss/` 下的三个文件会被忽略，并各产生一条构建告警：`_variables_project.scss`、`_variables_project_after_bs.scss` 与 `_styles_project.scss`。在转换之前，站点只带主题的默认样式构建。
+
+请手工转换一次：
+
+1. 把 `_styles_project.scss` 及其导入的 partial 中的规则，改写成纯 CSS 放进 `assets/css/project.css`。原生 CSS 嵌套可以保留；只有 Sass 才认识的写法要展开：变量、mixin（如 Bootstrap 的断点）、`@extend`，以及用 `&-` 拼接类名的嵌套选择器。
+2. 对两个变量钩子里赋过值的每个 Sass 变量，改为直接设置它原本影响的结果。颜色和字体有专门的设置，见[品牌外观](/zh/docs/customize/brand/)；其余情况，覆盖该变量对应的自定义属性或主题规则。
+3. 构建站点并比对关键页面。`project.css` 排在主题样式表之后加载，同权重的主题规则不再覆盖你的规则。请核对同时带有主题修饰类的元素，以及你提供的每个视觉预设。
+4. 删除三个 SCSS 文件以及只被它们导入的 partial。此后请直接编辑[项目样式表](/zh/docs/customize/brand/#scss)。
+
+在自己的模板里编译主题 SCSS partial 的站点，必须改为[按名称取用主题样式表](/zh/docs/customize/brand/#bundles)。
+
+## Bootstrap 的 JavaScript {#bootstrap-script}
+
+> [!NOTE] 尚未发布
+> 这项变更位于主题 main 分支，在 1.5.1 之后。目前没有任何已发布的标签包含它。
+
+从 1.5.1 升级后，只有站点自行加载 Bootstrap 脚本，才会提供 `window.bootstrap` 并启用它的脚本钩子。如果站点的模板、shortcode 或内容用到了 Bootstrap 的下拉菜单、标签页、模态框等脚本组件，请搜索 `bootstrap.`、`data-bs-toggle`、`data-bs-dismiss`、`data-bs-target` 和监听 `.bs.` 事件的代码。可以改用 OINK 组件，也可以在 `layouts/_partials/hooks/body-end.html` 中加载站点自己的 Bootstrap bundle。深浅色模式的 `data-bs-theme` 和 `data-bs-theme-value` 仍然有效。
+
+监听 OINK Landing 下载渠道切换时，请将 `shown.bs.tab` 换成 `td:tab-shown`。事件从刚显示的渠道面板向上冒泡。底栏和抽屉里的版本列表使用 `.td-version-menu__list`，为这些列表定制的 `.dropdown-menu` 选择器需要更新。如果原先监听 `*.bs.dropdown` 事件来判断菜单是否展开，可以观察触发按钮的 `aria-expanded` 属性。
 
 ## 升级到 1.5.1 {#preparing-1-5}
 
@@ -130,7 +156,7 @@ env -u HUGO_MODULE_REPLACEMENTS GOWORK=off HUGO_MODULE_WORKSPACE=off \
 ## 从 1.0 升到 1.1 {#from-1-0}
 
 从 1.0.0 升级到 1.1.0 不需要迁移源码，模块的 Go 1.27.0 声明与 1.0.0 相同。
-当前升级统一使用 Hugo Extended 0.169.0 验证；历史工具链信息保留在
+当前升级按本页开头的 Hugo 要求验证；历史工具链信息保留在
 [1.1 发布说明](/zh/blog/release/1.1.0/)中。
 
 选择新固定版本前，检查这些受影响的页面与行为：
@@ -176,7 +202,7 @@ make dev
 > 自定义深色品牌选择器的兼容处理见[品牌外观](/zh/docs/customize/brand/#visual-presets)。
 
 OINK 1.2.0 已发布。除上面的默认外观变化外，无需迁移内容源码。
-当前升级统一使用 Hugo Extended 0.169.0 验证，并按以下清单验收站点：
+当前升级按本页开头的 Hugo 要求验证，并按以下清单验收站点：
 
 - 检查所选预设、明暗图标、键盘与手机菜单、保存的偏好，以及自定义字体和强调色覆盖。
   太阳表示亮色，月亮表示暗色；切换风格不得改变保存的明暗偏好。
@@ -255,7 +281,7 @@ python3 bin/migrations/oink06.py migrate --site ~/www/ddia --only callout,tabs -
 
 ## 从 Docsy 迁移 {#from-docsy}
 
-OINK 是 Docsy 的硬分支：内容模型、`td-` 命名、Sass 变量、大部分 front matter 都还在。迁移的核心动作是删掉站点里复制的公共外壳，让主题的实现接管，而不是重写正文。
+OINK 是 Docsy 的硬分支：内容模型、`td-` 命名、大部分 front matter 都还在。迁移的核心动作是删掉站点里复制的公共外壳，让主题的实现接管，而不是重写正文。
 
 1. 固定目标版本。在 `go.mod` 里换成 OINK 的发布标签，或者用完整的版本化归档。评估期可以用不提交的 `go.work` 指向本地 checkout。
 
@@ -271,7 +297,7 @@ OINK 是 Docsy 的硬分支：内容模型、`td-` 命名、Sass 变量、大部
 
    Docsy 的驼峰式检索键在 OINK 中已改名：`offlineSearch`、`offlineSearchIndex`、`offlineSearchMaxResults`、`offlineSearchOnServe`、`offlineSearchSummaryLength` 一律改为下划线形式。这一步要自己盯着改——那份「中断构建并报出新键名」的迁移登记表已经删除，旧键现在只是一个没人读的键，检索会一声不响地保持关闭。
 
-1. 字体与样式的兼容点。站点的 `assets/scss/_variables_project.scss` 里那些 Docsy Sass 变量仍然生效，会作为字体角色的种子值，不用为了升级把它们删掉：`$td-fonts-serif`、`$font-family-sans-serif`、`$headings-font-family`、`$font-family-code` 各自喂给对应的字体角色。Docsy 的 Google Fonts 开关 `$td-enable-google-fonts`、`$td-google-font-name` 与 `$td-web-font-path` 主题已不再读取，留在文件里不影响构建，也不产生任何效果：OINK 自带 Inter、Chakra Petch 与 IBM Plex Mono，任何预设都不向 Google Fonts 发请求。想换字体走 token 层，见[品牌外观](/zh/docs/customize/brand/)。
+1. 字体与样式。Docsy 放在 `assets/scss/` 下的 SCSS 钩子不再被编译，其中的 Sass 变量（包括字体变量和 Google Fonts 开关）都不再生效。请按[已退役的 SCSS 钩子](#sass-hooks)转换。OINK 自带 Inter、Chakra Petch 与 IBM Plex Mono，任何预设都不向 Google Fonts 发请求。想换字体走 token 层，见[品牌外观](/zh/docs/customize/brand/)。
 
 1. 换 shortcode。Docsy 的 `alert`、`pageinfo`、`tabpane`、`card` 系列都有当前对应
    形态，用上面的[迁移工具](#migration-toolkit)批量转，`--only` 一类一类来。

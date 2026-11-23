@@ -37,7 +37,7 @@ aliases:
 
 ## 归属与验证 {#validation}
 
-主题负责发现译文、按需加载的入口与阅读器运行时、32 个界面语言目录和限定作用域的 SCSS。`bin/check-compare.py` 覆盖发现规则、Docs/Book/博客页面、按语言关闭、键盘提示、统计、输出隔离，以及每个运行时在窗格中的行为。`tests/js/compare-scroll.test.js` 覆盖滚动几何。文档站的 `test:compare` 测试负责同步、生命周期、刷新、窄屏与缩放布局、从右到左顺序、八种语言、失败处理和无障碍。
+主题负责发现译文、按需加载的入口与阅读器运行时、32 个界面语言目录和限定作用域的 CSS。`bin/check-compare.py` 覆盖发现规则、Docs/Book/博客页面、按语言关闭、键盘提示、统计、输出隔离，以及每个运行时在窗格中的行为。`tests/js/compare-scroll.test.js` 覆盖滚动几何。文档站的 `test:compare` 测试负责同步、生命周期、刷新、窄屏与缩放布局、从右到左顺序、八种语言、失败处理和无障碍。
 
 ## 修订 {#revisions}
 

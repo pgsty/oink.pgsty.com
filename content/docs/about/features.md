@@ -29,11 +29,12 @@ cards with icons and images, and field entries with several Markdown paragraphs.
 
 ## Build with Hugo {#hugo-only}
 
-Hugo Extended 0.169.0 or newer compiles the site's assets. SCSS is compiled by
-Hugo's embedded Sass transpiler. The theme never invokes `postCSS`. It requires
-neither npm nor webpack. Installing the theme as a Hugo Module also needs Go
+Hugo 0.169.0 or newer builds the site, in any edition. The theme's stylesheet
+is plain CSS that Hugo concatenates, so a build runs no compiler; OINK 1.5.1
+and older need Hugo's Extended edition. The theme never invokes `postCSS`. It
+requires neither npm nor webpack. Installing the theme as a Hugo Module also needs Go
 and access to the module dependencies, either over the network or from a local
-cache. With an offline archive or a submodule already prepared, Hugo Extended builds the site without Go or an external Sass compiler.
+cache. With an offline archive or a submodule already prepared, Hugo builds the site without Go or any other tool.
 
 The interface runs JavaScript in the browser: search, the command palette,
 diagrams and tabs are page scripts. The theme includes those scripts. Each page receives only the scripts it uses.

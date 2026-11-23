@@ -31,9 +31,10 @@ For an existing Hugo site, use the short [integration path](#existing-site)
 below. For an existing Docsy site, see [Upgrade](/docs/admin/upgrade/).
 
 The second half compares four install methods: Hugo Module, Git submodule,
-offline archive, and pinned source copy. Current development and builds use
-Go 1.27.4 and Hugo Extended 0.169.0 (with built-in Sass — no external Sass
-needed).
+offline archive, and pinned source copy. The current theme builds with
+Go 1.27.4 and Hugo 0.169.0 or newer, in any edition. Its stylesheet is plain
+CSS, so no Sass compiler is needed. A site pinned to OINK 1.5.1 or older needs
+Hugo's Extended edition.
 
 ## Add OINK to an existing site {#existing-site}
 
@@ -143,7 +144,6 @@ Skip `hugo new site` and keep the existing configuration filename.
      imports:
        - path: github.com/pgsty/oink
      hugoVersion:
-       extended: true
        min: '{{< param hugoMinVersion >}}'
    ```
 
@@ -333,7 +333,7 @@ Before building offline, confirm that all eleven top-level entries are present:
   - LICENSE             # Apache-2.0
   - NOTICE              # upstream attribution; must be kept on redistribution
   - VENDOR.json         # third-party runtime manifest: version, source, licence path, SHA-256
-  - assets/             # SCSS, JS and the third-party runtimes shipped with the theme
+  - assets/             # stylesheets, JS, and the third-party runtimes shipped with the theme
   - layouts/            # templates, partials, shortcodes, render hooks
   - static/             # font files, published as is
   - i18n/               # 32 interface language files
@@ -412,9 +412,8 @@ hugo --gc --minify --printPathWarnings
 ```
 
 It passes when the build ends with `Total in …` and no unexpected `WARN` or
-`ERROR` (the upstream LibSass deprecation warning is expected; keep warnings
-visible for review and do not enable `--panicOnWarning` or
-`HUGO_PANICONWARNING`). Then confirm:
+`ERROR`. Keep warnings visible for review and do not enable
+`--panicOnWarning` or `HUGO_PANICONWARNING`. Then confirm:
 
 - `/docs/` opens and the sidebar holds the page you wrote
 - The navbar has a search box that finds the heading you just wrote

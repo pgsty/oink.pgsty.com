@@ -17,9 +17,10 @@ or build plugin. On the host, run one command with the correct Hugo version.
 Publish `public/` and set `baseURL` to match the final address.
 
 First run a local [production build](/docs/admin/preview/#production-build)
-with Hugo Extended 0.169.0 (using its built-in LibSass). Do not enable
-`--panicOnWarning` or `HUGO_PANICONWARNING`; keep warnings visible and review
-them (the upstream LibSass deprecation warning is expected).
+with Hugo {{< param hugoMinVersion >}} or newer. Any edition builds the current
+theme, and the build compiles nothing. A site pinned to OINK 1.5.1 or older
+needs Hugo's Extended edition. Do not enable `--panicOnWarning` or
+`HUGO_PANICONWARNING`; keep warnings visible and review them.
 
 ## Getting baseURL right {#baseurl}
 An incorrect `baseURL` is the most common source of failure. The page can open
@@ -88,7 +89,6 @@ concurrency:
 
 env:
   GO_VERSION: stable
-  HUGO_VERSION: "0.169.0"
   # a workspace from a sibling checkout must never take part in a CI build
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
@@ -115,11 +115,10 @@ jobs:
         id: pages
         uses: actions/configure-pages@v6
 
-      - name: Install Hugo Extended
+      - name: Install Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: ${{ env.HUGO_VERSION }}
-          extended: true
+          hugo-version: latest
 
       - name: Record build tool versions
         run: |
@@ -158,9 +157,10 @@ OINK Starter ships this workflow. The following settings are required:
 - `fetch-depth: 0` — if `enableGitInfo` is enabled, "last modified" and contributor information require the complete Git history. A shallow clone leaves them empty.
 - `setup-go` plus `go mod download` — Hugo needs Go to resolve the theme as a Hugo Module. For a submodule installation, use `submodules: recursive` instead. For an offline archive, commit `themes/oink/`. With either alternative, remove both Go steps.
 - `GOWORK: off` and `HUGO_MODULE_WORKSPACE: off` — exclude a local development `go.work` from the CI build. CI then verifies the published tag pinned in `go.mod`.
+- `hugo-version: latest` — the current theme builds with any Hugo edition from {{< param hugoMinVersion >}}, so the workflow installs the current release. A site pinned to OINK 1.5.1 or older must install the Extended edition instead: add `extended: true` and set `hugo-version` to a release no newer than 0.169, because that theme release fails on Hugo 0.170.
 - `--baseURL "${{ steps.pages.outputs.base_url }}/"` — a project site's URL is `https://<OWNER>.github.io/<REPO>/`. Use the value computed by `configure-pages` instead of a hard-coded address.
 Warnings remain visible for review. Do not enable `--panicOnWarning` or
-`HUGO_PANICONWARNING`; the upstream LibSass deprecation warning is accepted.
+`HUGO_PANICONWARNING`.
 
 In the repository, set Settings → Pages → Build and deployment → Source to
 GitHub Actions. Push to `main`. Check the first run on the Actions tab.
@@ -187,14 +187,13 @@ same `public/` artifact to a Cloudflare Pages project.
    `CLOUDFLARE_SITE_URL` when a custom domain becomes production.
 {.steps}
 
-The workflow pins Hugo Extended 0.169.0, reads Go from `go.mod`, disables local
-module workspaces, and builds with Hugo Extended 0.169.0 and visible warnings
-before upload. It is the
-recommended reproducible path for Starter users.
+The workflow installs the current Hugo release, reads Go from `go.mod`,
+disables local module workspaces, and builds with visible warnings before
+upload. It is the recommended path for Starter users.
 
 You can also use Cloudflare Git integration as a separate mode. Set the build
 command to `hugo --gc --minify --printPathWarnings`, the output
-directory to `public`, Hugo to `0.169.0`, and Go to `1.27`. For one project,
+directory to `public`, Hugo to {{< param hugoMinVersion >}} or newer, and Go to `1.27`. For one project,
 use either Git integration **or** the Direct Upload workflow, and build preview
 deployments with their own preview URL and a non-production environment so they
 remain unindexed.
@@ -212,6 +211,7 @@ command = "hugo --gc --minify --printPathWarnings "
 publish = "public"
 
 [build.environment]
+# the platform needs an explicit release; 0.169.0 is the theme's minimum
 HUGO_VERSION = "0.169.0"
 ```
 
@@ -366,7 +366,7 @@ output. Check the remaining items at the real URL.
 
 | Check | How to confirm |
 | --- | --- |
-| A successful build with reviewed diagnostics | The build command carries `--printPathWarnings` and the log has `Total in …`; the upstream LibSass warning is accepted |
+| A successful build with reviewed diagnostics | The build command carries `--printPathWarnings` and the log has `Total in …` |
 | `baseURL` is correct | `<link rel="canonical">` in the page source points at the real production address, subpath included |
 | Sitemap | `<baseURL>/sitemap.xml` resolves; a multilingual site has an index pointing at `/en/sitemap.xml` and `/zh/sitemap.xml` |
 | robots | `<baseURL>/robots.txt` reads `Allow: /` with a `Sitemap:` line; a preview deployment should read `Disallow: /` |

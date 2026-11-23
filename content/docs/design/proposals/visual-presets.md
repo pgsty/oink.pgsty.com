@@ -51,9 +51,11 @@ canvas (`#f1f4f8` / `#0b1119`), navy text, steel-blue links (`#245f94`), copper
 accents, Inter for interface and prose, Chakra Petch for display and wordmark,
 IBM Plex Mono for code and technical labels, a blueprint grid and glow on the
 Landing hero, and a crimson inline-code pair. It is defined by Bootstrap
-custom properties in `assets/scss/td/_brand.scss`, shell tokens in
-`assets/scss/td/shell/_tokens.scss`, and font roles in
-`assets/scss/td/_tokens-typography.scss`.
+custom properties in `assets/css/td/brand.css`, shell tokens in
+`assets/css/td/shell/tokens.css`, and font roles in
+`assets/css/td/tokens-typography.css`. In releases up to 1.5.1 these are the
+SCSS partials `_brand.scss`, `shell/_tokens.scss` and `_tokens-typography.scss`
+under `assets/scss/td/`.
 
 PG.CENTER, an independent site, has a warm editorial reading style that
 maintainers want as the future OINK default. Its presentation tokens live in
@@ -180,7 +182,9 @@ Precedence, lowest to highest:
    always win.
 5. `theme_color` / `theme_color_dark` — page and section accent *backgrounds*
    only. They override the preset accent; they never touch links or inline code.
-6. Site `_styles_project.scss` — last in the bundle.
+6. The site's project stylesheet, `assets/css/project.css` — loaded after the
+   theme's stylesheet. In releases up to 1.5.1 it is `_styles_project.scss`,
+   last in the compiled bundle.
 
 `typography: technical` remains the name for "use the preset's bundled faces".
 The preset decides which bundled faces those are (Paper: Plex Sans; Slate:
@@ -269,7 +273,7 @@ of the current `aria-pressed` buttons.
 
 ## Token architecture {#token-architecture}
 
-All presets compile into the single existing `main.css`. Fonts are declared
+All presets are part of the single existing `main.css`. Fonts are declared
 with `@font-face` and are downloaded only when a rule uses them, so offering a
 preset costs CSS bytes but no font bytes until it is selected.
 
@@ -520,7 +524,8 @@ Changing the default to Paper changes every site that does not set `preset`.
 
 - Sites that want the current look add `params.ui.preset: slate`; the upgrade
   note leads with this one line. Slate output must equal `v1.1` tokens.
-- Sites with custom brand overrides in `_styles_project.scss`: light overrides
+- Sites with custom brand overrides in their own styles (`_styles_project.scss`
+  up to 1.5.1, `assets/css/project.css` after it): light overrides
   on `:root` keep working under Paper by source order; dark overrides on
   `[data-bs-theme='dark']` are outranked by Paper's dark block. Such sites
   should choose Slate or move overrides to `[data-td-preset='paper'][data-bs-theme='dark']`.
@@ -545,7 +550,8 @@ Phase 1, in dependency order. Each step names its owning checker.
    Checker: `check-vendor.py`.
 3. **Preset tokens.** New `assets/scss/td/_presets.scss` (imported after
    `_brand.scss`); the implementation keeps Paper in that file instead of a
-   separate `presets/_paper.scss`. Place preset font roles before the `system`
+   separate `presets/_paper.scss`. After v1.5.1 the file is the plain CSS layer
+   `assets/css/td/presets.css`, listed after `brand.css`. Place preset font roles before the `system`
    typography reset. Checkers: extend `check-font-tokens.py` (Plex Sans family,
    system block order, token parity between light and dark blocks).
 4. **Configuration.** `hugo.yaml` defaults (`preset: paper`,

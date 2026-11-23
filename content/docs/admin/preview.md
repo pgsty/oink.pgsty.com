@@ -10,9 +10,10 @@ aliases:
 ---
 
 Use `hugo server` to preview local changes. Use `hugo` to produce a `public/`
-directory that you can deploy to any static host. Install Hugo Extended
-({{< param hugoMinVersion >}} or newer) on the machine. If you install the theme
-as a Hugo Module, also install Go. The build does not require Node.js, npm, or
+directory that you can deploy to any static host. Install Hugo
+({{< param hugoMinVersion >}} or newer, in any edition) on the machine. A site
+pinned to OINK 1.5.1 or older needs Hugo's Extended edition. If you install the
+theme as a Hugo Module, also install Go. The build does not require Node.js, npm, or
 PostCSS. Only this repository's regression checks use those tools.
 
 ## The preview server {#hugo-server}
@@ -97,11 +98,10 @@ source tree. The four switches have these functions:
 | `--printPathWarnings` | Warns when two pages use the same output path. This is the most common silent error on multilingual sites |
 {.fields}
 
-Use Hugo Extended 0.169.0 and leave warnings visible. Do not enable
-`--panicOnWarning` or `HUGO_PANICONWARNING`: Hugo's upstream LibSass deprecation
-warning is accepted. Invalid giscus settings or unsupported theme values also
-warn and fall back; review these diagnostics and the rendered output before
-publication.
+Leave warnings visible. Do not enable `--panicOnWarning` or
+`HUGO_PANICONWARNING`. Invalid giscus settings or
+unsupported theme values warn and fall back; review these diagnostics and the
+rendered output before publication.
 
 This site's CI uses the production command above, with local module
 replacements and workspaces disabled for published-pin acceptance.
@@ -152,25 +152,14 @@ ARG TARGETARCH
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates curl git \
     && curl --fail --location -o /tmp/hugo.deb \
-      "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.deb" \
+      "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-${TARGETARCH}.deb" \
     && apt-get install -y /tmp/hugo.deb \
     && curl --fail --location -o /tmp/go.tgz \
       "https://go.dev/dl/go${GO_VERSION}.linux-${TARGETARCH}.tar.gz" \
     && tar -C /usr/local -xzf /tmp/go.tgz \
     && rm -rf /var/lib/apt/lists/* /tmp/hugo.deb /tmp/go.tgz
 
-RUN case "${TARGETARCH}" in \
-      amd64) sass_arch=x64; sass_sha=a530ee08d5792c80bdb9d9614b45fb58219c890cb42a280a80775f0af9c29582 ;; \
-      arm64) sass_arch=arm64; sass_sha=40c7a1946f654163daab34d3824cf572d2e72cc48a2efcf9ca0a33140007d374 ;; \
-      *) exit 1 ;; \
-    esac \
-    && curl --fail --location -o /tmp/sass.tgz \
-      "https://github.com/sass/dart-sass/releases/download/1.105.2/dart-sass-1.105.2-linux-${sass_arch}.tar.gz" \
-    && echo "${sass_sha}  /tmp/sass.tgz" | sha256sum --check \
-    && tar -C /opt -xzf /tmp/sass.tgz \
-    && rm /tmp/sass.tgz
-
-ENV PATH="/usr/local/go/bin:/opt/dart-sass:${PATH}"
+ENV PATH="/usr/local/go/bin:${PATH}"
 WORKDIR /src
 EXPOSE 1313
 ENTRYPOINT ["hugo"]
@@ -191,6 +180,12 @@ docker run --rm --user "$(id -u):$(id -g)" \
   -v "$PWD:/src" \
   oink-hugo --gc --minify
 ```
+
+`HUGO_VERSION` is the release this image pins; set it to the one your team
+builds with, {{< param hugoMinVersion >}} or newer. A site pinned to OINK 1.5.1
+or older needs the Extended package instead,
+`hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.deb`, at a release no newer
+than 0.169.
 
 The image includes Go because Hugo needs it to resolve and download a Hugo
 Module. If the site uses a submodule, offline archive, or plain clone, you can
@@ -213,7 +208,7 @@ Hugo stores intermediate output in three places. Clear the smallest scope first:
 | Directory / command | Contents | When to clear |
 | --- | --- | --- |
 | `public/` | The previous build's output | A deleted page remains live. You can also let the build clear this directory with `hugo --cleanDestinationDir` |
-| `resources/_gen/` | Processed images and compiled CSS | Image processing parameters, fonts, or the accent color changed, but the page still shows the old appearance |
+| `resources/_gen/` | Processed images. With OINK 1.5.1 or older, also the CSS that the build compiled | Image processing parameters, fonts, or the accent color changed, but the page still shows the old appearance |
 | `hugo mod clean` | The Hugo Module cache | The theme version changed, but the old version still resolves. Add `--all` to clear the complete module cache |
 {.fields}
 

@@ -131,7 +131,7 @@ Every menu entry carries a stable action ID:
 
 If a host does not support an action, hide it with CSS:
 
-```scss {title="assets/scss/_styles_project.scss"}
+```css {title="assets/css/project.css"}
 .td-page-actions__item[data-td-action='create_child_page'] {
   display: none;
 }

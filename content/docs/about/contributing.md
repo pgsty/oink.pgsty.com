@@ -33,14 +33,19 @@ from reports and reproductions.
 
 ## Build and check {#build-and-check}
 
-Development after **OINK v1.5.1** uses **Hugo Extended 0.169.0** and
-**Go 1.27.4**; the current theme checkout's Go minimum is 1.27.4.
-The published v1.5.1 module retains its original requirements. Hugo uses its built-in LibSass.
-Ordinary site builds require no external Sass compiler, Node.js, or npm.
+Development after **OINK v1.5.1** uses the Hugo that is installed, **0.169.0**
+at the oldest and in any edition, and **Go 1.27.4**; the current theme
+checkout's Go minimum is 1.27.4. The published v1.5.1 module retains its
+original requirements, including Hugo's Extended edition. After v1.5.1 the
+theme contains no Sass: its stylesheet is the plain CSS layer files under
+`assets/css/td/`, which Hugo concatenates. A site build needs no compiler,
+Node.js or npm. Editing a layer is the whole change: there is no build step and
+no generated file to commit. `python3 bin/check-stylesheets.py` checks the
+layers and their assembly.
 
 Never enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Keep warnings visible
-and review them; the upstream LibSass deprecation warning is accepted.
-Development and CI use the pinned Hugo baseline, without a legacy-version matrix.
+and review them. The theme pins no Hugo release: its checks use the installed
+one and its CI installs the current release, without a legacy-version matrix.
 
 For theme work, clone the theme and this site as siblings. Read each
 repository's `AGENTS.md`, this site's `TRANSLATION.md`, and the relevant

@@ -37,7 +37,7 @@ This release does not include cross-version diffing, manual page-pair maps, para
 
 ## Ownership and validation {#validation}
 
-The theme owns discovery, the lazy entry and reader runtimes, the 32 interface catalogs, and scoped SCSS. `bin/check-compare.py` covers discovery, Docs, Book and blog pages, the per-language opt-out, keyboard hints, analytics, output isolation, and how every runtime behaves inside a pane. `tests/js/compare-scroll.test.js` covers scroll geometry. The documentation site's `test:compare` suite owns sync, lifecycle, reload, narrow and zoomed layouts, right-to-left order, eight languages, failures, and accessibility.
+The theme owns discovery, the lazy entry and reader runtimes, the 32 interface catalogs, and scoped CSS. `bin/check-compare.py` covers discovery, Docs, Book and blog pages, the per-language opt-out, keyboard hints, analytics, output isolation, and how every runtime behaves inside a pane. `tests/js/compare-scroll.test.js` covers scroll geometry. The documentation site's `test:compare` suite owns sync, lifecycle, reload, narrow and zoomed layouts, right-to-left order, eight languages, failures, and accessibility.
 
 ## Revisions {#revisions}
 

@@ -54,7 +54,7 @@ Two optional concepts remain outside 1.4 scope:
 
 ### Preserve the palette, assign each role {#palette}
 
-Retain these source colors initially. Values below are light/dark pairs, not a new configuration authority; [preset SCSS](https://github.com/pgsty/oink/blob/v1.4.0/assets/scss/td/_experimental-presets.scss) remains the implementation owner. Refine repetition before changing hue.
+Retain these source colors initially. Values below are light/dark pairs, not a new configuration authority; the preset stylesheet remains the implementation owner: [`_experimental-presets.scss` in v1.4.0](https://github.com/pgsty/oink/blob/v1.4.0/assets/scss/td/_experimental-presets.scss), and `assets/css/td/experimental-presets.css` after v1.5.1. Refine repetition before changing hue.
 
 | Role | Ink light / dark | Terminal light / dark |
 | --- | --- | --- |
@@ -93,7 +93,7 @@ Authored `theme_color` remains authoritative for accent surfaces. Actual documen
 
 Book captions, table descriptions and human-readable search titles/excerpts use the body role. Authored chapter numbers retain their meaning and follow their heading's role. Technical paths, command controls and identifiers remain mono in Terminal. Field names stay unboxed, at weight 600. Descriptive Terminal table headers move to body `0.875rem/600`; ordinary prose retains `1rem/1.7` and the shared reading measure. Display titles retain page-specific scale and wrap; do not shrink mobile prose to accommodate mono chrome.
 
-The existing sans fallback order is `-apple-system`, `BlinkMacSystemFont`, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans SC, generic sans-serif and emoji. The mono list follows IBM Plex Mono with SFMono-Regular, Cascadia Code, Roboto Mono, Menlo, Consolas, Liberation Mono, Sarasa Mono SC, Noto Sans Mono CJK SC and generic monospace. Listed names do not install fonts. YaHei precedes Segoe and can supply Latin too. Chinese glyphs need not occupy Latin mono cells. Preserve language metadata, `typography: system`, explicit roles and legacy Sass precedence; inspect loaded, blocked, system and overridden font conditions on actual Windows/Android. ([Font matching](https://www.w3.org/TR/css-fonts-3/#font-matching-algorithm))
+The existing sans fallback order is `-apple-system`, `BlinkMacSystemFont`, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans SC, generic sans-serif and emoji. The mono list follows IBM Plex Mono with SFMono-Regular, Cascadia Code, Roboto Mono, Menlo, Consolas, Liberation Mono, Sarasa Mono SC, Noto Sans Mono CJK SC and generic monospace. Listed names do not install fonts. YaHei precedes Segoe and can supply Latin too. Chinese glyphs need not occupy Latin mono cells. Preserve language metadata, `typography: system`, explicit roles and, in releases up to 1.5.1, legacy Sass precedence; inspect loaded, blocked, system and overridden font conditions on actual Windows/Android. ([Font matching](https://www.w3.org/TR/css-fonts-3/#font-matching-algorithm))
 
 ### Establish hierarchy and language-sensitive links {#hierarchy-links}
 

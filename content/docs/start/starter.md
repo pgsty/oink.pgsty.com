@@ -12,8 +12,9 @@ template for new OINK sites. It stays lean and clean, without this site's theme
 reference docs, analytics IDs, comment repo settings, browser test harness, or
 PGSTY branding.
 
-You only need Git, Go 1.27.4+, and Hugo Extended 0.169.0+ (which includes its
-built-in Sass compiler — no Node.js or external Sass installation required).
+You only need Git, Go 1.27.4+, and Hugo 0.169.0+ in any edition. The theme's
+stylesheet is plain CSS, so no Sass compiler or Node.js is required. While the
+template pins OINK 1.5.1 or older, it needs Hugo's Extended edition.
 
 ## What the template contains {#contents}
 
@@ -229,7 +230,7 @@ hugo --cleanDestinationDir --gc --minify --environment production \
 ```
 
 Keep build warnings visible for review and do not enable `--panicOnWarning` or
-`HUGO_PANICONWARNING` (the upstream LibSass deprecation warning is expected).
+`HUGO_PANICONWARNING`.
 Commit `hugo.yaml`, `go.mod`, and `go.sum`. Never commit generated `public/`,
 `resources/`, module caches, or a local module replacement.
 
@@ -237,7 +238,7 @@ Commit `hugo.yaml`, `go.mod`, and `go.sum`. Never commit generated `public/`,
 
 The Starter already contains `.github/workflows/github-pages.yaml`. In
 **Settings → Pages**, select **GitHub Actions** as the source. A push to `main`
-builds with the pinned toolchain, asks GitHub for the correct project subpath,
+builds with the current Hugo release, asks GitHub for the correct project subpath,
 and publishes `public/` through the Pages deployment API.
 
 ### Cloudflare Pages {#cloudflare-pages}

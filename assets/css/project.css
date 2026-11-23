@@ -1,0 +1,251 @@
+@charset "UTF-8";
+/* Docsy website styles */
+/* Custom Docsy website styles below this point: */
+.published-draft-post h1::before, .published-draft-post .h1::before {
+  content: '[DRAFT] ';
+  color: var(--bs-warning-text-emphasis);
+  font-weight: 700;
+}
+
+/* Release blog post styles */
+.release-highlights .card .card-header {
+  background-color: var(--bs-success-bg-subtle) !important;
+  font-size: xx-large;
+  text-align: center;
+}
+
+.release-highlights .card .card-text {
+  display: none;
+}
+
+.release-highlights .card .card-body {
+  font-size: large;
+}
+
+.release-highlights .card .card-body ul {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+  margin-bottom: 0;
+}
+
+.release-highlights .card .card-body li {
+  --padding-y: 0.7rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  flex-wrap: nowrap;
+  padding-top: var(--padding-y);
+}
+
+.release-highlights .card .card-body li:not(:last-child) {
+  border-bottom: 1px solid var(--bs-secondary-bg);
+  padding-bottom: var(--padding-y);
+}
+
+.release-highlights .card .card-body li i {
+  width: 1.6rem;
+  margin-left: 1rem;
+  margin-right: 2rem;
+  flex-shrink: 0;
+}
+
+._list-unstyled ul,
+ul._list-unstyled {
+  list-style: none;
+  padding-left: 0;
+  --icon-width: 2.2rem;
+}
+
+._list-unstyled ul li,
+ul._list-unstyled li {
+  padding-left: var(--icon-width);
+}
+
+._list-unstyled ul li i,
+ul._list-unstyled li i {
+  margin-left: calc(var(--icon-width) * -1);
+  padding-right: 0.6rem !important;
+  max-width: var(--icon-width);
+}
+
+/* Landing logo-wall cards (the "example sites" section) are one link target,
+   not a card with a link in its corner. The theme already emits an anchor per
+   card; when the section omits `link_label`, that anchor's accessible name is
+   the site title, so stretching it over the card keeps one meaningful name. */
+.td-landing-logo-card {
+  position: relative;
+}
+
+.td-landing-logo-card .td-landing-card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.td-landing-logo-card:hover, .td-landing-logo-card:focus-within {
+  border-color: var(--td-brand-line-strong);
+}
+
+.td-checkbox-list-wrapper > ul,
+ul.td-checkbox-list {
+  list-style: none;
+}
+
+.td-checkbox-list-wrapper > ul > li,
+ul.td-checkbox-list > li {
+  text-indent: -1.4rem;
+}
+
+.td-checkbox-list-wrapper > ul > li > input,
+ul.td-checkbox-list > li > input {
+  margin-right: 0.3rem;
+}
+
+/* The theme frames a blog card's thumbnail with `aspect-ratio: 16 / 9`, but
+   `shell/blog-card.html` also emits width/height attributes on the processed
+   image. Those are presentational hints, and a definite height makes the
+   browser ignore `aspect-ratio` entirely — the card renders 305x360 and
+   crops the picture sideways. Releasing the height restores the frame.
+   
+   Only visible once a card carries a raster image: an SVG placeholder takes
+   the branch that emits no dimensions. Worth fixing in the theme itself. */
+.td-blog-card__image {
+  height: auto;
+}
+
+/* -- Case cards ------------------------------------------------------------
+   
+   The case grid is scoped by `body_class: td-case` on content/case/_index.md. */
+.td-case {
+  /* Every card is a site screenshot; a publication date says nothing about the
+     site and the meta line carries nothing else here (section and reading time
+     are already off), so the whole line goes. */
+  /* The screenshots are captured with a drop shadow and therefore carry
+     transparent edges. The theme tints the image well with --bs-secondary-bg,
+     which then reads as a grey band against the card body; matching the card's
+     own ground makes the frame disappear. */
+}
+
+.td-case .td-blog-card .td-blog-meta {
+  display: none;
+}
+
+.td-case .td-blog-card__image {
+  background: var(--td-brand-elev, var(--bs-tertiary-bg));
+}
+
+/* The same transparent edges sit behind the case page's full-bleed Hero. */
+.td-blog.td-page .td-featured-hero {
+  background: var(--bs-body-bg);
+}
+
+/* Home content-type cards use their existing, title-named link as the full
+   click target. The link stays focusable without a separate footer row. */
+.td-home-content-types .td-landing-card {
+  position: relative;
+}
+
+.td-home-content-types .td-landing-card .td-landing-card-link {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  border-radius: inherit;
+}
+
+.td-home-content-types .td-landing-card .td-landing-card-link i {
+  display: none;
+}
+
+/* -- Home: the compact case grid -------------------------------------------
+   
+   Fifteen small cards mirroring the Case library: a screenshot, the site's
+   domain, one line. The whole card opens the live site. Rendered by
+   layouts/_partials/landing/sections/case-cards.html. */
+.td-case-mini__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--td-columns, 3), minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 991.98px) {
+  .td-case-mini__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 575.98px) {
+  .td-case-mini__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.td-case-mini__card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--td-line);
+  border-radius: var(--td-radius-md, 12px);
+  background: var(--td-paper);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.td-case-mini__card:hover, .td-case-mini__card:focus-visible {
+  border-color: var(--td-copper-dim, var(--td-brand-copper-dim));
+  box-shadow: var(--td-shadow);
+  transform: translateY(-3px);
+}
+
+.td-case-mini__card:hover .td-case-mini__title, .td-case-mini__card:focus-visible .td-case-mini__title {
+  color: var(--bs-link-color);
+}
+
+.td-case-mini__media {
+  display: block;
+  /* The screenshots carry transparent edges, so the well matches the card. */
+  background: var(--td-paper);
+  border-block-end: 1px solid var(--td-line);
+}
+
+.td-case-mini__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.td-case-mini__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 14px 16px 16px;
+}
+
+.td-case-mini__title {
+  color: var(--td-ink);
+  font-family: var(--td-meta-font-family);
+  font-size: 0.95rem;
+  font-weight: 700;
+  transition: color 180ms ease;
+}
+
+.td-case-mini__desc {
+  color: var(--td-silk, var(--bs-secondary-color));
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .td-case-mini__card {
+    transition: none;
+  }
+  .td-case-mini__card:hover,
+.td-case-mini__card:focus-visible {
+    transform: none;
+  }
+}

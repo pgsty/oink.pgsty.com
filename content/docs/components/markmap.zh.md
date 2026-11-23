@@ -257,7 +257,7 @@ markmap:
 > - _markup/ 渲染钩子
 > - _shortcodes/
 > ## assets/
-> - scss/ 令牌与组件样式
+> - css/ 令牌与组件样式
 > - js/ 浏览器运行时
 > - third_party/ 随主题分发的库
 > ## i18n/
@@ -276,7 +276,7 @@ markmap:
 > - _markup/ 渲染钩子
 > - _shortcodes/
 > ## assets/
-> - scss/ 令牌与组件样式
+> - css/ 令牌与组件样式
 > - js/ 浏览器运行时
 > - third_party/ 随主题分发的库
 > ## i18n/

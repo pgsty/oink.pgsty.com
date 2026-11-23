@@ -23,13 +23,13 @@ Write `1.` for each item so Markdown counts automatically.
 Then you can add, remove, or reorder steps without renumbering. Content always uses three spaces of indentation.
 
 ```markdown {title="Source"}
-1. Install Hugo Extended
+1. Install Hugo
 1. Clone OINK Starter
 1. Start the local preview
 {.steps}
 ```
 
-1. Install Hugo Extended
+1. Install Hugo
 1. Clone OINK Starter
 1. Start the local preview
 {.steps}
@@ -103,7 +103,7 @@ The `{{%/* … */%}}` form does not. See [Limits](#limits).
 If a step differs by platform, put adjacent `{tab=}` fences inside that list item. They still form a tab set.
 
 `````markdown {title="Source"}
-1. Install Hugo Extended.
+1. Install Hugo.
 
 1. Install the dependencies:
 
@@ -118,7 +118,7 @@ If a step differs by platform, put adjacent `{tab=}` fences inside that list ite
 {.steps}
 `````
 
-1. Install Hugo Extended.
+1. Install Hugo.
 
 1. Install the dependencies:
 
@@ -158,7 +158,7 @@ The three headings below appear in this page's table of contents.
 
 ### Install the toolchain {#install-toolchain}
 
-You need Hugo Extended ≥ 0.169.0 and Go.
+You need Hugo ≥ 0.169.0 and Go.
 
 ### Run the server {#run-server}
 
@@ -182,7 +182,7 @@ Push to `main`; the workflow the repository ships builds and publishes.
 
 ### Install the toolchain {#install-toolchain}
 
-You need Hugo Extended ≥ 0.169.0 and Go.
+You need Hugo ≥ 0.169.0 and Go.
 
 ### Run the server {#run-server}
 

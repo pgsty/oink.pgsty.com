@@ -30,8 +30,8 @@ cascade:
 ---
 
 第一次使用 OINK，请从 [Starter](/zh/docs/start/) 预览一个可运行的站点，再替换成
-自己的内容。正文用 Markdown 编写，Hugo Extended 及其内置 Sass 编译器负责构建；采用 Hugo Modules
-时还需要 Go 解析主题模块。主题内置资源无需 CDN，也不需要 npm 构建流程。
+自己的内容。正文用 Markdown 编写，由 Hugo 构建；主题的样式表是纯 CSS，只有 OINK 1.5.1
+及更早版本需要 Hugo 的 Extended 版。采用 Hugo Modules 时还需要 Go 解析主题模块。主题内置资源无需 CDN，也不需要 npm 构建流程。
 
 当前发布版本为 {{% param version %}}。已有站点可查看
 [1.5.1 发布说明](/zh/blog/release/1.5.1/)与[升级指南](/zh/docs/admin/upgrade/#preparing-1-5)。

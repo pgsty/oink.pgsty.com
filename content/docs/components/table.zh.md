@@ -54,7 +54,7 @@ aliases:
 | 条目 | 取值 |
 | --- | --- |
 | 主题版本 | v0.8.1 |
-| Hugo 下限 | 0.169.0 Extended |
+| Hugo 下限 | 0.169.0 |
 | 许可证 | Apache-2.0 |
 {caption="本站当前使用的主题事实"}
 ```
@@ -62,7 +62,7 @@ aliases:
 | 条目 | 取值 |
 | --- | --- |
 | 主题版本 | v0.8.1 |
-| Hugo 下限 | 0.169.0 Extended |
+| Hugo 下限 | 0.169.0 |
 | 许可证 | Apache-2.0 |
 {caption="本站当前使用的主题事实"}
 
@@ -238,7 +238,7 @@ Print 和 RSS 保持静态表格，Markdown 保留作者语法；浏览器打印
 
 | 目录 | 内容 |
 | --- | --- |
-| `assets/` | SCSS 与图片资源 |
+| `assets/` | CSS 与图片资源 |
 | `static/` | 原样拷贝的文件 |
 {tab="资源" value="assets"}
 ```
@@ -251,7 +251,7 @@ Print 和 RSS 保持静态表格，Markdown 保留作者语法；浏览器打印
 
 | 目录 | 内容 |
 | --- | --- |
-| `assets/` | SCSS 与图片资源 |
+| `assets/` | CSS 与图片资源 |
 | `static/` | 原样拷贝的文件 |
 {tab="资源" value="assets"}
 

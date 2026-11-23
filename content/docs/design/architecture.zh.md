@@ -14,17 +14,21 @@ contract_status: v1.5.1
 ## Hugo 工具链 {#hugo-toolchain}
 
 已发布的 **OINK v1.5.1** 使用 **Hugo Extended 0.168.0** 完成验证。
-当前 checkout 及其开发、CI 检查使用 **Hugo Extended 0.169.0** 与 **Go 1.27.4**，
-详见[尚未发布的依赖迁移](#unreleased-dependencies)。所选工具链须固定版本。
+当前 checkout 不固定任何 Hugo 版本：开发与检查使用本机安装的 Hugo，主题 CI
+安装当前版本，任何 edition（标准版或 Extended 版）都能构建。`theme.toml` 与 `hugo.yaml`
+声明支持的最低版本为 **0.169.0**，模块要求 **Go 1.27.4**，
+详见[尚未发布的依赖迁移](#unreleased-dependencies)。
 
-禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。告警保持可见并接受审阅；
-上游 LibSass 弃用告警允许出现，不会让成功的构建失败。无效输入测试直接检查对应
-告警和安全降级产物。
+禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。告警保持可见并接受审阅。
+无效输入测试直接检查对应告警和安全降级产物。
 
-主样式与 ReDoc 样式使用 Hugo 内置 LibSass，普通用户无需安装 Dart Sass 或其他
-Sass 程序。项目变量与项目样式的 SCSS 钩子保持可用。后续升级必须保持这条依赖
-边界，并同步修改要求、检查器、CI 固定版本与双语契约；历史发布和研究记录保留
-当时的工具版本。
+已发布的 v1.5.1 在每次站点构建中用 Hugo 内置 LibSass 编译主样式与 ReDoc 样式
+（包括消费站的 SCSS 钩子），并输出 Hugo 允许出现的 LibSass 弃用告警，因此该版本
+需要 Hugo 的 Extended 版。当前 checkout 不含任何 Sass：样式表是纯 CSS，由 Hugo
+拼接，见[纯 CSS 样式表的交付](#stylesheet-delivery)。两者下普通用户都无需安装
+Dart Sass 或其他 Sass 程序。后续变更必须保持这条依赖边界：站点构建只需要 Hugo
+这一个程序。要求、检查器与双语契约须同步修改；历史发布和研究记录保留当时的
+工具版本。
 
 已发布的 OINK v1.5.1 模块要求 Go **1.27.3**。
 Go 用于解析 Hugo Modules；已准备好传统主题副本的站点无需 Go。
@@ -32,7 +36,7 @@ Go 用于解析 Hugo Modules；已准备好传统主题副本的站点无需 Go�
 ## 仓库与装配 {#repository-and-assembly}
 
 仓库根目录是一个完整的 Hugo 模块与主题，不是站点，也不是 npm workspace。
-Hugo Extended 使用内置 LibSass 编译 SCSS，并渲染模板。浏览器运行时与第三方资源都已提交到仓库，
+Hugo 渲染模板并发布主题的样式表。浏览器运行时与第三方资源都已提交到仓库，
 因此普通构建不会访问网络。公开的双语文档、示例与浏览器测试位于同级的
 `oink.pgsty.com` 仓库；主题仓库只在 `tests/site/` 中保留范围明确的内部回归
 夹具，不再维护独立的公开示例面。
@@ -42,8 +46,8 @@ Hugo Extended 使用内置 LibSass 编译 SCSS，并渲染模板。浏览器运�
 `VENDOR.json` 与 `bin/check-vendor.py` 固定其完整性。OINK 发布完整的受支持
 Font Awesome 发行包，因为用户编写的内容可能使用主题模板本身没有引用的图标。
 
-Font Awesome 官方编译 CSS 作为一份稳定、带指纹的 vendor 样式表发布，并排在由
-主题与消费站 SCSS 编译出的指纹 `main.css` 之前。站点样式的普通修改不会再让图标
+Font Awesome 官方编译 CSS 作为一份稳定、带指纹的 vendor 样式表发布，并排在
+带指纹的主题样式表 `main.css` 与站点自有样式之前。站点样式的普通修改不会再让图标
 发行包失效，同时常规层叠顺序仍允许站点覆盖它。KaTeX、DocSearch、Swagger 与
 Asciinema 等能力样式继续保持独立，只在实际使用时加载。内容指纹使不可变 URL 成为
 可能；HTTP 缓存响应头属于部署宿主，而不是 Hugo 主题的职责。
@@ -64,9 +68,10 @@ Hugo 的查找优先级，即使几个基础模板看起来相似，也应保持
 > 本节描述 v1.5.1 之后同级主题工作树中的实现，不代表已发布的 v1.5.1 模块或
 > 文档站当前固定版本已经包含这些变化。
 
-当前 checkout 要求 **Go 1.27.4** 和 **Hugo Extended 0.169.0**，开发与 CI
-使用相同版本。主样式与 ReDoc 样式仍由内置 LibSass 编译，并保留消费站点的
-SCSS 钩子。上文 v1.5.1 的要求保留为历史发布事实。贡献者浏览器检查使用
+当前 checkout 要求 **Go 1.27.4** 和 **Hugo 0.169.0** 或更新版本，不限 edition。
+不再固定任何 Hugo 版本：开发与检查使用本机安装的版本，主题 CI 安装当前版本。
+样式表是由 Hugo 拼接的纯 CSS，消费站点的 SCSS 钩子已退役，
+见[纯 CSS 样式表的交付](#stylesheet-delivery)。上文 v1.5.1 的要求保留为历史发布事实。贡献者浏览器检查使用
 Node 26.13.0 与 npm 12.2.2；它们不是普通消费站点的构建依赖。
 博客卡片、图库和外链列表通过 `RawSummary` 读取作者提供的后备摘要。
 Hugo 0.169.0 的 `plainify` 改进了 HTML 块之间的空白，摘要与字数统计遵循该行为。
@@ -79,8 +84,14 @@ Hugo 0.169.0 的 `plainify` 改进了 HTML 块之间的空白，摘要与字数�
 Markmap 1.1.0、Swagger UI 5.34.1、ReDoc 3.1.0、Asciinema 3.18.0、
 Infographic 0.2.20、Pako 3.0.3、idb-keyval 6.3.0 与 Viz.js 3.31.0
 （Graphviz 16.1.0、Expat 2.8.5）。Font Awesome 7.3.1、Bootstrap 5.3.8、
-Popper 2.11.8、ECharts 6.1.0、字体包与 PlantUML core 1.2026.9 已是当前稳定版。
+ECharts 6.1.0、字体包与 PlantUML core 1.2026.9 已是当前稳定版。
 精确清单仍以 `VENDOR.json` 为准。
+
+`main` 样式表保留 Bootstrap 的组件样式，包括模态框、侧滑面板和轮播图，供站点自己的模板使用。
+使用这些组件的 JavaScript 行为时，站点自行加载脚本。主题不再随包分发
+`bootstrap.bundle.js` 和 Popper。版本菜单由 `base.js` 控制，`main` 和 `chrome`
+两份样式表都包含它的样式。`landing.js` 为服务端渲染的下载渠道添加标签切换行为。
+站点自有的事件监听和 CSS 选择器如何迁移，见[升级指南](/zh/docs/admin/upgrade/#bootstrap-script)。
 
 Mermaid 显式保留 `layout: dagre`、`theme: default`、`look: classic`，不会因为
 上游改用 ELK、neo 与新颜色主题而默默改变已有图表。Mermaid 12 要求浏览器支持
@@ -115,6 +126,68 @@ Markmap 的本地 ESM 资源由 `@markmap/core`、`parse`、`render`、`view` �
 校验值后再导入。`import-redoc.py` 只对原始 npm 包做两处已记录的图片替换。
 lockfile 固定传递依赖，也覆盖 SVG loader 内嵌的 idb-keyval。普通 Hugo 构建
 不会执行这些工具。
+
+### 纯 CSS 样式表的交付 {#stylesheet-delivery}
+
+主题不含任何 Sass，样式表也不经过任何编译。源码是 `assets/css/td/` 下的纯 CSS
+分层文件。`assets/css/td/bootstrap/` 存放为主题构建的 Bootstrap 5.3.8，按
+Bootstrap 组件拆分：其中带有主题的调色板，与某条 Bootstrap 规则共用的主题
+选择器也直接写进该规则。字体声明层是
+`assets/third_party/inter/{normal,italic}.css` 与
+`assets/third_party/ibm-plex-sans/{normal,italic}.css`。
+
+`layouts/_partials/css/layers.html` 按层叠顺序列出每份样式表的各层；权重相同时，
+排在后面的层胜出。`layouts/_partials/css/bundle.html` 接收一个名称，把对应的
+样式表作为 Hugo 资源返回：各层由 `resources.Concat` 拼接，发布为
+`css/<name>.css`。名称未知时发出告警。
+
+| 样式表 | 使用方 |
+| --- | --- |
+| `main` | 所有主题页面，共 118 层。`head-css.html` 把它发布为 `css/main.css`；生产构建中压缩、加指纹并带完整性属性 |
+| `redoc.css` | 登记了 ReDoc 的页面。它是单独的一个文件 `assets/css/td/redoc.css`，不在各层清单之内，按同样方式发布为 `css/redoc.css` |
+| `chrome` | 不加载 `main` 的站点自有外壳：令牌、排版、四套配色、站点导航栏，以及语言、明暗与外观控件 |
+| `landing` | 站点自有外壳使用的 Landing 区块，在 `chrome` 之后加载。它重复了配色规则，因为配色以同等优先级改写 Landing 区块，必须排在其后 |
+| `search`、`compare` | 站点自有外壳使用的命令面板与本地搜索，以及双列视图 |
+
+四份较小的样式表没有自己的源码：它们列出的每一层 `main` 也都加载。站点布局
+按名称取用，并自行压缩、加指纹：
+
+```go-html-template
+{{ with partial "css/bundle.html" "chrome" }}<link rel="stylesheet" href="{{ (. | minify | fingerprint).RelPermalink }}">{{ end }}
+```
+
+这里没有编译器，没有构建步骤，Git 中也没有生成文件；修改某一层就是全部改动。
+每一层都是可直接拼接的扁平 CSS：不写 `@import`，不写 `//` 注释，所有取值都直接
+写出。原先是 Sass 变量的取值（例如 50px 的导航栏高度）在用到的地方各写一遍，
+修改时须同时改动每一处。任何布局都不得调用 `toCSS`、`css.Sass` 或 PostCSS。
+
+各层以 `../webfonts/…` 引用字体，因此所有样式表都发布在 `css/` 下，即站点根目录
+的下一级。Font Awesome 的样式表同样发布为 `css/fontawesome.css`。1.5.1 及更早
+版本发布的是 `scss/main.css`、`scss/fontawesome.css` 与 `scss/redoc.css`；写死了
+这些路径的站点布局必须随之修改。
+
+站点自己的规则是纯 CSS：先是 `assets/css/project.css`，再按路径顺序接上每个
+`assets/css/project/*.css`。主题把它们拼接为一份样式表，发布为
+`css/project.css`，位于 `main.css` 之后、RTL 产物之前；生产构建中压缩并加指纹。
+Hugo 不对它做转换。三个 SCSS 钩子 `_variables_project.scss`、
+`_variables_project_after_bs.scss` 与 `_styles_project.scss` 会被忽略；每个仍
+存在的文件在一次构建中告警一次，页面保留主题样式。消费站的 Sass 变量不再进入
+Bootstrap、字体角色或任何其他主题规则。
+
+这份契约由 `bin/check-stylesheets.py` 负责。出现以下情况时它会失败：`assets/`
+下存在 `.scss` 文件；布局调用了样式表编译器；各层清单与分层文件不一致，即清单
+中的每一层都必须存在，每个分层文件也都必须列入清单。随后它在 `PATH` 为空的
+环境下构建探测站点，并检查：各层按清单顺序发布；生产产物经过压缩、带指纹和
+完整性属性；每个已退役的 SCSS 钩子都会告警且不进入产物；四份较小的样式表能为
+站点自有外壳发布。
+
+这次转换没有改动任何规则。2026-11-23 在 Hugo 0.170.1 上验证：生产环境的 `main`
+样式表与最后一次由 Sass 编译的结果逐字节相同（556,437 字节），回归夹具的 683 个
+产物文件除样式表路径外完全一致。四份较小的样式表现在复用 `main` 的各层，因此
+多出了一些选择器（Bootstrap 标题、`.small` 与 `.mark` 的类变体，以及少量
+`.td-content` 选择器），但没有任何规则或声明发生变化。已发布的 v1.5.1 在
+Hugo 0.170 上构建失败，因为 Hugo 此时要求安装 Dart Sass。已有钩子的转换方法见
+[升级指南](/zh/docs/admin/upgrade/#sass-hooks)。
 
 ## 配置与诊断 {#configuration-and-diagnostics}
 
@@ -185,7 +258,7 @@ Docsy 以后增加的 locale 不会自动成为 OINK 支持项；它必须先补
 同形词可以与英文保持相同，不再生成整段英文 fallback。`zh` 与 `zh-cn` 使用简体中文，
 `zh-tw` 使用繁体中文。
 
-当前 Hugo 基线允许通用 `zh` 语言与地区化中文语言包并存时使用 `locale: zh`，也可
+主题支持的所有 Hugo 版本都允许通用 `zh` 语言与地区化中文语言包并存时使用 `locale: zh`，也可
 选择 `locale: zh-CN`。两种配置都不改变语言包文件名 `i18n/zh.yaml`。
 
 `%s`、`{count}`、`{{ .Count }}` 等运行时占位符可以移到符合目标语言语法的位置，
@@ -342,10 +415,10 @@ CSS 或 SVG 发起的请求也受此限制。
 字体角色为 `ui`、`body`、`heading`、`code`、`display`、`meta`、`brand` 与 `print`，
 通过 `--td-*-font-family` 暴露。`ui` 是主字体：`body` 经它解析，`heading` 又经
 `body` 解析，因此赋一次值即同时移动界面、正文与标题。`params.ui.typography`
-可取 `technical` 或 `system`；两者编译到同一份样式表，不加载运行时。旧
-Bootstrap/Docsy Sass 变量继续为这些角色提供初值。
+可取 `technical` 或 `system`；两者都在同一份样式表中，不加载运行时。已发布的
+v1.5.1 中旧 Bootstrap/Docsy Sass 变量为这些角色提供初值；当前的样式表是纯 CSS，不读取消费站的任何 Sass 变量。
 
-`params.ui.fonts` 让配置层触达同一组角色，供不愿挂载 SCSS 或新增样式表的站点
+`params.ui.fonts` 让配置层触达同一组角色，供不愿新增样式表的站点
 使用。它只写字体族名，绝不加载字体文件：所写字体族必须是读者已有的，或站点
 自己用 `@font-face` 声明过的，这也让该键留在网络契约之外。取值只放行纯粹的
 字体族语法，输出的 `:root` 块由匹配到的片段重新拼装；未知角色或不安全取值只
@@ -389,8 +462,7 @@ JavaScript 时显示站点默认的浅色预设；外观控件需要 JavaScript�
 四套预设编入同一个样式表。Slate 保留 v1.1.0 的基础色板选择器与值。Paper 调整
 配色和少量组件规则，不改变外壳列宽、断点或全局间距。Paper 深色块重声明浅色块的
 每个色板 token，并覆盖嵌套深色区域。字体角色保持同等选择器优先级，顺序为预设、
-`typography: system`、head 输出的 `params.ui.fonts`；站点的
-`_styles_project.scss` 仍在最后。`brand` 单独控制字标。Paper 使用本地 IBM Plex Sans，
+`typography: system`、站点自有样式、head 输出的 `params.ui.fonts`。`brand` 单独控制字标。Paper 使用本地 IBM Plex Sans，
 Slate 保留 Inter；两者的字标保留 Chakra Petch，代码保留 IBM Plex Mono。
 系统排版模式不请求内置文字字体，除非站点显式覆盖角色。没有新增外部字体请求。
 Ink 统一使用 Inter，配合红色标记、正文链接下划线、直角与无阴影。Terminal 使用

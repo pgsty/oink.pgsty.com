@@ -1,7 +1,7 @@
 ---
 title: 品牌外观
 linkTitle: 品牌外观
-description: 替换站名、Logo、favicon、主色、深浅色与字体，只需改配置与两个 SCSS 入口文件。
+description: 替换站名、Logo、favicon、主色、深浅色与字体，只需改配置与一份纯 CSS 的项目样式表。
 weight: 20
 search_keywords:
   [品牌, 外观, Logo, favicon, 主色, 配色, 深色模式, 字体, 排版, brand, logo, colors, dark mode, fonts, typography, scss]
@@ -16,9 +16,8 @@ aliases:
 先在 `hugo.yml` 中设置。选择系统已有或站点已加载的字体，用
 [`params.ui.fonts`](#fonts-in-config) 即可；[分区强调色](#theme-color)也有对应配置键。
 
-图标放在 `static/` 下。需要修改 SCSS 变量时再使用
-`assets/scss/_variables_project.scss`；自定义样式或新增 `@font-face` 声明放在
-`assets/scss/_styles_project.scss`。**不要改主题目录里的文件**：升级会替换它们。
+图标放在 `static/` 下。自定义样式或新增 `@font-face` 声明放在
+[`assets/css/project.css`](#scss)。**不要改主题目录里的文件**：升级会替换它们。
 
 ## 视觉预设 {#visual-presets}
 
@@ -119,23 +118,30 @@ Web App Manifest 一类的额外 head 元数据不在扫描范围内，用 `layo
 
 ## 主色与配色 {#colors}
 
-配色分两层：Bootstrap 的语义色（编译期 Sass 变量）和 OINK 的品牌层（运行期 CSS 自定义属性）。
+配色分两层，两层都是 CSS 自定义属性，在项目样式表里运行期覆盖。主题的样式表是纯 CSS，已经没有 `$primary` 这类 Sass 变量。
 
-先改语义色，它决定按钮、链接、提示块的色调：
+Bootstrap 的语义色决定按钮、工具类等 Bootstrap 组件的色调。覆盖对应属性，以及把颜色写成固定值的组件：
 
-```scss {title="assets/scss/_variables_project.scss"}
-$primary: #315f8f;
-$secondary: #b4762e;
-$success: #2c7a4b;
-$warning: #9a6700;
-$danger: #b42318;
+```css {title="assets/css/project.css"}
+:root,
+[data-bs-theme='light'] {
+  --bs-primary: #315f8f;
+  --bs-primary-rgb: 49, 95, 143;
+}
+
+.btn-primary {
+  --bs-btn-bg: #315f8f;
+  --bs-btn-border-color: #315f8f;
+  --bs-btn-hover-bg: #2a5179;
+  --bs-btn-hover-border-color: #274c72;
+}
 ```
 
-这个文件在 Bootstrap 与 OINK 默认值 **之前** 加载，是覆盖 Sass 变量的位置。需要引用 Bootstrap 已定义的变量或 map 时，改用 `_variables_project_after_bs.scss`。
+链接色与强调色不跟随 `--bs-primary`，它们来自视觉预设、下面的品牌层和 [`theme_color`](#theme-color)。此前设置过 Sass 变量的站点可以一次性转换，见[已退役的 SCSS 钩子](/zh/docs/admin/upgrade/#sass-hooks)。
 
-品牌层是一组 CSS 自定义属性，浅色和深色 **必须成对覆盖**，否则一种模式下会漏色：
+品牌层也是一组 CSS 自定义属性，浅色和深色 **必须成对覆盖**，否则一种模式下会漏色：
 
-```scss {title="assets/scss/_styles_project.scss"}
+```css {title="assets/css/project.css"}
 :root {
   --td-brand-copper: #a66722;
   --td-brand-mark-from: #1d588c;
@@ -257,7 +263,7 @@ params:
 `ui` 是主字体：`body` 经它解析，`heading` 又经 `body` 解析，所以只写 `ui` 一行，界面、正文与标题一起换掉。
 
 #### 在配置里换 {#fonts-in-config}
-只是想换一套字体族，不必碰 SCSS，写 `params.ui.fonts` 即可：
+只是想换一套字体族，不必写样式表，写 `params.ui.fonts` 即可：
 
 ```yaml {title="hugo.yml"}
 params:
@@ -278,7 +284,7 @@ params:
 #### 在样式表里换 {#fonts-in-css}
 要自带字体文件，或者只给某一类内容换字体，仍然走样式表。把 `.woff2` 放进站点 `static/webfonts/`，在项目样式中声明字体，再指定各角色使用的字体族：
 
-```scss {title="assets/scss/_styles_project.scss"}
+```css {title="assets/css/project.css"}
 @font-face {
   font-family: 'My Sans';
   font-display: swap;
@@ -297,7 +303,7 @@ params:
 
 角色按 CSS 规则继承，只给某类内容换字体也不必复制组件选择器：
 
-```scss {title="assets/scss/_styles_project.scss"}
+```css {title="assets/css/project.css"}
 body.td-blog {
   --td-body-font-family: 'My Serif', 'Noto Serif SC', serif;
   --td-heading-font-family: var(--td-body-font-family);
@@ -306,25 +312,13 @@ body.td-blog {
 
 等宽字体要带中文兜底，否则中英混排的代码块会对不齐：
 
-```scss {title="assets/scss/_styles_project.scss"}
+```css {title="assets/css/project.css"}
 :root {
   --td-code-font-family: 'My Mono', 'Sarasa Mono SC', 'Noto Sans Mono CJK SC', monospace;
 }
 ```
 
-从 Docsy 迁移过来的站点不必改写法。旧的 Sass 变量仍然喂进对应角色，写在 `_variables_project.scss` 里照样生效，优先级高于预设默认值：
-
-| 旧 Sass 变量 | 喂给的字体角色 | 说明 |
-| --- | --- | --- |
-| `$td-fonts-serif` | `--td-ui-font-family` / `--td-body-font-family` | Docsy 的界面字体栈，赋值给 `$font-family-sans-serif` |
-| `$font-family-sans-serif` | `--td-ui-font-family` / `--td-body-font-family` | 项目给出自己的栈时，`technical` 预设不再把预设内置的无衬线字体放在它前面 |
-| `$font-family-base` | `--td-ui-font-family` / `--td-body-font-family` | Bootstrap 的正文变量，经 `--bs-body-font-family` 进入角色 |
-| `$headings-font-family` | `--td-heading-font-family` | 不设置时标题继承正文角色 |
-| `$font-family-code` | `--td-code-font-family` | 代码、终端与 `pre` / `code` / `kbd` |
-| `$td-font-family-monospace` | `--bs-font-monospace` | 赋值给 `$font-family-monospace` |
-| `$font-family-monospace` | `--bs-font-monospace` | `system` 预设下，项目的显式取值优先于平台等宽栈 |
-
-Docsy 的三个 Google Fonts 变量 `$td-enable-google-fonts`、`$td-google-font-name` 与 `$td-web-font-path` 主题已不再读取。它们留在 `_variables_project.scss` 里不影响构建，也不产生任何效果：随主题分发的是 IBM Plex Sans、Inter、Chakra Petch 与 IBM Plex Mono，所有预设都不向 Google Fonts 发请求。打印角色 `--td-print-font-family` 跟随正文角色，主题不为纸张单独提供字体。
+Sass 字体变量不再进入主题，因为主题已不含任何 Sass。这包括 Docsy 的 `$td-fonts-serif`、`$font-family-sans-serif`、`$font-family-base`、`$headings-font-family`、`$font-family-code`、`$td-font-family-monospace`、`$font-family-monospace`，以及三个 Google Fonts 变量。请用 `params.ui.fonts` 或上面的角色属性设置字体。随主题分发的是 IBM Plex Sans、Inter、Chakra Petch 与 IBM Plex Mono，所有预设都不向 Google Fonts 发请求。打印角色 `--td-print-font-family` 跟随正文角色，主题不为纸张单独提供字体。
 
 YAML 里只接受字体族名。远程字体 URL 与任意 CSS 都不接受：字体文件与样式必须是可审查的本地输入，一次普通构建不会因为字体发出任何网络请求。
 
@@ -363,24 +357,46 @@ params:
 
 `params.copyright` 接受 Markdown 字符串，或 `authors` / `from_year` / `to_year` 三键的 map（`present` 表示今年）。`footer_center_info` 是页脚中间的行内 Markdown，显式设为空字符串即隐藏中间区域。
 
-## SCSS 入口与不该做的事 {#scss}
+## 项目样式表与不该做的事 {#scss}
 
-站点的 SCSS 覆盖进入主题的同一个样式包，生产构建仍然只有一份带指纹与完整性校验的样式表。三个入口文件放在站点 `assets/scss/` 下：
+主题的样式表是纯 CSS，站点构建不做任何编译。站点自己的规则同样是纯 CSS，放在 `assets/css/` 下：
 
 | 文件 | 什么时候用 |
 | --- | --- |
-| `_variables_project.scss` | 在 Bootstrap 与 OINK 默认值之前设置 Sass 变量（`$primary`、字体变量） |
-| `_variables_project_after_bs.scss` | 设置依赖 Bootstrap 已有定义的变量或 map |
-| `_styles_project.scss` | 在主题组件样式之后写选择器与 CSS 自定义属性 |
+| `project.css` | 选择器与 CSS 自定义属性，在主题样式表之后加载 |
+| `project/*.css` | 可选的更多文件，按路径顺序接在 `project.css` 之后 |
 
-编译顺序是：Bootstrap 函数 → 项目变量 → OINK 默认值与 Bootstrap → Bootstrap 之后的项目变量 → OINK 组件与品牌层 → 项目样式。
+主题把它们发布为一份样式表，生产构建带指纹与完整性校验，在主题样式表之后单独请求。修改站点样式不会改变主题样式表及其缓存。
+
+这里写的是 CSS，不是 SCSS。Hugo 只压缩、不转换这个文件：`//` 注释、Sass 变量、mixin、`@extend` 与 `&-suffix` 选择器在这里都无效，原生 CSS 嵌套会原样交给浏览器。相对 URL 从 `/css/` 解析，所以 `../webfonts/my-font.woff2` 指向站点的 `static/webfonts/my-font.woff2`。
+
+`assets/scss/` 下的三个 SCSS 钩子已经退役。如果仍有残留，构建会告警并忽略它。转换方法见[已退役的 SCSS 钩子](/zh/docs/admin/upgrade/#sass-hooks)。
 
 CSS 接口有明确边界。[字体](#fonts)那一节的八个字体角色与 `--td-brand-*` 品牌属性是公开接口，主题在小版本之间保持它们的名字与含义。组件别名（如 `--td-asciinema-font-family`）只承诺在该组件范围内有效，未在文档中记录的 `--td-shell-*` 一类变量是实现细节，随时可能改名或消失。
+
+### 站点自有外壳的样式 {#bundles}
+
+保留自有版式的页面（例如定制首页）可以只借用主题的一部分，而不引入阅读外壳。这类布局不加载 `main`（每个 OINK 页面都用的那份样式表），而是按名称取用一份较小的主题样式表：
+
+| 名称 | 内容 |
+| --- | --- |
+| `chrome` | 令牌、排版、四套配色、站点导航栏，以及语言、明暗与外观控件 |
+| `landing` | Landing 区块，须在 `chrome` 之后加载 |
+| `search` | 命令面板与本地搜索 |
+| `compare` | 双列视图 |
+
+```go-html-template {title="layouts/_partials/my-head.html"}
+{{ with partial "css/bundle.html" "chrome" }}
+  <link rel="stylesheet" href="{{ (. | minify | fingerprint).RelPermalink }}">
+{{ end }}
+```
+
+这个 partial 把样式表作为 Hugo 资源返回，并发布为 `css/<name>.css`，位于站点根目录的下一级，其中的 `../webfonts/…` 字体引用在这里才能解析。整个过程不做任何编译，压缩与指纹由布局自己完成。名称未知时构建会告警。这些样式表跟随锁定的主题版本，不要复制到站点里。
 
 不该做的事：
 
 - 不改主题目录里的任何文件（`hugo mod` 会覆盖）；
-- 不单独 `@import` 主题的内部 partial，它们不是公开的 Sass 接口，导入顺序可能变化；
+- 不在自己的模板里读取主题 `assets/css/td/` 下的分层文件：它们不是公开接口，请按名称取用样式表；
 - 不为了改一个颜色去覆盖 `baseof.html`。有设计变量就用变量，没有再写作用域尽量小的选择器；
 - 不引用远程样式表或字体 CDN。
 

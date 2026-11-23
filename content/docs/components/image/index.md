@@ -210,7 +210,7 @@ If you need two images, give each a `class`. Use `[data-bs-theme="dark"]` in sit
 {class="only-dark"}
 ```
 
-```scss {title="assets/scss/_styles_project.scss"}
+```css {title="assets/css/project.css"}
 html[data-bs-theme="dark"] .only-light,
 html:not([data-bs-theme="dark"]) .only-dark { display: none; }
 ```

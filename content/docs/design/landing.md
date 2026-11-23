@@ -48,6 +48,12 @@ Markdown output uses a four-backtick `markdown` fence. RSS omits it. Pane labels
 Combining center alignment with an image warns, falls back to `start`, and preserves the image.
 `download` uses the shortcode's `data/download/<key>.yaml` schema.
 It adds no second channel, version, publication, or interpolation model.
+HTML lists each channel under its own heading, with its download links or
+unpublished status. Once `landing.js` loads, each product with an available
+channel gets its own tablist. Tab reaches the selected channel. Left/Right
+follow the list's writing direction, and Home/End select the first/last
+available channel. Switching emits `td:tab-shown` from the visible panel and
+the event bubbles. A product with no available channels keeps its static headings and status.
 
 ## Language, runtime, and accessibility {#language-runtime-and-accessibility}
 

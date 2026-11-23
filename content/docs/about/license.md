@@ -15,7 +15,7 @@ combined work. Each table below links to the authoritative repository file.
 
 | Scope                                                                     | Licence                                        | Authoritative file                                                                                                                                |
 |---------------------------------------------------------------------------|------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| OINK theme source (layouts, partials, shortcodes, SCSS, JS, i18n)         | Apache License 2.0                             | Theme [`LICENSE`](https://github.com/pgsty/oink/blob/main/LICENSE), [`NOTICE`](https://github.com/pgsty/oink/blob/main/NOTICE)                    |
+| OINK theme source (layouts, partials, shortcodes, CSS, JS, i18n)          | Apache License 2.0                             | Theme [`LICENSE`](https://github.com/pgsty/oink/blob/main/LICENSE), [`NOTICE`](https://github.com/pgsty/oink/blob/main/NOTICE)                    |
 | This site's own code, build scripts and material derived from Docsy       | Apache License 2.0                             | Site [`LICENSE`](https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE), [`NOTICE`](https://github.com/pgsty/oink.pgsty.com/blob/main/NOTICE) |
 | This site's original documentation content, except where stated otherwise | Creative Commons Attribution 4.0 International | Site [`LICENSE-CC-BY-4.0`](https://github.com/pgsty/oink.pgsty.com/blob/main/LICENSE-CC-BY-4.0)                                                   |
 | Browser libraries, fonts and icons shipped with the theme                 | Each component's own licence                   | Theme [`VENDOR.json`](https://github.com/pgsty/oink/blob/main/VENDOR.json) and the licence files beside each asset                                |
@@ -116,8 +116,9 @@ Their notices and upstream source links accompany the two scripts in
 `assets/third_party/plantuml/`; `VENDOR.json` records the exact artifacts.
 
 > [!NOTE] Unreleased dependency inventory
-> The upgrade after v1.5.1 has 27 top-level entries in `VENDOR.json`, generated
-> 2026-11-11. Markmap's scoped 1.1.0 packages replace the legacy packages above;
+> The 2026-11-23 `VENDOR.json` lists 26 top-level dependencies. Bootstrap
+> supplies CSS, and removing its JavaScript bundle also removed Popper.
+> Markmap's scoped 1.1.0 packages replace the legacy packages above;
 > bundled modules, including MathJax, have complete version and license lists in
 > `assets/third_party/markmap/PACKAGES.json` and `LICENSES.txt`.
 > Viz.js 3.31.0 includes Graphviz 16.1.0 under **EPL-2.0**, replacing EPL-1.0.

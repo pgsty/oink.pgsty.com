@@ -97,13 +97,13 @@ Badges make a comparison table easier to scan than a column of "yes" and "no".
 ## In lists and steps {#in-lists}
 
 ```markdown {title="Source"}
-1. Install Hugo Extended {{</* badge text="≥ 0.169.0" tone="info" */>}}
+1. Install Hugo {{</* badge text="≥ 0.169.0" tone="info" */>}}
 1. Create a site from OINK Starter and change `baseURL` in `hugo.yaml`
 1. `hugo server` to preview {{</* badge text="port 1313" tone="neutral" */>}}
 {.steps}
 ```
 
-1. Install Hugo Extended {{< badge text="≥ 0.169.0" tone="info" >}}
+1. Install Hugo {{< badge text="≥ 0.169.0" tone="info" >}}
 1. Create a site from OINK Starter and change `baseURL` in `hugo.yaml`
 1. `hugo server` to preview {{< badge text="port 1313" tone="neutral" >}}
 {.steps}

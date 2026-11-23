@@ -52,6 +52,10 @@ RSS 省略它。面板标签来自主题 i18n。
 `hero.align` 可取 `start` 或 `center`。Center 只适用于文本；与图片组合时会警告，
 并回退到 `start`，同时保留图片。`download` 消费与 shortcode 相同的
 `data/download/<key>.yaml` 结构，不引入第二套 channel、版本、发布或插值模型。
+HTML 在各渠道标题下展示下载链接或未发布提示。`landing.js` 加载后，每个有可用渠道的产品
+各自显示一组标签。Tab 聚焦当前渠道，左右方向键遵循标签组的书写方向，Home 和 End
+分别跳到首个和末个可用渠道。切换后，新显示的面板发出向上冒泡的 `td:tab-shown` 事件。
+如果产品的全部渠道都未发布，页面继续显示静态标题和状态。
 
 ## 语言、运行时与无障碍 {#language-runtime-and-accessibility}
 

@@ -45,7 +45,7 @@ They are plain text, so Markdown appears literally. Use `\#` for a literal hash.
 - content/          # every page, both languages in one directory
   - docs/          # the documentation tree you are reading
   - blog/           # release notes and articles
-- assets/scss/      # the site's own SCSS, overriding theme variables
+- assets/css/       # the site's own CSS, loaded after the theme's
 - layouts/          # site-level template overrides, the fewer the better
 - static/images/    # images that need no build-time processing
 - hugo.yml         # site configuration: languages, menus, params.ui
@@ -56,7 +56,7 @@ They are plain text, so Markdown appears literally. Use `\#` for a literal hash.
 - content/          # every page, both languages in one directory
   - docs/          # the documentation tree you are reading
   - blog/           # release notes and articles
-- assets/scss/      # the site's own SCSS, overriding theme variables
+- assets/css/       # the site's own CSS, loaded after the theme's
 - layouts/          # site-level template overrides, the fewer the better
 - static/images/    # images that need no build-time processing
 - hugo.yml         # site configuration: languages, menus, params.ui

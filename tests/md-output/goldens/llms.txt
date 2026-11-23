@@ -56,7 +56,7 @@
   - [Asciinema](http://localhost/docs/components/asciinema/index.md): Display a .cast terminal recording with selectable text. The theme includes the player and does not use a CDN.
 - [Customization](http://localhost/docs/customize/index.md): Configure the site brand, navigation, layout, search, languages, versions, print output, and agent output.
   - [Configuration](http://localhost/docs/customize/config/index.md): Find every site parameter that the theme reads, with its type, default, description, and related guide.
-  - [Brand and appearance](http://localhost/docs/customize/brand/index.md): Change the site name, logo, favicon, accent color, light and dark palettes, and fonts. Use configuration and two SCSS entry points.
+  - [Brand and appearance](http://localhost/docs/customize/brand/index.md): Change the site name, logo, favicon, accent color, light and dark palettes, and fonts. Use configuration and a plain CSS project stylesheet.
   - [Home and landing pages](http://localhost/docs/customize/home/index.md): Build a home page from one local YAML file. Add hero, cards, capability panels, timeline, pricing, case studies, and downloads. Reuse these sections on landing pages.
   - [Navigation and menus](http://localhost/docs/customize/navigation/index.md): Configure the navbar menu, dropdowns, section switcher, breadcrumbs, page actions, pager, and footer links.
   - [Layouts and page types](http://localhost/docs/customize/layout/index.md): Select the page shell with `type`. Set sidebar width and icons, outline depth, section index style, and page width.
@@ -89,6 +89,7 @@
   - [Configuration](http://localhost/docs/design/decisions/configuration/index.md): Hugo and Docsy-compatible configuration, with a narrow OINK interface and no parallel configuration namespace or global resolver.
   - [Consumer evidence](http://localhost/docs/design/research/consumer-evidence/index.md): A dated consumer corpus survey that informed OINK shells, authoring primitives, and deterministic Book migration rules.
   - [Media convergence](http://localhost/docs/design/proposals/media-convergence/index.md): A draft for the remaining convergence between content images, numbered figures, Landing media, and featured-image selection.
+  - [Theme roadmap](http://localhost/docs/design/proposals/theme-roadmap/index.md): A draft roadmap that puts leaving Hugo's removed LibSass first, then closes small reader gaps, version lifecycle, and a static API reference.
   - [2026-08-26 review](http://localhost/docs/design/research/2026-08-26-comprehensive-review/index.md): Evidence-based review of post-v0.7.0 implementation, configuration, outputs, security, tests, performance, bilingual contracts, and the real integration site.
   - [CLI and roadmap](http://localhost/docs/design/proposals/oink-cli-roadmap/index.md): The accepted independent CLI boundary and local first-stage scope, with later adoption, theme, migration, and content-model work still proposed.
   - [Markdown-first authoring](http://localhost/docs/design/decisions/authoring/index.md): Native Markdown carries common semantics, shortcodes fill capability gaps, and new content models extend shared shells.

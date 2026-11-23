@@ -54,7 +54,7 @@ Ink 与 Terminal 已作为显式启用的实验存在。共用外壳让读者切
 
 ### 保留配色，明确角色 {#palette}
 
-初期保留以下源码颜色。表中为浅色／深色配对，不构成新的配置权威；[预设 SCSS](https://github.com/pgsty/oink/blob/v1.4.0/assets/scss/td/_experimental-presets.scss)仍是实现归属。在改色相之前，先减少重复强调。
+初期保留以下源码颜色。表中为浅色／深色配对，不构成新的配置权威；预设样式表仍是实现归属：v1.4.0 中是 [`_experimental-presets.scss`](https://github.com/pgsty/oink/blob/v1.4.0/assets/scss/td/_experimental-presets.scss)，v1.5.1 之后是 `assets/css/td/experimental-presets.css`。在改色相之前，先减少重复强调。
 
 | 角色 | Ink 浅色／深色 | Terminal 浅色／深色 |
 | --- | --- | --- |
@@ -93,7 +93,7 @@ Ink 与 Terminal 已作为显式启用的实验存在。共用外壳让读者切
 
 Book 图注、表格描述及供人阅读的搜索标题／摘要使用正文角色。作者编写的章节编号保留其含义，沿用所属标题的字体角色。Terminal 的技术路径、命令控件和标识符保持等宽。Field 名称保持无框、600 字重。描述性 Terminal 表头改用正文角色 `0.875rem/600`；普通正文保留 `1rem/1.7` 与共用阅读宽度。展示标题沿用页面尺度并允许换行；不能为了容纳等宽界面而缩小移动端正文。
 
-现有无衬线回退顺序为 `-apple-system`、`BlinkMacSystemFont`、PingFang SC、Hiragino Sans GB、Microsoft YaHei、Segoe UI、Roboto、Helvetica Neue、Arial、Noto Sans SC、通用 sans-serif 与 emoji。等宽列表在 IBM Plex Mono 后依次为 SFMono-Regular、Cascadia Code、Roboto Mono、Menlo、Consolas、Liberation Mono、Sarasa Mono SC、Noto Sans Mono CJK SC 和通用 monospace。列出字体名称不会安装字体。YaHei 排在 Segoe 之前，也可能承载拉丁字符。中文不必占用拉丁等宽字符格。保留语言元数据、`typography: system`、显式角色及旧 Sass 优先级；在真实 Windows／Android 上分别检查字体已加载、被阻止、系统字体和角色覆盖条件。（[字体匹配](https://www.w3.org/TR/css-fonts-3/#font-matching-algorithm)）
+现有无衬线回退顺序为 `-apple-system`、`BlinkMacSystemFont`、PingFang SC、Hiragino Sans GB、Microsoft YaHei、Segoe UI、Roboto、Helvetica Neue、Arial、Noto Sans SC、通用 sans-serif 与 emoji。等宽列表在 IBM Plex Mono 后依次为 SFMono-Regular、Cascadia Code、Roboto Mono、Menlo、Consolas、Liberation Mono、Sarasa Mono SC、Noto Sans Mono CJK SC 和通用 monospace。列出字体名称不会安装字体。YaHei 排在 Segoe 之前，也可能承载拉丁字符。中文不必占用拉丁等宽字符格。保留语言元数据、`typography: system`、显式角色，以及 1.5.1 及更早版本中的旧 Sass 优先级；在真实 Windows／Android 上分别检查字体已加载、被阻止、系统字体和角色覆盖条件。（[字体匹配](https://www.w3.org/TR/css-fonts-3/#font-matching-algorithm)）
 
 ### 建立层级与按语言区分的链接规则 {#hierarchy-links}
 

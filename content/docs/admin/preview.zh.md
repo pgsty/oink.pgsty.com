@@ -9,7 +9,7 @@ aliases:
   - /docs/deploy/local/
 ---
 
-两条命令覆盖日常工作：`hugo server` 在本机预览改动，`hugo` 产出可以部署到任何静态托管的 `public/`。前提是本机安装了 Hugo Extended（不低于 {{< param hugoMinVersion >}}）；用 Hugo Module 引入主题时还需要 Go。构建不依赖 Node.js、npm 与 PostCSS，它们只服务于本仓库自身的回归检查。
+两条命令覆盖日常工作：`hugo server` 在本机预览改动，`hugo` 产出可以部署到任何静态托管的 `public/`。前提是本机安装了 Hugo（不低于 {{< param hugoMinVersion >}}，不限 edition）；固定在 OINK 1.5.1 或更早版本的站点需要 Hugo 的 Extended 版。用 Hugo Module 引入主题时还需要 Go。构建不依赖 Node.js、npm 与 PostCSS，它们只服务于本仓库自身的回归检查。
 
 ## 预览服务器 {#hugo-server}
 
@@ -82,9 +82,9 @@ hugo --gc --minify --printPathWarnings
 | `--printPathWarnings` | 两个页面撞到同一个输出路径时告警，多语言站点最常见的静默错误 |
 {.fields}
 
-统一使用 Hugo Extended 0.169.0，告警保持可见。禁止启用 `--panicOnWarning`
-或 `HUGO_PANICONWARNING`，上游 LibSass 弃用告警允许出现。giscus 配置缺失或主题
-取值无效时也会告警并降级；发布前应核对这些诊断与实际产物。
+告警保持可见。禁止启用 `--panicOnWarning`
+或 `HUGO_PANICONWARNING`。giscus 配置缺失或主题取值无效时会告警并降级；
+发布前应核对这些诊断与实际产物。
 
 本站 CI 使用上面的生产构建命令。验证公开主题版本时，关闭本地模块替换与两种工作区。
 
@@ -128,25 +128,14 @@ ARG TARGETARCH
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates curl git \
     && curl --fail --location -o /tmp/hugo.deb \
-      "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.deb" \
+      "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-${TARGETARCH}.deb" \
     && apt-get install -y /tmp/hugo.deb \
     && curl --fail --location -o /tmp/go.tgz \
       "https://go.dev/dl/go${GO_VERSION}.linux-${TARGETARCH}.tar.gz" \
     && tar -C /usr/local -xzf /tmp/go.tgz \
     && rm -rf /var/lib/apt/lists/* /tmp/hugo.deb /tmp/go.tgz
 
-RUN case "${TARGETARCH}" in \
-      amd64) sass_arch=x64; sass_sha=a530ee08d5792c80bdb9d9614b45fb58219c890cb42a280a80775f0af9c29582 ;; \
-      arm64) sass_arch=arm64; sass_sha=40c7a1946f654163daab34d3824cf572d2e72cc48a2efcf9ca0a33140007d374 ;; \
-      *) exit 1 ;; \
-    esac \
-    && curl --fail --location -o /tmp/sass.tgz \
-      "https://github.com/sass/dart-sass/releases/download/1.105.2/dart-sass-1.105.2-linux-${sass_arch}.tar.gz" \
-    && echo "${sass_sha}  /tmp/sass.tgz" | sha256sum --check \
-    && tar -C /opt -xzf /tmp/sass.tgz \
-    && rm /tmp/sass.tgz
-
-ENV PATH="/usr/local/go/bin:/opt/dart-sass:${PATH}"
+ENV PATH="/usr/local/go/bin:${PATH}"
 WORKDIR /src
 EXPOSE 1313
 ENTRYPOINT ["hugo"]
@@ -168,6 +157,8 @@ docker run --rm --user "$(id -u):$(id -g)" \
   oink-hugo --gc --minify
 ```
 
+`HUGO_VERSION` 是这个镜像固定的版本，请设为团队实际使用的版本，不低于 {{< param hugoMinVersion >}}。固定在 OINK 1.5.1 或更早版本的站点需要改用 Extended 软件包 `hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.deb`，且版本不高于 0.169。
+
 镜像里装 Go 的原因：用 Hugo Module 引入主题时，Hugo 需要 Go 解析并下载模块。用 submodule、离线归档或直接克隆的站点可以去掉 Go，镜像会小很多。
 
 > [!WARNING] 不要让 root 写 `public/`
@@ -182,7 +173,7 @@ Hugo 的中间产物分三处，从轻到重依次清：
 | 目录 / 命令 | 内容 | 什么时候清 |
 | --- | --- | --- |
 | `public/` | 上一次的构建产物 | 删了页面但线上还在；或用 `hugo --cleanDestinationDir` 让构建自己清 |
-| `resources/_gen/` | 处理过的图片与编译出的 CSS | 换了图片处理参数、换了字体或主色，页面还是旧样子 |
+| `resources/_gen/` | 处理过的图片；使用 OINK 1.5.1 或更早版本时，还有构建编译出的 CSS | 换了图片处理参数、换了字体或主色，页面还是旧样子 |
 | `hugo mod clean` | Hugo Module 缓存 | 换了主题版本但解析出来还是旧的；加 `--all` 清整个模块缓存 |
 {.fields}
 

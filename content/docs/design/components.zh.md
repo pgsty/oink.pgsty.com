@@ -260,8 +260,8 @@ OINK 1.4.0 中，Markmap 在首次可测量显示和容器尺寸变化时适配�
 
 数学公式使用 Hugo 构建时生成的 KaTeX 产物和本地 CSS，不加载浏览器数学运行时。
 HTML 和 Print 使用本地样式表，并保留 MathML 与作者的 TeX 源文。
-数学公式按[架构契约](/zh/docs/design/architecture/#hugo-toolchain)中的当前 Hugo
-基线验证。已发布的 OINK v1.5.1 在 Markmap 内使用配套的本地 KaTeX 运行时；
+数学公式用满足[架构契约](/zh/docs/design/architecture/#hugo-toolchain)最低版本要求的 Hugo
+验证。已发布的 OINK v1.5.1 在 Markmap 内使用配套的本地 KaTeX 运行时；
 尚未发布的 Markmap 1 迁移则改用本地 MathJax 渲染导图公式。
 OINK 1.4.0 按阅读列的实际可用宽度为编号公式保留阅读空间，也覆盖侧栏
 或目录挤窄的正文列。标题无法与公式并排时移到下一行，连续长词允许换行。

@@ -38,9 +38,11 @@ proposal_date: 2026-10-04
 OINK 目前只有一套视觉，本文称为 **Slate**：冷灰蓝画布（`#f1f4f8` / `#0b1119`）、
 海军蓝文字、钢蓝链接（`#245f94`）、铜色点缀；Inter 用于界面与正文，Chakra Petch
 用于展示标题与字标，IBM Plex Mono 用于代码与技术标注；Landing 首屏有蓝图网格与
-光晕；行内代码为一组深红色。它由 `assets/scss/td/_brand.scss` 的 Bootstrap 自定义
-属性、`assets/scss/td/shell/_tokens.scss` 的外壳 token，以及
-`assets/scss/td/_tokens-typography.scss` 的字体角色定义。
+光晕；行内代码为一组深红色。它由 `assets/css/td/brand.css` 的 Bootstrap 自定义
+属性、`assets/css/td/shell/tokens.css` 的外壳 token，以及
+`assets/css/td/tokens-typography.css` 的字体角色定义。在 1.5.1 及更早版本中，
+它们是 `assets/scss/td/` 下的 SCSS partial：`_brand.scss`、`shell/_tokens.scss`
+与 `_tokens-typography.scss`。
 
 PG.CENTER 是独立站点，具有维护者希望成为 OINK 未来默认的暖色编辑式阅读风格。
 其展示层 token 位于该项目的 `media/css/pgsql.css`。在本地预览上测量
@@ -149,7 +151,8 @@ params:
    因此覆盖预设字体角色。显式字体永远优先。
 5. `theme_color` / `theme_color_dark`：只作用于页面与栏目的强调背景，覆盖预设
    强调色；从不触碰链接或行内代码。
-6. 站点 `_styles_project.scss`：位于样式包最后。
+6. 站点的项目样式表 `assets/css/project.css`：在主题样式表之后加载。在 1.5.1
+   及更早版本中，它是 `_styles_project.scss`，位于编译出的样式包最后。
 
 `typography: technical` 仍表示“使用预设自带字体”。具体是哪些字体由预设决定
 （Paper：Plex Sans；Slate：Inter + Chakra Petch）。
@@ -223,7 +226,7 @@ params:
 
 ## Token 架构 {#token-architecture}
 
-所有预设编译进现有的单一 `main.css`。字体通过 `@font-face` 声明，只有规则实际使用时
+所有预设都在现有的单一 `main.css` 中。字体通过 `@font-face` 声明，只有规则实际使用时
 才下载；因此提供一个预设只增加 CSS 字节，在被选中前不增加字体字节。
 
 ```scss
@@ -447,7 +450,8 @@ Terminal 的紧凑界面属于第二阶段的密度 token。
 
 - 想保留当前外观的站点加上 `params.ui.preset: slate`；升级说明以这一行开头。
   Slate 输出必须等于 `v1.1` 的 token。
-- 在 `_styles_project.scss` 中覆盖品牌 token 的站点：`:root` 上的浅色覆盖在 Paper
+- 在站点自有样式（1.5.1 及更早版本为 `_styles_project.scss`，之后为
+  `assets/css/project.css`）中覆盖品牌 token 的站点：`:root` 上的浅色覆盖在 Paper
   下仍按源顺序生效；`[data-bs-theme='dark']` 上的深色覆盖会被 Paper 深色块压过。
   这类站点应选择 Slate，或把覆盖改写到
   `[data-td-preset='paper'][data-bs-theme='dark']`。升级说明与品牌指南需说明。
@@ -468,7 +472,8 @@ Terminal 的紧凑界面属于第二阶段的密度 token。
 2. **Vendor IBM Plex Sans**：`third_party/`、`VENDOR.json`、许可证文件。
    检查器：`check-vendor.py`。
 3. **预设 token**：新增 `assets/scss/td/_presets.scss`（在 `_brand.scss` 之后导入）；
-   当前实现将 Paper 保留在这个文件中，不另建 `presets/_paper.scss`。
+   当前实现将 Paper 保留在这个文件中，不另建 `presets/_paper.scss`。v1.5.1 之后，
+   该文件是纯 CSS 分层文件 `assets/css/td/presets.css`，在清单中排在 `brand.css` 之后。
    字体预设块放在 `system` 重置之前。检查器：扩展
    `check-font-tokens.py`（Plex Sans 字体族、system 块顺序、浅深块 token 对等）。
 4. **配置**：`hugo.yaml` 默认值（`preset: paper`、`preset_menu: false`）；一个

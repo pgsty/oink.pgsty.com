@@ -20,7 +20,7 @@ aliases:
 
 ## 用 Hugo 构建 {#hugo-only}
 
-Hugo Extended 0.169.0 或更新版本负责构建站点资源。SCSS 由 Hugo 内置 LibSass 编译，主题不调用 `postCSS`，也不需要 npm 或 webpack。用 Hugo Module 方式安装主题还需要 Go，并能通过网络或本地缓存取得模块依赖。离线归档或 submodule 准备就绪后，仅使用 Hugo Extended 即可构建站点，无需 Go 或外部 Sass 编译器。
+Hugo 0.169.0 或更新版本负责构建站点，不限 edition。主题的样式表是由 Hugo 拼接的纯 CSS，构建时不运行任何编译器；OINK 1.5.1 及更早版本需要 Hugo 的 Extended 版。主题不调用 `postCSS`，也不需要 npm 或 webpack。用 Hugo Module 方式安装主题还需要 Go，并能通过网络或本地缓存取得模块依赖。离线归档或 submodule 准备就绪后，仅使用 Hugo 即可构建站点，无需 Go 或其他工具。
 
 界面交互在浏览器中执行 JavaScript：搜索、命令面板、图表、标签页都是页面脚本。这些脚本随主题分发，按页面用到的功能下发。
 

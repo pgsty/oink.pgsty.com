@@ -24,8 +24,8 @@ theme or deployment problem later.
 ## Install the prerequisite {#prerequisite}
 
 Install Git, Go 1.27.4 or newer, and Hugo Extended 0.169.0 for this tutorial.
-Styles compile with Hugo Extended's built-in LibSass, so no external Sass compiler
-or Node.js installation is required. If you started from an older Starter template,
+The theme ships its compiled CSS, so no Sass compiler or Node.js installation is
+required. If you started from an older Starter template,
 update its GitHub Actions workflow to Hugo Extended 0.169.0 as well.
 
 ```console

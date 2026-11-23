@@ -149,6 +149,6 @@ They add no content type. Immersive reading remains on the ordinary blog shell.
 Enable Goldmark unsafe rendering, block attributes, and standalone block images as specified in the [component contract](/docs/design/components/).
 Enable passthrough explicitly for `\(...\)`, `\[...\]`, or `$$...$$`. Hugo does not merge theme markup configuration.
 
-Run the smallest source and output checks for the changed contract with pinned Hugo Extended 0.169.0.
+Run the smallest source and output checks for the changed contract with the installed Hugo, 0.169.0 or newer.
 For runtime changes, also run JS tests. Run production root and subpath builds.
 For maintained sites, inspect representative EN/ZH Docs and Blog routes at desktop and narrow widths.

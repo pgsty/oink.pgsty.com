@@ -287,7 +287,7 @@ test -f "$PAGE" && grep -o 'taxonomy-term' "$PAGE"
 
 ## Limits {#limits}
 
-- `page_header: []` does **not** hide the term line. An empty list is treated as unset and lists every taxonomy. To remove the line, stop tagging those pages. Alternatively, hide `.taxonomy-terms-article` in `assets/scss/_styles_project.scss`.
+- `page_header: []` does **not** hide the term line. An empty list is treated as unset and lists every taxonomy. To remove the line, stop tagging those pages. Alternatively, hide `.taxonomy-terms-article` in `assets/css/project.css`.
 - `toc_taxonomies: false` hides the rail clouds. There is no configuration key to limit the number of terms in a visible cloud.
 - Term pages have no cross-language pairing. Language switching does not guarantee the same term in the other language.
 

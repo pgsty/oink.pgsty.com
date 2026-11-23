@@ -19,12 +19,67 @@ with a dry run and avoids manual edits to hundreds of files.
 An upgrade changes rendered output. Before you start, create an upgrade branch.
 You can discard that branch if you cancel the upgrade.
 
-> [!IMPORTANT] Current Hugo baseline
-> Maintained sites use Hugo Extended 0.169.0 and its built-in LibSass. No
-> external Sass installation is required. Do not enable `--panicOnWarning` or
-> `HUGO_PANICONWARNING`; Hugo's built-in LibSass deprecation warning is
-> expected. Update Hugo workflow pins when upgrading; older-Hugo requirements
-> in the sections below describe those historical releases only.
+> [!IMPORTANT] Current Hugo requirements
+> The theme after 1.5.1 builds with Hugo 0.169.0 or newer, in any edition, and
+> a site build compiles nothing. OINK 1.5.1 and older need Hugo's Extended
+> edition, which ended with Hugo 0.169. Do not enable `--panicOnWarning` or
+> `HUGO_PANICONWARNING`. Update the Hugo release in your workflows when
+> upgrading; older-Hugo requirements in the sections below describe those
+> historical releases only.
+
+## Retired SCSS hooks {#sass-hooks}
+
+> [!NOTE] Unreleased
+> This change follows 1.5.1 on the theme's main branch. No published tag
+> contains it yet.
+
+The theme's stylesheet is now plain CSS, and a site build runs no Sass compiler.
+Three files under `assets/scss/` are therefore ignored, and each produces one
+build warning: `_variables_project.scss`, `_variables_project_after_bs.scss`,
+and `_styles_project.scss`. Until you convert them, the site builds with the
+theme's default styles only.
+
+Convert them by hand, once:
+
+1. Move the rules in `_styles_project.scss`, and in the partials it imports,
+   to `assets/css/project.css` as plain CSS. Native CSS nesting is fine. Write
+   out what only Sass understands: variables, mixins such as Bootstrap's
+   breakpoints, `@extend`, and nested selectors that build a class name with
+   `&-`.
+2. For each Sass variable you assigned in the two variable hooks, set what it
+   used to change. Colors and fonts have their own settings; see
+   [Brand and appearance](/docs/customize/brand/). For anything else,
+   override the custom property or the theme rule the variable fed.
+3. Build the site and compare the pages that matter. `project.css` loads after
+   the theme's stylesheet, so a theme rule of equal specificity no longer
+   overrides your rule. Check elements that also carry a theme modifier class,
+   and check each visual preset you offer.
+4. Delete the three SCSS files and the partials only they imported. From then
+   on, edit the [project stylesheet](/docs/customize/brand/#scss).
+
+A site that compiled the theme's SCSS partials from its own templates must ask
+for a [theme stylesheet by name](/docs/customize/brand/#bundles) instead.
+
+## Bootstrap's JavaScript {#bootstrap-script}
+
+> [!NOTE] Unreleased
+> This change follows 1.5.1 on the theme's main branch. No published tag
+> contains it yet.
+
+After upgrading from 1.5.1, sites must load Bootstrap themselves to provide
+`window.bootstrap` or activate Bootstrap's script hooks. If your layouts, shortcodes or content
+use Bootstrap's dropdown, tab, modal or other JavaScript components, search for
+`bootstrap.`, `data-bs-toggle`, `data-bs-dismiss`, `data-bs-target` and `.bs.`
+event listeners. Use an OINK component or load your site's Bootstrap bundle in
+`layouts/_partials/hooks/body-end.html`. The colour-mode attributes `data-bs-theme`
+and `data-bs-theme-value` still work.
+
+For OINK Landing downloads, listen for `td:tab-shown` in place of `shown.bs.tab`.
+The event bubbles from the newly visible channel panel. Version lists in the
+footer and drawer use `.td-version-menu__list`. Update custom `.dropdown-menu`
+selectors for those lists. The version trigger exposes its state through
+`aria-expanded`. Sites listening for `*.bs.dropdown` on this control should
+observe that attribute.
 
 ## Upgrade to 1.5.1 {#preparing-1-5}
 
@@ -155,8 +210,8 @@ view, and every site customization.
 ## Upgrading from 1.0 to 1.1 {#from-1-0}
 
 No source migration was required from 1.0.0 to 1.1.0. Its Go 1.27.0 module
-directive was unchanged from 1.0.0. Validate current upgrades with Hugo Extended
-0.169.0. Historical toolchain details remain in the [1.1 release note](/blog/release/1.1.0/).
+directive was unchanged from 1.0.0. Validate current upgrades against the Hugo
+requirements at the top of this page. Historical toolchain details remain in the [1.1 release note](/blog/release/1.1.0/).
 
 Review the affected surfaces before choosing the new pin:
 
@@ -208,8 +263,8 @@ the [sidebar contract](/docs/design/shell/#sidebar-runtime),
 > Review custom dark brand selectors as described in [Brand](/docs/customize/brand/#visual-presets).
 
 OINK 1.2.0 is available as a published tag. Apart from the default appearance
-change above, no content migration is required. Validate current upgrades with
-Hugo Extended 0.169.0, then verify the site:
+change above, no content migration is required. Validate current upgrades
+against the Hugo requirements at the top of this page, then verify the site:
 
 - Check the chosen preset, light/dark icons, keyboard and mobile menus, saved
   preferences, and custom font/accent overrides. Sun means light; moon means
@@ -297,8 +352,8 @@ parameters.
 
 ## Migrating from Docsy {#from-docsy}
 
-OINK is a hard fork of Docsy. It retains the content model, `td-` naming, Sass
-variables, and most front matter. Migration mainly requires removing site
+OINK is a hard fork of Docsy. It retains the content model, `td-` naming, and
+most front matter. Migration mainly requires removing site
 copies of the shared shell. The theme's implementation then supplies the shell.
 You do not need to rewrite the prose.
 
@@ -321,7 +376,7 @@ You do not need to rewrite the prose.
    replacement. That registry was removed. The theme now ignores an old key,
    so search remains off without a message.
 
-1. Fonts and styling compatibility. The Docsy Sass variables in `assets/scss/_variables_project.scss` still supply seed values for font roles. You do not need to delete them for an upgrade. Each of `$td-fonts-serif`, `$font-family-sans-serif`, `$headings-font-family`, and `$font-family-code` supplies its role. The theme no longer reads Docsy's Google Fonts switches `$td-enable-google-fonts`, `$td-google-font-name`, and `$td-web-font-path`. These unused switches cause no failure and have no effect. OINK bundles Inter, Chakra Petch, and IBM Plex Mono. Neither preset requests Google Fonts. To change fonts, use the token layer. See [Brand and appearance](/docs/customize/brand/).
+1. Fonts and styles. Docsy's SCSS hooks in `assets/scss/` are no longer compiled, so its Sass variables, including the font variables and the Google Fonts switches, have no effect. Convert the hooks as described in [Retired SCSS hooks](#sass-hooks). OINK bundles Inter, Chakra Petch, and IBM Plex Mono. No preset requests Google Fonts. To change fonts, use the token layer. See [Brand and appearance](/docs/customize/brand/).
 
 1. Convert the shortcodes. Docsy's `alert`, `pageinfo`, `tabpane` and `card` families all have a current counterpart; convert them in bulk with the [migration toolkit](#migration-toolkit) above, one `--only` class at a time.
 

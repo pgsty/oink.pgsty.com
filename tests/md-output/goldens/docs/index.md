@@ -9,8 +9,9 @@ LLMS index: [llms.txt](/llms.txt)
 ---
 
 For a new OINK site, [Start with the Starter](/docs/start/). Preview the working site,
-then replace its sample content. Write in Markdown and build with Hugo Extended
-with its built-in Sass compiler. Hugo Modules also require Go to resolve the theme. Bundled theme assets require
+then replace its sample content. Write in Markdown and build with Hugo; the
+theme's stylesheet is plain CSS, and only OINK 1.5.1 and older need Hugo's
+Extended edition. Hugo Modules also require Go to resolve the theme. Bundled theme assets require
 no CDN or npm build step.
 
 The current release is v1.5.1. See the

@@ -31,7 +31,7 @@ includes neutral project content and deployment workflows without this repositor
 regression test harness.
 
 > [!NOTE] Requirements
-> OINK sites build with Git, Go 1.27.4 or newer, and Hugo Extended {{% param hugoMinVersion %}} or newer (using Hugo's built-in Sass compiler — no Node.js, npm, or external Sass installation required).
+> OINK sites build with Git, Go 1.27.4 or newer, and Hugo {{% param hugoMinVersion %}} or newer, in any edition. The theme's stylesheet is plain CSS, so a build needs no Sass compiler, Node.js, or npm. A site pinned to OINK 1.5.1 or older needs Hugo's Extended edition, which ended with Hugo 0.169.
 
 ## Choose a path {#choose}
 
@@ -45,8 +45,9 @@ regression test harness.
 
 1. ### Install the tools {#tools}
 
-   Install Git, Go 1.27.4 or newer, and Hugo Extended 0.169.0 or newer. The Hugo
-   output must contain `extended`:
+   Install Git, Go 1.27.4 or newer, and Hugo 0.169.0 or newer. Any edition
+   builds the current theme. While a site is pinned to OINK 1.5.1 or older, the
+   Hugo output must contain `extended`:
 
    ```console
    $ go version
@@ -57,7 +58,8 @@ regression test harness.
 
    On macOS, `brew install git go hugo` supplies them. On Linux and Windows,
    use the official [Hugo installation guide](https://gohugo.io/installation/)
-   and [Go downloads](https://go.dev/dl/). Choose Hugo **Extended**.
+   and [Go downloads](https://go.dev/dl/). For a site pinned to OINK 1.5.1 or
+   older, choose Hugo **Extended**.
 
 1. ### Create or clone the site {#clone}
 
@@ -117,8 +119,7 @@ hugo --cleanDestinationDir --gc --minify --environment production \
 Confirm that the build exits cleanly with `Total in …` and that `public/`
 contains the language roots along with representative Docs, Blog, and Book
 routes. Keep warnings visible for review and do not enable `--panicOnWarning`
-or `HUGO_PANICONWARNING` (Hugo's built-in LibSass deprecation notice is
-expected). After pushing, check the CI workflow and the live URL as well.
+or `HUGO_PANICONWARNING`. After pushing, check the CI workflow and the live URL as well.
 
 ## Build with an AI agent {#agent-skill}
 

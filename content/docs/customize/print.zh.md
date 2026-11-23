@@ -119,7 +119,7 @@ no_print: true
 - 表格、图片、块引用、提示块、卡片、标签页尽量不跨页断开；代码块允许跨页，但会自动折行而不是截断。
 - 链接加下划线、转深蓝色，不会在链接后面打印出 URL 文本。需要这个行为的站点自己加：
 
-```scss {title="assets/scss/_styles_project.scss"}
+```css {title="assets/css/project.css"}
 @media print {
   .td-content a[href^='http']::after {
     content: ' (' attr(href) ')';
@@ -131,7 +131,7 @@ no_print: true
 
 - 收起的 `<details>` 一律展开：折叠的提示块与文件树目录在纸上是完整的。
 
-自定义排版写在 `assets/scss/_styles_project.scss` 的 `@media print` 块里，不需要改模板。
+自定义排版写在 `assets/css/project.css` 的 `@media print` 块里，不需要改模板。
 
 ## 替换打印模板 {#customize-templates}
 

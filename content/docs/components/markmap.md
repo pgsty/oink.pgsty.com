@@ -266,7 +266,7 @@ Start every disclosure line with `>`, including fence lines.
 > - _markup/ render hooks
 > - _shortcodes/
 > ## assets/
-> - scss/ tokens and component styles
+> - css/ tokens and component styles
 > - js/ browser runtimes
 > - third_party/ libraries shipped with the theme
 > ## i18n/
@@ -285,7 +285,7 @@ Start every disclosure line with `>`, including fence lines.
 > - _markup/ render hooks
 > - _shortcodes/
 > ## assets/
-> - scss/ tokens and component styles
+> - css/ tokens and component styles
 > - js/ browser runtimes
 > - third_party/ libraries shipped with the theme
 > ## i18n/

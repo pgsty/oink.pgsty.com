@@ -30,7 +30,7 @@ aliases:
 已有 Hugo 站点时，按下方[接入现有站点](#existing-site)操作；已有 Docsy 站点见[版本升级](/zh/docs/admin/upgrade/)。
 
 后半部分对比四种安装方式：Hugo Module、Git submodule、离线归档、固定版本源码副本。
-当前开发与构建统一使用 Go 1.27.4 与 Hugo Extended 0.169.0（内置 Sass 编译器，无需外部 Sass）。
+当前主题使用 Go 1.27.4 与 Hugo 0.169.0 或更新版本构建，不限 edition。主题的样式表是纯 CSS，无需 Sass 编译器。固定在 OINK 1.5.1 或更早版本的站点需要 Hugo 的 Extended 版。
 
 ## 接入现有站点 {#existing-site}
 
@@ -123,7 +123,6 @@ aliases:
      imports:
        - path: github.com/pgsty/oink
      hugoVersion:
-       extended: true
        min: '{{< param hugoMinVersion >}}'
    ```
 
@@ -283,7 +282,7 @@ tar -xzf oink-{{< param tdVersion.latest >}}.tar.gz -C themes
   - LICENSE             # Apache-2.0
   - NOTICE              # 上游署名，再分发时必须保留
   - VENDOR.json         # 第三方运行时清单：版本、来源、许可证路径、SHA-256
-  - assets/             # SCSS、JS 与随主题分发的第三方运行时
+  - assets/             # 样式表、JS 与随主题分发的第三方运行时
   - layouts/            # 模板、partial、shortcode、render hook
   - static/             # 字体文件，原样发布
   - i18n/               # 32 份界面语言文件
@@ -349,7 +348,7 @@ hugo mod graph                                       # 主题实际解析到哪�
 hugo --gc --minify --printPathWarnings
 ```
 
-构建以 `Total in …` 结束且无意外 `WARN` / `ERROR` 即通过（上游 LibSass 弃用提示属预期现象；请保持告警可见并审阅，请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`）。再确认：
+构建以 `Total in …` 结束且无意外 `WARN` / `ERROR` 即通过。请保持告警可见并审阅，请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。再确认：
 
 - `/docs/` 打得开，侧栏里有你写的页面
 - 顶栏有搜索框，搜得到刚写的标题

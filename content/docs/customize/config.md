@@ -56,7 +56,6 @@ module:
   imports:
     - path: github.com/pgsty/oink
   hugoVersion:
-    extended: true
     min: 0.169.0
 
 params:
@@ -377,7 +376,7 @@ Which images become zoom candidates is in [Images](/docs/components/image/).
 
 Use `params.ui.fonts` when the faces already exist on the reader's system or the
 site has declared them with `@font-face`. To bundle font files or change
-lower-level typography, use the SCSS/CSS entry points. See
+lower-level typography, use the project stylesheet. See
 [Brand and appearance](/docs/customize/brand/#fonts).
 
 ## Comments and feedback {#comments-feedback}
@@ -536,7 +535,6 @@ Version parameters:
 | `params.taxonomy.page_header` | list | | Shows only listed taxonomies in a post header. If unset, shows all |
 | `services.googleAnalytics.id` | string | | Hugo's own: the analytics script is injected in production builds only — see [Analytics and SEO](/docs/admin/analytics/) |
 | `module.hugoVersion.min` | string | 0.169.0 | The theme's declared Hugo floor. An older version fails the build |
-| `module.hugoVersion.extended` | boolean | true | Hugo Extended is required (SCSS has to be compiled) |
 {.fields meta="type default"}
 
 ## Editor completion via generated schemas {#editor-schema}
@@ -599,11 +597,13 @@ After a configuration change, perform at least three checks. Open one page in
 each language. Open a page without a translation to check fallback. Check
 links under the production `baseURL`, including any deployment subpath.
 
-The theme requires Hugo Extended `0.169.0` or newer.
-Validate configuration changes with the pinned baseline:
+The theme requires Hugo `0.169.0` or newer, in any edition: its stylesheet is
+plain CSS and a site build compiles nothing. OINK 1.5.1 and older need Hugo's
+Extended edition.
+Validate configuration changes with the Hugo that builds the site:
 
 ```bash
-# require v0.169.0+extended in this output
+# require v0.169.0 or newer in this output
 hugo version
 hugo --printPathWarnings
 ```

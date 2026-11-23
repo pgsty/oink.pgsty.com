@@ -137,6 +137,37 @@ test('Landing page opens the shared Command Palette without article rails', asyn
 
 const fallbackLandingPath = '/tests/runtime/landing/';
 const metricDisplay = ['2.2k', '32+', '$12.50/day'];
+const sourceArchive = 'https://github.com/pgsty/oink/archive/refs/tags/v0.4.0.tar.gz';
+
+test('Landing switches to the rendered source archive channel', async ({ page }) => {
+  await page.addInitScript(() => {
+    document.addEventListener('DOMContentLoaded', () => {
+      const panel = document.querySelector('[data-td-download-tabs] > .tab-content > section');
+      panel.insertAdjacentHTML('beforeend', '<div role="tablist" aria-label="Platform"><button role="tab" aria-selected="true" aria-controls="linux-install">Linux</button></div><div id="linux-install" role="tabpanel">Linux install</div>');
+    }, { once: true });
+  });
+  await page.goto(fallbackLandingPath);
+  const product = page.locator('[data-td-download-key="prd5"]');
+  const install = product.getByRole('tab', { name: 'Install script' });
+  const source = product.getByRole('tab', { name: 'Source archive' });
+  await expect(install).toHaveAttribute('tabindex', '0');
+  await expect(source).toHaveAttribute('tabindex', '-1');
+  const platform = product.getByRole('tab', { name: 'Linux' });
+  await expect(platform).toHaveAttribute('aria-selected', 'true');
+  await platform.click();
+  await expect(install).toHaveAttribute('aria-selected', 'true');
+  await product.evaluate(node => { node.dir = 'rtl'; });
+  await page.evaluate(() => {
+    document.addEventListener('td:tab-shown', event => { window.shownChannel = event.target.id; }, { once: true });
+  });
+  await install.press('ArrowLeft');
+  const panel = product.getByRole('tabpanel', { name: 'Source archive' });
+  await expect(panel.getByRole('link', { name: 'Source archive' })).toHaveAttribute('href', sourceArchive);
+  expect(await page.evaluate(() => window.shownChannel)).toBe(await source.getAttribute('aria-controls'));
+  await expect(source).toBeFocused();
+  await expect(install).toHaveAttribute('tabindex', '-1');
+  await expect(product.getByRole('tabpanel')).toHaveCount(1);
+});
 
 for (const failure of ['no JavaScript', 'missing Landing script']) {
   test(`Landing content and metric labels survive ${failure}`, async ({ browser }) => {
@@ -152,6 +183,14 @@ for (const failure of ['no JavaScript', 'missing Landing script']) {
       await page.goto(fallbackLandingPath, { waitUntil: 'domcontentloaded' });
       await expect(page.locator('.td-landing-command-box')).toContainText('echo landing fallback');
       await expect(page.locator('.td-landing-pricing-grid')).toContainText('Community');
+      const download = page.locator('[data-td-download-key="prd5"]');
+      await expect(download.getByRole('tablist')).toHaveCount(0);
+      for (const name of ['Install script', 'Source archive', 'Release assets']) {
+        await expect(download.getByRole('heading', { name, exact: true })).toBeVisible();
+      }
+      const archive = download.getByRole('link', { name: 'Source archive' });
+      await expect(archive).toBeVisible();
+      await expect(archive).toHaveAttribute('href', sourceArchive);
       // toBeVisible deliberately ignores opacity. Check the computed result
       // so invisible-but-laid-out server content cannot pass this regression.
       const candidates = page.locator('[data-td-reveal]');

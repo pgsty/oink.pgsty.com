@@ -23,7 +23,8 @@ hugo --gc --minify --printPathWarnings --logLevel info
 
 | 症状 | 原因 | 修法 |
 | --- | --- | --- |
-| 构建报要求更高的 Hugo 版本 | 装的是标准版而不是 Extended，或版本低于 {{< param hugoMinVersion >}} |`hugo version` 输出里必须有 `extended`。多个 Hugo 共存时先查 `PATH` 与版本固定配置，而不是再装一份 |
+| 构建报要求更高的 Hugo 版本 | 版本低于 {{< param hugoMinVersion >}}；或者站点固定在 OINK 1.5.1 或更早版本，而装的是标准版而不是 Extended | 先看 `hugo version`。当前主题不限 edition；OINK 1.5.1 或更早版本要求输出里必须有 `extended`。多个 Hugo 共存时先查 `PATH` 与版本固定配置，而不是再装一份 |
+| `TOCSS-DART: … You need to install Dart Sass` | 站点固定在 OINK 1.5.1 或更早版本，而 Hugo 是 0.170 或更新版本，其中已没有内置的 Sass 编译器 | 用 0.169 或更早的 Hugo Extended 版构建这个站点。1.5.1 之后的主题不含任何 Sass，可用任何当前的 Hugo 构建 |
 | `module "github.com/pgsty/oink" not found` | 主题没解析出来 | Hugo Module：看 `hugo mod graph`、`go.mod`、`go.sum`，以及有没有多余的 workspace / replace。submodule：CI 有没有在 Hugo 之前跑 `git submodule update --init`。归档 / 克隆：`theme:` 的值要与 `themes/` 下的目录名一致 |
 | 模块下载卡住或超时 | Go 的模块代理不通 | Hugo 通过 Go 拉模块，所以走 `GOPROXY`。国内网络可以 `export GOPROXY=https://goproxy.cn,direct`；隔离环境改用离线归档或提交 `themes/oink/` |
 | 页面上出现 `{.cards}`、`{.steps}`、`{caption=…}` 这类原样文字 | 站点没开 goldmark 的块级属性 | 站点的 `hugo.yml` 里必须有下面那三项，主题的 `markup` 配置不会被 Hugo 合并进来 |
@@ -36,7 +37,8 @@ hugo --gc --minify --printPathWarnings --logLevel info
 | `shortcode "field": unsupported parameter "colour" at ...` | shortcode 参数名不对 | 警告指出 shortcode、参数、文件与行号，并忽略不支持的参数以保证本地预览可用；按提示修正参数名 |
 | `invalid params.ui.page_width "widee" (allowed: normal \| wide \| full) -- using "normal"` | **配置或 front matter 的取值**，不在允许集合里 | 配置类错误降级而不中断，避免一个笔误导致 `hugo server` 下每个 URL 都返回 500。消息列出键名、收到的值和回退值 |
 | 某个页面设置不生效，也没有任何提示 | 键写在了 front matter 的 `ui:` 段里 | 页面键写在 front matter 顶层，键名是站点键去掉 `ui.`。写进 `ui:` 段的键没有人读，也没有人报错，见[页面参数](/zh/docs/write/frontmatter/) |
-| 构建通过但线上少东西 | 有 WARNING 没人看 | 审阅构建告警，修正非法配置取值、缺失的 giscus 必填键或不支持的 `comments.type`。上游 LibSass 弃用告警允许出现 |
+| 构建通过但线上少东西 | 有 WARNING 没人看 | 审阅构建告警，修正非法配置取值、缺失的 giscus 必填键或不支持的 `comments.type` |
+| 升级后站点自有样式消失，并出现 `stylesheet: assets/scss/… is ignored` 告警 | 站点仍在使用已退役的 SCSS 钩子 | 把其中的规则移到 `assets/css/project.css`，见[已退役的 SCSS 钩子](/zh/docs/admin/upgrade/#sass-hooks) |
 {.wide .expand}
 
 那三项 goldmark 配置：
@@ -132,7 +134,7 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 
 上面的表覆盖不到的问题，按这几条挖：
 
-- 用固定的 Hugo Extended 版本复现，不在版本浮动的环境里判断。
+- 用一个已知的 Hugo 版本复现，并记下 `hugo version` 的输出，不在版本浮动的环境里判断。
 - 清掉 `public/` 与 `resources/_gen` 再重建，排除陈旧缓存。
 - 对比开发与生产两套配置层，很多只在线上出现的问题是环境差异。
 - 看第一条错误，不是最后那条。

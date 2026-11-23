@@ -143,7 +143,7 @@ whole-section printing:
 - Tables, images, blockquotes, callouts, cards, and tabs avoid page breaks where possible. Code blocks may break across pages. Long lines wrap instead of truncating.
 - Links are underlined and dark blue. Print does not append URL text. To append it, add this rule:
 
-```scss {title="assets/scss/_styles_project.scss"}
+```css {title="assets/css/project.css"}
 @media print {
   .td-content a[href^='http']::after {
     content: ' (' attr(href) ')';
@@ -156,7 +156,7 @@ whole-section printing:
 - A closed `<details>` always expands. Printed callouts and file tree directories therefore show all content.
 
 Custom print styling goes in a `@media print` block in
-`assets/scss/_styles_project.scss` and needs no template change.
+`assets/css/project.css` and needs no template change.
 
 ## Replacing the print templates {#customize-templates}
 

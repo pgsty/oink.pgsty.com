@@ -16,7 +16,7 @@ aliases:
 [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter) 开始。该模板固定了已发布的 OINK 版本，开箱即可构建，仅包含干净的示例内容与部署 workflow，不夹带本站的回归测试套件。
 
 > [!NOTE] 环境要求
-> OINK 站点使用 Git、Go 1.27.4 或更高版本，以及 Hugo Extended {{% param hugoMinVersion %}} 或更高版本构建（使用 Hugo 内置 Sass 编译器，无需安装 Node.js、npm 或外部 Sass）。
+> OINK 站点使用 Git、Go 1.27.4 或更高版本，以及 Hugo {{% param hugoMinVersion %}} 或更高版本构建，不限 edition。主题的样式表是纯 CSS，构建时无需 Sass 编译器、Node.js 或 npm。固定在 OINK 1.5.1 或更早版本的站点需要 Hugo 的 Extended 版，而 Extended 版止于 Hugo 0.169。
 
 ## 选择起点 {#choose}
 
@@ -30,8 +30,8 @@ aliases:
 
 1. ### 安装工具 {#tools}
 
-   安装 Git、Go 1.27.4 或更新版本，以及 Hugo Extended 0.169.0 或更新版本。Hugo
-   输出必须包含 `extended`：
+   安装 Git、Go 1.27.4 或更新版本，以及 Hugo 0.169.0 或更新版本。当前主题不限
+   edition；站点仍固定在 OINK 1.5.1 或更早版本时，Hugo 输出必须包含 `extended`：
 
    ```console
    $ go version
@@ -42,7 +42,8 @@ aliases:
 
    macOS 可以执行 `brew install git go hugo`。Linux 与 Windows 请按官方
    [Hugo 安装指南](https://gohugo.io/installation/)和
-   [Go 下载页](https://go.dev/dl/)安装，并确认选择 Hugo **Extended**。
+   [Go 下载页](https://go.dev/dl/)安装。固定在 OINK 1.5.1 或更早版本的站点请选择
+   Hugo **Extended**。
 
 1. ### 创建或克隆站点 {#clone}
 
@@ -91,7 +92,7 @@ hugo --cleanDestinationDir --gc --minify --environment production \
   --printPathWarnings
 ```
 
-确认命令正常退出并输出 `Total in …`，且 `public/` 下已生成各语言根目录以及代表性的 Docs、Blog、Book 页面。构建时请保持告警可见以便审阅，请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`（Hugo 内置 LibSass 的弃用提示属预期现象）。推送后，再进一步核对 CI workflow 状态与线上公开地址的渲染结果。
+确认命令正常退出并输出 `Total in …`，且 `public/` 下已生成各语言根目录以及代表性的 Docs、Blog、Book 页面。构建时请保持告警可见以便审阅，请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。推送后，再进一步核对 CI workflow 状态与线上公开地址的渲染结果。
 
 ## 用 AI agent 建站 {#agent-skill}
 

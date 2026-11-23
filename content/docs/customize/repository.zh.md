@@ -120,7 +120,7 @@ OINK 把 `.md` 与 `.zh.md` 并排放在同一个目录里，两种语言共用�
 
 托管服务不支持某条时，用 CSS 隐藏：
 
-```scss {title="assets/scss/_styles_project.scss"}
+```css {title="assets/css/project.css"}
 .td-page-actions__item[data-td-action='create_child_page'] {
   display: none;
 }

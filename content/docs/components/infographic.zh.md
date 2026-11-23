@@ -219,7 +219,7 @@ data
       - label assets
         desc 资源
         children
-          - label scss
+          - label css
             desc 令牌与组件样式
           - label js
             desc 浏览器运行时
@@ -246,7 +246,7 @@ data
       - label assets
         desc 资源
         children
-          - label scss
+          - label css
             desc 令牌与组件样式
           - label js
             desc 浏览器运行时

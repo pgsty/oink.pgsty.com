@@ -59,7 +59,7 @@ Its title has balanced padding inside the table frame and aligns with the column
 | Item | Value |
 | --- | --- |
 | Theme version | v0.8.1 |
-| Hugo floor | 0.169.0 Extended |
+| Hugo floor | 0.169.0 |
 | Licence | Apache-2.0 |
 {caption="Theme facts this site currently builds against"}
 ```
@@ -67,7 +67,7 @@ Its title has balanced padding inside the table frame and aligns with the column
 | Item | Value |
 | --- | --- |
 | Theme version | v0.8.1 |
-| Hugo floor | 0.169.0 Extended |
+| Hugo floor | 0.169.0 |
 | Licence | Apache-2.0 |
 {caption="Theme facts this site currently builds against"}
 
@@ -266,7 +266,7 @@ See [Tabs](/docs/components/tabs/) for the complete rules.
 
 | Directory | Contents |
 | --- | --- |
-| `assets/` | SCSS and image resources |
+| `assets/` | CSS and image resources |
 | `static/` | Files copied verbatim |
 {tab="Assets" value="assets"}
 ```
@@ -279,7 +279,7 @@ See [Tabs](/docs/components/tabs/) for the complete rules.
 
 | Directory | Contents |
 | --- | --- |
-| `assets/` | SCSS and image resources |
+| `assets/` | CSS and image resources |
 | `static/` | Files copied verbatim |
 {tab="Assets" value="assets"}
 

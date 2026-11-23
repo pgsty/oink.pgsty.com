@@ -225,7 +225,7 @@ data
       - label assets
         desc resources
         children
-          - label scss
+          - label css
             desc tokens and component styles
           - label js
             desc browser runtimes
@@ -252,7 +252,7 @@ data
       - label assets
         desc resources
         children
-          - label scss
+          - label css
             desc tokens and component styles
           - label js
             desc browser runtimes

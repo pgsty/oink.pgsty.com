@@ -10,7 +10,7 @@ search_keywords: [OINK Starter, GitHub 模板, Use this template, 定制 Starter
 [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter) 是新建 OINK
 站点的官方模板。它保持精简干净，不夹带 `oink.pgsty.com` 的主题文档、统计账号、评论仓库、浏览器回归套件或 PGSTY 品牌资产。
 
-你只需准备 Git、Go 1.27.4+ 以及 Hugo Extended 0.169.0+（内置 Sass 编译器，无需安装 Node.js 或外部 Sass）。
+你只需准备 Git、Go 1.27.4+ 以及 Hugo 0.169.0+，不限 edition。主题的样式表是纯 CSS，无需安装 Sass 编译器或 Node.js。模板固定的 OINK 版本为 1.5.1 或更早时，仍需要 Hugo 的 Extended 版。
 
 ## 模板包含什么 {#contents}
 
@@ -206,14 +206,14 @@ hugo --cleanDestinationDir --gc --minify --environment production \
   --printPathWarnings
 ```
 
-构建时请保持告警可见以便审阅，请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`（上游 LibSass 弃用提示属预期现象）。提交 `hugo.yaml`、`go.mod` 与 `go.sum`；不要提交生成的 `public/`、`resources/`、模块
+构建时请保持告警可见以便审阅，请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。提交 `hugo.yaml`、`go.mod` 与 `go.sum`；不要提交生成的 `public/`、`resources/`、模块
 缓存或本地模块替换。
 
 ### GitHub Pages {#github-pages}
 
 Starter 已包含 `.github/workflows/github-pages.yaml`。在
 **Settings → Pages** 中选择 **GitHub Actions** 作为 Source。推送到 `main` 后，
-workflow 使用固定工具链构建，向 GitHub 查询正确的项目子路径，再通过 Pages 部署
+workflow 使用当前的 Hugo 版本构建，向 GitHub 查询正确的项目子路径，再通过 Pages 部署
 API 发布 `public/`。
 
 ### Cloudflare Pages {#cloudflare-pages}

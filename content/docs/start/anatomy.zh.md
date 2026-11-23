@@ -120,7 +120,6 @@ module:
   imports:
     - path: github.com/pgsty/oink
   hugoVersion:
-    extended: true
     min: '{{< param hugoMinVersion >}}'
 ```
 
@@ -170,7 +169,7 @@ hugo --cleanDestinationDir --gc --minify --environment production \
 git status --short
 ```
 
-模块图应显示固定发布，构建成功并完成告警审阅，上游 LibSass 弃用告警允许出现。
+模块图应显示固定发布，构建成功并完成告警审阅。
 Git 状态只包含源码修改而没有 `public/` 或缓存。之后打开所有已启用语言的根，以及代表性的 Docs、Blog、Book 路由，再进入部署。
 
 ## 相关 {#related}

@@ -27,7 +27,8 @@ for your symptom. You do not need to read every row.
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| The build demands a newer Hugo | Hugo Standard is installed instead of Extended, or the version is below {{< param hugoMinVersion >}} |`hugo version` output must contain `extended`. If several Hugo versions are installed, check `PATH` and version pins before installing another |
+| The build demands a newer Hugo | The version is below {{< param hugoMinVersion >}}, or the site is pinned to OINK 1.5.1 or older and Hugo Standard is installed instead of Extended | Check `hugo version`. The current theme builds with any edition; for OINK 1.5.1 or older the output must contain `extended`. If several Hugo versions are installed, check `PATH` and version pins before installing another |
+| `TOCSS-DART: … You need to install Dart Sass` | The site is pinned to OINK 1.5.1 or older and Hugo is 0.170 or newer, which has no built-in Sass compiler | Build that site with Hugo's Extended edition, 0.169 or older. The theme after 1.5.1 contains no Sass and builds with any current Hugo |
 | `module "github.com/pgsty/oink" not found` | The theme did not resolve | Hugo Module: check `hugo mod graph`, `go.mod`, `go.sum`, and unexpected workspaces or replacements. Submodule: confirm that CI runs `git submodule update --init` before Hugo. Archive / clone: `theme:` must match the directory name under `themes/` |
 | Module download hangs or times out | The Go module proxy is unreachable | Hugo downloads modules through Go, so `GOPROXY` applies. In mainland China, use `export GOPROXY=https://goproxy.cn,direct`. In an isolated environment, use an offline archive or commit `themes/oink/` |
 | `{.cards}`, `{.steps}`, `{caption=…}` appear as literal text | The site has not enabled Goldmark block attributes | Put all three settings below in the site's own `hugo.yml`. Hugo does not merge a theme's `markup` configuration |
@@ -40,7 +41,8 @@ for your symptom. You do not need to read every row.
 | `shortcode "field": unsupported parameter "colour" at ...` | A shortcode parameter name is wrong | The warning identifies the shortcode, parameter, file, and line. The theme ignores the unsupported parameter so preview remains usable; correct the parameter name |
 | `invalid params.ui.page_width "widee" (allowed: normal \| wide \| full) -- using "normal"` | A *configuration* or front matter value is not one of the accepted ones | The theme uses a fallback instead of stopping so a typo does not produce HTTP 500 on every URL under `hugo server`. The message identifies the key, value, and fallback |
 | A page setting has no effect and nothing is reported | The key was written inside a `ui:` block in front matter | Put page keys at the top level of front matter. Remove `ui.` from the site key. The theme ignores a front matter `ui:` block without reporting it. See [Page parameters](/docs/write/frontmatter/) |
-| The build passes but production is missing something | An unreviewed WARNING | Review the build warnings and correct invalid configuration values, missing required giscus keys, or unsupported `comments.type` values. The upstream LibSass deprecation warning is accepted |
+| The build passes but production is missing something | An unreviewed WARNING | Review the build warnings and correct invalid configuration values, missing required giscus keys, or unsupported `comments.type` values |
+| Site styles disappear after an upgrade, with a `stylesheet: assets/scss/… is ignored` warning | The site still has a retired SCSS hook | Move its rules to `assets/css/project.css`; see [Retired SCSS hooks](/docs/admin/upgrade/#sass-hooks) |
 {.wide .expand}
 
 The three Goldmark settings:
@@ -144,7 +146,7 @@ navigation, content component, code block, and scenario component suites in sequ
 
 If the tables do not cover the problem, use these diagnostic steps:
 
-- Reproduce the problem with a pinned Hugo Extended version. Avoid an environment with an unpinned version.
+- Reproduce the problem with one known Hugo version, and record its `hugo version` output. Avoid an environment where the version changes between runs.
 - Clear `public/` and `resources/_gen` and rebuild, to rule out stale caches.
 - Compare the development and production configuration layers; many production-only problems are environment differences.
 - Read the first error. Later errors may result from it.

@@ -19,13 +19,13 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 每一项都写 `1.`，让 Markdown 自己数。这样插入、删除、调换步骤都不用手改编号，而且内容缩进恒定是三个空格。
 
 ```markdown {title="源码"}
-1. 安装 Hugo Extended
+1. 安装 Hugo
 1. 克隆 OINK Starter
 1. 启动本地预览
 {.steps}
 ```
 
-1. 安装 Hugo Extended
+1. 安装 Hugo
 1. 克隆 OINK Starter
 1. 启动本地预览
 {.steps}
@@ -94,7 +94,7 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 某一步在不同平台上命令不同时，把带 `{tab=}` 的围栏并排写进那个列表项，它们照样会合成标签页。
 
 `````markdown {title="源码"}
-1. 安装 Hugo Extended。
+1. 安装 Hugo。
 
 1. 安装依赖：
 
@@ -109,7 +109,7 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 {.steps}
 `````
 
-1. 安装 Hugo Extended。
+1. 安装 Hugo。
 
 1. 安装依赖：
 
@@ -146,7 +146,7 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 
 ### 安装工具链 {#install-toolchain}
 
-需要 Hugo Extended ≥ 0.169.0 与 Go。
+需要 Hugo ≥ 0.169.0 与 Go。
 
 ### 启动服务器 {#run-server}
 
@@ -170,7 +170,7 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 
 ### 安装工具链 {#install-toolchain}
 
-需要 Hugo Extended ≥ 0.169.0 与 Go。
+需要 Hugo ≥ 0.169.0 与 Go。
 
 ### 启动服务器 {#run-server}
 

@@ -1,7 +1,7 @@
 ---
 title: Brand and appearance
 linkTitle: Brand and appearance
-description: Change the site name, logo, favicon, accent color, light and dark palettes, and fonts. Use configuration and two SCSS entry points.
+description: Change the site name, logo, favicon, accent color, light and dark palettes, and fonts. Use configuration and a plain CSS project stylesheet.
 weight: 20
 search_keywords:
   [brand, appearance, logo, favicon, accent colour, palette, dark mode, fonts, typography, scss]
@@ -17,9 +17,8 @@ Configure the name, logo, page width, and footer in `hugo.yml`. To select an
 existing system or site font, use [`params.ui.fonts`](#fonts-in-config).
 [Section accent colors](#theme-color) also have configuration keys.
 
-Add icons under `static/`. Use `assets/scss/_variables_project.scss` for
-SCSS variables and `assets/scss/_styles_project.scss` for custom styles or new
-`@font-face` declarations only when needed. **Do not edit files inside the
+Add icons under `static/`. Use [`assets/css/project.css`](#scss) for custom
+styles or new `@font-face` declarations only when needed. **Do not edit files inside the
 theme directory**. An upgrade replaces them.
 
 ## Visual presets {#visual-presets}
@@ -141,28 +140,38 @@ rules, such as the directory or accepted filenames, override
 
 ## Accent colour and palette {#colors}
 
-Color has two layers. Bootstrap's semantic colors use Sass variables at
-compile time. OINK's brand layer uses CSS custom properties at run time.
+Color has two layers, and both are CSS custom properties that you override at
+run time in the project stylesheet. The theme's stylesheet is plain CSS, so
+Sass variables such as `$primary` no longer exist.
 
-First change the semantic colors. They determine the colors of buttons, links,
-and callouts:
+Bootstrap's semantic colors tint Bootstrap components such as buttons and
+utilities. Override the properties, and the components that carry the color as
+a fixed value:
 
-```scss {title="assets/scss/_variables_project.scss"}
-$primary: #315f8f;
-$secondary: #b4762e;
-$success: #2c7a4b;
-$warning: #9a6700;
-$danger: #b42318;
+```css {title="assets/css/project.css"}
+:root,
+[data-bs-theme='light'] {
+  --bs-primary: #315f8f;
+  --bs-primary-rgb: 49, 95, 143;
+}
+
+.btn-primary {
+  --bs-btn-bg: #315f8f;
+  --bs-btn-border-color: #315f8f;
+  --bs-btn-hover-bg: #2a5179;
+  --bs-btn-hover-border-color: #274c72;
+}
 ```
 
-The theme loads this file **before** Bootstrap and the OINK defaults. Override
-Sass variables here. If you need a variable or map already defined by Bootstrap,
-use `_variables_project_after_bs.scss` instead.
+Link and accent colors do not follow `--bs-primary`. They come from the visual
+preset, the brand layer below, and [`theme_color`](#theme-color). A site that
+set Sass variables before can convert them once; see
+[Retired SCSS hooks](/docs/admin/upgrade/#sass-hooks).
 
-The brand layer uses CSS custom properties. You **must override light and dark
-in pairs**. Otherwise, one mode retains the original color:
+The brand layer also uses CSS custom properties. You **must override light and
+dark in pairs**. Otherwise, one mode retains the original color:
 
-```scss {title="assets/scss/_styles_project.scss"}
+```css {title="assets/css/project.css"}
 :root {
   --td-brand-copper: #a66722;
   --td-brand-mark-from: #1d588c;
@@ -314,7 +323,7 @@ The `ui` role is the main font. The `body` role resolves through it, and
 prose, and headings together.
 
 #### From configuration {#fonts-in-config}
-To change only font families, use `params.ui.fonts`. You do not need SCSS:
+To change only font families, use `params.ui.fonts`. You do not need a stylesheet:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -347,7 +356,7 @@ To bundle your own font file or change the font for one content kind, use a
 stylesheet. Put the `.woff2` file in the site's `static/webfonts/`. Declare
 the font in the project stylesheet. Then override the roles:
 
-```scss {title="assets/scss/_styles_project.scss"}
+```css {title="assets/css/project.css"}
 @font-face {
   font-family: 'My Sans';
   font-display: swap;
@@ -367,7 +376,7 @@ the font in the project stylesheet. Then override the roles:
 Roles inherit through normal CSS rules. To change the font for one content
 kind, you do not need component selectors:
 
-```scss {title="assets/scss/_styles_project.scss"}
+```css {title="assets/css/project.css"}
 body.td-blog {
   --td-body-font-family: 'My Serif', 'Noto Serif SC', serif;
   --td-heading-font-family: var(--td-body-font-family);
@@ -376,29 +385,18 @@ body.td-blog {
 
 A monospace stack needs a CJK fallback, or mixed code blocks fail to align:
 
-```scss {title="assets/scss/_styles_project.scss"}
+```css {title="assets/css/project.css"}
 :root {
   --td-code-font-family: 'My Mono', 'Sarasa Mono SC', 'Noto Sans Mono CJK SC', monospace;
 }
 ```
 
-A site migrating from Docsy can retain its font configuration. The old Sass
-variables still supply the corresponding roles from `_variables_project.scss`.
-They take precedence over preset defaults:
-
-| Legacy Sass variable | Font role it feeds | Note |
-| --- | --- | --- |
-| `$td-fonts-serif` | `--td-ui-font-family` / `--td-body-font-family` | Docsy's interface stack, assigned to `$font-family-sans-serif` |
-| `$font-family-sans-serif` | `--td-ui-font-family` / `--td-body-font-family` | If a project supplies its own stack, the `technical` preset no longer prepends the preset’s bundled sans face |
-| `$font-family-base` | `--td-ui-font-family` / `--td-body-font-family` | Bootstrap's body variable, reaching the role through `--bs-body-font-family` |
-| `$headings-font-family` | `--td-heading-font-family` | Unset, headings inherit the body role |
-| `$font-family-code` | `--td-code-font-family` | Code, terminals and `pre` / `code` / `kbd` |
-| `$td-font-family-monospace` | `--bs-font-monospace` | Assigned to `$font-family-monospace` |
-| `$font-family-monospace` | `--bs-font-monospace` | Under the `system` preset, an explicit project value takes precedence over the platform monospace stack |
-
-The theme no longer reads Docsy's three Google Fonts variables:
-`$td-enable-google-fonts`, `$td-google-font-name`, and `$td-web-font-path`.
-Leaving them in `_variables_project.scss` causes no failure and has no effect.
+Sass font variables no longer reach the theme, because the theme contains no
+Sass. This covers Docsy's `$td-fonts-serif`, `$font-family-sans-serif`,
+`$font-family-base`, `$headings-font-family`, `$font-family-code`,
+`$td-font-family-monospace` and `$font-family-monospace`, and its three Google
+Fonts variables. Set the roles with `params.ui.fonts` or the role properties
+above.
 The theme bundles IBM Plex Sans, Inter, Chakra Petch, and IBM Plex Mono. No preset
 requests Google Fonts. The print role `--td-print-font-family` follows the body
 role. The theme bundles no separate print font.
@@ -450,21 +448,29 @@ The `params.copyright` key accepts a Markdown string or a map with `authors` /
 `footer_center_info` key accepts inline Markdown for the footer's center.
 Set it explicitly to an empty string to hide that region.
 
-## SCSS entry points, and what not to do {#scss}
+## Project stylesheet, and what not to do {#scss}
 
-The site's SCSS overrides join the theme's single style bundle. A production
-build still emits one fingerprinted stylesheet with an integrity attribute.
-Put the three entry files under the site's `assets/scss/`:
+The theme's stylesheet is plain CSS, and a site build compiles nothing. A
+site's own rules are plain CSS too, under `assets/css/`:
 
 | File | When to use it |
 | --- | --- |
-| `_variables_project.scss` | Sass variables set before Bootstrap and the OINK defaults (`$primary`, the font variables) |
-| `_variables_project_after_bs.scss` | Variables or maps that depend on Bootstrap's own definitions |
-| `_styles_project.scss` | Selectors and CSS custom properties written after the theme's component styles |
+| `project.css` | Selectors and CSS custom properties, loaded after the theme's stylesheet |
+| `project/*.css` | Optional further files, appended to `project.css` in path order |
 
-The compilation order is: Bootstrap functions → project variables → OINK
-defaults and Bootstrap → post-Bootstrap project variables → OINK components and
-the brand layer → project styles.
+The theme publishes them as one stylesheet, fingerprinted and with an integrity
+attribute in production, in a separate request after its own. Editing site
+styles leaves the theme's stylesheet and its cache entry unchanged.
+
+Write CSS, not SCSS. Hugo minifies the file and does not transform it: `//`
+comments, Sass variables, mixins, `@extend`, and `&-suffix` selectors are
+invalid here, and native CSS nesting reaches the browser as written. A relative
+URL resolves from `/css/`, so `../webfonts/my-font.woff2` is the site's
+`static/webfonts/my-font.woff2`.
+
+The three SCSS hooks under `assets/scss/` are retired. If one remains, the
+build warns and ignores it. See
+[Retired SCSS hooks](/docs/admin/upgrade/#sass-hooks) for how to convert it.
 
 The CSS interface has a defined boundary. The eight font roles in
 [Fonts](#fonts) and the `--td-brand-*` properties are public. The theme preserves
@@ -473,10 +479,36 @@ their names and meanings across minor versions. Component aliases such as
 variables, such as `--td-shell-*`, are implementation details. They may be
 renamed or removed at any time.
 
+### Styles for a site-owned shell {#bundles}
+
+A page that keeps its own layout, such as a bespoke homepage, can borrow parts
+of the theme without the reading shell. Such a layout does not load `main`,
+the stylesheet of every OINK page. It asks for a smaller theme stylesheet by
+name:
+
+| Name | Contents |
+| --- | --- |
+| `chrome` | Tokens, typography, the four palettes, the site navbar, and the language, theme and appearance controls |
+| `landing` | The Landing sections. Load it after `chrome` |
+| `search` | The command palette and local search |
+| `compare` | Duo View |
+
+```go-html-template {title="layouts/_partials/my-head.html"}
+{{ with partial "css/bundle.html" "chrome" }}
+  <link rel="stylesheet" href="{{ (. | minify | fingerprint).RelPermalink }}">
+{{ end }}
+```
+
+The partial returns the stylesheet as a Hugo resource and publishes it as
+`css/<name>.css`, one directory below the site root, where its `../webfonts/…`
+font references resolve. Nothing is compiled; the layout minifies and
+fingerprints the resource. An unknown name produces a build warning. These
+stylesheets follow the pinned theme version; do not copy them into the site.
+
 What not to do:
 
 - Do not edit any file inside the theme directory (`hugo mod` overwrites it);
-- Do not `@import` the theme's internal partials individually. They are not a public Sass interface, and their import order may change;
+- Do not read the theme's layer files under `assets/css/td/` from your own templates. They are not a public interface; ask for a stylesheet by name;
 - Do not override `baseof.html` to change one color. If a design variable exists, use it. Otherwise, write the narrowest selector that works;
 - Do not reference a remote stylesheet or a font CDN.
 
