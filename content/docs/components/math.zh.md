@@ -153,7 +153,7 @@ c_{\text{seq}} \cdot P = c_{\text{rand}} \cdot \sigma \cdot T
 
 | 输出 | 呈现 |
 | --- | --- |
-| HTML | 构建期渲染好的 KaTeX HTML + MathML；本页额外加载一份本地 `katex.min.css`，没有公式的页面不加载 |
+| HTML | 构建期渲染好的 KaTeX HTML + MathML；本页额外加载一份本地 `katex.min.css` 及其引用的 woff2 字体，没有公式的页面不加载 |
 | 打印 | 同 HTML，静态，长公式不滚动 |
 | Markdown | 原样输出源码：`$$` 块（连同下面的属性行）、`math` / `chem` 围栏、`\(…\)`；`eq` shortcode 输出 `**公式 3-2.** 说明` + 一个 `$$` 块 |
 | RSS | 与 Markdown 相同的静态文本 |

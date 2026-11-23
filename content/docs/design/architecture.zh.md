@@ -96,7 +96,9 @@ ECharts 6.1.0、字体包与 PlantUML core 1.2026.9 已是当前稳定版。
 Mermaid 显式保留 `layout: dagre`、`theme: default`、`look: classic`，不会因为
 上游改用 ELK、neo 与新颜色主题而默默改变已有图表。Mermaid 12 要求浏览器支持
 ES2024（Safari 至少 17.4）；加载或渲染失败时保留源码。KaTeX 0.19.1 的样式与
-字体保留对 Hugo 0.169.0 内置公式渲染器的类名归一化。DocSearch 使用关键词搜索包，
+字体保留对 Hugo 0.169.0 内置公式渲染器的类名归一化。含公式的页面只发布 KaTeX 的
+二十个 woff2 字体，以及只引用它们的样式表；woff 与 ttf 副本留在模块里，不发布。
+DocSearch 使用关键词搜索包，
 把现有 `indexName` 设置转换为上游的 `indices` API，不启用 Ask AI。
 
 Markmap 的本地 ESM 资源由 `@markmap/core`、`parse`、`render`、`view` 与
@@ -240,6 +242,8 @@ Asciinema、ECharts、Infographic 与 Markmap 在 HTML 页面上遵循同一规�
 导图是源码，图表与信息图是一个空画框。普通浏览器打印不等待脚本：已挂载的组件照原样
 打印，未挂载的图表与信息图打印其声明的选项或 DSL，与 Print 输出一致。引擎无法加载时，
 图表与信息图显示这份源码，播放器保留链接。站点自行加载过的引擎不会被重复请求。
+Giscus 以同样的方式请求：读者滚动到评论区附近，或已经滚过评论区时。从登录回跳的访问
+（会话仍在地址里）与设置了 `loading: eager` 的站点会立即请求。
 
 ## 界面本地化 {#interface-localization}
 

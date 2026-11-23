@@ -198,7 +198,8 @@ If you set a fixed theme name in `theme`, giscus no longer follows the toggle.
 
 - OINK never requests or stores a reader's GitHub password or access token. All sign-in and posting operations occur on giscus / GitHub.
 - The theme ships the comment initialization script as a same-origin asset. It adds the script only to pages with comments enabled.
-- With `loading: lazy`, the iframe loads only as the reader scrolls near the comment section.
+- The giscus script is requested when the reader comes within a scroll of the comment section, or is already past it. With `loading: lazy`, the iframe follows the same rule.
+- A visit returning from GitHub sign-in requests the script at once, and so does a site that sets `loading: eager`.
 - If the site has a strict Content Security Policy, both `script-src` and `frame-src` must permit giscus. Merge these permissions into the existing policy. Do not replace other directives. See [Content Security Policy](/docs/admin/deploy/#csp) for the general rules:
 
 ```text {title="CSP fragment"}

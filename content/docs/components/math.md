@@ -171,7 +171,7 @@ Use `eq` for migrated manuscripts or sites whose `hugo.yml` cannot be changed.
 
 | Output | Shape |
 | --- | --- |
-| HTML | KaTeX HTML + MathML rendered at build time; this page also loads a local `katex.min.css`, which pages without formulas never load |
+| HTML | KaTeX HTML + MathML rendered at build time; this page also loads a local `katex.min.css` and the woff2 faces it names, which pages without formulas never load |
 | Print | Same as HTML, static, long formulas do not scroll |
 | Markdown | The source as written: `$$` blocks with their attribute line, `math` / `chem` fences, `\(…\)`; the `eq` shortcode emits `**Equation 3-2.** caption` plus a `$$` block |
 | RSS | The same static text as Markdown |

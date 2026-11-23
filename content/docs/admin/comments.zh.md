@@ -149,7 +149,8 @@ params:
 
 - OINK 不会索取或保存读者的 GitHub 密码与访问令牌，登录与发帖全程在 giscus / GitHub 一侧完成。
 - 评论初始化脚本是主题自带的同源资源，只加入启用了评论的页面，未开评论的页面没有这段脚本。
-- `loading: lazy` 时，读者滚动到评论区附近才加载 iframe。
+- 读者滚动到评论区附近，或已经滚过评论区时，才请求 giscus 脚本；`loading: lazy` 时 iframe 遵循同样的规则。
+- 从 GitHub 登录回跳的访问会立即请求脚本，站点设置 `loading: eager` 时也是如此。
 - 站点有严格的内容安全策略时，`script-src` 和 `frame-src` 都要放行 giscus，合并进现有策略而不是替换其它指令（总则见[内容安全策略](/zh/docs/admin/deploy/#csp)）：
 
 ```text {title="CSP 片段"}
