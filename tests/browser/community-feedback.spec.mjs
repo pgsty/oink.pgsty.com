@@ -149,6 +149,7 @@ for (const locale of ['', '/zh']) {
     expect(await heading.evaluate(el => !!el.closest('[inert], [aria-hidden="true"]'))).toBe(false);
     await page.setViewportSize({ width: 375, height: 813 });
     await page.locator('[data-td-shell-drawer-open]:visible').click();
+    await expect(page.locator('button[data-td-shell-drawer-close]')).toBeFocused();
     await heading.focus();
     await expect(heading).toBeFocused();
     await page.setViewportSize({ width: 1440, height: 900 });
