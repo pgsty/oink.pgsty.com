@@ -324,7 +324,7 @@ Use a [table](/docs/components/table/) or a `data/`-driven component on a [relea
 
 | Output | Shape |
 | --- | --- |
-| HTML | A canvas container inside `<div class="td-echarts">` plus an `application/json` options block; the local ECharts draws it |
+| HTML | A canvas container inside `<div class="td-echarts">` plus an `application/json` options block; the local ECharts loads and draws it as the reader approaches the chart |
 | Print | No chart; the fence source inside `<pre class="td-echarts-source">` |
 | Markdown | The `echarts` fence and its option source, kept as written |
 | RSS | Same as print — source only |

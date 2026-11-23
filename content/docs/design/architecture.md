@@ -274,6 +274,17 @@ Unsupported schemes, protocol-relative URLs, backslashes, whitespace, and same-s
 > completed diagrams show images and the remainder retain source. Dedicated
 > outputs are unchanged.
 
+Asciinema, ECharts, Infographic and Markmap follow the same rule on HTML pages.
+The page publishes each engine without requesting it.
+A component on screen, within a short scroll below, or anywhere above the reader loads its engine and mounts.
+One further down waits, and a hidden one waits until it is shown.
+Mounting above the reader would move the text being read, so everything above is due at once.
+Until it mounts, a player is its recording link, a map is its source, and a chart or infographic is an empty frame.
+Ordinary browser printing cannot wait for a script: a mounted component prints as it is,
+and an unmounted chart or infographic prints its declared options or DSL, as the Print output does.
+If an engine cannot load, the chart or infographic shows that source and the player keeps its link.
+An engine a site has already loaded itself is used without a second request.
+
 ## Interface localization {#interface-localization}
 
 > [!NOTE] Available since OINK 1.1

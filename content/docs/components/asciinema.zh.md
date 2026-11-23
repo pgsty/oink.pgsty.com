@@ -120,7 +120,7 @@ search_keywords: [Asciinema, 终端录像, cast, asciicast, 录屏, 演示, term
 
 | 输出 | 呈现 |
 | --- | --- |
-| HTML | `<div class="td-asciinema">` 窗口外框 + 播放器；播放器 CSS/JS 与运行时按需加载，一页一次，且只在这一种输出里 |
+| HTML | `<div class="td-asciinema">` 窗口外框，内含录像链接；播放器 CSS 与运行时一页加载一次，且只在这一种输出里，播放器本身在读者接近时才加载 |
 | 打印 | 一行带标题的静态链接，地址可见；不加载播放器，也不加载任何运行时 |
 | Markdown | 一个纯 Markdown 链接 `[标题](/images/install.cast)`——没有组件标记，也没有配置块 |
 | RSS | 同样的纯链接 |

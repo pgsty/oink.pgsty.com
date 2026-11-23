@@ -281,7 +281,7 @@ data
 
 | 输出 | 呈现 |
 | --- | --- |
-| HTML | `<div class="td-infographic">` 里一个画布容器加一段 DSL，本地 AntV 运行时画成 SVG |
+| HTML | `<div class="td-infographic">` 里一个画布容器加一段 DSL；读者接近时，本地 AntV 运行时才加载并画成 SVG |
 | 打印 | 不画图，输出 `<pre class="td-infographic-source">` 包着的 DSL 源码 |
 | Markdown | 原样保留 `infographic` 围栏与 DSL |
 | RSS | 与打印相同，只有源码 |

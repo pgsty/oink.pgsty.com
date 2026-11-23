@@ -54,7 +54,9 @@ contract_status: v1.5.1
 回退契约。达到 `sidebar_cache_limit` 后，两种 walker 只有在语言、导航根与实际
 影响输出的有效设置均相同时才复用中性标记。没有 JavaScript 时这份标记仍然可见；
 普通外壳运行时只补上 active 路径。会输出 `sidebar_headings` 的 Book 页面保持页面
-专属，并绕过共享树缓存。
+专属，并绕过共享树缓存。未达到该上限时，内容树 walker 对当前页面不在其中的分支只渲染
+一次，并在相同深度、相同有效设置下复用。这样的分支里没有 active 行、active 路径上的行，
+也没有 Book 标题列表；输出不变，active 状态仍在构建期渲染。
 
 根候选先收集可链接、非分隔项的顶层分区，再收集 `sidebar_root_for: self` 分区，并按 URL 去重。
 两种来源都遵守显式的 `sidebar_root_menu: false`；未设置或 true 时保留。

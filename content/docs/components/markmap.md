@@ -298,7 +298,7 @@ Start every disclosure line with `>`, including fence lines.
 
 | Output | Shape |
 | --- | --- |
-| HTML | `<pre><code class="language-markmap">` first; the runtime replaces it with `<div class="markmap">` and draws the SVG |
+| HTML | `<pre><code class="language-markmap">` first; as the reader approaches, the runtime replaces it with `<div class="markmap">` and draws the SVG |
 | Print | The outline source, with no runtime |
 | Markdown | The `markmap` fence and its outline, kept as written |
 | RSS | The outline source only — a readable outline for subscribers |

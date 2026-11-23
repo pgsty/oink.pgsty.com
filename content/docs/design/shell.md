@@ -60,6 +60,10 @@ Invalid policies follow the shared warning and fallback contract.
 At `sidebar_cache_limit`, both walkers may reuse neutral markup only for the same language, root, and effective settings that affect output.
 The markup stays visible without JavaScript. The normal shell runtime adds the active path.
 Book pages with `sidebar_headings` remain page-specific and bypass the shared tree cache.
+Below the limit, the content-tree walker renders a branch the current page is not in once,
+and reuses it wherever it appears at the same depth with the same effective settings.
+No row in such a branch is active, on the active path, or carrying Book headings.
+Output is unchanged, and the active state is still rendered at build time.
 
 Root candidates are linkable, non-divider top-level sections, followed by sections with `sidebar_root_for: self`.
 Candidates are deduplicated by URL. Both sources honor `sidebar_root_menu: false`. Absent or true values preserve inclusion.

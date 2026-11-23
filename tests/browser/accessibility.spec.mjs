@@ -87,12 +87,50 @@ async function scan(page, include) {
   return builder.analyze();
 }
 
+// Players, charts, infographics and maps mount as a reader approaches them,
+// and everything above the reader is due at once. Standing at the end of the
+// page therefore mounts every visible one, so the scan still covers what a
+// reader ends up looking at rather than a link or a source block.
+async function mountDeferredComponents(page) {
+  const deferred =
+    '[data-td-asciinema], [data-td-echarts], [data-td-infographic], pre > code.language-markmap';
+  if (!(await page.locator(deferred).count())) return;
+
+  await page.waitForFunction(
+    () => {
+      // Checked once per frame. A page that is still growing (API readers,
+      // images, a player that just mounted) moves its end, so go there again
+      // each time; the observers report on the frame after.
+      scrollTo(0, document.documentElement.scrollHeight);
+      // The content of a closed disclosure keeps its boxes, so ask the
+      // browser whether the node is rendered rather than whether it has one.
+      const shown = (node) => node.checkVisibility();
+      const waiting = (selector, mounted) =>
+        [...document.querySelectorAll(selector)]
+          .filter(shown)
+          .some((node) => !node.querySelector(mounted));
+      return (
+        ![...document.querySelectorAll('pre > code.language-markmap')].some(shown) &&
+        !waiting('[data-td-asciinema]', '.ap-player') &&
+        !waiting('[data-td-echarts]', 'canvas, pre.td-echarts-source, [role="alert"]') &&
+        !waiting('[data-td-infographic]', 'svg, pre.td-infographic-source, [role="alert"]')
+      );
+    },
+    undefined,
+    { timeout: 30_000 },
+  );
+  await page.evaluate(() => scrollTo(0, 0));
+}
+
 async function waitForStableMarkmaps(page) {
   if (!(await page.locator('.language-markmap, .markmap').count())) return;
 
   await page.waitForFunction(
     () => {
-      const sourceBlocks = document.querySelectorAll('.language-markmap');
+      // A hidden map keeps its source until its panel is shown.
+      const sourceBlocks = [...document.querySelectorAll('.language-markmap')].filter(
+        (block) => block.checkVisibility(),
+      );
       // Hidden maps deliberately defer rendering until their panel is shown.
       const maps = [...document.querySelectorAll('div.markmap')].filter(map =>
         map.getClientRects().length && getComputedStyle(map).visibility !== 'hidden');
@@ -136,6 +174,7 @@ test.describe('WCAG AA contract', () => {
       // Markmap replaces every source block asynchronously and fades each SVG
       // label through a d3 transition. On slower CI workers, a fixed delay can
       // scan later maps mid-fade and report phantom contrast failures.
+      await mountDeferredComponents(page);
       await waitForStableMarkmaps(page);
       const { violations } = await scan(page);
       if (violations.length) {

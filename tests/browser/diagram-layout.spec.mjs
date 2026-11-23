@@ -74,6 +74,8 @@ for (const language of ['', '/zh']) {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(`${language}/docs/components/markmap/`);
+    // A map keeps its source until the reader approaches it.
+    await page.locator('.td-content > pre:has(> code.language-markmap)').first().scrollIntoViewIfNeeded();
     const map = page.locator('.td-content > .markmap').first();
     const svg = map.locator('svg');
     const fitted = () => svg.evaluate((el) => {
@@ -136,6 +138,12 @@ for (const language of ['', '/zh']) {
     await page.goto(`${language}/docs/components/infographic/`);
     const canvases = page.locator('[data-td-infographic-canvas]');
     await expect(canvases.first().locator('svg')).toBeVisible();
+    // An infographic mounts as the reader approaches it; walk the page once
+    // so the resize checks below cover every one of them.
+    for (const figure of await page.locator('[data-td-infographic]').all()) {
+      await figure.scrollIntoViewIfNeeded();
+    }
+    await expect(canvases.filter({ has: page.locator('svg') })).toHaveCount(await canvases.count());
     await page.evaluate(() => document.fonts.ready);
     for (const width of [390, 820, 320, 600, 1440]) {
       await page.setViewportSize({ width, height: 900 });

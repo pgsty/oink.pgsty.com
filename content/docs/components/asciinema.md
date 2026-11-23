@@ -142,7 +142,7 @@ Use `asciinema rec --idle-time-limit=2 --cols=100 --rows=28 install.cast`, then 
 
 | Output | Shape |
 | --- | --- |
-| HTML | A `<div class="td-asciinema">` window frame plus the player; the player CSS/JS and the runtime load on demand, once per page, and only in this output |
+| HTML | A `<div class="td-asciinema">` window frame holding a link to the recording; the player CSS and the runtime load once per page and only in this output, and the player itself as the reader approaches it |
 | Print | A labelled static link showing the recording's address; no player, no runtime |
 | Markdown | A plain Markdown link, `[title](/images/install.cast)` — no component markup, no configuration block |
 | RSS | The same plain link |

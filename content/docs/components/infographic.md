@@ -290,7 +290,7 @@ See the full [AntV Infographic](https://infographic.antv.vision/gallery) gallery
 
 | Output | Shape |
 | --- | --- |
-| HTML | A canvas container inside `<div class="td-infographic">` plus the DSL; the local AntV runtime draws the SVG |
+| HTML | A canvas container inside `<div class="td-infographic">` plus the DSL; the local AntV runtime loads and draws the SVG as the reader approaches it |
 | Print | No diagram; the DSL source inside `<pre class="td-infographic-source">` |
 | Markdown | The `infographic` fence and its DSL, kept as written |
 | RSS | Same as print — source only |

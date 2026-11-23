@@ -15,6 +15,17 @@ async function offline(page) {
   return external;
 }
 
+// The player, the chart and the map mount as a reader approaches them, so a
+// test walks to the static form of the component it is about to assert on.
+const PLAYER = '[data-td-asciinema]';
+const CHART = '[data-td-echarts]';
+const MAP = '#svg-map';
+async function approach(scope, ...selectors) {
+  for (const selector of selectors) {
+    await scope.locator(selector).first().scrollIntoViewIfNeeded();
+  }
+}
+
 test('ReDoc ESM readers keep independent routes and make no default external request', async ({ page, context }) => {
   const external = await offline(page);
   const errors = [];
@@ -57,6 +68,7 @@ test('Markmap math and notes use local chunks; source escaping and print stay in
   const requests = [];
   page.on('request', request => requests.push(request.url()));
   await page.goto('/tests/dependencies/');
+  await approach(page, MAP);
   const map = page.locator('div.markmap');
   await map.scrollIntoViewIfNeeded();
   await expect(map.locator('text').filter({ hasText: 'x > y & z "quoted"' })).toHaveCount(1);
@@ -91,11 +103,60 @@ test('Markmap math and notes use local chunks; source escaping and print stay in
   await expect(page.locator('[data-td-markmap-config], .td-redoc iframe')).toHaveCount(0);
 });
 
+test('the player, chart and map engines wait until the reader approaches', async ({ page }) => {
+  const engines = [];
+  page.on('request', request => {
+    const match = request.url().match(/third_party\/(asciinema|echarts|markmap)\/(?:asciinema-player|echarts|markmap)[^/]*\.js/);
+    if (match) engines.push(match[1]);
+  });
+  await page.goto('/tests/dependencies/');
+  await expect(page.locator('.td-redoc iframe').first()).toBeAttached();
+  await expect(page.locator('code.language-markmap')).toBeAttached();
+  await expect(page.locator('[data-td-asciinema-player] a')).toHaveText('Recording fallback');
+  expect(engines).toEqual([]);
+
+  // Browser printing cannot wait for a script: what has not mounted prints
+  // its declared source, as the Print output does, and takes it back after.
+  await page.emulateMedia({ media: 'print' });
+  await expect(page.locator('.td-echarts > pre.td-echarts-source')).toContainText('"type": "bar"');
+  await expect(page.locator('[data-td-echarts-canvas]')).toBeHidden();
+  await page.emulateMedia({ media: 'screen' });
+  await expect(page.locator('.td-echarts > pre.td-echarts-source')).toHaveCount(0);
+  expect(engines).toEqual([]);
+
+  await approach(page, MAP, PLAYER, CHART);
+  await expect(page.locator('div.markmap text').first()).toBeAttached();
+  await expect(page.locator('.ap-player')).toBeVisible();
+  await expect(page.locator('[data-td-echarts-canvas] canvas')).toBeVisible();
+  expect([...engines].sort()).toEqual(['asciinema', 'echarts', 'markmap']);
+});
+
+test('a jump past the components mounts what is now above the reader', async ({ page }) => {
+  await page.goto('/tests/dependencies/');
+  await expect(page.locator('code.language-markmap')).toBeAttached();
+  // Mounting above the reader later would move the text being read, so
+  // everything above is due at once.
+  await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
+  await expect(page.locator('div.markmap text').first()).toBeAttached();
+  await expect(page.locator('[data-td-echarts-canvas] canvas')).toBeAttached();
+  await expect(page.locator('.ap-player')).toBeAttached();
+});
+
+test('a chart whose engine cannot load shows its declared options', async ({ page }) => {
+  await page.route('**/third_party/echarts/*.js', route => route.abort());
+  await page.goto('/tests/dependencies/');
+  await approach(page, CHART);
+  await expect(page.locator('.td-echarts > pre.td-echarts-source')).toContainText('"type": "bar"');
+  await expect(page.locator('[data-td-echarts-canvas]')).toBeHidden();
+  await expect(page.locator('[data-td-echarts-canvas] canvas')).toHaveCount(0);
+});
+
 test('a synchronous player failure keeps its link and lets charts mount', async ({ page }) => {
   await page.route('**/third_party/asciinema/asciinema-player*.js', route => route.fulfill({
     contentType: 'text/javascript', body: 'window.AsciinemaPlayer = {create() {throw new Error("invalid player option")}};',
   }));
   await page.goto('/tests/dependencies/');
+  await approach(page, PLAYER, CHART);
   await expect(page.locator('[data-td-asciinema-player] a')).toHaveText('Recording fallback');
   await expect(page.locator('[data-td-echarts-canvas] canvas')).toBeVisible();
 });
@@ -216,6 +277,7 @@ test('the real terminal player plays, pauses and remounts on a theme change', as
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/tests/dependencies/');
+  await approach(page, PLAYER);
   const player = page.locator('.ap-player');
   await player.getByRole('button', { name: 'Play', exact: true }).click();
   await expect(player).toContainText('bash-5.3$');
@@ -282,6 +344,7 @@ for (const failure of ['spec', 'module']) {
     await redoc.scrollIntoViewIfNeeded();
     await expect(redoc.locator(':scope > p > a')).toBeVisible();
     await expect(redoc.locator(':scope > p > a')).toHaveAttribute('href', /\/openapi\/docs-demo\.yaml$/);
+    await approach(page, MAP, CHART);
     await expect(page.locator('div.markmap text').first()).toBeAttached();
     await expect(page.locator('[data-td-echarts-canvas] canvas')).toBeAttached();
   });
@@ -302,6 +365,7 @@ test('without JavaScript the source, recording and specification remain accessib
 test('a missing player bundle keeps the original recording link', async ({ page }) => {
   await page.route('**/third_party/asciinema/*.js', route => route.abort());
   await page.goto('/tests/dependencies/');
+  await approach(page, PLAYER, CHART);
   await expect(page.locator('[data-td-asciinema-player] a')).toHaveText('Recording fallback');
   await expect(page.locator('[data-td-echarts-canvas] canvas')).toBeAttached();
 });
@@ -315,6 +379,7 @@ for (const failure of ['missing', 'invalid']) {
       contentType: 'text/plain', body: 'This is not an asciicast',
     }));
     await page.goto('/tests/dependencies/');
+    await approach(page, PLAYER, CHART);
     await page.locator('.ap-player').getByRole('button', { name: 'Play', exact: true }).focus();
     await page.keyboard.press('Enter');
     const link = page.locator('[data-td-asciinema-player] a');
@@ -349,6 +414,7 @@ test('Markmap SVG links and open notes cooperate cleanly inside Duo View', async
   const reader = page.locator('dialog[data-td-compare][open]');
   await expect(reader).toBeVisible();
   const leftPane = reader.locator('[data-td-compare-frame]').first().contentFrame();
+  await approach(leftPane, MAP);
   const map = leftPane.locator('div.markmap');
   await map.scrollIntoViewIfNeeded();
   await expect(map.getByRole('link', { name: 'Theme source', exact: true })).toBeVisible();

@@ -36,6 +36,8 @@ for (const locale of ['', '/zh']) {
       localStorage.setItem('td-preset', 'terminal');
     });
     await page.goto(`${locale}/docs/components/markmap/`);
+    // A map keeps its source until the reader approaches it.
+    await page.locator('.td-content > pre:has(> code.language-markmap)').first().scrollIntoViewIfNeeded();
     const label = page.locator('.td-content .markmap svg text tspan').first();
     await expect(label).toBeVisible();
     expect(await label.evaluate(el => getComputedStyle(el).fill === getComputedStyle(el.closest('.td-content')).color)).toBe(true);

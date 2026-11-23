@@ -311,7 +311,7 @@ series:
 
 | 输出 | 呈现 |
 | --- | --- |
-| HTML | `<div class="td-echarts">` 里一个画布容器加一段 `application/json` 选项，本地 ECharts 画图 |
+| HTML | `<div class="td-echarts">` 里一个画布容器加一段 `application/json` 选项；读者接近图表时，本地 ECharts 才加载并画图 |
 | 打印 | 不画图，输出 `<pre class="td-echarts-source">` 包着的围栏源码 |
 | Markdown | 原样保留 `echarts` 围栏与选项源码 |
 | RSS | 与打印相同，只有源码 |

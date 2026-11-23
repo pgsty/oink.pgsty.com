@@ -289,7 +289,7 @@ markmap:
 
 | 输出 | 呈现 |
 | --- | --- |
-| HTML | 先输出 `<pre><code class="language-markmap">`，运行时把它换成 `<div class="markmap">` 并画出 SVG |
+| HTML | 先输出 `<pre><code class="language-markmap">`；读者接近时，运行时把它换成 `<div class="markmap">` 并画出 SVG |
 | 打印 | 保留大纲源码，不加载运行时 |
 | Markdown | 原样保留 `markmap` 围栏与它的大纲源码 |
 | RSS | 只有大纲源码，订阅端看到的是一段可读的提纲 |
