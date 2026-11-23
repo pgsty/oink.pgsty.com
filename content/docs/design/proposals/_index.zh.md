@@ -25,6 +25,7 @@ design_status: active
 | ---------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | [反向链接与知识图谱](/zh/docs/design/proposals/knowledge-graph/) | G1（静态反向链接）已接受，已在主题 main 分支实现，随 OINK 0.8.0 发布；局部与全站图谱（G2/G3）保持草案 |
 | [媒体收敛](/zh/docs/design/proposals/media-convergence/)         | 部分已实现；media-result 契约与 Landing 资源元数据已交付，M3 决议为原生图片处理，退役（M4）保持开放 |
+| [主题路线图：Sass 出口与下一阶段产品](/zh/docs/design/proposals/theme-roadmap/) | 草案，起草于 2026-11-21。R0 已在主题 main 分支实现、尚未发布：编译样式交付于 2026-11-22 决定，此后源码改为由 Hugo 拼装的纯 CSS，不再有编译器；其余阶段均未被接受。为脱离 Hugo 已移除的 LibSass、读者侧小缺口、版本生命周期和静态 API 参考排定顺序 |
 | [OINK CLI 与下一阶段产品路线](/zh/docs/design/proposals/oink-cli-roadmap/) | 独立 Go 仓库与首期边界已接受，本地 CLI 候选已实现、尚未公开发布；后续主题、迁移、采用、版本管理、OpenAPI 与平台阶段保持提案 |
 | [视觉预设与外观切换](/zh/docs/design/proposals/visual-presets/) | Paper/Slate 已随 v1.2.0 发布；Ink/Terminal 已提供显式启用的实验，等待视觉定稿；当前行为与证据见已接受决策和带日期验收记录 |
 
