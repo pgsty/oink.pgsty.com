@@ -193,6 +193,16 @@ HUGO_VERSION = "0.169.0"
 
 **Vercel** — 同样的三件事：构建命令 `hugo --gc --minify`、输出目录 `public`、环境变量 `HUGO_VERSION`。它同样不需要安装 npm 依赖。
 
+**deed.page** — 把 `public/` 打成一个归档上传，不需要注册账号，也不需要配置 CI。用最终的 `baseURL` 构建，然后打包并上传：
+
+```bash {title="终端"}
+hugo --cleanDestinationDir --gc --minify --baseURL "https://my-docs.deed.page/" &&
+  tar -czf site.tar.gz -C public . &&
+  curl -T site.tar.gz "https://deed.page/v1/sites?slug=my-docs"
+```
+
+响应会返回站点地址和一个只显示一次的 token。之后用同一条命令并带上 `Authorization: Bearer` 头发送该 token，即可更新这个 slug 下的站点。单次上传上限为 4 MB；更大的站点请参阅 [deed.page 文档](https://deed.page/docs)。
+
 **任意静态服务器（Nginx / Caddy）** — 原样提供 `public/` 的内容。下例通过
 `current` 符号链接指向一份发布目录，创建方法见下方离线打包步骤。配置 Nginx 或
 Caddy 时，将宿主的站点根目录设为这个链接：

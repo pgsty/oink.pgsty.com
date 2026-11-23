@@ -222,6 +222,20 @@ for production and preview, unless the preview tests an upgrade.
 **Vercel** — set the build command to `hugo --gc --minify`, the output directory
 to `public`, and environment variable `HUGO_VERSION`. No npm install is required.
 
+**deed.page** — upload `public/` as one archive; no account or CI setup is
+needed. Build with the final `baseURL`, then pack and upload the output:
+
+```bash {title="Terminal"}
+hugo --cleanDestinationDir --gc --minify --baseURL "https://my-docs.deed.page/" &&
+  tar -czf site.tar.gz -C public . &&
+  curl -T site.tar.gz "https://deed.page/v1/sites?slug=my-docs"
+```
+
+The response returns the site URL and a token, shown once. Send the token as
+`Authorization: Bearer` with the same command to publish updates to that slug.
+A single upload is limited to 4 MB; see the
+[deed.page documentation](https://deed.page/docs) for larger sites.
+
 **Any static server (Nginx / Caddy)** — serve an unchanged copy of `public/`.
 The example below uses a `current` symlink to a release directory; create it
 with the offline packaging steps below. Set the host's document root to that
