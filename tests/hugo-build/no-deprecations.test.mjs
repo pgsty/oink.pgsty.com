@@ -29,7 +29,7 @@ function buildSite() {
   }
 }
 
-test('site build accepts only the known upstream LibSass deprecation notice', (t) => {
+test('site build logs no Hugo deprecation notices', (t) => {
   // The complete suite explicitly passes the successful `test:base` log.
   // Focused runs build a fresh copy instead of trusting an implicit tmp file.
   const output = buildSite();
@@ -37,8 +37,7 @@ test('site build accepts only the known upstream LibSass deprecation notice', (t
   assert.match(output, /Total in \d+ ms/);
   const deprecations = output
     .split('\n')
-    .filter((line) => /deprecated/i.test(line))
-    .filter((line) => line !== 'WARN  deprecated: css.Sass: libsass was deprecated in Hugo v0.153.0 and will be removed in a future release. Use dartsass instead. See https://gohugo.io/functions/css/sass/#dart-sass');
+    .filter((line) => /deprecated/i.test(line));
   assert.deepEqual(deprecations, [], 'Hugo build logged deprecation notice(s)');
   t.diagnostic(`Scanned ${output.split('\n').length} build-log lines`);
 });

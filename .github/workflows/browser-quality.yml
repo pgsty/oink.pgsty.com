@@ -10,7 +10,6 @@ permissions:
 
 env:
   GO_VERSION: 1.27.4
-  HUGO_VERSION: "0.169.0"
   NODE_VERSION: "26.13.0"
   NPM_VERSION: "12.2.2"
   HUGO_CACHEDIR: ${{ github.workspace }}/.hugo_cache
@@ -91,11 +90,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      - name: Install Hugo Extended
+      - name: Install Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: ${{ env.HUGO_VERSION }}
-          extended: true
+          hugo-version: latest
       - name: Record build tool versions
         run: |
           go version

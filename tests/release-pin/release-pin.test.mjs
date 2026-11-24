@@ -125,7 +125,7 @@ test('rejects disagreement between the advertised current and latest versions', 
   );
 });
 
-test('CI resolves a public pin with Hugo 0.169 and visible warnings', () => {
+test('CI resolves a public pin with current Hugo and visible warnings', () => {
   // These steps lived in the GitHub Pages deploy workflow until that second,
   // unused publication target was removed -- Cloudflare Pages serves the site.
   const workflow = readFileSync(
@@ -136,7 +136,8 @@ test('CI resolves a public pin with Hugo 0.169 and visible warnings', () => {
   assert.match(workflow, /^  HUGO_MODULE_WORKSPACE: off$/m);
   assert.match(workflow, /go mod download github\.com\/pgsty\/oink/);
   assert.match(workflow, /node scripts\/check-release-pin\.mjs/);
-  assert.match(workflow, /HUGO_VERSION: \"0\.169\.0\"/);
+  assert.match(workflow, /hugo-version: latest/);
+  assert.doesNotMatch(workflow, /extended:\s*true/);
   assert.match(workflow, /--printPathWarnings/);
   assert.doesNotMatch(workflow, /--panicOnWarning|HUGO_PANICONWARNING/);
   assert.ok(
