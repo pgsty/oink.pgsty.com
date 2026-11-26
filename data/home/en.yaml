@@ -8,9 +8,10 @@ sections:
   - type: cards
     key: cases
     partial: landing/sections/case-cards.html
+  - type: command-box
+    key: quickstart
   - type: faq
     key: faq
-  - cta
 
 hero:
   eyebrow: OINK 1.6.0 · Local-first · Built with Hugo
@@ -18,7 +19,7 @@ hero:
     - words:
         - { text: PGSTY OINK }
   # prettier-ignore
-  lead: Technical content, written in Markdown.<br>Four styles for docs, blogs, books and API references.
+  lead: Technical content, written in Markdown.<br>Four styles for docs, blogs, books and albums.
   image:
     light: images/hero-light.webp
     dark: images/hero-dark.webp
@@ -29,7 +30,7 @@ hero:
       icon: fa-solid fa-rocket
       style: primary
     - label: What's new in 1.6.0
-      url: blog/release/1.6.0/
+      url: release/1.6.0/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -45,14 +46,8 @@ capabilities:
       motto: Ship docs, not build pipelines
       bullets:
         - '[Starter and deployment guides](docs/start/) for your first site'
-        - '[Full-text search](docs/customize/search/),
-          [i18n](docs/customize/i18n/), [Duo View](docs/customize/i18n/#bilingual-view), and
-          [versioning](docs/customize/versions/)
-          built in'
-        - '[RSS](docs/write/blog/),
-          [SEO](docs/admin/analytics/),
-          and [Google Analytics](docs/admin/analytics/)
-          ready'
+        - '[Search](docs/customize/search/), [i18n](docs/customize/i18n/), [Duo View](docs/customize/i18n/#bilingual-view) and [versioning](docs/customize/versions/) built in'
+        - '[RSS](docs/write/blog/), [SEO](docs/admin/analytics/) and [Google Analytics](docs/admin/analytics/) ready'
       value: Focus on documentation, not site plumbing.
       visual:
         type: shell
@@ -74,10 +69,9 @@ capabilities:
       url: docs/customize/brand/#visual-presets
       motto: Paper · Slate · Ink · Terminal
       bullets:
-        - '[Paper](docs/customize/brand/#visual-presets) feels warm and quiet;
-          Slate keeps its technical look'
+        - '[Paper](docs/customize/brand/#visual-presets) feels warm; Slate keeps the technical look'
         - 'Ink uses black, white and red; Terminal pairs mono with sans'
-        - 'Set Style and Light separately; both stay set across pages'
+        - 'Set Style and Light separately; both persist across pages'
       value: Same content, a different feel. Fonts and core scripts stay local.
       visual:
         type: components
@@ -109,10 +103,8 @@ capabilities:
       motto: Plain CSS, bundled assets, Hugo 0.169+
       bullets:
         - 'One [**hugo**](https://gohugo.io/) command builds everything'
-        - '[No **npm install**, Sass compiler, or
-          PostCSS.](docs/about/features/)'
-        - '[Bundled assets stay local](docs/about/features/);
-          [prepare dependencies for offline builds](docs/start/from-scratch/)'
+        - '[No **npm install**, Sass compiler, or PostCSS.](docs/about/features/)'
+        - '[Local bundled assets](docs/about/features/), ready for [offline builds](docs/start/from-scratch/)'
       value: Hugo Modules need Go for resolution; external integrations remain your choice.
       visual:
         type: code
@@ -133,12 +125,8 @@ capabilities:
       url: docs/components/
       motto: First-class components, loaded per page
       bullets:
-        - '[Code Groups](docs/components/tabs/),
-          [FileTree](docs/components/filetree/), and
-          [Fields](docs/components/fields/) for everyday technical writing'
-        - '[Gallery](docs/components/gallery/), [Image
-          Zoom](docs/components/image/), and diagrams for visual
-          explanations'
+        - '[Code Groups](docs/components/tabs/), [FileTree](docs/components/filetree/) and [Fields](docs/components/fields/) for daily writing'
+        - '[Gallery](docs/components/gallery/), [Image Zoom](docs/components/image/) and diagrams built in'
         - '[Components](docs/components/) support Markdown and print with fallbacks'
       value: Heavy component engines load on approach, and only on pages that use them.
       visual:
@@ -211,58 +199,45 @@ capabilities:
 content_types:
   eyebrow: Beyond docs
   title: Six kinds of content, one shell
-  text:
-    Documentation sites rarely stay documentation-only. The shapes that
-    normally need a second tool share this one's shell, search and outputs.
+  text: Documentation sites rarely stay docs-only; every shape shares one shell, search and output.
   columns: 3
   class: td-home-content-types
   items:
     - title: Documentation
       meta: The shell
       icon: fa-solid fa-book
-      desc:
-        Sidebar tree, page outline, breadcrumbs, pager, edit and history
-        links — the shell every other content type reuses.
+      desc: Sidebar tree, page outline, breadcrumbs, pager and edit links reused everywhere.
       url: docs/write/pages/
     - title: Blog and RSS
       meta: Updates
       icon: fa-solid fa-rss
-      desc:
-        Dated posts, count-sorted tag panels, and a separate feed for each
-        language.
+      desc: Dated posts, four index views, tag clouds and a separate RSS feed per language.
       url: docs/write/blog/
     - title: Books
       meta: Long-form
       icon: fa-solid fa-book-open
-      desc:
-        Chapter numbers, `{#id num=}` figures and equations, `xref`
-        cross-references, and whole-book print.
+      desc: Chapter numbers, numbered figures and equations, `xref` links and whole-book print.
       url: docs/write/book/
     - title: Landing pages
       meta: Presentation
       icon: fa-solid fa-layer-group
-      desc:
-        Twenty-two server-rendered sections compose a page. The one you are
-        reading is one of them.
+      desc: Twenty-two server-rendered sections compose a page, including the one you are reading.
       url: docs/customize/home/
     - title: Expo image albums
+      meta: Visual
       icon: fa-solid fa-images
+      desc: Resource-backed photo collections with wall, cards, seamless views and original zoom.
       url: docs/write/expo/
-      desc: Resource-backed image collections with wall, cards, seamless layouts and an original-image viewer.
     - title: API references
       meta: OpenAPI
       icon: fa-solid fa-plug
-      desc:
-        Swagger UI and Redoc as local runtimes. Keep the spec in the
-        repository; it works offline.
+      desc: Local Swagger UI and Redoc runtimes that render repository specs completely offline.
       url: docs/write/openapi/
 
 components:
   eyebrow: Component reference
   title: 21 components, loaded on demand
-  text:
-    Each component has its own guide and HTML, print, Markdown and RSS output.
-    Scripts load only where needed.
+  text: Each component has its own guide across HTML, print, Markdown and RSS; scripts load only where used.
   layout: grid
   columns: 3
   # Ordered by distinctiveness: the ones you rarely find elsewhere first,
@@ -291,12 +266,32 @@ components:
     - { title: Include,     icon: fa-solid fa-file-import,          desc: 'files, params, build notes',     url: docs/components/include/ }
 
 cases:
-  eyebrow: Cases
-  title: Fifteen sites, one family
+  eyebrow: Showcase
+  title: Built with OINK
   # Items come from content/case/ — see layouts/_partials/landing/sections/case-cards.html
-  text: >-
-    English, Chinese and bilingual; distribution manuals, product docs, three books, a company page, an extension catalog and a two-page tool. Every card opens the live site; the [Case library](case/) explains the content model behind each one.
+  text: Community projects and PGSTY sites in production — browse all 45 in the [Case library](case/).
   columns: 3
+  groups:
+    - key: community
+      title: Community
+    - key: ecosystem
+      title: PGSTY Ecosystem
+  footer_cta:
+    label: Browse all 45 cases
+    url: case/
+    icon: fa-solid fa-layer-group
+  footer_guide:
+    label: Case Guide
+    url: docs/about/showcase/
+
+quickstart:
+  eyebrow: Get started
+  title: Build your site with an AI agent
+  text: Copy this prompt into Claude Code, Codex, or any coding agent to build an OINK site.
+  class: td-home-prompt-box
+  code: >-
+    Please build a Hugo website for my project using the OINK theme (github.com/pgsty/oink) starting from https://github.com/pgsty/oink-starter. Follow the OINK site-building skill at https://oink.pgsty.com/skill.md, verify syntax against the official docs at https://oink.pgsty.com/docs/ (Markdown index: https://oink.pgsty.com/llms.txt), and draw layout inspiration from live cases in https://oink.pgsty.com/case/ such as pigsty.io, hugegraph.apache.org, barn.pgsty.com, and ddia.vonng.com.
+  note: 'See [Build with an AI agent](docs/start/#agent-skill) to install `skill.md` permanently, or follow [OINK Starter](docs/start/starter/).'
 
 faq:
   eyebrow: Before you commit
@@ -304,7 +299,7 @@ faq:
   items:
     - question: What's new in OINK 1.6.0?
       answer: >-
-        [OINK 1.6.0](blog/release/1.6.0/) moves the stylesheet to plain CSS for
+        [OINK 1.6.0](release/1.6.0/) moves the stylesheet to plain CSS for
         Hugo 0.170+ compatibility, removes Bootstrap JS and Lunr, introduces
         scanning BM25 local search with unspaced CJK queries, automatic split
         indexes, and field anchors, and upgrades Markmap, ReDoc, Mermaid, KaTeX,
@@ -327,9 +322,10 @@ faq:
         migration](docs/admin/upgrade/).
     - question: Is OINK only for large documentation trees?
       answer: >-
-        No. The [example sites](docs/about/showcase/) run from a two-page project
-        site to a fifteen-hundred-file distribution manual, and one uses OINK for
-        landing pages alone. The shell scales down as well as up.
+        No. The [45 showcase sites](docs/about/showcase/) run from a two-page
+        interactive utility and personal blogs to an eight-language, 5,000-page
+        documentation hub, books, and Expo albums. The shell scales down as well
+        as up.
     - question: How does it handle Chinese and other non-Latin content?
       answer: >-
         Local search uses a single scanning BM25 engine with overlapping
@@ -359,7 +355,6 @@ faq:
         Docsy's history, attribution and Apache-2.0 obligations are preserved,
         and every vendored runtime is listed with its license in `VENDOR.json`.
         See [License and acknowledgements](docs/about/license/).
-
     - question: How can I contribute?
       answer: >-
         The [contribution guide](docs/about/contributing/) explains where to
@@ -367,10 +362,3 @@ faq:
         Thank you to [@imbajin](docs/about/license/#community-contributors)
         for the earlier reading repairs; the current release carries those fixes
         forward alongside the bilingual reader.
-
-cta:
-  title: Start from a repository that already works.
-  text: Start with OINK Starter, pin OINK 1.6.0, customize your site identity and content, and deploy with GitHub Pages or Cloudflare Pages.
-  label: Use OINK Starter
-  url: docs/start/starter/
-  style: primary

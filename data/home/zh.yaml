@@ -8,9 +8,10 @@ sections:
   - type: cards
     key: cases
     partial: landing/sections/case-cards.html
+  - type: command-box
+    key: quickstart
   - type: faq
     key: faq
-  - cta
 
 hero:
   eyebrow: OINK 1.6.0 · 本地优先 · Hugo 构建
@@ -18,7 +19,7 @@ hero:
     - words:
         - { text: PGSTY OINK }
   # prettier-ignore
-  lead: 用 Markdown 创作技术内容。<br>用四套风格呈现文档、博客、书籍与 API 参考。
+  lead: 用 Markdown 创作技术内容。<br>用四套风格呈现文档、博客、书籍与相册。
   image:
     light: images/hero-light.webp
     dark: images/hero-dark.webp
@@ -29,7 +30,7 @@ hero:
       icon: fa-solid fa-rocket
       style: primary
     - label: 查看 1.6.0 新特性
-      url: blog/release/1.6.0/
+      url: release/1.6.0/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -45,11 +46,8 @@ capabilities:
       motto: 从可运行的模板开始，逐步完善自己的站点
       bullets:
         - '[Starter 与部署指南](docs/start/)帮助你完成第一个站点'
-        - '自带[全文检索](docs/customize/search/)、[i18n](docs/customize/i18n/)、
-          [双列视图](docs/customize/i18n/#bilingual-view)与[多版本支持](docs/customize/versions/)'
-        - '自带
-          [RSS](docs/write/blog/)、[SEO](docs/admin/analytics/)
-          与 [Google Analytics](docs/admin/analytics/) 集成'
+        - '自带[全文检索](docs/customize/search/)、[i18n](docs/customize/i18n/)、[双列视图](docs/customize/i18n/#bilingual-view)与[多版本](docs/customize/versions/)'
+        - '自带 [RSS](docs/write/blog/)、[SEO](docs/admin/analytics/) 与 [Google Analytics](docs/admin/analytics/) 集成'
       value: 内容团队可以把时间用在文档上，而不是重复搭建站点基础设施。
       visual:
         type: shell
@@ -71,9 +69,8 @@ capabilities:
       url: docs/customize/brand/#visual-presets
       motto: Paper · Slate · Ink · Terminal
       bullets:
-        - '[Paper](docs/customize/brand/#visual-presets) 使用暖色纸面与克制排版；
-          Slate 保留原有技术风格'
-        - 'Ink 用黑白与红色建立对比；Terminal 将等宽标题与易读的无衬线正文搭配'
+        - '[Paper](docs/customize/brand/#visual-presets) 使用暖色纸面与克制排版；Slate 保留原有技术风格'
+        - 'Ink 用黑白与红色建立对比；Terminal 将等宽标题与无衬线正文搭配'
         - '在外观菜单中独立选择风格与明暗，翻页后仍保留你的偏好'
       value: 内容不变，风格自选。字体与核心脚本均由本地提供。
       visual:
@@ -106,9 +103,8 @@ capabilities:
       motto: 纯 CSS，内置资源，Hugo 0.169+
       bullets:
         - '一条 [**hugo**](https://gohugo.io/) 命令完成全部构建'
-        - '[无需 **npm install**、Sass 编译器或 PostCSS
-          构建](docs/about/features/)'
-        - '[内置资源本地提供](docs/about/features/)；[备齐依赖后可离线构建](docs/start/from-scratch/)'
+        - '[无需 **npm install**、Sass 编译器或 PostCSS 构建](docs/about/features/)'
+        - '[内置资源本地提供](docs/about/features/)，[备齐依赖即可离线构建](docs/start/from-scratch/)'
       value: Hugo Modules 需要 Go 解析模块，外部服务由站点按需接入。
       visual:
         type: code
@@ -125,13 +121,9 @@ capabilities:
       url: docs/components/
       motto: 把工程内容需要的表达能力直接带进主题
       bullets:
-        - '[Code
-          Group](docs/components/tabs/)、[FileTree](docs/components/filetree/)
-          与 [Fields](docs/components/fields/) 覆盖日常技术写作'
-        - '[Gallery](docs/components/gallery/)、[Image
-          Zoom](docs/components/image/) 与图表组件用于视觉化说明'
-        - '[组件](docs/components/)明确说明 Markdown 与打印输出；
-          交互内容按需保留源码或静态说明'
+        - '[Code Group](docs/components/tabs/)、[FileTree](docs/components/filetree/) 与 [Fields](docs/components/fields/) 覆盖日常写作'
+        - '[Gallery](docs/components/gallery/)、[Image Zoom](docs/components/image/) 与图表组件用于视觉说明'
+        - '[组件](docs/components/)在 HTML、Markdown 与打印下均有确定输出'
       value: 重型组件引擎只在用到它们的页面按需接近加载。
       visual:
         type: components
@@ -203,44 +195,45 @@ capabilities:
 content_types:
   eyebrow: 不止文档
   title: 六种内容形态，同一套外壳
-  text: 文档站很少只有文档。那些通常需要第二个工具的内容形态，在这里共用同一套外壳、检索与输出。
+  text: 文档站很少只有文档，所有内容形态共用同一套外壳、检索与输出。
   columns: 3
   class: td-home-content-types
   items:
     - title: 文档
       meta: 阅读外壳
       icon: fa-solid fa-book
-      desc: 侧栏树、页内目录、面包屑、翻页、编辑与历史链接——其它内容类型复用的就是这套外壳。
+      desc: 侧栏树、页内目录、面包屑、翻页与编辑链接，供其它内容形态复用。
       url: docs/write/pages/
     - title: 博客与 RSS
       meta: 更新
       icon: fa-solid fa-rss
-      desc: 按时间排列的文章、按数量排序的标签面板，以及按语言分别生成的订阅源。
+      desc: 按时间排列的文章、四种索引视图、标签面板与分语种订阅源。
       url: docs/write/blog/
     - title: 书籍
       meta: 长篇
       icon: fa-solid fa-book-open
-      desc: 章节编号，图表公式用 `{#id num=}` 编号、`xref` 交叉引用，整本可打印。
+      desc: 章节编号、图表公式 `{#id num=}` 编号、`xref` 引用与整本打印。
       url: docs/write/book/
     - title: Landing 页
       meta: 展示
       icon: fa-solid fa-layer-group
-      desc: 用二十二种服务端渲染分区拼装页面，你正在读的这一页就是其中之一。
+      desc: 用二十二种服务端渲染分区拼装落地页，当前首页就是其中之一。
       url: docs/customize/home/
     - title: Expo 图片相册
+      meta: 画册
       icon: fa-solid fa-images
-      url: docs/write/expo/
       desc: 页面资源包中的图片收藏，支持展墙、卡片、无缝布局与原图查看器。
+      url: docs/write/expo/
     - title: API 参考
       meta: OpenAPI
       icon: fa-solid fa-plug
-      desc: Swagger UI 与 Redoc 都是本地运行时，规范文件放在仓库里，离线可用。
+      desc: Swagger UI 与 Redoc 都是本地运行时，规范放在仓库即可离线浏览。
       url: docs/write/openapi/
 
 components:
   eyebrow: 组件参考
   title: 二十一个组件，按需加载
-  text: 每个组件都有独立的一页，并在 HTML、打印、Markdown 与 RSS 下有确定形态；交互运行时只随用到它的页面下发。
+  text: 每个组件均有独立指南与 HTML、打印、Markdown、RSS 输出，脚本按需下发。
   layout: grid
   columns: 3
   # 按特色程度排列：先是别处少见的，再是日常写作最常用的。
@@ -269,11 +262,31 @@ components:
 
 cases:
   eyebrow: 案例
-  title: 十五个站点，同一个家族
+  title: 生产站点案例
   # Items come from content/case/ — see layouts/_partials/landing/sections/case-cards.html
-  text: >-
-    中文、英文与双语；发行版手册、产品文档、三本书、公司主页、扩展目录，以及一个两页的小工具。每张卡片都会打开线上站点，[案例库](case/) 说明每个站点背后的内容模型。
+  text: 第三方社区项目与 PGSTY 生态真实站点，完整收录于[案例库](case/)。
   columns: 3
+  groups:
+    - key: community
+      title: 社区与第三方
+    - key: ecosystem
+      title: PGSTY 生态
+  footer_cta:
+    label: 浏览全部 45 个案例
+    url: case/
+    icon: fa-solid fa-layer-group
+  footer_guide:
+    label: 案例导览
+    url: docs/about/showcase/
+
+quickstart:
+  eyebrow: 快速开始
+  title: 用 AI Agent 帮你建站
+  text: 复制下面这段提示词交给 Claude Code、Codex 或任意编程代理，即可用 OINK 搭建站点。
+  class: td-home-prompt-box
+  code: >-
+    请使用 Hugo 与 OINK 主题（github.com/pgsty/oink），基于 https://github.com/pgsty/oink-starter 帮我建设一个站点。请先遵循 OINK 建站技能 https://oink.pgsty.com/skill.zh.md，语法与配置以官方文档 https://oink.pgsty.com/zh/docs/（Markdown 索引：https://oink.pgsty.com/zh/llms.txt）为准，并参考案例库 https://oink.pgsty.com/zh/case/ 中的线上示例（如 pigsty.cc、hugegraph.apache.org、barn.pgsty.com、ddia.vonng.com）来组织首页与内容。
+  note: '前往[用 AI agent 建站](docs/start/#agent-skill)安装 `skill.zh.md`，或按 [OINK Starter 教程](docs/start/starter/)手动起步。'
 
 faq:
   eyebrow: 选型之前
@@ -281,7 +294,7 @@ faq:
   items:
     - question: OINK 1.6.0 有哪些变化？
       answer: >-
-        [OINK 1.6.0](blog/release/1.6.0/) 将样式表改为纯 CSS 以兼容 Hugo 0.170+，
+        [OINK 1.6.0](release/1.6.0/) 将样式表改为纯 CSS 以兼容 Hugo 0.170+，
         移除 Bootstrap JS 与 Lunr，引入支持无空格中文查询、大索引自动拆分与参数锚点的
         扫描式 BM25 本地搜索，并升级 Markmap、ReDoc、Mermaid、KaTeX 等全部随包运行时。
         任意 edition 的 Hugo（0.169.0+）即可构建，无需 Sass 编译器。
@@ -298,8 +311,8 @@ faq:
         见[升级与迁移](docs/admin/upgrade/)。
     - question: OINK 只适合大型文档树吗？
       answer: >-
-        不是。[样例站点](docs/about/showcase/)里既有两页的项目站，也有一千五百个文件的发行版手册，
-        还有一个只用 OINK 做落地页的公司站。外壳向下缩放和向上扩展一样自然。
+        不是。[45 个案例站点](docs/about/showcase/)里既有两页的小工具和个人博客，
+        也有近五千页的八语种文档中心、在线书籍与 Expo 影像档案馆。外壳向下缩放和向上扩展一样自然。
     - question: 中文与其它非拉丁文字的内容怎么处理？
       answer: >-
         本地检索采用单一的扫描式 BM25 引擎，对无空格中日韩查询使用重叠二元组、对拉丁词
@@ -322,16 +335,8 @@ faq:
         Apache License 2.0。OINK 是 Docsy 的分叉并独立演化；Docsy 的源码历史、署名与 Apache-2.0
         义务完整保留，每个随主题分发的运行时都在 `VENDOR.json` 里连同许可证列出。
         见[开源许可与致谢](docs/about/license/)。
-
     - question: 如何参与贡献？
       answer: >-
         [贡献指南](docs/about/contributing/)说明在哪里报告问题、改进翻译，以及提交主题与测试改动。
         感谢 [@imbajin](docs/about/license/#community-contributors)
         为早期版本贡献阅读体验修复；当前版本继续保留这些修复，并加入双语阅读器。
-
-cta:
-  title: 从一个已经能运行的仓库开始。
-  text: 从 OINK Starter 开始，固定 OINK 1.6.0，替换站点身份与内容，通过 GitHub Pages 或 Cloudflare Pages 发布上线。
-  label: 使用 OINK Starter
-  url: docs/start/starter/
-  style: primary
