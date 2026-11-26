@@ -8,6 +8,8 @@ weight: 50
 date: 2026-08-11
 search_keywords: [oink.pgsty.com, OINK docs, regression site, component gallery]
 tags: [Docs, Reference, Testing]
+site_url: https://oink.pgsty.com/
+case_group: ecosystem
 ---
 
 [oink.pgsty.com](https://oink.pgsty.com/) is the site you are reading. It is the

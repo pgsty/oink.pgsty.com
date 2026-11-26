@@ -7,6 +7,8 @@ weight: 60
 date: 2026-08-10
 search_keywords: [caps.vonng.com, Capslock, 配置器, 小型站点]
 tags: [工具, 双语, 小型站点]
+site_url: https://caps.vonng.com/
+case_group: ecosystem
 ---
 
 [caps.vonng.com](https://caps.vonng.com/) 是 Capslock 键盘增强方案的

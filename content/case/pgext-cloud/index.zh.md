@@ -7,6 +7,9 @@ weight: 150
 date: 2026-08-01
 search_keywords: [ext.pgsty.com, PostgreSQL 扩展目录, 数据应用, 扩展catalog]
 tags: [目录, 数据驱动]
+site_url: https://ext.pgsty.com/
+case_group: ecosystem
+case_featured: true
 ---
 [ext.pgsty.com](https://ext.pgsty.com/) 是 PostgreSQL 扩展目录：可以按扩展、
 软件包系列、依赖，以及每个扩展可用的 PostgreSQL 与操作系统组合进行检索。目录收录

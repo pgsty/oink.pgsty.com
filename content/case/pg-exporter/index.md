@@ -7,6 +7,8 @@ weight: 90
 date: 2026-08-07
 search_keywords: [exp.pgsty.com, PG Exporter, metrics catalogue, system typography]
 tags: [Docs, Bilingual, Data driven]
+site_url: https://exp.pgsty.com/
+case_group: ecosystem
 ---
 
 [exp.pgsty.com](https://exp.pgsty.com/) documents PG Exporter, a Prometheus

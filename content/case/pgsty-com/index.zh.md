@@ -7,6 +7,8 @@ weight: 10
 date: 2026-08-15
 search_keywords: [pgsty.com, 公司站, 落地页, 双语]
 tags: [落地页, 双语, 公司]
+site_url: https://pgsty.com/
+case_group: ecosystem
 ---
 
 [pgsty.com](https://pgsty.com/) 是 Pigsty 背后的双语公司站，总共只有十来个

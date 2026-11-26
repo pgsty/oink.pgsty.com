@@ -7,6 +7,8 @@ weight: 20
 date: 2026-08-14
 search_keywords: [pigsty.cc, 中文文档, 双站点, 语言切换]
 tags: [文档, 中文, 大型站点]
+site_url: https://pigsty.cc/
+case_group: ecosystem
 ---
 
 [pigsty.cc](https://pigsty.cc/) 以简体中文发布 Pigsty。本案例记录的快照有

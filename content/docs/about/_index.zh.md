@@ -1,7 +1,7 @@
 ---
 title: OINK 是什么
 linkTitle: 简介
-description: 一套从 Docsy 演化而来的本地优先 Hugo 文档框架：组件在 Markdown 中仍然可读，资源随主题分发，十五个生产站点持续验证它。
+description: 一套从 Docsy 演化而来的本地优先 Hugo 文档框架：组件在 Markdown 中仍然可读，资源随主题分发，四十五个生产站点持续验证它。
 weight: 10
 icon: fa-solid fa-circle-info
 search_keywords: [OINK, Hugo 主题, Docsy, 技术文档, 文档站, 本地优先, Markdown 原生, Hugo theme]
@@ -13,7 +13,7 @@ OINK 是一款独立的 [Hugo](https://gohugo.io/) 主题，用于搭建中大�
 
 当前发布版本为 **OINK v1.6.0**，使用 **Hugo 0.169.0** 或更新版本构建（不限 edition，纯 CSS 无需 Sass 编译器）；采用 Hugo Module 时还需要 **Go 1.27.4** 解析模块，首次下载需要可访问的模块来源。主题资源不依赖 Node.js、npm、PostCSS 或 CDN。Bootstrap、Font Awesome、字体、本地搜索、图表与 API 文档运行时都提交在主题仓库里，只在页面用到时下发。
 
-组件不是另一套模板语言：`> [!NOTE]` 是提示块，表格加一行 `{.fields}` 是参数表，图片下面加 `{caption="..."}` 就有图注。当前有[十五个生产站点](/zh/docs/about/showcase/)在用它，本站是其中之一。
+组件不是另一套模板语言：`> [!NOTE]` 是提示块，表格加一行 `{.fields}` 是参数表，图片下面加 `{caption="..."}` 就有图注。当前已有[四十五个生产站点](/zh/docs/about/showcase/)使用它，涵盖第三方开源社区项目与 PGSTY 生态。
 
 ![OINK 把 Markdown 内容、配置与本地资源汇成一个静态文档站](/images/hero-light.webp)
 {width="900" height="600" caption="一次 Hugo 构建，产出可直接托管的静态站点"}
@@ -55,10 +55,10 @@ OINK 不是叠在 Docsy 上的皮肤，而是 fork 之后独立演化的主题�
 ## 入口 {#start-here}
 - [快速上手](/zh/docs/start/) — 使用官方 Starter，分层定制，再发布上线。
 - [组件总览](/zh/docs/components/) — 一个组件一页，先源码后效果。
-- [示例站点](/zh/docs/about/showcase/) — 十五个生产站点，各自用了 OINK 的哪部分。
+- [示例站点](/zh/docs/about/showcase/) — 45 个真实生产站点，各自用了 OINK 的哪部分。
 {.cards}
 
 [特性](/zh/docs/about/features/)按能力逐条列出主题提供的东西，每条链接到讲它的指南页。
 
 报告问题或提交修改请参阅[贡献指南](/zh/docs/about/contributing/)；
-[1.6.0 发布说明](/zh/blog/release/1.6.0/)介绍纯 CSS 架构、移除 Bootstrap JS 与 Lunr、BM25 本地搜索、依赖升级与升级步骤。
+[1.6.0 发布说明](/zh/release/1.6.0/)介绍纯 CSS 架构、移除 Bootstrap JS 与 Lunr、BM25 本地搜索、依赖升级与升级步骤。

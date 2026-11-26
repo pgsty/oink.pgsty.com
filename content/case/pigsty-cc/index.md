@@ -7,6 +7,8 @@ weight: 20
 date: 2026-08-14
 search_keywords: [pigsty.cc, Chinese documentation, separate language sites, alt site]
 tags: [Docs, Chinese, Large site]
+site_url: https://pigsty.cc/
+case_group: ecosystem
 ---
 
 [pigsty.cc](https://pigsty.cc/) publishes Pigsty in Simplified Chinese. The case

@@ -7,6 +7,8 @@ weight: 130
 date: 2026-08-03
 search_keywords: [pgsql.cc, PostgreSQL 运维, 汇编文档, 部分翻译]
 tags: [文档, 多语言, 汇编]
+site_url: https://github.com/pgsty/pgsql.cc
+case_group: ecosystem
 ---
 
 [PostgreSQL 组件文库](https://github.com/pgsty/pgsql.cc) 把 Patroni、HAProxy、etcd、PgBouncer、pgBackRest

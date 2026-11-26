@@ -7,6 +7,8 @@ weight: 90
 date: 2026-08-07
 search_keywords: [exp.pgsty.com, PG Exporter, 指标目录, 系统字体]
 tags: [文档, 双语, 数据驱动]
+site_url: https://exp.pgsty.com/
+case_group: ecosystem
 ---
 
 [exp.pgsty.com](https://exp.pgsty.com/) 是 PostgreSQL Prometheus 指标采集器

@@ -7,6 +7,9 @@ weight: 30
 date: 2026-08-13
 search_keywords: [pigsty.io, large documentation, extension catalogue, pricing landing]
 tags: [Docs, English, Large site]
+site_url: https://pigsty.io/
+case_group: ecosystem
+case_featured: true
 ---
 
 [pigsty.io](https://pigsty.io/) is the English home of Pigsty, the open-source

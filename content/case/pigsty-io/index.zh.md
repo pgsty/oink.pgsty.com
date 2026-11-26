@@ -7,6 +7,9 @@ weight: 30
 date: 2026-08-13
 search_keywords: [pigsty.io, 大型文档站, 扩展目录, 价格落地页]
 tags: [文档, 英文, 大型站点]
+site_url: https://pigsty.io/
+case_group: ecosystem
+case_featured: true
 ---
 
 [pigsty.io](https://pigsty.io/) 是开源 PostgreSQL 发行版 Pigsty 的英文主站。

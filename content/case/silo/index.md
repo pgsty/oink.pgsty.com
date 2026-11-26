@@ -7,6 +7,8 @@ weight: 40
 date: 2026-08-12
 search_keywords: [silo.pgsty.com, SILO, migration, generated navigation, S3]
 tags: [Docs, Bilingual, Migration]
+site_url: https://silo.pgsty.com/
+case_group: ecosystem
 ---
 
 [silo.pgsty.com](https://silo.pgsty.com/) documents SILO, an S3-compatible

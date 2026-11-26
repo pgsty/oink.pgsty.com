@@ -7,6 +7,8 @@ weight: 140
 date: 2026-08-02
 search_keywords: [pgsty.pro, Pigsty v5, 发布档案, release-card]
 tags: [文档, 双语, 发布]
+site_url: https://pgsty.pro/
+case_group: ecosystem
 ---
 
 [pgsty.pro](https://pgsty.pro/) 用中英文记录 Pigsty v5。本案例快照中，每种

@@ -7,6 +7,9 @@ weight: 150
 date: 2026-08-01
 search_keywords: [ext.pgsty.com, pgext.cloud, PostgreSQL extension catalog, data application]
 tags: [Catalogue, Data driven]
+site_url: https://ext.pgsty.com/
+case_group: ecosystem
+case_featured: true
 ---
 [ext.pgsty.com](https://ext.pgsty.com/) is the PostgreSQL Extension Catalog:
 search across extensions, package families, dependencies, and the exact

@@ -8,6 +8,8 @@ weight: 110
 date: 2026-08-05
 search_keywords: [tpme.vonng.com, Product-Minded Engineer, bilingual book, book shell]
 tags: [Book, Bilingual, Publishing]
+site_url: https://tpme.vonng.com/
+case_group: ecosystem
 ---
 
 [tpme.vonng.com](https://tpme.vonng.com/) publishes *The Product-Minded

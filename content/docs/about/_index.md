@@ -1,7 +1,7 @@
 ---
 title: What is OINK
 linkTitle: Introduction
-description: A local-first Hugo documentation framework that evolved from Docsy. Its components remain readable in Markdown. The theme includes its assets. Fifteen production sites use it.
+description: A local-first Hugo documentation framework that evolved from Docsy. Its components remain readable in Markdown. The theme includes its assets. Forty-five production sites use it.
 weight: 10
 icon: fa-solid fa-circle-info
 search_keywords: [OINK, Hugo theme, Docsy, technical documentation, documentation site, local-first, Markdown native]
@@ -25,8 +25,8 @@ the theme repository and load only on pages that use them.
 Components are written in clean Markdown rather than a custom template
 language: `> [!NOTE]` creates a callout, a table followed by `{.fields}`
 renders as a parameter list, and an image followed by `{caption="..."}` becomes
-a captioned figure. [Fifteen production sites](/docs/about/showcase/) run on
-OINK today, including this one.
+a captioned figure. [Forty-five production sites](/docs/about/showcase/) run on
+OINK today, spanning independent community projects and the PGSTY ecosystem.
 
 ![OINK turns Markdown content, configuration and local assets into one static documentation site](/images/hero-light.webp)
 {width="900" height="600" caption="One Hugo build produces a static site ready to host"}
@@ -76,7 +76,7 @@ source history, Apache-2.0 obligations, and attribution. For details, see
 ## Start here {#start-here}
 - [Get started](/docs/start/) — Use the official Starter. Customize one part at a time, then publish it.
 - [Components](/docs/components/) — Each component has one page. The source appears first, followed by the rendered result.
-- [Showcase](/docs/about/showcase/) — See fifteen production sites and the OINK features each site uses.
+- [Showcase](/docs/about/showcase/) — See 45 production sites and the OINK features each site uses.
 {.cards}
 
 [Highlights](/docs/about/features/) lists each theme capability. Each entry
@@ -84,6 +84,6 @@ links to its guide.
 
 To report a problem or submit a correction, follow the
 [contribution guide](/docs/about/contributing/). The
-[1.6.0 release notes](/blog/release/1.6.0/) cover the plain CSS architecture,
+[1.6.0 release notes](/release/1.6.0/) cover the plain CSS architecture,
 Bootstrap JS and Lunr removal, scanning BM25 search, dependency upgrades, and
 upgrade steps.

@@ -7,6 +7,8 @@ weight: 70
 date: 2026-08-09
 search_keywords: [pig.pgsty.com, PIG, 包管理器, 小型文档]
 tags: [文档, 双语, 产品]
+site_url: https://pig.pgsty.com/
+case_group: ecosystem
 ---
 
 [pig.pgsty.com](https://pig.pgsty.com/) 是 PostgreSQL 扩展包管理器 PIG 的

@@ -1,8 +1,8 @@
 ---
 title: OINK 案例
 linkTitle: 案例
-description: 十五个真实站点展示 OINK 如何覆盖两页小工具、多语言文档群与三本书籍。
-search_keywords: [OINK 案例, 示例站点, 生产站点, Pigsty, Hugo 示例]
+description: 四十五个真实 Oink 生产站点，涵盖第三方开源项目、企业团队、个人博客、书籍与 PGSTY 生态。
+search_keywords: [OINK 案例, 示例站点, 生产站点, 社区案例, Apache HugeGraph, Pigsty, Hugo 示例]
 weight: 40
 type: blog
 icon: fa-solid fa-layer-group
@@ -15,7 +15,7 @@ body_class: td-case
 blog_index: cards
 blog_index_toggle: true
 blog_index_columns: 3
-blog_index_size: 24
+blog_index_size: 60
 featured_image: hero
 toc_taxonomies: false
 footer_style: fat
@@ -40,6 +40,4 @@ cascade:
   sidebar_expand_levels: 3
 ---
 
-十五个站点项目，从两页的小工具到多语言文档体系与三本书。
-点击卡片先阅读案例，再访问其中的站点或源码链接。也可以按[案例导览](/zh/docs/about/showcase/)
-比较与自己目标形态接近的站点。
+四十五个真实上线的 OINK 站点，包括 14 个独立第三方与社区项目（如 Apache HugeGraph、Red Hat AI Services、Stashix 与 CASSA）以及 31 个 PGSTY 与 Vonng 生态站点，覆盖文档、书籍、博客、数据目录、开放标准与 Expo 影像档案。点击卡片阅读案例说明并访问线上站点或源码仓库，也可以按[案例导览](/zh/docs/about/showcase/)比较与自己目标形态接近的站点。

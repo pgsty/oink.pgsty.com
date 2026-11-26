@@ -7,6 +7,8 @@ weight: 130
 date: 2026-08-03
 search_keywords: [pgsql.cc, PostgreSQL operations, aggregate documentation, partial translation]
 tags: [Docs, Multilingual, Aggregation]
+site_url: https://github.com/pgsty/pgsql.cc
+case_group: ecosystem
 ---
 
 [The PostgreSQL ecosystem library](https://github.com/pgsty/pgsql.cc) brings the operating manuals for Patroni, HAProxy,

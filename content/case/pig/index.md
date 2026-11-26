@@ -7,6 +7,8 @@ weight: 70
 date: 2026-08-09
 search_keywords: [pig.pgsty.com, PIG, package manager, compact documentation]
 tags: [Docs, Bilingual, Product]
+site_url: https://pig.pgsty.com/
+case_group: ecosystem
 ---
 
 [pig.pgsty.com](https://pig.pgsty.com/) documents PIG, the PostgreSQL extension

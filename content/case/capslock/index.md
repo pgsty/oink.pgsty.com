@@ -7,6 +7,8 @@ weight: 60
 date: 2026-08-10
 search_keywords: [caps.vonng.com, Capslock, configurator, small site]
 tags: [Tool, Bilingual, Small site]
+site_url: https://caps.vonng.com/
+case_group: ecosystem
 ---
 
 [caps.vonng.com](https://caps.vonng.com/) is a two-page-per-language

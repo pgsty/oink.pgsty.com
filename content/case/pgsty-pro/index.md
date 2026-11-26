@@ -7,6 +7,8 @@ weight: 140
 date: 2026-08-02
 search_keywords: [pgsty.pro, Pigsty v5, release archive, release card]
 tags: [Docs, Bilingual, Releases]
+site_url: https://pgsty.pro/
+case_group: ecosystem
 ---
 
 [pgsty.pro](https://pgsty.pro/) documents Pigsty v5 in English and Chinese. The

@@ -8,6 +8,9 @@ weight: 100
 date: 2026-08-06
 search_keywords: [ddia.vonng.com, DDIA, book, cross references, numbered figures]
 tags: [Book, Multilingual, Publishing]
+site_url: https://ddia.vonng.com/
+case_group: ecosystem
+case_featured: true
 ---
 
 [ddia.vonng.com](https://ddia.vonng.com/) publishes *Designing Data-Intensive

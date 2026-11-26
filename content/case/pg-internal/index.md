@@ -7,6 +7,8 @@ weight: 120
 date: 2026-08-04
 search_keywords: [pgint.vonng.com, PostgreSQL Internals, PG 技术内幕, single language, book]
 tags: [Book, Chinese, Publishing]
+site_url: https://pgint.vonng.com/
+case_group: ecosystem
 ---
 
 [pgint.vonng.com](https://pgint.vonng.com/) publishes *PG 技术内幕*, the 2018

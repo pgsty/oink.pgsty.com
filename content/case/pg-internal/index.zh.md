@@ -7,6 +7,8 @@ weight: 120
 date: 2026-08-04
 search_keywords: [pgint.vonng.com, PG 技术内幕, PostgreSQL Internals, 单语站点, 书籍]
 tags: [书籍, 中文, 出版]
+site_url: https://pgint.vonng.com/
+case_group: ecosystem
 ---
 
 [pgint.vonng.com](https://pgint.vonng.com/) 发布《PG 技术内幕》——Hironobu

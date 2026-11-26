@@ -7,6 +7,8 @@ weight: 10
 date: 2026-08-15
 search_keywords: [pgsty.com, corporate site, landing page, bilingual]
 tags: [Landing, Bilingual, Corporate]
+site_url: https://pgsty.com/
+case_group: ecosystem
 ---
 
 [pgsty.com](https://pgsty.com/) is the bilingual corporate site behind Pigsty.

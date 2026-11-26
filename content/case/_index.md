@@ -1,8 +1,8 @@
 ---
 title: OINK Case
 linkTitle: Case
-description: Fifteen real sites show how OINK scales from a two-page utility to a multilingual documentation estate and three books.
-search_keywords: [OINK cases, showcase, production sites, Pigsty, Hugo examples]
+description: Forty-five real sites across third-party open-source projects, enterprise teams, personal blogs, books, and the PGSTY ecosystem built with Oink.
+search_keywords: [OINK cases, showcase, production sites, community sites, Apache HugeGraph, Pigsty, Hugo examples]
 weight: 40
 type: blog
 icon: fa-solid fa-layer-group
@@ -14,7 +14,7 @@ body_class: td-case
 blog_index: cards
 blog_index_toggle: true
 blog_index_columns: 3
-blog_index_size: 24
+blog_index_size: 60
 featured_image: hero
 toc_taxonomies: false
 footer_style: fat
@@ -39,7 +39,9 @@ cascade:
   sidebar_expand_levels: 3
 ---
 
-Fifteen site projects, from a two-page utility to a multilingual
-documentation estate and three books. Open a card to read the case, then follow
-its site or source link. Use the [Case Guide](/docs/about/showcase/) to compare
+Forty-five live OINK sites—including 14 independent third-party community
+projects (such as Apache HugeGraph, Red Hat AI Services, Stashix, and CASSA) and
+31 PGSTY and Vonng ecosystem sites spanning docs, books, blogs, catalogs,
+standards, and Expo archives. Open a card to read the case, then follow its live
+site or source link. Use the [Case Guide](/docs/about/showcase/) to compare
 examples by the kind of site you want to build.

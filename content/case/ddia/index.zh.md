@@ -8,6 +8,9 @@ weight: 100
 date: 2026-08-06
 search_keywords: [ddia.vonng.com, DDIA, 书籍, 交叉引用, 图表编号]
 tags: [书籍, 多语言, 出版]
+site_url: https://ddia.vonng.com/
+case_group: ecosystem
+case_featured: true
 ---
 
 [ddia.vonng.com](https://ddia.vonng.com/) 以多语言书籍形式发布《设计数据密集型

@@ -7,6 +7,8 @@ weight: 40
 date: 2026-08-12
 search_keywords: [silo.pgsty.com, SILO, 文档迁移, 生成导航, S3]
 tags: [文档, 双语, 迁移]
+site_url: https://silo.pgsty.com/
+case_group: ecosystem
 ---
 
 [silo.pgsty.com](https://silo.pgsty.com/) 是 S3 兼容对象存储 SILO 的文档站。

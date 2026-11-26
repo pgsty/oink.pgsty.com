@@ -7,6 +7,8 @@ weight: 80
 date: 2026-08-08
 search_keywords: [sow.pgsty.com, SOW, APT, YUM, download page]
 tags: [Docs, Bilingual, Downloads]
+site_url: https://sow.pgsty.com/
+case_group: ecosystem
 ---
 
 [sow.pgsty.com](https://sow.pgsty.com/) documents SOW, an APT and YUM repository

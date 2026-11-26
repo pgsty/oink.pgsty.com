@@ -7,6 +7,8 @@ weight: 80
 date: 2026-08-08
 search_keywords: [sow.pgsty.com, SOW, APT, YUM, 下载页]
 tags: [文档, 双语, 下载]
+site_url: https://sow.pgsty.com/
+case_group: ecosystem
 ---
 
 [sow.pgsty.com](https://sow.pgsty.com/) 记录 APT 与 YUM 仓库管理器 SOW。
