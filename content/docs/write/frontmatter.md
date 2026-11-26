@@ -227,7 +227,7 @@ the supported layouts are `list`, `cards`, `table`, and `gallery`.
 | `images` | string array | — | The first entry becomes the post's featured image and share card. Put it in a section `_index.md` cascade for a section-wide default. `images: []` opts the page out of an inherited cascade value. It does not suppress an image the page bundle already supplies under a `featured`, `cover` or `thumbnail` name |
 | `byline` | string | — | Credit shown with the resolved featured image when that image is rendered |
 | `featured_image` | `none` / `banner` / `wash` / `hero` | site value (`none`) | How this article renders its own featured image. `hero` creates a full-width image shell. An invalid value warns and falls back |
-| `blog_index` | `list` / `cards` / `table` / `gallery` | site value (`list`) | Blog section index layout. A standalone `table` with `blog_index_toggle: false` lists the whole section without pagination. An invalid value warns and falls back |
+| `blog_index` | `list` / `cards` / `table` / `gallery` | site value (`list`) | Blog section index layout. `table` always lists the whole section without pagination. An invalid value warns and falls back |
 | `blog_index_columns` | positive integer | site value (`3`) | Card columns at wide breakpoints. Medium and narrow layouts retain their responsive limits |
 | `blog_index_size` | positive integer | site value (`12`) | Posts per page for `list`, `cards`, `gallery`, and all four views when switching is enabled. A standalone `table` ignores it |
 | `blog_index_toggle` | boolean | site value (`false`) | Publishes all four layouts and remembers the reader's choice. When false, publishes only the configured layout and ignores saved layout choices |

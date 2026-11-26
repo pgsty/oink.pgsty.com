@@ -207,7 +207,7 @@ OINK 1.3.0 为默认 `shell_types` 列表添加了 `expo`，
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
 | `params.ui.featured_image` | enum | none | 文章正文里怎么渲染自己的题图：`none` 不渲染，`banner` 在标题上方框出一张 16:9 的图，`wash` 把它铺在文章头部背后、只留十分之一的不透明度，`hero` 把它作为外壳自己的通栏背景铺开并把开头下移——单页与栏目列表页都一样。用的就是这一页在卡片与 `og:image` 里已经在用的那张图，两处不会打架。没有题图的文章在任何模式下都不渲染任何东西 |
-| `params.ui.blog_index` | enum | list | `list` 是水平条目，`cards` 是规则图文卡片，`table` 是紧凑表格，`gallery` 是可点击封面组成的画廊。均按日期倒序排列；仅 `blog_index_toggle: false` 时的独立 `table` 不分页、列出整个栏目 |
+| `params.ui.blog_index` | enum | list | `list` 是水平条目，`cards` 是规则图文卡片，`table` 是紧凑表格，`gallery` 是可点击封面组成的画廊。均按日期倒序排列；`table` 始终不分页并列出整个栏目 |
 | `params.ui.blog_index_columns` | integer | 3 | `blog_index: cards` 时的列数；md 到 xl 之间恒为两列，md 以下一列，不受此值影响 |
 | `params.ui.blog_index_size` | integer | 12 | `list`、`cards`、`gallery` 及启用切换时四种视图共享的每页文章数；独立 `table` 忽略此值 |
 | `params.ui.blog_index_toggle` | boolean | false | 输出四种布局，让读者按 `list` → `cards` → `table` → `gallery` 循环切换并记住选择；设为 false 时只输出配置的布局 |

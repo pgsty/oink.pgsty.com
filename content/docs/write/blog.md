@@ -191,9 +191,10 @@ processing, Hugo applies `.Fill`, so readers download cropped previews.
 
 ### Table and layout switching {#list-switching}
 
-A standalone `blog_index: table` with `blog_index_toggle: false` lists the
-entire section without pagination. Set `blog_index_toggle: true` to add the
-layout switch beside the title. In OINK 1.4.0, it cycles through
+`blog_index: table` always lists the entire section as a compact archive table
+without pagination — both standalone (`blog_index_toggle: false`) and when
+reached through the layout switch. Set `blog_index_toggle: true` to add the
+layout switch beside the title. It cycles through
 `list` → `cards` → `table` → `gallery` → `list`:
 
 ```yaml {title="content/blog/_index.md"}
@@ -202,8 +203,9 @@ blog_index_toggle: true
 ```
 
 All layouts preserve date order and `manual_link` destinations. With switching
-enabled, all four views show the same current page of posts, using
-`blog_index_size`. Only the standalone table shows the entire section.
+enabled, `list`, `cards`, and `gallery` share the current `blog_index_size`
+page and pager, while `table` always renders every post in the section without
+pagination.
 The switch remembers the reader's choice. Set `blog_index_toggle: false` to
 publish only the configured layout, regardless of a saved reader preference.
 Hidden views use lazy images, although their markup and generated thumbnails

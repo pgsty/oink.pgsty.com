@@ -158,7 +158,7 @@ params:
 
 ### 表格与布局切换 {#list-switching}
 
-单独使用 `blog_index: table` 且 `blog_index_toggle: false` 时，表格列出整个栏目，
+无论是否开启布局切换，`blog_index: table` 始终以紧凑表格列出整个栏目的全部文章，
 不分页。设置 `blog_index_toggle: true`，标题旁就会出现布局切换按钮。切换顺序是
 `list` → `cards` → `table` → `gallery` → `list`：
 
@@ -167,8 +167,9 @@ blog_index: cards
 blog_index_toggle: true
 ```
 
-所有布局都保留日期顺序与 `manual_link` 目标。开启切换时，四种布局显示同一页
-文章，都使用 `blog_index_size`；只有独立表格才显示整个栏目。切换器会记住
+所有布局都保留日期顺序与 `manual_link` 目标。开启切换时，`list`、`cards` 与
+`gallery` 共享 `blog_index_size` 分页与页码导航，而 `table` 始终完整列出整个
+栏目而不分页。切换器会记住
 读者的选择。设为 `blog_index_toggle: false` 时，只输出配置的布局，不受读者
 之前保存的选择影响。隐藏视图使用延迟加载，但输出标记与生成缩略图仍需要构建
 时间。v1.4.0 的切换器在四种布局之间循环。

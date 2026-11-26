@@ -1,38 +1,38 @@
 import { expect, test } from '@playwright/test';
 
 const blogPath = '/zh/blog/';
-const blogSections = ['release', 'oink'];
-const blogArticles = {
-  release: [
-    '1.6.0',
-    '1.5.1',
-    '1.5.0',
-    '1.4.0',
-    '1.3.2',
-    '1.3.1',
-    '1.3.0',
-    '1.2.0',
-    '1.1.0',
-    '1.0.0',
-    '0.8.2',
-    '0.8.1',
-    '0.8.0',
-    '0.7.1',
-    '0.7.0',
-    '0.6.0',
-    '0.5.0',
-    '0.4.0',
-    '0.3.0',
-    '0.2.0',
-    '0.1.0',
-  ],
-  oink: [
-    'blog-gallery',
-    'immersive-reading',
-    'oink-announcement',
-    'oink-implementation-diary',
-  ],
-};
+const blogArticles = [
+  'blog-gallery',
+  'sdd',
+  'oink-intro',
+  'immersive-reading',
+  'oink-release',
+  'oink-announcement',
+  'oink-implementation-diary',
+];
+const releaseArticles = [
+  '1.6.0',
+  '1.5.1',
+  '1.5.0',
+  '1.4.0',
+  '1.3.2',
+  '1.3.1',
+  '1.3.0',
+  '1.2.0',
+  '1.1.0',
+  '1.0.0',
+  '0.8.2',
+  '0.8.1',
+  '0.8.0',
+  '0.7.1',
+  '0.7.0',
+  '0.6.0',
+  '0.5.0',
+  '0.4.0',
+  '0.3.0',
+  '0.2.0',
+  '0.1.0',
+];
 
 async function openCleanBlog(page, width, path = blogPath) {
   await page.setViewportSize({ width, height: 900 });
@@ -71,7 +71,7 @@ test('RSS stays in page actions when the right rail is collapsed', async ({
   ).toBeVisible();
 });
 
-test('blog metadata links to the post section without changing resting color', async ({
+test('blog and release metadata links to the section without changing resting color', async ({
   page,
 }) => {
   await openCleanBlog(page, 1024, '/blog/');
@@ -88,12 +88,10 @@ test('blog metadata links to the post section without changing resting color', a
   );
 
   const sectionLink = page
-    .locator(
-      '[data-td-blog-form="list"] .td-blog-meta__section[href="/blog/release/"]',
-    )
+    .locator('[data-td-blog-form="list"] .td-blog-meta__section[href="/blog/"]')
     .first();
-  await expect(sectionLink).toHaveText('Releases');
-  await expect(sectionLink).toHaveAttribute('href', '/blog/release/');
+  await expect(sectionLink).toHaveText('Blog');
+  await expect(sectionLink).toHaveAttribute('href', '/blog/');
 
   const restingColor = await sectionLink.evaluate(
     (element) => getComputedStyle(element.parentElement).color,
@@ -108,10 +106,10 @@ test('blog metadata links to the post section without changing resting color', a
     .not.toBe(restingColor);
 
   await sectionLink.click();
-  await expect(page).toHaveURL(/\/blog\/release\/$/);
+  await expect(page).toHaveURL(/\/blog\/$/);
 });
 
-test('blog sidebar keeps bilingual sections and posts in the configured order', async ({
+test('blog sidebar and release table keep bilingual posts in the configured order', async ({
   page,
 }) => {
   for (const languagePrefix of ['', '/zh']) {
@@ -122,31 +120,28 @@ test('blog sidebar keeps bilingual sections and posts in the configured order', 
     const hrefs = await page
       .locator('#td-section-nav a.td-shell-tree__link')
       .evaluateAll((links) => links.map((link) => link.getAttribute('href')));
-    const sectionHrefs = blogSections.map(
-      (section) => `${languagePrefix}/blog/${section}/`,
-    );
+    const blogPrefix = `${languagePrefix}/blog/`;
+    expect(
+      hrefs.filter((href) => href.startsWith(blogPrefix) && href !== blogPrefix),
+    ).toEqual(blogArticles.map((article) => `${blogPrefix}${article}/`));
 
-    expect(hrefs.filter((href) => sectionHrefs.includes(href))).toEqual(
-      sectionHrefs,
-    );
-
-    for (const section of blogSections) {
-      const sectionPrefix = `${languagePrefix}/blog/${section}/`;
-      expect(
-        hrefs.filter(
-          (href) => href.startsWith(sectionPrefix) && href !== sectionPrefix,
-        ),
-      ).toEqual(
-        blogArticles[section].map((article) => `${sectionPrefix}${article}/`),
-      );
-    }
+    await openCleanBlog(page, 1280, `${languagePrefix}/release/`);
+    const releaseHrefs = await page
+      .locator('[data-td-blog-form="table"] a')
+      .evaluateAll((links) => links.map((link) => link.getAttribute('href')));
+    const releasePrefix = `${languagePrefix}/release/`;
+    expect(
+      releaseHrefs.filter(
+        (href) => href.startsWith(releasePrefix) && href !== releasePrefix,
+      ),
+    ).toEqual(releaseArticles.map((article) => `${releasePrefix}${article}/`));
   }
 });
 
 test('series member targets mirror their leading indent in RTL', async ({
   page,
 }) => {
-  await openCleanBlog(page, 360, '/blog/release/0.6.0/');
+  await openCleanBlog(page, 360, '/release/0.6.0/');
 
   const strip = page.locator('.td-series-strip');
   const summary = strip.locator('.td-series-strip__summary');
@@ -156,10 +151,6 @@ test('series member targets mirror their leading indent in RTL', async ({
   const firstMember = strip.locator('.td-series-strip__link').first();
   await expect(firstMember).toBeVisible();
 
-  // The indent is the ordinal's own grid track, not padding: the row opens a
-  // fixed gap on its leading side, the title fills what is left, and the row
-  // closes on plain padding. Measuring the title against its row therefore
-  // measures the indent itself, in whichever direction the page runs.
   const measure = () =>
     firstMember.evaluate((element) => {
       const rtl = getComputedStyle(element).direction === 'rtl';
@@ -177,8 +168,6 @@ test('series member targets mirror their leading indent in RTL', async ({
       };
     });
 
-  // Every member shares one ordinal track, so the titles keep a single edge
-  // however many digits the ordinals grow to.
   const titleEdges = () =>
     strip.evaluate((element) => {
       const rtl = getComputedStyle(element).direction === 'rtl';
@@ -247,7 +236,7 @@ test('blog cards keep a 16:9 image and a reserved three-line summary', async ({
 });
 
 test('share controls are centered full-size touch targets', async ({ page }) => {
-  await openCleanBlog(page, 1280, '/blog/release/0.6.0/');
+  await openCleanBlog(page, 1280, '/release/0.6.0/');
 
   const share = page.locator('.td-share');
   const controls = share.locator('.td-share__item');
@@ -267,12 +256,9 @@ test('share controls are centered full-size touch targets', async ({ page }) => 
 test('a banner heading takes the full phone measure in both languages', async ({
   page,
 }) => {
-  // The floating actions button parks on the banner artwork, so the heading
-  // below it must not reserve clearance for it: at 390px the Chinese title
-  // once shrank to ~278px and wrapped one orphaned character per line.
   for (const path of [
-    '/zh/blog/oink/oink-implementation-diary/',
-    '/blog/oink/oink-implementation-diary/',
+    '/zh/blog/oink-implementation-diary/',
+    '/blog/oink-implementation-diary/',
   ]) {
     for (const width of [360, 390]) {
       await openCleanBlog(page, width, path);

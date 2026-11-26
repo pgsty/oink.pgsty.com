@@ -516,9 +516,8 @@ Explicit `params.taxonomy.page_header` restores either.
 Blog section indexes use `params.ui.blog_index`.
 `list`, the default, `cards`, and `gallery` show one flat sequence,
 newest first, with shared `blog_index_size` pagination and no year headings.
-`table` shows date/title/tag rows; without a layout switch, it lists the complete
-section without pagination. With switching enabled, it uses the same page as
-the other layouts.
+`table` shows date/title/tag rows and always lists the complete section without
+pagination, both standalone and when toggled.
 Cards use shared lead images, localized date/author/section metadata, tags, and three-line summaries.
 
 Taxonomy pages such as `/tags/` and `/authors/`, and their term pages, share `shell/taxonomy-head.html`.
@@ -543,13 +542,13 @@ Sites with one taxonomy show no switcher. The switcher and clouds share the `toc
 Taxonomy pages scope clouds to the whole site (`taxonomy-root.html` returns no root for this page kind) and omit their own cloud because its terms already appear in the cards.
 Term pages keep section scope and all clouds.
 
-`params.ui.blog_index_toggle` renders all four forms for the current paginator slice and lets readers cycle between them: `list`, `cards`, `table`, then `gallery`.
+`params.ui.blog_index_toggle` renders all four forms — `list`, `cards`, and `gallery` for the current paginator slice, plus `table` as a complete unpaginated archive — and lets readers cycle between them: `list`, `cards`, `table`, then `gallery`.
 The fourth form is included in OINK 1.4.0.
 The configured form controls initial display. Hidden forms load no images.
 Stored reader preferences apply only to indexes that publish all four forms.
 Sections without toggles publish one form and always show it.
 Front matter or cascades override site mode per section.
-Tables published without toggles remain complete, unpaginated archives.
+Tables remain complete, unpaginated archives whether or not the switch is enabled.
 
 ### Blog gallery {#blog-gallery}
 
@@ -722,10 +721,7 @@ focus leaving closes it. Below 768 px and inside the Landing drawer,
 `showModal()` opens a bottom sheet in the browser top layer with a close
 button and 44 px option targets. Closing the sheet preserves the underlying
 drawer. The surface coordinator closes unrelated popovers before opening.
-The `t` and `y` shortcuts toggle light/dark through `switch_theme`. `v` runs
-`switch_preset` with the next offered preset and wraps after the last; it does
-nothing when the site offers no preset choice. `switch_preset` is also the
-command-palette choice.
+The `t` shortcut runs `switch_preset` with the next offered preset in order (Paper, Slate, Ink, Terminal) and wraps after the last; it does nothing when the site offers no preset choice. The `y` shortcut cycles color mode through `light`, `dark`, and `auto` (system) via `switch_theme`. `switch_preset` is also the command-palette choice.
 
 > [!NOTE] Fixed in OINK 1.3.0
 > A queued close event from an earlier appearance dialog must not clear the

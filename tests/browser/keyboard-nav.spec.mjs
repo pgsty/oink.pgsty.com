@@ -233,7 +233,7 @@ test('content articles carry one pinned navbar without a subnav', async ({
   // the taxonomy surfaces below still opt into it.
   const cases = [
     { path: '/docs/customize/config/', autohide: 0 },
-    { path: '/blog/release/0.4.0/', autohide: 0 },
+    { path: '/release/0.4.0/', autohide: 0 },
     { path: '/book/01-start/', autohide: 0 },
   ];
   for (const { path, autohide } of cases) {
@@ -378,43 +378,47 @@ test('h toggles the chrome-free reading mode and survives paging', async ({
   await expect(page.locator('#td-shell-sidebar')).toBeVisible();
 });
 
-test('t and y flip the color theme, v steps the style, and l switches the language', async ({
+test('t steps the visual style, y cycles light/dark/system, and l switches the language', async ({
   page,
 }) => {
   await openDocs(page);
-  const initial = await page.evaluate(() =>
-    document.documentElement.getAttribute('data-bs-theme'),
-  );
-  await page.keyboard.press('t');
-  await expect
-    .poll(() =>
-      page.evaluate(() =>
-        document.documentElement.getAttribute('data-bs-theme'),
-      ),
-    )
-    .toBe(initial === 'dark' ? 'light' : 'dark');
 
-  await page.keyboard.press('y');
-  await expect
-    .poll(() =>
-      page.evaluate(() =>
-        document.documentElement.getAttribute('data-bs-theme'),
-      ),
-    )
-    .toBe(initial === 'dark' ? 'dark' : 'light');
-
-  // The site offers Paper, Slate, Ink and Terminal, in that order.
+  // T cycles Paper, Slate, Ink and Terminal in offered order.
   const offered = ['paper', 'slate', 'ink', 'terminal'];
   const style = () =>
     page.evaluate(() => document.documentElement.getAttribute('data-td-preset'));
   const first = await style();
   for (let step = 1; step <= offered.length; step += 1) {
-    await page.keyboard.press('v');
+    await page.keyboard.press('t');
     await expect
       .poll(style)
       .toBe(offered[(offered.indexOf(first) + step) % offered.length]);
   }
-  await expect(page.locator('.td-shell-keyboard-help kbd', { hasText: /^V$/ })).toHaveCount(1);
+
+  // Y cycles Light, Dark, and System (auto) color modes in order.
+  const modes = ['light', 'dark', 'auto'];
+  const mode = () =>
+    page.evaluate(() => document.documentElement.getAttribute('data-td-color-mode'));
+  const initialMode = await mode();
+  expect(modes).toContain(initialMode);
+  for (let step = 1; step <= modes.length; step += 1) {
+    const expected = modes[(modes.indexOf(initialMode) + step) % modes.length];
+    await page.keyboard.press('y');
+    await expect.poll(mode).toBe(expected);
+    if (expected === 'light' || expected === 'dark') {
+      await expect(page.locator('html')).toHaveAttribute('data-bs-theme', expected);
+    }
+    await expect(
+      page.locator(`input[data-bs-theme-value="${expected}"]`).first(),
+    ).toBeChecked();
+  }
+
+  // V is no longer bound; the bottom-right shortcut help lists T and Y separately.
+  await page.keyboard.press('v');
+  await expect.poll(style).toBe(first);
+  await expect(page.locator('.td-shell-keyboard-help kbd', { hasText: /^T$/ })).toHaveCount(1);
+  await expect(page.locator('.td-shell-keyboard-help kbd', { hasText: /^Y$/ })).toHaveCount(1);
+  await expect(page.locator('.td-shell-keyboard-help kbd', { hasText: /^V$/ })).toHaveCount(0);
 
   await page.keyboard.press('l');
   await page.waitForURL(`**/zh${docsPath}`);

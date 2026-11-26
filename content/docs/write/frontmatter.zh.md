@@ -200,7 +200,7 @@ cascade:
 | `images` | 字符串数组 | — | 第一项作为文章封面与分享卡片；写进栏目 `_index.md` 的 `cascade` 即为栏目级默认。`images: []` 让这一页不继承 cascade 里的值，但不会屏蔽页面 bundle 里已有的 `featured`、`cover` 或 `thumbnail` 图片 |
 | `byline` | 字符串 | — | 解析到的题图实际渲染时显示的图片署名 |
 | `featured_image` | `none` / `banner` / `wash` / `hero` | 站点值（`none`） | 本文正文里怎么渲染自己的题图；`hero` 使用沉浸式通栏外壳。非法值告警并回退 |
-| `blog_index` | `list` / `cards` / `table` / `gallery` | 站点值（`list`） | 博客栏目索引布局；仅 `blog_index_toggle: false` 时的独立 `table` 不分页、列出整个栏目。非法值告警并回退 |
+| `blog_index` | `list` / `cards` / `table` / `gallery` | 站点值（`list`） | 博客栏目索引布局；`table` 始终不分页并列出整个栏目。非法值告警并回退 |
 | `blog_index_columns` | 正整数 | 站点值（`3`） | 宽视口下的卡片列数；中等与窄视口仍保留响应式限制 |
 | `blog_index_size` | 正整数 | 站点值（`12`） | `list`、`cards`、`gallery` 及启用切换时四种视图共享的每页文章数；独立 `table` 忽略此值 |
 | `blog_index_toggle` | 布尔 | 站点值（`false`） | 输出四种布局并记住读者选择；设为 false 时只输出配置的布局，不受已保存布局选择影响 |

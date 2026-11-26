@@ -229,7 +229,7 @@ below.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `params.ui.featured_image` | enum | none | Controls the article's featured image on single pages and section indexes. The mode `none` renders nothing. The mode `banner` shows a 16:9 figure above the title. The mode `wash` shows the image behind the article header at a tenth of its opacity. The mode `hero` uses a full-bleed shell background and moves the opening down. It uses the same image as the page card and `og:image`, so they cannot differ. Without an image, every mode renders nothing |
-| `params.ui.blog_index` | enum | list | `list` shows horizontal entries, `cards` shows regular image cards, `table` shows compact rows, and `gallery` shows linked covers. All sort by date, newest first. Only a standalone `table` with `blog_index_toggle: false` shows the complete section without pagination |
+| `params.ui.blog_index` | enum | list | `list` shows horizontal entries, `cards` shows regular image cards, `table` shows compact rows, and `gallery` shows linked covers. All sort by date, newest first; `table` always lists the complete section without pagination |
 | `params.ui.blog_index_columns` | integer | 3 | Column count for `blog_index: cards`. Regardless of this value, uses two columns between md and xl breakpoints and one below md |
 | `params.ui.blog_index_size` | integer | 12 | Posts per page for `list`, `cards`, `gallery`, and all four views when switching is enabled. A standalone `table` ignores it |
 | `params.ui.blog_index_toggle` | boolean | false | Publishes all four layouts and lets readers cycle through `list` → `cards` → `table` → `gallery`, remembering their choice. When false, publishes only the configured layout |
