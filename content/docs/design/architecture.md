@@ -553,7 +553,11 @@ Links in running text carry a non-color cue in every preset. Paper and Ink use
 an underline at the weight of the surrounding text: Paper's is one pixel at
 half the link color's strength and takes the full color on hover or focus;
 Ink's is solid. Slate and Terminal keep weight 600 without an underline.
-Heading anchors, badges, buttons and footnote references are excluded. Inline
+Running text here means a paragraph, a table cell, a caption, or an item of a
+list that has no class or is a `.steps` or task list. A list with any other
+class is a component: its links, such as card titles, Book contents and file
+tree entries, keep weight 600 and take no underline in any preset. Heading
+anchors, badges, buttons and footnote references are excluded. Inline
 code is weight 600 in Slate and Ink and weight 400 in Paper and Terminal,
 where a chip or a border already marks it; bold code is 600 everywhere. These
 rules stay at element specificity, so the theme's semantic `code` elements and
