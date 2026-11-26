@@ -525,18 +525,44 @@ a clay accent of its own (`#9b4a28`, dark `#de8460`) through the optional
 Paper redeclares every light palette token, including nested dark islands.
 Font roles have equal selector specificity: preset, then `typography: system`,
 then the site's own styles, then head-emitted `params.ui.fonts`.
-`brand` controls the wordmark independently from display headings. Paper uses
-local IBM Plex Sans; Slate keeps Inter; both retain Chakra Petch for the
-wordmark and IBM Plex Mono for code. System typography requests no bundled
-text face unless the site explicitly overrides a role. No external font is
-introduced. Ink uses Inter throughout, with red markers, underlined prose
-links, square geometry and no shadows. Terminal uses mono chrome/headings,
-Plex Sans prose, teal links, amber accents, 2 px corners and no shadows. Its
+`brand` controls the wordmark independently from display headings. Slate keeps
+Inter. Paper uses local IBM Plex Sans for interface and prose and a system
+serif for headings. Both retain Chakra Petch for the wordmark and IBM Plex Mono
+for code. Ink uses Inter for interface and headings and a system serif for
+prose, with red markers, underlined prose links, square geometry and no
+shadows. Terminal uses IBM Plex Mono for chrome, headings and prose, teal
+links, amber accents, 2 px corners and no shadows; its print role stays IBM
+Plex Sans. System typography requests no bundled text face unless the site
+explicitly overrides a role. No external font is introduced. Its
 navigation density changes only on desktop; prose measure and mobile targets
 remain unchanged. CSS heading marks have empty accessible alternatives and
 are omitted in unsupported browsers. Explicit `fonts.ui` still supplies the
 main face unless a valid `fonts.body` overrides it. See the
 [experiment record](/docs/design/research/2026-10-05-ink-terminal-experiment/).
+
+Han text uses fonts the reader already has; the theme ships no CJK file. Each
+preset arranges the Chinese skeletons differently, and Latin and Han share a
+class wherever they share a line: a sans beside Hei, a serif beside Song.
+
+| Preset | Latin and Han in prose | Latin and Han in headings | Emphasis and citation | Quotation |
+| --- | --- | --- | --- | --- |
+| Paper | IBM Plex Sans; Hiragino Sans GB, then the platform Hei | System serif (Charter, Iowan Old Style, Cambria, Georgia); Song | Kai | Kai |
+| Slate | Inter; platform Hei | Inter; platform Hei | Kai | Text face |
+| Ink | System serif; Song, at 17 px because Song is lighter | Inter; platform Hei | Kai | Kai |
+| Terminal | IBM Plex Mono; platform Hei | IBM Plex Mono; platform Hei | Text face, upright, accent color | Text face |
+
+Three roles serve this: `--td-emphasis-font-family` for `em`, `cite`, `dfn` and
+an `i` without a class, `--td-heading-emphasis-font-family` inside headings, and
+`--td-quote-font-family` for `blockquote`. A `[!QUOTE]` callout body uses the
+emphasis role. These roles are not `params.ui.fonts` keys; a site sets them in
+its own CSS. Kai comes from `OINK Kai`, a `local()`-only face (Kaiti SC,
+STKaiti, KaiTi) limited to CJK code points with `size-adjust: 114%`, declared
+both normal and italic so Han is never slanted while Latin in the same phrase
+keeps its true italic. Where no Kai is installed, as on Android, the face never
+loads and the stack behind it answers. Paper's heading stack names Microsoft
+YaHei before `serif`, so a Windows system without a usable Song shows a bold
+Hei; Ink's prose stack ends in STSong and SimSun. These stacks have been
+reviewed on macOS only.
 
 Prose craft is shared by all four presets. A bare `<kbd>` draws the keycap of
 the `kbd` shortcode, and list markers use the tertiary ink. Headings in a

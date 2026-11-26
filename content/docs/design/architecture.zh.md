@@ -473,14 +473,36 @@ JavaScript 时显示站点默认的浅色预设；外观控件需要 JavaScript�
 `--td-preset-accent` 属性设置自己的陶土强调色（`#9b4a28`，深色 `#de8460`）。
 已发布的 `theme_color` 在任何预设下都会替换该强调色。Paper 深色块重声明浅色块的
 每个色板 token，并覆盖嵌套深色区域。字体角色保持同等选择器优先级，顺序为预设、
-`typography: system`、站点自有样式、head 输出的 `params.ui.fonts`。`brand` 单独控制字标。Paper 使用本地 IBM Plex Sans，
-Slate 保留 Inter；两者的字标保留 Chakra Petch，代码保留 IBM Plex Mono。
-系统排版模式不请求内置文字字体，除非站点显式覆盖角色。没有新增外部字体请求。
-Ink 统一使用 Inter，配合红色标记、正文链接下划线、直角与无阴影。Terminal 使用
-等宽界面和标题、Plex Sans 正文、青色链接、琥珀强调、2 px 圆角与无阴影；仅压紧
+`typography: system`、站点自有样式、head 输出的 `params.ui.fonts`。`brand` 单独控制字标。Slate 保留 Inter。
+Paper 的界面与正文使用本地 IBM Plex Sans，标题使用系统衬线字体。两者的字标保留
+Chakra Petch，代码保留 IBM Plex Mono。Ink 的界面与标题使用 Inter，正文使用系统
+衬线字体，配合红色标记、正文链接下划线、直角与无阴影。Terminal 的界面、标题与
+正文都使用 IBM Plex Mono，配合青色链接、琥珀强调、2 px 圆角与无阴影，打印角色
+仍为 IBM Plex Sans。系统排版模式不请求内置文字字体，除非站点显式覆盖角色。
+没有新增外部字体请求。Terminal 仅压紧
 桌面导航，保留正文行长与手机触控目标。CSS 标题标记使用空的无障碍替代文字，
 不支持的浏览器省略标记。显式 `fonts.ui` 仍控制主字体，除非设置了有效的
 `fonts.body`。参见[实验记录](/zh/docs/design/research/2026-10-05-ink-terminal-experiment/)。
+
+汉字使用读者系统已有的字体，主题不分发任何中日韩字体文件。每套预设以不同方式
+编排中文骨架；西文与汉字同处一行时类别一致：无衬线配黑体，衬线配宋体。
+
+| 预设 | 正文的西文与汉字 | 标题的西文与汉字 | 强调与引称 | 引用 |
+| --- | --- | --- | --- | --- |
+| Paper | IBM Plex Sans；冬青黑体，其次平台黑体 | 系统衬线（Charter、Iowan Old Style、Cambria、Georgia）；宋体 | 楷体 | 楷体 |
+| Slate | Inter；平台黑体 | Inter；平台黑体 | 楷体 | 正文字体 |
+| Ink | 系统衬线；宋体，字号 17 px，因为宋体更轻 | Inter；平台黑体 | 楷体 | 楷体 |
+| Terminal | IBM Plex Mono；平台黑体 | IBM Plex Mono；平台黑体 | 正文字体，直立，强调色 | 正文字体 |
+
+为此新增三个角色：`--td-emphasis-font-family` 用于 `em`、`cite`、`dfn` 与无类名的
+`i`，`--td-heading-emphasis-font-family` 用于标题内的强调，`--td-quote-font-family`
+用于 `blockquote`。`[!QUOTE]` 提示块正文使用强调角色。这些角色不是
+`params.ui.fonts` 的键，站点在自己的 CSS 中设置。楷体来自 `OINK Kai`：只用
+`local()` 引用（Kaiti SC、STKaiti、KaiTi），仅覆盖中日韩码位，`size-adjust: 114%`，
+同时声明为正体与斜体，因此汉字从不被推歪，同一短语中的西文仍保留真斜体。未安装
+楷体时（如 Android），该字体不会加载，由其后的字体栈接替。Paper 的标题字体栈在
+`serif` 之前列出 Microsoft YaHei，没有可用宋体的 Windows 显示粗黑体；Ink 的正文
+字体栈以 STSong 与 SimSun 结尾。这些字体栈只在 macOS 上审阅过。
 
 四套预设共用同一组正文细节。Markdown 中的裸 `<kbd>` 采用 `kbd` 短代码的键帽
 样式，列表符号使用三级墨色。中文、日文、韩文段落（`:lang(zh)`、`:lang(ja)`、

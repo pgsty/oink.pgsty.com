@@ -306,11 +306,13 @@ for (const preset of ['ink', 'terminal']) for (const mode of ['light', 'dark']) 
       expect(scan.violations, `${preset} ${mode} ${path}`).toEqual([]);
       if (path === docs) {
         const article = page.locator('.td-content').first();
-        await expect(article).toHaveCSS('font-family', preset === 'ink' ? /Inter/ : /IBM Plex Sans/);
+        // Ink sets prose in a system serif with Song beside it; Terminal sets
+        // it in mono with the platform Hei for Han.
+        await expect(article).toHaveCSS('font-family', preset === 'ink' ? /^Charter,.*"Songti SC"/ : /^"IBM Plex Mono",.*"PingFang SC"/);
         await expect(page.locator('h1').first()).toHaveCSS('font-family', preset === 'ink' ? /Inter/ : /IBM Plex Mono/);
         await expect(page.locator('.td-nav-search-box:visible')).toHaveCSS('border-radius', preset === 'ink' ? '0px' : '2px');
         if (preset === 'ink') await expect(article.locator('p a').first()).toHaveCSS('text-decoration-line', 'underline');
-        else await expect(article.locator('table').first()).toHaveCSS('font-family', /IBM Plex Sans/);
+        else await expect(article.locator('table').first()).toHaveCSS('font-family', /^"IBM Plex Mono"/);
       }
     }
     await page.goto(docs);
@@ -327,6 +329,8 @@ for (const preset of ['ink', 'terminal']) for (const mode of ['light', 'dark']) 
     await page.emulateMedia({ media: 'print' });
     await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
     await expect(page.locator('.td-content')).toHaveCSS('color', preset === 'ink' ? 'rgb(20, 20, 20)' : 'rgb(29, 33, 31)');
+    // Paper output keeps a reading face: Terminal prints in Plex Sans.
+    if (preset === 'terminal') await expect(page.locator('.td-content')).toHaveCSS('font-family', /^"IBM Plex Sans"/);
   });
 }
 

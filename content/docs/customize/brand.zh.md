@@ -47,7 +47,7 @@ params:
 ```
 
 Ink 使用黑白表面、红色标记、直角面板和带下划线的正文链接。Terminal 使用等宽
-控件与标题、青色链接、琥珀强调和紧凑的桌面导航，长文正文仍为无衬线字体。两者
+控件与标题、青色链接、琥珀强调和紧凑的桌面导航，正文同样使用等宽字体。两者
 均支持明暗切换并复用现有字体。菜单使用两列排列的四个简洁按钮，各带主题色图标，
 不加实验标记。`preset_menu: true` 提供 Paper、
 Slate 和站点默认值，不会自动开启所有实验。设置 `preset: ink` 或 `preset: terminal`
@@ -240,8 +240,9 @@ params:
     typography: technical # technical | system
 ```
 
-- `technical`（默认）：Paper 的界面、正文与展示标题使用 IBM Plex Sans；Slate 的界面与正文使用 Inter，展示标题使用 Chakra Petch。两者的字标使用 Chakra Petch，代码使用 IBM Plex Mono。中文与 emoji 落到平台字体。Plex Sans 与 Inter 包含本地拉丁、西里尔、希腊与越南语子集，不请求 Google Fonts。
-- 实验字体：Ink 的界面、正文与标题使用 Inter；Terminal 的控件与标题使用 IBM Plex Mono，正文使用 Plex Sans。两者复用现有代码字体。显式 `fonts.ui` 仍控制主字体；需要独立正文字体时设置 `fonts.body`。
+- `technical`（默认）：Paper 的界面、正文与展示标题使用 IBM Plex Sans，标题使用系统衬线字体；Slate 的界面与正文使用 Inter，展示标题使用 Chakra Petch。两者的字标使用 Chakra Petch，代码使用 IBM Plex Mono。Plex Sans 与 Inter 包含本地拉丁、西里尔、希腊与越南语子集，不请求 Google Fonts。
+- 实验字体：Ink 的界面与标题使用 Inter，正文使用系统衬线字体；Terminal 的控件、标题与正文都使用 IBM Plex Mono，打印时使用 Plex Sans。显式 `fonts.ui` 仍控制主字体；需要独立正文字体时设置 `fonts.body`。
+- 中文使用读者系统已有的字体，按风格编排：Paper 为宋体标题配黑体正文，Ink 为黑体标题配宋体正文，Slate 与 Terminal 通篇黑体。强调与引用在装有楷体时使用楷体，汉字不会被推歪；Terminal 改用强调色。主题不分发中文字体文件。
 - `system`：界面、展示、元数据、打印与等宽角色全部回到平台字体栈，浏览器不请求品牌字体。字体文件仍随主题分发，只是不被引用。
 
 非法取值告警并回落到 `technical`。选中的值写入 `<html data-td-typography="…">`，可在浏览器中确认。

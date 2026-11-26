@@ -85,6 +85,15 @@ one paragraph read as emphasis the author never wrote; Slate and Terminal keep
 the semibold cue. Paper and Terminal inline code dropped to weight 400 so it
 stops competing with authored bold. The `v` key now steps through the offered
 presets and `y` toggles light and dark; `y` no longer switches language.
+On 2026-11-27 the maintainer accepted a Chinese typography for each preset.
+The four Latin voices were distinct, but Han fell to the same platform Hei in
+all of them. Each preset now arranges Song, Hei and Kai differently from fonts
+the reader already has: Paper sets Song headings over Hei text, Ink Hei
+headings over Song text, Slate stays Hei, Terminal sets mono prose. Kai carries
+emphasis and quotation. The cost is a Latin change too, because a serif must
+stand beside Song: Paper headings and Ink prose move to a system serif and
+Terminal prose to mono. Bundling a CJK web font was rejected for its size.
+Windows and Android rendering is unverified.
 Typeset copy reuses the print palette instead of adding a third palette. The
 [architecture contract](/docs/design/architecture/#typeset-copy) owns its
 behavior. These changes follow OINK 1.6.0 and are unreleased.

@@ -52,7 +52,7 @@ params:
 
 Ink uses black/white surfaces, red markers, square panels and underlined prose
 links. Terminal uses mono controls/headings, teal links, amber accents and
-compact desktop navigation; its long-form prose stays sans-serif. Both support
+compact desktop navigation; its prose is monospaced too. Both support
 light/dark mode and reuse existing fonts. The menu shows four compact style
 buttons in a two-column grid, each with a colored icon and no experiment badge.
 `preset_menu: true` offers Paper, Slate and the site default; it does not opt
@@ -295,8 +295,9 @@ params:
     typography: technical # technical | system
 ```
 
-- `technical` (the default): Paper uses IBM Plex Sans for interface, body and display text; Slate uses Inter for interface/body and Chakra Petch for display. Both use Chakra Petch for the wordmark and IBM Plex Mono for code. Chinese and emoji use platform fallbacks. Plex Sans and Inter include local Latin, Cyrillic, Greek and Vietnamese subsets. No Google Fonts request is made.
-- Experimental fonts: Ink uses Inter for UI, prose and headings; Terminal uses IBM Plex Mono for controls/headings and Plex Sans for prose. Both reuse existing code fonts. Explicit `fonts.ui` still supplies the main face; use `fonts.body` for a separate prose face.
+- `technical` (the default): Paper uses IBM Plex Sans for interface, body and display text and a system serif for headings; Slate uses Inter for interface/body and Chakra Petch for display. Both use Chakra Petch for the wordmark and IBM Plex Mono for code. Plex Sans and Inter include local Latin, Cyrillic, Greek and Vietnamese subsets. No Google Fonts request is made.
+- Experimental fonts: Ink uses Inter for UI and headings and a system serif for prose; Terminal uses IBM Plex Mono for controls, headings and prose, and Plex Sans in print. Explicit `fonts.ui` still supplies the main face; use `fonts.body` for a separate prose face.
+- Chinese uses fonts already on the reader's system, arranged per style: Paper sets Song headings over Hei text, Ink Hei headings over Song text, Slate and Terminal use Hei throughout. Emphasis and quotations use Kai where it is installed, so Han is never slanted; Terminal colors emphasis instead. The theme ships no Chinese font file.
 - `system`: interface, display, metadata, print, and monospace roles use the platform stack. The browser requests no brand font. Font files remain bundled with the theme, but the output does not reference them.
 
 If the value is invalid, the theme warns and falls back to `technical`. Normal
