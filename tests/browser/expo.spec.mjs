@@ -157,7 +157,7 @@ test('Expo keeps appearance in navigation, omits article actions, and prints rea
  await expect(page.locator('[data-td-expo-controls]')).toBeHidden();
  await expect(page.locator('.td-expo-caption').first()).toHaveCSS('position','static');
  await expect(page.locator('.td-expo-caption').first()).toHaveCSS('background-image','none');
- await expect(page.locator('.td-expo-caption small').first()).toHaveCSS('color','rgb(33, 32, 28)');
+ await expect(page.locator('.td-expo-caption small').first()).toHaveCSS('color','rgb(31, 30, 28)');
 });
 
 test('Expo remembers mode and size across albums, language routes and reloads',async({page})=>{

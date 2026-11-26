@@ -81,13 +81,16 @@ While the shell is hidden, WASD cannot focus the invisible sidebar.
 
 | Key | Behaviour |
 | --- | --- |
-| {{< kbd "L" >}} {{< kbd "Y" >}} | Cycle the language (the two keys are equivalent) |
-| {{< kbd "T" >}} | Toggle light and dark |
+| {{< kbd "L" >}} | Cycle the language |
+| {{< kbd "T" >}} {{< kbd "Y" >}} | Toggle light and dark (the two keys are equivalent) |
+| {{< kbd "V" >}} | Step to the next visual style the site offers |
 | {{< kbd "R" >}} | Cycle among same-origin top-level navbar entries |
 
-These three shortcuts work on every interactive page, including pages outside
+These shortcuts work on every interactive page, including pages outside
 the documentation shell. {{< kbd "L" >}} does nothing on a single-language site.
-{{< kbd "T" >}} does nothing if the light/dark menu is off. {{< kbd "R" >}}
+{{< kbd "T" >}} and {{< kbd "Y" >}} do nothing if the light/dark menu is off.
+{{< kbd "V" >}} does nothing unless the site offers a style choice
+(`preset_menu`); it wraps from the last style to the first. {{< kbd "R" >}}
 does nothing if there is only one top-level entry. {{< kbd "R" >}} cycles only
 same-origin top-level menu items. It excludes external links and navbar utility
 controls.

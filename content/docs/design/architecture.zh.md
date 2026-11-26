@@ -468,7 +468,10 @@ Hugo 为所有文档根元素输出 `data-td-preset` 与 `data-td-site-preset`�
 JavaScript 时显示站点默认的浅色预设；外观控件需要 JavaScript。
 
 四套预设编入同一个样式表。Slate 保留 v1.1.0 的基础色板选择器与值。Paper 调整
-配色和少量组件规则，不改变外壳列宽、断点或全局间距。Paper 深色块重声明浅色块的
+配色和少量组件规则，不改变外壳列宽、断点或全局间距。Paper 的画布为象牙色
+`#faf9f5`，墨色为 `#1f1e1c`；链接保持蓝色，并与 Ink、Terminal 一样通过可选的
+`--td-preset-accent` 属性设置自己的陶土强调色（`#9b4a28`，深色 `#de8460`）。
+已发布的 `theme_color` 在任何预设下都会替换该强调色。Paper 深色块重声明浅色块的
 每个色板 token，并覆盖嵌套深色区域。字体角色保持同等选择器优先级，顺序为预设、
 `typography: system`、站点自有样式、head 输出的 `params.ui.fonts`。`brand` 单独控制字标。Paper 使用本地 IBM Plex Sans，
 Slate 保留 Inter；两者的字标保留 Chakra Petch，代码保留 IBM Plex Mono。
@@ -479,6 +482,23 @@ Ink 统一使用 Inter，配合红色标记、正文链接下划线、直角与�
 不支持的浏览器省略标记。显式 `fonts.ui` 仍控制主字体，除非设置了有效的
 `fonts.body`。参见[实验记录](/zh/docs/design/research/2026-10-05-ink-terminal-experiment/)。
 
+四套预设共用同一组正文细节。Markdown 中的裸 `<kbd>` 采用 `kbd` 短代码的键帽
+样式，列表符号使用三级墨色。中文、日文、韩文段落（`:lang(zh)`、`:lang(ja)`、
+`:lang(ko)`）中的标题字距为零；各预设的负字距只作用于其他语言。`.td-content`
+设置 `text-autospace: normal`，代码、`kbd` 与 `samp` 不参与；段落、列表项与引用
+使用 `text-wrap: pretty`。不支持这些属性的浏览器保持原有渲染。Ink 标题使用
+700 字重，二级标题上方为 1 像素横线。Ink 与 Terminal 的引用块在屏幕、打印与
+排版复制中都使用预设强调色竖线。Terminal 生成的标题标记使用 400 字重与
+`0.12em` 字距。
+
+正文中的链接在每套预设下都带有不依赖颜色的线索。Paper 与 Ink 使用下划线，字重与
+周围文字相同：Paper 的下划线为 1 像素、链接色的一半浓度，悬停或聚焦时变为完整颜色；
+Ink 的为实线。Slate 与 Terminal 保持 600 字重、不加下划线。标题锚点、徽章、按钮与
+脚注引用除外。行内代码在 Slate 与 Ink 中为 600 字重，在 Paper 与 Terminal 中为 400
+字重，因为底板或边框已经标明了代码；加粗的代码在所有预设中均为 600。这些规则保持
+元素级优先级，主题的语义 `code` 元素与站点自有样式仍可覆盖。表格单元格使用等宽数字。
+表格视口的顶部圆角为 8 px，除非预设为其加了外框或改为直角。深色模式使用灰度字体平滑。
+
 > [!NOTE] OINK 1.4.0 的 Paper 章节标题
 > Paper 在浅色与深色模式下均不再绘制正文 `h2` 标题右侧的装饰横线。
 > 标题的字体、间距、锚点与正常换行保持原样，仍支持站点自定义的标题边框。
@@ -487,6 +507,48 @@ Giscus 自动色板同时跟随风格与明暗；显式主题或浅深色样式�
 当前预设的浅色配色与白纸背景，即使屏幕为深色。Mermaid 与 ECharts 继续只跟随
 明暗，API 组件保留供应商色板。参见[已接受决策](/zh/docs/design/decisions/visual-presets/)
 与[本地验收记录](/zh/docs/design/research/2026-10-05-visual-presets-acceptance/)。
+
+## 排版复制 {#typeset-copy}
+
+`params.ui.rich_copy` 是布尔值，默认 `true`；front matter 与分区 cascade 可以覆盖。
+其他取值告警并保持默认值。开启时，可交互的 HTML 输出加载
+`js/chunks/rich-copy.js`；打印、Markdown、RSS 与 LLMS 输出不加载。
+
+运行时处理触及正文（`.td-content`）的单区间选区的 `copy` 事件。它写入
+`text/html`，`text/plain` 保持浏览器自身的 `Selection.toString()`。以下情况它不做
+任何事，由浏览器原生复制：事件已被其他处理器阻止、选区位于表单字段或可编辑区域、
+选区完全落在界面元素内，或任一步骤抛出异常。
+
+HTML 由选中的节点重建，不使用浏览器带样式的序列化结果：
+
+- 输出只包含 `h1`–`h6`、`p`、`a`、`strong`、`em`、`del`、`u`、`mark`、`sub`、
+  `sup`、`kbd`、`code`、`pre`、`blockquote`、`ul`、`ol`、`li`、`table`、`tbody`、
+  `tr`、`th`、`td`、`caption`、`figure`、`figcaption`、`img`、`hr`、`br` 与 `span`。
+  属性只有 `style`、`href`、`src`、`alt`、`start`、`colspan`、`rowspan`，以及代码块上的
+  `class="language-…"`。
+- 链接保留 `http`、`https`、`mailto`、`tel` 的绝对地址，其他协议变为纯文本。
+  图片保留 `http`、`https` 或 `data:image/` 的绝对地址。
+- 丢弃：页尾区块、文章元数据、署名、系列条、页面操作、面包屑、标题锚点、脚注
+  返回链接、代码块工具、标签页列表、按钮、表单、导航、内嵌 frame、媒体、
+  canvas、SVG，以及隐藏、`aria-hidden`、视觉隐藏、未渲染或不可选中的内容。
+  折叠的 disclosure 只复制摘要。
+- 颜色取自 `--td-print-*` 属性：无论屏幕明暗，都是预设的浅色色板配白底。只使用
+  能解析为十六进制、`rgb()`、`rgba()` 或 `color(srgb …)` 的值，其余回退到内置色板。
+  尺寸使用像素。不输出画布颜色、自定义属性、`rem` 值或网页字体名。
+- 代码块保留文本、文件名与语法着色，不含行号。浅色代码表面使用打印代码底色；
+  深色代码表面保留自己的背景与墨色。提示块变为引用，标题加粗，语义色作为竖线。
+  KaTeX 复制为 `$` 或 `$$` 包裹的 TeX 源码。
+- 行内空白按 CSS 规则折叠，但两个汉字、假名或全角字符之间的源码换行不产生空格。
+- 选区位于一行正文、一个列表项、一个单元格或一行代码之内时，复制为不带 `style`
+  的裸标记，由粘贴目标决定格式。选区超出文章范围时只复制文章。
+
+`--td-copy-heading-rule`（`under`、`over` 或 `none`）与 `--td-copy-heading-font`
+让预设决定剪贴板中二级标题横线的位置和标题字体。Ink 使用 `over`；Terminal 使用
+`none` 与平台等宽字体栈。
+
+`tests/js/rich-copy.test.js` 负责序列化器，`bin/check-params.py` 负责配置项，
+文档站的 `rich-copy.spec.mjs` 在四套预设下测试真实页面。在微信、Word 等编辑器中的
+粘贴结果取决于各编辑器自己的过滤规则，不在自动化测试范围内。
 
 ## 译文阅读运行时 {#translation-reader-runtime}
 

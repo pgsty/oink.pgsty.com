@@ -158,6 +158,36 @@ whole-section printing:
 Custom print styling goes in a `@media print` block in
 `assets/css/project.css` and needs no template change.
 
+## Copying into rich-text editors {#typeset-copy}
+
+A reader who copies part of an article and pastes it into a rich-text editor
+(WeChat, Word, mail) gets typeset text in the same light palette print uses.
+The page background, dark-mode colors, heading anchors, copy buttons and line
+numbers do not come along. Selecting the whole page (<kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd>)
+copies only the article: title, description and body.
+
+- Headings, lists, quotes, callouts, tables and code blocks keep their
+  structure and take sizes in pixels, so editors that drop stylesheets still
+  show them.
+- Code blocks keep syntax colors. Copied in dark mode, a code block stays a
+  dark card while the prose around it is dark ink on white.
+- A few words selected inside one paragraph copy without formatting and take
+  the style of the document they are pasted into.
+- Plain-text pastes are unchanged.
+
+To restyle the result, override the print palette, for example
+`--td-print-ink` or `--td-print-quote-line`, in `assets/css/project.css`. Turn
+the behavior off for a site or a page with `rich_copy: false`:
+
+```yaml {title="hugo.yml"}
+params:
+  ui:
+    rich_copy: false
+```
+
+Editors filter pasted HTML differently. Check an important article in the
+editor you publish to before relying on the result.
+
 ## Replacing the print templates {#customize-templates}
 
 To add a running header or change numbering, override the partial with the

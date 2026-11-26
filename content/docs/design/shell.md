@@ -359,7 +359,7 @@ Escape dismisses the list even when a touch browser leaves focus on the page bod
 The list wraps long labels and scrolls above the bottom bar. In the phone drawer it expands in the flow so the drawer can scroll to its last link.
 A press outside a floating list closes it at once, because iOS sends no click for a tap on plain content. The drawer's list closes on the click, so the row under the finger stays in place.
 `/`, `\`, `f`, and `c` open search or commands. `j`/`k` move between headings. `q`/`e` move between pages.
-`h` changes presentation. `l`/`y`, `t`, and `r` open language, theme, and root choices.
+`h` changes presentation. `l` cycles the language, `t`/`y` toggle light and dark, `v` steps to the next offered visual preset, and `r` cycles root choices.
 Sidebar WASD/Arrow navigation uses real focus without changing Tab order.
 Non-link divider buttons participate in tree navigation.
 From a child, Left/`a` focuses its parent group. A second press collapses it.
@@ -722,8 +722,10 @@ focus leaving closes it. Below 768 px and inside the Landing drawer,
 `showModal()` opens a bottom sheet in the browser top layer with a close
 button and 44 px option targets. Closing the sheet preserves the underlying
 drawer. The surface coordinator closes unrelated popovers before opening.
-The `t` shortcut still toggles light/dark through `switch_theme`;
-`switch_preset` is the separate command-palette choice.
+The `t` and `y` shortcuts toggle light/dark through `switch_theme`. `v` runs
+`switch_preset` with the next offered preset and wraps after the last; it does
+nothing when the site offers no preset choice. `switch_preset` is also the
+command-palette choice.
 
 > [!NOTE] Fixed in OINK 1.3.0
 > A queued close event from an earlier appearance dialog must not clear the

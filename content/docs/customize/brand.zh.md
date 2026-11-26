@@ -21,8 +21,8 @@ aliases:
 
 ## 视觉预设 {#visual-presets}
 
-OINK 1.2.0 默认使用 Paper：暖纸色背景、墨色正文、蓝色链接、Plex Sans
-与外框表格。Slate 保留 OINK 原有的冷灰蓝外观。开启读者选择：
+OINK 1.2.0 默认使用 Paper：象牙纸色背景、墨色正文、带下划线的蓝色链接、陶土强调色、
+Plex Sans 与外框表格。Slate 保留 OINK 原有的冷灰蓝外观。开启读者选择：
 
 ```yaml
 params:

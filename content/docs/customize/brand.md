@@ -23,8 +23,8 @@ theme directory**. An upgrade replaces them.
 
 ## Visual presets {#visual-presets}
 
-OINK 1.2.0 defaults to Paper: warm paper backgrounds,
-ink text, blue links, Plex Sans and framed tables. Slate
+OINK 1.2.0 defaults to Paper: ivory paper backgrounds,
+ink text, underlined blue links, a clay accent, Plex Sans and framed tables. Slate
 keeps OINK's existing cool blue-gray identity. Enable reader choice with:
 
 ```yaml

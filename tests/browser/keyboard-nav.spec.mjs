@@ -378,7 +378,7 @@ test('h toggles the chrome-free reading mode and survives paging', async ({
   await expect(page.locator('#td-shell-sidebar')).toBeVisible();
 });
 
-test('t flips the color theme and l/y switch the language', async ({
+test('t and y flip the color theme, v steps the style, and l switches the language', async ({
   page,
 }) => {
   await openDocs(page);
@@ -394,9 +394,31 @@ test('t flips the color theme and l/y switch the language', async ({
     )
     .toBe(initial === 'dark' ? 'light' : 'dark');
 
+  await page.keyboard.press('y');
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        document.documentElement.getAttribute('data-bs-theme'),
+      ),
+    )
+    .toBe(initial === 'dark' ? 'dark' : 'light');
+
+  // The site offers Paper, Slate, Ink and Terminal, in that order.
+  const offered = ['paper', 'slate', 'ink', 'terminal'];
+  const style = () =>
+    page.evaluate(() => document.documentElement.getAttribute('data-td-preset'));
+  const first = await style();
+  for (let step = 1; step <= offered.length; step += 1) {
+    await page.keyboard.press('v');
+    await expect
+      .poll(style)
+      .toBe(offered[(offered.indexOf(first) + step) % offered.length]);
+  }
+  await expect(page.locator('.td-shell-keyboard-help kbd', { hasText: /^V$/ })).toHaveCount(1);
+
   await page.keyboard.press('l');
   await page.waitForURL(`**/zh${docsPath}`);
-  await page.keyboard.press('y');
+  await page.keyboard.press('l');
   await page.waitForURL(`**${docsPath}`);
 });
 

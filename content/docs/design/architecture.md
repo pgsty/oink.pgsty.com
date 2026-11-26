@@ -517,7 +517,11 @@ renders; appearance controls require JavaScript.
 
 All four presets are part of the one stylesheet. Slate retains the v1.1.0 base
 palette selectors and values. Paper changes palette and selected component
-rules without changing shell columns, breakpoints, or global spacing. Dark
+rules without changing shell columns, breakpoints, or global spacing. Paper's
+canvas is ivory `#faf9f5` with ink `#1f1e1c`; its links stay blue, and it sets
+a clay accent of its own (`#9b4a28`, dark `#de8460`) through the optional
+`--td-preset-accent` properties, as Ink and Terminal do. A published
+`theme_color` replaces that accent in every preset. Dark
 Paper redeclares every light palette token, including nested dark islands.
 Font roles have equal selector specificity: preset, then `typography: system`,
 then the site's own styles, then head-emitted `params.ui.fonts`.
@@ -534,6 +538,29 @@ are omitted in unsupported browsers. Explicit `fonts.ui` still supplies the
 main face unless a valid `fonts.body` overrides it. See the
 [experiment record](/docs/design/research/2026-10-05-ink-terminal-experiment/).
 
+Prose craft is shared by all four presets. A bare `<kbd>` draws the keycap of
+the `kbd` shortcode, and list markers use the tertiary ink. Headings in a
+Chinese, Japanese or Korean passage (`:lang(zh)`, `:lang(ja)`, `:lang(ko)`)
+have zero tracking; each preset's negative tracking applies to other languages.
+`.td-content` sets `text-autospace: normal`, and code, `kbd` and `samp` opt
+out; paragraphs, list items and quotes use `text-wrap: pretty`. Browsers
+without these properties render as before. Ink headings use weight 700 and a
+one-pixel rule above second-level headings. Ink and Terminal quotes use the
+preset accent rule on screen, in print and in a typeset copy. Terminal's
+generated heading marks have weight 400 and `0.12em` tracking.
+
+Links in running text carry a non-color cue in every preset. Paper and Ink use
+an underline at the weight of the surrounding text: Paper's is one pixel at
+half the link color's strength and takes the full color on hover or focus;
+Ink's is solid. Slate and Terminal keep weight 600 without an underline.
+Heading anchors, badges, buttons and footnote references are excluded. Inline
+code is weight 600 in Slate and Ink and weight 400 in Paper and Terminal,
+where a chip or a border already marks it; bold code is 600 everywhere. These
+rules stay at element specificity, so the theme's semantic `code` elements and
+a site's own styles still override them. Table cells use tabular numerals. The
+table viewport rounds its top corners by 8 px unless a preset frames or squares
+it. Dark mode sets grayscale font smoothing.
+
 > [!NOTE] Paper section headings in OINK 1.4.0
 > Paper no longer draws a decorative line to the right of content `h2` headings,
 > in either light or dark mode. Heading typography, spacing, anchors, and normal
@@ -545,6 +572,62 @@ preset palette on white paper even when the screen is dark. Mermaid and
 ECharts continue to follow mode only; API widgets retain vendor palettes.
 See the [accepted decision](/docs/design/decisions/visual-presets/) and
 [local acceptance record](/docs/design/research/2026-10-05-visual-presets-acceptance/).
+
+## Typeset copy {#typeset-copy}
+
+`params.ui.rich_copy` is a boolean, default `true`; front matter and section
+cascades override it. Other values warn and keep the default. When it is on,
+interactive HTML output loads `js/chunks/rich-copy.js`; print, Markdown, RSS
+and LLMS output never do.
+
+The runtime handles the `copy` event for a single-range selection that touches
+article prose (`.td-content`). It writes `text/html` and leaves `text/plain` as
+the browser's own `Selection.toString()`. It does nothing, so the native copy
+proceeds, when another handler already prevented the event, when the selection
+is in a form field or editable region, when it lies wholly inside interface, or
+when any step throws.
+
+The HTML is rebuilt from the selected nodes, never from the browser's styled
+serialization:
+
+- Output uses only `h1`–`h6`, `p`, `a`, `strong`, `em`, `del`, `u`, `mark`,
+  `sub`, `sup`, `kbd`, `code`, `pre`, `blockquote`, `ul`, `ol`, `li`, `table`,
+  `tbody`, `tr`, `th`, `td`, `caption`, `figure`, `figcaption`, `img`, `hr`,
+  `br` and `span`. The only attributes are `style`, `href`, `src`, `alt`,
+  `start`, `colspan`, `rowspan`, and `class="language-…"` on a code block.
+- Links keep absolute `http`, `https`, `mailto` and `tel` targets; other
+  schemes become plain text. Images keep absolute `http`, `https` or
+  `data:image/` sources.
+- Dropped: page-end blocks, article metadata, bylines, series strips, page
+  actions, breadcrumbs, heading anchors, footnote back-references, code
+  utilities, tab lists, buttons, forms, navigation, embedded frames, media,
+  canvases, SVG, and anything hidden, `aria-hidden`, visually hidden, not
+  rendered or not selectable. A closed disclosure copies its summary only.
+- Colors come from the `--td-print-*` properties: the preset's light palette on
+  white in either screen mode. Only values that parse as a hex, `rgb()`,
+  `rgba()` or `color(srgb …)` color are used; anything else falls back to the
+  built-in palette. Sizes are pixels. No canvas color, custom property, `rem`
+  value or web font name is emitted.
+- A code block keeps its text, filename and token colors, without line numbers.
+  A light code surface takes the print code tint; a dark one keeps its own
+  background and ink. Callouts become quotes with a bold title and their tone
+  as the rule. KaTeX copies as its TeX source between `$` or `$$`.
+- Inline whitespace collapses as CSS does, except that a source line break
+  between two Han, kana or fullwidth characters produces no space.
+- A selection inside one line of prose, one list item, one cell or one line of
+  code copies as bare markup without `style`, so it takes the destination's
+  formatting. A selection that extends beyond the article copies the article
+  only.
+
+`--td-copy-heading-rule` (`under`, `over` or `none`) and
+`--td-copy-heading-font` let a preset place the second-level heading rule and
+name a heading face for the clipboard. Ink uses `over`; Terminal uses `none`
+and a platform monospace stack.
+
+`tests/js/rich-copy.test.js` owns the serializer; `bin/check-params.py` owns
+the setting; the documentation site's `rich-copy.spec.mjs` tests real pages in
+all four presets. Paste results in WeChat, Word and other editors depend on
+each editor's own sanitizer and are not covered by automated tests.
 
 ## Translation reader runtime {#translation-reader-runtime}
 

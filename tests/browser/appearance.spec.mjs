@@ -12,7 +12,7 @@ test('coordinated closure leaves focus alone when Appearance is closed', async (
   await expect(main).toBeFocused();
 });
 
-const canvases = { ink: { light: 'rgb(255, 255, 255)', dark: 'rgb(11, 11, 11)' }, terminal: { light: 'rgb(244, 245, 242)', dark: 'rgb(12, 15, 14)' }, paper: { light: 'rgb(247, 246, 243)', dark: 'rgb(22, 21, 19)' }, slate: { light: 'rgb(241, 244, 248)', dark: 'rgb(11, 17, 25)' } };
+const canvases = { ink: { light: 'rgb(255, 255, 255)', dark: 'rgb(11, 11, 11)' }, terminal: { light: 'rgb(244, 245, 242)', dark: 'rgb(12, 15, 14)' }, paper: { light: 'rgb(250, 249, 245)', dark: 'rgb(22, 21, 19)' }, slate: { light: 'rgb(241, 244, 248)', dark: 'rgb(11, 17, 25)' } };
 
 async function expectModeIcons(page, mode) {
   const slots = page.locator('[data-td-theme-icon]:visible');
@@ -223,7 +223,7 @@ test('no JavaScript uses Paper and light print stays readable from either mode',
   await page.evaluate(() => { document.documentElement.setAttribute('data-bs-theme', 'dark'); });
   await page.emulateMedia({ media: 'print' });
   await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
-  await expect(page.locator('.td-content')).toHaveCSS('color', 'rgb(33, 32, 28)');
+  await expect(page.locator('.td-content')).toHaveCSS('color', 'rgb(31, 30, 28)');
 });
 
 test('preset is a command-palette choice using the shared executor', async ({ page }) => {
@@ -282,7 +282,7 @@ test('comment stylesheet output provides offered preset palettes without font im
     expect(response.ok()).toBe(true);
     const css = await response.text();
     expect(css).toContain(`color-scheme: ${mode}`);
-    if (preset === 'paper') expect(css).toContain(`--color-canvas-default: ${mode === 'light' ? '#f7f6f3' : '#161513'}`);
+    if (preset === 'paper') expect(css).toContain(`--color-canvas-default: ${mode === 'light' ? '#faf9f5' : '#161513'}`);
     expect(css).not.toMatch(/@import|fonts\.google/);
   }
 });

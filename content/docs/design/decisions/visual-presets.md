@@ -69,6 +69,26 @@ vendors stay mode-only; comment palettes and print follow the experiments.
 Remaining work is visual acceptance, wider device review and any decision to
 promote them into the stable set.
 
+On 2026-11-26, the maintainer asked for a refinement pass over all four
+presets and for copied passages that paste cleanly into rich-text editors.
+Paper's canvas became ivory `#faf9f5` and it gained a clay accent, because the
+earlier grey canvas and link-blue accent left Paper too close to a warm Slate;
+links stay blue and Dark Paper keeps its canvas. The cost is a visible accent
+change on Paper sites that set no `theme_color`. Slate's palette stays frozen.
+Ink headings dropped to weight 700, the heaviest weight the platform CJK faces
+carry, with a one-pixel section rule. Terminal's heading marks were lightened
+and spaced so the hashes stay distinct. All presets gained keycaps for bare
+`<kbd>`, quieter list markers and zero heading tracking in CJK passages.
+A second pass the same day settled reading texture. Paper and Ink links moved
+from semibold to an underline at prose weight, because several bold links in
+one paragraph read as emphasis the author never wrote; Slate and Terminal keep
+the semibold cue. Paper and Terminal inline code dropped to weight 400 so it
+stops competing with authored bold. The `v` key now steps through the offered
+presets and `y` toggles light and dark; `y` no longer switches language.
+Typeset copy reuses the print palette instead of adding a third palette. The
+[architecture contract](/docs/design/architecture/#typeset-copy) owns its
+behavior. These changes follow OINK 1.6.0 and are unreleased.
+
 ## Evidence {#evidence}
 
 On 2026-10-25, the maintainer authorized component refinement using the existing
