@@ -33,7 +33,7 @@ OINK 由 PGSTY 维护。感谢 [@imbajin](https://github.com/imbajin) 报告并�
 | 显式开启的技术表格可读宽度布局 | [主题 #54](https://github.com/pgsty/oink/pull/54) |
 | 双语契约、发布文档与伴生站回归覆盖 | [文档 #11](https://github.com/pgsty/oink.pgsty.com/pull/11) |
 
-[发布说明](/zh/blog/release/1.3.1/#thanks)记录了集成细节。参与纠错、翻译或修复，
+[发布说明](/zh/release/1.3.1/#thanks)记录了集成细节。参与纠错、翻译或修复，
 请参阅[贡献指南](/zh/docs/about/contributing/)。
 
 ## 上游：Docsy {#upstream-docsy}

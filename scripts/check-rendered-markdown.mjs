@@ -53,7 +53,7 @@ function inScope(file) {
   return (
     name === 'index.html' ||
     name === 'zh/index.html' ||
-    /^(?:zh\/)?(?:docs|blog|book|case|expo|about|examples|community|project|tests)\/.*\.html$/.test(
+    /^(?:zh\/)?(?:docs|blog|release|book|case|expo|about|examples|community|project|tests)\/.*\.html$/.test(
       name,
     )
   );

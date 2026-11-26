@@ -80,7 +80,7 @@ plain note between releases is therefore an ordinary entry and causes no warning
 `release_products` filter and `release_group_by_product` grouping are gone;
 Using either warns.
 
-This site's [Releases](/blog/release/) currently uses the ordinary blog list.
+This site's [Releases](/release/) currently uses the ordinary blog list.
 Switch to `layout: releases` when a strict chronology is wanted.
 
 ## Checksum assets {#assets}
@@ -252,11 +252,11 @@ model is required. See
 
 The two have different jobs:
 
-- A release note in the blog (this site keeps them in `content/blog/release/`) explains what changed, how to upgrade, and what breaks. Its front matter carries `release_url`, and a `release-card` can sit at the top. For writing instructions, see [Blog posts](/docs/write/blog/).
+- A release note (this site keeps them in `content/release/`) explains what changed, how to upgrade, and what breaks. Its front matter carries `release_url`, and a `release-card` can sit at the top. For writing instructions, see [Blog posts](/docs/write/blog/).
 - Download data identifies the channel, command, and hash. It is separate from the version number. An upgrade changes one place.
 
 For a release, follow this order: update `version` in `data/download/<key>.yaml` → write a
-new `content/blog/release/<version>.md` with its `release_url` → set
+new `content/release/<version>.md` with its `release_url` → set
 `published` to `true` after the tag and assets are in place.
 
 ## Verify {#verify}

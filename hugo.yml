@@ -160,22 +160,10 @@ languages:
           name: Blog
           pageRef: /blog
           weight: 50
-        - identifier: blog-oink
-          parent: blog
-          name: OINK engineering
-          pageRef: /blog/oink
-          weight: 10
-          params:
-            icon: fa-solid fa-screwdriver-wrench
-            description: Design notes and engineering reports from the theme
-        - identifier: blog-release
-          parent: blog
-          name: Releases
-          pageRef: /blog/release
-          weight: 20
-          params:
-            icon: fa-solid fa-tags
-            description: Version announcements and migration notes
+        - identifier: release
+          name: Release
+          pageRef: /release
+          weight: 60
         - identifier: github
           name: GitHub
           url: https://github.com/pgsty/oink
@@ -293,22 +281,10 @@ languages:
           name: 博客
           pageRef: /blog
           weight: 50
-        - identifier: blog-oink
-          parent: blog
-          name: OINK 工程实践
-          pageRef: /blog/oink
-          weight: 10
-          params:
-            icon: fa-solid fa-screwdriver-wrench
-            description: 主题设计记录与工程报告
-        - identifier: blog-release
-          parent: blog
-          name: 版本发布
-          pageRef: /blog/release
-          weight: 20
-          params:
-            icon: fa-solid fa-tags
-            description: 版本公告与迁移说明
+        - identifier: release
+          name: 发布
+          pageRef: /release
+          weight: 60
         - identifier: github
           name: GitHub
           url: https://github.com/pgsty/oink

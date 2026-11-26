@@ -27,7 +27,7 @@ aliases:
 
 OINK `v1.6.0` 仍保持在 `v1` Go 模块路径（`github.com/pgsty/oink`），同时为了适配
 Hugo 0.170+ 并移除 Sass、Bootstrap JavaScript 与 Lunr，引入了明确的破坏性变更。
-升级前请阅读[1.6.0 发布说明](/zh/blog/release/1.6.0/)并逐项检查：
+升级前请阅读[1.6.0 发布说明](/zh/release/1.6.0/)并逐项检查：
 
 - **工具链**：将 Go 升级至 **1.27.4** 或更高版本，Hugo 升级至 **0.169.0** 或更高版本
   （不限 edition，已在 Hugo 0.170.1 上验证）。所有分支切到 1.6.0+ 后可移除 CI 中的
@@ -86,7 +86,7 @@ Hugo 0.170+ 并移除 Sass、Bootstrap JavaScript 与 Lunr，引入了明确的�
 
 OINK `v1.5.1` 稳定了 1.5.0 引入的按需开启[双列视图](/zh/docs/customize/i18n/#bilingual-view)，
 并修正 RSS、Print、导航、校验、搜索与无障碍行为。未设置 `params.ui.compare` 的站点生成的页面
-与输出保持不变，详情参见[1.5.1 发布说明](/zh/blog/release/1.5.1/)。
+与输出保持不变，详情参见[1.5.1 发布说明](/zh/release/1.5.1/)。
 
 在关闭替换与工作区的环境中验证公开模块解析，固定 `github.com/pgsty/oink@v1.5.1`，
 并用 `--printPathWarnings` 构建。开启 `params.ui.compare: true` 时请注意：
@@ -101,7 +101,7 @@ OINK `v1.5.1` 稳定了 1.5.0 引入的按需开启[双列视图](/zh/docs/custo
 
 OINK `v1.4.0` 保持仅依赖 Hugo 的构建方式，新增本地 PlantUML、统一图表阅读、
 更完善的本地搜索、按需开启的表格阅读器与博客画廊。详情参见
-[1.4.0 发布说明](/zh/blog/release/1.4.0/)。
+[1.4.0 发布说明](/zh/release/1.4.0/)。
 
 在关闭替换与工作区的环境中验证公开模块解析，固定 `github.com/pgsty/oink@v1.4.0`，
 用 `--printPathWarnings` 构建，并检查导航、图片查看器与阅读器设置。源码副本方式的
@@ -112,7 +112,7 @@ OINK `v1.3.1` 修复 Markmap 文字对比度和固定 TOC 的页脚避让，并�
 开启[技术宽表布局](/zh/docs/components/table/#wide)或文件树的 `wrap=true`。
 
 提供四套风格的站点继续使用 `preset: paper` 和显式 `[paper, slate, ink, terminal]`
-菜单。[1.3.1 发布说明](/zh/blog/release/1.3.1/)列出修复细节与贡献者致谢。
+菜单。[1.3.1 发布说明](/zh/release/1.3.1/)列出修复细节与贡献者致谢。
 
 ## 先看发布注记 {#release-notes}
 
@@ -190,7 +190,7 @@ env -u HUGO_MODULE_REPLACEMENTS GOWORK=off HUGO_MODULE_WORKSPACE=off \
 
 从 1.0.0 升级到 1.1.0 不需要迁移源码，模块的 Go 1.27.0 声明与 1.0.0 相同。
 当前升级按本页开头的 Hugo 要求验证；历史工具链信息保留在
-[1.1 发布说明](/zh/blog/release/1.1.0/)中。
+[1.1 发布说明](/zh/release/1.1.0/)中。
 
 选择新固定版本前，检查这些受影响的页面与行为：
 

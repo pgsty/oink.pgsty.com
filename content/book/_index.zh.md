@@ -1,7 +1,7 @@
 ---
 title: 使用 OINK 创作优美的内容
 linkTitle: 教程
-description: 一本实战教程：用 OINK 创作清晰、优美且易于维护的技术内容。
+description: 一本实战教程：用 Oink 创作清晰、优美且易于维护的技术内容。
 type: book
 icon: fa-solid fa-book-open
 weight: 30

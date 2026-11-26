@@ -73,19 +73,21 @@ for (const [deployment, baseURL, prefix] of [
       '/book',
       '/case',
       '/blog',
+      '/release',
       '/docs/cli',
       '/zh/docs',
       '/zh/book',
       '/zh/case',
       '/zh/blog',
+      '/zh/release',
       '/zh/docs/cli',
     ]) {
       documentAt(outDir, route);
     }
 
     for (const [languagePath, labels, panelCount] of [
-      ['', ['Docs', 'Get started', 'Book', 'Case', 'Blog', 'CLI'], 2],
-      ['/zh', ['文档', '快速上手', '教程', '案例', '博客', 'CLI'], 2],
+      ['', ['Docs', 'Get started', 'Book', 'Case', 'Blog', 'Release', 'CLI'], 1],
+      ['/zh', ['文档', '快速上手', '教程', '案例', '博客', '发布', 'CLI'], 1],
     ]) {
       const home = documentAt(outDir, languagePath || '/');
       const desktop = navbarEntries(home);
@@ -99,7 +101,7 @@ for (const [deployment, baseURL, prefix] of [
         desktop
           .filter((entry) => entry.level === 0)
           .map((entry) => entry.label),
-        [labels[0], labels[2], labels[3], labels[4]],
+        [labels[0], labels[2], labels[3], labels[4], labels[5]],
       );
       // The below-md drawer projects the same top-level menu authority; the
       // centered icon links stay the visible tree at every width.
@@ -107,7 +109,7 @@ for (const [deployment, baseURL, prefix] of [
         navbarEntries(home, 'mobile')
           .filter((entry) => entry.level === 0)
           .map((entry) => entry.label),
-        [labels[0], labels[2], labels[3], labels[4]],
+        [labels[0], labels[2], labels[3], labels[4], labels[5]],
       );
       assert.equal(home.querySelectorAll('[data-td-navbar-toggle]').length, 0);
       assert.equal(
@@ -115,7 +117,7 @@ for (const [deployment, baseURL, prefix] of [
         0,
       );
 
-      // Docs and Blog own nested panels; Book and Case are direct roots.
+      // Docs owns a nested panel; Book, Case, Blog, and Release are direct roots.
       const controls = [...home.querySelectorAll('[aria-controls]')].filter(
         (control) =>
           control.getAttribute('aria-controls')?.startsWith('td-navbar-'),
@@ -174,6 +176,7 @@ for (const [deployment, baseURL, prefix] of [
           { href: `${prefix}/book/`, title: 'Book' },
           { href: `${prefix}/case/`, title: 'Case' },
           { href: `${prefix}/blog/`, title: 'Blog' },
+          { href: `${prefix}/release/`, title: 'Release' },
           { href: `${prefix}/docs/`, title: 'Docs' },
           { href: `${prefix}/expo/`, title: 'Expo' },
         ],
@@ -185,6 +188,7 @@ for (const [deployment, baseURL, prefix] of [
           { href: `${prefix}/zh/book/`, title: '教程' },
           { href: `${prefix}/zh/case/`, title: '案例' },
           { href: `${prefix}/zh/blog/`, title: '博客' },
+          { href: `${prefix}/zh/release/`, title: '发布' },
           { href: `${prefix}/zh/docs/`, title: '文档' },
           { href: `${prefix}/zh/expo/`, title: 'Expo' },
         ],

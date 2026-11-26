@@ -14,7 +14,7 @@ decision_date: 2026-10-25
 > boundaries.
 
 The [shell contract](/docs/design/shell/#blog-gallery) defines the behavior.
-The [design blog](/blog/oink/blog-gallery/) explains the reading experience,
+The [design blog](/blog/blog-gallery/) explains the reading experience,
 and the [authoring guide](/docs/write/blog/#list-gallery) gives configuration.
 
 ## Context {#context}

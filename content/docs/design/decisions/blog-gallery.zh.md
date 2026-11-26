@@ -13,7 +13,7 @@ decision_date: 2026-10-25
 > 本决策记录正式发布的博客画廊视图及其兼容边界。
 
 [外壳契约](/zh/docs/design/shell/#blog-gallery)定义行为；
-[设计博客](/zh/blog/oink/blog-gallery/)介绍阅读体验；
+[设计博客](/zh/blog/blog-gallery/)介绍阅读体验；
 [创作指南](/zh/docs/write/blog/#list-gallery)提供配置方法。
 
 ## 背景 {#context}

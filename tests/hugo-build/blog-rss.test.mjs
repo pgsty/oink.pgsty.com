@@ -13,7 +13,6 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 const siteDir = fileURLToPath(new URL('../../', import.meta.url));
-const sections = ['oink', 'release', 'rss-probe'];
 
 function itemLinks(file) {
   const rss = readFileSync(file, 'utf8');
@@ -148,17 +147,26 @@ The complete article continues here.
     for (const languagePrefix of ['', 'zh']) {
       const feedDir = path.join(publicDir, languagePrefix, 'blog');
       const topLevel = itemLinks(path.join(feedDir, 'index.xml'));
-      const languageSections = languagePrefix
-        ? sections.filter((section) => section !== 'rss-probe')
-        : sections;
-      const nested = languageSections
-        .flatMap((section) =>
-          itemLinks(path.join(feedDir, section, 'index.xml')),
-        )
-        .sort();
-
       assert.equal(new Set(topLevel).size, topLevel.length);
-      assert.deepEqual(topLevel, nested);
+      if (!languagePrefix) {
+        const probeItems = itemLinks(
+          path.join(feedDir, 'rss-probe', 'index.xml'),
+        );
+        for (const item of probeItems) {
+          assert.ok(
+            topLevel.includes(item),
+            `top-level /blog/index.xml missing nested item ${item}`,
+          );
+        }
+      }
+      const releaseItems = itemLinks(
+        path.join(publicDir, languagePrefix, 'release', 'index.xml'),
+      );
+      assert.equal(new Set(releaseItems).size, releaseItems.length);
+      assert.ok(
+        releaseItems.length >= 20,
+        `${languagePrefix || 'en'} /release/index.xml should list release notes`,
+      );
     }
 
     const probeFeed = readFileSync(

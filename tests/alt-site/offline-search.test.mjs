@@ -124,7 +124,7 @@ for (const [deployment, baseURL, prefix] of [
 
       const config = entryBySuffix(entries, '/docs/customize/config/');
       const tutorial = entryBySuffix(entries, '/docs/start/from-scratch/');
-      const blog = entryBySuffix(entries, '/blog/oink/oink-announcement/');
+      const blog = entryBySuffix(entries, '/blog/oink-announcement/');
       assert.equal(config.boost, 1.6);
       assert.equal(tutorial.boost, 1.35);
       assert.equal(blog.boost, 0.9);

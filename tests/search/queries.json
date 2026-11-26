@@ -33,7 +33,7 @@
     "scope": "summary",
     "lang": "en",
     "query": "local fonts",
-    "path": "/blog/release/1.2.0/"
+    "path": "/release/1.2.0/"
   },
   {
     "scope": "summary",
@@ -103,7 +103,7 @@
     "scope": "summary",
     "lang": "zh",
     "query": "本地 字体",
-    "path": "/zh/blog/release/1.2.0/"
+    "path": "/zh/release/1.2.0/"
   },
   {
     "scope": "summary",

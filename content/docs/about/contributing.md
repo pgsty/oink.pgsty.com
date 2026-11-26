@@ -9,7 +9,7 @@ search_keywords: [contributing, contributors, pull request, bug report, translat
 
 Corrections, translations, bug reports, and focused pull requests are welcome.
 OINK **v1.6.0** is the current theme release. Its
-[release notes](/blog/release/1.6.0/) describe the plain CSS stylesheet,
+[release notes](/release/1.6.0/) describe the plain CSS stylesheet,
 Bootstrap JS and Lunr removal, scanning BM25 search, and runtime upgrades.
 
 ## Where to contribute {#where-to-contribute}
@@ -82,7 +82,7 @@ faithful to their original evidence.
 
 The [acknowledgements](/docs/about/license/#community-contributors) link
 community fixes to their authors and pull requests. The
-[1.3.1 notes](/blog/release/1.3.1/#thanks) record the reading repairs;
+[1.3.1 notes](/release/1.3.1/#thanks) record the reading repairs;
 1.6.0 keeps those fixes and eliminates the Sass compiler dependency entirely.
 
 Theme code and site tooling use Apache-2.0; original documentation uses

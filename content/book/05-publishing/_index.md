@@ -38,7 +38,7 @@ sidebar_enabled: false
 ```
 
 This is the same configuration used by
-[Immersive reading](/blog/oink/immersive-reading/), sharing the standard `blog`
+[Immersive reading](/blog/immersive-reading/), sharing the standard `blog`
 templates, feeds, and taxonomy pages.
 
 ## Turn examples into Case studies {#case-studies}

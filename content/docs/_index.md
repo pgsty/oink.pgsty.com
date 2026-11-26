@@ -5,6 +5,7 @@ outputs: [HTML, RSS, print, markdown, LLMSFULL]
 title: OINK Documentation
 linkTitle: Docs
 description: Build a technical content site. Use shared navigation, multilingual support, and search for documentation, blogs, books, and API references.
+weight: 10
 search_keywords:
   [
     OINK,
@@ -45,7 +46,7 @@ theme's stylesheet is plain CSS, and only OINK 1.5.1 and older need Hugo's
 Extended edition. Hugo Modules also require Go to resolve the theme. Bundled theme assets require
 no CDN or npm build step.
 
-See the [1.6.0 release notes](/blog/release/1.6.0/) or the
+See the [1.6.0 release notes](/release/1.6.0/) or the
 [upgrade guide](/docs/admin/upgrade/#preparing-1-6) for an existing site.
 
 ## Five ways in {#five-entries}

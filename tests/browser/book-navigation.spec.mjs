@@ -79,7 +79,7 @@ for (const width of [390, 1440]) {
 for (const [name, path, minimum, fraction, maximum] of [
   ['Book', fixture, 286, 0.2, 420],
   ['Docs', '/docs/customize/layout/', 286, 0.2, 420],
-  ['flow', '/blog/oink/immersive-reading/', 340, 0.22, 440],
+  ['flow', '/blog/immersive-reading/', 340, 0.22, 440],
 ]) {
   test(`${name} outline grows within bounds and survives viewport transitions`, async ({ page }) => {
     await openClean(page, path);

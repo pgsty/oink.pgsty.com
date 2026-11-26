@@ -21,7 +21,7 @@ test('closed mobile drawer has no visible shadow and immersive pages retain util
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto('/docs/customize/config/');
   await expect(page.locator('.td-shell-sidebar__panel')).toHaveCSS('box-shadow', 'none');
-  await page.goto('/blog/oink/immersive-reading/');
+  await page.goto('/blog/immersive-reading/');
   const opener = page.locator('[data-td-landing-menu-toggle]');
   await expect(opener).toBeVisible();
   await opener.click();
@@ -81,7 +81,7 @@ test.describe('phone touch', () => {
   test.use({ viewport: { width: 360, height: 890 }, isMobile: true, hasTouch: true });
 
   test('drawer delivers the tap after an open version list to Appearance or Search', async ({ page }) => {
-    await page.goto('/blog/oink/immersive-reading/');
+    await page.goto('/blog/immersive-reading/');
     const opener = page.locator('[data-td-landing-menu-toggle]');
     const drawer = page.locator('[data-td-landing-menu]');
     const version = drawer.locator('[data-td-version-menu] button');
@@ -173,8 +173,9 @@ test('Landing uses fluid section spacing and print links remain underlined', asy
   await expect(page.locator('.td-content p a').first()).toHaveCSS('text-decoration-line', 'underline');
 });
 
-test('Chinese blog pagination is a localized navigation landmark', async ({ page }) => {
-  await page.goto('/zh/blog/');
+test('Chinese release pagination is a localized navigation landmark', async ({ page }) => {
+  await page.goto('/zh/release/');
+  await page.locator('[data-td-blog-index-toggle]').click();
   const pager = page.getByRole('navigation', { name: '分页导航', exact: true });
   await expect(pager).toBeVisible();
   await expect(pager.getByRole('link', { name: '下一页', exact: true })).toBeVisible();

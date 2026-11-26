@@ -8,7 +8,7 @@ search_keywords: [参与贡献, 贡献者, pull request, 问题报告, 翻译, O
 ---
 
 欢迎纠错、翻译、报告问题和提交范围明确的 pull request。当前主题版本为
-**OINK v1.6.0**。[发布说明](/zh/blog/release/1.6.0/)介绍纯 CSS 样式表、移除 Bootstrap JS 与 Lunr、BM25 本地搜索以及运行时依赖升级。
+**OINK v1.6.0**。[发布说明](/zh/release/1.6.0/)介绍纯 CSS 样式表、移除 Bootstrap JS 与 Lunr、BM25 本地搜索以及运行时依赖升级。
 
 ## 选择贡献仓库 {#where-to-contribute}
 
@@ -66,7 +66,7 @@ make browser
 ## 署名与许可 {#credit-and-licenses}
 
 [致谢页](/zh/docs/about/license/#community-contributors)将社区修复与作者和 pull request
-关联起来。[1.3.1 发布说明](/zh/blog/release/1.3.1/#thanks)记录了阅读体验修复；
+关联起来。[1.3.1 发布说明](/zh/release/1.3.1/#thanks)记录了阅读体验修复；
 1.6.0 继续保留这些修复，并彻底移除 Sass 编译器依赖。
 
 主题代码与站点工具使用 Apache-2.0，原创文档使用 CC BY 4.0。请保留第三方许可证和

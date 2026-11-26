@@ -32,7 +32,7 @@ You can discard that branch if you cancel the upgrade.
 OINK `v1.6.0` remains on the `v1` Go module path (`github.com/pgsty/oink`) while
 introducing deliberate breaking changes to remove Sass (for Hugo 0.170+
 compatibility), Bootstrap's JavaScript bundle, and Lunr. Read the
-[1.6.0 release notes](/blog/release/1.6.0/) and review these items before
+[1.6.0 release notes](/release/1.6.0/) and review these items before
 upgrading:
 
 - **Toolchain.** Upgrade Go to **1.27.4** or newer and Hugo to **0.169.0** or
@@ -142,7 +142,7 @@ The [Shell contract](/docs/design/shell/#search-engine) lists the rules.
 OINK `v1.5.1` stabilizes the opt-in [Duo View](/docs/customize/i18n/#bilingual-view)
 introduced in 1.5.0 and corrects RSS, Print, navigation, validation, search, and
 accessibility behavior. Sites that leave `params.ui.compare` unset build the exact
-same pages and outputs as before. See the [1.5.1 release notes](/blog/release/1.5.1/).
+same pages and outputs as before. See the [1.5.1 release notes](/release/1.5.1/).
 
 Verify public module resolution with replacements and workspaces disabled, pin
 `github.com/pgsty/oink@v1.5.1`, and build with `--printPathWarnings`. If you
@@ -158,7 +158,7 @@ enable `params.ui.compare: true`:
 
 OINK `v1.4.0` keeps the Hugo-only build boundary and adds local PlantUML,
 unified diagram reading, richer local search, the opt-in table reader, and the
-gallery blog layout. See the [1.4.0 release notes](/blog/release/1.4.0/).
+gallery blog layout. See the [1.4.0 release notes](/release/1.4.0/).
 
 Verify public module resolution with replacements and workspaces disabled.
 Pin `github.com/pgsty/oink@v1.4.0`, build with `--printPathWarnings`, and review
@@ -171,7 +171,7 @@ content keeps its default appearance. Enable [technical table layout](/docs/comp
 or FileTree `wrap=true` only where complete technical text is needed.
 
 Keep `preset: paper` and the explicit `[paper, slate, ink, terminal]` menu when
-the site offers all four styles. The [1.3.1 notes](/blog/release/1.3.1/) describe
+the site offers all four styles. The [1.3.1 notes](/release/1.3.1/) describe
 these fixes and credit their contributor.
 
 ## Read the release notes first {#release-notes}
@@ -267,7 +267,7 @@ view, and every site customization.
 
 No source migration was required from 1.0.0 to 1.1.0. Its Go 1.27.0 module
 directive was unchanged from 1.0.0. Validate current upgrades against the Hugo
-requirements at the top of this page. Historical toolchain details remain in the [1.1 release note](/blog/release/1.1.0/).
+requirements at the top of this page. Historical toolchain details remain in the [1.1 release note](/release/1.1.0/).
 
 Review the affected surfaces before choosing the new pin:
 

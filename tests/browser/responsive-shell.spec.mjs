@@ -165,10 +165,10 @@ test('an auto-hiding surface keeps a visible navbar at drawer widths', async ({
 });
 
 for (const [locale, path, labels] of [
-  ['en', '/', ['Docs', 'Book', 'Case', 'Blog']],
-  ['zh', '/zh/', ['文档', '教程', '案例', '博客']],
+  ['en', '/', ['Docs', 'Book', 'Case', 'Blog', 'Release']],
+  ['zh', '/zh/', ['文档', '教程', '案例', '博客', '发布']],
 ]) {
-  test(`${locale} homepage navbar contains the four content roots`, async ({
+  test(`${locale} homepage navbar contains the five content roots`, async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
@@ -186,12 +186,12 @@ for (const [locale, path, labels] of [
 }
 
 for (const [locale, path, docsLabel, rootHrefs] of [
-  ['en', docPath, 'Docs', ['/docs/', '/book/', '/case/', '/blog/']],
+  ['en', docPath, 'Docs', ['/docs/', '/book/', '/case/', '/blog/', '/release/']],
   [
     'zh',
     '/zh/docs/customize/config/',
     '文档',
-    ['/zh/docs/', '/zh/book/', '/zh/case/', '/zh/blog/'],
+    ['/zh/docs/', '/zh/book/', '/zh/case/', '/zh/blog/', '/zh/release/'],
   ],
 ]) {
   test(`${locale} root switcher keeps all content roots`, async ({
@@ -262,6 +262,7 @@ for (const [locale, path, roots] of [
       ['Book', '/book/'],
       ['Case', '/case/'],
       ['Blog', '/blog/'],
+      ['Release', '/release/'],
     ],
   ],
   [
@@ -272,6 +273,7 @@ for (const [locale, path, roots] of [
       ['教程', '/zh/book/'],
       ['案例', '/zh/case/'],
       ['博客', '/zh/blog/'],
+      ['发布', '/zh/release/'],
     ],
   ],
 ]) {

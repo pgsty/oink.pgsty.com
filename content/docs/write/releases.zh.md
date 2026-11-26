@@ -64,7 +64,7 @@ layout: releases
 不是警告。0.5 的 `release_products` 过滤与 `release_group_by_product` 分组
 已移除；写了会警告。
 
-本站的[版本发布](/zh/blog/release/)目前用普通博客列表。需要严格时间序时改用 `layout: releases`。
+本站的[版本发布](/zh/release/)目前用普通博客列表。需要严格时间序时改用 `layout: releases`。
 
 ## 校验和资产 {#assets}
 
@@ -206,10 +206,10 @@ published: false
 
 两者分工：
 
-- 博客里的发布注记（本站在 `content/blog/release/`）是叙事：这一版改了什么、怎么升级、有什么破坏性变更。它的 front matter 里带 `release_url`，页首可以放一张 `release-card`。写法见[博客与文章](/zh/docs/write/blog/)。
+- 发布注记（本站在 `content/release/`）是叙事：这一版改了什么、怎么升级、有什么破坏性变更。它的 front matter 里带 `release_url`，页首可以放一张 `release-card`。写法见[博客与文章](/zh/docs/write/blog/)。
 - 下载数据是操作：选哪个渠道、运行哪条命令、校验哪个哈希。它与版本号解耦，升级时只改一处。
 
-一次发布的顺序：更新 `data/download/<key>.yaml` 的 `version` → 新写一篇 `content/blog/release/<version>.md` 并填 `release_url` → 标签与资产就绪后把 `published` 翻成 `true`。
+一次发布的顺序：更新 `data/download/<key>.yaml` 的 `version` → 新写一篇 `content/release/<version>.md` 并填 `release_url` → 标签与资产就绪后把 `published` 翻成 `true`。
 
 ## 验证 {#verify}
 

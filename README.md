@@ -25,8 +25,8 @@ supporting unspaced CJK queries, field anchors, and automatic split indexes,
 and upgrades Markmap, ReDoc, Mermaid, KaTeX, DocSearch, and the rest of the
 vendored runtime set.
 
-- Release notes: [English](https://oink.pgsty.com/blog/release/1.6.0/) /
-  [简体中文](https://oink.pgsty.com/zh/blog/release/1.6.0/)
+- Release notes: [English](https://oink.pgsty.com/release/1.6.0/) /
+  [简体中文](https://oink.pgsty.com/zh/release/1.6.0/)
 - Contribution guide: [English](https://oink.pgsty.com/docs/about/contributing/) /
   [简体中文](https://oink.pgsty.com/zh/docs/about/contributing/)
 - [Upgrade and migration](https://oink.pgsty.com/docs/admin/upgrade/)

@@ -1,7 +1,7 @@
 ---
 title: Write Beautiful Docs
 linkTitle: Book
-description: A practical tutorial for creating clear, beautiful, and maintainable technical content with OINK.
+description: A practical tutorial for creating clear, beautiful, and maintainable technical content with Oink.
 type: book
 icon: fa-solid fa-book-open
 weight: 30

@@ -39,7 +39,7 @@ Introduced in 1.3.1, these fixes remain included in **1.6.0**.
 | Readable technical tables with an opt-in layout | [Theme #54](https://github.com/pgsty/oink/pull/54) |
 | Bilingual contracts, release documentation, and companion regression coverage | [Documentation #11](https://github.com/pgsty/oink.pgsty.com/pull/11) |
 
-The [release notes](/blog/release/1.3.1/#thanks) record the integration details.
+The [release notes](/release/1.3.1/#thanks) record the integration details.
 To contribute a correction, translation, or fix, follow the
 [contribution guide](/docs/about/contributing/).
 

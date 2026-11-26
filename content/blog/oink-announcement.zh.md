@@ -1,0 +1,124 @@
+---
+title: OINK 实现预览正式亮相
+linkTitle: OINK 实现预览
+date: 2026-08-08
+aliases: [/blog/2026/oink-announcement/, /blog/oink/oink-announcement/]
+lastmod: 2026-10-15
+description: >-
+  OINK 将直接定制的 Docsy 代码库演化为本地优先、仅依赖 Hugo
+  的文档主题，并提供多语言基础设施与可复用内容组件。
+authors: [oink, vonng]
+categories: [工程实践]
+tags: [Oink, 架构]
+series: [building-oink]
+series_weight: 10
+---
+
+今天，我们发布 OINK 实现预览：它从 Docsy 直接演进而来，提供统一的产品页面骨架、仅依赖 Hugo 的站点构建、本地优先的浏览器依赖、通用多语言框架，以及一组从 PGSTY 文档站提炼出的可复用内容组件。
+
+这次预览完成了首个正式标签与 Cloudflare Pages 生产部署之前的实现与文档里程碑。
+
+## 为什么需要 OINK？ {#why-oink-exists}
+
+多个成熟的文档站此前各自复制了相同的 Docsy 布局、导航、搜索代码、SCSS、JavaScript 与短代码。每当修复一个共性问题，都必须在多个仓库里重复改动；同时每个站点都背着一套前端工具链与隐式外部网络依赖，导致离线构建异常繁琐。
+
+OINK 将真正可复用的基础层收敛到主题中。产品矩阵、门户、价格页等业务专属逻辑留在各自站点；共享主题统一负责文档骨架、浏览器运行时、多语言路由、无障碍交互与内容组件契约。
+
+## 有哪些变化？ {#what-changes}
+
+### 产品本身，而不是一种模式 {#one-product-instead-of-a-mode}
+
+OINK 不是可选皮肤。项目没有 `oink.enabled` 开关、`params.oink.*`
+命名空间，也没有“上游版与品牌版”并行的两套模板树。`theme/` 中的实现就是产品本身。
+
+这项取舍避免了同时维护两套视觉系统与两套测试矩阵。Hugo 原生设置与兼容的 Docsy 参数继续保持原有语义。
+
+### 消费端仅依赖 Hugo 构建 {#hugo-only-consumer-builds}
+
+下游站点只需运行一条命令即可完成构建：
+
+```sh
+hugo --gc --minify
+```
+
+Bootstrap、Font Awesome、字体、搜索、图表、API 文档运行时与 OINK 组件均已随主题提交。构建站点不再需要安装 Node.js、npm、PostCSS、Autoprefixer，也不再从 CDN 下载资源。
+
+主题仓库维护者仍使用 Node 工具运行回归测试与更新 vendor 资源，但这套维护工具链不进入下游站点的构建流程。
+
+### 本地优先的浏览器行为 {#local-first-browser-behavior}
+
+默认 starter 会从生成后的站点提供页面外壳、字体、图标、搜索、Mermaid、KaTeX、Markmap、Swagger
+UI、Redoc、Asciinema、ECharts 与 Infographic 依赖。可选运行时按页面选取，并且每页最多加载一次。
+
+PlantUML 与 Diagrams.net 不再拥有公共服务默认值。站点必须配置受控端点、使用预渲染结果，或明确选择远程服务。
+
+### 多语言基础设施 {#multilingual-infrastructure}
+
+语言路由来自 Hugo 的语言与翻译对象。配置一种语言时隐藏选择器；配置两种或更多语言时，直接点击按配置顺序切换，短暂悬停或键盘聚焦则打开完整菜单。当前页面缺少译文时，选择器会进入目标语言首页，而不是失效路径。
+
+starter 与本站均以英文为首要语言、简体中文为第二语言。核心文档与博客范围内的每个页面都有并置的
+`.zh.md` 译文，且标题采用稳定的显式 ID。
+
+### 可复用组件 {#reusable-components}
+
+OINK 新增主题级 Asciinema、ECharts、Infographic、文档轮播、折叠块、标签页、卡片、导航卡片、文档卡片与参数组件。它们会生成唯一实例 ID，并且只在实际使用时加载本地资源。
+
+ECharts 接受结构化 JSON 或 YAML，也支持通过 `$fn:name`
+引用可选的 JavaScript 回调。回调代码只在声明它的页面运行。
+
+## 哪些能力保持不变？ {#what-stays-familiar}
+
+OINK 沿用 Docsy 的内容组织、front
+matter、文档与博客 section、菜单、taxonomy、打印输出、仓库链接、常用短代码、图表、API 参考能力与扩展 hook。现有站点可以删除重复公共实现，而不必重写普通 Markdown。
+
+项目也保留 Docsy 的 Apache-2.0 历史与归属信息。vendor 清单记录固定的第三方来源、许可证、产物与校验值。
+
+## 体验 starter {#try-the-starter}
+
+> [!NOTE] 使用说明更新于 2026-10-17
+> 本文记录最初的实现预览。当前搭建与验收统一使用 Hugo Extended 0.168.0，基线随
+> 稳定版更新，不再测试或适配旧 Hugo。
+
+安装 Git、Go 1.27 或更新版本，以及 Hugo Extended `0.168.0`，再评估
+[官方 Starter](/zh/docs/start/starter/)：
+
+```sh
+git clone https://github.com/pgsty/oink-starter.git my-docs
+cd my-docs
+hugo server
+```
+
+旧 Starter 的 workflow 固定版本也应同步更新。打开本地英文与中文页面，切换语言、
+使用本地搜索、改变颜色模式，并访问组件示例。网络隔离环境按
+[离线归档安装指南](/zh/docs/start/from-scratch/#offline-archive)操作。
+
+## 当前验证范围 {#current-validation}
+
+当前实现的自动化覆盖包括：
+
+- 统一使用 Hugo Extended 0.168.0 构建；
+- 禁止消费端 Node/npm/PostCSS/Autoprefixer 路径；
+- LTR、RTL、子路径、打印、颜色模式与生产资源；
+- 语言选择器的隐藏、点击轮换、悬停菜单、缺失译文回退与 RTL 行为；
+- 本地按页运行时与重复组件实例；
+- ECharts 结构化选项与回调集成；
+- 离线双语 starter 与离线发行归档；
+- vendor 许可证与校验值；
+- SILO、PGSTY、SOW 与 Pigsty 的非破坏性迁移演练。
+
+最近一次四站演练已全部在临时副本中通过生产构建。
+
+## 正式发布前还需要什么？ {#what-remains-before-release}
+
+在打上首个正式版本标签前，我们将敲定模块与软件包命名，把初始版本号同步写入源码标签、归档包与文档，并将生产 Cloudflare Pages 项目接入固定的 Hugo 构建流水线。
+
+## 继续阅读 {#read-next}
+
+- [OINK 概览](/zh/docs/about/)
+- [架构](/zh/docs/about/architecture/)
+- [本地优先运行](/zh/docs/about/local-first/)
+- [内容组件](/zh/docs/components/)
+- [配置总览](/zh/docs/customize/config/)
+- [迁移指南](/zh/docs/upgrade/from-docsy/)
+- [发布流程](/zh/docs/about/)
+- [实施日记](/zh/blog/oink-implementation-diary/)

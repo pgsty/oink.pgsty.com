@@ -1,9 +1,11 @@
 ---
 title: Blog
-description: OINK engineering stories, immersive guides, and release notes
-search_keywords: [OINK blog, engineering, immersive reading, release notes]
+description: Oink engineering notes, design stories, and reading shell guides
+search_keywords: [OINK blog, engineering, immersive reading, gallery, design]
+weight: 50
 type: blog
 icon: fa-solid fa-blog
+aliases: [/blog/oink/]
 sidebar_root_for: self
 sidebar_root_link_self: true
 footer_style: fat
@@ -25,6 +27,8 @@ cascade:
   type: blog
   navbar_autohide: false
   images: [/images/oink.webp]
+  # The other featured-image mode: a framed 16:9 banner above the title.
+  featured_image: banner
   footer_style: fat
   comments: true
   reading_time: true

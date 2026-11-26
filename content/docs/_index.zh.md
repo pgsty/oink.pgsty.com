@@ -5,6 +5,7 @@ outputs: [HTML, RSS, print, markdown, LLMSFULL]
 title: OINK 文档
 linkTitle: 文档
 description: 为文档、博客、书籍与 API 参考建立统一的技术内容站点，共用导航、多语言与搜索。
+weight: 10
 search_keywords: [OINK, Hugo 主题, 技术文档, 文档站, Hugo theme, documentation]
 type: docs
 icon: fa-solid fa-book
@@ -34,7 +35,7 @@ cascade:
 及更早版本需要 Hugo 的 Extended 版。采用 Hugo Modules 时还需要 Go 解析主题模块。主题内置资源无需 CDN，也不需要 npm 构建流程。
 
 已有站点可查看
-[1.6.0 发布说明](/zh/blog/release/1.6.0/)与[升级指南](/zh/docs/admin/upgrade/#preparing-1-6)。
+[1.6.0 发布说明](/zh/release/1.6.0/)与[升级指南](/zh/docs/admin/upgrade/#preparing-1-6)。
 
 ## 五条入口 {#five-entries}
 

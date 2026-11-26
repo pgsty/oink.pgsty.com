@@ -34,7 +34,7 @@ toc_taxonomies: false
 sidebar_enabled: false
 ```
 
-这与[沉浸式阅读](/zh/blog/oink/immersive-reading/)使用的是同一套配置，共享标准的 `blog`
+这与[沉浸式阅读](/zh/blog/immersive-reading/)使用的是同一套配置，共享标准的 `blog`
 模板、订阅源与分类页面。
 
 ## 把样例变成 Case 案例 {#case-studies}

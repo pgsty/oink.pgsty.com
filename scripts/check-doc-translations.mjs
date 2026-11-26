@@ -64,6 +64,7 @@ function renderedHeadingIds(file) {
 const bilingualScopes = [
   'docs',
   'blog',
+  'release',
   'book',
   'case',
   'authors',
