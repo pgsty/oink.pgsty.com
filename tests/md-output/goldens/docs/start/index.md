@@ -152,6 +152,8 @@ Section pages:
 
 Backlinks:
 
+- [Six years to Oink](/blog/oink-release/)
+- [Le Shi Handbook](/case/le-shi/)
 - [Docs](/docs/)
 - [Introduction](/docs/about/)
 - [Highlights](/docs/about/features/)

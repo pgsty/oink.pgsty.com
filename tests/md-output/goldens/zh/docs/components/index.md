@@ -117,9 +117,7 @@ OINK 1.4.0 启用 PlantUML 后，使用两份随主题提供的脚本在浏览�
 
 反链：
 
-- [OINK 实现预览](/zh/blog/oink/oink-announcement/)
-- [Oink v0.2.0](/zh/blog/release/0.2.0/)
-- [Oink v0.3.0](/zh/blog/release/0.3.0/)
+- [OINK 实现预览](/zh/blog/oink-announcement/)
 - [组合页面](/zh/book/03-compose/)
 - [OINK 文档](/zh/case/oink/)
 - [文档](/zh/docs/)
@@ -133,3 +131,5 @@ OINK 1.4.0 启用 PlantUML 后，使用两份随主题提供的脚本在浏览�
 - [博客与文章](/zh/docs/write/blog/)
 - [书籍出版](/zh/docs/write/book/)
 - [编写页面](/zh/docs/write/pages/)
+- [Oink v0.2.0](/zh/release/0.2.0/)
+- [Oink v0.3.0](/zh/release/0.3.0/)

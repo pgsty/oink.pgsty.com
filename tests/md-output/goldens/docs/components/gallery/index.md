@@ -200,9 +200,9 @@ is for image groups inside text pages.
 
 Backlinks:
 
-- [OINK v1.3.0](/blog/release/1.3.0/)
 - [Cards](/docs/components/cards/)
 - [FileTree](/docs/components/filetree/)
 - [Images](/docs/components/image/)
 - [Print](/docs/customize/print/)
 - [Expo albums](/docs/write/expo/)
+- [OINK v1.3.0](/release/1.3.0/)

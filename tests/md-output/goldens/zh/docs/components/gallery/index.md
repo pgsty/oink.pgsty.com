@@ -186,9 +186,9 @@ image_zoom: true
 
 反链：
 
-- [OINK v1.3.0](/zh/blog/release/1.3.0/)
 - [卡片](/zh/docs/components/cards/)
 - [文件树](/zh/docs/components/filetree/)
 - [图片](/zh/docs/components/image/)
 - [打印支持](/zh/docs/customize/print/)
 - [Expo 相册](/zh/docs/write/expo/)
+- [OINK v1.3.0](/zh/release/1.3.0/)

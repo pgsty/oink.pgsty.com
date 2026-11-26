@@ -14,7 +14,7 @@ theme's stylesheet is plain CSS, and only OINK 1.5.1 and older need Hugo's
 Extended edition. Hugo Modules also require Go to resolve the theme. Bundled theme assets require
 no CDN or npm build step.
 
-See the [1.6.0 release notes](/blog/release/1.6.0/) or the
+See the [1.6.0 release notes](/release/1.6.0/) or the
 [upgrade guide](/docs/admin/upgrade/#preparing-1-6) for an existing site.
 
 ## Five ways in {#five-entries}
@@ -54,7 +54,7 @@ material for OINK theme contributors.
 
 Section pages:
 
-- [What is OINK](/docs/about/): A local-first Hugo documentation framework that evolved from Docsy. Its components remain readable in Markdown. The theme includes its assets. Fifteen production sites use it.
+- [What is OINK](/docs/about/): A local-first Hugo documentation framework that evolved from Docsy. Its components remain readable in Markdown. The theme includes its assets. Forty-five production sites use it.
 - [Get started](/docs/start/): Start from the official OINK Starter. Verify the local site, then customize content, language, brand, integrations, and deployment in that order.
 - [Authoring](/docs/write/): Write documentation pages, blog posts, books, release pages, and API references. Learn the page structure and content organization.
 - [Components](/docs/components/): Find each writing component, from simple examples to detailed examples, with its output matrix, parameters, and limits.

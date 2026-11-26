@@ -126,9 +126,7 @@ Section pages:
 
 Backlinks:
 
-- [Introducing OINK](/blog/oink/oink-announcement/)
-- [Oink v0.2.0](/blog/release/0.2.0/)
-- [Oink v0.3.0](/blog/release/0.3.0/)
+- [Introducing OINK](/blog/oink-announcement/)
 - [Compose the page](/book/03-compose/)
 - [OINK Docs](/case/oink/)
 - [Docs](/docs/)
@@ -142,3 +140,5 @@ Backlinks:
 - [Blog posts](/docs/write/blog/)
 - [Books](/docs/write/book/)
 - [Writing pages](/docs/write/pages/)
+- [Oink v0.2.0](/release/0.2.0/)
+- [Oink v0.3.0](/release/0.3.0/)
