@@ -336,6 +336,11 @@ HTML 页面加入稳定的 `js/chunks/keyboard.js`，依次包含 `history.js` �
 | 操作 | `/` 与 `f` 搜索，`c` 与 `` ` `` 命令，`u` 编辑，`n` 子页面，`i` 文档议题，`o` 全部展开/折叠，`p` 打印，`[` ChatGPT，`]` Claude，`\` Gemini |
 | 样式 | `b` 双列视图，`z` 禅意模式，`m` Markdown 源码，`t` 视觉预设，`y` 明暗模式，`l` 索引布局，`;` 画廊布局，`,`/`.` 画廊尺寸（也可用 `<`/`>`），`-`/`=` 阅读宽度（也可用 `+`），`'` 帮助 |
 
+读者可以在快捷键帮助中关闭全局字符快捷键，也可以在「跳转到主要内容」后的焦点位置操作，
+即使页面没有页脚，或只启用了本地搜索，也能找到这个开关。它同时控制命令面板使用的单个标点键。
+Ctrl/Cmd+K、原生焦点移动和控件激活继续生效。浏览器以 `td-single-key-shortcuts:` 加上
+URL 编码后的站点基路径保存偏好。存储不可用时，开关在当前页面仍有效。
+
 作用范围：
 
 - 侧栏键需要 `#td-sidebar-menu`，且不处于禅意模式。上下左右方向键只在焦点进入侧栏后
@@ -390,7 +395,7 @@ HTML 页面加入稳定的 `js/chunks/keyboard.js`，依次包含 `history.js` �
 
 浏览历史只保存在本地。`history.js` 把除 404 页以外的每次 HTML 页面加载记录为
 `{url, title, time}`：不含片段的路径与查询串、`og:title` 或文档标题，以及访问时间。
-记录存放在 `localStorage` 中，键为 `td-history:` 加站点基础路径（`"/" | relURL`），
+记录存放在 `localStorage` 中，键为 `td-history:` 加`Site.BaseURL` 中经过 URL 编码、保留末尾斜杠的路径（例如，挂载到 `/manual/` 的站点各语言共用 `td-history:/manual/`），
 按时间倒序、按 URL 去重，最多 100 条；基础路径之外的记录与格式错误的记录直接丢弃，
 不做修补。历史从不外发。`h` 或仅出现在命令面板中的 `browse_history` 操作（开启
 `keyboard_nav` 时可用）打开 `#td-shell-history[data-td-history]`，它复用命令面板的

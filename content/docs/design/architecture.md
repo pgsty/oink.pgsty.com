@@ -627,7 +627,8 @@ serialization:
   `sub`, `sup`, `kbd`, `code`, `pre`, `blockquote`, `ul`, `ol`, `li`, `table`,
   `tbody`, `tr`, `th`, `td`, `caption`, `figure`, `figcaption`, `img`, `hr`,
   `br` and `span`. The only attributes are `style`, `href`, `src`, `alt`,
-  `start`, `colspan`, `rowspan`, and `class="language-…"` on a code block.
+  `start`, `reversed`, `value`, `colspan`, `rowspan`, and `class="language-…"` on a code block.
+  Copying several ordered-list items retains their original numbers, including when the selection starts midway through the list.
 - Links keep absolute `http`, `https`, `mailto` and `tel` targets; other
   schemes become plain text. Images keep absolute `http`, `https` or
   `data:image/` sources.

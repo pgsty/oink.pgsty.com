@@ -550,8 +550,8 @@ HTML 由选中的节点重建，不使用浏览器带样式的序列化结果：
 - 输出只包含 `h1`–`h6`、`p`、`a`、`strong`、`em`、`del`、`u`、`mark`、`sub`、
   `sup`、`kbd`、`code`、`pre`、`blockquote`、`ul`、`ol`、`li`、`table`、`tbody`、
   `tr`、`th`、`td`、`caption`、`figure`、`figcaption`、`img`、`hr`、`br` 与 `span`。
-  属性只有 `style`、`href`、`src`、`alt`、`start`、`colspan`、`rowspan`，以及代码块上的
-  `class="language-…"`。
+  属性只有 `style`、`href`、`src`、`alt`、`start`、`reversed`、`value`、`colspan`、`rowspan`，以及代码块上的
+  `class="language-…"`。从有序列表中间开始选取多个条目时，复制结果保留条目原有的编号。
 - 链接保留 `http`、`https`、`mailto`、`tel` 的绝对地址，其他协议变为纯文本。
   图片保留 `http`、`https` 或 `data:image/` 的绝对地址。
 - 丢弃：页尾区块、文章元数据、署名、系列条、页面操作、面包屑、标题锚点、脚注

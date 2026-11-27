@@ -109,12 +109,12 @@ YouTube、Bilibili 或 Vimeo 的链接渲染为一张卡片：
 ![Pigsty：开源中国专访](https://www.bilibili.com/video/BV1o3411w7hP)
 {caption="开源中国与本站作者聊 Pigsty，2022 年"}
 
-卡片是一个指向观看页的链接，显示 `poster` 或一块素色底面、一个播放图标、方括号文字和平台名称。渲染卡片不联系任何人：没有 iframe、没有平台脚本，也不请求缩略图。本站启用了 Bilibili，点击上面的卡片会就地加载播放器，见[下一节](#embeds)。
+卡片是一个指向观看页的链接，显示 `poster` 或一块素色底面、一个播放图标、方括号文字和平台名称。浏览器会从指定的地址加载作者提供的海报。点击播放前，卡片不向视频平台请求缩略图或播放器。本站启用了 Bilibili，点击上面的卡片会就地加载播放器，见[下一节](#embeds)。
 
 接受的 URL：
 
 - YouTube：`youtube.com/watch?v=ID`、`music.youtube.com/watch?v=ID`、`youtu.be/ID`、`youtube.com/shorts/ID`、`/live/ID`、`/embed/ID` 与 `youtube-nocookie.com/embed/ID`，ID 为 11 个字符。`t`、`start` 或 `#t=` 设定起始时间，写秒数（`90`）或 `1m30s` 形式。Shorts 链接在未指定 `poster` 或 `width`/`height` 时默认按 `9:16` 占位。
-- Bilibili：`bilibili.com/video/BV…`、`bilibili.com/video/av…`、直接携带 ID 的 `b23.tv/BV…` / `b23.tv/av…`，以及 Bilibili 嵌入代码里的 `src`，即 `https://player.bilibili.com/player.html?bvid=…`（或 `?aid=…`；复制来的地址以 `//` 开头，需补上 `https:`）。`p` 选择多 P 视频中的某一 P，`t` 设定起始时间。
+- Bilibili：`bilibili.com/video/BV…`、`bilibili.com/video/av…`、直接携带 ID 的 `b23.tv/BV…` / `b23.tv/av…`，以及 Bilibili 嵌入代码里的 `src`，即 `https://player.bilibili.com/player.html?bvid=…`（或 `?aid=…`；复制来的地址以 `//` 开头，需补上 `https:`）。嵌入地址可以用数字 `cid` 指定分 P；未指定有效 `cid` 时按 `p` 选择集数。`t` 设定起始时间。
 - Vimeo：`vimeo.com/NUMBER`、`vimeo.com/manage/videos/NUMBER` 或 `player.vimeo.com/video/NUMBER`，不公开视频支持 `/HASH` 或 `?h=HASH`；`#t=` 或 `t` 设定起始时间。
 
 主机名可以带 `www.` 或 `m.`。主题先校验视频 ID，再用它拼出播放器地址，作者写的文字不会进入 iframe。这些主机上认不出 ID 的 URL 告警，渲染为没有播放器的卡片；不直接包含 ID 的 `b23.tv` 短链接（例如 `b23.tv/abc`）不联网无法解析，同样如此，改写完整的 `bilibili.com/video/BV…` 地址即可。

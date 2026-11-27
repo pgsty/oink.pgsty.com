@@ -54,6 +54,35 @@ async function unavailableRows(dialog) {
   );
 }
 
+test('a reader can turn off single-key shortcuts and restore them by keyboard across languages', async ({ page }) => {
+  await recordPageActions(page);
+  await openDocs(page);
+  const dialog = await openHelp(page);
+  await dialog.getByRole('checkbox', { name: 'Single-key shortcuts' }).uncheck();
+  await page.keyboard.press('Escape');
+  for (const key of ['p', 'h', '/', '`', "'"]) await page.keyboard.press(key);
+  await expect(dialog).toBeHidden();
+  await expect(page.locator('#td-shell-history')).toBeHidden();
+  await expect(page.locator('#td-shell-search')).toBeHidden();
+  expect(await page.evaluate(() => window.__printed)).toBe(0);
+  await expect(page.locator('[data-td-page-shortcut][aria-keyshortcuts]')).toHaveCount(0);
+  await page.keyboard.press('Control+k');
+  await expect(page.locator('#td-shell-search')).toBeVisible();
+  await page.keyboard.press('Escape');
+
+  await page.goto('/zh' + docsPath);
+  const preference = page.getByRole('checkbox', { name: '单键快捷键' });
+  await page.keyboard.press('Tab');
+  await expect(page.locator('a.td-skip-link')).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(preference).toBeFocused();
+  await expect(preference).not.toBeChecked();
+  await page.keyboard.press('Space');
+  await expect(preference).toBeChecked();
+  await page.keyboard.press('h');
+  await expect(page.locator('#td-shell-history')).toBeVisible();
+});
+
 function articleWidth(page) {
   return page.locator('.td-shell-layout .td-shell-article')
     .evaluate((article) => Math.round(article.getBoundingClientRect().width));

@@ -314,6 +314,7 @@ Swagger 与 Redoc 接受 HTTP(S) 规范 URL 或以 `static/` 为根的路径，�
 空心节点读取 `--td-timeline-surface` 以融入提示块、卡片和标签页表面，轴线采用 `--td-brand-line-strong` 以与 Landing 时间轴保持视觉一致。
 打印时无论屏幕配色如何都切换为纸张调色板令牌（`--td-print-ink`、`--td-print-meta`、`--td-print-table-line`、`--td-print-quote-line`），并避免在定义内部分页。
 构建期检查 `content/check-timeline.html` 在零 JS 运行时的前提下对以下情况按页面路径告警：`{.timeline}` 被空行隔开、落到非 `<dl>` 块上（含关闭 `definitionList` 时），或提示块标题被吞入 `<dl><dt>`；`bin/check-site-markup.py` 同时校验 `markup.goldmark.extensions.definitionList: true`。
+检查按完整的 `timeline` 类名匹配，也会跳过任意长度代码围栏中的示例。
 由于 Hugo 没有 `<dl>` 渲染钩子，`<dl class="timeline">` 上的属性（与 `.steps` 相同）沿用 Goldmark 默认过滤规则：剥离 `on*` 事件，但放行 `style`。
 
 带 `{.update}` 标记的标题就是一条更新日志条目，另外接受字符串型 `date`（`YYYY`、`YYYY-MM` 或合法日历 `YYYY-MM-DD`，渲染为 `<time datetime>`）与字符串型 `tags`（支持 `,` 与中文全角 `，` 分隔的纯文本，渲染为中性 chip）。
@@ -327,13 +328,15 @@ Goldmark 会给每个标题加上 `id` 属性，因此当该 id 是唯一属性�
 视频接受 `caption`、`num`（Book `fig` 目标）、`id`、`poster`、`track`（一个页面语言的 WebVTT 文件；本地资源保留查询参数；远程 `track` URL 会在 `<video>` 上输出 `crossorigin="anonymous"`）、`autoplay`、`width` 与 `height`（须为成对正整数；只设定容器宽高比，不覆盖海报 `<img>` 的固有尺寸）。音频接受 `caption`、`id` 与 `preload`（`metadata` 或 `none`；同页前 6 个音频默认 `metadata`，第 7 个起默认 `none`；`id` 与同页另一个无编号音视频 figure 或编号 Book 目标重复时告警，无论谁先出现都从后出现的一方丢弃；不与标题或普通图片的 ID 比较）。音频 figure 不携带 `.td-figure`，将方括号文字显示为可见标题，并通过 `aria-labelledby`（带说明时另加 `aria-describedby`）关联到 `<audio>`；在 `content/render-block.html` 内会自动重写生成的 ID 作用域。
 `autoplay=true` 输出 `muted loop playsinline`，但不输出 `autoplay` 属性；`js/chunks/media.js` 只在视频至少一半可见时播放，读者要求减少动态效果时绝不播放，离开视口即暂停。原生控件始终保留。页面上有两个及以上 `<audio>` 或 `<video>` 播放器时，`js/chunks/media.js` 同时负责同页互斥播放：播放器变为有声时（带声音开始播放，或正在播放时被取消静音；在捕获阶段监听 `play` 与 `volumechange`），会暂停页面上其它所有有声播放器；点击展开已启用的平台视频卡片时也会先暂停本地有声播放器。静音或音量为 0 的播放器（包括自动播放循环与作者自写的静音循环）既不打断别人也不被打断；跨域 iframe 中的平台播放器此后无法被本地播放器暂停。只有一个音频播放器的页面不加载脚本。
 平台 URL 渲染为链接卡片（YouTube `/shorts/` 在未给海报或尺寸时默认按 `9:16` 占位；空名称回退为观看地址；Draw.io 跳过 `a.td-media-card` 内的图片，其他带链接的图片照常检测）。卡片以 `--td-media-ratio` 携带比例，`media.css` 据此为卡片及替换它的播放器推导宽高比与 `min(100%, 80vh × 比例)` 的宽度上限；支持容器单位时，比例改为按 figure 宽度计算的最小高度，换行的长标题在各引擎中都会撑高卡片。对 `params.video_embeds` 列出的平台，普通点击会加载带沙箱的播放器 iframe（`allow="autoplay; picture-in-picture; fullscreen"`、`sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox"`），其 URL 由主题根据校验过的 ID 推导（`youtube-nocookie.com`、带 `danmaku=0` 的 Bilibili、带 `dnt=1` 的 Vimeo，支持 `youtube-nocookie.com`、`music.youtube.com`、`player.vimeo.com`、Vimeo `?h=`/`#t=`、`b23.tv/BV…`、Bilibili 嵌入代码地址 `player.bilibili.com/player.html?bvid=…|aid=…` 与十进制前导零时间戳）；点击之前不发出任何请求。
+Bilibili 嵌入地址带有正十进制整数 `cid` 时，播放器保留该分 P 的内容 ID，其余情况使用 `p` 选择分 P。作者提供的海报会从指定的 URL 独立加载。
 行内媒体渲染为链接。专用 Print 输出带可见 `.td-media__link` URL 的静态 figure（包含平台观看地址）；直接用浏览器打印 HTML 页面时则显示屏幕上隐藏的 `.td-media__url` 行，并在 `@media print` 下无论屏幕主题如何都重置为纸张调色板，卡片替换为 iframe 后仍保留回退地址；RSS 为视频/平台输出静态 figure（含观看地址与真实海报尺寸），为音频将标题直接链接到绝对文件 URL；Markdown 保留作者写下的那一行；`rich-copy.js` 保留起始对齐与可点击录音 URL（未点击的平台卡片不重复输出 URL，点击替换后仍保留回退地址）。不带 `.td-figure` 的媒体 figure 通过 `:where(.td-media):not(.td-figure)` 保持 1.5rem/1.75rem 外边距，比 Bootstrap 的 `figure` 重置多一级类选择器权重。连续音频 figure（间距 16px）以及紧随其后的 `.td-callout--details` 文字稿（间距 8px）通过 `:has()` 正向边距编组，使音频与文字稿的间距小于相邻两组之间的间距（24px）。
 
 `social` 只用页面内容引用一条帖子，参数为 `author`、`handle`、`avatar`、`date`、`url` 与 `platform`（顶层卡片默认 `x`，嵌套引用默认 `none`，另有 `bluesky`、`mastodon`、`threads`、`weibo`、`zhihu`、`telegram`、`linkedin`，决定图标以及向辅助技术播报、写入 Markdown 与 RSS 的平台名；嵌套省略 `platform` 时同时省略图标与视觉隐藏平台名，显式指定则两者同时呈现）。
 参数校验字符串类型并拒绝未知或位置参数；`avatar` 以 `parameter="avatar"` 经过 `content/image-resolve.html`，并在项目自己的 `static/` 目录存在时，对解码、规范化后在该目录中找不到的静态头像离线告警，告警 ID 为可关闭的 `social:avatar-static`（检查看不到模块挂载与自定义 `staticDir`）；用 `..` 越出站点根目录的静态路径总是告警。无头像时，先剥离开头的 `@`、Unicode 空白、控制字符与不可见格式字符，再按首个字素簇绘制首字符（剥离后为空时回退人物图标）。
+作者显式填写远程头像或附件地址时，读者的浏览器会在显示时请求该资源。
 `date` 仅在 `YYYY-MM`，或 `YYYY-MM-DD` 带可选 `HH:MM[:SS]` 与可选 `Z`／`±HH:MM`，且为真实日历日期时输出 `<time datetime>`，否则输出 `<span class="td-social__date">`；`url` 仅对外链输出 `rel="external"`。
 正文是 Markdown，图片、`gallery` 围栏（在卡片内采用适配预设圆角的紧凑网格）与嵌套 `social`（超过一层时告警）都在正文中组合；HTML 在 RTL 下对账号名和 ISO 时间戳执行 LTR 双向隔离，打印时无论屏幕配色都映射至 `--td-print-*` 纸张令牌，并在原帖链接中附加视觉隐藏的作者名上下文。
-Markdown 通过上下文感知的行内转义（`content/markdown-escape-inline.html`）与行内代码账号名生成可读引用块，并在其后留一个空行，使相邻卡片保持为独立的引用；RSS 在仅含链接的卡片上省略空 `<blockquote>` 并补全站内相对 URL。
+Markdown 通过上下文感知的行内转义（`content/markdown-escape-inline.html`）与行内代码账号名生成可读引用块，并在其后留一个空行，使相邻卡片保持为独立的引用；RSS 在仅含链接的卡片上省略空 `<blockquote>`。社交引用和地图地点链接如果只含查询串或片段，RSS 使用原文 HTML 页面的永久链接补全地址。
 缺少 `author` 与 `handle` 时，有正文则渲染为普通引用块（`url` 只保留为 `cite`，Markdown 中省略；`date`、`platform` 与 `avatar` 被忽略），空正文且有 `url` 则在全部四种输出中渲染含原帖链接的引用块并发出单条告警；正文与 `url` 皆空时不输出。Hugo 内置的 `x` 短代码不被覆盖。
 
 `map` 围栏承载一个 YAML 或 JSON 地点列表（`name`、`lat`、`lng`、`text`、`image`、`link`），按名称以 YAML 解析，而不是靠内容猜测格式。围栏属性为 `caption`、`route`、`zoom`（1–22 无前导零整数）、`height`、`id` 以及相邻标签页的键。

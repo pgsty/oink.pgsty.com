@@ -382,6 +382,13 @@ keys in three groups of ten, and the shortcut help lists them in this order:
 | Actions | `/` and `f` search, `c` and `` ` `` commands, `u` edit, `n` child page, `i` docs issue, `o` fold all, `p` print, `[` ChatGPT, `]` Claude, `\` Gemini |
 | View | `b` Duo View, `z` Zen Mode, `m` Markdown source, `t` preset, `y` color mode, `l` index layout, `;` gallery layout, `,`/`.` gallery size (`<`/`>` too), `-`/`=` reading width (`+` too), `'` help |
 
+Readers can disable global character shortcuts in the help dialog or at the
+focus stop following the skip link. The latter also serves footerless pages
+and pages with only local search. The preference covers the palette's bare
+punctuation keys. Ctrl/Cmd+K and native focus and activation keys still work.
+The browser stores the choice under `td-single-key-shortcuts:` plus the
+encoded site base path. With storage unavailable, the switch works for the current page.
+
 Scopes:
 
 - Tree keys need `#td-sidebar-menu` outside Zen Mode. Up/Down/Left/Right act
@@ -453,7 +460,7 @@ history, help, and "Click for all shortcuts". A click opens the dialog. With
 Browsing history is local. `history.js` records each HTML page load except the
 404 page as `{url, title, time}`: the path and query without the fragment, the
 `og:title` or document title, and the visit time. Entries live in
-`localStorage` under `td-history:` plus the site base path (`"/" | relURL`),
+`localStorage` under `td-history:` plus the URL-encoded path of `Site.BaseURL` with its trailing slash (for example, `td-history:/manual/` for every language of that site),
 newest first, unique by URL and capped at 100; entries outside the base path
 or malformed ones are dropped, never repaired. The list is never transmitted.
 `h` or the palette-only `browse_history` action, available when

@@ -37,7 +37,7 @@ LLMS 索引： [llms.txt](/zh/llms.txt)
 | [画廊](/zh/docs/components/gallery/) | 一组图片，在同一个缩放对话框里翻看 | ```` ```gallery ```` | 围栏 | 需站点开关 |
 | [视频](/zh/docs/components/video/) | 视频文件、循环演示、YouTube 与 Bilibili 卡片 | `![名称](demo.mp4)` | 原生 | 按页加载；播放器需站点开关 |
 | [音频](/zh/docs/components/audio/) | 播客单集与语音样例，带标题的原生播放器 | `![名称](episode.mp3)` | 原生 | 单个无；两个及以上按页加载 |
-| [社交帖子](/zh/docs/components/social/) | 把社交平台的帖子引用进页面，不抓取任何内容 | `{{< social author="…" >}}` | shortcode | 无 |
+| [社交帖子](/zh/docs/components/social/) | 在页面中引用帖子，无需向社交平台取回原帖 | `{{< social author="…" >}}` | shortcode | 无 |
 | [地图](/zh/docs/components/map/) | 地点列表，启用后上方附带交互地图 | ```` ```map ```` | 围栏 | 需站点开关 |
 | [徽章](/zh/docs/components/badge/) | 名字旁边一两个词的状态，例如 Beta | `{{< badge text="Beta" >}}` | shortcode | 无 |
 | [按键](/zh/docs/components/kbd/) | 键名与快捷键 | `{{< kbd "Ctrl" "K" >}}` | shortcode | 无 |
@@ -113,7 +113,7 @@ markup:
 - [画廊](/zh/docs/components/gallery/): 用 `gallery` 围栏把一组相关截图排成响应式网格，每张图可以带说明或链接。
 - [视频](/zh/docs/components/video/): 在页面里放产品演示、屏幕录制和代替 GIF 的静音循环短片，并为 YouTube、Bilibili、Vimeo 上的视频生成卡片，读者点击之前不联系任何平台。
 - [音频](/zh/docs/components/audio/): 用图片语法把播客单集、语音样例或讲座录音放进页面，渲染为带标题的原生播放器，文字稿紧随其后。
-- [社交帖子](/zh/docs/components/social/): 用 `social` 短代码引用 X、Bluesky、Mastodon 等平台上的帖子。卡片内容写在页面里，不抓取任何数据，也不加载脚本。
+- [社交帖子](/zh/docs/components/social/): 用 `social` 短代码引用 X、Bluesky、Mastodon 等平台上的帖子。正文和署名都写在页面里，无需平台脚本。
 - [地图](/zh/docs/components/map/): 在 `map` 围栏里列出地点，任何输出都得到带编号的地点列表；站点指定瓦片服务后，网页上还会多一张交互地图。
 - [徽章](/zh/docs/components/badge/): 用五种语义 tone 之一，给功能名、版本号或表格单元格标上 Beta、已弃用这类简短状态。
 - [按键](/zh/docs/components/kbd/): 用 `kbd` 写快捷键：一个 shortcode 接一串按键名，输出语义化的按键序列，打印与 Markdown 输出里同样可读。

@@ -53,7 +53,7 @@ for it: **none**, **per page** (only on pages that use it), or **site switch**
 | [Gallery](/docs/components/gallery/) | A set of images browsed in one shared zoom dialog | ```` ```gallery ```` | fence | site switch |
 | [Video](/docs/components/video/) | Video files, looping demos, YouTube and Bilibili cards | `![name](demo.mp4)` | native | per page; players need a site switch |
 | [Audio](/docs/components/audio/) | Podcast episodes and voice samples in a titled native player | `![name](episode.mp3)` | native | none for one; per page for two+ |
-| [Social posts](/docs/components/social/) | A social media post quoted in the page, with nothing fetched | `{{</* social author="…" */>}}` | shortcode | none |
+| [Social posts](/docs/components/social/) | Quote a social post without contacting its platform | `{{</* social author="…" */>}}` | shortcode | none |
 | [Map](/docs/components/map/) | Places as a list, plus an interactive map when enabled | ```` ```map ```` | fence | site switch |
 | [Badge](/docs/components/badge/) | A one- or two-word status beside a name, such as Beta | `{{</* badge text="Beta" */>}}` | shortcode | none |
 | [Kbd](/docs/components/kbd/) | Key names and keyboard shortcuts | `{{</* kbd "Ctrl" "K" */>}}` | shortcode | none |

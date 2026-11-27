@@ -1,7 +1,7 @@
 ---
 title: Social posts
 linkTitle: Social posts
-description: Quote a post from X, Bluesky, Mastodon, or another platform with the `social` shortcode. The card is written in the page, so nothing is fetched and no script loads.
+description: Quote a post from X, Bluesky, Mastodon, or another platform with the `social` shortcode. The page supplies the quote and attribution without a platform script.
 weight: 176
 search_keywords: [social, social post, quote a post, tweet, X, Twitter, Bluesky, Mastodon, Threads, Weibo, Zhihu, Telegram, LinkedIn, offline embed, avatar, quoted post]
 image_zoom: true
@@ -10,9 +10,8 @@ image_zoom: true
 When an article cites something posted on X, Mastodon or another network, the
 `social` shortcode quotes it as a card: avatar, name, handle, platform icon,
 the post text and a dated link to the original. You write all of it into the
-page, so nothing is fetched at build time or in the reader's browser, no
-script loads, and the quote stays readable after the original is edited or
-deleted. The card takes its colors from the site's preset and color scheme.
+page, so the quoted text stays readable after the original is edited or deleted.
+A local avatar and local attachments keep the card entirely on your site. The card takes its colors from the site's preset and color scheme.
 To quote a book or a paper, an ordinary Markdown blockquote is enough.
 
 ## Shortest form {#minimal}
@@ -21,13 +20,15 @@ A card needs `author` or `handle`, and a body with the post text in Markdown.
 
 ````markdown {title="Source"}
 {{</* social author="Mara Lindqvist" handle="@mara_dba" */>}}
-Upgraded our reporting cluster to PostgreSQL 18 over the weekend. pg_upgrade with --link took four minutes.
+Upgraded our reporting cluster to PostgreSQL 18 over the weekend. `pg_upgrade --link` took four minutes.
 {{</* /social */>}}
 ````
 
-{{< social author="Mara Lindqvist" handle="@mara_dba" >}}
-Upgraded our reporting cluster to PostgreSQL 18 over the weekend. pg_upgrade with --link took four minutes.
-{{< /social >}}
+{{< social-preview unavailable="The examples show their source here. Live cards require the social shortcode introduced after OINK 1.6.0." >}}
+{{</* social author="Mara Lindqvist" handle="@mara_dba" */>}}
+Upgraded our reporting cluster to PostgreSQL 18 over the weekend. `pg_upgrade --link` took four minutes.
+{{</* /social */>}}
+{{< /social-preview >}}
 
 Without `avatar`, the card draws the first character (preserving emoji and
 combining marks, after removing leading `@`, spaces, and invisible characters
@@ -50,16 +51,18 @@ name, and **no gradients**.
 {{</* /social */>}}
 ````
 
-{{< social author="Jun Okada" handle="@jun_draws" avatar="/favicon.svg"
-           date="2026-11-23" url="https://example.com/jun_draws/status/1001" >}}
+{{< social-preview >}}
+{{</* social author="Jun Okada" handle="@jun_draws" avatar="/favicon.svg"
+           date="2026-11-23" url="https://example.com/jun_draws/status/1001" */>}}
 Finished the wordmark for the documentation site: a fountain-pen nib, a serif
 name, and **no gradients**.
 
 ![The Oink wordmark beside a round fountain-pen logo](/images/oink.webp)
-{{< /social >}}
+{{</* /social */>}}
+{{< /social-preview >}}
 
 - `avatar` resolves like any image. A value with a URL scheme is a remote
-  image, never fetched. Any other value is looked up as a page resource (or a
+  image that the reader’s browser loads directly. Any other value is looked up as a page resource (or a
   resource of the section's branch bundle), then a global resource in
   `assets/`, and otherwise used as a path to the site's static files. Prefer
   page or `assets/` resources, which the build always finds. The name sits
@@ -101,7 +104,7 @@ own interface. Use `none` when quoting a platform that has no icon here.
 ````markdown {title="Source"}
 {{</* social author="Mara Lindqvist" handle="@mara@fosstodon.example" platform="mastodon"
            date="2026-11-20 08:30" url="https://example.com/@mara/1002" */>}}
-Cross-posting the upgrade notes here: pg_upgrade with --link, four minutes of downtime, no surprises.
+Cross-posting the upgrade notes here: `pg_upgrade --link`, four minutes of downtime, no surprises.
 {{</* /social */>}}
 
 {{</* social handle="@pgnotes.example" platform="bluesky" */>}}
@@ -109,14 +112,16 @@ Vacuum is not optional. Neither is watching it.
 {{</* /social */>}}
 ````
 
-{{< social author="Mara Lindqvist" handle="@mara@fosstodon.example" platform="mastodon"
-           date="2026-11-20 08:30" url="https://example.com/@mara/1002" >}}
-Cross-posting the upgrade notes here: pg_upgrade with --link, four minutes of downtime, no surprises.
-{{< /social >}}
+{{< social-preview >}}
+{{</* social author="Mara Lindqvist" handle="@mara@fosstodon.example" platform="mastodon"
+           date="2026-11-20 08:30" url="https://example.com/@mara/1002" */>}}
+Cross-posting the upgrade notes here: `pg_upgrade --link`, four minutes of downtime, no surprises.
+{{</* /social */>}}
 
-{{< social handle="@pgnotes.example" platform="bluesky" >}}
+{{</* social handle="@pgnotes.example" platform="bluesky" */>}}
 Vacuum is not optional. Neither is watching it.
-{{< /social >}}
+{{</* /social */>}}
+{{< /social-preview >}}
 
 The second card is quoted by handle alone, so it has no name, date or link.
 Screen readers hear the platform name, which the card carries as visually
@@ -152,14 +157,16 @@ One home page, two color schemes:
 {{</* /social */>}}
 ````
 
-{{< social author="Mara Lindqvist" handle="@mara_dba" avatar="/favicon.svg" date="2026-11-24" >}}
+{{< social-preview >}}
+{{</* social author="Mara Lindqvist" handle="@mara_dba" avatar="/favicon.svg" date="2026-11-24" */>}}
 One home page, two color schemes:
 
 ```gallery
 ![The OINK home page in light mode](/images/hero-light.webp)
 ![The OINK home page in dark mode](/images/hero-dark.webp)
 ```
-{{< /social >}}
+{{</* /social */>}}
+{{< /social-preview >}}
 
 Footnote references warn in the body, as in every shortcode body, so keep
 footnotes in the page's own Markdown.
@@ -185,15 +192,17 @@ A backup you have never restored is a hope, not a backup.
 {{</* /social */>}}
 ````
 
-{{< social author="Mara Lindqvist" handle="@mara_dba" avatar="/favicon.svg"
-           date="2026-11-25" url="https://example.com/mara_dba/status/1003" >}}
+{{< social-preview >}}
+{{</* social author="Mara Lindqvist" handle="@mara_dba" avatar="/favicon.svg"
+           date="2026-11-25" url="https://example.com/mara_dba/status/1003" */>}}
 This is why the restore drill stays on our calendar.
 
-{{< social author="Theo Brandt" handle="@theo_ops"
-           date="2026-11-24" url="https://example.com/theo_ops/status/2001" >}}
+{{</* social author="Theo Brandt" handle="@theo_ops"
+           date="2026-11-24" url="https://example.com/theo_ops/status/2001" */>}}
 A backup you have never restored is a hope, not a backup.
-{{< /social >}}
-{{< /social >}}
+{{</* /social */>}}
+{{</* /social */>}}
+{{< /social-preview >}}
 
 ## Missing or invalid input {#degraded}
 
@@ -251,8 +260,6 @@ lists or quoted posts; images and quoted posts go in the body.
 
 ## Limits {#limits}
 
-- Nothing is fetched: you copy the text and save the avatar and media
-  yourself, and the theme stores nothing beyond what you wrote into the page.
 - What you may quote, and which avatars and media you keep in the repository,
   is your decision. When the original no longer resolves, remove `url`; the
   quote itself stays.
@@ -267,8 +274,7 @@ lists or quoted posts; images and quoted posts go in the body.
 - The static avatar check reads only the project's own `static/` directory,
   and only when it exists. A file that a module mount or a custom `staticDir`
   publishes also warns; list `social:avatar-static` under the site's
-  `ignoreLogs` to silence that warning. Remote avatar URLs are never fetched
-  or checked. Prefer page-bundle or `assets/` images and inspect the rendered
+  `ignoreLogs` to silence that warning. The build skips remote avatar checks. Prefer page-bundle or `assets/` images and inspect the rendered
   card before publishing.
 
 ## Related {#related}

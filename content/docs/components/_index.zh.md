@@ -41,7 +41,7 @@ no_list: true
 | [画廊](/zh/docs/components/gallery/) | 一组图片，在同一个缩放对话框里翻看 | ```` ```gallery ```` | 围栏 | 需站点开关 |
 | [视频](/zh/docs/components/video/) | 视频文件、循环演示、YouTube 与 Bilibili 卡片 | `![名称](demo.mp4)` | 原生 | 按页加载；播放器需站点开关 |
 | [音频](/zh/docs/components/audio/) | 播客单集与语音样例，带标题的原生播放器 | `![名称](episode.mp3)` | 原生 | 单个无；两个及以上按页加载 |
-| [社交帖子](/zh/docs/components/social/) | 把社交平台的帖子引用进页面，不抓取任何内容 | `{{</* social author="…" */>}}` | shortcode | 无 |
+| [社交帖子](/zh/docs/components/social/) | 在页面中引用帖子，无需向社交平台取回原帖 | `{{</* social author="…" */>}}` | shortcode | 无 |
 | [地图](/zh/docs/components/map/) | 地点列表，启用后上方附带交互地图 | ```` ```map ```` | 围栏 | 需站点开关 |
 | [徽章](/zh/docs/components/badge/) | 名字旁边一两个词的状态，例如 Beta | `{{</* badge text="Beta" */>}}` | shortcode | 无 |
 | [按键](/zh/docs/components/kbd/) | 键名与快捷键 | `{{</* kbd "Ctrl" "K" */>}}` | shortcode | 无 |

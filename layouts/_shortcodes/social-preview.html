@@ -1,0 +1,11 @@
+{{- /* The published pin can predate social. Keep its example source readable
+       on that pin and exercise the theme's own shortcode when available. */ -}}
+{{- $example := .InnerDeindent -}}
+{{- if templates.Exists "_shortcodes/social.html" -}}
+  {{- $markup := .Page.Page.Markup (printf "td-block/social-preview-%d" .Ordinal) -}}
+  {{- $markup.RenderString (dict "display" "block") $example -}}
+{{- else -}}
+  {{- with .Get "unavailable" -}}
+    {{- if eq ($.Page.Store.Get "tdOutputFormat") "markdown" }}{{ . }}{{ else }}<p>{{ . }}</p>{{ end -}}
+  {{- end -}}
+{{- end -}}

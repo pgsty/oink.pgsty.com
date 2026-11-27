@@ -311,6 +311,12 @@ Comments load in an iframe, so their keystrokes never reach the page.
 
 ## Turning it off {#disable}
 
+To turn off single-key shortcuts for yourself, open shortcut help and uncheck
+**Single-key shortcuts**. At the start of any page with these shortcuts, Tab
+past **Skip to content** to reach the same checkbox. This also works on pages
+without a footer. Space toggles the checkbox. Your choice applies across the
+site’s languages in this browser. Ctrl+K or ⌘K still opens the search palette.
+
 Site-wide:
 
 ```yaml {title="hugo.yml"}

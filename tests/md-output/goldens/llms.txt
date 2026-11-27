@@ -55,7 +55,7 @@
   - [Gallery](http://localhost/docs/components/gallery/index.md): Lay out a set of related screenshots as a responsive grid with a `gallery` fence, each with an optional description or link.
   - [Video](http://localhost/docs/components/video/index.md): Embed product demos, screen recordings and muted loops that replace GIFs, and link YouTube, Bilibili or Vimeo talks without contacting the platform until a reader clicks.
   - [Audio](http://localhost/docs/components/audio/index.md): Put a podcast episode, voice sample or recorded talk on a page with image syntax, as a titled native player with its transcript beside it.
-  - [Social posts](http://localhost/docs/components/social/index.md): Quote a post from X, Bluesky, Mastodon, or another platform with the `social` shortcode. The card is written in the page, so nothing is fetched and no script loads.
+  - [Social posts](http://localhost/docs/components/social/index.md): Quote a post from X, Bluesky, Mastodon, or another platform with the `social` shortcode. The page supplies the quote and attribution without a platform script.
   - [Maps](http://localhost/docs/components/map/index.md): List places in a `map` fence to get a numbered place list everywhere, plus an interactive map once the site names a tile service.
   - [Badge](http://localhost/docs/components/badge/index.md): Mark a feature, version or table cell with a short status label such as Beta or deprecated, in one of five semantic tones.
   - [Kbd](http://localhost/docs/components/kbd/index.md): Use `kbd` with one key name per parameter to display a semantic key sequence. Instructions remain readable in print and Markdown.

@@ -1,13 +1,13 @@
 ---
 title: 社交帖子
 linkTitle: 社交帖子
-description: 用 `social` 短代码引用 X、Bluesky、Mastodon 等平台上的帖子。卡片内容写在页面里，不抓取任何数据，也不加载脚本。
+description: 用 `social` 短代码引用 X、Bluesky、Mastodon 等平台上的帖子。正文和署名都写在页面里，无需平台脚本。
 weight: 176
 search_keywords: [社交帖子, 引用帖子, 推文, 微博, 知乎, Telegram, 离线嵌入, 头像, 引用帖, social, tweet, X, Twitter, Bluesky, Mastodon, Threads, Weibo, Zhihu, LinkedIn]
 image_zoom: true
 ---
 
-文章要引用某人在 X、Mastodon 或其他平台上发的帖子时，`social` 短代码把它引用成一张卡片：头像、名字、账号、平台图标、帖子正文，以及带日期的原帖链接。这些内容全部由你写进页面，构建期和读者浏览器里都不抓取任何数据，也不加载脚本；原帖被修改或删除后，引用依然可读。卡片的颜色跟随站点的预设与深浅色。引用书籍或论文的段落，用普通的 Markdown 引用块就够了。
+文章要引用某人在 X、Mastodon 或其他平台上发的帖子时，`social` 短代码把它引用成一张卡片：头像、名字、账号、平台图标、帖子正文，以及带日期的原帖链接。引用文字保存在页面中，原帖被修改或删除后仍可阅读。头像和附件也使用本地文件时，整张卡片都由自己的站点提供。卡片的颜色跟随站点的预设与深浅色。引用书籍或论文的段落，用普通的 Markdown 引用块就够了。
 
 ## 最简例子 {#minimal}
 
@@ -15,13 +15,15 @@ image_zoom: true
 
 ````markdown {title="源码"}
 {{</* social author="林舒" handle="@linshu_dba" */>}}
-周末把报表集群升级到了 PostgreSQL 18，pg_upgrade 加 --link，四分钟搞定。
+周末把报表集群升级到了 PostgreSQL 18，`pg_upgrade --link`，四分钟搞定。
 {{</* /social */>}}
 ````
 
-{{< social author="林舒" handle="@linshu_dba" >}}
-周末把报表集群升级到了 PostgreSQL 18，pg_upgrade 加 --link，四分钟搞定。
-{{< /social >}}
+{{< social-preview unavailable="本页保留了示例源码。构建文档站的主题包含 OINK 1.6.0 之后新增的 social 短代码时，示例也会显示为卡片。" >}}
+{{</* social author="林舒" handle="@linshu_dba" */>}}
+周末把报表集群升级到了 PostgreSQL 18，`pg_upgrade --link`，四分钟搞定。
+{{</* /social */>}}
+{{< /social-preview >}}
 
 没有 `avatar` 时，卡片在圆形里画出 `author`（或 `handle`）的第一个字符（先去掉开头的 `@`、空白以及零宽空格等不可见字符，保留完整 emoji 与组合字符；去掉后没有可见字符时回退到人物图标），不会去请求默认头像或 Gravatar。顶层卡片省略 `platform` 时显示 X 图标。参数只接受命名形式，位置参数会告警并被忽略。
 
@@ -38,14 +40,16 @@ image_zoom: true
 {{</* /social */>}}
 ````
 
-{{< social author="冈田纯" handle="@jun_draws" avatar="/favicon.svg"
-           date="2026-11-23" url="https://example.com/jun_draws/status/1001" >}}
+{{< social-preview >}}
+{{</* social author="冈田纯" handle="@jun_draws" avatar="/favicon.svg"
+           date="2026-11-23" url="https://example.com/jun_draws/status/1001" */>}}
 文档站的字标画好了：一支钢笔笔尖，一行衬线字，**不用渐变**。
 
 ![Oink 字标，旁边是圆形的钢笔徽标](/images/oink.webp)
-{{< /social >}}
+{{</* /social */>}}
+{{< /social-preview >}}
 
-- `avatar` 按普通图片的规则解析：带 URL 协议的值是远程图片，从不抓取；其他值依次查找页面资源（或所在栏目分支包的资源）、`assets/` 下的全局资源，都找不到时作为站点静态文件的路径使用。建议优先使用页面资源或 `assets/`，构建期一定能找到。名字就在旁边，所以头像是装饰图（`alt=""`）。卡片把它缩小并裁切填满头像框，最好用方图。
+- `avatar` 按普通图片的规则解析：远程图片由读者的浏览器直接加载；其他值依次查找页面资源（或所在栏目分支包的资源）、`assets/` 下的全局资源，都找不到时作为站点静态文件的路径使用。建议优先使用页面资源或 `assets/`，构建期一定能找到。名字就在旁边，所以头像是装饰图（`alt=""`）。卡片把它缩小并裁切填满头像框，最好用方图。
 - `date` 是纯文本，按原样显示。写成年月（`2026-11`）、日期（`2026-11-23`），或带时分、可选秒数和可选 `Z`／`±HH:MM` 时区偏移的日期时间（`2026-11-23 08:30`、`2026-11-23T08:30:00+08:00`），并且是真实存在的日历日期时，会生成机器可读的 `<time datetime>`；时间前的空格在属性里写成 `T`。其他写法，包括带小数秒或 `+0800` 偏移的，都按纯文本输出，不套 `<time>`。
 - `url` 让日期这一行变成“查看原帖”链接。支持原帖的 HTTP(S) 地址（附带 `rel="external"`）或站内路径，无效的 URL 会告警并被丢弃。它是可选的，原帖已经不在了也照样可以引用。
 - 附图就是普通的 Markdown 图片。本页开启了[图片缩放](/zh/docs/components/image/#zoom)，点击可以看大图。
@@ -69,7 +73,7 @@ image_zoom: true
 ````markdown {title="源码"}
 {{</* social author="林舒" handle="@linshu@fosstodon.example" platform="mastodon"
            date="2026-11-20 08:30" url="https://example.com/@linshu/1002" */>}}
-升级笔记也同步到这里：pg_upgrade 加 --link，停机四分钟，一切顺利。
+升级笔记也同步到这里：`pg_upgrade --link`，停机四分钟，一切顺利。
 {{</* /social */>}}
 
 {{</* social handle="@pgnotes.example" platform="bluesky" */>}}
@@ -77,14 +81,16 @@ VACUUM 不是可选项，盯着它也不是。
 {{</* /social */>}}
 ````
 
-{{< social author="林舒" handle="@linshu@fosstodon.example" platform="mastodon"
-           date="2026-11-20 08:30" url="https://example.com/@linshu/1002" >}}
-升级笔记也同步到这里：pg_upgrade 加 --link，停机四分钟，一切顺利。
-{{< /social >}}
+{{< social-preview >}}
+{{</* social author="林舒" handle="@linshu@fosstodon.example" platform="mastodon"
+           date="2026-11-20 08:30" url="https://example.com/@linshu/1002" */>}}
+升级笔记也同步到这里：`pg_upgrade --link`，停机四分钟，一切顺利。
+{{</* /social */>}}
 
-{{< social handle="@pgnotes.example" platform="bluesky" >}}
+{{</* social handle="@pgnotes.example" platform="bluesky" */>}}
 VACUUM 不是可选项，盯着它也不是。
-{{< /social >}}
+{{</* /social */>}}
+{{< /social-preview >}}
 
 第二张卡片只用账号引用，所以没有名字、日期和链接。图标是装饰性的，读屏器读到的是平台名称，卡片把它作为视觉隐藏文字放在图标旁边（`platform="none"` 时省略）。未知或空的 `platform` 会告警并回退到 `x`（嵌套卡片回退到 `none`）。`handle` 完全按原样显示，主题既不补 `@`，也没有各平台的账号规则：X 写 `@name`，Mastodon 写 `@user@instance`。
 
@@ -111,14 +117,16 @@ VACUUM 不是可选项，盯着它也不是。
 {{</* /social */>}}
 ````
 
-{{< social author="林舒" handle="@linshu_dba" avatar="/favicon.svg" date="2026-11-24" >}}
+{{< social-preview >}}
+{{</* social author="林舒" handle="@linshu_dba" avatar="/favicon.svg" date="2026-11-24" */>}}
 同一个首页，两种配色：
 
 ```gallery
 ![浅色模式下的 OINK 首页](/images/hero-light.webp)
 ![深色模式下的 OINK 首页](/images/hero-dark.webp)
 ```
-{{< /social >}}
+{{</* /social */>}}
+{{< /social-preview >}}
 
 正文里的脚注引用会告警，这一点与所有短代码正文相同，脚注请写在页面自己的 Markdown 里。
 
@@ -138,15 +146,17 @@ VACUUM 不是可选项，盯着它也不是。
 {{</* /social */>}}
 ````
 
-{{< social author="林舒" handle="@linshu_dba" avatar="/favicon.svg"
-           date="2026-11-25" url="https://example.com/linshu_dba/status/1003" >}}
+{{< social-preview >}}
+{{</* social author="林舒" handle="@linshu_dba" avatar="/favicon.svg"
+           date="2026-11-25" url="https://example.com/linshu_dba/status/1003" */>}}
 所以我们的日历上一直留着恢复演练。
 
-{{< social author="周远" handle="@zhouyuan_ops"
-           date="2026-11-24" url="https://example.com/zhouyuan_ops/status/2001" >}}
+{{</* social author="周远" handle="@zhouyuan_ops"
+           date="2026-11-24" url="https://example.com/zhouyuan_ops/status/2001" */>}}
 从没恢复过的备份只是一个愿望，算不上备份。
-{{< /social >}}
-{{< /social >}}
+{{</* /social */>}}
+{{</* /social */>}}
+{{< /social-preview >}}
 
 ## 缺失与无效输入 {#degraded}
 
@@ -191,13 +201,12 @@ Hugo 自带一个 `x` 短代码 `{{</* x user="…" id="…" */>}}`，OINK 不�
 
 ## 限制与常见问题 {#limits}
 
-- 不抓取任何数据：正文要自己复制，头像和媒体要自己保存。卡片只显示你写进页面的内容，主题自己不存任何东西。
 - 可以引用什么、在仓库里保留哪些头像和媒体，由你自己决定。原帖链接失效时删掉 `url` 即可，引用本身仍然保留。
 - 没有点赞、转发、浏览量和认证徽章，因为这些数字只是快照，很快就会过时。
 - 各平台只有图标不同，没有按平台区分的皮肤或品牌色。
 - 不支持串帖、回复与投票。要引用多条帖子，就写多张卡片。
 - 参数都是纯文本，`author`、`handle`、`date` 里的 Markdown 按字面显示。
-- 静态头像检查只读项目自己的 `static/` 目录，而且只在该目录存在时进行。由模块挂载或自定义 `staticDir` 发布的文件同样会告警，可在站点配置的 `ignoreLogs` 中加入 `social:avatar-static` 关闭这条告警。远程头像 URL 从不抓取或校验；建议优先使用页面包或 `assets/` 图片，并在发布前查看渲染结果。
+- 静态头像检查只读项目自己的 `static/` 目录，而且只在该目录存在时进行。由模块挂载或自定义 `staticDir` 发布的文件同样会告警，可在站点配置的 `ignoreLogs` 中加入 `social:avatar-static` 关闭这条告警。构建时跳过远程头像检查；建议优先使用页面包或 `assets/` 图片，并在发布前查看渲染结果。
 
 ## 相关 {#related}
 

@@ -162,9 +162,8 @@ A YouTube, Bilibili or Vimeo URL renders as a card:
 {caption="OSChina talks with this site's author about Pigsty, 2022"}
 
 The card is one link to the watch page, showing the `poster` or a plain
-surface, a play glyph, the bracket text and the platform name. Rendering it
-contacts no one: there is no iframe, no platform script and no thumbnail
-request. This site has opted Bilibili in, so a click on the card above loads
+surface, a play glyph, the bracket text and the platform name. The browser loads any poster you supply from its URL.
+The card fetches no platform thumbnail or player before activation. This site has opted Bilibili in, so a click on the card above loads
 the player in place; see [the next section](#embeds).
 
 The accepted URLs:
@@ -177,8 +176,8 @@ The accepted URLs:
 - Bilibili: `bilibili.com/video/BV…`, `bilibili.com/video/av…`,
   `b23.tv/BV…` / `b23.tv/av…`, or the `src` of Bilibili's embed code,
   `https://player.bilibili.com/player.html?bvid=…` (or `?aid=…`; prefix the
-  `//` it is copied with by `https:`). `p` picks a part of a multi-part video and `t`
-  sets the start time.
+  `//` it is copied with by `https:`). An embed URL can select a part by its numeric `cid`. Otherwise `p` selects the part by number.
+  `t` sets the start time.
 - Vimeo: `vimeo.com/NUMBER`, `vimeo.com/manage/videos/NUMBER`, or
   `player.vimeo.com/video/NUMBER`, with `/HASH` or `?h=HASH` for an unlisted
   video. `#t=` or `t` sets the start time.

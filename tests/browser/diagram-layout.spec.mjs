@@ -39,6 +39,7 @@ for (const language of ['', '/zh']) {
       'hand-drawn': 'rgb(255, 255, 255)', custom: 'rgb(255, 242, 204)',
     })) {
       const canvas = page.locator(`[data-theme-case="${name}"] [data-td-infographic-canvas]`);
+      await canvas.scrollIntoViewIfNeeded();
       const svg = canvas.locator('svg');
       await expect(svg).toBeVisible();
       await page.evaluate(() => document.fonts.ready);
