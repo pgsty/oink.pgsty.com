@@ -140,5 +140,5 @@ Backlinks:
 - [Blog posts](/docs/write/blog/)
 - [Books](/docs/write/book/)
 - [Writing pages](/docs/write/pages/)
-- [Oink v0.2.0](/release/0.2.0/)
-- [Oink v0.3.0](/release/0.3.0/)
+- [OINK v0.2.0](/release/0.2.0/)
+- [OINK v0.3.0](/release/0.3.0/)

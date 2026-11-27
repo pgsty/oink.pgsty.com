@@ -131,5 +131,5 @@ OINK 1.4.0 启用 PlantUML 后，使用两份随主题提供的脚本在浏览�
 - [博客与文章](/zh/docs/write/blog/)
 - [书籍出版](/zh/docs/write/book/)
 - [编写页面](/zh/docs/write/pages/)
-- [Oink v0.2.0](/zh/release/0.2.0/)
-- [Oink v0.3.0](/zh/release/0.3.0/)
+- [OINK v0.2.0](/zh/release/0.2.0/)
+- [OINK v0.3.0](/zh/release/0.3.0/)
