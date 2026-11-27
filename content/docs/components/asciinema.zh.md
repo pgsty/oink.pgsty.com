@@ -3,7 +3,7 @@ title: Asciinema
 linkTitle: Asciinema
 description: 在页面里嵌入 .cast 终端录像，读者可以播放、暂停并从中复制文字，播放器随主题分发。
 weight: 210
-search_keywords: [Asciinema, 终端录像, cast, asciicast, 录屏, 演示, terminal recording, 播放器]
+search_keywords: [Asciinema, 终端录像, cast, asciicast, 录屏, 演示, terminal recording, 播放器, 章节, markers]
 ---
 
 `asciinema` 在页面里播放一段 `.cast` 终端录像。有些命令行流程看一遍比读一遍更容易明白，例如一次安装、一次迁移、一次耗时很长的构建，这时就用它。与视频不同，录像里的终端输出仍然是文字：读者可以暂停，直接从播放器里复制命令；本页那段六分多钟的安装录像也只有约 196 KB。图形界面的操作请用截图或[视频](/zh/docs/components/video/)。播放器与样式随主题分发，构建期不下载任何东西，运行时也不连接 CDN。
@@ -46,6 +46,21 @@ search_keywords: [Asciinema, 终端录像, cast, asciicast, 录屏, 演示, term
 `speed` 与 `startAt` 是数字，`startAt` 以秒计。`poster` 用播放器的 `npt:` 记法表示时间点，`npt:1:30` 就是第 1 分 30 秒：上面的播放器定格在这一帧，点播放后从第 60 秒开始。
 
 `idleTimeLimit` 把每段静默压缩到最多 N 秒。这段录像不需要它，因为 `.cast` 文件头里已经写了 `idle_time_limit: 0.5`；录制时没有限制静默时长的文件才用得上。
+
+## 章节标记 {#markers}
+
+`markers` 在进度条上标出带名字的章节，读者可以直接跳到长录像里自己要看的那一段。每个章节写成 `时间:标签`，时间以秒计，章节之间用逗号分隔：
+
+```markdown {title="源码"}
+{{</* asciinema file="images/install.cast" title="分章节的 Pigsty 安装" preload="true"
+  markers="5:下载, 26:执行部署剧本, 56:基础设施, 118:PostgreSQL, 169:汇总" */>}}
+```
+
+{{< asciinema file="images/install.cast" title="分章节的 Pigsty 安装" preload="true" markers="5:下载, 26:执行部署剧本, 56:基础设施, 118:PostgreSQL, 169:汇总" >}}
+
+鼠标悬停在标记上可以看到标签；播放器获得焦点时，`[` 与 `]` 跳到上一个、下一个章节。标记要等录像加载后才出现，所以希望读者按下播放前就看到它们时，给 `markers` 配上 `preload="true"`。`pauseOnMarkers="true"` 会在每个章节处暂停，适合让读者一步步看完的演示。
+
+时间按播放器的时钟计算，也就是静默段已经按静默上限（`idleTimeLimit`，或 `.cast` 文件头里的值）压缩之后的时间，所以要从播放器的计时器上读，而不是从 `.cast` 文件里读。标签里可以有冒号，不能有逗号；只写时间的章节没有标签。
 
 ## 尺寸与适配 {#size}
 
@@ -137,14 +152,13 @@ search_keywords: [Asciinema, 终端录像, cast, asciicast, 录屏, 演示, term
 | `loop` | `"true"` / 不写 | 关 | 播完重播 |
 | `preload` | `"true"` / 不写 | 关 | 播放器出现时就取回录像 |
 | `pauseOnMarkers` | `"true"` / 不写 | 关 | 播到章节标记处暂停 |
-| `markers` | `时间:标签,时间:标签` | — | 章节标记；标签到不了播放器，见[限制](#limits) |
+| `markers` | `时间:标签,时间:标签` | — | 进度条上带名字的章节，时间以秒计、按播放器的时钟；见[章节标记](#markers) |
 {.fields meta="type default"}
 
 开关类参数只有值为文本 `true` 时才开启，`loop="true"` 与 `loop=true` 都可以，其它值一律表示关闭。其余参数非法时告警并回退：未知的 `fit` 用 `width`，`speed` 不是正数时用 `1`，`startAt` 不是数字时用 `0`，`cols`、`rows`、`idleTimeLimit` 与标记时间不是数字时忽略。`file` 使用其它 scheme、写成协议相对的 `//host` 地址或为空时，告警且不渲染。
 
 ## 限制与常见问题 {#limits}
 
-- `markers` 的标签会丢失：播放器只收到时间点，收不到文字，时间轴上是没有标签的标记。时间不是数字的标记会告警并跳过。需要带名字的章节时，在录像旁边写一个列表。
 - 播放器需要 JavaScript。浏览器禁用脚本时，窗口外框里是一个指向录像的链接。
 - 站内搜索索引的是页面文字，不是录像，只在录像里出现过的命令搜不到。
 - 超过五六分钟的录像很少有人看完。长流程拆成几段短录像，每段配上自己的文字。

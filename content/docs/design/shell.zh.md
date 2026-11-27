@@ -631,6 +631,25 @@ Ink 与 Terminal 实验预设需显式配置；`preset_menu: true`
 
 OINK 1.4.0 统一搜索／命令行、侧栏圆角与外观控件的尺寸规则。选中与悬停保持可区分，键盘焦点即时可见，偏好存储、导航和预设选择不变。不增加滑动高亮运行时。
 
+## 归档版本横幅 {#archived-banner}
+
+> [!NOTE] 尚未发布
+> 已在主题 main 分支实现，晚于 v1.6.0；目前没有包含它的版本标签。
+
+`params.archived_version: true` 时，每个 HTML 外壳与 Landing 页面都以
+`version-banner.html` 开头：一个带 `role="note"` 的
+`td-page-notice td-page-notice--primary` 元素，装饰性的 `fa-box-archive` 图标
+之后是本地化的 `version_banner_archived` 句子；`params.url_latest_version` 通过
+共享 URL 策略时，再跟上 `version_banner_latest` 链接。句子要写出
+`params.version`；没有设置时构建告警一次并省略横幅，不输出空元素。
+
+`alerts.css` 按提示块的强调色语法、以界面字体为 `td-page-notice` 设置样式：
+一条带主色淡铺的横带，强调竖线使用 `border-inline-start`，从右到左的页面会自动
+镜像。在 Landing 与默认布局中，它直接位于 `<main>` 之下，保持 1050px 的正文
+宽度并留出 1rem 边距。强制颜色模式使用系统颜色；浏览器打印时横幅以墨色呈现，
+去掉淡铺。Print 输出的「可打印分区」提示共用这个类，只在屏幕上显示；专用 Print
+输出不渲染归档横幅。
+
 ## v1.5.1 审查修正 {#unreleased-review-corrections}
 
 这些修正已随 v1.5.1 发布，并属于当前消费站契约。

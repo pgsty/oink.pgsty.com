@@ -3,7 +3,7 @@ title: ECharts
 linkTitle: ECharts
 description: Draw bar, line and pie charts by writing ECharts options as YAML or JSON in an `echarts` fence, with colors that follow light and dark mode.
 weight: 150
-search_keywords: [ECharts, chart, bar, line, pie, height, theme, OinkEchartsFunctions]
+search_keywords: [ECharts, chart, bar, line, pie, height, theme, OinkEchartsFunctions, OinkEchartsThemes, registerTheme]
 ---
 
 An `echarts` fence draws a chart with axes, series and a legend: table sizes,
@@ -267,10 +267,71 @@ series:
     data: [12, 8, 15, 9]
 ```
 
-`dark` is the only theme built into ECharts; any other name must already be
-registered with `echarts.registerTheme()` when the chart draws. Leave `theme`
-out unless your brand requires fixed colors, so that charts match the rest of
-the page.
+`dark` is the only theme built into ECharts. Leave `theme` out unless your
+brand requires fixed colors, so that charts match the rest of the page.
+
+For a theme of your own, define it on `window.OinkEchartsThemes` under the name
+the fence uses. ECharts loads only when the first chart comes on screen, so a
+site script has no moment to call `echarts.registerTheme()` itself; instead
+each chart registers every theme it finds there before it draws:
+
+````markdown {title="Source"}
+<script>
+  window.OinkEchartsThemes = window.OinkEchartsThemes || {};
+  window.OinkEchartsThemes.brand = {
+    color: ['#0b5394', '#e69138', '#6aa84f', '#a64d79'],
+    backgroundColor: '#f7f9fc',
+  };
+</script>
+
+```echarts {height="240px" theme="brand"}
+legend: {}
+xAxis:
+  type: category
+  data: [Mon, Tue, Wed, Thu, Fri]
+yAxis:
+  type: value
+  name: queries (k/s)
+series:
+  - name: primary
+    type: bar
+    data: [42, 45, 51, 48, 39]
+  - name: replica
+    type: bar
+    data: [31, 33, 36, 35, 30]
+```
+````
+
+<script>
+  window.OinkEchartsThemes = window.OinkEchartsThemes || {};
+  window.OinkEchartsThemes.brand = {
+    color: ['#0b5394', '#e69138', '#6aa84f', '#a64d79'],
+    backgroundColor: '#f7f9fc',
+  };
+</script>
+
+```echarts {height="240px" theme="brand"}
+legend: {}
+xAxis:
+  type: category
+  data: [Mon, Tue, Wed, Thu, Fri]
+yAxis:
+  type: value
+  name: queries (k/s)
+series:
+  - name: primary
+    type: bar
+    data: [42, 45, 51, 48, 39]
+  - name: replica
+    type: bar
+    data: [31, 33, 36, 35, 30]
+```
+
+A theme is a plain object in ECharts' theme format, such as the JSON its theme
+builder exports. To offer it on every page, put the script in
+`layouts/_partials/hooks/body-end.html` instead of a page. A name defined
+nowhere draws with ECharts' default colors and no warning, and an entry named
+`dark` replaces the palette that charts without `theme` use in dark mode.
 
 ## Callbacks with `$fn:` {#callbacks}
 
@@ -357,7 +418,7 @@ The fence attribute line (```` ```echarts {…} ````):
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `height` | CSS length | `400px` | A non-negative number plus `px` `rem` `em` `vh` `vw` `%`; anything else warns and uses the default |
-| `theme` | string | unset | Pin an ECharts theme and stop following the site's color scheme; only `dark` is built in |
+| `theme` | string | unset | Pin an ECharts theme and stop following the site's color scheme; `dark` is built in, other names come from `window.OinkEchartsThemes` |
 | `full` | bool | `false` | `true` drops the reading-column limit and fills the content area; a value other than `true` or `false` warns and uses `false` |
 | `class` | space-separated classes | — | Passed through to the container for site CSS |
 {.fields meta="type default"}
@@ -369,8 +430,9 @@ ECharts has no site-level setting in `hugo.yml`.
 
 ## Limits {#limits}
 
-- A fence cannot contain JavaScript; functions go through `$fn:`, and a name
-  that is not registered fails silently.
+- A fence cannot contain JavaScript; functions go through `$fn:` and themes
+  through `window.OinkEchartsThemes`, and a name that is not registered fails
+  silently.
 - A fence cannot read `data/`, front matter or shortcodes; the numbers must be
   in the fence.
 - Quote category values such as `10`, `9.6`, `on` and `yes`, which YAML would

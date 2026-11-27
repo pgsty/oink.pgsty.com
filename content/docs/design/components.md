@@ -106,6 +106,15 @@ OINK has 30 shortcodes:
 > JavaScript disabled or an unavailable player bundle. Recording fetch/parse
 > failures restore the link and any focus held by the player.
 
+> [!NOTE] Unreleased
+> Implemented on the theme's main branch after v1.6.0; no tagged release contains it yet.
+>
+> Asciinema `markers="time:label, …"` reaches the player as a list of
+> `[time, label]` pairs with trimmed labels, the only shape besides bare
+> numbers that asciinema-player 3.18 accepts. A label keeps its colons; a bare
+> time gets an empty label. Earlier output spread the pairs into one flat list,
+> which the player rejected, so any `markers` value left only the recording link.
+
 ## Optional component presentation {#component-refinement}
 
 OINK 1.4.0 supports the following opt-in presentation variants. See the
@@ -269,6 +278,18 @@ Copy returns authored source.
 Mermaid palettes follow light/dark mode, independently of visual preset. The default dark edge-label background is `#404040` for AA contrast with its label text; explicit `params.mermaid.themeVariables` values retain priority.
 
 ECharts uses declarative JSON/YAML. Callbacks use `$fn:<name>` from `window.OinkEchartsFunctions`. Embedded scripts are never executed.
+
+> [!NOTE] Unreleased
+> Implemented on the theme's main branch after v1.6.0; no tagged release contains it yet.
+>
+> A fence `theme` other than ECharts' built-in `dark` names an entry of
+> `window.OinkEchartsThemes`, an object of theme name to ECharts theme object.
+> The engine loads only when a chart comes due, so a site script has no
+> moment to call `echarts.registerTheme()`; the runtime registers every object
+> entry immediately before each chart initializes and ignores other values.
+> This registry is the supported registration point. An entry named `dark`
+> also replaces the palette that unpinned charts use in dark mode, and an
+> undefined name draws with ECharts' defaults without a warning.
 
 In OINK 1.4.0, Infographic SVGs scale with their container width,
 including orientation and shell layout changes, without repeated DSL rendering.

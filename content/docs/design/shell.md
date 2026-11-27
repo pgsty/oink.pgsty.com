@@ -743,6 +743,28 @@ The [Expo contract](/docs/design/expo/) owns its content model, controls, and ou
 
 OINK 1.4.0 aligns search/command rows, sidebar corners, and Appearance controls with the component geometry. Selected and hovered rows remain distinct, keyboard focus remains immediate, and preference storage, navigation, and palette selection are unchanged. No moving-highlight runtime is added.
 
+## Archived-version banner {#archived-banner}
+
+> [!NOTE] Unreleased
+> Implemented on the theme's main branch after v1.6.0; no tagged release contains it yet.
+
+With `params.archived_version: true`, every HTML shell and Landing page opens
+with `version-banner.html`: a `td-page-notice td-page-notice--primary` element
+with `role="note"`, in which a decorative `fa-box-archive` icon precedes the
+localized `version_banner_archived` sentence and, when
+`params.url_latest_version` passes the shared URL policy, the
+`version_banner_latest` link. The sentence names `params.version`; without one
+the build warns once and omits the banner rather than emitting an empty element.
+
+`alerts.css` styles `td-page-notice` with the callout accent grammar in the
+interface face: a primary-tinted band whose accent rule uses
+`border-inline-start`, so right-to-left pages mirror it. Directly under
+`<main>`, in Landing and default layouts, it keeps the 1050px article measure
+with a 1rem gutter. Forced colors use system colors, and browser print keeps
+the banner in ink without the tint. The Print output's printable-section
+notice shares the class and stays screen-only; the dedicated Print output does
+not render the archive banner.
+
 ## v1.5.1 review corrections {#unreleased-review-corrections}
 
 These corrections shipped in v1.5.1 and are part of the current consumer contract.

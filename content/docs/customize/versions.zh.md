@@ -79,7 +79,7 @@ params:
   url_latest_version: https://docs.example.com
 ```
 
-`archived_version: true` 时，站点的每个页面（包括博客和落地页）顶部都会出现一条横幅，说明 v1.9 版本已不再积极维护、当前浏览的是一份归档快照，并给出指向 `url_latest_version` 的链接。文案随站点语言显示，无需自己编写。横幅里的版本号取自 `params.version`，没有设置它时横幅里没有文字，所以两项都要写。`url_latest_version` 没有通过主题的 URL 检查时会告警，横幅照常显示，只是没有链接。
+`archived_version: true` 时，站点的每个页面（包括博客和落地页）顶部都会出现一条横幅，说明 v1.9 版本已不再积极维护、当前浏览的是一份归档快照，并给出指向 `url_latest_version` 的链接。文案随站点语言显示，无需自己编写。横幅里的版本号取自 `params.version`，没有设置它时构建会告警并且不显示横幅，所以两项都要写。`url_latest_version` 没有通过主题的 URL 检查时会告警，横幅照常显示，只是没有链接。
 
 ## `params.version` 与 `params.versions` 的区别 {#site-version}
 

@@ -340,7 +340,7 @@ your own built output.
 Features you enable add their own requirements:
 
 - Inline HTML and scripts that authors write under `renderer.unsafe: true` are the site's to review.
-- [ECharts `$fn:` callbacks](/docs/components/echarts/#callbacks): the site registers its functions on `window.OinkEchartsFunctions`, so the registering script's origin belongs in `script-src`.
+- [ECharts `$fn:` callbacks](/docs/components/echarts/#callbacks) and [custom themes](/docs/components/echarts/#theme): the site registers its functions on `window.OinkEchartsFunctions` and its themes on `window.OinkEchartsThemes`, so the registering script's origin belongs in `script-src`.
 - [Analytics scripts](/docs/admin/analytics/#other-analytics): the script you insert, and the host it reports to.
 - [Local PlantUML rendering](/docs/components/plantuml/#limits): same-origin scripts, `wasm-unsafe-eval` in `script-src` to compile WebAssembly, and `blob:` in `img-src`. No rendering-service origin is needed.
 - [Remote API specifications](/docs/write/openapi/#spec-file) and [self-hosted diagram services](/docs/components/plantuml/#server): their origins in `connect-src` and `img-src`.

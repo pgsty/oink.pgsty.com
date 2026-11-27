@@ -98,6 +98,14 @@ OINK 有 30 个 shortcode：
 > Asciinema 在播放器挂载前保留录像链接，禁用 JavaScript 或播放器资源不可用时
 > 也能访问原始录像。录像获取或解析失败时恢复链接，并转移播放器原有的焦点。
 
+> [!NOTE] 尚未发布
+> 已在主题 main 分支实现，晚于 v1.6.0；目前没有包含它的版本标签。
+>
+> Asciinema 的 `markers="时间:标签, …"` 以 `[时间, 标签]` 对的列表交给播放器，
+> 标签去掉首尾空白；这是 asciinema-player 3.18 除纯数字外唯一接受的写法。标签
+> 中的冒号保留，只写时间的标记得到空标签。此前的输出把这些对摊平成一个扁平列表，
+> 播放器会拒绝它，所以只要写了 `markers`，页面上就只剩录像链接。
+
 ## 可选组件呈现 {#component-refinement}
 
 OINK 1.4.0 支持以下可选呈现变体。示例见[组件呈现](/zh/docs/components/presentation/)。
@@ -252,6 +260,16 @@ FileTree 围栏参数 `wrap` 接受 `true` 或 `false`，默认 `false`；设置
 
 ECharts 输入是声明式 JSON/YAML；回调使用
 `window.OinkEchartsFunctions` 中的 `$fn:<name>`，绝不执行嵌入脚本。
+
+> [!NOTE] 尚未发布
+> 已在主题 main 分支实现，晚于 v1.6.0；目前没有包含它的版本标签。
+>
+> 围栏的 `theme` 不是 ECharts 内置的 `dark` 时，指向 `window.OinkEchartsThemes`
+> 中的条目；该对象把主题名映射到 ECharts 主题对象。引擎要等图表到期才加载，
+> 站点脚本没有调用 `echarts.registerTheme()` 的时机，所以运行时在每张图表初始化前
+> 注册其中所有对象条目，忽略其它值。这个注册表就是受支持的注册入口。名为 `dark`
+> 的条目也会替换未固定主题的图表在深色模式下使用的配色；未定义的名字以 ECharts
+> 默认配色绘制，不会告警。
 
 OINK 1.4.0 中，Infographic SVG 跟随容器宽度缩放，覆盖横竖屏及外壳布局
 变化，无须重复渲染 DSL。初始隐藏的容器等到可测量时再渲染；围栏 `height` 与

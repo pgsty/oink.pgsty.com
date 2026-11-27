@@ -549,6 +549,41 @@ test('Asciinema waits for its web font before measuring terminal cells', async (
     .toBe(true);
 });
 
+test('Asciinema chapter markers reach the player with their labels', async ({
+  page,
+}) => {
+  await page.goto(asciinemaPath);
+  const root = page.locator('[data-td-asciinema]', {
+    has: page.locator('.td-asciinema__title', { hasText: 'in chapters' }),
+  });
+  await root.scrollIntoViewIfNeeded();
+  // A flat marker list makes the player throw and fall back to its link.
+  await expect(root.locator('.ap-player')).toBeAttached();
+  await expect(root.locator('[data-td-asciinema-player] > a')).toHaveCount(0);
+  await expect(root.locator('.ap-marker-container .ap-tooltip')).toHaveText([
+    /Download$/,
+    /Deploy playbook$/,
+    /Infrastructure$/,
+    /PostgreSQL$/,
+    /Recap$/,
+  ]);
+});
+
+test('ECharts registers a site theme before the chart draws', async ({ page }) => {
+  await page.goto(`${componentsPath}echarts/`);
+  const root = page.locator('[data-td-echarts][data-theme="brand"]');
+  await root.scrollIntoViewIfNeeded();
+  await expect(root.locator('[data-td-echarts-canvas] canvas')).toBeVisible();
+  const option = await root.evaluate((node) => {
+    const chart = window.echarts.getInstanceByDom(
+      node.querySelector('[data-td-echarts-canvas]'),
+    );
+    const { color, backgroundColor } = chart.getOption();
+    return { first: color[0], backgroundColor };
+  });
+  expect(option).toEqual({ first: '#0b5394', backgroundColor: '#f7f9fc' });
+});
+
 const mediaInteractionPath = '/tests/runtime/media/';
 
 for (const zoom of ['image', 'diagram']) {

@@ -109,8 +109,9 @@ included, opens with a banner saying that version v1.9 is no longer actively
 maintained and that this is an archived snapshot, with a link to
 `url_latest_version`. The text comes in the site's language, so you write none
 of it. The version number in the banner is `params.version`; without it the
-banner has no text, so set both. A `url_latest_version` that fails the theme's
-URL check warns, and the banner appears without the link.
+build warns and leaves the banner out, so set both. A `url_latest_version`
+that fails the theme's URL check warns, and the banner appears without the
+link.
 
 ## `params.version` versus `params.versions` {#site-version}
 

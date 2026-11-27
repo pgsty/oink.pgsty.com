@@ -3,7 +3,7 @@ title: Asciinema
 linkTitle: Asciinema
 description: Embed a .cast terminal recording that readers can play, pause and copy text from, with the player shipped in the theme.
 weight: 210
-search_keywords: [Asciinema, terminal recording, cast, asciicast, screencast, demo, player]
+search_keywords: [Asciinema, terminal recording, cast, asciicast, screencast, demo, player, chapters, markers]
 ---
 
 `asciinema` plays a `.cast` terminal recording in the page. Use it when a
@@ -71,6 +71,30 @@ the player above shows that frame and starts playing from second 60.
 `idleTimeLimit` shortens every silent stretch to at most that many seconds.
 This recording needs none, because its `.cast` header already sets
 `idle_time_limit: 0.5`; use it for a recording made without an idle limit.
+
+## Chapter markers {#markers}
+
+`markers` puts named chapters on the progress bar, so a reader can jump to the
+part of a long recording they came for. Write each chapter as `time:label`,
+with the time in seconds, and separate chapters with commas:
+
+```markdown {title="Source"}
+{{</* asciinema file="images/install.cast" title="Pigsty install in chapters" preload="true"
+  markers="5:Download, 26:Deploy playbook, 56:Infrastructure, 118:PostgreSQL, 169:Recap" */>}}
+```
+
+{{< asciinema file="images/install.cast" title="Pigsty install in chapters" preload="true" markers="5:Download, 26:Deploy playbook, 56:Infrastructure, 118:PostgreSQL, 169:Recap" >}}
+
+Hover a mark to read its label; with the player focused, `[` and `]` jump to
+the previous and next chapter. The marks appear once the recording has
+loaded, so pair `markers` with `preload="true"` when they should show before
+the reader presses play. `pauseOnMarkers="true"` stops at every chapter, which
+suits a walkthrough the reader steps through.
+
+Times count on the player's clock, after the idle limit (`idleTimeLimit`, or
+the one in the `.cast` header) has shortened the silences, so take them from
+the player's timer rather than from the `.cast` file. A label may contain
+colons but not commas, and a chapter written as a bare time has no label.
 
 ## Size and fit {#size}
 
@@ -183,7 +207,7 @@ write the key commands and their output beside the recording as text or code.
 | `loop` | `"true"` / omitted | off | Replay at the end |
 | `preload` | `"true"` / omitted | off | Fetch the recording as soon as the player appears |
 | `pauseOnMarkers` | `"true"` / omitted | off | Pause at chapter markers |
-| `markers` | `time:label,time:label` | — | Chapter markers; the labels do not reach the player, see [Limits](#limits) |
+| `markers` | `time:label,time:label` | — | Named chapters on the progress bar, times in seconds on the player's clock; see [Chapter markers](#markers) |
 {.fields meta="type default"}
 
 The on/off parameters are on only when their value is the text `true`, so
@@ -196,10 +220,6 @@ value warns and renders nothing.
 
 ## Limits {#limits}
 
-- `markers` loses its labels: the player receives the times but not the
-  text, so the timeline shows unlabeled marks. A marker whose time is not a
-  number warns and is skipped. For named chapters, write a list beside the
-  recording.
 - The player needs JavaScript. With scripts off, the window frame holds a
   link to the recording instead.
 - Site search indexes page text, not recordings, so a command that appears

@@ -3,7 +3,7 @@ title: ECharts
 linkTitle: ECharts
 description: 在 `echarts` 围栏里用 YAML 或 JSON 写 ECharts 选项，画出跟随深浅色的柱状图、折线图与饼图。
 weight: 150
-search_keywords: [ECharts, 图表, 统计图, 柱状图, 折线图, 饼图, chart, bar, line, pie, height, theme, OinkEchartsFunctions]
+search_keywords: [ECharts, 图表, 统计图, 柱状图, 折线图, 饼图, chart, bar, line, pie, height, theme, OinkEchartsFunctions, OinkEchartsThemes, registerTheme, 主题]
 ---
 
 `echarts` 围栏用来画带坐标轴、序列与图例的统计图：各张表的大小、版本发布时间线、各类别在总量中的占比。图表写成一个 YAML 或 JSON 形式的 ECharts 选项对象，所以围栏里是数据而不是代码，数字就写在 Markdown 里，每次改动在 diff 中一目了然。Hugo 在构建时检查选项，读者的浏览器用随主题分发的 ECharts 绘图，颜色跟随深浅色切换。不需要任何配置，没有图表的页面什么也不加载。关系与流程请用 [Mermaid](/zh/docs/components/mermaid/)，顺序与层级请用 [Infographic](/zh/docs/components/infographic/)。
@@ -244,7 +244,63 @@ series:
     data: [12, 8, 15, 9]
 ```
 
-ECharts 内置的主题只有 `dark`；其它主题名必须在图表绘制之前已经用 `echarts.registerTheme()` 注册过。除非品牌要求固定配色，否则不写 `theme`，让图表与页面其它部分保持一致。
+ECharts 内置的主题只有 `dark`。除非品牌要求固定配色，否则不写 `theme`，让图表与页面其它部分保持一致。
+
+要用自己的主题，就以围栏里写的主题名为键，把它定义在 `window.OinkEchartsThemes` 上。ECharts 要等第一张图表进入视野才加载，站点脚本找不到时机自己调用 `echarts.registerTheme()`；因此每张图表在绘制前，会先注册它在这里找到的全部主题：
+
+````markdown {title="源码"}
+<script>
+  window.OinkEchartsThemes = window.OinkEchartsThemes || {};
+  window.OinkEchartsThemes.brand = {
+    color: ['#0b5394', '#e69138', '#6aa84f', '#a64d79'],
+    backgroundColor: '#f7f9fc',
+  };
+</script>
+
+```echarts {height="240px" theme="brand"}
+legend: {}
+xAxis:
+  type: category
+  data: [周一, 周二, 周三, 周四, 周五]
+yAxis:
+  type: value
+  name: 查询（千次/秒）
+series:
+  - name: 主库
+    type: bar
+    data: [42, 45, 51, 48, 39]
+  - name: 从库
+    type: bar
+    data: [31, 33, 36, 35, 30]
+```
+````
+
+<script>
+  window.OinkEchartsThemes = window.OinkEchartsThemes || {};
+  window.OinkEchartsThemes.brand = {
+    color: ['#0b5394', '#e69138', '#6aa84f', '#a64d79'],
+    backgroundColor: '#f7f9fc',
+  };
+</script>
+
+```echarts {height="240px" theme="brand"}
+legend: {}
+xAxis:
+  type: category
+  data: [周一, 周二, 周三, 周四, 周五]
+yAxis:
+  type: value
+  name: 查询（千次/秒）
+series:
+  - name: 主库
+    type: bar
+    data: [42, 45, 51, 48, 39]
+  - name: 从库
+    type: bar
+    data: [31, 33, 36, 35, 30]
+```
+
+主题是 ECharts 主题格式的普通对象，例如其主题构建工具导出的 JSON。要让每个页面都能用，把这段脚本放进 `layouts/_partials/hooks/body-end.html`，而不是写在某个页面里。哪里都没有定义的名字会以 ECharts 默认配色绘制，不会告警；名为 `dark` 的条目会替换未设置 `theme` 的图表在深色模式下使用的配色。
 
 ## 回调：`$fn:` {#callbacks}
 
@@ -315,7 +371,7 @@ Hugo 不会在围栏里展开 shortcode、front matter 值或 `data/` 目录下�
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
 | `height` | CSS 长度 | `400px` | 只接受非负数字加 `px` `rem` `em` `vh` `vw` `%`；其它写法告警并使用默认值 |
-| `theme` | string | 未设置 | 固定使用某个 ECharts 主题，不再跟随站点配色；内置只有 `dark` |
+| `theme` | string | 未设置 | 固定使用某个 ECharts 主题，不再跟随站点配色；内置 `dark`，其它名字来自 `window.OinkEchartsThemes` |
 | `full` | bool | `false` | `true` 去掉正文栏宽限制，图铺满内容区；`true`、`false` 以外的值告警并使用 `false` |
 | `class` | 空格分隔的 class | — | 透传给容器，供站点 CSS 使用 |
 {.fields meta="type default"}
@@ -324,7 +380,7 @@ Hugo 不会在围栏里展开 shortcode、front matter 值或 `data/` 目录下�
 
 ## 限制与常见问题 {#limits}
 
-- 围栏里不能写 JavaScript；函数要通过 `$fn:` 传入，名字没有注册时会悄无声息地失效。
+- 围栏里不能写 JavaScript；函数要通过 `$fn:` 传入，主题要通过 `window.OinkEchartsThemes` 提供，名字没有注册时会悄无声息地失效。
 - 围栏读不到 `data/`、front matter 或 shortcode，数字必须写在围栏里。
 - 分类轴上的 `10`、`9.6`、`on`、`yes` 要加引号，否则 YAML 会把它们变成数字或布尔值。
 - 不要只靠颜色区分序列，同时变换线型或标记形状，并在两种配色模式下检查图例的对比度。

@@ -263,7 +263,7 @@ hugo --gc --minify --environment staging --baseURL "$PREVIEW_URL"
 启用的功能会各自带来额外要求：
 
 - 作者在 `renderer.unsafe: true` 下写的行内 HTML 与脚本，由站点自行审查。
-- [ECharts 的 `$fn:` 回调](/zh/docs/components/echarts/#callbacks)：站点把函数注册到 `window.OinkEchartsFunctions`，注册脚本的来源要加入 `script-src`。
+- [ECharts 的 `$fn:` 回调](/zh/docs/components/echarts/#callbacks)与[自定义主题](/zh/docs/components/echarts/#theme)：站点把函数注册到 `window.OinkEchartsFunctions`、把主题定义在 `window.OinkEchartsThemes`，注册脚本的来源要加入 `script-src`。
 - [分析脚本](/zh/docs/admin/analytics/#other-analytics)：你插入的脚本，以及它上报的主机。
 - [PlantUML 本地渲染](/zh/docs/components/plantuml/#limits)：允许同源脚本，在 `script-src` 中允许 `wasm-unsafe-eval` 以编译 WebAssembly，在 `img-src` 中允许 `blob:`；不需要放行任何渲染服务。
 - [远程 API 规范](/zh/docs/write/openapi/#spec-file)与[自建图表服务](/zh/docs/components/plantuml/#server)：它们的来源加入 `connect-src` 与 `img-src`。
