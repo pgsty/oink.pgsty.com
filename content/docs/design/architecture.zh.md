@@ -423,8 +423,8 @@ CSS 或 SVG 发起的请求也受此限制。
 不再包围整篇文章。强制颜色模式保留键盘提示，不使用全局焦点边框重置。
 
 字体角色为 `ui`、`body`、`heading`、`code`、`display`、`meta`、`brand` 与 `print`，
-通过 `--td-*-font-family` 暴露。`ui` 是主字体：`body` 经它解析，`heading` 又经
-`body` 解析，因此赋一次值即同时移动界面、正文与标题。`params.ui.typography`
+通过 `--td-*-font-family` 暴露。设置 `fonts.ui` 会同时改变四种预设的界面、正文与标题字体，包括 Paper。
+此时单独设置的 `fonts.body` 也用于标题，显式设置 `fonts.heading` 可为标题另选字体。`params.ui.typography`
 可取 `technical` 或 `system`；两者都在同一份样式表中，不加载运行时。已发布的
 OINK 1.6.0 的样式表是纯 CSS，不读取消费站的任何 Sass 变量（1.5.1 及更早版本曾由旧 Bootstrap/Docsy Sass 变量提供初值）。
 

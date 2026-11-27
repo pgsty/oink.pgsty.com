@@ -471,7 +471,7 @@ The skip-link destination shows a local outline around its title instead of the 
 Forced colors retain keyboard focus indication. No global focus-outline reset is used.
 
 Font roles are `ui`, `body`, `heading`, `code`, `display`, `meta`, `brand`, and `print`. They use `--td-*-font-family` properties.
-`ui` is the primary face, with `body` resolving through it and `heading` through `body`, so one assignment changes interface text, prose, and headings together.
+Setting `fonts.ui` changes interface text, prose, and headings in every preset, including Paper. An explicit `fonts.body` then supplies the prose and heading face unless `fonts.heading` supplies its own.
 `params.ui.typography` accepts `technical` or `system`. Both are part of the one stylesheet and need no runtime.
 OINK 1.6.0's stylesheet is plain CSS and reads no consumer Sass variable (1.5.1 and older let legacy Bootstrap/Docsy Sass variables initialize these roles).
 

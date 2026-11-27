@@ -135,13 +135,13 @@ params:
 params:
   ui:
     fonts:
-      # 主字体：正文跟着它走，Paper 以外的预设里标题也跟着走
+      # 四种预设的正文和标题都跟随这款字体
       ui: "'Source Han Sans SC', 'PingFang SC', sans-serif"
       # 等宽字体要带中文兜底，否则中英混排的代码块会对不齐
       code: "'Sarasa Mono SC', 'Noto Sans Mono CJK SC', monospace"
 ```
 
-`ui` 是主字体。所有预设的正文都跟随它；标题在 Paper 以外的预设里也跟随它，Paper 保留自己的衬线标题，除非你同时设置 `heading`。其余键见[字体角色](#custom-fonts)。
+设置 `ui` 会同时改变四种预设的正文和标题字体。要为标题单独选字体，设置 `heading`。其余键见[字体角色](#custom-fonts)。
 
 这里写的是字体族名，不是字体文件，主题不会因为这个键下载或加载任何字体。所写的字体族要么已经装在读者系统里，要么由你自己的 [`@font-face`](#fonts-in-css) 声明，所以每个列表都要以通用族（`sans-serif`、`serif`、`monospace`）结尾，两者都没有的读者会落到这里。
 

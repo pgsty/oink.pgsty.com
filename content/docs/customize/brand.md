@@ -196,15 +196,14 @@ To change a family without writing CSS, set `params.ui.fonts`:
 params:
   ui:
     fonts:
-      # The main face: body text follows it, and headings too outside Paper
+      # Body text and headings follow this face in every preset
       ui: "'Source Han Sans SC', 'PingFang SC', sans-serif"
       # Give monospace a CJK fallback, or mixed code blocks stop aligning
       code: "'Sarasa Mono SC', 'Noto Sans Mono CJK SC', monospace"
 ```
 
-`ui` is the main face. Body text follows it in every preset, and headings
-follow it in every preset except Paper, which keeps its serif headings until
-you also set `heading`. The other keys are listed under
+Setting `ui` changes body text and headings in all four presets. Set
+`heading` to choose a separate face for headings. The other keys are listed under
 [Font roles](#custom-fonts).
 
 These values are family names, not files: the theme never downloads or loads a
