@@ -10,15 +10,15 @@ design_status: implemented
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] Implemented, awaiting acceptance
-> Implemented on the theme's `main` branch (`730e9f6`, with review fixes on the
-> working tree) and documented in the [Timeline guide](/docs/components/timeline/).
+> [!NOTE] Implemented, awaiting release
+> Implemented on the theme's `main` branch and documented in the
+> [Timeline guide](/docs/components/timeline/).
 > Not yet in a tagged release. The shared decisions are in the
 > [overview](/docs/design/proposals/content-components-expansion/).
 
 | Record | Value |
 | --- | --- |
-| Status | Implemented 2026-11-27 on `main`; review fixes in progress; awaiting release |
+| Status | Implemented 2026-11-27 on `main`; awaiting release |
 | Owner | OINK maintainers |
 | Delivery stage | S1, with [Update](/docs/design/proposals/component-update/) |
 | Form | Native: a Markdown definition list followed by `{.timeline}` |

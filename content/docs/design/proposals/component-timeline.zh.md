@@ -10,12 +10,12 @@ design_status: implemented
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] 已实现，等待接受
-> 已在主题 `main` 分支实现（`730e9f6`，并在工作区补充评审修复），并写入了[时间轴指南](/zh/docs/components/timeline/)。尚未包含在发布标签中。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
+> [!NOTE] 已实现，等待发布
+> 已在主题 `main` 分支实现并写入了[时间轴指南](/zh/docs/components/timeline/)。尚未包含在发布标签中。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 2026-11-27 在 `main` 实现；评审修复进行中；等待发布 |
+| 状态 | 2026-11-27 在 `main` 实现；等待发布 |
 | 负责人 | OINK 维护者 |
 | 交付阶段 | S1，与 [Update](/zh/docs/design/proposals/component-update/) 同批 |
 | 形态 | 原生：Markdown 定义列表后接 `{.timeline}` |

@@ -10,12 +10,12 @@ design_status: implemented
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] 已实现，等待接受
-> 已在主题 main 分支的工作区中实现，并写入了[更新指南](/zh/docs/components/update/)。尚未提交，也未发布。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
+> [!NOTE] 已实现，等待发布
+> 已在主题 `main` 分支中实现，并写入了[更新指南](/zh/docs/components/update/)。尚未包含在发布标签中。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 2026-11-27 实现；尚未提交；等待接受 |
+| 状态 | 2026-11-27 在 `main` 实现；等待发布 |
 | 负责人 | OINK 维护者 |
 | 交付阶段 | S1，与 [Timeline](/zh/docs/design/proposals/component-timeline/) 同批 |
 | 形态 | 原生形态：带 `{.update date="…" tags="…"}` 的 Markdown 标题 |

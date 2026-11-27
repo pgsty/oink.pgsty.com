@@ -10,12 +10,12 @@ design_status: implemented
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] 已实现，等待接受
-> 已在主题 main 分支的工作区中实现，并写入了[地图指南](/zh/docs/components/map/)。尚未提交，也未发布。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
+> [!NOTE] 已实现，等待发布
+> 已在主题 `main` 分支中实现，并写入了[地图指南](/zh/docs/components/map/)。尚未包含在发布标签中。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 2026-11-27 实现；尚未提交；等待接受 |
+| 状态 | 2026-11-27 在 `main` 实现；等待发布 |
 | 负责人 | OINK 维护者 |
 | 交付阶段 | S5；基于 GPS 元数据的照片标记点留待之后 |
 | 形态 | 数据围栏：```` ```map ```` 加 YAML 或 JSON 地点列表 |

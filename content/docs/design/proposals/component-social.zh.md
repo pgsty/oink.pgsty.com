@@ -10,12 +10,12 @@ design_status: implemented
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] 已实现，等待接受
-> `social` 短代码已在主题 main 分支的工作区中实现，并写入了[社交帖子指南](/zh/docs/components/social/)。首版实现已提交（主题 `730e9f6`，站点 `e00295c`），评审后的加固尚未提交，均未发布。所依据的共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
+> [!NOTE] 已实现，等待发布
+> `social` 短代码已在主题 `main` 分支中实现，并写入了[社交帖子指南](/zh/docs/components/social/)。尚未包含在发布标签中。所依据的共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 2026-11-27 实现（`730e9f6` / `e00295c`），经深度评审加固；等待接受 |
+| 状态 | 2026-11-27 在 `main` 实现；等待发布 |
 | 负责人 | OINK 维护者 |
 | 交付阶段 | S3 |
 | 形态 | 带 Markdown 正文的短代码：`{{</* social … */>}}…{{</* /social */>}}` |

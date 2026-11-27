@@ -1,7 +1,7 @@
 ---
 title: "Audio 组件"
 linkTitle: Audio 组件
-description: 用普通 Markdown 图片语法嵌入音频：为播客、语音样本和录音提供带标题的原生播放器，文字稿放进折叠提示块，不需要运行时。
+description: 用普通 Markdown 图片语法嵌入音频：为播客、语音样本和录音提供带标题的原生播放器，文字稿放进折叠提示块，同页多播放器共享互斥播放运行时。
 weight: 28
 icon: fa-solid fa-headphones
 search_keywords: [音频, audio, mp3, 播客, 语音样本, 文字稿, 播放器, 组件]
@@ -10,12 +10,12 @@ design_status: implemented
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] 已实现，等待接受
-> 已在主题 main 分支的工作区中实现，并写入了[音频指南](/zh/docs/components/audio/)。尚未提交，也未发布。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
+> [!NOTE] 已实现，等待发布
+> 已在主题 `main` 分支中实现，并写入了[音频指南](/zh/docs/components/audio/)。尚未包含在发布标签中。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 2026-11-27 实现；尚未提交；等待接受 |
+| 状态 | 2026-11-27 在 `main` 实现；等待发布 |
 | 负责人 | OINK 维护者 |
 | 交付阶段 | S2，与视频文件一同交付 |
 | 形态 | 原生形态：目标为音频文件的块级 Markdown 图片 |

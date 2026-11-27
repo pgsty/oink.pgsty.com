@@ -1,7 +1,7 @@
 ---
 title: "Audio component"
 linkTitle: Audio component
-description: Audio through ordinary Markdown image syntax — a labeled native player for podcasts, voice samples, and recordings, with transcripts in a folded callout and no runtime.
+description: Audio through ordinary Markdown image syntax — a labeled native player for podcasts, voice samples, and recordings, with transcripts in a folded callout and shared single-active playback when multiple players appear on a page.
 weight: 28
 icon: fa-solid fa-headphones
 search_keywords: [audio, mp3, podcast, voice sample, transcript, player, component]
@@ -10,14 +10,14 @@ design_status: implemented
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] Implemented, awaiting acceptance
-> Implemented on the theme's main branch working tree and documented in the
-> [Audio guide](/docs/components/audio/). Not committed or released. The shared decisions
+> [!NOTE] Implemented, awaiting release
+> Implemented on the theme's `main` branch and documented in the
+> [Audio guide](/docs/components/audio/). Not yet in a tagged release. The shared decisions
 > are in the [overview](/docs/design/proposals/content-components-expansion/).
 
 | Record | Value |
 | --- | --- |
-| Status | Implemented 2026-11-27; uncommitted; awaiting acceptance |
+| Status | Implemented 2026-11-27 on `main`; awaiting release |
 | Owner | OINK maintainers |
 | Delivery stage | S2, with video files |
 | Form | Native: a block Markdown image whose destination is an audio file |

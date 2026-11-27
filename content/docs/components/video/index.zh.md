@@ -61,7 +61,7 @@ search_keywords: [视频, Video, mp4, webm, 海报图, poster, 字幕, subtitles
 {caption="文档外壳、它的上游 Docsy 与一个版本发布页，九秒看完" poster="tour-poster.jpg" track="tour.zh.vtt"}
 
 - `poster` 是播放前显示的海报图，查找方式与图片相同。本地位图海报还会给播放器提供宽高（这里是 1200×600），视频加载之前占位框就是正确的比例。
-- `track` 是一个 WebVTT 字幕文件，查找方式相同。主题写出 `kind="subtitles"`，`srclang` 取页面语言，标签取语言名称，并默认打开字幕。每个语言版本写自己的文件：英文页用 `tour.en.vtt`，本页用 `tour.zh.vtt`。请把 `.vtt` 文件放在同源位置（页面包或 `static/`），浏览器默认会因 CORS 阻止跨域 `<track>` 字幕文件。
+- `track` 是一个 WebVTT 字幕文件，查找方式相同。主题写出 `kind="subtitles"`，`srclang` 取页面语言，标签取语言名称，并默认打开字幕。每个语言版本写自己的文件：英文页用 `tour.en.vtt`，本页用 `tour.zh.vtt`。尽量把 `.vtt` 文件放在同源位置（页面包或 `static/`）；当 `track` 指向远程 URL 时，`<video>` 会附加 `crossorigin="anonymous"`，此时字幕与视频所在服务端都必须返回 CORS 响应头。
 - `caption` 是 `<figcaption>` 里的纯文本，与图片完全相同，不解析 Markdown。
 
 `num` 让视频成为 Book 编号图，与图片一样：图注前加按页面语言显示的「图 N」，`#id` 缺省为 `fig-<num>`，普通链接与 `xref` 都能引用它。见[书籍出版](/zh/docs/write/book/)。

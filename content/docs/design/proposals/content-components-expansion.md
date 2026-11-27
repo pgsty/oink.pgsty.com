@@ -10,16 +10,16 @@ design_status: implemented
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] Implemented, awaiting acceptance
-> All six components are implemented on the theme's main branch working tree,
+> [!NOTE] Implemented, awaiting release
+> All six components are implemented on the theme's `main` branch,
 > documented in the [component guides](/docs/components/), and recorded in the
 > [Components contract](/docs/design/components/#timeline-media-social-and-maps).
-> Nothing is committed or released. This page replaces the first, single-page
+> Not yet in a tagged release. This page replaces the first, single-page
 > draft of the same date; each component has its own proposal.
 
 | Record | Value |
 | --- | --- |
-| Status | Implemented 2026-11-27; uncommitted; awaiting acceptance |
+| Status | Implemented 2026-11-27 on `main`; awaiting release |
 | Owner | OINK maintainers |
 | Scope | OINK theme; this documentation site; one optional `oink-cli` helper (separate proposal) |
 | Affected contracts | [Components](/docs/design/components/), [Architecture](/docs/design/architecture/), the [component guides](/docs/components/), configuration reference |
@@ -33,7 +33,7 @@ proposal_date: 2026-11-27
 | Update | Heading + `{.update date="…" tags="…"}` | Two heading attributes | None | [Update component](/docs/design/proposals/component-update/) |
 | Social posts | `{{</* social */>}}…{{</* /social */>}}` | One shortcode | None | [Social post component](/docs/design/proposals/component-social/) |
 | Video | `![name](demo.mp4)` and platform URLs | Media attributes on the image hook; `params.video_embeds` | Only for autoplay or enabled embeds | [Video component](/docs/design/proposals/component-video/) |
-| Audio | `![name](episode.mp3)` | Media attributes on the image hook | None | [Audio component](/docs/design/proposals/component-audio/) |
+| Audio | `![name](episode.mp3)` | Media attributes on the image hook | None for one player; shared `media.js` for 2+ | [Audio component](/docs/design/proposals/component-audio/) |
 | Map | `map` data fence | One fence; `params.map` | Vendored Leaflet, only when enabled | [Map component](/docs/design/proposals/component-map/) |
 
 The documented component catalog grows from 21 to 27. The shortcode count grows

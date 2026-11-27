@@ -92,8 +92,9 @@ attributes.
   `kind="subtitles"`, takes `srclang` from the page language, labels the track
   with the language name and turns it on by default. Each translation names
   its own file: the Chinese page uses `tour.zh.vtt`. Keep `.vtt` files on the
-  same origin (in the page bundle or `static/`), because browsers block
-  cross-origin `<track>` files without CORS headers.
+  same origin (in the page bundle or `static/`) when possible; when `track` is
+  a remote URL, `<video>` adds `crossorigin="anonymous"`, so both the subtitle
+  and video hosts must send CORS headers.
 - `caption` is plain text in a `<figcaption>`, exactly as for images; it is
   not parsed as Markdown.
 

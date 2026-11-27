@@ -10,12 +10,12 @@ design_status: implemented
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] 已实现，等待接受
-> 六个组件都已在主题 main 分支的工作区中实现，写入了[组件指南](/zh/docs/components/)，并记录在[组件契约](/zh/docs/design/components/#timeline-media-social-and-maps)中。所有改动都尚未提交，也未发布。本页取代同日写成的第一版单页草案；每个组件各有一份提案。
+> [!NOTE] 已实现，等待发布
+> 六个组件都已在主题 `main` 分支中实现，写入了[组件指南](/zh/docs/components/)，并记录在[组件契约](/zh/docs/design/components/#timeline-media-social-and-maps)中。尚未包含在发布标签中。本页取代同日写成的第一版单页草案；每个组件各有一份提案。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 2026-11-27 实现；尚未提交；等待接受 |
+| 状态 | 2026-11-27 在 `main` 实现；等待发布 |
 | 负责人 | OINK 维护者 |
 | 范围 | OINK 主题；本文档站；一个可选的 `oink-cli` 辅助命令（另有提案） |
 | 受影响契约 | [组件](/zh/docs/design/components/)、[架构](/zh/docs/design/architecture/)、[组件指南](/zh/docs/components/)、配置参考 |
@@ -29,7 +29,7 @@ proposal_date: 2026-11-27
 | Update | 标题加 `{.update date="…" tags="…"}` | 两个标题属性 | 无 | [Update 组件](/zh/docs/design/proposals/component-update/) |
 | 社交帖子 | `{{</* social */>}}…{{</* /social */>}}` | 一个短代码 | 无 | [社交帖子组件](/zh/docs/design/proposals/component-social/) |
 | Video | `![name](demo.mp4)` 与平台 URL | 图片钩子上的媒体属性；`params.video_embeds` | 仅自动播放或已启用的嵌入需要 | [Video 组件](/zh/docs/design/proposals/component-video/) |
-| Audio | `![name](episode.mp3)` | 图片钩子上的媒体属性 | 无 | [Audio 组件](/zh/docs/design/proposals/component-audio/) |
+| Audio | `![name](episode.mp3)` | 图片钩子上的媒体属性 | 单播放器无；2 个及以上共享 `media.js` | [Audio 组件](/zh/docs/design/proposals/component-audio/) |
 | Map | `map` 数据围栏 | 一个围栏；`params.map` | 随主题内置（vendored）的 Leaflet，仅在启用时加载 | [Map 组件](/zh/docs/design/proposals/component-map/) |
 
 文档中的组件目录从 21 个增加到 27 个，短代码从 29 个增加到 30 个（新增 `social`）。图片与标题渲染钩子各增加分支，另新增一个围栏钩子（`map`）。

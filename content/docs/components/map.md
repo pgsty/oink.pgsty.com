@@ -226,8 +226,8 @@ straight line from place to place, not a computed walking or driving route.
 ## One place and zoom {#single}
 
 A single place opens at zoom level 15. `zoom` sets another level, from 1 (the
-whole world) to 19 (a street corner), and `height` sets the map's height as a
-CSS length.
+whole world) to 22 (a street corner, capped by `params.map.max_zoom`), and
+`height` sets the map's height as a CSS length.
 
 ````markdown {title="Source"}
 ```map {zoom=17 height="18rem"}
@@ -318,7 +318,7 @@ Fence attributes:
 | --- | --- | --- | --- |
 | `caption` | plain text | — | Caption under the list; also labels the map region |
 | `route` | bool | `false` | `true` connects the places in list order |
-| `zoom` | whole number | fit | 1 to 19. Without it: 15 for one place, otherwise fit all places |
+| `zoom` | whole number | fit | 1 to 22 (capped by `params.map.max_zoom`). Without it: 15 for one place, otherwise fit all places |
 | `height` | CSS length | `min(26rem, 60vh)` | A number plus `px` `rem` `em` `vh` `vw` `%` |
 | `tab` | plain text | — | Makes this map one panel of a [tab set](/docs/components/tabs/) |
 | `group` / `value` | string | — | Tab group and sync value; must appear with `tab` |

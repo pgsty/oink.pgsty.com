@@ -10,17 +10,15 @@ design_status: implemented
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] Implemented, awaiting acceptance
-> The `social` shortcode is implemented on the theme's main branch working tree
-> and documented in the [Social posts guide](/docs/components/social/). The
-> first implementation is committed (`730e9f6`, site `e00295c`); the hardening
-> after review is not yet committed, and nothing is released. The shared
-> decisions behind it are in the
+> [!NOTE] Implemented, awaiting release
+> The `social` shortcode is implemented on the theme's `main` branch
+> and documented in the [Social posts guide](/docs/components/social/).
+> Not yet in a tagged release. The shared decisions behind it are in the
 > [overview](/docs/design/proposals/content-components-expansion/).
 
 | Record | Value |
 | --- | --- |
-| Status | Implemented 2026-11-27 (`730e9f6` / `e00295c`), hardened after deep review; awaiting acceptance |
+| Status | Implemented 2026-11-27 on `main`; awaiting release |
 | Owner | OINK maintainers |
 | Delivery stage | S3 |
 | Form | Shortcode with a Markdown body: `{{</* social … */>}}…{{</* /social */>}}` |
