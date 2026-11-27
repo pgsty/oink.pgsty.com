@@ -11,17 +11,17 @@ proposal_date: 2026-11-27
 ---
 
 > [!NOTE] 已实现，等待接受
-> `social` 短代码已在主题 main 分支的工作区中实现，并写入了[社交帖子指南](/zh/docs/components/social/)。它尚未提交，也未发布。所依据的共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
+> `social` 短代码已在主题 main 分支的工作区中实现，并写入了[社交帖子指南](/zh/docs/components/social/)。首版实现已提交（主题 `730e9f6`，站点 `e00295c`），评审后的加固尚未提交，均未发布。所依据的共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 2026-11-27 实现；尚未提交；等待接受 |
+| 状态 | 2026-11-27 实现（`730e9f6` / `e00295c`），经深度评审加固；等待接受 |
 | 负责人 | OINK 维护者 |
 | 交付阶段 | S3 |
 | 形态 | 带 Markdown 正文的短代码：`{{</* social … */>}}…{{</* /social */>}}` |
 | 新增公共 API | 短代码 `social`，参数为 `author`、`handle`、`avatar`、`date`、`url`、`platform`；语言键 `ui_social_view_original` |
 | 运行时 | 无 |
-| 实现 | `layouts/_shortcodes/social.html`、`assets/css/td/social.css`、夹具 `tests/site/content/fixtures/social.md` |
+| 实现 | `layouts/_shortcodes/social.html`、`layouts/_partials/content/markdown-escape-inline.html`、`assets/css/td/social.css`、夹具 `tests/site/content/fixtures/social.md` |
 
 ## 概要 {#summary}
 
@@ -34,7 +34,7 @@ The post text, in ordinary **Markdown**, with its line breaks and links.
 {{</* /social */>}}
 ```
 
-卡片显示头像、名称、账号名、平台图标、正文、附图、日期以及原帖链接。所有内容都来自页面本身，构建期和浏览期都不获取任何数据。`platform`（默认 `x`）为 Bluesky、Mastodon、Threads、微博或 LinkedIn 的帖子选择对应图标，版式保持不变。
+卡片显示头像、名称、账号名、平台图标、正文、附图、日期以及原帖链接。所有内容都来自页面本身，构建期和浏览期都不获取任何数据。`platform`（顶层默认 `x`，嵌套默认 `none`）为 Bluesky、Mastodon、Threads、微博、知乎、Telegram 或 LinkedIn 的帖子选择对应图标，版式保持不变，或使用 `none` 省略图标。
 
 ## 问题 {#problem}
 
@@ -61,7 +61,7 @@ Hugo 内置的 `x` 短代码在构建期向 X 请求 oEmbed 数据（Hugo 会在
 
 - 一张辨识度高、满足无障碍要求的帖子卡片，零网络请求，零 JavaScript。
 - 支持文字、链接、图片（含图片缩放）、多图网格，以及一层引用帖。
-- 在 Print、Markdown、LLMS 和 RSS 中输出带署名的静态引用块。
+- Print 输出同样的静态卡片；Markdown、LLMS 和 RSS 输出带署名的引用块。
 
 ### 非目标 {#non-goals}
 
@@ -79,14 +79,14 @@ Hugo 内置的 `x` 短代码在构建期向 X 请求 oEmbed 数据（Hugo 会在
 
 | 参数 | 规则 | 无效输入 |
 | --- | --- | --- |
-| `author` | 显示名称，纯文本 | — |
-| `handle` | 纯文本，按原样显示（`@name`、`@user@mastodon.social`） | — |
-| `avatar` | 图片路径，经共享图片解析器处理；名称就在旁边，因此作为装饰图（`alt=""`） | 与其他图片同样解析：页面资源与全局资源会被查找或告警；`static/` 路径与 HTTPS URL 按原样使用 |
-| `date` | 纯文本。ISO 8601 日期或日期时间还会生成 `<time datetime>` | — |
-| `url` | 原帖地址，经共享 URL 策略处理（HTTP/HTTPS）。可选，以便仍能引用已删除的帖子 | 无效：告警并丢弃 |
-| `platform` | `x`（默认）、`bluesky`、`mastodon`、`threads`、`weibo`、`linkedin` | 未知：告警，使用 `x` |
+| `author` | 显示名称，纯文本 | 非字符串：告警并忽略 |
+| `handle` | 纯文本，按原样显示（`@name`、`@user@mastodon.social`） | 非字符串：告警并忽略 |
+| `avatar` | 图片路径，经 `content/image-resolve.html`（`parameter="avatar"`）处理；名称就在旁边，因此作为装饰图（`alt=""`） | 不安全协议或非图片资源：以 `avatar` 为参数名告警并丢弃；静态路径在项目自己的 `static/` 中找不到时（仅在该目录存在时检查，路径先解码并规范化），以 ID `social:avatar-static` 告警并保留路径，使用模块挂载或自定义 `staticDir` 的站点可把该 ID 加入 `ignoreLogs`；用 `..` 越出站点根目录的静态路径告警并保留路径；从不抓取远程 URL |
+| `date` | 纯文本。`YYYY-MM`，或 `YYYY-MM-DD` 后接可选的 `T`／空格、`HH:MM`、可选 `:SS` 与可选 `Z`／`±HH:MM`，且是真实日历日期时，输出 `<time datetime>`（空格写成 `T`）；其他写法输出 `<span class="td-social__date">` | 非字符串：告警并忽略 |
+| `url` | 原帖地址，经共享 URL 策略处理（HTTP/HTTPS 附带 `rel="external"`，站内路径不附带）。可选，以便仍能引用已删除的帖子 | 无效：告警并丢弃 |
+| `platform` | `x`（顶层默认）、`bluesky`、`mastodon`、`threads`、`weibo`、`zhihu`、`telegram`、`linkedin`、`none`（嵌套默认） | 未知、为空或非字符串：告警，回退至当前层级默认值 |
 
-`author` 与 `handle` 至少提供一个。两者都缺失时，短代码告警并把正文渲染为普通引用块，引用的文字不会丢失。没有头像时，用 CSS 绘制一个圆形，显示 `author`（或 `handle`）的首字符；不请求默认头像，也不请求 Gravatar。只接受命名参数，未知参数会告警。
+`author` 与 `handle` 至少提供一个。两者都缺失时，短代码告警并把正文渲染为普通引用块（空正文且 `url` 有效时渲染为含原帖链接的引用块），引用的文字不会丢失。有正文时，`url` 只保留为引用块的 `cite` 属性，Markdown 中不出现；`date`、`platform` 和 `avatar` 被忽略。没有头像时，用 CSS 绘制一个圆形，显示 `author`（或 `handle`）的首个字素簇（先剥离开头的 `@`、空白与不可见格式字符，剥离后为空时回退人物图标）；不请求默认头像，也不请求 Gravatar。只接受命名参数，未知参数会告警。
 
 ### 正文 {#body}
 
@@ -96,11 +96,11 @@ Hugo 内置的 `x` 短代码在构建期向 X 请求 oEmbed 数据（Hugo 会在
 | --- | --- |
 | 文字、换行、链接、代码 | 普通 Markdown |
 | 一张附图 | Markdown 图片；符合条件时获得图片缩放 |
-| 多张图片 | 正文中的 `gallery` 围栏 |
-| 引用帖 | 嵌套的 `social` 短代码；内层卡片以紧凑样式渲染，不显示平台图标 |
+| 多张图片 | 正文中的 `gallery` 围栏（在卡片内采用匹配圆角的紧凑网格） |
+| 引用帖 | 嵌套的 `social` 短代码；省略 `platform` 时默认 `none`，显式指定则呈现紧凑图标与隐藏平台名；超过一层嵌套告警 |
 | 视频 | 一行 Video 图片语法 |
 
-与所有短代码正文一样，正文中的脚注引用会告警，并按字面保留。正文为空时告警：若 `url` 有效，卡片渲染为仅含链接的卡片，否则不渲染任何内容。
+与所有短代码正文一样，正文中的脚注引用会告警，并按字面保留。正文为空时告警：若 `url` 有效，卡片渲染为仅含链接的卡片（匿名时渲染为含链接的引用块），否则不渲染任何内容。
 
 ### 渲染 {#rendering}
 
@@ -108,12 +108,12 @@ Hugo 内置的 `x` 短代码在构建期向 X 请求 oEmbed 数据（Hugo 会在
 <figure class="td-social td-social--x">
   <figcaption class="td-social__author">
     <img class="td-social__avatar" src="/logo.svg" alt="" loading="lazy" decoding="async">
-    <span class="td-social__names"><span class="td-social__name">OINK Example</span><span class="td-social__handle">@oink_example</span></span>
+    <span class="td-social__names"><span class="td-social__name" dir="auto">OINK Example</span> <span class="td-social__handle" dir="ltr">@oink_example</span></span>
     <i class="td-social__platform fa-brands fa-x-twitter" aria-hidden="true"></i>
     <span class="visually-hidden"> · X</span>
   </figcaption>
   <blockquote class="td-social__body" cite="https://example.com/oink_example/status/1">…</blockquote>
-  <p class="td-social__meta"><a href="https://example.com/oink_example/status/1" rel="external"><time datetime="2026-02-15">2026-02-15</time> · View original</a></p>
+  <p class="td-social__meta"><a href="https://example.com/oink_example/status/1" rel="external"><time datetime="2026-02-15">2026-02-15</time> · View original<span class="visually-hidden"> — OINK Example</span></a></p>
 </figure>
 ```
 
@@ -124,18 +124,21 @@ Hugo 内置的 `x` 短代码在构建期向 X 请求 oEmbed 数据（Hugo 会在
 | `mastodon` | `fa-brands fa-mastodon` |
 | `threads` | `fa-brands fa-threads` |
 | `weibo` | `fa-brands fa-weibo` |
+| `zhihu` | `fa-brands fa-zhihu` |
+| `telegram` | `fa-brands fa-telegram` |
 | `linkedin` | `fa-brands fa-linkedin` |
+| `none` | 无 |
 
-图标是装饰性的单色图标；平台名称以视觉隐藏文字提供给辅助技术。卡片使用文章表面 token；Ink 和 Terminal 保持平面、直角的几何形态，Terminal 中的头像也是方形。Print 保留卡片边框，并在链接后打印原帖 URL。RTL 通过逻辑属性实现镜像；过长的账号名和 URL 会自动换行。
+图标是装饰性的单色图标；有平台名称时以视觉隐藏文字提供给辅助技术。卡片使用抬升表面令牌（`--td-brand-elev`），嵌套引用回到 `--bs-body-bg`，正文隔离 `blockquote` 的楷体规则以保持与预设正文一致；Ink 和 Terminal 保持平面、直角的几何形态（0px 与 2px），Terminal 中的头像也是方形。Print 无论屏幕明暗都切换至 `--td-print-*` 纸张调色板，并在链接后打印原帖 URL。RTL 通过逻辑属性镜像，并对账号名与 ISO 时间戳执行 LTR 双向隔离；过长的账号名和 URL 会自动换行。
 
 ### 输出 {#outputs}
 
 | 输出 | 结果 |
 | --- | --- |
 | HTML | 卡片本身，没有运行时。正文图片照常按条件接入共享的图片缩放 |
-| Print | 静态卡片，URL 可见 |
-| Markdown / LLMS | 引用块：先是正文各行，然后是 `— OINK Example (@oink_example), 2026-02-15, [View original](url)`；嵌套帖子变为嵌套引用块。署名中的文字经共享的 Markdown 转义处理 |
-| RSS | 包含正文与署名行的 `<blockquote cite>`；不含头像 |
+| Print | 纸张调色板上的静态卡片，URL 可见 |
+| Markdown / LLMS | 引用块：先是正文各行，然后是 ``— OINK Example (`@oink_example`) · X · 2026-02-15 · [View original](url)``；嵌套帖子变为嵌套引用块。署名中的文字经 `content/markdown-escape-inline.html` 处理 |
+| RSS | 包含 `<blockquote cite>`（仅含链接的卡片省略空引用块）与带绝对 URL 署名行的 `<figure>`；不含头像 |
 
 ### Hugo 自带的 `x` {#hugo-x}
 
@@ -179,7 +182,7 @@ Hugo 内置的 `x` 短代码保持可用且不变：它在构建期获取 oEmbed
 | 样式 | `assets/css/td/social.css` |
 | 语言文件 | 全部 32 个语言文件中的 `ui_social_view_original` |
 | 夹具 | `tests/site/content/fixtures/social.md` 及其中文对页，由 HTML、Markdown 与 Print golden 固定 |
-| 无效输入 | `bin/check-content-primitives.py` 中的六个用例：未知平台、带与不带 URL 的空正文、同时缺少作者和账号名、不安全的 URL 协议、未知参数 |
+| 无效输入 | `bin/check-content-primitives.py` 中的 15 个 `social-*` 用例、`check_social_posts()` 及模板/样式契约校验，加上 `tests/browser/social.spec.mjs` 浏览器回归测试 |
 | 指南 | [社交帖子](/zh/docs/components/social/) |
 
 ## 验收标准 {#acceptance}
@@ -192,7 +195,7 @@ Hugo 内置的 `x` 短代码保持可用且不变：它在构建期获取 oEmbed
 
 ## 待决问题 {#open-decisions}
 
-1. **平台列表。** 建议：保留上述六个。只有在具备随主题内置的图标、且有作者提出需求时才新增平台。
+1. **平台列表。** 已扩展为 `x`、`bluesky`、`mastodon`、`threads`、`weibo`、`zhihu`、`telegram`、`linkedin` 与 `none`。后续仅在具备随主题内置的图标且有作者需求时新增平台。
 2. **作者注册表。** 建议：暂不提供；等实际页面出现重复元数据后再考虑。
 
 ## 决策日志 {#decision-log}
@@ -201,3 +204,5 @@ Hugo 内置的 `x` 短代码保持可用且不变：它在构建期获取 oEmbed
 - **2026-11-27（评审）。** 精简为六个参数加组合式 Markdown 正文；记录了已验证的旧式 `x` 调用解析失败。
 - **2026-11-27（负责人）。** 改名为 `social`，避免与 Hugo 的 `x` 冲突；`platform` 继续支持其他平台。
 - **2026-11-27（实现）。** 按设计实现；另以视觉隐藏文字提供平台名称，打印规则在链接后显示原帖 URL。
+- **2026-11-27（深度评审与加固）。** 修复深色打印剪影、嵌套卡片样式优先级失效、RTL 双向隔离、嵌套平台读屏矛盾、匿名空正文带 URL 退化、HTML5 `<time>` 校验、emoji/字素簇首字符截断、卡片内画廊网格与圆角、CJK 正文楷体泄漏、强制颜色首字母头像边框、离线 `static/` 头像告警以及上下文感知 Markdown 行内转义；新增 `zhihu`、`telegram` 与 `none` 平台及 Playwright 回归测试。
+- **2026-11-27（对抗性评审）。** 首字符跳过开头的不可见字符（零宽空格、BOM、双向控制符及任意 Unicode 空白）；静态头像检查先解码并规范化路径，对用 `..` 越出站点根目录的路径告警，缺失文件的告警改为可用 `social:avatar-static` 关闭；Markdown 在每张卡片后留一个空行，相邻卡片不再合并为一个引用块；指南中日期、头像解析顺序与匿名卡片的描述已与实现对齐。

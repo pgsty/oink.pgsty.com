@@ -325,9 +325,12 @@ Goldmark 会给每个标题加上 `id` 属性，因此当该 id 是唯一属性�
 平台 URL 渲染为链接卡片。对 `params.video_embeds` 列出的平台，普通点击会加载播放器，其 URL 由主题根据校验过的 ID 推导（`youtube-nocookie.com`、带 `danmaku=0` 的 Bilibili、带 `dnt=1` 的 Vimeo）；点击之前不发出任何请求。
 行内媒体渲染为链接。Print 与 RSS 得到含海报图、名称与 URL 的静态 figure；Markdown 保留作者写下的那一行。
 
-`social` 只用页面内容引用一条帖子，参数为 `author`、`handle`、`avatar`、`date`、`url` 与 `platform`（默认 `x`，另有 `bluesky`、`mastodon`、`threads`、`weibo`、`linkedin`，只决定图标）。
-正文是 Markdown，因此图片、`gallery` 围栏以及嵌套的 `social`（引用帖）都可以在正文中组合。HTML 是带 `blockquote cite` 与署名行的 figure；Markdown 是以署名结尾的引用块；RSS 是引用块。
-缺少 `author` 与 `handle` 时，正文渲染为普通引用块；没有正文时，有 `url` 则渲染为链接卡片，否则不输出。Hugo 内置的 `x` 短代码不被覆盖。
+`social` 只用页面内容引用一条帖子，参数为 `author`、`handle`、`avatar`、`date`、`url` 与 `platform`（顶层卡片默认 `x`，嵌套引用默认 `none`，另有 `bluesky`、`mastodon`、`threads`、`weibo`、`zhihu`、`telegram`、`linkedin`，决定图标以及向辅助技术播报、写入 Markdown 与 RSS 的平台名；嵌套省略 `platform` 时同时省略图标与视觉隐藏平台名，显式指定则两者同时呈现）。
+参数校验字符串类型并拒绝未知或位置参数；`avatar` 以 `parameter="avatar"` 经过 `content/image-resolve.html`，并在项目自己的 `static/` 目录存在时，对解码、规范化后在该目录中找不到的静态头像离线告警，告警 ID 为可关闭的 `social:avatar-static`（检查看不到模块挂载与自定义 `staticDir`）；用 `..` 越出站点根目录的静态路径总是告警。无头像时，先剥离开头的 `@`、Unicode 空白、控制字符与不可见格式字符，再按首个字素簇绘制首字符（剥离后为空时回退人物图标）。
+`date` 仅在 `YYYY-MM`，或 `YYYY-MM-DD` 带可选 `HH:MM[:SS]` 与可选 `Z`／`±HH:MM`，且为真实日历日期时输出 `<time datetime>`，否则输出 `<span class="td-social__date">`；`url` 仅对外链输出 `rel="external"`。
+正文是 Markdown，图片、`gallery` 围栏（在卡片内采用适配预设圆角的紧凑网格）与嵌套 `social`（超过一层时告警）都在正文中组合；HTML 在 RTL 下对账号名和 ISO 时间戳执行 LTR 双向隔离，打印时无论屏幕配色都映射至 `--td-print-*` 纸张令牌，并在原帖链接中附加视觉隐藏的作者名上下文。
+Markdown 通过上下文感知的行内转义（`content/markdown-escape-inline.html`）与行内代码账号名生成可读引用块，并在其后留一个空行，使相邻卡片保持为独立的引用；RSS 在仅含链接的卡片上省略空 `<blockquote>` 并补全站内相对 URL。
+缺少 `author` 与 `handle` 时，有正文则渲染为普通引用块（`url` 只保留为 `cite`，Markdown 中省略；`date`、`platform` 与 `avatar` 被忽略），空正文且有 `url` 则在全部四种输出中渲染含原帖链接的引用块并发出单条告警；正文与 `url` 皆空时不输出。Hugo 内置的 `x` 短代码不被覆盖。
 
 `map` 围栏承载一个 YAML 或 JSON 地点列表（`name`、`lat`、`lng`、`text`、`image`、`link`），按名称以 YAML 解析，而不是靠内容猜测格式。围栏属性为 `caption`、`route`、`zoom`、`height`、`id` 以及相邻标签页的键。
 所有输出都渲染带 OpenStreetMap 坐标链接的编号地点列表。`params.map` 配置完整时，HTML 另加画布和校验后的地点 JSON；`content-components.js` 只在这些页面加载随主题内置的 Leaflet 引擎与样式表。

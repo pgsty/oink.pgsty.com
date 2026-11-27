@@ -3,7 +3,7 @@ title: Social posts
 linkTitle: Social posts
 description: Quote a post from X, Bluesky, Mastodon, or another platform with the `social` shortcode. The card is written in the page, so nothing is fetched and no script loads.
 weight: 176
-search_keywords: [social, social post, quote a post, tweet, X, Twitter, Bluesky, Mastodon, Threads, Weibo, LinkedIn, offline embed, avatar, quoted post]
+search_keywords: [social, social post, quote a post, tweet, X, Twitter, Bluesky, Mastodon, Threads, Weibo, Zhihu, Telegram, LinkedIn, offline embed, avatar, quoted post]
 image_zoom: true
 ---
 
@@ -29,10 +29,12 @@ Upgraded our reporting cluster to PostgreSQL 18 over the weekend. pg_upgrade wit
 Upgraded our reporting cluster to PostgreSQL 18 over the weekend. pg_upgrade with --link took four minutes.
 {{< /social >}}
 
-Without `avatar`, the card draws the first character of `author` (or of
-`handle`) in a circle rather than requesting a default image or a Gravatar.
-Without `platform`, it shows the X icon. Parameters must be named; positional
-ones warn and are ignored.
+Without `avatar`, the card draws the first character (preserving emoji and
+combining marks, after removing leading `@`, spaces, and invisible characters
+such as a zero-width space, or falling back to a person icon if nothing visible
+remains) of `author` (or of `handle`) in a circle rather than requesting a
+default image or a Gravatar. Without `platform`, a top-level card shows the X
+icon. Parameters must be named; positional ones warn and are ignored.
 
 ## A complete card {#full}
 
@@ -56,33 +58,45 @@ name, and **no gradients**.
 ![The Oink wordmark beside a round fountain-pen logo](/images/oink.webp)
 {{< /social >}}
 
-- `avatar` resolves like any image: a page resource, then a global resource
-  in `assets/`, then a static path, then a remote URL. The name sits beside
-  it, so it is decorative (`alt=""`). The card shows it small and crops it to
-  fill its frame, so use a square image.
-- `date` is plain text, shown as written. An ISO 8601 date or date-time, such
-  as `2026-11-23` or `2026-11-23 08:30`, also becomes a machine-readable
-  `<time datetime>`.
+- `avatar` resolves like any image. A value with a URL scheme is a remote
+  image, never fetched. Any other value is looked up as a page resource (or a
+  resource of the section's branch bundle), then a global resource in
+  `assets/`, and otherwise used as a path to the site's static files. Prefer
+  page or `assets/` resources, which the build always finds. The name sits
+  beside the avatar, so it is decorative (`alt=""`). The card shows it small
+  and crops it to fill its frame, so use a square image.
+- `date` is plain text, shown as written. A year-month (`2026-11`), a date
+  (`2026-11-23`), or a date and time with hours and minutes, optional seconds,
+  and an optional `Z` or `±HH:MM` offset (`2026-11-23 08:30`,
+  `2026-11-23T08:30:00+08:00`) on a real calendar day becomes a
+  machine-readable `<time datetime>`; a space before the time is written as
+  `T` in the attribute. Anything else, including fractional seconds or a
+  `+0800` offset, renders as plain text without `<time>`.
 - `url` turns the date line into a "View original" link. Give the post's
-  HTTP(S) address; an invalid URL warns and is dropped. It is optional, so you
-  can still quote a post that no longer exists.
+  HTTP(S) address (which receives `rel="external"`) or a site-internal path;
+  an invalid URL warns and is dropped. It is optional, so you can still quote
+  a post that no longer exists.
 - The attached image is an ordinary Markdown image. This page turns on
   [image zoom](/docs/components/image/#zoom), so it opens at full size.
 
 ## Platforms {#platforms}
 
-`platform` changes the brand icon and nothing else: every platform shares one
+`platform` selects the brand icon and the platform name that screen readers,
+Markdown and RSS carry, and nothing else: every platform shares one
 layout, the preset owns the colors, and the card never imitates a platform's
-own interface.
+own interface. Use `none` when quoting a platform that has no icon here.
 
 | `platform` | Icon |
 | --- | --- |
-| `x` (default) | `fa-brands fa-x-twitter` |
+| `x` (default on top-level cards) | `fa-brands fa-x-twitter` |
 | `bluesky` | `fa-brands fa-bluesky` |
 | `mastodon` | `fa-brands fa-mastodon` |
 | `threads` | `fa-brands fa-threads` |
 | `weibo` | `fa-brands fa-weibo` |
+| `zhihu` | `fa-brands fa-zhihu` |
+| `telegram` | `fa-brands fa-telegram` |
 | `linkedin` | `fa-brands fa-linkedin` |
+| `none` (default when nested) | None (omits icon and platform name) |
 
 ````markdown {title="Source"}
 {{</* social author="Mara Lindqvist" handle="@mara@fosstodon.example" platform="mastodon"
@@ -106,10 +120,11 @@ Vacuum is not optional. Neither is watching it.
 
 The second card is quoted by handle alone, so it has no name, date or link.
 Screen readers hear the platform name, which the card carries as visually
-hidden text beside the decorative icon. An unknown `platform` warns and falls
-back to `x`. `handle` appears exactly as written, because the theme adds no
-`@` and knows no per-platform rules: write `@name` for X and `@user@instance`
-for Mastodon.
+hidden text beside the decorative icon (omitted for `platform="none"`). An
+unknown or empty `platform` warns and falls back to `x` (or `none` on a nested
+card). `handle` appears exactly as written, because the theme adds no `@` and
+knows no per-platform rules: write `@name` for X and `@user@instance` for
+Mastodon.
 
 ## The body {#body}
 
@@ -153,7 +168,10 @@ footnotes in the page's own Markdown.
 
 When the post quotes another, write the quoted post as a second `social`
 inside the body. The inner card is compact (a smaller avatar, name and handle
-on one line, no platform icon) and keeps its own date and link.
+on one line, `platform` defaults to `none` so neither icon nor hidden platform
+name repeats) and keeps its own date and link. Pass an explicit `platform` on
+the inner card for a cross-platform quote to show a compact icon and announce
+that platform. Nesting deeper than one quoted post warns.
 
 ````markdown {title="Source"}
 {{</* social author="Mara Lindqvist" handle="@mara_dba" avatar="/favicon.svg"
@@ -184,11 +202,16 @@ kept.
 
 | Input | Result |
 | --- | --- |
-| Neither `author` nor `handle` | Warns; the body renders as a plain blockquote, without the card |
+| Neither `author` nor `handle`, with body | Warns; the body renders as a plain blockquote, without the card. `url` survives only as the quote's `cite` attribute and is left out of Markdown; `date`, `platform` and `avatar` are ignored |
+| Neither `author` nor `handle`, empty body, with `url` | Warns; renders a plain blockquote linking to `url` |
 | Empty body, with `url` | Warns; a link-only card with the author line and "View original" |
 | Empty body, no `url` | Warns; nothing renders |
-| Unknown `platform` | Warns; uses `x` |
-| Invalid `url` | Warns; the link is dropped |
+| Unknown, empty, or non-string `platform` | Warns; uses `x` (or `none` when nested) |
+| Non-string `author`, `handle`, or `date` | Warns; ignored |
+| Invalid `url` or `avatar` | Warns; the attribute is dropped |
+| Static `avatar` not under the project's `static/` | Warns when `static/` exists (ID `social:avatar-static`); keeps the path |
+| Static `avatar` that climbs above the site root with `..` | Warns; keeps the path |
+| Nested deeper than one quoted post | Warns; renders cleanly without dropping content |
 | Unknown or positional parameters | Warn; ignored |
 
 ## Hugo's `x` shortcode {#hugo-x}
@@ -201,12 +224,14 @@ shortcodes have different names and do not interact.
 
 ## Output {#outputs}
 
-The card loads no JavaScript. Print shows the same card with the original URL
-printed after "View original". In the Markdown and LLMS output the card
-becomes a blockquote: the body lines, then
-`— Author (@handle), date, [View original](url)`, with a quoted post as a
-nested blockquote. RSS carries the body and an attribution line, without the
-avatar.
+The card loads no JavaScript. Print switches the card to the paper palette
+regardless of screen color mode and prints the original URL after "View
+original". In the Markdown and LLMS output the card becomes a blockquote: the
+body lines, then
+``— Author (`@handle`) · Platform · date · [View original](url)`` (omitting
+the platform segment when `platform="none"`), with a quoted post as a nested
+blockquote. RSS carries the body (omitting `<blockquote>` on link-only cards)
+and an attribution line with absolute URLs, without the avatar.
 
 ## Parameter reference {#reference}
 
@@ -214,10 +239,10 @@ avatar.
 | --- | --- | --- | --- |
 | `author` | plain text | — | Display name. `author` or `handle` is required |
 | `handle` | plain text | — | Shown as written: `@name`, `@user@instance` |
-| `avatar` | image source | — | Page resource / global resource / static path / remote URL; decorative. Without it, the card draws the first character |
-| `date` | plain text | — | Shown as written; an ISO 8601 date or date-time also fills `<time datetime>` |
-| `url` | URL | — | The original post, HTTP(S); links the date line |
-| `platform` | enum | `x` | `x` `bluesky` `mastodon` `threads` `weibo` `linkedin`; selects the icon only |
+| `avatar` | image source | — | Remote URL / page or branch-bundle resource / global resource / static path; decorative. Without it, the card draws the first character (or a user icon) |
+| `date` | plain text | — | Shown as written; a year-month, date, or date-time (`HH:MM`, optional seconds, optional `Z` or `±HH:MM`) on a real day renders as `<time datetime>` |
+| `url` | URL | — | Original post (HTTP(S) or site-internal path); links the date line |
+| `platform` | enum | `x` (`none` nested) | `x` `bluesky` `mastodon` `threads` `weibo` `zhihu` `telegram` `linkedin` `none`; selects the icon and the announced platform name |
 | Body | Markdown | — | The post; may contain images, a `gallery` fence, a video, or a nested `social` |
 {.fields meta="type default"}
 
@@ -239,8 +264,12 @@ lists or quoted posts; images and quoted posts go in the body.
   cards.
 - Parameters are plain text, so Markdown in `author`, `handle` or `date`
   appears literally.
-- The theme does not check that a static or remote avatar exists, so look at
-  the rendered card before publishing.
+- The static avatar check reads only the project's own `static/` directory,
+  and only when it exists. A file that a module mount or a custom `staticDir`
+  publishes also warns; list `social:avatar-static` under the site's
+  `ignoreLogs` to silence that warning. Remote avatar URLs are never fetched
+  or checked. Prefer page-bundle or `assets/` images and inspect the rendered
+  card before publishing.
 
 ## Related {#related}
 

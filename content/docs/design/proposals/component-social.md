@@ -12,19 +12,21 @@ proposal_date: 2026-11-27
 
 > [!NOTE] Implemented, awaiting acceptance
 > The `social` shortcode is implemented on the theme's main branch working tree
-> and documented in the [Social posts guide](/docs/components/social/). It is
-> not committed or released. The shared decisions behind it are in the
+> and documented in the [Social posts guide](/docs/components/social/). The
+> first implementation is committed (`730e9f6`, site `e00295c`); the hardening
+> after review is not yet committed, and nothing is released. The shared
+> decisions behind it are in the
 > [overview](/docs/design/proposals/content-components-expansion/).
 
 | Record | Value |
 | --- | --- |
-| Status | Implemented 2026-11-27; uncommitted; awaiting acceptance |
+| Status | Implemented 2026-11-27 (`730e9f6` / `e00295c`), hardened after deep review; awaiting acceptance |
 | Owner | OINK maintainers |
 | Delivery stage | S3 |
 | Form | Shortcode with a Markdown body: `{{</* social … */>}}…{{</* /social */>}}` |
 | New public API | Shortcode `social` with `author`, `handle`, `avatar`, `date`, `url`, `platform`; locale key `ui_social_view_original` |
 | Runtime | None |
-| Implementation | `layouts/_shortcodes/social.html`, `assets/css/td/social.css`, fixture `tests/site/content/fixtures/social.md` |
+| Implementation | `layouts/_shortcodes/social.html`, `layouts/_partials/content/markdown-escape-inline.html`, `assets/css/td/social.css`, fixture `tests/site/content/fixtures/social.md` |
 
 ## Summary {#summary}
 
@@ -39,8 +41,10 @@ The post text, in ordinary **Markdown**, with its line breaks and links.
 
 The card shows the avatar, name, handle, platform icon, body, attached images,
 date, and a link to the original. Everything comes from the page; nothing is
-fetched at build or view time. `platform` (default `x`) selects the icon for
-Bluesky, Mastodon, Threads, Weibo, or LinkedIn posts with the same layout.
+fetched at build or view time. `platform` (default `x` on top-level cards,
+`none` when nested) selects the icon for Bluesky, Mastodon, Threads, Weibo,
+Zhihu, Telegram, or LinkedIn posts with the same layout, or omits the icon
+with `none`.
 
 ## Problem {#problem}
 
@@ -81,7 +85,8 @@ searchable, and absent from LLMS output.
   JavaScript.
 - Text, links, images (with Image Zoom), multi-image grids, and one level of
   quoted post.
-- A static blockquote with attribution in Print, Markdown, LLMS, and RSS.
+- The same static card in Print, and a blockquote with attribution in
+  Markdown, LLMS, and RSS.
 
 ### Non-goals {#non-goals}
 
@@ -102,18 +107,23 @@ searchable, and absent from LLMS output.
 
 | Parameter | Rule | Invalid input |
 | --- | --- | --- |
-| `author` | Display name, plain text | — |
-| `handle` | Plain text shown verbatim (`@name`, `@user@mastodon.social`) | — |
-| `avatar` | Image path through the shared image resolver; decorative (`alt=""`) because the name is adjacent | Resolved like any image: page and global resources are found or warned about; `static/` paths and HTTPS URLs are used as written |
-| `date` | Plain text. An ISO 8601 date or date-time also becomes `<time datetime>` | — |
-| `url` | Original post, through the shared URL policy (HTTP/HTTPS). Optional, so a deleted post can still be quoted | Invalid: warns and is dropped |
-| `platform` | `x` (default), `bluesky`, `mastodon`, `threads`, `weibo`, `linkedin` | Unknown: warns, uses `x` |
+| `author` | Display name, plain text | Non-string: warns and ignored |
+| `handle` | Plain text shown verbatim (`@name`, `@user@mastodon.social`) | Non-string: warns and ignored |
+| `avatar` | Image path through `content/image-resolve.html` (`parameter="avatar"`); decorative (`alt=""`) because the name is adjacent | Unsafe scheme or non-image resource: warns naming `avatar` and drops; a static path missing from the project's own `static/` (checked only when that directory exists, after decoding and cleaning the path): warns with the ID `social:avatar-static`, which a site using module mounts or a custom `staticDir` can list in `ignoreLogs`, and keeps the path; a static path that climbs above the site root with `..`: warns and keeps the path; remote HTTPS URLs are never fetched |
+| `date` | Plain text. `YYYY-MM`, or `YYYY-MM-DD` optionally followed by `T` or a space, `HH:MM`, optional `:SS`, and an optional `Z` or `±HH:MM`, on a real calendar day, becomes `<time datetime>` (the space written as `T`); anything else renders as `<span class="td-social__date">` | Non-string: warns and ignored |
+| `url` | Original post, through the shared URL policy (HTTP/HTTPS with `rel="external"`, or site-internal path without `rel="external"`). Optional, so a deleted post can still be quoted | Invalid: warns and is dropped |
+| `platform` | `x` (default top-level), `bluesky`, `mastodon`, `threads`, `weibo`, `zhihu`, `telegram`, `linkedin`, `none` (default nested) | Unknown, empty, or non-string: warns, uses context default |
 
 At least one of `author` and `handle` is required. Without both, the shortcode
-warns and renders the body as a plain blockquote, so the quoted words are not
-lost. Without an avatar, a circle shows the first character of `author` (or
-`handle`), drawn in CSS; no default avatar or Gravatar is requested. Named
-parameters only; unknown parameters warn.
+warns and renders the body as a plain blockquote (or a blockquote link when
+the body is empty and `url` is valid), so the quoted words are not lost. With a
+body, `url` survives only as the quote's `cite` attribute and is left out of
+Markdown; `date`, `platform` and `avatar` are ignored. Without an avatar, a
+circle shows the first grapheme cluster of `author` (or `handle`) after leading
+`@`, spaces, and invisible format characters are removed, falling back to a
+person icon if nothing visible remains; no
+default avatar or Gravatar is requested. Named parameters only; unknown
+parameters warn.
 
 ### Body {#body}
 
@@ -123,13 +133,13 @@ The body is rendered through `content/render-block.html` with its own ID scope:
 | --- | --- |
 | Text, line breaks, links, code | Ordinary Markdown |
 | One attached image | A Markdown image; it gets Image Zoom when eligible |
-| Several images | A `gallery` fence inside the body |
-| A quoted post | A nested `social` shortcode; the inner card renders compact, without the platform icon |
+| Several images | A `gallery` fence inside the body (compact grid matching the card radius) |
+| A quoted post | A nested `social` shortcode; `platform` defaults to `none` (or renders a compact icon + label when set explicitly); nesting deeper than one level warns |
 | A video | A Video image line |
 
 Footnote references in the body warn and stay literal, as in every shortcode
 body. An empty body warns; with a valid `url` the card renders as a link-only
-card, otherwise it renders nothing.
+card (or a blockquote link if anonymous), otherwise it renders nothing.
 
 ### Rendering {#rendering}
 
@@ -137,12 +147,12 @@ card, otherwise it renders nothing.
 <figure class="td-social td-social--x">
   <figcaption class="td-social__author">
     <img class="td-social__avatar" src="/logo.svg" alt="" loading="lazy" decoding="async">
-    <span class="td-social__names"><span class="td-social__name">OINK Example</span><span class="td-social__handle">@oink_example</span></span>
+    <span class="td-social__names"><span class="td-social__name" dir="auto">OINK Example</span> <span class="td-social__handle" dir="ltr">@oink_example</span></span>
     <i class="td-social__platform fa-brands fa-x-twitter" aria-hidden="true"></i>
     <span class="visually-hidden"> · X</span>
   </figcaption>
   <blockquote class="td-social__body" cite="https://example.com/oink_example/status/1">…</blockquote>
-  <p class="td-social__meta"><a href="https://example.com/oink_example/status/1" rel="external"><time datetime="2026-02-15">2026-02-15</time> · View original</a></p>
+  <p class="td-social__meta"><a href="https://example.com/oink_example/status/1" rel="external"><time datetime="2026-02-15">2026-02-15</time> · View original<span class="visually-hidden"> — OINK Example</span></a></p>
 </figure>
 ```
 
@@ -153,22 +163,29 @@ card, otherwise it renders nothing.
 | `mastodon` | `fa-brands fa-mastodon` |
 | `threads` | `fa-brands fa-threads` |
 | `weibo` | `fa-brands fa-weibo` |
+| `zhihu` | `fa-brands fa-zhihu` |
+| `telegram` | `fa-brands fa-telegram` |
 | `linkedin` | `fa-brands fa-linkedin` |
+| `none` | None |
 
 The icon is decorative and monochrome; the platform name is available to
-assistive technology as visually hidden text. The card uses article surface
-tokens; Ink and Terminal keep flat, square geometry, with a square avatar in
-Terminal. Print keeps the frame and prints the original URL after the link.
-RTL mirrors through logical properties; long handles and URLs wrap.
+assistive technology as visually hidden text when present. The card uses
+elevated surface tokens (`--td-brand-elev`) with `--bs-body-bg` for nested
+quotes, keeps body typography independent of `blockquote`'s Kai rule, and
+follows each preset's geometry (0px in Ink, 2px and square avatar in
+Terminal). Print maps the card to `--td-print-*` tokens regardless of screen
+color mode and prints the original URL after the link. RTL mirrors through
+logical properties while isolating LTR handles and ISO timestamps; long
+handles and URLs wrap.
 
 ### Outputs {#outputs}
 
 | Output | Result |
 | --- | --- |
 | HTML | The card; no runtime. Body images opt into the shared Image Zoom as usual |
-| Print | The static card with the URL visible |
-| Markdown / LLMS | A blockquote: the body lines, then `— OINK Example (@oink_example), 2026-02-15, [View original](url)`; a nested post becomes a nested blockquote. Text in the attribution goes through the shared Markdown escape |
-| RSS | A `<blockquote cite>` with the body and an attribution line; no avatar |
+| Print | The static card on the paper palette with the URL visible |
+| Markdown / LLMS | A blockquote: the body lines, then ``— OINK Example (`@oink_example`) · X · 2026-02-15 · [View original](url)``; a nested post becomes a nested blockquote. Attribution text goes through `content/markdown-escape-inline.html` |
+| RSS | A `<figure>` with `<blockquote cite>` (omitted on link-only cards) and an attribution line using absolute URLs; no avatar |
 
 ### Hugo's own `x` {#hugo-x}
 
@@ -226,7 +243,7 @@ restricted, and raise terms-of-use questions. The theme never depends on it.
 | Styles | `assets/css/td/social.css` |
 | Locale | `ui_social_view_original` in all 32 catalogs |
 | Fixture | `tests/site/content/fixtures/social.md` and its Chinese peer, pinned by HTML, Markdown and Print goldens |
-| Invalid input | Six cases in `bin/check-content-primitives.py`: unknown platform, empty body with and without URL, missing author and handle, unsafe URL scheme, unknown parameter |
+| Invalid input | Fifteen `social-*` cases plus `check_social_posts()` and template/CSS contract checks in `bin/check-content-primitives.py`, and Playwright coverage in `tests/browser/social.spec.mjs` |
 | Guide | [Social posts](/docs/components/social/) |
 
 ## Acceptance criteria {#acceptance}
@@ -241,8 +258,9 @@ restricted, and raise terms-of-use questions. The theme never depends on it.
 
 ## Open decisions {#open-decisions}
 
-1. **Platform list.** Recommended: the six above. Add a platform only with a
-   vendored icon and an author request.
+1. **Platform list.** Expanded to `x`, `bluesky`, `mastodon`, `threads`,
+   `weibo`, `zhihu`, `telegram`, `linkedin`, and `none`. Add another platform
+   only with a vendored icon and an author request.
 2. **Author registry.** Recommended: not yet; reconsider after real pages show
    repeated metadata.
 
@@ -258,3 +276,17 @@ restricted, and raise terms-of-use questions. The theme never depends on it.
 - **2026-11-27 (implementation).** Implemented as specified, with the platform
   name added as visually hidden text and the print rule showing the original
   URL after the link.
+- **2026-11-27 (deep review & hardening).** Fixed dark-mode print cutout,
+  nested CSS specificity, RTL BiDi isolation, nested platform SR symmetry,
+  anonymous empty+url output, HTML5 `<time>` validation, grapheme initial
+  slicing, compact card gallery layout, CJK body font isolation, forced-colors
+  avatar border, offline `static/` avatar warning, and context-aware Markdown
+  inline escaping; added `zhihu`, `telegram`, and `none` platforms and
+  Playwright regression coverage.
+- **2026-11-27 (adversarial review).** Initials skip invisible leading
+  characters (zero-width space, BOM, bidi marks, any Unicode space); the static
+  avatar check decodes and cleans the path, warns on `..` above the site root,
+  and makes its missing-file warning suppressible as `social:avatar-static`;
+  Markdown ends every card with a blank line so adjacent cards stay separate
+  quotations; the guide's date, avatar-resolution and anonymous-card wording
+  now matches the implementation.
