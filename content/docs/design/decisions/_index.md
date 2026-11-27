@@ -38,6 +38,7 @@ contracts it supports, in the same bilingual, versioned site.
 | [Component refinement](/docs/design/decisions/component-refinement/) | Shared styling, divided cards, compact steps and command strips |
 | [Unified diagram reading](/docs/design/decisions/diagram-reading/) | Shared Mermaid and local PlantUML viewing, source export and demand loading |
 | [Local search refinement](/docs/design/decisions/local-search/) | Mixed queries, real section anchors, partial matches and section scope |
+| [Keyboard map](/docs/design/decisions/keyboard-map/) | Thirty single keys in three groups of ten, dimmed unavailable rows, local history, fold-all and a reader width |
 
 ## Record format {#record-format}
 

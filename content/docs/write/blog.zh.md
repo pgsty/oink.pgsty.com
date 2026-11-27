@@ -226,7 +226,7 @@ params:
 
 ### 表格与布局切换 {#list-switching}
 
-`table` 是归档视图：它总是在一页里列出栏目的全部文章，不分页。想让读者自己选，就设置 `blog_index_toggle: true`。标题旁会出现切换按钮（开启键盘导航时也可以按 {{< kbd "V" >}}），按 `list` → `cards` → `table` → `gallery` → `list` 循环：
+`table` 是归档视图：它总是在一页里列出栏目的全部文章，不分页。想让读者自己选，就设置 `blog_index_toggle: true`。标题旁会出现切换按钮（开启键盘导航时也可以按 {{< kbd "L" >}}），按 `list` → `cards` → `table` → `gallery` → `list` 循环：
 
 ```yaml {title="content/blog/_index.zh.md"}
 blog_index: cards
@@ -257,7 +257,7 @@ blog_gallery:
 
 `blog_index: cards` 是常规的卡片网格；画廊里的瀑布流则是 `blog_index: gallery` 加 `blog_gallery.mode: cards`。`blog_gallery.size` 是目标格子尺寸，范围 160–360 CSS 像素，默认 240，与控制每页文章数的 `blog_index_size` 毫无关系。
 
-读者可以调整排布与尺寸，这个选择与 Expo 相册分开记忆。开启键盘导航且画廊在视图中时，按 {{< kbd "M" >}} 在 `wall` → `cards` → `seamless` 之间循环，按 {{< kbd "," >}} / {{< kbd "<" >}} 或 {{< kbd "." >}} / {{< kbd ">" >}} 以 `20 px` 为步长缩小或放大格子。
+读者可以调整排布与尺寸，这个选择与 Expo 相册分开记忆。开启键盘导航且画廊在视图中时，按 {{< kbd ";" >}} 在 `wall` → `cards` → `seamless` 之间循环，按 {{< kbd "," >}} / {{< kbd "<" >}} 或 {{< kbd "." >}} / {{< kbd ">" >}} 以 `20 px` 为步长缩小或放大格子。
 
 全站默认值写在 `params.ui` 下的 `blog_gallery` 块里。页面或 `cascade` 里的块会整体替换它，没写的字段回退为 `wall` 与 `240`。完整参数表见[站点参数](/zh/docs/customize/config/#blog)与[页面参数](/zh/docs/write/frontmatter/#blog)。
 

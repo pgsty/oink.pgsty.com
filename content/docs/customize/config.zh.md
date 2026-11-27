@@ -165,7 +165,7 @@ Hugo 原生键负责站名和 Git 元数据：
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `params.logo` | string | icons/logo.svg | 品牌图标，可指向 `assets/` 资源或 `static/` 路径，见[品牌外观](/zh/docs/customize/brand/#logo) |
-| `params.wordmark` | string | | 横向字标；设置后顶栏用它替代「图标 + 站名」 |
+| `params.wordmark` | string | | 横向字标，设置后显示在顶栏 Logo 旁，代替站点名称；视口窄于 992 px 时顶栏只显示 Logo |
 | `params.description` | string | | 站点描述，页面没有 `description` 时作为 meta 描述 |
 | `params.copyright` | string 或 map | | 字符串按 Markdown 渲染；map 接受 `authors`、`from_year`、`to_year`，`present` 表示今年 |
 | `params.footer_center_info` | string | Powered by [Oink](https://oink.pgsty.com) | 页脚中间的行内 Markdown，设为空字符串即隐藏 |
@@ -294,7 +294,7 @@ favicon 没有参数：主题按约定文件名在 `static/` 里查找（`favico
 
 ## 搜索与命令面板 {#search}
 
-本地搜索默认关闭。打开后命令面板随之出现，可以从顶栏放大镜、{{< kbd "Cmd/Ctrl" "K" >}}、`/` 和 `\` 唤起。
+本地搜索默认关闭。打开后命令面板随之出现，可以从顶栏放大镜、{{< kbd "Cmd/Ctrl" "K" >}}、`/` 和 `` ` `` 唤起。
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
@@ -315,7 +315,7 @@ favicon 没有参数：主题按约定文件名在 `static/` 里查找（`favico
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `params.ui.keyboard_nav` | boolean | true | 单键导航：WASD 或方向键在树中移动，j/k 在标题间跳转，q/e 翻页，另有唤起面板与切换外壳的按键。设为 `false` 后页面不加载这部分运行时，见[键盘导航](/zh/docs/customize/keyboard/) |
+| `params.ui.keyboard_nav` | boolean | true | 导航、页面操作与样式三组共三十个单键快捷键，以及浏览历史和读者设定的正文宽度。设为 `false` 后页面不加载这部分运行时，不绑定按键、不记录历史，也不恢复宽度，见[键盘导航](/zh/docs/customize/keyboard/) |
 {.fields meta="type default"}
 
 ## 图片缩放 {#image-zoom}

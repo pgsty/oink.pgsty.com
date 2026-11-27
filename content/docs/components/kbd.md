@@ -30,14 +30,14 @@ Each parameter represents one key. Write symbol keys as displayed on the keyboar
 {{</* kbd "/" */>}} jumps to search;
 {{</* kbd "t" */>}} cycles visual styles;
 {{</* kbd "y" */>}} cycles light, dark, and system;
-{{</* kbd "l" */>}} cycles through languages.
+{{</* kbd "x" */>}} cycles through languages.
 ```
 
 {{< kbd "Escape" >}} closes a dialog;
 {{< kbd "/" >}} jumps to search;
 {{< kbd "t" >}} cycles visual styles;
 {{< kbd "y" >}} cycles light, dark, and system;
-{{< kbd "l" >}} cycles through languages.
+{{< kbd "x" >}} cycles through languages.
 
 ## Chords {#combo}
 

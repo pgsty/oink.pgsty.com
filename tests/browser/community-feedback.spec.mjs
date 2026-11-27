@@ -335,7 +335,8 @@ test('search-tail rows use native pointer, keyboard and ARIA behavior and hand f
     window.OinkCommandPalette.instance.open();
   });
   expect(await page.evaluate(() => window.tailContexts.length)).toBe(0);
-  const input = page.locator('.td-shell-search__input');
+  // Scope to the palette: the browsing-history overlay reuses its surface classes.
+  const input = page.locator('#td-shell-search .td-shell-search__input');
   await input.fill('sidebar');
   const row = page.getByRole('option', { name: /Ask <Helper>/ });
   await expect(row).toBeVisible();

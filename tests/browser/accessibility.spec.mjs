@@ -332,7 +332,7 @@ test.describe('WCAG AA contract', () => {
       path: '/docs/customize/config/',
       viewport: { width: 1280, height: 720 },
       open: async (page) => {
-        await page.keyboard.press(';');
+        await page.keyboard.press("'");
         await expect(page.locator('[data-td-keyboard-dialog]')).toBeVisible();
       },
     },
@@ -342,8 +342,29 @@ test.describe('WCAG AA contract', () => {
       viewport: { width: 390, height: 844 },
       theme: 'dark',
       open: async (page) => {
-        await page.keyboard.press(';');
+        await page.keyboard.press("'");
         await expect(page.locator('[data-td-keyboard-dialog]')).toBeVisible();
+      },
+    },
+    {
+      label: 'browsing history · en · dark',
+      path: '/docs/customize/config/',
+      viewport: { width: 1280, height: 720 },
+      theme: 'dark',
+      open: async (page) => {
+        await page.goto('/docs/customize/keyboard/', { waitUntil: 'domcontentloaded' });
+        await page.keyboard.press('h');
+        await expect(page.locator('#td-shell-history')).toBeVisible();
+        await expect(page.locator('#td-shell-history [role="option"]')).not.toHaveCount(0);
+      },
+    },
+    {
+      label: 'browsing history · zh · light · empty',
+      path: '/zh/docs/customize/config/',
+      viewport: { width: 390, height: 844 },
+      open: async (page) => {
+        await page.keyboard.press('h');
+        await expect(page.locator('#td-shell-history .td-shell-search__empty')).toBeVisible();
       },
     },
   ]) {

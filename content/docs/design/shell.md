@@ -316,8 +316,8 @@ An entry without an id or a title warns and is skipped.
 An entry is scored and opened like a section, and its title counts as a heading.
 The [proposal](/docs/design/proposals/local-search-engine/) records the design rationale and evaluation evidence.
 
-Built-in action IDs are `compare_translations`, `copy_markdown`, `copy_link`, `open_chatgpt`, `open_claude`, `view_markdown`, `view_history`, `edit_page`,
-`create_child_page`, `create_issue`, `create_project_issue`, `print_section`, `print`, `switch_preset`, `switch_theme`, `switch_language`, `switch_version`, and `open_github`.
+Built-in action IDs are `compare_translations`, `copy_markdown`, `copy_link`, `open_chatgpt`, `open_claude`, `open_gemini`, `view_markdown`, `view_history`, `edit_page`,
+`create_child_page`, `create_issue`, `create_project_issue`, `print_section`, `print`, `switch_preset`, `switch_theme`, `switch_language`, `switch_version`, `open_github`, and `browse_history`.
 Outside the share bar, `copy_link` appears only in the Palette.
 Site commands under `languages.<lang>.params.ui.command_palette.commands` may open safe URLs or invoke built-in IDs. They never inject JavaScript.
 The legacy clipboard fallback restores previous focus and selection, including selection direction.
@@ -346,25 +346,19 @@ Docs and project issue actions remain available under their existing repository 
 Windows mappings must match `/`, not `\`. Normalization preserves filename case.
 
 The Palette has empty, text-search, and `>` command modes. Quick links come from navigation.
-It provides no history, semantic search, personalization, or remote fallback.
+It keeps no query history and provides no semantic search, personalization, or remote fallback.
+Its `browse_history` command opens the separate browsing-history overlay of [keyboard shortcuts](#keyboard-shortcuts).
 Queries stay in the browser. No default telemetry is sent.
 
-`OinkSurfaceCoordinator` coordinates the Palette, Appearance, keyboard shortcuts help dialog, Draw.io, Expo viewer, drawer, root, language, and version menus.
+`OinkSurfaceCoordinator` coordinates the Palette, Appearance, keyboard shortcuts help dialog, browsing history, Draw.io, Expo viewer, drawer, root, language, and version menus.
 Each surface controls focus restoration and Escape.
 Already closed Appearance menus do not restore focus when the coordinator closes them.
-Keyboard navigation ignores text-entry controls (`textarea`, `select`, `contenteditable`, and text-entry `input` types) and modals, while allowing non-text controls such as gallery layout radios and tile-size range sliders; modifiers suppress bindings except `Shift` for `<` (`Shift+,`) and `>` (`Shift+.`). The desktop nonmodal Appearance panel permits search shortcuts; its mobile modal sheet and other open dialogs, including fixed-position ARIA dialogs, retain keyboard ownership.
+Keyboard navigation ignores text-entry controls (`textarea`, `select`, `contenteditable`, and text-entry `input` types) and modals, while allowing non-text controls such as gallery layout radios and tile-size range sliders; modifiers suppress bindings except `Shift` for `<` (`Shift+,`), `>` (`Shift+.`), `+` (`Shift+=`), and the Palette's `~` (Shift with the backtick key). The desktop nonmodal Appearance panel permits search shortcuts; its mobile modal sheet and other open dialogs, including fixed-position ARIA dialogs, retain keyboard ownership.
 Inside the mobile drawer, Escape closes the root switcher first and returns focus to its trigger. A subsequent Escape closes the drawer. Moving focus outside the root switcher dismisses its popover.
 The version disclosure opens on hover, focus or tap. Tab and the up/down arrows reach the version links.
 Escape dismisses the list even when a touch browser leaves focus on the page body. A second Escape closes the drawer.
 The list wraps long labels and scrolls above the bottom bar. In the phone drawer it expands in the flow so the drawer can scroll to its last link.
 A press outside a floating list closes it at once, because iOS sends no click for a tap on plain content. The drawer's list closes on the click, so the row under the finger stays in place.
-`/`, `\`, `f`, and `c` open search or commands. `k`/`j` jump to the previous/next heading (listed on separate rows in shortcut help). `q`/`e` move between pages.
-`h`/`z` toggle chrome-free Zen Mode. `v` switches the layout form on index pages that enable `blog_index_toggle`. On Expo album pages and visible blog/case/release `gallery` views, `m` cycles gallery layout modes and `,`/`<` and `.`/`>` shrink or enlarge the tile size slider (`160–360 px` in `20 px` steps). `l`/`x` cycle the language, `t` steps to the next offered visual preset, `y` cycles light, dark, and system color modes, `;` or clicking the bottom-bar `?` button opens the centered top-layer two-column shortcut help dialog (including in Zen Mode and on `footer_style: none` pages, while hovering or focusing `?` on desktop `≥ 768 px` previews a two-column card above the footer and closing the dialog restores focus without reopening the hover card), and `r` switches top-level sections.
-Sidebar WASD/Arrow navigation uses real focus without changing Tab order.
-Non-link divider buttons participate in tree navigation.
-From a child, Left/`a` focuses its parent group. A second press collapses it.
-Right/`d` opens closed groups or enters the first visible child of open groups.
-Previous and next page navigation includes only links, never group buttons.
 
 The outline uses one heading model and computed `scroll-padding-top` to derive the cursor and visible-heading range.
 Its SVG line and dot share animated values, preventing drift.
@@ -373,6 +367,126 @@ This applies when indexing links and selecting requested headings near the page 
 No speculative DOM repair pass is allowed. The normal shell runtime always owns this tracking.
 `params.ui.scroll_spy` and page `scroll_spy` remain quiet compatibility no-ops throughout 1.x.
 They emit no separate runtime and may be removed only in a future breaking release.
+
+### Keyboard shortcuts {#keyboard-shortcuts}
+
+`params.ui.keyboard_nav` (default `true`; site, page or cascade) adds the stable
+`js/chunks/keyboard.js` chunk, `history.js` followed by `keyboard-nav.js`, to
+interactive HTML pages. A page with `false` ships neither file, so it binds no
+key, records no history and restores no reading width. The map is thirty bare
+keys in three groups of ten, and the shortcut help lists them in this order:
+
+| Group | Keys, in help order |
+| --- | --- |
+| Navigation | `w`/`s` tree move, `a`/`d` collapse/expand, `Enter`/`Space` open the focused tree item, `q`/`e` page, `k`/`j` heading, `x` language, `r` section, `v` version, `h` history, `g` home |
+| Actions | `/` and `f` search, `c` and `` ` `` commands, `u` edit, `n` child page, `i` docs issue, `o` fold all, `p` print, `[` ChatGPT, `]` Claude, `\` Gemini |
+| View | `b` Duo View, `z` Zen Mode, `m` Markdown source, `t` preset, `y` color mode, `l` index layout, `;` gallery layout, `,`/`.` gallery size (`<`/`>` too), `-`/`=` reading width (`+` too), `'` help |
+
+Scopes:
+
+- Tree keys need `#td-sidebar-menu` outside Zen Mode. Up/Down/Left/Right act
+  only once focus is in the tree, where Left and Right swap in RTL; elsewhere
+  the arrows keep native scrolling and `Space` keeps scrolling the page.
+  Movement uses real focus without changing Tab order, starting from the
+  current page's row. Non-link divider buttons take part. From a child,
+  Left/`a` focuses its parent group and a second press collapses it;
+  Right/`d` opens a closed group or enters the first visible child of an open
+  one. A closed drawer or collapsed desktop sidebar opens on the first press.
+- `q`/`e` work on shell pages and follow the visible sidebar links only, never
+  group buttons, then the page-end pager, then `rel` links. `k`/`j` and `z`
+  work on shell pages and the home page; on the home page `k`/`j` move between
+  `[data-td-landing] > section[id]`. Every other key works on every
+  interactive page when its target exists and does nothing otherwise.
+- `/` and `` ` `` (also `~`) belong to the Command Palette and keep working
+  when `keyboard_nav` is `false`; `\` no longer opens commands. `f` and `c`
+  open the same instance, or on a standalone home page without a palette move
+  to `[data-td-keyboard-search-route]` and resume the requested mode there.
+- `u`, `n`, `i`, `p`, `m`, `[`, `]` and `\` run `edit_page`,
+  `create_child_page`, `create_issue`, `print`, `view_markdown`,
+  `open_chatgpt`, `open_claude` and `open_gemini` through the action registry,
+  only while the descriptor is available. `x` and `v` move to the next
+  available, non-active option with a URL of `switch_language` and
+  `switch_version`, wrapping at the end; `x` falls back to
+  `[data-td-language-route]`. `g` opens the manifest's `home`
+  (`Site.Home.RelPermalink`), falling back to the brand link; on the home page
+  it glides to the top.
+- `open_gemini` targets `https://gemini.google.com/app?q=` with the prompt and
+  shares the `assistant_links` gate and placements of the other assistants;
+  the page menu lists ChatGPT, Claude, Gemini. Gemini documents no prompt
+  parameter, so every activation first copies the prompt synchronously with
+  `OinkClipboard.copyNow` and then opens the tab.
+- `?` and the digits stay unbound. `l` as a language alias, `h` as a Zen alias,
+  the home page's `n` alias, `g` as tree activation, `v` for the index layout,
+  `m` for the gallery layout and `;` for help are retired.
+
+The shortcut help is one sheet in `<template data-td-keyboard-help-source>`,
+rendered in the footer menu or, under `footer_style: none`, by `scripts.html`.
+It holds three `.td-shell-keyboard-help__section` groups
+(`td-shell-shortcuts-navigation`, `-actions`, `-view`) of ten
+`.td-shell-keyboard-help__row[data-td-shortcut]` rows. The row IDs, in order,
+are `tree-move`, `tree-toggle`, `tree-open`, `page-move`, `heading-move`,
+`language`, `route`, `version`, `history`, `home`; `search`, `commands`,
+`edit`, `new-page`, `issue`, `expand-all`, `print`, `chatgpt`, `claude`,
+`gemini`; `duo`, `zen`, `markdown`, `style`, `theme`, `layout`, `gallery`,
+`image-size`, `page-width`, `help`. `'` toggles a modal
+`<dialog data-td-keyboard-dialog>` cloned from the sheet with `-dialog` ID
+suffixes. Each opening evaluates every row against the live page; a row that
+cannot run stays in place with `td-is-unavailable` and a visually hidden
+"unavailable" note, so the grid keeps its shape. Dimming never lowers opacity:
+the label takes the secondary text color and the keycaps lose their fill for a
+dashed border, which keeps WCAG AA contrast in every preset, and forced colors
+use `GrayText`. The dialog is
+`min(58rem, 100vw − 1.5rem)` wide with auto-fit columns of at least 16.5rem:
+three side by side on desktop, stacked on phones. `'`, Escape, the close button
+(`aria-keyshortcuts="Escape '"`) and a backdrop click close it, and focus
+returns to the trigger without reopening its hover card. Other shortcuts stand
+down while it is open.
+
+The footer `?` trigger declares `aria-keyshortcuts="'"` and
+`aria-haspopup="dialog"`. Hover or focus shows a short hint card
+(`.td-shell-keyboard-hint`): search and commands when local search is on,
+history, help, and "Click for all shortcuts". A click opens the dialog. With
+`keyboard_nav: false` and local search on, the hint keeps only the `/` and
+`` ` `` rows and opens no dialog.
+
+Browsing history is local. `history.js` records each HTML page load except the
+404 page as `{url, title, time}`: the path and query without the fragment, the
+`og:title` or document title, and the visit time. Entries live in
+`localStorage` under `td-history:` plus the site base path (`"/" | relURL`),
+newest first, unique by URL and capped at 100; entries outside the base path
+or malformed ones are dropped, never repaired. The list is never transmitted.
+`h` or the palette-only `browse_history` action, available when
+`keyboard_nav` is on, opens `#td-shell-history[data-td-history]`, which
+reuses the palette surface classes. It omits the current page, filters on
+every typed token across title and path, and supports Up/Down, Enter (same
+tab), Ctrl/Cmd+Enter or a modified click (new tab), Shift+Delete (remove the
+selected entry) and the `[data-td-history-clear]` button (clear all, disabled
+when empty). With no rows the listbox stays childless and the empty or
+no-match text appears in the sibling `[data-td-history-empty]`. Escape or the
+backdrop closes it and restores focus. It holds
+`data-td-shell-lock` while open and registers as `history` with the
+coordinator.
+
+`o` folds or unfolds together the tree and right-rail groups
+(`[data-td-shell-tree-toggle]` in `#td-shell-sidebar` or
+`[data-td-shell-aside]`, through `OinkSidebar.setExpanded` with source `api`),
+every `<details>` outside dialogs, hover menus, the site header and templates,
+and `[data-td-code].is-collapsible` blocks through their expand button. If any
+target is folded, all expand; otherwise all collapse, and the `api` source
+keeps the current page's active path open. Rail collapse and popover menus are
+not targets. One frame of `html[data-td-kbd-instant]` suppresses transitions
+while the element at the top of the main column keeps its viewport position.
+
+`-` and `=` (or `+`) set a reader width for `.td-shell-layout .td-shell-article`
+in 100 px steps from the rendered width, never below 600 px (or the container
+when narrower). Reaching the container stores `none`, which fills it on any
+screen. A step that reaches or crosses the page's own width, measured without
+the override, stops there and removes the stored value. The value lives in
+`localStorage` as `td-shell-article-w` (pixels or `none`); on shell pages with
+keyboard navigation the prepaint script restores it as
+`html[data-td-shell-article-w]` with `--td-shell-article-w`. The `@media screen`
+rule overrides `page_width` and the Book `.td-content` measure; print ignores
+it.
 
 ## Search-tail extensions {#search-tail-extensions}
 
@@ -589,7 +703,7 @@ Docs/Book pagers follow sidebar preorder. Blog pagers use weight, then reverse d
 
 Every rendered footer has an icon-only utility dock at the end of its bottom line.
 Dock order is version, language, theme, then keyboard help. Menus open upward.
-On desktop (`≥ 768 px`), hovering or focusing the keyboard-help trigger previews a two-column cheat sheet; clicking it when `keyboard_nav` is enabled promotes to the centered modal dialog.
+Hovering or focusing the keyboard-help trigger shows a short hint card; clicking it when `keyboard_nav` is enabled opens the three-group shortcut dialog described in [keyboard shortcuts](#keyboard-shortcuts).
 The version control never shows the current branch or release label.
 The fat footer's collapse chevron follows the dock.
 Below `lg`, copyright, center content, and dock become three centered full-width rows, with the dock last.
@@ -615,8 +729,8 @@ icon and sync notes use the same catalog. The entry exposes its label as its
 tooltip and accessible name. When keyboard navigation is enabled, `B` toggles the
 reader: it opens it from the page and closes it from the toolbar or either pane,
 under the page shortcut's guards (no modifier, composition or editable target).
-The entry and Close declare `aria-keyshortcuts`, and the help panel lists the
-shortcut under the view's name only on pages with a real target. The default is `false`. This is one
+The entry and Close declare `aria-keyshortcuts`, and the shortcut help dims the
+Duo View row on pages without a real target. The default is `false`. This is one
 site setting; there is no page-pair data, new layout, or output format. A
 language that sets it to `false` offers no entry and is never a target.
 Navigation's language-home fallback is never a comparison target, nor is a

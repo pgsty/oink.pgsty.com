@@ -2,9 +2,65 @@ import { expect, test } from '@playwright/test';
 
 const docsPath = '/docs/customize/config/';
 
+// The 3 x 10 shortcut sheet, in help order.
+const SHORTCUT_ROWS = [
+  ['tree-move', 'tree-toggle', 'tree-open', 'page-move', 'heading-move',
+    'language', 'route', 'version', 'history', 'home'],
+  ['search', 'commands', 'edit', 'new-page', 'issue', 'expand-all', 'print',
+    'chatgpt', 'claude', 'gemini'],
+  ['duo', 'zen', 'markdown', 'style', 'theme', 'layout', 'gallery',
+    'image-size', 'page-width', 'help'],
+];
+
 async function openDocs(page, viewport = { width: 1280, height: 600 }) {
   await page.setViewportSize(viewport);
   await page.goto(docsPath, { waitUntil: 'domcontentloaded' });
+}
+
+// Page actions open new tabs, print, and copy. Record them instead.
+async function recordPageActions(page) {
+  await page.addInitScript(() => {
+    window.__opened = [];
+    window.open = (url, target, features) => {
+      window.__opened.push({ url: String(url), target, features });
+      return null;
+    };
+    window.__printed = 0;
+    window.print = () => {
+      window.__printed += 1;
+    };
+    window.__copied = [];
+    const execCommand = document.execCommand.bind(document);
+    document.execCommand = (command, ...rest) => {
+      if (command !== 'copy') return execCommand(command, ...rest);
+      const field = document.activeElement;
+      window.__copied.push(field && 'value' in field ? field.value : String(document.getSelection()));
+      return true;
+    };
+  });
+}
+
+async function openHelp(page) {
+  const dialog = page.locator('[data-td-keyboard-dialog]');
+  await page.keyboard.press("'");
+  await expect(dialog).toBeVisible();
+  return dialog;
+}
+
+async function unavailableRows(dialog) {
+  return dialog.evaluate((element) =>
+    Array.from(element.querySelectorAll('[data-td-shortcut].td-is-unavailable'))
+      .map((row) => row.getAttribute('data-td-shortcut')),
+  );
+}
+
+function articleWidth(page) {
+  return page.locator('.td-shell-layout .td-shell-article')
+    .evaluate((article) => Math.round(article.getBoundingClientRect().width));
+}
+
+function storedWidth(page) {
+  return page.evaluate(() => localStorage.getItem('td-shell-article-w'));
 }
 
 function focusedTreeLink(page) {
@@ -73,7 +129,7 @@ test('a folds from the current page in one step; d unfolds again', async ({
   expect(childHref.endsWith(docsPath)).toBe(true);
 });
 
-test('Enter opens the focused page and q/e follow the tree order', async ({
+test('Enter and Space open the focused page and q/e follow the tree order', async ({
   page,
 }) => {
   await openDocs(page);
@@ -91,6 +147,18 @@ test('Enter opens the focused page and q/e follow the tree order', async ({
   await page.keyboard.press('s');
   await page.keyboard.press('Enter');
   await page.waitForURL(`**${neighbors.next}`);
+
+  await page.goto(docsPath, { waitUntil: 'domcontentloaded' });
+  await page.keyboard.press('w');
+  await page.keyboard.press('Space');
+  await page.waitForURL(`**${neighbors.prev}`);
+
+  // G no longer activates the tree: from a focused row it goes home.
+  await page.goto(docsPath, { waitUntil: 'domcontentloaded' });
+  await page.keyboard.press('s');
+  await expect(focusedTreeLink(page)).toHaveCount(1);
+  await page.keyboard.press('g');
+  await page.waitForURL((url) => url.pathname === '/');
 });
 
 test('the Docs landing is the first focus and paging destination', async ({
@@ -192,7 +260,7 @@ test('j and k jump quickly to adjacent outline items while inputs keep every key
   await expect(focusedTreeLink(page)).toHaveCount(0);
 });
 
-test('homepage n, j, and k jump between landing sections while h hides page chrome', async ({
+test('homepage j and k jump between landing sections, g returns to the top, and z hides page chrome', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 600 });
@@ -213,22 +281,31 @@ test('homepage n, j, and k jump between landing sections while h hides page chro
   expect(await page.evaluate(() => scrollY)).toBeLessThan(3);
   expect(await page.evaluate(() => location.hash)).toBe('#hero');
 
-  await page.keyboard.press('n');
+  // G on the home page glides back to the top instead of reloading.
+  await page.keyboard.press('j');
+  await page.keyboard.press('j');
   await page.waitForTimeout(180);
-  expect(await page.evaluate(() => location.hash)).toBe('#capabilities');
   expect(await page.evaluate(() => scrollY)).toBeGreaterThan(100);
+  await page.keyboard.press('g');
+  await page.waitForTimeout(180);
+  expect(await page.evaluate(() => scrollY)).toBeLessThan(3);
+  expect(new URL(page.url()).pathname).toBe('/');
 
-  await page.keyboard.press('h');
+  await page.keyboard.press('z');
   await expect(page.locator('html')).toHaveAttribute('data-td-kbd-zen', '');
   await expect(page.locator('[data-td-header]')).toBeHidden();
   await expect(page.locator('[data-td-shell-footer]')).toBeHidden();
 
+  // H is history now, not a Zen alias.
+  await page.keyboard.press('h');
+  await expect(page.locator('#td-shell-history')).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('data-td-kbd-zen', '');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#td-shell-history')).toBeHidden();
+
   await page.keyboard.press('z');
   await expect(page.locator('html')).not.toHaveAttribute('data-td-kbd-zen', '');
   await expect(page.locator('[data-td-header]')).toBeVisible();
-  await page.keyboard.press('z');
-  await expect(page.locator('html')).toHaveAttribute('data-td-kbd-zen', '');
-  await expect(page.locator('[data-td-header]')).toBeHidden();
 });
 
 test('content articles carry one pinned navbar without a subnav', async ({
@@ -349,12 +426,12 @@ test('WASD restores a collapsed sidebar but yields while zen mode hides it', asy
   await expect(focusedTreeLink(page)).toHaveCount(1);
 
   await page.keyboard.press('Escape');
-  await page.keyboard.press('h');
+  await page.keyboard.press('z');
   await page.keyboard.press('s');
   await expect(focusedTreeLink(page)).toHaveCount(0);
 });
 
-test('h and z toggle the chrome-free reading mode and survive paging', async ({
+test('z toggles the chrome-free reading mode and survives paging', async ({
   page,
 }) => {
   await openDocs(page);
@@ -380,12 +457,12 @@ test('h and z toggle the chrome-free reading mode and survive paging', async ({
   await page.waitForURL(`**${neighbors}`);
   await expect(page.locator('html')).toHaveAttribute('data-td-kbd-zen', '');
 
-  await page.keyboard.press('h');
+  await page.keyboard.press('z');
   await expect(page.locator('html')).not.toHaveAttribute('data-td-kbd-zen', '');
   await expect(page.locator('#td-shell-sidebar')).toBeVisible();
 });
 
-test('t steps the visual style, y cycles light/dark/system, and l/x switch the language', async ({
+test('t steps the visual style, y cycles light/dark/system, and x switches the language', async ({
   page,
 }) => {
   await openDocs(page);
@@ -420,82 +497,101 @@ test('t steps the visual style, y cycles light/dark/system, and l/x switch the l
     ).toBeChecked();
   }
 
-  // The bottom-right shortcut help lists K, J, H/Z, L/X, T, Y, and ; (and omits V on docs pages).
-  for (const keycap of ['K', 'J', 'H', 'Z', 'L', 'X', 'T', 'Y', ';']) {
-    await expect(
-      page.locator('.td-shell-keyboard-help kbd', { hasText: new RegExp(`^${keycap}$`) }),
-    ).toHaveCount(1);
-  }
-  await expect(
-    page.locator('.td-shell-keyboard-help kbd', { hasText: /^V$/ }),
-  ).toHaveCount(0);
-  await expect(page.locator('.td-shell-keyboard-help')).toContainText('Zen Mode');
-  await expect(page.locator('.td-shell-keyboard-help')).toContainText('Switch section');
-  await expect(page.locator('.td-shell-keyboard-help')).toContainText('Shortcut help');
-  await expect(page.locator('.td-shell-keyboard-help')).toContainText('Previous heading');
-  await expect(page.locator('.td-shell-keyboard-help')).toContainText('Next heading');
+  // L is the index layout now; on a docs page it has nothing to switch.
+  await page.keyboard.press('l');
+  await page.waitForTimeout(150);
+  expect(new URL(page.url()).pathname).toBe(docsPath);
 
-  await page.keyboard.press('l');
-  await page.waitForURL(`**/zh${docsPath}`);
-  await expect(page.locator('.td-shell-keyboard-help')).toContainText('禅意模式');
-  await expect(page.locator('.td-shell-keyboard-help')).toContainText('切换栏目');
-  await expect(page.locator('.td-shell-keyboard-help')).toContainText('热键说明');
-  await expect(page.locator('.td-shell-keyboard-help')).toContainText('上一个标题');
-  await expect(page.locator('.td-shell-keyboard-help')).toContainText('下一个标题');
-  await page.keyboard.press('x');
-  await page.waitForURL(`**${docsPath}`);
   await page.keyboard.press('x');
   await page.waitForURL(`**/zh${docsPath}`);
-  await page.keyboard.press('l');
-  await page.waitForURL(`**${docsPath}`);
+  await page.keyboard.press('x');
+  await page.waitForURL((url) => url.pathname === docsPath);
 });
 
-test('; toggles the top-layer shortcut help dialog anywhere, including Zen Mode', async ({
+test("' toggles the 3 x 10 shortcut help anywhere and dims what the page cannot run", async ({
   page,
 }) => {
   await openDocs(page, { width: 1280, height: 720 });
   const dialog = page.locator('[data-td-keyboard-dialog]');
 
-  // Open from top of page (footer is off-screen); dialog renders centered in viewport.
-  await page.keyboard.press(';');
+  // Open from the top of the page (the footer is off-screen); the dialog is centered.
+  await page.keyboard.press("'");
   await expect(dialog).toBeVisible();
   await expect(dialog).toHaveAttribute('open', '');
   await expect(dialog.locator('[data-td-keyboard-dialog-close]')).toBeFocused();
+  await expect(dialog.locator('[data-td-keyboard-dialog-close]')).toHaveAttribute(
+    'aria-keyshortcuts',
+    "Escape '",
+  );
 
-  // Desktop renders the two sections side by side without duplicate IDs.
-  const geometry = await page.evaluate(() => {
+  // Three groups of ten, in help order, side by side on desktop without duplicate IDs.
+  const layout = await page.evaluate(() => {
     const el = document.querySelector('[data-td-keyboard-dialog]');
     const sections = Array.from(el.querySelectorAll('.td-shell-keyboard-help__section'));
-    const rects = sections.map((s) => s.getBoundingClientRect());
-    const ids = Array.from(document.querySelectorAll('[id]')).map((n) => n.id);
-    const dupes = ids.filter((id, i) => ids.indexOf(id) !== i);
+    const ids = Array.from(document.querySelectorAll('[id]')).map((node) => node.id);
     return {
       dialogRect: el.getBoundingClientRect(),
-      sectionRects: rects,
-      dupes,
+      sectionRects: sections.map((section) => section.getBoundingClientRect()),
+      titles: sections.map((section) =>
+        section.querySelector('.td-shell-keyboard-help__section-title').textContent.trim()),
+      rows: sections.map((section) =>
+        Array.from(section.querySelectorAll('[data-td-shortcut]'))
+          .map((row) => row.getAttribute('data-td-shortcut'))),
+      dupes: ids.filter((id, index) => ids.indexOf(id) !== index),
     };
   });
-  expect(geometry.dupes).toEqual([]);
-  expect(geometry.sectionRects).toHaveLength(2);
-  expect(geometry.dialogRect.top).toBeGreaterThanOrEqual(0);
-  expect(geometry.dialogRect.bottom).toBeLessThanOrEqual(720);
-  expect(Math.abs(geometry.sectionRects[0].top - geometry.sectionRects[1].top)).toBeLessThanOrEqual(2);
-  expect(geometry.sectionRects[1].left).toBeGreaterThan(geometry.sectionRects[0].left + 200);
+  expect(layout.dupes).toEqual([]);
+  expect(layout.titles).toEqual(['Navigation', 'Actions', 'View']);
+  expect(layout.rows).toEqual(SHORTCUT_ROWS);
+  expect(layout.dialogRect.top).toBeGreaterThanOrEqual(0);
+  expect(layout.dialogRect.bottom).toBeLessThanOrEqual(720);
+  for (const index of [1, 2]) {
+    expect(Math.abs(layout.sectionRects[index].top - layout.sectionRects[0].top)).toBeLessThanOrEqual(2);
+    expect(layout.sectionRects[index].left).toBeGreaterThan(layout.sectionRects[index - 1].left + 200);
+  }
+
+  // Keycaps follow the new map.
+  const keycaps = (id) => dialog.locator(`[data-td-shortcut="${id}"] kbd`).allTextContents();
+  expect(await keycaps('history')).toEqual(['H']);
+  expect(await keycaps('home')).toEqual(['G']);
+  expect(await keycaps('commands')).toEqual(['C', '`']);
+  expect(await keycaps('gemini')).toEqual(['\\']);
+  expect(await keycaps('layout')).toEqual(['L']);
+  expect(await keycaps('gallery')).toEqual([';']);
+  expect(await keycaps('page-width')).toEqual(['-', '=']);
+  expect(await keycaps('help')).toEqual(["'"]);
+
+  // This docs page has one version, no index layout and no gallery: those
+  // rows stay in place, dimmed and announced as unavailable.
+  expect((await unavailableRows(dialog)).sort()).toEqual(
+    ['gallery', 'image-size', 'layout', 'version'],
+  );
+  // Dimming keeps AA contrast: secondary text plus dashed keycaps, never opacity.
+  const version = dialog.locator('[data-td-shortcut="version"]');
+  await expect(version).toHaveCSS('opacity', '1');
+  await expect(version.locator('kbd').first()).toHaveCSS('border-top-style', 'dashed');
+  await expect(dialog.locator('[data-td-shortcut="history"] kbd').first()).not.toHaveCSS('border-top-style', 'dashed');
+  await expect(version.locator('[data-td-shortcut-state]')).toHaveText(/unavailable/);
+  await expect(dialog.locator('[data-td-shortcut="history"] [data-td-shortcut-state]')).toHaveCount(0);
 
   // Other shortcuts stand down while the help dialog is open.
   await page.keyboard.press('z');
   await expect(page.locator('html')).not.toHaveAttribute('data-td-kbd-zen', '');
 
-  // Second ; closes it.
-  await page.keyboard.press(';');
+  // A second ' closes it.
+  await page.keyboard.press("'");
   await expect(dialog).toBeHidden();
 
-  // Works inside Zen Mode even though the footer is display:none.
+  // It opens inside Zen Mode although the footer is hidden, and availability
+  // is evaluated again: the tree rows dim while the sidebar is gone.
   await page.keyboard.press('z');
   await expect(page.locator('html')).toHaveAttribute('data-td-kbd-zen', '');
   await expect(page.locator('[data-td-shell-footer]')).toBeHidden();
-  await page.keyboard.press(';');
+  await page.keyboard.press("'");
   await expect(dialog).toBeVisible();
+  expect(await unavailableRows(dialog)).toEqual(
+    expect.arrayContaining(['tree-move', 'tree-toggle', 'tree-open']),
+  );
 
   // Escape closes it without leaving Zen Mode.
   await page.keyboard.press('Escape');
@@ -503,24 +599,51 @@ test('; toggles the top-layer shortcut help dialog anywhere, including Zen Mode'
   await expect(page.locator('html')).toHaveAttribute('data-td-kbd-zen', '');
 
   // Clicking the backdrop closes it too.
-  await page.keyboard.press(';');
+  await page.keyboard.press("'");
   await expect(dialog).toBeVisible();
   await page.mouse.click(8, 8);
   await expect(dialog).toBeHidden();
+  await page.keyboard.press('z');
 
-  // Narrow viewport collapses cleanly to one column inside the viewport.
-  await page.setViewportSize({ width: 390, height: 700 });
+  // ; is the gallery layout now and opens nothing here.
   await page.keyboard.press(';');
+  await page.waitForTimeout(100);
+  await expect(dialog).toBeHidden();
+
+  // A narrow viewport stacks the groups inside the viewport.
+  await page.setViewportSize({ width: 390, height: 700 });
+  await page.keyboard.press("'");
   await expect(dialog).toBeVisible();
   const mobileBox = await dialog.boundingBox();
   expect(mobileBox).not.toBeNull();
   expect(mobileBox.x).toBeGreaterThanOrEqual(0);
   expect(mobileBox.x + mobileBox.width).toBeLessThanOrEqual(390.5);
+  const stacked = await dialog.evaluate((element) =>
+    Array.from(element.querySelectorAll('.td-shell-keyboard-help__section'))
+      .map((section) => Math.round(section.getBoundingClientRect().left)));
+  expect(new Set(stacked).size).toBe(1);
   await dialog.locator('[data-td-keyboard-dialog-close]').click();
   await expect(dialog).toBeHidden();
 });
 
-test('v cycles layout modes on blog and release index pages and m/,/. control visible gallery view', async ({
+test('the Chinese shortcut help keeps the same grid with localized groups', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto(`/zh${docsPath}`, { waitUntil: 'domcontentloaded' });
+  const dialog = await openHelp(page);
+  const titles = await dialog.locator('.td-shell-keyboard-help__section-title').allTextContents();
+  expect(titles.map((title) => title.trim())).toEqual(['导航', '操作', '样式']);
+  await expect(dialog.locator('[data-td-shortcut]')).toHaveCount(30);
+  await expect(dialog.locator('[data-td-shortcut="history"]')).toContainText('浏览历史');
+  await expect(dialog.locator('[data-td-shortcut="home"]')).toContainText('回到首页');
+  await expect(dialog.locator('[data-td-shortcut="gemini"]')).toContainText('Gemini');
+  await expect(
+    dialog.locator('[data-td-shortcut="version"] [data-td-shortcut-state]'),
+  ).toHaveText(/暂不可用/);
+});
+
+test('l cycles layout modes on blog and release index pages and ;/,/. control visible gallery view', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
@@ -531,30 +654,44 @@ test('v cycles layout modes on blog and release index pages and m/,/. control vi
   });
   await page.goto('/blog/', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('html')).toHaveAttribute('data-td-blog-index', 'cards');
-  for (const keycap of ['V', 'M', '<', '>']) {
-    await expect(
-      page.locator('.td-shell-keyboard-help kbd', { hasText: new RegExp(`^${keycap}$`) }),
-    ).toHaveCount(1);
-  }
+  await expect(page.locator('[data-td-blog-index-toggle]')).toHaveAttribute('aria-keyshortcuts', 'L');
+
+  // The layout row is live here; the gallery rows wait for a visible gallery.
+  let help = await openHelp(page);
+  let dimmed = await unavailableRows(help);
+  expect(dimmed).not.toContain('layout');
+  expect(dimmed).toEqual(expect.arrayContaining(['gallery', 'image-size']));
+  await page.keyboard.press("'");
+  await expect(help).toBeHidden();
 
   const gallery = page.locator('[data-td-blog-gallery]');
   const slider = gallery.locator('input[data-gallery-size]');
 
-  // While cards view is active, the hidden gallery ignores m/,/..
-  await page.keyboard.press('m');
+  // While cards view is active, the hidden gallery ignores ;/,/..
+  await page.keyboard.press(';');
   await page.keyboard.press('.');
   await expect(gallery).toHaveAttribute('data-td-mode', 'wall');
   await expect(slider).toHaveValue('240');
 
-  // Cycle cards -> table -> gallery with V.
+  // Cycle cards -> table -> gallery with L; V is the version key now.
   await page.keyboard.press('v');
+  await expect(page.locator('html')).toHaveAttribute('data-td-blog-index', 'cards');
+  await page.keyboard.press('l');
   await expect(page.locator('html')).toHaveAttribute('data-td-blog-index', 'table');
-  await page.keyboard.press('v');
+  await page.keyboard.press('l');
   await expect(page.locator('html')).toHaveAttribute('data-td-blog-index', 'gallery');
+  await expect(gallery.locator('fieldset.td-expo-modes')).toHaveAttribute('aria-keyshortcuts', ';');
 
-  // Once gallery view is visible, m cycles modes and ,/< ./> adjust tile size and reflow geometry.
+  help = await openHelp(page);
+  dimmed = await unavailableRows(help);
+  expect(dimmed).not.toContain('gallery');
+  expect(dimmed).not.toContain('image-size');
+  await page.keyboard.press('Escape');
+  await expect(help).toBeHidden();
+
+  // Once gallery view is visible, ; cycles modes and ,/< ./> adjust tile size and reflow geometry.
   for (const expected of ['cards', 'seamless', 'wall']) {
-    await page.keyboard.press('m');
+    await page.keyboard.press(';');
     await expect(gallery).toHaveAttribute('data-td-mode', expected);
   }
   const tileHeight = () =>
@@ -585,10 +722,10 @@ test('v cycles layout modes on blog and release index pages and m/,/. control vi
   }
   await expect.poll(tileHeight).toBeGreaterThan(initialHeight);
 
-  // Clicking a layout radio or focusing the range slider must not trap m/,/. shortcuts.
+  // Clicking a layout radio or focusing the range slider must not trap ;/,/. shortcuts.
   await gallery.locator('label.td-expo-mode').nth(1).click();
   await expect(gallery).toHaveAttribute('data-td-mode', 'cards');
-  await page.keyboard.press('m');
+  await page.keyboard.press(';');
   await expect(gallery).toHaveAttribute('data-td-mode', 'seamless');
   await slider.focus();
   await expect(slider).toBeFocused();
@@ -603,10 +740,10 @@ test('v cycles layout modes on blog and release index pages and m/,/. control vi
     ]),
   ).toEqual(['seamless', '360']);
 
-  // Continue V cycle gallery -> list -> cards.
-  await page.keyboard.press('v');
+  // Continue the L cycle gallery -> list -> cards.
+  await page.keyboard.press('l');
   await expect(page.locator('html')).toHaveAttribute('data-td-blog-index', 'list');
-  await page.keyboard.press('v');
+  await page.keyboard.press('l');
   await expect(page.locator('html')).toHaveAttribute('data-td-blog-index', 'cards');
 });
 
@@ -617,17 +754,13 @@ test('f and c open the palette in search and command mode', async ({
   const dialog = page.locator('#td-shell-search');
   const input = dialog.locator('.td-shell-search__input');
 
-  await page.keyboard.press('f');
-  await expect(dialog).toBeVisible();
-  await expect(input).toHaveValue('');
-  await page.keyboard.press('Escape');
-  await expect(dialog).toBeHidden();
-
-  await page.keyboard.press('c');
-  await expect(dialog).toBeVisible();
-  await expect(input).toHaveValue('>');
-  await page.keyboard.press('Escape');
-  await expect(dialog).toBeHidden();
+  for (const [key, value] of [['f', ''], ['/', ''], ['c', '>'], ['`', '>'], ['~', '>']]) {
+    await page.keyboard.press(key);
+    await expect(dialog).toBeVisible();
+    await expect(input).toHaveValue(value);
+    await page.keyboard.press('Escape');
+    await expect(dialog).toBeHidden();
+  }
 });
 
 test('the footer arrow collapses the fat footer and persists', async ({
@@ -678,4 +811,267 @@ test('on a drawer viewport the first press opens the drawer', async ({
     'data-td-shell-drawer',
     'open',
   );
+});
+
+test('h lists earlier pages newest first, filters, forgets and clears them', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  const visited = [];
+  for (const path of [docsPath, '/docs/customize/keyboard/', '/docs/']) {
+    await page.goto(path, { waitUntil: 'domcontentloaded' });
+    visited.push({
+      path,
+      title: await page.evaluate(() =>
+        document.querySelector('meta[property="og:title"]').getAttribute('content')),
+    });
+  }
+
+  const root = page.locator('#td-shell-history');
+  const input = root.locator('.td-shell-search__input');
+  const rows = root.locator('[role="option"]');
+  await expect(root).toBeHidden();
+  await page.keyboard.press('h');
+  await expect(root).toBeVisible();
+  await expect(input).toBeFocused();
+  await expect(input).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.locator('html')).toHaveAttribute('data-td-shell-lock', '');
+
+  // Newest first, without the page being read.
+  await expect(rows).toHaveCount(2);
+  await expect(rows.nth(0)).toContainText(visited[1].title);
+  await expect(rows.nth(0)).toContainText(visited[1].path);
+  await expect(rows.nth(1)).toContainText(visited[0].title);
+  await expect(rows.nth(0)).toHaveAttribute('aria-selected', 'true');
+
+  // Page shortcuts stand down while the list owns the keyboard.
+  await input.press('z');
+  await expect(input).toHaveValue('z');
+  await expect(page.locator('html')).not.toHaveAttribute('data-td-kbd-zen', '');
+  await input.fill('');
+
+  // Every typed word must match the title or the path.
+  await input.fill('config');
+  await expect(rows).toHaveCount(1);
+  await expect(rows.first()).toContainText(visited[0].title);
+  await expect(rows.first().locator('mark').first()).toBeVisible();
+
+  // Shift+Delete forgets the selected page.
+  await input.press('Shift+Delete');
+  await expect(rows).toHaveCount(0);
+  await expect(root.locator('.td-shell-search__empty')).toBeVisible();
+  await input.fill('');
+  await expect(rows).toHaveCount(1);
+  const stored = await page.evaluate(() => {
+    const key = Object.keys(localStorage).find((name) => name.startsWith('td-history:'));
+    return { key, entries: JSON.parse(localStorage.getItem(key)).map((entry) => entry.url) };
+  });
+  expect(stored.key).toBe('td-history:/');
+  expect(stored.entries).toEqual(['/docs/', '/docs/customize/keyboard/']);
+
+  // Clear empties the list and the storage, then disables itself.
+  const clear = root.locator('[data-td-history-clear]');
+  await clear.click();
+  await expect(rows).toHaveCount(0);
+  await expect(root.locator('.td-shell-search__empty')).toBeVisible();
+  await expect(clear).toBeDisabled();
+  expect(await page.evaluate(() => localStorage.getItem('td-history:/'))).toBeNull();
+
+  await page.keyboard.press('Escape');
+  await expect(root).toBeHidden();
+  await expect(page.locator('html')).not.toHaveAttribute('data-td-shell-lock', '');
+});
+
+test('h then Enter returns to the previous page, and the palette opens the same list', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto(docsPath, { waitUntil: 'domcontentloaded' });
+  await page.goto('/zh/docs/customize/keyboard/', { waitUntil: 'domcontentloaded' });
+
+  // Every language of the site shares one history.
+  await page.keyboard.press('h');
+  const root = page.locator('#td-shell-history');
+  await expect(root).toBeVisible();
+  await expect(root.locator('[role="option"]').first()).toContainText(docsPath);
+  await page.keyboard.press('Enter');
+  await page.waitForURL((url) => url.pathname === docsPath);
+
+  const palette = page.locator('#td-shell-search');
+  await page.keyboard.press('c');
+  await expect(palette).toBeVisible();
+  await palette.locator('.td-shell-search__input').fill('>Browsing history');
+  const option = palette.getByRole('option', { name: /Browsing history/ }).first();
+  await expect(option).toBeVisible();
+  await option.click();
+  await expect(root).toBeVisible();
+  await expect(palette).toBeHidden();
+  await expect(root.locator('[role="option"]').first()).toContainText('/zh/docs/customize/keyboard/');
+  await page.keyboard.press('Escape');
+  await expect(root).toBeHidden();
+});
+
+test('g opens the home page of the current language', async ({ page }) => {
+  await openDocs(page);
+  await page.keyboard.press('g');
+  await page.waitForURL((url) => url.pathname === '/');
+
+  await page.goto(`/zh${docsPath}`, { waitUntil: 'domcontentloaded' });
+  await page.keyboard.press('g');
+  await page.waitForURL((url) => url.pathname === '/zh/');
+});
+
+test('o opens every fold, then folds all but the current branch without moving the text', async ({
+  page,
+}) => {
+  await openDocs(page, { width: 1440, height: 900 });
+  // A closed disclosure above the second outline heading.
+  await page.evaluate(() => {
+    const details = document.createElement('details');
+    details.setAttribute('data-test-fold', '');
+    details.innerHTML = '<summary>More</summary><p style="height:400px">Folded detail</p>';
+    document.querySelector('.td-content h2').before(details);
+  });
+  const hash = await page.locator('#TableOfContents a[href^="#"]').nth(1).getAttribute('href');
+  const target = page.locator(`[id="${decodeURIComponent(hash.slice(1))}"]`);
+  // The root scrolls smoothly; place the heading instantly so the baseline is settled.
+  await target.evaluate((element) => element.scrollIntoView({ block: 'start', behavior: 'instant' }));
+  await page.waitForTimeout(100);
+  const before = await target.evaluate((element) => element.getBoundingClientRect().top);
+
+  const toggles = page.locator('#td-shell-sidebar [data-td-shell-tree-toggle]');
+  // A toggle belongs to the active path when its own item does.
+  const states = () => toggles.evaluateAll((buttons) => buttons.map((button) => {
+    const item = button.closest('.td-shell-tree__item');
+    return {
+      expanded: button.getAttribute('aria-expanded') === 'true',
+      activePath: Boolean(item && item.classList.contains('td-active-path')),
+    };
+  }));
+
+  await page.keyboard.press('o');
+  await expect(page.locator('[data-test-fold]')).toHaveAttribute('open', '');
+  expect((await states()).every((state) => state.expanded)).toBe(true);
+  await expect(page.locator('[aria-controls="td-shell-aside-toc"]')).toHaveAttribute('aria-expanded', 'true');
+  const after = await target.evaluate((element) => element.getBoundingClientRect().top);
+  expect(Math.abs(after - before)).toBeLessThanOrEqual(2);
+
+  await page.keyboard.press('o');
+  await expect(page.locator('[data-test-fold]')).not.toHaveAttribute('open', '');
+  const folded = await states();
+  expect(folded.filter((state) => !state.activePath).every((state) => !state.expanded)).toBe(true);
+  expect(folded.filter((state) => state.activePath).every((state) => state.expanded)).toBe(true);
+  await expect(page.locator(`#td-sidebar-menu a[aria-current="page"]`)).toBeVisible();
+  await expect(page.locator('[aria-controls="td-shell-aside-toc"]')).toHaveAttribute('aria-expanded', 'false');
+  // Rails and popovers are not folded content.
+  await expect(page.locator('html')).not.toHaveAttribute('data-td-shell-sidebar', 'collapsed');
+  await expect(page.locator('html')).not.toHaveAttribute('data-td-shell-toc', 'collapsed');
+
+  await page.keyboard.press('o');
+  expect((await states()).every((state) => state.expanded)).toBe(true);
+});
+
+test('- and = narrow and widen the reading column, persist, and step back to the page width', async ({
+  page,
+}) => {
+  await openDocs(page, { width: 1920, height: 1000 });
+  const pageWidth = await articleWidth(page);
+  const container = await page.locator('.td-shell-layout .td-shell-article')
+    .evaluate((article) => Math.round(article.parentElement.clientWidth));
+  expect(container).toBeGreaterThan(pageWidth + 150);
+
+  await page.keyboard.press('=');
+  await expect.poll(() => articleWidth(page)).toBe(pageWidth + 100);
+  expect(await storedWidth(page)).toBe(String(pageWidth + 100));
+  await expect(page.locator('html')).toHaveAttribute('data-td-shell-article-w', '');
+
+  // The prepaint script restores the reader's width on the next page.
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await expect(page.locator('html')).toHaveAttribute('data-td-shell-article-w', '');
+  expect(await articleWidth(page)).toBe(pageWidth + 100);
+
+  // Stepping back to the page's own width forgets the stored value.
+  await page.keyboard.press('-');
+  await expect.poll(() => articleWidth(page)).toBe(pageWidth);
+  expect(await storedWidth(page)).toBeNull();
+  await expect(page.locator('html')).not.toHaveAttribute('data-td-shell-article-w', '');
+
+  // Never narrower than 600 px.
+  for (let press = 0; press < 8; press += 1) await page.keyboard.press('-');
+  await expect.poll(() => articleWidth(page)).toBe(600);
+  expect(await storedWidth(page)).toBe('600');
+
+  // Widening back stops at the page width before going past it.
+  for (let press = 0; press < 8; press += 1) {
+    await page.keyboard.press('=');
+    if ((await storedWidth(page)) === null) break;
+  }
+  expect(await articleWidth(page)).toBe(pageWidth);
+  expect(await storedWidth(page)).toBeNull();
+
+  // Reaching the rails stores "fill", so a wider window still fills.
+  for (let press = 0; press < 8; press += 1) await page.keyboard.press('+');
+  await expect.poll(() => storedWidth(page)).toBe('none');
+  expect(await articleWidth(page)).toBe(container);
+  await page.setViewportSize({ width: 2200, height: 1000 });
+  const wider = await page.locator('.td-shell-layout .td-shell-article')
+    .evaluate((article) => Math.round(article.parentElement.clientWidth));
+  await expect.poll(() => articleWidth(page)).toBe(wider);
+});
+
+test('page action keys run the same actions as the page menu', async ({ page }) => {
+  await recordPageActions(page);
+  await openDocs(page, { width: 1280, height: 800 });
+  const manifest = await page.locator('#td-action-manifest')
+    .evaluate((node) => JSON.parse(node.textContent || '{}'));
+  const action = (id) => manifest.actions.find((candidate) => candidate.id === id);
+  const opened = () => page.evaluate(() => window.__opened.map((entry) => entry.url));
+
+  for (const [key, id] of [
+    ['u', 'edit_page'],
+    ['n', 'create_child_page'],
+    ['i', 'create_issue'],
+    ['m', 'view_markdown'],
+  ]) {
+    expect(action(id).available).toBe(true);
+    await page.keyboard.press(key);
+    await expect.poll(async () => (await opened()).at(-1)).toBe(new URL(action(id).url, page.url()).href);
+  }
+  const lastOpen = await page.evaluate(() => window.__opened.at(-1));
+  expect(lastOpen.target).toBe('_blank');
+  expect(lastOpen.features).toBe('noopener,noreferrer');
+
+  await page.keyboard.press('p');
+  await expect.poll(() => page.evaluate(() => window.__printed)).toBe(1);
+
+  for (const [key, origin, parameter] of [
+    ['[', 'https://chatgpt.com', 'prompt'],
+    [']', 'https://claude.ai', 'q'],
+    ['\\', 'https://gemini.google.com', 'q'],
+  ]) {
+    await page.keyboard.press(key);
+    await expect.poll(async () => new URL((await opened()).at(-1)).origin).toBe(origin);
+    const prompt = new URL((await opened()).at(-1)).searchParams.get(parameter);
+    expect(prompt).toContain(page.url());
+  }
+  // Gemini also gets the prompt on the clipboard, copied before its tab opens.
+  const gemini = new URL((await opened()).at(-1));
+  expect(gemini.pathname).toBe('/app');
+  expect(await page.evaluate(() => window.__copied)).toEqual([gemini.searchParams.get('q')]);
+
+  // The same keys are inert inside a text field.
+  const count = (await opened()).length;
+  await page.evaluate(() => {
+    const field = document.createElement('input');
+    field.setAttribute('data-test-kbd-field', '');
+    document.body.appendChild(field);
+  });
+  const field = page.locator('[data-test-kbd-field]');
+  await field.focus();
+  await field.press('u');
+  await field.press('[');
+  await field.press('\\');
+  await expect(field).toHaveValue('u[\\');
+  expect((await opened()).length).toBe(count);
+  expect(await page.evaluate(() => window.__printed)).toBe(1);
 });

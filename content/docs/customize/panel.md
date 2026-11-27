@@ -18,11 +18,14 @@ the page has no palette, index, or search engine. See [Search](/docs/customize/s
 | Click the search box in the navbar or sidebar | Full search mode |
 | <kbd>⌘</kbd> / <kbd>Ctrl</kbd> + <kbd>K</kbd> | Full search mode. Press again to close |
 | <kbd>/</kbd> | Full search mode |
-| The backslash key | Command-only mode (equivalent to a prefilled `>`) |
+| <kbd>&#96;</kbd> (or <kbd>~</kbd>) | Command-only mode (equivalent to a prefilled `>`) |
 | <kbd>f</kbd> / <kbd>c</kbd> | The same two, provided by [keyboard navigation](/docs/customize/keyboard/) |
 | Typing a query beginning with `>` in the box | Command-only mode |
 
-<kbd>/</kbd>, backslash, <kbd>f</kbd>, and <kbd>c</kbd> are bare single keys.
+On layouts where <kbd>&#96;</kbd> is a dead key or hard to reach, use <kbd>c</kbd>
+or type `>` instead.
+
+<kbd>/</kbd>, <kbd>&#96;</kbd>, <kbd>f</kbd>, and <kbd>c</kbd> are bare single keys.
 They do not open the palette during typing. This applies to focus in an input,
 textarea, select, or `contenteditable`, and to input-method composition. The
 keys type ordinary characters instead. The modified
@@ -43,7 +46,7 @@ With nothing typed, the palette lists four groups in a fixed order:
 | Quick links | A few entry points chosen from the navbar's top-level menu | `params.ui.quick_links` |
 | Page actions | Copy Markdown, view Markdown source, edit this page, view history, create a child page, open an issue, print the section, open the duo view (`compare_translations`) | Repository configuration, whether this page has a Markdown output, and for the duo view `params.ui.compare` plus a same-origin translation |
 | Preferences | Switch version → switch language → switch theme | Whether the site configures versions, languages and the light/dark menu |
-| Commands | Open the GitHub repository, then the site's own commands | `params.github_project_repo` (falling back to `github_repo`) and `ui.command_palette.commands` |
+| Commands | Open the GitHub repository, open the [browsing history](/docs/customize/keyboard/#history), then the site's own commands | `params.github_project_repo` (falling back to `github_repo`), whether keyboard navigation is on, and `ui.command_palette.commands` |
 
 The three preferences follow the navbar order: version, language, theme.
 Selecting a preference such as "switch language" does not navigate immediately.
@@ -157,6 +160,10 @@ page_context_menu:
 
 Check the title menu and palette. Neither should offer assistant links on
 that page. See [AI-agent support](/docs/customize/agents/) for handoff behavior.
+
+The links open ChatGPT, Claude and Gemini. Gemini cannot receive a prompt
+through its address, so choosing it also copies the prompt to the clipboard
+for the reader to paste.
 
 `links` adds external actions that appear only in the menu beside the title, not
 in the palette:

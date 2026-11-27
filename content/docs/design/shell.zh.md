@@ -275,9 +275,9 @@ BM25 以小节为单位，`k1` 为 1.2，`b` 为 0.5，长度按字符数计。
 设计依据与评估证据见[提案](/zh/docs/design/proposals/local-search-engine/)。
 
 内置操作 ID 包括 `compare_translations`、`copy_markdown`、`copy_link`、`open_chatgpt`、`open_claude`、
-`view_markdown`、`view_history`、`edit_page`、`create_child_page`、`create_issue`、
+`open_gemini`、`view_markdown`、`view_history`、`edit_page`、`create_child_page`、`create_issue`、
 `create_project_issue`、`print_section`、`print`、`switch_preset`、`switch_theme`、
-`switch_language`、`switch_version` 与 `open_github`。分享栏之外的 `copy_link`
+`switch_language`、`switch_version`、`open_github` 与 `browse_history`。分享栏之外的 `copy_link`
 只出现在命令面板中。站点通过
 `languages.<lang>.params.ui.command_palette.commands` 配置的命令可以打开安全
 URL，或调用内置 ID，绝不能注入 JavaScript。剪贴板的旧式回退恢复此前的焦点、选区及其方向，
@@ -300,24 +300,19 @@ OINK 1.4.0 中，阅读列变窄或文字放大时，面包屑与页面操作会
 结果都会隐藏这三项操作。文档 issue 与项目 issue 操作仍按各自的仓库配置提供。
 Windows 映射应匹配 `/` 而不是 `\`；归一化不会改变文件名大小写。
 
-命令面板有空状态、文本搜索状态与 `>` 命令状态；快捷链接来自导航。它没有历史、
-语义搜索、个性化或远程回退。搜索查询留在浏览器内，默认不发送遥测。
+命令面板有空状态、文本搜索状态与 `>` 命令状态；快捷链接来自导航。它不保存查询历史，
+也没有语义搜索、个性化或远程回退；其中的 `browse_history` 命令打开的是[键盘快捷键](#keyboard-shortcuts)
+一节所述的独立浏览历史浮层。搜索查询留在浏览器内，默认不发送遥测。
 
-`OinkSurfaceCoordinator` 协调命令面板、外观面板、快捷键帮助对话框、Draw.io、Expo 查看器、抽屉、根栏目、语言与版本菜单。各界面自行
+`OinkSurfaceCoordinator` 协调命令面板、外观面板、快捷键帮助对话框、浏览历史、Draw.io、Expo 查看器、抽屉、根栏目、语言与版本菜单。各界面自行
 管理焦点恢复与 Escape。已关闭的外观面板收到协调器的关闭请求时，不恢复焦点。
-键盘导航会忽略文本输入控件（`textarea`、`select`、`contenteditable` 以及输入型 `input`）与模态框，同时允许在画廊布局单选框、图片尺寸滑杆等非文本控件聚焦时继续生效；修饰键一律屏蔽快捷键，唯独 `<`（`Shift+,`）与 `>`（`Shift+.`）放行 `Shift`。桌面端非模态外观面板允许搜索快捷键；移动端模态外观面板及其他已打开的 dialog（包括固定定位的 ARIA
+键盘导航会忽略文本输入控件（`textarea`、`select`、`contenteditable` 以及输入型 `input`）与模态框，同时允许在画廊布局单选框、图片尺寸滑杆等非文本控件聚焦时继续生效；修饰键一律屏蔽快捷键，唯独 `<`（`Shift+,`）、`>`（`Shift+.`）、`+`（`Shift+=`）以及命令面板的 `~`（Shift 加反引号键）放行 `Shift`。桌面端非模态外观面板允许搜索快捷键；移动端模态外观面板及其他已打开的 dialog（包括固定定位的 ARIA
 对话框）仍独占按键。移动端抽屉内，Escape 先关闭根栏目切换器并归还触发器焦点，
-再次按 Escape 才关闭抽屉；焦点移出切换器时收起弹层。`/`、`\`、`f`、`c`
-打开搜索或命令；`k`/`j` 分别跳到上一个/下一个标题（热键说明中分两行显示）；`q`/`e` 翻页；`h`/`z` 切换禅意模式；`v` 在开启 `blog_index_toggle` 的索引页切换布局形态；Expo 相册页与可见的博客／案例／发布画廊视图中 `m` 循环切换画廊布局，`,`/`<` 与 `.`/`>` 以 `20 px` 为步长在 `160–360 px` 间缩小/放大图片尺寸；`l`/`x` 循环
-切换语言，`t` 切换到下一个可选的视觉预设，`y` 循环浅色、深色与系统明暗模式，`;` 或点击底栏 `?` 按钮打开居中顶层双列热键说明对话框（在禅意模式及 `footer_style: none` 页面同样可用；桌面端 `≥ 768 px` 悬停或聚焦 `?` 会在底栏上方预览双列速查卡，关闭弹窗归还焦点时不重开悬停卡），`r` 切换一级栏目。侧栏 WASD/方向键导航使用真实焦点，
-不会改写 Tab 顺序。
+再次按 Escape 才关闭抽屉；焦点移出切换器时收起弹层。
 版本菜单支持悬停、聚焦或点按展开，Tab 或上下方向键可以移到版本链接。
 即使触屏浏览器把焦点留在页面正文，Escape 也会先关闭版本列表，再按一次才关闭抽屉。
 底栏上方的列表允许长名称换行和纵向滚动。手机抽屉中的列表随文档流展开，滚动抽屉即可到达最后一个链接。
 在浮动列表以外按下，列表立即收起，因为 iOS 不会为落在普通内容上的轻触发出 click。抽屉中的列表等到 click 才收起，手指下的那一行不会移位。
-不带链接的分隔分组按钮也参与树导航。从子页按 Left/`a` 先聚焦父分组，再按一次才折叠；
-Right/`d` 展开已折叠的分组，已展开时进入第一个可见子项。上一页/下一页仍只遍历链接，
-不会把分组按钮当成页面。
 
 页面大纲从同一套标题模型与滚动容器计算后的 `scroll-padding-top` 推导光标和可见
 标题范围；SVG 线条与圆点共享同一组动画值，不会漂移。合法 URL 片段会被解码；
@@ -326,6 +321,100 @@ Right/`d` 展开已折叠的分组，已展开时进入第一个可见子项。�
 修复遍历。这项跟踪始终由普通外壳运行时负责。`params.ui.scroll_spy` 与页面键
 `scroll_spy` 在整个 1.x 期间都是静默兼容 no-op，不加载独立运行时；只有未来的
 破坏性版本才会删除它们。
+
+### 键盘快捷键 {#keyboard-shortcuts}
+
+`params.ui.keyboard_nav`（默认 `true`，可在站点、页面或 cascade 中设置）为交互式
+HTML 页面加入稳定的 `js/chunks/keyboard.js`，依次包含 `history.js` 与
+`keyboard-nav.js`。设为 `false` 的页面两个文件都不加载，因此不绑定任何键、不记录
+历史，也不恢复阅读宽度。键位表共三十个裸键，分三组、每组十个，热键说明按以下顺序
+列出：
+
+| 分组 | 按键（帮助中的顺序） |
+| --- | --- |
+| 导航 | `w`/`s` 侧栏移动，`a`/`d` 收起/展开，`Enter`/`Space` 打开侧栏焦点项，`q`/`e` 翻页，`k`/`j` 锚点，`x` 语言，`r` 栏目，`v` 版本，`h` 历史，`g` 首页 |
+| 操作 | `/` 与 `f` 搜索，`c` 与 `` ` `` 命令，`u` 编辑，`n` 子页面，`i` 文档议题，`o` 全部展开/折叠，`p` 打印，`[` ChatGPT，`]` Claude，`\` Gemini |
+| 样式 | `b` 双列视图，`z` 禅意模式，`m` Markdown 源码，`t` 视觉预设，`y` 明暗模式，`l` 索引布局，`;` 画廊布局，`,`/`.` 画廊尺寸（也可用 `<`/`>`），`-`/`=` 阅读宽度（也可用 `+`），`'` 帮助 |
+
+作用范围：
+
+- 侧栏键需要 `#td-sidebar-menu`，且不处于禅意模式。上下左右方向键只在焦点进入侧栏后
+  生效，从右向左书写时左右互换；在其他位置方向键保持原生滚动，`Space` 也照常滚动
+  页面。移动使用真实焦点，从当前页所在行出发，不改写 Tab 顺序。不带链接的分隔分组
+  按钮也参与导航。从子项按 Left/`a` 先聚焦父分组，再按一次才折叠；Right/`d` 展开
+  已折叠的分组，已展开时进入第一个可见子项。关闭的抽屉或折叠的桌面侧栏在第一次
+  按键时打开。
+- `q`/`e` 在外壳页面生效，只遍历可见的侧栏链接，不把分组按钮当成页面；其次是页尾
+  翻页器，再其次是 `rel` 链接。`k`/`j` 与 `z` 在外壳页面和首页生效；首页上 `k`/`j`
+  在 `[data-td-landing] > section[id]` 之间移动。其余按键在所有交互式页面上生效，
+  目标存在时执行，否则什么也不做。
+- `/` 与 `` ` ``（以及 `~`）属于命令面板，`keyboard_nav` 为 `false` 时依然可用；
+  `\` 不再打开命令。`f` 与 `c` 打开同一个面板实例；独立首页没有面板时，转到
+  `[data-td-keyboard-search-route]` 并在那里恢复所请求的状态。
+- `u`、`n`、`i`、`p`、`m`、`[`、`]` 与 `\` 通过操作注册表分别执行 `edit_page`、
+  `create_child_page`、`create_issue`、`print`、`view_markdown`、`open_chatgpt`、
+  `open_claude` 与 `open_gemini`，只在描述符可用时执行。`x` 与 `v` 分别跳到
+  `switch_language` 与 `switch_version` 中下一个可用、非当前且带 URL 的选项，到末尾
+  后回到开头；`x` 回退到 `[data-td-language-route]`。`g` 打开清单中的 `home`
+  （`Site.Home.RelPermalink`），缺失时回退到品牌链接；在首页上则滑回顶部。
+- `open_gemini` 指向 `https://gemini.google.com/app?q=` 加提示语，与其他助手共用
+  `assistant_links` 开关和摆放位置；页面菜单顺序为 ChatGPT、Claude、Gemini。Gemini
+  没有公开的提示语参数，因此每次激活都先用 `OinkClipboard.copyNow` 同步复制提示语，
+  再打开新标签页。
+- `?` 与数字键保持不绑定。`l` 作为语言别名、`h` 作为禅意模式别名、首页的 `n`
+  别名、`g` 作为侧栏激活键、`v` 切换索引布局、`m` 切换画廊布局以及 `;` 打开帮助，
+  均已退役。
+
+热键说明是 `<template data-td-keyboard-help-source>` 中的一张表，由页脚菜单渲染；
+`footer_style: none` 时由 `scripts.html` 渲染。它包含三个
+`.td-shell-keyboard-help__section` 分组（`td-shell-shortcuts-navigation`、
+`-actions`、`-view`），每组十个 `.td-shell-keyboard-help__row[data-td-shortcut]`
+行。行 ID 依次为 `tree-move`、`tree-toggle`、`tree-open`、`page-move`、
+`heading-move`、`language`、`route`、`version`、`history`、`home`；`search`、
+`commands`、`edit`、`new-page`、`issue`、`expand-all`、`print`、`chatgpt`、
+`claude`、`gemini`；`duo`、`zen`、`markdown`、`style`、`theme`、`layout`、
+`gallery`、`image-size`、`page-width`、`help`。`'` 切换一个从这张表克隆的模态
+`<dialog data-td-keyboard-dialog>`，克隆出的 ID 带 `-dialog` 后缀。每次打开都按当前
+页面实时判断每一行；无法执行的行留在原位，带 `td-is-unavailable` 类与视觉隐藏的
+「不可用」说明，表格因此保持同一形状。变暗从不降低透明度：标签改用次要文字色，键帽去掉
+底色并改为虚线边框，在所有预设下都保持 WCAG AA 对比度；强制色模式下使用 `GrayText`。对话框宽度为 `min(58rem, 100vw − 1.5rem)`，
+按至少 16.5rem 自动排列列：桌面端三列并排，手机上纵向堆叠。`'`、Escape、关闭按钮
+（`aria-keyshortcuts="Escape '"`）与点击遮罩都能关闭它，焦点回到触发器且不会重新
+弹出悬停卡。对话框打开期间其他快捷键让行。
+
+页脚 `?` 触发器声明 `aria-keyshortcuts="'"` 与 `aria-haspopup="dialog"`。悬停或聚焦
+时显示简短提示卡（`.td-shell-keyboard-hint`）：开启本地搜索时列出搜索与命令，另有
+历史、帮助，以及「点击查看全部快捷键」。点击则打开对话框。`keyboard_nav: false` 且
+开启本地搜索时，提示卡只保留 `/` 与 `` ` `` 两行，也不打开对话框。
+
+浏览历史只保存在本地。`history.js` 把除 404 页以外的每次 HTML 页面加载记录为
+`{url, title, time}`：不含片段的路径与查询串、`og:title` 或文档标题，以及访问时间。
+记录存放在 `localStorage` 中，键为 `td-history:` 加站点基础路径（`"/" | relURL`），
+按时间倒序、按 URL 去重，最多 100 条；基础路径之外的记录与格式错误的记录直接丢弃，
+不做修补。历史从不外发。`h` 或仅出现在命令面板中的 `browse_history` 操作（开启
+`keyboard_nav` 时可用）打开 `#td-shell-history[data-td-history]`，它复用命令面板的
+界面样式类。列表不含当前页面，按输入的每个词同时匹配标题和路径，支持上下键、
+Enter（当前标签页）、Ctrl/Cmd+Enter 或带修饰键点击（新标签页）、Shift+Delete
+（删除所选条目），以及 `[data-td-history-clear]` 按钮（全部清除，列表为空时禁用）。
+没有条目时列表框不含任何子元素，空列表或无匹配的提示显示在相邻的
+`[data-td-history-empty]` 中。Escape 或点击遮罩关闭它并恢复焦点。打开期间持有 `data-td-shell-lock`，并以
+`history` 名义注册到协调器。
+
+`o` 一并展开或折叠侧栏与右栏分组（`#td-shell-sidebar` 或 `[data-td-shell-aside]`
+中的 `[data-td-shell-tree-toggle]`，通过来源为 `api` 的 `OinkSidebar.setExpanded`）、
+对话框、悬停菜单、站点页眉与模板以外的所有 `<details>`，以及通过展开按钮处理的
+`[data-td-code].is-collapsible` 代码块。只要有任一目标处于折叠状态，就全部展开；
+否则全部折叠，`api` 来源会保持当前页面所在的活动路径展开。侧栏与右栏本身的收起
+状态以及弹出菜单都不是目标。期间用一帧 `html[data-td-kbd-instant]` 抑制过渡，
+主栏顶部的元素保持在视口中的原位。
+
+`-` 与 `=`（或 `+`）为 `.td-shell-layout .td-shell-article` 设置读者宽度，从当前
+渲染宽度起每步 100 px，最窄 600 px（容器更窄时以容器为准）。加宽到容器宽度时保存
+`none`，在任何屏幕上都铺满容器。某一步到达或越过页面自身宽度（去掉覆盖后测得）时，
+停在该宽度并删除保存的值。该值以 `td-shell-article-w`（像素或 `none`）存放在
+`localStorage` 中；开启键盘导航的外壳页面由首帧前脚本恢复为
+`html[data-td-shell-article-w]` 与 `--td-shell-article-w`。`@media screen` 规则覆盖
+`page_width` 与 Book 的 `.td-content` 正文宽度，打印时不生效。
 
 ## 搜索尾部扩展 {#search-tail-extensions}
 
@@ -521,7 +610,7 @@ cascade 可为每个分区覆盖站点模式。无论是否开启切换器，`ta
 `pager: false` 退出。静态输出省略翻页 UI。
 
 每一种实际渲染的页脚形态，都会在最底层栏右侧保留纯图标工具组，顺序为版本、
-语言、主题、快捷键帮助。各菜单向上展开；桌面端（`≥ 768 px`）悬停或聚焦快捷键帮助触发器会预览双列速查卡，启用 `keyboard_nav` 时点击它则打开居中的模态对话框。版本触发器不直接显示当前分支或版本名。
+语言、主题、快捷键帮助。各菜单向上展开；悬停或聚焦快捷键帮助触发器显示简短提示卡，启用 `keyboard_nav` 时点击它则打开[键盘快捷键](#keyboard-shortcuts)一节所述的三组热键对话框。版本触发器不直接显示当前分支或版本名。
 胖页脚的折叠箭头排在工具组之后。低于 `lg` 时，底层栏放弃版权/居中/工具组的
 三列布局，改为三行全宽居中堆叠，工具组在最后一行。这些全局控件不再出现在
 侧栏底部；`footer_style: none` 会移除整条底栏。
@@ -542,7 +631,7 @@ OINK 没有归档外壳、任意深度飞出菜单、第二个导航权威、查
 语言目录。图标入口通过悬停提示和无障碍名称提供标签。启用键盘导航时，`B` 在两种状态间
 切换：在页面上按下打开阅读器，在工具栏或任一窗格中再按一次关闭，并沿用页面快捷键的
 限制（不带修饰键、不在输入法组字中、焦点不在可编辑区域）。入口和关闭按钮声明
-`aria-keyshortcuts`，帮助面板只在当前页面确实有目标译文时，以视图名称列出这个快捷键。
+`aria-keyshortcuts`；当前页面没有真实目标译文时，热键说明把双列视图那一行变暗显示。
 默认关闭。这是唯一站点参数，无需页面配对数据、新布局或新输出格式。把它设为
 `false` 的语言既不提供入口，也不会成为目标。语言导航使用的首页回退不会成为对照目标；构建策略不输出 HTML 的译文（`build.render: link` 或
 `never`，包括经 cascade 继承的设置）也不会。博客归档第二页及之后的分页没有对应页，因此不提供

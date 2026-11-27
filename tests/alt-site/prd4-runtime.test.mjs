@@ -120,6 +120,7 @@ test('default subpath output localizes manifests and keeps print static', () => 
         'copy_link',
         'open_chatgpt',
         'open_claude',
+        'open_gemini',
         'view_markdown',
         'view_history',
         'edit_page',
@@ -133,6 +134,7 @@ test('default subpath output localizes manifests and keeps print static', () => 
         'switch_preset',
         'switch_theme',
         'open_github',
+        'browse_history',
         'compare_translations',
       ],
     );
@@ -170,9 +172,14 @@ test('search-disabled pages omit the Palette runtime but retain page actions', (
     assert.match(page, /data-td-action="copy_markdown"/);
     const bundle = mainBundle(outDir, page);
     const actions = sharedBundle(outDir, page, 'actions');
-    // keyboard-nav.js may reference the palette global as a consumer; only
-    // the controller's own definition is barred on search-off pages.
-    assert.doesNotMatch(bundle, /OinkCommandPalette\s*=|td-shell-search/);
+    // keyboard-nav.js may reference the palette global as a consumer, and the
+    // browsing-history overlay reuses the palette's td-shell-search__* surface
+    // classes. Only the palette controller, its model and the search engine
+    // are barred on search-off pages.
+    assert.doesNotMatch(
+      bundle,
+      /OinkCommandPalette\s*=|OinkPaletteModel|OinkSearchEngine|registerSearchTail|td-shell-search-option-/,
+    );
     assert.match(actions, /OinkActionRegistry/);
     assert.match(actions, /data-td-action/);
   }

@@ -309,7 +309,7 @@ it with `.Fill`, so readers download a small preview instead of the original.
 `table` is an archive view: it always lists every post in the section on one
 page, without pagination. Set `blog_index_toggle: true` to let readers choose
 for themselves. A switch appears beside the title (and on
-{{< kbd "V" >}} when keyboard navigation is on), cycling `list` → `cards` →
+{{< kbd "L" >}} when keyboard navigation is on), cycling `list` → `cards` →
 `table` → `gallery` → `list`:
 
 ```yaml {title="content/blog/_index.md"}
@@ -355,7 +355,7 @@ nothing to do with `blog_index_size`, the number of posts per page.
 
 Readers can change the arrangement and size, and their choice is remembered
 separately from Expo albums. With keyboard navigation on and the gallery in
-view, {{< kbd "M" >}} cycles `wall` → `cards` → `seamless`, and
+view, {{< kbd ";" >}} cycles `wall` → `cards` → `seamless`, and
 {{< kbd "," >}} / {{< kbd "<" >}} or {{< kbd "." >}} / {{< kbd ">" >}} shrinks
 or enlarges tiles by `20 px`.
 

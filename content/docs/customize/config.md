@@ -208,7 +208,7 @@ The theme's keys add the logo, footer text and accent color:
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `params.logo` | string | icons/logo.svg | Brand mark, from an `assets/` resource or a `static/` path. See [Brand and appearance](/docs/customize/brand/#logo) |
-| `params.wordmark` | string | | Horizontal wordmark. When set, it replaces "icon + site name" in the navbar |
+| `params.wordmark` | string | | Horizontal wordmark shown beside the logo in place of the site name. Below 992 px the navbar shows the logo alone |
 | `params.description` | string | | Site description, used as the meta description when a page has none |
 | `params.copyright` | string or map | | A string renders as Markdown. A map takes `authors`, `from_year` and `to_year`; `present` means the current year |
 | `params.footer_center_info` | string | Powered by [Oink](https://oink.pgsty.com) | Inline Markdown in the middle of the footer. An empty string hides it |
@@ -363,7 +363,7 @@ Backlinks sit in the right rail beside the outline.
 
 Local search is off by default. Turning it on also brings up the command
 palette, which opens from the navbar magnifier, {{< kbd "Cmd/Ctrl" "K" >}}, `/`
-and `\`.
+and `` ` ``.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -387,7 +387,7 @@ must not repeat a built-in action ID. Put per-language titles under
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.keyboard_nav` | boolean | true | Single-key navigation: WASD or arrows in the tree, j/k between headings, q/e between pages, plus keys for the palette and shell toggles. With `false`, the runtime is left out of the page. See [Keyboard navigation](/docs/customize/keyboard/) |
+| `params.ui.keyboard_nav` | boolean | true | Thirty single-key shortcuts for navigation, page actions and the view, plus the browsing history and the reader's column width. With `false`, the runtime is left out of the page, so nothing is bound, recorded or restored. See [Keyboard navigation](/docs/customize/keyboard/) |
 {.fields meta="type default"}
 
 ## Image zoom {#image-zoom}

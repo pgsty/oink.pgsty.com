@@ -3,206 +3,311 @@ title: Keyboard navigation
 linkTitle: Keyboard navigation
 description: Use single-key shortcuts and understand when typing disables them. Disable shortcuts for the site or individual pages.
 weight: 80
-search_keywords: [keyboard navigation, shortcuts, WASD, zen mode, keyboard_nav, accessibility, skip link]
+search_keywords: [keyboard navigation, shortcuts, shortcut help, WASD, zen mode, browsing history, page width, expand all, Gemini, keyboard_nav, accessibility, skip link]
 aliases:
   - /docs/advanced/keyboard/
 ---
 
-OINK's interactive pages ship with single-key shortcuts: WASD moves through the
-sidebar tree, {{< kbd "K" >}} {{< kbd "J" >}} jump between headings,
-{{< kbd "Q" >}} {{< kbd "E" >}} turn pages, {{< kbd "H" >}} / {{< kbd "Z" >}}
-toggle Zen Mode, {{< kbd "V" >}} switches index layouts, {{< kbd "M" >}} and
-{{< kbd "," >}} / {{< kbd "." >}} adjust Expo and blog gallery views,
-{{< kbd "L" >}} / {{< kbd "X" >}} / {{< kbd "T" >}} / {{< kbd "Y" >}} /
-{{< kbd "R" >}} control language, appearance, and section routing,
-{{< kbd "F" >}} / {{< kbd "C" >}} open the command palette, and
-{{< kbd ";" >}} opens the shortcut help dialog. Shortcuts are on by default,
-yield to text entry and overlays, and can be disabled per site or per page.
+Your readers can work through your documentation without reaching for the
+mouse: every interactive OINK page answers thirty single-key shortcuts, ten for
+moving around, ten for acting on the page and ten for changing the view.
+Press {{< kbd "'" >}} on any page to see all thirty; keys the current page
+cannot use are dimmed. Shortcuts are on by default, step aside whenever the
+reader is typing, and can be [turned off](#disable) for a site or a page.
 
-Keyboard navigation keeps no separate state. Expansion and collapse use the
-sidebar's arrow buttons. Section jumps use the right-hand outline. Language
-and theme switching use command palette actions. Keyboard and mouse navigation
-therefore use the same order.
+## Navigation {#navigation}
 
-## Sidebar {#sidebar}
-
-| Key | Behaviour |
+| Key | Action |
 | --- | --- |
-| {{< kbd "W" >}} {{< kbd "S" >}} {{< kbd "↑" >}} {{< kbd "↓" >}} | Move focus to the previous / next visible entry |
-| {{< kbd "A" >}} {{< kbd "D" >}} {{< kbd "←" >}} {{< kbd "→" >}} | Collapse / expand a group. On a leaf, {{< kbd "A" >}} opens the parent and {{< kbd "D" >}} does nothing |
-| {{< kbd "Enter" >}} {{< kbd "Space" >}} {{< kbd "G" >}} | Activate the focused entry: open a page link or toggle a group button |
-| {{< kbd "Esc" >}} | Leave the tree. Return focus to the body |
+| {{< kbd "W" >}} {{< kbd "S" >}} | Move to the previous / next entry of the sidebar tree |
+| {{< kbd "A" >}} {{< kbd "D" >}} | Collapse / expand the section |
+| {{< kbd "Enter" >}} {{< kbd "Space" >}} | Open the focused tree entry |
+| {{< kbd "Q" >}} {{< kbd "E" >}} | Previous / next page in sidebar order |
+| {{< kbd "K" >}} {{< kbd "J" >}} | Previous / next heading of the page outline |
+| {{< kbd "X" >}} | Switch to the next language |
+| {{< kbd "R" >}} | Switch to the next top-level section |
+| {{< kbd "V" >}} | Switch to the next version |
+| {{< kbd "H" >}} | Open the browsing history |
+| {{< kbd "G" >}} | Go to the home page |
 
-You can use the four letter keys before entering the tree. With focus in the
-body, {{< kbd "S" >}} starts from the current page's sidebar entry. It moves
-down one entry and takes focus. The focused row is darker than the "current
-page" row. Readers can distinguish the two states.
+### Sidebar tree {#sidebar}
 
-If the sidebar is in a narrow-screen drawer or collapsed on desktop, the first
-key press opens it. If a page has no sidebar tree, these keys do nothing.
+The tree keys work on every page with a sidebar tree, and you do not have to
+enter the tree first: with focus in the article, {{< kbd "S" >}} moves from the
+current page's entry to the next one in a single press. The focused row is
+tinted one step darker than the current-page row, so "where I am" and "where
+the cursor is" stay distinguishable. When the sidebar sits in the phone drawer
+or is collapsed on desktop, the first press opens it.
 
-Arrow keys control the tree **only after focus enters the sidebar**. In the
-body, they retain native browser scrolling. For a right-to-left language,
-{{< kbd "←" >}} {{< kbd "→" >}} swap with the reading direction.
-{{< kbd "A" >}} {{< kbd "D" >}} always mean "collapse / expand".
+Once focus is in the tree, {{< kbd "↑" >}} {{< kbd "↓" >}} {{< kbd "←" >}}
+{{< kbd "→" >}} work like the letters; in the article the arrows keep native
+scrolling. In a right-to-left language {{< kbd "←" >}} and {{< kbd "→" >}}
+follow the reading direction, while {{< kbd "A" >}} always collapses and
+{{< kbd "D" >}} always expands.
 
-Since OINK 1.1, groups without their own pages use disclosure buttons for
-keyboard navigation. From a child, {{< kbd "A" >}} first returns to the group.
-Press it again to collapse the group. {{< kbd "D" >}} opens a collapsed group.
-If the group is open, it moves to the first visible child. Page navigation with
-{{< kbd "Q" >}} / {{< kbd "E" >}} skips group buttons.
+From a page entry, {{< kbd "A" >}} first moves to the parent section and a
+second press collapses it. {{< kbd "D" >}} opens a collapsed section, or steps
+into its first visible child when it is already open. Sections without a page
+of their own take focus through their disclosure button, which
+{{< kbd "Enter" >}} or {{< kbd "Space" >}} toggles. {{< kbd "Esc" >}} leaves the
+tree and returns focus to where it was.
 
-## Reading {#reading}
+### Reading {#reading}
 
-| Key | Behaviour |
+{{< kbd "K" >}} and {{< kbd "J" >}} visit the same targets as the right-hand
+outline and land where an outline click would. Every jump takes 100 ms however
+far it goes, and you can press again before it finishes. Deep inside a section,
+{{< kbd "K" >}} first returns to that section's start. A page without headings
+scrolls a short step instead. On the home page the two keys move between the
+landing sections.
+
+{{< kbd "Q" >}} and {{< kbd "E" >}} follow the order the sidebar shows, not
+dates, and skip collapsed branches, so paging and tree focus always agree. A
+section's index page is an entry of its own: at a blog boundary the order runs
+from the last post of one section to the next section's index, then to its
+first post. Without a sidebar tree, paging uses the page-end pager, then the
+`rel="prev"` and `rel="next"` links in `<head>`.
+
+### Language, section and version {#switching}
+
+These keys work on every interactive page and do nothing when there is no
+other choice:
+
+- {{< kbd "X" >}} switches to the next language, wrapping after the last one.
+  It opens this page's translation, or that language's home page when the page
+  has none.
+- {{< kbd "R" >}} cycles through the same-origin top-level navbar entries. It
+  skips external links and the navbar's utility controls.
+- {{< kbd "V" >}} opens the next version listed in `params.versions` that has a
+  URL, wrapping after the last one.
+
+### Browsing history {#history}
+
+{{< kbd "H" >}} opens a search-style list of the pages you have read on this
+site, newest first. The page you are on is left out, so {{< kbd "H" >}} then
+{{< kbd "Enter" >}} takes you back to the previous page.
+
+| Key | In the history list |
 | --- | --- |
-| {{< kbd "K" >}} | Jump to the previous heading along the page outline |
-| {{< kbd "J" >}} | Jump to the next heading along the page outline |
-| {{< kbd "N" >}} | Home page only: jump to the next top-level section (a mnemonic alias for {{< kbd "J" >}} there) |
-| {{< kbd "Q" >}} {{< kbd "E" >}} | Previous / next page |
-| {{< kbd "H" >}} {{< kbd "Z" >}} | Zen Mode: hide / restore the navigation shell |
-| {{< kbd "B" >}} | Open or close the [duo view](/docs/customize/i18n/#bilingual-view) when the site enables `params.ui.compare` and the page has a translation |
+| Typing | Filter by title and path; every word must match |
+| {{< kbd "↑" >}} {{< kbd "↓" >}} | Select an entry |
+| {{< kbd "Enter" >}} | Open it; {{< kbd "Ctrl" "Enter" >}} ({{< kbd "⌘" "Enter" >}} on macOS) opens it in a new tab |
+| {{< kbd "Shift" "Delete" >}} | Remove the selected entry |
+| {{< kbd "Esc" >}} | Close the list |
 
-{{< kbd "K" >}} and {{< kbd "J" >}} use the same target sequence as the right-hand
-outline. They reach the same location as an outline click. Each jump uses a
-100 ms ease, regardless of distance. You can press again before the animation
-finishes. If you have scrolled into a section, {{< kbd "K" >}} first returns
-to its start. A second press opens the previous section. Without headings,
-the keys perform a short scroll.
+The **Clear history** button empties the list. The command palette also offers
+a **Browsing history** command that opens the same list.
 
-{{< kbd "Q" >}} {{< kbd "E" >}} follow the **sidebar tree's visible order**.
-They do not sort by date. Section indexes are tree entries. At a blog section
-boundary, the sequence is "last post of the previous section → next section's index →
-first post of the next section". Collapsed branches are excluded. Paging and
-focus use the same order. Without a sidebar tree, paging uses the page-end
-pager. Without that pager, it uses `rel=prev/next` in `<head>`.
+History keeps the last 100 pages in this browser's `localStorage`, under a key
+named after the site's base path, such as `td-history:/`. Every language of the
+site shares one list, and two sites on the same domain keep separate ones. OINK
+never sends it anywhere. It is recorded only on pages where keyboard navigation
+is on, and there is no separate switch for it.
 
-On the home page, {{< kbd "H" >}} and {{< kbd "Z" >}} hide only the navbar and footer. On a
-documentation page, they also hide the left and right columns and floating
-buttons. The tab session stores this state and restores it before the first
-frame. Paging with {{< kbd "Q" >}} {{< kbd "E" >}} preserves it without flicker.
-While the shell is hidden, WASD cannot focus the invisible sidebar.
+{{< kbd "G" >}} opens the home page of the current language. On the home page
+itself it scrolls back to the top.
 
-## Appearance, language and routing {#appearance}
+## Actions {#actions}
 
-| Key | Behaviour |
+| Key | Action |
 | --- | --- |
-| {{< kbd "V" >}} | Switch layout on blog, release, or case index pages (`list`, `cards`, `table`, `gallery`) when `blog_index_toggle` is enabled |
-| {{< kbd "L" >}} {{< kbd "X" >}} | Cycle the language |
-| {{< kbd "T" >}} | Cycle visual styles in offered order (Paper, Slate, Ink, Terminal) |
-| {{< kbd "Y" >}} | Cycle color mode across Light, Dark, and System |
-| {{< kbd "R" >}} | Switch section: cycle among same-origin top-level navbar entries |
-| {{< kbd ";" >}} | Open or close the shortcut help dialog |
+| {{< kbd "/" >}} {{< kbd "F" >}} | Search |
+| {{< kbd "C" >}} {{< kbd "`" >}} | Open the command palette with commands only |
+| {{< kbd "U" >}} | Edit this page |
+| {{< kbd "N" >}} | Create a child page |
+| {{< kbd "I" >}} | Create a docs issue |
+| {{< kbd "O" >}} | Expand or collapse everything that folds |
+| {{< kbd "P" >}} | Print this page |
+| {{< kbd "[" >}} | Open in ChatGPT |
+| {{< kbd "]" >}} | Open in Claude |
+| {{< kbd `\` >}} | Open in Gemini |
 
-{{< kbd "L" >}} / {{< kbd "X" >}}, {{< kbd "T" >}}, {{< kbd "Y" >}},
-{{< kbd "R" >}}, and {{< kbd ";" >}} work on every interactive page, including
-pages outside the reading shell. {{< kbd "V" >}} applies only to index pages
-that render the layout switch (`blog_index_toggle: true`).
-{{< kbd "L" >}} and {{< kbd "X" >}} do nothing on a single-language site.
-{{< kbd "T" >}} does nothing unless the site offers a style choice
-(`preset_menu`); it wraps from the last style back to the first.
-{{< kbd "Y" >}} steps through Light, Dark, and System in order and does nothing
-if the color-mode menu is off. {{< kbd "R" >}}
-does nothing if there is only one top-level entry. {{< kbd "R" >}} cycles only
-same-origin top-level menu items. It excludes external links and navbar utility
-controls. {{< kbd ";" >}} opens a centered top-layer two-column dialog showing
-the shortcuts available on the current page—even mid-scroll, in Zen Mode, or
-when `footer_style: none` removes the bottom bar—and closes on a second
-{{< kbd ";" >}}, {{< kbd "Esc" >}}, its close button, or a backdrop click.
-Clicking the `?` button in the footer's bottom bar opens the same dialog, while
-hovering or focusing `?` on desktop previews a two-column card above the bar.
+### Search and commands {#search}
 
-## Search and commands {#search}
+{{< kbd "/" >}} opens the [command palette](/docs/customize/panel/) ready to
+search, and {{< kbd "`" >}} (also {{< kbd "~" >}}) opens it with commands only.
+Both keys belong to the palette, so they keep working when keyboard
+navigation is off; {{< kbd "F" >}} and {{< kbd "C" >}} are the keyboard
+navigation equivalents. {{< kbd "⌘" "K" >}} on macOS and {{< kbd "Ctrl" "K" >}}
+elsewhere open the palette from anywhere, even a text field, and close it
+again. On layouts where {{< kbd "`" >}} is hard to reach, press {{< kbd "C" >}}
+or type `>` at the start of the search box.
 
-| Key | Behaviour |
+The palette needs local search (`params.offline_search: true`); without it
+these four keys do nothing.
+
+### Page actions {#page-actions}
+
+{{< kbd "U" >}}, {{< kbd "N" >}} and {{< kbd "I" >}} run the same actions as the
+page menu beside the title and open their target in a new tab. All three need
+a [repository](/docs/customize/repository/) configured for the site;
+{{< kbd "U" >}} and {{< kbd "N" >}} also need a page with a source file, so
+they do nothing on generated pages such as tag lists. {{< kbd "P" >}} prints
+the page, exactly like the browser's print command.
+
+{{< kbd "[" >}}, {{< kbd "]" >}} and {{< kbd `\` >}} hand the page to an AI
+assistant in a new tab. They work only when the site enables
+`params.ui.page_context_menu.assistant_links`. Gemini cannot receive a prompt
+through its address, so OINK copies the prompt to the clipboard as it opens
+Gemini: paste it into the message box.
+
+### Expand or collapse all {#expand-all}
+
+{{< kbd "O" >}} opens everything on the page that folds: the sidebar sections,
+the right-rail groups (outline, backlinks, term clouds), collapsible callouts,
+file trees, "show more" lists and long code blocks. When everything is already
+open, it folds all of them instead, except the sidebar branch of the current
+page, so you never lose your place. The line you are reading stays where it is
+while the page above it grows or shrinks.
+
+Menus and popovers such as navbar dropdowns are not folded content and stay
+closed. Collapsed rails stay collapsed; restore them with their own buttons.
+
+## View {#view}
+
+| Key | Action |
 | --- | --- |
-| {{< kbd "F" >}} or {{< kbd "/" >}} | Open the command palette in full search mode |
-| {{< kbd "C" >}} or the backslash key | Open the command palette in command-only mode |
-| {{< kbd "⌘" "K" >}} or {{< kbd "Ctrl" "K" >}} | Open the palette; press again to close |
+| {{< kbd "B" >}} | Open or close the Duo View |
+| {{< kbd "Z" >}} | Turn Zen Mode on or off |
+| {{< kbd "M" >}} | View the page's Markdown source |
+| {{< kbd "T" >}} | Switch to the next visual style |
+| {{< kbd "Y" >}} | Switch color mode: light, dark, system |
+| {{< kbd "L" >}} | Switch the index layout: list, cards, table, gallery |
+| {{< kbd ";" >}} | Switch the gallery layout: wall, cards, seamless |
+| {{< kbd "," >}} {{< kbd "." >}} | Smaller / larger gallery images |
+| {{< kbd "-" >}} {{< kbd "=" >}} | Narrower / wider reading column |
+| {{< kbd "'" >}} | Open or close the shortcut help |
 
-{{< kbd "/" >}} and backslash belong to search. They work when keyboard
-navigation is off. Keyboard navigation adds {{< kbd "F" >}} {{< kbd "C" >}}
-as aliases for the same palette. Backslash is difficult to use on some non-US
-layouts. You can also type a `>` prefix in the palette to select command-only
-mode. See [Command palette](/docs/customize/panel/) for its contents.
+### Zen Mode and Duo View {#zen}
 
-## Expo and gallery controls {#expo-viewer}
+{{< kbd "Z" >}} hides the navigation shell so only the text remains: the
+navbar and footer on the home page, and also both rails and the floating
+buttons on documentation pages. The choice lasts for the browser tab and is
+restored before the first frame, so paging with {{< kbd "Q" >}}
+{{< kbd "E" >}} keeps it without a flicker. At phone width the top bar stays,
+because it is the only way back to the navigation. While the shell is hidden,
+the tree keys do nothing.
 
-On an individual [Expo album](/docs/write/expo/#shortcuts) page (not the album
-directory index) or on a blog, case, or release index page while its
-[`gallery` view](/docs/write/blog/#list-gallery) is visible (press
-{{< kbd "V" >}} to switch into `gallery`), page-level keyboard navigation adds
-gallery layout and tile-size shortcuts while browsing the grid:
+{{< kbd "B" >}} opens the [Duo View](/docs/customize/i18n/#bilingual-view) when
+the site sets `params.ui.compare: true` and the page has a translation, and
+closes it again from either pane.
 
-| Key | Gallery grid action |
+{{< kbd "M" >}} opens the page's Markdown output in a new tab on sites that
+publish it.
+
+### Appearance {#appearance}
+
+{{< kbd "T" >}} steps through the visual styles the site offers in
+`params.ui.preset_menu` and wraps after the last one; it does nothing when the
+site offers a single style. {{< kbd "Y" >}} steps through light, dark and
+system color modes and does nothing when the color-mode menu is off. Both work
+on every interactive page and remember the choice like the Appearance menu does.
+
+### Index and gallery layouts {#layouts}
+
+On blog, release and case index pages with `params.ui.blog_index_toggle`,
+{{< kbd "L" >}} cycles the index through list, cards, table and gallery. On an
+[Expo album](/docs/write/expo/#shortcuts), and on an index while its
+[gallery view](/docs/write/blog/#list-gallery) is showing, three more keys
+control the grid:
+
+| Key | Gallery action |
 | --- | --- |
-| {{< kbd "M" >}} | Cycle gallery layout (`wall` → `cards` → `seamless`) |
-| {{< kbd "," >}} or {{< kbd "<" >}} | Shrink target tile size by one step (`−20 px`, down to `160 px`) |
-| {{< kbd "." >}} or {{< kbd ">" >}} | Enlarge target tile size by one step (`+20 px`, up to `360 px`) |
+| {{< kbd ";" >}} | Cycle the layout: wall, cards, seamless |
+| {{< kbd "," >}} or {{< kbd "<" >}} | Shrink the target image size by 20 px, down to 160 px |
+| {{< kbd "." >}} or {{< kbd ">" >}} | Enlarge the target image size by 20 px, up to 360 px |
 
-Both controls update the toolbar, re-lay out the grid immediately, and persist
-in `localStorage` (`td-expo-mode` / `td-expo-size` on Expo albums,
-`td-blog-gallery-mode` / `td-blog-gallery-size` on blog/case/release galleries).
-Clicking a layout radio or dragging the tile-size slider does not block these
-shortcuts.
+The toolbar follows each change, the grid reflows at once, and the choice is
+remembered: `td-expo-mode` and `td-expo-size` for Expo albums,
+`td-blog-gallery-mode` and `td-blog-gallery-size` for index galleries. Clicking
+a layout icon or dragging the size slider does not stop these keys.
 
-The [Expo viewer](/docs/write/expo/#shortcuts) has its own
-shortcuts. Page-level single-key navigation pauses while an image is open.
-It resumes when the viewer closes.
+### Page width {#page-width}
 
-| Key | Viewer action |
-| --- | --- |
-| W / A / S / D | Move the enlarged image up / left / down / right |
-| Q or H, E or L | Previous image, next image |
-| J or −, K or + | Zoom out, zoom in |
-| R or 0 | Reset size and position |
-| F | Expand to fit the whole image in the viewing area |
-| Escape | Close the viewer |
+On wide screens the reading column keeps its page width even when the window
+has room to spare. {{< kbd "-" >}} and {{< kbd "=" >}} (or {{< kbd "+" >}})
+narrow and widen it by 100 px at a time on documentation, book, blog and Expo
+pages:
 
-Gallery grid bindings follow `keyboard_nav`; viewer actions apply inside the
-viewer regardless of `keyboard_nav`. Expo is available in OINK 1.3.0.
+- The column never gets narrower than 600 px and never wider than the space
+  between the rails. Widening until it touches the rails makes it fill that
+  space on any screen size.
+- The width applies to every page of the site in this browser and is restored
+  before the first frame. It replaces each page's `page_width` and the Book
+  content measure. Printing ignores it.
+- A step that reaches the page's own width stops there and forgets the stored
+  width (`td-shell-article-w` in `localStorage`), so stepping back always
+  returns every page to the width its author chose.
 
-## Keys deliberately left free {#reserved}
+### Expo viewer {#expo-viewer}
 
-{{< kbd "?" >}} is reserved and unbound. Press {{< kbd ";" >}} anywhere on the
-page—or click the question-mark button in the footer's bottom bar—to open the
-centered two-column shortcut help dialog. Hovering or focusing that button on
-desktop (`≥ 768 px`) previews the same two-column cheat sheet directly above
-the footer; closing the dialog returns focus to the button without reopening
-the hover card. When `keyboard_nav: false` and local search is enabled, the
-button keeps a compact single-column popover for search shortcuts. Both views
-show only keys available on the current page; a single-language site therefore
-has no language row.
+An Expo image opens in a viewer with its own keys for moving, zooming and
+changing images, listed in the [Expo guide](/docs/write/expo/#shortcuts). Page
+shortcuts pause while the viewer is open and resume when it closes. The viewer
+keys work even when `keyboard_nav` is off.
 
-{{< kbd "G" >}} {{< kbd "G" >}}, {{< kbd "Shift" "G" >}} and the digits are
-likewise reserved, as possible future jump sequences.
+## Shortcut help {#help}
+
+{{< kbd "'" >}} opens all thirty shortcuts in a centered dialog: navigation,
+actions and view side by side, ten rows each. Rows the current page cannot run
+stay in place but are dimmed, and screen readers hear them as unavailable, so
+the grid keeps the same shape everywhere. The dialog opens from anywhere: in
+the middle of a long page, in Zen Mode, or on pages without a footer
+(`footer_style: none`). {{< kbd "'" >}}, {{< kbd "Esc" >}}, the close button or
+a click outside the dialog closes it.
+
+The question-mark button at the end of the footer's bottom bar offers the same
+dialog. Hovering or focusing it shows a short hint with the keys readers reach
+for first; clicking it opens the full dialog, and closing the dialog returns
+focus to the button.
+
+With keyboard navigation off and local search on, the button keeps only the
+two palette keys, {{< kbd "/" >}} and {{< kbd "`" >}}, and opens no dialog.
+
+## Keys left free {#reserved}
+
+{{< kbd "?" >}} and the digits are deliberately unbound, and every letter key
+pressed with a modifier keeps its browser or system meaning. Only
+{{< kbd "<" >}}, {{< kbd ">" >}}, {{< kbd "+" >}} and {{< kbd "~" >}} accept
+{{< kbd "Shift" >}}, because standard keyboards need it to type them.
 
 ## When shortcuts stand down {#stand-down}
 
-Every binding is a single key. The following conditions disable bindings to
-prevent conflicts with typing or overlays:
+Every binding is a single key, so each one steps aside when it could collide
+with typing or an overlay:
 
-- Focus is in a text-entry control (`<textarea>`, `<select>`, `contenteditable`, or a text-entry `<input>` such as text, search, email, password, or number). Non-text controls like gallery layout radio buttons and tile-size range sliders still allow page shortcuts while retaining native arrow-key behavior;
-- An input method is composing (a hard requirement on a Chinese site);
-- A modifier key is held—except {{< kbd "Shift" >}} for {{< kbd "<" >}} (`Shift+,`) and {{< kbd ">" >}} (`Shift+.`), which require Shift on standard keyboards. {{< kbd "⌘" "C" >}} still copies, {{< kbd "Shift" "M" >}} does nothing, and {{< kbd "Shift" "↓" >}} remains a browser action;
-- The command palette, another open native dialog (including the `;` shortcut help dialog or Expo viewer), or a visible ARIA dialog owns the keyboard. This includes fixed-position ARIA dialogs; hidden ARIA dialogs do not block shortcuts.
+- Focus is in a text field: `<textarea>`, `<select>`, `contenteditable`, or an
+  `<input>` you type into, such as text, search, email, password or number.
+  Non-text controls such as gallery layout radio buttons and the size slider
+  keep the page shortcuts and their own arrow keys.
+- An input method is composing, which matters on every Chinese, Japanese or
+  Korean site.
+- A modifier key is held. {{< kbd "⌘" "C" >}} still copies,
+  {{< kbd "Shift" "M" >}} does nothing, and {{< kbd "Shift" "↓" >}} stays a
+  browser action.
+- The command palette, the browsing history, the shortcut help, the Expo
+  viewer, another open dialog or a visible ARIA dialog owns the keyboard.
+  Hidden ARIA dialogs do not block shortcuts.
 
-The comment section uses an iframe. Its key events do not propagate to the
-page. No additional isolation is needed.
+Comments load in an iframe, so their keystrokes never reach the page.
 
 ## Focus order and accessibility {#a11y}
 
-Since OINK 1.1, hidden sidebar and drawer content is removed from
-keyboard focus. Clicking the article, a table viewport or a code block no
-longer produces a large outline after a later keypress. Keyboard focus remains
-visible: the skip link highlights the article title, and scrollable tables
-and code keep their own focus indication and keyboard scrolling.
-
-- **Skip link**: the first {{< kbd "Tab" >}} on a page reveals "skip to main content". It skips the navbar and sidebar in one action.
-- **Real focus**: tree navigation moves actual DOM focus instead of a virtual cursor. A screen reader announces the link name and "current page" marker. {{< kbd "Enter" >}} retains the link's native behavior. The Tab order remains unchanged.
-- **High contrast**: under `forced-colors`, the focused row's background is removed. A system highlight outline replaces it.
-- **Reduced motion**: with `prefers-reduced-motion` enabled, section jumps and paging scroll position instantly without an ease.
-- The key caps in the cheatsheet share their styling with the [Kbd](/docs/components/kbd/) component used in the body.
+- **Skip link**: the first {{< kbd "Tab" >}} on a page reveals "Skip to main
+  content", which passes the navbar and sidebar in one step and marks the
+  article title.
+- **Real focus**: tree navigation moves the actual DOM focus, so a screen reader
+  announces the link name and its "current page" state, {{< kbd "Enter" >}}
+  keeps the link's native behavior, and the Tab order is unchanged.
+- **Hidden content**: a collapsed sidebar or closed drawer leaves the Tab order,
+  while the button that restores it stays reachable. Clicking the article, a
+  table or a code block does not leave a large outline behind for the next key.
+- **High contrast**: under `forced-colors` the focused row and the selected
+  history entry are outlined in the system highlight color.
+- **Reduced motion**: with `prefers-reduced-motion`, heading jumps and paging
+  land instantly.
+- The keycaps in the shortcut help are the same as the
+  [Kbd](/docs/components/kbd/) component you write in pages.
 
 ## Turning it off {#disable}
 
@@ -214,8 +319,8 @@ params:
     keyboard_nav: false
 ```
 
-For one page (interaction-heavy demonstration pages often need this), or for a
-whole section by cascade:
+For one page, such as an interaction-heavy demonstration, or for a whole
+section through `cascade`:
 
 ```yaml {title="content/docs/playground.md"}
 ---
@@ -224,21 +329,19 @@ keyboard_nav: false
 ---
 ```
 
-The key accepts only a boolean. Passing `"false"` or any other non-boolean
-value warns (`params.ui.keyboard_nav must be a boolean`) and uses the site default. See the complete definition in
-[Configuration](/docs/customize/config/).
-
-If you disable keyboard navigation, its runtime is excluded from the JavaScript
-bundle. {{< kbd "/" >}}, backslash, and {{< kbd "⌘" "K" >}} belong to search
-and still work. The footer's collapsible link-grid arrows are unaffected.
+The key takes a boolean only; see [Configuration](/docs/customize/config/) for
+the complete definition. A page with keyboard navigation off ships no keyboard
+runtime at all: no shortcuts, no browsing history recording and no restored
+page width. {{< kbd "/" >}}, {{< kbd "`" >}} and {{< kbd "⌘" "K" >}} belong to
+search and keep working, and the footer's collapse arrow is unaffected.
 
 ## Verify {#verify}
 
-Run from your site's root after a production build. In the commands below, replace
-`public/docs/getting-started/index.html` with an actual generated documentation
-page in your site (including a language prefix if needed).
+Build your site, then replace `public/docs/getting-started/index.html` below
+with a documentation page your site actually generates, including any language
+prefix.
 
-1. After a build, confirm the cheatsheet button is in the page:
+1. Confirm that the help button is in the page:
 
    ```bash
    hugo --printPathWarnings
@@ -246,29 +349,28 @@ page in your site (including a language prefix if needed).
    test -f "$PAGE" && grep -c 'td-shell-keyboard__trigger' "$PAGE"
    ```
 
-   With keyboard navigation off and local search not enabled, the button is not
-   generated at all.
+   With keyboard navigation off and no local search, the button is not
+   generated.
 
-2. Open a documentation page. Leave focus in the body and press {{< kbd "S" >}} repeatedly. Confirm that the sidebar moves down from the current page's entry. The body should not move.
-
-3. Press {{< kbd "E" >}} several times. Confirm that paging follows the sidebar from top to bottom. Collapse a group and page again. Confirm that paging skips collapsed pages.
-
-4. Click in the search box and press {{< kbd "J" >}}. The page should **not** scroll. The character should appear normally. Repeat with a Chinese input method.
-
-5. Enable "reduce motion" in the system and press {{< kbd "J" >}}. Confirm instant positioning without animation.
-
-6. Press {{< kbd ";" >}} mid-scroll or in Zen Mode ({{< kbd "H" >}} / {{< kbd "Z" >}}), and hover then click the footer `?` button. Confirm desktop hover shows the two-column cheat sheet, clicking `?` or pressing {{< kbd ";" >}} opens the centered two-column dialog, and closing restores focus without reopening the hover card.
-
-7. Open an Expo album or switch `/blog/` to `gallery` with {{< kbd "V" >}}. Press {{< kbd "M" >}}, {{< kbd "," >}} / {{< kbd "<" >}}, and {{< kbd "." >}} / {{< kbd ">" >}}—including after clicking a layout icon or adjusting the slider—and confirm the grid reflows and persists across reload.
-
-8. For the 1.1 focus fixes, follow the skip link and check the title's focus
-   indication. Collapse the sidebar and use {{< kbd "Tab" >}}: its hidden links
-   should be skipped, while the restore control remains reachable.
+2. Open a documentation page and press {{< kbd "'" >}}: three columns of ten
+   appear, with dimmed rows for features this page lacks. Press it again to
+   close the dialog.
+3. With focus in the article, press {{< kbd "S" >}} a few times. The sidebar
+   focus moves down from the current page and the article stays still. Then
+   press {{< kbd "E" >}} and check that pages follow the sidebar order.
+4. Read two pages, then press {{< kbd "H" >}} and {{< kbd "Enter" >}}: you are
+   back on the first one.
+5. Press {{< kbd "O" >}} twice. Every sidebar section opens, then everything
+   folds again except the branch of the current page.
+6. On a wide window, press {{< kbd "=" >}} and {{< kbd "-" >}}. The column
+   widens and narrows, and keeps its width after a reload.
+7. Click in the search box and press {{< kbd "J" >}}. The letter is typed and
+   the page does not scroll. Repeat with an input method.
 
 ## Related {#related}
 
-- [Command palette](/docs/customize/panel/) — the dialog {{< kbd "F" >}} {{< kbd "C" >}} open
-- [Search](/docs/customize/search/) — where the palette's page results come from
-- [Layouts and page types](/docs/customize/layout/) — which pages have a sidebar and outline, and so which keys apply
-- [Kbd](/docs/components/kbd/) — writing key caps in your own documentation
-- [Configuration](/docs/customize/config/) — the full definition of `ui.keyboard_nav`
+- [Command palette](/docs/customize/panel/): the dialog behind {{< kbd "/" >}}, {{< kbd "F" >}}, {{< kbd "C" >}} and {{< kbd "`" >}}
+- [Search](/docs/customize/search/): where the palette's page results come from
+- [Layouts and page types](/docs/customize/layout/): which pages have a sidebar and an outline, and so which keys apply
+- [Kbd](/docs/components/kbd/): writing keycaps in your own pages
+- [Configuration](/docs/customize/config/): the complete definition of `ui.keyboard_nav`

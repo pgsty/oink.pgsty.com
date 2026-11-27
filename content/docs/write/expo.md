@@ -214,7 +214,7 @@ occupies one CSS pixel.
 ## Keyboard shortcuts {#shortcuts}
 
 On an album page (not a section page listing albums), with `keyboard_nav`
-enabled, {{< kbd "M" >}} cycles through `wall`, `cards` and `seamless`,
+enabled, {{< kbd ";" >}} cycles through `wall`, `cards` and `seamless`,
 {{< kbd "," >}} / {{< kbd "<" >}} shrinks the tiles by one step (`−20 px`), and
 {{< kbd "." >}} / {{< kbd ">" >}} enlarges them by one step (`+20 px`).
 

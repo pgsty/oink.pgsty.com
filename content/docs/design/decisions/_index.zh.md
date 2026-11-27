@@ -36,6 +36,7 @@ OINK 过去把评审、PRD 与执行记录放在本地 `plan/` 目录中。这�
 | [组件精修](/zh/docs/design/decisions/component-refinement/) | 共用样式、分隔式卡片、紧凑步骤与命令条 |
 | [统一图表阅读](/zh/docs/design/decisions/diagram-reading/) | Mermaid 与本地 PlantUML 共用查看器、源码导出与按需加载 |
 | [本地搜索改进](/zh/docs/design/decisions/local-search/) | 混合查询、真实小节锚点、部分匹配与栏目范围 |
+| [键位表](/zh/docs/design/decisions/keyboard-map/) | 三组、每组十个单键，变暗显示不可用的行，本地历史、全部折叠与读者宽度 |
 
 ## 记录格式 {#record-format}
 

@@ -64,6 +64,7 @@ test("empty Palette exposes shared quick links, page actions, and preferences", 
   await expect(actions).toContainText("Copy Markdown");
   await expect(actions).toContainText("Open in ChatGPT");
   await expect(actions).toContainText("Open in Claude");
+  await expect(actions).toContainText("Open in Gemini");
   await expect(actions).toContainText("View markdown");
   await expect(actions).toContainText("View edit history");
   await expect(actions).toContainText("Edit this page");
@@ -77,6 +78,7 @@ test("empty Palette exposes shared quick links, page actions, and preferences", 
   await expect(preferences).toContainText("v1.6.0");
   const commands = group(dialog, "Commands");
   await expect(commands).toContainText("OINK issues");
+  await expect(commands).toContainText("Browsing history");
   await expect(commands).not.toContainText("Copy Markdown");
 
   const rows = dialog.locator('[role="option"]');
@@ -137,7 +139,7 @@ test("command mode is index-free and localizes configured commands", async ({
   expect(indexRequests).toEqual([]);
 });
 
-test("slash opens search, backslash opens command mode, both yield to fields", async ({
+test("slash opens search, backtick and tilde open command mode, all yield to fields", async ({
   page,
 }) => {
   await page.goto(docsPath, { waitUntil: "domcontentloaded" });
@@ -156,16 +158,18 @@ test("slash opens search, backslash opens command mode, both yield to fields", a
   await expect(dialog).toBeHidden();
   await expect(opener).toBeFocused();
 
-  await page.keyboard.press("\\");
-  await expect(dialog).toBeVisible();
-  await expect(input).toBeFocused();
-  await expect(input).toHaveValue(">");
-  await expect(group(dialog, "Quick links")).toHaveCount(0);
-  await expect(group(dialog, "Page actions")).toHaveCount(0);
+  for (const key of ["`", "~"]) {
+    await page.keyboard.press(key);
+    await expect(dialog).toBeVisible();
+    await expect(input).toBeFocused();
+    await expect(input).toHaveValue(">");
+    await expect(group(dialog, "Quick links")).toHaveCount(0);
+    await expect(group(dialog, "Page actions")).toHaveCount(0);
 
-  await page.keyboard.press("Escape");
-  await expect(dialog).toBeHidden();
-  await expect(opener).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+    await expect(opener).toBeFocused();
+  }
 
   await page.evaluate(() => {
     const input = document.createElement("input");
@@ -177,8 +181,10 @@ test("slash opens search, backslash opens command mode, both yield to fields", a
   await search.fill("docs");
   await search.press("/");
   await expect(search).toHaveValue("docs/");
-  await search.press("\\");
-  await expect(search).toHaveValue("docs/\\");
+  await search.press("`");
+  await expect(search).toHaveValue("docs/`");
+  await search.press("~");
+  await expect(search).toHaveValue("docs/`~");
   await expect(dialog).toBeHidden();
 });
 
@@ -256,6 +262,7 @@ test("URL actions match progressive-enhancement anchors", async ({ page }) => {
   for (const [id, selector] of [
     ["open_chatgpt", '[data-td-action="open_chatgpt"]'],
     ["open_claude", '[data-td-action="open_claude"]'],
+    ["open_gemini", '[data-td-action="open_gemini"]'],
     ["view_markdown", '[data-td-action="view_markdown"]'],
     ["view_history", '[data-td-action="view_history"]'],
     ["edit_page", '[data-td-action="edit_page"]'],
@@ -263,7 +270,7 @@ test("URL actions match progressive-enhancement anchors", async ({ page }) => {
   ]) {
     const descriptor = action(id);
     const anchor = controls.locator(selector);
-    if (id === "open_chatgpt" || id === "open_claude") {
+    if (id === "open_chatgpt" || id === "open_claude" || id === "open_gemini") {
       const href = new URL(await anchor.getAttribute("href"));
       expect(href.origin).toBe(new URL(descriptor.url).origin);
       const prompt = href.searchParams.get(

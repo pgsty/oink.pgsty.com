@@ -294,6 +294,7 @@ custom CSS use:
 | Copy Markdown | `copy_markdown` | The page has the `markdown` output format |
 | Open in ChatGPT | `open_chatgpt` | `page_context_menu.assistant_links: true` |
 | Open in Claude | `open_claude` | `page_context_menu.assistant_links: true` |
+| Open in Gemini | `open_gemini` | `page_context_menu.assistant_links: true` |
 | View markdown | `view_markdown` | The page has the `markdown` output format |
 | View edit history | `view_history` | `params.github_repo` is set and the page's source path resolves |
 | Edit this page | `edit_page` | The same |
@@ -460,9 +461,9 @@ Zen Mode. `slim` and `none` have no such arrow.
 
 The footer's bottom bar ends with an icon dock holding, in order, the version,
 language, appearance and keyboard-help controls, followed by the `fat`
-footer's collapse arrow. Their menus open upward. On desktop, hovering
-keyboard help previews the two-column cheat sheet, and clicking it opens the
-centered dialog. The version button shows only an icon, while its choices keep
+footer's collapse arrow. Their menus open upward. Hovering keyboard help
+shows a short hint, and clicking it opens the dialog with all thirty
+[shortcuts](/docs/customize/keyboard/#help). The version button shows only an icon, while its choices keep
 their full labels. The sidebar does not repeat these controls, and
 `footer_style: none` removes the bottom bar together with the footer.
 

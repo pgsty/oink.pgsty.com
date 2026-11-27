@@ -123,15 +123,17 @@ to search, and a query that starts with `>` lists only commands.
 
 ## Keyboard navigation {#keyboard}
 
-Single-key shortcuts are on by default and can be turned off for a site, a
-section or a single page. `w` and `s` move through the sidebar tree and `a` and `d` collapse
-and expand it, `q` and `e` go to the previous and next page, and `k` and `j`
-jump to the previous and next heading. Other keys switch the visual preset,
-the color mode and the language, open the duo view, toggle Zen Mode, and
-change layouts and tile sizes on blog, case, release and Expo pages. Every
-shortcut stands aside while you type in a text field or compose with an input
-method. The question-mark button in the footer lists them all in a two-column
-dialog, and on desktop, hovering it shows a preview.
+Thirty single-key shortcuts are on by default, ten each for navigation,
+actions and the view, and can be turned off for a site, a section or a single
+page. `w` and `s` move through the sidebar tree and `a` and `d` collapse and
+expand it, `q` and `e` go to the previous and next page, `k` and `j` jump to the
+previous and next heading, `h` lists the pages you read recently and `g` goes
+home. Other keys search, edit or print the page, hand it to ChatGPT, Claude or
+Gemini, fold or unfold everything at once, switch the preset, color mode and
+language, open the duo view, toggle Zen Mode, and widen or narrow the reading
+column. Every shortcut stands aside while you type in a text field or compose
+with an input method. Press `'`, or click the question-mark button in the
+footer, to see all thirty in three columns; keys a page cannot use are dimmed.
 
 → [Keyboard navigation](/docs/customize/keyboard/)
 

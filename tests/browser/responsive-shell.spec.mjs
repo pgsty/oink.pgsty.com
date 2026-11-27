@@ -382,7 +382,7 @@ for (const [locale, path] of [
   ['zh', '/zh/docs/customize/config/'],
 ]) {
   for (const theme of ['light', 'dark']) {
-    test(`${locale} ${theme} shortcut help previews two columns on desktop and opens modal on click`, async ({
+    test(`${locale} ${theme} shortcut help shows a hint on hover and opens the 3 x 10 dialog on click`, async ({
       page,
     }) => {
       await page.addInitScript((colorTheme) => {
@@ -395,44 +395,40 @@ for (const [locale, path] of [
         await expect(page.locator('html')).toHaveAttribute('data-bs-theme', theme);
 
         const trigger = page.locator('.td-shell-keyboard__trigger');
-        const help = page.locator('.td-shell-keyboard-help');
+        const hint = page.locator('.td-shell-keyboard-hint');
         const dialog = page.locator('[data-td-keyboard-dialog]');
+        await expect(trigger).toHaveAttribute('aria-keyshortcuts', "'");
+        await expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
         await trigger.scrollIntoViewIfNeeded();
 
         if (width >= 768) {
-          // Hovering ? previews the two-column cheat sheet above the footer.
+          // Hovering ? shows a short hint above the footer, not the full sheet.
           await trigger.hover();
-          await expect(help).toBeVisible();
-          await expect(help.locator('.td-kbd-sequence kbd')).not.toHaveCount(0);
-          await expect(help.locator('pre, code')).toHaveCount(0);
+          await expect(hint).toBeVisible();
+          await expect(hint.locator('.td-shell-keyboard-hint__more')).toBeVisible();
+          await expect(hint.locator('.td-shell-keyboard-help__row')).toHaveCount(4);
+          await expect(hint.locator('kbd', { hasText: /^'$/ })).toHaveCount(1);
+          await expect(hint.locator('kbd', { hasText: /^H$/ })).toHaveCount(1);
+          await expect(hint.locator('pre, code')).toHaveCount(0);
+          const hintBox = await hint.boundingBox();
+          expect(hintBox).not.toBeNull();
+          expect(hintBox.x).toBeGreaterThanOrEqual(0);
+          expect(hintBox.x + hintBox.width).toBeLessThanOrEqual(width + 0.5);
+          expect(
+            await page.evaluate(() => document.documentElement.scrollWidth),
+          ).toBeLessThanOrEqual(width);
 
-          const hoverGeo = await help.evaluate((el) => {
-            const box = el.getBoundingClientRect();
-            const sections = Array.from(el.querySelectorAll('.td-shell-keyboard-help__section'));
-            return {
-              box,
-              sections: sections.map((s) => s.getBoundingClientRect()),
-              scrollWidth: document.documentElement.scrollWidth,
-            };
-          });
-          expect(hoverGeo.sections).toHaveLength(2);
-          expect(hoverGeo.box.width).toBeLessThanOrEqual(640.5);
-          expect(hoverGeo.box.x).toBeGreaterThanOrEqual(0);
-          expect(hoverGeo.box.x + hoverGeo.box.width).toBeLessThanOrEqual(width + 0.5);
-          expect(Math.abs(hoverGeo.sections[0].top - hoverGeo.sections[1].top)).toBeLessThanOrEqual(2);
-          expect(hoverGeo.sections[1].left).toBeGreaterThan(hoverGeo.sections[0].left + 200);
-          expect(hoverGeo.scrollWidth).toBeLessThanOrEqual(width);
-
-          // Clicking ? promotes to the centered two-column modal dialog and hides the hover card.
+          // Clicking ? opens the centered dialog and hides the hint.
           await trigger.click();
           await expect(dialog).toBeVisible();
-          await expect(help).toBeHidden();
+          await expect(dialog.locator('[data-td-shortcut]')).toHaveCount(30);
+          await expect(hint).toBeHidden();
           await page.keyboard.press('Escape');
           await expect(dialog).toBeHidden();
           await expect(trigger).toBeFocused();
-          await expect(help).toBeHidden();
+          await expect(hint).toBeHidden();
         } else {
-          // On phones, tapping ? opens the centered single-column modal dialog cleanly inside the viewport.
+          // On phones, tapping ? opens the stacked dialog cleanly inside the viewport.
           await trigger.click();
           await expect(dialog).toBeVisible();
           await expect(dialog.locator('.td-kbd-sequence kbd')).not.toHaveCount(0);
@@ -488,7 +484,7 @@ test('bottom bar utilities keep their order and open upward', async ({ page }) =
     ['.td-version-menu__title', '.td-version-menu__list'],
     ['.td-language-selector__trigger', '.td-language-selector > ul'],
     ['[data-td-appearance-trigger]', '.td-shell-footline__theme dialog'],
-    ['.td-shell-keyboard__trigger', '.td-shell-keyboard-help'],
+    ['.td-shell-keyboard__trigger', '.td-shell-keyboard-hint'],
   ]) {
     const trigger = dock.locator(triggerSelector);
     const menu = dock.locator(menuSelector);
@@ -799,7 +795,8 @@ for (const [locale, path, query] of [
     await page
       .locator('.td-shell-sidebar__brand-row > [data-td-shell-search-open]')
       .click();
-    const input = page.locator('.td-shell-search__input');
+    // Scope to the palette: the browsing-history overlay reuses its surface classes.
+    const input = page.locator('#td-shell-search .td-shell-search__input');
     await expect(input).toHaveAttribute('role', 'combobox');
     await expect(input).toHaveAttribute('aria-expanded', 'true');
     await input.fill(query);

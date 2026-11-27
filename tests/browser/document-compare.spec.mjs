@@ -166,8 +166,15 @@ test('compare: continuous owner scrolling keeps the follower in step', async ({ 
 
 test('compare: B toggles the localized duo view and the toolbar stays icon-only where requested', async ({ page }) => {
   await page.goto('/tests/compare-reader/');
-  await expect(page.locator('.td-shell-keyboard-help')).toContainText('B');
-  await expect(page.locator('.td-shell-keyboard-help')).toContainText('Duo View');
+  await page.keyboard.press("'");
+  const help = page.locator('[data-td-keyboard-dialog]');
+  const duo = help.locator('[data-td-shortcut="duo"]');
+  await expect(help).toBeVisible();
+  await expect(duo).toContainText('Duo View');
+  await expect(duo).not.toHaveClass(/td-is-unavailable/);
+  expect(await duo.locator('kbd').allTextContents()).toEqual(['B']);
+  await page.keyboard.press('Escape');
+  await expect(help).toBeHidden();
   await page.keyboard.press('b');
   await expect(page.locator(`${reader}[open]`)).toBeVisible();
   await expect(page.locator('.td-compare__title')).toHaveText('Duo View');
