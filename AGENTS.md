@@ -2,8 +2,9 @@
 
 `CLAUDE.md` is a symbolic link to this file. Edit `AGENTS.md` only.
 
-Start with `README.md` for this site's build and repository boundary, and
-`TRANSLATION.md` for bilingual content rules. Public maintainer contracts,
+Start with `README.md` for this site's build and repository boundary,
+`WRITING.md` for how to write documentation pages, and `TRANSLATION.md` for
+bilingual content rules. Public maintainer contracts,
 accepted decisions, dated research, and proposals live under
 `content/docs/design/`; this directory is their canonical bilingual source,
 not a projection of a second theme-local document tree.
@@ -39,6 +40,9 @@ actual tags, module resolution and deployment before making release claims.
 ## Content conventions
 
 - Keep English primary and add Simplified Chinese peers as `.zh.md` files.
+- Write every page under `content/docs/` outside `design/` to `WRITING.md`:
+  lead with the reader's problem and a working example, give the reason with
+  each instruction, say each fact once, and keep maintainer material out.
 - Follow `TRANSLATION.md` and the published Design contracts.
 - Update both language versions of an affected Design contract in the same
   delivery as its theme implementation and owning checker.
