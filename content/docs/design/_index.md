@@ -21,10 +21,11 @@ cascade:
   categories: [Design]
 ---
 
-> [!NOTE] OINK 1.6.0 contract
-> The contracts in this section describe OINK v1.6.0. Theme development uses the
-> sibling checkout; release acceptance verifies the published module with
-> replacements and workspaces disabled.
+> [!NOTE] Release baseline and development changes
+> This site pins OINK v1.6.0. The architecture, component and shell contracts also
+> describe changes on `main` for the proposed v1.7.0 release. Use the sibling
+> checkout to preview those changes. Release acceptance checks the published
+> module with replacements and workspaces disabled.
 
 This section explains how OINK works and why it has its present shape. It brings
 together current contracts, the reasoning behind accepted decisions, evidence

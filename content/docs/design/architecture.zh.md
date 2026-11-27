@@ -8,8 +8,8 @@ search_keywords: [OINK 架构, 仓库边界, 运行时, i18n, Docsy 语言, 输�
 contract_status: v1.6.0
 ---
 
-> [!NOTE] OINK 1.6.0 契约
-> 本契约描述 OINK v1.6.0。
+> [!NOTE] 架构版本
+> 当前发布版本为 OINK v1.6.0。下文的地图瓦片与媒体播放器网络策略适用于 `main` 上拟随 v1.7.0 发布的实现。
 
 ## Hugo 工具链 {#hugo-toolchain}
 

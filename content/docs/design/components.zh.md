@@ -8,8 +8,8 @@ search_keywords: [OINK 组件契约, shortcode API, Markdown 组件, Book, 发�
 contract_status: v1.6.0
 ---
 
-> [!NOTE] OINK 1.6.0 契约
-> 本契约描述 OINK v1.6.0。
+> [!NOTE] 组件版本
+> 当前发布版本为 OINK v1.6.0。时间线、更新条目、视频、音频、社交引用和地图已在 `main` 实现，拟随 v1.7.0 发布。
 
 教程与完整示例位于面向读者的[组件](/zh/docs/components/)专栏。本页定义这些
 指南所依赖的 API 与行为。

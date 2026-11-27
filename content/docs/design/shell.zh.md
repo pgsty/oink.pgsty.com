@@ -8,8 +8,8 @@ search_keywords: [OINK 外壳, 导航契约, 搜索, 操作, 博客展示, 作�
 contract_status: v1.6.0
 ---
 
-> [!NOTE] OINK 1.6.0 契约
-> 本契约描述 OINK v1.6.0。
+> [!NOTE] 外壳版本
+> 当前发布版本为 OINK v1.6.0。包含 30 个按键的快捷键面板、读者开关、浏览历史和排版复制已在 `main` 实现，拟随 v1.7.0 发布。
 
 ## 权威来源与导航 {#authorities-and-navigation}
 

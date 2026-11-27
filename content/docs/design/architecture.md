@@ -8,8 +8,10 @@ search_keywords: [OINK architecture, repository boundary, runtime, i18n, Docsy l
 contract_status: v1.6.0
 ---
 
-> [!NOTE] OINK 1.6.0 contract
-> This contract describes OINK v1.6.0.
+> [!NOTE] Architecture versions
+> OINK v1.6.0 is the released baseline. The map tile and media player network
+> policies described below apply to the implementations on `main` for the
+> proposed v1.7.0 release.
 
 ## Hugo toolchain {#hugo-toolchain}
 

@@ -8,8 +8,10 @@ search_keywords: [OINK shell, navigation contract, search, actions, blog present
 contract_status: v1.6.0
 ---
 
-> [!NOTE] OINK 1.6.0 contract
-> This contract describes OINK v1.6.0.
+> [!NOTE] Shell versions
+> OINK v1.6.0 is the released baseline. The 30-key shortcut sheet, reader
+> preference, browsing history and typeset copy are on `main` for the proposed
+> v1.7.0 release.
 
 ## Authorities and navigation {#authorities-and-navigation}
 

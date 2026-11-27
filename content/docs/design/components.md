@@ -8,8 +8,9 @@ search_keywords: [OINK component contract, shortcode API, Markdown components, B
 contract_status: v1.6.0
 ---
 
-> [!NOTE] OINK 1.6.0 contract
-> This contract describes OINK v1.6.0.
+> [!NOTE] Component versions
+> OINK v1.6.0 is the released baseline. Timeline, Update, Video, Audio, Social
+> and Map are implemented on `main` for the proposed v1.7.0 release.
 
 The reader-facing [Components](/docs/components/) section provides tutorials and complete examples.
 This page defines the API and behavior used by those guides.
