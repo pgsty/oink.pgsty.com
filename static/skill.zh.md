@@ -1,287 +1,178 @@
 ---
 name: oink-site
-description: "Oink 建站：用 OINK 主题（github.com/pgsty/oink，文档 oink.pgsty.com）搭建、迁移和打磨 Hugo 网站，包括产品文档、书籍与课程门户、博客、Landing 与公司站、档案馆、相册和聚合文库。适用场景：从 oink-starter 起步；为现有 Hugo 或 Docsy 站点接入 OINK；把 PDF、HTML 或上游 Markdown 转成 Docs 或 Book 页面；设计首页；增加语言；检查、升级和发布 OINK 站点。不用于修改主题本身。"
+description: "Oink 建站：用 OINK 主题（github.com/pgsty/oink，文档 oink.pgsty.com）搭建、迁移和打磨 Hugo 网站，包括开源项目与产品文档、书籍与课程、个人博客与知识库、档案馆与相册、公司站与落地页、数据目录站。适用场景：新建 OINK 站点；把 Hugo 或 Docsy 站点迁到 OINK；转换书籍或上游文档；设计首页；增加语言；检查、升级和发布 OINK 站点。它把每类站点对应到值得参考的真实 OINK 站点，把每项任务对应到讲解它的文档页。不用于修改主题本身。"
 ---
 
 # Oink 建站
 
-> OINK 建站技能的公开版。地址：<https://oink.pgsty.com/skill.zh.md> · English：<https://oink.pgsty.com/skill.md>。保存为技能目录 `oink-site/` 下的 `SKILL.md`，或直接把地址交给任何 agent。本快照对应 OINK v1.6.0，日期 2026-11-23。
+> OINK 建站技能的公开版：<https://oink.pgsty.com/skill.zh.md> · English：<https://oink.pgsty.com/skill.md>。保存为技能目录 `oink-site/` 下的 `SKILL.md`，或直接把地址交给任何 agent。本文写于 2026-11-27，对应 OINK v1.7.0。
 
-OINK 是本地优先的 Hugo 模块主题，硬分叉自 Docsy。站点就是普通的 Hugo 仓库：`hugo.yaml`、固定 `github.com/pgsty/oink@<tag>` 的 `go.mod`、`content/`、`data/`，以及可选的 `assets/` 和 `layouts/` 钩子。用任意 edition 的 Hugo 构建（纯 CSS，无 Sass 编译器），以模块方式安装时还需要 Go。不需要 Node、npm、Dart Sass、PostCSS 或 CDN。它提供 Docs、Book、Blog 和 Swagger 阅读外壳，Expo 相册，Landing 区块，本地搜索，内置字体与图标，32 种界面语言，外观预设，打印，以及 Markdown/LLMS 输出。它不提供 CMS、身份认证、数据库或自动翻译。
+这份文件是一张地图，不是说明书。它告诉你 OINK 能提供什么、哪些真实站点和你要建的站点相像、每项任务该读文档的哪一页。细节都在那些站点和文档里：需要时再去打开，其间的事情交给你自己判断。
 
-## 怎么用这份文件
+## OINK 是什么
 
-语法和行为以 OINK 文档为准。本文负责的是判断：工作流程、边界、OINK 维护者审阅自家站点时采用的标准，以及此前约五十次建站中出过的错。写配置键之前先查文档，不要凭记忆或照搬其他站点的配置。
+OINK 是本地优先的 Hugo 模块主题，硬分叉自 Docsy。一个 OINK 站点就是普通的 Hugo 仓库：一份配置文件、一个固定 `github.com/pgsty/oink@<tag>` 的 `go.mod`、`content/`、`data/`，以及可选的 `assets/` 和 `layouts/`。用 Hugo 0.169.0 或更新版本构建（不限 edition），Go 负责拉取模块；不需要 Node、npm、Sass 或 CDN。
 
-流程轻重按任务定。改一处文案，构建一次、在浏览器里看一眼即可。新建站点、迁移或转换一本书，才需要走完下面的全部内容。
+可以用上的东西：
 
-设计部分是分量很重的默认值，而不是模板。用户的品牌、读者或材料不同，形态也可以不同；偏离时要说明理由。
+- Docs、Book、Blog、Swagger 四种阅读外壳，以及 Expo 相册；
+- 用 YAML 数据拼出来的首页和落地页，有 22 种区块可选；
+- 内容组件，大多是纯 Markdown 加一行属性：提示框、步骤、卡片、标签页、带注释的代码、图表、时间线、更新日志条目、视频和音频播放器、引用的社交帖子、地图；
+- 带命令面板的本地搜索、键盘快捷键、32 种界面语言、对照译文的双列视图、多版本、分类标签；
+- 四种外观预设及亮暗模式、打印，以及给 agent 读的 Markdown 和 `llms.txt` 输出。
 
-## 权威来源
+它不提供 CMS、登录、数据库或自动翻译。
 
-- 文档：<https://oink.pgsty.com/docs/>（中文在 `/zh/docs/` 下）。在任意页面 URL 后加 `index.md` 即可读取 Markdown；`https://oink.pgsty.com/llms.txt` 列出了全部页面。源码：<https://github.com/pgsty/oink.pgsty.com>（`content/docs/`）。
-- 合同在 `docs/design/` 下。主题的默认值（`hugo.yaml`）和检查器（`bin/`）在 <https://github.com/pgsty/oink>；模板是 <https://github.com/pgsty/oink-starter>。
-- 按需查阅：`start/`（starter、from-scratch、anatomy）· `write/`（organize、pages、frontmatter、blog、book、expo、releases、openapi）· `components/` · `customize/`（home、brand、navigation、layout、i18n、search、config、print、agents）· `admin/`（preview、deploy、upgrade、troubleshooting、analytics、comments）· `design/`（landing、shell、components、architecture）。
-- 本快照的基线：OINK v1.6.0、Hugo 0.169.0+（不限 edition，已在 0.170.1 验证）、Go 1.27.4。到 GitHub Releases 查看最新的已发布版本，读它的发布说明，并用 `hugo mod graph` 确认实际解析到的版本。较新的文档优先于本文。
-- 目标站点自己的 `AGENTS.md`/`CLAUDE.md`、`README.md` 和 `Makefile` 对该站点有约束力。
-- 旧教程和旧站点里有已经过时的做法。以下内容只能说明当时的意图：OINK 0.4–1.4 的键名、`exampleSite`、`type: landing`、Docsy `blocks/*`、`--panicOnWarning`、“零警告”、Dart Sass。
+比较顺手的入门方式：先在下面找到最接近的案例，再读几页与手头任务相关的文档，然后先把一条小路径从头到尾做通（首页、一个分区、一个页面，有译文的话连同译文），再铺开。
 
-## 动手之前
+## 参考真实站点
 
-- 说明要建的是哪个仓库、哪个域名，并确认当前工作目录就是该站点。拿来参考的站点一律只读。
-- 先运行 `git status --short`。保留未提交的修改和其他会话的文件，只暂存自己的文件。绝不用 `checkout` 或 `reset` 覆盖不是自己做的修改。`git init` 或新建仓库前先询问。
-- 下载原始材料之前先定好位置：放在仓库外，或放进用 `git check-ignore` 确认过的忽略路径。PDF、压缩包、克隆仓库、抓取结果和构建产物默认不进 Git，除非用户另有指示。拿不准就问。
+[案例库](https://oink.pgsty.com/zh/case/)收录了 45 个线上运行的 OINK 站点。每篇介绍都讲了设计思路和取舍，并分清哪些是站点自己写的、哪些来自主题；站点自己写的部分不是 OINK 功能，未必适合你的项目。下面每个名字都链接到它的介绍（URL 后加 `index.md` 可读 Markdown），后面跟着线上站点，源码公开的还附上源码。
 
-## 理解材料与读者
+挑最接近的一两个，先像读者一样逛一遍线上站点，再读源码。借鉴组织思路，配置要按自己的情况改；其余的由用户的内容和品味决定。
 
-**先盘点，再搭骨架。** 列出来源（README、代码、上游文档、旧站、PDF、档案、数据），写清它们的版本、语言、完整程度和许可证，以及各自的去处。大型转换把清单做成机器可读的格式，记下修订号和校验值。只就真正的歧义提问。盘点常常会改变范围：课程比预想的多，许可证禁止修改，所谓的两份“译文”其实是不同版本。这类发现要在动手前汇报。
+### 开源项目或产品
 
-**按读者要做的事选择页面形态。**
+首页用真实的命令、图示或截图说明产品能做什么，再引向手册；下载和版本信息与实际发布一致。
 
-| 读者想要… | 页面形态 |
+- [Apache HugeGraph](https://oink.pgsty.com/zh/case/apache-hugegraph/)（[站点](https://hugegraph.apache.org/)、[源码](https://github.com/apache/hugegraph-doc)）：ASF 项目，在 Slate 预设上做了自定义品牌 Hero，约 300 页中英文档。
+- [Stashix](https://oink.pgsty.com/zh/case/stashix/)（[站点](https://stashix.net/)、[源码](https://github.com/Aroy-Art/Stashix-Site)）：自托管应用，Ink 预设配自己的强调色和产品预览图。
+- [AGW](https://oink.pgsty.com/zh/case/agw/)（[站点](https://agw-ai.dev/)、[源码](https://github.com/zxyao145/agw)）：产品站和文档都放在应用仓库的 `site/` 目录里。
+- [Vchord](https://oink.pgsty.com/zh/case/vchord/)（[站点](https://vchord.pgsty.com/)、[源码](https://github.com/pgsty/vchord.pgsty.com)）：366 页手册，配架构图、基准测试和下载页。
+- [Mooncake](https://oink.pgsty.com/zh/case/mooncake/)（[站点](https://mooncake.pgsty.com/)、[源码](https://github.com/pgsty/mooncake.pgsty.com)）：以图示为主的落地页，和同系列扩展站共用一套产品形象。
+- [Barn](https://oink.pgsty.com/zh/case/barn/)（[站点](https://barn.pgsty.com/)、[源码](https://github.com/pgsty/barn.pgsty.com)）：插画 Hero、终端快速开始、文档加博客。
+- [PIG](https://oink.pgsty.com/zh/case/pig/)（[站点](https://pig.pgsty.com/)、[源码](https://github.com/pgsty/pig.pgsty.com)）：紧凑的命令行工具手册，首页由数据驱动。
+- [Piglet](https://oink.pgsty.com/zh/case/piglet/)（[站点](https://piglet.run/)、[源码](https://github.com/pgsty/piglet.run)）：深色终端风格的 Hero，配简短的安装文档。
+- [SOW](https://oink.pgsty.com/zh/case/sow/)（[站点](https://sow.pgsty.com/)、[源码](https://github.com/pgsty/sow.pgsty.com)）和 [PG Exporter](https://oink.pgsty.com/zh/case/pg-exporter/)（[站点](https://exp.pgsty.com/)、[源码](https://github.com/pgsty/exp.pgsty.com)）：运维手册，带下载页和自动生成的目录。
+
+### 大型、多语言或迁移过来的文档
+
+- [pigsty.io](https://oink.pgsty.com/zh/case/pigsty-io/)（[站点](https://pigsty.io/)、[源码](https://github.com/pgsty/pigsty.io)）和 [pigsty.cc](https://oink.pgsty.com/zh/case/pigsty-cc/)（[站点](https://pigsty.cc/)、[源码](https://github.com/pgsty/pigsty.cc)）：同一个产品的英文和中文主页分成两个站点运行，包括手册、博客、扩展目录、多版本和定价页。
+- [PG.CENTER](https://oink.pgsty.com/zh/case/doc-pg-center/)（[站点](https://doc.pg.center/)、[源码](https://github.com/pgsty/doc.pg.center)）：八种语言（含阿拉伯语），近 5,000 个文件，多份上游手册并列。
+- [Red Hat AI Services](https://oink.pgsty.com/zh/case/redhat-cai/)（[站点](https://rh-aiservices-bu.github.io/cai/)、[源码](https://github.com/rh-aiservices-bu/cai)）：九种语言的团队门户。
+- [Cloud Exit](https://oink.pgsty.com/zh/case/cloudexit/)（[站点](https://cloudexit.org/)、[源码](https://github.com/cloudexit/cloudexit.org)）：一份开放标准加公开成本账本，共 690 页中英双语。
+- [SILO](https://oink.pgsty.com/zh/case/silo/)（[站点](https://silo.pgsty.com/)）：大规模上游迁移，导航由一份校验过的清单生成。
+- [PostgreSQL 组件文库](https://oink.pgsty.com/zh/case/pgsql-cc/)（[源码](https://github.com/pgsty/pgsql.cc)）：多份上游手册共用一个搜索，译文逐步补齐。
+
+### 书籍、课程与教程
+
+Book 外壳会给章节、图和表编号，解析交叉引用，并支持整书打印；这些站点展示了以阅读为先的首页：封面、目录和一个阅读入口。做书籍转换时，先转两个样章和用户一起看过，再处理其余部分，通常更划算。
+
+- [DDIA](https://oink.pgsty.com/zh/case/ddia/)（[站点](https://ddia.vonng.com/)、[源码](https://github.com/Vonng/ddia)）：最完整的书籍站，多种语言、多个版本分开管理，图表编号，可打印。
+- [TPME](https://oink.pgsty.com/zh/case/tpme/)（[站点](https://tpme.vonng.com/)、[源码](https://github.com/Vonng/tpme)）：精简的双语书，只用 Book 外壳。
+- [PG Internals](https://oink.pgsty.com/zh/case/pg-internal/)（[站点](https://pgint.vonng.com/)、[源码](https://github.com/Vonng/pg-internal)）：单语言的书籍站。
+- [PG 三十六计](https://oink.pgsty.com/zh/case/pg36g/)（[站点](https://pg36g.vonng.com/)、[源码](https://github.com/Vonng/pg36g)）：36 章，配封面插画和实验。
+- [人工智能帝国](https://oink.pgsty.com/zh/case/aiempire/)（[站点](https://aiempire.vonng.com/)）：封面插画 Hero 和作者介绍。
+- [PG 18 内参](https://oink.pgsty.com/zh/case/int18-pgsql/)（[站点](https://int18.pgsql.cc/)）：三语译本，带译者介绍。
+- [PG 实例教程](https://oink.pgsty.com/zh/case/pgexp-pgsql/)（[站点](https://pgexp.pgsql.cc/)）：57 课教程，配可下载的示例包。
+- [SSG Book](https://oink.pgsty.com/zh/case/ssg-book/)（[站点](https://polla.dev/ssg-book/)、[源码](https://github.com/polla-fattah/ssg-book)）：深色模式的开源书，带课件和学习路径，部署在子路径下。
+- [System Design Notes](https://oink.pgsty.com/zh/case/system-design-notes/)（[站点](https://ariana-yang.github.io/system-design-notes-zh/)、[源码](https://github.com/Ariana-Yang/system-design-notes-zh)）：28 章的中文学习笔记书。
+- [Dalibo 培训](https://oink.pgsty.com/zh/case/dalibo-pgsql/)（[站点](https://dalibo.pgsql.cc/)）和 [PGPRO 培训](https://oink.pgsty.com/zh/case/pgpro-pgsql/)（[站点](https://pgpro.pgsql.cc/)）：多语言课程库，课程体系与章节导航分开组织。
+
+### 个人博客、数字花园或知识库
+
+- [vonng.com](https://oink.pgsty.com/zh/case/vonng-com/)（[站点](https://vonng.com/)、[源码](https://github.com/Vonng/vonng.com)）：1,344 页的双语博客，有专栏和作者展示。
+- [Nekonull's Garden](https://oink.pgsty.com/zh/case/nekonull/)（[站点](https://nekonull.me/)、[源码](https://github.com/jerrylususu/jerrylususu.github.io)）：长文、短分享和 TIL 笔记，首页以排版为主。
+- [Sanbei's Blog](https://oink.pgsty.com/zh/case/sanbei-blog/)（[站点](https://sanbei101.github.io/blog/)、[源码](https://github.com/sanbei101/blog)）：按日期发布的文章，旁边是一个结构化的指南栏目。
+- [blog.xjkj.org](https://oink.pgsty.com/zh/case/xjkj-blog/)（[站点](https://blog.xjkj.org/)、[源码](https://github.com/wzemc/blog)）：没有 Hero，卡片网格的文章索引就是首页。
+- [hongyu](https://oink.pgsty.com/zh/case/hongyu-docs/)（[站点](https://le0shy.github.io/my-docs/)、[源码](https://github.com/Le0shy/my-docs)）：随笔、知识库和书影评论放在同一个站点里。
+- [Vianlex's Wiki](https://oink.pgsty.com/zh/case/vianlex-wiki/)（[站点](https://vianlex.github.io/)、[源码](https://github.com/vianlex/vianlex.github.io)）：150 页的个人知识库，从首页卡片进入。
+- [Le Shi 系统手册](https://oink.pgsty.com/zh/case/le-shi/)（[站点](https://le-shi.github.io/)、[源码](https://github.com/le-shi/le-shi.github.io)）和 [Homelab IaC](https://oink.pgsty.com/zh/case/homelab-iac/)（[站点](https://blue126.github.io/IaC/)、[源码](https://github.com/blue126/IaC)）：个人运维手册；后者和它管理的基础设施代码放在一起。
+
+### 相册、档案馆与展览
+
+- [冯振彪 · 沙漠之箭](https://oink.pgsty.com/zh/case/fzb/)（[站点](https://fzb.vonng.com/)）：601 页的家庭档案，回忆录和诗歌是 Book 章节，照片是 Expo 相册。
+- [OINK 自己的 Expo 相册](https://oink.pgsty.com/zh/expo/)：相册布局、封面和图片查看器，指南在 `write/expo`。
+
+### 公司、组织、落地页或小工具
+
+- [pgsty.com](https://oink.pgsty.com/zh/case/pgsty-com/)（[站点](https://pgsty.com/)、[源码](https://github.com/pgsty/pgsty.com)）：小型公司站，几乎完全由落地页数据搭成。
+- [CASSA](https://oink.pgsty.com/zh/case/cassa/)（[站点](https://cassa.au/)、[源码](https://github.com/cassa/static-CASSA-website)）：学生社团站，有会员招募、时间线和新闻。
+- [CapsLock](https://oink.pgsty.com/zh/case/capslock/)（[站点](https://caps.vonng.com/)、[源码](https://github.com/Vonng/caps.vonng.com)）：两页的小站，第二页是一个交互式配置器。
+- [Capslock 应用](https://oink.pgsty.com/zh/case/caps-pgsty/)（[站点](https://caps.pgsty.com/)）和 [Crib](https://oink.pgsty.com/zh/case/crib/)（[站点](https://crib.pgsty.com/)）：原生应用的产品站，有 Hero、预览和下载。
+
+### 数据目录与数据驱动的站点
+
+- [PGEXT](https://oink.pgsty.com/zh/case/pgext-cloud/)（[站点](https://ext.pgsty.com/)、[源码](https://github.com/pgsty/pgext.cloud)）：由数据生成的 2,241 个扩展的目录，可按平台和版本检索。
+- [PIGSTY PRO](https://oink.pgsty.com/zh/case/pgsty-pro/)（[站点](https://pgsty.pro/)）：由结构化发布记录渲染出来的版本归档。
+
+### 最全面的参考
+
+- [OINK 文档](https://oink.pgsty.com/zh/case/oink/)（[站点](https://oink.pgsty.com/)、[源码](https://github.com/pgsty/oink.pgsty.com)）：每个组件页开头都有可以直接粘贴的源码。它的配置很庞大，因为同时承担着主题的回归测试，所以借鉴它的页面，而不是它的配置。主题仓库里的 `tests/site/` 是测试夹具，不是可以照搬的设计。
+
+## 文档目录
+
+文档在 <https://oink.pgsty.com/zh/docs/>（英文在 `/docs/`）。每个页面 URL 后加 `index.md` 就是它的 Markdown 版本；`https://oink.pgsty.com/zh/llms.txt` 列出全部页面，`https://oink.pgsty.com/zh/docs/llms-full.txt` 把整套手册放在一个约 2 MB 的文件里，适合检索。下表路径都相对于 `/zh/docs/`。
+
+| 你在做… | 读这里 |
 | --- | --- |
-| 了解产品并选择下一步 | Landing：`data/home/<lang>.yaml` 或 `layout: landing`（绝不是 `type: landing`） |
-| 完成任务或查阅资料 | Docs：`type: docs` |
-| 按顺序阅读并引用图表 | Book：`type: book` |
-| 关注按日期发布的文章和版本 | Blog：`type: blog` |
-| 浏览相册 | Expo：`type: expo` |
-| 下载各版本文件 | `data/download/` 中的记录 |
-| 浏览 HTTP API | Swagger：`type: swagger` |
+| 判断 OINK 是否合适，它增加了什么 | `about/`、`about/features/` |
+| 新建站点，或给已有 Hugo 站点接入 OINK | `start/from-scratch/` |
+| 从自带部署工作流的模板起步 | `start/starter/`、`start/anatomy/` |
+| 把目录组织成侧栏，编写页面和 front matter | `write/organize/`、`write/pages/`、`write/frontmatter/` |
+| 写博客、书或相册 | `write/blog/`、`write/book/`、`write/expo/` |
+| 发布版本与下载，或 API 参考 | `write/releases/`、`write/openapi/` |
+| 挑选组件 | `components/`：先是全部组件的速查表，然后每个组件一页 |
+| 做首页或其他落地页 | `customize/home/` |
+| 设置 Logo、颜色、字体、预设和站点 CSS | `customize/brand/` |
+| 调整菜单、面包屑和页脚 | `customize/navigation/` |
+| 选择外壳、侧栏、目录和页面宽度 | `customize/layout/` |
+| 增加语言，或使用双列视图 | `customize/i18n/` |
+| 配置搜索和命令面板 | `customize/search/`、`customize/panel/` |
+| 关联代码仓库，标注上游来源 | `customize/repository/` |
+| 给页面打标签，发布多个产品版本 | `customize/taxonomy/`、`customize/versions/` |
+| 打印一页或整个分区 | `customize/print/` |
+| 给 agent 提供 Markdown 和 `llms.txt` | `customize/agents/` |
+| 查键盘快捷键 | `customize/keyboard/` |
+| 查任何配置键，以及填错时会怎样 | `customize/config/` |
+| 本地预览、部署、加统计或评论 | `admin/preview/`、`admin/deploy/`、`admin/analytics/`、`admin/comments/` |
+| 升级，或从 Docsy、旧版 OINK 迁移 | `admin/upgrade/` |
+| 排查出了问题的地方 | `admin/troubleshooting/` |
+| 核对主题应有的行为 | `design/`（维护者合同） |
 
-- 阅读外壳由 `type` 决定，与目录无关，所以 `/docs/x/` 和 `/x/` 都可以。放在 `content/docs/` 之外的文档树还需要 `sidebar_root_for: self`。
-- 教程、任务指南、参考资料和随笔分属不同的树。
+站点上还有一本动手教程书在 `/zh/book/`，发布说明在 `/zh/release/`，工程笔记在 `/zh/blog/`。主题的源码、默认值（`hugo.yaml`）、迁移工具和检查器在 <https://github.com/pgsty/oink>。到它的 Releases 查看最新版本；较新的文档优先于本文。旧教程和旧站点里有已经退役的做法，比如 OINK 0.4–1.4 的键名、`exampleSite`、`type: landing`、Docsy `blocks/*`、Sass，读它们是为了了解意图，不是照抄语法。
 
-**一个站点还是多个。**
-- 读者、语言、发布节奏和维护者都相同，且共用搜索有帮助时，就合并。版本、语言组合、许可证、节奏或归属不同时，就拆分。有一组 PostgreSQL 书籍起初是一个聚合站，最后拆成了一书一站。
-- 同一上游的系列适合一站多书，每项一本 Book，例如每个大版本一本或每门课一本。每本 Book 是一个顶级分区，这样根切换器就兼作书籍切换器。
-- 搜索会为整个站点下载每种语言一份索引。合并时要考虑体积。
-- 名称宜短，目录名、域名和仓库名最好用同一个名字。
-- 按主要读者选择默认语言。翻译书籍通常把目标语言放在 `/`。
-- 决定会牵涉域名或仓库变化时，先问用户。
+## 值得早点知道的事
 
-**先研究最接近的真实站点。** 先走一遍读者路径，源码公开的再读源码。借鉴组织思路，不照搬配置。最后一列都是站点代码，不是 OINK 功能。其中不少站点在[案例库](https://oink.pgsty.com/zh/case/)里有详细介绍。
+有几件事曾经让之前的建站白白耗费时间。其余的都在文档里。
 
-| 要建的站点 | 研究 | 值得学的 | 站点私有 |
-| --- | --- | --- | --- |
-| 带文档的产品站 | [vchord.pgsty.com](https://vchord.pgsty.com/)（[源码](https://github.com/pgsty/vchord.pgsty.com)）；最新的 [mooncake.pgsty.com](https://mooncake.pgsty.com/)（[源码](https://github.com/pgsty/mooncake.pgsty.com)）；另有 [pig](https://pig.pgsty.com/)、[sow](https://sow.pgsty.com/)、[piglet.run](https://piglet.run/) | 首页放真实的命令和功能；一行出处说明；下载信息与实际版本发布一致；单一 `/docs/` 根配合 `upstream_*` | 带高亮的快速开始 partial、`bin/sync_download.py` |
-| 翻译书籍 | [DDIA](https://ddia.vonng.com/)（[源码](https://github.com/Vonng/ddia)）；精简的 [TPME](https://tpme.vonng.com/)（[源码](https://github.com/Vonng/tpme)）；单语言的 [PG Internal](https://pgint.vonng.com/)（[源码](https://github.com/Vonng/pg-internal)） | 以阅读为先的首页；各版本分开（DDIA 中 `content/zh` 和 `tw` 是第 2 版，`v1*` 是第 1 版，`en` 仅作参考）；编号图表、`xref`、打印 | 作者、法律声明和贡献者 partial；`bin/epub`；繁体转换 |
-| 转换的书籍与课程 | [intro.pgsql.cc](https://intro.pgsql.cc/)、[feat.pgsql.cc](https://feat.pgsql.cc/)、[dalibo.pgsql.cc](https://dalibo.pgsql.cc/)（仅站点） | 一章一页；逐项核算覆盖率；课程目录与章节导航分开 | 转换脚本、课程数据、生成脚本 |
-| 单站多语言 | [doc.pg.center](https://doc.pg.center/)（[源码](https://github.com/pgsty/doc.pg.center)）：8 种语言，含从右到左的阿拉伯语；手册放在 `/patroni/` 等路径 | 语言配对、双列视图、上游登记表、按渲染后的锚点检查 | 首页 partial、覆盖率脚本 |
-| 跨两个域名的大型文档 | [pigsty.cc](https://pigsty.cc/)（[源码](https://github.com/pgsty/pigsty.cc)）和 [pigsty.io](https://pigsty.io/)（[源码](https://github.com/pgsty/pigsty.io)） | 导引、任务、参考三分；中文到英文的同步 | 产品首页、扩展目录 |
-| 个人博客 | [vonng.com](https://vonng.com/)（[源码](https://github.com/Vonng/vonng.com)） | 按专题组织的首页；克制地挑选近期文章；卡片风格一致 | `hero-featured`、`column-cards`、`recent-posts`、`link-cards`；`data/works.yaml` |
-| 相册或展馆 | [OINK Expo 相册](https://oink.pgsty.com/zh/expo/)与 `docs/write/expo` | 一个主题一个相册，选定封面和排列顺序；做档案馆时，按时期或作品组织叙事，旁边配生平和作品索引 | — |
-| 公司站或落地页 | [pgsty.com](https://pgsty.com/)（[源码](https://github.com/pgsty/pgsty.com)）、[caps.vonng.com](https://caps.vonng.com/)（[源码](https://github.com/Vonng/caps.vonng.com)） | 产品描述准确；事实信息放在页脚 | pgsty.com 手写的 `layouts/index.html`（别照抄）；CapsLock 配置器 |
-| 专题指南 | [us.vonng.com](https://us.vonng.com/)（[源码](https://github.com/Vonng/us.vonng.com)）、[sg.vonng.com](https://sg.vonng.com/)、[cloudexit.org](https://cloudexit.org/)（[源码](https://github.com/cloudexit/cloudexit.org)） | 清晰的阅读入口胜过装饰 | us 和 sg 是较旧的 `themes/oink` 副本 |
-| 起点 | [oink-starter](https://github.com/pgsty/oink-starter)；[oink.pgsty.com](https://oink.pgsty.com/)（[源码](https://github.com/pgsty/oink.pgsty.com)） | 干净的配置；可运行的组件示例 | 文档站的大型配置；绝不用主题的 `tests/site/` |
+- Hugo 不会继承主题的 `markup` 设置，所以每个站点都要带上自己的 Goldmark 选项；缺了它们，`{.steps}` 这样的属性行会原样显示成文字。`start/from-scratch` 里有可以直接复制的配置块。
+- 交互功能和第三方功能在站点开启之前都是关闭的：搜索、双列视图、额外输出、评论、统计、地图、页内视频播放器、AI 助手链接。觉得某个功能没出现时，先找它的开关。
+- 填错的值只会告警并回退，不会让构建失败，所以要读告警：一条告警往往意味着你以为开着的功能其实没开。
+- 每种启用的语言都要有自己的首页数据、页脚数据和菜单，否则默认语言的内容会悄悄露出来。
+- 页面用哪个外壳由 `type` 决定，与所在目录无关。
+- 站点样式写在 `assets/css/project.css`，覆盖放进最窄的钩子或 partial。改主题文件，或为一处改动复制整个外壳，会让每次升级都很痛苦。
 
-## 搭建骨架
+## 与用户协作
 
-- **新站点。** 用 Starter（“Use this template”）。每完成一层都构建一次：
-  1. 语言。默认 en+zh+fr。在其他修改之前，复制 `examples/hugo.single.yaml` 或 `hugo.bilingual.yaml`，或设置 `disableLanguages`。
-  2. 身份信息：`title`、`baseURL`、版权、仓库链接。
-  3. 先做好一种语言的首页，再做译文。
-  4. 内容与导航。
-  5. 品牌与阅读功能。
-  6. 外部集成。
-  7. 生产构建，然后部署。
-- **现有 Hugo 站点。**
-  - 保留内容和配置文件名；必要时运行 `hugo mod init`。
-  - 运行 `hugo mod get github.com/pgsty/oink@<tag>`，并加入 `module.imports`。
-  - 合并下面的 markup 设置，而不是替换整份配置。
-  - 审查站点的 `layouts/`、旧短代码以及 `type`/`layout` 取值。
-- **Docsy 或旧版 OINK 站点。** 按 `docs/admin/upgrade` 操作，使用主题 `bin/migrations/` 中的迁移工具。`oink06.py` 的顺序是：`report`，干跑 `migrate`，`--write`，最后 `check`。旧的图表标记用 `book_figures.py`。第二次运行必须没有任何改动。
-- **站点必备配置。** Hugo 不会合并主题的 `markup`，所以每个站点都要自己设置：
-  - `goldmark.renderer.unsafe: true`
-  - `goldmark.parser.attribute.block: true`
-  - `goldmark.parser.wrapStandAloneImageWithinParagraph: false`
-  - `markup.highlight.noClasses: false`
-  - 有数学公式时开启 passthrough（绝不用单个 `$`）
-- **需显式开启的功能。** 搜索要设置 `params.offline_search: true`。额外的输出要在 `outputs` 中显式列出；每种类型的列表会整体替换主题的列表。
-- **Git 规范。** 提交 `go.mod` 和 `go.sum`。忽略 `public/`、`resources/`、`.hugo_build.lock` 和缓存。绝不提交 `go.work` 或模块替换。
-- **常见形态。**
-  - 一个有 `dev`/`build`/`check` 目标的 Makefile，设置 `GOWORK=off HUGO_MODULE_WORKSPACE=off`；检查构建输出到临时目录。
-  - 一份 `AGENTS.md`：使命、来源与许可证、目录结构、硬性规则、校验门槛。
-  - 一个内容为 `@AGENTS.md` 的 `CLAUDE.md`。
-  - Starter 的 `make dev` 通过 `HUGO_MODULE_REPLACEMENTS` 预览同级目录下的 `../oink` 主题检出；`serve` 和 `build` 使用 pin 的版本。
-- **先做一条代表性路径。** 做完首页 → 分区索引 → 内容页，以及它的译文。在这条路径上定下导航、字体、图片和转换方法，再铺开。
+- 确认要建的是哪个仓库、哪个域名，当前工作目录就是那个站点。拿来参考的站点一律只读。
+- 尊重已有的工作：先看 `git status`，保留未提交的修改和其他会话的文件，只暂存自己的。新建仓库、提交、推送、部署或改 DNS 之前先问用户。
+- PDF、抓取结果、录音录像这类大体积原始材料放在哪里，下载之前先和用户商量好，免得它们意外进了 Git。
+- 一段简短的需求，比如名称、目录、内容与受众、几个栏目、风格、域名和托管平台，只是起点。会改变构建方式的问题就问；其余的取合理的默认值，并说明你选了什么。
+- “充分利用 OINK 的特性”的意思是：内容需要什么，就先用主题现成的功能，而不是自己另写一套。时间线要有真实的日期，地图要有真实的地点；把每个组件都摆一遍的站点，读起来就像演示。
+- 事实要真实：不编造数字、引文、帖子或功能；真实的人按真实身份署名；写明许可证和上游来源。许可证限制复制或翻译时，先问用户。
+- 主题没有现成功能时，自己写扩展（partial、脚本、生成器）完全可以。在站点的 `AGENTS.md` 里注明它们是站点代码；多个站点都需要同一样东西时，它也许应该作为 issue 或[设计提案](https://oink.pgsty.com/zh/docs/design/proposals/)提交给上游。
 
-## 编写与转换内容
+## 品味
 
-- **优先用原生 Markdown。** `> [!NOTE]` 提示框；`{.steps}`、`{.cards}`、`{.fields}` 属性行；带标签的代码块；`filetree` 代码块；图片属性行。只有文档说明原生写法不够用时才用短代码。标题里不放短代码，短代码正文里不放脚注。
-- **每个目录** 都有 `_index.md`。`weight` 以 10 为步长。会被链接或翻译的标题都要写明确的 `{#id}`。每页都有一句话的 `description`。
-- **出处标注是内置功能。**
-  - 设置 `upstream_link`，配合 `upstream_name`、`upstream_copyright`、`upstream_license`（SPDX）和 `upstream_notice`，通常经由 `cascade` 设置，或用 `upstream_source` 引用 `data/upstreams` 中的条目。缺少任何一个键都会告警，并省略出处说明。
-  - 站点许可证与上游许可证分开写。特殊条款按原文披露。
-  - 许可证禁止修改或翻译时，停下来询问。
-- **上游材料。**
-  - 在副本上工作。对照 pin 版本的代码核实事实：曾有一份旧文档写的是 `source_uri`，代码里却是 `src_uri`。
-  - 旧 URL 映射到 `aliases`；旧的大版本放进带标注的归档区。
-  - 指向上游域名的链接改成站内相对链接。替换 `git://` 等协议：OINK 组件会丢弃它们，输出检查器会拒绝它们。
-  - 已下线的站点：用 Wayback CDX，每个 URL 取最新的可读快照，保留记有快照时间和校验值的清单。快照时间不等于内容日期。
-- **按类别核对，不按文件数。** 逐项核对来源：作品、章节、图、表、脚注、代码、图片、链接。如实标注不完整的材料：“仅摘要”“Beta，非 GA”、样例数据。
-- **档案。** 一部作品一页，而不是一个文件或一张图片一页。合并碎片。提供完整索引和检索页。清除所有转换痕迹。
-- **文字。** 写具体的任务和事实。不写空话，不编造数字，不写 AI 腔的文案。精简时保留限制、条件和推理。每删一句都问：删掉它，读者会做错什么？
+维护者审阅自家站点时，有几条偏好。把它们当作倾向，而不是规则；用户的眼睛才是真正的验收标准，用户已经认可的部分就保留。
 
-**书籍。** 一章一页，所有链接和内部引用都要完整。
-- **准备。** 写明要转换的版本和变体。
-  - 根 `_index.md` 设置 `type: book`、`cascade: {type: book}` 和 `outputs: [HTML, print, markdown]`。
-  - 每个章节目录都有手写的 `book_number` 和 `weight`。
-  - 图片放在页面包里。
-- **转换。**
-  - 把转换脚本和它的 README 放在 `scripts/`，供下一版复用。
-  - 先转两个样章，和用户一起审阅，再处理其余部分。
-  - PDF 的陷阱：阅读顺序、断行和断开的标识符、跨页表格、被误认为标题的数字输出。
-- **标记。**
-  - 图、表和 `$$` 公式使用紧贴在块下方的属性行：`{#id num="2-1" caption="…"}`。
-  - 示例把 `num`、`caption` 和 `#id` 写在代码块围栏上。
-  - 引用用 `xref`。在书籍首页放 `book-toc` 和 `book-*` 索引短代码。
-  - PostgreSQL 的 `$$` 只留在代码里；SQL 章节不应出现 KaTeX。
-- **检查。**
-  - 数量与来源对得上；脚注双向链接都可用。
-  - 整书打印：锚点、跨章链接、页数。
-  - `index.md`，以及主题的 `bin/check-book.py --site-public public`。
-  - 失败就把状态留在 `failed`。勘误与原文分开。
-- **多本书。** 一本书一个会话或子代理。由协调者分配任务，并分批验收结果。
+- 第一屏点明主题，并给出真正的下一步：书籍给出阅读入口，产品给出能跑的命令，档案馆给出进入故事的门。
+- 克制胜过装饰：放真实的内容和真实的状态，而不是装饰性的徽章、计数器或特效。
+- 标题和卡片文字在每种语言、每种宽度下都换行得体，不会有一两个字孤零零地落到下一行；通常改写文案就能解决。
+- 栅格贴合条目数量，同一行的卡片对齐。
 
-**多语言。**
-- **文件模型。** 新站点用成对文件（`page.md` + `page.zh.md`）。现有站点保留原有模型；DDIA 使用按语言划分的 `contentDir`。两者绝不混用。只启用有真实内容的语言。
-- **对应页面。** 成对的页面共用 `weight`、`date`、`aliases`、标题 ID 和标题顺序。每种已启用的语言都需要自己的：
-  - `data/home/<lang>.yaml`（缺了它，页面会悄悄显示英文）；
-  - 页脚数据；
-  - 标识符一致的菜单。
-- **缺口。** 绝不用原文或混杂语言填补缺口。占位页要注明尚未翻译，并链接原文；否则就不要提供这个路由。不同版本不是彼此的译文。
-- **页面包。** 不带语言后缀的资源为各语言共用。只有 `index.zh.md` 的页面包需要带 `.zh.` 后缀的资源。
-- **双列视图**（`params.ui.compare: true`）需要：
-  - 已发布的同源译文；
-  - CSP 允许 `frame-src 'self'`；
-  - 统计代码用 `window.OinkComparePane` 做判断。
+## 检查与发布
 
-  各语言标题 ID 对齐，同步滚动才准确。
-- **署名。** 在译文发布的页面上同时署作者和译者。译者是否出现在原文语言的页面上，先问译者本人。译文措辞交给专门的翻译流程；本技能只管站点。
+- 按生产环境的方式构建，不带本地模块替换或工作区，并读完每条告警：
 
-## 首页与设计
+  ```bash
+  export GOWORK=off HUGO_MODULE_WORKSPACE=off; unset HUGO_MODULE_REPLACEMENTS
+  hugo mod graph | grep github.com/pgsty/oink
+  hugo --cleanDestinationDir --gc --minify --environment production --printPathWarnings
+  ```
 
-**容易踩坑的机制**（细节见 `customize/home`）：
-- **结构。** 首页是 `data/home/<lang>.yaml`：一个 `sections` 列表加若干命名键，内置 22 种类型。类型名拼错会告警并跳过。
-  - `{type: cards, key: chapters}` 用来区分同一类型的两个实例。
-  - `partial:` 渲染站点模板；模板名加上站点前缀。
-- **数据。**
-  - 站内 URL 不加开头的斜杠。
-  - 星标数、价格、头像等事实信息是提交到仓库的数据。
-  - 页脚放在 `data/footer/<lang>.yaml`，绝不放在首页数据里。
-- **链接。** Landing 的 `cards` 通过一行操作链接跳转，整卡可点需要限定作用域的站点 CSS。内容页中带 `{.cards}` 的 Markdown 列表本身就是整卡链接。
-- **高亮。** Chroma 会高亮 `code-plate`、`preview` 以及 Markdown 字段里的代码块，不会高亮 `command-box`、`steps` 或 `capabilities` 的代码行。
-- **外观预设。** OINK 项目维护的站点使用 `params.ui.preset: paper`、`preset_menu: [paper, slate, ink, terminal]` 和 `dark_mode: true`；想让读者自选外观时，这是不错的默认值。
-- **品牌。** 只通过配置和公开 token 修改：
-  - `params.logo`/`wordmark`，以及 `static/` 中的 favicon；
-  - `theme_color`，可经 `cascade` 按分区设置；
-  - `params.ui.fonts`、`--td-brand-*` 和八个字体角色属性。
-
-  亮色和暗色成对设置。绝不修改主题文件，不加载远程字体或 CSS。
-
-**OINK 自家站点的审阅标准：**
-- **内容先行。** 第一屏点明具体的对象，并给出有用的下一步。书籍给出阅读入口和目录；产品给出能跑的命令和文档；展馆给出叙事入口。绝不编造数字、节省比例、星标数、状态灯或尚未发布的功能。
-- **不留孤字。** 几个字孤零零地换到下一行，是维护者最常打回的问题。
-  - 一行文字要么一行放下，要么排满均衡的两行，每种语言、每种宽度都是如此。
-  - 通过改写文案、调整宽度或字号来解决。
-  - 绝不用省略号、行数截断或固定的 `nowrap` 来伪装。
-- **节奏跟着内容走。** 同一行的卡片行数相同。栅格按条目数来定：6 项排成 3×2，而不是 4+2。长命令给足宽度，简短的要点用紧凑卡片。
-- **克制。**
-  - 不要这些东西：装饰性编号、计数徽章、重复标题的 eyebrow、闪烁圆点、毛玻璃、终端窗口外框。
-  - 徽章只用于真实的状态。
-  - 整张卡片就是链接，不放“查看更多”按钮。
-  - 文案要具体。引导语要么言之有物，要么删掉。
-- **人和事实都要真实。**
-  - 展示真实的作者和译者，配照片和链接。绝不把 AI 工具署为译者。
-  - 出处说明要准确：“Fork of X · originally by Y · maintained by Z · licence”。
-  - 法律实体和地址只放在页脚或公司页。
-  - 页脚各栏均衡，标签不超过一行。
-- **保留已认可的部分。** 去掉图片的边框，不等于去掉图片。
-
-**行之有效的形态**，可作起点：
-- **DDIA 书籍首页：** 带封面和三个阅读按钮的 Hero → 作者/译者卡片 → 序言 → 各篇与章节 → 权利说明 → 贡献者。
-- **vchord 产品首页：** 带出处说明的 Hero → 紧凑的事实卡片 → 快速开始 → 文档栅格 → FAQ → CTA。
-- **vonng.com：** 肖像、小号 eyebrow、按数量排布的栅格。
-- **us.vonng.com：** 文字在左、原图在右，每篇一张卡片。
-
-针对眼前的材料来设计；这些顺序不是配额。
-
-**CSS 规则。**
-- 站点样式用纯 CSS 写在 `assets/css/project.css`（及按路径排序的 `assets/css/project/*.css`），限定在站点前缀或区块 `class` 之下。旧的 `assets/scss/_*_project*.scss` 钩子已退役并会被忽略。
-- 绝不全局改写 `.td-*` 样式，也不用全局 `!important`。
-- 检查菜单里的每种预设在亮色和暗色下的效果，以及 RTL、打印和窄屏。
-- 不加载 `main` 的站点自有外壳，通过 `partial "css/bundle.html"` 按名取用 `chrome`、`landing`、`search` 或 `compare`。
-
-## 扩展
-
-- **主题优先。** 先用主题功能，再考虑自己写。配置器、生成脚本、同步脚本、自定义 partial 和 CSS 都属于站点扩展。
-  - 放进最窄的钩子：`layouts/_partials/hooks/head-end.html`、`body-end.html`，或区块的 `partial:`。
-  - 在站点的 `AGENTS.md` 中写明，绝不把它们称为 OINK 功能。
-  - 多个站点都需要同一个扩展时，通过[设计提案](https://oink.pgsty.com/zh/docs/design/proposals/)流程或在 <https://github.com/pgsty/oink> 提 issue，向上游提出。
-- **不复制。** 不要为了一处改动复制整个外壳或 `baseof.html`。不要用手写的 `layouts/index.html` 加 `static/css` 做新首页。
-- **外部集成默认关闭**，直到完整地做出选择。
-  - Giscus 和 GA 需要项目自己的 ID。
-  - `share` 是显式列出的列表。
-  - AI 助手链接会把 URL 发给第三方。
-
-在这个边界之内，尽管发挥：新的区块 partial、数据驱动的索引、别出心裁的阅读路径。只要内容需要，就去做。
-
-## 校验、汇报与发布
-
-```bash
-unset HUGO_MODULE_REPLACEMENTS; export GOWORK=off HUGO_MODULE_WORKSPACE=off
-hugo mod graph | grep github.com/pgsty/oink
-hugo --cleanDestinationDir --gc --minify --environment production --printPathWarnings
-git status --short
-```
-
-- **通过标准。** 构建输出 `Total in …` 且没有 ERROR，每条 WARN 都已读过。OINK 1.6.0+ 使用纯 CSS，不会产生 LibSass 警告（仍固定在 1.5.1 或更早版本的站点在 Hugo 0.169 上仍会出现上游 LibSass 弃用提示）。
-  - 绝不使用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。
-  - 大多数错误输入只告警并回退；无法解析的 `ref`/`relref` 和残留的 `blocks/*` 会让构建失败。
-  - 多语言站点加上 `--printI18nWarnings`。子路径部署用真实的 `--baseURL`，绝不用 `canonifyURLs`。
-- **按需检查。** 主题的检查器要从 <https://github.com/pgsty/oink> 在 pin 版本标签上的检出中运行。
-  - 站点自己的 `make check`；
-  - `bin/check-output-security.py --public <dir> --base-url <url>`；
-  - `bin/check-book.py`；
-  - 站内链接；
-  - 一对译文渲染后的标题 ID；
-  - `index.md` 和 `llms.txt`。
-- **浏览器审阅。**
-  - 每个语言的根页面，以及每种页面形态各一页。
-  - 桌面与约 390 px 宽度；亮色与暗色，以及提供的每种预设。
-  - 切换语言后落在对应页面。
-  - 搜索、锚点、长代码和长表格、键盘操作、打印、404，以及关闭 JS 时的落地页。
-  - 要在大量页面中查孤字，测量文字的行框。
-
-  用户的眼睛才是验收标准。构建通过只说明构建通过。
-- **汇报。**
-  - 说明参照了哪个站点、改了哪些文件、运行了哪些检查、哪些没有覆盖、在哪里预览，以及还剩什么。
-  - 各状态分开报告：源码完成 → 本地验证 → 已提交 → 已推送 → 已部署 → 生产环境已核实。
-  - 提交、推送、部署或改 DNS，只在用户要求时进行。按逻辑分批提交，改版前先做一次基线提交。
-- **部署。**
-  - 只走一条生产部署路径；Starter 自带 GitHub Pages 和 Cloudflare Direct Upload。
-  - 在 CI 和托管平台上都固定 Hugo 版本；`HUGO_VERSION` 不一致曾导致构建失败。
-  - 开启 `enableGitInfo` 时用 `fetch-depth: 0`；预览部署用 `--environment staging`。
-  - 放在忽略路径里的文件，不会出现在从 Git 构建的部署中。
-  - 部署后在公开 URL 上检查规范 URL、sitemap、robots、搜索索引、语言切换和 404。
-  - 回滚靠重新部署，绝不手改生产环境。
-- **升级。**
-  - 读完两个 pin 之间的每一份发布说明。运行 `hugo mod get …@<tag>` 和 `hugo mod tidy`。源码副本和子模块要单独更新。
-  - 用迁移工具迁移旧语法。保持站点原有的外观预设策略。
-  - pin 的变更与内容分开提交。
-
-## 值得记住的失败
-
-- **改错了仓库。** 一个公司站在错误的目录里建了好一阵，直到维护者问：这个目录不是那个专题站吗？
-- **模板拼凑。** 千篇一律的视觉被直接打回。一条全局 `!important` 覆盖了约 1,800 行站点 SCSS，随后一次 `git checkout HEAD` 毁掉了尚未提交的样式。
-- **“零警告”门槛。** 它引入了一个 Dart Sass 依赖，后来被撤销；普通用户不应该需要额外安装 Sass。
-- **悄无声息的破坏。**
-  - SQL 里的 `$$` 被渲染成数学公式。
-  - 数字被识别成标题。
-  - 放在被忽略的 `static/` 里的 PDF 没有进入部署。
-  - 中文页面通过错误的 `/zh/` 路由链接到英文书籍。
-- **虚假的“已完成”。**
-  - 用文件数宣称内容完整。
-  - 把 Beta 版标成 GA。
-  - 把失败的链接藏在“已完成”后面。
-  - 文字精简过头，丢掉了 16 处限制条件。
+- 在浏览器里看结果：每种语言、每种页面、手机宽度、亮色和暗色、提供的每种预设、搜索和语言切换。构建通过只说明构建跑完了。
+- 站点需要更深入的检查时，主题仓库的 `bin/` 里有针对输出安全、书籍和译文的检查器。
+- 汇报时说明参照了什么、改了什么、检查了什么、哪些没检查，并把各个状态分开：本地构建通过、已提交、已推送、已部署、线上已核实。按读者实际得到的东西清点，比如章节、图表和能打开的链接，而不是按文件数。
+- `admin/deploy` 讲了托管平台、CI、`baseURL`、安全响应头和回滚；记住放在忽略路径里的文件，永远不会出现在从 Git 构建的部署中。`admin/upgrade` 讲了如何在版本之间升级。

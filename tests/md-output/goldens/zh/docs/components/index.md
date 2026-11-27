@@ -36,7 +36,7 @@ LLMS 索引： [llms.txt](/zh/llms.txt)
 | [Infographic](/zh/docs/components/infographic/) | 表达顺序、层级或对比的 AntV 信息图 | ```` ```infographic ```` | 围栏 | 按页加载 |
 | [画廊](/zh/docs/components/gallery/) | 一组图片，在同一个缩放对话框里翻看 | ```` ```gallery ```` | 围栏 | 需站点开关 |
 | [视频](/zh/docs/components/video/) | 视频文件、循环演示、YouTube 与 Bilibili 卡片 | `![名称](demo.mp4)` | 原生 | 按页加载；播放器需站点开关 |
-| [音频](/zh/docs/components/audio/) | 播客单集与语音样例，带标题的原生播放器 | `![名称](episode.mp3)` | 原生 | 无 |
+| [音频](/zh/docs/components/audio/) | 播客单集与语音样例，带标题的原生播放器 | `![名称](episode.mp3)` | 原生 | 单个无；两个及以上按页加载 |
 | [社交帖子](/zh/docs/components/social/) | 把社交平台的帖子引用进页面，不抓取任何内容 | `{{< social author="…" >}}` | shortcode | 无 |
 | [地图](/zh/docs/components/map/) | 地点列表，启用后上方附带交互地图 | ```` ```map ```` | 围栏 | 需站点开关 |
 | [徽章](/zh/docs/components/badge/) | 名字旁边一两个词的状态，例如 Beta | `{{< badge text="Beta" >}}` | shortcode | 无 |
@@ -51,7 +51,7 @@ LLMS 索引： [llms.txt](/zh/llms.txt)
 - 图片与画廊共用一个缩放对话框，需要 `params.ui.image_zoom: true`，且页面上至少有一张可缩放的图片。
 - 公式在构建期已经渲染成 HTML 与 MathML，所以页面只加载 KaTeX 样式表与字体，不加载脚本。
 - Draw.io 只在含 PNG 或 SVG 图片的页面加载，每个不同的图片地址只下载一次，用来查找可编辑副本。
-- 视频只在有自动播放的视频，或卡片所属平台列在 `params.video_embeds` 中时加载 `media.js`。地图只在配置了 `params.map` 时加载 Leaflet，否则就是一份地点列表。
+- 视频与音频共用 `media.js`，只在有自动播放的视频、卡片所属平台列在 `params.video_embeds` 中，或同页有两个及以上音视频播放器（用于同页互斥播放）时加载。地图只在配置了 `params.map` 时加载 Leaflet，否则就是一份地点列表。
 
 打印、Markdown 与 RSS 输出里，任何组件都不加载脚本。这几种输出的形态与预期不同时，各组件页会单独说明。
 

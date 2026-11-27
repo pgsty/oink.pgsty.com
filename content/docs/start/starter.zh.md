@@ -145,7 +145,7 @@ Starter 中的外部集成全部关闭或注释掉了，因为每一项都需要
 - Giscus 评论需要仓库与分类的名称及其 ID，见[启用评论](/zh/docs/admin/comments/)。
 - Google Analytics 需要项目自己的 measurement ID，并且只在生产构建中生效，见[分析与 SEO](/zh/docs/admin/analytics/)。
 - 反馈按钮通过 Google Analytics 发送事件，没有接入分析就什么也记录不到，见[仓库与页面信息](/zh/docs/customize/repository/#feedback)。
-- 助手链接（`params.ui.page_context_menu.assistant_links`）在读者点击时会把页面 URL 发给 ChatGPT 或 Claude。它默认关闭，是否开启是项目的隐私决策。
+- 助手链接（`params.ui.page_context_menu.assistant_links`）在读者点击时会把页面 URL 发给 ChatGPT、Claude 或 Gemini。它默认关闭，是否开启是项目的隐私决策。
 
 检查启用的每项集成都出现在页面上，构建输出中也没有关于它的告警。
 

@@ -65,8 +65,8 @@ OINK 有 30 个 shortcode：
 | 图表与数据 | `mermaid`、`plantuml`、`markmap`、`echarts`、`infographic` 围栏 | 无 | 只加载选中的本地运行时 |
 | 时间轴 | 定义列表加 `{.timeline}` | 无 | 无 |
 | 更新 | 标题加 `{.update date= tags=}` | 无 | 无 |
-| 视频 | 指向视频文件或平台 URL 的块级图片加 `{caption= poster= track= autoplay=}` | 无 | 自动播放或已启用播放器时加载 `media` |
-| 音频 | 指向音频文件的块级图片加 `{caption=}` | 无 | 无 |
+| 视频 | 指向视频文件或平台 URL 的块级图片加 `{caption= poster= track= autoplay=}` | 无 | 自动播放、已启用播放器或同页 2 个及以上播放器时加载 `media` |
+| 音频 | 指向音频文件的块级图片加 `{caption= id= preload=}` | 无 | 同页 2 个及以上播放器时加载 `media` |
 | 社交帖子 | 无 | `social` | 无 |
 | 地图 | `map` 数据围栏 | 无 | 仅在 `params.map` 完整时加载 Leaflet |
 
@@ -310,7 +310,11 @@ Swagger 与 Redoc 接受 HTTP(S) 规范 URL 或以 `static/` 为根的路径，�
 > 已在主题 main 分支实现，晚于 v1.6.0；目前没有包含它的版本标签。
 
 紧跟 `{.timeline}` 的定义列表就是时间轴：术语是自由文本的标记，定义是可含块级内容的事件。
-`<dl>` 由 Goldmark 生成；主题只添加作用域为 `.td-content dl.timeline` 的 CSS，宽屏时分出标记列，窄屏时为单列。
+`<dl>` 由 Goldmark 生成；主题只添加作用域为 `.td-content dl.timeline` 的 CSS，宽屏时分出标记列，窄屏或位于 `.td-content-card` 容器内时保持单列。
+空心节点读取 `--td-timeline-surface` 以融入提示块、卡片和标签页表面，轴线采用 `--td-brand-line-strong` 以与 Landing 时间轴保持视觉一致。
+打印时无论屏幕配色如何都切换为纸张调色板令牌（`--td-print-ink`、`--td-print-meta`、`--td-print-table-line`、`--td-print-quote-line`），并避免在定义内部分页。
+构建期检查 `content/check-timeline.html` 在零 JS 运行时的前提下对以下情况按页面路径告警：`{.timeline}` 被空行隔开、落到非 `<dl>` 块上（含关闭 `definitionList` 时），或提示块标题被吞入 `<dl><dt>`；`bin/check-site-markup.py` 同时校验 `markup.goldmark.extensions.definitionList: true`。
+由于 Hugo 没有 `<dl>` 渲染钩子，`<dl class="timeline">` 上的属性（与 `.steps` 相同）沿用 Goldmark 默认过滤规则：剥离 `on*` 事件，但放行 `style`。
 
 带 `{.update}` 标记的标题就是一条更新日志条目，另外接受字符串型 `date`（`YYYY`、`YYYY-MM` 或合法日历 `YYYY-MM-DD`，渲染为 `<time datetime>`）与字符串型 `tags`（支持 `,` 与中文全角 `，` 分隔的纯文本，渲染为中性 chip）。
 标题本身保持不变，因此 TOC 条目、锚点、搜索小节与 Print ID 都与普通标题一样；标题之后跟一行 `td-update-meta`，各项之间插入 `<span class="td-update-sep">, </span>` 分隔符。这一行采用行内排版而非 flex，分隔符是 `font-size: 0` 的文档流内文本，且不设 `user-select: none`，因此 Chromium、Firefox 与 WebKit 的纯文本复制、离线搜索（`offline_search_index: content`）、RSS 阅读器与无障碍树都能保持词项独立；flex 子项会被块级化，复制出的文本因而断行或粘连。
@@ -320,10 +324,10 @@ Goldmark 会给每个标题加上 `id` 属性，因此当该 id 是唯一属性�
 
 目标为视频或音频文件，或 YouTube、Bilibili、Vimeo URL 的块级图片属于媒体，由 `content/media.html` 处理。
 文件按解析到的资源的 Hugo 媒体类型识别，否则按扩展名识别；解析到的本地资源会保留查询参数与片段（如 `#t=30,60`）。图片行为、其他非图片资源的告警以及查找顺序都不变；这套顺序现在由 `content/resource-lookup.html` 统一提供给两个解析器。
-视频接受 `caption`、`num`（Book `fig` 目标）、`id`、`poster`、`track`（一个页面语言的 WebVTT 文件；本地资源保留查询参数）、`autoplay`、`width` 与 `height`（须为成对正整数；只设定容器宽高比，不覆盖海报 `<img>` 的固有尺寸）。音频接受 `caption` 与 `id`，并把方括号文字显示为可见标题。
-`autoplay=true` 输出 `muted loop playsinline`，但不输出 `autoplay` 属性；`js/chunks/media.js` 只在视频至少一半可见时播放，读者要求减少动态效果时绝不播放，离开视口即暂停。原生控件始终保留。
+视频接受 `caption`、`num`（Book `fig` 目标）、`id`、`poster`、`track`（一个页面语言的 WebVTT 文件；本地资源保留查询参数）、`autoplay`、`width` 与 `height`（须为成对正整数；只设定容器宽高比，不覆盖海报 `<img>` 的固有尺寸）。音频接受 `caption`、`id` 与 `preload`（`metadata` 或 `none`；同页前 6 个音频默认 `metadata`，第 7 个起默认 `none`；`id` 与同页另一个无编号音视频 figure 或编号 Book 目标重复时告警，无论谁先出现都从后出现的一方丢弃；不与标题或普通图片的 ID 比较）。音频 figure 不携带 `.td-figure`，将方括号文字显示为可见标题，并通过 `aria-labelledby`（带说明时另加 `aria-describedby`）关联到 `<audio>`；在 `content/render-block.html` 内会自动重写生成的 ID 作用域。
+`autoplay=true` 输出 `muted loop playsinline`，但不输出 `autoplay` 属性；`js/chunks/media.js` 只在视频至少一半可见时播放，读者要求减少动态效果时绝不播放，离开视口即暂停。原生控件始终保留。页面上有两个及以上 `<audio>` 或 `<video>` 播放器时，`js/chunks/media.js` 同时负责同页互斥播放：播放器变为有声时（带声音开始播放，或正在播放时被取消静音；在捕获阶段监听 `play` 与 `volumechange`），会暂停页面上其它所有有声播放器。静音或音量为 0 的播放器（包括自动播放循环与作者自写的静音循环）既不打断别人也不被打断；跨域 iframe 中的平台播放器无法参与。只有一个音频播放器的页面不加载脚本。
 平台 URL 渲染为链接卡片（YouTube `/shorts/` 在未给海报或尺寸时默认按 `9:16` 占位；空名称回退为观看地址；Draw.io 跳过 `a.td-media-card` 内的图片，其他带链接的图片照常检测）。卡片以 `--td-media-ratio` 携带比例，`media.css` 据此为卡片及替换它的播放器推导宽高比与 `min(100%, 80vh × 比例)` 的宽度上限；支持容器单位时，比例改为按 figure 宽度计算的最小高度，换行的长标题在各引擎中都会撑高卡片。对 `params.video_embeds` 列出的平台，普通点击会加载带沙箱的播放器 iframe（`allow="autoplay; picture-in-picture; fullscreen"`、`sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox"`），其 URL 由主题根据校验过的 ID 推导（`youtube-nocookie.com`、带 `danmaku=0` 的 Bilibili、带 `dnt=1` 的 Vimeo，支持 `youtube-nocookie.com`、`music.youtube.com`、`player.vimeo.com`、Vimeo `?h=`/`#t=`、`b23.tv/BV…`、Bilibili 嵌入代码地址 `player.bilibili.com/player.html?bvid=…|aid=…` 与十进制前导零时间戳）；点击之前不发出任何请求。
-行内媒体渲染为链接。专用 Print 输出带可见 `.td-media__link` URL 的静态 figure（包含平台观看地址）；直接用浏览器打印 HTML 页面时则显示屏幕上隐藏的 `.td-media__url` 行，卡片替换为 iframe 后仍保留回退地址；RSS 为视频/平台输出静态 figure（含观看地址与真实海报尺寸）；Markdown 保留作者写下的那一行；`rich-copy.js` 保留可点击的媒体 URL（未点击的平台卡片不重复输出 URL，点击替换后仍保留回退地址）。不带 `.td-figure` 的媒体 figure 通过 `:where(.td-media):not(.td-figure)` 保持 1.5rem/1.75rem 外边距，比 Bootstrap 的 `figure` 重置多一级类选择器权重。
+行内媒体渲染为链接。专用 Print 输出带可见 `.td-media__link` URL 的静态 figure（包含平台观看地址）；直接用浏览器打印 HTML 页面时则显示屏幕上隐藏的 `.td-media__url` 行，并在 `@media print` 下无论屏幕主题如何都重置为纸张调色板，卡片替换为 iframe 后仍保留回退地址；RSS 为视频/平台输出静态 figure（含观看地址与真实海报尺寸），为音频将标题直接链接到绝对文件 URL；Markdown 保留作者写下的那一行；`rich-copy.js` 保留起始对齐与可点击录音 URL（未点击的平台卡片不重复输出 URL，点击替换后仍保留回退地址）。不带 `.td-figure` 的媒体 figure 通过 `:where(.td-media):not(.td-figure)` 保持 1.5rem/1.75rem 外边距，比 Bootstrap 的 `figure` 重置多一级类选择器权重。连续音频 figure（间距 16px）以及紧随其后的 `.td-callout--details` 文字稿（间距 8px）通过 `:has()` 正向边距编组，使音频与文字稿的间距小于相邻两组之间的间距（24px）。
 
 `social` 只用页面内容引用一条帖子，参数为 `author`、`handle`、`avatar`、`date`、`url` 与 `platform`（顶层卡片默认 `x`，嵌套引用默认 `none`，另有 `bluesky`、`mastodon`、`threads`、`weibo`、`zhihu`、`telegram`、`linkedin`，决定图标以及向辅助技术播报、写入 Markdown 与 RSS 的平台名；嵌套省略 `platform` 时同时省略图标与视觉隐藏平台名，显式指定则两者同时呈现）。
 参数校验字符串类型并拒绝未知或位置参数；`avatar` 以 `parameter="avatar"` 经过 `content/image-resolve.html`，并在项目自己的 `static/` 目录存在时，对解码、规范化后在该目录中找不到的静态头像离线告警，告警 ID 为可关闭的 `social:avatar-static`（检查看不到模块挂载与自定义 `staticDir`）；用 `..` 越出站点根目录的静态路径总是告警。无头像时，先剥离开头的 `@`、Unicode 空白、控制字符与不可见格式字符，再按首个字素簇绘制首字符（剥离后为空时回退人物图标）。

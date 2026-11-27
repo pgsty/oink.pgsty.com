@@ -404,7 +404,8 @@ Scopes:
 - `u`, `n`, `i`, `p`, `m`, `[`, `]` and `\` run `edit_page`,
   `create_child_page`, `create_issue`, `print`, `view_markdown`,
   `open_chatgpt`, `open_claude` and `open_gemini` through the action registry,
-  only while the descriptor is available. `x` and `v` move to the next
+  only while the descriptor is available (`p` falls back to `window.print()`
+  when no `print` descriptor is registered). `x` and `v` move to the next
   available, non-active option with a URL of `switch_language` and
   `switch_version`, wrapping at the end; `x` falls back to
   `[data-td-language-route]`. `g` opens the manifest's `home`
@@ -462,28 +463,35 @@ every typed token across title and path, and supports Up/Down, Enter (same
 tab), Ctrl/Cmd+Enter or a modified click (new tab), Shift+Delete (remove the
 selected entry) and the `[data-td-history-clear]` button (clear all, disabled
 when empty). With no rows the listbox stays childless and the empty or
-no-match text appears in the sibling `[data-td-history-empty]`. Escape or the
-backdrop closes it and restores focus. It holds
+no-match text appears in the sibling `[data-td-history-empty]`. Escape (outside
+IME composition) or the backdrop closes it and restores focus (falling back to
+`#td-main-content` when the opener is no longer rendered). Launching
+`browse_history` from the Command Palette closes the palette and restores the
+opener's focus first, so history returns to that opener on Escape. It holds
 `data-td-shell-lock` while open and registers as `history` with the
 coordinator.
 
-`o` folds or unfolds together the tree and right-rail groups
-(`[data-td-shell-tree-toggle]` in `#td-shell-sidebar` or
+`o` folds or unfolds together the visible tree and right-rail groups
+(`[data-td-shell-tree-toggle]` in an active `#td-shell-sidebar` or
 `[data-td-shell-aside]`, through `OinkSidebar.setExpanded` with source `api`),
-every `<details>` outside dialogs, hover menus, the site header and templates,
-and `[data-td-code].is-collapsible` blocks through their expand button. If any
-target is folded, all expand; otherwise all collapse, and the `api` source
-keeps the current page's active path open. Rail collapse and popover menus are
-not targets. One frame of `html[data-td-kbd-instant]` suppresses transitions
-while the element at the top of the main column keeps its viewport position.
+every visible `<details>` outside dialogs, hover menus, the site header and
+templates, and visible `[data-td-code].is-collapsible` blocks through their
+expand button. If any target is folded, all expand; otherwise all collapse, and
+the `api` source keeps the current page's active path open. Rail collapse,
+collapsed or hidden rails (including Zen Mode), and popover menus are not
+targets. One frame of `html[data-td-kbd-instant]` suppresses transitions while
+the deepest visible article block at the reading line keeps its viewport
+position.
 
 `-` and `=` (or `+`) set a reader width for `.td-shell-layout .td-shell-article`
-in 100 px steps from the rendered width, never below 600 px (or the container
-when narrower). Reaching the container stores `none`, which fills it on any
-screen. A step that reaches or crosses the page's own width, measured without
-the override, stops there and removes the stored value. The value lives in
-`localStorage` as `td-shell-article-w` (pixels or `none`); on shell pages with
-keyboard navigation the prepaint script restores it as
+in 100 px steps from the rendered reading column (using `.td-content` plus
+horizontal article padding when Book `reading_width` constrains it), never
+below 600 px (or the container when narrower). Reaching the container stores
+`none`, which fills it on any screen. A step that reaches or crosses the page's
+own width, measured without the override, stops there and removes the stored
+value. The value lives in `localStorage` as `td-shell-article-w` (pixels or
+`none`); on shell pages with keyboard navigation the prepaint script restores
+valid values (`none` or integer pixels `>= 600`) as
 `html[data-td-shell-article-w]` with `--td-shell-article-w`. The `@media screen`
 rule overrides `page_width` and the Book `.td-content` measure; print ignores
 it.

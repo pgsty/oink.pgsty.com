@@ -296,7 +296,7 @@ breadcrumb row:
 | `params.ui.dark_mode` | boolean or map | false | `true` turns on the dark palette and the light/dark control. `dark_mode: { show_menu: true }` adds only the control |
 | `params.ui.breadcrumb` | boolean | true | Breadcrumbs above the title. A top-level section never shows a one-level breadcrumb |
 | `params.ui.page_context_menu.enable` | boolean | true | The page-action split button at the right end of the breadcrumb row |
-| `params.ui.page_context_menu.assistant_links` | boolean | false | Adds "Open in ChatGPT" and "Open in Claude". A click sends the page's full URL to that site |
+| `params.ui.page_context_menu.assistant_links` | boolean | false | Adds "Open in ChatGPT", "Open in Claude" and "Open in Gemini". A click sends the page's full URL to that site |
 | `params.ui.page_context_menu.links` | list | [] | Your own external actions. `url` may use the `{url}`, `{title}` and `{markdown_url}` placeholders |
 | `params.ui.github_stars` | string or number | | Star count on the navbar GitHub mark. It is a constant you write; the page makes no request |
 | `params.ui.alt_site` | map | | Link to a sibling site in a single-language footer. Needs both `label` and an absolute `http(s)` `url` |

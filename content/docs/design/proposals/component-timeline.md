@@ -11,13 +11,14 @@ proposal_date: 2026-11-27
 ---
 
 > [!NOTE] Implemented, awaiting acceptance
-> Implemented on the theme's main branch working tree and documented in the
-> [Timeline guide](/docs/components/timeline/). Not committed or released. The shared decisions
-> are in the [overview](/docs/design/proposals/content-components-expansion/).
+> Implemented on the theme's `main` branch (`730e9f6`, with review fixes on the
+> working tree) and documented in the [Timeline guide](/docs/components/timeline/).
+> Not yet in a tagged release. The shared decisions are in the
+> [overview](/docs/design/proposals/content-components-expansion/).
 
 | Record | Value |
 | --- | --- |
-| Status | Implemented 2026-11-27; uncommitted; awaiting acceptance |
+| Status | Implemented 2026-11-27 on `main`; review fixes in progress; awaiting release |
 | Owner | OINK maintainers |
 | Delivery stage | S1, with [Update](/docs/design/proposals/component-update/) |
 | Form | Native: a Markdown definition list followed by `{.timeline}` |
@@ -123,7 +124,7 @@ collide:
 | --- | --- |
 | Wide column | Two-column grid: a marker column sized to its content and capped (about 10rem), and an event column. An axis line runs along the start edge of the event column, with a node on each marker row |
 | Narrow column | One column: marker above body, axis and nodes on the start edge |
-| Ink, Terminal | Flat surfaces; square nodes; monospace markers with tabular numerals |
+| Ink, Terminal | Flat surfaces; square nodes (`0px` in Ink, `2px` radius in Terminal); preset `--td-meta-font-family` (`Inter` sans-serif in Ink, `IBM Plex Mono` in Terminal) with tabular numerals |
 | Forced colors | Axis and nodes use system colors; no meaning carried by color |
 | Print | Axis as a thin border; no backgrounds; short entries avoid page breaks inside |
 | RTL | Logical properties mirror the axis |

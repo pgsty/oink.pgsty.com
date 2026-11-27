@@ -173,8 +173,8 @@ its sidebar tree as data in one `navigation.json` per language. This site
 publishes both: <https://oink.pgsty.com/docs/llms-full.txt> and
 <https://oink.pgsty.com/navigation.json>.
 
-"Open in ChatGPT / Claude" links are off by default, because a click sends
-the page's URL to a third party. A site turns them on with
+"Open in ChatGPT / Claude / Gemini" links are off by default, because a click
+sends the page's URL to a third party. A site turns them on with
 `params.ui.page_context_menu.assistant_links`.
 
 → [AI-agent support](/docs/customize/agents/)

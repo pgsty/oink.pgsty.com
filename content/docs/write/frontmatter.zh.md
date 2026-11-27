@@ -89,7 +89,7 @@ cascade:
 | `theme_color` | 字符串 | 站点值 | 本页的强调色，`#rgb` 或 `#rrggbb`。写在分区根的 `cascade` 里，就给整个分区一个专属颜色，见[品牌外观](/zh/docs/customize/brand/#theme-color) |
 | `theme_color_dark` | 字符串 | 派生 | 暗色模式下的强调色。上层 cascade 设了这个键时，只覆盖 `theme_color` 的页面会继承 cascade 的暗色，所以两个要一起写。`theme_color: false` 让页面不再继承分区色 |
 | `page_context_menu` | 布尔 | 站点值（`true`） | 标题行的页面操作菜单：复制 Markdown、编辑本页、打印等 |
-| `page_context_menu.assistant_links` | 布尔 | 站点值（`false`） | ChatGPT 与 Claude 两项，写成 `page_context_menu: { assistant_links: false }`。页面只能关掉它们，站点没开时页面无法单独开启 |
+| `page_context_menu.assistant_links` | 布尔 | 站点值（`false`） | ChatGPT、Claude 与 Gemini 三项，写成 `page_context_menu: { assistant_links: false }`。页面只能关掉它们，站点没开时页面无法单独开启 |
 {.fields meta="type default"}
 
 ## 页面外壳 {#shell}

@@ -282,11 +282,13 @@ cases:
 quickstart:
   eyebrow: 快速开始
   title: 用 AI Agent 帮你建站
-  text: 复制下面这段提示词交给 Claude Code、Codex 或任意编程代理，即可用 OINK 搭建站点。
+  text: 把【】换成你的站点信息，再交给 Claude Code、Codex 或任意编程代理。
   class: td-home-prompt-box
-  code: >-
-    请使用 Hugo 与 OINK 主题（github.com/pgsty/oink），基于 https://github.com/pgsty/oink-starter 帮我建设一个站点。请先遵循 OINK 建站技能 https://oink.pgsty.com/skill.zh.md，语法与配置以官方文档 https://oink.pgsty.com/zh/docs/（Markdown 索引：https://oink.pgsty.com/zh/llms.txt）为准，并参考案例库 https://oink.pgsty.com/zh/case/ 中的线上示例（如 pigsty.cc、hugegraph.apache.org、barn.pgsty.com、ddia.vonng.com）来组织首页与内容。
-  note: '前往[用 AI agent 建站](docs/start/#agent-skill)安装 `skill.zh.md`，或按 [OINK Starter 教程](docs/start/starter/)手动起步。'
+  code: |-
+    请基于 Hugo 和 OINK 主题建站，遵循 OINK 建站技能：https://oink.pgsty.com/skill.zh.md
+    参考 OINK 文档（https://oink.pgsty.com/zh/docs/）及其中的各种样例，充分利用 OINK 的特性。
+    站点信息：【名称、目录、内容与受众、主题、栏目、形式、风格偏好、域名、托管平台……】
+  note: '想让每次会话都自动带上这份技能，见[用 AI agent 建站](docs/start/#agent-skill)。'
 
 faq:
   eyebrow: 选型之前

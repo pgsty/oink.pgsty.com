@@ -169,7 +169,9 @@ alternative procedure, background reading.
 
 `[!DETAILS]` is a disclosure with no color and no icon, closed unless you
 write `[!DETAILS]+`. Use it when the content is neither a note nor a warning,
-just long: a complete configuration file, a full log.
+just long: a complete configuration file, a full log, or an
+[audio transcript](/docs/components/audio/#transcript) placed right after a
+player.
 
 ````markdown {title="Source"}
 > [!DETAILS] Full `hugo version` output

@@ -1,445 +1,355 @@
 ---
 name: oink-site
-description: "Oink 建站: build, migrate, and polish Hugo sites on the OINK theme (github.com/pgsty/oink, docs at oink.pgsty.com): product docs, books and course portals, blogs, landing and company sites, archives, albums, aggregate libraries. Use when starting from oink-starter, adding OINK to an existing Hugo or Docsy site, turning PDFs, HTML, or upstream Markdown into Docs or Book pages, designing a home page, adding languages, or checking, upgrading, and publishing an OINK site. Not for changing the theme itself."
+description: "Oink 建站: build, migrate, and polish Hugo sites on the OINK theme (github.com/pgsty/oink, docs at oink.pgsty.com): open-source and product docs, books and courses, personal blogs and knowledge bases, archives and photo albums, company and landing sites, catalogs. Use when creating an OINK site, moving a Hugo or Docsy site onto OINK, converting books or upstream docs, designing a home page, adding languages, or checking, upgrading, and publishing an OINK site. Maps each kind of site to real OINK sites worth studying and each task to the docs page that explains it. Not for changing the theme itself."
 ---
 
 # Oink 建站
 
-> Public edition of the OINK site-building skill. Source:
-> <https://oink.pgsty.com/skill.md> · 中文：<https://oink.pgsty.com/skill.zh.md>.
-> Save it as `SKILL.md` in an `oink-site/` skills directory, or hand the URL to
-> any agent. Snapshot 2026-11-23 for OINK v1.6.0.
+> Public edition of the OINK site-building skill: <https://oink.pgsty.com/skill.md>
+> · 中文：<https://oink.pgsty.com/skill.zh.md>. Save it as `SKILL.md` in an
+> `oink-site/` skills directory, or hand the URL to any agent. Written
+> 2026-11-27 for OINK v1.7.0.
 
-OINK is a local-first Hugo Module theme, a hard fork of Docsy. A site is an
-ordinary Hugo repository: `hugo.yaml`, a `go.mod` pinning
-`github.com/pgsty/oink@<tag>`, `content/`, `data/`, and optional `assets/` and
-`layouts/` hooks. Hugo builds it in any edition (plain CSS, no Sass compiler),
-plus Go for module installs. There is no Node, npm, Dart Sass, PostCSS, or CDN. It provides Docs, Book, Blog and
-Swagger reading shells, Expo albums, Landing sections, local search, bundled
-fonts and icons, 32 interface locales, appearance presets, print, and
-Markdown/LLMS outputs. It has no CMS, authentication, database, or automatic
-translation.
+This file is a map, not a manual. It tells you what OINK offers, which real
+sites look like the one you are about to build, and which page of the
+documentation explains each task. The details live in those sites and pages:
+open them when you need them, and use your own judgment in between.
 
-## How to use this file
+## What OINK is
 
-The OINK docs own syntax and behaviour. This file owns judgment: workflow,
-boundaries, the review standards OINK's maintainers apply to their own sites,
-and what went wrong in about fifty earlier builds. Look a key up in the docs
-before writing it. Do not trust memory or another site's config for syntax.
+OINK is a local-first Hugo Module theme, a hard fork of Docsy. An OINK site is
+an ordinary Hugo repository: a config file, a `go.mod` that pins
+`github.com/pgsty/oink@<tag>`, `content/`, `data/`, and optionally `assets/`
+and `layouts/`. Hugo 0.169.0 or newer, in any edition, builds it and Go fetches
+the module; there is no Node, npm, Sass, or CDN step.
 
-Scale the process to the job. A copy fix needs a build and a look in the
-browser. A new site, a migration, or a book conversion needs everything below.
+What you have to work with:
 
-The design notes are strong defaults, not templates. Your user's brand, readers,
-or material can justify a different shape; when you depart from them, say why.
+- reading shells for Docs, Book, Blog, and Swagger, and Expo photo albums;
+- home and landing pages assembled from YAML data out of 22 section types;
+- content components, most of them plain Markdown with one attribute line:
+  callouts, steps, cards, tabs, annotated code, diagrams and charts, timelines,
+  changelog entries, video and audio players, quoted social posts, maps;
+- local search with a command palette, keyboard shortcuts, 32 interface
+  languages, Duo View for translations, versions, and taxonomies;
+- four visual presets with light and dark modes, print, and Markdown and
+  `llms.txt` outputs for agents.
 
-## Ground truth
+There is no CMS, login, database, or automatic translation.
 
-- Docs: <https://oink.pgsty.com/docs/> (Chinese under `/zh/docs/`). Append
-  `index.md` to any page URL for Markdown; `https://oink.pgsty.com/llms.txt`
-  lists them. Source: <https://github.com/pgsty/oink.pgsty.com> (`content/docs/`).
-- Contracts are under `docs/design/`. The theme's defaults (`hugo.yaml`) and
-  checkers (`bin/`) are in <https://github.com/pgsty/oink>; the template is
-  <https://github.com/pgsty/oink-starter>.
-- Pages by need: `start/` (starter, from-scratch, anatomy) · `write/`
-  (organize, pages, frontmatter, blog, book, expo, releases, openapi) ·
-  `components/` · `customize/` (home, brand, navigation, layout, i18n, search,
-  config, print, agents) · `admin/` (preview, deploy, upgrade,
-  troubleshooting, analytics, comments) · `design/` (landing, shell,
-  components, architecture).
-- Baseline of this snapshot: OINK v1.6.0, Hugo 0.169.0+ (any edition; validated on 0.170.1), Go 1.27.4.
-  Check GitHub releases for the newest published version, read its notes, and
-  confirm what resolved with `hugo mod graph`. Newer docs win over this file.
-- The target site's `AGENTS.md`/`CLAUDE.md`, `README.md`, and `Makefile` are
-  binding for that site.
-- Older tutorials and sites carry obsolete practice. Treat the following as
-  evidence of intent only: OINK 0.4–1.4 keys, `exampleSite`, `type: landing`,
-  Docsy `blocks/*`, `--panicOnWarning`, "zero warnings", and Dart Sass.
+A good way in: find the closest case below, read a few docs pages for what you
+are about to do, then build one small route end to end (home page, a section,
+one page, and its translation if there is one) before scaling up.
 
-## Before touching files
+## Learn from real sites
 
-- Say which repository and domain you are building, and confirm the working
-  directory is that site. Sites you consult for reference are read-only.
-- Run `git status --short` first. Keep uncommitted work and other sessions'
-  files, and stage only your own. Never `checkout` or `reset` over changes you
-  did not make. Ask before `git init` or creating a repository.
-- Decide where raw material goes before downloading it: outside the repo, or
-  in an ignored path confirmed with `git check-ignore`. PDFs, archives, clones,
-  scrapes, and build output stay out of Git unless your user says otherwise.
-  Ask when unsure.
+The [case library](https://oink.pgsty.com/case/) documents 45 production OINK
+sites. Each write-up explains the design, its trade-offs, and which parts the
+site built itself rather than taking from the theme; those parts are not OINK
+features and may not suit your project. Each name below links to its write-up
+(add `index.md` to the URL for Markdown), followed by the live site and, where
+it is public, the source.
 
-## Understand the material and the reader
+Pick the closest one or two, walk the live site as a reader would, then read
+the source. Borrow the organizing idea and adapt the configuration; your
+user's content and taste decide the rest.
 
-**Inventory before scaffolding.** List the sources (README, code, upstream
-docs, old site, PDFs, archives, data), their editions, languages,
-completeness, and licence, and where each will go. For a large conversion keep
-the inventory machine-readable, with revisions and checksums. Ask only about
-real ambiguities. Inventories often change the scope: more courses than
-expected, a licence that forbids modification, two "translations" that turn
-out to be different editions. Report such findings before building.
+### Open-source project or product
 
-**Choose surfaces by what the reader does.**
+A home page that shows what the product does, with a real command, diagram, or
+screenshot, leading into a manual; downloads and releases that match what was
+actually shipped.
 
-| Reader wants to… | Surface |
+- [Apache HugeGraph](https://oink.pgsty.com/case/apache-hugegraph/)
+  ([site](https://hugegraph.apache.org/),
+  [source](https://github.com/apache/hugegraph-doc)): an ASF project with a
+  custom brand hero on the Slate preset and about 300 bilingual pages.
+- [Stashix](https://oink.pgsty.com/case/stashix/)
+  ([site](https://stashix.net/), [source](https://github.com/Aroy-Art/Stashix-Site)):
+  a self-hosted app on the Ink preset with its own accent and a product preview.
+- [AGW](https://oink.pgsty.com/case/agw/) ([site](https://agw-ai.dev/),
+  [source](https://github.com/zxyao145/agw)): product site and docs kept in
+  the `site/` folder of the application repository.
+- [Vchord](https://oink.pgsty.com/case/vchord/)
+  ([site](https://vchord.pgsty.com/), [source](https://github.com/pgsty/vchord.pgsty.com)):
+  a 366-page manual with architecture diagrams, benchmarks, and downloads.
+- [Mooncake](https://oink.pgsty.com/case/mooncake/)
+  ([site](https://mooncake.pgsty.com/), [source](https://github.com/pgsty/mooncake.pgsty.com)):
+  a diagram-led landing page shared with sibling extension sites.
+- [Barn](https://oink.pgsty.com/case/barn/) ([site](https://barn.pgsty.com/),
+  [source](https://github.com/pgsty/barn.pgsty.com)): illustrated hero,
+  terminal quick start, docs, and a blog.
+- [PIG](https://oink.pgsty.com/case/pig/) ([site](https://pig.pgsty.com/),
+  [source](https://github.com/pgsty/pig.pgsty.com)): a compact CLI manual with
+  a data-driven home page.
+- [Piglet](https://oink.pgsty.com/case/piglet/) ([site](https://piglet.run/),
+  [source](https://github.com/pgsty/piglet.run)): a dark terminal hero over
+  short setup docs.
+- [SOW](https://oink.pgsty.com/case/sow/) ([site](https://sow.pgsty.com/),
+  [source](https://github.com/pgsty/sow.pgsty.com)) and
+  [PG Exporter](https://oink.pgsty.com/case/pg-exporter/)
+  ([site](https://exp.pgsty.com/), [source](https://github.com/pgsty/exp.pgsty.com)):
+  operations manuals with a download page and a generated catalog.
+
+### Large, multilingual, or migrated documentation
+
+- [pigsty.io](https://oink.pgsty.com/case/pigsty-io/)
+  ([site](https://pigsty.io/), [source](https://github.com/pgsty/pigsty.io))
+  and [pigsty.cc](https://oink.pgsty.com/case/pigsty-cc/)
+  ([site](https://pigsty.cc/), [source](https://github.com/pgsty/pigsty.cc)):
+  one product's English and Chinese homes run as two sites, with a manual,
+  blog, extension catalog, versions, and pricing.
+- [PG.CENTER](https://oink.pgsty.com/case/doc-pg-center/)
+  ([site](https://doc.pg.center/), [source](https://github.com/pgsty/doc.pg.center)):
+  eight languages including Arabic, nearly 5,000 files, upstream manuals side
+  by side.
+- [Red Hat AI Services](https://oink.pgsty.com/case/redhat-cai/)
+  ([site](https://rh-aiservices-bu.github.io/cai/),
+  [source](https://github.com/rh-aiservices-bu/cai)): a team portal in nine
+  languages.
+- [Cloud Exit](https://oink.pgsty.com/case/cloudexit/)
+  ([site](https://cloudexit.org/), [source](https://github.com/cloudexit/cloudexit.org)):
+  an open standard and public cost ledger across 690 bilingual pages.
+- [SILO](https://oink.pgsty.com/case/silo/) ([site](https://silo.pgsty.com/)):
+  a large upstream migration generated from a checked manifest.
+- [PostgreSQL ecosystem library](https://oink.pgsty.com/case/pgsql-cc/)
+  ([source](https://github.com/pgsty/pgsql.cc)): several upstream manuals
+  under one search, with translations that grow over time.
+
+### Books, courses, and tutorials
+
+The Book shell numbers chapters, figures, and tables, resolves
+cross-references, and prints the whole book; these sites show reading-first
+home pages with a cover, contents, and a way in. For a conversion, it usually
+pays to convert two sample chapters and review them with your user before
+running the rest.
+
+- [DDIA](https://oink.pgsty.com/case/ddia/) ([site](https://ddia.vonng.com/),
+  [source](https://github.com/Vonng/ddia)): the most complete book site, with
+  several languages and editions kept apart, numbered figures, and print.
+- [TPME](https://oink.pgsty.com/case/tpme/) ([site](https://tpme.vonng.com/),
+  [source](https://github.com/Vonng/tpme)): a lean bilingual book that needs
+  only the Book shell.
+- [PG Internals](https://oink.pgsty.com/case/pg-internal/)
+  ([site](https://pgint.vonng.com/), [source](https://github.com/Vonng/pg-internal)):
+  a single-language book site.
+- [PG 36 Stratagems](https://oink.pgsty.com/case/pg36g/)
+  ([site](https://pg36g.vonng.com/), [source](https://github.com/Vonng/pg36g)):
+  36 chapters with cover art and labs.
+- [Empire of AI](https://oink.pgsty.com/case/aiempire/)
+  ([site](https://aiempire.vonng.com/)): a cover-art hero and author profiles.
+- [PostgreSQL 18 Internals](https://oink.pgsty.com/case/int18-pgsql/)
+  ([site](https://int18.pgsql.cc/)): a trilingual translation with translator
+  profiles.
+- [PostgreSQL by Example](https://oink.pgsty.com/case/pgexp-pgsql/)
+  ([site](https://pgexp.pgsql.cc/)): a 57-lesson tutorial with downloadable
+  example bundles.
+- [SSG Book](https://oink.pgsty.com/case/ssg-book/)
+  ([site](https://polla.dev/ssg-book/), [source](https://github.com/polla-fattah/ssg-book)):
+  a dark-mode open book with slides and learning paths, served from a subpath.
+- [System Design Notes](https://oink.pgsty.com/case/system-design-notes/)
+  ([site](https://ariana-yang.github.io/system-design-notes-zh/),
+  [source](https://github.com/Ariana-Yang/system-design-notes-zh)): a
+  28-chapter Chinese study book.
+- [Dalibo Training](https://oink.pgsty.com/case/dalibo-pgsql/)
+  ([site](https://dalibo.pgsql.cc/)) and
+  [PGPRO Training](https://oink.pgsty.com/case/pgpro-pgsql/)
+  ([site](https://pgpro.pgsql.cc/)): multilingual course libraries whose
+  curriculum stays apart from chapter navigation.
+
+### Personal blog, digital garden, or knowledge base
+
+- [vonng.com](https://oink.pgsty.com/case/vonng-com/)
+  ([site](https://vonng.com/), [source](https://github.com/Vonng/vonng.com)):
+  a 1,344-page bilingual blog with columns and an author showcase.
+- [Nekonull's Garden](https://oink.pgsty.com/case/nekonull/)
+  ([site](https://nekonull.me/),
+  [source](https://github.com/jerrylususu/jerrylususu.github.io)): long
+  essays, short shares, and TIL notes behind a typography-led home page.
+- [Sanbei's Blog](https://oink.pgsty.com/case/sanbei-blog/)
+  ([site](https://sanbei101.github.io/blog/), [source](https://github.com/sanbei101/blog)):
+  dated essays beside a structured guide section.
+- [blog.xjkj.org](https://oink.pgsty.com/case/xjkj-blog/)
+  ([site](https://blog.xjkj.org/), [source](https://github.com/wzemc/blog)):
+  no hero at all; the card-grid post index is the front door.
+- [hongyu](https://oink.pgsty.com/case/hongyu-docs/)
+  ([site](https://le0shy.github.io/my-docs/), [source](https://github.com/Le0shy/my-docs)):
+  essays, a knowledge base, and book and film reviews in one site.
+- [Vianlex's Wiki](https://oink.pgsty.com/case/vianlex-wiki/)
+  ([site](https://vianlex.github.io/), [source](https://github.com/vianlex/vianlex.github.io)):
+  a 150-page knowledge base entered through landing cards.
+- [Le Shi Handbook](https://oink.pgsty.com/case/le-shi/)
+  ([site](https://le-shi.github.io/), [source](https://github.com/le-shi/le-shi.github.io))
+  and [Homelab IaC](https://oink.pgsty.com/case/homelab-iac/)
+  ([site](https://blue126.github.io/IaC/), [source](https://github.com/blue126/IaC)):
+  personal operations manuals; the second lives beside its infrastructure code.
+
+### Albums, archives, and exhibitions
+
+- [Feng Zhenbiao Archive](https://oink.pgsty.com/case/fzb/)
+  ([site](https://fzb.vonng.com/)): a 601-page family archive where memoir and
+  poetry are Book chapters and photographs are Expo albums.
+- [OINK's own Expo albums](https://oink.pgsty.com/expo/): album layouts,
+  covers, and the image viewer, with the guide at `write/expo`.
+
+### Company, organization, landing page, or small tool
+
+- [pgsty.com](https://oink.pgsty.com/case/pgsty-com/)
+  ([site](https://pgsty.com/), [source](https://github.com/pgsty/pgsty.com)):
+  a small corporate site built almost entirely from landing data.
+- [CASSA](https://oink.pgsty.com/case/cassa/) ([site](https://cassa.au/),
+  [source](https://github.com/cassa/static-CASSA-website)): a student
+  association with membership, a timeline, and news.
+- [CapsLock](https://oink.pgsty.com/case/capslock/)
+  ([site](https://caps.vonng.com/), [source](https://github.com/Vonng/caps.vonng.com)):
+  a two-page site whose second page is an interactive configurator.
+- [Capslock App](https://oink.pgsty.com/case/caps-pgsty/)
+  ([site](https://caps.pgsty.com/)) and [Crib](https://oink.pgsty.com/case/crib/)
+  ([site](https://crib.pgsty.com/)): native-app sites with a hero, a preview,
+  and downloads.
+
+### Catalogs and data-driven sites
+
+- [PGEXT](https://oink.pgsty.com/case/pgext-cloud/)
+  ([site](https://ext.pgsty.com/), [source](https://github.com/pgsty/pgext.cloud)):
+  2,241 extensions indexed from data and searchable by platform and version.
+- [PIGSTY PRO](https://oink.pgsty.com/case/pgsty-pro/)
+  ([site](https://pgsty.pro/)): a release archive rendered from structured
+  release records.
+
+### The broadest reference
+
+- [OINK Docs](https://oink.pgsty.com/case/oink/)
+  ([site](https://oink.pgsty.com/), [source](https://github.com/pgsty/oink.pgsty.com)):
+  every component page opens with source you can paste. Its configuration is
+  large because it also serves the theme's regression tests, so borrow from
+  its pages rather than its config. The theme repository's `tests/site/` is a
+  test fixture, not a design to copy.
+
+## Where the docs explain it
+
+Docs live at <https://oink.pgsty.com/docs/> (Chinese under `/zh/docs/`). Every
+page has a Markdown copy at its URL plus `index.md`; `https://oink.pgsty.com/llms.txt`
+lists them all, and `https://oink.pgsty.com/docs/llms-full.txt` holds the
+whole manual in one file of about 2 MB, which is handy to search. Paths below
+are relative to `/docs/`.
+
+| When you are… | Read |
 | --- | --- |
-| understand a product and choose a next step | Landing: `data/home/<lang>.yaml` or `layout: landing` (never `type: landing`) |
-| do a task or look something up | Docs: `type: docs` |
-| read in order and cite figures | Book: `type: book` |
-| follow dated posts and releases | Blog: `type: blog` |
-| browse albums | Expo: `type: expo` |
-| download versioned files | records in `data/download/` |
-| explore an HTTP API | Swagger: `type: swagger` |
+| deciding whether OINK fits, and what it adds | `about/`, `about/features/` |
+| creating a site, or adding OINK to an existing Hugo site | `start/from-scratch/` |
+| starting from a template with deploy workflows included | `start/starter/`, `start/anatomy/` |
+| arranging folders into a sidebar; writing pages and front matter | `write/organize/`, `write/pages/`, `write/frontmatter/` |
+| writing a blog, a book, or photo albums | `write/blog/`, `write/book/`, `write/expo/` |
+| publishing releases and downloads, or an API reference | `write/releases/`, `write/openapi/` |
+| choosing a component | `components/`: a cheatsheet of all of them, then one page each |
+| building the home page or other landing pages | `customize/home/` |
+| setting logo, colors, fonts, presets, and site CSS | `customize/brand/` |
+| shaping menus, breadcrumbs, and the footer | `customize/navigation/` |
+| choosing shells, sidebars, tables of contents, page width | `customize/layout/` |
+| adding languages, or Duo View | `customize/i18n/` |
+| setting up search and the command palette | `customize/search/`, `customize/panel/` |
+| linking to the repository; crediting upstream sources | `customize/repository/` |
+| tagging pages; publishing several product versions | `customize/taxonomy/`, `customize/versions/` |
+| printing a page or a whole section | `customize/print/` |
+| serving Markdown and `llms.txt` to agents | `customize/agents/` |
+| looking up keyboard shortcuts | `customize/keyboard/` |
+| looking up any config key, and how a wrong value behaves | `customize/config/` |
+| previewing, deploying, adding analytics or comments | `admin/preview/`, `admin/deploy/`, `admin/analytics/`, `admin/comments/` |
+| upgrading, or migrating from Docsy or an old OINK | `admin/upgrade/` |
+| fixing something that broke | `admin/troubleshooting/` |
+| checking how the theme is meant to behave | `design/` (maintainer contracts) |
 
-- The shell follows `type`, not the directory, so `/docs/x/` and `/x/` both
-  work. A docs tree outside `content/docs/` also needs `sidebar_root_for: self`.
-- Keep tutorials, task guides, reference, and essays in separate trees.
+The site also has a hands-on tutorial book at `/book/`, release notes at
+`/release/`, and engineering notes at `/blog/`. The theme's source, defaults
+(`hugo.yaml`), migration tools, and checkers are at
+<https://github.com/pgsty/oink>. Check its releases for the newest version;
+newer docs win over this file. Older tutorials and sites carry retired
+practice, such as OINK 0.4–1.4 keys, `exampleSite`, `type: landing`, Docsy
+`blocks/*`, and Sass, so read them for intent, not syntax.
 
-**One site or several.**
-- Merge works that share readers, languages, release cadence, and maintainer,
-  where one search helps. Split them when edition, language mix, licence,
-  cadence, or ownership differ. A set of PostgreSQL books started as one
-  aggregate site and ended as one site per book.
-- A series from one upstream fits one site with a Book per item, such as one
-  per major version or one per course. Each Book is a top-level section, so
-  the root switcher doubles as a book switcher.
-- Search downloads one index per language for the whole site. Size counts when
-  merging.
-- Short names work best, with the directory, domain, and repository sharing
-  one name.
-- Choose the default language by the main readership. A translated book
-  usually puts its target language at `/`.
-- Ask when the decision changes domains or repositories.
+## Things worth knowing early
 
-**Study the closest real site.** Walk its reader path, then read its source
-where it is public. Take the organizing idea, not the config. Everything in
-the last column is site code, not an OINK feature. Write-ups of many of these
-sites are in the [case library](https://oink.pgsty.com/case/).
+A few facts have cost earlier builds real time. Everything else is in the
+docs.
 
-| Building | Study | Worth learning | Site-only |
-| --- | --- | --- | --- |
-| Product with docs | [vchord.pgsty.com](https://vchord.pgsty.com/) ([source](https://github.com/pgsty/vchord.pgsty.com)); [mooncake.pgsty.com](https://mooncake.pgsty.com/) ([source](https://github.com/pgsty/mooncake.pgsty.com)), the newest; also [pig](https://pig.pgsty.com/), [sow](https://sow.pgsty.com/), [piglet.run](https://piglet.run/) | real commands and capabilities on the home page; a provenance line; download facts that match releases; one `/docs/` root with `upstream_*` | highlighted quick-start partials, `bin/sync_download.py` |
-| Translated book | [DDIA](https://ddia.vonng.com/) ([source](https://github.com/Vonng/ddia)); [TPME](https://tpme.vonng.com/) ([source](https://github.com/Vonng/tpme)), lean; [PG Internal](https://pgint.vonng.com/) ([source](https://github.com/Vonng/pg-internal)), single language | reading-first home page; editions kept apart (in DDIA, `content/zh` and `tw` are the 2nd edition, `v1*` the 1st, `en` reference only); numbered figures, `xref`, print | people, legal, and contributor partials; `bin/epub`; zh-tw conversion |
-| Converted books and courses | [intro.pgsql.cc](https://intro.pgsql.cc/), [feat.pgsql.cc](https://feat.pgsql.cc/), [dalibo.pgsql.cc](https://dalibo.pgsql.cc/) (sites only) | one chapter per page; coverage accounting; a course catalog kept apart from chapter navigation | converters, course data, generators |
-| One site, many languages | [doc.pg.center](https://doc.pg.center/) ([source](https://github.com/pgsty/doc.pg.center)): 8 languages including RTL Arabic; manuals at `/patroni/` and similar | language pairing, Duo View, an upstream registry, checks on rendered anchors | home partials, coverage scripts |
-| Large docs on two domains | [pigsty.cc](https://pigsty.cc/) ([source](https://github.com/pgsty/pigsty.cc)) and [pigsty.io](https://pigsty.io/) ([source](https://github.com/pgsty/pigsty.io)) | split between orientation, tasks, and reference; ZH→EN sync | product home page, extension catalog |
-| Personal blog | [vonng.com](https://vonng.com/) ([source](https://github.com/Vonng/vonng.com)) | topic-led home page; a restrained selection of recent posts; consistent cards | `hero-featured`, `column-cards`, `recent-posts`, `link-cards`; `data/works.yaml` |
-| Albums or exhibition | [OINK Expo albums](https://oink.pgsty.com/expo/) and `docs/write/expo` | one album per topic with a chosen cover and order; for an archive, a narrative by period or work beside a biography and works index | — |
-| Company or landing | [pgsty.com](https://pgsty.com/) ([source](https://github.com/pgsty/pgsty.com)), [caps.vonng.com](https://caps.vonng.com/) ([source](https://github.com/Vonng/caps.vonng.com)) | accurate products; facts kept in the footer | pgsty.com's hand-written `layouts/index.html` (don't copy it); the CapsLock configurator |
-| Topical guide | [us.vonng.com](https://us.vonng.com/) ([source](https://github.com/Vonng/us.vonng.com)), [sg.vonng.com](https://sg.vonng.com/), [cloudexit.org](https://cloudexit.org/) ([source](https://github.com/cloudexit/cloudexit.org)) | clear reading entries instead of decoration | us and sg are older `themes/oink` copies |
-| Baseline | [oink-starter](https://github.com/pgsty/oink-starter); [oink.pgsty.com](https://oink.pgsty.com/) ([source](https://github.com/pgsty/oink.pgsty.com)) | clean config; runnable component examples | the docs site's large config; never the theme's `tests/site/` |
+- Hugo does not take `markup` settings from a theme, so every site carries its
+  own Goldmark options; without them, attribute lines such as `{.steps}` show
+  up as literal text. `start/from-scratch` has the block to copy.
+- Interactive and third-party features stay off until the site turns them on:
+  search, Duo View, extra outputs, comments, analytics, maps, in-page video
+  players, assistant links. When something seems missing, look for its switch.
+- A wrong value warns and falls back rather than failing the build, so read
+  the warnings: one usually means a feature you expected did not turn on.
+- Each enabled language needs its own home data, footer data, and menus, or
+  the default language quietly shows through.
+- The shell a page gets follows its `type`, not its folder.
+- Site styles go in `assets/css/project.css` and overrides in the narrowest
+  hook or partial. Editing theme files or copying a whole shell for one change
+  makes every upgrade painful.
 
-## Build the skeleton
+## Working with your user
 
-- **New site.** Use the Starter ("Use this template"). Build after each layer:
-  1. Languages. The default is en+zh+fr. Before other edits, copy
-     `examples/hugo.single.yaml` or `hugo.bilingual.yaml`, or set
-     `disableLanguages`.
-  2. Identity: `title`, `baseURL`, copyright, repository links.
-  3. One home page, then its translations.
-  4. Content and navigation.
-  5. Brand and reader features.
-  6. Integrations.
-  7. Production build, then deploy.
-- **Existing Hugo site.**
-  - Keep the content and the config file name; run `hugo mod init` if needed.
-  - Run `hugo mod get github.com/pgsty/oink@<tag>` and add `module.imports`.
-  - Merge the markup settings below rather than replacing your config.
-  - Review site `layouts/`, old shortcodes, and `type`/`layout` values.
-- **Docsy or an old OINK site.** Follow `docs/admin/upgrade` and the migration
-  toolkit in the theme's `bin/migrations/`. For `oink06.py`: `report`, then a
-  dry-run `migrate`, then `--write`, then `check`. Use `book_figures.py` for
-  legacy figure markup. A second run must change nothing.
-- **Required site config.** Hugo does not merge a theme's `markup`, so every
-  site sets these itself:
-  - `goldmark.renderer.unsafe: true`
-  - `goldmark.parser.attribute.block: true`
-  - `goldmark.parser.wrapStandAloneImageWithinParagraph: false`
-  - `markup.highlight.noClasses: false`
-  - passthrough when the site has math (never single `$`)
-- **Opt-in features.** Set `params.offline_search: true` for search. Request
-  extra outputs in an explicit `outputs` block; each kind's list replaces the
-  theme's.
-- **Git hygiene.** Commit `go.mod` and `go.sum`. Ignore `public/`,
-  `resources/`, `.hugo_build.lock`, and caches. Never commit `go.work` or a
-  module replacement.
-- **Usual shape.**
-  - A Makefile with `dev`/`build`/`check` that sets
-    `GOWORK=off HUGO_MODULE_WORKSPACE=off`; checks build to a temp directory.
-  - An `AGENTS.md`: mission, sources and licences, layout, hard rules,
-    verification gate.
-  - A `CLAUDE.md` containing `@AGENTS.md`.
-  - The Starter's `make dev` previews a sibling `../oink` theme checkout
-    through `HUGO_MODULE_REPLACEMENTS`. `serve` and `build` use the pin.
-- **Representative route first.** Finish home → section index → content page,
-  plus its translation. Settle navigation, type, images, and the conversion
-  method on that route before scaling.
+- Confirm which repository and domain you are building, and that the working
+  directory is that site. Sites you study are read-only.
+- Respect work that is already there: check `git status`, keep uncommitted
+  changes and other sessions' files, and stage only your own. Ask before
+  creating a repository, committing, pushing, deploying, or touching DNS.
+- Agree with your user where large raw material such as PDFs, scrapes, or
+  recordings should live before you download it, so nothing lands in Git by
+  accident.
+- A short brief, such as a name, a directory, the content and its readers, a
+  few sections, a style, a domain, and a host, is a starting point. Ask about
+  what would change the build; pick sensible defaults for the rest and say
+  what you picked.
+- "Make full use of OINK's features" means reaching for the theme's feature
+  before writing your own wherever the content calls for it. A timeline wants
+  real dates and a map real places; a site that shows off every component
+  reads as a demo.
+- Keep facts true: no invented numbers, quotes, posts, or features; real people
+  credited as they are; licences and upstream sources stated. Ask when a
+  licence limits copying or translation.
+- Extensions of your own (a partial, a script, a generator) are fine when the
+  theme has nothing for the job. Name them in the site's `AGENTS.md` as site
+  code; when several sites need the same thing, it may belong upstream as an
+  issue or a [design proposal](https://oink.pgsty.com/docs/design/proposals/).
 
-## Write and convert content
+## Taste
 
-- **Native Markdown first.** `> [!NOTE]` callouts; `{.steps}`, `{.cards}`, and
-  `{.fields}` attribute lines; fenced tabs; `filetree` fences; image attribute
-  lines. Use a shortcode only where the docs say the native form falls short.
-  No shortcodes in headings, and no footnotes inside shortcode bodies.
-- **Every directory** has an `_index.md`. Weights go in steps of ten. Any
-  heading that will be linked or translated gets an explicit `{#id}`. Each
-  page has a one-sentence `description`.
-- **Provenance is built in.**
-  - Set `upstream_link` with `upstream_name`, `upstream_copyright`,
-    `upstream_license` (SPDX), and `upstream_notice`, usually through
-    `cascade` or a `data/upstreams` entry named by `upstream_source`. A missing
-    key omits the credit and warns.
-  - Keep the site licence separate from upstream licences. Disclose special
-    terms as written.
-  - When a licence forbids modification or translation, stop and ask.
-- **Upstream material.**
-  - Work on copies. Fact-check against the code at the pinned tag: one set of
-    old docs said `source_uri` where the code says `src_uri`.
-  - Map old URLs to `aliases`, and keep old major versions in a labelled
-    archive.
-  - Make links into the upstream domain site-relative. Replace `git://` and
-    similar schemes: OINK components drop them and the output checker rejects
-    them.
-  - Dead sites: use Wayback CDX, take the newest readable snapshot per URL, and
-    keep a manifest with snapshot times and hashes. A snapshot time is not a
-    content date.
-- **Account by kind, not by file.** Check the source item by item: works,
-  chapters, figures, tables, footnotes, code, images, links. Label partial
-  material honestly: "summary only", "Beta, not GA", sample data.
-- **Archives.** One page per work, not per file or image. Merge fragments. Give
-  a complete index and a search page. Remove every conversion trace.
-- **Prose.** Concrete tasks and facts. No filler, no invented numbers, no
-  AI-flavoured copy. When tightening, keep limits, conditions, and reasoning.
-  Test each cut by asking what the reader would get wrong without it.
+The maintainers review their own sites against a few preferences. Treat them as
+tendencies, not rules; your user's eye is the real acceptance test, and what
+they have approved stays.
 
-**Books.** One chapter per page, with every link and internal reference
-complete.
-- **Setup.** Name the edition and variant you convert.
-  - The root `_index.md` has `type: book`, `cascade: {type: book}`, and
-    `outputs: [HTML, print, markdown]`.
-  - Each chapter directory has a hand-written `book_number` and `weight`.
-  - Images live in page bundles.
-- **Conversion.**
-  - Keep the converter and its README in `scripts/` for the next edition.
-  - Convert two samples, review them with your user, then run the rest.
-  - PDF traps: reading order, broken lines and identifiers, tables that cross
-    pages, numeric output read as headings.
-- **Markup.**
-  - Figures, tables, and `$$` equations take an attribute line touching the
-    block: `{#id num="2-1" caption="…"}`.
-  - Examples put `num`, `caption`, and `#id` on the code fence.
-  - Use `xref` for references. Put `book-toc` and the `book-*` index
-    shortcodes on the book home.
-  - PostgreSQL `$$` stays inside code; a SQL chapter has no KaTeX.
-- **Checks.**
-  - Counts against the source; footnote links both ways.
-  - Whole-book print: anchors, cross-chapter links, page count.
-  - `index.md`, and the theme's `bin/check-book.py --site-public public`.
-  - Leave the status at `failed` when it failed. Keep errata apart from the
-    original text.
-- **Several books.** One session or subagent per book. A coordinator assigns
-  them and accepts results in waves.
+- The first screen names the subject and offers a real next step: reading for
+  a book, a working command for a product, a way into the story for an
+  archive.
+- Restraint over decoration: real content and real status rather than
+  ornamental badges, counters, or effects.
+- Headlines and card text wrap cleanly in every language and width, with no
+  word or two stranded on a line of their own; rewriting the copy is the
+  usual fix.
+- Grids fit their item count, and cards in a row line up.
 
-**Languages.**
-- **File model.** New sites pair files (`page.md` + `page.zh.md`). Existing
-  sites keep their model; DDIA uses per-language `contentDir`. Never mix the
-  two. Enable only languages with real content.
-- **Peers.** Paired pages share `weight`, `date`, `aliases`, and heading IDs
-  and order. Each enabled language needs its own:
-  - `data/home/<lang>.yaml` (without it, English shows up silently);
-  - footer data;
-  - menus with matching identifiers.
-- **Gaps.** Never fill a gap with the original text or mixed languages. A
-  placeholder says the page is untranslated and links the source. Otherwise
-  leave the route out. Different editions are not translations of each other.
-- **Bundles.** Unsuffixed resources are shared. A bundle with only
-  `index.zh.md` needs `.zh.`-suffixed resources.
-- **Duo View** (`params.ui.compare: true`) needs:
-  - a published same-origin translation;
-  - CSP `frame-src 'self'`;
-  - analytics guarded by `window.OinkComparePane`.
+## Check and ship
 
-  Aligned heading IDs make Sync Scroll accurate.
-- **Credits.** Name author and translator where the translation is published.
-  Ask the translator whether to appear on source-language pages. Keep
-  translation wording to a dedicated translation workflow; this skill covers
-  the site.
+- Build the way production will, without local module replacements or
+  workspaces, and read every warning:
 
-## Home page and design
+  ```bash
+  export GOWORK=off HUGO_MODULE_WORKSPACE=off; unset HUGO_MODULE_REPLACEMENTS
+  hugo mod graph | grep github.com/pgsty/oink
+  hugo --cleanDestinationDir --gc --minify --environment production --printPathWarnings
+  ```
 
-**Mechanics that bite** (the details are in `customize/home`):
-- **Structure.** The home page is `data/home/<lang>.yaml`: a `sections` list
-  plus named keys, with 22 built-in types. A misspelled type warns and is
-  skipped.
-  - `{type: cards, key: chapters}` tells two instances apart.
-  - `partial:` renders a site template; prefix its name with the site.
-- **Data.**
-  - Write internal URLs without a leading slash.
-  - Facts such as stars, prices, and avatars are committed data.
-  - The footer lives in `data/footer/<lang>.yaml`, never in home data.
-- **Links.** Landing `cards` link through an action row, so a whole-card click
-  needs scoped site CSS. In content pages, Markdown `{.cards}` lists are
-  already whole-card links.
-- **Highlighting.** Chroma highlights `code-plate`, `preview`, and fences
-  inside Markdown fields. It does not highlight `command-box`, `steps`, or
-  `capabilities` lines.
-- **Presets.** Sites maintained by the OINK project use
-  `params.ui.preset: paper`, `preset_menu: [paper, slate, ink, terminal]`,
-  and `dark_mode: true`; it is a good default when readers should choose.
-- **Brand.** Change it only through config and public tokens:
-  - `params.logo`/`wordmark` and favicons in `static/`;
-  - `theme_color`, per section through `cascade`;
-  - `params.ui.fonts`, `--td-brand-*`, and the eight font-role properties.
-
-  Set light and dark values in pairs. Never edit theme files, and load no
-  remote fonts or CSS.
-
-**Review standards from OINK's own sites:**
-- **Substance first.** The first screen names a specific subject and offers a
-  useful next step. A book offers reading and contents; a product, a working
-  command and docs; an exhibition, a narrative way in. Never invent numbers,
-  savings, star counts, status lights, or unshipped features.
-- **No orphans.** A few characters stranded on a new line are the defect the
-  maintainers reject most often.
-  - A line either fits on one line or fills two balanced lines, in every
-    language and at every width.
-  - Fix it by rewriting the copy or adjusting width and size.
-  - Never fake it with an ellipsis, a line clamp, or a fixed `nowrap`.
-- **Rhythm fits the content.** Cards in a row have the same number of lines.
-  The grid fits the item count: 6 items make 3×2, not 4+2. Long commands get
-  width; short claims get compact cards.
-- **Restraint.**
-  - None of the following: decorative numbering, count badges, eyebrows that
-    repeat the title, pulse dots, glassmorphism, terminal chrome.
-  - Badges only for real status.
-  - Whole cards are links; there are no "View more" buttons.
-  - Copy is specific. An intro line earns its place or goes.
-- **Faithful people and facts.**
-  - Show real authors and translators with photos and links. Never credit an
-    AI tool as translator.
-  - Give exact provenance: "Fork of X · originally by Y · maintained by Z ·
-    licence".
-  - Put the legal entity and address only in the footer or a Company page.
-  - Balance footer columns and keep labels to one line.
-- **Keep what was approved.** Removing a frame is not removing the image.
-
-**Shapes that worked**, as starting points:
-- **DDIA book home:** hero with cover and three reading actions →
-  author/translator cards → preface → parts and chapters → rights →
-  contributors.
-- **vchord product home:** hero with provenance → compact facts → quick start
-  → docs grid → FAQ → CTA.
-- **vonng.com:** portrait, small eyebrows, fitted grids.
-- **us.vonng.com:** text on the left, the original image on the right, one card
-  per part.
-
-Design for the material in front of you; these orders are not quotas.
-
-**CSS rules.**
-- Site styles go in `assets/css/project.css` (and `assets/css/project/*.css` in
-  path order) as plain CSS, scoped under a site prefix or a section `class`.
-  The legacy `assets/scss/_*_project*.scss` hooks are retired and ignored.
-- Never restyle `.td-*` globally or use a global `!important`.
-- Check every preset in the menu in both light and dark, plus RTL, print, and
-  narrow screens.
-- For site-owned shells that do not load `main`, request `chrome`, `landing`,
-  `search`, or `compare` through `partial "css/bundle.html"`.
-
-## Extensions
-
-- **Theme first.** Use theme features before writing your own. Configurators,
-  generators, sync scripts, custom partials, and CSS are site extensions.
-  - Put them in the narrowest hook: `layouts/_partials/hooks/head-end.html`,
-    `body-end.html`, or a section's `partial:`.
-  - Name them in the site's `AGENTS.md`, and never call them OINK features.
-  - When several sites need the same one, propose it upstream through the
-    [design proposals](https://oink.pgsty.com/docs/design/proposals/) process
-    or an issue on <https://github.com/pgsty/oink>.
-- **No copies.** Don't copy a shell or `baseof.html` for one change. Don't build
-  new home pages as a hand-written `layouts/index.html` with `static/css`.
-- **Integrations stay off** until they are chosen completely.
-  - Giscus and GA need the project's own IDs.
-  - `share` is an explicit list.
-  - Assistant links send the URL to a third party.
-
-Within that boundary, invent freely: a new section partial, a data-driven
-index, an unusual reading path. Do it when the content calls for it.
-
-## Verify, report, publish
-
-```bash
-unset HUGO_MODULE_REPLACEMENTS; export GOWORK=off HUGO_MODULE_WORKSPACE=off
-hugo mod graph | grep github.com/pgsty/oink
-hugo --cleanDestinationDir --gc --minify --environment production --printPathWarnings
-git status --short
-```
-
-- **Pass criteria.** The build prints `Total in …` with no ERROR, and you have
-  read every WARN. OINK 1.6.0+ uses plain CSS and emits no LibSass notice (sites
-  still pinned to 1.5.1 or older still see the upstream LibSass deprecation
-  notice on Hugo 0.169).
-  - Never use `--panicOnWarning` or `HUGO_PANICONWARNING`.
-  - Most bad input warns and falls back. Unresolved `ref`/`relref` and leftover
-    `blocks/*` fail the build.
-  - Add `--printI18nWarnings` on multilingual sites. Use the real `--baseURL`
-    for subpaths, never `canonifyURLs`.
-- **Checks, as relevant.** Run the theme's checkers from a checkout of
-  <https://github.com/pgsty/oink> at the pinned tag.
-  - the site's own `make check`;
-  - `bin/check-output-security.py --public <dir> --base-url <url>`;
-  - `bin/check-book.py`;
-  - internal links;
-  - rendered heading IDs of one translated pair;
-  - `index.md` and `llms.txt`.
-- **Browser review.**
-  - Each language root, plus one page of each surface.
-  - Desktop and about 390 px; light and dark, and each preset offered.
-  - Language switching lands on the peer page.
-  - Search, anchors, long code and tables, keyboard use, print, 404, and
-    landing pages with JS off.
-  - To hunt orphans across many pages, measure line boxes.
-
-  Your user's eye is the acceptance test. A green build proves only that the
-  build passed.
-- **Report.**
-  - Name the reference you followed, the files you changed, the checks you ran
-    and what you did not cover, where to preview, and what remains.
-  - Keep the states separate: source complete → locally validated → committed
-    → pushed → deployed → production verified.
-  - Commit, push, deploy, or touch DNS only when asked. Commit in logical
-    batches, and make a baseline commit before a redesign.
-- **Deploy.**
-  - One production path; the Starter ships GitHub Pages and Cloudflare Direct
-    Upload.
-  - Pin Hugo in CI and on the host; drift in `HUGO_VERSION` has broken builds.
-  - Use `fetch-depth: 0` with `enableGitInfo`, and `--environment staging`
-    for previews.
-  - Files in ignored paths are missing from a deploy built from Git.
-  - After deploying, check the canonical URL, sitemap, robots, search index,
-    language switching, and 404 at the public URL.
-  - Roll back by redeploying, never by editing production.
-- **Upgrade.**
-  - Read every release note between the two pins. Run
-    `hugo mod get …@<tag>` and `hugo mod tidy`. Source copies and submodules
-    update separately.
-  - Migrate old syntax with the toolkit. Keep the site's preset policy.
-  - Commit the pin separately from content.
-
-## Failures worth remembering
-
-- **Wrong repository.** A company site was built in the wrong directory until
-  the maintainer asked why it was not the topical site that directory held.
-- **Template pastiche.** Generic visuals were rejected outright. A global
-  `!important` overrode about 1,800 lines of site SCSS, and a
-  `git checkout HEAD` then destroyed the uncommitted styles.
-- **"Zero warnings" gates.** They pulled in a Dart Sass dependency that was
-  later revoked; ordinary users must not need an extra Sass install.
-- **Silent breakage.**
-  - `$$` in SQL rendered as math.
-  - Numbers were read as headings.
-  - PDFs in an ignored `static/` were missing from the deploy.
-  - Chinese pages linked to English books through broken `/zh/` routes.
-- **False "done" reports.**
-  - Completeness claimed from file counts.
-  - A Beta edition labelled GA.
-  - Failing links hidden behind "done".
-  - Prose over-trimmed until it lost 16 conditions.
+- Look at the result in a browser: each language, each kind of page, a phone
+  width, light and dark, each preset offered, search, and language switching.
+  A green build only proves that the build ran.
+- The theme repository's `bin/` has checkers for output security, books, and
+  translations when a site needs that depth.
+- Report what you followed, what you changed, what you checked and what you
+  did not, and keep the states apart: built locally, committed, pushed,
+  deployed, verified live. Count what readers get, such as chapters, figures,
+  and working links, rather than files.
+- `admin/deploy` covers hosts, CI, `baseURL`, security headers, and rollback;
+  remember that files in ignored paths never reach a deploy built from Git.
+  `admin/upgrade` covers moving between releases.

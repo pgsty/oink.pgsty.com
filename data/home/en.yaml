@@ -287,11 +287,13 @@ cases:
 quickstart:
   eyebrow: Get started
   title: Build your site with an AI agent
-  text: Copy this prompt into Claude Code, Codex, or any coding agent to build an OINK site.
+  text: Replace the brackets with your site's details, then paste it into Claude Code, Codex, or any coding agent.
   class: td-home-prompt-box
-  code: >-
-    Please build a Hugo website for my project using the OINK theme (github.com/pgsty/oink) starting from https://github.com/pgsty/oink-starter. Follow the OINK site-building skill at https://oink.pgsty.com/skill.md, verify syntax against the official docs at https://oink.pgsty.com/docs/ (Markdown index: https://oink.pgsty.com/llms.txt), and draw layout inspiration from live cases in https://oink.pgsty.com/case/ such as pigsty.io, hugegraph.apache.org, barn.pgsty.com, and ddia.vonng.com.
-  note: 'See [Build with an AI agent](docs/start/#agent-skill) to install `skill.md` permanently, or follow [OINK Starter](docs/start/starter/).'
+  code: |-
+    Build a site with Hugo and the OINK theme, following the OINK site-building skill: https://oink.pgsty.com/skill.md
+    Use the OINK docs (https://oink.pgsty.com/docs/) and their examples, and make full use of OINK's features.
+    Site details: [name, directory, content and audience, topic, sections, format, style, domain, hosting…]
+  note: 'To keep the skill installed for every session, see [Build with an AI agent](docs/start/#agent-skill).'
 
 faq:
   eyebrow: Before you commit

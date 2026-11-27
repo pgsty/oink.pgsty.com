@@ -11,11 +11,11 @@ proposal_date: 2026-11-27
 ---
 
 > [!NOTE] 已实现，等待接受
-> 已在主题 main 分支的工作区中实现，并写入了[时间轴指南](/zh/docs/components/timeline/)。尚未提交，也未发布。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
+> 已在主题 `main` 分支实现（`730e9f6`，并在工作区补充评审修复），并写入了[时间轴指南](/zh/docs/components/timeline/)。尚未包含在发布标签中。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 2026-11-27 实现；尚未提交；等待接受 |
+| 状态 | 2026-11-27 在 `main` 实现；评审修复进行中；等待发布 |
 | 负责人 | OINK 维护者 |
 | 交付阶段 | S1，与 [Update](/zh/docs/design/proposals/component-update/) 同批 |
 | 形态 | 原生：Markdown 定义列表后接 `{.timeline}` |
@@ -89,7 +89,7 @@ HTML 结构由 Goldmark 生成；主题只添加 CSS，并把作用域限定在 
 | --- | --- |
 | 宽栏 | 两列网格：标记列按内容定宽并设上限（约 10rem），另一列为事件列。轴线沿事件列的起始边延伸，每个标记所在行上有一个节点 |
 | 窄栏 | 单列：标记位于正文上方，轴线和节点位于起始边 |
-| Ink、Terminal | 平面表面；方形节点；标记使用等宽字体和表格数字（tabular numerals） |
+| Ink、Terminal | 平面表面；方形节点（Ink 为 `0px`，Terminal 为 `2px` 圆角）；沿用预设 `--td-meta-font-family`（Ink 为无衬线 `Inter`，Terminal 为 `IBM Plex Mono`）和表格数字（tabular numerals） |
 | 强制颜色 | 轴线和节点使用系统颜色；不靠颜色传达含义 |
 | Print | 轴线呈现为细边框；无背景；短条目避免内部分页 |
 | RTL | 逻辑属性使轴线镜像 |

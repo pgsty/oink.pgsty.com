@@ -91,7 +91,7 @@ OINK 沿用 Hugo 原生的多语言模型：译文路由、按权重排序的语
 
 另有两种输出，服务于想一次拿到全部内容的 Agent。栏目开启 `LLMSFULL` 后，整个栏目拼成一份 `llms-full.txt`，Agent 一次请求即可取完；站点开启 `NAVJSON` 后，每种语言发布一份 `navigation.json`，把侧栏树作为数据提供。本站两者都已开启：<https://oink.pgsty.com/zh/docs/llms-full.txt> 与 <https://oink.pgsty.com/zh/navigation.json>。
 
-「在 ChatGPT / Claude 中打开」链接默认关闭，因为读者一点击，当前页面的 URL 就会交给第三方。站点需要显式打开 `params.ui.page_context_menu.assistant_links`。
+「在 ChatGPT / Claude / Gemini 中打开」链接默认关闭，因为读者一点击，当前页面的 URL 就会交给第三方。站点需要显式打开 `params.ui.page_context_menu.assistant_links`。
 
 → [Agent 支持](/zh/docs/customize/agents/)
 

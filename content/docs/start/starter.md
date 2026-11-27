@@ -208,8 +208,8 @@ incomplete one only warns and stays off.
   record nothing without it; see
   [Repository links and page info](/docs/customize/repository/#feedback).
 - Assistant links (`params.ui.page_context_menu.assistant_links`) send the page
-  URL to ChatGPT or Claude when a reader uses them. They are off by default;
-  turning them on is a privacy decision for your project.
+  URL to ChatGPT, Claude or Gemini when a reader uses them. They are off by
+  default; turning them on is a privacy decision for your project.
 
 Check that each integration you enabled appears on the page and that the build
 prints no warning about it.

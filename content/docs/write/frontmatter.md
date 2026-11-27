@@ -109,7 +109,7 @@ or when a section index should list its children differently.
 | `theme_color` | string | site value | `#rgb` or `#rrggbb` accent for this page. In a section root's `cascade`, it gives the whole section its own color. See [Brand and appearance](/docs/customize/brand/#theme-color) |
 | `theme_color_dark` | string | derived | The dark-mode accent. A page that overrides only `theme_color` under a cascade that sets this key inherits the cascade's dark value, so override both. `theme_color: false` opts the page out of an inherited section color |
 | `page_context_menu` | boolean | site value (`true`) | The page action menu on the title row: copy Markdown, edit this page, print and so on |
-| `page_context_menu.assistant_links` | boolean | site value (`false`) | The ChatGPT and Claude items, written `page_context_menu: { assistant_links: false }`. A page can only turn them off; it cannot turn them on when the site has not |
+| `page_context_menu.assistant_links` | boolean | site value (`false`) | The ChatGPT, Claude and Gemini items, written `page_context_menu: { assistant_links: false }`. A page can only turn them off; it cannot turn them on when the site has not |
 {.fields meta="type default"}
 
 ## Page shell {#shell}

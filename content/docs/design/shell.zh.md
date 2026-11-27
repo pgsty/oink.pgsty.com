@@ -353,7 +353,8 @@ HTML 页面加入稳定的 `js/chunks/keyboard.js`，依次包含 `history.js` �
   `[data-td-keyboard-search-route]` 并在那里恢复所请求的状态。
 - `u`、`n`、`i`、`p`、`m`、`[`、`]` 与 `\` 通过操作注册表分别执行 `edit_page`、
   `create_child_page`、`create_issue`、`print`、`view_markdown`、`open_chatgpt`、
-  `open_claude` 与 `open_gemini`，只在描述符可用时执行。`x` 与 `v` 分别跳到
+  `open_claude` 与 `open_gemini`，只在描述符可用时执行（未注册 `print` 描述符时，
+  `p` 回退到 `window.print()`）。`x` 与 `v` 分别跳到
   `switch_language` 与 `switch_version` 中下一个可用、非当前且带 URL 的选项，到末尾
   后回到开头；`x` 回退到 `[data-td-language-route]`。`g` 打开清单中的 `home`
   （`Site.Home.RelPermalink`），缺失时回退到品牌链接；在首页上则滑回顶部。
@@ -397,24 +398,29 @@ HTML 页面加入稳定的 `js/chunks/keyboard.js`，依次包含 `history.js` �
 Enter（当前标签页）、Ctrl/Cmd+Enter 或带修饰键点击（新标签页）、Shift+Delete
 （删除所选条目），以及 `[data-td-history-clear]` 按钮（全部清除，列表为空时禁用）。
 没有条目时列表框不含任何子元素，空列表或无匹配的提示显示在相邻的
-`[data-td-history-empty]` 中。Escape 或点击遮罩关闭它并恢复焦点。打开期间持有 `data-td-shell-lock`，并以
-`history` 名义注册到协调器。
+`[data-td-history-empty]` 中。非输入法组字状态下的 Escape 或点击遮罩关闭它并恢复
+焦点（原触发元素不可见时回退到 `#td-main-content`）；通过命令面板启动
+`browse_history` 会先关闭面板并恢复触发元素焦点，以便退出历史浮层时回到该触发元素。
+打开期间持有 `data-td-shell-lock`，并以 `history` 名义注册到协调器。
 
-`o` 一并展开或折叠侧栏与右栏分组（`#td-shell-sidebar` 或 `[data-td-shell-aside]`
-中的 `[data-td-shell-tree-toggle]`，通过来源为 `api` 的 `OinkSidebar.setExpanded`）、
-对话框、悬停菜单、站点页眉与模板以外的所有 `<details>`，以及通过展开按钮处理的
-`[data-td-code].is-collapsible` 代码块。只要有任一目标处于折叠状态，就全部展开；
-否则全部折叠，`api` 来源会保持当前页面所在的活动路径展开。侧栏与右栏本身的收起
-状态以及弹出菜单都不是目标。期间用一帧 `html[data-td-kbd-instant]` 抑制过渡，
-主栏顶部的元素保持在视口中的原位。
+`o` 一并展开或折叠可见的侧栏与右栏分组（处于活动状态的 `#td-shell-sidebar` 或
+`[data-td-shell-aside]` 中的 `[data-td-shell-tree-toggle]`，通过来源为 `api` 的
+`OinkSidebar.setExpanded`）、对话框、悬停菜单、站点页眉与模板以外的所有可见
+`<details>`，以及通过展开按钮处理的可见 `[data-td-code].is-collapsible` 代码块。
+只要有任一目标处于折叠状态，就全部展开；否则全部折叠，`api` 来源会保持当前页面
+所在的活动路径展开。侧栏与右栏本身的收起状态、已折叠或隐藏的边栏（包括禅意模式）
+以及弹出菜单都不是目标。期间用一帧 `html[data-td-kbd-instant]` 抑制过渡，阅读线处
+最深层的可见正文块保持在视口中的原位。
 
 `-` 与 `=`（或 `+`）为 `.td-shell-layout .td-shell-article` 设置读者宽度，从当前
-渲染宽度起每步 100 px，最窄 600 px（容器更窄时以容器为准）。加宽到容器宽度时保存
-`none`，在任何屏幕上都铺满容器。某一步到达或越过页面自身宽度（去掉覆盖后测得）时，
-停在该宽度并删除保存的值。该值以 `td-shell-article-w`（像素或 `none`）存放在
-`localStorage` 中；开启键盘导航的外壳页面由首帧前脚本恢复为
-`html[data-td-shell-article-w]` 与 `--td-shell-article-w`。`@media screen` 规则覆盖
-`page_width` 与 Book 的 `.td-content` 正文宽度，打印时不生效。
+实际阅读栏宽度起（当 Book 的 `reading_width` 收窄正文时，以 `.td-content` 加文章
+水平内边距计量）每步 100 px，最窄 600 px（容器更窄时以容器为准）。加宽到容器宽度
+时保存 `none`，在任何屏幕上都铺满容器。某一步到达或越过页面自身宽度（去掉覆盖后
+测得）时，停在该宽度并删除保存的值。该值以 `td-shell-article-w`（像素或 `none`）
+存放在 `localStorage` 中；开启键盘导航的外壳页面由首帧前脚本恢复合法值（`none` 或
+`>= 600` 的整数像素）为 `html[data-td-shell-article-w]` 与 `--td-shell-article-w`。
+`@media screen` 规则覆盖 `page_width` 与 Book 的 `.td-content` 正文宽度，打印时不
+生效。
 
 ## 搜索尾部扩展 {#search-tail-extensions}
 

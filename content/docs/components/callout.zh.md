@@ -147,7 +147,7 @@ aliases:
 
 ## 中性折叠块 DETAILS {#details}
 
-`[!DETAILS]` 是不带颜色和图标的折叠块，默认收起，写成 `[!DETAILS]+` 则默认展开。内容既不是提示也不是警告、只是篇幅长时用它，例如一份完整配置文件、一段完整日志。
+`[!DETAILS]` 是不带颜色和图标的折叠块，默认收起，写成 `[!DETAILS]+` 则默认展开。内容既不是提示也不是警告、只是篇幅长时用它，例如一份完整配置文件、一段完整日志，或紧跟在播放器后的[音频文字稿](/zh/docs/components/audio/#transcript)。
 
 ````markdown {title="源码"}
 > [!DETAILS] 完整的 `hugo version` 输出

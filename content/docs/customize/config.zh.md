@@ -237,7 +237,7 @@ favicon 没有参数：主题按约定文件名在 `static/` 里查找（`favico
 | `params.ui.dark_mode` | boolean 或 map | false | `true` 同时打开深色调色板与深浅色控件；只要控件写 `dark_mode: { show_menu: true }` |
 | `params.ui.breadcrumb` | boolean | true | 标题上方的面包屑导航。顶层分区本来就不显示只有一级的面包屑 |
 | `params.ui.page_context_menu.enable` | boolean | true | 面包屑行右端的页面操作拆分按钮 |
-| `params.ui.page_context_menu.assistant_links` | boolean | false | 加上「在 ChatGPT 中打开」「在 Claude 中打开」；点击时会把页面的完整 URL 发给对方站点 |
+| `params.ui.page_context_menu.assistant_links` | boolean | false | 加上「在 ChatGPT 中打开」「在 Claude 中打开」「在 Gemini 中打开」；点击时会把页面的完整 URL 发给对方站点 |
 | `params.ui.page_context_menu.links` | list | [] | 自定义外部操作，`url` 可使用 `{url}`、`{title}`、`{markdown_url}` 占位符 |
 | `params.ui.github_stars` | string 或 number | | 顶栏 GitHub 徽标上的星数，是你写死的常量，页面不发任何请求 |
 | `params.ui.alt_site` | map | | 单语言站点页脚里的姊妹站链接，`label` 与绝对 `http(s)` 地址 `url` 缺一不可 |

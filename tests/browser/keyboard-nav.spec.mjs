@@ -272,23 +272,19 @@ test('homepage j and k jump between landing sections, g returns to the top, and 
   expect(await sections.nth(1).getAttribute('id')).toBe('capabilities');
 
   await page.keyboard.press('j');
-  await page.waitForTimeout(180);
-  expect(await page.evaluate(() => location.hash)).toBe('#capabilities');
-  expect(await page.evaluate(() => scrollY)).toBeGreaterThan(100);
+  await expect.poll(() => page.evaluate(() => location.hash)).toBe('#capabilities');
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);
 
   await page.keyboard.press('k');
-  await page.waitForTimeout(180);
-  expect(await page.evaluate(() => scrollY)).toBeLessThan(3);
-  expect(await page.evaluate(() => location.hash)).toBe('#hero');
+  await expect.poll(() => page.evaluate(() => location.hash)).toBe('#hero');
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeLessThan(3);
 
   // G on the home page glides back to the top instead of reloading.
   await page.keyboard.press('j');
   await page.keyboard.press('j');
-  await page.waitForTimeout(180);
-  expect(await page.evaluate(() => scrollY)).toBeGreaterThan(100);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);
   await page.keyboard.press('g');
-  await page.waitForTimeout(180);
-  expect(await page.evaluate(() => scrollY)).toBeLessThan(3);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeLessThan(3);
   expect(new URL(page.url()).pathname).toBe('/');
 
   await page.keyboard.press('z');
@@ -499,7 +495,7 @@ test('t steps the visual style, y cycles light/dark/system, and x switches the l
 
   // L is the index layout now; on a docs page it has nothing to switch.
   await page.keyboard.press('l');
-  await page.waitForTimeout(150);
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   expect(new URL(page.url()).pathname).toBe(docsPath);
 
   await page.keyboard.press('x');
@@ -607,7 +603,7 @@ test("' toggles the 3 x 10 shortcut help anywhere and dims what the page cannot 
 
   // ; is the gallery layout now and opens nothing here.
   await page.keyboard.press(';');
-  await page.waitForTimeout(100);
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   await expect(dialog).toBeHidden();
 
   // A narrow viewport stacks the groups inside the viewport.
@@ -882,23 +878,57 @@ test('h lists earlier pages newest first, filters, forgets and clears them', asy
   await expect(page.locator('html')).not.toHaveAttribute('data-td-shell-lock', '');
 });
 
-test('h then Enter returns to the previous page, and the palette opens the same list', async ({
+test('h then Enter returns to the previous page, and the palette opens the same list with focus return', async ({
   page,
 }) => {
+  await recordPageActions(page);
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto(docsPath, { waitUntil: 'domcontentloaded' });
+
+  // First visit: only the current page is stored, so Clear history starts disabled.
+  const root = page.locator('#td-shell-history');
+  await page.keyboard.press('h');
+  await expect(root).toBeVisible();
+  await expect(root.locator('[role="option"]')).toHaveCount(0);
+  await expect(root.locator('[data-td-history-clear]')).toBeDisabled();
+
+  // Escape during IME composition must not close the history overlay.
+  await root.locator('.td-shell-search__input').evaluate((input) => {
+    input.dispatchEvent(new CompositionEvent('compositionstart', { bubbles: true }));
+    input.dispatchEvent(new KeyboardEvent('keydown', {
+      key: 'Escape', keyCode: 229, isComposing: true, bubbles: true, cancelable: true,
+    }));
+  });
+  await expect(root).toBeVisible();
+  await root.locator('.td-shell-search__input').evaluate((input) => {
+    input.dispatchEvent(new CompositionEvent('compositionend', { bubbles: true }));
+  });
+  await page.keyboard.press('Escape');
+  await expect(root).toBeHidden();
+
   await page.goto('/zh/docs/customize/keyboard/', { waitUntil: 'domcontentloaded' });
 
-  // Every language of the site shares one history.
+  // Every language of the site shares one history; Ctrl+Enter opens in a new tab.
   await page.keyboard.press('h');
-  const root = page.locator('#td-shell-history');
   await expect(root).toBeVisible();
   await expect(root.locator('[role="option"]').first()).toContainText(docsPath);
+  await root.locator('.td-shell-search__input').press('Control+Enter');
+  await expect.poll(() => page.evaluate(() => window.__opened.length)).toBe(1);
+  const newTab = await page.evaluate(() => window.__opened[0]);
+  expect(new URL(newTab.url).pathname).toBe(docsPath);
+  expect(newTab.target).toBe('_blank');
+  expect(newTab.features).toBe('noopener');
+  await expect(root).toBeVisible();
+
   await page.keyboard.press('Enter');
   await page.waitForURL((url) => url.pathname === docsPath);
 
+  // Opening Browsing history from the Command Palette restores focus to the
+  // original visible opener on Escape instead of dropping focus on the closed palette.
+  const trigger = page.locator('[data-td-shell-search-open]:visible').first();
+  await trigger.focus();
+  await trigger.click();
   const palette = page.locator('#td-shell-search');
-  await page.keyboard.press('c');
   await expect(palette).toBeVisible();
   await palette.locator('.td-shell-search__input').fill('>Browsing history');
   const option = palette.getByRole('option', { name: /Browsing history/ }).first();
@@ -909,6 +939,7 @@ test('h then Enter returns to the previous page, and the palette opens the same 
   await expect(root.locator('[role="option"]').first()).toContainText('/zh/docs/customize/keyboard/');
   await page.keyboard.press('Escape');
   await expect(root).toBeHidden();
+  await expect(trigger).toBeFocused();
 });
 
 test('g opens the home page of the current language', async ({ page }) => {
@@ -936,7 +967,7 @@ test('o opens every fold, then folds all but the current branch without moving t
   const target = page.locator(`[id="${decodeURIComponent(hash.slice(1))}"]`);
   // The root scrolls smoothly; place the heading instantly so the baseline is settled.
   await target.evaluate((element) => element.scrollIntoView({ block: 'start', behavior: 'instant' }));
-  await page.waitForTimeout(100);
+  await expect.poll(() => target.evaluate((element) => Math.abs(element.getBoundingClientRect().top))).toBeLessThan(120);
   const before = await target.evaluate((element) => element.getBoundingClientRect().top);
 
   const toggles = page.locator('#td-shell-sidebar [data-td-shell-tree-toggle]');
@@ -969,6 +1000,88 @@ test('o opens every fold, then folds all but the current branch without moving t
 
   await page.keyboard.press('o');
   expect((await states()).every((state) => state.expanded)).toBe(true);
+});
+
+test('o keeps the reading line steady on wide screens and ignores hidden rails in Zen Mode', async ({
+  page,
+}) => {
+  await openDocs(page, { width: 1920, height: 1000 });
+  await page.evaluate(() => {
+    const details = document.createElement('details');
+    details.setAttribute('data-test-fold', '');
+    details.innerHTML = '<summary>More</summary><p style="height:400px">Folded detail</p>';
+    document.querySelector('.td-content h2').before(details);
+  });
+  const hash = await page.locator('#TableOfContents a[href^="#"]').nth(1).getAttribute('href');
+  const target = page.locator(`[id="${decodeURIComponent(hash.slice(1))}"]`);
+  await target.evaluate((element) => element.scrollIntoView({ block: 'start', behavior: 'instant' }));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+  const beforeWide = await target.evaluate((element) => element.getBoundingClientRect().top);
+
+  await page.keyboard.press('o');
+  await expect(page.locator('[data-test-fold]')).toHaveAttribute('open', '');
+  const afterWide = await target.evaluate((element) => element.getBoundingClientRect().top);
+  expect(Math.abs(afterWide - beforeWide)).toBeLessThanOrEqual(2);
+
+  // Enter Zen Mode: hidden rail toggles must not affect o, so pressing o once
+  // closes the open <details> and keeps the heading anchored.
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.keyboard.press('z');
+  await expect(page.locator('html')).toHaveAttribute('data-td-kbd-zen', '');
+  await target.evaluate((element) => element.scrollIntoView({ block: 'start', behavior: 'instant' }));
+  const beforeZen = await target.evaluate((element) => element.getBoundingClientRect().top);
+
+  await page.keyboard.press('o');
+  await expect(page.locator('[data-test-fold]')).not.toHaveAttribute('open', '');
+  const afterZen = await target.evaluate((element) => element.getBoundingClientRect().top);
+  expect(Math.abs(afterZen - beforeZen)).toBeLessThanOrEqual(2);
+
+  // Without any visible article foldables in Zen Mode, help dims expand-all.
+  await page.evaluate(() => {
+    document.querySelectorAll('.td-content details, .td-content [data-td-code].is-collapsible')
+      .forEach((el) => el.remove());
+  });
+  const dialog = await openHelp(page);
+  expect(await unavailableRows(dialog)).toContain('expand-all');
+  await page.keyboard.press('Escape');
+});
+
+test('- and = step smoothly on Book slim reading_width, ignore invalid prepaint values, and yield to print', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1920, height: 1000 });
+  await page.goto('/book/01-start/', { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() => {
+    document.body.classList.remove('td-book-content--normal', 'td-book-content--wide');
+    document.body.classList.add('td-book-content--slim');
+  });
+  const contentWidth = () => page.locator('.td-shell-layout .td-shell-article > .td-content')
+    .evaluate((el) => Math.round(el.getBoundingClientRect().width));
+
+  const slimWidth = await contentWidth();
+  expect(slimWidth).toBe(768);
+
+  await page.keyboard.press('-');
+  await expect.poll(contentWidth).toBe(slimWidth - 100);
+  await page.keyboard.press('=');
+  await expect.poll(contentWidth).toBe(slimWidth);
+  expect(await storedWidth(page)).toBeNull();
+
+  await page.keyboard.press('=');
+  await expect.poll(contentWidth).toBe(slimWidth + 100);
+
+  // Print ignores the screen-only reader width override.
+  await page.emulateMedia({ media: 'print' });
+  await expect.poll(async () => page.locator('.td-shell-layout .td-shell-article')
+    .evaluate((el) => getComputedStyle(el).maxWidth)).not.toBe(
+      `${await storedWidth(page)}px`,
+    );
+  await page.emulateMedia({ media: 'screen' });
+
+  // Prepaint rejects stored widths below the 600 px minimum.
+  await page.evaluate(() => localStorage.setItem('td-shell-article-w', '200'));
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await expect(page.locator('html')).not.toHaveAttribute('data-td-shell-article-w', '');
 });
 
 test('- and = narrow and widen the reading column, persist, and step back to the page width', async ({

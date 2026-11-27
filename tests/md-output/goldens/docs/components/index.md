@@ -48,7 +48,7 @@ for it: **none**, **per page** (only on pages that use it), or **site switch**
 | [Infographic](/docs/components/infographic/) | AntV infographics that show order, hierarchy or comparison | ```` ```infographic ```` | fence | per page |
 | [Gallery](/docs/components/gallery/) | A set of images browsed in one shared zoom dialog | ```` ```gallery ```` | fence | site switch |
 | [Video](/docs/components/video/) | Video files, looping demos, YouTube and Bilibili cards | `![name](demo.mp4)` | native | per page; players need a site switch |
-| [Audio](/docs/components/audio/) | Podcast episodes and voice samples in a titled native player | `![name](episode.mp3)` | native | none |
+| [Audio](/docs/components/audio/) | Podcast episodes and voice samples in a titled native player | `![name](episode.mp3)` | native | none for one; per page for two+ |
 | [Social posts](/docs/components/social/) | A social media post quoted in the page, with nothing fetched | `{{< social author="…" >}}` | shortcode | none |
 | [Map](/docs/components/map/) | Places as a list, plus an interactive map when enabled | ```` ```map ```` | fence | site switch |
 | [Badge](/docs/components/badge/) | A one- or two-word status beside a name, such as Beta | `{{< badge text="Beta" >}}` | shortcode | none |
@@ -69,9 +69,10 @@ A few entries in the *Runtime* column depend on what is on the page:
   formulas are already HTML and MathML when the page is built.
 - Draw.io loads only on pages with PNG or SVG images, and it downloads each
   distinct image once to look for an editable copy.
-- Video loads `media.js` only for an autoplaying video or for a card whose
-  platform is listed in `params.video_embeds`. A map loads Leaflet only when
-  `params.map` is configured; otherwise it stays a list of places.
+- Video and audio share `media.js`, loaded only for an autoplaying video, for a
+  card whose platform is listed in `params.video_embeds`, or on pages with two
+  or more audio/video players (for single-active playback). A map loads Leaflet
+  only when `params.map` is configured; otherwise it stays a list of places.
 
 No component loads a script in print, Markdown or RSS output. Each component
 page says what those outputs contain when it differs from what you would
