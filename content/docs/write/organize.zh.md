@@ -1,40 +1,44 @@
 ---
 title: 组织内容
 linkTitle: 组织内容
-description: 目录结构就是侧栏树：`_index.md` 与 weight、栏目首页样式、图标与折叠、隐藏页面、把文档放在任意路径。
+description: 用目录和 `_index.md` 搭出想要的侧栏，再控制排序、栏目首页、图标、折叠、隐藏页面，以及文档放在哪个路径。
 weight: 20
 search_keywords: [组织内容, 目录结构, 侧栏, sidebar, weight, -index, section, 栏目, type, cascade, sidebar-root-for, organizing]
 aliases:
   - /docs/content/organize/
 ---
 
-OINK 不需要单独配置导航：`content/` 下的目录结构就是侧栏树。本页覆盖目录与文件的摆放、栏目首页、排序、图标、折叠、隐藏，以及多根侧栏。
+`content/` 下的目录就是站点的导航：每个目录成为侧栏里的一组，每个 Markdown 文件成为一页，`weight` 决定顺序。所以搭侧栏靠的是摆放文件，而不是另外维护一份菜单。面包屑、上一页 / 下一页翻页器和每个栏目首页上的子页列表都由同一棵树生成，彼此始终一致。
 
 ## 目录就是侧栏 {#tree-is-sidebar}
 
-一个目录是一个栏目（Hugo 称 section），目录里的 Markdown 文件是它的页面，嵌套目录是它的子栏目。侧栏按这棵树逐层渲染，顺序由 `weight` 决定，标签取 `linkTitle`，缺省时取 `title`。左侧这棵树的源码如下：
+一个目录在 Hugo 中叫一个分区（section），目录里的 Markdown 文件是它的页面，嵌套目录是子分区。侧栏按这棵树逐层渲染，条目标签取 `linkTitle`（没有时取 `title`），同级之间按 `weight` 排序。一个产品的文档可能是这样：
 
-```filetree {title="content/docs/ 的前两层"}
+```filetree {title="content/docs/"}
 - content/
   - docs/
-    - _index.zh.md                   # 栏目根：type: docs + cascade
-    - about/                         # 简介       {open=false}
-      - _index.zh.md
-      - features.zh.md
-    - start/                         # 快速上手    {open=false}
-      - _index.zh.md
-    - write/                         # 创作内容（本栏目）
-      - _index.zh.md                 # weight: 30
-      - pages.zh.md                  # weight: 10
-      - organize.zh.md               # weight: 20
-      - frontmatter.zh.md            # weight: 30
-    - components/                    # 组件       {open=false}
-      - _index.zh.md
+    - _index.md                      # Docs 根：type: docs + cascade
+    - install/                       # weight: 10
+      - _index.md
+      - requirements.md              # weight: 10
+      - linux.md                     # weight: 20
+      - kubernetes.md                # weight: 30
+    - operate/                       # weight: 20
+      - _index.md
+      - backup.md                    # weight: 10
+      - upgrade/                     # weight: 20，一个页面包
+        - index.md
+        - upgrade-dialog.webp
+    - reference/                     # weight: 90
+      - _index.md
+      - configuration.md
 ```
+
+`upgrade/` 是一个页面包：目录里放 `index.md` 和这一页用到的文件。它在侧栏中的显示和 URL 都与单个文件完全相同，见[新建一页](/zh/docs/write/pages/#new-page)。
 
 ## 每个目录都要有 `_index.md` {#index-pages}
 
-栏目首页是目录里的 `_index.md`（中文为 `_index.zh.md`）。缺少它时 Hugo 仍会生成栏目，但没有标题、描述、图标与 `weight`：侧栏那一行显示目录名，排序不受控制。
+分区自己的页面是目录里的 `_index.md`（中文为 `_index.zh.md`）。缺了它，Hugo 仍会生成这个分区，但没有标题、描述、图标和 `weight`：侧栏里只显示目录名，位置也无法控制。
 
 ```yaml {title="content/docs/deploy/_index.zh.md"}
 ---
@@ -46,7 +50,7 @@ icon: fa-solid fa-cloud-arrow-up
 ---
 ```
 
-栏目 `_index.md` 另有一项专属能力：用 `cascade` 把共享设置一次下推给整棵子树，不必每页重复。
+分区的 `_index.md` 还可以写 `cascade`，把 front matter 下推给它下面的每一页，整棵子树共用的设置只需写一次：
 
 ```yaml {title="content/docs/reference/_index.zh.md"}
 ---
@@ -60,17 +64,13 @@ cascade:
 
 ## 排序：weight 用 10 的倍数 {#weight}
 
-同一栏目里的页面按 `weight` 升序排列，`weight` 相同时才退回日期与 `linkTitle` 字母序。一律用 10 的倍数（10、20、30），此后往中间插页不必改动其它页。栏目自身的 `weight` 决定它在父级里的位置。
+同级页面按 `weight` 升序排列，只有权重相同时才依次按日期和 `linkTitle` 排。按 10 递增编号（10、20、30），以后在两页之间插入新页时，就不必改动其它页的编号。分区自身的 `weight` 写在它的 `_index.md` 里，决定它在同级中的位置。
 
-没写 `weight` 的页面视为 0，Hugo 把它们排在所有写了 `weight` 的页面之后，彼此按日期与标题排列。这个顺序会随内容改动漂移，因此每页都写上 `weight`。
-
-## 单文件还是页面包 {#bundles}
-
-没有自身资源的页面用单文件 `slug.md`；带图片、cast、示例文件的页面改成目录加 `index.md`，资源与它同放。两种形态在侧栏里没有区别，URL 也相同。详见[编写页面](/zh/docs/write/pages/#new-page)。
+没写 `weight` 的页面按 0 计，Hugo 把它们排在所有写了权重的页面之后，彼此再按日期和标题排列。这个顺序会随内容变化而漂移，所以每页都写上 `weight`。
 
 ## 栏目首页显示子页列表还是卡片 {#section-index}
 
-`_index.md` 的正文之后，主题自动接上子页索引，两种样式：
+`_index.md` 正文之后，主题会自动列出该分区的子页，栏目首页不必手写目录。样式由站点选择：
 
 ```yaml {title="hugo.yml：全站默认"}
 params:
@@ -78,7 +78,7 @@ params:
     section_index: cards # list | cards
 ```
 
-`list` 是主题默认，每个子页一行标题加描述；`cards` 是链接卡片网格，读取子页的 `icon`、`linkTitle` 与 `description`。本站用 `cards`，本栏目首页即是例子。单个栏目需要另一种样式时在它的 front matter 里覆盖：
+`list` 是主题默认样式，每个子页一行，显示标题和描述。`cards` 是链接卡片网格，取每个子页的 `icon`、`linkTitle` 与 `description`，本栏目的首页就是例子。卡片样式下 `description` 就是卡片正文，控制在一句话、一行显示得下。某个分区需要另一种样式时，在它的 front matter 里覆盖：
 
 ```yaml {title="content/docs/reference/_index.zh.md"}
 section_index: list
@@ -86,20 +86,28 @@ cascade:
   section_index: list   # 连同后代栏目一起
 ```
 
-两个页面级开关不受样式影响：`simple_list: true` 渲染紧凑的项目符号列表，`no_list: true` 不生成索引，用于正文自行手写导航的场合。
+两个页面开关对两种样式都有效：`simple_list: true` 渲染只有标题的紧凑列表，`no_list: true` 不生成列表，适合正文已经自带导航的页面。卡片列数等站点级设置见[栏目首页样式](/zh/docs/customize/layout/#section-index)。
 
-> [!TIP]
-> 卡片样式下 `description` 即卡片正文。描述控制在一句话、单行可显示。
+## 从侧栏里藏起来 {#hiding}
+
+| front matter | 效果 |
+| --- | --- |
+| `toc_hide: true` | 页面不出现在侧栏树里，也不进入上一页 / 下一页序列；页面本身照常发布，链接照常可用 |
+| `hide_summary: true` | 页面不出现在所在分区的子页列表里 |
+| `sidebar_divider: true` | 这一项不再是链接，而是侧栏里的一条分组标题 |
+| `manual_link: https://…` | 侧栏这一行指向别处；配合 `manual_link_title`、`manual_link_target: _blank` 使用 |
+
+`toc_hide` 与 `hide_summary` 管的是两个不同的地方，只有两处都不该出现时才同时设置。
 
 ## 侧栏图标 {#icons}
 
-在页面或栏目的 front matter 里写一对 Font Awesome class：
+在页面或分区的 front matter 里写一对 Font Awesome class，就能给它加图标：
 
 ```yaml {title="content/docs/deploy/_index.zh.md"}
 icon: fa-solid fa-cloud-arrow-up
 ```
 
-图标密度是站点级策略，用于避免叶子页全部带图标：
+每个叶子页都带图标，长侧栏就很难扫读，所以由一项站点级策略决定哪些条目显示图标：
 
 ```yaml {title="hugo.yml"}
 params:
@@ -109,37 +117,25 @@ params:
 
 | 取值 | 效果 |
 | --- | --- |
-| `all` | 每个写了 `icon` 的条目都显示（未设置时的兼容默认值） |
-| `groups` | 只有根节点和有子页的节点显示图标，普通叶子页不显示 |
+| `all` | 每个写了 `icon` 的条目都显示；未设置该键时即为此值 |
+| `groups` | 只有根节点和有子项的条目显示图标，普通叶子页不显示 |
 | `none` | 侧栏不显示任何条目图标 |
 
-新站点建议显式写 `groups`：保留分组的语义标识，去掉叶子层的图标。本站使用这个设置，左侧只有六个栏目带图标。
+新站点建议显式写 `groups`：分区保留用于辨识的图标，叶子页保持简洁。本站用的就是 `groups`，所以侧栏里只有分区带图标。
 
 ## 展开与折叠 {#folding}
 
-有子页的栏目在侧栏里带一个折叠箭头。OINK 保存整栏折叠、宽度和滚动位置；各分支的读者选择可由站点通过[侧栏运行时 API](/zh/docs/design/shell/#sidebar-runtime) 自行持久保存。默认行为：当前页所在的那条路径展开，其余收起；博客类栏目默认展开。
+有子项的分区在侧栏里带一个折叠箭头。默认情况下，当前页所在的分支展开，其余收起；博客类分区例外，默认展开。在分区的 `_index.md` 中写 `sidebar_expanded`，可以朝任一方向覆盖这个默认行为：
 
 ```yaml {title="content/docs/reference/_index.zh.md"}
 sidebar_expanded: true   # 这个栏目始终默认展开
 ```
 
-站点级的折叠、紧凑模式、初始展开层数、宽度与截断在[布局与页面类型](/zh/docs/customize/layout/)里配；键的完整定义见[配置总览](/zh/docs/customize/config/)。
-
-## 从侧栏里藏起来 {#hiding}
-
-| front matter | 效果 |
-| --- | --- |
-| `toc_hide: true` | 页面不出现在侧栏树里（页面本身照常发布，链接照常可用） |
-| `hide_summary: true` | 页面不出现在栏目首页的子页索引里 |
-| `sidebar_divider: true` | 这一项不再是链接，而是侧栏里的一条分组标题 |
-| `manual_link: https://…` | 侧栏这一行指向别处；配 `manual_link_title`、`manual_link_target: _blank` 用 |
-
-`toc_hide` 与 `hide_summary` 控制两个不同的入口，两处都不该出现时才同时设置。
+浏览器会记住读者对整个侧栏的选择：是否收起、宽度和滚动位置。各个分支的展开状态不会被记住；站点需要的话，可以用[侧栏 API](#sidebar-api) 自行实现。站点级的折叠、紧凑模式、初始展开层数、宽度与截断在[布局与页面类型](/zh/docs/customize/layout/#sidebar)中设置，每个键的定义见[配置总览](/zh/docs/customize/config/#sidebar)。
 
 ## 不发布目录页的分组 {#group-only}
 
-自 OINK 1.1 起，分隔分区保留子页，同时让标题不再跳转，修复了 v1.0.0
-子页丢失的问题。目录只负责组织子页时，使用这样的 `_index.md`：
+目录只用来给子页分组时，把它的 `_index.md` 设为分隔项，并且不发布：
 
 ```yaml
 ---
@@ -150,25 +146,21 @@ build:
 ---
 ```
 
-标题显示为分组标签，启用侧栏折叠时按钮负责展开子页；子页仍进入翻页、搜索、导航 JSON 和 Print。
-没有 JavaScript 时分组保持展开。省略 `build`，即可继续发布分区页面，同时保留侧栏的
-非链接标题。叶子分隔项保持原来的外观。
+标题在侧栏中变成一个不可点击的分组标签。启用折叠时，它的按钮负责展开和收起子页；没有 JavaScript 时，分组保持展开。子页仍然进入翻页器、搜索、导航 JSON 和打印视图。省略 `build`，分区页面照常发布，侧栏里仍显示为不可点击的标签。没有子项的分隔项显示为一条普通的分隔标题。
 
-`toc_hide` 会隐藏分区的整棵子树；`no_list` 只移除分区正文的子页列表，`hide_summary`
-只移除父页面列表中的一项，都不能代替分组。`build.render: link` 保留 permalink，却不
-发布页面；不发布的分组应使用 `never`，避免其他导航把它当成可访问的目标。
+另外三个开关看起来相似，作用却不同，都不能代替分组：`toc_hide` 隐藏分区的整棵子树，`no_list` 只去掉分区页面正文后的子页列表，`hide_summary` 只把该条目从父级列表中移除。`build.render: link` 保留 permalink 但不发布页面；分组既然不该成为访问目标，就用 `never`，这样其它导航也不会给出指向它的链接。
 
 ## 外壳由 `type` 决定，不是路径 {#type-and-shell}
 
-文档外壳（侧栏、目录、面包屑、翻页器）不取决于目录名，只取决于页面的 `type` 是否在 `params.ui.shell_types` 里：
+文档外壳（侧栏、目录、面包屑、翻页器）与目录名无关，而是跟随页面的 `type`：下面五种内置类型都带这套外壳，它们也是 `params.ui.shell_types` 的默认值（修改这个列表前请先读[布局与页面类型](/zh/docs/customize/layout/#shell-types)）。
 
 ```yaml {title="hugo.yml：主题默认"}
 params:
   ui:
-    shell_types: [docs, book, blog, swagger]
+    shell_types: [docs, book, blog, swagger, expo]
 ```
 
-文档因此可以放在任意路径，用 cascade 指定 `type` 即可。例如把一套手册放在 `content/handbook/`，栏目根的写法如下：
+因此文档可以放在任意路径，用 cascade 指定 `type: docs` 即可。例如把一套手册放在 `content/handbook/`，分区根这样写：
 
 ```yaml {title="content/handbook/_index.zh.md"}
 ---
@@ -181,11 +173,11 @@ cascade:
 ```
 
 > [!IMPORTANT]
-> 文档目录不叫 `docs` 时，`type: docs` 之外还要写 `sidebar_root_for: self`。否则侧栏会按 `params.ui.docs_section`（默认 `docs`）去找根，读者在 `/handbook/` 下却看到 `/docs/` 的树。
+> 文档目录不叫 `docs` 时，`type: docs` 之外还要写 `sidebar_root_for: self`。否则侧栏会按 `params.ui.docs_section`（默认 `docs`）去找根，读者在 `/handbook/` 下看到的却是 `/docs/` 的树。
 
 ## 多根侧栏 {#sidebar-roots}
 
-侧栏树默认以读者所在的顶层栏目为根，树上方一行标出当前的根。规模较大的子树可以自己成为一个根，例如带版本的 API 参考或一本独立的手册：
+侧栏一次只显示一棵树，树上方的一行标出这棵树的根，默认是读者当前所在的顶层分区。规模较大的子树，例如带版本的 API 参考或一本独立的手册，可以自成一个根：
 
 ```yaml {title="content/docs/api/v2/_index.zh.md"}
 ---
@@ -194,14 +186,14 @@ sidebar_root_for: self   # self | children
 ---
 ```
 
-| 取值 | 语义 |
+| 取值 | 含义 |
 | --- | --- |
-| `self` | 这个栏目的首页及其全部后代都以它为侧栏根 |
+| `self` | 这个分区的首页及其全部后代都以它为侧栏根 |
 | `children` | 首页仍留在父级树里，只有后代以它为根 |
 
-根节点上方的切换器是全站的：它列出所有顶层栏目，加上站内所有 `sidebar_root_for: self` 的栏目。只有一个入口时它退化成一个普通链接，两个及以上才是下拉菜单。在顶层栏目或嵌套自根的 `_index.md` 中写 `sidebar_root_menu: false`，可将其排除在全站候选之外；浏览该分区时，当前根仍保留为位置提示。
+树上方的切换器在每一页上都相同：它列出所有顶层分区，以及所有声明了 `sidebar_root_for: self` 的分区；只有一项时显示为普通链接，多于一项时是下拉菜单。要把某个顶层分区或嵌套的根排除在列表之外，在它的 `_index.md` 中写 `sidebar_root_menu: false`；读者位于该分区内时，切换器仍会把它显示为当前位置。
 
-切换器下方，栏目首页仍是树里的第一个链接：切换器选择一棵树，根链接指向一篇文档。`sidebar_root_link_self: false` 让根那一行改为指向父级栏目。
+切换器下方，根分区的首页是树里的第一个链接：切换器选的是哪棵树，根链接打开的是一个页面。设置 `sidebar_root_link_self: false`，这一行就改为指向父级分区。
 
 ## 验证 {#verify}
 
@@ -209,22 +201,20 @@ sidebar_root_for: self   # self | children
 hugo --printPathWarnings
 ```
 
-构建应以 `Total in …` 结束且无 ERROR。调整目录结构时，`--printPathWarnings` 可以及时发现两个页面指向同一输出路径的冲突。
+构建应以 `Total in …` 结束，且没有 `ERROR`。挪动目录之后，`--printPathWarnings` 会报告两个页面发布到同一路径的冲突。
 
-在浏览器里逐项确认：
+然后在浏览器里逐项确认：
 
-1. 侧栏里的顺序与写下的 `weight` 一致，新栏目出现在预期位置；
-2. 栏目首页的子页索引齐全（缺项来自 `hide_summary` 或缺少 `_index.zh.md`）；
-3. 面包屑与翻页器的顺序与侧栏一致，翻页器读的是同一棵树；
-4. 换语言之后树的形状相同（每个 `_index.md` 都要有 `.zh.md` 对等文件）。
+1. 侧栏顺序与你写的 `weight` 一致，新分区出现在预期的位置；
+2. 每个栏目首页都列全了子页，缺项的原因是设置了 `hide_summary` 或缺少 `_index.md`；
+3. 面包屑和翻页器的顺序与侧栏一致，因为它们读的是同一棵树；
+4. 每种语言下树的形状相同，这要求每个 `_index.md` 旁边都有对应的译文（如 `_index.zh.md`）。
 
-侧栏条目超过 `params.ui.sidebar_menu_truncate` 时构建给出警告，并指出应调到多少。这个警告不可忽略：被截断的条目不会出现在侧栏里。
+某个分区的条目超过 `params.ui.sidebar_menu_truncate` 时，构建会告警，并指出应调到多少。请按告警调整：超出上限的条目不会出现在侧栏里。
 
 ## 通过站点代码控制分支 {#sidebar-api}
 
-`window.OinkSidebar` 自 OINK 1.1 起提供；v1.0.0 不提供该 API。
-站点代码应在主题脚本之后加载，例如使用 `layouts/_partials/hooks/body-end.html`，
-读取或恢复分支状态前先等待 `ready`。以下示例展开侧栏的第一个分组：
+`window.OinkSidebar` 让站点代码可以展开或收起侧栏分支，例如恢复读者保存的选择。站点脚本要在主题脚本之后加载，例如放进 `layouts/_partials/hooks/body-end.html`，并在读取或修改状态前等待 `ready`。下面的例子展开侧栏的第一个分组：
 
 ```javascript
 const sidebar = window.OinkSidebar;
@@ -240,15 +230,9 @@ if (sidebar) {
 }
 ```
 
-区域 ID 使用按钮现有的 `aria-controls` 值；`getState(id)` 返回 `{id, expanded}`
-或 `null`。按钮、区域与无障碍状态一致后，变化会在 `document` 上触发一次
-`oink:sidebar-disclosure` 事件，detail 为 `{id, expanded, source}`；重复写入相同
-状态不发事件。通过 API 恢复时，当前页面的祖先分组保持展开，读者仍可主动折叠。
+分支的 ID 就是其折叠按钮的 `aria-controls` 值。`getState(id)` 返回 `{id, expanded}`，ID 不存在时返回 `null`。每次变化都会在按钮、分支及其无障碍状态一致之后，在 `document` 上派发一次 `oink:sidebar-disclosure` 事件，detail 为 `{id, expanded, source}`；写入与当前相同的状态不会派发事件。通过 API 恢复状态时，包含当前页的分支保持展开，读者仍可以手动收起。
 
-主题不保存单个分支的偏好。站点自行增加这项功能时，应为存储键区分语言与导航版本，
-容忍存储不可用，并忽略当前页面不存在的 ID。完整生命周期见
-[侧栏契约](/zh/docs/design/shell/#sidebar-runtime)。
-
+如果要持久保存分支选择，存储键应区分语言和导航版本，在存储不可用时正常工作，并忽略当前页面上不存在的 ID。完整的生命周期见[侧栏契约](/zh/docs/design/shell/#sidebar-runtime)。
 
 ## 相关 {#related}
 

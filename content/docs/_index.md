@@ -40,44 +40,40 @@ cascade:
   search_boost: 1.35
 ---
 
-For a new OINK site, [Start with the Starter](/docs/start/). Preview the working site,
-then replace its sample content. Write in Markdown and build with Hugo; the
-theme's stylesheet is plain CSS, and only OINK 1.5.1 and older need Hugo's
-Extended edition. Hugo Modules also require Go to resolve the theme. Bundled theme assets require
-no CDN or npm build step.
+OINK is a Hugo theme for technical documentation: product manuals, project
+sites, books and API references, in one language or many. You write plain
+Markdown, run `hugo`, and get a static site with a navigation tree, local
+full-text search, light and dark modes, and a print view. The theme ships every
+script, font and stylesheet it uses, so the build needs no Node.js, npm or CDN.
 
-See the [1.6.0 release notes](/release/1.6.0/) or the
-[upgrade guide](/docs/admin/upgrade/#preparing-1-6) for an existing site.
+New to OINK? [Get started](/docs/start/) has a working site running in five
+minutes, which you then make your own one piece at a time. Already running
+OINK? Read the [1.6.0 release notes](/release/1.6.0/), then follow the
+[upgrade guide](/docs/admin/upgrade/#preparing-1-6).
 
-## Five ways in {#five-entries}
+## Where to start {#five-entries}
 
-- [Get started](/docs/start/) — Create an OINK Starter repository. Verify the local site, customize one part at a time, then deploy it.
-- [Components](/docs/components/) — Each component has one page. The source appears first, followed by the rendered result.
-- [Write Beautiful Docs](/book/) — Follow a six-chapter hands-on walkthrough from cloning the Starter to publishing a polished bilingual site.
-- [Case studies](/case/) — Learn reusable design and migration patterns from production sites.
-- [Design and development](/docs/design/) — Read contracts, accepted decisions, research evidence, and active proposals for OINK maintainers.
-  {.cards}
+- [Get started](/docs/start/) — Clone the Starter, preview it, replace its content, deploy it.
+- [Components](/docs/components/) — Callouts, tabs, diagrams, cards and more, each with its source beside the result.
+- [Write Beautiful Docs](/book/) — A six-chapter course that takes one site from an empty repository to a published bilingual release.
+- [Case studies](/case/) — How production sites solved navigation, migration and landing-page design.
+{.cards}
 
 ## Find it by task {#where-to-go}
 
-| What you want to do                                   | Where to go                                    |
-| ----------------------------------------------------- | ---------------------------------------------- |
-| Decide whether it fits                                | [What is OINK](/docs/about/)                   |
-| Install and preview                                   | [Get started](/docs/start/)                    |
-| Write a documentation page                            | [Writing pages](/docs/write/pages/)            |
-| Turn a directory tree into a sidebar                  | [Organizing content](/docs/write/organize/)    |
-| Look up a component's syntax                          | [Components](/docs/components/)                |
-| Build an image album or browse the live gallery       | [Expo albums](/docs/write/expo/) · [Live Expo](/expo/) |
-| Change the name, logo, colors, and fonts              | [Brand and appearance](/docs/customize/brand/) |
-| Look up a configuration key's default                 | [Configuration](/docs/customize/config/)       |
-| Run a bilingual or multilingual site                  | [Languages](/docs/customize/i18n/)             |
-| Practice building and writing                         | [Write Beautiful Docs](/book/)                 |
-| Study a production implementation                     | [Case studies](/case/)                         |
-| Deploy                                                | [Deploy](/docs/admin/deploy/)                  |
-| Upgrade, or migrate from Docsy                        | [Upgrade](/docs/admin/upgrade/)                |
-| Maintain the theme, review a contract, or write a PRD | [Design and development](/docs/design/)        |
+| I want to…                                   | Read                                           |
+| -------------------------------------------- | ---------------------------------------------- |
+| Decide whether OINK fits my project          | [What is OINK](/docs/about/)                   |
+| Write a documentation page                   | [Writing pages](/docs/write/pages/)            |
+| Turn a folder tree into the sidebar          | [Organizing content](/docs/write/organize/)    |
+| Look up a component's syntax                 | [Components](/docs/components/)                |
+| Publish a blog, a book or an image album     | [Blog posts](/docs/write/blog/) · [Books](/docs/write/book/) · [Expo albums](/docs/write/expo/) |
+| Change the name, logo, colors and fonts      | [Brand and appearance](/docs/customize/brand/) |
+| Look up a configuration key and its default  | [Configuration](/docs/customize/config/)       |
+| Publish in two or more languages             | [Languages](/docs/customize/i18n/)             |
+| Deploy to GitHub Pages, Cloudflare or my own server | [Deploy](/docs/admin/deploy/)           |
+| Upgrade OINK or migrate from Docsy           | [Upgrade](/docs/admin/upgrade/)                |
+| Fix a build error or a missing feature       | [Troubleshooting](/docs/admin/troubleshooting/) |
 
-The first six sections in the sidebar (**Introduction**, **Get started**,
-**Authoring**, **Components**, **Customization**, and **Operations**) are for
-site authors and operators. **Design** and **CLI** at the bottom are reference
-material for OINK theme contributors.
+**Design** and **CLI**, at the bottom of the sidebar, document how OINK itself
+is built and maintained. You do not need them to build a site.

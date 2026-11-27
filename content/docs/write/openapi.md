@@ -1,24 +1,23 @@
 ---
 title: API reference pages
 linkTitle: API reference
-description: Add an OpenAPI specification to the site. Use bundled Swagger UI or Redoc to render a browsable API reference without a CDN.
+description: Render an OpenAPI specification as a browsable API reference with the bundled Swagger UI or Redoc, without a CDN.
 weight: 70
 search_keywords: [API, OpenAPI, Swagger, Swagger UI, Redoc, swagger, spec, specification]
 ---
 
-An API reference page is one OpenAPI specification plus one shortcode. Choose
-Swagger UI when readers need to try requests, or Redoc for browsing endpoint
-descriptions and schemas. Both runtimes ship with the theme and load only on
-pages that use them in HTML output, without a CDN. Swagger UI's online validator
-is disabled. Remote specifications and API requests still contact their
-configured hosts.
-
-Put the specification file under `static/`. Create a page with the shortcode.
-If the page needs the dedicated shell, change its `type` to `swagger`.
+Publish an API reference straight from the OpenAPI file your service already
+has: save the file under `static/` and add one shortcode to a page. Choose
+Swagger UI when readers should try requests from the page, or Redoc when they
+mainly read endpoint descriptions and schemas. Both runtimes ship with the
+theme and load only on pages that use them, so the site needs no CDN, and
+Swagger UI's online validator is turned off. Remote specifications, and the
+requests readers send to your API, still reach their own hosts.
 
 ## Where the specification file goes {#spec-file}
-Put the specification under `static/`. Hugo publishes it unchanged at the site
-root. Both shortcodes then receive a URL that the browser can fetch:
+
+Put the specification under `static/`. Hugo publishes that folder unchanged at
+the site root, so both shortcodes get a URL the browser can fetch:
 
 ```filetree {title="where the specification lives"}
 - static/
@@ -30,42 +29,40 @@ root. Both shortcodes then receive a URL that the browser can fetch:
       - openapi.md       # this page
 ```
 
-Do not put the specification beside the page. Both shortcodes treat a local
-value as a path under `static/`. Neither resolves page resources. A `.yaml`
-file beside a content page is a page resource. A shortcode reference to its
-name does not publish it. The browser therefore receives a 404.
+Do not keep the file beside the page. Neither shortcode resolves page
+resources: a `.yaml` file in a page bundle is published only when a template
+asks for it, and naming it in a shortcode does not, so the browser gets a 404.
 
-Both shortcodes accept a remote specification starting `https://…`. This
-creates a network dependency and exposes the reader's metadata to that host. Intranet deployments and sites with a CSP should use a same-origin
-specification. Only `http` and `https` are accepted. Any other scheme, a
-protocol-relative `//host`, or an empty value warns. The shortcode then renders
-nothing.
+Both shortcodes also accept a remote `https://…` specification. Every page
+view then depends on that host and reveals the reader's address and browser
+details to it, so intranet sites and sites with a Content Security Policy
+should serve a same-origin copy. Only `http` and `https` are accepted: any
+other scheme, a protocol-relative `//host` or an empty value warns, and the
+shortcode renders nothing.
 
-To try the examples, download [docs-demo.yaml](/openapi/docs-demo.yaml) and save
-it as `static/openapi/docs-demo.yaml` in your site. It describes a demonstration
-cluster-management API with no reachable server behind it.
+To try the examples on your own site, save
+[docs-demo.yaml](/openapi/docs-demo.yaml) as `static/openapi/docs-demo.yaml`.
+It describes a demonstration cluster-management API with no server behind it.
 
 ## Swagger UI {#swaggerui}
 
-`swagger` has one named parameter, `src`, whose value is a URL from the site
-root. It passes through the theme's URL validation, so a subpath deployment
-resolves correctly:
+`swagger` takes one named parameter, `src`: the specification's URL from the
+site root. The theme resolves it like any other site URL, so it stays correct
+when the site is deployed under a subpath:
 
 ```markdown {title="Source"}
 {{</* swagger src="/openapi/docs-demo.yaml" */>}}
 ```
 
-In your local preview, this displays expandable API operations, request
-parameters and response schemas. "Try it out" sends requests to the
-specification's `servers` address. The sample has no working backend.
-
-This page shows Swagger UI source and a live Redoc example below. Both widgets
-have known accessibility limitations. See [Limits](#limits).
+The page lists every operation as an expandable row with its request
+parameters and response schemas. "Try it out" sends a real request to the
+address in the specification's `servers` list; the demonstration file's
+address does not answer.
 
 ## Redoc {#redoc}
 
 `redoc` takes exactly one positional parameter, the specification path. A
-second parameter warns and the shortcode renders nothing.
+second parameter warns, and the shortcode renders nothing.
 
 ```markdown {title="Source"}
 {{</* redoc "openapi/docs-demo.yaml" */>}}
@@ -73,37 +70,33 @@ second parameter warns and the shortcode renders nothing.
 
 {{< redoc "openapi/docs-demo.yaml" >}}
 
-An `http` or `https` URL remains remote. Any other accepted value is a path
-under `static/`. Leading and non-leading slash forms are equivalent. For
-example, `openapi/docs-demo.yaml` and `/openapi/docs-demo.yaml` both become
-`https://example.com/preview/openapi/docs-demo.yaml` when the site `baseURL` is
-`https://example.com/preview/`. Unlike `swagger`, Redoc receives this absolute
-URL based on `baseURL`.
+A path is relative to `static/`, with or without a leading slash, and the
+shortcode turns it into an absolute URL based on `baseURL`: with
+`baseURL: https://example.com/preview/`, both `openapi/docs-demo.yaml` and
+`/openapi/docs-demo.yaml` become
+`https://example.com/preview/openapi/docs-demo.yaml`. An `http` or `https` URL
+is used as given.
 
-> [!NOTE] ReDoc 3 in OINK 1.6.0
-> OINK v1.6.0 loads ReDoc 3.1.0 as a local ES module
-> in a separate document for each reader. Its navigation uses its own fragment;
-> article anchors and other readers stay independent. The frame has a light
-> vendor palette and its own scrolling area. A specification link stays below it.
+Each `redoc` shortcode runs ReDoc 3.1.0 from the theme's local files in a frame
+of its own. The frame keeps its navigation in its own URL fragment, so it never
+disturbs the article's anchors or another reader on the same page. It uses
+ReDoc's light palette, scrolls independently, and has a plain link to the
+specification below it. Telemetry is off and ReDoc's two brand images are
+inlined, so the reader requests nothing from a CDN; a remote specification,
+and images the specification itself references, are still fetched from their
+hosts. Opened directly, the frame accepts only same-origin specifications. If
+your [Content Security Policy](/docs/admin/deploy/#csp) restricts frames, allow
+the reader with `frame-src 'self'`.
 
-Telemetry is disabled. The vendor's two brand images are inlined, so the
-reader fetches no theme-owned CDN resources. Remote specifications and images
-explicitly referenced by a specification can still make network requests;
-direct navigation to the local reader asset accepts only same-origin specifications.
-The old `hide-hostname`, `hide-logo`, `suppress-warnings`, `lazy-rendering`, and
-`native-scrollbars` defaults are removed with the v2 API. Sites overriding the
-shortcode or styles must migrate those overrides.
-If a site's Content Security Policy restricts frames, it must allow the local
-reader document through `frame-src 'self'`.
-ReDoc 3 supports OpenAPI, AsyncAPI and GraphQL; rename specification extension `x-code-samples` to
-`x-codeSamples`. Legacy operation links redirect upstream, but v2 schema and
-individual security-scheme fragments have no equivalent route. Dedicated
-Print, Markdown and RSS retain the plain specification link.
+ReDoc reads OpenAPI, AsyncAPI and GraphQL descriptions. Put code samples in
+the `x-codeSamples` extension; rename any `x-code-samples` left in an older
+specification. A site that customized the Redoc shortcode or its styles before
+OINK 1.6.0 should read [Upgrade to 1.6.0](/docs/admin/upgrade/#preparing-1-6).
 
 ## The dedicated page shell {#shell}
 
-API reference pages are often wide and long. Use the `swagger` page type for
-this layout:
+API references tend to be wide and long, so give them the `swagger` page type
+and a wide page:
 
 ```yaml {title="content/api/_index.md"}
 ---
@@ -115,45 +108,35 @@ cascade:
 ---
 ```
 
-`swagger` is one of the theme's default shell types (`params.ui.shell_types`
-defaults to `[docs, book, blog, swagger, expo]`, and a site that overrides the list
-needs to keep it). It differs from the `docs` shell in exactly two ways. It
-adds a `td-swagger` class to `<body>` for styling hooks. It omits the version banner.
-Sidebar, table of contents, breadcrumbs, pager and page end all behave normally.
-
-Shells and page width are covered fully in
+The `swagger` shell is the `docs` shell with one addition, a `td-swagger` class
+on `<body>` that lets site CSS target API pages. The sidebar, table of
+contents, breadcrumbs, pager and page end all behave as usual. `swagger` is in
+the default `params.ui.shell_types`; keep it there if your site overrides the
+list. Shells and page width are covered in
 [Layouts and page types](/docs/customize/layout/).
 
 ## Output {#outputs}
 
-| Output | What appears |
-| --- | --- |
-| HTML | The full interactive Swagger UI / Redoc. Only HTML loads the runtime, on demand from local files without a CDN |
-| Print | A labeled static link showing the specification's address. Neither runtime loads |
-| Markdown | A plain Markdown link, `[OpenAPI specification](/openapi/example.yaml)`. It does not become an endpoint list |
-| RSS | The same plain link |
-
-Outside HTML, the API reference contains only a link to the specification.
-To include endpoint information in print or agent output, describe key
-endpoints in prose on the same page. Body text outside the shortcode remains
-intact in all four outputs.
+Only the HTML page loads the interactive widgets. Print, Markdown and RSS
+replace each shortcode with a plain link to the specification; in Markdown it
+reads `[OpenAPI specification](/openapi/example.yaml)`, not an endpoint list.
+A printed page or an agent reading the Markdown therefore sees no endpoints.
+If those readers need the important ones, describe them in prose on the same
+page, because text outside the shortcode appears in every output.
 
 ## Limits {#limits}
 
-- Both components derive their container ID from the page address and the shortcode's ordinal, so several on one page never collide.
-- The two can coexist on one page, but the page becomes long and its HTML output loads both runtimes. Pick one for a production site.
-- Both embedded third-party widgets have upstream accessibility limitations: Swagger UI renders unnamed server controls and scrollable regions without keyboard access, and Redoc's operation descriptions fall below AA contrast ratios. Evaluate these trade-offs against your site's accessibility requirements, or document key endpoints directly in Markdown prose when strict conformance is required.
-- `redoc` accepts no attribute parameter. A second positional argument warns and the shortcode renders nothing.
-- A local `redoc` path starts under `static/`. A leading `/` is optional. Page resources are not resolved.
-- The browser must be able to fetch the specification. Put it in `static/`. After a build, confirm that the file exists under `public/`.
-- There is no mock server. Swagger UI's "Try it out" sends a real request to the address in `servers`. The sample specification's address is unreachable.
+- Both widgets have upstream accessibility limitations: Swagger UI renders unnamed server controls and scrollable regions without keyboard access, and Redoc's operation descriptions fall below AA contrast ratios. If your site must meet strict accessibility requirements, document the key endpoints in Markdown prose as well.
+- Swagger UI and Redoc can share a page, but the page gets long and loads both runtimes. Choose one for a production site.
+- Several shortcodes on one page never collide: each container ID derives from the page address and the shortcode's position.
+- There is no mock server. "Try it out" sends a real request to the address in `servers`.
 
 ## Verify {#verify}
 
-1. Build with visible diagnostics: `hugo --printPathWarnings`.
-2. The specification really was published: `ls public/openapi/docs-demo.yaml`, or open `http://localhost:1313/openapi/docs-demo.yaml`.
-3. Expand endpoints on the page and confirm that their schemas appear. The browser console must show no 404 or cross-origin error.
-4. Disconnect from the external network while keeping the local preview server reachable, then reload. Local runtimes and a same-origin specification should still appear.
+1. Build with `hugo --printPathWarnings` and read the warnings.
+2. Confirm the specification was published: `ls public/openapi/docs-demo.yaml`, or open `http://localhost:1313/openapi/docs-demo.yaml`.
+3. Expand a few endpoints on the page and check that their schemas appear and that the browser console shows no 404 or cross-origin error.
+4. Cut the machine off from the outside network while keeping the local preview server reachable, then reload. With local runtimes and a same-origin specification, the reference still appears.
 
 ## Related {#related}
 

@@ -1,37 +1,48 @@
 ---
 title: Update
 linkTitle: Update
-description: Mark a heading `{.update}`, with an optional `date` and `tags`, to make it a changelog entry. The entry stays an ordinary heading in the TOC, search and Print.
+description: Write a changelog, a "What's new" page or weekly notes as ordinary headings marked `{.update}`, with an optional date and tags under each entry.
 weight: 74
 search_keywords: [Update, changelog, what's new, release notes, heading attributes, date, tags, time]
 ---
 
-An update is a changelog entry written as an ordinary Markdown heading with the `{.update}` marker.
-Optional `date` and `tags` attributes add a metadata line below the heading: a machine-readable date and neutral tag chips.
-Each entry heading also gets extra space and a separator rule above it, which gives a long stream its rhythm.
-The entry is still a heading, so it keeps its table-of-contents entry, anchor, search section and Print ID. No script loads.
-Use updates for a single-page changelog, a "What's new" page, weekly notes, or a policy-change log.
-Use [release pages](#which) when each version needs a page of its own.
+An update is a changelog entry written as an ordinary Markdown heading with
+`{.update}` at the end. Each entry gets extra space and a separator rule above
+it, which gives a long stream of entries its rhythm, and optional `date` and
+`tags` attributes add a metadata line under the heading. Use updates for a
+one-page changelog, a "What's new" page, weekly notes or a log of policy
+changes.
+
+Because the entry is still a heading, it keeps everything a heading has: its
+table-of-contents entry, anchor, search section and print ID. No script loads.
+When each version needs a page of its own, use [release pages](#which)
+instead.
 
 ## Shortest form {#minimal}
 
-Put `{.update}` at the end of a heading, with `date` and `tags` inside the same braces.
-The optional `#id` written first gives the entry a short anchor that does not change when its title does.
-A changelog page usually writes each entry as `##`. The examples on this page use `###` so they nest under their section in the table of contents on the right.
+Put `{.update}` at the end of the heading, with `date` and `tags` inside the
+same braces. An `#id` written first is optional, but it gives the entry a short
+anchor that survives a change of title.
 
 ```markdown {title="Source"}
-### v1.6.0 — Plain CSS stylesheets {#v1-6-0 .update date="2026-11-23" tags="Breaking, Performance"}
+### v1.6.0 — PostgreSQL 18 by default {#v1-6-0 .update date="2026-11-23" tags="Breaking, Performance"}
 
-The stylesheet is now plain CSS layers. A site build needs only the Hugo binary.
+New clusters get PostgreSQL 18, with asynchronous I/O turned on.
 ```
 
-### v1.6.0 — Plain CSS stylesheets {#v1-6-0 .update date="2026-11-23" tags="Breaking, Performance"}
+### v1.6.0 — PostgreSQL 18 by default {#v1-6-0 .update date="2026-11-23" tags="Breaking, Performance"}
 
-The stylesheet is now plain CSS layers. A site build needs only the Hugo binary.
+New clusters get PostgreSQL 18, with asynchronous I/O turned on.
+
+A changelog page usually writes each entry as `##`. The examples here use
+`###` so that they nest under this page's own sections in the table of
+contents.
 
 ## Date {#date}
 
-`date` takes a year, a month or a day: `YYYY`, `YYYY-MM` or `YYYY-MM-DD`. It renders as `<time datetime="…">` and shows exactly as written, so `2026-11` stays `2026-11`.
+`date` takes a year, a month or a day (`YYYY`, `YYYY-MM` or `YYYY-MM-DD`). It
+renders as `<time datetime="…">` and shows exactly as written, so `2026-11`
+stays `2026-11`.
 
 ```markdown
 ## 2026 in review {.update date="2026"}
@@ -39,22 +50,29 @@ The stylesheet is now plain CSS layers. A site build needs only the Hugo binary.
 ## v1.6.0 {.update date="2026-11-23"}
 ```
 
-Any other value warns, naming the heading and the page, and the date is dropped; the heading and the rest of the entry stay.
-The check is a pattern, not a calendar: the month must be 01–12 and the day 01–31, so `2026-02-30` passes. Times and time zones are not accepted.
+Any other value warns, naming the heading and the page, and the date is
+dropped while the heading and the rest of the entry stay. The check is a
+pattern, not a calendar: the month must be 01–12 and the day 01–31, so
+`2026-02-30` passes. Times and time zones are not accepted.
 
 ## Tags {#tags}
 
-`tags` is a comma-separated list of plain text. Each item is trimmed and empty items are skipped, so `tags=" Fix ,, Docs "` gives two chips, Fix and Docs.
-Chips are neutral: every tag looks the same whatever it says, and the preset sets their color. Markdown inside a tag shows literally.
+`tags` is a comma-separated list of plain text. Each item is trimmed and empty
+items are skipped, so `tags=" Fix ,, Docs "` gives two chips, Fix and Docs.
+Every chip looks the same whatever it says, in a color set by the preset, and
+Markdown inside a tag shows literally.
 
-These are not Hugo taxonomy tags. They create no term pages and link nowhere. Write them in the page's language; the theme does not translate them.
+These are not Hugo taxonomy tags: they create no term pages and link nowhere.
+The theme does not translate them, so write them in the page's language.
 
 ## Entries without metadata {#no-metadata}
 
-Both attributes are optional. `## Unreleased {.update}` is a valid entry: it gets the entry spacing and separator rule, and no metadata line.
-The metadata line is also left out when `tags` holds only commas and spaces and there is no date.
+Both attributes are optional. `## Unreleased {.update}` is a valid entry with
+the entry spacing and separator rule but no metadata line, and the line is
+also left out when there is no date and `tags` holds only commas and spaces.
 
-Text under an entry is ordinary Markdown. Lower headings inside an entry are ordinary headings: they nest under it in the TOC and take no marker.
+The text under an entry is ordinary Markdown, and lower headings inside an
+entry are ordinary headings that nest under it in the TOC without a marker.
 
 ## Still a heading {#heading}
 
@@ -66,50 +84,52 @@ The marker changes nothing a heading already does:
 - Local search indexes the entry as a section titled with the heading text; the date and tags are part of that section's text.
 - Multi-page Print namespaces the heading ID as it does for any heading.
 
-The metadata line follows the heading instead of sitting inside it, so the heading text, its accessible name and its search title stay exactly as written.
-Without an explicit `#id`, the anchor comes from the heading text, and renaming the entry changes its link. Give entries an `#id` when other pages link to them.
-
-`date` and `tags` on a heading without `.update` are unknown attributes: they warn and are dropped.
+The metadata line follows the heading rather than sitting inside it, so the
+heading text, its accessible name and its search title stay exactly as
+written. Without an explicit `#id` the anchor comes from the heading text, and
+renaming the entry changes its link, so give an `#id` to any entry that other
+pages link to.
 
 ## A changelog on one page {#demo}
 
-A stream of entries, newest first. The three entries and the subsection below appear in this page's table of contents on the right, under this section.
+A stream of entries, newest first. The three entries and the subsection below
+appear in the table of contents under this section.
 
 ```markdown {title="Source"}
 ### Unreleased {#demo-unreleased .update}
 
-Timeline and Update join the native components.
+One command sets up logical replication between two clusters.
 
 ### v1.6.0 {#demo-v1-6-0 .update date="2026-11-23" tags="Breaking"}
 
-The stylesheet is now plain CSS, assembled from the layers under `assets/css/td/`.
+PostgreSQL 18 is the default version for new clusters.
 
 #### Upgrade notes {#demo-v1-6-0-upgrade}
 
-- Move rules from the retired SCSS hooks into `assets/css/project.css`.
-- Replace `shown.bs.tab` listeners with `td:tab-shown`.
+- Set `pg_version: 17` in the inventory to keep creating PostgreSQL 17 clusters.
+- Rename `pg_backup_dir` to `backup_dir`.
 
 ### v1.5.1 {#demo-v1-5-1 .update date="2026-11" tags="Changed, Fixed"}
 
-The translation reader is renamed Duo View in all 32 interface languages.
+Failover no longer times out on clusters with more than three replicas.
 ```
 
 ### Unreleased {#demo-unreleased .update}
 
-Timeline and Update join the native components.
+One command sets up logical replication between two clusters.
 
 ### v1.6.0 {#demo-v1-6-0 .update date="2026-11-23" tags="Breaking"}
 
-The stylesheet is now plain CSS, assembled from the layers under `assets/css/td/`.
+PostgreSQL 18 is the default version for new clusters.
 
 #### Upgrade notes {#demo-v1-6-0-upgrade}
 
-- Move rules from the retired SCSS hooks into `assets/css/project.css`.
-- Replace `shown.bs.tab` listeners with `td:tab-shown`.
+- Set `pg_version: 17` in the inventory to keep creating PostgreSQL 17 clusters.
+- Rename `pg_backup_dir` to `backup_dir`.
 
 ### v1.5.1 {#demo-v1-5-1 .update date="2026-11" tags="Changed, Fixed"}
 
-The translation reader is renamed Duo View in all 32 interface languages.
+Failover no longer times out on clusters with more than three replicas.
 
 ## Update or release pages {#which}
 
@@ -119,18 +139,17 @@ The translation reader is renamed Duo View in all 32 interface languages.
 | One page per version, with its own URL, feed item, release assets or GitHub release | [release pages](/docs/write/releases/#release-index) collected by `layout: releases` |
 | A short dated sequence inside other prose | [Timeline](/docs/components/timeline/) |
 
-A version that already has a release page needs no second description in an update stream. Link to the release page from the entry.
+A version that already has a release page needs no second description in an
+update stream; link to the release page from the entry.
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | The heading with `class="update"`, then `<div class="td-update-meta">` holding `<time datetime>` and a `<span class="td-update-tag">` per tag |
-| Print | The same; multi-page Print namespaces the heading ID, and print styles keep the heading with its metadata line |
-| Markdown and LLMS | The authored heading line, attribute block included |
-| RSS | The heading and metadata line as static HTML |
-
-Updates load no JavaScript. The page remains one page with one URL; entries are not separate feed items.
+Updates load no JavaScript. In HTML the heading gets `class="update"` and is
+followed by `<div class="td-update-meta">`, which holds the `<time datetime>`
+and one `<span class="td-update-tag">` per tag, for site CSS to target. Print
+keeps each heading with its metadata line, Markdown and LLMS output keep the
+heading line with its attribute block, and the page stays one page with one
+URL, so entries never become separate feed items.
 
 ## Parameter reference {#reference}
 
@@ -144,16 +163,20 @@ The attribute block at the end of the heading:
 | `id` | anchor | from the heading text | The usual heading ID, written first: `{#v1-6-0 .update …}` |
 {.fields meta="type default"}
 
-`date` and `tags` take effect only together with `.update`. Without the marker they warn as unknown attributes and are dropped.
+`date` and `tags` work only together with `.update`; on any other heading they
+warn as unknown attributes and are dropped.
 
 ## Limits {#limits}
 
-- There is no sticky label rail or two-column layout. The table of contents already tracks the entries.
-- Entries get no URLs or feed items of their own. Use [release pages](/docs/write/releases/) when each version needs one.
-- The TOC shows the heading text only. Put the date in the heading text when readers should see it there.
+- There is no sticky label rail or two-column layout; the table of contents
+  already tracks the entries.
+- Entries get no URLs or feed items of their own. Use
+  [release pages](/docs/write/releases/) when each version needs one.
+- The TOC shows the heading text only, so put the date in the heading text
+  when readers should see it there.
 - Tags are not translated, colored or linked.
-- Entries appear in source order. There is no sorting, filtering or generation from data.
-- Dates are checked against the pattern only, not against the calendar.
+- Entries appear in source order, with no sorting, filtering or generation
+  from data.
 
 ## Related {#related}
 

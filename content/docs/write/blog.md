@@ -1,45 +1,242 @@
 ---
 title: Blog posts
 linkTitle: Blog posts
-description: Set up a blog section. Learn directory conventions, post front matter, featured images, the date-ordered list page, and RSS.
+description: Write blog posts with dates, bylines, series and featured images, then choose how the blog index, RSS feed and share bar present them.
 weight: 40
 search_keywords: [blog, post, RSS, feed, featured image, author, date, pagination, layout, gallery]
 ---
 
-Write a blog post's body like a documentation page. The shell differs. A post
-has a date, author, tags, and featured image. The list uses date order, newest
-first. The section has an RSS feed. This page
-covers creating the blog section, a post's front matter, featured images, list
-layouts, pagination and feeds.
+A blog section gives dated writing the shell readers expect from a blog: a
+newest-first index with a thumbnail on every row, an RSS feed, bylines, tags
+and share links. The body of a post is ordinary Markdown, written exactly like
+a documentation page; what changes is the front matter and the section around
+it.
 
-## The blog directory {#layout}
-A blog is a section under `content/`, and `type: blog` gives it the blog shell.
-Subdirectories divide it by publisher and audience, with posts sitting flat
-inside. Year directories are unnecessary: the list orders posts by their
-`date`.
+## Write a post {#front-matter}
 
-```filetree {title="this site's content/blog/"}
+Create one Markdown file per post anywhere in the blog section. The file path
+becomes the URL, and the `date`, not the folder, decides where the post appears:
+
+```yaml {title="content/blog/release/2.4.0.md"}
+---
+title: Release 2.4 — parallel restore and faster vacuum
+linkTitle: v2.4.0             # short name in the sidebar and pager
+date: 2026-08-14              # publication date; decides list order
+lastmod: 2026-08-14
+description: >-
+  Version 2.4 restores large clusters in parallel, halves vacuum time on
+  append-only tables, and adds a dry-run mode to every upgrade command.
+author: The maintainers
+categories: [Release]
+tags: [Release, Backup]
+---
+```
+
+Four keys matter more on a post than on a documentation page:
+
+- `date` is required, because it sets the post's place in the index and its
+  RSS timestamp. A post dated in the future stays out of the build until that
+  day; preview it with `hugo server -F`.
+- `description` appears above the body as the post's introduction and in
+  search results, so write it as a sentence for the reader rather than a
+  keyword list.
+- `author` accepts inline Markdown, so `[Alice Chen](https://example.com/alice)`
+  works. For several authors, portraits or profile pages, use
+  [`authors`](#authors) instead; a post that has `authors` ignores `author`.
+- The date is shown in the format of `params.time_format_blog`, ISO
+  `2006-01-02` by default. Set it per language for a localized form:
+
+  ```yaml {title="hugo.yml"}
+  languages:
+    en:
+      params:
+        time_format_blog: January 2, 2006
+    zh:
+      params:
+        time_format_blog: 2006年1月2日
+  ```
+
+The body takes every [component](/docs/components/) a documentation page does,
+and headings take explicit English `{#id}` anchors here too. `tags` and
+`categories` appear as chips under the title, a cloud in the right rail and a
+filter menu in the navbar; [Taxonomies](/docs/customize/taxonomy/) covers
+enabling them and translating their labels. The page end (feedback, last
+modified, pager, comments) works as described in
+[Writing pages](/docs/write/pages/#page-end); a blog usually turns feedback off
+and keeps comments.
+
+A bilingual post is a pair of files, `2.4.0.md` and `2.4.0.zh.md`, with the
+same `date`, `author`, `weight` and `aliases`. Translate the title, description
+and tags, but not commit IDs, version numbers, commands or URLs.
+
+## Featured image {#featured-image}
+
+The featured image is the thumbnail on the post's index row and the picture on
+its social share card. OINK uses the first of these it finds:
+
+1. the first entry of `images` in the post's front matter;
+2. an image in the post's page bundle whose filename contains `featured` or
+   `feature`, then `cover` or `thumbnail`; it is cropped to fit, and the
+   resource's own `byline` becomes its caption;
+3. `images` inherited from an ancestor section's `cascade`, nearest first.
+
+The third source gives a whole section a default image, so posts without art of
+their own still get a thumbnail:
+
+```yaml {title="content/blog/release/_index.md"}
+cascade:
+  images: [/images/release.webp]
+```
+
+To drop an inherited image from one post, write `images: []` in its front
+matter; to drop it from a whole subsection, put that in the subsection's
+`cascade`. Neither hides an image the page bundle supplies. The site-level
+`params.images` is used for share cards only, never as an index thumbnail.
+
+### On the article itself {#featured-image-article}
+
+By default the featured image appears only on index rows and share cards. Set
+`params.ui.featured_image` to show it on the article as well:
+
+| Mode | What the article shows |
+| --- | --- |
+| `none` | No image on the article. The default |
+| `banner` | The image above the title in a fixed 16:9 frame, so a run of posts reads with the same rhythm |
+| `wash` | A faint copy of the image behind the article header, fading out before the body |
+| `hero` | A full-width image header |
+
+```yaml {title="hugo.yml"}
+params:
+  ui:
+    featured_image: banner
+```
+
+The page key is `featured_image`, so a subsection's `cascade` can switch it on
+for that tree alone and a single post can opt out. A post without an image
+shows none in any mode, which makes it safe to enable for a section where only
+some posts have art. The modes load no script. A bundled or asset raster image
+is re-encoded as WebP and requested ahead of the page's other images; an
+animated image keeps its frames.
+
+```yaml {title="content/blog/release/_index.md"}
+cascade:
+  featured_image: wash
+```
+
+## Authors and bylines {#authors}
+
+Use the `authors` taxonomy when a blog has more than one writer, or when
+readers should be able to see everything one person wrote. Declaring the
+taxonomy is the only switch; the theme adds no parameter for it:
+
+```yaml {title="hugo.yml"}
+taxonomies:
+  category: categories
+  tag: tags
+  author: authors
+```
+
+A post then names its authors in byline order:
+
+```yaml
+authors: [alice-chen, raj-patel]
+```
+
+The article header shows their portraits and linked names in that order, index
+rows show the names, and the blog feed lists each author alongside the
+site-level `managingEditor`.
+
+An author's profile is the taxonomy term page, so no `data/authors` file is
+involved:
+
+```markdown {title="content/authors/alice-chen/_index.md"}
+---
+title: Alice Chen
+linkTitle: Alice
+description: Maintains the backup and restore tooling.
+images: [portrait.webp]
+---
+
+The long introduction, rendered on the profile page under the name.
+```
+
+Bylines use the term page's `linkTitle`, or `title` when there is none, so a
+profile can carry a full name while bylines show a short one. `description` is
+the one-line introduction and the body the long one. The portrait is chosen by
+the same rules as a post's [featured image](#featured-image), so `images:` and a
+bundled `portrait.webp` both work. A Chinese profile is an `_index.zh.md` beside
+it. An author named in a post but without a profile page still gets a byline:
+the name, an initial in place of a portrait, and a link to their post archive.
+
+## Series {#series}
+
+A series is a reading path through posts that each stand on their own, such as
+a five-part deep dive into backup internals. It is lighter than a
+[book](/docs/write/book/), which adds chapter numbers, cross-references and a
+combined print view. Declaring the taxonomy enables it:
+
+```yaml {title="hugo.yml"}
+taxonomies:
+  series: series
+```
+
+A post names its series and may give itself a position:
+
+```yaml
+series: [backup-internals]
+series_weight: 20
+```
+
+The post then shows a strip above its body with the series name, the post's
+position, a link to the next part, and the full list inside a `<details>`, with
+no JavaScript. The term page `content/series/<name>/_index.md` is the series
+introduction; an `_index.zh.md` beside it makes it bilingual.
+
+Members with a `series_weight` come first in ascending order; the others follow
+from oldest to newest, and the content path breaks ties. The strip and the term
+page use the same order. A post in several series shows one strip, for the
+first series it names, and a series with only one post shows none.
+
+Neither `authors` nor `series` appears in the taxonomy chip row on a post,
+since each has its own place on the page. To show one there as well, name it in
+`params.taxonomy.page_header`.
+
+## Release notes {#release-notes}
+
+A version announcement is an ordinary post, conventionally under
+`blog/release/`, with the version in `linkTitle` (`v2.4.0`). To add a card
+linking the GitHub release and source archives, an asset table with checksums,
+or a chronological release index, see
+[Releases and downloads](/docs/write/releases/).
+
+## Set up the blog section {#layout}
+
+The Starter already has a blog. To create one, make a section under `content/`
+and give it `type: blog`. Split it into subsections by audience or purpose if
+you like, but not by year: the index orders posts by `date` on its own.
+
+```filetree {title="content/blog/"}
 - content/
   - blog/
     - _index.md                      # type: blog + cascade
     - _index.zh.md
-    - oink/                          # engineering notes and announcements
-      - _index.md                    # cascade: images: [/images/oink.webp]
-      - oink-announcement.md
-      - oink-announcement.zh.md
-    - release/                       # versioned release notes
-      - _index.md                    # cascade: images: [/images/releasenote.webp]
-      - 0.4.0.md
-      - 0.4.0.zh.md
+    - engineering/                   # design notes and benchmarks
+      - _index.md                    # cascade: images: [/images/engineering.webp]
+      - parallel-restore.md
+      - parallel-restore.zh.md
+    - release/                       # one post per version
+      - _index.md                    # cascade: images: [/images/release.webp]
+      - 2.4.0.md
+      - 2.4.0.zh.md
 ```
 
-The section root applies the type to the whole subtree. It sets the section's
-shared behavior:
+The section root sets the type for the whole subtree, along with anything every
+post should share:
 
 ```yaml {title="content/blog/_index.md"}
 ---
 title: Blog
-description: OINK engineering notes and release announcements
+description: Engineering notes and release announcements
 type: blog
 icon: fa-solid fa-blog
 sidebar_root_for: self      # the blog has its own sidebar tree
@@ -50,117 +247,36 @@ cascade:
 ---
 ```
 
-`params.ui.blog_section` (default `blog`) names where the blog root is. Rename
-the directory and either change that parameter or use `sidebar_root_for: self`
-as above.
+`params.ui.blog_section` (default `blog`) tells the theme where the blog root
+is. If you name the directory something else, change that parameter or keep
+`sidebar_root_for: self` as above.
 
-Blog sections are expanded by default in the sidebar and ordered by date, newest
-first. To place one post at the top, give it a `weight`.
-
-## A post's front matter {#front-matter}
-
-```yaml {title="content/blog/release/0.4.0.md"}
----
-title: Oink 0.4.0 — scenario components for a complete release workflow
-linkTitle: Oink v0.4.0        # short name in the sidebar and pager
-date: 2026-08-14              # publication date; decides list order
-lastmod: 2026-08-14
-description: >-
-  Oink 0.4.0 delivers sequential reading and release surfaces, reusable landing
-  pages, book publishing with stable references, and a keyboard-first site shell.
-author: The OINK maintainers
-categories: [Release]
-tags: [Oink, Release]
----
-```
-
-Where it differs from a documentation page:
-
-- `date` is required. It decides the post's place in the list and its RSS timestamp. A future date excludes the post from the default build. Use `hugo server -F` to preview it.
-- `description` appears as an introduction above the body and as a search snippet. Write a sentence for the reader.
-- `author` accepts inline Markdown, so `[Vonng](https://vonng.com)` works. For more than one author, a portrait, or a profile page, use the `authors` taxonomy below. The two do not interfere. A post renders `author` if `authors` is absent.
-- The date display format comes from `params.time_format_blog` and can be set per language (this site uses `Monday, January 02, 2006` in English and `2006年1月2日` in Chinese).
-
-Bilingual posts are stored in pairs, keeping `date`, `author`, `weight` and
-`aliases` identical across the two. Titles, descriptions and tags are
-translated. Do not translate commit IDs, version numbers, commands, or URLs.
-
-## Featured image {#featured-image}
-
-Each row on a list or tag page has a thumbnail on the left. The resolver
-uses the first match in this order:
-
-1. `images` in the post's front matter, first entry;
-2. An image resource in the page bundle whose filename matches `featured` or `feature`, then `cover` or `thumbnail` (it is cropped to a thumbnail, and the resource's own `byline` becomes its caption);
-3. An `images` value inherited from an ancestor section's `cascade`, nearest first.
-
-A section-wide default uses Hugo's native `cascade` over the whole subtree.
-This site sets one for each of its two subsections:
-
-```yaml {title="content/blog/release/_index.md"}
-cascade:
-  images: [/images/releasenote.webp]
-```
-
-To clear an inherited image on one post, write `images: []` in its front matter.
-To clear it for a whole subsection, put it in that level's `cascade`. This does not suppress
-an image supplied by the page bundle. To hide the image on the article itself,
-use `featured_image: none`. List thumbnails and share cards use images separately.
-The site-level `params.images` feeds the share card only and is never rendered
-as a list thumbnail.
-
-### On the article itself {#featured-image-article}
-
-By default the resolved image appears on list rows and in the social card. Set
-`params.ui.featured_image` to use the same image on the article itself:
-
-| Mode | What the article shows |
-| --- | --- |
-| `none` | No article image. This is the theme default |
-| `banner` | The image above the title in a fixed 16:9 figure. Articles use a consistent layout |
-| `wash` | A faint image behind the article header, fading before the body |
-| `hero` | A full-width image header |
-
-```yaml {title="hugo.yml"}
-params:
-  ui:
-    featured_image: banner
-```
-
-The page key is `featured_image`. A subsection's `cascade` enables it for that
-tree. An individual post can opt out. A post without an image shows none in
-any mode. A section can therefore enable it even if only some posts have images. These modes need no additional script.
-In OINK 1.6.0, local raster images in `banner`, `hero`, and `wash` modes are
-re-encoded as WebP and requested with `fetchpriority="high"`; animated images
-retain their frames.
-
-```yaml {title="content/blog/release/_index.md"}
-cascade:
-  featured_image: wash
-```
+In the sidebar, blog sections start expanded and list posts newest first. A
+post with a `weight` is pinned above the dated ones there; the post index
+ignores `weight` and stays in date order.
 
 ## List layouts and pagination {#list}
 
-After the section `_index.md` body, the theme appends the post index, sorted
-by date, newest first, without year groups. Choose its layout with `blog_index`:
+Below the section's own `_index.md` text, OINK appends the post index: every
+post in the section and its subsections, newest first, without year groups.
+`blog_index` chooses how it looks:
 
 | Value | Layout | What the reader sees |
 | --- | --- | --- |
-| `list` | Horizontal entries (default) | Thumbnail, title, date, subsection, tags, and a summary |
-| `cards` | Regular card grid | A cropped 16:9 cover above the title, metadata, and summary |
-| `table` | Compact table | Date, title, and tags in one row per article |
-| `gallery` | Image gallery | Proportional covers with titles and descriptions; click to open the article |
-
-OINK v1.4.0 includes `list`, `cards`, `table`, and `gallery`.
+| `list` | Horizontal rows (default) | Thumbnail, title, date, subsection, tags and summary |
+| `cards` | Card grid | A cropped 16:9 cover above the title, metadata and summary |
+| `table` | Compact table | Date, title and tags, one row per post |
+| `gallery` | Image gallery | Covers at their own proportions with titles and descriptions; click to open the post |
 
 Set the site default with `params.ui.blog_index` in `hugo.yml`, or set
-`blog_index` in a blog section's `_index.md` front matter to override it.
-Use a section's `cascade` to apply it to descendant sections. These settings
-control native blog section indexes; term and taxonomy pages keep their own
-layouts, and custom homepages need their own template integration.
+`blog_index` in a blog section's `_index.md` to override it there; a section's
+`cascade` passes it to the sections below. These settings shape blog section
+indexes only. Tag and category pages keep their own layout, and a custom home
+page needs its own template to show posts.
 
-List, card, and gallery views show 12 posts per page by default. Set the theme's
-`blog_index_size` in `hugo.yml` to change it:
+`list`, `cards` and `gallery` show 12 posts per page. Change that with
+`blog_index_size`, in `hugo.yml` for the site or in a section's front matter
+for one blog:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -168,15 +284,14 @@ params:
     blog_index_size: 20
 ```
 
-The same key in a blog section's front matter overrides the site value. The
-theme explicitly passes this size to Hugo's paginator. `pagination.pagerSize`
-does not control these lists.
+Hugo's `pagination.pagerSize` has no effect on these lists, because the theme
+passes `blog_index_size` to the paginator itself.
 
 ### The card form {#list-cards}
 
-`params.ui.blog_index: cards` renders the same list as a grid of content cards
-instead of rows. Each card shows a 16:9 image crop above the title, a date and
-subsection line, and a three-line summary.
+`cards` turns the rows into a grid of content cards, each with a 16:9 crop of
+the featured image above the title, a date and subsection line, and a
+three-line summary:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -185,40 +300,37 @@ params:
     blog_index_columns: 3
 ```
 
-The column count applies above the xl breakpoint. Between md and xl, the grid
-has two columns. Below md, it has one. If a card image resource supports
-processing, Hugo applies `.Fill`, so readers download cropped previews.
+`blog_index_columns` applies above the xl breakpoint; between md and xl the grid
+has two columns, and below md one. When the image can be processed, Hugo crops
+it with `.Fill`, so readers download a small preview instead of the original.
 
 ### Table and layout switching {#list-switching}
 
-`blog_index: table` always lists the entire section as a compact archive table
-without pagination — both standalone (`blog_index_toggle: false`) and when
-reached through the layout switch. Set `blog_index_toggle: true` to add the
-layout switch beside the title (also bound to {{< kbd "V" >}} when keyboard navigation is enabled). It cycles through
-`list` → `cards` → `table` → `gallery` → `list`:
+`table` is an archive view: it always lists every post in the section on one
+page, without pagination. Set `blog_index_toggle: true` to let readers choose
+for themselves. A switch appears beside the title (and on
+{{< kbd "V" >}} when keyboard navigation is on), cycling `list` → `cards` →
+`table` → `gallery` → `list`:
 
 ```yaml {title="content/blog/_index.md"}
 blog_index: cards
 blog_index_toggle: true
 ```
 
-All layouts preserve date order and `manual_link` destinations. With switching
-enabled, `list`, `cards`, and `gallery` share the current `blog_index_size`
-page and pager, while `table` always renders every post in the section without
-pagination.
-The switch remembers the reader's choice. Set `blog_index_toggle: false` to
-publish only the configured layout, regardless of a saved reader preference.
-Hidden views use lazy images, although their markup and generated thumbnails
-still contribute to build work. In v1.4.0, the switch cycles through all four
-layouts.
+The switch remembers the reader's choice. With it on, `list`, `cards` and
+`gallery` share the same `blog_index_size` pages and pager, while `table` still
+shows every post at once. Every layout keeps date order and `manual_link`
+destinations. Hidden layouts load their images lazily, but their markup and
+thumbnails still add build time. With `blog_index_toggle: false`, only the
+configured layout is published and any saved reader choice is ignored.
 
 ### Gallery form {#list-gallery}
 
-`gallery` makes each article a linked cover,
-using the existing `images` field or bundled featured image. The default wall
-joins images into rows while preserving their proportions. Hover or keyboard
-focus reveals the title and description; touch devices show them below the
-image. Clicking opens the article. Posts without a cover keep a title tile.
+`gallery` suits a blog whose posts are mostly visual. Each post becomes a
+linked cover, taken from its featured image; the default wall joins covers into
+rows while keeping their proportions. Titles and descriptions appear on hover or
+keyboard focus, and below the image on touch screens. A post without a cover
+keeps a title tile.
 
 ```yaml {title="content/blog/_index.md"}
 blog_index: gallery
@@ -232,30 +344,30 @@ The gallery toolbar offers three arrangements:
 
 | `blog_gallery.mode` | Arrangement | Captions |
 | --- | --- | --- |
-| `wall` (default) | Justified rows with 6px gaps | On hover or keyboard focus; below images on touch devices |
-| `seamless` | The same rows without gaps | On hover or keyboard focus; below images on touch devices |
+| `wall` (default) | Justified rows with 6px gaps | On hover or keyboard focus; below images on touch screens |
+| `seamless` | The same rows without gaps | On hover or keyboard focus; below images on touch screens |
 | `cards` | Masonry columns | Always visible below images |
 
-`blog_index: cards` selects the regular card grid. `blog_index: gallery` with
-`blog_gallery.mode: cards` selects masonry inside the gallery.
-`blog_gallery.size` sets the target tile size, from 160 to 360 CSS pixels,
-with a default of 240. It is independent of `blog_index_size`, the number of
-posts per page. Readers can change the arrangement and size; their choices
-are remembered separately from Expo albums. With `keyboard_nav` enabled while
-the gallery view is visible, {{< kbd "M" >}} cycles `wall` → `cards` →
-`seamless`, and {{< kbd "," >}} / {{< kbd "<" >}} or {{< kbd "." >}} /
-{{< kbd ">" >}} shrinks or enlarges tiles by `20 px`.
+`blog_index: cards` is the regular card grid; masonry inside the gallery is
+`blog_index: gallery` with `blog_gallery.mode: cards`. `blog_gallery.size` is
+the target tile size, from 160 to 360 CSS pixels with a default of 240, and has
+nothing to do with `blog_index_size`, the number of posts per page.
 
-Site defaults use the same `blog_gallery` block under `params.ui`; a page or
-cascade block replaces it in full. Omitted fields use `wall` and `240`;
-invalid values warn and use those defaults. These settings are available in
-v1.4.0. See the
+Readers can change the arrangement and size, and their choice is remembered
+separately from Expo albums. With keyboard navigation on and the gallery in
+view, {{< kbd "M" >}} cycles `wall` → `cards` → `seamless`, and
+{{< kbd "," >}} / {{< kbd "<" >}} or {{< kbd "." >}} / {{< kbd ">" >}} shrinks
+or enlarges tiles by `20 px`.
+
+The site default is a `blog_gallery` block under `params.ui`. A block in a
+page or `cascade` replaces it whole, and any field it omits falls back to
+`wall` and `240`. The reference tables are in
 [site parameters](/docs/customize/config/#blog) and
-[page parameters](/docs/write/frontmatter/#blog) for the reference tables.
+[page parameters](/docs/write/frontmatter/#blog).
 
 ## RSS {#rss}
 
-`outputs` determines which pages produce a feed. Adding `RSS` to `section`
+Which pages publish a feed is decided by `outputs`. Adding `RSS` to `section`
 gives every section its own feed:
 
 ```yaml {title="hugo.yml"}
@@ -265,139 +377,32 @@ outputs:
   section: [HTML, RSS, print, markdown]
 ```
 
-Setting `outputs` replaces all Hugo defaults. Include `RSS` explicitly if you
-need feeds. If you omit it, that page kind has no feed. The build does not warn.
+Writing `outputs` replaces all of Hugo's defaults, so list `RSS` explicitly. A
+page kind without it has no feed, and the build does not warn you.
 
-This site therefore has `/blog/index.xml` (the whole blog) and
-`/blog/release/index.xml` (release notes only). A section feed recursively
-includes every subsection's posts. Subscribing to `/blog/` covers the whole blog. An individual post has no `.xml` of its own.
+With the tree above, `/blog/index.xml` carries every post, subsections
+included, and `/blog/release/index.xml` only the release posts. Individual
+posts have no feed of their own. Each
+language has its own feed at that language's path plus `index.xml`, and Hugo's
+`services.rss.limit` caps the number of items. On the blog root and its
+first-level subsections, the first button on the title row is the RSS link, so
+readers never have to guess the address.
 
-Each language has its own feed at that language's route plus `index.xml`. The
-item limit is Hugo's `services.rss.limit`. On the blog root and its first-level
-subsection pages, the first action button beside the title row is the RSS link,
-so readers do not need to construct the address manually.
-
-To drop feeds site-wide, turn the kind off with `disableKinds`, which is more
-thorough than removing `RSS` from each page kind:
+To publish no feeds at all, turn the kind off. That is more thorough than
+removing `RSS` from each page kind:
 
 ```yaml {title="hugo.yml"}
 disableKinds: [RSS]
 ```
 
-Components use their static form in a feed. Disclosures are expanded, and
-interactive controls are removed. The four-output rules are the same for blog
-posts as for documentation.
-
-## Categories and tags {#taxonomy}
-
-`tags` and `categories` are Hugo's taxonomies, and the theme renders them as
-chips in the post header, a tag cloud in the right column, and a filter menu in
-the navbar. Enabling them, bilingual term labels, and switching them per content
-type are covered in [Taxonomies](/docs/customize/taxonomy/).
-
-## Release notes {#release-notes}
-
-A versioned release announcement is an ordinary post, conventionally under
-`blog/release/`, with the version in `linkTitle` (`Oink v0.4.0`). For a download
-page with release cards, asset tables and checksums, see
-[Releases and downloads](/docs/write/releases/).
-
-## Components in a post {#components}
-
-Callouts, tabs, code blocks, images and tables work exactly as on a
-documentation page. The syntax is in [Components](/docs/components/). Headings
-in a post body take explicit English `{#id}` anchors too.
-
-The four blocks at the end of a post — feedback, last modified, pager, comments
-— behave as on a documentation page. See
-[Writing pages](/docs/write/pages/#page-end). A blog usually turns feedback off
-and keeps comments.
-
-## Authors and bylines {#authors}
-
-Declare the taxonomy to enable this feature. The theme adds no parameter:
-
-```yaml {title="hugo.yml"}
-taxonomies:
-  category: categories
-  tag: tags
-  author: authors
-```
-
-A post then names its authors in order:
-
-```yaml
-authors: [vonng, ada-example]
-```
-
-The article header renders portraits and linked names in that order. List rows
-show the names. The blog feed includes each author alongside the site-level
-`managingEditor`.
-
-An author's profile is the taxonomy term page. No `data/authors` file is needed:
-
-```markdown {title="content/authors/vonng/_index.md"}
----
-title: Vonng
-description: Maintainer of OINK and Pigsty.
-images: [portrait.webp]
----
-
-The long introduction, rendered on the profile page under the name.
-```
-
-The display name is the term page's **link title**. It uses `linkTitle` if
-available, otherwise `title`. A profile can use a full name and the byline a
-short handle. `description` gives a one-line introduction. The body gives the
-long introduction. The featured-image resolver selects the avatar. `images:`
-and a bundled portrait follow the same rules as an article's image. A bilingual profile is an `_index.zh.md` beside it.
-An author without a profile page still has a byline. It shows the link title,
-an initial, and an archive link.
-
-The 0.4 `author:` string is untouched wherever `authors` is absent, and neither
-form warns about the other.
-
-## Series {#series}
-
-A series is a reading path through articles that each stand alone. Numbering,
-cross-references, and aggregate output belong to [Book](/docs/write/book/). A
-series has less structure. Declare the taxonomy to enable it:
-
-```yaml {title="hugo.yml"}
-taxonomies:
-  series: series
-```
-
-An article names the series and may place itself in it:
-
-```yaml
-series: [shell-internals]
-series_weight: 20
-```
-
-The article then shows a strip above its body. It names the series, position,
-and next part. A `<details>` contains the full list. This requires no JavaScript
-or bundle member.
-The term page `content/series/<name>/_index.md` is the introduction, and an
-`_index.zh.md` beside it makes the pair bilingual.
-
-Members with `series_weight` come first in ascending order. Other members follow
-from oldest to newest. The content path breaks ties. The series strip
-and term page use this same reading order. For implementation details, see
-[Authors and series](/docs/design/shell/#authors-and-series).
-
-A member of several series shows one strip, for the first term it names. A
-series of one shows none.
-
-Neither `authors` nor `series` appears in the generic taxonomy chip row on an
-article, because each has a surface of its own. Name one in
-`params.taxonomy.page_header` to put it back.
+In a feed, components take their static form: disclosures are expanded and
+interactive controls removed.
 
 ## Share {#share}
 
-`params.ui.share` puts a share bar at the top of the page end. It is empty by
-default, so nothing renders until a site names its targets, in the order it
-wants them:
+`params.ui.share` adds a row of share links at the top of the page end. It is
+empty by default, so nothing appears until you list the targets you want, in
+the order you want them:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -407,35 +412,32 @@ params:
 
 Sixteen targets are available: `x`, `bluesky`, `mastodon`, `facebook`,
 `linkedin`, `reddit`, `hackernews`, `telegram`, `whatsapp`, `line`,
-`pinterest`, `weibo`, `chatgpt`, `claude`, `email`, and `copy`. An unknown name
-warns and is dropped. Discord is deliberately absent. It provides no share-intent URL. Use `copy`
-for Discord. The theme does not infer a private scheme.
+`pinterest`, `weibo`, `chatgpt`, `claude`, `email` and `copy`. An unknown name
+warns and is dropped. There is no `discord`, because Discord offers no public
+share link to build one from; `copy` covers it.
 
-The page key is `share`, so a `cascade` scopes the bar to one tree, a page's own
-list replaces the inherited one, and `share: false` opts a single page out:
+The page key is also `share`, so a `cascade` limits the bar to one tree, a
+page's own list replaces the inherited one, and `share: false` removes it from
+a single page:
 
 ```yaml {title="content/blog/_index.md"}
 cascade:
   share: [x, bluesky, email, copy]
 ```
 
-Only regular pages render the bar. Lists, term pages, and the home page have
-no single item to share. Print, Markdown, and RSS omit the bar.
+Only regular pages show the bar; lists, term pages and the home page have no
+single item to share, and print, Markdown and RSS output leave it out. Each
+target is a plain link carrying the page's permalink and title, plus a local
+copy button. The bar loads no third-party scripts or stylesheets, and a
+service hears about the page only when a reader clicks its link.
 
-Share targets are links carrying the page's permalink and title, plus a local
-copy button. The bar loads no third-party scripts or stylesheets. It contacts a target only
-when the reader clicks its link. See the
-[Share contract](/docs/design/shell/#share) for the implementation rules.
+`chatgpt` and `claude` hand that same permalink to an assistant with a prompt
+asking it to read the page. They are separate from the "Open in ChatGPT" and
+"Open in Claude" items of the page action menu, which send the live browser URL
+when clicked and therefore stay behind `page_context_menu.assistant_links`.
 
-`chatgpt` and `claude` hand that same build-time permalink to an assistant with
-a prompt asking it to read the page. They are not the "open in ChatGPT" /
-"open in Claude" entries of the page action menu, which the runtime rewrites at
-activation time to the live browser URL and which therefore stay behind
-`page_context_menu.assistant_links`.
-
-The copy button is the built-in `copy_link` action, so the Command
-Palette includes it on every page of every site. This applies even if no bar
-is configured.
+The copy button is the built-in `copy_link` action, which the Command Palette
+offers on every page whether or not a share bar is configured.
 
 ## Verify {#verify}
 
@@ -443,17 +445,20 @@ is configured.
 hugo --printPathWarnings
 ```
 
-The build must complete with `Total in …` and no ERROR. Then confirm:
+The build should end with `Total in …` and no ERROR. Then check that:
 
-1. The post appears in the right date order at `/blog/`, with the date in the expected format.
-2. `public/blog/index.xml` exists, contains the post, and its links are complete absolute addresses.
-3. The thumbnail shows in the list (a missing one means none of the three featured-image sources matched).
-4. Tag chips lead to the corresponding tag page.
+1. the post appears at `/blog/` in the right date order, with the date in the
+   format you expect;
+2. `public/blog/index.xml` exists, contains the post, and uses complete
+   absolute links;
+3. the post has a thumbnail in the index (if not, none of the three
+   featured-image sources matched);
+4. each tag chip leads to its tag page.
 
 ## Related {#related}
 
 - [Writing pages](/docs/write/pages/) — how to write the body
-- [Page parameters](/docs/write/frontmatter/) — the full definition of `author`, `images` and the rest
+- [Page parameters](/docs/write/frontmatter/#blog) — every blog key with its type and default
 - [Organizing content](/docs/write/organize/) — directories and the sidebar
 - [Taxonomies](/docs/customize/taxonomy/) — tags and categories
 - [Releases and downloads](/docs/write/releases/) — version cards and asset tables

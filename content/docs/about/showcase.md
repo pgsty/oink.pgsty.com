@@ -8,15 +8,43 @@ aliases:
   - /docs/about/examples/
 ---
 
-The [Case library](/case/) documents 45 live OINK sites and their
-implementation patterns: 14 independent third-party community sites and 31
-PGSTY and Vonng ecosystem sites, including this documentation site. Case pages
-link to the live result and source repository. Where a pattern needs custom
-implementation, they distinguish site-owned code from theme features.
+The quickest way to design an OINK site is to find a live one shaped like
+yours and see how it was built. The [case library](/case/) documents 45 of
+them: 14 independent community sites and 31 from the PGSTY and Vonng
+ecosystem, this documentation site included. Each case links to the live site
+(and to its source repository where that is public), explains the design and
+its trade-offs, and separates the code the site wrote itself from what the
+theme provides. Read
+the case for the architecture, then follow its links to the guides for exact
+configuration. Page counts and similar figures come from the snapshot taken
+when the case was written.
 
-If you know the type of site you want to build, use this guide. Read a case to
-understand its architecture and trade-offs. Then use the linked documentation
-for exact configuration. Counts in each case reflect the audited snapshot.
+## Choosing a starting point {#choosing-a-starting-point}
+
+- A branded open-source project: look at
+  [Apache HugeGraph](/case/apache-hugegraph/), [Stashix](/case/stashix/) or
+  [Barn](/case/barn/).
+- A conventional product manual: start with [PIG](/case/pig/),
+  [SOW](/case/sow/) or [AGW](/case/agw/).
+- A large multilingual or migrated corpus: compare
+  [PG.CENTER](/case/doc-pg-center/), [SILO](/case/silo/) and
+  [Red Hat CAI](/case/redhat-cai/).
+- A book or course library: compare [TPME](/case/tpme/),
+  [SSG Book](/case/ssg-book/) and [DDIA](/case/ddia/), or see
+  [PG Internal](/case/pg-internal/) for a single-language edition.
+- A personal blog or digital garden: compare [VONNG](/case/vonng-com/),
+  [Nekonull's Garden](/case/nekonull/) and [blog.xjkj.org](/case/xjkj-blog/).
+- A standard, an archive or a queryable dataset: look at
+  [Cloud Exit](/case/cloudexit/), [Feng Zhenbiao Archive](/case/fzb/) or
+  [ext.pgsty.com](/case/pgext-cloud/).
+- A landing page or an interactive tool: start with
+  [pgsty.com](/case/pgsty-com/), [CASSA](/case/cassa/) or
+  [Capslock](/case/capslock/).
+- The broadest reference of all: [OINK Docs](/case/oink/).
+
+Start the site itself from the [Starter](/docs/start/), not from the theme
+repository's `tests/site/`: that folder is a test fixture whose pages exist to
+exercise rendering edge cases, not a design to copy.
 
 ## Third-party and community sites {#community-sites}
 
@@ -257,30 +285,4 @@ design contracts, multiple content shells, and regression coverage in one reposi
 This PostgreSQL extension catalog uses a queryable dataset as its primary object.
 It indexes 2,241 extensions and 576 packaged builds across 16 platforms.
 
-## Choosing a starting point {#choosing-a-starting-point}
-
-- For a branded open-source project, inspect
-  [Apache HugeGraph](/case/apache-hugegraph/), [Stashix](/case/stashix/), or
-  [Barn](/case/barn/).
-- For a conventional product manual, begin with [PIG](/case/pig/),
-  [SOW](/case/sow/), or [AGW](/case/agw/).
-- For a large multilingual or migrated corpus, compare
-  [PG.CENTER](/case/doc-pg-center/), [SILO](/case/silo/), and
-  [Red Hat CAI](/case/redhat-cai/).
-- For a book or course library, compare [TPME](/case/tpme/),
-  [SSG Book](/case/ssg-book/), and [DDIA](/case/ddia/), or
-  [PG Internal](/case/pg-internal/) for a single-language edition.
-- For a personal blog or digital garden, compare [VONNG](/case/vonng-com/),
-  [Nekonull's Garden](/case/nekonull/), and [blog.xjkj.org](/case/xjkj-blog/).
-- For a standard, archive, or queryable dataset, inspect
-  [Cloud Exit](/case/cloudexit/), [Feng Zhenbiao Archive](/case/fzb/), or
-  [ext.pgsty.com](/case/pgext-cloud/).
-- For a landing or interactive site, start with [pgsty.com](/case/pgsty-com/),
-  [CASSA](/case/cassa/), or [Capslock](/case/capslock/).
-- For the broadest reference, use [OINK Docs](/case/oink/).
-
-The theme repository's `tests/site/` is an internal CI fixture. Do not use it as
-a starter template. Its pages test rendering behavior. Use the production cases
-above as design references.
-
-→ [Browse all cases](/case/) · [Quick start](/docs/start/) · [Repository tour](/docs/start/anatomy/)
+→ [Browse all cases](/case/) · [Get started](/docs/start/) · [Starter repository tour](/docs/start/anatomy/)

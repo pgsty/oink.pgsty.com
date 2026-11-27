@@ -1,50 +1,52 @@
 ---
 title: Infographic
 linkTitle: Infographic
-description: 用 `infographic` 围栏挑一个 AntV 模板，把标题与条目渲染成流程、时间线、漏斗、网格或层级信息图。
+description: 用 `infographic` 围栏和一个 AntV 模板，把标题与几个条目画成流程、时间线、漏斗、网格或层级信息图。
 weight: 160
 search_keywords: [Infographic, 信息图, AntV, 流程图, 时间线, 漏斗, timeline, funnel, 模板, template]
 ---
 
-`infographic` 围栏挑一个 AntV 模板，把「标题 + 一串条目」渲染成信息图。适用于表达顺序、层级与对比这类结构。需要坐标轴与数值精度时用 [ECharts](/zh/docs/components/echarts/)，需要条件分支的流程时用 [Mermaid](/zh/docs/components/mermaid/)。围栏正文是数据，在 GitHub 上仍是一段可读的文本。
+信息图把一小串条目画成它的结构：一排三个步骤、一条五年的时间线、逐级收窄的漏斗、两层的层级关系。你在 `infographic` 围栏里用纯数据写下标题和条目，第一行指定一个 AntV 模板，由浏览器负责绘制；在 GitHub 上，这个围栏仍是一段可读的文本。
+
+当信息的「形状」本身就是要传达的内容时，用信息图。读者需要坐标轴和精确数值时，用 [ECharts](/zh/docs/components/echarts/)；流程里有条件和分支时，用 [Mermaid](/zh/docs/components/mermaid/)。
 
 ## 最简例子 {#minimal}
 
-第一行是 `infographic 模板名`，其后是一个 `data` 块：`title` 是标题，`items` 下面每个条目至少要有 `label`。
+第一行是 `infographic 模板名`，其后是一个 `data` 块：`title` 是标题，`items` 是条目列表，每个条目至少要有 `label`。
 
 ````markdown {title="源码"}
 ```infographic
 infographic list-row-simple-horizontal-arrow
 data
-  title 一次文档改动的三步
+  title 升级 PostgreSQL 大版本
   items
-    - label 写
-      desc 先写中文 .zh.md
-    - label 校
-      desc 构建生产，例子真渲染
-    - label 发
-      desc 补英文对等页，提交 PR
+    - label 备份
+      desc 做一次基础备份，并确认能恢复
+    - label 升级
+      desc 先在从库上执行 pg_upgrade
+    - label 切换
+      desc 提升升级后的节点，下线旧节点
 ```
 ````
 
 ```infographic
 infographic list-row-simple-horizontal-arrow
 data
-  title 一次文档改动的三步
+  title 升级 PostgreSQL 大版本
   items
-    - label 写
-      desc 先写中文 .zh.md
-    - label 校
-      desc 构建生产，例子真渲染
-    - label 发
-      desc 补英文对等页，提交 PR
+    - label 备份
+      desc 做一次基础备份，并确认能恢复
+    - label 升级
+      desc 先在从库上执行 pg_upgrade
+    - label 切换
+      desc 提升升级后的节点，下线旧节点
 ```
 
-缩进决定结构，两个空格一级。标签要短，说明放 `desc`。
+缩进决定结构，每级两个空格。标签控制在一两个词，解释放进 `desc`，因为长标签在手机上会被挤压或截断。
 
 ## 时间线 {#timeline}
 
-`sequence-timeline-*` 系列把条目排成一条时间轴，`label` 是时间点，`desc` 是事件。
+`sequence-timeline-*` 系列模板把条目排在一条时间轴上：`label` 是时间点，`desc` 是事件。
 
 ````markdown {title="源码"}
 ```infographic {height="420px"}
@@ -84,121 +86,121 @@ data
 
 ## 漏斗 {#funnel}
 
-`sequence-funnel-simple` 画逐步收窄的阶段。下面是主题发布的五个阶段。
+`sequence-funnel-simple` 画逐级收窄的阶段，例如从第一次访问到投入生产的过程。
 
 ````markdown {title="源码"}
 ```infographic {height="420px"}
 infographic sequence-funnel-simple
 data
-  title 一次主题发布要经过的五个状态
+  title 从首次访问到投入生产
   items
-    - label 源码完成
-      desc 代码写完，仅此而已
-    - label 已验证
-      desc 主题检查脚本与站点测试套件全绿
-    - label 已发布
-      desc 不可变的签名标签，能从 Go 代理拉到
-    - label 已文档化
-      desc 文档站钉住了这个标签
-    - label 已部署
-      desc 生产环境运行的就是这个版本
+    - label 访问
+      desc 打开了站点的任意页面
+    - label 阅读入门
+      desc 打开了入门教程
+    - label 安装
+      desc 在测试机上运行了安装程序
+    - label 首个集群
+      desc 创建集群并连接成功
+    - label 投入生产
+      desc 承载真实业务流量
 ```
 ````
 
 ```infographic {height="420px"}
 infographic sequence-funnel-simple
 data
-  title 一次主题发布要经过的五个状态
+  title 从首次访问到投入生产
   items
-    - label 源码完成
-      desc 代码写完，仅此而已
-    - label 已验证
-      desc 主题检查脚本与站点测试套件全绿
-    - label 已发布
-      desc 不可变的签名标签，能从 Go 代理拉到
-    - label 已文档化
-      desc 文档站钉住了这个标签
-    - label 已部署
-      desc 生产环境运行的就是这个版本
+    - label 访问
+      desc 打开了站点的任意页面
+    - label 阅读入门
+      desc 打开了入门教程
+    - label 安装
+      desc 在测试机上运行了安装程序
+    - label 首个集群
+      desc 创建集群并连接成功
+    - label 投入生产
+      desc 承载真实业务流量
 ```
 
 ## 网格卡片 {#grid}
 
-条目之间没有先后关系时用 `list-grid-*`，它把条目排成网格而不是队列。
+条目之间没有先后顺序时，`list-grid-*` 把它们排成卡片网格，而不是一条队列。写在 `data` 下的 `desc` 是副标题。
 
 ````markdown {title="源码"}
 ```infographic {height="380px"}
 infographic list-grid-compact-card
 data
-  title 同一页内容的四种输出
-  desc 每个内容组件都要在这四态里给出可用的结果
+  title 四种安装方式
+  desc 选一种与你现有的服务器管理方式相符的
   items
-    - label HTML
-      desc 交互式，按需加载运行时
-    - label 打印
-      desc 折叠展开，去掉缩放与复制按钮
-    - label Markdown
-      desc 纯文本，按字节比对金样本
-    - label RSS
-      desc 静态，与打印同源
+    - label 软件包
+      desc 项目仓库提供 RPM 与 DEB
+    - label 容器
+      desc 每个大版本一个镜像
+    - label Ansible
+      desc 用剧本搭建整个集群
+    - label 源码
+      desc 按自己的编译选项构建
 ```
 ````
 
 ```infographic {height="380px"}
 infographic list-grid-compact-card
 data
-  title 同一页内容的四种输出
-  desc 每个内容组件都要在这四态里给出可用的结果
+  title 四种安装方式
+  desc 选一种与你现有的服务器管理方式相符的
   items
-    - label HTML
-      desc 交互式，按需加载运行时
-    - label 打印
-      desc 折叠展开，去掉缩放与复制按钮
-    - label Markdown
-      desc 纯文本，按字节比对金样本
-    - label RSS
-      desc 静态，与打印同源
+    - label 软件包
+      desc 项目仓库提供 RPM 与 DEB
+    - label 容器
+      desc 每个大版本一个镜像
+    - label Ansible
+      desc 用剧本搭建整个集群
+    - label 源码
+      desc 按自己的编译选项构建
 ```
 
 ## 带数值的条目 {#values}
 
-条目上加 `value`，能表达比例的模板（饼、环、进度）会用到它。
+表达比例的模板，例如饼图、环形图和进度图，会读取每个条目上的 `value`。
 
 ````markdown {title="源码"}
 ```infographic {height="400px"}
 infographic chart-pie-donut-plain-text
 data
-  title 30 个 shortcode 的构成
+  title 一个 200 GB 数据库的磁盘占用
   items
-    - label 核心组件
-      value 15
-    - label Book 编号与索引
+    - label 表
+      value 120
+    - label 索引
+      value 50
+    - label WAL
+      value 20
+    - label 临时文件
       value 10
-    - label 发布与下载
-      value 3
-    - label OpenAPI
-      value 2
 ```
 ````
 
 ```infographic {height="400px"}
 infographic chart-pie-donut-plain-text
 data
-  title 30 个 shortcode 的构成
+  title 一个 200 GB 数据库的磁盘占用
   items
-    - label 核心组件
-      value 15
-    - label Book 编号与索引
+    - label 表
+      value 120
+    - label 索引
+      value 50
+    - label WAL
+      value 20
+    - label 临时文件
       value 10
-    - label 发布与下载
-      value 3
-    - label OpenAPI
-      value 2
 ```
 
 ## 层级与手绘风格 {#hierarchy-and-theme}
 
-条目下面可以再嵌 `children`，`hierarchy-mindmap-*` 把它画成两层的结构图。顶层的 `theme` 块换整张图的风格，`type` 取 `light`、`dark` 或 `hand-drawn`。
+条目下面可以用 `children` 继续嵌套，`hierarchy-mindmap-*` 模板会画出两层结构。顶层的 `theme` 块改变整张图的外观，`type` 取 `light`、`dark` 或 `hand-drawn`。
 
 ````markdown {title="源码"}
 ```infographic {height="320px"}
@@ -207,24 +209,24 @@ theme
   type hand-drawn
 data
   root
-    label 主题仓库
+    label Hugo 站点
     children
-      - label layouts
-        desc 模板
+      - label content
+        desc 页面
         children
-          - label _markup
-            desc 渲染钩子
-          - label _partials
-            desc 外壳与工具
+          - label docs
+            desc 文档
+          - label blog
+            desc 文章
       - label assets
-        desc 资源
+        desc 构建输入
         children
           - label css
-            desc 令牌与组件样式
-          - label js
-            desc 浏览器运行时
-          - label third_party
-            desc 随主题分发的库
+            desc 站点样式
+          - label images
+            desc 需处理的图片
+          - label parts
+            desc 共享片段
 ```
 ````
 
@@ -234,34 +236,31 @@ theme
   type hand-drawn
 data
   root
-    label 主题仓库
+    label Hugo 站点
     children
-      - label layouts
-        desc 模板
+      - label content
+        desc 页面
         children
-          - label _markup
-            desc 渲染钩子
-          - label _partials
-            desc 外壳与工具
+          - label docs
+            desc 文档
+          - label blog
+            desc 文章
       - label assets
-        desc 资源
+        desc 构建输入
         children
           - label css
-            desc 令牌与组件样式
-          - label js
-            desc 浏览器运行时
-          - label third_party
-            desc 随主题分发的库
+            desc 站点样式
+          - label images
+            desc 需处理的图片
+          - label parts
+            desc 共享片段
 ```
 
-`theme` 属于 DSL。OINK 1.4.0 为每张图提供独立底面：默认透明图和手绘图使用
-白底，作者指定的背景优先。`type dark` 图在浅色页面上仍保留深底。站点明暗切换
-保留色板、文字颜色与笔触，不重新绘图。显式透明背景或自定义文字颜色仍须在两种
-模式下检查对比度。
+每张信息图都画在自己的底面上，不跟随站点的深浅色模式。默认风格和手绘风格使用白底，DSL 里指定的背景优先，`type dark` 的图即使在浅色页面上也保持深底。切换站点明暗时，图保持原样不重绘；如果你设置了透明背景或自定义文字颜色，请在两种模式下都检查对比度。
 
 ## 挑模板 {#templates}
 
-模板名是 `结构-变体` 的组合，同一个结构有多个视觉变体。常用的几类：
+模板名的格式是「结构-变体」，每种结构有多个视觉变体。常用的几类：
 
 | 结构前缀 | 表达什么 | 例子 |
 | --- | --- | --- |
@@ -275,18 +274,11 @@ data
 | `chart-pie-*` `chart-bar-*` `chart-column-*` | 带 `value` 的示意图 | `chart-pie-donut-plain-text` |
 | `relation-network-*` `relation-dagre-flow` | 网络与流向（配合 `relations`） | `relation-dagre-flow` |
 
-选能表达清楚关系的最小形式。完整图库见 [AntV Infographic 图库](https://infographic.antv.vision/gallery)，模板名与随主题分发的版本一一对应。
+选能把关系讲清楚的最简单的形式。全部模板见 [AntV Infographic 图库](https://infographic.antv.vision/gallery)，模板名与随主题分发的版本一致。
 
 ## 输出形态 {#outputs}
 
-| 输出 | 呈现 |
-| --- | --- |
-| HTML | `<div class="td-infographic">` 里一个画布容器加一段 DSL；读者接近时，本地 AntV 运行时才加载并画成 SVG |
-| 打印 | 不画图，输出 `<pre class="td-infographic-source">` 包着的 DSL 源码 |
-| Markdown | 原样保留 `infographic` 围栏与 DSL |
-| RSS | 与打印相同，只有源码 |
-
-图上的信息要在正文里写一遍：打印与 RSS 输出里只有那段 DSL。
+在网页上，主题自带的 AntV 运行时在读者滚动到附近时才把信息图画成 SVG，一页有多张图也不会拖慢加载。打印与 RSS 不画图，只在 `<pre>` 块里给出 DSL 源码，所以结论要写在周围的正文里；页面的 Markdown 输出原样保留围栏。
 
 ## 参数参考 {#reference}
 
@@ -299,9 +291,9 @@ data
 | `class` | 空格分隔的 class | — | 透传给容器 |
 {.fields meta="type default"}
 
-`style`、`on*` 与未知属性会告警并忽略；空 DSL 正文告警并不渲染。
+`style`、`on*` 与未知属性会告警并被忽略；围栏为空时告警，什么也不渲染。
 
-DSL 的顶层键（属于 AntV，不是主题）：
+DSL 的顶层键（由 AntV 定义）：
 
 | 键 | 说明 |
 | --- | --- |
@@ -312,15 +304,13 @@ DSL 的顶层键（属于 AntV，不是主题）：
 | `design` | 逐部件的细调，少用 |
 {.fields}
 
-`items` 里每个条目可用 `label`、`desc`、`value`、`icon`、`children`、`group`、`id`。DSL 的完整定义以 [AntV Infographic 文档](https://infographic.antv.vision/learn)为准；随主题分发的版本与校验值记在主题仓库的 `VENDOR.json` 里。
+`items` 里每个条目可用 `label`、`desc`、`value`、`icon`、`children`、`group`、`id`。完整的 DSL 以 [AntV Infographic 文档](https://infographic.antv.vision/learn)为准；主题的 `VENDOR.json` 记录了随附的版本与校验值。
 
 ## 限制与常见问题 {#limits}
 
-- 模板名写错不会让构建失败：Hugo 只检查围栏属性，DSL 由浏览器运行时解析，模板不存在时容器里显示一行错误文字。改动模板名后在页面上确认。
-- 不跟随深浅色：`theme` 写在 DSL 里，两种配色模式下都要检查对比度。
-- 打印与 RSS 里只有 DSL，关键结论要写进正文。
-- SVG 不是语义结构：屏幕阅读器读到的顺序未必是排版顺序。标题、列表、表格能表达的内容优先用它们。
-- 标签要短：长文本在窄屏下会被截断或挤压，改动后在手机宽度下确认。
+- 模板名写错不会让构建失败：Hugo 只检查围栏属性，DSL 在浏览器里解析。图的位置会显示一行错误信息，所以改了模板名之后要打开页面看一眼。
+- SVG 没有语义结构，屏幕阅读器读出的顺序未必是视觉顺序。标题、列表或表格能表达同样内容时，优先用它们。
+- 长标签在窄屏上会被挤压或截断，修改后请在手机宽度下检查。
 
 ## 相关 {#related}
 

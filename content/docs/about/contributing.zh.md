@@ -1,14 +1,13 @@
 ---
 title: 参与 OINK 贡献
 linkTitle: 参与贡献
-description: 为 OINK 1.6.0 报告问题，贡献主题修复、文档、翻译与回归测试。
+description: 把问题报告或修复提交到负责它的仓库，并在评审前跑完主题或文档改动所需的检查。
 weight: 40
 icon: fa-solid fa-code-pull-request
 search_keywords: [参与贡献, 贡献者, pull request, 问题报告, 翻译, OINK 1.6.0]
 ---
 
-欢迎纠错、翻译、报告问题和提交范围明确的 pull request。当前主题版本为
-**OINK v1.6.0**。[发布说明](/zh/release/1.6.0/)介绍纯 CSS 样式表、移除 Bootstrap JS 与 Lunr、BM25 本地搜索以及运行时依赖升级。
+欢迎报告问题、纠错、翻译，以及提交范围明确的 pull request。OINK 的工作分布在三个仓库里，第一步是找到负责你要改动的那部分行为的仓库。
 
 ## 选择贡献仓库 {#where-to-contribute}
 
@@ -18,30 +17,27 @@ search_keywords: [参与贡献, 贡献者, pull request, 问题报告, 翻译, O
 | 文档、翻译、示例、集成测试与浏览器回归覆盖 | [pgsty/oink.pgsty.com](https://github.com/pgsty/oink.pgsty.com) |
 | 可选 CLI 命令与原生站点检查 | [pgsty/oink-cli](https://github.com/pgsty/oink-cli) |
 
-CLI 拥有独立版本与发布周期，普通 Hugo 站点不需要安装。请在负责相应行为的仓库报告问题。
+问题请报告到负责相应行为的仓库。CLI 有独立的版本与发布周期，普通 Hugo 站点用不到它。
 
 ## 提供可复现的问题报告 {#report-a-problem}
 
-报告中请提供 OINK 版本、`hugo version`、模块构建使用的 Go 版本、相关配置与最小内容示例。
-显示问题还需注明页面、视口宽度、浏览器、视觉预设及明暗模式，说明预期效果与实际表现。
-提交报告和复现材料前，移除凭据与私有内容。
+别人能复现的问题修得最快，所以请先确认问题在[最新版本](/zh/release/)上依然存在。报告中写明 OINK 版本、`hugo version` 的输出、使用 Hugo Module 构建时的 Go 版本、相关配置与最小内容示例。显示类问题再补充页面、视口宽度、浏览器、视觉预设以及当时是浅色还是深色模式，并说明预期效果与实际表现。提交报告与复现材料之前，先移除其中的凭据与私有内容。
 
 ## 构建与检查 {#build-and-check}
 
-**OINK v1.6.0** 的开发使用本机安装的 Hugo（最低 **0.169.0**，不限 edition）
-和 **Go 1.27.4**（模块声明的最低 Go 版本）。1.5.1 及更早版本保留原有要求，包括
-Hugo 的 Extended 版。从 v1.6.0 起主题不含任何 Sass：样式表
-是 `assets/css/td/` 下的纯 CSS 分层文件，由 Hugo 拼接。站点构建不需要编译器，
-也无需 Node.js 或 npm。修改某一层就是全部改动：没有构建步骤，也没有需要提交的
-生成文件。`python3 bin/check-stylesheets.py` 检查各层及其拼接。
+开发主题时，需要把主题与本站克隆到同级目录，因为本站的检查会使用旁边的主题检出来构建：
 
-禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。告警保持可见并接受审阅。
-主题不固定任何 Hugo 版本：检查使用本机安装的版本，CI 安装当前版本，不维护旧版本
-测试矩阵。
+```text
+~/src/
+├── oink/
+└── oink.pgsty.com/
+```
 
-开发主题时，把主题与本站克隆到同级目录。阅读各仓库的 `AGENTS.md`、本站
-`TRANSLATION.md` 及相关[设计契约](/zh/docs/design/)。本站回归测试需要
-Node >= 26.13.0 和 npm >= 12.2.2：
+Go 需要 1.27.4 或更新版本（即模块声明的最低版本）；Hugo 用本机已安装的即可，{{< param hugoMinVersion >}} 或更新、任意 edition 均可。主题不固定 Hugo 版本，CI 使用当前最新版本测试。本站的回归测试还需要 Node.js 26.13.0 与 npm 12.2.2 或更新版本，但主题与站点的构建都用不到它们。动手之前，请先阅读各仓库的 `AGENTS.md`、本站的 `WRITING.md` 与 `TRANSLATION.md`，以及你要改动部分对应的[设计契约](/zh/docs/design/)。
+
+主题的样式表是纯 CSS：直接编辑 `assets/css/td/` 下的分层文件，由 Hugo 负责拼接。改完某一层就是全部改动，没有构建步骤，也没有需要提交的生成文件；`python3 bin/check-stylesheets.py` 会检查各层及其拼接结果。
+
+先运行覆盖本次改动的主题检查器（主题的 `AGENTS.md` 列出了全部检查器），再在本仓库运行站点测试：
 
 ```sh
 npm ci
@@ -49,25 +45,16 @@ make check
 make browser
 ```
 
-先运行负责该改动的最小检查器。`make check` 使用同级主题运行非浏览器套件；
-渲染或交互发生变化时使用 `make browser`。检查受影响中英文页面在桌面、手机及
-明暗模式下的效果。[仓库 README](https://github.com/pgsty/oink.pgsty.com#local-development)
-同时说明了如何单独验证公开固定版本。
+`make check` 使用同级主题运行非浏览器测试；渲染或交互有变化时，还要运行 `make browser` 跑浏览器测试。最后，在桌面与手机宽度、浅色与深色模式下查看受影响的中英文页面。[仓库 README](https://github.com/pgsty/oink.pgsty.com#local-development) 说明了如何改用已发布的主题版本、而不是同级检出来构建。
+
+不要在构建或 CI 任务中加入 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。OINK 遇到无效输入会告警，并以安全的回退值继续构建，其测试也会有意触发这类告警，加上这个参数构建就会失败。
 
 ## 准备 pull request {#prepare-a-pull-request}
 
-保持改动范围明确，说明问题、修改后的行为及验证结果。中英文页面同步更新，保留稳定标题 ID。
-主题公共行为变化时，一并更新实现、归属检查器与相关契约的两个语言版本。
-新设计提案放在双语[设计提案](/zh/docs/design/proposals/)专栏。
+一个 pull request 只做一件事，并说明问题是什么、修改后的行为如何、怎样验证。中英文页面同步更新，并保留标题 ID，因为其它页面与主题告警都会链接到它们。改动主题的公开行为时，要连同实现、覆盖它的检查器，以及相关设计契约的中英文两个版本一起提交；新的设计提案放在双语的[设计提案](/zh/docs/design/proposals/)栏目。
 
-共享工作树中保留无关改动。只提交源码与审阅过的测试预期；生成文件、缓存、二进制文件及
-文件系统模块替换不得进入 Git。历史发布说明和带日期的研究记录应忠实保留当时的证据。
+只提交源码与审阅过的测试预期。生成文件、缓存、二进制文件与文件系统模块替换都不进入 Git；在共享工作树中，别人那些无关的改动保持原样。历史发布说明与带日期的研究记录保持原文，因为它们记录的是当时的证据。
 
 ## 署名与许可 {#credit-and-licenses}
 
-[致谢页](/zh/docs/about/license/#community-contributors)将社区修复与作者和 pull request
-关联起来。[1.3.1 发布说明](/zh/release/1.3.1/#thanks)记录了阅读体验修复；
-1.6.0 继续保留这些修复，并彻底移除 Sass 编译器依赖。
-
-主题代码与站点工具使用 Apache-2.0，原创文档使用 CC BY 4.0。请保留第三方许可证和
-NOTICE 文件，具体范围见[开源许可与致谢](/zh/docs/about/license/)。
+[致谢](/zh/docs/about/license/#community-contributors)把每一项社区修复与它的作者和 pull request 对应起来。主题代码与站点工具采用 Apache-2.0，原创文档采用 CC BY 4.0；第三方许可证与 NOTICE 文件请保持完整。完整范围见[开源许可与致谢](/zh/docs/about/license/)。

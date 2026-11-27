@@ -1,7 +1,7 @@
 ---
 title: 图片
 linkTitle: 图片
-description: 用普通 Markdown 图片语法写图，加一行属性就得到图注、尺寸、缩放、链接、编号与 Hugo 图片处理。
+description: 用普通 Markdown 插图，再加一行属性，就能设置图注、尺寸、缩放、链接、编号或 Hugo 图片处理。
 weight: 20
 search_keywords: [图片, Image, Figure, 图注, caption, 缩放, zoom, 图片处理, imgproc, width, height, 编号]
 image_zoom: true
@@ -10,7 +10,7 @@ aliases:
   - /docs/content/media/
 ---
 
-图片只有一种写法：Markdown 的 `![替代文字](来源 "标题")`。独立成段的图片可以在下一行跟一行 `{…}` 属性，成为带图注的 figure、缩放候选、编号图或经 Hugo 处理的派生图。主题没有图片 shortcode。
+截图和示意图用普通 Markdown 插入：`![替代文字](来源 "标题")`，同一份源码在 GitHub 或任何编辑器里照样能看到图。图片需要更多东西时，比如图注、显示尺寸、书籍里的图号，或者构建期生成的缩小版，就让它独立成段，在下一行加一行 `{…}` 属性。主题没有图片 shortcode，不用额外学一套语法。
 
 ## 最简例子 {#minimal}
 
@@ -20,10 +20,11 @@ aliases:
 
 ![OINK 文档外壳：侧栏、正文与目录三栏](oink-shell.webp)
 
-这张图与本页放在同一目录（页面包）中，主题读取它的固有尺寸并写入 `width`/`height`，页面加载时不发生跳版；所有图片懒加载。替代文字供屏幕阅读器与搜索引擎使用，应当始终填写；空 alt 表示装饰性图片，缩放会跳过它。
+图片文件与本页的 `index.md` 放在同一目录，这个目录因此构成一个页面包。主题读出图片尺寸，把 `width` 与 `height` 写进页面，图片加载时正文不会跳动；所有图片都懒加载。替代文字请始终填写，屏幕阅读器和搜索引擎都依赖它；只有装饰性图片才留空，这类图片也不参与缩放。
 
 ## 图片来源 {#sources}
-来源按以下顺序解析，写法相同：
+
+图片放在哪里方便维护就放在哪里，然后用对应的路径写法：
 
 | 放法 | 源码里怎么写 | 适合 |
 | --- | --- | --- |
@@ -33,16 +34,13 @@ aliases:
 | 静态目录 `static/images/…` | `![…](/images/hero-light.webp)` | 不需要处理的大图、下载物；主题拿不到尺寸时可以用 `width`/`height` 补 |
 | 远程 URL | `![…](https://example.com/a.png)` | 少用：构建期不会下载，也不能处理 |
 
-相对路径依次按页面资源、当前分区资源、全局资源查找，都找不到时按静态路径输出；主题不检查
-静态路径与远程 URL 是否存在。要求处理（`command=`）却解析不到可处理资源时，普通
-预览告警并保留未处理图片；发布前应审阅告警并检查回退结果。
+相对路径依次按页面资源、当前分区资源、全局资源查找，都找不到时按静态路径发布。主题不检查静态路径和远程 URL 是否存在，路径写错时浏览器里会出现一张破图。要求处理（`command=`）的图片如果找不到可处理的资源，构建会告警，并发布未经处理的原图。
 
-Markdown 中的替代文字优先于资源 metadata，包括明确表示装饰图的空 alt。资源的
-`params.alt` 必须是字符串；无效 metadata 会告警并被忽略，保留正文中编写的 alt。
-发布前应审阅告警并检查回退结果。
+Markdown 里写的替代文字永远优先于资源的元数据，表示装饰图的空 alt 也一样。资源的 `params.alt` 必须是字符串，其它类型的值会告警并被忽略。
 
 ## 行内与块级 {#inline-vs-block}
-位于文字中间的是行内图片，渲染为一个 `<img>`，不能带属性；独立成段的是块级图片，可以带属性行。
+
+夹在一行文字中间的是行内图片，只渲染为一个 `<img>`，不能带属性；独立成段的是块级图片，只有块级图片可以带属性行。
 
 ```markdown {title="源码"}
 这一枚小图 ![文档外壳缩略图](oink-mini.webp) 夹在句子里，是行内图片。
@@ -56,14 +54,14 @@ Markdown 中的替代文字优先于资源 metadata，包括明确表示装饰�
 ![文档外壳缩略图](oink-mini.webp)
 {width="100" height="64"}
 
-行内图片按自身尺寸显示（这里是 50×32）。没有固有尺寸的 SVG 行内插入时会被拉伸到容器宽度，SVG 应作为块级图片使用并给出 `width`/`height`。
+行内图片按自身尺寸显示，这里是 50×32。没有固有尺寸的 SVG 放在行内会被拉伸到整栏宽度，所以 SVG 应当作为块级图片，并写明 `width` 与 `height`。
 
 > [!NOTE]
-> 块级图片依赖站点设置 `markup.goldmark.parser.wrapStandAloneImageWithinParagraph: false`（本站已配置；见[配置总览](/zh/docs/customize/config/)）。缺少它时 Goldmark 会把独立图片包进 `<p>`，属性行也会被当作正文。
+> 块级图片依赖站点自己的 `hugo.yml` 中设置 `markup.goldmark.parser.wrapStandAloneImageWithinParagraph: false`，见 [Goldmark 前置配置](/zh/docs/customize/config/#goldmark)。缺少这一项时，Goldmark 会把每张独立图片包进 `<p>`，属性行也会作为正文文字显示出来。
 
 ## 图注 {#caption}
 
-属性行加 `caption="…"`，图片渲染为 `<figure>` + `<figcaption>`。图注是纯文本，不解析 Markdown。
+`caption="…"` 让图片渲染为带 `<figcaption>` 的 `<figure>`。图注是纯文本，不渲染其中的 Markdown。
 
 ```markdown {title="源码"}
 ![发布卡片：版本号、发布日期与资产按钮](release-note.webp)
@@ -73,11 +71,11 @@ Markdown 中的替代文字优先于资源 metadata，包括明确表示装饰�
 ![发布卡片：版本号、发布日期与资产按钮](release-note.webp)
 {caption="发布卡片使用页面的 release_url 与 date"}
 
-Markdown 里的 `"标题"` 保持原义（悬停提示），不会成为图注。
+Markdown 图片里的 `"标题"` 仍是鼠标悬停提示，不会变成图注。
 
 ## 尺寸 {#size}
 
-`width`/`height` 是正整数，覆盖资源自身的尺寸：为静态或远程图片提供占位框以避免跳版，或把大图缩小显示（浏览器缩放，不改文件）。
+`width` 与 `height` 取正整数，覆盖主题读出的尺寸。静态图片和远程图片主题量不到尺寸，可以用它们预留位置；也可以用它们把大图缩小显示。缩放由浏览器完成，文件本身不变。
 
 ```markdown {title="源码"}
 ![OINK 首页插画（浅色）](/images/hero-light.webp)
@@ -89,7 +87,7 @@ Markdown 里的 `"标题"` 保持原义（悬停提示），不会成为图注�
 
 ## 处理型图片 {#processing}
 
-页面资源与全局资源可以在构建期由 Hugo 处理：`command` 与 `options` 必须同时给出，命令是 `Fit` `Resize` `Fill` `Crop` 之一，选项是 Hugo 的图片处理字符串。渲染出的 `src` 是派生图；启用缩放时对话框打开原图。
+想发布缩小或裁切后的副本而不是原文件时，让 Hugo 在构建期处理图片。`command`（`Fit`、`Resize`、`Fill` 或 `Crop`）与 `options`（Hugo 的图片处理语法）必须同时给出。页面引用的是处理后的副本；开启缩放时，对话框打开的仍是原图。
 
 ```markdown {title="源码"}
 ![文档外壳缩略图](oink-shell.webp)
@@ -105,14 +103,14 @@ Markdown 里的 `"标题"` 保持原义（悬停提示），不会成为图注�
 ![文档外壳左半边](oink-shell.webp)
 {command="Fill" options="300x150 Left" caption="Fill 300x150 Left：填满框，从左侧裁"}
 
-静态路径、远程 URL 与 SVG 不能处理。对它们写 `command` 时告警并保留未处理图片。选项语法（锚点、质量、格式转换，如
-`300x150 webp q80`）见 [Hugo 图片处理](https://gohugo.io/content-management/image-processing/)。
+只有页面资源和全局资源能处理。对静态路径、远程 URL 或 SVG 写 `command` 会告警，并发布未处理的原图。锚点、质量、格式转换等选项（如 `300x150 webp q80`）见 [Hugo 图片处理](https://gohugo.io/content-management/image-processing/)。
 
 ## 链接图片 {#link}
-两种写法，用途不同：
 
-- 没有图注、图片本身是链接：用 Markdown 的链接包图 `[![alt](src)](href)`。
-- 有图注的 figure 整体可点：属性行加 `link="…"`（必须同时有 `caption` 或 `num`）。
+让图片可点击有两种写法，取决于有没有图注：
+
+- 没有图注时，用 Markdown 链接把图包起来：`[![alt](src)](href)`。
+- 要让带图注的 figure 整体可点，在属性行加 `link="…"`，此时必须同时有 `caption` 或 `num`。
 
 ```markdown {title="源码"}
 [![点击进入亮点特性页](oink-shell.webp)](/zh/docs/about/features/)
@@ -126,11 +124,11 @@ Markdown 里的 `"标题"` 保持原义（悬停提示），不会成为图注�
 ![发布卡片](release-note.webp)
 {caption="点击图片查看发布与下载页的说明" link="/zh/docs/write/releases/"}
 
-带链接的图不参与缩放。没有图注只写 `link=` 时告警并丢弃链接，消息提示改用 `[![…](…)](…)`。
+带链接的图片不参与缩放，因为点击会跳转。没有图注也没有编号却写了 `link=` 时，构建告警并丢弃链接，提示改用 `[![…](…)](…)`。
 
 ## 编号图 {#numbered}
 
-编号图用于书籍与长篇手册：属性行加 `num`，可选 `#id`。编号是作者书写的字符串（`2-1`、`3.4`），主题不自动计数；图注前加本地化的「图 2-1」前缀，`#id` 缺省为 `fig-<num>`。正文用普通链接 `[图 2-1](#fig-2-1)` 或 `xref` shortcode 引用；全书图目录见[书籍出版](/zh/docs/write/book/)。
+书籍和长篇手册按编号引用插图。在属性行加 `num`，可以再加一个 `#id`。编号由你自己写成字符串，如 `2-1`、`3.4`，主题从不自动计数；图注前会加上本地化的「图 2-1」，ID 缺省为 `fig-<num>`。正文用普通链接 `[图 2-1](#fig-2-1)` 或 `xref` 引用它；全书的图目录见[书籍出版](/zh/docs/write/book/)。
 
 ```markdown {title="源码"}
 ![发布卡片](release-note.webp)
@@ -144,15 +142,11 @@ Markdown 里的 `"标题"` 保持原义（悬停提示），不会成为图注�
 
 见[图 2-1](#fig-release)。
 
-编号图可以同时是处理型图片（`num` + `command`），也可以带 `link`。
+编号图同时也可以是处理型图片（`num` 加 `command`），也可以带 `link`。
 
 ## 缩放 {#zoom}
 
-图片缩放默认关闭。站点开启后，块级图片、figure、画廊中带 alt 的图成为可点击的按钮，在原生 `<dialog>` 中查看大图（Esc 关闭，焦点回到原处）。本页在 front matter 中开启了它，上面的图都可以点击。
-
-自 OINK 1.1 起，预览操作和图片描述保留在按钮的无障碍名称中，不会给复制的
-文章增加辅助文字；复制得到的富文本 HTML 保留图片和作者写的图注。v1.0.0 的隐藏预览
-标签可能在粘贴后出现。升级之前，可设置 `image_zoom: false` 并重新构建来避免这个标签。
+缩放让读者不离开页面就能查看截图原图。它默认关闭：用 `params.ui.image_zoom` 为整个站点开启；页面 front matter 里的 `image_zoom` 会覆盖站点设置，开、关两个方向都可以：
 
 ```yaml {title="hugo.yml"}
 params:
@@ -164,7 +158,9 @@ params:
 image_zoom: false
 ```
 
-不缩放的图：行内图、alt 为空的装饰图、带链接的图、`data-no-zoom` 标记的图。运行时只在页面确有候选图时加载；打印 / Markdown / RSS 中没有对话框。
+开启后，带替代文字的块级图片、figure 和画廊图片都会变成按钮，在原生 `<dialog>` 中打开原图；按 <kbd>Esc</kbd> 关闭，焦点回到原来的图片。本页在 front matter 中开启了缩放，上面的图都可以点开。按钮的说明文字只提供给屏幕阅读器，复制文章时只会复制图片和图注，不会带上按钮文字。
+
+行内图片、替代文字为空的装饰图、带链接的图片，以及标记了 `data-no-zoom` 的图片都不缩放。只有页面上存在可缩放的图片时，缩放脚本才会加载。
 
 ```markdown {title="源码：装饰图不缩放"}
 ![](oink-shell.webp)
@@ -175,7 +171,8 @@ image_zoom: false
 {width="150" height="75"}
 
 ## 深浅色图片 {#dark-mode}
-主题没有按深浅色切换图片的参数。需要两张图时，各写一个 `class`，在站点 CSS 中按 `[data-bs-theme="dark"]` 显示其一：
+
+主题没有按深浅色切换图片的设置。一张截图需要浅色、深色两个版本时，给两张图各加一个 `class`，再在站点 CSS 里隐藏不该显示的那张。主题把 `data-bs-theme` 设在 `html` 上，下面的选择器保证两张图只显示其一：
 
 ```markdown {title="源码"}
 ![侧栏（浅色）](sidebar-light.webp)
@@ -190,20 +187,15 @@ html[data-bs-theme="dark"] .only-light,
 html:not([data-bs-theme="dark"]) .only-dark { display: none; }
 ```
 
-把 `sidebar-light.webp` 与 `sidebar-dark.webp` 换成自己的浅色、深色图片。主题把 `data-bs-theme` 设在 `html` 上，上面的选择器让对应图片单独显示；`class` 由主题原样透传给站点 CSS。
+把 `sidebar-light.webp` 与 `sidebar-dark.webp` 换成你自己的图片。
 
 ## 输出形态 {#outputs}
 
-| 输出 | 呈现 |
-| --- | --- |
-| HTML | 行内 `<img>`；块级 `<img class="td-image">`；有图注 / 编号时 `<figure class="td-figure">` + `<figcaption>`；缩放候选带 `data-td-image-zoom` |
-| 打印 | 同 HTML，去掉缩放控件 |
-| Markdown | 原样输出 `![alt](src)` 与属性行 |
-| RSS | 图片 `src` 改为绝对地址；无缩放 |
+打印时图片与 figure 和网页上一样，只是没有缩放按钮；RSS 把每张图片的 `src` 改成绝对地址。页面的 Markdown 输出原样保留 `![alt](src)` 与属性行。
 
 ## 参数参考 {#reference}
 
-属性行 `{…}`（块级图片之后紧接的一行）：
+属性行 `{…}`（紧接在块级图片的下一行）：
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
@@ -218,15 +210,15 @@ html:not([data-bs-theme="dark"]) .only-dark { display: none; }
 | `data-*` / `aria-*` | 字符串 | — | 透传 |
 {.fields meta="type default"}
 
-`style`、`on*`、`alt`、`title`、`src` 与不支持的键出现在属性行时告警并忽略。alt、title、src 属于 Markdown 图片本身。
+属性行上的 `style`、`on*`、`alt`、`title`、`src` 以及其它不支持的键会告警并被忽略。替代文字、标题与来源写在 Markdown 图片本身里。
 
 ## 限制与常见问题 {#limits}
 
-- 图注不含 Markdown：所有公开字符串参数都是纯文本；富文本说明写在图片下方的段落中。
-- `title` 不是图注：`![a](b "c")` 的 `c` 是悬停提示。
-- 处理型图片只对资源生效：`static/` 中的图需要处理时移到页面包或 `assets/`。
-- 构建期不下载远程图片。
-- 缩放不支持拖拽、平移、上一张 / 下一张；一组相关图片使用[画廊](/zh/docs/components/gallery/)。
+- 图注和其它字符串参数都是纯文本，较长的解释写在图片下方的段落里。
+- `title` 不是图注：`![a](b "c")` 里的 `c` 是悬停提示。
+- 只有资源能处理，`static/` 里的图需要处理时，挪到页面包或 `assets/`。
+- 构建期从不下载远程图片。
+- 缩放不支持拖动、平移或上一张 / 下一张；一组相关图片请做成[画廊](/zh/docs/components/gallery/)。
 
 ## 相关 {#related}
 

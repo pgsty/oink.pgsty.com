@@ -1,12 +1,12 @@
 ---
 title: 徽章
 linkTitle: 徽章
-description: 在功能名、版本号或表格单元格旁边放一枚语义状态标签，五种 tone，不需要自定义颜色。
+description: 用五种语义 tone 之一，给功能名、版本号或表格单元格标上 Beta、已弃用这类简短状态。
 weight: 180
 search_keywords: [徽章, Badge, 状态标签, tone, Beta, 已弃用, neutral, info, success, warning, danger]
 ---
 
-徽章（Badge）是紧跟在名字旁边的行内状态标签：Beta、已弃用、v0.5、需自建服务。适用于一两个词能说完的状态；作者只选语义 tone，颜色由主题决定，浅色与深色模式下的对比度都有保证。状态需要解释、操作步骤或截止日期时，改用正文或[提示块](/zh/docs/components/callout/)。
+徽章（Badge）是跟在名字后面的行内小标签，用一两个词说明它的状态：Beta、已弃用、v0.5、需自建服务。你只需决定这个状态的含义，从五种 tone 里选一个，颜色由主题挑选，浅色与深色模式下都保持足够的对比度。状态需要说明原因、操作步骤或截止日期时，改写一句正文或一个[提示块](/zh/docs/components/callout/)。
 
 ## 最简例子 {#minimal}
 
@@ -16,11 +16,9 @@ search_keywords: [徽章, Badge, 状态标签, tone, Beta, 已弃用, neutral, i
 
 {{< badge text="Beta" tone="warning" >}}
 
-`text` 是唯一必填参数，必须是非空字符串。
+`text` 是唯一必填参数，不能为空。
 
 ## 五种 tone {#tones}
-
-只有这五个取值，没有自定义颜色。
 
 ```markdown {title="源码"}
 {{</* badge text="默认" */>}}
@@ -36,30 +34,27 @@ search_keywords: [徽章, Badge, 状态标签, tone, Beta, 已弃用, neutral, i
 {{< badge text="实验性" tone="warning" >}}
 {{< badge text="已弃用" tone="danger" >}}
 
-不写 `tone` 时使用 `neutral`。其它取值在普通预览中告警并使用 `neutral`；警告带
-源码位置，发布前应审阅告警并检查回退结果。
+不写 `tone` 时是 `neutral`。这五个之外的取值会告警并回退为 `neutral`，也没有办法自定义颜色。
 
 ## 夹在句子里 {#inline}
 
-徽章是行内元素，跟在名字后面，不占单独一行。
+徽章紧跟在它所修饰的名字后面，与名字在同一行：
 
 ```markdown {title="源码"}
-`params.ui.image_zoom` {{</* badge text="默认关闭" tone="neutral" */>}} 打开后，
-有替代文字的块级图片可以点开看大图。PlantUML {{</* badge text="按需启用" tone="info" */>}}
-使用独立的站点开关。Draw.io {{</* badge text="需自建服务" tone="warning" */>}}
-没有配置服务端点时告警并保持关闭。
+逻辑复制 {{</* badge text="默认关闭" tone="neutral" */>}} 需要设置
+`wal_level = logical`。`pg_duckdb` 扩展 {{</* badge text="按需启用" tone="info" */>}}
+需要单独安装；备份仓库 {{</* badge text="需自建服务" tone="warning" */>}}
+必须在第一次备份之前指向一个对象存储。
 ```
 
-`params.ui.image_zoom` {{< badge text="默认关闭" tone="neutral" >}} 打开后，
-有替代文字的块级图片可以点开看大图。PlantUML {{< badge text="按需启用" tone="info" >}}
-使用独立的站点开关。Draw.io {{< badge text="需自建服务" tone="warning" >}}
-没有配置服务端点时告警并保持关闭。
+逻辑复制 {{< badge text="默认关闭" tone="neutral" >}} 需要设置
+`wal_level = logical`。`pg_duckdb` 扩展 {{< badge text="按需启用" tone="info" >}}
+需要单独安装；备份仓库 {{< badge text="需自建服务" tone="warning" >}}
+必须在第一次备份之前指向一个对象存储。
 
 ## 标题旁边 {#in-headings}
 
-**标题里不要写 shortcode。**
-Hugo 先生成目录、后替换 shortcode，所以徽章在标题上渲染正常，目录里却会留下一段
-Hugo 的内部占位符文本。把状态写进标题下面的第一段：
+不要把徽章或其它任何 shortcode 写进标题。Hugo 先生成目录、后展开 shortcode，标题本身看起来正常，目录里对应的条目却会显示一段 Hugo 内部占位符。把徽章放在标题下第一段的开头：
 
 ```markdown {title="源码"}
 ### OpenAPI 页面 {#openapi-example}
@@ -69,12 +64,12 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 
 ### OpenAPI 页面 {#openapi-example}
 
-{{< badge text="0.5 新增" tone="success" >}} 徽章紧跟在标题下方，目录保持干净，
-锚点链接分享出去也不会带上徽章文字。
+{{< badge text="0.5 新增" tone="success" >}} 徽章紧贴在标题下方，目录保持干净，
+分享出去的标题链接也不会带上徽章文字。
 
 ## 表格单元格里 {#in-tables}
 
-对照表里用徽章标状态，比整列写「是」「否」更容易扫读。
+对照表里用一列徽章标状态，比整列写「是」「否」更容易扫读：
 
 ```markdown {title="源码"}
 | 组件 | 形态 | 状态 |
@@ -108,7 +103,7 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 
 ## 卡片里 {#in-cards}
 
-卡片有自己的 `badge` 参数（纯文本，固定在标题右侧）；卡片正文里可以放徽章 shortcode。
+卡片有自己的 `badge` 参数，是显示在标题旁的纯文本；卡片正文里也可以放徽章 shortcode：
 
 ```markdown {title="源码"}
 {{</* cards */>}}
@@ -132,7 +127,7 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 
 ## 可点击的徽章 {#link}
 
-加 `link` 后徽章变成链接（`<a>`），站内路径、相对路径、`http(s):`、`mailto:` 都可以。
+`link` 把徽章变成链接，可以是站内路径、相对路径、`http(s):` 地址或 `mailto:` 地址：
 
 ```markdown {title="源码"}
 当前版本 {{</* badge text="v0.5" tone="info" link="/zh/blog/" */>}}，
@@ -142,18 +137,11 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 当前版本 {{< badge text="v0.5" tone="info" link="/zh/blog/" >}}，
 升级步骤见 {{< badge text="版本升级" tone="neutral" link="/zh/docs/admin/upgrade/" >}}。
 
-链接非法时告警并丢弃链接，保留普通徽章。
+链接无效时告警并丢弃，只留下一个普通徽章。
 
 ## 输出形态 {#outputs}
 
-| 输出 | 呈现 |
-| --- | --- |
-| HTML | 无链接时 `<span class="td-badge td-badge--<tone>">`，有链接时 `<a class="td-badge …">` |
-| 打印 | 同 HTML，静态行内元素 |
-| Markdown | `**Beta**`，有链接时 `[**Beta**](/…)` |
-| RSS | 同打印 |
-
-不加载 JavaScript。徽章不是实时状态区域，新增徽章不会触发读屏器播报。
+徽章不加载脚本，打印与 RSS 中的样子与页面上一致。徽章只有 shortcode 一种写法，没有原生 Markdown 形态，所以页面的 Markdown 输出把它变成加粗文字：`**Beta**`，带链接时是 `[**Beta**](/…)`。
 
 ## 参数参考 {#reference}
 
@@ -164,21 +152,18 @@ Hugo 的内部占位符文本。把状态写进标题下面的第一段：
 | `link` | URL | — | 设置后徽章变成链接 |
 {.fields meta="type default"}
 
-只接受命名参数。没有 `icon`、`class`、`color`、`outline`、`size` 参数。无效输入
-会告警并采用安全回退：未知参数忽略，空 `text` 不渲染，非法 `tone` 回退
-`neutral`，不安全链接被丢弃。
+徽章只接受命名参数，没有 `icon`、`class`、`color`、`outline`、`size`。写错时告警并回退：未知参数被忽略，缺少 `text` 或为空时不渲染，未知的 `tone` 变成 `neutral`，不安全的链接被丢弃。
 
 ## 限制与常见问题 {#limits}
 
-- 颜色不是唯一的含义载体：tone 是补充，文字要自己说清楚。`{{</* badge text="🔴" */>}}` 对读屏器没有信息。
-- 没有图标参数：需要图标时改用[卡片](/zh/docs/components/cards/)或[提示块](/zh/docs/components/callout/)。
-- 文字要短：徽章不换行地跟在名字后面，超过五六个字的内容写进正文。
-- 同一处不超过三枚：连排的徽章会盖过它修饰的名字。
-- 徽章只有 shortcode 一种形态，没有原生 Markdown 写法；纯 Markdown 阅读器里它退化成加粗文字。
+- 颜色只是辅助，文字本身要说清状态。`{{</* badge text="🔴" */>}}` 对读屏器毫无信息。
+- 没有图标参数。需要图标时改用[卡片](/zh/docs/components/cards/)或[提示块](/zh/docs/components/callout/)。
+- 文字控制在几个字以内。徽章不换行，更长的内容写进句子里。
+- 同一处最多放三枚，一排徽章会盖过它们修饰的名字。
 
 ## 相关 {#related}
 
 - [卡片](/zh/docs/components/cards/) — `card` 自己的 `badge` 参数
 - [文件树](/zh/docs/components/filetree/) — `tone` 用的是同一套词汇
-- [按键](/zh/docs/components/kbd/) — 另一枚行内 shortcode
+- [按键](/zh/docs/components/kbd/) — 另一个行内 shortcode
 - [提示块](/zh/docs/components/callout/) — 状态需要解释时用它

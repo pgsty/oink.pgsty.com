@@ -7,61 +7,73 @@ search_keywords: [social, social post, quote a post, tweet, X, Twitter, Bluesky,
 image_zoom: true
 ---
 
-The `social` shortcode quotes a post from a social platform as a card: avatar, name, handle, platform icon, the post text, and a dated link to the original.
-Everything comes from the page. Nothing is fetched at build time or in the reader's browser, and the card loads no JavaScript.
-The quote stays readable after the original is edited or deleted, and it follows the site's presets and color schemes.
-Use it when an article cites what someone posted. For a passage from a book or a paper, an ordinary Markdown blockquote is enough.
+When an article cites something posted on X, Mastodon or another network, the
+`social` shortcode quotes it as a card: avatar, name, handle, platform icon,
+the post text and a dated link to the original. You write all of it into the
+page, so nothing is fetched at build time or in the reader's browser, no
+script loads, and the quote stays readable after the original is edited or
+deleted. The card takes its colors from the site's preset and color scheme.
+To quote a book or a paper, an ordinary Markdown blockquote is enough.
 
 ## Shortest form {#minimal}
 
-A card needs `author` or `handle`, and a body. The body is the post text in Markdown.
+A card needs `author` or `handle`, and a body with the post text in Markdown.
 
 ````markdown {title="Source"}
-{{</* social author="OINK Example" handle="@oink_example" */>}}
-The post text lives in the page, so this quote needs no network at all.
+{{</* social author="Mara Lindqvist" handle="@mara_dba" */>}}
+Upgraded our reporting cluster to PostgreSQL 18 over the weekend. pg_upgrade with --link took four minutes.
 {{</* /social */>}}
 ````
 
-{{< social author="OINK Example" handle="@oink_example" >}}
-The post text lives in the page, so this quote needs no network at all.
+{{< social author="Mara Lindqvist" handle="@mara_dba" >}}
+Upgraded our reporting cluster to PostgreSQL 18 over the weekend. pg_upgrade with --link took four minutes.
 {{< /social >}}
 
-Without `avatar`, the card draws the first character of `author` (or of `handle`) in a circle. No default avatar or Gravatar is requested.
-Without `platform`, the card shows the X icon. Parameters are named only. Positional parameters warn and are ignored.
+Without `avatar`, the card draws the first character of `author` (or of
+`handle`) in a circle rather than requesting a default image or a Gravatar.
+Without `platform`, it shows the X icon. Parameters must be named; positional
+ones warn and are ignored.
 
 ## A complete card {#full}
 
 All six parameters, with an image attached to the post:
 
 ````markdown {title="Source"}
-{{</* social author="OINK Example" handle="@oink_example" avatar="/favicon.svg"
-           date="2026-11-23" url="https://example.com/oink_example/status/1001" */>}}
-Quoting a post with `social` keeps the words on **your own page**: no embed
-script, no build-time request, and the quote outlives a deleted original.
+{{</* social author="Jun Okada" handle="@jun_draws" avatar="/favicon.svg"
+           date="2026-11-23" url="https://example.com/jun_draws/status/1001" */>}}
+Finished the wordmark for the documentation site: a fountain-pen nib, a serif
+name, and **no gradients**.
 
-![The OINK documentation shell](/images/oink.webp)
+![The Oink wordmark beside a round fountain-pen logo](/images/oink.webp)
 {{</* /social */>}}
 ````
 
-{{< social author="OINK Example" handle="@oink_example" avatar="/favicon.svg"
-           date="2026-11-23" url="https://example.com/oink_example/status/1001" >}}
-Quoting a post with `social` keeps the words on **your own page**: no embed
-script, no build-time request, and the quote outlives a deleted original.
+{{< social author="Jun Okada" handle="@jun_draws" avatar="/favicon.svg"
+           date="2026-11-23" url="https://example.com/jun_draws/status/1001" >}}
+Finished the wordmark for the documentation site: a fountain-pen nib, a serif
+name, and **no gradients**.
 
-![The OINK documentation shell](/images/oink.webp)
+![The Oink wordmark beside a round fountain-pen logo](/images/oink.webp)
 {{< /social >}}
 
-- `avatar` uses the shared image resolver: page resource → global resource in `assets/` → static path → remote URL.
-  It is decorative (`alt=""`) because the name sits beside it. The card shows it small and crops it to fill its frame, so use a square image.
-- `date` is plain text and is shown as written. An ISO 8601 date or date-time, such as `2026-11-23` or `2026-11-23 08:30`, also becomes `<time datetime>`.
-- `url` turns the date line into a "View original" link. It is optional, so a post that no longer exists can still be quoted.
-  Use the post's HTTP(S) address. An invalid URL warns and is dropped.
-- The attached image is an ordinary Markdown image. This page enables [image zoom](/docs/components/image/#zoom), so the image opens at full size.
+- `avatar` resolves like any image: a page resource, then a global resource
+  in `assets/`, then a static path, then a remote URL. The name sits beside
+  it, so it is decorative (`alt=""`). The card shows it small and crops it to
+  fill its frame, so use a square image.
+- `date` is plain text, shown as written. An ISO 8601 date or date-time, such
+  as `2026-11-23` or `2026-11-23 08:30`, also becomes a machine-readable
+  `<time datetime>`.
+- `url` turns the date line into a "View original" link. Give the post's
+  HTTP(S) address; an invalid URL warns and is dropped. It is optional, so you
+  can still quote a post that no longer exists.
+- The attached image is an ordinary Markdown image. This page turns on
+  [image zoom](/docs/components/image/#zoom), so it opens at full size.
 
 ## Platforms {#platforms}
 
-`platform` selects the brand icon and nothing else. Every platform shares one layout, and the preset owns the colors.
-The card does not imitate any platform's interface.
+`platform` changes the brand icon and nothing else: every platform shares one
+layout, the preset owns the colors, and the card never imitates a platform's
+own interface.
 
 | `platform` | Icon |
 | --- | --- |
@@ -73,33 +85,38 @@ The card does not imitate any platform's interface.
 | `linkedin` | `fa-brands fa-linkedin` |
 
 ````markdown {title="Source"}
-{{</* social author="OINK Example" handle="@oink@social.example" platform="mastodon"
-           date="2026-11-20 08:30" url="https://example.com/@oink/1002" */>}}
-The same card on Mastodon. Only the icon in the corner changes.
+{{</* social author="Mara Lindqvist" handle="@mara@fosstodon.example" platform="mastodon"
+           date="2026-11-20 08:30" url="https://example.com/@mara/1002" */>}}
+Cross-posting the upgrade notes here: pg_upgrade with --link, four minutes of downtime, no surprises.
 {{</* /social */>}}
 
-{{</* social handle="@oink.example" platform="bluesky" */>}}
-A Bluesky post quoted with a handle alone: no name, no date, no link.
+{{</* social handle="@pgnotes.example" platform="bluesky" */>}}
+Vacuum is not optional. Neither is watching it.
 {{</* /social */>}}
 ````
 
-{{< social author="OINK Example" handle="@oink@social.example" platform="mastodon"
-           date="2026-11-20 08:30" url="https://example.com/@oink/1002" >}}
-The same card on Mastodon. Only the icon in the corner changes.
+{{< social author="Mara Lindqvist" handle="@mara@fosstodon.example" platform="mastodon"
+           date="2026-11-20 08:30" url="https://example.com/@mara/1002" >}}
+Cross-posting the upgrade notes here: pg_upgrade with --link, four minutes of downtime, no surprises.
 {{< /social >}}
 
-{{< social handle="@oink.example" platform="bluesky" >}}
-A Bluesky post quoted with a handle alone: no name, no date, no link.
+{{< social handle="@pgnotes.example" platform="bluesky" >}}
+Vacuum is not optional. Neither is watching it.
 {{< /social >}}
 
-The icon is decorative. Screen readers hear the platform name, which the card carries as visually hidden text.
-An unknown `platform` warns and uses `x`.
-`handle` is shown exactly as written. The theme adds no `@` and has no per-platform handle rules: write `@name` for X and `@user@instance` for Mastodon.
+The second card is quoted by handle alone, so it has no name, date or link.
+Screen readers hear the platform name, which the card carries as visually
+hidden text beside the decorative icon. An unknown `platform` warns and falls
+back to `x`. `handle` appears exactly as written, because the theme adds no
+`@` and knows no per-platform rules: write `@name` for X and `@user@instance`
+for Mastodon.
 
 ## The body {#body}
 
-The body is ordinary Markdown, rendered as its own block: paragraphs, links, inline code, lists.
-Everything else in a post is written with syntax OINK already has, so the card needs no parameters for it.
+The body is ordinary Markdown rendered as its own block, so paragraphs, links,
+inline code and lists work as usual. Everything else a post can contain is
+written with syntax OINK already has, which is why the card has no parameters
+for it.
 
 | Post content | Write it as |
 | --- | --- |
@@ -110,7 +127,7 @@ Everything else in a post is written with syntax OINK already has, so the card n
 | A video | A [video](/docs/components/video/) written as an image, `![name](clip.mp4)` |
 
 ````markdown {title="Source"}
-{{</* social author="OINK Example" handle="@oink_example" avatar="/favicon.svg" date="2026-11-24" */>}}
+{{</* social author="Mara Lindqvist" handle="@mara_dba" avatar="/favicon.svg" date="2026-11-24" */>}}
 One home page, two color schemes:
 
 ```gallery
@@ -120,7 +137,7 @@ One home page, two color schemes:
 {{</* /social */>}}
 ````
 
-{{< social author="OINK Example" handle="@oink_example" avatar="/favicon.svg" date="2026-11-24" >}}
+{{< social author="Mara Lindqvist" handle="@mara_dba" avatar="/favicon.svg" date="2026-11-24" >}}
 One home page, two color schemes:
 
 ```gallery
@@ -129,40 +146,41 @@ One home page, two color schemes:
 ```
 {{< /social >}}
 
-A footnote reference in the body warns, as in every shortcode body. Keep footnotes in the page's own Markdown.
+Footnote references warn in the body, as in every shortcode body, so keep
+footnotes in the page's own Markdown.
 
 ## Quoted posts {#quote}
 
-Write the quoted post as a second `social` inside the body.
-The inner card is compact: a smaller avatar, the name and handle on one line, and no platform icon. It keeps its own date and link.
+When the post quotes another, write the quoted post as a second `social`
+inside the body. The inner card is compact (a smaller avatar, name and handle
+on one line, no platform icon) and keeps its own date and link.
 
 ````markdown {title="Source"}
-{{</* social author="OINK Example" handle="@oink_example" avatar="/favicon.svg"
-           date="2026-11-25" url="https://example.com/oink_example/status/1003" */>}}
-Agreed. A quote that depends on a third-party embed disappears with the post.
+{{</* social author="Mara Lindqvist" handle="@mara_dba" avatar="/favicon.svg"
+           date="2026-11-25" url="https://example.com/mara_dba/status/1003" */>}}
+This is why the restore drill stays on our calendar.
 
-{{</* social author="Example Reader" handle="@example_reader"
-           date="2026-11-24" url="https://example.com/example_reader/status/2001" */>}}
-Screenshots of posts are not searchable, and screen readers cannot read them.
+{{</* social author="Theo Brandt" handle="@theo_ops"
+           date="2026-11-24" url="https://example.com/theo_ops/status/2001" */>}}
+A backup you have never restored is a hope, not a backup.
 {{</* /social */>}}
 {{</* /social */>}}
 ````
 
-{{< social author="OINK Example" handle="@oink_example" avatar="/favicon.svg"
-           date="2026-11-25" url="https://example.com/oink_example/status/1003" >}}
-Agreed. A quote that depends on a third-party embed disappears with the post.
+{{< social author="Mara Lindqvist" handle="@mara_dba" avatar="/favicon.svg"
+           date="2026-11-25" url="https://example.com/mara_dba/status/1003" >}}
+This is why the restore drill stays on our calendar.
 
-{{< social author="Example Reader" handle="@example_reader"
-           date="2026-11-24" url="https://example.com/example_reader/status/2001" >}}
-Screenshots of posts are not searchable, and screen readers cannot read them.
+{{< social author="Theo Brandt" handle="@theo_ops"
+           date="2026-11-24" url="https://example.com/theo_ops/status/2001" >}}
+A backup you have never restored is a hope, not a backup.
 {{< /social >}}
 {{< /social >}}
-
-In Markdown and LLMS output, the quoted post becomes a nested blockquote.
 
 ## Missing or invalid input {#degraded}
 
-Invalid input warns. Whenever there is a body, the quoted words are kept.
+Invalid input warns, and as long as there is a body, the quoted words are
+kept.
 
 | Input | Result |
 | --- | --- |
@@ -175,24 +193,20 @@ Invalid input warns. Whenever there is a body, the quoted words are kept.
 
 ## Hugo's `x` shortcode {#hugo-x}
 
-Hugo ships its own `x` shortcode, `{{</* x user="…" id="…" */>}}`, and OINK leaves it untouched.
-It requests the post from X's oEmbed service at build time. A clean build therefore needs network access, and the quote depends on the post still being online.
-Use `social` for quotes that must build offline and stay readable. The two shortcodes have different names and do not interact.
-
-## Rights and archiving {#rights}
-
-A card persists after the original is deleted. That is the purpose of an offline quote.
-The theme stores nothing by itself: the card shows only what you wrote into the page.
-You decide what you may quote, and which avatars and media you keep in the repository. Remove `url` when the original no longer resolves.
+Hugo ships its own `x` shortcode, `{{</* x user="…" id="…" */>}}`, and OINK
+leaves it alone. It asks X's oEmbed service for the post at build time, so a
+clean build needs network access and the quote disappears when the post does.
+Use `social` for quotes that must build offline and stay readable; the two
+shortcodes have different names and do not interact.
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | `<figure class="td-social">`: the author line as `<figcaption>`, the body in `<blockquote cite>`, and a date line; no JavaScript |
-| Print | The same static card; the original URL is printed after "View original" |
-| Markdown | A blockquote: the body lines, then `— Author (@handle), date, [View original](url)`; a quoted post is a nested blockquote |
-| RSS | `<blockquote cite>` with the body, then an attribution line; no avatar |
+The card loads no JavaScript. Print shows the same card with the original URL
+printed after "View original". In the Markdown and LLMS output the card
+becomes a blockquote: the body lines, then
+`— Author (@handle), date, [View original](url)`, with a quoted post as a
+nested blockquote. RSS carries the body and an attribution line, without the
+avatar.
 
 ## Parameter reference {#reference}
 
@@ -207,17 +221,26 @@ You decide what you may quote, and which avatars and media you keep in the repos
 | Body | Markdown | — | The post; may contain images, a `gallery` fence, a video, or a nested `social` |
 {.fields meta="type default"}
 
-There are no parameters for engagement counts, verification badges, image lists, or quoted posts.
-Write images and quoted posts in the body.
+There are no parameters for engagement counts, verification badges, image
+lists or quoted posts; images and quoted posts go in the body.
 
 ## Limits {#limits}
 
-- Nothing is fetched. You copy the text and save the avatar and media yourself.
-- There are no likes, reposts, view counts, or verification badges. Such numbers are snapshots that go stale.
-- There are no per-platform skins or brand colors. Platforms differ only by their icon.
-- There are no threads, replies, or polls. Quote several posts as several cards.
-- Parameters are plain text. Markdown in `author`, `handle`, or `date` appears literally.
-- The theme does not check whether a static or remote avatar exists. Check the rendered card before publishing.
+- Nothing is fetched: you copy the text and save the avatar and media
+  yourself, and the theme stores nothing beyond what you wrote into the page.
+- What you may quote, and which avatars and media you keep in the repository,
+  is your decision. When the original no longer resolves, remove `url`; the
+  quote itself stays.
+- There are no likes, reposts, view counts or verification badges, because
+  such numbers are snapshots that go stale.
+- Platforms differ only by their icon; there are no platform skins or brand
+  colors.
+- Threads, replies and polls are not modeled. Quote several posts as several
+  cards.
+- Parameters are plain text, so Markdown in `author`, `handle` or `date`
+  appears literally.
+- The theme does not check that a static or remote avatar exists, so look at
+  the rendered card before publishing.
 
 ## Related {#related}
 

@@ -1,12 +1,14 @@
 ---
 title: 文件树
 linkTitle: 文件树
-description: 用 `filetree` 围栏画带注释的目录结构：对齐的注释列、逐条目图标、可折叠目录、可拖动的分栏。
+description: 用 `filetree` 围栏画一棵带注释的目录树：注释列自动对齐，条目带图标，目录可以折叠。
 weight: 90
 search_keywords: [文件树, FileTree, 目录树, tree, 目录结构, 仓库结构, 围栏, icon, tone, open]
 ---
 
-文件树（FileTree）是一个 `filetree` 围栏，围栏正文就是目录清单：缩进表示层级，结尾的 `/` 表示目录，`#` 之后是注释。适合解释一份目录结构里与读者有关的那部分，并逐条加上说明。需要读者逐字复制的清单用普通代码块。
+文件树（FileTree）用来逐条解释一个目录结构：配置放在哪、数据在哪个目录、哪些东西可以删。它写在 `filetree` 围栏里：缩进表示层级，结尾的 `/` 表示目录，`#` 之后是注释。主题会把注释排成对齐的一列，把目录渲染成读者可以展开、收起的文件夹。
+
+文件树只画出与读者相关的那部分结构，并说明原因。需要读者逐字复制的清单，请用普通[代码块](/zh/docs/components/code/)。
 
 ## 最简例子 {#minimal}
 
@@ -30,11 +32,11 @@ search_keywords: [文件树, FileTree, 目录树, tree, 目录结构, 仓库结�
 - go.mod
 ```
 
-项目符号（`-`、`*`、`+`）可以省略，效果相同。有子项的条目是目录；没有子项时，结尾的 `/` 告诉主题它是目录。
+项目符号（`-`、`*` 或 `+`）可写可不写，效果相同。有子项的条目就是目录；没有子项的条目，只有名字以 `/` 结尾时才算目录。
 
 ## 加注释 {#comments}
 
-每行第一个前面带空白的 `#` 之后是注释，渲染成对齐的右列。注释是纯文本，里面的 Markdown 按字面显示；要一个字面井号就写 `\#`。
+每行第一个前面带空白的 `#` 之后都是注释，显示在右侧对齐的一列里。注释是纯文本，其中的 Markdown 按字面显示；需要字面井号时写 `\#`。
 
 ````markdown {title="源码"}
 ```filetree
@@ -58,9 +60,9 @@ search_keywords: [文件树, FileTree, 目录树, tree, 目录结构, 仓库结�
 - hugo.yml          # 站点配置：语言、菜单、params.ui
 ```
 
-注释列的起点在构建期算出，由最宽的一行决定，因此每行的 `#` 从同一列开始，与源码里是否对齐无关。注释列最多占面板的右半边，最少占三成。中间的虚线是分隔条，可以拖动，也可以用 <kbd>Tab</kbd> 聚焦后按方向键调整（<kbd>Home</kbd> / <kbd>End</kbd> 到两端）。
+源码里的 `#` 不必手工对齐：主题把注释列的起点放在最宽的名称之后，每条注释自然对齐。注释列占面板宽度的三成到一半。读者可以拖动两列之间的虚线分隔条，也可以用 <kbd>Tab</kbd> 聚焦后按方向键调整，<kbd>Home</kbd> 与 <kbd>End</kbd> 直接到两端。分隔条是文件树唯一的脚本，所以不带注释的树不加载任何 JavaScript。
 
-默认（`wrap=false`）情况下，过长的名称与注释各自在本列内用省略号截断，鼠标悬停时由 `title` 提示完整文本。分隔条是文件树唯一的 JavaScript，只有 **带注释** 的树才加载它。
+过长的名称或注释会在各自的列里以省略号截断，鼠标悬停可以看到完整文本：
 
 ````markdown {title="源码"}
 ```filetree {title="两列都发生截断"}
@@ -75,12 +77,12 @@ search_keywords: [文件树, FileTree, 目录树, tree, 目录结构, 仓库结�
   - a-deliberately-long-runbook-filename-for-a-failover-drill.md  # 同样超长的注释，写在一行里，因此必须在注释列内截断
   - restart.md                                                    # 短名字
 ```
+
+屏幕窄于 `sm` 断点时，文件树收成单列：注释移到名称下方并完整显示，分隔条隐藏。
 
 ## 长注释换行 {#wrap}
 
-在 `filetree` 围栏上设置 `wrap=true`，即可在注释列中完整显示长注释，包括没有
-空格的长标识符；行高随内容增长。默认的 `wrap=false` 保持紧凑行与省略号。
-名称、目录折叠、分隔条操作、移动布局与全部展开的打印输出保持原有行为。
+如果注释正是这棵树的重点、必须读全，在围栏上加 `wrap=true`。注释会在本列内换行，连没有空格的长标识符也会折行，行高随内容增长；名称仍然用省略号截断。折叠、分隔条、窄屏布局与打印都不受影响。
 
 ````markdown {title="源码"}
 ```filetree {title="完整存储注释" wrap=true}
@@ -95,42 +97,32 @@ search_keywords: [文件树, FileTree, 目录树, tree, 目录结构, 仓库结�
   - metadata/ # 元数据定义：属性键、顶点标签、边标签、索引和计数器。
   - graph/    # 图数据：顶点、边、索引表，以及 OLAP 分析任务使用的数据。
 ```
-
-无效 `wrap` 值会告警并回退到 `false`。发布前应审阅告警并检查回退结果。
 
 ## 标题栏 {#title}
 
-围栏属性 `{title="…"}` 在树上方渲染一条标题栏；不写时没有标题栏。
+围栏上的 `{title="…"}` 在树的上方加一条标题栏。读者需要知道这棵树描述的是哪台机器、哪个仓库时，它很有用。
 
 ````markdown {title="源码"}
-```filetree {title="oink.pgsty.com 仓库根目录"}
-- content/          # 页面
-- assets/           # 参与构建的资源
-- data/             # 首页、Landing、下载页的数据
-- layouts/          # 模板覆盖
-- static/           # 原样拷贝的文件
-- tests/            # Playwright 与 node --test
-- hugo.yml
-- go.mod            # 用 Hugo Module 引入主题
-- Makefile          # make d / make b / make c
+```filetree {title="备份主机上的 pgBackRest 仓库"}
+- /pg/backup/
+  - archive/         # WAL 段文件，时间点恢复要用
+  - backup/          # 全量、差异与增量备份
+- /etc/pgbackrest/
+  - pgbackrest.conf  # stanza、保留策略与仓库设置
 ```
 ````
 
-```filetree {title="oink.pgsty.com 仓库根目录"}
-- content/          # 页面
-- assets/           # 参与构建的资源
-- data/             # 首页、Landing、下载页的数据
-- layouts/          # 模板覆盖
-- static/           # 原样拷贝的文件
-- tests/            # Playwright 与 node --test
-- hugo.yml
-- go.mod            # 用 Hugo Module 引入主题
-- Makefile          # make d / make b / make c
+```filetree {title="备份主机上的 pgBackRest 仓库"}
+- /pg/backup/
+  - archive/         # WAL 段文件，时间点恢复要用
+  - backup/          # 全量、差异与增量备份
+- /etc/pgbackrest/
+  - pgbackrest.conf  # stanza、保留策略与仓库设置
 ```
 
 ## 缩进与层级 {#indent}
 
-层级由缩进决定。两个空格、四个空格、制表符（按四列计算）都可以，同一棵树内不要求统一，条件是每次退回的层级此前已经打开过。`tree` 命令的输出可以整段粘贴，包括开头的根目录行与结尾的统计行，统计行会被丢弃。
+层级由缩进决定。两个空格、四个空格、制表符（按四列计）都可以，同一棵树里甚至可以混用，只要每次退回的层级之前打开过。因此 `tree` 命令的输出可以原样粘贴进来，开头的根目录行和结尾的统计行都不用删，统计行会被自动丢弃。
 
 ````markdown {title="源码"}
 ```filetree
@@ -162,16 +154,16 @@ content/docs
 3 directories, 5 files
 ```
 
-退回到未打开过的缩进层级时告警并跳过该行，消息带围栏内的行号。
+如果某一行退回到从未打开过的层级，构建会告警并给出它在围栏内的行号，这一行被跳过。
 
 ## 折叠与显式类型 {#dir-file}
 
-有子项的目录默认展开，`{open=false}` 使其初始收起。目录用原生 `<details>` 渲染，键盘可操作，不需要 JavaScript。`open` 只能写在目录上。没有子项、名字也不以 `/` 结尾的条目按文件处理，`{type=dir}` 覆盖这个判断，`{type=file}` 同理。
+有子项的目录默认展开；在行尾写 `{open=false}` 可以让它初始收起，大的目录树因此能把注意力留在你正在讲解的部分。目录是原生 `<details>` 元素，用键盘就能展开、收起，不需要 JavaScript。单凭名字看不出类型时，用 `{type=dir}` 或 `{type=file}` 指定。
 
 ````markdown {title="源码"}
 ```filetree {title="内容目录"}
 - content/
-  - docs/                # 新文档树
+  - docs/                # 文档树
     - components/         # 22 个组件页        {open=false}
       - callout.zh.md
       - filetree.zh.md
@@ -185,7 +177,7 @@ content/docs
 
 ```filetree {title="内容目录"}
 - content/
-  - docs/                # 新文档树
+  - docs/                # 文档树
     - components/         # 22 个组件页        {open=false}
       - callout.zh.md
       - filetree.zh.md
@@ -198,9 +190,9 @@ content/docs
 
 ## 图标与配色 {#icon-tone}
 
-图标默认按名字推断：目录用文件夹图标，随开合切换；文件先按完整文件名匹配（`LICENSE`、`Makefile`、`go.mod`、`package.json`、`.gitignore` 等），再按扩展名匹配（`md yml toml json sh py go js sql css png svg pdf zip` 等），都不匹配时用普通文件图标。
+主题根据名字挑选图标。目录图标随展开、收起切换；文件先按完整文件名匹配（`LICENSE`、`Makefile`、`go.mod`、`package.json`、`.gitignore` 等），再按扩展名匹配（`md yml toml json sh py go js sql css png svg pdf zip` 等），都不匹配时用通用的文件图标。
 
-`{icon=…}` 覆盖它，取值是恰好一对 Font Awesome class。`{tone=…}` 给图标上色，取值与[徽章](/zh/docs/components/badge/)相同：`neutral` `info` `success` `warning` `danger`。
+`{icon=…}` 用一对 Font Awesome class 替换图标。`{tone=…}` 给图标上色，取值与[徽章](/zh/docs/components/badge/)相同：`neutral`、`info`、`success`、`warning`、`danger`。
 
 ````markdown {title="源码"}
 ```filetree {title="部署目录：权限与要点"}
@@ -224,11 +216,11 @@ content/docs
 - /usr/bin/pig                 # 0755 root:root · 命令行工具         {icon="fa-solid fa-terminal" tone=success}
 ```
 
-`tone` 只给图标上色，不改文字。颜色是补充，含义写在名字或注释里。
+`tone` 只给图标上色，从不改变文字颜色。含义请写在名字或注释里，分辨不出颜色的读者也能从文字中读到。
 
 ## 条目链接 {#link}
 
-条目名写成 `[名字](链接)` 即为链接。站内路径、相对路径、`http(s):` 都可以，URL 校验与其它组件是同一套。
+把条目写成 `[名字](链接)` 就成了链接，例如指向讲解这个文件的页面。站内路径、相对路径、`http(s):` 都可以，URL 校验与其它组件相同。
 
 ````markdown {title="源码"}
 ```filetree {title="本站的组件页"}
@@ -238,7 +230,7 @@ content/docs
   - [gallery.zh.md](/zh/docs/components/gallery/)     # 画廊
   - image/                                             # 页面包
     - [index.zh.md](/zh/docs/components/image/)       # 图片
-- [hugo.yml](https://github.com/pgsty/oink.pgsty.com/blob/main/hugo.yml)   # 站点配置（GitHub）
+- [hugo.yml](https://github.com/pgsty/oink.pgsty.com/blob/main/hugo.yml)   # 本站配置（GitHub）
 ```
 ````
 
@@ -249,12 +241,12 @@ content/docs
   - [gallery.zh.md](/zh/docs/components/gallery/)     # 画廊
   - image/                                             # 页面包
     - [index.zh.md](/zh/docs/components/image/)       # 图片
-- [hugo.yml](https://github.com/pgsty/oink.pgsty.com/blob/main/hugo.yml)   # 站点配置（GitHub）
+- [hugo.yml](https://github.com/pgsty/oink.pgsty.com/blob/main/hugo.yml)   # 本站配置（GitHub）
 ```
 
 ## 按平台分成标签页 {#tabs}
 
-围栏带 `tab=`（以及 `group=` `value=`）时成为一组[标签页](/zh/docs/components/tabs/)中的一页，可以与代码围栏混排。
+不同平台的目录布局不一样时，给每个围栏写 `tab=`（以及 `group=`、`value=`），相邻的围栏就合并成一组[标签页](/zh/docs/components/tabs/)，其中可以混排文件树与代码围栏。
 
 ````markdown {title="源码"}
 ```filetree {tab="Linux" group="platform" value="linux"}
@@ -280,14 +272,7 @@ content/docs
 
 ## 输出形态 {#outputs}
 
-| 输出 | 呈现 |
-| --- | --- |
-| HTML | `<div class="td-filetree">`，可选标题栏，目录是原生 `<details>`；带注释时多一条可拖动分隔条（唯一的运行时） |
-| 打印 | 同一棵树，全部展开，没有分隔条，注释换行不截断 |
-| Markdown | 原样输出 `filetree` 围栏 |
-| RSS | 围栏源码放进 `<pre>` |
-
-窄屏（小于 `sm` 断点）时布局收成单列：注释移到名称下方，不再截断，分隔条隐藏。不带注释的树是单列，也不加载任何脚本。
+打印时所有目录全部展开，注释换行而不截断，也没有分隔条。页面的 Markdown 输出原样保留 `filetree` 围栏，RSS 则把同一段源码放在 `<pre>` 块里。
 
 ## 参数参考 {#reference}
 
@@ -295,8 +280,8 @@ content/docs
 
 | 属性 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `title` | 纯文本 | — | 树上方的标题栏；不写就不画；不能为空 |
-| `wrap` | 布尔值 | `false` | 长注释换行，行高随内容增长；文件名继续省略 |
+| `title` | 纯文本 | — | 树上方的标题栏；不写就没有；不能为空 |
+| `wrap` | 布尔值 | `false` | 长注释换行，行高随内容增长；名称继续省略；无效值告警并按 `false` 处理 |
 | `tab` | 纯文本 | — | 让这棵树成为一个标签页 |
 | `group` / `value` | 字符串 | — | 标签页分组与同步值；必须与 `tab` 同时出现 |
 | `class` | class 列表 | — | 透传给站点 CSS |
@@ -312,7 +297,7 @@ content/docs
 | `type` | 枚举 | 自动判断 | `dir` 或 `file`，覆盖自动判断 |
 {.fields meta="type default"}
 
-行语法本身：
+行语法：
 
 | 元素 | 说明 |
 | --- | --- |
@@ -324,16 +309,15 @@ content/docs
 | `N directories, M files` | `tree` 的统计行，自动丢弃 |
 {.fields}
 
-未知属性、未知取值、写在文件上的 `open`、格式错误的 `{…}`、退回到未打开过的
-缩进层级，都会告警并采用安全回退或跳过坏行，消息给出围栏内行号。
+未知属性或取值、写在文件上的 `open`、格式错误的 `{…}`、退回到未打开过的层级，都会告警并给出围栏内的行号，主题随后采用安全的默认值或跳过该行。
 
 ## 限制与常见问题 {#limits}
 
-- 只有 `filetree` 围栏这一种形态：没有 `{.filetree}` 列表标记，也没有 shortcode。
-- 注释与名字都是纯文本：写 `**粗体**` 会原样显示，围栏源码在任何环境里都读得通。
-- 不读取磁盘：树是手写或粘贴的静态内容，不随仓库变化。
-- 不提供搜索、多选、复制整棵树：需要逐字复制时用普通代码块。
-- 分栏宽度不持久化：拖动过的位置刷新后回到构建期算出的默认值。
+- 只有 `filetree` 围栏这一种写法，没有 `{.filetree}` 列表标记，也没有 shortcode。
+- 名字与注释都是纯文本，`**粗体**` 会原样显示，源码在任何 Markdown 阅读器里都读得通。
+- 文件树不读取磁盘，它就是你写下或粘贴的文字，不会跟随仓库后来的变化。
+- 不提供搜索、多选或一键复制整棵树；读者需要复制清单时用代码块。
+- 拖动过的分隔条位置不保存，刷新后回到构建期算出的宽度。
 
 ## 相关 {#related}
 

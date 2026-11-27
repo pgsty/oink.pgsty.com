@@ -1,50 +1,61 @@
 ---
 title: Timeline
 linkTitle: Timeline
-description: Add `{.timeline}` to a Markdown definition list to draw dated or ordered events on an axis. Markers are free text, events take block content, and no script loads.
+description: Turn a Markdown definition list into a vertical timeline of dated or ordered events, for milestones, incident write-ups, product history or an agenda.
 weight: 72
 search_keywords: [Timeline, chronology, milestones, history, postmortem, agenda, definition list, dl, dt, dd]
 ---
 
-A timeline places events on a vertical axis, each beside its marker. A marker is whatever orders the events: a date, a time, a version, "Day 2".
-Write a Markdown definition list, one term per marker and one definition per event, and put `{.timeline}` on the line below it.
-The theme adds only CSS. Use a timeline for project milestones, an incident's sequence, a product's history, or an agenda.
-Use [steps](/docs/components/steps/) for a procedure the reader carries out, and [update](/docs/components/update/) entries when each item needs a heading in the table of contents.
+A timeline lays events along a vertical axis, each beside its marker: a date,
+a time, a version, "Day 2", whatever puts the events in order. Use it for
+project milestones, the sequence of an incident, a product's history or an
+agenda; [Where a timeline fits](#which) compares it with steps, update entries
+and Gantt charts.
+
+You write an ordinary Markdown definition list, one term per marker and one
+definition per event, and put `{.timeline}` on the line below it. The theme
+adds only CSS, so the source stays plain Markdown and the page loads no script.
 
 ## Shortest form {#minimal}
 
-Write each marker on its own line and its event on the next line, after `: `. Separate entries with a blank line.
-Put `{.timeline}` directly under the last event.
+Write each marker on its own line and its event on the next line after `: `,
+with a blank line between entries. Put `{.timeline}` directly under the last
+event.
 
 ```markdown {title="Source"}
-2026-08-29
-: **OINK 1.0.0.** Component, configuration and output contracts are declared stable.
+2024-03-12
+: **v1.0.** First stable release: single-node installs on EL 9 and Ubuntu 24.04.
 
-2026-10-15
-: **OINK 1.3.0.** Image albums arrive with `type: expo`.
+2024-11-05
+: **v2.0.** Streaming replicas and automatic failover.
 
-2026-11-23
-: **OINK 1.6.0.** The stylesheet becomes plain CSS; a site build needs only the Hugo binary.
+2025-09-30
+: **v3.0.** PostgreSQL 18 becomes the default version.
 {.timeline}
 ```
 
-2026-08-29
-: **OINK 1.0.0.** Component, configuration and output contracts are declared stable.
+2024-03-12
+: **v1.0.** First stable release: single-node installs on EL 9 and Ubuntu 24.04.
 
-2026-10-15
-: **OINK 1.3.0.** Image albums arrive with `type: expo`.
+2024-11-05
+: **v2.0.** Streaming replicas and automatic failover.
 
-2026-11-23
-: **OINK 1.6.0.** The stylesheet becomes plain CSS; a site build needs only the Hugo binary.
+2025-09-30
+: **v3.0.** PostgreSQL 18 becomes the default version.
 {.timeline}
 
-`{.timeline}` must touch the last event. With a blank line before it, Goldmark drops the attribute line without a warning, and the list renders as an ordinary definition list.
-The blank lines between entries are required: without one, the next marker becomes a line of the previous event's text.
+Both kinds of line break matter. `{.timeline}` must touch the last event: after
+a blank line Goldmark drops the attribute line before the theme ever sees it,
+so there is no warning, and the list renders as a plain definition list. The
+blank lines between entries are required too, because without one the next
+marker becomes a line of the previous event's text.
 
 ## Markers {#markers}
 
-A marker is one line of free text. The theme does not parse it, so `2026-11`, `09:02`, `v1.6.0`, `Day 2` and `Q3 2026 – Q1 2027` are all valid.
-Events stay in the order you write them. Plain text is recommended; markers are set small and semibold, with tabular figures so times and dates line up.
+A marker is one line of free text. The theme does not parse it, so `2026-11`,
+`09:02`, `v1.6.0`, `Day 2` and `Q3 2026 – Q1 2027` all work, and events stay
+in the order you write them. Markers are set small and semibold with tabular
+figures, so times and dates line up; plain text suits them best.
 
 ```markdown {title="Source"}
 09:02 UTC
@@ -74,71 +85,77 @@ Events stay in the order you write them. Plain text is recommended; markers are 
 : **Resolved.** Production serves the new page.
 {.timeline}
 
-On wide screens the marker column grows with the longest marker, up to 10rem; a longer marker wraps inside it.
-Every line directly above a `: ` line is a separate marker, so a marker cannot continue onto a second source line.
+On wide screens the marker column grows with the longest marker up to 10rem,
+and a longer marker wraps inside it. A marker cannot continue onto a second
+source line: every line directly above a `: ` line is a marker of its own, and
+two marker lines in a row leave the first without an event, which shows as a
+gap in the axis.
 
 ## Event content {#events}
 
-An event is a definition, so it takes block content: continuation paragraphs, lists and fenced code.
-Indent them two spaces, to the column after `: `, as for any definition list. A leading bold phrase is the conventional event title.
-It is a writing convention, not syntax; the theme styles it as ordinary bold text.
+An event is a definition, so it can hold continuation paragraphs, lists and
+fenced code, indented two spaces to the column after `: `. A bold phrase at the
+start is the usual event title; it is a writing convention, and the theme
+styles it as ordinary bold text.
 
 ````markdown {title="Source"}
-2026-11-23
-: **OINK 1.6.0.** The stylesheet becomes plain CSS layers, and the three SCSS hooks are retired.
+2025-09-30
+: **v3.0.** PostgreSQL 18 becomes the default, and PostgreSQL 13 leaves the supported list.
 
-  A site that used the hooks upgrades in two moves:
+  A cluster still on PostgreSQL 13 upgrades in two moves:
 
-  - put its rules in `assets/css/project.css`;
-  - restate each changed Sass variable as the custom property it produced.
+  - take a fresh base backup;
+  - run `pg_upgrade` on the primary, then rebuild the replicas from it.
 
   ```bash
-  hugo mod get github.com/pgsty/oink@v1.6.0
+  pg_upgrade -b /usr/pgsql-13/bin -B /usr/pgsql-18/bin -d /var/lib/pgsql/13/data -D /var/lib/pgsql/18/data --link
   ```
 
-Unreleased
-: **Timeline and Update.** Native components for dated events and changelog entries.
+Next release
+: **Logical replication.** One command sets up publications and subscriptions between clusters.
 {.timeline}
 ````
 
-2026-11-23
-: **OINK 1.6.0.** The stylesheet becomes plain CSS layers, and the three SCSS hooks are retired.
+2025-09-30
+: **v3.0.** PostgreSQL 18 becomes the default, and PostgreSQL 13 leaves the supported list.
 
-  A site that used the hooks upgrades in two moves:
+  A cluster still on PostgreSQL 13 upgrades in two moves:
 
-  - put its rules in `assets/css/project.css`;
-  - restate each changed Sass variable as the custom property it produced.
+  - take a fresh base backup;
+  - run `pg_upgrade` on the primary, then rebuild the replicas from it.
 
   ```bash
-  hugo mod get github.com/pgsty/oink@v1.6.0
+  pg_upgrade -b /usr/pgsql-13/bin -B /usr/pgsql-18/bin -d /var/lib/pgsql/13/data -D /var/lib/pgsql/18/data --link
   ```
 
-Unreleased
-: **Timeline and Update.** Native components for dated events and changelog entries.
+Next release
+: **Logical replication.** One command sets up publications and subscriptions between clusters.
 {.timeline}
 
-The axis is drawn along the start edge of each event, so it stays continuous however tall an event grows.
+The axis runs along the start edge of each event, so it stays unbroken however
+tall an event grows.
 
 ## Several events under one marker {#several}
 
-Write more than one `: ` line under a marker for events that share it. They follow one another on the axis, under a single node.
+Write more than one `: ` line under a marker for events that share it. They
+follow one another on the axis under a single node.
 
 ```markdown {title="Source"}
-2026-10-18
-: **OINK 1.3.1.** Readability repairs and an opt-in FileTree comment layout.
-: **OINK 1.3.2.** The same day, a patch restores the Hugo-only build that 1.3.1 broke.
+2025-10-14
+: **v3.0.1.** Fixes a failover timeout on clusters with more than three replicas.
+: **v3.0.2.** The same day, a patch restores air-gapped installs, which 3.0.1 broke.
 
-2026-11-04
-: **OINK 1.5.0.** Bilingual View opens a page and its translation side by side.
+2025-12-02
+: **v3.1.** Point-in-time recovery from the command line.
 {.timeline}
 ```
 
-2026-10-18
-: **OINK 1.3.1.** Readability repairs and an opt-in FileTree comment layout.
-: **OINK 1.3.2.** The same day, a patch restores the Hugo-only build that 1.3.1 broke.
+2025-10-14
+: **v3.0.1.** Fixes a failover timeout on clusters with more than three replicas.
+: **v3.0.2.** The same day, a patch restores air-gapped installs, which 3.0.1 broke.
 
-2026-11-04
-: **OINK 1.5.0.** Bilingual View opens a page and its translation side by side.
+2025-12-02
+: **v3.1.** Point-in-time recovery from the command line.
 {.timeline}
 
 ## Where a timeline fits {#which}
@@ -154,17 +171,21 @@ Write more than one `: ` line under a marker for events that share it. They foll
 
 | Condition | Layout |
 | --- | --- |
-| Viewport 576px and wider | Two columns: markers end-aligned against the axis, events beside them; the marker column is content-sized and capped at 10rem |
+| Viewport 576px and wider | Two columns: markers end-aligned against the axis, events beside them; the marker column fits its content up to 10rem |
 | Narrower viewport | One column: each marker above its event, with the axis and nodes on the start edge |
 | Ink and Terminal presets | Square nodes instead of round ones |
 | Forced colors | The axis and nodes use the system text color |
-| Right-to-left pages | The axis moves to the right; logical properties mirror the layout |
+| Right-to-left pages | The axis moves to the right, and the whole layout mirrors |
 
-The styles are scoped to `.td-content dl.timeline`. A definition list without `{.timeline}` renders as before, and elements a site already calls `.timeline` outside article content are not touched.
+The styles apply only to `dl.timeline` inside article content, so definition
+lists without the marker, and any element your site already calls `.timeline`
+outside the article, are left alone.
 
 ## Prerequisites {#prerequisites}
 
-Definition lists are a Goldmark extension that Hugo enables by default. The attribute line needs Goldmark block attributes, one of the [site prerequisites](/docs/components/#prerequisites) every component shares.
+Definition lists are a Goldmark extension that Hugo enables by default. The
+attribute line needs Goldmark block attributes, one of the
+[site prerequisites](/docs/components/#prerequisites) every component shares.
 
 ```yaml {title="hugo.yml"}
 markup:
@@ -176,18 +197,16 @@ markup:
         block: true # enable {…} attribute lines
 ```
 
-With definition lists turned off, each marker and its event render as one paragraph with a literal colon.
+With definition lists turned off, each marker and its event render as one
+paragraph with a literal colon.
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | `<dl class="timeline">` from Goldmark: a `<dt>` per marker and a `<dd>` per event; the axis and nodes are CSS |
-| Print | The same markup; print styles keep a marker on the same page as its event |
-| Markdown and LLMS | The authored definition list and its `{.timeline}` line |
-| RSS | The `<dl>` as rendered; feed readers show markers and events as terms and definitions |
-
-Timelines load no JavaScript. Screen readers announce each marker and event as a term and its definition, in source order; the axis and nodes are decoration.
+Timelines load no JavaScript. Screen readers announce each marker and event as
+a term and its definition, in source order; the axis and nodes are decoration.
+Print keeps each marker on the same page as its event, Markdown and LLMS
+output keep the list and its `{.timeline}` line as written, and feed readers
+show a plain definition list.
 
 ## Parameter reference {#reference}
 
@@ -202,16 +221,20 @@ The definition-list syntax:
 | `{.timeline}` | yes | The line directly below the last event, with no blank line before it |
 {.fields}
 
-There are no attributes: no icon, color, badge, link or compact variant. An `id` or further classes on the same line, as in `{#history .timeline}`, pass through Goldmark onto the `<dl>`.
+A timeline has no attributes of its own: no icon, color, badge, link or
+compact variant. An `id` or further classes on the same line, as in
+`{#history .timeline}`, pass through Goldmark onto the `<dl>`.
 
 ## Limits {#limits}
 
-- Events take no icons, colors, badges or links as parameters. Put a link or a [badge](/docs/components/badge/) in the event text instead.
-- A blank line before `{.timeline}` silently drops the marker. This is true of every Goldmark block attribute: the attribute never reaches the theme, so no warning is possible.
-- GitHub and some editors do not render definition lists. The source still reads as a marker line followed by `: event` lines.
-- Two marker lines in a row leave the first marker without an event, which shows as a gap in the axis on wide screens. Give every marker at least one event.
-- No date parsing, sorting or grouping: events appear in source order, and markers are not localized.
-- Events are not headings and do not appear in the TOC. Use [update](/docs/components/update/) headings when they should.
+- Events take no icon, color, badge or link parameters. Put a link or a
+  [badge](/docs/components/badge/) in the event text instead.
+- GitHub and some editors do not render definition lists, but the source
+  still reads naturally: a marker line followed by `: event` lines.
+- Markers are not parsed, sorted, grouped or localized; events appear in
+  source order.
+- Events are not headings and do not appear in the TOC. Use
+  [update](/docs/components/update/) headings when they should.
 
 ## Related {#related}
 

@@ -8,7 +8,9 @@ aliases:
   - /docs/components/layout/
 ---
 
-提示块（Callout）是 GitHub / Obsidian 风格的块引用：`> [!TYPE]` 起头，正文跟在后面。用于把提示、警告、前提条件从正文中分离出来；正文一句话能说清的内容不必使用提示块。
+提示块（Callout）用来把读者绝不能漏看的那件事单独拎出来：一个前提条件、一条有破坏性的命令、一个版本限制。它就是普通的块引用，只是第一行写一个 `[!TYPE]` 标记，与 GitHub、Obsidian 的写法相同。同一份源码在 GitHub 上显示为提示框，在其它 Markdown 阅读器里显示为普通引用。
+
+请克制使用。每隔一段就有一个框，读者很快就会对框视而不见；一句正文能说清的，就写成正文。
 
 ## 最简例子 {#minimal}
 
@@ -20,11 +22,11 @@ aliases:
 > [!NOTE]
 > Hugo Module 需要本机安装 Go；只用离线归档时不需要。
 
-不写标题时使用本地化的类型名（中文站显示「注意」，英文站显示 "Note"）。源码在 GitHub 上按 GitHub 的提示块渲染，在普通 Markdown 阅读器中显示为块引用，内容都不会丢失。
+不写标题时，显示当前语言的类型名：中文页面是「注意」，英文页面是 "Note"。
 
 ## 十种类型 {#types}
 
-前五种与 GitHub 一致，后五种是 OINK 追加的语义类型。每种类型有默认图标与强调色。
+前五种类型由 GitHub 定义，后五种是 OINK 追加的；每种有自己的图标与颜色，类型名不区分大小写。按“读者跳过这个框会怎样”来选类型：`NOTE`、`TIP` 跳过也无妨；`IMPORTANT` 表示缺了它任务做不成；`WARNING`、`CAUTION` 表示会出故障或变慢；`DANGER` 留给无法撤销的操作。
 
 ```markdown {title="源码"}
 > [!TIP]
@@ -40,10 +42,10 @@ aliases:
 > 删除 `resources/_gen` 后第一次构建会慢很多。
 
 > [!SUCCESS]
-> 构建通过、生产——可以推上线了。
+> 312 个页面全部构建完成，可以部署了。
 
 > [!DANGER]
-> 不要把 `go.work` 提交进仓库。
+> 部署前执行 `rm -rf public/`，会连同你手动放进去的文件一起删掉。
 
 > [!QUESTION]
 > 站点要不要开评论？看[启用评论](/zh/docs/admin/comments/)。
@@ -68,10 +70,10 @@ aliases:
 > 删除 `resources/_gen` 后第一次构建会慢很多。
 
 > [!SUCCESS]
-> 构建通过、生产——可以推上线了。
+> 312 个页面全部构建完成，可以部署了。
 
 > [!DANGER]
-> 不要把 `go.work` 提交进仓库。
+> 部署前执行 `rm -rf public/`，会连同你手动放进去的文件一起删掉。
 
 > [!QUESTION]
 > 站点要不要开评论？看[启用评论](/zh/docs/admin/comments/)。
@@ -82,11 +84,9 @@ aliases:
 > [!QUOTE]
 > Documentation is a love letter that you write to your future self.
 
-类型名不区分大小写。
-
 ## 自定义标题 {#title}
 
-标记同一行的后续文字是标题，支持行内 Markdown（代码、粗体、链接）。
+标记同一行后面的文字就是标题，可以包含行内代码、粗体与链接。
 
 ```markdown {title="源码"}
 > [!WARNING] 会改写 `public/`
@@ -97,7 +97,7 @@ aliases:
 > 生产构建前先确认 `baseURL` 指向正式域名，否则所有绝对链接都会指错。
 
 ## 正文内容 {#body}
-正文是页面级 Markdown：列表、代码围栏、表格、图片、嵌套的提示块。每一行都以 `>` 开头，围栏也不例外。
+正文就是普通 Markdown：列表、代码围栏、表格、图片，甚至另一个提示块。每一行都以 `>` 开头，围栏行也不例外。
 
 ````markdown {title="源码"}
 > [!TIP] 三条命令启动预览
@@ -129,7 +129,7 @@ aliases:
 
 ## 折叠 {#collapsible}
 
-类型后加 `-` 默认收起，加 `+` 默认展开；两者都渲染为原生 `<details>`，不加载 JavaScript。适用于完整输出、备选方案、背景说明这类不必默认展示的内容。
+类型后加 `-` 渲染为收起状态，加 `+` 渲染为展开但可收起。两者都是原生 `<details>` 元素，不依赖 JavaScript。适合折叠大多数读者可以跳过的内容：完整命令输出、备选做法、背景阅读。
 
 ```markdown {title="源码"}
 > [!NOTE]- 为什么需要 Go？
@@ -147,7 +147,7 @@ aliases:
 
 ## 中性折叠块 DETAILS {#details}
 
-`[!DETAILS]` 是没有语义颜色的折叠块：不加符号默认收起，`[!DETAILS]+` 默认展开。用于冗长输出、完整配置文件等需要折叠的内容。
+`[!DETAILS]` 是不带颜色和图标的折叠块，默认收起，写成 `[!DETAILS]+` 则默认展开。内容既不是提示也不是警告、只是篇幅长时用它，例如一份完整配置文件、一段完整日志。
 
 ````markdown {title="源码"}
 > [!DETAILS] 完整的 `hugo version` 输出
@@ -162,7 +162,7 @@ aliases:
 > ```
 
 ## 自定义图标 {#icon}
-块引用结束后的下一行写属性 `{icon="fa-solid fa-xxx"}`（一对 Font Awesome class），替换该类型的默认图标。属性行紧接块引用，中间不能有空行。
+在块引用的下一行写 `{icon="fa-solid fa-…"}`（一对 Font Awesome class），即可替换该类型的图标。属性行必须紧跟块引用，中间不能有空行。
 
 ```markdown {title="源码"}
 > [!TIP] PostgreSQL 18 已支持
@@ -176,7 +176,7 @@ aliases:
 
 ## 嵌套 {#nesting}
 
-提示块可以嵌套（每层多一个 `>`），也可以放在列表项或步骤中。建议最多嵌套一层。
+每嵌套一层多写一个 `>`。通常一层就够，再深就难读了。
 
 ```markdown {title="源码"}
 > [!WARNING] 升级前先备份
@@ -194,7 +194,7 @@ aliases:
 
 ## 未知类型与易错写法 {#pitfalls}
 
-未知的类型名不会导致构建失败，也不会丢失内容：该块渲染为普通块引用，`[!TYPE]` 标记原样可见。
+类型名拼错不会导致构建失败，也不会丢内容：该块渲染为普通块引用，标记原样留在页面上，一眼就能看出拼写错误。
 
 ```markdown {title="源码"}
 > [!NOTICE] 这不是合法类型
@@ -204,22 +204,14 @@ aliases:
 > [!NOTICE] 这不是合法类型
 > 标记会保留在页面上提醒你。
 
-其它常见问题：
+另外两类常见问题来自 Prettier 等格式化工具：
 
-- 正文与标题合并：经过 Prettier 等格式化工具的文件，在标题行下保留一个空的 `>` 行，否则工具会把标题并入正文。
-- 属性行被格式化工具移动：把 `{icon=…}` 这类标记行放在 `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->` 之间。
-- `style`、`onclick` 与不支持的属性会告警并忽略：属性行只接受 `icon` 与 `class`（见下表）。
+- 标题行被并入正文：在标题行下保留一个空的 `>` 行。
+- `{icon=…}` 这类属性行被挪走：用 `<!-- prettier-ignore-start -->` 与 `<!-- prettier-ignore-end -->` 把提示块包起来。
 
 ## 输出形态 {#outputs}
 
-| 输出 | 呈现 |
-| --- | --- |
-| HTML | 静态类型是 `<div class="td-callout" role="note">`；折叠类型是原生 `<details>` + `<summary>` |
-| 打印 | 全部静态展开，折叠块带 `data-td-callout-collapsible` 标记 |
-| Markdown | 保留源码块引用（含 `[!TYPE]` 标记与标题） |
-| RSS | 与打印相同，静态展开 |
-
-提示块不加载脚本。
+提示块不加载脚本。打印与 RSS 中所有提示块都完整展开；页面的 Markdown 输出保留原始块引用，包括标记与标题。
 
 ## 参数参考 {#reference}
 
@@ -240,13 +232,13 @@ aliases:
 | `class` | 空格分隔的 class | — | 原样透传给站点 CSS |
 {.fields meta="type default"}
 
-`style`、`on*` 与其它键会告警并忽略。
+其它键（包括 `style` 与 `on*` 事件属性）会被丢弃，并在构建时告警。
 
 ## 限制与常见问题 {#limits}
 
-- 不能自定义颜色：颜色由类型决定，需要新语义时选最接近的类型并自定义标题。
-- 折叠状态不持久化。
-- 提示块可以放在 `{.steps}` 列表项与 `{{%/* steps */%}}` 步骤中（见[步骤](/zh/docs/components/steps/)），块引用的每一行都以 `>` 开头，缩进与列表项对齐。
+- 颜色由类型决定，没有颜色参数。找不到合适的类型时，选最接近的一种，用标题表达具体含义。
+- 读者展开或收起的状态在刷新后不保留。
+- 放进 `{.steps}` 列表项或 `{{%/* steps */%}}` 步骤时，每一行 `>` 都要缩进到列表项文字的位置，见[步骤](/zh/docs/components/steps/)。
 
 ## 相关 {#related}
 

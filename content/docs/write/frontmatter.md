@@ -1,36 +1,28 @@
 ---
 title: Page parameters
 linkTitle: Page parameters
-description: The full front matter table — active page keys and retained 1.x compatibility no-ops, grouped by sidebar, shell, search, output, page end, Book, Expo, landing and release pages.
+description: Look up every front matter key OINK reads, with its type, default and effect, to change one page or a whole section.
 weight: 30
 search_keywords: [page parameters, front matter, cascade, page override, parameter table]
 ---
 
-This page lists all page-level parameters that OINK reads, including explicit
-1.x compatibility no-ops. It omits keys that the theme reads only to warn about
-a rename or removal. Those keys are in
-[Migration](/docs/design/migration/), and they are also kept out of the
-generated editor schema. Hugo's own front matter fields (`slug`, `url`, `build`,
-`sitemap`, `expiryDate` and others) work as usual. For their meaning, see the
-[Hugo documentation](https://gohugo.io/content-management/front-matter/). Site
-parameters (`params.*` in `hugo.yml`) are in
-[Configuration](/docs/customize/config/).
+Front matter lets one page, or a whole section through `cascade`, depart from
+the site-wide settings in `hugo.yml`: a wide layout for one reference table, no
+pager on a landing page, comments on blog posts but not on the docs. The keys
+below are every page key OINK reads, grouped by what they change. Hugo's own
+fields (`slug`, `url`, `build`, `sitemap`, `expiryDate` and the rest) work as
+usual and are documented by
+[Hugo](https://gohugo.io/content-management/front-matter/). Site parameters
+are in [Configuration](/docs/customize/config/).
 
-## How to read the tables {#how-to-read}
-Precedence, highest first:
+## How page keys work {#how-to-read}
 
-1. The page's own front matter.
-2. The nearest `cascade`. If several cascade layers set the same key, the closest layer takes precedence.
-3. The site parameter in `hugo.yml`.
-
-Keys whose *Default* column says "site value" fall back to the site parameter of
-the same name when unset.
-
-Write page keys at the top level of front matter, without the site key's `ui.`
-prefix. For example, the site's `params.ui.section_index` becomes the page's
-`section_index`. Do not nest these keys in a `ui:` block: the theme neither
-reads nor reports a `ui:` block there. If a setting has no effect, check its
-key name against this page.
+**A page key is the site key without `params.` and `ui.`, written at the top
+level of the front matter.** The site's `params.ui.section_index` becomes
+`section_index` on a page, and `params.page_width` becomes `page_width`. Do not
+nest page keys under a `ui:` block: the theme does not read one and does not
+warn about it either, so the setting silently has no effect. When a key seems
+to do nothing, check its name and placement against these tables first.
 
 ```yaml {title="content/docs/wide-reference.md"}
 ---
@@ -43,7 +35,8 @@ section_index: list
 ---
 ```
 
-Inside a `cascade`, use the same key names one level deeper:
+A section's `cascade` uses the same names one level deeper and applies them to
+every page beneath it:
 
 ```yaml {title="content/docs/reference/_index.md"}
 cascade:
@@ -51,246 +44,261 @@ cascade:
   section_index: list
 ```
 
-An invalid value does not abort the build: the theme logs a warning naming the
-key, supplied value, and fallback, then renders the page with the default listed
-below so a single typo does not return HTTP 500 across `hugo server`.
+When several places set the same key, the most specific wins:
 
-When continuing with a default would publish misleading metadata—such as an
-incomplete upstream attribution—the theme logs a warning and omits the block
-entirely. Unresolved content references (`ref` / `relref`) still fail the build
-through Hugo.
+1. the page's own front matter;
+2. the nearest `cascade` above it;
+3. the site parameter in `hugo.yml`.
+
+A *Default* of "site value" means the key falls back to the site parameter of
+the same name. An invalid value warns and the page uses the default shown here,
+as described in [Configuration](/docs/customize/config/#principles); the
+tables mention a fallback only where it differs. Keys that OINK has renamed or
+retired are not listed: the build warns when it meets one, and
+[Upgrade](/docs/admin/upgrade/) has the replacements.
 
 ## Basics {#basic}
 
+Every page uses a few of these, and `title` is the one it cannot do without.
+
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `title` | string | — | Page heading, browser title, search result title. Required on every page |
+| `title` | string | — | Page heading, browser title and search result title. Required on every page |
 | `linkTitle` | string | `title` | Short name in the sidebar, breadcrumbs, pager and cards |
-| `description` | string | — | One-sentence summary for section cards, search snippets, and `meta description`. Blog pages also show it as an introduction above the body |
-| `weight` | integer | `0` | Order among siblings. Use multiples of 10. `0` (unset) sorts after every page with a weight. See [Organizing content](/docs/write/organize/#weight) |
-| `draft` | boolean | `false` | A draft never reaches build output. Use `hugo server -D` to preview it. See [Writing pages](/docs/write/pages/#drafts) |
-| `date` | date | — | Blog date and release-page sort key. A future date excludes the page by default |
-| `lastmod` | date | Git commit time | The page-end "last modified" time. No manual value is needed if the site enables `enableGitInfo` |
-| `aliases` | string array | — | Redirects an old path to this page. Use for page migration rather than everyday navigation |
-| `type` | string | top-level directory name | Decides the template and the shell: `docs`, `book`, `blog`, `swagger` — see [Organizing content](/docs/write/organize/#type-and-shell) |
-| `layout` | string | — | Picks a layout for one page: `landing`, `releases` |
+| `description` | string | — | One-sentence summary for section cards, search snippets and `meta description`. Blog pages also show it as an introduction above the body |
+| `weight` | integer | `0` | Order among siblings; use multiples of 10. `0` (unset) sorts after every page with a weight. See [Organizing content](/docs/write/organize/#weight) |
+| `draft` | boolean | `false` | A draft never reaches the build output; preview it with `hugo server -D`. See [Writing pages](/docs/write/pages/#drafts) |
+| `date` | date | — | Blog date and release-page sort key. A future date keeps the page out of the build by default |
+| `lastmod` | date | Git commit time | The page-end "last modified" time. With `enableGitInfo` on, Git supplies it and you need not write it |
+| `aliases` | string array | — | Old paths that redirect to this page, for when a page moves |
+| `type` | string | top-level directory name | Picks the template and the shell: `docs`, `book`, `blog`, `swagger`, `expo`. See [Organizing content](/docs/write/organize/#type-and-shell) |
+| `layout` | string | — | Picks a layout for one page: `landing` or `releases` |
 | `cascade` | map | — | Applies the keys below to the whole subtree |
 {.fields meta="type default"}
 
 ## Sidebar and navigation {#navigation}
 
-The guide is [Organizing content](/docs/write/organize/).
+Reach for these when a page belongs somewhere else in the sidebar, or nowhere,
+or when a section index should list its children differently.
+[Organizing content](/docs/write/organize/) shows how they combine.
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `icon` | Font Awesome class pair | — | Icon in the sidebar, section cards and search results, e.g. `fa-solid fa-rocket` |
-| `toc_hide` | boolean | `false` | Excludes this page and its subtree from sidebar navigation and the pager sequence, in both content-derived and explicit trees |
-| `hide_summary` | boolean | `false` | Absent from the section index |
-| `sidebar_divider` | boolean | `false` | A non-link group heading, excluded from pager destinations. The 1.1 implementation retains a section's children. Use `build.render: never` for a [group without its own page](/docs/write/organize/#group-only) |
-| `sidebar_expanded` | boolean | `true` for blog sections, `false` otherwise | This section is expanded by default in the sidebar |
-| `sidebar_root_for` | `self` / `children` | — | Makes this section a sidebar tree root. `self` includes the section index. `children` covers descendants only. Any other value warns and is ignored |
-| `sidebar_root_link_self` | boolean | `true` | The root row links to itself. `false` links to the parent section instead. A non-boolean warns and uses `true` |
-| `sidebar_root_menu` | boolean | `true` | Includes a top-level section or nested self-root in global switcher choices. An excluded current root remains a location marker. The nested-root exclusion is fixed in 1.1 |
-| `toc_root` | boolean | `false` | When the sidebar root is the site home, excludes this whole top-level section from the tree and the pager sequence |
-| `manual_link` | URL | — | The sidebar and section index row points elsewhere |
+| `icon` | Font Awesome class pair | — | Icon in the sidebar, section cards and search results, such as `fa-solid fa-rocket` |
+| `toc_hide` | boolean | `false` | Removes this page and its subtree from the sidebar and the pager sequence, in content-derived and explicit trees alike |
+| `hide_summary` | boolean | `false` | Leaves the page out of its section index |
+| `sidebar_divider` | boolean | `false` | Turns the entry into a group heading without a link, which the pager skips; a section marked this way still lists its children. For a group with no page of its own, use `build.render: never` instead ([group without a page](/docs/write/organize/#group-only)) |
+| `sidebar_expanded` | boolean | `true` for blog sections, `false` otherwise | Opens this section in the sidebar by default |
+| `sidebar_root_for` | `self` / `children` | — | Makes this section the root of the sidebar tree. `self` includes the section index; `children` covers only its descendants. Any other value warns and is ignored |
+| `sidebar_root_link_self` | boolean | `true` | The root row links to the section itself; `false` links it to the parent section instead |
+| `sidebar_root_menu` | boolean | `true` | Offers a top-level section or nested self-root in the sidebar's root switcher. An excluded root still shows as the current location while you are inside it |
+| `toc_root` | boolean | `false` | When the sidebar root is the site home, removes this whole top-level section from the tree and the pager sequence |
+| `manual_link` | URL | — | Points this row in the sidebar and section index somewhere else |
 | `manual_link_relref` | content reference | — | The same link, resolved with `relref`. A missing target fails the build |
 | `manual_link_title` | string | `title` | Hover title for the manual link |
-| `manual_link_target` | string | — | For example `_blank`. The theme adds `noopener` |
-| `no_list` | boolean | `false` | The section index generates no child list |
-| `simple_list` | boolean | `false` | The child index renders as a compact bulleted list |
-| `section_index` | `list` / `cards` | site value (`list`) | Style of the child index. An invalid value warns and falls back |
-| `section_index_columns` | integer | `2` | Column count in the card style |
-| `notoc` | boolean | `false` | Hides the right-hand page outline |
-| `pager` | boolean | decided by `params.ui.pager_types` | `false` turns off previous / next for this page. A non-boolean warns and is ignored |
+| `manual_link_target` | string | — | Link target such as `_blank`; the theme adds `noopener` |
+| `no_list` | boolean | `false` | The section index lists no children |
+| `simple_list` | boolean | `false` | The section index lists children as a compact bulleted list |
+| `section_index` | `list` / `cards` | site value (`list`) | Style of the section index |
+| `section_index_columns` | integer | `2` | Column count of the card style |
+| `notoc` | boolean | `false` | Hides the outline in the right rail |
+| `pager` | boolean | decided by `params.ui.pager_types` | `false` removes previous / next from this page. A non-boolean warns and the page keeps its type's setting |
 | `navbar_enabled` | boolean | site value (`true`) | Whether this page renders the navbar |
-| `navbar_autohide` | boolean | site value (`false`) | The navbar hides itself on pointer devices |
-| `breadcrumb` | boolean | shell default | Whether this page renders breadcrumbs. Docs/Book default on. Blog defaults off |
-| `theme_color` | string | site value | `#rgb`/`#rrggbb` hex value for this page's accent backgrounds. In a section root's `cascade`, it gives the whole section an identity. See [Brand and appearance](/docs/customize/brand/#theme-color) |
-| `theme_color_dark` | string | derived | The dark-mode accent. If a page overrides `theme_color` under a cascade that sets this key, it inherits that dark value. Override both. `theme_color: false` opts the page out of an inherited section color entirely |
-| `page_context_menu` | boolean | site value (`true`) | The page action menu on the title row (copy Markdown, edit this page, print, …) |
-| `page_context_menu.assistant_links` | boolean | site value (`false`) | The ChatGPT / Claude link items, written `page_context_menu: { assistant_links: false }`. A page may only restrict the site policy. It may never enable these links alone |
+| `navbar_autohide` | boolean | site value (`false`) | On desktop screens with a mouse, hides the navbar until the pointer nears the top edge or keyboard focus enters it. The home page ignores the site value and follows only its own front matter |
+| `breadcrumb` | boolean | shell default | Whether this page renders breadcrumbs. Docs and Book pages default on, Blog pages off |
+| `theme_color` | string | site value | `#rgb` or `#rrggbb` accent for this page. In a section root's `cascade`, it gives the whole section its own color. See [Brand and appearance](/docs/customize/brand/#theme-color) |
+| `theme_color_dark` | string | derived | The dark-mode accent. A page that overrides only `theme_color` under a cascade that sets this key inherits the cascade's dark value, so override both. `theme_color: false` opts the page out of an inherited section color |
+| `page_context_menu` | boolean | site value (`true`) | The page action menu on the title row: copy Markdown, edit this page, print and so on |
+| `page_context_menu.assistant_links` | boolean | site value (`false`) | The ChatGPT and Claude items, written `page_context_menu: { assistant_links: false }`. A page can only turn them off; it cannot turn them on when the site has not |
 {.fields meta="type default"}
 
 ## Page shell {#shell}
 
-Site-level defaults and what they do are in
-[Layouts and page types](/docs/customize/layout/).
+Change these when one page needs a different frame around its content: a
+wider column, no sidebar, a slimmer footer. Site defaults and their effects are
+in [Layouts and page types](/docs/customize/layout/).
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `page_width` | `normal` / `wide` / `full` | `normal` | Width of the content column. An invalid value warns and falls back |
-| `reading_width` | `slim` / `normal` / `wide` | `normal` | Reading width on Book pages. Applies only to `type: book` |
-| `footer_style` | `fat` / `slim` / `none` | site value (`fat`) | Footer shape. An invalid value warns and falls back |
-| `body_class` | string | — | A class appended to `<body>` for the site's own CSS |
-| `reading_time` | boolean | site value | Whether this page shows a reading time. `false` hides it |
-| `sidebar_enabled` | boolean | `true` | Whether this page shows the left sidebar. `false` hides it |
-| `scroll_spy` | boolean | site value | Silent 1.x compatibility no-op. The normal shell runtime always provides active-heading tracking |
-| `keyboard_nav` | boolean | site value (`true`) | Single-key keyboard navigation — see [Keyboard navigation](/docs/customize/keyboard/). A non-boolean warns and falls back |
-| `lastmod_commit` | `subject` / `hash` / `none` | `subject` | How the commit is shown after "last modified". An invalid value warns and falls back |
-| `sidebar_expand_levels`, `sidebar_menu_compact`, `sidebar_menu_foldable`, `sidebar_item_overflow` | as the site parameter | site value | Each page can override sidebar behavior. The values are in [Configuration](/docs/customize/config/) |
-| `sidebar_width_min`, `sidebar_width_max` | positive integer | site value (`220` / `480`) | Per-page minimum and maximum for desktop sidebar resizing. A minimum above its maximum warns and restores the site pair |
-| `code_copy` | boolean | site value (`true`) | Default copy control for code blocks on this page. An explicit fence `copy=` takes precedence |
-| `toc_style` | `fixed` / `flow` | site value (`fixed`) | Fixed right-rail panel or a wider rail beginning in the content flow |
-| `toc_taxonomies` | boolean | site value (`true`) | Whether taxonomy clouds join the right-rail outline |
-| `taxonomy_icons` | map | site value | Per-taxonomy icon overrides for this page or section cascade |
+| `page_width` | `normal` / `wide` / `full` | `normal` | Width of the content column |
+| `reading_width` | `slim` / `normal` / `wide` | `normal` | Line length on Book pages. Applies only to `type: book` |
+| `footer_style` | `fat` / `slim` / `none` | site value (`fat`) | Footer shape |
+| `body_class` | string | — | A class added to `<body>` for the site's own CSS |
+| `reading_time` | boolean | site value | Whether this page shows a reading time |
+| `sidebar_enabled` | boolean | `true` | `false` hides the left sidebar on this page |
+| `scroll_spy` | boolean | site value | Accepted and ignored: the outline always highlights the heading you are reading |
+| `keyboard_nav` | boolean | site value (`true`) | Single-key keyboard navigation. See [Keyboard navigation](/docs/customize/keyboard/) |
+| `lastmod_commit` | `subject` / `hash` / `none` | `subject` | What follows "last modified": the commit subject, its hash, or nothing |
+| `sidebar_expand_levels`, `sidebar_menu_compact`, `sidebar_menu_foldable`, `sidebar_item_overflow` | as the site parameter | site value | Per-page sidebar behavior; the values are in [Configuration](/docs/customize/config/) |
+| `sidebar_width_min`, `sidebar_width_max` | positive integer | site value (`220` / `480`) | Limits for resizing the desktop sidebar on this page. A minimum above its maximum warns and restores the site pair |
+| `code_copy` | boolean | site value (`true`) | Default copy button on this page's code blocks. A fence's own `copy=` wins |
+| `toc_style` | `fixed` / `flow` | site value (`fixed`) | A fixed right-rail panel, or a wider rail that starts in the content flow |
+| `toc_taxonomies` | boolean | site value (`true`) | Whether taxonomy clouds join the outline in the right rail |
+| `taxonomy_icons` | map | site value | Per-taxonomy icon overrides for this page, or for a section through `cascade` |
 {.fields meta="type default"}
 
 ## Search {#search}
 
-The guide is [Search](/docs/customize/search/).
+Use these to make the right page rank first for a query, or to keep a page out
+of search entirely. The guide is [Search](/docs/customize/search/).
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `search_keywords` | string or string array | — | Extra search terms, including synonyms and other languages |
-| `search_boost` | positive number | `1.0` | Ranking multiplier. The final score is the text match score times this value. A non-numeric, non-finite, zero or negative value warns and falls back to `1.0` |
+| `search_keywords` | string or string array | — | Extra search terms: synonyms, abbreviations, other languages |
+| `search_boost` | positive number | `1.0` | Ranking multiplier: the final score is the text match score times this value. A non-numeric, infinite, zero or negative value falls back to `1.0` |
 | `search_exclude` | boolean | `false` | Keeps the page out of the local index |
 {.fields meta="type default"}
 
 ## Output formats {#outputs}
 
-The guides are [AI-agent support](/docs/customize/agents/) (`.md` and
-`llms.txt`) and [Print](/docs/customize/print/).
+Set these when a page should not get a Markdown copy or should stay out of the
+printed chapter. The guides are [AI-agent support](/docs/customize/agents/)
+(`.md` and `llms.txt`) and [Print](/docs/customize/print/).
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `outputs` | string array | site `outputs` | The output formats this page generates. `[HTML]` disables the `.md` version |
-| `no_print` | boolean | `false` | Excluded from the whole-chapter and whole-book print aggregate |
+| `outputs` | string array | site `outputs` | The output formats this page generates. `[HTML]` drops its `.md` version |
+| `no_print` | boolean | `false` | Leaves the page out of the whole-chapter and whole-book print view |
 {.fields meta="type default"}
 
 ## Page end: comments, feedback and provenance {#page-end}
 
-The order is fixed: feedback → provenance → pager → comments. See
+These decide what follows the article. The order is fixed: feedback, then
+provenance, then the pager, then comments. See
 [Writing pages](/docs/write/pages/#page-end).
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `comments` | boolean | site `params.comments.enable` (`false`) | Whether this page shows the giscus comment section — see [Comments](/docs/admin/comments/) |
-| `feedback` | boolean or map | site `params.ui.feedback` (off) | The map form takes `enable` and `reasons`. Anything else warns and falls back |
-| `annotation` | boolean | site `params.ui.annotation` (on) | The "last modified / provenance" block at the page end. Only a boolean is accepted. Other values warn and fall back |
-| `backlinks` | boolean | site `params.ui.backlinks` (off) | Whether the right rail shows the "Backlinks" group beside the table of contents. A section can cascade it. Only a boolean is accepted; anything else warns and falls back — see [Navigation and menus](/docs/customize/navigation/#backlinks) |
-| `translation_notice` | language code or `false` | site `params.ui.translation_notice` (off) | The language code of the authoritative version, so a translation can say so and link back. Write `false` on a page authored natively in this language |
+| `comments` | boolean | site `params.comments.enable` (`false`) | Whether this page shows the giscus comment section. See [Comments](/docs/admin/comments/) |
+| `feedback` | boolean or map | site `params.ui.feedback` (off) | The "was this page helpful?" widget. The map form takes `enable` and `reasons` |
+| `annotation` | boolean | site `params.ui.annotation` (on) | The "last modified" and provenance block at the page end |
+| `backlinks` | boolean | site `params.ui.backlinks` (off) | Lists the pages that link here in a "Backlinks" group beside the outline. A section can cascade it. See [Navigation and menus](/docs/customize/navigation/#backlinks) |
+| `translation_notice` | language code or `false` | site `params.ui.translation_notice` (off) | The language of the authoritative version, so a translation can say so and link back. Write `false` on a page written natively in this language |
 {.fields meta="type default"}
 
 ### Upstream attribution {#upstream}
 
-When a page is derived from material elsewhere, `upstream_link` declares the
-source and the page-end provenance line gives the work, the copyright holder,
-the license, and a link to the full notice. This family resolves site parameters
-→ the `data/upstreams` entry named by `upstream_source` → this page's front
-matter. The most specific declaration takes precedence.
+Declare a source when a page is adapted from someone else's material. The
+provenance line at the page end then names the work, the copyright holder and
+the license, and links to the full notice. Values resolve from the site
+parameters, then the `data/upstreams` entry named by `upstream_source`, then
+the page's front matter; the most specific declaration wins.
 
-`upstream_link` is read from front matter only (a cascade counts, site
-parameters do not). A site-wide value would make every page claim the same
-source. A companion key without `upstream_link` warns and the attribution is omitted.
+`upstream_link` itself is read only from front matter (a cascade counts, a
+site parameter does not), because a site-wide value would make every page
+claim the same source.
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `upstream_link` | URL | — | The address of the material this page is derived from. An empty string opts out of an inherited cascade value |
-| `upstream_name` | string | — | The upstream work, as the attribution names it. Required once `upstream_link` is set |
-| `upstream_copyright` | string | — | The copyright notice, retained as upstream wrote it. Required |
-| `upstream_license` | SPDX identifier | — | Must be found in `data/licenses`, or it warns and the attribution is omitted. Required |
-| `upstream_notice` | site path or URL | — | The page carrying the full notice (licence text, warranty disclaimer, upstream NOTICE, snapshot pin). Required |
-| `upstream_ref` | string | — | The tag or commit the snapshot pins, shown in parentheses after the work |
-| `upstream_source` | string | site parameter | The entry name in `data/upstreams`, for upstream facts shared by many pages. A missing entry warns and omits the attribution |
-| `upstream_modified` | boolean | `false` | Changes the credit verb to say the work was adapted. If the site has repository information, the same attribution sentence also includes a "view history" link. A non-boolean warns and the page is treated as unmodified |
+| `upstream_link` | URL | — | Address of the material this page is derived from. An empty string opts out of a value inherited through `cascade` |
+| `upstream_name` | string | — | Name of the upstream work, as the credit shows it. Required once `upstream_link` is set |
+| `upstream_copyright` | string | — | Copyright notice, kept exactly as upstream wrote it. Required |
+| `upstream_license` | SPDX identifier | — | Must appear in `data/licenses`. Required |
+| `upstream_notice` | site path or URL | — | Page carrying the full notice: license text, warranty disclaimer, upstream NOTICE, snapshot pin. Required |
+| `upstream_ref` | string | — | Tag or commit of the snapshot, shown in parentheses after the work |
+| `upstream_source` | string | site parameter | Entry in `data/upstreams` that holds upstream facts shared by many pages |
+| `upstream_modified` | boolean | `false` | Changes the credit to say the work was adapted. When the site has repository information, the same sentence also links to the page's history. A non-boolean is treated as `false` |
 {.fields meta="type default"}
 
-Missing any one of the four required keys (`upstream_name`,
-`upstream_copyright`, `upstream_license`, `upstream_notice`) warns and omits the attribution.
-A partial attribution can mislead readers more than an obvious omission. The theme ships an SPDX
-table at `data/licenses.yaml`, and a site adds to or overrides it with a file of
-the same name.
+The attribution is all or nothing, because a partial credit misleads readers
+more than an obvious gap. A companion key without `upstream_link`, a missing
+required key, a license not found in `data/licenses` or an unknown
+`upstream_source` entry each warns and omits the whole attribution. The theme
+ships an SPDX table at `data/licenses.yaml`; a site adds or overrides entries
+with a file of the same name.
 
 ## Image zoom {#image-zoom}
 
+Turn this on for pages of screenshots or diagrams that readers need to see at
+full size.
+
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `image_zoom` | boolean | site value (`false`) | Whether images on this page open full size — see [Images](/docs/components/image/). A non-boolean warns and falls back |
+| `image_zoom` | boolean | site value (`false`) | Whether images on this page open full size when clicked. See [Images](/docs/components/image/) |
 {.fields meta="type default"}
 
 ## Blog posts {#blog}
 
-The guide is [Blog posts](/docs/write/blog/).
-
-See [List layouts](/docs/write/blog/#list) for the four presentation choices.
-`gallery` and `blog_gallery` are available in OINK v1.4.0;
-the supported layouts are `list`, `cards`, `table`, and `gallery`.
+Posts use these for bylines, series and featured images, and blog sections use
+them to choose the post index. The guide is [Blog posts](/docs/write/blog/);
+[List layouts](/docs/write/blog/#list) compares the four index layouts.
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `author` | string | — | Post byline. Inline Markdown is allowed. Ignored on a page that has `authors` |
-| `authors` | string array | — | Terms of the `authors` taxonomy, in byline order — see [Authors and bylines](/docs/write/blog/#authors). Needs `author: authors` under `taxonomies:` |
-| `series` | string array | — | Terms of the `series` taxonomy. The strip above the body uses the first one — see [Series](/docs/write/blog/#series) |
+| `author` | string | — | Post byline; inline Markdown is allowed. Ignored on a page that has `authors` |
+| `authors` | string array | — | Terms of the `authors` taxonomy, in byline order. Needs `author: authors` under `taxonomies:`. See [Authors and bylines](/docs/write/blog/#authors) |
+| `series` | string array | — | Terms of the `series` taxonomy; the strip above the body uses the first one. See [Series](/docs/write/blog/#series) |
 | `series_weight` | integer | — | Place in the series. Weighted members come first in ascending order, the rest follow by ascending date |
-| `tags` | string array | — | Tags — see [Taxonomies](/docs/customize/taxonomy/) |
+| `tags` | string array | — | Tags. See [Taxonomies](/docs/customize/taxonomy/) |
 | `categories` | string array | — | Categories, likewise |
-| `images` | string array | — | The first entry becomes the post's featured image and share card. Put it in a section `_index.md` cascade for a section-wide default. `images: []` opts the page out of an inherited cascade value. It does not suppress an image the page bundle already supplies under a `featured`, `cover` or `thumbnail` name |
-| `byline` | string | — | Credit shown with the resolved featured image when that image is rendered |
-| `featured_image` | `none` / `banner` / `wash` / `hero` | site value (`none`) | How this article renders its own featured image. `hero` creates a full-width image shell. An invalid value warns and falls back |
-| `blog_index` | `list` / `cards` / `table` / `gallery` | site value (`list`) | Blog section index layout. `table` always lists the whole section without pagination. An invalid value warns and falls back |
-| `blog_index_columns` | positive integer | site value (`3`) | Card columns at wide breakpoints. Medium and narrow layouts retain their responsive limits |
-| `blog_index_size` | positive integer | site value (`12`) | Posts per page for `list`, `cards`, `gallery`, and all four views when switching is enabled. A standalone `table` ignores it |
-| `blog_index_toggle` | boolean | site value (`false`) | Publishes all four layouts and remembers the reader's choice. When false, publishes only the configured layout and ignores saved layout choices |
-| `blog_gallery` | map | site block | Replaces the whole site gallery block. Omitted fields use built-in defaults; invalid fields warn and fall back. Reader choices for mode and size take precedence |
-| `blog_gallery.mode` | `wall` / `cards` / `seamless` | `wall` within a page block | Justified rows with 6px gaps, masonry with visible captions, or rows without gaps. Independent of the outer `blog_index` layout |
-| `blog_gallery.size` | integer 160–360 | `240` within a page block | Target gallery tile size in CSS pixels; independent of the posts-per-page setting |
-| `share` | string array or `false` | site `params.ui.share` (empty) | The page-end share targets. Replaces any inherited list. `false` opts this page out. See [Share](/docs/write/blog/#share). An unknown target warns and is dropped |
-| `summary` | string | — | Fallback excerpt for gallery entries and post rows on tag and category pages. `description` takes precedence |
+| `images` | string array | — | The first entry is the post's featured image and share card. In a section's `cascade`, it sets a default for the section. `images: []` opts a page out of an inherited value, but does not hide an image the page bundle supplies as `featured`, `cover` or `thumbnail` |
+| `byline` | string | — | Credit shown with the featured image wherever that image is rendered |
+| `featured_image` | `none` / `banner` / `wash` / `hero` | site value (`none`) | How the post shows its featured image on the article itself; `hero` makes a full-width image header |
+| `blog_index` | `list` / `cards` / `table` / `gallery` | site value (`list`) | Layout of the blog section's post index. `table` always lists the whole section without pagination |
+| `blog_index_columns` | positive integer | site value (`3`) | Card columns at wide breakpoints; medium and narrow screens keep their own limits |
+| `blog_index_size` | positive integer | site value (`12`) | Posts per page for `list`, `cards` and `gallery`, and for all four views when switching is on. A standalone `table` ignores it |
+| `blog_index_toggle` | boolean | site value (`false`) | Publishes all four layouts with a switch that remembers the reader's choice. When `false`, only the configured layout is published and saved choices are ignored |
+| `blog_gallery` | map | site block | Replaces the site's whole gallery block; omitted fields use the built-in defaults. A reader's saved mode and size win |
+| `blog_gallery.mode` | `wall` / `cards` / `seamless` | `wall` within a page block | Justified rows with 6px gaps, masonry with visible captions, or rows without gaps. Independent of `blog_index` |
+| `blog_gallery.size` | integer 160–360 | `240` within a page block | Target tile size in CSS pixels; independent of posts per page |
+| `share` | string array or `false` | site `params.ui.share` (empty) | Share targets at the page end. Replaces any inherited list; `false` opts the page out; an unknown target warns and is dropped. See [Share](/docs/write/blog/#share) |
+| `summary` | string | — | Excerpt for gallery entries and for post rows on tag and category pages when `description` is absent |
 {.fields meta="type default"}
 
 ## Book {#book}
 
-The guide is [Books](/docs/write/book/). A whole book sets `type: book` through
-a section `cascade`.
+A book sets `type: book` on its section through `cascade`; these keys then
+number chapters and mark drafts. The guide is [Books](/docs/write/book/).
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
 | `book_number` | string | — | Chapter number, shown before the page title and the sidebar entry |
-| `book_status` | `draft` | — | Marks a draft chapter: flagged in the sidebar and contents, and left out of the indexes by default |
-| `sidebar_headings` | `false` / `true` / integer 2–4 | site value (`false`) | Expands the h2–h4 branch under the current sidebar entry. Out of range warns and falls back |
-| `book_draft_banner` | boolean | site value (`false`) | Adds a banner at the top of a draft chapter. A non-boolean warns and falls back |
+| `book_status` | `draft` | — | Marks an unfinished chapter: flagged in the sidebar and contents; `book-toc` with `drafts=false` leaves it out |
+| `sidebar_headings` | `false` / `true` / integer 2–4 | site value (`false`) | Lists the current page's headings under its sidebar entry, down to the given level; `true` means h2 |
+| `book_draft_banner` | boolean | site value (`false`) | Adds a banner at the top of a draft chapter |
 {.fields meta="type default"}
 
 ## Expo albums {#expo}
 
-OINK 1.3.0 uses `type: expo` for album pages. See [Expo albums](/docs/write/expo/) for the authoring guide.
+An album page (`type: expo`) reads its images and opening arrangement from
+this block. The guide is [Expo albums](/docs/write/expo/).
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `expo` | map | site `params.ui.expo` | Replaces the site block; absent fields use the built-in defaults below |
-| `expo.images` | string | `images/*` | Pattern for image resources in the page bundle |
-| `expo.mode` | `wall` / `cards` / `seamless` | `wall` | Initial mode when the reader has no stored choice |
-| `expo.size` | integer | `240` | Target size from 160 to 360 CSS pixels; a stored reader size takes precedence |
+| `expo` | map | site `params.ui.expo` | Replaces the site block; absent fields use the defaults below |
+| `expo.images` | string | `images/*` | Pattern matching the image resources in the page bundle |
+| `expo.mode` | `wall` / `cards` / `seamless` | `wall` | Arrangement shown until the reader picks one |
+| `expo.size` | integer | `240` | Target tile size from 160 to 360 CSS pixels; a size the reader saved wins |
 {.fields meta="type default"}
 
-Image titles, captions, credits, weights, explicit IDs, and separate originals
-use native Hugo `resources` metadata. See [Image metadata](/docs/write/expo/#image-metadata)
-for the fields and an example.
+Titles, captions, credits, weights, explicit IDs and separate originals for
+individual images use Hugo's native `resources` metadata; see
+[Image metadata](/docs/write/expo/#image-metadata).
 
 ## Landing {#landing}
 
-The guide is [Home and landing pages](/docs/customize/home/). Any page with
-`layout: landing` uses the landing shell.
+A page with `layout: landing` builds its sections from a data file or from its
+own front matter. The guide is [Home and landing pages](/docs/customize/home/).
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `landing` | string | — | Data is taken from `data/landing/<key>/<language>.yaml` |
-| `sections` | array | — | Section definitions inlined in front matter, taking precedence over `landing`. A non-array value warns. No sections render |
+| `landing` | string | — | Reads the sections from `data/landing/<key>/<language>.yaml` |
+| `sections` | array | — | Section definitions written in the front matter, taking precedence over `landing`. A value that is not an array warns and renders no sections |
 {.fields meta="type default"}
 
 ## Release pages {#releases}
 
-The guide is [Releases and downloads](/docs/write/releases/). A section with
-`layout: releases` ignores `weight` and sorts by release date and SemVer,
-newest first.
+A release note names its GitHub release with one key, and a section with
+`layout: releases` lists those pages newest first by date and then SemVer,
+ignoring `weight`. The guide is [Releases and downloads](/docs/write/releases/).
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `release_url` | string | — | One GitHub release URL, `https://github.com/<owner>/<repo>/releases/tag/<tag>`. The theme extracts the owner, project and tag and generates source archive links. The date comes from the page's `date`. Download assets come from the release body's `checksums` block (see [Releases](/docs/write/releases/)). Anything else warns and the release block is skipped |
+| `release_url` | string | — | One GitHub release URL, `https://github.com/<owner>/<repo>/releases/tag/<tag>`. The theme derives the owner, project, tag and source archive links from it and takes the date from the page's `date`; download assets come from a `checksums` block in the body. Any other value warns and the release block is skipped |
 {.fields meta="type default"}
 
 ## Related {#related}
 
 - [Writing pages](/docs/write/pages/) — the handful of keys every page needs
-- [Organizing content](/docs/write/organize/) — what the sidebar and navigation keys actually do
-- [Configuration](/docs/customize/config/) — the full table of site parameters in `hugo.yml`
+- [Organizing content](/docs/write/organize/) — what the sidebar and navigation keys do together
+- [Configuration](/docs/customize/config/) — every site parameter in `hugo.yml`

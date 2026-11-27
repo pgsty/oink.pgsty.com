@@ -1,7 +1,7 @@
 ---
 title: OINK CLI
 linkTitle: CLI
-description: 面向 Hugo 站点的可选 OINK 命令行工具草案介绍。
+description: 了解可选的 OINK 命令行工具能做什么，以及如何构建尚未发布的本地候选版。
 weight: 80
 type: docs
 icon: fa-solid fa-terminal
@@ -11,10 +11,10 @@ aliases:
   - /docs/start/cli-overview/
 ---
 
-`oink` 是面向 OINK 站点的可选命令行辅助工具，用于初始化站点、检查 Hugo 构建产物，以及审阅内容或主题变更。站点渲染仍由 Hugo 完成，项目本身保持标准的 Hugo 目录结构。
+`oink` 是面向 OINK 站点的可选命令行工具：检查 Hugo 实际产物中的链接、锚点与翻译关系，从 Starter 创建站点，并在写入之前预览主题升级。站点仍由 Hugo 渲染，用 `oink` 管理的项目依然是普通的 Hugo 仓库。
 
-> [!NOTE] 可选草案 · 常规建站无需安装
-> 日常使用 OINK 建站只需标准的 `hugo` 与 `hugo server` 命令，无需安装或编译 `oink-cli`。OINK CLI 在独立的 `oink-cli` 仓库中开发，本页介绍本地 `0.1.0-dev` 候选版，目前尚未发布正式版本或公开安装入口，命令接口仍可能调整。
+> [!NOTE] 尚未发布，也不是必需
+> 任何 OINK 站点都可以只用 `hugo` 与 `hugo server` 构建和预览，不需要这个 CLI。它在独立仓库 [pgsty/oink-cli](https://github.com/pgsty/oink-cli) 中开发，有自己的版本与发布周期，目前是本地 `0.1.0-dev` 候选版：还没有发布可执行文件或安装入口，命令也仍可能调整。
 
 ## 能做什么 {#capabilities}
 
@@ -28,11 +28,11 @@ aliases:
 | `oink translations`       | 查看翻译状态与差异，并记录人工审阅结果。      |
 | `oink upgrade`            | 对比主题版本差异，审阅后再写入模块变更。      |
 
-此外，CLI 支持输出 JSON/YAML 结构化报告、管理多站点工作区，以及生成带校验结果的构建产物。早期草案中的 Studio 界面与通用源码编辑命令已移除：日常写作请用 `oink dev` 预览、用常规编辑器改稿，并通过 `inspect` 或 `check` 获取结构化诊断。
+每条命令都可以用 JSON 或 YAML（`--json`、`--yaml`）输出结果，便于脚本与 CI 读取；CLI 还能一并检查多个显式登记的站点，并生成带校验结果的构建产物。它没有自带编辑器：用你惯用的编辑器写作，用 `oink dev` 预览，用 `oink inspect` 或 `oink check` 获取结构化诊断。
 
 ## 本地试用 {#try-locally}
 
-在 `oink-cli` 源码仓库中使用 Go 1.27.4+ 和 Make 构建可执行文件：
+在 `oink-cli` 的源码检出中，用 Go 1.27.4 或更新版本加 Make 构建可执行文件：
 
 ```sh
 cd oink-cli
@@ -43,11 +43,13 @@ make build
 ./bin/oink check --site ../my-docs
 ```
 
-将 `../my-docs` 替换为目标站点路径。执行站点命令需要 Hugo 0.169.0+（OINK 1.6.0+ 不限 edition；1.5.1 及更早版本需要 Hugo Extended 0.169.0），模块操作需要 Go 1.27+。`oink init` 使用 CLI 内置的 Starter 快照初始化项目；若需升级至 OINK v1.6.0，请参考[升级指南](/zh/docs/admin/upgrade/)。
+把 `../my-docs` 换成你的站点路径。只有 `make deps` 会下载东西（Go 编译依赖）；CLI 本身离线运行，只有某条命令需要尚未缓存的远程输入时，才需要显式传入 `--network`。
 
-`make deps` 会下载 Go 编译依赖。CLI 命令默认离线运行，需要拉取未缓存的远程依赖时请显式传入 `--network`。检查与变更预览命令（`new`、`move`、`upgrade`）不会直接修改站点源文件，只有执行显式应用步骤时才会落盘；`dev` 与 `build` 则会正常写入 Hugo 构建产物与缓存。
+尽管 OINK 本身任意 edition 的 Hugo 都能构建，这个候选版的站点命令仍要求 Hugo Extended {{< param hugoMinVersion >}} 或更新版本，模块操作需要 Go 1.27 或更新版本。`oink init` 复制的 Starter 快照固定在 OINK v1.3.2，生成站点后请按[升级指南](/zh/docs/admin/upgrade/)升级到当前版本。
+
+预览不会改动任何东西：`new`、`move` 与 `upgrade` 在你执行显式的应用步骤之前不会修改站点源文件（保存的计划用 `oink plans apply` 应用，升级用 `oink upgrade --write --expect-plan ID` 应用）。`dev` 与 `build` 则会照常写入 Hugo 的构建产物与缓存。
 
 ## 延伸阅读 {#further-reading}
 
-- [CLI 契约](/zh/docs/design/decisions/cli/)：支持的行为与维护规则。
-- [维护路线图](/zh/docs/design/proposals/oink-cli-maintenance-roadmap/)：历史开发阶段及其退役状态。
+- [CLI 契约](/zh/docs/design/decisions/cli/)：支持的全部命令、各自可能修改什么，以及维护规则。
+- [维护路线图](/zh/docs/design/proposals/oink-cli-maintenance-roadmap/)：历史开发阶段，以及其中哪些已经退役。

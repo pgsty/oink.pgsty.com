@@ -1,14 +1,17 @@
 ---
 title: Badge
 linkTitle: Badge
-description: Add a semantic status label beside a feature name, version, or table cell. Choose from five tones; custom colors are not supported.
+description: Mark a feature, version or table cell with a short status label such as Beta or deprecated, in one of five semantic tones.
 weight: 180
 search_keywords: [Badge, status label, tone, Beta, deprecated, neutral, info, success, warning, danger]
 ---
 
-A badge is an inline status label after a name, such as Beta, deprecated, v0.5, or needs a server.
-Use it for a status of one or two words. Choose a semantic tone. The theme selects colors with contrast in light and dark modes.
-If the status needs an explanation, procedure, or deadline, use prose or a [callout](/docs/components/callout/).
+A badge is a small inline label that sits after a name and states its status
+in a word or two: Beta, deprecated, v0.5, needs a server. You choose what the
+status means, one of five tones, and the theme picks colors that keep their
+contrast in light and dark mode. When the status needs a reason, a procedure
+or a deadline, write a sentence or a [callout](/docs/components/callout/)
+instead.
 
 ## Shortest form {#minimal}
 
@@ -18,11 +21,9 @@ If the status needs an explanation, procedure, or deadline, use prose or a [call
 
 {{< badge text="Beta" tone="warning" >}}
 
-`text` is the only required parameter and must be a non-empty string.
+`text` is the only required parameter, and it must not be empty.
 
 ## Five tones {#tones}
-
-Use one of these five values. Custom colors are not supported.
 
 ```markdown {title="Source"}
 {{</* badge text="Default" */>}}
@@ -38,30 +39,31 @@ Use one of these five values. Custom colors are not supported.
 {{< badge text="Experimental" tone="warning" >}}
 {{< badge text="Deprecated" tone="danger" >}}
 
-If you omit `tone`, the badge uses `neutral`. Other values warn and use `neutral` in ordinary previews.
-The warning identifies the source location and should be reviewed with the rendered fallback before publication.
+Without `tone` a badge is `neutral`. Any value other than these five warns
+and falls back to `neutral`, and there is no way to set a custom color.
 
 ## Inside a sentence {#inline}
 
-A badge is an inline element after a name. It never occupies a separate line.
+A badge follows the name it describes, on the same line:
 
 ```markdown {title="Source"}
-With `params.ui.image_zoom` {{</* badge text="off by default" tone="neutral" */>}} enabled,
-block images that have alt text open full size. PlantUML {{</* badge text="opt-in" tone="info" */>}}
-uses its own site switch. Draw.io {{</* badge text="needs a server" tone="warning" */>}}
-warns and remains off when no endpoint is configured.
+Logical replication {{</* badge text="off by default" tone="neutral" */>}} needs
+`wal_level = logical`. The `pg_duckdb` extension {{</* badge text="opt-in" tone="info" */>}}
+is installed separately, and the backup repository {{</* badge text="needs a server" tone="warning" */>}}
+must point at an object store before the first backup runs.
 ```
 
-With `params.ui.image_zoom` {{< badge text="off by default" tone="neutral" >}} enabled,
-block images that have alt text open full size. PlantUML {{< badge text="opt-in" tone="info" >}}
-uses its own site switch. Draw.io {{< badge text="needs a server" tone="warning" >}}
-warns and remains off when no endpoint is configured.
+Logical replication {{< badge text="off by default" tone="neutral" >}} needs
+`wal_level = logical`. The `pg_duckdb` extension {{< badge text="opt-in" tone="info" >}}
+is installed separately, and the backup repository {{< badge text="needs a server" tone="warning" >}}
+must point at an object store before the first backup runs.
 
 ## Next to a heading {#in-headings}
 
-**Never put a shortcode in a heading.** Hugo builds the table of contents before it expands shortcodes.
-The badge displays in the heading, but an internal Hugo placeholder remains in the table of contents.
-Put the status in the first paragraph below the heading:
+Do not put a badge, or any other shortcode, in a heading. Hugo builds the
+table of contents before it expands shortcodes, so the heading looks right
+but its table-of-contents entry shows an internal Hugo placeholder. Put the
+badge at the start of the first paragraph instead:
 
 ```markdown {title="Source"}
 ### OpenAPI pages {#openapi-example}
@@ -71,12 +73,14 @@ Put the status in the first paragraph below the heading:
 
 ### OpenAPI pages {#openapi-example}
 
-{{< badge text="new in 0.5" tone="success" >}} The badge appears below the heading. The table of contents stays readable.
-The shared anchor link does not include the badge text.
+{{< badge text="new in 0.5" tone="success" >}} The badge sits right under the
+heading, the table of contents stays clean, and a shared link to the heading
+does not carry the badge text.
 
 ## In table cells {#in-tables}
 
-Badges make a comparison table easier to scan than a column of "yes" and "no".
+In a comparison table, a column of badges is quicker to scan than a column of
+"yes" and "no":
 
 ```markdown {title="Source"}
 | Component | Form | Status |
@@ -110,8 +114,8 @@ Badges make a comparison table easier to scan than a column of "yes" and "no".
 
 ## On cards {#in-cards}
 
-A card has its own `badge` parameter. This plain text appears to the right of the title.
-The card body can also contain badge shortcodes.
+A card has a `badge` parameter of its own, plain text shown beside the title,
+and its body can hold badge shortcodes as well:
 
 ```markdown {title="Source"}
 {{</* cards */>}}
@@ -135,7 +139,8 @@ Builds on a machine with no network {{< badge text="manual upgrades" tone="warni
 
 ## Clickable badges {#link}
 
-With `link`, the badge becomes an `<a>` element. Site paths, relative paths, `http(s):`, and `mailto:` are supported.
+`link` turns the badge into a link. It accepts a site path, a relative path,
+an `http(s):` URL or a `mailto:` address:
 
 ```markdown {title="Source"}
 Current version {{</* badge text="v0.5" tone="info" link="/blog/" */>}};
@@ -145,18 +150,14 @@ for the upgrade steps see {{</* badge text="Upgrading" tone="neutral" link="/doc
 Current version {{< badge text="v0.5" tone="info" link="/blog/" >}};
 for the upgrade steps see {{< badge text="Upgrading" tone="neutral" link="/docs/admin/upgrade/" >}}.
 
-An invalid link warns and is removed, rendering a plain badge.
+An invalid link warns and is dropped, leaving a plain badge.
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | `<span class="td-badge td-badge--<tone>">`, or `<a class="td-badge …">` when linked |
-| Print | Same as HTML, a static inline element |
-| Markdown | `**Beta**`, or `[**Beta**](/…)` when linked |
-| RSS | Same as print |
-
-Badges load no JavaScript. A badge is not a live region, so adding one does not produce a screen reader announcement.
+Badges load no script, and print and RSS show them as they appear on the
+page. A badge exists only as a shortcode, with no native Markdown form, so the
+page's Markdown output turns it into bold text: `**Beta**`, or `[**Beta**](/…)`
+when it has a link.
 
 ## Parameter reference {#reference}
 
@@ -167,17 +168,21 @@ Badges load no JavaScript. A badge is not a live region, so adding one does not 
 | `link` | URL | — | Turns the badge into a link |
 {.fields meta="type default"}
 
-Use named parameters only. There is no `icon`, `class`, `color`, `outline`, or `size` parameter.
-Invalid input warns and uses a safe fallback: unknown parameters are ignored, empty `text` renders nothing,
-invalid `tone` uses `neutral`, and unsafe links are removed.
+Badges take named parameters only; there is no `icon`, `class`, `color`,
+`outline` or `size`. Mistakes warn and fall back: an unknown parameter is
+ignored, a missing or empty `text` renders nothing, an unknown `tone` becomes
+`neutral`, and an unsafe link is dropped.
 
 ## Limits {#limits}
 
-- Tone supplements the text. The text must state the status. `{{</* badge text="🔴" */>}}` gives a screen reader no meaning.
-- There is no icon parameter. If you need an icon, use [cards](/docs/components/cards/) or a [callout](/docs/components/callout/).
-- Keep text short. Badges follow names without wrapping. Put text longer than a few words in the prose.
-- Use no more than three badges in one place. More badges make the associated name difficult to find.
-- Badges use only shortcodes. There is no native Markdown form. Plain Markdown readers show them as bold text.
+- The color only reinforces the text, so the text must state the status on
+  its own. `{{</* badge text="🔴" */>}}` tells a screen reader nothing.
+- There is no icon parameter. For an icon, use [cards](/docs/components/cards/)
+  or a [callout](/docs/components/callout/).
+- Keep the text to a few words. A badge does not wrap, so longer text belongs
+  in the sentence.
+- Use at most three badges in one place; a row of them buries the name they
+  describe.
 
 ## Related {#related}
 

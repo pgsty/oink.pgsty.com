@@ -1,23 +1,28 @@
 ---
 title: Draw.io
 linkTitle: Draw.io
-description: Display a `.drawio.svg` with an embedded editable copy as an ordinary image. Its edit button opens the Draw.io editor.
+description: Publish a Draw.io export as an ordinary image that readers can open in the Draw.io editor, change and download.
 weight: 140
 search_keywords: [drawio-server, Draw.io, diagrams.net, drawio, mxfile, editable diagram, SVG, edit button]
 ---
 
-Draw.io uses plain Markdown images. It has no fence or shortcode.
-When exporting from Draw.io, select "Include a copy of my diagram". The SVG or PNG then contains an `mxfile` copy.
-The theme detects this copy and adds an edit button. Use this integration for diagrams that readers can download and change.
-Use an ordinary [image](/docs/components/image/) for diagrams that only need to be viewed.
+A diagram exported from Draw.io can carry its own source. Put such an export
+in a page as an ordinary Markdown image and the theme adds an edit button that
+opens it in the Draw.io editor, so a reader or a teammate can change the
+diagram and download the result instead of redrawing it from a screenshot.
+There is no fence or shortcode: the only requirement is that you tick
+"Include a copy of my diagram" when you export the SVG or PNG. A diagram that
+only needs to be looked at is an ordinary [image](/docs/components/image/).
 
 ## Shortest form {#minimal}
 
-To show the edit button, first set `params.drawio.enable: true` and configure
-`params.drawio.drawio_server` as shown under [The editor address](#server).
-Without this setup, the diagram remains an ordinary image without editing.
+The edit button appears once the site sets `params.drawio.enable: true` and
+an editor address in `params.drawio.drawio_server`, as shown under
+[The editor address](#server). Until then, every diagram is shown as a plain
+image.
 
-Use ordinary image syntax. The filename does not affect detection. `.drawio.svg` is only a naming convention.
+Write the diagram like any image. The `.drawio.svg` name is a convention that
+helps you find the editable files; the theme does not look at the name.
 
 ```markdown {title="Source"}
 ![The Hugo build pipeline: content goes through Hugo and out as public](pipeline.drawio.svg)
@@ -27,15 +32,18 @@ Use ordinary image syntax. The filename does not affect detection. `.drawio.svg`
 ![The Hugo build pipeline: content goes through Hugo and out as public](pipeline.drawio.svg)
 {width="620" height="140"}
 
-An export with an `mxfile` copy is wrapped in a `.drawio` container.
-A pencil button appears at the bottom right on hover or keyboard focus. It stays visible on touch devices and in forced-colors mode.
-The button opens a full-screen iframe with the site's configured editor.
-When image zoom is enabled, Edit and Zoom are separate sibling buttons. Edit does not open the zoom dialog.
+A pencil button appears at the bottom right of the diagram when the pointer is
+over it or keyboard focus reaches it; on touch screens and in forced-colors
+mode it is always visible. The button opens the configured editor over the
+whole page. When [image zoom](/docs/components/image/#zoom) is also on, Edit
+and Zoom are two separate buttons, and Edit never opens the zoom dialog.
 
 ## How the copy is detected {#detection}
 
-The runtime checks whether the file contains `mxfile`. It does not check the filename.
-A hand-drawn SVG with the same block-image syntax and attribute line has no embedded copy, so it gets no edit button.
+What decides is the content of the file: an export with an embedded Draw.io
+copy gets the button, and any other image does not. This hand-drawn SVG uses
+the same syntax and attribute line as the diagram above, but it carries no
+copy, so it has no button:
 
 ```markdown {title="Source"}
 ![The three columns of the documentation shell: sidebar, article, table of contents](plain-shell.svg)
@@ -47,8 +55,9 @@ A hand-drawn SVG with the same block-image syntax and attribute line has no embe
 
 ## With a caption {#caption}
 
-Draw.io images use the ordinary image render hook. All [image](/docs/components/image/) attributes apply.
-Add `caption` to create a captioned figure. The edit button still appears on the image.
+A Draw.io diagram is rendered by the ordinary image hook, so every
+[image](/docs/components/image/) attribute applies. Add `caption` for a
+captioned figure; the edit button stays on the image.
 
 ```markdown {title="Source"}
 ![The Hugo build pipeline](pipeline.drawio.svg)
@@ -60,7 +69,8 @@ Add `caption` to create a captioned figure. The edit button still appears on the
 
 ## As a numbered figure {#numbered}
 
-Add `{#id num=…}` to create a numbered figure. `xref` can reference it, and it appears in the list of figures.
+Add `{#id num=…}` to make it a numbered figure that `xref` can refer to and
+that appears in the list of figures:
 
 ```markdown {title="Source"}
 ![The Hugo build pipeline](pipeline.drawio.svg)
@@ -70,13 +80,13 @@ Add `{#id num=…}` to create a numbered figure. `xref` can reference it, and it
 ![The Hugo build pipeline](pipeline.drawio.svg)
 {#fig_pipeline num="1-1" caption="From content to a static site" width="620" height="140"}
 
-The complete numbering and cross-reference rules are in
-[publishing books](/docs/write/book/).
+[Publishing books](/docs/write/book/) has the complete numbering and
+cross-reference rules.
 
 ## SVG or PNG {#svg-or-png}
 
-Both SVG and PNG are recognized. A Draw.io PNG can store the editable copy in a text chunk.
-The runtime uses the same detection test.
+Both work. A PNG export keeps the editable copy in a text chunk of the image,
+and the button appears the same way:
 
 ```markdown {title="Source"}
 ![The Hugo build pipeline (PNG export)](pipeline.drawio.png)
@@ -86,39 +96,43 @@ The runtime uses the same detection test.
 ![The Hugo build pipeline (PNG export)](pipeline.drawio.png)
 {width="620" height="140"}
 
-Prefer SVG for documentation. It scales without quality loss, contains searchable text accessible to screen readers, and has readable diffs.
-Use PNG for very complex diagrams or platforms without SVG support. Only PNG supports Hugo image processing; processing an SVG warns and preserves the source.
+Prefer SVG for documentation: it stays sharp at any size, its labels are real
+text that search and screen readers can read, and its diffs are readable in
+review. Choose PNG for a very complex diagram or for a platform without SVG
+support. Hugo's image processing works only on PNG; processing an SVG warns
+and keeps the original file.
 
 ## What the button does {#editing}
 
-The button performs three actions in this order.
+Edit hands the diagram to the editor and gives the reader a file back;
+nothing on the site changes.
 
 {{% steps %}}
 
-### Lay an overlay over the page {#editing-overlay}
+### The editor opens over the page {#editing-overlay}
 
-In OINK 1.3.0, the runtime opens a full-screen
-`<dialog class="drawioframe">` containing an iframe.
-The editor URL keeps the configured `drawio_server` query parameters and fragment,
-and sets `embed=1`, `ui=atlas`, `proto=json`, `saveAndEdit=1`, and `noSaveBtn=1`.
-The modal includes a localized Close button and contains keyboard focus. Close
-it with that button or a background click. Escape closes it while focus is in
-the host dialog; the embedded editor handles its own keys. Closing restores
-focus to Edit unless another surface has already taken focus.
+A full-screen dialog opens with the Draw.io editor inside it and a Close
+button in the reader's language. Keyboard focus stays inside the dialog.
+Close it with that button, by clicking the background, or with Escape while
+focus is outside the editor, which handles its own keys. Focus then returns to
+the Edit button.
 
-### Hand the diagram to the editor {#editing-load}
+### The diagram goes straight to the editor {#editing-load}
 
-When the editor is ready, the runtime sends the image and its `mxfile` copy to the iframe as a data URL.
-This transfer does not use your server.
+When the editor is ready, the reader's browser hands it the image together
+with its embedded copy. The diagram does not pass through your web server.
 
-### Save and write back {#editing-save}
+### Saving downloads a new file {#editing-save}
 
-When you save, the editor exports the original format, SVG or PNG. The browser downloads it with the same filename.
-The runtime never writes to the repository. Replace the file in `content/` with the download and commit it yourself.
+Save in the editor, and the browser downloads the diagram in its original
+format, SVG or PNG, under the original file name. Nothing is written back to
+the site: to publish the change, replace the file in `content/` with the
+download and commit it.
 
 {{% /steps %}}
 
-The edit button lets readers download and change a diagram. It does not edit the site online.
+The button lets readers take a diagram away and change it; it is not an
+online editor for the site.
 
 ## The editor address {#server}
 
@@ -129,31 +143,33 @@ params:
     drawio_server: https://drawio.internal.example/
 ```
 
-- `enable: true` without `drawio_server` warns and disables editing.
-  The theme does not select a public service.
-- The address must be an HTTP(S) URL or local path. Local paths honor the `baseURL` deployment subpath.
-  Whitespace, control characters, raw backslashes, protocol-relative URLs (`//host/`), and other schemes warn and disable editing.
-- If editing must stay within your organization, deploy a [self-hosted editor](https://github.com/jgraph/docker-drawio) and configure its address.
-- The public endpoint `https://embed.diagrams.net/` works. With this endpoint, the reader's diagram is sent to a third-party page.
+- `enable: true` without `drawio_server` warns and leaves editing off. The
+  theme never picks a public service for you.
+- The address must be an `http(s)` URL or a local path; a local path follows
+  the deployment subpath in `baseURL`. Whitespace, control characters,
+  backslashes, protocol-relative URLs (`//host/`) and other schemes warn and
+  turn editing off.
+- Query parameters and a fragment in the address, such as `?lang=en`, are
+  kept, and the theme adds Draw.io's embed-mode parameters (`embed=1`,
+  `proto=json` and others).
+- When diagrams must not leave your organization, run a
+  [self-hosted editor](https://github.com/jgraph/docker-drawio) and point the
+  address at it.
+- The public editor `https://embed.diagrams.net/` works too, but the reader's
+  diagram is then opened in a third-party page.
 
-Both keys are defined in
-[Configuration](/docs/customize/config/).
+[Configuration](/docs/customize/config/) defines both keys.
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | A plain `<img>` or `<figure>`; once enabled, the runtime wraps an image that carries a copy in `<div class="drawio">` and adds the button |
-| Print | The image prints as usual; this output loads no Draw.io runtime and creates no edit button |
-| Markdown | Plain Markdown image syntax |
-| RSS | A plain `<img>` with an absolute URL and no button |
-
-All four outputs include the image. Only HTML adds the optional edit button.
+The diagram appears as an ordinary image in print, RSS and the page's
+Markdown output; only the HTML page gets the edit button.
 
 ## Parameter reference {#reference}
 
-Draw.io has no fence or shortcode parameters. It uses the [Images](/docs/components/image/) attribute line:
-`caption`, `width`, `height`, `link`, `#id`, `num`, `command`, and `options`.
+Draw.io has no parameters of its own on the page. The attribute line is the
+one from [Images](/docs/components/image/): `caption`, `width`, `height`,
+`link`, `#id`, `num`, `command` and `options`.
 
 Site parameters (`hugo.yml`):
 
@@ -165,13 +181,17 @@ Site parameters (`hugo.yml`):
 
 ## Limits {#limits}
 
-- The runtime loads only if rendered page content has `.svg` or `.png` candidates.
-  It groups matching images by URL and reads each URL once to find `mxfile`.
-- Without "Include a copy of my diagram" on export, the image has no edit button.
-- Editing needs the editor and never writes to the repository. Offline, images display normally, but the button has no effect.
-  Saving downloads a file. You must replace and commit the file manually.
-- Exported SVG colors are fixed and do not follow the site's color scheme.
-  Use `none` fills and neutral gray lines and text so the image is readable in both modes.
+- The edit check runs only on pages with PNG or SVG images, and it reads each
+  distinct image address once to look for an embedded copy.
+- An export made without "Include a copy of my diagram" has no copy, so it
+  gets no button.
+- Editing needs the editor to be reachable. Offline, diagrams display
+  normally but the editor cannot load.
+- Saving only downloads a file; replacing it in the repository and committing
+  is up to you.
+- An exported SVG has fixed colors that do not follow light and dark mode.
+  Use `none` fills and neutral gray lines and text, as the diagrams on this
+  page do, so that the diagram reads well in both.
 
 ## Related {#related}
 

@@ -10,31 +10,35 @@ cascade:
 aliases:
   - /docs/configure/
   - /docs/advanced/
+# The body's task map links every child page; the generated card list
+# would repeat it. The Markdown output still lists the children.
+no_list: true
 ---
 
-Use this section to configure site parameters in `hugo.yml`, data files under
-`data/`, and style entry points under `assets/`. To write individual pages and
-their front matter, see [Authoring](/docs/write/).
+Customization covers whatever applies to the whole site rather than to one
+page: how it looks, how readers find their way around, what it publishes
+besides HTML, and which languages and versions it serves. Most of it is a key
+in `hugo.yml`; the rest lives in data files under `data/` and in your own
+stylesheets under `assets/`. To write a page and set its front matter, see
+[Authoring](/docs/write/).
 
 ## Find it by what you want to change {#what-to-change}
 
-| What you want to change | Page |
+| I want to change… | Read |
 | --- | --- |
-| Site name, logo, favicon | [Brand and appearance](/docs/customize/brand/#logo) |
-| Colors, light and dark mode, fonts | [Brand and appearance](/docs/customize/brand/#colors) |
+| The site name, logo or favicon | [Brand and appearance](/docs/customize/brand/#logo) |
+| Colors, light and dark mode, fonts | [Brand and appearance](/docs/customize/brand/#theme-color) |
 | The navbar menu and its dropdowns | [Navigation and menus](/docs/customize/navigation/#main-menu) |
-| Sidebar width, icon density, outline depth | [Layouts and page types](/docs/customize/layout/#sidebar) |
+| Sidebar width, icon density or outline depth | [Layouts and page types](/docs/customize/layout/#sidebar) |
 | The home page and landing pages | [Home and landing pages](/docs/customize/home/) |
-| Full-text search and its index scope | [Search](/docs/customize/search/) |
-| What appears in the command palette | [Command palette](/docs/customize/panel/) |
+| Full-text search and what it indexes | [Search](/docs/customize/search/) |
+| What the command palette offers | [Command palette](/docs/customize/panel/) |
 | Keyboard shortcuts | [Keyboard navigation](/docs/customize/keyboard/) |
-| Adding a language | [Languages](/docs/customize/i18n/) |
-| Multi-version sites and the archive banner | [Versions](/docs/customize/versions/) |
+| The languages the site publishes | [Languages](/docs/customize/i18n/) |
+| Several versions of the docs, or the archive banner | [Versions](/docs/customize/versions/) |
 | Tags and categories | [Taxonomies](/docs/customize/taxonomy/) |
-| Edit this page, last modified, contributors | [Repository links and page info](/docs/customize/repository/) |
-| Print and whole-chapter export | [Print](/docs/customize/print/) |
-| `llms.txt` and the per-page `.md` output | [AI-agent support](/docs/customize/agents/) |
-| A parameter's type and default | [Configuration](/docs/customize/config/) |
-
-Comments, analytics, and deployment require an external service. See
-[Operations](/docs/admin/).
+| "Edit this page", last-modified dates and contributors | [Repository links and page info](/docs/customize/repository/) |
+| Printing a page or a whole chapter | [Print](/docs/customize/print/) |
+| What AI agents read: `llms.txt` and per-page `.md` files | [AI-agent support](/docs/customize/agents/) |
+| Any parameter's type and default | [Configuration](/docs/customize/config/) |
+| Comments, analytics or the deployment target, which need an outside service | [Operations](/docs/admin/) |

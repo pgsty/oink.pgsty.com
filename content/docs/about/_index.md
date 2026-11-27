@@ -1,7 +1,7 @@
 ---
 title: What is OINK
 linkTitle: Introduction
-description: A local-first Hugo documentation framework that evolved from Docsy. Its components remain readable in Markdown. The theme includes its assets. Forty-five production sites use it.
+description: Decide whether OINK fits your project, what you get with it, how it differs from Docsy and MDX-based tools, and where it falls short.
 weight: 10
 icon: fa-solid fa-circle-info
 search_keywords: [OINK, Hugo theme, Docsy, technical documentation, documentation site, local-first, Markdown native]
@@ -9,81 +9,111 @@ cascade:
   categories: [Introduction]
 ---
 
-OINK is a standalone [Hugo](https://gohugo.io/) theme for medium and large
-technical documentation sites. It evolved from
-[Docsy](https://github.com/google/docsy), retaining the content model and
-multilingual behavior while replacing the shell, navigation, search, and
-content components.
+OINK is a [Hugo](https://gohugo.io/) theme for technical documentation that
+has outgrown a README: product manuals, API references, books, release pages
+and blogs, often in several languages, maintained by engineers rather than a
+front-end team. You write Markdown, run `hugo`, and publish a static site with
+a sidebar built from your folders, local full-text search, a print view and a
+Markdown copy of every page for AI agents. Every script, font and stylesheet
+ships inside the theme, so the build needs no Node.js, npm, Sass or CDN, and
+unless you add an integration such as analytics or comments, the theme makes
+your readers' browsers request nothing from third parties.
 
-The current release is **OINK v1.6.0**, built with **Hugo 0.169.0** or newer in
-any edition (plain CSS with no Sass compiler), plus **Go 1.27.4** when resolving
-the theme as a Hugo Module.
-No Node.js, npm, PostCSS, or CDN requests are needed: Bootstrap, Font Awesome,
-fonts, local search, diagram runtimes, and API reference runtimes all ship in
-the theme repository and load only on pages that use them.
-
-Components are written in clean Markdown rather than a custom template
-language: `> [!NOTE]` creates a callout, a table followed by `{.fields}`
-renders as a parameter list, and an image followed by `{caption="..."}` becomes
-a captioned figure. [Forty-five production sites](/docs/about/showcase/) run on
-OINK today, spanning independent community projects and the PGSTY ecosystem.
+OINK began as a fork of [Docsy](https://github.com/google/docsy). It keeps
+Docsy's content model and multilingual behavior and replaces the shell,
+navigation, search and components.
+[Forty-five production sites](/docs/about/showcase/) run on it: fourteen
+independent projects, among them Apache HugeGraph's bilingual documentation
+and a nine-language team portal at Red Hat AI Services, and 31 sites from the
+PGSTY and Vonng ecosystem, the largest of which spans nearly 5,000 Markdown
+files in eight languages, Arabic included.
 
 ![OINK turns Markdown content, configuration and local assets into one static documentation site](/images/hero-light.webp)
 {width="900" height="600" caption="One Hugo build produces a static site ready to host"}
 
-## What the theme provides {#what-oink-provides}
-- The documentation and blog shell provides navigation, a sidebar tree, a table of contents, breadcrumbs, a pager, dark mode, print view, and accessible interaction.
-- The multilingual structure provides translation routing, fallback for untranslated pages, language weighting, RTL, 32 complete interface catalogs, and an opt-in duo view (`params.ui.compare: true`) for side-by-side reading.
-- Local browser features include Mermaid, Markmap, Swagger UI, Redoc, Asciinema, ECharts, Infographic, and full-text search. Mathematics is rendered by Hugo at build time and uses local KaTeX styles.
-- Content components include callouts, tabs, steps, cards, field lists, file trees, galleries, badges, keys, and more. Most have a native Markdown form.
-- Additional content types provide built-in book numbering and cross-references, release and download pages, data-driven landing pages, and OpenAPI reference pages.
+## What you get {#what-oink-provides}
 
-The theme does not handle source hosting or deployment. A site can use
-GitHub, GitLab, or a private Git server. You can publish Hugo's static output
-anywhere. The site owns its content, brand, and business components. The theme
-supplies the shell and reusable components.
+- **A build that needs only Hugo.** Any edition of Hugo builds the site, and Go
+  is needed only to download the theme as a Hugo Module. The stylesheet is
+  plain CSS, so your repository has no Sass compiler, PostCSS step or
+  `package.json`. [Get started](/docs/start/#tools) lists the versions.
+- **Components that stay Markdown.** `> [!NOTE]` is a callout, a table followed
+  by `{.fields}` is a parameter list, and an image followed by
+  `{caption="…"}` is a captioned figure. On GitHub or in any editor the same
+  source still reads as a quote, a table and an image.
+- **A complete reading shell.** Sidebar tree, table of contents, breadcrumbs,
+  pager, a `Cmd/Ctrl + K` command palette, keyboard navigation, light and dark
+  modes and four visual presets.
+- **Search without a service.** A BM25 engine in the browser queries an index
+  Hugo builds for each language, and it finds Chinese, Japanese and Korean
+  text typed without spaces.
+- **Real multilingual sites.** Hugo's own translation model, an interface
+  translated into 32 locales, right-to-left scripts, and an optional view that
+  puts a page beside its translation.
+- **More than documentation.** Books with numbered figures and
+  cross-references, release and download pages generated from YAML, landing
+  pages assembled from 22 section types, and OpenAPI references rendered by
+  bundled Swagger UI and Redoc.
+- **Output for people and machines.** Print a whole section at once, read any
+  page as plain Markdown, or point an AI agent at `llms.txt`.
+
+[Highlights](/docs/about/features/) describes each capability and links to its
+guide.
+
+The theme stops at the static site. Your source can live on GitHub, GitLab or a
+private Git server, and Hugo's output deploys to any static host. Content,
+brand and components specific to your product stay in your site; the theme
+supplies the shell and the reusable parts.
 
 ## Is OINK for me {#is-oink-for-me}
-| A good fit when | A poor fit when |
+
+| OINK fits when | Look elsewhere when |
 | --- | --- |
-| The site has many pages and combines documentation, a blog, a book, release pages, and an API reference | The site has one or two pages and needs no structured navigation. A README or a lighter Hugo theme is simpler |
-| You need full multilingual support rather than only a translation link on an English site | The site is mostly application UI. OINK can provide its documentation. Business components remain at the site layer |
-| Reproducible builds and network isolation matter, and the build machine has no outbound access | You need interactive components inside the prose (React / MDX) |
-| Several sites need a shared shell without copies of layouts and shortcodes | You want one switch to change the appearance. The theme has no brand switch. Appearance changes require CSS tokens and partial overrides |
-| The team has no front-end engineers and maintains no Node toolchain | You need a built-in CMS or a WYSIWYG editor |
+| The site has many pages and mixes documentation, a blog, a book, release pages and an API reference | The site has one or two pages and needs no navigation; a README or a lighter Hugo theme is simpler |
+| You publish full translations, not an English site with a translate link | The site is mostly application UI; OINK can carry its documentation, but product components stay in your site |
+| Builds must be reproducible, and the build machine may have no network access | You want interactive React components inside your prose (MDX) |
+| Several sites should share one shell without copying layouts and shortcodes | You want a completely different look from one switch; beyond the four presets, appearance changes go through CSS tokens and partial overrides |
+| Nobody on the team is a front-end engineer or wants to maintain a Node toolchain | You need a CMS or a WYSIWYG editor |
+
+Weigh two more things. Most features are off until you configure them,
+including search, dark mode, image zoom, comments, feedback and the Markdown
+and agent outputs; the [Starter](/docs/start/) turns the common ones on for
+you. And OINK is young and moves quickly: 1.0.0 shipped in August 2026 and
+1.6.0 three months later. Each site pins an exact release, so nothing changes
+until you raise the pin, and the [upgrade guide](/docs/admin/upgrade/) has a
+section for every release that asks you to change something.
 
 ## How it differs from other documentation systems {#comparison}
 
-Choose a toolchain and authoring model before comparing individual features.
-Different systems can suit the same project. The choice depends on who
-maintains it:
+The usual alternatives are Docsy, which OINK forked, and Node-based systems
+built on MDX, such as Docusaurus. These are the differences that tend to decide
+the choice:
 
-| Your priority | What to evaluate |
-| --- | --- |
-| Keep an existing Hugo content workflow | Compare OINK with Docsy and Hextra using your own content tree, overrides, and language needs |
-| Build without a Node toolchain | OINK includes browser assets in the theme. Hugo Module installation still needs Go to resolve modules |
-| Write React components inside documentation | Evaluate an MDX-based system such as Docusaurus. OINK's main authoring model uses Markdown, attributes, and shortcodes |
-| Publish books, downloads, or data-driven landing pages | Try OINK's built-in patterns on one representative page before adopting them site-wide |
+| | OINK | Docsy | Docusaurus and other MDX systems |
+| --- | --- | --- | --- |
+| Build tools | Hugo in any edition, plus Go to fetch the theme module | Hugo Extended to compile Sass, plus npm for PostCSS and Autoprefixer | Node.js and npm |
+| Callouts and tabs | Markdown that GitHub also renders: `> [!NOTE]`, fences with `{tab="…"}` | Shortcodes such as `alert` and `tabpane` | MDX, with React components inside the prose |
+| Search | Bundled BM25 engine, one index per language, unspaced CJK included | Lunr offline search, or a hosted service | Algolia DocSearch, or a community plugin for local search |
+| Fonts and scripts | Bundled and served from your own domain; no jQuery | Google Fonts unless switched off; jQuery on every page | Scripts bundled by the Node build |
+| Home page | Sections listed in `data/home/<lang>.yaml` | `blocks/*` shortcodes in a Markdown page | A React page |
 
-Check each candidate's current installation and extension documentation. OINK's
-search, image zoom, comments, and feedback require explicit configuration. The
-site also selects Markdown and agent outputs under `outputs`.
+If you already run Docsy, your content and most front matter carry over;
+[Migrating from Docsy](/docs/admin/upgrade/#from-docsy) lists what to delete
+and convert. If you are comparing Hugo themes such as Docsy and Hextra, build
+a copy of your own content tree with each before you decide, because overrides
+and language needs show differences no feature list does.
 
-OINK forked from Docsy and evolved as a separate theme. It retains Docsy's
-source history, Apache-2.0 obligations, and attribution. For details, see
+OINK is a hard fork rather than a skin over Docsy, and it keeps Docsy's source
+history, Apache-2.0 obligations and attribution; see
 [License and acknowledgements](/docs/about/license/).
 
 ## Start here {#start-here}
-- [Get started](/docs/start/) — Use the official Starter. Customize one part at a time, then publish it.
-- [Components](/docs/components/) — Each component has one page. The source appears first, followed by the rendered result.
-- [Showcase](/docs/about/showcase/) — See 45 production sites and the OINK features each site uses.
+
+- [Get started](/docs/start/) — Clone the Starter, preview it, make it yours one piece at a time, and deploy it.
+- [Components](/docs/components/) — Every component on its own page, source first, then the result.
+- [Showcase](/docs/about/showcase/) — 45 production sites and the OINK features each one uses.
 {.cards}
 
-[Highlights](/docs/about/features/) lists each theme capability. Each entry
-links to its guide.
-
-To report a problem or submit a correction, follow the
-[contribution guide](/docs/about/contributing/). The
-[1.6.0 release notes](/release/1.6.0/) cover the plain CSS architecture,
-Bootstrap JS and Lunr removal, scanning BM25 search, dependency upgrades, and
-upgrade steps.
+Found a problem or want to send a fix? The
+[contribution guide](/docs/about/contributing/) says where it goes. The
+[1.6.0 release notes](/release/1.6.0/) describe the current release.

@@ -1,7 +1,7 @@
 ---
 title: 品牌外观
 linkTitle: 品牌外观
-description: 替换站名、Logo、favicon、主色、深浅色与字体，只需改配置与一份纯 CSS 的项目样式表。
+description: 换上自己的站名、Logo、favicon、强调色与字体，选一套视觉预设，再用项目样式表补上其余定制。
 weight: 20
 search_keywords:
   [品牌, 外观, Logo, favicon, 主色, 配色, 深色模式, 字体, 排版, brand, logo, colors, dark mode, fonts, typography, scss]
@@ -12,165 +12,83 @@ aliases:
   - /docs/appearance/customize/
 ---
 
-本页的前提是站点已能构建（[十分钟上手](/zh/docs/start/)）。站名、Logo、页宽和页脚
-先在 `hugo.yml` 中设置。选择系统已有或站点已加载的字体，用
-[`params.ui.fonts`](#fonts-in-config) 即可；[分区强调色](#theme-color)也有对应配置键。
+站点换上自己的名字、Logo 和颜色，才算有了自己的样子。这三样都是 `hugo.yml` 里的设置，改一次、刷新一下就能看到第一版品牌效果：
 
-图标放在 `static/` 下。自定义样式或新增 `@font-face` 声明放在
-[`assets/css/project.css`](#scss)。**不要改主题目录里的文件**：升级会替换它们。
+```yaml {title="hugo.yml"}
+title: Acme DB 文档
 
-## 视觉预设 {#visual-presets}
-
-OINK 1.2.0 默认使用 Paper：象牙纸色背景、墨色正文、带下划线的蓝色链接、陶土强调色、
-Plex Sans 与外框表格。Slate 保留 OINK 原有的冷灰蓝外观。开启读者选择：
-
-```yaml
 params:
+  logo: images/acme-mark.svg # 放在 assets/ 或 static/ 下
   ui:
-    preset: paper
-    preset_menu: true
+    theme_color: '#0f766e'
     dark_mode: true
 ```
 
-主题的 `preset_menu` 默认值为 `false`。设置 `preset: slate` 即可保留原有外观。
-风格与明暗分别保存；选择站点默认项（悬停提示中注明）恢复跟随站点。所有风格共用一个
-样式表，字体全部本地加载。
-
-OINK 1.2.0 起提供 Ink 与 Terminal 实验预设，需要显式开启：
-
-```yaml
-params:
-  ui:
-    preset: paper
-    preset_menu: [paper, slate, ink, terminal]
-    dark_mode: true
-```
-
-Ink 使用黑白表面、红色标记、直角面板和带下划线的正文链接。Terminal 使用等宽
-控件与标题、青色链接、琥珀强调和紧凑的桌面导航，正文同样使用等宽字体。两者
-均支持明暗切换并复用现有字体。菜单使用两列排列的四个简洁按钮，各带主题色图标，
-不加实验标记。`preset_menu: true` 提供 Paper、
-Slate 和站点默认值，不会自动开启所有实验。设置 `preset: ink` 或 `preset: terminal`
-可将实验风格设为站点默认值，不依赖读者菜单。测试范围与后续设计工作见
-[实验记录](/zh/docs/design/research/2026-10-05-ink-terminal-experiment/)。
-
-只使用 `[data-bs-theme='dark']` 的站点自定义深色规则，优先级低于 Paper 深色色板。
-可以保留 Slate，或改用 `[data-td-preset='paper'][data-bs-theme='dark']` 限定规则。
-字体配置与分区 `theme_color` 在所有预设下继续优先。打印始终使用浅色与白纸背景。
-
+字体、整体风格与页脚同样是配置项。配置管不到的地方，在 [`assets/css/project.css`](#scss) 里写纯 CSS，它在主题样式表之后加载。不要改主题自己的文件：下一次 `hugo mod get` 会把它们替换掉。
 
 ## 站名 {#site-title}
 
-站名出现在顶栏、浏览器标题与页脚。多语言站每种语言各写一个：
+站名出现在顶栏、浏览器标签页和页脚。多语言站点在 `languages.<lang>.title` 下为每种语言各写一个；某种语言没写时，回退到顶层 `title`。
 
 ```yaml {title="hugo.yml"}
-title: 产品文档
+title: Acme DB 文档
 
 languages:
   en:
-    title: Product Docs
+    title: Acme DB Docs
     label: English
     locale: en-US
     weight: 1
   zh:
-    title: 产品文档
+    title: Acme DB 文档
     label: 简体中文
     locale: zh-CN
     weight: 2
 ```
 
-顶层 `title` 是兜底，`languages.<lang>.title` 优先。
-
 ## Logo 与字标 {#logo}
 
-主题默认使用自带的 `assets/icons/logo.svg`。替换步骤是把图标文件放进站点的 `assets/` 或 `static/`，再在配置里指向它。
+默认情况下，顶栏显示主题自带的图标 `assets/icons/logo.svg`，旁边是站名。要替换其中任意一半，把图片放进站点的 `assets/` 或 `static/`，再写出它相对该目录的路径：
 
 ```yaml {title="hugo.yml"}
 params:
-  logo: images/product-mark.svg
-  wordmark: logo.svg
+  logo: images/acme-mark.svg
+  wordmark: images/acme-wordmark.svg # 可选
 ```
 
-- `params.logo` 是方形图标，顶栏、侧栏与页脚共用。放在 `assets/` 下会经过 Hugo 资源管线（可指纹化），放在 `static/` 下按原样发布；两种写法都是相对 `assets/`、`static/` 根的路径。
-- `params.wordmark` 是横向字标。设置后顶栏用它替代「图标 + 站名」，窄屏放不下时回落到 `params.logo`。不设置则保持「图标 + 站名」。
+- `params.logo` 是方形图标，顶栏、侧栏顶部与页脚共用。放在 `assets/` 下的文件经过 Hugo 资源管线，放在 `static/` 下的按原样发布。
+- `params.wordmark` 是一张写着名字的图片，用来替换图标旁边的站名文字。顶栏把它绘制为 16px 高，宽度低于 992px 时与站名一样隐藏，只留下图标，所以字标里只放名字、不要带图标。页脚单独显示字标，除非[页脚数据](/zh/docs/customize/navigation/#footer)另外指定了 Logo。
 
-源 SVG 应紧贴图形边缘裁切，否则各处尺寸对不齐。SVG 必须带 `viewBox`，颜色继承 `currentColor`，或者在深浅色下都有足够对比度。
-
-本站两个参数都不设：顶栏用主题自带的 `assets/icons/logo.svg` 搭配以展示字体渲染的站名。
+SVG 要贴着图形边缘裁切并带上 `viewBox`，否则与旁边的文字对不齐。主题用 `<img>` 放置这两张图，页面 CSS 无法给它们换色，`currentColor` 在其中会解析成黑色。请选在浅色和深色背景上都清晰的颜色，或者照主题自带图标的做法：在 SVG 内部写一段 `<style>`，加上 `@media (prefers-color-scheme: dark)` 规则。这条规则跟随读者的系统设置，而不是站点上的明暗切换。
 
 ## favicon {#favicon}
 
-favicon 没有参数。主题扫描站点 `static/` 目录里的约定文件名，发现哪个就在每个页面输出对应的 `<link>`：
+favicon 没有配置项。主题在站点的 `static/` 目录里查找约定的文件名，找到一个就在每个页面输出一条对应的 `<link>`：
 
 | 文件 | 生成的链接 |
 | --- | --- |
 | `static/favicon.ico` | `rel="icon"` |
 | `static/favicon.svg` | `rel="icon"` `type="image/svg+xml"` |
-| `static/favicon-32x32.png` | `rel="icon"` 带 `sizes`，按尺寸升序输出 |
+| `static/favicon-32x32.png` | `rel="icon"` `type="image/png"`，带 `sizes`；有多个尺寸时从小到大输出 |
 | `static/apple-touch-icon.png` | `rel="apple-touch-icon"` |
-| `static/apple-touch-icon-180x180.png` | `rel="apple-touch-icon"` 带 `sizes` |
+| `static/apple-touch-icon-180x180.png` | `rel="apple-touch-icon"`，带 `sizes` |
 
-够用的最小组合是 `favicon.ico` + `favicon.svg` + `apple-touch-icon.png`。带尺寸后缀的文件必须是正方形（`NxN`），否则不会被识别。
+有 `favicon.ico`、`favicon.svg` 和 `apple-touch-icon.png` 三个文件，所有浏览器就都够用了。文件名带尺寸的必须是正方形（`NxN`），否则主题会忽略它。
 
-这些文件用任意图形工具生成即可。主题不需要 Node.js，Hugo 只发布 `static/` 里已经存在的文件。
+Web App Manifest 等其它 head 元数据写在 `layouts/_partials/hooks/head-end.html` 里。要换查找目录或接受其它文件名，在站点里覆盖 `layouts/_partials/favicons.html`。
 
-Web App Manifest 一类的额外 head 元数据不在扫描范围内，用 `layouts/_partials/hooks/head-end.html` 钩子自行输出；要改变发现规则本身（换目录、增加文件名），在站点 `layouts/` 下覆盖 `layouts/_partials/favicons.html`。
+## 强调色 {#theme-color}
 
-## 主色与配色 {#colors}
-
-配色分两层，两层都是 CSS 自定义属性，在项目样式表里运行期覆盖。主题的样式表是纯 CSS，已经没有 `$primary` 这类 Sass 变量。
-
-Bootstrap 的语义色决定按钮、工具类等 Bootstrap 组件的色调。覆盖对应属性，以及把颜色写成固定值的组件：
-
-```css {title="assets/css/project.css"}
-:root,
-[data-bs-theme='light'] {
-  --bs-primary: #315f8f;
-  --bs-primary-rgb: 49, 95, 143;
-}
-
-.btn-primary {
-  --bs-btn-bg: #315f8f;
-  --bs-btn-border-color: #315f8f;
-  --bs-btn-hover-bg: #2a5179;
-  --bs-btn-hover-border-color: #274c72;
-}
-```
-
-链接色与强调色不跟随 `--bs-primary`，它们来自视觉预设、下面的品牌层和 [`theme_color`](#theme-color)。此前设置过 Sass 变量的站点可以一次性转换，见[已退役的 SCSS 钩子](/zh/docs/admin/upgrade/#sass-hooks)。
-
-品牌层也是一组 CSS 自定义属性，浅色和深色 **必须成对覆盖**，否则一种模式下会漏色：
-
-```css {title="assets/css/project.css"}
-:root {
-  --td-brand-copper: #a66722;
-  --td-brand-mark-from: #1d588c;
-  --td-brand-mark-to: #a66722;
-}
-
-[data-bs-theme='dark'] {
-  --td-brand-copper: #e0a35c;
-  --td-brand-mark-from: #7fb8e8;
-  --td-brand-mark-to: #e0a35c;
-}
-```
-
-可覆盖的品牌属性有 `--td-brand-elev`（浮层底色）、`--td-brand-silk`（次要文字）、`--td-brand-copper` 与 `--td-brand-copper-dim`（强调色与它的弱化版）、`--td-brand-line-strong`（分隔线）、`--td-brand-header-bg`（顶栏背景）、`--td-brand-shadow-sm` / `--td-brand-shadow-md`（阴影）、`--td-brand-mark-from` / `--td-brand-mark-to` / `--td-brand-mark-gradient`（品牌渐变）。
-
-## 分区主题色 {#theme-color}
-
-上面的品牌配色决定整站外观。`theme_color` 用一个十六进制颜色调整当前分区的
-界面强调色，让读者通过选中状态和导航提示辨认所在分区。
+强调色标出读者“在哪里”：侧栏选中行与悬停背景、目录中当前章节的标记及其轨道、标签与徽章的悬停状态、卡片边框与分享按钮的悬停效果、文本选中、焦点环，以及侧栏切换器里各分区的图标。用一个十六进制颜色设置：
 
 ```yaml {title="hugo.yml"}
 params:
   ui:
-    theme_color: '#6d28d9'
-    theme_color_dark: '#a78bfa' # 可选
+    theme_color: '#0f766e'
+    theme_color_dark: '#5eead4' # 可选
 ```
 
-它按分区写比按站点写有用得多。写进分区根的 `cascade`，整个分区就有了身份 ——
-藏青的文档、紫色的博客、橙色的教程 —— 而站点默认仍是品牌色：
+按分区设置最有用。把这一对颜色写进分区根的 `cascade`，整个分区（包括分区首页）都换成这个颜色，读者一眼就能分清文档和博客，站点其余部分仍用默认配色：
 
 ```yaml {title="content/blog/_index.md"}
 cascade:
@@ -178,112 +96,60 @@ cascade:
   theme_color_dark: '#a78bfa'
 ```
 
-Hugo 会把这些 cascade 值同时解析到分区首页与子页，因此只声明这一对即可。同一对
-解析结果既驱动页面强调色，也驱动根切换器里该分区的图标。
+正文链接、外部链接和行内代码在任何分区都保持预设的颜色，因为读者在哪里都该一眼认出链接和标识符。要改它们，请覆盖[配色](#colors)。
 
-**它作用于**：侧栏选中行与悬停背景、当前目录项的背景及其指示线和位置标记、
-悬停或聚焦的 Book 章节小标题、标签与徽章的悬停状态、卡片的悬停边框、分享按钮的
-悬停背景、文本选中背景、焦点环，以及侧栏根切换器中的分区图标。
+`theme_color_dark` 可以不写。省略时，主题把浅色向白色提亮，直到它在深色背景上达到正文的 AA 对比度；派生出的色调偏离品牌时，再自己指定。浅色是必需的：单独写 `theme_color_dark`，或者与非法的 `theme_color` 一起写，都会被忽略并告警，一个页面要么两种模式都着色，要么都不着色。
 
-**它刻意不作用于**：正文链接、外链、行内代码。这些是阅读约定，不是品牌表面 ——
-一页密集的标识符在任何分区都该读成「代码与正文」，链接在哪里都该看起来像链接。
-这也是强调色单独占一个自定义属性、而不是去重刷 Bootstrap 链接色的原因。
+要让某一页回到默认配色，在它的 front matter 里写 `theme_color: false`，继承来的深色值也一并取消，不产生告警。其它不是 `#rgb` 或 `#rrggbb` 的取值，例如数字、`true` 或颜色名，都会告警并保留默认配色。Hugo 按键合并参数，某一页只覆盖 `theme_color` 时，仍会继承分区的 `theme_color_dark`，所以两个键要么都覆盖，要么都不覆盖。
 
-暗色一半是可选的。省略时，从亮色向白提亮，直到在暗色画布上达到 AA 正文对比度，
-所以只填一个颜色的作者不可能产出不可读的暗色配色。派生结果不再符合期望的品牌
-色相时，再自己指定暗色一半。亮色才是主键：单独设置 `theme_color_dark`，或者把它放在
-一个非法的 `theme_color` 旁边，两种模式都不会着色 —— 主题会发出警告并保留默认配色，
-而不是只给暗色模式上色。
-
-要让某一页恢复默认配色，在 front matter 中设置 `theme_color: false`。
-这会同时取消继承的亮色与暗色分区配色，不产生警告。其他非十六进制取值
-（数字、`true`、颜色名）都会告警。
-
-> [!CAUTION] 对比度是检查，不是强制
-> 主题按默认页面背景检查颜色，低于 AA 正文对比度（4.5:1）时告警，颜色仍会生效。
-> 若使用自定义背景或必须保留品牌色，可根据实际对比度选择是否忽略该告警。
-> 发布前检查实际背景上的对比度，按需调整颜色；无需将全部告警改为构建失败。
->
-> 这个检查是拿颜色对着页面画布读的。有些交互表面会同时把它用作文字与半透明淡铺；
-> 例如可点击的实心徽章在 hover 时，是强调色文字压在 12% 的同色淡铺上。这一对比
-> 画布检查更紧。如果颜色只是刚好过线，还要检查这些表面，必要时再调深一档。
-
-Hugo 按键合并参数：某一页在同时设了 `theme_color_dark` 的分区里只覆盖
-`theme_color`，会继承那个暗色。要么两个都覆盖，要么都不覆盖。
-
-## 深浅色模式 {#dark-mode}
-
-主题默认 **不显示** 深浅色控件。开启方式：
-
-```yaml {title="hugo.yml"}
-params:
-  ui:
-    dark_mode: true
-```
-
-太阳/月亮图标表示当前状态：浅色显示太阳，深色显示月亮。
-点击顶栏或底栏的「外观」，打开浅色、深色、跟随系统单选组，支持触屏与键盘，
-手机上显示为底部表单。选择保存在浏览器本地并同步到其他标签页，没有选择时跟随
-`prefers-color-scheme`。head 内联脚本在样式表加载前应用实际明暗状态。
-
-只要深色调色板、不要控件时写 `dark_mode: { show_menu: false, enable: true }`；`dark_mode: false`（默认）两者都不启用。
-
-自定义组件在两种模式下都要给出可读的悬停、聚焦、禁用、选中状态，正文对比度至少 4.5:1、大号文字 3:1。
+主题会拿你写的颜色与自己的背景色比对，对比度低于正文 AA 标准 4.5:1 时告警。颜色照样生效，因为自定义背景或固定的品牌色可能确有理由；在真实背景上确认过之后，可以把告警里的 ID 加进 Hugo 的 `ignoreLogs`。刚好过线的颜色，还要看看那些把它同时用作文字和 12% 同色底的交互元素，例如可点击的徽章；读起来吃力就换深一档。
 
 ## 字体 {#fonts}
 
-字体策略在构建期选择，切换视觉预设时使用对应的内置字体：
+OINK 把西文字体作为本地字体随主题分发、从你自己的站点加载，任何页面都不会请求 Google Fonts 或其它字体服务。中文使用读者系统里已有的字体，主题不分发中文字体文件。每套[视觉预设](#visual-presets)的字体编排各不相同：
+
+| 预设 | 界面与正文 | 标题 | 中文 |
+| --- | --- | --- | --- |
+| Paper | IBM Plex Sans | 系统衬线字体 | 宋体标题配黑体正文 |
+| Slate | Inter | Inter；展示标题用 Chakra Petch | 通篇黑体 |
+| Ink | 界面用 Inter，正文用系统衬线字体 | Inter | 黑体标题配宋体正文 |
+| Terminal | IBM Plex Mono，打印时用 IBM Plex Sans | IBM Plex Mono | 通篇黑体 |
+
+Paper 与 Slate 的代码字体是 IBM Plex Mono，字标是 Chakra Petch。Plex Sans 与 Inter 包含拉丁、西里尔、希腊与越南语字符。中文的强调与引文在读者装有楷体时改用楷体，汉字不会被强行倾斜；Terminal 则改为给强调文字着色。
+
+想用平台自带字体、不加载任何内置字体，就切换字体策略：
 
 ```yaml {title="hugo.yml"}
 params:
   ui:
-    typography: technical # technical | system
+    typography: system # technical（默认）| system
 ```
 
-- `technical`（默认）：Paper 的界面、正文与展示标题使用 IBM Plex Sans，标题使用系统衬线字体；Slate 的界面与正文使用 Inter，展示标题使用 Chakra Petch。两者的字标使用 Chakra Petch，代码使用 IBM Plex Mono。Plex Sans 与 Inter 包含本地拉丁、西里尔、希腊与越南语子集，不请求 Google Fonts。
-- 实验字体：Ink 的界面与标题使用 Inter，正文使用系统衬线字体；Terminal 的控件、标题与正文都使用 IBM Plex Mono，打印时使用 Plex Sans。显式 `fonts.ui` 仍控制主字体；需要独立正文字体时设置 `fonts.body`。
-- 中文使用读者系统已有的字体，按风格编排：Paper 为宋体标题配黑体正文，Ink 为黑体标题配宋体正文，Slate 与 Terminal 通篇黑体。强调与引用在装有楷体时使用楷体，汉字不会被推歪；Terminal 改用强调色。主题不分发中文字体文件。
-- `system`：界面、展示、元数据、打印与等宽角色全部回到平台字体栈，浏览器不请求品牌字体。字体文件仍随主题分发，只是不被引用。
+设为 `system` 后，所有字体角色都使用平台字体栈。取值非法时告警并回退到 `technical`。实际生效的策略写在 `<html data-td-typography="…">` 上。
 
-非法取值告警并回落到 `technical`。选中的值写入 `<html data-td-typography="…">`，可在浏览器中确认。
+### 使用读者已有的字体 {#fonts-in-config}
 
-### 自定义字体 {#custom-fonts}
-字体角色是八个 CSS 自定义属性，覆盖它们即可，不必查找组件选择器：
-
-| 属性 | 配置键 | 用在哪 |
-| --- | --- | --- |
-| `--td-ui-font-family` | `ui` | 导航、控件与界面文字 |
-| `--td-body-font-family` | `body` | 正文与博客 |
-| `--td-heading-font-family` | `heading` | 正文标题 |
-| `--td-code-font-family` | `code` | 代码与终端 |
-| `--td-display-font-family` | `display` | 展示型大标题 |
-| `--td-meta-font-family` | `meta` | 技术标签与元数据 |
-| `--td-brand-font-family` | `brand` | 字标 |
-| `--td-print-font-family` | `print` | 打印正文 |
-
-`ui` 是主字体：`body` 经它解析，`heading` 又经 `body` 解析，所以只写 `ui` 一行，界面、正文与标题一起换掉。
-
-#### 在配置里换 {#fonts-in-config}
-只是想换一套字体族，不必写样式表，写 `params.ui.fonts` 即可：
+只换字体族、不想写 CSS 时，设置 `params.ui.fonts`：
 
 ```yaml {title="hugo.yml"}
 params:
   ui:
     fonts:
-      # 主字体：界面、正文、标题一起跟着走
+      # 主字体：正文跟着它走，Paper 以外的预设里标题也跟着走
       ui: "'Source Han Sans SC', 'PingFang SC', sans-serif"
-      # 等宽要带中文兜底，否则中英混排的代码块会对不齐
+      # 等宽字体要带中文兜底，否则中英混排的代码块会对不齐
       code: "'Sarasa Mono SC', 'Noto Sans Mono CJK SC', monospace"
 ```
 
-这里写的是字体族名，不是字体文件。主题不会因为这个键去下载或加载任何字体：所写的族必须是读者机器上已有的，或者站点自己在样式表里 `@font-face` 声明过的。所以每个列表都要以通用族（`sans-serif`、`monospace`、`serif`）收尾——读者没有你写的字体时，落到那里。
+`ui` 是主字体。所有预设的正文都跟随它；标题在 Paper 以外的预设里也跟随它，Paper 保留自己的衬线标题，除非你同时设置 `heading`。其余键见[字体角色](#custom-fonts)。
 
-取值只放行纯粹的字体族语法：带引号的名字、裸标识符、允许前导连字符（`-apple-system`），以及任何文字系统写成的名字（`苹方` 合法）。分号、花括号、括号、`url()`、尖括号一律不过关。未知角色或不合法取值只告警并单独丢弃，同一份 map 里其余的行照常生效。什么都不设时，`<head>` 里连这个 `style` 元素都不会出现。
+这里写的是字体族名，不是字体文件，主题不会因为这个键下载或加载任何字体。所写的字体族要么已经装在读者系统里，要么由你自己的 [`@font-face`](#fonts-in-css) 声明，所以每个列表都要以通用族（`sans-serif`、`serif`、`monospace`）结尾，两者都没有的读者会落到这里。
 
-该块在样式表之后输出，这正是作者字体能在同等优先级下压过 `typography` 预设的原因。
+取值只接受字体族语法：带引号的名字、裸标识符、`-apple-system` 这样的前导连字符，以及任何文字写成的名字（`苹方` 也是合法的字体族名）。分号、花括号、圆括号、`url()` 和尖括号都会被拒绝。未知角色或不安全的取值会告警，只丢弃这一项，其余各项照常生效。主题在样式表之后输出这些值，所以它们优先于预设，也优先于 `typography: system`。
 
-#### 在样式表里换 {#fonts-in-css}
-要自带字体文件，或者只给某一类内容换字体，仍然走样式表。把 `.woff2` 放进站点 `static/webfonts/`，在项目样式中声明字体，再指定各角色使用的字体族：
+### 自带字体文件 {#fonts-in-css}
+
+要随站点分发字体文件，或者只给某一类内容换字体，就用项目样式表。把 `.woff2` 文件放进站点的 `static/webfonts/`，声明字体，再把各角色指向它：
 
 ```css {title="assets/css/project.css"}
 @font-face {
@@ -302,7 +168,7 @@ params:
 }
 ```
 
-角色按 CSS 规则继承，只给某类内容换字体也不必复制组件选择器：
+字体角色是普通的、可继承的 CSS 自定义属性，把它限定在某个 body class 下，就能只给这一类页面换字体，不必去找组件选择器：
 
 ```css {title="assets/css/project.css"}
 body.td-blog {
@@ -311,7 +177,7 @@ body.td-blog {
 }
 ```
 
-等宽字体要带中文兜底，否则中英混排的代码块会对不齐：
+等宽字体栈要带中文兜底，否则中英混排的代码会对不齐：
 
 ```css {title="assets/css/project.css"}
 :root {
@@ -319,20 +185,65 @@ body.td-blog {
 }
 ```
 
-Sass 字体变量不再进入主题，因为主题已不含任何 Sass。这包括 Docsy 的 `$td-fonts-serif`、`$font-family-sans-serif`、`$font-family-base`、`$headings-font-family`、`$font-family-code`、`$td-font-family-monospace`、`$font-family-monospace`，以及三个 Google Fonts 变量。请用 `params.ui.fonts` 或上面的角色属性设置字体。随主题分发的是 IBM Plex Sans、Inter、Chakra Petch 与 IBM Plex Mono，所有预设都不向 Google Fonts 发请求。打印角色 `--td-print-font-family` 跟随正文角色，主题不为纸张单独提供字体。
+### 字体角色 {#custom-fonts}
 
-YAML 里只接受字体族名。远程字体 URL 与任意 CSS 都不接受：字体文件与样式必须是可审查的本地输入，一次普通构建不会因为字体发出任何网络请求。
+字体角色由八个 CSS 自定义属性承载，每个也都可以用 `params.ui.fonts` 下对应的键设置：
 
-## 页宽 {#page-width}
+| 属性 | 配置键 | 用在哪里 |
+| --- | --- | --- |
+| `--td-ui-font-family` | `ui` | 导航、控件与界面文字 |
+| `--td-body-font-family` | `body` | 正文与博客文章 |
+| `--td-heading-font-family` | `heading` | 正文标题 |
+| `--td-code-font-family` | `code` | 代码与终端 |
+| `--td-display-font-family` | `display` | 展示型大标题 |
+| `--td-meta-font-family` | `meta` | 技术标签与元数据 |
+| `--td-brand-font-family` | `brand` | 字标 |
+| `--td-print-font-family` | `print` | 打印正文；未设置时跟随 `body` |
+
+## 视觉预设 {#visual-presets}
+
+预设是一整套外观：配色、字体、链接样式与表格样式，浅色深色都包含在内。先挑一套最接近自己品牌的，再动手调颜色。
+
+| 预设 | 外观 |
+| --- | --- |
+| `paper`（默认） | 象牙纸色背景、墨色正文、带下划线的蓝色链接、陶土色强调、Plex Sans 与外框表格 |
+| `slate` | 冷灰蓝的技术风格 |
+| `ink`（实验） | 黑白底色、红色标记、直角面板、带下划线的正文链接 |
+| `terminal`（实验） | 控件、标题与正文都用等宽字体，青色链接、琥珀色强调、紧凑的桌面导航 |
+
+`params.ui.preset` 决定站点的外观，`params.ui.preset_menu` 决定读者能否在「外观」菜单里换成别的预设：
 
 ```yaml {title="hugo.yml"}
 params:
-  page_width: normal # normal | wide | full
+  ui:
+    preset: paper
+    preset_menu: [paper, slate, ink, terminal]
+    dark_mode: true
 ```
 
-`page_width` 控制外壳整体宽度，可逐页或按分区 cascade 覆盖。Book 页另有一个
-`reading_width`（`slim` / `normal` / `wide`），改的是正文阅读行宽，不是外壳。
-两个键取值非法都会告警并回退。
+| `preset_menu` | 读者可选 |
+| --- | --- |
+| `false`（默认） | 不可选，所有页面都用 `preset` |
+| `true` | Paper、Slate 与站点自己的预设 |
+| 列表 | 恰好是列出的这些；漏写站点预设时主题会补上并告警 |
+
+Ink 与 Terminal 只有被点名（写在 `preset` 或列表里）时才会出现，已测试的范围见[实验记录](/zh/docs/design/research/2026-10-05-ink-terminal-experiment/)。读者选的风格与明暗分别保存在浏览器里；选回标注为站点默认的那一项，就恢复跟随站点。打印始终使用白纸上的浅色配色。
+
+字体设置与 `theme_color` 在所有预设下都优先生效，但你在自己 CSS 里写的深色覆盖不一定：Paper 的深色配色限定在 `[data-td-preset='paper'][data-bs-theme='dark']` 上，优先级高于单独的 `[data-bs-theme='dark']`。深色覆盖请按[配色](#colors)一节的写法来写。
+
+## 深浅色模式 {#dark-mode}
+
+站点默认只有浅色，需要时再开启深色模式：
+
+```yaml {title="hugo.yml"}
+params:
+  ui:
+    dark_mode: true
+```
+
+开启后，主题加入深色配色，并在顶栏与页脚的「外观」控件里加入浅色、深色、跟随系统三个选项，控件图标会显示为太阳或月亮，表示当前模式。控件支持触屏与键盘，在手机上以底部面板打开。读者的选择保存在浏览器里并在各标签页之间同步；没有保存过选择时，页面跟随系统的 `prefers-color-scheme`。一小段内联脚本在样式表加载前就应用好明暗模式，页面不会先闪一下错误的配色。
+
+只想在读者系统要求时提供深色配色、不显示控件，写 `dark_mode: { enable: true, show_menu: false }`。
 
 ## 页脚 {#footer}
 
@@ -341,48 +252,97 @@ params:
   ui:
     footer_style: fat # fat | slim | none
   copyright:
-    authors: '[产品团队](https://example.com/)'
+    authors: '[Acme DB 团队](https://example.com/)'
     from_year: 2026
     to_year: present
   footer_center_info: 'Powered by [Oink](https://oink.pgsty.com)'
 ```
 
-- `fat`（默认）：多列链接网格 + 版权行；
-- `slim`：只有版权行；
-- `none`：不渲染页脚。
-
-页面 front matter（含分区 cascade）可以覆盖它，本站的文档栏目用的是
-`footer_style: slim`。无法识别的取值会告警并回退到 `fat`。
-
-多列网格的数据在 `data/footer/<语言>.yaml`，写法见[导航与菜单](/zh/docs/customize/navigation/#footer)。配了 `fat` 但没有数据时自动降级成 `slim`，可以先开启再补内容。
-
-`params.copyright` 接受 Markdown 字符串，或 `authors` / `from_year` / `to_year` 三键的 map（`present` 表示今年）。`footer_center_info` 是页脚中间的行内 Markdown，显式设为空字符串即隐藏中间区域。
-
-## 项目样式表与不该做的事 {#scss}
-
-主题的样式表是纯 CSS，站点构建不做任何编译。站点自己的规则同样是纯 CSS，放在 `assets/css/` 下：
-
-| 文件 | 什么时候用 |
+| `footer_style` | 页脚 |
 | --- | --- |
-| `project.css` | 选择器与 CSS 自定义属性，在主题样式表之后加载 |
+| `fat`（默认） | 版权行上方有多列链接网格 |
+| `slim` | 只有版权行 |
+| `none` | 不显示页脚 |
+
+链接列来自 `data/footer/<语言>.yaml`，写法见[导航与菜单](/zh/docs/customize/navigation/#footer)。这个文件还不存在时，`fat` 页脚按 `slim` 渲染，所以可以先开启、再补链接。front matter 或分区的 `cascade` 可以单独指定样式，本站文档栏目用的就是 `slim`。无法识别的取值会告警并使用 `fat`。
+
+`params.copyright` 可以是一段 Markdown 字符串，也可以是 `authors`、`from_year`、`to_year` 三个键组成的 map，`present` 表示当前年份。`footer_center_info` 是版权行中间的行内 Markdown，设为空字符串即可让那里留空。
+
+## 项目样式表 {#scss}
+
+配置管不到的地方，用纯 CSS 写在站点的 `assets/css/` 下：
+
+| 文件 | 用途 |
+| --- | --- |
+| `project.css` | 你自己的选择器与自定义属性覆盖 |
 | `project/*.css` | 可选的更多文件，按路径顺序接在 `project.css` 之后 |
 
-主题把它们发布为一份样式表，生产构建带指纹与完整性校验，在主题样式表之后单独请求。修改站点样式不会改变主题样式表及其缓存。
+主题把它们发布为一份样式表，在主题样式表之后加载，生产构建中会压缩、加指纹并带完整性校验。因为是单独的文件，修改站点样式不会改动主题样式表，读者浏览器里缓存的那一份也不受影响。
 
-这里写的是 CSS，不是 SCSS。Hugo 只压缩、不转换这个文件：`//` 注释、Sass 变量、mixin、`@extend` 与 `&-suffix` 选择器在这里都无效，原生 CSS 嵌套会原样交给浏览器。相对 URL 从 `/css/` 解析，所以 `../webfonts/my-font.woff2` 指向站点的 `static/webfonts/my-font.woff2`。
+Hugo 只压缩这个文件、不编译它，所以要写 CSS 而不是 SCSS：`//` 注释、Sass 变量、mixin、`@extend` 和 `&-suffix` 选择器都不起作用，原生 CSS 嵌套会原样交给浏览器。相对 URL 从 `/css/` 解析，所以 `../webfonts/my-font.woff2` 指向站点的 `static/webfonts/my-font.woff2`。从旧版 OINK 或 Docsy 升级来的站点，`assets/scss/` 下可能还留着文件；在你按[已退役的 SCSS 钩子](/zh/docs/admin/upgrade/#sass-hooks)转换之前，构建会告警并忽略它们。
 
-`assets/scss/` 下的三个 SCSS 钩子已经退役。如果仍有残留，构建会告警并忽略它。转换方法见[已退役的 SCSS 钩子](/zh/docs/admin/upgrade/#sass-hooks)。
+只依赖主题 CSS 的公开部分：八个[字体角色](#custom-fonts)与 `--td-brand-*` 属性在小版本之间保持名字与含义不变。`--td-asciinema-font-family` 这类组件别名只在各自组件内有效，`--td-shell-*` 等其它变量在任何版本都可能变化。有变量就用变量，没有再写作用范围尽量小的选择器；为了改一个颜色去覆盖 `baseof.html`，每次升级主题都得手动合并。
 
-CSS 接口有明确边界。[字体](#fonts)那一节的八个字体角色与 `--td-brand-*` 品牌属性是公开接口，主题在小版本之间保持它们的名字与含义。组件别名（如 `--td-asciinema-font-family`）只承诺在该组件范围内有效，未在文档中记录的 `--td-shell-*` 一类变量是实现细节，随时可能改名或消失。
+要引入第三方样式表，先把它复制进站点，再通过 `layouts/_partials/hooks/head-end.html` 作为本地资源发布，不要在 Markdown 里写 `<link>`。样式表与字体都放在本地，不要指向 CDN，这样对方服务器出问题时站点照常可用。
+
+### 配色 {#colors}
+
+强调色以外的颜色都是 CSS 自定义属性，在项目样式表里覆盖。每套预设都同时设置了浅色和深色，所以两种模式要一起覆盖，否则其中一种会保留预设的颜色。
+
+链接使用 Bootstrap 的链接变量 `--bs-link-color` 与 `--bs-link-hover-color`，以及它们对应的 `-rgb` 变量。按钮等 Bootstrap 组件使用语义色；覆盖这个属性，以及把颜色写成固定值的按钮变量：
+
+```css {title="assets/css/project.css"}
+:root,
+[data-bs-theme='light'] {
+  --bs-primary: #315f8f;
+  --bs-primary-rgb: 49, 95, 143;
+}
+
+.btn-primary {
+  --bs-btn-bg: #315f8f;
+  --bs-btn-border-color: #315f8f;
+  --bs-btn-hover-bg: #2a5179;
+  --bs-btn-hover-border-color: #274c72;
+}
+```
+
+主题的品牌层也是同样的做法。深色块要同时写下面两个选择器：单独的那个覆盖 Slate，带预设限定的那个才能压过 Paper 的深色配色。
+
+```css {title="assets/css/project.css"}
+:root {
+  --td-brand-copper: #a66722;
+  --td-brand-mark-from: #1d588c;
+  --td-brand-mark-to: #a66722;
+}
+
+[data-bs-theme='dark'],
+[data-td-preset='paper'][data-bs-theme='dark'] {
+  --td-brand-copper: #e0a35c;
+  --td-brand-mark-from: #7fb8e8;
+  --td-brand-mark-to: #e0a35c;
+}
+```
+
+| 属性 | 用于 |
+| --- | --- |
+| `--td-brand-copper`、`--td-brand-copper-dim` | 暖色的次强调色，用在页脚与 Landing 分区，以及它的弱化版 |
+| `--td-brand-mark-from`、`--td-brand-mark-to`、`--td-brand-mark-gradient` | 品牌渐变，例如顶栏里的站名 |
+| `--td-brand-header-bg` | 顶栏背景 |
+| `--td-brand-elev` | 浮层背景 |
+| `--td-brand-silk` | 次要文字 |
+| `--td-brand-line-strong` | 加重的分隔线 |
+| `--td-brand-shadow-sm`、`--td-brand-shadow-md` | 阴影 |
+
+无论改了哪些颜色，都要在两种模式下检查悬停、聚焦、禁用与选中状态：正文对比度至少 4.5:1，大号文字至少 3:1。
 
 ### 站点自有外壳的样式 {#bundles}
 
-保留自有版式的页面（例如定制首页）可以只借用主题的一部分，而不引入阅读外壳。这类布局不加载 `main`（每个 OINK 页面都用的那份样式表），而是按名称取用一份较小的主题样式表：
+自带版式的页面（例如手工搭建的首页）可以只借用主题的一部分样式，而不引入阅读外壳。这类布局不加载每个 OINK 页面都用的 `main` 样式表，而是按名称取一份较小的样式表：
 
 | 名称 | 内容 |
 | --- | --- |
-| `chrome` | 令牌、排版、四套配色、站点导航栏，以及语言、明暗与外观控件 |
-| `landing` | Landing 区块，须在 `chrome` 之后加载 |
+| `chrome` | 设计变量、排版、四套配色、站点顶栏，以及语言、明暗与外观控件 |
+| `landing` | Landing 分区，须在 `chrome` 之后加载 |
 | `search` | 命令面板与本地搜索 |
 | `compare` | 双列视图 |
 
@@ -392,16 +352,7 @@ CSS 接口有明确边界。[字体](#fonts)那一节的八个字体角色与 `-
 {{ end }}
 ```
 
-这个 partial 把样式表作为 Hugo 资源返回，并发布为 `css/<name>.css`，位于站点根目录的下一级，其中的 `../webfonts/…` 字体引用在这里才能解析。整个过程不做任何编译，压缩与指纹由布局自己完成。名称未知时构建会告警。这些样式表跟随锁定的主题版本，不要复制到站点里。
-
-不该做的事：
-
-- 不改主题目录里的任何文件（`hugo mod` 会覆盖）；
-- 不在自己的模板里读取主题 `assets/css/td/` 下的分层文件：它们不是公开接口，请按名称取用样式表；
-- 不为了改一个颜色去覆盖 `baseof.html`。有设计变量就用变量，没有再写作用域尽量小的选择器；
-- 不引用远程样式表或字体 CDN。
-
-需要额外的第三方 CSS 时，用 `layouts/_partials/hooks/head-end.html` 钩子发布本地资源，不在 Markdown 里写 `<link>`。
+这个 partial 返回一个 Hugo 资源，发布为 `css/<name>.css`，位于站点根目录下一级，其中的 `../webfonts/…` 引用在这里才能正确解析；压缩与指纹由你的布局完成。名称未知时会告警。这些样式表跟随锁定的主题版本，所以按名称取用，不要复制到站点里，也不要读取主题 `assets/css/td/` 下的分层文件，它们在任何版本都可能变化。
 
 ## 验证 {#verify}
 
@@ -409,18 +360,16 @@ CSS 接口有明确边界。[字体](#fonts)那一节的八个字体角色与 `-
 hugo --printPathWarnings
 ```
 
-- 构建输出 `Total in …` 且没有 ERROR；
-- 页面源码里 `<html>` 上有 `data-td-typography="technical"`（或所选的预设）；
-- 浏览器中顶栏显示自己的 Logo 与站名，标签页图标是自己的 favicon；
-- 切到深色模式再看一遍正文、表格、提示块、代码块与焦点框。配色改动容易只在一种模式下验证过；
-- 换一种语言，确认站名随之切换。
-
-字体是否已替换，用浏览器开发者工具查任意一段正文的 `font-family`：应当包含自己设置的字体族；再查看实际渲染字体，确认文件加载或系统字体回退符合预期。
+- 构建以 `Total in …` 结束且没有 ERROR。读一遍告警：被拒绝的颜色、字体取值或预设名都会在这里报出，并换成默认值。
+- 顶栏显示你的 Logo 与站名，浏览器标签页显示你的 favicon，切换语言时站名随之切换。
+- `<html>` 上的 `data-td-typography` 与 `data-td-preset` 是你设置的值。
+- 深色模式下，正文、表格、提示块、代码块与焦点环都仍然清晰。每处颜色改动都要在两种模式、以及你提供的每套预设下检查。
+- 在浏览器开发者工具里，正文段落的 `font-family` 包含你的字体族，实际渲染的也是你预期的字体文件或系统字体。
 
 ## 相关 {#related}
 
-- [配置总览](/zh/docs/customize/config/#identity) — 品牌相关参数的类型与默认值
+- [配置总览](/zh/docs/customize/config/#identity) — 品牌相关配置的类型与默认值
 - [导航与菜单](/zh/docs/customize/navigation/) — 顶栏菜单、页面操作与页脚数据
-- [布局与页面类型](/zh/docs/customize/layout/) — 外壳、侧栏与目录
-- [图片](/zh/docs/components/image/) — 正文里的图片、深浅色双图与图注
+- [布局与页面类型](/zh/docs/customize/layout/) — 外壳、侧栏、目录与页宽
+- [图片](/zh/docs/components/image/) — 正文图片、深浅色双图与图注
 - [首页与落地页](/zh/docs/customize/home/) — Hero、分区与落地页数据

@@ -7,52 +7,53 @@ comments: false
 search_keywords: [PlantUML, UML, 本地渲染, 时序图, 类图, 组件图, 活动图, 用例图]
 ---
 
-在 `plantuml` 围栏中写图表源码，OINK 使用随主题提供的两份脚本，在读者的浏览器中
-完成渲染。无需安装 Java、Graphviz 可执行程序或 npm 包，也不依赖 CDN 或渲染服务。
-使用本地渲染时，图表源码留在浏览器内。
+PlantUML 是很多团队早已在用的 UML 文本格式，时序图、类图、组件图、活动图、用例图都能画。`plantuml` 围栏有两种渲染方式，按图的需要选择：
 
-> [!NOTE] OINK 1.4.0 的本地渲染
-> 启用 PlantUML 且不配置端点时使用随主题提供的本地资源；显式端点继续选择服务端模式。
+- **本地模式**（默认）：用随主题提供的两份脚本在读者浏览器里渲染。不需要 Java、Graphviz、npm 包、CDN 或渲染服务，图表源码也不会离开浏览器。
+- **服务端模式**：把每张图发给你自己运行的 PlantUML 服务器。只有用到浏览器资源里没有的功能（如 `!include`、C4 图库）时才需要它。必须显式配置端点，OINK 不提供任何默认端点。
 
-在站点配置中启用：
+## 最简例子 {#minimal}
+
+PlantUML 默认关闭。打开它、但不配置端点，就是本地模式：
 
 ```yaml {title="hugo.yml"}
 params:
   plantuml: true
 ```
 
-`plantuml: { enable: true }` 同样有效。功能默认关闭；启用后，不含 PlantUML 围栏
-的页面也不会加载这两份引擎脚本。
+写成 `plantuml: { enable: true }` 效果相同。不含 `plantuml` 围栏的页面不加载这两份引擎脚本。然后把图写进围栏：
 
-## 时序图 {#minimal}
-
-将源码放入 `plantuml` 围栏。下面的示例完全在本地渲染：
-
-````markdown
+````markdown {title="源码"}
 ```plantuml
 @startuml
-actor 读者
-participant 浏览器
-读者 -> 浏览器 : 打开页面
-浏览器 -> 浏览器 : 本地渲染
-浏览器 --> 读者 : SVG 图表
+actor 运维
+participant Patroni
+database PostgreSQL
+运维 -> Patroni : 切换到 replica-2
+Patroni -> PostgreSQL : 降级原主库
+Patroni -> PostgreSQL : 提升 replica-2
+Patroni --> 运维 : 切换完成
 @enduml
 ```
 ````
 
 ```plantuml
 @startuml
-actor 读者
-participant 浏览器
-读者 -> 浏览器 : 打开页面
-浏览器 -> 浏览器 : 本地渲染
-浏览器 --> 读者 : SVG 图表
+actor 运维
+participant Patroni
+database PostgreSQL
+运维 -> Patroni : 切换到 replica-2
+Patroni -> PostgreSQL : 降级原主库
+Patroni -> PostgreSQL : 提升 replica-2
+Patroni --> 运维 : 切换完成
 @enduml
 ```
 
+围栏里可以省略 `@startuml` 与 `@enduml`，本地模式会自动补上。
+
 ## 类图 {#class}
 
-声明类、字段与关系基数。
+先声明类及其字段，再写类之间的关系与基数。
 
 ```plantuml
 @startuml
@@ -78,7 +79,7 @@ Subscription "1" -- "1" ReplicationSlot : 绑定
 
 ## 组件图 {#component}
 
-用包组织组件，用箭头表示依赖关系。
+用包把组件分组，用箭头表示谁依赖谁。
 
 ```plantuml
 @startuml
@@ -102,24 +103,24 @@ grafana --> prom : PromQL
 
 ## 活动图 {#activity}
 
-使用判断与分支说明工作流程。
+用判断与分支铺开一个工作流程，比如一次备份校验任务。
 
 ```plantuml
 @startuml
 start
-:写 content/docs/**/*.zh.md;
-:补英文对等页，抄渲染出来的标题 ID;
-if (hugo 通过?) then (是)
-  :npm test;
+:做一次基础备份;
+:在临时主机上恢复;
+if (恢复成功?) then (是)
+  :执行冒烟查询;
 else (否)
-  :按报错的文件名与行号修正;
+  :呼叫值班工程师;
   stop
 endif
-if (测试全绿?) then (是)
-  :提交 PR;
+if (行数一致?) then (是)
+  :把备份标记为已校验;
   stop
 else (否)
-  :返回修改;
+  :创建故障单;
   stop
 endif
 @enduml
@@ -127,7 +128,7 @@ endif
 
 ## 用例图 {#usecase}
 
-通过参与者与用例说明各类读者能做什么。
+用参与者与用例说明每类用户能用系统做什么。
 
 ```plantuml
 @startuml
@@ -149,31 +150,17 @@ rectangle 文档站 {
 
 ## 深色模式 {#dark-mode}
 
-本地图表跟随深浅色切换，作者的 `skinparam` 设置仍然有效。切换时丢弃旧主题的
-过期渲染结果；已打开的查看器保留缩放和平移位置。
+本地模式下，图跟随读者的深浅色模式切换，你写的 `skinparam` 设置依然有效。切换时会丢弃已经过时的渲染结果，已打开的查看器保留缩放比例与位置。
 
 ## 放大、源码与下载 {#zoom}
 
-本地 PlantUML 与 Mermaid 使用[同一查看器](/zh/docs/components/mermaid/#zoom)。
-点击角上的放大按钮，拖动或用方向键平移，滚轮、双指、`+` 和 `-` 缩放，
-“适应窗口”或 `0` 显示全图，`Esc` 关闭并恢复焦点。查看器复用 Blob 图片，
-不会把 PlantUML 的 SVG 标记或链接插入页面 DOM，也不重复渲染。
+本地模式下，每张图的角上有一个按钮，打开的是[与 Mermaid 相同的查看器](/zh/docs/components/mermaid/#zoom)：拖动或用方向键平移；滚轮、双指捏合、`+` 与 `-` 缩放；点「适应窗口」或按 `0` 显示整张图；按 `Esc` 关闭，焦点回到按钮上。查看器直接复用页面上已有的图片，不会重新渲染。
 
-“源码”和“复制代码”保留箭头、引号、和号及中文。“下载 SVG”导出带样式的
-独立文件；有外部资源依赖时拒绝导出，失败有明确提示。页面的源码折叠区同样可查看和复制。显式服务端模式沿用旧行为。
-
-## 按需加载与打印 {#loading}
-
-图表距离视口不超过 320px 时才加载两份本地引擎；同页仅加载一次。隐藏标签页、
-折叠区或宽度为零的容器在显示后处理。缺少 IntersectionObserver 时使用滚动和
-尺寸检查。Mermaid 与 PlantUML 在主线程串行执行，没有新增安装依赖或构建步骤。
-
-普通浏览器打印保留已渲染图片，并为尚未渲染的图显示源码。它不会等待异步引擎；
-需要全是图片时，先浏览并展开需要的图。独立 Print、Markdown 与 RSS 保持源码回退。
+「源码」和「复制代码」原样保留箭头、引号、和号与中文。「下载 SVG」保存一份带样式的独立文件；依赖外部资源的图无法导出，失败时工具栏会给出提示。每张图下方的源码折叠区同样可以展开和复制。服务端模式只显示服务器返回的图片，没有查看器。
 
 ## 可选渲染服务 {#server}
 
-已有站点可以继续使用显式配置的端点：
+图需要浏览器资源里没有的功能（见[限制](#limits)），而你又运行着一台 PlantUML 服务器时，改用服务端模式：
 
 ```yaml {title="hugo.yml"}
 params:
@@ -183,50 +170,35 @@ params:
     svg: false
 ```
 
-非空的 `svg_image_url` 选择服务端渲染，删除该设置则使用本地渲染。
-端点应保留所需的末尾路径分隔符，使用包含主机的 HTTP(S) URL 或同站路径。
-非法端点会告警并关闭渲染，不会静默切换模式。OINK 不提供默认公共端点。
+`svg_image_url` 非空即为服务端模式；删掉它或留空，就回到本地模式。主题把编码后的图直接拼接在这个 URL 后面，所以它必须以服务器要求的路径分隔符结尾，通常是 `/`。它必须是带主机名的 HTTP(S) URL，或同站路径。端点不合法时会告警并关闭 PlantUML 渲染，不会悄悄改用本地模式。
 
-服务端模式会把编码后的图表源码发送到端点，并保留原有的 `svg` 选项。
-本地模式忽略 `svg`：生成的 SVG 通过图片展示，图内链接与标记不会进入页面 DOM。
+服务端模式会把每张图编码后的源码发给这个端点，请使用你信得过的服务器。`svg: true` 把服务器返回的 SVG 内联到页面里，而不是以图片显示。本地模式忽略 `svg`，总是以图片显示，图里的链接和标记不会进入页面。
 
-## 输出形态 {#outputs}
+## 加载与输出 {#outputs}
 
-| 输出 | 呈现 |
-| --- | --- |
-| HTML | 启用后显示本地 SVG 图片；渲染成功前保留可读源码 |
-| 浏览器打印 HTML | 已渲染图片按纸张宽度缩放；未渲染的图显示源码 |
-| 独立 Print 输出 | 可读源码，不加载 PlantUML 运行时 |
-| Markdown 与 RSS | 原始图表源码，不发送渲染请求 |
+本地模式下，第一张图距离视口不超过 320px 时，两份引擎脚本才加载，同一页只加载一次。隐藏标签页、未展开的折叠块和宽度为零的容器里的图，等显示出来再渲染；没有 IntersectionObserver 的浏览器改用滚动与尺寸检查。Mermaid 与 PlantUML 的图在主线程上逐张渲染。
 
-JavaScript 关闭、引擎下载失败、输入不受支持或渲染出错时，源码仍然可读。
-一张图失败不会阻止同页其它图表渲染。
+关闭 JavaScript、引擎下载失败、图里用了不支持的内容或渲染出错时，源码依然可读，同页其他图照常渲染。从浏览器打印时，已渲染的图按纸张宽度缩放，尚未渲染的图打印成源码。打印无法等待引擎加载，所以需要整套图时，先把要用的图逐一滚动到、所在的标签页和折叠块也打开，再打印。站点的打印视图、Markdown 输出与 RSS 输出原始源码，不发送渲染请求。
 
 ## 参数参考 {#reference}
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
 | `params.plantuml` | boolean 或 map | 关闭 | `true` 启用本地渲染 |
-| `params.plantuml.enable` | boolean | `false` | 使用 map 形式时的开关 |
-| `params.plantuml.svg_image_url` | string | 无 | 可选端点，填写后选择原有服务端模式 |
-| `params.plantuml.svg` | boolean | `false` | 仅服务端模式有效：使用内联 SVG 而非图片 |
+| `params.plantuml.enable` | boolean | `false` | map 形式的开关 |
+| `params.plantuml.svg_image_url` | string | 无 | 服务端端点；非空即选择服务端模式 |
+| `params.plantuml.svg` | boolean | `false` | 仅服务端模式有效：内联 SVG 而不是图片 |
 {.fields meta="type default"}
 
-围栏不接受代码块的标题、复制按钮、行号、编号或缩放属性。本地渲染会为省略
-`@startuml` / `@enduml` 的源码补上包围标记；显式写出的图表起止标记保持不变。
+围栏不接受代码块的任何属性（标题、复制、行号、编号、缩放），写了会告警并被忽略。
 
 ## 限制与常见问题 {#limits}
 
-- 浏览器资源只包含核心引擎与 Graphviz 布局库，不会下载 `!include`、`!includeurl`、
-  外部主题、C4、AWS 或其它可选图标库。不支持的资源会保留源码。
-  此类内容请改写为自包含图表、使用预渲染图片，或显式配置服务端。
-- 固定引擎为 `@plantuml/core` 1.2026.9，布局库为 Viz.js 3.31.0。两份脚本未压缩时
-  合计约 4.7 MB，gzip 后约 1.6 MB；只在启用且图表接近视口时加载，可正常使用 HTTP 缓存。
-- 渲染使用浏览器的 JavaScript 和 WebAssembly。设有严格 CSP 的站点需要允许
-  同站脚本、WebAssembly 编译（`wasm-unsafe-eval`）与 `blob:` 图片；资源被拦截时保留源码。
-- 大图仍然会消耗浏览器 CPU 和内存。运行时逐张渲染，不在后台 Worker 中执行。
-  若引擎发生不可取消的超时，剩余 PlantUML 图保留源码，刷新页面后才能重试。
-- 图表以图片呈现，SVG 超链接不可点击。本集成不提供编号。
+- 浏览器资源只包含核心引擎和 Graphviz 布局库，`!include`、`!includeurl`、外部主题、C4、AWS 以及其他可选图标库都用不了，用到它们的图保留为源码。可以把图改成自包含的，改用预渲染的[图片](/zh/docs/components/image/)，或者切换到[服务端模式](#server)。
+- 引擎为 `@plantuml/core` 1.2026.9，布局库为 Viz.js 3.31.0。两份脚本合计约 4.7 MB，gzip 后约 1.6 MB；只在图接近视口时加载，可以正常利用 HTTP 缓存。
+- 本地渲染依赖 JavaScript 和 WebAssembly。设置了严格内容安全策略（CSP）的站点，需要允许同站脚本、用于 WebAssembly 编译的 `wasm-unsafe-eval`，以及 `blob:` 图片；其中任何一项被拦截，图都会保留为源码。
+- 大图会消耗读者的 CPU 和内存，而且渲染在主线程上进行，不在 Worker 里。引擎一旦遇到无法取消的超时，本页剩余的 PlantUML 图保留源码，刷新页面后才会重试。
+- 图以图片呈现，里面的链接不可点击，也不能编号。
 
 ## 相关 {#related}
 

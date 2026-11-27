@@ -1,7 +1,7 @@
 ---
 title: OINK CLI
 linkTitle: CLI
-description: An introduction to the optional OINK command-line companion for Hugo sites. The CLI is still a draft.
+description: Learn what the optional OINK command-line tool does and how to build its unreleased local candidate.
 weight: 80
 type: docs
 icon: fa-solid fa-terminal
@@ -11,15 +11,18 @@ aliases:
   - /docs/start/cli-overview/
 ---
 
-`oink` is an optional command-line companion for OINK sites that helps create
-sites, inspect Hugo output, and review content or theme changes. Hugo still
-renders the site, and the project remains a standard Hugo repository.
+`oink` is an optional command-line tool for OINK sites. It checks the links,
+anchors and translations in Hugo's real output, creates a site from the
+Starter, and previews a theme upgrade before writing it. Hugo still renders
+the site, and a project you manage with `oink` remains an ordinary Hugo
+repository.
 
-> [!NOTE] Optional draft · not needed for ordinary sites
-> Everyday OINK sites build and preview with standard `hugo` and `hugo server`
-> commands—you do not need to install or build `oink-cli`. OINK CLI is
-> developed in the independent `oink-cli` repository as a local `0.1.0-dev`
-> candidate with no public release or installer yet; commands may still change.
+> [!NOTE] Unreleased, and not required
+> Every OINK site builds and previews with plain `hugo` and `hugo server`; you
+> do not need the CLI. It is developed in its own repository,
+> [pgsty/oink-cli](https://github.com/pgsty/oink-cli), with its own version and
+> release cycle, and is currently a local `0.1.0-dev` candidate: there is no
+> published binary or installer yet, and its commands may still change.
 
 ## What it does {#capabilities}
 
@@ -33,14 +36,16 @@ renders the site, and the project remains a standard Hugo repository.
 | `oink translations` | Inspect translation status and diffs, and record human reviews. |
 | `oink upgrade` | Compare a theme upgrade before writing module changes. |
 
-The CLI also supports JSON/YAML output, explicit multi-site workspaces, and
-checked build artifacts. Studio and general source-editing commands have been
-retired: use `oink dev` for live preview, a regular editor for authoring, and
-`inspect` or `check` for structured diagnostics.
+Every command can also report in JSON or YAML (`--json`, `--yaml`) for
+scripts and CI, and the CLI can check several explicitly registered sites
+together and produce checked build artifacts. It has no editor of its own:
+write in your usual editor, preview with `oink dev`, and use `oink inspect` or
+`oink check` for structured diagnostics.
 
 ## Try the local candidate {#try-locally}
 
-From an `oink-cli` source checkout, build the binary with Go 1.27.4+ and Make:
+Build the binary from a checkout of `oink-cli` with Go 1.27.4 or newer and
+Make:
 
 ```sh
 cd oink-cli
@@ -51,19 +56,23 @@ make build
 ./bin/oink check --site ../my-docs
 ```
 
-Replace `../my-docs` with your site path. Site commands require Hugo 0.169.0+
-(any edition for OINK 1.6.0+; Hugo Extended 0.169.0 for OINK 1.5.1 and older)
-and Go 1.27+ for module operations. `oink init` uses the CLI's
-bundled Starter snapshot; follow the [upgrade guide](/docs/admin/upgrade/) to
-update a generated site to OINK v1.6.0.
+Replace `../my-docs` with the path to your site. `make deps` is the only step
+that downloads anything (the Go build dependencies); the CLI itself runs
+offline unless you pass `--network` to a command that needs remote inputs it
+has not cached.
 
-`make deps` downloads Go build dependencies. CLI commands run offline by
-default; pass `--network` when a command needs uncached remote inputs.
-Inspection and plan previews (`new`, `move`, `upgrade`) leave site sources
-untouched until you run their explicit apply step, whereas `dev` and `build`
-write normal Hugo output and caches.
+The candidate still expects Hugo Extended {{< param hugoMinVersion >}} or newer
+for its site commands, even though OINK itself builds with any edition, and its
+module operations need Go 1.27 or newer. `oink init` copies a Starter snapshot
+pinned to OINK v1.3.2, so follow the [upgrade guide](/docs/admin/upgrade/) to
+bring a generated site to the current release.
+
+Previews change nothing: `new`, `move` and `upgrade` leave site sources
+untouched until you run the explicit apply step (`oink plans apply` for a
+saved plan, `oink upgrade --write --expect-plan ID` for an upgrade). `dev` and `build` write
+Hugo's normal output and caches.
 
 ## Further reading {#further-reading}
 
-- [CLI contract](/docs/design/decisions/cli/): supported behavior and maintainer rules.
-- [Maintenance roadmap](/docs/design/proposals/oink-cli-maintenance-roadmap/): historical development stages and their retirement status.
+- [CLI contract](/docs/design/decisions/cli/): every supported command, what it may change, and the maintainer rules.
+- [Maintenance roadmap](/docs/design/proposals/oink-cli-maintenance-roadmap/): the historical development stages and which of them were retired.

@@ -7,20 +7,19 @@ icon: fa-solid fa-images
 search_keywords: [expo, album, gallery, images, GIF, wall, cards, seamless, zoom]
 ---
 
-Expo displays image collections as albums. A sidebar groups the albums. The
-main area shows the images in the selected album. Each image opens in a viewer.
-
-> [!NOTE] Available in OINK 1.3.0
-> Expo is included in OINK v1.3.0.
-
-Open the [example albums](/expo/) to try the controls. Use the
-[Gallery component](/docs/components/gallery/) for an image grid inside a text page.
+Expo turns folders of images into a collection readers browse rather than
+read: albums grouped in the sidebar, a grid of the selected album's images,
+and a viewer for zooming and stepping through them. Use it when the images are
+the content, such as a photo archive, a screenshot library or a set of posters
+and diagrams. For a few images inside an article, the
+[Gallery component](/docs/components/gallery/) fits better. The
+[example albums](/expo/) show every control described here.
 
 ## Create an album {#create-an-album}
 
-Use one directory for each album. Put the images in that directory's `images/`
-folder. One `index.md` describes the album. Filenames supply the default image titles.
-Expo does not require a Markdown or YAML file for each image.
+An album is a folder holding an `index.md` that describes it and an `images/`
+subfolder with the pictures. Filenames supply the default image titles, so an
+album needs no file per image; you add metadata only where you want more.
 
 ```text
 content/photos/
@@ -38,7 +37,7 @@ content/photos/
         └── arch.jpg
 ```
 
-1. Create the section entry:
+1. Create the section entry, which makes everything below it an Expo page:
 
    ```yaml {title="content/photos/_index.md"}
    ---
@@ -72,20 +71,20 @@ content/photos/
 
 4. Put the images in the album's `images/` folder.
 
-The section lists its child topics and albums. The sidebar follows the same
-content tree. On narrow screens, open the navigation drawer to select an album.
-The album body is optional. If supplied, it appears above the images.
+A section page lists its child topics and albums, and the sidebar follows the
+same tree; on narrow screens it opens as a navigation drawer. The album's body
+text is optional and appears above the images.
 
-Split large collections into separate albums. Expo has no automatic image
-pagination. A section card uses the first sorted image as its cover. A topic
-without images uses the first available image from its descendant albums.
-The cover fills a 4:3 frame and can crop the preview.
+Expo does not paginate, so split a large collection into several albums. On a
+section page, each album card uses the album's first image in sort order as its
+cover, and a topic without images of its own borrows the first one from its
+albums. Covers fill a 4:3 frame, so they may be cropped.
 
-## Add image metadata {#image-metadata}
+## Image metadata {#image-metadata}
 
-Add a `resources` entry to the album front matter when an image needs a title,
-description, credit, or fixed position. The `src` path is relative to the album
-directory.
+To give an image a title, description, credit or fixed position, add a
+`resources` entry to the album's front matter. The `src` path is relative to
+the album folder.
 
 ```yaml {title="Album front matter"}
 resources:
@@ -109,23 +108,26 @@ resources:
 | `params.id` | Stable image ID within the album |
 | `params.original` | Optional path to another image in the same album bundle |
 
-Images with equal weights keep the resource name order. To set a complete order,
-give each image a weight. Images without a weight come before positive weights.
+Images with equal weights keep the order of their resource names. Because the
+default weight is `0`, images without a weight come before any image with a
+positive weight; to fix the complete order, weight every image.
 
-Use ASCII letters or digits for the first ID character. The remaining characters can
-also include `_` and `-`. Keep IDs unique within an album. The example creates
-`/photos/nature/field-notes/#img-fern`. This link stays valid after a filename
-change if the album URL and explicit ID stay the same. Without an explicit ID,
-Expo uses a filename hash. Renaming that file changes the link.
+An `id` gives the image a permanent link, here
+`/photos/nature/field-notes/#img-fern`, which survives renaming the file as long
+as the album URL stays the same. Without one, Expo derives the ID from a hash
+of the filename, so renaming the file breaks links to the image. An ID starts
+with an ASCII letter or digit, may continue with `_` and `-`, and must be
+unique within its album.
 
-To use a separate original, put it in `originals/` and set
-`params.original: originals/fern.jpg`. Keep the preview and original at the same
-aspect ratio. Keep originals outside the `expo.images` pattern to avoid duplicate
-entries. Expo reads bundled images; it does not fetch remote files for an album.
+To link a larger original from a lighter preview, put the original in
+`originals/` and set `params.original: originals/fern.jpg`. Keep both at the
+same aspect ratio, and keep `originals/` outside the `expo.images` pattern, or
+every original also appears in the album as an image of its own. Expo reads
+only images in the album bundle; it never fetches remote files.
 
-## Set the defaults {#defaults}
+## Defaults {#defaults}
 
-Set site defaults in `hugo.yml`:
+Choose the site-wide layout and tile size in `hugo.yml`:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -142,7 +144,8 @@ params:
 | `mode` | `wall`, `cards`, or `seamless` | `wall` |
 | `size` | An integer from `160` to `360`, in CSS pixels | `240` |
 
-Use a top-level `expo` block in album front matter to replace the site block:
+An album, or a section through `cascade`, can set its own top-level `expo`
+block:
 
 ```yaml {title="Album front matter"}
 expo:
@@ -151,16 +154,16 @@ expo:
   size: 280
 ```
 
-This override replaces the whole block. Omitted fields use built-in defaults,
-not values from the site block. A section can supply the block through `cascade`.
-The size is a layout target, not a fixed width and height for every image.
+A page block replaces the site block as a whole: a field it omits takes the
+built-in default, not the site's value. `size` is the tile size the layout aims
+for, not a fixed width and height for every image.
 
-The browser saves the reader's layout and size choices for the same site origin.
-These choices take precedence over author defaults. They remain in use after
-a reload, an album change, or an appearance change. If browser storage is
-unavailable, Expo uses the author defaults when the page loads.
+A reader's own choice wins over both. The layout and size a reader picks are
+saved in the browser for the whole site and persist through reloads, album
+changes and appearance changes. When browser storage is unavailable, each page
+starts from your defaults.
 
-## Select a layout {#layouts}
+## Layouts {#layouts}
 
 | Mode | Display |
 | --- | --- |
@@ -168,20 +171,22 @@ unavailable, Expo uses the author defaults when the page loads.
 | `cards` | Columns of cards with visible titles, descriptions, and credits |
 | `seamless` | Rows of image tiles with no gaps between them |
 
-The toolbar has three layout icons, a play/pause button, and an image-size slider.
-On devices with a mouse, Wall and Seamless show captions on hover or keyboard
-focus. Images with extreme proportions can have space inside their tiles.
-The album tiles contain the whole image.
+Readers switch layouts with the three icons in the album toolbar, which also
+holds a play/pause button and an image-size slider. On devices with a mouse,
+`wall` and `seamless` show captions on hover or keyboard focus. Album tiles
+always show the whole image, so an image with extreme proportions leaves empty
+space inside its tile.
 
-GIFs play by default. Select Pause to show still previews. If the system requests
-reduced motion, Expo starts with still previews. Select Play to start them.
-The play button is disabled when the album has no GIFs. Images load as they
-approach the visible area; large GIF files still require their full transfer size.
+GIFs play by default, and Pause switches them to still previews. When the
+system asks for reduced motion, Expo starts with still previews and Play starts
+them. The button is disabled in an album without GIFs. Images load as they
+approach the visible area, but a large GIF still costs its full file size once
+it loads.
 
-## Use the image viewer {#viewer}
+## The image viewer {#viewer}
 
-Select an image to open the viewer. A small image starts at its original size.
-A large image shrinks until both dimensions fit the available image area.
+Selecting an image opens the viewer. A small image starts at its original
+size; a large one shrinks until it fits the image area in both directions.
 
 | Control | Action |
 | --- | --- |
@@ -193,29 +198,30 @@ A large image shrinks until both dimensions fit the available image area.
 | Previous / Next | Show the adjacent image in the same album |
 | Close | Close the viewer and restore focus to an image link |
 
-Expand to fit keeps the whole image visible. It does not switch the browser to
-fullscreen. Manual zoom can make the image larger than the viewing area. Hold
-the left mouse button and drag to move the enlarged image. Movement stops at
-the image bounds. On a touch screen, an enlarged image uses native scrolling.
-When the image fits, swipe horizontally with one finger to change images;
-pinching keeps native browser behavior. Double-click alternates between the
-initial fit and a closer view: a reduced image opens at 100% under the pointer,
-while an image already at its original size expands to fit.
+Expand to fit keeps the whole image visible; it does not put the browser into
+fullscreen. Zooming in can make the image larger than the viewing area: drag
+it with the left mouse button, and it stops at the image's edges. On a touch
+screen, an enlarged image scrolls natively, a fitted image changes with a
+one-finger horizontal swipe, and pinching keeps the browser's own behavior.
+Double-click alternates between the initial fit and a closer view: a reduced
+image opens at 100% under the pointer, and an image already at its original
+size expands to fit.
 
-Changing images resets the scale and position. Previous and Next stop at the
-ends of the album. The percentage uses CSS pixels: at 100%, one source pixel
+Changing images resets the scale and position, and Previous and Next stop at
+the ends of the album. Percentages are in CSS pixels: at 100%, one source pixel
 occupies one CSS pixel.
 
-## Use keyboard shortcuts {#shortcuts}
+## Keyboard shortcuts {#shortcuts}
 
-While browsing an album grid with `keyboard_nav` enabled, {{< kbd "M" >}} cycles
-between `wall`, `cards`, and `seamless`, {{< kbd "," >}} / {{< kbd "<" >}}
-shrinks the tile size by one step (`−20 px`), and {{< kbd "." >}} /
-{{< kbd ">" >}} enlarges it by one step (`+20 px`).
+On an album page (not a section page listing albums), with `keyboard_nav`
+enabled, {{< kbd "M" >}} cycles through `wall`, `cards` and `seamless`,
+{{< kbd "," >}} / {{< kbd "<" >}} shrinks the tiles by one step (`−20 px`), and
+{{< kbd "." >}} / {{< kbd ">" >}} enlarges them by one step (`+20 px`).
 
-These shortcuts work while the viewer is open. They take precedence over the
-page's single-key navigation. They do not handle text input, input method
-composition, or Ctrl/Command/Alt combinations.
+The viewer has its own keys. They work whenever the viewer is open, whatever
+`keyboard_nav` says, and take precedence over the page's single-key
+navigation. They stay out of the way of text input, input-method composition
+and any Ctrl, Command or Alt combination.
 
 | Key | Action |
 | --- | --- |
@@ -223,60 +229,53 @@ composition, or Ctrl/Command/Alt combinations.
 | Q or H | Previous image |
 | E or L | Next image |
 | J or − | Zoom out |
-| K or + | Zoom in |
+| K, + or = | Zoom in |
 | R or 0 | Reset the size and position |
 | F | Expand to fit |
 | Escape | Close the viewer |
 
-WASD moves the image by 80 CSS pixels per press, only along an axis that
-overflows. Left and Right arrow keys change images when horizontal scrolling
-is unnecessary. When the image is wider than the viewing area, the arrows
-retain native scrolling. The `keyboard_nav` setting controls page shortcuts;
-it does not disable the viewer controls.
+W, A, S and D move the image 80 CSS pixels per press, and only along an axis
+where it overflows. The Left and Right arrow keys change images while the image
+fits horizontally; once it is wider than the viewing area, they scroll it
+instead. In right-to-left languages the arrows follow the reading direction.
 
-## Use the site appearance {#appearance}
+## Appearance and page width {#appearance}
 
-Expo uses Paper, Slate, Ink, and Terminal with the site's light or dark mode.
-Select these options in the shared navigation. The album body has its image
-toolbar and no article action menu.
+Expo has no appearance settings of its own. Albums use the site's visual
+preset (Paper, Slate, Ink or Terminal) and its light or dark mode, readers
+switch them from the shared navigation as on any other page, and the grid
+re-lays itself out after a preset change. To offer all four presets, set
+`params.ui.preset_menu: [paper, slate, ink, terminal]`; see
+[Visual presets](/docs/customize/brand/#visual-presets). The top navbar follows
+the site's navbar settings, and the album page shows its image toolbar instead
+of the article action menu.
 
-To expose all four presets and keep the top navbar visible, use:
+An album uses the full available page width and has no outline on the right.
+Set `page_width` in its front matter for a narrower body. If your site sets
+`params.ui.shell_types`, keep `expo` in the list, or albums lose their sidebar.
 
-```yaml {title="hugo.yml"}
-params:
-  ui:
-    preset: paper
-    preset_menu: [paper, slate, ink, terminal]
-    navbar_enabled: true
-    navbar_autohide: false
-```
+## Translations and other outputs {#translations-and-outputs}
 
-Expo uses the full available page width by default and has no right-hand outline.
-Set `page_width` in page front matter if the album needs a narrower body. If your
-site overrides `params.ui.shell_types`, include `expo` to retain its sidebar.
+For a Chinese album, add `index.zh.md` beside `index.md`, and `_index.zh.md` to
+each translated section. Both languages share the image files; translate the
+title, description and resource metadata in each page, and keep the same image
+`id` for the same image so links match across languages.
 
-## Translate and export an album {#translations-and-outputs}
-
-Add `index.zh.md` beside `index.md` for a Chinese album. Add `_index.zh.md` for
-each translated section. Both languages can share the image files. Translate
-the title, description, and resource metadata in each page. Keep image IDs the
-same when they refer to the same image.
-
-HTML works without JavaScript: image links open the original files, and captions
-remain visible. When enabled, Print uses still previews. Markdown and LLMSFULL
-include image links and metadata. RSS includes static image descriptions.
-See [Print](/docs/customize/print/) and [Agent outputs](/docs/customize/agents/)
-for output configuration.
+Albums work without JavaScript: image links open the original files and
+captions stay visible. Where you enable them, Print shows still previews,
+Markdown and LLMSFULL list image links with their metadata, and RSS carries
+static image descriptions. See [Print](/docs/customize/print/) and
+[Agent outputs](/docs/customize/agents/) to turn those outputs on.
 
 ## Check an album {#check-an-album}
 
-1. Run `hugo --printPathWarnings` with a theme version that includes Expo.
-2. Open each album and confirm its image order, titles, and descriptions.
-3. Test a small image, a wide image, a long image, and a GIF if the album has one.
-4. Test Reset, Expand to fit, zoom, dragging, keyboard navigation, and Locate in album.
-5. Check both languages, narrow screens, the four presets, and light/dark mode.
+1. Run `hugo --printPathWarnings` and read the warnings.
+2. Open each album and confirm the image order, titles and descriptions.
+3. Open a small image, a wide image, a tall image and, if the album has one, a GIF.
+4. Try Reset, Expand to fit, zoom, dragging, the keyboard shortcuts and Locate in album.
+5. Check both languages, a narrow screen, each preset you offer, and light and dark mode.
 
-If an album is empty, check its `type`, bundle structure, and `expo.images` pattern.
-If a default seems to have no effect, check the stored reader choice and the
-whole-block override rule. For required behavior and maintainer checks, see the
-[Expo contract](/docs/design/expo/) and [design decision](/docs/design/decisions/expo/).
+An empty album usually means a wrong `type`, a folder that is not a page bundle
+(no `index.md`), or an `expo.images` pattern that matches nothing. A default
+that seems to have no effect is usually overridden by a choice saved in your
+browser, or by a page `expo` block that replaced the whole site block.

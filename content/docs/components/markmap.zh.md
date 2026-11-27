@@ -6,133 +6,102 @@ weight: 130
 search_keywords: [思维导图, Markmap, mind map, 大纲, outline, 脑图, 树状图]
 ---
 
-`markmap` 围栏的正文是一段普通的 Markdown 大纲：标题与列表决定层级，浏览器把它画成一棵可展开、可折叠的树。适合把「这一节讲了什么」的层级一次呈现。节点之间有方向、有条件的流程用 [Mermaid](/zh/docs/components/mermaid/)。
-
-> [!NOTE] OINK 1.6.0 中的 Markmap 1
-> 本页示例面向 OINK v1.6.0 引入的 Markmap 1.1.0。
-> 从 v1.5.1（Markmap 0.18）升级的站点请查阅[迁移说明](#migration)。
+思维导图让读者一眼看清一个主题的全貌：一份指南讲了哪些内容、一个系统拆成哪几块、哪些检查项归在一起。`markmap` 围栏直接用普通的 Markdown 大纲画出这张图：源码在 GitHub、打印稿和订阅源里仍是一份可读的列表，站点读者则可以折叠分支、缩放和拖动。节点之间有方向或条件（谁调用谁、失败就重试）时，改用 [Mermaid](/zh/docs/components/mermaid/) 流程图。
 
 ## 最简例子 {#minimal}
 
-先在站点配置中启用 Markmap，默认关闭；未启用时，围栏保留为可读的代码块。
+Markmap 默认关闭，需要先在站点配置中打开。打开之前，围栏只是普通代码块，也不加载任何导图脚本。
 
 ```yaml {title="hugo.yml"}
 params:
   markmap: true
 ```
 
-再把大纲写进 `markmap` 围栏：
+然后把大纲写进 `markmap` 围栏：
 
 ````markdown {title="源码"}
 ```markmap
-# OINK
-## 本地优先
-- 运行时全部随主题分发
-- 不依赖任何 CDN
-## Markdown 原生
-- 组件是围栏和属性行
-- 不写 shortcode 也能用
-## 四态输出
-- HTML
-- 打印
-- Markdown
-- RSS
+# 备份策略
+## 物理备份
+- pgBackRest 全量与增量
+- 持续归档 WAL
+## 逻辑备份
+- 按库执行 pg_dump
+- 恢复到临时实例
+## 校验
+- 每周恢复演练
+- 每份备份做校验和
 ```
 ````
 
 ```markmap
-# OINK
-## 本地优先
-- 运行时全部随主题分发
-- 不依赖任何 CDN
-## Markdown 原生
-- 组件是围栏和属性行
-- 不写 shortcode 也能用
-## 四态输出
-- HTML
-- 打印
-- Markdown
-- RSS
+# 备份策略
+## 物理备份
+- pgBackRest 全量与增量
+- 持续归档 WAL
+## 逻辑备份
+- 按库执行 pg_dump
+- 恢复到临时实例
+## 校验
+- 每周恢复演练
+- 每份备份做校验和
 ```
 
-一级标题是根节点，其余标题与列表项按缩进挂在它下面。点击节点上的圆点折叠或展开这一支，鼠标滚轮缩放，拖动平移。
-OINK 1.4.0 中，导图下方的 **适应窗口** 按钮恢复完整大纲，并重新启用阅读列
-宽度变化时的自动适配。拖动或缩放后会暂停自动适配，保留阅读位置。按钮也可通过
-Tab 和 Enter 操作。
+第一个标题是根节点，其余标题和列表项按层级挂在它下面。点击节点上的圆点折叠或展开这一支，滚轮缩放，拖动平移。在你拖动或缩放之前，正文栏宽度一变，导图就自动重新适配；一旦手动操作过，导图会保持你的位置，此时点导图下方的 **适应窗口** 即可重新显示整张图，并恢复自动适配。这个按钮可以用键盘操作，打印时隐藏。
 
 ## 多层级 {#depth}
 
-渲染器自动排布各层节点，并将整棵树适配到画布。下面是本站文档的六个栏目与它们的页数。
+主题需要几层就写几层标题和列表，导图会自动排布，并把整棵树缩放到画布内。
 
 ````markdown {title="源码"}
 ```markmap
-# OINK 文档
-## 简介（4 页）
-### 它是什么
-### 功能一览
-### 案例
-### 许可
-## 快速上手（4 页）
-### 选择起点
-### OINK Starter
-### 仓库导览
-### 从零开始
-## 创作内容（8 页）
-### 组织内容
-### 编写页面
-### 页面参数
-### 博客
-### 书籍
-### 发布与下载
-### OpenAPI
-## 组件（22 页）
-### 提示块 / 标签页 / 步骤 / 卡片
-### 图片 / 画廊 / 表格 / 参数表
-### 图表：Mermaid / PlantUML / 思维导图 / ECharts
-## 定制站点（15 页）
-### 品牌 / 导航 / 搜索 / 多语言
-### 首页 / 版本 / 分类 / 打印
-## 维护管理（7 页）
-### 预览 / 部署 / 升级
-### 评论 / 统计 / 排错
+# 运维手册
+## 安装
+### 环境要求
+### 单节点
+### 三节点集群
+## 配置
+### 连接池
+### 内存与 WAL
+### 访问控制
+## 监控
+### 监控面板
+### 告警规则
+## 备份与恢复
+### 全量与增量备份
+### 时间点恢复
+### 恢复演练
+## 升级
+### 小版本
+### 用 pg_upgrade 升级大版本
 ```
 ````
 
 ```markmap
-# OINK 文档
-## 简介（4 页）
-### 它是什么
-### 功能一览
-### 案例
-### 许可
-## 快速上手（4 页）
-### 选择起点
-### OINK Starter
-### 仓库导览
-### 从零开始
-## 创作内容（8 页）
-### 组织内容
-### 编写页面
-### 页面参数
-### 博客
-### 书籍
-### 发布与下载
-### OpenAPI
-## 组件（22 页）
-### 提示块 / 标签页 / 步骤 / 卡片
-### 图片 / 画廊 / 表格 / 参数表
-### 图表：Mermaid / PlantUML / 思维导图 / ECharts
-## 定制站点（15 页）
-### 品牌 / 导航 / 搜索 / 多语言
-### 首页 / 版本 / 分类 / 打印
-## 维护管理（7 页）
-### 预览 / 部署 / 升级
-### 评论 / 统计 / 排错
+# 运维手册
+## 安装
+### 环境要求
+### 单节点
+### 三节点集群
+## 配置
+### 连接池
+### 内存与 WAL
+### 访问控制
+## 监控
+### 监控面板
+### 告警规则
+## 备份与恢复
+### 全量与增量备份
+### 时间点恢复
+### 恢复演练
+## 升级
+### 小版本
+### 用 pg_upgrade 升级大版本
 ```
 
 ## 链接、代码与强调 {#inline-markdown}
 
-节点里可以写行内 Markdown：链接可点击，行内代码用等宽字体，粗体与斜体照常生效。
+节点文字支持行内 Markdown：链接可以点击，并以链接文字作为无障碍名称；行内代码用等宽字体；粗体与斜体照常生效。
 
 ````markdown {title="源码"}
 ```markmap
@@ -164,10 +133,11 @@ Tab 和 Enter 操作。
 - [本站源码](https://github.com/pgsty/oink.pgsty.com)
 ```
 
+写在标题或列表项下面的段落、表格和代码块，会成为该节点的注释。节点上会出现一个标记，点击它，或用 Tab 聚焦后按 Enter 或空格，即可打开注释；按 Escape 关闭，焦点回到标记上。
+
 ## 节点里的公式 {#math}
 
-节点中出现 `$…$` 时，Markmap 运行时按需加载本地 MathJax 来渲染公式。
-普通正文公式继续使用 KaTeX。
+在节点里写 `$…$` 即可插入公式。导图用随主题内置的 MathJax 排版公式，只有含公式的导图才会加载它；正文里的普通公式仍由 [KaTeX](/zh/docs/components/math/) 渲染。
 
 ````markdown {title="源码"}
 ```markmap
@@ -195,7 +165,7 @@ Tab 和 Enter 操作。
 
 ## 控制初始展开层数 {#options}
 
-围栏正文最前面可以写一段 Markmap 自己的 YAML 头，它不是 Hugo front matter。`foldLevel` 只展开前几层，其余分支由读者点开。`colorDepth` 指定从第几层起同一分支使用同一种颜色。
+大导图初始折叠起来更好读。在围栏正文最前面写一段 Markmap 的 YAML 头（它属于这张图，不是 Hugo 的 front matter）：`foldLevel: 1` 只显示根节点和第一层分支，更深的层级全部收起，读者按需展开自己关心的分支。`colorDepth` 指定从第几层起，每个分支沿用同一种颜色。
 
 ````markdown {title="源码"}
 ```markmap
@@ -205,19 +175,20 @@ markmap:
   colorDepth: 2
 ---
 
-# 主题仓库的检查脚本
-## 源码级契约
-### check-i18n.py
-### check-taxonomy.py
-### check-font-tokens.py
-## 输出级检查
-### check-output.py
-### check-goldens.py
-### check-code-blocks.py
-### check-content-primitives.py
-### check-media-primitives.py
-## 浏览器运行时
-### node --test tests/js/**/*.test.js
+# 故障处理手册
+## 主库宕机
+### 用两个监控源确认
+### 提升从库
+### 让连接池指向新主库
+## 复制延迟
+### 查找长时间运行的查询
+### 检查网络吞吐
+## 磁盘将满
+### 清理过期的 WAL 归档
+### 扩容数据卷
+## 慢查询
+### 查看 pg_stat_statements
+### 检查缺失的索引
 ```
 ````
 
@@ -228,77 +199,69 @@ markmap:
   colorDepth: 2
 ---
 
-# 主题仓库的检查脚本
-## 源码级契约
-### check-i18n.py
-### check-taxonomy.py
-### check-font-tokens.py
-## 输出级检查
-### check-output.py
-### check-goldens.py
-### check-code-blocks.py
-### check-content-primitives.py
-### check-media-primitives.py
-## 浏览器运行时
-### node --test tests/js/**/*.test.js
+# 故障处理手册
+## 主库宕机
+### 用两个监控源确认
+### 提升从库
+### 让连接池指向新主库
+## 复制延迟
+### 查找长时间运行的查询
+### 检查网络吞吐
+## 磁盘将满
+### 清理过期的 WAL 归档
+### 扩容数据卷
+## 慢查询
+### 查看 pg_stat_statements
+### 检查缺失的索引
 ```
 
 ## 折进折叠块 {#in-details}
 
-每张导图固定 300 像素高，正文里连着放三张会占掉大量版面。把全景图折进 `> [!DETAILS]`，由读者自己展开。折叠块里的每一行都要以 `>` 开头，围栏也不例外。
+每张导图固定 300 像素高，连放几张就会把正文撑得很散。只有部分读者需要的全景图，放进 `> [!DETAILS]` 折叠块；折叠块里的每一行都以 `>` 开头，围栏行也不例外。
 
 ````markdown {title="源码"}
-> [!DETAILS] 主题仓库长什么样
+> [!DETAILS] 监控系统采集的全部指标
 > ```markmap
-> # pgsty/oink
-> ## layouts/
-> - baseof.html 与各类型的壳
-> - _partials/shell/
-> - _markup/ 渲染钩子
-> - _shortcodes/
-> ## assets/
-> - css/ 令牌与组件样式
-> - js/ 浏览器运行时
-> - third_party/ 随主题分发的库
-> ## i18n/
-> - 32 个语言文件，键完全对齐
-> ## docs/
-> - 冻结契约文档
+> # 指标
+> ## 主机
+> - CPU、内存与磁盘
+> - 网络吞吐
+> ## PostgreSQL
+> - 连接与锁
+> - 复制延迟
+> - 缓存命中率
+> ## 连接池
+> - 客户端与服务端连接
+> - 等待时间
+> ## 备份
+> - 最近一次成功备份
+> - WAL 归档延迟
 > ```
 ````
 
-> [!DETAILS] 主题仓库长什么样
+> [!DETAILS] 监控系统采集的全部指标
 > ```markmap
-> # pgsty/oink
-> ## layouts/
-> - baseof.html 与各类型的壳
-> - _partials/shell/
-> - _markup/ 渲染钩子
-> - _shortcodes/
-> ## assets/
-> - css/ 令牌与组件样式
-> - js/ 浏览器运行时
-> - third_party/ 随主题分发的库
-> ## i18n/
-> - 32 个语言文件，键完全对齐
-> ## docs/
-> - 冻结契约文档
+> # 指标
+> ## 主机
+> - CPU、内存与磁盘
+> - 网络吞吐
+> ## PostgreSQL
+> - 连接与锁
+> - 复制延迟
+> - 缓存命中率
+> ## 连接池
+> - 客户端与服务端连接
+> - 等待时间
+> ## 备份
+> - 最近一次成功备份
+> - WAL 归档延迟
 > ```
 
 ## 输出形态 {#outputs}
 
-| 输出 | 呈现 |
-| --- | --- |
-| HTML | 先输出 `<pre><code class="language-markmap">`；读者接近时，运行时把它换成 `<div class="markmap">` 并画出 SVG |
-| 打印 | 保留大纲源码，不加载运行时 |
-| Markdown | 原样保留 `markmap` 围栏与它的大纲源码 |
-| RSS | 只有大纲源码，订阅端看到的是一段可读的提纲 |
-
-大纲本身就是内容：拿不到 JavaScript 的地方读到的仍是完整层级。
+读者滚动到导图附近时才绘制它；在此之前，以及关闭 JavaScript 或引擎加载失败时，页面显示的是大纲源码，完整层级照样可读。打印、Markdown 输出和 RSS 始终原样保留大纲。
 
 ## 参数参考 {#reference}
-
-围栏属性：没有。`markmap` 围栏不读属性行，高度由主题固定为 300px（`.markmap > svg`），宽度撑满正文栏。
 
 站点参数（`hugo.yml`）：
 
@@ -307,41 +270,28 @@ markmap:
 | `params.markmap` | bool | `false` | 关闭时围栏保持为代码块，不加载任何运行时 |
 {.fields meta="type default"}
 
-键的完整定义见[配置总览](/zh/docs/customize/config/)。每张图的行为写在围栏正文最前面的 `markmap:` YAML 头里（`foldLevel`、`colorDepth`、`wrapWidth` 等），属于 Markmap 语法，可用键以 [Markmap 文档](https://markmap.js.org/docs/options)为准。
+单张导图的选项（`foldLevel`、`colorDepth`、`wrapWidth` 等）写在围栏正文开头的 `markmap:` YAML 头里。它们是 Markmap 1 的选项，完整列表见 [Markmap 文档](https://markmap.js.org/docs/options)。围栏属性不影响导图：宽度撑满正文栏，高度固定为 300px。
 
 ## 限制与常见问题 {#limits}
 
-- 输出是固定 300px 高的内联 SVG：高度由一条 `.markmap > svg` 规则统一，围栏改不了，层级太多时用 `foldLevel` 收起或拆成两张图；内联 SVG 也不适用 `{#id num=}` 编号与图片缩放。
-- 节点文字跟随站点正文颜色，连线保留 Markmap 自己的调色板；自定义颜色需在两种模式下检查对比度。
-- 没开 `params.markmap` 就只是代码块：不用这个组件的站点不加载任何运行时。
-- OINK 1.4.0 在每张导图下提供适配按钮，打印时隐藏该按钮。
-- 标点只转义一次；Markmap 1 不再把原始 HTML 作为节点格式。
+- 300px 的高度来自主题的一条 `.markmap > svg` 规则，围栏无法修改。层级很深时，用 `foldLevel` 收起，或拆成两张图。导图是内联 SVG，`{#id num=}` 编号与图片缩放都不适用。
+- 节点文字跟随站点正文颜色，连线保留 Markmap 自己的配色。站点改过颜色的，要在浅色和深色模式下各检查一遍。
+- `>`、`&`、引号等字符按原样显示；节点里的 HTML 标签会被丢弃，图片标签和 Markmap 的魔法注释除外。
+- 某张导图、它的注释或公式加载失败时，这张图退回大纲源码，同页其他导图不受影响。
 
-## 迁移到 Markmap 1 {#migration}
+## 旧选项名 {#migration}
 
-OINK v1.6.0 将 Markmap 从 0.18 升级至 1.1.0：
+导图的 YAML 头里如果还在用左列的旧选项名，请改成右列的新名字。旧名字会被忽略，构建时给出告警。
 
-| 旧选项 | Markmap 1 选项 |
+| 旧选项 | 现行选项 |
 | --- | --- |
-| `initialExpandLevel: N` | 正整数改为 `foldLevel: N-1`；`-1` 则省略该项 |
+| `initialExpandLevel: N` | N 为正整数时改为 `foldLevel: N-1`；N 为 `-1` 时直接删除 |
 | `maxWidth` | `wrapWidth` |
 | `spacingHorizontal` | `levelGap` |
 | `spacingVertical` | `siblingGap` |
 | `colorFreezeLevel` | `colorDepth` |
 
-根节点现在的深度为 0。旧键会触发构建告警并被忽略，升级前应检查每个围栏中的
-选项。`paddingX`、`lineWidth`、`extraJs`、`extraCss`、`embedAssets`、
-`htmlParser` 与 `activeNode` 已移除，请改用受支持的主题与布局，不再注入资源。
-
-标题与列表项继续构成节点，段落、表格与代码块改为节点注释。除受支持的图片标签
-和魔法注释外，原始 HTML 会被丢弃。图内公式改用本地 MathJax，普通正文公式仍由
-KaTeX 处理。注释与公式只在需要时加载相应的本地 chunk。适应窗口按钮、实时外观
-切换与源码降级继续可用。独立 Print、Markdown 与 RSS 保留大纲，不加载引擎。
-SVG 链接使用 Markdown 链接文字作为无障碍名称，折叠与重绘后仍然保留。
-按 Tab 聚焦注释标记后，用 Enter 或空格打开注释；Escape 关闭注释并将焦点
-恢复到原标记。
-已打开的注释会随外观变化更新，浏览器打印时隐藏浮层。注释加载失败时，
-对应导图恢复完整 Markdown 源码并接收焦点，其他导图仍可使用。
+`foldLevel` 把根节点算作第 0 层，所以数值要减一。`paddingX`、`lineWidth`、`extraJs`、`extraCss`、`embedAssets`、`htmlParser` 与 `activeNode` 已不存在，请直接删除：导图不能自行注入脚本或样式。
 
 ## 相关 {#related}
 

@@ -1,19 +1,32 @@
 ---
 title: Maps
 linkTitle: Maps
-description: List places in a `map` fence. Every output shows a numbered place list; on sites that name a tile service, HTML adds an interactive map whose numbered markers match it.
+description: List places in a `map` fence to get a numbered place list everywhere, plus an interactive map once the site names a tile service.
 weight: 178
 search_keywords: [map, maps, places, markers, route, popup, OpenStreetMap, Leaflet, tiles, coordinates, WGS 84, travel]
 ---
 
-A `map` fence holds a YAML or JSON list of places. Every output renders them as a numbered list with names, notes, thumbnails, and coordinates that link to OpenStreetMap.
-That list is the content. On sites that configure a tile service, HTML pages also show an interactive map above the list, with numbered markers that match it.
-Use it for places in an order: travel notes, venues and offices, field trips, photo essays.
-Use a [table](/docs/components/table/) for addresses that need no map, and an [image](/docs/components/image/) for a map that is a drawing.
+A map fence suits places that belong together in an order: the stops of a
+trip, a company's offices, the venues of a conference, the sites of a field
+survey. You write the places as a short YAML list, and every output renders
+them as a numbered list with names, notes, thumbnails and coordinates that link
+to OpenStreetMap. That list is the content, and it works in print, in RSS and
+without JavaScript.
+
+The interactive map above the list is something your site turns on. Map tiles
+are images fetched from a third-party tile service in the reader's browser,
+and every service has its own usage policy, quota and attribution terms, so
+the theme does not pick one for you: until you set `params.map` with a tile
+URL and its attribution, as described in
+[Site configuration](#configuration), pages show the list and make no map
+requests at all.
+
+For addresses that need no map, a [table](/docs/components/table/) is enough;
+a map that is a drawing belongs in an [image](/docs/components/image/).
 
 ## Shortest form {#minimal}
 
-Each place needs `name`, `lat`, and `lng`.
+Each place needs a `name`, a `lat` and a `lng`.
 
 ````markdown {title="Source"}
 ```map
@@ -41,13 +54,53 @@ Each place needs `name`, `lat`, and `lng`.
   lng: 135.7727
 ```
 
-This site configures a tile service, so the map appears above the list. Its markers carry the list numbers, and with several places it fits all of them.
-Each coordinate pair links to the place on openstreetmap.org. That is an ordinary outbound link, not a request made by the page.
-The body is parsed as YAML. JSON is valid YAML, so `[{"name": "Kyoto Station", "lat": 34.9858, "lng": 135.7589}]` works too.
+This site has a tile service configured, so a map appears above the list, with
+markers numbered like the list and zoomed to fit every place. On a site
+without one, the same fence renders only the list. Each coordinate pair links
+to the place on openstreetmap.org; that is an ordinary link the reader may
+follow, not a request the page makes.
+
+The body is parsed as YAML, and since JSON is valid YAML,
+`[{"name": "Kyoto Station", "lat": 34.9858, "lng": 135.7589}]` works too.
+
+## Site configuration {#configuration}
+
+Maps are off by default. To turn them on, choose a tile service and add it to
+`hugo.yml`. This site uses OpenStreetMap's standard tiles:
+
+```yaml {title="hugo.yml"}
+params:
+  map:
+    enable: true
+    tiles: https://tile.openstreetmap.org/{z}/{x}/{y}.png
+    attribution: "© OpenStreetMap contributors"
+```
+
+- `tiles` is an `https://` URL template containing `{z}`, `{x}` and `{y}`.
+  An optional `dark_tiles`, with the same rules, is used in dark mode.
+- `attribution` is the plain-text credit the tile service requires; it appears
+  in the corner of every map.
+- `max_zoom` is a whole number from 1 to 22 and defaults to 19.
+- `enable: true` without a valid `tiles` and an `attribution` warns and leaves
+  maps off, so a half-finished configuration never sends readers to a service
+  you have not agreed to. Fences keep rendering their lists.
+
+Pick a service that fits your traffic. The OpenStreetMap Foundation's
+[tile usage policy](https://operations.osmfoundation.org/policies/tiles/)
+allows light use of its standard tiles with attribution; a busy site should
+use a commercial tile service with a domain-restricted key, or
+host its own tiles. A key in the tile URL is visible to every reader, which is
+why the restriction to your domain matters.
+
+Each tile request sends the reader's IP address and the area being viewed to
+the tile service. Requests start only on sites that enable maps, and only when
+a map scrolls into view, so mention the service in your privacy notice if you
+have one.
 
 ## Place fields {#places}
 
-Besides `name` and the coordinates, a place can have a note, a thumbnail, and a link:
+Besides `name` and the coordinates, a place can carry a note, a thumbnail and a
+link:
 
 ```yaml {title="One place with every field"}
 - name: Kinkaku-ji
@@ -58,19 +111,27 @@ Besides `name` and the coordinates, a place can have a note, a thumbnail, and a 
   link: "#day-1"
 ```
 
-- `name` and `text` are plain text. Markdown and HTML appear literally, and popups are built from this text, never from HTML.
-- `image` uses the shared image resolver: page resource → global resource → static path → remote URL.
-  A local raster is resized to fit 480×360 for the list and the popup. Remote images are used as they are.
-  Thumbnails are decorative (`alt=""`). The name beside them says what they show.
-- `link` turns the name into a link in the list and in the popup. A `#anchor` on the same page is typical.
-  Quote it: YAML reads an unquoted `#` as the start of a comment.
-- A place without a name, without numeric coordinates, or with coordinates out of range warns and is skipped.
-  A quoted number such as `lat: "35.0394"` is a string, so that place is skipped too.
-- Unknown fields warn and are ignored. A fence without a valid place warns and renders nothing.
+- `name` and `text` are plain text: Markdown and HTML in them show literally,
+  and popups are built from this text, never from HTML.
+- `image` is resolved like any image: page resource, then global resource,
+  then static path, then remote URL. Local raster images are resized to fit
+  480×360 for the list and the popup; remote images are used as they are.
+  Thumbnails are decorative (`alt=""`), since the name beside them already says
+  what they show.
+- `link` turns the name into a link in the list and in the popup, typically to
+  a `#anchor` on the same page. Quote it, because YAML reads an unquoted `#` as
+  the start of a comment.
+- A place without a name, without numeric coordinates, or with coordinates out
+  of range warns and is skipped. A quoted number such as `lat: "35.0394"` is a
+  string, so that place is skipped too.
+- Unknown fields warn and are ignored. A fence with no valid place warns and
+  renders nothing.
 
 ## Routes and captions {#route}
 
-`route=true` connects the places with a line, in list order. `caption` adds a plain-text caption under the list and names the map region for screen readers.
+`route=true` joins the places with a line in list order. `caption` adds a
+plain-text caption under the list, and screen readers announce it as the name
+of the map.
 
 ````markdown {title="Source"}
 ```map {caption="Kyoto in one day" route=true}
@@ -122,13 +183,15 @@ Besides `name` and the coordinates, a place can have a note, a thumbnail, and a 
   text: The gold-leaf pavilion over its pond.
 ```
 
-Select a marker to open its popup: the name, the note, and the thumbnail when there is one. The first place links to the next section.
-The line is drawn straight from place to place. It is not a computed walking or driving route.
+Select a marker to open its popup with the name, the note and the thumbnail
+when there is one; the first place links to the next section. The route is a
+straight line from place to place, not a computed walking or driving route.
 
 ## One place and zoom {#single}
 
-A single place opens at zoom 15. `zoom` sets another level, from 1 (the whole world) to 19 (a street corner).
-`height` sets the map's height as a CSS length.
+A single place opens at zoom level 15. `zoom` sets another level, from 1 (the
+whole world) to 19 (a street corner), and `height` sets the map's height as a
+CSS length.
 
 ````markdown {title="Source"}
 ```map {zoom=17 height="18rem"}
@@ -146,69 +209,47 @@ A single place opens at zoom 15. `zoom` sets another level, from 1 (the whole wo
   text: Trains from Osaka and Tokyo arrive here.
 ```
 
-With several places, `zoom` replaces the fitted level and keeps the fitted center.
-Without `height`, the map is `min(26rem, 60vh)` high, so a phone can always scroll past it.
-`height` accepts a number followed by `px`, `rem`, `em`, `vh`, `vw`, or `%`. Anything else warns and keeps the default.
+With several places, `zoom` replaces the fitted zoom level but keeps the
+fitted center. Without `height` the map is `min(26rem, 60vh)` tall, so a reader
+on a phone can always scroll past it. `height` takes a number followed by
+`px`, `rem`, `em`, `vh`, `vw` or `%`; anything else warns and keeps the
+default.
 
 ## The interactive map {#interactive}
 
-- The theme vendors Leaflet 1.9.4. Only pages with a map link its stylesheet,
-  and the engine script loads only when a map comes within 320px of the viewport.
-- Scroll-wheel zoom is off, so scrolling the page never zooms a map.
-  Zoom with the buttons, the keyboard (focus the map, then use the arrow keys and <kbd>+</kbd> / <kbd>-</kbd>), or a pinch.
-- Markers are numbered like the list. Selecting a marker, by pointer or with <kbd>Enter</kbd>, opens its popup.
-  Popups are built from text; no author HTML reaches them.
-- In dark mode the map uses `dark_tiles` when the site configures them, and it switches when the reader changes the color scheme.
-  Without `dark_tiles`, the light tiles stay.
-- The map resizes with its container, when a tab panel is shown, and when a disclosure opens.
-- Browser printing hides the map and prints the list.
-- If the engine or the tiles fail to load, the list remains.
+- The theme bundles Leaflet 1.9.4. Only pages with a map link its stylesheet,
+  and the script loads when a map comes within 320px of the viewport.
+- Scroll-wheel zoom is off, so scrolling the page never zooms a map by
+  accident. Readers zoom with the buttons, with the keyboard (focus the map,
+  then use the arrow keys and <kbd>+</kbd> / <kbd>-</kbd>) or with a pinch.
+- Selecting a marker, by pointer or with <kbd>Enter</kbd>, opens its popup.
+- In dark mode the map switches to `dark_tiles` when the site configures them,
+  and switches back when the reader changes the color scheme; otherwise the
+  light tiles stay.
+- The map resizes with its container, including when a tab panel is shown or a
+  disclosure opens.
+- If the script or the tiles fail to load, the list is still there.
 
-The list stays under the map as its legend and as the accessible alternative. On wide screens it uses two columns.
-
-## Site configuration {#configuration}
-
-Maps are off by default. A site turns them on with `params.map` and the tile service it has chosen. This site's configuration:
-
-```yaml {title="hugo.yml"}
-params:
-  map:
-    enable: true
-    tiles: https://tile.openstreetmap.org/{z}/{x}/{y}.png
-    attribution: "© OpenStreetMap contributors"
-```
-
-- The theme names no default tile service. `enable: true` without a valid `tiles` and an `attribution` warns, and maps stay off.
-  The fences still render their lists.
-- `tiles` is an `https://` URL template containing `{z}`, `{x}`, and `{y}`. `dark_tiles` follows the same rules.
-- `attribution` is the plain text the tile service requires. It appears in the corner of every map.
-- `max_zoom` is a whole number from 1 to 22. It defaults to 19.
-
-Tile services have usage policies, quotas, and attribution terms, so the choice belongs to the site.
-This site uses OpenStreetMap's standard tiles, which the OpenStreetMap Foundation's [tile usage policy](https://operations.osmfoundation.org/policies/tiles/) permits for light use with attribution.
-A busy site should use a commercial tile service with a domain-restricted key, or host its own tiles. A key in a tile URL is visible to every reader.
-
-Tile requests send the reader's IP address and the area being viewed to the tile service.
-They start only on sites that enable maps, and only when a map comes into view.
+The list stays under the map as its legend and as the accessible alternative,
+and it uses two columns on wide screens.
 
 ## Coordinates {#coordinates}
 
-Coordinates are WGS 84 decimal degrees, the system used by GPS, photo metadata, and OpenStreetMap.
-The explicit `lat` and `lng` keys avoid the order confusion of GeoJSON's `[lng, lat]` arrays.
-To look up a place, open it on openstreetmap.org: the address bar ends with `#map=zoom/lat/lng`.
+Coordinates are WGS 84 decimal degrees, the system used by GPS, photo metadata
+and OpenStreetMap. The explicit `lat` and `lng` keys avoid the mix-ups that
+GeoJSON's `[lng, lat]` order causes. To look up a place, open it on
+openstreetmap.org: the address bar ends with `#map=zoom/lat/lng`.
 
-Tile services in mainland China commonly use GCJ-02 or BD-09 coordinates.
-On those tiles, WGS 84 markers appear offset by hundreds of meters. The theme converts no coordinates, so use a tile service that works in WGS 84.
+Tile services in mainland China commonly use GCJ-02 or BD-09 coordinates, on
+which WGS 84 markers land hundreds of meters off. The theme converts no
+coordinates, so pick a tile service that works in WGS 84.
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML, maps off | `<figure class="td-map">` with `<ol class="td-map__places">` and the caption; no script, stylesheet, or tile URL |
-| HTML, maps on | The same figure with `data-td-map`, a map canvas above the list, and a JSON copy of the places; Leaflet loads as the reader approaches |
-| Print | The list and the caption; no map |
-| Markdown | The `map` fence, emitted as written |
-| RSS | The list, with absolute thumbnail URLs |
+Print and RSS show the list and the caption without a map, and RSS makes the
+thumbnail URLs absolute. On a site without a tile service, the HTML page has
+no map script, stylesheet or tile URL at all. The page's Markdown output keeps
+the `map` fence as you wrote it.
 
 ## Parameter reference {#reference}
 
@@ -238,7 +279,7 @@ Fence attributes:
 | `class` | class list | — | Passed through to the figure for site CSS |
 {.fields meta="type default"}
 
-`num`, `style`, `on*`, and other attributes warn and are ignored. Without `id`, the figure gets a generated ID.
+`num`, `style`, `on*` and other attributes warn and are ignored.
 
 Site parameters (`hugo.yml`):
 
@@ -253,12 +294,13 @@ Site parameters (`hugo.yml`):
 
 ## Limits {#limits}
 
-- Coordinates are WGS 84 only. Markers on GCJ-02 or BD-09 tiles appear offset.
-- There are no GPX or GeoJSON tracks, clustering, search, geocoding, or custom marker icons.
-- Pins are not derived from photo GPS metadata yet. Write the coordinates.
-- Without a configured tile service there is no map, only the list. Print, RSS, and LLMS readers always get the list or the fence.
-- `name`, `text`, and `caption` are plain text. Put rich text in a paragraph next to the fence.
-- Remote thumbnails are not downloaded or resized at build time.
+- Coordinates are WGS 84 only; markers on GCJ-02 or BD-09 tiles appear offset.
+- There are no GPX or GeoJSON tracks, no marker clustering, search or
+  geocoding, and no custom marker icons.
+- Markers are not read from photo GPS metadata; write the coordinates.
+- `name`, `text` and `caption` are plain text; put rich text in a paragraph
+  next to the fence.
+- Remote thumbnails are neither downloaded nor resized at build time.
 
 ## Related {#related}
 

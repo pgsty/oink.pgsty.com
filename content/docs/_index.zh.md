@@ -30,39 +30,33 @@ cascade:
   search_boost: 1.35
 ---
 
-第一次使用 OINK，请从 [Starter](/zh/docs/start/) 预览一个可运行的站点，再替换成
-自己的内容。正文用 Markdown 编写，由 Hugo 构建；主题的样式表是纯 CSS，只有 OINK 1.5.1
-及更早版本需要 Hugo 的 Extended 版。采用 Hugo Modules 时还需要 Go 解析主题模块。主题内置资源无需 CDN，也不需要 npm 构建流程。
+OINK 是一款面向技术文档的 Hugo 主题，适合产品手册、项目官网、书籍与 API
+参考，单语多语皆可。你只写 Markdown，执行一次 `hugo`，就得到一个静态站点：导航树、本地全文搜索、深浅色模式与打印视图一应俱全。主题用到的脚本、字体与样式都随主题分发，构建不需要 Node.js、npm，也不访问 CDN。
 
-已有站点可查看
-[1.6.0 发布说明](/zh/release/1.6.0/)与[升级指南](/zh/docs/admin/upgrade/#preparing-1-6)。
+第一次用 OINK？[快速上手](/zh/docs/start/)带你五分钟跑起一个完整站点，再一块一块换成自己的内容。已经在用？先读 [1.6.0 发布说明](/zh/release/1.6.0/)，再按[升级指南](/zh/docs/admin/upgrade/#preparing-1-6)操作。
 
-## 五条入口 {#five-entries}
+## 从哪里开始 {#five-entries}
 
-- [快速上手](/zh/docs/start/) — 创建 OINK Starter 仓库，建立本地基线，分层定制并部署。
-- [组件总览](/zh/docs/components/) — 每个组件一页，先给源码再给渲染效果。
-- [使用 OINK 创作优美的内容](/zh/book/) — 六章动手实战教程，带你从克隆 Starter 一直走到双语发布上线。
-- [案例](/zh/case/) — 把生产站点拆解成可复用的设计与迁移模式。
-- [设计与开发](/zh/docs/design/) — 面向 OINK 维护者的契约、已接受决策、研究证据与候选提案。
-  {.cards}
+- [快速上手](/zh/docs/start/) — 克隆 Starter，预览，换成自己的内容，部署上线。
+- [组件总览](/zh/docs/components/) — 提示块、标签页、图表、卡片等组件，源码与效果并排展示。
+- [使用 OINK 创作优美的内容](/zh/book/) — 六章动手教程，把一个站点从空仓库做到双语发布。
+- [案例](/zh/case/) — 看生产站点怎样解决导航、迁移与首页设计问题。
+{.cards}
 
-## 按任务导航 {#where-to-go}
+## 按任务查找 {#where-to-go}
 
-| 你要做的事                   | 去哪                                   |
-| ---------------------------- | -------------------------------------- |
-| 判断是否适用                 | [OINK 是什么](/zh/docs/about/)         |
-| 安装并预览                   | [快速上手](/zh/docs/start/)            |
-| 写一页文档                   | [编写页面](/zh/docs/write/pages/)      |
-| 把目录树变成侧栏             | [组织内容](/zh/docs/write/organize/)   |
-| 查组件写法                   | [组件总览](/zh/docs/components/)       |
-| 制作图片相册或浏览在线画廊   | [Expo 相册](/zh/docs/write/expo/) · [在线画廊](/zh/expo/) |
-| 改站名、Logo、配色与字体     | [品牌外观](/zh/docs/customize/brand/)  |
-| 查某个配置键的默认值         | [配置总览](/zh/docs/customize/config/) |
-| 做双语或多语言站             | [多语言](/zh/docs/customize/i18n/)     |
-| 跟随练习建站与写作           | [使用 OINK 创作优美的内容](/zh/book/)  |
-| 研究生产环境实现             | [案例](/zh/case/)                      |
-| 部署到线上                   | [发布上线](/zh/docs/admin/deploy/)     |
-| 升级版本或从 Docsy 迁移      | [版本升级](/zh/docs/admin/upgrade/)    |
-| 维护主题、审查契约或编写 PRD | [设计与开发](/zh/docs/design/)         |
+| 我想……                         | 阅读                                   |
+| ------------------------------ | -------------------------------------- |
+| 判断 OINK 是否适合我的项目     | [OINK 是什么](/zh/docs/about/)         |
+| 写一页文档                     | [编写页面](/zh/docs/write/pages/)      |
+| 把目录树变成侧栏               | [组织内容](/zh/docs/write/organize/)   |
+| 查组件写法                     | [组件总览](/zh/docs/components/)       |
+| 发布博客、书籍或图片相册       | [博客与文章](/zh/docs/write/blog/) · [书籍出版](/zh/docs/write/book/) · [Expo 相册](/zh/docs/write/expo/) |
+| 修改站名、Logo、配色与字体     | [品牌外观](/zh/docs/customize/brand/)  |
+| 查某个配置键及其默认值         | [配置总览](/zh/docs/customize/config/) |
+| 用两种以上语言发布             | [多语言](/zh/docs/customize/i18n/)     |
+| 部署到 GitHub Pages、Cloudflare 或自己的服务器 | [发布上线](/zh/docs/admin/deploy/) |
+| 升级 OINK 或从 Docsy 迁移      | [版本升级](/zh/docs/admin/upgrade/)    |
+| 排查构建报错或功能不生效       | [排错与检查](/zh/docs/admin/troubleshooting/) |
 
-侧栏前六个栏目（**简介**、**快速上手**、**创作内容**、**组件**、**定制站点** 与 **维护管理**）面向站点作者与运营者；底部的 **设计** 和 **CLI** 则供 OINK 主题维护者查阅。
+侧栏底部的 **设计** 与 **CLI** 记录 OINK 自身如何构建与维护，搭建站点用不到它们。

@@ -1,7 +1,7 @@
 ---
 title: Releases and downloads
 linkTitle: Releases and downloads
-description: Record versions, tags, archive links, checksums, and install commands locally. Release cards, asset tables, download blocks, and index pages use these records.
+description: Publish a release page with a GitHub release card, a checksummed asset table and install instructions, all built from facts kept in your repository.
 weight: 60
 search_keywords: [release, download, checksums, sha256, release card, asset table, rolling channel, pinned version]
 release_url: https://github.com/pgsty/oink/releases/tag/v0.4.0
@@ -9,46 +9,46 @@ aliases:
   - /docs/scenarios/releases/
 ---
 
-OINK stores release metadata in two local places: a page's front matter
-`release_url` identifies its GitHub release, and `data/download/<key>.yaml`
-records installation instructions. Release cards, asset tables, download blocks,
-and index pages derive their links from those records without contacting GitHub
-at build time.
+A release page tells readers what shipped and lets them download it safely: a
+card linking the GitHub release and its source archives, a table of files with
+their checksums, and install instructions for each way of getting the
+software. OINK builds all of it from facts kept in your repository (one
+`release_url` in the page's front matter, the `sha256sum` output you paste
+into the body, and a `data/download/<key>.yaml` record), so the build never
+contacts GitHub.
 
-> [!NOTE] This page carries demonstration release facts
-> Its front matter holds a `release_url` (OINK v0.4.0), and the card, asset
-> table and download block below are really rendered. The checksums and asset
-> filenames are fabricated. The URLs are derived locally from the repository and
-> tag. Their target files do not exist in any real release.
-> Do not use these hashes to verify anything.
+> [!NOTE] The examples on this page are rendered for real
+> This page's own front matter sets `release_url` to OINK v0.4.0, so the card,
+> asset tables and download block below are live output. The checksums and
+> asset filenames are made up, and the download links they produce point at
+> files that do not exist. Do not verify anything against these hashes.
 
-## Components and where the facts come from {#overview}
+## What a release page is made of {#overview}
 
-| What you want | What renders it | Facts come from |
+| What you want | What renders it | Where the facts come from |
 | --- | --- | --- |
-| A version summary card (tag, date, archives, repo) | `release-card` | The page's `release_url` |
-| A checksum asset table | The `checksums` fence / `release-assets` | `sha*sum` lines in the body |
-| A multi-channel download block | `download` | `data/download/<key>.yaml` |
-| A chronological release index | `layout: releases` | Each page's `release_url`, or its title |
+| A summary card with tag, date, source archives and repository | `release-card` | The page's `release_url` |
+| A table of assets with checksums | The `checksums` fence, or `release-assets` | `sha*sum` lines in the page body |
+| Install instructions for several channels | `download` | `data/download/<key>.yaml` |
+| A chronological index of releases | `layout: releases` | Each page's `release_url`, or its title |
 
-## The page owns the release facts {#release-facts}
+## Link the release {#release-facts}
 
-One front matter key contains the release record. It is the GitHub release URL
-for an exact tag:
+A release page names its GitHub release with one front matter key, the release
+URL for an exact tag:
 
 ```yaml {title="content/blog/release/0.4.0.md"}
 release_url: https://github.com/pgsty/oink/releases/tag/v0.4.0
 ```
 
-The URL supplies the owner, project, and tag. The page's `date` supplies the
-date. An invalid exact-tag GitHub release URL warns and skips the release block.
-The 0.5
-`release` map (product / version / repo / tag / date / prev / checksums) and
-its string shorthand are removed. A page that still uses either gets a warning
-that names `release_url`.
+The owner, project and tag come from the URL, and the date from the page's own
+`date`. A value that is not an exact-tag GitHub release URL warns and the
+release block is skipped. Pages written for OINK 0.5 (the `release` map,
+`release_products`, `release_group_by_product`) get a warning naming the
+replacement; see the [0.6.0 release notes](/release/0.6.0/#migration).
 
-Put a parameterless shortcode where you want the summary. The call accepts
-no release facts:
+Put the card where you want the summary. The shortcode takes no parameters,
+because every fact comes from the front matter:
 
 ```markdown {title="Source"}
 {{</* release-card */>}}
@@ -56,37 +56,16 @@ no release facts:
 
 {{< release-card >}}
 
-The card shows four locally derived links: the release, both source archives,
-and the repository. Checksum files
-belong in the asset table below a note, and comparisons live on GitHub.
+The card carries four links derived from the URL: the release itself, the
+`.tar.gz` and `.zip` source archives, and the repository. It does not list
+checksum files, which belong in the asset table below, or compare the release
+with the previous one, which GitHub already does on the release page.
 
-## The release index page {#release-index}
+## Checksums and assets {#assets}
 
-A section can switch to the release index layout. It lists every regular page
-in the section, newest first by page date. Within one day, the tag's version
-breaks ties. It uses SemVer precedence with a deterministic fallback for
-non-SemVer tags:
-
-```yaml {title="content/blog/release/_index.md"}
----
-title: Releases
-layout: releases
----
-```
-
-If `release_url` parses, the entry shows `project tag`, such as `oink v0.4.0`,
-above the page description. A page without that URL keeps its own title. A
-plain note between releases is therefore an ordinary entry and causes no warning. The 0.5
-`release_products` filter and `release_group_by_product` grouping are gone;
-Using either warns.
-
-This site's [Releases](/release/) currently uses the ordinary blog list.
-Switch to `layout: releases` when a strict chronology is wanted.
-
-## Checksum assets {#assets}
-
-The `checksums` fence is the native form of a checksum table, holding the
-verbatim output of a `sha*sum` command:
+Paste the output of `sha256sum` (or any `sha*sum` command) into a `checksums`
+fence, and the page gets a download table with each file linked and its hash
+ready to copy:
 
 ````markdown {title="Source"}
 ```checksums
@@ -100,28 +79,34 @@ verbatim output of a `sha*sum` command:
 7b3d9e0c145a8f26d0b7e93c48156aa2f0d9c7b31e846a5029df1b6c7a3e8250 *oink-0.4.0-darwin-arm64.tar.gz
 ```
 
-Only two line shapes are accepted: `<hex><two spaces><filename>` and
-`<hex><space>*<filename>`. Blank lines and lines starting with `#` are ignored.
-The hash length determines the algorithm (MD5 / SHA-1 / SHA-256 / SHA-512), and
-each block holds a single algorithm. Malformed lines log a warning with the
-line number and are skipped. Each filename must be a single path segment;
-package type, OS, and architecture badges are inferred from the filename when
-recognized.
+Each line must be either `<hex><two spaces><filename>` or
+`<hex><space>*<filename>`, exactly as the tools print it; blank lines and lines
+starting with `#` are ignored. The hash length identifies the algorithm (MD5,
+SHA-1, SHA-256 or SHA-512), and one block holds one algorithm. A filename must
+be a single path segment, and package type, operating system and architecture
+badges are added when the filename makes them recognizable. A malformed line, or
+one whose algorithm differs from the rest of the block, warns with its line
+number and is skipped, so a single typo costs one row rather than the table.
 
-If the page has `release_url` front matter, the base for asset links is derived
-as `https://github.com/<repo>/releases/download/<tag>/`. A page without release
-facts must set `base=` explicitly. Having both is an error.
+On a page with `release_url`, asset links point at
+`https://github.com/<owner>/<repo>/releases/download/<tag>/`. On a page without
+one, set `base=` to wherever the files are hosted. Setting both, or neither,
+warns and skips the block, because a guessed base would publish links to the
+wrong files:
 
-````markdown {title="a page with no release front matter"}
+````markdown {title="a page with no release_url"}
 ```checksums {base="https://repo.pigsty.io/oink/v0.4.0/" algo="sha256"}
 1e2f4c8a9d05b7361f8ac25d0e7b4913a6c8df215047eb9c3a1d6b8250f9e7c4  oink-0.4.0-linux-amd64.tar.gz
 ```
 ````
 
-`release-assets` is the shortcode form of the same parser and renderer. It adds
-one parameter that the fence lacks, `src=`. Use it for a checksum file stored
-as a page resource or global asset. `src` and inner content are mutually
-exclusive. `group="auto"` groups by platform and architecture:
+`algo=` pins the algorithm instead of inferring it, and `group="auto"` groups
+rows by platform and architecture.
+
+`release-assets` is the shortcode form of the same table. It adds one
+parameter the fence lacks, `src=`, which reads the checksum file itself from a
+page resource or global asset instead of inline lines; use either `src` or
+inline lines, not both.
 
 ```markdown {title="Source"}
 {{</* release-assets group="auto" */>}}
@@ -135,16 +120,80 @@ c93f16a8d052b7e41ac68d3907b25fe0a41d8c7362b95e0187ac4d63f9520ea8  oink-0.4.0-1.e
 c93f16a8d052b7e41ac68d3907b25fe0a41d8c7362b95e0187ac4d63f9520ea8  oink-0.4.0-1.el9.aarch64.rpm
 {{< /release-assets >}}
 
-HTML shows a truncated hash. The accessible name and copied text retain the
-full value. The copy button uses a local runtime loaded on demand. With JavaScript disabled it is still a complete linked
-table. Print expands the full hash without controls, and Markdown and RSS emit a
-pipe table of full hashes.
+The HTML table shortens each hash for display, while screen readers and the
+copy button get the full value; the copy button's script loads only on pages
+that have a table. Without JavaScript the table is still complete and linked.
+Print and RSS show the full hashes without controls, and the page's Markdown
+output is a pipe table of full hashes.
 
-## Download channel data {#download-data}
+## Download block {#download-shortcode}
 
-Installation instructions belong to the product rather than one release. Store
-them in `data/download/<key>.yaml`. This site's real record is
-`data/download/prd5.yaml`:
+Install instructions belong to the product rather than to one release: the
+install script, the source archive and the package repository stay the same
+from version to version. Keep them in one data record and render it with
+`download`, whose only parameter is the record's key, the file name under
+`data/download/` without `.yaml`:
+
+```markdown {title="Source"}
+{{</* download "prd5" */>}}
+```
+
+{{< download "prd5" >}}
+
+The block opens with a row of links to each channel, followed by one section
+per channel. Code steps use the enhanced code block and its copy button, and a
+channel with checksums renders the same asset table as above. Print shows the
+same content expanded, the Markdown output keeps the titles, code fences and
+full hashes, and RSS leaves the block out. A landing page's `download` section
+reads the same record, so the home page and the docs never disagree about the
+current version; see [Home and landing pages](/docs/customize/home/).
+
+## Release workflow {#release-notes}
+
+A release note and the download data do different jobs. The release note,
+written as a [blog post](/docs/write/blog/#release-notes), tells readers what
+changed, how to upgrade and what breaks; it carries `release_url` and can open
+with a `release-card`. The download data tells them which channel to use,
+which command to run and which hash to check, and it changes in one place when
+the version does.
+
+Publish a new version in this order, so that no page ever links to a file that
+is not there yet:
+
+1. In `data/download/<key>.yaml`, set `version` to the new version and
+   `published: false`. Rolling channels keep working, while pinned channels
+   show a "pending release" state with their commands omitted and their asset
+   links and copy buttons disabled.
+2. Write the release note, for example `content/blog/release/0.4.0.md`, with
+   its `release_url`.
+3. Create the tag and upload the assets, then set `published: true`. Do not
+   write a guessed download link into the prose in the meantime.
+
+## The release index page {#release-index}
+
+A section of release notes can list them as a strict chronology instead of a
+blog index:
+
+```yaml {title="content/blog/release/_index.md"}
+---
+title: Releases
+layout: releases
+---
+```
+
+Every regular page in the section is listed newest first by `date`; when two
+pages share a date, the version in their tags breaks the tie, by SemVer
+precedence with a deterministic fallback for tags that are not SemVer. An entry
+whose `release_url` parses reads `project tag`, such as `oink v0.4.0`, above
+the page description. A page without one keeps its own title, so an ordinary
+note between releases is a normal entry rather than an error.
+
+When you would rather keep the blog shell, `blog_index: table` gives a compact
+date-ordered archive instead; this site's [release notes](/release/) use it.
+
+## Download data format {#download-data}
+
+This site's real record is `data/download/prd5.yaml`, the one rendered above:
 
 ```yaml {title="data/download/prd5.yaml"}
 version: 0.4.0
@@ -183,94 +232,62 @@ channels:
       aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  oink-0.4.0.tar.gz
 ```
 
-The record has five top-level fields: `version`, `repo`, `tag`, `published`,
-and `channels` (any unknown top-level key logs a warning and skips the record).
-`version` may be omitted here and supplied by the site's `params.version`
-instead.
+A record takes the five top-level fields below; any other key warns and the
+whole block is skipped.
 
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
-| `version` | string | site `params.version` | Missing in both places warns and skips the block |
-| `repo` | `owner/name` | — | Required once a pinned channel has a link or assets |
-| `tag` | string | `v{version}` | URL-safe characters only |
-| `published` | boolean | `true` | `false` means the immutable release does not exist yet |
-| `channels` | array | — | Must be non-empty |
+| `version` | string | site `params.version` | The current version. Missing from both the record and the site, it warns and the block is skipped |
+| `repo` | `owner/name` | — | GitHub repository; required once a pinned channel has a link or assets |
+| `tag` | string | `v{version}` | Release tag. URL-safe characters only |
+| `published` | boolean | `true` | `false` while the tagged release and its assets do not exist yet |
+| `channels` | array | — | The channels, in display order. Must not be empty |
 {.fields meta="type default"}
 
 Each channel:
 
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
-| `id` | `^[a-z][a-z0-9-]*$` | — | Unique within the record. Used as the anchor |
-| `kind` | `rolling` \| `pinned` | — | Decides whether release facts may be interpolated |
-| `title` | localized string | — | Must resolve to a non-empty value |
-| `note` | localized string | — | One line of explanation under the channel |
+| `id` | `^[a-z][a-z0-9-]*$` | — | Unique within the record; also the channel's anchor |
+| `kind` | `rolling` \| `pinned` | — | Whether the channel follows the latest release or one exact version, which decides whether version facts may be interpolated |
+| `title` | localized string | — | Channel name. Must resolve to a non-empty value |
+| `note` | localized string | — | One line of explanation under the channel name |
 | `icon` | Font Awesome class pair | — | For example `fa-solid fa-bolt` |
-| `url` | http(s) or a site path | — | Interpolatable on `pinned` only |
-| `steps[]` | `title` / `code` / `lang` | `lang: text` | Code steps go through OINK's enhanced code renderer |
-| `checksums` | `sha*sum` text | — | `pinned` only. Mutually exclusive with `checksums_src` |
+| `url` | http(s) URL or site path | — | Download link. Interpolated on `pinned` channels only |
+| `steps[]` | `title` / `code` / `lang` | `lang: text` | Code steps, rendered by OINK's enhanced code block |
+| `checksums` | `sha*sum` text | — | Assets for this channel. `pinned` only; use this or `checksums_src`, not both |
 | `checksums_src` | asset path | — | Reads the checksum file as a Hugo asset |
 {.fields meta="type default"}
 
-Two rules:
+Two rules govern the text fields:
 
-- Localization resolves by suffix: `<field>_<exact language>` → `<field>_<base language>` → `<field>`. A Chinese site resolves `title_zh_cn`, then `title_zh`, then `title`. camelCase aliases are not accepted.
-- Only a pinned channel's `url` and `steps[].code` interpolate `${version}` and `${tag}`. A rolling channel refuses interpolation, so a stable install command is never bound to one version. Titles and notes never interpolate.
-
-## Rendering the download block {#download-shortcode}
-
-`download` takes exactly one positional parameter, the data key:
-
-```markdown {title="Source"}
-{{</* download "prd5" */>}}
-```
-
-{{< download "prd5" >}}
-
-HTML renders a row of anchor chips and one section per channel. Code steps
-reuse the enhanced code block and its on-demand copy runtime. A checksum
-channel reuses the asset table above. Print statically expands the same
-content, Markdown emits the titles, source fences and full hashes, and RSS omits
-the component.
-
-Before you create the tag and upload assets, mark the record unpublished:
-
-```yaml {title="data/download/<key>.yaml"}
-published: false
-```
-
-Rolling channels keep working. Pinned channels become an unclickable "pending
-release" state, omit the pinned commands, and disable asset links and copy
-controls. After the tag and assets resolve, change the publication state. Do not write
-a guessed link in the prose.
-
-The same record can supply a landing page's `download` section. No second version
-model is required. See
-[Home and landing pages](/docs/customize/home/).
-
-## How this relates to blog release notes {#release-notes}
-
-The two have different jobs:
-
-- A release note (this site keeps them in `content/release/`) explains what changed, how to upgrade, and what breaks. Its front matter carries `release_url`, and a `release-card` can sit at the top. For writing instructions, see [Blog posts](/docs/write/blog/).
-- Download data identifies the channel, command, and hash. It is separate from the version number. An upgrade changes one place.
-
-For a release, follow this order: update `version` in `data/download/<key>.yaml` → write a
-new `content/release/<version>.md` with its `release_url` → set
-`published` to `true` after the tag and assets are in place.
+- Localized fields resolve by suffix, from `<field>_<exact language>` to
+  `<field>_<base language>` to `<field>`. A `zh-cn` page tries `title_zh_cn`,
+  then `title_zh`, then `title`. camelCase variants are not accepted.
+- Only a pinned channel's `url` and `steps[].code` interpolate `${version}` and
+  `${tag}`. A rolling channel refuses interpolation, so a command meant to
+  install the latest release is never silently tied to one version. Titles and
+  notes never interpolate.
 
 ## Verify {#verify}
 
-1. Build with visible diagnostics: `hugo --printPathWarnings`. A malformed hash line, mixed algorithms, a missing `base` and a misspelled channel field all produce warnings that need review.
-2. On the page: the card's tag and date match the repository, and every asset row opens a real download URL.
-3. Check hashes against the actual artifacts manually. The component only displays them. It verifies nothing.
-4. Confirm the hashes are complete in non-HTML output:
+1. Build with diagnostics visible: `hugo --printPathWarnings`. A malformed hash
+   line, mixed algorithms, a missing `base` and a misspelled channel field each
+   produce a warning; read them, because each one means a row, a table or a
+   channel is missing from the page.
+2. On the page, check that the card's tag and date match the repository and
+   that every asset row opens a real download.
+3. Check each hash against the real artifact yourself. The table only displays
+   the hashes you paste; it verifies nothing.
+4. Confirm the Markdown output carries the full hashes:
 
-```bash
-curl -s http://localhost:1313/docs/write/releases/index.md | grep -c '^| '
-```
+   ```bash
+   curl -s http://localhost:1313/docs/write/releases/index.md | grep -c '^| '
+   ```
 
-5. Test with `published: false` first. Set it to `true` only after the tag and assets exist. Test each language and a subpath deployment.
+5. Try the page with `published: false` first, and switch to `true` only once
+   the tag and assets exist. Check every language, and a subpath deployment if
+   you use one.
 
 ## Related {#related}
 
@@ -278,4 +295,4 @@ curl -s http://localhost:1313/docs/write/releases/index.md | grep -c '^| '
 - [Code Blocks](/docs/components/code/) — code rendering and copying inside download steps
 - [Home and landing pages](/docs/customize/home/) — the landing `download` section
 - [Configuration](/docs/customize/config/) — `params.version` and the related site parameters
-- [Upgrade](/docs/admin/upgrade/) — how a consuming site tracks theme versions
+- [Upgrade](/docs/admin/upgrade/) — how a site keeps up with new OINK versions

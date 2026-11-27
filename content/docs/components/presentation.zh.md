@@ -7,12 +7,11 @@ outputs: [HTML, markdown, print]
 search_keywords: [组件样式, 卡片列表, 紧凑步骤, 命令条, 预设]
 ---
 
-使用外观菜单切换 Paper、Slate、Ink、Terminal 及明暗模式，比较同一批内容的呈现。以下示例继续沿用通常的 Markdown 写作方式。
+本页把常用组件和它们的紧凑变体并排放在一起，方便你选用之前先看效果：在外观菜单里切换 Paper、Slate、Ink、Terminal 以及明暗模式，对照着看即可。每种变体只是在你原本的 Markdown 上多加一个 class 或一个 `variant` 参数，不加载脚本，也不改变链接、键盘操作、复制出的文字、打印与 Markdown 输出；写了未知的变体会告警，并回退到常规样式。
 
-> [!NOTE] OINK 1.4.0 已提供
-> 本页的可选变体已随 OINK 1.4.0 发布。
+## 卡片与卡片列表 {#cards}
 
-## 相关页面 {#cards}
+常规的卡片网格：
 
 - [创建站点](/zh/docs/start/)
 
@@ -23,13 +22,13 @@ search_keywords: [组件样式, 卡片列表, 紧凑步骤, 命令条, 预设]
   设置导航、语言、外观和搜索。
 {.cards #presentation-cards}
 
-紧凑的资源目录可以使用 `{.cards .td-cards-list}`。分隔列表共用一个外框，说明文字可以自然换行。
+紧凑的资源目录用 `{.cards .td-cards-list}`：同一份链接列表变成一个带分隔线的单框列表，每行高度随说明文字自然伸展。
 
 - [创作内容](/zh/docs/write/) — 组织文章、指南和发布说明，另见 **[配置指南](/zh/docs/customize/config/)**。
 - [标题较长的组件参考入口](/zh/docs/components/) — 选择原生 Markdown 或组合短代码。
 {.cards .td-cards-list #presentation-card-list}
 
-需要图标、徽章或块级说明时，完整形式支持 `cards variant="list"`：
+每行需要图标、徽章或较长说明时，改用 shortcode 形式的 `cards variant="list"`：
 
 {{< cards variant="list" >}}
 {{< card title="安装" link="/zh/docs/start/" icon="fa-solid fa-rocket" badge="从这里开始" >}}
@@ -41,6 +40,8 @@ search_keywords: [组件样式, 卡片列表, 紧凑步骤, 命令条, 预设]
 {{< /cards >}}
 
 ## 提示与折叠块 {#disclosures}
+
+提示块没有变体，放在这里是为了对照它们在各个预设下的颜色与折叠行。
 
 > [!NOTE] 保持本地预览
 > 除了桌面效果，也要检查窄屏上的页面。
@@ -65,7 +66,7 @@ brew install hugo
 sudo apt install hugo
 ```
 
-单行围栏代码块加上 `{class="td-code-command"}` 后显示为命令条。复制按钮独占一列，命令可以滚动或换行，不会被按钮遮挡。
+单行围栏加上 `{class="td-code-command"}` 就成了命令条。复制按钮独占一列，长命令滚动或换行时不会被按钮挡住。
 
 ```bash {class="td-code-command" id="presentation-command"}
 hugo server --bind 127.0.0.1 --port 1313
@@ -75,18 +76,18 @@ hugo server --bind 127.0.0.1 --port 1313
 hugo --environment production --baseURL https://example.com/documentation/ --destination public
 ```
 
-`wrap`、`copy` 和无障碍标签保持原有含义。多行、带行号或可折叠的输入会给出警告并回退到普通代码块。没有该修饰类的单行代码块保留通常的呈现。
+`wrap`、`copy` 和无障碍标签的用法与普通代码块相同。命令条只能有一行，所以多行、带行号或可折叠的代码块加上这个 class 会告警，并按普通代码块渲染。
 
 ## 短流程 {#steps}
 
-在简短有序列表后添加 `{.steps .td-steps-compact}`。较长教程仍可使用常规 `.steps` 布局。
+简短的流程在标记里加上 `.td-steps-compact`，写成 `{.steps .td-steps-compact}`。较长的教程保留常规的 `.steps`，宽松的间距更易读。
 
 3. 检查配置。
 1. 运行本地预览。
 1. 检查生成结果。
 {.steps .td-steps-compact #presentation-steps}
 
-需要标题的流程使用百分号分隔的 `steps variant="compact"`：
+带标题的流程用 shortcode 的 `variant="compact"`，以百分号分隔符书写：
 
 {{% steps variant="compact" %}}
 
@@ -101,6 +102,8 @@ hugo --environment production --baseURL https://example.com/documentation/ --des
 {{% /steps %}}
 
 ## 表格与元信息 {#metadata}
+
+表格、参数表、徽章与按键序列同样没有变体，放在这里是为了对照它们与预设其余部分是否协调。
 
 | 视图 | 用途 | 输入 |
 | --- | --- | --- |
@@ -117,7 +120,3 @@ hugo --environment production --baseURL https://example.com/documentation/ --des
 {{< badge text="预览" tone="info" >}} {{< badge text="已验证" tone="success" >}} {{< badge text="待检查" tone="warning" >}}
 
 用 {{< kbd "Ctrl" "K" >}} 打开搜索，用方向键切换结果。
-
-## 兼容性 {#compatibility}
-
-这些变体不加载额外运行时。已有链接、键盘操作、复制文字、打印内容与 Markdown 输出保持原有含义。不支持的 `cards` 或 `steps` 变体会给出警告并使用常规呈现。视觉精修不改变默认预设或字体政策。

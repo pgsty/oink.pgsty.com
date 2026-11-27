@@ -1,20 +1,25 @@
 ---
 title: ECharts
 linkTitle: ECharts
-description: Write ECharts options as YAML or JSON in an `echarts` fence. Hugo validates them, and bundled ECharts draws charts that follow the color scheme.
+description: Draw bar, line and pie charts by writing ECharts options as YAML or JSON in an `echarts` fence, with colors that follow light and dark mode.
 weight: 150
 search_keywords: [ECharts, chart, bar, line, pie, height, theme, OinkEchartsFunctions]
 ---
 
-An `echarts` fence contains an ECharts option object in YAML or JSON. It contains data, not code.
-Use it for quantitative charts with axes, series, and a legend.
-Use [Mermaid](/docs/components/mermaid/) for relationships and flows. Use [Infographic](/docs/components/infographic/) for order and hierarchy.
-Hugo parses options at build time. Invalid input warns and preserves readable source.
-The browser draws charts with the theme's bundled ECharts. Only pages that use it load the runtime.
+An `echarts` fence draws a chart with axes, series and a legend: table sizes,
+release timelines, the share of each category in a total. You describe the
+chart as an ECharts option object in YAML or JSON, so the fence holds data,
+not code, and the numbers sit in your Markdown where a diff shows every change.
+Hugo checks the options while it builds, the theme's bundled copy of ECharts
+draws the chart in the reader's browser, and the colors follow light and dark
+mode. There is nothing to configure, and pages without a chart load nothing.
+For relationships and flows, use [Mermaid](/docs/components/mermaid/); for
+order and hierarchy, use [Infographic](/docs/components/infographic/).
 
 ## Shortest form {#minimal}
 
-A bar chart needs `xAxis`, `yAxis`, and `series`. This chart shows page counts for the six documentation sections.
+A bar chart needs `xAxis`, `yAxis` and `series`. This one shows the size of six
+tables in an application database:
 
 ````markdown {title="Source"}
 ```echarts {height="320px"}
@@ -22,12 +27,12 @@ tooltip:
   trigger: axis
 xAxis:
   type: category
-  data: [Introduction, Get started, Authoring, Components, Customization, Operations]
+  data: [customers, products, orders, events, sessions, audit_log]
 yAxis:
   type: value
-  name: pages
+  name: GB
 series:
-  - name: pages
+  - name: size
     type: bar
     data: [4, 4, 8, 22, 15, 7]
 ```
@@ -38,23 +43,26 @@ tooltip:
   trigger: axis
 xAxis:
   type: category
-  data: [Introduction, Get started, Authoring, Components, Customization, Operations]
+  data: [customers, products, orders, events, sessions, audit_log]
 yAxis:
   type: value
-  name: pages
+  name: GB
 series:
-  - name: pages
+  - name: size
     type: bar
     data: [4, 4, 8, 22, 15, 7]
 ```
 
-Both formats are supported. YAML is shorter because it needs no quotes or commas.
-Incorrect indentation or an array instead of a map warns, identifies the source line, and shows the source instead of a blank chart.
+YAML and JSON both work; YAML is shorter because it needs no quotes or
+commas. If the options do not parse, or parse to a list instead of a mapping,
+the build warns with the source line and the page shows your source instead
+of an empty chart.
 
 ## Multiple line series {#line}
 
-`series` is an array. Add an entry for each line. `legend` lets readers hide a series.
-This chart shows PostgreSQL major release years and the end-of-support years from the community's five-year policy.
+`series` is a list, with one entry per line, and `legend` lets readers hide a
+line by clicking its name. This chart shows when each PostgreSQL major version
+was released and when the community's five-year support ends:
 
 ````markdown {title="Source"}
 ```echarts {height="360px"}
@@ -120,11 +128,13 @@ series:
     data: [2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030]
 ```
 
-Quote version numbers. YAML reads unquoted `10` and `9.6` as numbers. Category-axis labels must be strings.
+The version numbers are quoted because YAML reads a bare `10` or `9.6` as a
+number, and labels on a category axis must be strings.
 
 ## Pie and doughnut charts {#pie}
 
-Give `radius` two values to create a doughnut chart. This example groups OINK's 30 shortcodes by purpose.
+Give `radius` two values to cut a hole in a pie and get a doughnut. This one
+groups OINK's 30 shortcodes by purpose:
 
 ````markdown {title="Source"}
 ```echarts {height="340px"}
@@ -170,32 +180,34 @@ series:
       - { value: 2, name: OpenAPI }
 ```
 
-`{b}`, `{c}`, and `{d}` are ECharts placeholders for name, value, and percentage.
-Use them in a string. No function is needed.
+`{b}`, `{c}` and `{d}` are ECharts placeholders for the name, the value and
+the percentage. A formatter string with placeholders covers most labels and
+tooltips without a function.
 
 ## Height and full width {#size}
 
-`height` defaults to `400px` and accepts `px rem em vh vw %`.
-`full=true` removes the reading-column limit and fills the content area. Use it for charts with many points or long labels.
+`height` defaults to `400px` and accepts `px`, `rem`, `em`, `vh`, `vw` and `%`.
+`full=true` lets the chart leave the reading column and use the whole content
+area, which gives many data points or long labels room:
 
 ````markdown {title="Source"}
 ```echarts {height="260px" full=true}
 tooltip:
   trigger: axis
 grid:
-  left: 40
+  left: 48
   right: 16
   top: 24
   bottom: 32
 xAxis:
   type: category
-  data: [i18n, taxonomy, font tokens, content contracts, navigation, runtime, sidebar icons, search, actions, palette, params, reading, release assets, download, landing, book, migrations, keyboard, shell, output, goldens]
+  data: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
 yAxis:
   type: value
-  name: scripts
+  name: queries/s
 series:
   - type: bar
-    data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    data: [310, 280, 260, 250, 255, 290, 420, 780, 1150, 1320, 1380, 1400, 1290, 1350, 1410, 1380, 1300, 1180, 960, 820, 700, 590, 470, 380]
 ```
 ````
 
@@ -203,27 +215,29 @@ series:
 tooltip:
   trigger: axis
 grid:
-  left: 40
+  left: 48
   right: 16
   top: 24
   bottom: 32
 xAxis:
   type: category
-  data: [i18n, taxonomy, font tokens, content contracts, navigation, runtime, sidebar icons, search, actions, palette, params, reading, release assets, download, landing, book, migrations, keyboard, shell, output, goldens]
+  data: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
 yAxis:
   type: value
-  name: scripts
+  name: queries/s
 series:
   - type: bar
-    data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    data: [310, 280, 260, 250, 255, 290, 420, 780, 1150, 1320, 1380, 1400, 1290, 1350, 1410, 1380, 1300, 1180, 960, 820, 700, 590, 470, 380]
 ```
 
-Invalid heights such as `360` and `36pt` warn and use the default `400px`.
+An invalid height such as `360` or `36pt` warns and uses `400px`.
 
 ## Light and dark {#theme}
 
-Without `theme`, charts use the reader's current color scheme. They redraw in place when the scheme changes, without reloading the page.
-Charts resize when their containers resize. Switch this page to dark mode to change each chart's background and text.
+Without `theme`, a chart takes the reader's current color scheme and redraws
+in place when the reader switches, without a reload; it also resizes with its
+container. Switch this page to dark mode to watch the charts above change
+their background and text.
 
 A fixed `theme` keeps the same colors in both modes:
 
@@ -231,51 +245,56 @@ A fixed `theme` keeps the same colors in both modes:
 ```echarts {height="240px" theme="dark"}
 xAxis:
   type: category
-  data: [HTML, Print, Markdown, RSS]
+  data: [replica-1, replica-2, replica-3, replica-4]
 yAxis:
   type: value
+  name: lag (ms)
 series:
   - type: bar
-    data: [1, 1, 1, 1]
+    data: [12, 8, 15, 9]
 ```
 ````
 
 ```echarts {height="240px" theme="dark"}
 xAxis:
   type: category
-  data: [HTML, Print, Markdown, RSS]
+  data: [replica-1, replica-2, replica-3, replica-4]
 yAxis:
   type: value
+  name: lag (ms)
 series:
   - type: bar
-    data: [1, 1, 1, 1]
+    data: [12, 8, 15, 9]
 ```
 
-`dark` is the only built-in runtime theme. Register other ECharts themes with `echarts.registerTheme()` before naming them here.
-Unless branding requires a fixed theme, omit `theme` so charts follow the site.
+`dark` is the only theme built into ECharts; any other name must already be
+registered with `echarts.registerTheme()` when the chart draws. Leave `theme`
+out unless your brand requires fixed colors, so that charts match the rest of
+the page.
 
 ## Callbacks with `$fn:` {#callbacks}
 
-A fence contains data and cannot contain JavaScript.
-If an option needs a function, such as a tooltip formatter or data-dependent color, use `"$fn:name"` in the options.
-Register the name on `window.OinkEchartsFunctions`:
+A fence holds data and cannot contain JavaScript. When an option needs a
+function, such as a tooltip that computes a share or a color that depends on
+the value, write the string `"$fn:name"` in the options and register a
+function under that name on `window.OinkEchartsFunctions`:
 
 ````markdown {title="Source"}
 <script>
   window.OinkEchartsFunctions = window.OinkEchartsFunctions || {};
-  window.OinkEchartsFunctions.pageShare = function (params) {
+  window.OinkEchartsFunctions.tableShare = function (params) {
     var p = params[0];
-    return p.name + ': ' + p.value + ' pages, ' + Math.round((p.value / 60) * 100) + '% of the site';
+    return p.name + ': ' + p.value + ' GB, ' + Math.round((p.value / 60) * 100) + '% of the database';
   };
 </script>
 
 ```echarts {height="300px"}
 tooltip:
   trigger: axis
-  formatter: "$fn:pageShare"
+  formatter: "$fn:tableShare"
 xAxis:
   type: category
-  data: [Introduction, Get started, Authoring, Components, Customization, Operations]
+  data: [customers, products, orders, events, sessions, audit_log]
 yAxis:
   type: value
 series:
@@ -286,19 +305,19 @@ series:
 
 <script>
   window.OinkEchartsFunctions = window.OinkEchartsFunctions || {};
-  window.OinkEchartsFunctions.pageShare = function (params) {
+  window.OinkEchartsFunctions.tableShare = function (params) {
     var p = params[0];
-    return p.name + ': ' + p.value + ' pages, ' + Math.round((p.value / 60) * 100) + '% of the site';
+    return p.name + ': ' + p.value + ' GB, ' + Math.round((p.value / 60) * 100) + '% of the database';
   };
 </script>
 
 ```echarts {height="300px"}
 tooltip:
   trigger: axis
-  formatter: "$fn:pageShare"
+  formatter: "$fn:tableShare"
 xAxis:
   type: category
-  data: [Introduction, Get started, Authoring, Components, Customization, Operations]
+  data: [customers, products, orders, events, sessions, audit_log]
 yAxis:
   type: value
 series:
@@ -306,30 +325,30 @@ series:
     data: [4, 4, 8, 22, 15, 7]
 ```
 
-Hover over a bar to see the tooltip sentence from the function.
-Unregistered names resolve to `undefined`. The chart draws as if the option were absent, without build or runtime warnings.
-Keep the script beside the fence so they change together.
-
-The script is site code and needs code review. If string templates (`{b}`, `{c}`, `{d}`) can express the formatting, no function is needed.
+Hover over a bar to see the sentence the function builds. A name that is not
+registered becomes `undefined`, and the chart draws as if the option were
+missing, with no warning at build time or in the browser, so keep the script
+next to the fence where both change together. The script is your site's own
+code: review it like any other, and on a site with a Content Security Policy
+allow it as described under [Deploy](/docs/admin/deploy/#csp). Use a function
+only when a formatter string with `{b}`, `{c}` and `{d}` cannot do the job.
 
 ## Where the data lives {#data}
 
-Fence bodies are literal text. Hugo does not expand shortcodes, front matter variables, or `data/` files inside them.
-Write the numbers in the fence. Data cannot be shared this way, but Git stores the chart with its data and shows changed numbers.
+Hugo does not expand shortcodes, front matter values or `data/` files inside a
+fence, so the numbers are written in the fence itself. Two charts cannot share
+one dataset this way, but each chart travels with its data and a diff shows
+exactly which number changed.
 
-Do not chart data that changes frequently, such as version matrices or asset lists.
-Use a [table](/docs/components/table/) or a `data/`-driven component on a [release page](/docs/write/releases/).
+Data that changes often, such as version matrices or download lists, should
+not be a chart. Use a [table](/docs/components/table/), or the `data/`-driven
+components of a [release page](/docs/write/releases/).
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | A canvas container inside `<div class="td-echarts">` plus an `application/json` options block; the local ECharts loads and draws it as the reader approaches the chart |
-| Print | No chart; the fence source inside `<pre class="td-echarts-source">` |
-| Markdown | The `echarts` fence and its option source, kept as written |
-| RSS | Same as print — source only |
-
-Explain the chart's information in prose. Print and RSS do not include the chart.
+Print and RSS show the fence's option source instead of a chart, and the
+page's Markdown output keeps the fence as written. Say what the chart shows in
+the surrounding prose, so that those readers get the conclusion too.
 
 ## Parameter reference {#reference}
 
@@ -338,24 +357,26 @@ The fence attribute line (```` ```echarts {…} ````):
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `height` | CSS length | `400px` | A non-negative number plus `px` `rem` `em` `vh` `vw` `%`; anything else warns and uses the default |
-| `theme` | string | unset | Pin an ECharts theme and stop following the site's colour scheme; only `dark` is built in |
-| `full` | bool | `false` | `true` drops the reading-column limit and fills the content area |
+| `theme` | string | unset | Pin an ECharts theme and stop following the site's color scheme; only `dark` is built in |
+| `full` | bool | `false` | `true` drops the reading-column limit and fills the content area; a value other than `true` or `false` warns and uses `false` |
 | `class` | space-separated classes | — | Passed through to the container for site CSS |
 {.fields meta="type default"}
 
-`style`, `on*`, and unknown attributes warn and are ignored.
-If a fence body does not parse to a YAML/JSON map, it warns and displays the source.
-ECharts defines the option keys in its [official option manual](https://echarts.apache.org/en/option.html).
-
-ECharts has no site-level parameter. It needs no switch in `hugo.yml` and loads only on pages that use it.
+`style`, `on*` handlers and unknown attributes warn and are ignored. An empty
+fence warns and renders nothing. The option keys themselves belong to ECharts
+and are listed in its [option manual](https://echarts.apache.org/en/option.html).
+ECharts has no site-level setting in `hugo.yml`.
 
 ## Limits {#limits}
 
-- Fences cannot contain JavaScript. Use `$fn:` for functions. Unregistered names resolve to `undefined` without an error.
-- Fences cannot read external data. They cannot access `data/`, front matter, or shortcodes. Write the numbers in the fence.
-- Print and RSS include only the source. State the conclusion in prose.
-- Quote category-axis values such as `10`, `9.6`, `on`, and `yes`. YAML can convert them to numbers or booleans.
-- Use line styles or marker shapes as well as color to distinguish series. Check legend contrast in both color schemes.
+- A fence cannot contain JavaScript; functions go through `$fn:`, and a name
+  that is not registered fails silently.
+- A fence cannot read `data/`, front matter or shortcodes; the numbers must be
+  in the fence.
+- Quote category values such as `10`, `9.6`, `on` and `yes`, which YAML would
+  otherwise turn into numbers or booleans.
+- Do not rely on color alone to tell series apart. Vary the line style or
+  marker shape as well, and check the legend's contrast in both color schemes.
 
 ## Related {#related}
 

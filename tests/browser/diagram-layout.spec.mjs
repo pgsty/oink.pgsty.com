@@ -29,6 +29,8 @@ for (const language of ['', '/zh']) {
     await page.addInitScript(() => localStorage.setItem('td-color-theme', 'dark'));
     await page.goto(`${language}/docs/components/infographic/`);
     const defaultCanvas = page.locator('[data-td-infographic-canvas]').first();
+    // Infographics render as the reader approaches them, not at page load.
+    await defaultCanvas.scrollIntoViewIfNeeded();
     await expect(defaultCanvas.locator('svg')).toBeVisible();
     await expect(defaultCanvas).toHaveCSS('background-color', 'rgb(255, 255, 255)');
     await page.goto(`${language}/tests/diagram-layout/`);

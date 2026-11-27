@@ -1,7 +1,7 @@
 ---
 title: 本地预览
 linkTitle: 本地预览
-description: 用 hugo server 在本机预览改动，用 hugo 构建可部署的 public/，不需要 Node 与 CDN。
+description: 用 hugo server 边保存边看渲染结果，再用 hugo 构建用于部署的 public/ 目录。
 weight: 10
 search_keywords: [本地预览, hugo server, 开发服务器, 草稿, 生产构建, 容器, Docker, 缓存, 断网, preview, local, build, air-gapped]
 aliases:
@@ -9,35 +9,36 @@ aliases:
   - /docs/deploy/local/
 ---
 
-两条命令覆盖日常工作：`hugo server` 在本机预览改动，`hugo` 产出可以部署到任何静态托管的 `public/`。前提是本机安装了 Hugo（不低于 {{< param hugoMinVersion >}}，不限 edition）；固定在 OINK 1.5.1 或更早版本的站点需要 Hugo 的 Extended 版。用 Hugo Module 引入主题时还需要 Go。构建不依赖 Node.js、npm 与 PostCSS，它们只服务于本仓库自身的回归检查。
+日常工作只用两条命令。`hugo server` 在每次保存后重建站点并自动刷新浏览器；`hugo` 把完整站点写进 `public/`，也就是要部署的那个目录：
+
+```bash {title="终端"}
+hugo server                                                   # 在 http://localhost:1313/ 预览
+hugo --cleanDestinationDir --gc --minify --printPathWarnings  # 构建用于部署的 public/
+```
+
+两者都不需要 Node.js、npm 或 CDN。需要安装的 Git、Go 与 Hugo 见[快速上手](/zh/docs/start/#tools)。
 
 ## 预览服务器 {#hugo-server}
 
-在站点根目录（`hugo.yml` 所在的目录）执行：
-
-```bash {title="终端"}
-hugo server
-```
-
-打开 <http://localhost:1313/>。保存文件后 Hugo 重新构建并刷新浏览器，切换 Git 分支同样触发重建。首次启动较慢：用 Hugo Module 引入主题时，Hugo 要先通过 Go 把模块下载到缓存，之后的启动都走缓存。
+在站点根目录（`hugo.yml` 所在目录）执行 `hugo server`，然后打开 <http://localhost:1313/>。每次保存文件、每次切换 Git 分支，Hugo 都会重建并刷新浏览器。首次启动较慢，因为 Hugo 要先把主题模块下载到缓存，之后的启动直接读缓存。
 
 ## 常用开关 {#server-flags}
 
-| 开关 | 默认 | 说明 |
+| 开关 | 默认 | 作用 |
 | --- | --- | --- |
 | `-D` / `--buildDrafts` | 关 | 把 `draft: true` 的页面也构建出来 |
 | `-F` / `--buildFuture` | 关 | 把 `date` / `publishDate` 在未来的页面也构建出来 |
 | `-E` / `--buildExpired` | 关 | 把 `expiryDate` 已过的页面也构建出来 |
-| `--disableFastRender` | 关 | 每次改动都整站重渲染，不用增量 |
-| `-M` / `--renderToMemory` | 关（写磁盘） | 只在内存里渲染，不落 `public/` |
+| `--disableFastRender` | 关 | 每次改动都整站重新渲染，而不是只渲染 Hugo 认为受影响的页面 |
+| `-M` / `--renderToMemory` | 关（写磁盘） | 从内存提供页面，不往 `public/` 写任何文件 |
 | `-N` / `--navigateToChanged` | 关 | 保存哪个页面，浏览器就跳到哪个页面 |
-| `--bind` | `127.0.0.1` | 监听地址；要让局域网或容器外访问就设 `0.0.0.0` |
+| `--bind` | `127.0.0.1` | 监听地址；要从局域网或容器外访问，设为 `0.0.0.0` |
 | `-p` / `--port` | `1313` | 监听端口 |
-| `--minify` | 关 | 预览也压缩输出，用来复现生产环境下的渲染 |
-| `--printPathWarnings` | 关 | 有两个页面写到同一个目标路径时告警 |
+| `--minify` | 关 | 预览时也压缩输出，用来复现生产环境下的渲染 |
+| `--printPathWarnings` | 关 | 两个页面写到同一个输出路径时告警 |
 {.fields meta="default"}
 
-本站开发时用的组合是：
+写作时推荐这样组合：
 
 ```bash {title="终端"}
 hugo server -DFE \
@@ -45,78 +46,52 @@ hugo server -DFE \
   --printPathWarnings --logLevel info
 ```
 
-`-DFE` 是 `-D -F -E` 的合写，草稿、未来与过期页面一并构建，写作时新建的页面才可见。
+`-DFE` 是 `-D -F -E` 的合写，草稿、未来日期与已过期的页面在写作期间都能看到。`--renderToMemory` 让这些页面不落进 `public/`，之后部署时就不会被误带上线。
 
 ### 改动没有生效 {#fast-render}
 
-Hugo 默认开启快速渲染（fast render），只重建它判定受影响的部分。修改布局、配置、`data/` 或被 `include` 引用的文件时，增量判定可能不准，页面看起来没有变化。三步排查：
+Hugo 默认只重新渲染它判断受影响的部分，而布局、配置、`data/` 或被 `include` 引用的文件改动后，这个判断偶尔会漏。页面看起来没变时：
 
-1. 加 `--disableFastRender` 重启，看是否恢复。
-1. 硬刷新浏览器（`Cmd`/`Ctrl` + `Shift` + `R`），排除浏览器缓存。
-1. 仍未恢复则[清缓存](#clean-caches)后重启。
+1. 加 `--disableFastRender` 重启。
+1. 强制刷新浏览器（`Cmd`/`Ctrl` + `Shift` + `R`），排除浏览器缓存。
+1. 仍然是旧内容，就[清缓存](#clean-caches)后重启。
 {.steps}
 
 ### 从其它设备访问 {#bind}
-`hugo server` 默认只监听 `127.0.0.1`，其它设备访问不到。要在手机或另一台机器上预览：
+
+预览服务器只监听 `127.0.0.1`，手机或另一台电脑访问不到。要让它们访问，就监听所有网卡，并把对方能访问的地址写进 `--baseURL`：
 
 ```bash {title="终端"}
 hugo server --bind 0.0.0.0 --port 1313 --baseURL http://192.168.1.10:1313/
 ```
 
-`--baseURL` 必须写成对方可访问的地址，否则页面能打开，但 CSS 与搜索索引这类走绝对路径的资源会指向 `localhost`。
+不写 `--baseURL` 时页面也能打开，但样式表、搜索索引这些走绝对路径的资源仍然指向 `localhost`。
 
 ## 生产构建 {#production-build}
 
-部署产物用 `hugo` 构建，不用 `hugo server`：
+要部署的产物只用 `hugo` 构建，不用 `hugo server`：
 
 ```bash {title="终端"}
-hugo --gc --minify --printPathWarnings
+hugo --cleanDestinationDir --gc --minify --printPathWarnings
 ```
 
-产物写入 `public/`，该目录可以脱离源码树独立部署。三个开关各管一件事：
+`public/` 是自包含的，可以脱离源码树拷到任何地方。四个开关各有用处：
 
-| 开关 | 说明 |
+| 开关 | 为什么 |
 | --- | --- |
-| `--gc` | 构建后清掉 `resources/_gen` 里不再被引用的缓存资源 |
+| `--cleanDestinationDir` | 删除本次构建没有写出的文件，已经删掉的页面不会继续留在线上 |
+| `--gc` | 清掉 `resources/_gen` 里已经没有引用的处理结果 |
 | `--minify` | 压缩 HTML、CSS、JS 与 XML 输出 |
-| `--printPathWarnings` | 两个页面撞到同一个输出路径时告警，多语言站点最常见的静默错误 |
+| `--printPathWarnings` | 两个页面抢同一个输出路径时告警，这是多语言站点最常见的静默错误 |
 {.fields}
 
-告警保持可见。禁止启用 `--panicOnWarning`
-或 `HUGO_PANICONWARNING`。giscus 配置缺失或主题取值无效时会告警并降级；
-发布前应核对这些诊断与实际产物。
+构建成功的最后一行是 `Total in …`。部署前读一遍告警：每条告警都指出一个被主题忽略的设置，构建则用安全的默认值继续完成。
 
-本站 CI 使用上面的生产构建命令。验证公开主题版本时，关闭本地模块替换与两种工作区。
-
-### baseURL 与构建环境 {#baseurl-and-environment}
-
-`baseURL` 写在 `hugo.yml` 里，也可以在命令行覆盖：
-
-```yaml {title="hugo.yml"}
-baseURL: https://oink.pgsty.com
-```
-
-```bash {title="终端"}
-hugo --minify --baseURL "https://example.com/docs/"
-```
-
-部署到子路径时 `--baseURL` 必须带上那段路径，细节见[发布上线](/zh/docs/admin/deploy/#baseurl)。
-
-构建环境用 `-e` / `--environment` 选择，`hugo` 默认 `production`，`hugo server` 默认 `development`。这个选择在 OINK 里有三处可见后果：
-
-- `production` 下才输出 `<meta name="robots" content="index, follow">`，其它环境输出 `noindex, nofollow`。
-- `production` 下 `robots.txt` 是 `Allow: /`，其它环境是 `Disallow: /`。
-- `production` 下才渲染 Hugo 的 Google Analytics 模板，静态资源也才做指纹与 SRI。
-
-预览部署（PR preview、staging）用非 production 环境构建，产物自带不被搜索引擎收录、不上报分析的行为：
-
-```bash {title="终端"}
-hugo --minify --environment staging --baseURL "$PREVIEW_URL"
-```
+产物一旦离开本机，有两项设置就很要紧。`baseURL` 决定所有绝对链接，包括 `/docs/` 这样的子路径，见[确定 baseURL](/zh/docs/admin/deploy/#baseurl)。构建环境（`hugo` 默认 `production`，`hugo server` 默认 `development`）决定页面是否请求收录、是否加载统计脚本，见[预览部署不要被收录](/zh/docs/admin/deploy/#preview-builds)。
 
 ## 容器内预览 {#container}
 
-容器不是必需的。两种情况适合用容器：团队需要固定工具链版本，或不希望在每台开发机上安装 Hugo。
+容器不是必需的。团队希望所有人用同一套工具链，或者不想在每台机器上安装 Hugo 时，它才派得上用场。
 
 ```dockerfile {title="Dockerfile" collapse=16}
 FROM debian:bookworm-slim
@@ -157,24 +132,22 @@ docker run --rm --user "$(id -u):$(id -g)" \
   oink-hugo --gc --minify
 ```
 
-`HUGO_VERSION` 是这个镜像固定的版本，请设为团队实际使用的版本，不低于 {{< param hugoMinVersion >}}。固定在 OINK 1.5.1 或更早版本的站点需要改用 Extended 软件包 `hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.deb`，且版本不高于 0.169。
+`HUGO_VERSION` 设为团队实际使用的版本，不低于 {{< param hugoMinVersion >}}。仍固定在 OINK 1.5.1 或更早版本的站点要换一个软件包，见[版本升级](/zh/docs/admin/upgrade/#hugo-extended)。
 
-镜像里装 Go 的原因：用 Hugo Module 引入主题时，Hugo 需要 Go 解析并下载模块。用 submodule、离线归档或直接克隆的站点可以去掉 Go，镜像会小很多。
+镜像里装 Go，是因为主题以 Hugo Module 方式引入时，Hugo 要靠 Go 下载模块。用 submodule、离线归档或直接克隆的站点可以去掉 Go，镜像会小很多。镜像里没有任何东西需要 Node.js、npm 或 PostCSS，构建也不下载浏览器资源，因此在网络隔离环境里，只需预先镜像基础镜像以及 Hugo、Go 两个软件包。
 
 > [!WARNING] 不要让 root 写 `public/`
-> 容器里的进程默认是 root，生成的 `public/` 属于 root，宿主机上删不掉。共享环境里用 `--user "$(id -u):$(id -g)"` 映射用户 ID（上面的生产构建命令已经带了）。
-
-镜像不需要 Node.js、npm 与 PostCSS，也不应出现拉取远程浏览器资源的步骤。网络隔离环境需要预先镜像基础镜像与这两个软件包。
+> 容器默认以 root 运行，root 写出的 `public/` 在宿主机上不用 `sudo` 就删不掉。用 `--user "$(id -u):$(id -g)"` 映射自己的用户 ID，上面的生产构建命令已经这样做了。
 
 ## 清缓存 {#clean-caches}
 
-Hugo 的中间产物分三处，从轻到重依次清：
+Hugo 把中间产物放在三处。按症状清能解释它的最小范围：
 
 | 目录 / 命令 | 内容 | 什么时候清 |
 | --- | --- | --- |
-| `public/` | 上一次的构建产物 | 删了页面但线上还在；或用 `hugo --cleanDestinationDir` 让构建自己清 |
-| `resources/_gen/` | 处理过的图片；使用 OINK 1.5.1 或更早版本时，还有构建编译出的 CSS | 换了图片处理参数、换了字体或主色，页面还是旧样子 |
-| `hugo mod clean` | Hugo Module 缓存 | 换了主题版本但解析出来还是旧的；加 `--all` 清整个模块缓存 |
+| `public/` | 上一次的构建产物 | 删掉的页面线上还在；`hugo --cleanDestinationDir` 会在构建时顺带清理 |
+| `resources/_gen/` | 处理过的图片 | 改了图片处理参数、字体或主色，页面还是旧样子 |
+| `hugo mod clean` | Hugo Module 缓存 | 换了主题版本，解析出来的还是旧版；加 `--all` 清掉整个模块缓存 |
 {.fields}
 
 ```bash {title="终端"}
@@ -183,76 +156,65 @@ hugo mod clean          # 只清当前项目用到的模块
 hugo mod clean --all    # 清整个模块缓存，下次构建重新下载
 ```
 
-`public/` 与 `resources/` 都应该写进 `.gitignore`，不要提交生成产物。
+`public/` 与 `resources/` 都写进 `.gitignore`。它们每次构建都会重新生成，提交进仓库只会过期，还会让仓库越来越大。
 
-## 与主题一起改 {#theme-workspace}
+## 对着本地主题预览 {#theme-workspace}
 
-同时修改主题与站点时才需要这一节。用 `HUGO_MODULE_REPLACEMENTS` 把模块临时指向本地 checkout，`go.mod` 保持不变：
+同时修改主题与站点时，用 `HUGO_MODULE_REPLACEMENTS` 让这一条命令改用本地的主题 checkout。`go.mod` 不动，替换也就不会被误提交：
 
 ```bash {title="终端"}
 HUGO_MODULE_REPLACEMENTS='github.com/pgsty/oink -> /absolute/path/to/oink' hugo server
 ```
 
-本站的 `Makefile` 封装了这几条命令，要求主题 checkout 在同级目录 `../oink`：
+目录布局和 Go workspace 的替代做法见[从零建站](/zh/docs/start/from-scratch/#local-theme-checkout)。
 
-```text {title="Makefile 目标" copy=false}
-make dev     # 替换为 ../oink 的开发服务器
-make check   # 替换为 ../oink 跑完整回归套件（npm test）
-make build   # 用 go.mod 里的版本构建
-make serve   # 按生产配置起预览服务器
-```
-
-> [!DANGER] 本地覆盖可能掩盖公开版本
-> CI 与生产构建仍可能继承替换或 workspace。不要提交包含开发机路径的 workspace。
-> 验证公开标签时，移除 `HUGO_MODULE_REPLACEMENTS`，同时设置 `GOWORK=off` 和
-> `HUGO_MODULE_WORKSPACE=off`。还要检查 `go.mod`、Hugo 配置中的持久替换，以及
-> `_vendor/` 副本；先在同一环境下用 `hugo mod graph` 确认精确版本，再执行构建。
+> [!WARNING] 替换会盖掉你固定的版本
+> 只要这个变量还在，或者 Go workspace 处于生效状态，构建用的就是本地 checkout，与 `go.mod` 写的版本无关；CI 任务也可能继承其中任何一个。要构建公开发布的版本，先移除 `HUGO_MODULE_REPLACEMENTS`，设置 `GOWORK=off` 和 `HUGO_MODULE_WORKSPACE=off`，检查 `go.mod` 与 Hugo 配置里有没有持久的 `replace` 指令、站点里有没有 `_vendor/` 副本，再在同一环境下用 `hugo mod graph` 确认精确版本。不要提交写有本机路径的 workspace 文件。
 
 ## 断网构建验证 {#air-gapped}
 
-网络隔离环境的验收要同时覆盖构建阶段与浏览器阶段。六步：
+站点要在网络隔离环境里使用时，切断网络，把构建和浏览器两头都测一遍：
 
 1. 从一份已校验的主题归档与空的模块缓存开始（`hugo mod clean --all`）。
 1. 阻断出站 HTTP、HTTPS 与 Go module proxy。
 1. 运行生产构建 `hugo --gc --minify --printPathWarnings`。
-1. 浏览产物里两种语言的页面：文档页、博客页、首页、404。
-1. 操作搜索、深浅色切换、图表与内容组件。
-1. 检查子资源来源，确认没有意外的远程主机。
+1. 每种语言都浏览一遍：文档页、博客页、首页、404。
+1. 实际操作搜索、深浅色切换、图表，以及站点用到的内容组件。
+1. 检查所有子资源的来源，确认没有意外的远程主机。
 {.steps}
 
-最后一步使用与固定发布版本对应的主题 checkout 中的输出检查器。它需要 Python 3，
-不依赖本文档站的测试框架。将下面两个绝对路径换成自己的目录，base URL 与构建时保持一致：
+最后一步用输出检查器完成。从与站点固定版本相同的主题 checkout 里运行它，只需要 Python 3。把两个路径换成自己的目录，base URL 与构建时一致：
 
 ```bash {title="终端"}
 python3 /path/to/oink/bin/check-output-security.py \
   --public /path/to/my-site/public --base-url https://docs.internal.example.com/
 ```
 
-脚本扫描四种输出里的每个 `href` / `src` / `srcset` / `poster` 与表单 `action`，要求它们是站内相对路径或 `http` / `https` / `mailto` / `tel`，并拒绝行内 `on*` 事件处理器与 `javascript:` URL。指向别的主机的 `<iframe>` `<script>` `<link>` `<img>` `<video>` `<audio>` `<embed>` `<object>` `<source>` 一律报错，站点确实要嵌入第三方内容时加 `--third-party` 放行，多域名语言配置用 `--allow-host` 追加首方主机。
+脚本读取 HTML、打印、Markdown 与 RSS 输出里的每个 `href`、`src`、`srcset`、`poster` 与表单 `action`，要求它们是站内相对路径，或者使用 `http`、`https`、`mailto`、`tel`；行内 `on*` 事件处理器与 `javascript:` URL 一律拒绝。指向其它主机的 `<iframe>`、`<script>`、`<link>`、`<img>`、`<video>`、`<audio>`、`<embed>`、`<object>`、`<source>` 都算错误。站点有意嵌入第三方内容时加 `--third-party`；各语言分布在多个域名时，用 `--allow-host` 补充首方主机。
 
-一次通过只证明当次提交与当次环境。每个主题候选版本、每次随附依赖更新之后都要重跑一遍。
+一次通过只说明这一次构建没问题，每次升级主题后都要重跑。
 
 ## 验证 {#verify}
 
-一次干净的生产构建应该是这样：
+从空缓存开始，避免旧产物掩盖问题：
 
 ```bash {title="终端"}
 rm -rf public resources/_gen
 hugo --gc --minify --printPathWarnings
 ```
 
-看到 `Total in …` 且无 ERROR 即表示构建通过。随后确认：
+以 `Total in …` 结束且没有 ERROR 即为构建通过。然后确认：
 
-- 日志里没有 npm、PostCSS、Autoprefixer 或下载浏览器资源的步骤。出现了说明配置里混进了上游 Docsy 的流程。
-- `public/` 下有 `sitemap.xml`、`robots.txt`，`robots.txt` 是 `Allow: /`。
-- 启用本地搜索后，`public/` 下每种语言各有一份索引：生产文件名为 `offline-search-index.<语言>.<hash>.json`，开发环境不带 hash。打开搜索，确认 `data-td-index-src` 指定的实际 URL 返回 200。
-- 用 `hugo server` 打开代表性页面：一个文档页、一个博客页、首页、404，两种语言、两种配色都看一遍。
+- 日志里没有 npm、PostCSS、Autoprefixer 或下载资源的步骤。出现了，说明配置里残留着 Docsy 的流程。
+- `public/` 下有 `sitemap.xml` 和 `robots.txt`，`robots.txt` 内容是 `Allow: /`。
+- 启用本地搜索时，`public/` 下每种语言各有一份索引，生产构建的文件名是 `offline-search-index.<语言>.<hash>.json`（开发构建不带 hash）。打开搜索，确认页面 `data-td-index-src` 属性给出的 URL 返回 200。
+- 在 `hugo server` 里，文档页、博客页、首页和 404 在每种语言、两种配色下都显示正常。
 
-构建失败或结果不对，去[排错与检查](/zh/docs/admin/troubleshooting/)。
+部署之后，按[验收清单](/zh/docs/admin/deploy/#checklist)在线上站点再查一遍。构建失败或结果不对，见[排错与检查](/zh/docs/admin/troubleshooting/)。
 
 ## 相关 {#related}
 
 - [发布上线](/zh/docs/admin/deploy/) — 把 `public/` 发到 GitHub Pages、Cloudflare 或别处
-- [排错与检查](/zh/docs/admin/troubleshooting/) — 构建、语言、搜索、平台四类常见故障
-- [从零建站与其它安装方式](/zh/docs/start/from-scratch/) — Hugo Module / submodule / 离线归档的取舍
+- [排错与检查](/zh/docs/admin/troubleshooting/) — 构建、语言、搜索与平台故障
+- [从零建站与其它安装方式](/zh/docs/start/from-scratch/) — Hugo Module、submodule 还是离线归档
 - [配置总览](/zh/docs/customize/config/) — `hugo.yml` 里每个键的定义

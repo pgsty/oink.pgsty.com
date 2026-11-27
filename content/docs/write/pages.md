@@ -1,30 +1,50 @@
 ---
 title: Writing pages
 linkTitle: Writing pages
-description: Create a documentation page. Learn where to save it, how to set front matter and anchors, and how links, images, and page-end controls work.
+description: Create a documentation page, from where the file goes and the front matter it needs to stable anchors, links, images, drafts and the controls the theme adds at the end.
 weight: 10
 search_keywords: [writing pages, front matter, heading ID, heading anchor, links, ref, relref, draft, Markdown]
 aliases:
   - /docs/content/writing/
 ---
 
-This page covers the complete process for writing a documentation page. It
-explains file location, front matter, heading anchors, links, images, drafts,
-and page-end controls. The site must already build locally. If it does not,
-start with
-[Quick start](/docs/start/).
+A documentation page is one Markdown file under `content/`: a few lines of YAML
+front matter, then the body. Where you save the file decides its URL and its
+place in the sidebar, so a new page needs nothing beyond the file itself:
+
+```markdown {title="content/docs/install.md"}
+---
+title: Install Pigsty
+linkTitle: Install
+description: Get a working PostgreSQL cluster onto a clean EL 9 machine.
+weight: 20
+---
+
+## Prerequisites {#prerequisites}
+
+A Linux machine you can reach over SSH, passwordless `sudo`, and Python 3.11 or
+newer.
+
+> [!IMPORTANT]
+> The installer rewrites `/etc/yum.repos.d/`. Back it up first.
+```
+
+With `hugo server` running, the page appears at `/docs/install/` and as
+**Install** in the sidebar. If your site does not build yet, start with
+[Get started](/docs/start/).
 
 ## Creating a page {#new-page}
 
-A page is a Markdown file under `content/`. Its location determines its URL.
-For example, `content/docs/install.md` is published as `/docs/install/`. The Chinese
-translation is a `.zh.md` file of the same name in the same directory, sharing
-one logical path with the English page.
+The path under `content/` becomes the URL: `content/docs/install.md` is
+published at `/docs/install/`. A translation is a file of the same name with a
+language suffix, such as `install.zh.md`, in the same directory, and it shares
+the English page's logical path.
 
-Use a single file for a page without attached resources. If a page has images,
-cast files, or example configuration, create a directory. Name the page file
-`index.md` and put the resources beside it. Hugo calls this a
-[page bundle](https://gohugo.io/content-management/page-bundles/):
+A page with no files of its own is a single `.md` file. When it has
+screenshots, recordings or example configuration, make it a directory instead:
+name the page `index.md` and put its files beside it. Hugo calls this a
+[page bundle](https://gohugo.io/content-management/page-bundles/), and the
+page refers to its files by their bare names:
 
 ```filetree {title="the two page shapes inside content/"}
 - content/
@@ -39,19 +59,18 @@ cast files, or example configuration, create a directory. Name the page file
       - shell.webp                   # page resource, shared by both languages
 ```
 
-`hugo new content docs/install.md` generates an empty file with front matter
-from an archetype. See the [Hugo documentation](https://gohugo.io/commands/hugo_new_content/).
-You can also write the file manually.
-
-> [!IMPORTANT]
-> When a Chinese page has no English counterpart, Hugo does not give it
-> resources without a language suffix. In that case the resource filename
-> needs the `.zh.` infix (`shell.zh.webp`) while the body still writes
-> `shell.webp`.
+Both shapes look the same in the sidebar. `hugo new content docs/install.md`
+creates the file with front matter from an
+[archetype](https://gohugo.io/commands/hugo_new_content/); writing it by hand
+works just as well. A bundle resource without a language suffix is shared by
+every language. [File naming and resources](/docs/customize/i18n/#files)
+explains language-specific resources and the one case that needs them: a page
+that exists only in Chinese.
 
 ## The front matter you need {#front-matter}
-Between the two `---` lines at the top of the file is YAML front matter. Four
-keys belong on every page:
+
+The YAML between the two `---` lines at the top of the file is the front
+matter. Four keys belong on every page:
 
 ```yaml {title="content/docs/install.md"}
 ---
@@ -62,22 +81,24 @@ weight: 20                  # ordering among siblings; use multiples of 10 to le
 ---
 ```
 
-Use `description` to state in one sentence what the reader can accomplish.
-It appears on section index cards, in search results, and on social cards.
-`weight` determines sidebar order. Only equal weights use alphabetical order.
+Write `description` as one sentence saying what the reader can do with the
+page. It appears on section index cards, in search results and on social
+cards, so it is what someone reads when deciding whether to open the page.
+`weight` orders the page among its siblings; [Ordering](/docs/write/organize/#weight)
+explains ties and pages without one.
 
-Other keys are optional. These include the icon, draft status, search weight,
-comment switch, and page shell. For the full table, see
-[Page parameters](/docs/write/frontmatter/).
+Every other key is optional: an icon, draft status, a search boost, comments,
+the page shell. [Page parameters](/docs/write/frontmatter/) lists them all.
 
 ## Heading levels and stable anchors {#headings}
 
-Start body sections at `##`. Reserve `#` for `title`. The theme renders the page
-heading. Another `#` in the body creates a second top-level heading. The right
-column outline starts at `##`. Hugo's `markup.tableOfContents` determines its
-maximum depth. This site uses `####`.
+Start body sections at `##`. The theme renders `title` as the page's one `#`
+heading, so a `#` in the body would add a second. The outline in the right
+column lists headings from `##` down to Hugo's
+`markup.tableOfContents.endLevel`, which is `###` unless you set it to `4` to
+include `####`.
 
-Write an explicit English anchor `{#id}` on every `##` and `###`:
+Give every `##` and `###` an explicit English ID:
 
 ```markdown {title="Source"}
 ## Prerequisites {#prerequisites}
@@ -85,70 +106,29 @@ Write an explicit English anchor `{#id}` on every `##` and `###`:
 ### Disk and memory {#disk-and-memory}
 ```
 
-There are two reasons:
+Without an explicit ID, Hugo derives one from the heading text, which causes
+two problems:
 
-- Cross-language alignment. Hugo derives an ID from heading text. A Chinese heading produces a Chinese ID. `/docs/install/#prerequisites` and `/zh/docs/install/#前提条件` identify equivalent places with different anchors. A translation audit cannot compare them. Give the translated heading the English page's ID. Both pages then share one fragment.
-- Link stability. Revisions can change heading text. They should not break public links. After publication, an explicit ID is a public route. If you must rename it, leave an empty anchor for the old ID:
+- A translated heading gets a different ID (`#前提条件` instead of
+  `#prerequisites`), so a link that works in English lands at the top of the
+  Chinese page. With the English ID on both, `/docs/install/#prerequisites`
+  and `/zh/docs/install/#prerequisites` reach the same place; see
+  [Heading anchors must align](/docs/customize/i18n/#anchors).
+- Rewording a heading silently breaks every link to it. Treat a published ID
+  as part of the URL, and when you must rename one, leave an empty anchor with
+  the old ID so existing links still arrive:
 
-```markdown {title="Source: leaving a target behind for the old anchor"}
-## Getting started <a id="get-started"></a> {#quickstart}
-```
+  ```markdown {title="Source: leaving a target behind for the old anchor"}
+  ## Getting started <a id="get-started"></a> {#quickstart}
+  ```
 
-Use lowercase English with hyphens, unique within the page. This site's
-translation audit compares the heading IDs rendered by the English and Chinese
-pages and fails on a mismatch.
-
-## Writing links {#links}
-Use one of these three forms, according to its purpose:
-
-| Form | Example | When to use it |
-| --- | --- | --- |
-| Absolute site path | `[Configuration](/docs/customize/config/)` | The default. It points at a published route, is easy to audit and replace site-wide, and survives source files moving |
-| Relative path | `[another page](../organize/)`, `![diagram](shell.webp)` | Resources inside the same page bundle, or a neighboring page that should follow the source directory |
-| The `ref` / `relref` shortcode | `[Configuration]({{</* ref "/docs/configure/overview" */>}})` | If the target must exist at build time. A missing target fails the build instead of leaving a broken link |
-
-All three carry a trailing slash and point at directory-style routes
-(`/docs/write/pages/`), matching Hugo's default permalinks.
-
-The theme has no link render hook. It passes links to Goldmark unchanged.
-External links do not automatically receive `target="_blank"`. If you need a
-new tab, write HTML or use the site's `layouts/_markup/render-link.html`.
-
-Plain Markdown links are not checked for target existence. Use these rules:
-
-- Prefer absolute paths for internal links. After restructuring the site, use `grep` to replace them site-wide.
-- When you move a page, add `aliases` for the old path. Update internal links to the new route. Do not use an alias for navigation indefinitely.
-- If you are unsure that a target exists, use `ref`. The build then checks it.
-
-In a bilingual site, link to the logical page (`/docs/write/pages/`) rather than
-to a `.zh.md` filename, and keep fragment IDs language-neutral.
-
-## Where images go {#images}
-Put a page's screenshots in its page bundle. Put shared images in
-`assets/images/`. Put large files that require no processing in `static/`.
-Use `![alt text](source)` for all three. An attribute line controls caption,
-size, zoom, and numbering. See [Images](/docs/components/image/).
-
-## Drafts and publishing {#drafts}
-
-A page with `draft: true` never reaches the build output:
-
-```yaml {title="front matter"}
----
-title: Migration guide, not yet final
-draft: true
----
-```
-
-Preview with `hugo server -D` to show drafts (`-D` is `--buildDrafts`). A page
-whose `date` is in the future is also excluded. `-F` shows those pages. A production
-build uses neither switch, and plain `hugo` publishes only finished content.
+Use lowercase English words joined by hyphens, unique within the page.
 
 ## OINK's Markdown extensions {#extensions}
 
-The body is standard Markdown (Goldmark) plus the native forms below. Each is
-ordinary Markdown syntax with one attribute line, and each stays readable as
-source on GitHub:
+The body is standard Markdown, rendered by Hugo's Goldmark, plus the forms
+below. Each is ordinary Markdown with at most one attribute line, so the
+source still reads well on GitHub or in any editor:
 
 | Component | Shortest syntax | Page |
 | --- | --- | --- |
@@ -164,75 +144,134 @@ source on GitHub:
 | Mathematics | A `math` fence, or display math wrapped in `$$` | [Math](/docs/components/math/) |
 | Diagrams | A `mermaid` fence (also `plantuml`, `markmap`, `echarts`) | [Mermaid](/docs/components/mermaid/) |
 
-The remaining components use shortcodes. These include badges, keys, file
-includes, terminal recordings, and the Book figure and table family. For syntax
-and parameters, see [Components](/docs/components/).
+The few components that need more than Markdown can express use shortcodes:
+badges, keyboard keys, file includes, terminal recordings, and the Book figure
+and table family. Their syntax is in [Components](/docs/components/).
 
-A combined example: code fences and a callout inside steps.
+The forms combine. Here a code fence and a callout sit inside steps:
 
 ````markdown {title="Source"}
-1. Install Hugo, 0.169.0 at the oldest:
+1. Install PostgreSQL 18:
    ```bash
-   brew install hugo
+   brew install postgresql@18
    ```
-1. Clone OINK Starter and preview it:
+1. Start the server and connect to it:
    ```bash
-   git clone https://github.com/pgsty/oink-starter my-docs
-   cd my-docs && hugo server
+   brew services start postgresql@18
+   psql postgres
    ```
    > [!TIP]
-   > Add `-D` to preview drafts as well.
+   > `brew services list` shows whether the server is running.
 {.steps}
 ````
 
-1. Install Hugo, 0.169.0 at the oldest:
+1. Install PostgreSQL 18:
    ```bash
-   brew install hugo
+   brew install postgresql@18
    ```
-1. Clone OINK Starter and preview it:
+1. Start the server and connect to it:
    ```bash
-   git clone https://github.com/pgsty/oink-starter my-docs
-   cd my-docs && hugo server
+   brew services start postgresql@18
+   psql postgres
    ```
    > [!TIP]
-   > Add `-D` to preview drafts as well.
+   > `brew services list` shows whether the server is running.
 {.steps}
 
+## Writing links {#links}
+
+Choose the form by what the link points at:
+
+| Form | Example | When to use it |
+| --- | --- | --- |
+| Absolute site path | `[Configuration](/docs/customize/config/)` | The default. It names the published route, survives moving the source file, and is easy to find and replace across the site |
+| Relative path | `[another page](../organize/)`, `![diagram](shell.webp)` | Resources in the same page bundle, or a neighboring page that should move with its source directory |
+| The `ref` / `relref` shortcode | `[Configuration]({{</* ref "/docs/customize/config" */>}})` | A target that must exist: a missing one fails the build instead of leaving a broken link |
+
+All three point at directory-style routes with a trailing slash
+(`/docs/write/pages/`), the way Hugo publishes pages by default. In a
+bilingual site, link to the logical page rather than to a `.zh.md` file, and
+use the same fragment IDs in both languages.
+
+Plain Markdown links are not checked when the site builds, so:
+
+- Write internal links as absolute paths; after a restructure, one site-wide
+  search and replace finds them all.
+- When you move a page, add its old path to `aliases` so outside links keep
+  working, and point your own links at the new route instead of leaning on the
+  alias.
+- When you are not sure a target exists, use `ref` and let the build check it.
+
+The theme passes links to Goldmark unchanged; it has no link render hook.
+External links therefore open in the same tab. For new tabs, write the link as
+HTML or add your own `layouts/_markup/render-link.html`.
+
+## Where images go {#images}
+
+Put a page's own screenshots in its page bundle, images several pages share in
+`assets/images/`, and large files that need no processing in `static/`. All
+three use the same `![alt text](source)` syntax, and an attribute line below the
+image adds a caption, a size, zoom or a figure number; see
+[Images](/docs/components/image/).
+
+## Drafts and publishing {#drafts}
+
+Mark an unfinished page `draft: true` and no build publishes it:
+
+```yaml {title="front matter"}
+---
+title: Migration guide, not yet final
+draft: true
+---
+```
+
+`hugo server -D` (`--buildDrafts`) previews drafts. A page whose `date` lies in
+the future is left out the same way until you build after that date, and `-F`
+(`--buildFuture`) previews it. Production builds use neither flag, so plain
+`hugo` publishes only finished pages.
+
 ## What appears at the end of a page {#page-end}
-The theme generates these four blocks in a fixed order. Do not write them in
-the body. An optional Share bar appears before them:
 
-| Position | What it is | Default | Where to configure |
+Do not write a feedback prompt, a last-updated line, previous/next links or a
+comment box into the body. The theme adds them after the last paragraph,
+always in this order:
+
+| Block | Default | Off for one page | Configure |
 | --- | --- | --- | --- |
-| 1 | Feedback: the two "Was this page helpful?" buttons | Off | [Repository links and page info](/docs/customize/repository/) |
-| 2 | Last modified: the time and the most recent commit subject, linked to GitHub | On when Git information is available | [Repository links and page info](/docs/customize/repository/) |
-| 3 | Pager: previous and next, in sidebar tree order | On for docs / book / blog | [Navigation and menus](/docs/customize/navigation/) |
-| 4 | Comments: giscus | When configured and enabled | [Comments](/docs/admin/comments/) |
+| Share bar | Off until `params.ui.share` lists networks | `share: false` | [Blog posts](/docs/write/blog/#share) |
+| Feedback: the two "Was this page helpful?" buttons | Off | `feedback: false` | [Repository links and page info](/docs/customize/repository/#feedback) |
+| Last modified: the time and the latest commit subject, linked to GitHub | On when Git information is available | `annotation: false` | [Repository links and page info](/docs/customize/repository/#lastmod) |
+| Pager: previous and next, in sidebar order | On for docs, book and blog | `pager: false` | [Navigation and menus](/docs/customize/navigation/#pager) |
+| Comments: Giscus | On when configured and enabled | `comments: false` | [Comments](/docs/admin/comments/) |
 
-The theme also generates the action menu beside the title. It includes copy
-Markdown, edit this page, view history, open an issue, and print. Configure it in
-[Repository links and page info](/docs/customize/repository/).
-
-To turn off a control for one page, set its front matter: `feedback: false`,
-`annotation: false`, `pager: false`, `comments: false`. The keys are described
-in [Page parameters](/docs/write/frontmatter/).
+The action menu beside the title (copy as Markdown, edit this page, view
+history, open an issue, print) is generated too, and is configured in
+[Repository links and page info](/docs/customize/repository/). Why the blocks
+come in this order is explained in
+[What the page end is made of](/docs/customize/repository/#page-end).
 
 ## Verify {#verify}
 
-After writing a page, run a production build:
+Build once after writing a page:
 
 ```bash
 hugo --printPathWarnings
 ```
 
-- The build must exit with `Total in …` and no ERROR. An invalid attribute key or component parameter logs a warning with a source position and renders a safe fallback, whereas a `ref` pointing to a missing target fails the build.
-- `--printPathWarnings` flags any two pages that resolve to the same output path, which is most common in multilingual sites or after editing `permalinks`.
+The build should end with `Total in …` and no `ERROR`. A mistyped attribute or
+component parameter produces a warning with its source position and renders a
+safe fallback, as described in
+[Configuration principles](/docs/customize/config/#principles); a `ref` to a
+missing page fails the build. `--printPathWarnings` reports two pages that
+publish to the same path, which happens most often in multilingual sites or
+after a change to `permalinks`.
 
-Then confirm three things in the browser:
+Then check in the browser:
 
-1. The page appears in the sidebar at the position determined by `weight`.
-2. The right-hand outline lists your `##` headings. Clicking a heading adds an English anchor to the URL.
-3. The English and Chinese versions of the same heading share an anchor (this site audits that with `node scripts/check-doc-translations.mjs --public public`).
+1. The page sits in the sidebar where its `weight` puts it.
+2. The right-hand outline lists your `##` headings, and clicking one puts an
+   English anchor in the URL.
+3. A heading has the same anchor on the English page and on its translation.
 
 ## Related {#related}
 

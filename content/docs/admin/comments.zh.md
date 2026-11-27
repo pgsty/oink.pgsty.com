@@ -1,50 +1,23 @@
 ---
 title: 启用评论
 linkTitle: 启用评论
-description: 用 giscus 把 GitHub Discussions 接成页面底部的评论区，全站开、按页关、跟随深浅色。
+description: 用 giscus 与 GitHub Discussions 给每个页面加上评论区，决定哪些页面开放评论，并让评论区配色与站点一致。
 weight: 30
 search_keywords: [评论, giscus, GitHub Discussions, 留言, 讨论, Disqus, comments, discussions]
 aliases:
   - /docs/advanced/comments/
 ---
 
-OINK 的评论走 [giscus](https://giscus.app/zh-CN)：每个页面对应一条 GitHub Discussion，读者用 GitHub 账号登录后发言，维护者在 GitHub Discussions 里审核与管理。主题不提供自建评论后端，也不内置 giscus 以外的服务商。
+开启评论后，每个页面底部都有一个独立的讨论区，而你不需要运行任何评论服务器。OINK 使用 [giscus](https://giscus.app/zh-CN)：每个页面的讨论保存为你指定仓库里的一条 GitHub Discussion，读者用 GitHub 账号登录后发言，你在 GitHub Discussions 里像管理其它讨论一样审核。主题没有自建的评论后端，也不内置 giscus 以外的服务商。
 
-前提是一个公开的 GitHub 仓库，访客读不到私有仓库的 Discussions。
+仓库必须公开，因为访客读不到私有仓库的 Discussions。
 
-> [!IMPORTANT] 这是主题里少数对外发请求的功能
-> 启用评论的页面会从 `https://giscus.app` 加载脚本和 iframe，网络隔离环境里用不了。它默认关闭，只在显式打开时才加载。站点有隐私政策时，这条外部数据边界应当写进去。
-
-## 准备 GitHub 仓库 {#prepare-github}
-
-1. 选一个公开仓库存放评论线程，可以就是站点源码仓库。
-
-1. 在仓库 Settings → General → Features 里勾选 Discussions。
-
-1. 为该仓库安装 [giscus GitHub App](https://github.com/apps/giscus)。未安装 App 时访客无法评论或表态。
-
-1. 选一个 Discussion 分类。giscus 推荐 Announcements 类型：只有维护者与 giscus bot 能在该类型下新建 Discussion，读者不会误开话题。
-{.steps}
-
-仓库 ID 与分类 ID 是公开标识符，不是凭据。不要往 Hugo 配置里放 personal access token、OAuth secret 或密码。
-
-## 生成配置 {#generate}
-
-打开 [giscus.app](https://giscus.app/zh-CN)，按表单填仓库、映射方式和分类，页面下方会生成一段 `<script>`。把里面四个属性抄进 OINK 配置：
-
-| giscus.app 生成的属性 | OINK 配置键 |
-| --- | --- |
-| `data-repo` | `repo` |
-| `data-repo-id` | `repoId` |
-| `data-category` | `category` |
-| `data-category-id` | `categoryId` |
-{.fields}
-
-映射方式（`mapping`）决定哪个页面对应哪条 Discussion。OINK 默认 `pathname`，适合发布路径稳定、同一个仓库要服务多个域名或预览环境的站点。开始收集评论之后再改 `mapping` 或移动页面，giscus 会去找另一条 Discussion：已有评论不会被删除，但页面上再也找不到它们。映射方式要在上线前定好；确实要改 URL 时，同时保留重定向或重命名 Discussion。
+> [!IMPORTANT] 评论会加载第三方服务
+> 启用评论的页面会从 `https://giscus.app` 加载脚本和 iframe，因此在网络隔离环境里无法使用。评论在配置之前一直关闭；开启后，如果站点有隐私政策，请在其中写明 giscus 与 GitHub。
 
 ## 全站启用 {#enable}
 
-从你自己仓库生成的配置中复制四个仓库与分类字段；启用评论前，替换下面全部占位值：
+全部配置都在 `params.comments` 下。把四个占位值换成 giscus.app 为你的仓库生成的值，做法见后面两节：
 
 ```yaml {title="hugo.yml"}
 params:
@@ -62,15 +35,44 @@ params:
       loading: lazy
 ```
 
-`repo`、`repoId`、`category`、`categoryId` 必须来自同一个仓库及其选定的 Discussion 分类，四个键缺一不可：任何一个缺失或只有空白字符，Hugo 打一条 WARNING 并跳过 giscus，构建成功并保留告警；发布前应审阅诊断并补齐缺失值。`type` 目前只接受 `giscus`，写别的值同样是告警加跳过。`params.comments` 的键名与 Hextra 同形，从 Hextra 迁来的配置可以照搬。
+`repo`、`repoId`、`category`、`categoryId` 四个键必填，而且必须对应同一个仓库及其 Discussion 分类。任何一个缺失或为空，构建都会打印一条告警并且不渲染评论区，所以发布前要看一遍构建日志。`type` 只接受 `giscus`，写成其它值同样会告警并跳过。这些键名与 Hextra 的 `params.comments` 相同，从 Hextra 搬来的配置可以直接使用。
 
-其余的键（`strict`、`reactionsEnabled`、`emitMetadata`、`term`、`lang`、`lightTheme`、`darkTheme`、`ariaLabel`、`errorMessage`）都有默认值，完整定义见[配置总览](/zh/docs/customize/config/)。功能开关既可以写 YAML 布尔值，也可以写 giscus 风格的 `0` / `1`。
+其余键都有默认值，见[配置总览](/zh/docs/customize/config/#comments-feedback)：`mapping`（`pathname`）、`inputPosition`（`top`）、`theme`（`auto`）、`loading`（`lazy`），以及 `strict`、`reactionsEnabled`、`emitMetadata`、`term`、`lang`、`lightTheme`、`darkTheme`、`ariaLabel`、`errorMessage`。giscus 的开关类键既可以写 YAML 布尔值，也可以写 giscus 自己的 `0` / `1`。
+
+## 准备 GitHub 仓库 {#prepare-github}
+
+1. 选一个公开仓库存放讨论，直接用站点源码仓库也可以。
+
+1. 在仓库 Settings → General → Features 中开启 Discussions。
+
+1. 为该仓库安装 [giscus GitHub App](https://github.com/apps/giscus)。没有安装时，访客既不能评论也不能表态。
+
+1. 选一个 Discussion 分类。giscus 推荐 Announcements 类型：只有维护者和 giscus bot 能在其中新建 Discussion，读者不会随手开出无关的话题。
+{.steps}
+
+仓库 ID 与分类 ID 是公开标识符，不是凭据。不要把 personal access token、OAuth secret 或密码写进 Hugo 配置，因为配置会随站点源码一起公开。
+
+## 生成配置 {#generate}
+
+打开 [giscus.app](https://giscus.app/zh-CN)，填入仓库、映射方式和分类，页面会生成一段 `<script>`。把其中四个属性抄进 OINK 配置：
+
+| giscus.app 生成的属性 | OINK 配置键 |
+| --- | --- |
+| `data-repo` | `repo` |
+| `data-repo-id` | `repoId` |
+| `data-category` | `category` |
+| `data-category-id` | `categoryId` |
+{.fields}
+
+映射方式 `mapping` 决定页面与 Discussion 的对应关系。OINK 默认用 `pathname`，适合发布路径稳定的站点，也让同一个仓库可以同时服务多个域名或预览环境。
+
+映射方式要在上线前定下来。已经有评论之后再改 `mapping` 或移动页面，giscus 会去找另一条 Discussion：旧评论不会被删除，但页面再也找不到它们。确实要改 URL 时，同时保留重定向，或者把 Discussion 改名。
 
 ## 按页开关 {#per-page}
 
-front matter 里的 `comments` 可以从任一方向覆盖全站开关，离页面最近的值优先。
+页面 front matter 里的 `comments` 可以从两个方向覆盖全站开关，离页面最近的值生效。
 
-只给某些页面开评论。全站关掉但保留完整仓库配置，再让选中的页面显式打开：
+只想让少数页面开放评论：全站设 `enable: false`，其余配置保持完整，再逐页打开：
 
 ```yaml {title="content/blog/2026-roadmap.md"}
 ---
@@ -79,7 +81,7 @@ comments: true
 ---
 ```
 
-只关掉某些页面。全站开着，让不适合讨论的页面退出：
+只想让少数页面关闭评论：全站开关保持打开，在不适合讨论的页面上关掉：
 
 ```yaml {title="content/about/security.md"}
 ---
@@ -88,7 +90,7 @@ comments: false
 ---
 ```
 
-整个栏目统一设置用 cascade。本站在 `content/docs/_index.zh.md` 的 cascade 里写了 `comments: true`，本页底部因此有一个真实的 giscus 评论区。
+整个栏目统一设置，用 cascade。本站在 `content/docs/_index.zh.md` 的 cascade 里写了 `comments: true`，所以本页底部有一个真实的 giscus 评论区：
 
 ```yaml {title="content/docs/_index.zh.md"}
 ---
@@ -99,13 +101,13 @@ cascade:
 ---
 ```
 
-站点同时配了 `services.disqus.shortname` 时，giscus 优先：giscus 生效即抑制 Disqus，`comments: false` 同时关掉两者，giscus 必填键不全则告警跳过、由 Disqus 兜底。
+站点同时配置了 `services.disqus.shortname` 时，giscus 配置完整就优先生效，Disqus 不再加载；页面上的 `comments: false` 会把两者一起关掉。giscus 缺少必填键时，它会告警并被跳过，改由 Disqus 加载。
 
 ## 多语言文案 {#i18n}
 
-giscus 的界面语言自动跟随当前 Hugo 语言：简体、繁体、香港繁体分别映射到对应的 giscus locale，不支持的语言回退英文。只有自动选择不合适时才显式设 `lang`。
+giscus 的界面语言跟随页面语言：简体中文、繁体中文和香港繁体各自对应 giscus 的相应 locale，giscus 不支持的语言回退为英文。只有自动选择不对时，才需要显式设置 `lang`。
 
-需要翻译的是 OINK 一侧的两句文案：评论区的无障碍标签与加载失败提示。它们按语言配置，与全局仓库配置合并：
+OINK 自己还有两句文案：评论区的无障碍标签，以及加载失败时的提示。主题自带的每种界面语言都已经翻译好这两句。想换个说法，就按语言设置 `ariaLabel` 与 `errorMessage`；语言层只写有差异的值，仓库相关的键仍然留在 `params.comments`：
 
 ```yaml {title="hugo.yml"}
 languages:
@@ -113,76 +115,69 @@ languages:
     params:
       comments:
         giscus:
-          ariaLabel: Comments
-          errorMessage: Comments could not be loaded. Please try again later.
+          ariaLabel: Discussion
+          errorMessage: The discussion could not be loaded. Please try again later.
   zh:
     params:
       comments:
         giscus:
-          ariaLabel: 评论
-          errorMessage: 评论加载失败，请稍后重试。
+          ariaLabel: 讨论
+          errorMessage: 讨论区加载失败，请稍后重试。
 ```
-
-语言层只需要写差异部分，`repo` / `repoId` / `category` / `categoryId` 留在 `params.comments` 里就够了。
 
 ## 跟随深浅色 {#theme}
 
-`theme: auto` 时，giscus iframe 跟随 OINK 的深浅色切换按钮和浏览器的 `prefers-color-scheme`，读者切换主题时评论区一起变。
+`theme: auto` 时，评论区跟随读者选择的深浅色和视觉预设，使用主题为站点提供的每套预设配好的样式表。
 
-需要更贴合站点配色时，用 `lightTheme` / `darkTheme` 分别指定两套 giscus 主题，取值是 giscus 内置主题名或站点自己托管的 CSS。本站用的是后者：
+想用别的配色，就设置 `lightTheme` 与 `darkTheme`，取值可以是 giscus 内置的主题名，也可以是站点上某个样式表的 URL，例如放在 `static/` 下、地址为 `/css/giscus-brand-dark.css` 的文件。设置后，它们在所有预设下都生效。`theme` 写成固定的主题名时，评论区完全不再跟随切换。
 
 ```yaml {title="hugo.yml"}
 params:
   comments:
     giscus:
       theme: auto
-      lightTheme: /css/giscus-oink-light.css?v=0.4.0
-      darkTheme: /css/giscus-oink-dark.css?v=0.4.0
+      lightTheme: light
+      darkTheme: dark_dimmed
 ```
 
-`theme` 写成固定主题名时不再跟随切换。
-
-> [!NOTE]- 自定义 giscus 主题需要跨域可读
-> giscus 的 iframe 从 `giscus.app` 加载，要读站点上的这个 CSS 文件需要 CORS 允许。本站在 `hugo.yml` 的 `server.headers` 里给本地预览加了 `Access-Control-Allow-Origin: '*'`；线上由托管商的响应头配置决定。
+> [!NOTE]- 站点托管的 giscus 样式表必须允许跨域读取
+> giscus 的 frame 运行在 `giscus.app` 上，却要从你的站点读取样式表（无论是主题自带的还是你自己的），所以响应必须允许跨域读取。线上请在托管商处配置 `Access-Control-Allow-Origin`。本站为 `hugo server` 在 `hugo.yml` 的 `server.headers` 里加了 `Access-Control-Allow-Origin: '*'`。
 
 ## 隐私与 CSP {#privacy}
 
-- OINK 不会索取或保存读者的 GitHub 密码与访问令牌，登录与发帖全程在 giscus / GitHub 一侧完成。
-- 评论初始化脚本是主题自带的同源资源，只加入启用了评论的页面，未开评论的页面没有这段脚本。
-- 读者滚动到评论区附近，或已经滚过评论区时，才请求 giscus 脚本；`loading: lazy` 时 iframe 遵循同样的规则。
-- 从 GitHub 登录回跳的访问会立即请求脚本，站点设置 `loading: eager` 时也是如此。
-- 站点有严格的内容安全策略时，`script-src` 和 `frame-src` 都要放行 giscus，合并进现有策略而不是替换其它指令（总则见[内容安全策略](/zh/docs/admin/deploy/#csp)）：
+- OINK 不会索取或保存读者的 GitHub 密码和令牌，登录与发帖全程在 giscus 和 GitHub 上完成。
+- 评论加载脚本是同源脚本，主题只把它加到启用了评论的页面上。
+- 读者滚动到评论区附近，或已经滚过评论区时，才会请求 giscus 脚本；`loading: lazy` 时 iframe 也同样等待。从 GitHub 登录回跳的访问，以及设置了 `loading: eager` 的站点，会立即请求。
+- 站点有严格的内容安全策略时，要在 `script-src` 与 `frame-src` 中都放行 giscus，并合并进现有策略，而不是替换它；总体规则见[内容安全策略](/zh/docs/admin/deploy/#csp)。
 
 ```text {title="CSP 片段"}
 script-src 'self' https://giscus.app;
 frame-src 'self' https://giscus.app;
 ```
 
-外部脚本加载失败或没能创建 iframe 时，OINK 结束加载状态并在实时状态区域显示 `errorMessage`，不会让页面停在「加载中」。
+脚本加载失败或始终没有创建 iframe 时，OINK 会结束加载状态，并在实时状态区域显示 `errorMessage`，页面不会一直停在「加载中」。
 
 ## 验证 {#verify}
 
 ```bash {title="终端"}
-hugo --minify # 必填键缺失会告警并停用评论
+hugo --minify # 必填键缺失时会告警并停用评论
 hugo server --disableFastRender
 ```
 
-然后逐项确认：
-
-1. 打开一个应该有评论的页面，页面底部出现 giscus，显示「使用 GitHub 登录」，界面语言是当前页面的语言。
-1. 切换 OINK 的深浅色，评论区跟着变（`theme: auto` 时）。
-1. 打开设置了 `comments: false` 的页面，确认那里既没有 giscus 也没有其它评论组件。
-1. 发一条测试评论，回到 GitHub 看指定分类下是否出现了对应的 Discussion，并且能在 GitHub 上管理。
+1. 打开一个应该有评论的页面，底部出现 giscus 和「使用 GitHub 登录」，界面语言与页面一致。
+1. 切换深浅色。`theme: auto` 时评论区随之改变。
+1. 打开设置了 `comments: false` 的页面，确认那里没有任何评论区。
+1. 发一条测试评论，再到 GitHub 上确认所选分类里出现了对应的 Discussion，并且可以管理。
 {.steps}
 
-首次评论或表态创建 Discussion 之前，浏览器控制台提示「找不到 Discussion」是正常现象。
+某个页面在第一条评论或表态创建 Discussion 之前，浏览器控制台出现「找不到 Discussion」是正常的。
 
-出问题时按这个顺序查：构建日志里的 WARNING（四个必填键）→ `params.comments.enable` 与 `type` → 页面 front matter 的 `comments` → 仓库是否公开、Discussions 是否开启、giscus App 是否安装 → 浏览器控制台与响应头（CSP 是否拦了 `giscus.app`）。找不到已有评论线程，先恢复原来的 `mapping` 和页面路径。
+评论区没有出现时，按这个顺序查：构建日志中关于四个必填键的告警；`params.comments.enable` 与 `type`；页面 front matter 的 `comments`；仓库是否公开、是否开启了 Discussions、是否安装了 giscus App；最后看浏览器控制台和响应头，确认 CSP 没有拦截 `giscus.app`。已有的评论线程不见了，先恢复原来的 `mapping` 和页面路径。
 
 ## 相关 {#related}
 
-- [仓库与页面信息](/zh/docs/customize/repository/) — 编辑本页、提 issue、贡献者与「这篇文档有用吗」反馈组件
-- [分析与 SEO](/zh/docs/admin/analytics/) — 另一类需要接外部服务的能力
-- [发布上线](/zh/docs/admin/deploy/) — 内容安全策略与预览部署的外部集成
+- [仓库与页面信息](/zh/docs/customize/repository/) — 编辑链接、提 issue、贡献者与「这篇文档有用吗」反馈组件
+- [分析与 SEO](/zh/docs/admin/analytics/) — 另一项需要调用外部服务的集成
+- [发布上线](/zh/docs/admin/deploy/) — 内容安全策略与预览部署
 - [配置总览](/zh/docs/customize/config/) — `params.comments.*` 每个键的定义
 - [页面参数](/zh/docs/write/frontmatter/) — front matter 里的 `comments`

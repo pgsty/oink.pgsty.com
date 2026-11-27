@@ -8,9 +8,20 @@ aliases:
   - /docs/about/examples/
 ---
 
-[案例库](/zh/case/)收录 45 个真实上线的 OINK 站点及其实现模式，包括 14 个独立第三方社区项目与 31 个 PGSTY 及 Vonng 生态站点，本站也包含在内。案例页链接到线上站点或源码仓库；涉及定制实现时，区分站点自有代码与主题能力。
+设计一个 OINK 站点，最快的办法是找一个形态相近的线上站点，看看它是怎么搭起来的。[案例库](/zh/case/)收录了 45 个这样的站点：14 个独立社区项目，31 个来自 PGSTY 与 Vonng 生态，本站也在其中。每个案例都链接到线上站点（源码公开的还会链接到源码仓库），讲清设计思路与取舍，并区分哪些是站点自己写的代码、哪些是主题提供的能力。先从案例了解整体架构，再顺着其中的链接去指南里查具体配置。页数之类的统计数字来自撰写案例时的快照。
 
-当你已经知道自己要搭建哪类站点时，可以从这里开始：先通过案例了解架构与取舍，再沿页面链接进入具体配置文档。案例中的数量统计基于盘点时的快照。
+## 如何选择起点 {#choosing-a-starting-point}
+
+- 品牌感强的开源项目：参考 [Apache HugeGraph](/zh/case/apache-hugegraph/)、[Stashix](/zh/case/stashix/) 或 [Barn](/zh/case/barn/)。
+- 常规产品手册：从 [PIG](/zh/case/pig/)、[SOW](/zh/case/sow/) 或 [AGW](/zh/case/agw/) 开始。
+- 大规模多语言或迁移而来的语料：对比 [PG.CENTER](/zh/case/doc-pg-center/)、[SILO](/zh/case/silo/) 与 [Red Hat CAI](/zh/case/redhat-cai/)。
+- 书籍与课程库：对比精简的 [TPME](/zh/case/tpme/)、深色风格的 [SSG Book](/zh/case/ssg-book/) 与完整的 [DDIA](/zh/case/ddia/)；单语版本可参考 [《PG 技术内幕》](/zh/case/pg-internal/)。
+- 个人博客与数字花园：对比 [老冯云数](/zh/case/vonng-com/)、[Nekonull's Garden](/zh/case/nekonull/) 与 [小知小和](/zh/case/xjkj-blog/)。
+- 开放标准、人文档案或可检索的数据集：参考 [Cloud Exit](/zh/case/cloudexit/)、[《冯振彪 · 沙漠之箭》](/zh/case/fzb/) 或 [ext.pgsty.com](/zh/case/pgext-cloud/)。
+- 落地页或交互工具站：从 [pgsty.com](/zh/case/pgsty-com/)、[CASSA](/zh/case/cassa/) 或 [Capslock](/zh/case/capslock/) 开始。
+- 最全面的参考：[OINK 文档](/zh/case/oink/)。
+
+站点本身请从 [Starter](/zh/docs/start/) 起步，而不是从主题仓库的 `tests/site/` 起步：那个目录是测试夹具，其中的页面专门用来覆盖渲染边界情况，不是可供模仿的设计。
 
 ## 第三方与社区站点 {#community-sites}
 
@@ -202,17 +213,4 @@ PostgreSQL 实时列存与 Apache Iceberg 湖仓扩展双语手册，与同系�
 
 PostgreSQL 扩展目录：把可检索的数据集作为站点主体呈现，收录 2,241 个扩展、576 个已打包版本，覆盖 16 个 Linux 平台。
 
-## 如何选择起点 {#choosing-a-starting-point}
-
-- 强品牌识别的开源项目：参考 [Apache HugeGraph](/zh/case/apache-hugegraph/)、[Stashix](/zh/case/stashix/) 或 [Barn](/zh/case/barn/)。
-- 常规产品手册：从 [PIG](/zh/case/pig/)、[SOW](/zh/case/sow/) 或 [AGW](/zh/case/agw/) 开始。
-- 超大规模多语言或迁移项目：对比 [PG.CENTER](/zh/case/doc-pg-center/)、[SILO](/zh/case/silo/) 与 [Red Hat CAI](/zh/case/redhat-cai/)。
-- 书籍与培训课程：对比精简的 [TPME](/zh/case/tpme/)、深色风格的 [SSG Book](/zh/case/ssg-book/) 与完整的 [DDIA](/zh/case/ddia/)，单语场景可参考 [《PG 技术内幕》](/zh/case/pg-internal/)。
-- 个人博客与数字花园：对比 [老冯云数](/zh/case/vonng-com/)、[Nekonull's Garden](/zh/case/nekonull/) 与 [小知小和](/zh/case/xjkj-blog/)。
-- 开放标准、人文档案或数据目录：参考 [Cloud Exit](/zh/case/cloudexit/)、[《冯振彪 · 沙漠之箭》](/zh/case/fzb/) 与 [ext.pgsty.com](/zh/case/pgext-cloud/)。
-- 落地页或交互工具站：参考 [pgsty.com](/zh/case/pgsty-com/)、[CASSA](/zh/case/cassa/) 或 [Capslock](/zh/case/capslock/)。
-- 最完整的参考实现：使用 [OINK 文档](/zh/case/oink/)。
-
-主题仓库的 `tests/site/` 是内部 CI 夹具，而不是起步模板；其中页面的职责是触发渲染行为。上面的生产案例更适合作为架构与设计参考。
-
-→ [浏览全部案例](/zh/case/) · [快速上手](/zh/docs/start/) · [仓库导览](/zh/docs/start/anatomy/)
+→ [浏览全部案例](/zh/case/) · [快速上手](/zh/docs/start/) · [Starter 仓库导览](/zh/docs/start/anatomy/)

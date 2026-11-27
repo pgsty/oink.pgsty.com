@@ -1,14 +1,14 @@
 ---
 title: 引用
 linkTitle: 引用
-description: 用 include 插入外部文件，用 param 插入站点参数，用 comment 写不会出现在任何输出里的注释。
+description: 让多页共用一份源头：include 引入共享片段与文件，param 打印站点或页面参数，comment 写永不发布的注释。
 weight: 200
 search_keywords: [引用, include, 引入文件, 片段, snippet, 复用, readfile, param, 参数, 插值, comment, 注释]
 params:
   pigsty_pg_major: 18
 ---
 
-三个 shortcode 各做一件事：`include` 把另一个文件的内容放进当前页面，`param` 打印一个页面或站点参数，`comment` 丢弃一段内容。适用于跨页复用的片段与散落在多页的常量：同一段安装步骤出现在三页时用 `include`，版本号出现在几十页时用 `param`，改一处即可。只在一页出现的内容写在那一页。
+同一段安装步骤出现在三页上，当前版本号散落在三十页里，每多一份拷贝，各页之间就多一分对不上的可能。这三个 shortcode 让它们只保留一份源头：`include` 把另一个文件的内容插进页面，`param` 打印一个页面或站点参数，`comment` 存放写给作者自己的备注，任何输出里都看不到。只在一页出现的内容，就直接写在那一页。
 
 ## 最简例子 {#minimal}
 
@@ -18,7 +18,7 @@ params:
 {{</* include file="parts/install-oink.zh.md" */>}}
 ```
 
-被引的文件是一段普通 Markdown，放在 `assets/` 下：
+被引入的文件是一段普通 Markdown，放在 `assets/` 下：
 
 ````markdown {title="assets/parts/install-oink.zh.md"}
 把 OINK 安装到一个已有的 Hugo 站点，三条命令：
@@ -35,14 +35,15 @@ hugo server
 当前发布版本是 {{</* param version */>}}。
 ````
 
-渲染结果与写在本页里相同：代码块有复制按钮，提示块是提示块。
+渲染结果与直接写在本页完全一样，复制按钮和提示块都在：
 
 {{< include file="parts/install-oink.zh.md" >}}
 
-被引的文件不是一篇独立页面：它不出现在侧栏、不参与翻译配对、没有自己的 URL。
+被引入的文件不是页面：它没有自己的 URL，不出现在侧栏，也不参与翻译配对。
 
 ## 文件位置 {#sources}
-`file` 按下面的顺序解析，第一个命中的胜出：
+
+`file` 按下面的顺序查找，先命中的胜出：
 
 | 顺序 | 找哪里 | 写法 |
 | --- | --- | --- |
@@ -50,16 +51,13 @@ hugo server
 | 2 | 全局资源 `assets/` 下的文件 | `file="snippets/dsn.txt"` |
 | 3 | `content/` 下的文件：`/` 开头是内容根目录，否则相对当前页面所在目录 | `file="notes/caveat.md"`、`file="/shared/notice.md"` |
 
-三处都找不到，或路径里含 `..` 时，引用会告警并不输出。发布前应审阅告警并检查回退结果：
-引用只能在 `content/` 与 `assets/` 中取文件。
+引用只会读取 `content/` 与 `assets/` 里的文件。路径含 `..`，或者三处都找不到时，构建告警，什么也不插入。
 
-引 Markdown 片段时写文件在磁盘上的真名。有一个陷阱只属于第 1 步：Hugo 把带语言后缀的页面资源（如 `notice.zh.md`）按去掉后缀的名字挂在页面上，向页面包索取 `notice.md` 拿到的是已渲染的 HTML 而不是源码，Markdown 输出里会出现 `<div class="td-code">`。`assets/` 与 `content/` 下写什么名字就取什么文件，没有这层转换。非 Markdown 文件（`.yaml`、`.sh`、`.txt`）也没有这个区别。
-
-本页两种语言各引一份自己的片段：中文引 `assets/parts/install-oink.zh.md`，英文引 `assets/parts/install-oink.md`。片段放在 `assets/` 下而不是页面包里，两种语言就都按写下的名字取到源码。
+Markdown 片段请放在 `assets/` 或 `content/` 下，在那里写什么名字就取到哪个文件。页面包（第 1 步）有个陷阱：Hugo 会把带语言后缀的资源（如 `notice.zh.md`）挂在去掉后缀的名字下，向页面包索取 `notice.md` 拿到的是已经渲染好的 HTML 而不是源码，结果页面的 Markdown 输出里会混进 `<div class="td-code">` 这样的标记。`.yaml`、`.sh`、`.txt` 等非 Markdown 文件不受影响。
 
 ## 引入代码文件 {#code}
 
-加 `code=true` 让文件按代码块渲染，`lang=` 指定高亮语言。引用仓库里的真实配置文件，文档与实际文件不会不一致。
+加 `code=true` 让文件以代码块显示，`lang=` 指定高亮语言。直接引入仓库里真实的配置文件，文档就不会与文件本身脱节。
 
 ```markdown {title="源码"}
 {{</* include file="parts/module.zh.yml" code=true lang="yaml" */>}}
@@ -67,19 +65,17 @@ hugo server
 
 {{< include file="parts/module.zh.yml" code=true lang="yaml" >}}
 
-代码块与围栏走同一条渲染管线：高亮、行号、复制按钮都有。围栏属性（`title=`、`collapse`、`hl_lines=`）传不进来，需要它们时把文件内容写成普通[代码块](/zh/docs/components/code/)。
+引入的代码块与代码围栏一样有高亮、行号和复制按钮。`title=`、`collapse`、`hl_lines=` 这类围栏属性无法通过 `include` 传入，需要它们时，请写成普通的[代码块](/zh/docs/components/code/)。
 
 ## 片段内容 {#snippet-content}
-片段是页面级 Markdown，在当前页面的上下文里渲染：提示块、表格、列表、图片、步骤与 shortcode 都可以用。上面那段片段结尾的「当前发布版本是 v0.8.1」，是片段里的 `{{</* param version */>}}` 在本页展开的结果。
 
-一个片段被两页引用时，两页各自渲染一遍，各自生成标题锚点与代码块 ID，互不冲突。
+片段是普通 Markdown，在引用它的页面上下文里渲染，所以提示块、表格、列表、图片、步骤和 shortcode 都能用。上面例子的最后一行显示的正是本站当前的发布版本，因为片段里的 `{{</* param version */>}}` 是在本页展开的。
 
-> [!TIP] 适合做成片段的内容
-> 安装命令、连接串、支持矩阵、法务声明：会变动、且变动时必须处处同步的内容。只在一页出现的内容写在那一页。
+两个页面引用同一个片段时，各自独立渲染，各自生成标题锚点和代码块 ID，互不冲突。适合做成片段的，是那些必须处处同步修改的内容：安装命令、连接串、支持矩阵、法律声明。
 
 ## 插入站点参数 {#param}
 
-`param` 打印一个参数：先查本页 front matter，查不到再查站点配置（Hugo 的 `.Param` 规则）。
+`param` 打印一个参数：先查本页 front matter，查不到再查站点配置，查找规则与 Hugo 的 `.Param` 相同。
 
 ```markdown {title="源码"}
 本站发布版本 {{</* param version */>}}，版权起始年 {{</* param copyright.from_year */>}}，
@@ -89,12 +85,11 @@ hugo server
 本站发布版本 {{< param version >}}，版权起始年 {{< param copyright.from_year >}}，
 本页 front matter 里写了 `pigsty_pg_major: 18`，这里取到 {{< param pigsty_pg_major >}}。
 
-嵌套键用 `.` 连接，`copyright.from_year` 取的是 `params.copyright.from_year`。参数不存在，
-或者值是 map / 列表而不是标量时，告警并不输出；发布前应审阅告警并检查回退结果。
+嵌套键用 `.` 连接，`copyright.from_year` 读取的是 `params.copyright.from_year`。参数不存在，或者它的值是 map、列表而不是标量时，构建告警，什么也不输出。
 
 ## 在命令、表格与链接里插参数 {#param-in-place}
 
-`param` 的输出是转义后的纯文本，可以放进代码围栏、表格单元格与链接地址。安装命令里的版本号适合这么写：
+`param` 输出的是转义后的纯文本，因此也能放进代码围栏、表格单元格和链接地址，版本号通常就出现在这些地方：
 
 ````markdown {title="源码"}
 ```sh
@@ -120,11 +115,11 @@ hugo mod get github.com/pgsty/oink@{{< param tdVersion.latest >}}
 
 [发布说明](https://github.com/pgsty/oink/releases/tag/{{< param tdVersion.latest >}})
 
-站点参数在哪里定义、有哪些可用，见[配置总览](/zh/docs/customize/config/)；页面参数见[页面参数](/zh/docs/write/frontmatter/)。
+站点参数在[配置总览](/zh/docs/customize/config/)中设置，页面参数见[页面参数](/zh/docs/write/frontmatter/)。
 
 ## 构建期删除的注释 {#comment}
 
-`comment` 的内容在 HTML、打印、Markdown、RSS 四种输出里都不出现。HTML 注释不同：它留在页面源码里，也会进入 `llms.txt`。
+待办事项、写给下一位作者的备注，放进 `comment`。它的内容在 HTML、打印、Markdown、RSS 所有输出里都会被删掉。HTML 注释做不到这一点：它留在页面源码里，还会进入 `llms.txt`。
 
 ```markdown {title="源码"}
 PostgreSQL 18 起 `pg_stat_io` 拆分了 WAL 统计。
@@ -146,18 +141,11 @@ PostgreSQL 18 起 `pg_stat_io` 拆分了 WAL 统计。
 
 升级前先在测试库上验证监控面板。
 
-上面两段之间有一段注释，查看页面源码也找不到它。
+这两段之间其实有一段注释，查看页面源码也找不到它。
 
 ## 输出形态 {#outputs}
 
-| 输出 | `include`（Markdown） | `include code=true` | `param` | `comment` |
-| --- | --- | --- | --- | --- |
-| HTML | 片段渲染成正常内容 | 高亮代码块 + 复制按钮 | 转义后的纯文本 | 无 |
-| 打印 | 同 HTML | 同 HTML，无复制按钮 | 同 HTML | 无 |
-| Markdown | 片段的源码原样输出 | 源码围栏 | 值本身 | 无 |
-| RSS | 同 HTML | 同 HTML | 同 HTML | 无 |
-
-Markdown 输出里片段是源码而不是 HTML，片段里的 shortcode 保持 `{{</* param version */>}}` 的原样。这与「Markdown 输出保留源码」一致，不是漏渲染。三个 shortcode 都不加载脚本。
+三个 shortcode 都不加载脚本，打印与 RSS 显示的内容与网页相同。页面的 Markdown 输出保留源码而不是渲染后的 HTML：引入的片段原样输出，其中的 `{{</* param version */>}}` 等 shortcode 保持未展开；`include code=true` 变成一个代码围栏；`param` 输出参数值本身；`comment` 什么也不留下。
 
 ## 参数参考 {#reference}
 
@@ -165,12 +153,12 @@ Markdown 输出里片段是源码而不是 HTML，片段里的 shortcode 保持 
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `file` | 路径（必填） | — | 解析顺序见[文件放在哪](#sources)；含 `..`、文件缺失、空值时告警并不输出 |
+| `file` | 路径（必填） | — | 解析顺序见[文件位置](#sources)；含 `..`、文件缺失、空值时告警并不输出 |
 | `code` | 布尔 | `false` | `true` 时按代码块渲染；带引号的 `code="true"` 会告警并按普通内容引入 |
 | `lang` | 字符串 | — | 代码语言；没有 `code=true` 时告警并忽略 |
 {.fields meta="type default"}
 
-其它参数名会告警并忽略，消息带文件名与行号。
+其它参数名会告警并被忽略，告警里带有文件名与行号。
 
 `param`（一个位置参数）：
 
@@ -183,11 +171,11 @@ Markdown 输出里片段是源码而不是 HTML，片段里的 shortcode 保持 
 
 ## 限制与常见问题 {#limits}
 
-- `include` 不是模板：不能向片段传变量、不能条件引入、不能给引入的代码块加围栏属性（`title=`、`collapse`）。按平台分版本时写两个片段配[标签页](/zh/docs/components/tabs/)。
-- 片段的语言要自己维护：`include` 不做语言回退。中文页引中文片段，英文页引英文片段，两份文件并列存放（`install-oink.zh.md` 与 `install-oink.md`）。
-- `param` 只打印标量：结构化数据（版本矩阵、下载列表）用 `data/` 目录里的数据配对应组件渲染。
-- `comment` 不是「暂时不发布」：内容每次构建都被丢弃，临时下线整页用 `draft: true`。
-- 不把 `include` 当目录页：一页引入十个片段时，读者需要的是十条链接。
+- `include` 不是模板：不能向片段传变量，不能按条件引入，也不能给引入的代码块加 `title=`、`collapse` 等围栏属性。需要按平台区分时，写两个片段，放进[标签页](/zh/docs/components/tabs/)。
+- `include` 不做语言回退，写什么路径就读什么文件。一个片段可以供所有语言共用；也可以像本页这样每种语言一份（`install-oink.md` 与 `install-oink.zh.md`），各语言页面引用自己的那份。
+- `param` 只打印标量。版本矩阵、下载列表这类结构化数据放在 `data/` 里，用对应的组件渲染。
+- `comment` 的内容每次构建都会被丢弃。想让整页暂时下线，用 `draft: true`。
+- 一页如果要引入十个片段，给读者十条链接通常比拼出一个大页面更好。
 
 ## 相关 {#related}
 

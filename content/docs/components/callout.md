@@ -8,8 +8,14 @@ aliases:
   - /docs/components/layout/
 ---
 
-A callout is a GitHub / Obsidian style blockquote. Put `> [!TYPE]` on the first line and the body below it.
-Use callouts to separate prerequisites, warnings, and asides from prose. If a prose sentence is sufficient, a callout is unnecessary.
+A callout lifts out the one thing a reader must not miss: a prerequisite, a
+destructive command, a version limit. It is an ordinary blockquote whose first
+line is a `[!TYPE]` marker, the syntax GitHub and Obsidian use, so the same
+source renders as an alert on GitHub and as a plain quote in any other Markdown
+reader.
+
+Use them sparingly. When every other paragraph sits in a box, readers stop
+seeing the boxes, so if a sentence of prose does the job, write the sentence.
 
 ## Shortest form {#minimal}
 
@@ -21,12 +27,16 @@ Use callouts to separate prerequisites, warnings, and asides from prose. If a pr
 > [!NOTE]
 > Hugo Modules need Go on the machine; an offline archive does not.
 
-If you omit the title, the callout uses the localized type name: "Note" in English or 「注意」 in Chinese.
-GitHub displays the source as a GitHub callout. Other Markdown readers display a plain blockquote. All content remains available.
+Without a title, the callout shows its type name in the page's language:
+"Note" in English, 「注意」 in Chinese.
 
 ## Ten types {#types}
 
-The first five types match GitHub. OINK adds five semantic types. Each type has a default icon and accent color.
+GitHub defines the first five types and OINK adds five more; each has its own
+icon and color, and type names are case-insensitive. Choose the type by what
+happens when the reader skips the box: `NOTE` and `TIP` are safe to skip,
+`IMPORTANT` means the task fails without it, `WARNING` and `CAUTION` mean
+something breaks or slows down, and `DANGER` marks what cannot be undone.
 
 ```markdown {title="Source"}
 > [!TIP]
@@ -42,10 +52,10 @@ The first five types match GitHub. OINK adds five semantic types. Each type has 
 > The first build after deleting `resources/_gen` is much slower.
 
 > [!SUCCESS]
-> Build passed with reviewed warnings — ship it.
+> All 312 pages built; the site is ready to deploy.
 
 > [!DANGER]
-> Never commit `go.work`.
+> `rm -rf public/` before a deploy also deletes files you placed there by hand.
 
 > [!QUESTION]
 > Should the site have comments? See [enabling comments](/docs/admin/comments/).
@@ -70,10 +80,10 @@ The first five types match GitHub. OINK adds five semantic types. Each type has 
 > The first build after deleting `resources/_gen` is much slower.
 
 > [!SUCCESS]
-> Build passed with reviewed warnings — ship it.
+> All 312 pages built; the site is ready to deploy.
 
 > [!DANGER]
-> Never commit `go.work`.
+> `rm -rf public/` before a deploy also deletes files you placed there by hand.
 
 > [!QUESTION]
 > Should the site have comments? See [enabling comments](/docs/admin/comments/).
@@ -84,11 +94,10 @@ The first five types match GitHub. OINK adds five semantic types. Each type has 
 > [!QUOTE]
 > Documentation is a love letter that you write to your future self.
 
-Type names are case-insensitive.
-
 ## Custom title {#title}
 
-Text after the marker on the same line becomes the title. It accepts inline Markdown, including code, bold text, and links.
+Text after the marker on the same line becomes the title, and it may contain
+inline code, bold text and links.
 
 ```markdown {title="Source"}
 > [!WARNING] Rewrites `public/`
@@ -102,8 +111,8 @@ Text after the marker on the same line becomes the title. It accepts inline Mark
 
 ## Body content {#body}
 
-The body uses page-level Markdown. It can contain lists, fenced code, tables, images, and nested callouts.
-Start every line with `>`, including fence lines.
+The body is ordinary Markdown: lists, fenced code, tables, images, even
+another callout. Every line starts with `>`, fence lines included.
 
 ````markdown {title="Source"}
 > [!TIP] Three commands to a live preview
@@ -135,8 +144,10 @@ Start every line with `>`, including fence lines.
 
 ## Collapsing {#collapsible}
 
-A `-` after the type makes the callout initially closed. A `+` makes it initially open.
-Both use native `<details>` and load no JavaScript. Use them for full command output, alternatives, or background information that can remain hidden initially.
+Put `-` after the type to render the callout closed, or `+` to render it open
+with a toggle. Either way it is a native `<details>` element that works
+without JavaScript. Fold what most readers can skip: full command output, an
+alternative procedure, background reading.
 
 ```markdown {title="Source"}
 > [!NOTE]- Why is Go needed?
@@ -156,8 +167,9 @@ Both use native `<details>` and load no JavaScript. Use them for full command ou
 
 ## The neutral disclosure, DETAILS {#details}
 
-`[!DETAILS]` is a disclosure without a semantic color. It is closed by default; `[!DETAILS]+` is open.
-Use it for long output, complete configuration files, or other content that must be collapsible.
+`[!DETAILS]` is a disclosure with no color and no icon, closed unless you
+write `[!DETAILS]+`. Use it when the content is neither a note nor a warning,
+just long: a complete configuration file, a full log.
 
 ````markdown {title="Source"}
 > [!DETAILS] Full `hugo version` output
@@ -173,8 +185,9 @@ Use it for long output, complete configuration files, or other content that must
 
 ## Custom icon {#icon}
 
-To replace the default icon, put `{icon="fa-solid fa-xxx"}` after the blockquote. Use one Font Awesome class pair.
-The attribute line must immediately follow the blockquote, with no blank line between them.
+To replace the type's icon, put `{icon="fa-solid fa-…"}` (one Font Awesome
+class pair) on the line right after the blockquote, with no blank line between
+them.
 
 ```markdown {title="Source"}
 > [!TIP] PostgreSQL 18 is supported
@@ -188,8 +201,8 @@ The attribute line must immediately follow the blockquote, with no blank line be
 
 ## Nesting {#nesting}
 
-To nest callouts, add one `>` per level. Callouts can also appear inside list items or steps.
-One nesting level is sufficient.
+Add one `>` per level. One level is usually enough; deeper nesting is hard to
+read.
 
 ```markdown {title="Source"}
 > [!WARNING] Back up before upgrading
@@ -207,7 +220,9 @@ One nesting level is sufficient.
 
 ## Unknown types and common slips {#pitfalls}
 
-Unknown type names do not fail the build or remove content. The block renders as an ordinary blockquote with its `[!TYPE]` marker visible.
+A misspelled type does not break the build or lose content. The block renders
+as a plain blockquote with the marker still visible, so the typo is easy to
+spot.
 
 ```markdown {title="Source"}
 > [!NOTICE] Not a valid type
@@ -217,23 +232,18 @@ Unknown type names do not fail the build or remove content. The block renders as
 > [!NOTICE] Not a valid type
 > The marker stays on the page to tell you so.
 
-Other common problems:
+Formatters such as Prettier cause the other two common slips:
 
-- Formatters such as Prettier can merge titles into the body. Keep an empty `>` line below the title to prevent this.
-- Formatters can move attribute lines. Wrap marker lines such as `{icon=…}` in `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->`.
-- `style`, `onclick`, and unsupported attributes warn and are ignored. The attribute line accepts only `icon` and `class`.
-  See the table below.
+- They join the title line and the body. Keep an empty `>` line under the
+  title.
+- They move attribute lines such as `{icon=…}`. Wrap the callout in
+  `<!-- prettier-ignore-start -->` and `<!-- prettier-ignore-end -->`.
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | Static types are `<div class="td-callout" role="note">`; collapsible types are a native `<details>` + `<summary>` |
-| Print | All static and expanded; disclosures carry a `data-td-callout-collapsible` marker |
-| Markdown | The source blockquote is preserved, `[!TYPE]` marker and title included |
-| RSS | Same as print — static and expanded |
-
-Callouts load no script.
+Callouts load no script. Print and RSS show every callout expanded, and the
+page's Markdown output keeps the original blockquote, marker and title
+included.
 
 ## Parameter reference {#reference}
 
@@ -254,14 +264,16 @@ The attribute line `{…}`, immediately after the blockquote:
 | `class` | space-separated classes | — | Passed through verbatim for site CSS |
 {.fields meta="type default"}
 
-`style`, `on*`, and other keys warn and are ignored.
+Any other key, `style` and `on*` handlers included, is dropped with a build
+warning.
 
 ## Limits {#limits}
 
-- Colors cannot be customized. The type sets the color. If you need a new meaning, choose the nearest type and write a title.
-- The collapsed state is not saved.
-- Callouts work inside `{.steps}` list items and `{{%/* steps */%}}` steps. See [Steps](/docs/components/steps/).
-  Start every blockquote line with `>` and align it with the list item's indentation.
+- The type sets the color; there is no color parameter. When no type fits,
+  take the closest one and let the title carry the meaning.
+- A reader's open or closed choice is not remembered after a reload.
+- Inside a `{.steps}` list item or a `{{%/* steps */%}}` step, indent every
+  `>` line to the list item's text. See [Steps](/docs/components/steps/).
 
 ## Related {#related}
 

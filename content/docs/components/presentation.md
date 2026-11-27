@@ -7,12 +7,17 @@ outputs: [HTML, markdown, print]
 search_keywords: [component styles, card list, compact steps, command strip, presets]
 ---
 
-Use the Appearance menu to compare Paper, Slate, Ink, and Terminal in light or dark mode. These examples use the same content and preserve the normal Markdown authoring model.
+This page shows the everyday components side by side with their compact
+variants, so you can judge how each looks before choosing it: switch between
+Paper, Slate, Ink and Terminal, light or dark, from the Appearance menu and
+compare. Each variant is one extra class or a `variant` parameter on the
+Markdown you already write. None loads a script or changes links, keyboard
+use, copied text, print or Markdown output, and an unknown variant warns and
+falls back to the regular look.
 
-> [!NOTE] Available in OINK 1.4.0
-> The optional variants on this page ship in OINK 1.4.0.
+## Cards and card lists {#cards}
 
-## Related pages {#cards}
+The regular card grid:
 
 - [Start a site](/docs/start/)
 
@@ -23,13 +28,16 @@ Use the Appearance menu to compare Paper, Slate, Ink, and Terminal in light or d
   Set navigation, languages, appearance, and search.
 {.cards #presentation-cards}
 
-For a compact resource directory, use `{.cards .td-cards-list}`. A divided list has one enclosing frame and grows naturally with its descriptions.
+For a compact directory of resources, `{.cards .td-cards-list}` turns the
+same link list into a single framed list with dividers, each row as tall as
+its description needs.
 
 - [Writing content](/docs/write/) — Organize articles, guides, and release notes; see also the **[configuration guide](/docs/customize/config/)**.
 - [Component reference with a longer title](/docs/components/) — Choose native Markdown or a compound shortcode.
 {.cards .td-cards-list #presentation-card-list}
 
-The full form accepts `cards variant="list"` for icons, badges, or block descriptions:
+When the rows need icons, badges or longer descriptions, use the shortcode
+form with `cards variant="list"`:
 
 {{< cards variant="list" >}}
 {{< card title="Installation" link="/docs/start/" icon="fa-solid fa-rocket" badge="Start here" >}}
@@ -41,6 +49,9 @@ Read the [configuration guide](/docs/customize/config/) or the [writing guide](/
 {{< /cards >}}
 
 ## Notes and disclosures {#disclosures}
+
+Callouts have no variants; compare their colors and the disclosure row in each
+preset.
 
 > [!NOTE] Keep a local preview
 > Review the page at a narrow width as well as on your desktop.
@@ -65,7 +76,9 @@ brew install hugo
 sudo apt install hugo
 ```
 
-A marked one-line fence uses `{class="td-code-command"}`. Its copy button occupies its own column so the command can scroll or wrap without being obscured.
+Add `{class="td-code-command"}` to a one-line fence to make it a command
+strip. The copy button gets its own column, so a long command scrolls or wraps
+without running under it.
 
 ```bash {class="td-code-command" id="presentation-command"}
 hugo server --bind 127.0.0.1 --port 1313
@@ -75,18 +88,23 @@ hugo server --bind 127.0.0.1 --port 1313
 hugo --environment production --baseURL https://example.com/documentation/ --destination public
 ```
 
-`wrap`, `copy`, and accessible labels keep their existing meaning. Multiline, numbered, or collapsed input warns and falls back to an ordinary code block. Single-line fences without this modifier keep their usual presentation.
+`wrap`, `copy` and accessible labels work as on any code block. A command
+strip holds exactly one line, so a multiline, numbered or collapsed block with
+this class warns and renders as a regular code block.
 
 ## Short procedures {#steps}
 
-Add `{.steps .td-steps-compact}` to a short ordered list. The regular `.steps` layout remains available for longer tutorials.
+For a short procedure, add `.td-steps-compact` to the marker:
+`{.steps .td-steps-compact}`. Keep the regular `.steps` for long tutorials,
+where the extra spacing helps.
 
 3. Review the configuration.
 1. Run the local preview.
 1. Check the generated output.
 {.steps .td-steps-compact #presentation-steps}
 
-For a procedure with headings, use `steps variant="compact"` with percent delimiters:
+A procedure with headings uses the shortcode with `variant="compact"`, written
+with percent delimiters:
 
 {{% steps variant="compact" %}}
 
@@ -101,6 +119,9 @@ Check the page in the language and appearance your readers use.
 {{% /steps %}}
 
 ## Tables and metadata {#metadata}
+
+Tables, field lists, badges and key sequences have no variants either; they
+are here so you can check them against the rest of the preset.
 
 | View | Purpose | Input |
 | --- | --- | --- |
@@ -117,7 +138,3 @@ Check the page in the language and appearance your readers use.
 {{< badge text="Preview" tone="info" >}} {{< badge text="Validated" tone="success" >}} {{< badge text="Review needed" tone="warning" >}}
 
 Open search with {{< kbd "Ctrl" "K" >}} and move between results with the arrow keys.
-
-## Compatibility {#compatibility}
-
-These variants load no additional runtime. Existing links, keyboard behavior, copy text, print content, and Markdown output retain their meaning. Unsupported `cards` or `steps` variants warn and use the regular presentation. The visual refinement does not change the default preset or font policy.

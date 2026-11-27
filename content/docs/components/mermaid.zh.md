@@ -8,67 +8,69 @@ aliases:
   - /docs/components/diagrams/
 ---
 
-`mermaid` 围栏把一段文本渲染成流程图、时序图、甘特图、类图、ER 图与状态图。图以源码形式存在，可以进 Git、可以 review diff、可以被搜索命中；渲染由主题自带的 Mermaid 在读者浏览器里完成，不请求外部服务。需要像素级控制的示意图画成 SVG，按[图片](/zh/docs/components/image/)使用。
+`mermaid` 围栏用几行文本画出流程图、时序图、甘特图、类图、ER 图或状态图。图以文本形式写在页面里，改动在评审时是一段看得懂的 diff，站内搜索也能搜到图里的文字，这些都是截图做不到的。Mermaid 引擎随主题提供，在读者浏览器里渲染，图的内容不会经过任何外部服务。需要像素级控制的示意图，画成 SVG 后按[图片](/zh/docs/components/image/)插入。
 
 ## 最简例子 {#minimal}
 
 ````markdown {title="源码"}
 ```mermaid
 flowchart LR
-  内容["content/"] --> Hugo
-  配置["hugo.yml"] --> Hugo
-  主题["OINK 主题"] --> Hugo
-  Hugo --> 站点["public/"]
+  app["应用"] --> pool["PgBouncer"]
+  pool --> primary[("主库")]
+  primary -->|流复制| replica[("从库")]
 ```
 ````
 
 ```mermaid
 flowchart LR
-  内容["content/"] --> Hugo
-  配置["hugo.yml"] --> Hugo
-  主题["OINK 主题"] --> Hugo
-  Hugo --> 站点["public/"]
+  app["应用"] --> pool["PgBouncer"]
+  pool --> primary[("主库")]
+  primary -->|流复制| replica[("从库")]
 ```
 
-围栏语言写 `mermaid` 即可，没有其它开关。主题检测到这个围栏后才把 Mermaid 运行时加入这一页，同一页里画十张图也只加载一次。
+不需要任何开关，把围栏语言写成 `mermaid` 即可。只有包含这种围栏的页面才加载 Mermaid 运行时，而且无论页面里有几张图，都只加载一次。
 
 ## 时序图 {#sequence}
 
-`sequenceDiagram` 描述参与者之间按时间发生的消息，适合说明请求链路与加载顺序。
+`sequenceDiagram` 描述参与者之间按时间先后传递的消息，适合讲请求链路、握手与重试。
 
 ````markdown {title="源码"}
 ```mermaid
 sequenceDiagram
   autonumber
-  participant 读者 as 读者浏览器
-  participant CDN as 静态托管
-  participant JS as 页面脚本包
-  读者->>CDN: GET /zh/docs/components/mermaid/
-  CDN-->>读者: HTML（一个 figure 加围栏源码）
-  读者->>CDN: GET 本页的脚本包
-  CDN-->>读者: mermaid.min.js
-  JS->>JS: 把围栏源码渲染成 SVG
-  Note over JS: 未使用的运行时不下载
+  participant App as 应用
+  participant Pool as PgBouncer
+  participant DB as PostgreSQL
+  App->>Pool: BEGIN
+  Pool->>DB: 借出一条服务端连接
+  App->>Pool: UPDATE accounts
+  Pool->>DB: 转发语句
+  DB-->>App: UPDATE 1
+  App->>Pool: COMMIT
+  Pool->>DB: COMMIT
+  Note over Pool,DB: 事务池模式在 COMMIT 后归还连接
 ```
 ````
 
 ```mermaid
 sequenceDiagram
   autonumber
-  participant 读者 as 读者浏览器
-  participant CDN as 静态托管
-  participant JS as 页面脚本包
-  读者->>CDN: GET /zh/docs/components/mermaid/
-  CDN-->>读者: HTML（一个 figure 加围栏源码）
-  读者->>CDN: GET 本页的脚本包
-  CDN-->>读者: mermaid.min.js
-  JS->>JS: 把围栏源码渲染成 SVG
-  Note over JS: 未使用的运行时不下载
+  participant App as 应用
+  participant Pool as PgBouncer
+  participant DB as PostgreSQL
+  App->>Pool: BEGIN
+  Pool->>DB: 借出一条服务端连接
+  App->>Pool: UPDATE accounts
+  Pool->>DB: 转发语句
+  DB-->>App: UPDATE 1
+  App->>Pool: COMMIT
+  Pool->>DB: COMMIT
+  Note over Pool,DB: 事务池模式在 COMMIT 后归还连接
 ```
 
 ## 甘特图 {#gantt}
 
-`gantt` 画时间区间。下面是 PostgreSQL 各大版本从发布日算起的五年社区支持期，`1825d` 即五年。
+`gantt` 在时间轴上画区间。下面是 PostgreSQL 各大版本从发布日算起的五年社区支持期，`1825d` 即五年。
 
 ````markdown {title="源码"}
 ```mermaid
@@ -104,52 +106,50 @@ gantt
 
 ## 类图与 ER 图 {#class-and-er}
 
-`classDiagram` 画类型与关系，`erDiagram` 画实体与基数。两者都常用来解释数据模型。
+`classDiagram` 画类型、成员以及它们之间的关系，`erDiagram` 画实体与基数。解释数据模型时，一张图往往比一段文字快得多。
 
 ````markdown {title="源码"}
 ```mermaid
 classDiagram
-  class Page {
-    +string Title
-    +string Description
-    +int Weight
-    +Content()
-    +OutputFormats()
+  class Cluster {
+    +string name
+    +int port
+    +failover()
   }
-  class Resource {
-    +string Name
-    +string RelPermalink
-    +Resize(spec)
+  class Instance {
+    +string host
+    +string role
+    +promote()
   }
-  class OutputFormat {
-    +string Name
-    +string MediaType
+  class Database {
+    +string name
+    +string owner
+    +backup()
   }
-  Page "1" --> "0..*" Resource : 页面包资源
-  Page "1" --> "1..*" OutputFormat : html / print / markdown / rss
+  Cluster "1" --> "1..*" Instance : 运行于
+  Cluster "1" --> "0..*" Database : 承载
 ```
 ````
 
 ```mermaid
 classDiagram
-  class Page {
-    +string Title
-    +string Description
-    +int Weight
-    +Content()
-    +OutputFormats()
+  class Cluster {
+    +string name
+    +int port
+    +failover()
   }
-  class Resource {
-    +string Name
-    +string RelPermalink
-    +Resize(spec)
+  class Instance {
+    +string host
+    +string role
+    +promote()
   }
-  class OutputFormat {
-    +string Name
-    +string MediaType
+  class Database {
+    +string name
+    +string owner
+    +backup()
   }
-  Page "1" --> "0..*" Resource : 页面包资源
-  Page "1" --> "1..*" OutputFormat : html / print / markdown / rss
+  Cluster "1" --> "1..*" Instance : 运行于
+  Cluster "1" --> "0..*" Database : 承载
 ```
 
 ````markdown {title="源码"}
@@ -192,71 +192,71 @@ erDiagram
 
 ## 状态图 {#state}
 
-`stateDiagram-v2` 画状态与迁移条件。下面是 OINK 主题发布依次经过的五个阶段。
+`stateDiagram-v2` 画状态以及触发状态迁移的事件。下面是高可用集群里一个 PostgreSQL 实例会经历的几种角色。
 
 ````markdown {title="源码"}
 ```mermaid
 stateDiagram-v2
-  [*] --> 源码完成
-  源码完成 --> 已验证 : 主题检查脚本 + 站点测试套件全绿
-  已验证 --> 已发布 : 推送不可变的签名 vX.Y.Z 标签
-  已发布 --> 已文档化 : 站点 go.mod 钉住该标签
-  已文档化 --> 已部署 : 生产构建上线
-  已部署 --> [*]
-  已发布 --> 源码完成 : 发现问题只能出新补丁版本，标签不移动
+  [*] --> 初始化
+  初始化 --> 从库 : 基础备份恢复完成
+  从库 --> 主库 : 故障切换后被提升
+  主库 --> 从库 : 用 pg_rewind 重新加入
+  从库 --> 延迟 : 复制延迟超过 1 GB
+  延迟 --> 从库 : 追上进度
+  从库 --> [*] : 下线
 ```
 ````
 
 ```mermaid
 stateDiagram-v2
-  [*] --> 源码完成
-  源码完成 --> 已验证 : 主题检查脚本 + 站点测试套件全绿
-  已验证 --> 已发布 : 推送不可变的签名 vX.Y.Z 标签
-  已发布 --> 已文档化 : 站点 go.mod 钉住该标签
-  已文档化 --> 已部署 : 生产构建上线
-  已部署 --> [*]
-  已发布 --> 源码完成 : 发现问题只能出新补丁版本，标签不移动
+  [*] --> 初始化
+  初始化 --> 从库 : 基础备份恢复完成
+  从库 --> 主库 : 故障切换后被提升
+  主库 --> 从库 : 用 pg_rewind 重新加入
+  从库 --> 延迟 : 复制延迟超过 1 GB
+  延迟 --> 从库 : 追上进度
+  从库 --> [*] : 下线
 ```
 
 ## 单张图的标题与配置 {#per-diagram-config}
 
-围栏正文最前面可以写 Mermaid 自己的 YAML 头，它不是 Hugo front matter。`title` 给图加标题，`config` 覆盖这一张图的 Mermaid 配置。写死 `config.theme` 的图不再跟随站点深浅色。
+围栏正文最前面可以写 Mermaid 自己的 YAML 头（它属于这张图，不是 Hugo 的 front matter）。`title` 给图加标题，`config` 只覆盖这一张图的 Mermaid 配置。不要在这里写 `config.theme`：写了它的图不再跟随读者的深浅色模式。
 
 ````markdown {title="源码"}
 ```mermaid
 ---
-title: 只有用到的运行时才会进包
+title: 选择恢复来源
 config:
   flowchart:
     curve: linear
 ---
 flowchart TD
-  页面 --> 判断{用了什么组件？}
-  判断 -->|Mermaid 围栏| M[mermaid.min.js]
-  判断 -->|ECharts 围栏| E[echarts.min.js]
-  判断 -->|都没用| B[只有基础包]
+  Loss[数据丢失] --> When{要恢复到什么时候？}
+  When -->|最新状态| Promote[提升一个从库]
+  When -->|某个时间点| PITR[基础备份加 WAL 重放]
+  When -->|单张表| Dump[从 pg_dump 恢复这张表]
 ```
 ````
 
 ```mermaid
 ---
-title: 只有用到的运行时才会进包
+title: 选择恢复来源
 config:
   flowchart:
     curve: linear
 ---
 flowchart TD
-  页面 --> 判断{用了什么组件？}
-  判断 -->|Mermaid 围栏| M[mermaid.min.js]
-  判断 -->|ECharts 围栏| E[echarts.min.js]
-  判断 -->|都没用| B[只有基础包]
+  Loss[数据丢失] --> When{要恢复到什么时候？}
+  When -->|最新状态| Promote[提升一个从库]
+  When -->|某个时间点| PITR[基础备份加 WAL 重放]
+  When -->|单张表| Dump[从 pg_dump 恢复这张表]
 ```
 
 ## 深浅色 {#dark-mode}
 
-页面初始化时主题读取当前配色模式：深色模式下用 Mermaid 的 `dark` 主题，浅色模式下用站点配置的主题。读者切换配色时图会就地重绘，页面不会重载；重绘期间每张图保持原有高度，页面不会在读者眼皮底下跳动。
+图跟随读者的配色模式：深色模式用 Mermaid 的 `dark` 主题，浅色模式用站点配置的主题。读者切换配色时，图就地重绘，页面不重新加载；重绘期间每张图保持原有高度，周围的文字不会跳动。
 
-站点级默认写在 `hugo.yml` 里，键名小写，主题按 Mermaid 的默认配置匹配回正确的大小写：
+站点级默认值写在 `params.mermaid` 下，键名一律小写，主题会把它们匹配回 Mermaid 的大小写。
 
 ```yaml {title="hugo.yml"}
 params:
@@ -266,113 +266,86 @@ params:
       diagrampadding: 6
 ```
 
-完整键表见[配置总览](/zh/docs/customize/config/)，可用值以 [Mermaid 配置文档](https://mermaid.js.org/config/schema-docs/config.html)为准。
+可用的键和取值见 [Mermaid 配置文档](https://mermaid.js.org/config/schema-docs/config.html)。
 
 ## 放进标签页与步骤 {#compose}
 
-`mermaid` 围栏没有 `tab` 属性，相邻围栏标签页只对普通代码围栏生效。并排比较两张图用 `tabs` shortcode。
+把相邻代码围栏合成标签页的 `tab` 属性，对 `mermaid` 围栏不起作用。要让读者在两张图之间切换，把它们放进 `tabs` shortcode。
 
 ````markdown {title="源码"}
 {{</* tabs */>}}
-{{</* tab label="按数据流看" */>}}
+{{</* tab label="物理复制" */>}}
 ```mermaid
 flowchart LR
-  Markdown --> Goldmark --> 渲染钩子 --> HTML
+  Primary[主库] -->|WAL 流| R1[从库 1]
+  Primary -->|WAL 流| R2[从库 2]
 ```
 {{</* /tab */>}}
-{{</* tab label="按输出形态看" */>}}
+{{</* tab label="逻辑复制" */>}}
 ```mermaid
 flowchart LR
-  页面 --> HTML
-  页面 --> 打印
-  页面 --> Markdown
-  页面 --> RSS
+  Publisher[发布端] -->|orders 表| Reporting[报表库]
+  Publisher -->|products 表| Search[搜索索引]
 ```
 {{</* /tab */>}}
 {{</* /tabs */>}}
 ````
 
 {{< tabs >}}
-{{< tab label="按数据流看" >}}
+{{< tab label="物理复制" >}}
 ```mermaid
 flowchart LR
-  Markdown --> Goldmark --> 渲染钩子 --> HTML
+  Primary[主库] -->|WAL 流| R1[从库 1]
+  Primary -->|WAL 流| R2[从库 2]
 ```
 {{< /tab >}}
-{{< tab label="按输出形态看" >}}
+{{< tab label="逻辑复制" >}}
 ```mermaid
 flowchart LR
-  页面 --> HTML
-  页面 --> 打印
-  页面 --> Markdown
-  页面 --> RSS
+  Publisher[发布端] -->|orders 表| Reporting[报表库]
+  Publisher -->|products 表| Search[搜索索引]
 ```
 {{< /tab >}}
 {{< /tabs >}}
 
-`{{%/* steps */%}}` 里的每一步是页面级 Markdown，其中可以写 `mermaid` 围栏，用法见[步骤](/zh/docs/components/steps/)。
+`{{%/* steps */%}}` 里的每一步都是普通的页面 Markdown，同样可以放 `mermaid` 围栏，见[步骤](/zh/docs/components/steps/)。
 
-## 输出形态 {#outputs}
+## 放大查看 {#zoom}
 
-| 输出 | 呈现 |
-| --- | --- |
-| HTML | 一个 `figure`，保留可读源码，图表接近视口后在舞台中渲染 SVG |
-| 打印 | `<pre class="td-mermaid-source">` 包着的源码，静态输出，不跑运行时 |
-| Markdown | 原样保留 `mermaid` 围栏与它的源码 |
-| RSS | `<pre class="td-mermaid-source">` 包着的源码，订阅端看到的是文本 |
+每张图的角上有一个按钮，点开是一个查看器，本地渲染的 [PlantUML](/zh/docs/components/plantuml/) 图也用它。查看器直接复用页面上已经画好的图，不会重新渲染。拖动或用方向键平移；滚轮、双指捏合、`+` 与 `-` 缩放；点「适应窗口」或按 `0` 显示整张图；按 `Esc` 关闭，焦点回到打开按钮。很宽的图初次打开时保持原始尺寸，方便看清文字；手机上的按钮保持便于触控的大小；切换深浅色不会丢失当前位置；读者设置了减少动态效果时不播放动画。
+
+「源码」显示原始文本，「复制代码」复制它，箭头、引号、和号与中文都原样保留。「下载 SVG」保存一份带样式、不依赖外部资源的独立图片；依赖外部图片或样式的图无法导出，复制或导出失败时会给出提示。每张图下方的源码折叠区同样可以展开和复制。
+
+## 加载与输出 {#outputs}
+
+图进入视口、或距离视口不超过 320px 时才渲染，长页面不会为读者没看到的图付出代价。同页的图共用一个引擎，逐张渲染。隐藏标签页、未展开的折叠块和宽度为零的容器里的图，等到显示出来再渲染；没有 IntersectionObserver 的浏览器改用滚动与尺寸检查。没有图的页面既不加载引擎，也不加载查看器。
+
+关闭 JavaScript、引擎被拦截或图的语法有错时，读者看到的是源码。从浏览器打印页面时，已经画好的浅色图按纸张宽度缩放；深色模式下的图和尚未渲染的图，打印成白底黑字的源码。想让打印稿里全是图，先切到浅色模式，把需要的图逐一滚动到、所在的标签页和折叠块也打开，再打印。打印不会改变读者的外观设置。站点的打印视图、Markdown 输出和 RSS 始终输出源码。
 
 ## 参数参考 {#reference}
-
-围栏属性：没有。`mermaid` 围栏不读属性行，写 `{height=…}`、`{class=…}` 之类既不生效也不报错；尺寸由图自身与容器宽度决定，并在其中居中。
 
 站点参数（`hugo.yml`）：
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `params.mermaid` | map | 未设置 | 整个映射按 Mermaid 的 `initialize()` 配置传入；键名写小写，主题按 Mermaid 默认配置匹配回正确大小写 |
-| `params.mermaid.theme` | string | Mermaid 默认 | 浅色模式下的主题；深色模式下被强制为 `dark` |
+| `params.mermaid` | map | 未设置 | 整个映射传给 Mermaid 的 `initialize()`；键名写小写，主题按 Mermaid 的大小写匹配回去 |
+| `params.mermaid.theme` | string | Mermaid 默认 | 浅色模式下的主题；深色模式始终使用 `dark` |
 {.fields meta="type default"}
 
-单张图的配置写在围栏正文最前面的 YAML 头里（`title`、`config`），属于 Mermaid 语法，不是主题参数。
+单张图的配置（`title`、`config`）写在围栏正文开头的 YAML 头里，它们是 Mermaid 的键，不是主题参数。
 
-## 放大查看 {#zoom}
-
-> [!NOTE] OINK 1.4.0 的阅读体验
-> 以下共用查看器与按需加载行为已随 v1.4.0 发布。
-
-Mermaid 与本地 PlantUML 共用查看器。通过图表角上的按钮打开，直接使用已渲染
-结果，无需再次运行引擎。拖动或用方向键平移；滚轮、双指捏合、`+` 和 `-` 缩放。
-点击“适应窗口”或按 `0` 显示整张图，按 `Esc` 关闭并把焦点还给打开按钮。
-很宽的图初次打开时保持原始尺寸，便于读字；手机上的按钮保持可触控大小。
-深浅色切换保留查看器中的阅读位置，减少动态效果偏好不会触发动画。
-
-点击“源码”查看原始文本，点击“复制代码”复制。箭头、引号、和号及中文保留原样。
-“下载 SVG”导出带样式的独立图片，无需远程资源。复制或导出失败时显示提示；
-有外部图片或样式依赖的 SVG 会拒绝导出。页面下方的源码折叠区也可查看和复制。
-
-## 按需加载与打印 {#loading}
-
-距离视口不超过 320px 的可见图表才加载引擎并渲染。同页多图共用引擎，两种
-图表串行渲染。隐藏标签页、折叠区和宽度为零的容器在恢复可见后处理；没有
-IntersectionObserver 的浏览器使用滚动和尺寸检查。快速切换主题时丢弃过期结果。
-没有图表的页面不加载查看器或图表引擎。此行为不会增加安装依赖或构建步骤。
-
-禁用 JavaScript、引擎受阻或语法错误时保留可读源码。OINK 1.4.0 打印普通 HTML
-页面时，已完成的浅色图按页面宽度缩放；暗色图和未渲染的图输出黑字白底、可换行
-的源码，无须等待异步引擎，也不要求开启背景打印。需要全是图片时，先切换浅色
-模式，浏览并展开需要的图，再打印。打印后恢复源码折叠状态，不改变阅读外观偏好。
-独立 Print、Markdown、RSS 继续输出源码。
+围栏属性只接受 `class`、`data-*` 与 `aria-*`，它们会加在图的 `<figure>` 上，供站点 CSS 使用。其他键（如 `height`、`align`）会告警并被忽略：图的尺寸由图本身的内容和正文栏宽度决定，并且总是居中。
 
 ## 限制与常见问题 {#limits}
 
-- 图不能编号：Mermaid 输出的是内联 SVG，不是 `<img>`，`{#id num=}` 编号不适用；需要编号时导出成图片，按[图片](/zh/docs/components/image/)的编号写法使用。
-- 围栏属性无效：宽度在图里控制（`flowchart` 的方向、`classDiagram` 的布局），或者用 CSS。也没有对齐属性——图总是居中。
-- 语法错误只在浏览器里可见：Hugo 不解析 Mermaid 语法，写错的图在页面上显示一条带解析错误与图源码的提示，构建照样通过，发布前要在浏览器里确认。
-- RSS、Markdown 与打印输出里是源码而不是图：结论要写在正文里，不要只画在图上。
+- 图是内联 SVG 而不是 `<img>`，`{#id num=}` 编号不适用。需要编号时，把图导出成图片，按[图片编号](/zh/docs/components/image/)的方式使用。
+- 要改变图的宽度，就改图本身（流程图的方向、类图的布局），或者在站点 CSS 里为它的 `class` 写样式。
+- Hugo 不解析 Mermaid，语法错误不会让构建失败。页面上会显示一条提示和源码，而不是图，所以发布前要在浏览器里打开每一张改过的图看一眼。
+- 打印、Markdown 与 RSS 里只有源码，没有图，结论要在正文里写出来，不能只画在图上。
 
 ## 相关 {#related}
 
-- [PlantUML](/zh/docs/components/plantuml/) — UML 图表；渲染模式与版本要求见指南
+- [PlantUML](/zh/docs/components/plantuml/) — UML 图，可本地渲染，也可交给自建服务
 - [思维导图](/zh/docs/components/markmap/) — 大纲式的层级图
 - [ECharts](/zh/docs/components/echarts/) — 有数值的统计图
 - [图片](/zh/docs/components/image/) — 手绘 SVG、需要编号的图

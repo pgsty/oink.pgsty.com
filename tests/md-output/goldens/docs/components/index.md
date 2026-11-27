@@ -1,6 +1,6 @@
 # Components
 
-> Find each writing component, from simple examples to detailed examples, with its output matrix, parameters, and limits.
+> Pick the component that fits what you are writing and look up its shortest syntax, its form and whether it loads a script.
 
 ---
 
@@ -8,29 +8,103 @@ LLMS index: [llms.txt](/llms.txt)
 
 ---
 
-Use this section to write components in Markdown. Each page starts with the shortest example, then gives more detailed examples.
-The page also gives the output matrix, parameter table, and limits. Use the cheatsheet below for a quick syntax reference.
+Components are what a documentation page needs beyond paragraphs: a warning
+the reader must not skip, install commands for three platforms, a diagram, a
+chart, a terminal recording. Most of them are ordinary Markdown with one
+attribute line, so the source still reads cleanly on GitHub, and the theme
+turns it into the richer version when Hugo builds the site. Pick one from the
+table below; each component's page opens with the shortest source and its
+result, then the variations, then every parameter.
+[Component presentation](/docs/components/presentation/) shows the most common
+ones side by side in each visual preset.
+
+## Cheatsheet {#cheatsheet}
+
+*Form* says how you write it: **native** is Markdown syntax plus an attribute
+line, **fence** is a code fence with a language tag, **shortcode** is
+`{{< … >}}`. *Runtime* says whether the reader's browser downloads a script
+for it: **none**, **per page** (only on pages that use it), or **site switch**
+(off until you enable it in `hugo.yml`, then per page).
+
+| Component | Use it for | Shortest form | Form | Runtime |
+| --- | --- | --- | --- | --- |
+| [Callouts](/docs/components/callout/) | A prerequisite, warning or aside the reader must not miss | `> [!NOTE]` | native | none |
+| [Images](/docs/components/image/) | Screenshots and figures with captions, sizing, zoom and numbering | `![alt](oink.webp)` | native | site switch |
+| [Code Blocks](/docs/components/code/) | Commands and source with a filename, exact copy, folding and line links | ```` ```sh ```` | fence | per page |
+| [Tabs](/docs/components/tabs/) | The same instructions for several platforms or languages | attribute `{tab="Linux"}` | native + shortcode | per page |
+| [Tables](/docs/components/table/) | Comparisons and matrices, full-width, captioned or numbered | `{.full-width}` | native | tabs or `.expand` only |
+| [Fields](/docs/components/fields/) | Parameter lists with type, required and default chips | `{.fields meta="type default"}` | native + shortcode | none |
+| [Steps](/docs/components/steps/) | A procedure the reader carries out in order | `{.steps}` | native + shortcode | none |
+| [Timeline](/docs/components/timeline/) | Dated or ordered events on an axis | `{.timeline}` on a definition list | native | none |
+| [Update](/docs/components/update/) | Changelog entries that stay headings in the table of contents | `## v1.6 {.update date="2026-11-23"}` | native | none |
+| [Cards](/docs/components/cards/) | A few parallel destinations for the reader to choose from | `{.cards}` | native + shortcode | none |
+| [FileTree](/docs/components/filetree/) | A directory layout with an aligned comment beside each entry | ```` ```filetree ```` | fence | per page |
+| [Math](/docs/components/math/) | Inline and display formulas, rendered by KaTeX at build time | `$$ … $$` | native | none |
+| [Mermaid](/docs/components/mermaid/) | Flowcharts, sequence diagrams and Gantt charts drawn from text | ```` ```mermaid ```` | fence | per page |
+| [PlantUML](/docs/components/plantuml/) | UML diagrams, rendered in the browser or by your own server | ```` ```plantuml ```` | fence | site switch |
+| [Markmap](/docs/components/markmap/) | A Markdown outline drawn as a mind map | ```` ```markmap ```` | fence | site switch |
+| [Draw.io](/docs/components/drawio/) | Diagrams readers can open in the Draw.io editor; needs an editor address | `![alt](arch.drawio.svg)` | native | site switch |
+| [ECharts](/docs/components/echarts/) | Bar, line and pie charts declared as data | ```` ```echarts ```` | fence | per page |
+| [Infographic](/docs/components/infographic/) | AntV infographics that show order, hierarchy or comparison | ```` ```infographic ```` | fence | per page |
+| [Gallery](/docs/components/gallery/) | A set of images browsed in one shared zoom dialog | ```` ```gallery ```` | fence | site switch |
+| [Video](/docs/components/video/) | Video files, looping demos, YouTube and Bilibili cards | `![name](demo.mp4)` | native | per page; players need a site switch |
+| [Audio](/docs/components/audio/) | Podcast episodes and voice samples in a titled native player | `![name](episode.mp3)` | native | none |
+| [Social posts](/docs/components/social/) | A social media post quoted in the page, with nothing fetched | `{{< social author="…" >}}` | shortcode | none |
+| [Map](/docs/components/map/) | Places as a list, plus an interactive map when enabled | ```` ```map ```` | fence | site switch |
+| [Badge](/docs/components/badge/) | A one- or two-word status beside a name, such as Beta | `{{< badge text="Beta" >}}` | shortcode | none |
+| [Kbd](/docs/components/kbd/) | Key names and keyboard shortcuts | `{{< kbd "Ctrl" "K" >}}` | shortcode | none |
+| [Includes](/docs/components/include/) | Reuse a file, print a site parameter, keep a note out of the output | `{{< include file="parts/x.md" >}}` | shortcode | none |
+| [Asciinema](/docs/components/asciinema/) | Terminal sessions replayed as selectable text | `{{< asciinema file="images/x.cast" >}}` | shortcode | per page |
+{.wide .expand}
+
+A few entries in the *Runtime* column depend on what is on the page:
+
+- A code block loads `code-block.js` only when some block on the page has a
+  copy or fold control. A file tree loads `filetree.js` only when it has a
+  comment column, which the reader can resize by dragging.
+- Images and galleries share one zoom dialog. It needs
+  `params.ui.image_zoom: true` and at least one image on the page that can be
+  zoomed.
+- Math loads the KaTeX stylesheet and fonts but no script, because the
+  formulas are already HTML and MathML when the page is built.
+- Draw.io loads only on pages with PNG or SVG images, and it downloads each
+  distinct image once to look for an editable copy.
+- Video loads `media.js` only for an autoplaying video or for a card whose
+  platform is listed in `params.video_embeds`. A map loads Leaflet only when
+  `params.map` is configured; otherwise it stays a list of places.
+
+No component loads a script in print, Markdown or RSS output. Each component
+page says what those outputs contain when it differs from what you would
+expect.
 
 ## Two forms {#two-forms}
 
-The native form uses Markdown blockquotes, lists, tables, images, or fences, followed by one `{…}` attribute line.
-This form stays readable on GitHub and in Markdown editors. Markdown output preserves the source instead of rendered HTML.
+Prefer the native form: a blockquote, list, table, image or fence, followed
+by a `{…}` attribute line. It stays readable on GitHub and in any Markdown
+editor, and the page's Markdown output keeps your source instead of rendered
+HTML.
 
-Use a shortcode for features that the native form cannot express. Examples include tabs in prose and parameter tables with block descriptions.
-Cards with icons and badges, and terminal recordings, also need shortcodes. Follow these five rules:
+Shortcodes cover what Markdown cannot express, such as tabs that hold prose,
+parameter lists whose descriptions contain code blocks, cards with icons and
+badges, and terminal recordings. They follow the same rules everywhere:
 
-- Write every shortcode as `{{< name >}}`. Only `{{% steps %}}` uses the `%` delimiter because its body is page-level Markdown.
-- Use nested names (`tab`, `card`, `field`) only inside their parent.
-- Invalid author parameters never fail silently. Ordinary previews warn, identify the source position, and use the documented fallback or omit unsafe content.
-  Review the warning and rendered fallback before publication.
-- Public string parameters, such as captions, labels, and titles, are plain text. They are not parsed as Markdown.
-  Only bodies are Markdown: `tab`, `card` and `field` bodies, files loaded by `include`, and Book `fig` / `tbl` / `eg` bodies.
-- Components that a page does not use load no runtime. HTML references only the stable capability chunks that the page needs.
-  Print, Markdown, and RSS load no interactive runtime.
+- Write every shortcode as `{{< name >}}`. Only `{{% steps %}}` uses
+  `%`, because its body is page-level Markdown with headings.
+- Child shortcodes (`tab`, `card`, `field`) work only inside their parent.
+- Parameters such as titles, labels and captions are plain text, not
+  Markdown. Only bodies are Markdown: the bodies of `tab`, `card` and `field`,
+  files pulled in by `include`, and the Book `fig`, `tbl` and `eg` bodies.
+- A wrong parameter never stops the build. Hugo prints a warning with the
+  file and line, and the component falls back to the behavior its page
+  documents or leaves the unsafe part out, so read the warnings before you
+  publish. See
+  [When a value is wrong](/docs/customize/config/#principles).
 
 ## Site prerequisites {#prerequisites}
 
-Components need three Goldmark settings. OINK Starter configures these settings. If you start from scratch, copy this snippet:
+Components rely on three Goldmark settings. Hugo does not take `markup`
+settings from a theme, so they must be in your site's own configuration. OINK
+Starter already has them; on a site you set up yourself, add:
 
 ```yaml {title="hugo.yml"}
 markup:
@@ -43,97 +117,53 @@ markup:
       wrapStandAloneImageWithinParagraph: false # standalone images are not wrapped in <p>
 ```
 
-- `renderer.unsafe: true` keeps raw HTML in content. Goldmark drops it by default. Without this setting, HTML inside component bodies disappears.
-- `parser.attribute.block: true` enables attribute lines. Without it, `{.steps}` and `{caption="…"}` appear as text.
-- `parser.wrapStandAloneImageWithinParagraph: false` prevents `<p>` wrappers around standalone images. This permits captioned figures and attribute lines after images.
+- `renderer.unsafe: true` keeps raw HTML in the rendered content. Without it,
+  Goldmark drops that HTML and markup inside component bodies disappears.
+- `parser.attribute.block: true` turns on attribute lines. Without it,
+  `{.steps}` and `{caption="…"}` show up as literal text.
+- `parser.wrapStandAloneImageWithinParagraph: false` stops Goldmark from
+  wrapping an image that stands alone in a `<p>`, which is what lets it become
+  a captioned figure with an attribute line.
 
-Some components need other settings. Mathematics needs Goldmark passthrough. Draw.io needs an explicitly configured editor service.
-Each component page explains its requirements. [Configuration](/docs/customize/config/) lists all configuration keys.
-
-OINK 1.4.0 renders PlantUML locally when enabled without an endpoint, using two
-bundled scripts. An explicit endpoint keeps server mode; see the
-[PlantUML guide](/docs/components/plantuml/) for both modes.
-
-## Cheatsheet {#cheatsheet}
-
-The *Form* column uses three labels. Native means Markdown syntax plus an attribute line.
-Fence means a fenced block with a language tag. Shortcode means `{{< … >}}`.
-The *Runtime* column shows whether the component loads JavaScript on the page.
-
-| Component | In one line | Shortest form | Form | Runtime |
-| --- | --- | --- | --- | --- |
-| [Callouts](/docs/components/callout/) | Separate prerequisites, warnings and asides from the prose | `> [!NOTE]` | native | none |
-| [Images](/docs/components/image/) | Captions, sizing, zoom, numbering and build-time processing | `![alt](oink.webp)` | native | site switch |
-| [Code Blocks](/docs/components/code/) | Highlighting, titles, copy, folding, linkable lines | ```` ```sh ```` | fence | per page |
-| [Tabs](/docs/components/tabs/) | One thing, several platforms or languages | attribute `{tab="Linux"}` | native + shortcode | per page |
-| [Tables](/docs/components/table/) | Plain tables plus full-width, matrix, caption and numbering | `{.full-width}` | native | tabs or `.expand` only |
-| [Fields](/docs/components/fields/) | Parameter lists with type / required / default chips | `{.fields meta="type default"}` | native + shortcode | none |
-| [Steps](/docs/components/steps/) | A procedure with an order | `{.steps}` | native + shortcode | none |
-| [Timeline](/docs/components/timeline/) | Dated or ordered events on an axis | `{.timeline}` on a definition list | native | none |
-| [Update](/docs/components/update/) | Changelog entries that stay headings | `## v1.6 {.update date="2026-11-23"}` | native | none |
-| [Cards](/docs/components/cards/) | A set of parallel destinations | `{.cards}` | native + shortcode | none |
-| [FileTree](/docs/components/filetree/) | Directory structure with an aligned comment column | ```` ```filetree ```` | fence | per page |
-| [Math](/docs/components/math/) | KaTeX inline and display formulas | `$$ … $$` | native | none |
-| [Mermaid](/docs/components/mermaid/) | Flowcharts, sequence diagrams, Gantt charts | ```` ```mermaid ```` | fence | per page |
-| [PlantUML](/docs/components/plantuml/) | UML diagrams; local rendering in OINK 1.4.0 | ```` ```plantuml ```` | fence | site switch |
-| [Markmap](/docs/components/markmap/) | A Markdown outline becomes a mind map | ```` ```markmap ```` | fence | site switch |
-| [Draw.io](/docs/components/drawio/) | Diagrams that stay editable; needs a server | `![alt](arch.drawio.svg)` | native | site switch |
-| [ECharts](/docs/components/echarts/) | Declarative statistical charts | ```` ```echarts ```` | fence | per page |
-| [Infographic](/docs/components/infographic/) | AntV infographics | ```` ```infographic ```` | fence | per page |
-| [Gallery](/docs/components/gallery/) | A set of images sharing one zoom dialog | ```` ```gallery ```` | fence | site switch |
-| [Video](/docs/components/video/) | Video files, looping demos, YouTube and Bilibili cards | `![name](demo.mp4)` | native | per page; players need a site switch |
-| [Audio](/docs/components/audio/) | A titled native audio player | `![name](episode.mp3)` | native | none |
-| [Social posts](/docs/components/social/) | Offline quotes of social posts | `{{< social author="…" >}}` | shortcode | none |
-| [Map](/docs/components/map/) | Places as a list, and a map when enabled | ```` ```map ```` | fence | site switch |
-| [Badge](/docs/components/badge/) | Inline status markers | `{{< badge text="Beta" >}}` | shortcode | none |
-| [Kbd](/docs/components/kbd/) | Key names and chords | `{{< kbd "Ctrl" "K" >}}` | shortcode | none |
-| [Includes](/docs/components/include/) | Pull in files, print site parameters, drop build-time notes | `{{< include file="parts/x.md" >}}` | shortcode | none |
-| [Asciinema](/docs/components/asciinema/) | Terminal recordings | `{{< asciinema file="images/x.cast" >}}` | shortcode | per page |
-{.wide .expand}
-
-Five notes on the *Runtime* column:
-
-- A code block loads `code-block.js` only if a block on the page has a copy or fold control.
-  A file tree loads `filetree.js` only if it has a comment column. This runtime lets readers drag the splitter.
-- Images and galleries share one zoom dialog runtime. It needs site-level `ui.image_zoom` and at least one eligible image on the page.
-- KaTeX renders mathematics to HTML and MathML at build time. The page loads a KaTeX stylesheet and fonts, but no script.
-- Draw.io loads only on pages whose rendered content has PNG or SVG candidates. It inspects each distinct image URL once.
-- Video loads `media.js` only for an autoplay video or a card whose platform the site lists in `video_embeds`. A map loads Leaflet only when the site configures `params.map`; otherwise it is a place list.
-
-Every component defines its behavior in four outputs: HTML, print, Markdown, and RSS. See *Output* on each component page.
+A few components need more. Math written with `$$`, `\[…\]` or `\(…\)` needs
+Goldmark's passthrough extension. PlantUML, Markmap, Draw.io, the image zoom dialog,
+in-page video players and maps each have a site switch, and Draw.io also needs
+an editor address. Each component page shows its setting, and
+[Configuration](/docs/customize/config/#goldmark) has the complete `markup`
+block.
 
 ---
 
 Section pages:
 
 - [Callouts](/docs/components/callout/): Write notes, warnings, and collapsible asides with colors, icons, and titles. Use `> [!NOTE]` blockquotes without shortcodes.
-- [Images](/docs/components/image/): Use Markdown image syntax and attributes for captions, sizing, zoom, links, numbering, and Hugo image processing.
-- [Code Blocks](/docs/components/code/): Use a Markdown fence and attributes for titles, exact copying, line numbers, highlighting, wrapping, folding, and line links.
-- [Tabs](/docs/components/tabs/): Add `{tab=}` to adjacent fences or tables to create tabs. Add a group to enable links, synchronization, and saved selections.
-- [Tables](/docs/components/table/): Add attributes to a GFM table for captions, compatibility matrices, field lists, numbering, or tabs. Wide tables scroll within their own regions.
-- [Fields](/docs/components/fields/): Add `{.fields}` to a table to document configuration keys, command flags, and API fields. Entries adapt to narrow screens and have individual anchors.
+- [Images](/docs/components/image/): Add images with plain Markdown, then use one attribute line for a caption, a size, zoom, a link, a figure number or Hugo image processing.
+- [Code Blocks](/docs/components/code/): Show commands, configuration and source code in a Markdown fence with a filename, exact copying, line numbers, highlighting, wrapping, folding and linkable lines.
+- [Tabs](/docs/components/tabs/): Put equivalent alternatives such as package managers or config formats side by side, and let one reader choice follow them across every page.
+- [Tables](/docs/components/table/): Turn an ordinary Markdown table into a captioned table, a compatibility matrix, a field list, a numbered book table or a tab set, and give wide technical tables room to read.
+- [Fields](/docs/components/fields/): Document configuration keys, command flags and API fields as a field list that stays readable on a phone and gives every entry its own link.
 - [Steps](/docs/components/steps/): Add `{.steps}` to an ordered list for a numbered procedure. Use the steps shortcode when each step needs a table-of-contents heading.
-- [Timeline](/docs/components/timeline/): Add `{.timeline}` to a Markdown definition list to draw dated or ordered events on an axis. Markers are free text, events take block content, and no script loads.
-- [Update](/docs/components/update/): Mark a heading `{.update}`, with an optional `date` and `tags`, to make it a changelog entry. The entry stays an ordinary heading in the TOC, search and Print.
-- [Cards](/docs/components/cards/): Add `{.cards}` to a link list to create navigation cards. Use the shortcode for icons, badges, or images.
-- [FileTree](/docs/components/filetree/): Write directory listings in a `filetree` fence. Use indentation for depth, trailing slashes for directories, and aligned comments for explanations.
+- [Timeline](/docs/components/timeline/): Turn a Markdown definition list into a vertical timeline of dated or ordered events, for milestones, incident write-ups, product history or an agenda.
+- [Update](/docs/components/update/): Write a changelog, a "What's new" page or weekly notes as ordinary headings marked `{.update}`, with an optional date and tags under each entry.
+- [Cards](/docs/components/cards/): Turn a Markdown link list into a grid of navigation cards, and use the shortcode when cards need icons, badges or images.
+- [FileTree](/docs/components/filetree/): Draw an annotated directory tree in a `filetree` fence, with aligned comments, per-entry icons and collapsible directories.
 - [Math](/docs/components/math/): Use KaTeX for inline and display mathematics at build time. Readers download no script.
 - [Mermaid](/docs/components/mermaid/): Use a `mermaid` fence for flowcharts, sequence diagrams, Gantt charts, class diagrams, and state diagrams. Bundled Mermaid follows the color scheme; source diffs show changes.
 - [Component presentation](/docs/components/presentation/): Cards, disclosures, tabs, and compact procedures across OINK's four visual presets.
 - [PlantUML](/docs/components/plantuml/): Render sequence, class, component, activity and use-case diagrams in the browser with bundled assets and no rendering service.
 - [Markmap](/docs/components/markmap/): Use a `markmap` fence for an expandable mind map with zoom controls. Its source remains a readable Markdown outline.
-- [Draw.io](/docs/components/drawio/): Display a `.drawio.svg` with an embedded editable copy as an ordinary image. Its edit button opens the Draw.io editor.
-- [ECharts](/docs/components/echarts/): Write ECharts options as YAML or JSON in an `echarts` fence. Hugo validates them, and bundled ECharts draws charts that follow the color scheme.
-- [Infographic](/docs/components/infographic/): Use an `infographic` fence and AntV template to display a title and items as a flow, timeline, funnel, grid, or hierarchy.
-- [Gallery](/docs/components/gallery/): Use a `gallery` fence for a responsive image grid with optional descriptions and links. Images share the page zoom dialog.
-- [Video](/docs/components/video/): Write a video as a Markdown image. Files play in the browser's native player, muted loops replace animated GIFs, and YouTube, Bilibili and Vimeo URLs become cards that contact nobody until clicked.
-- [Audio](/docs/components/audio/): Write audio as a Markdown image. It renders as a titled native player for podcast episodes, voice samples and recordings, with the transcript in a folded callout and no JavaScript.
+- [Draw.io](/docs/components/drawio/): Publish a Draw.io export as an ordinary image that readers can open in the Draw.io editor, change and download.
+- [ECharts](/docs/components/echarts/): Draw bar, line and pie charts by writing ECharts options as YAML or JSON in an `echarts` fence, with colors that follow light and dark mode.
+- [Infographic](/docs/components/infographic/): Turn a title and a short list of items into a flow, timeline, funnel, grid or hierarchy graphic with an `infographic` fence and an AntV template.
+- [Gallery](/docs/components/gallery/): Lay out a set of related screenshots as a responsive grid with a `gallery` fence, each with an optional description or link.
+- [Video](/docs/components/video/): Embed product demos, screen recordings and muted loops that replace GIFs, and link YouTube, Bilibili or Vimeo talks without contacting the platform until a reader clicks.
+- [Audio](/docs/components/audio/): Put a podcast episode, voice sample or recorded talk on a page with image syntax, as a titled native player with its transcript beside it.
 - [Social posts](/docs/components/social/): Quote a post from X, Bluesky, Mastodon, or another platform with the `social` shortcode. The card is written in the page, so nothing is fetched and no script loads.
-- [Maps](/docs/components/map/): List places in a `map` fence. Every output shows a numbered place list; on sites that name a tile service, HTML adds an interactive map whose numbered markers match it.
-- [Badge](/docs/components/badge/): Add a semantic status label beside a feature name, version, or table cell. Choose from five tones; custom colors are not supported.
+- [Maps](/docs/components/map/): List places in a `map` fence to get a numbered place list everywhere, plus an interactive map once the site names a tile service.
+- [Badge](/docs/components/badge/): Mark a feature, version or table cell with a short status label such as Beta or deprecated, in one of five semantic tones.
 - [Kbd](/docs/components/kbd/): Use `kbd` with one key name per parameter to display a semantic key sequence. Instructions remain readable in print and Markdown.
-- [Includes](/docs/components/include/): Use include to insert a file, param to print a site parameter, and comment to remove a note from every output.
-- [Asciinema](/docs/components/asciinema/): Display a .cast terminal recording with selectable text. The theme includes the player and does not use a CDN.
+- [Includes](/docs/components/include/): Reuse one source across pages with include for shared fragments and files, param for site and page values, and comment for notes that never publish.
+- [Asciinema](/docs/components/asciinema/): Embed a .cast terminal recording that readers can play, pause and copy text from, with the player shipped in the theme.
 
 ---
 
@@ -146,14 +176,15 @@ Backlinks:
 - [Introduction](/docs/about/)
 - [Highlights](/docs/about/features/)
 - [Upgrade](/docs/admin/upgrade/)
+- [Audio](/docs/components/audio/)
 - [Presentation](/docs/components/presentation/)
+- [Tables](/docs/components/table/)
 - [Timeline](/docs/components/timeline/)
 - [Components](/docs/design/components/)
 - [Content components expansion](/docs/design/proposals/content-components-expansion/)
 - [Get started](/docs/start/)
 - [Authoring](/docs/write/)
 - [Blog posts](/docs/write/blog/)
-- [Books](/docs/write/book/)
 - [Writing pages](/docs/write/pages/)
 - [OINK v0.2.0](/release/0.2.0/)
 - [OINK v0.3.0](/release/0.3.0/)

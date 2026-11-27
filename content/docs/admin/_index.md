@@ -1,28 +1,33 @@
 ---
 title: Operations
 linkTitle: Operations
-description: Preview, deploy, and maintain a site. Configure comments, analytics, and SEO. Upgrade the theme and diagnose problems.
+description: Take a finished site from your machine to a live address and keep it running there.
 weight: 60
 icon: fa-solid fa-screwdriver-wrench
 search_keywords: [operations, deploy, publish, preview, upgrade, troubleshooting, maintenance]
 cascade:
   categories: [Operations]
+# The body's task map links every child page; the generated card list
+# would repeat it. The Markdown output still lists the children.
+no_list: true
 ---
 
-Use this section after you write the content. Preview the site locally, build
-and deploy the output, configure comments and analytics, track theme versions,
-and diagnose problems. The previous five sections describe the site's appearance
-and content. This section describes its build, deployment, and diagnosis.
+Once the content is written, this section gets it online and keeps it there:
+previewing changes on your machine, building and hosting the output, adding
+comments and analytics, upgrading the theme, and finding out why a build or a
+page went wrong.
 
 ## Find it by task {#where-to-go}
-| What you want to do | Where to go |
+
+| I want to… | Read |
 | --- | --- |
-| See a change on your own machine | [Local preview](/docs/admin/preview/) |
-| Build a deployable `public/` | [Local preview](/docs/admin/preview/#production-build) |
-| Deploy to GitHub Pages / Cloudflare / Netlify | [Deploy](/docs/admin/deploy/) |
-| Deploy to a subpath such as `example.com/docs/` | [Deploy](/docs/admin/deploy/#baseurl) |
+| See my changes as I write | [Local preview](/docs/admin/preview/) |
+| Build the `public/` directory I deploy | [Local preview](/docs/admin/preview/#production-build) |
+| Publish to GitHub Pages, Cloudflare Pages, Netlify or my own server | [Deploy](/docs/admin/deploy/) |
+| Serve the site under a subpath such as `example.com/docs/` | [Deploy](/docs/admin/deploy/#baseurl) |
+| Keep preview deployments out of search engines | [Deploy](/docs/admin/deploy/#preview-builds) |
 | Let readers comment at the end of a page | [Comments](/docs/admin/comments/) |
-| Connect Google Analytics or a self-hosted alternative | [Analytics and SEO](/docs/admin/analytics/) |
-| Configure correct search engine indexing | [Analytics and SEO](/docs/admin/analytics/#indexing) |
-| Upgrade the theme, or migrate from Docsy or 0.4 | [Upgrade](/docs/admin/upgrade/) |
-| Diagnose a build error, missing search results, or a 404 | [Troubleshooting](/docs/admin/troubleshooting/) |
+| Count visits with Google Analytics, Plausible or another service | [Analytics and SEO](/docs/admin/analytics/) |
+| Check that search engines index the site correctly | [Analytics and SEO](/docs/admin/analytics/#indexing) |
+| Upgrade OINK, or migrate from Docsy or OINK 0.4 | [Upgrade](/docs/admin/upgrade/) |
+| Fix a build error, empty search results or a 404 | [Troubleshooting](/docs/admin/troubleshooting/) |

@@ -1,21 +1,21 @@
 ---
 title: Code Blocks
 linkTitle: Code Blocks
-description: Use a Markdown fence and attributes for titles, exact copying, line numbers, highlighting, wrapping, folding, and line links.
+description: Show commands, configuration and source code in a Markdown fence with a filename, exact copying, line numbers, highlighting, wrapping, folding and linkable lines.
 weight: 30
 search_keywords: [Code Block, fence, copy, lineNos, hl-lines, collapse, wrap, Chroma, syntax highlighting]
 aliases:
   - /docs/components/code-blocks/
 ---
 
-A code block uses an ordinary Markdown fence. Hugo's embedded Chroma highlighter runs at build time. The browser has no highlighter.
-Use code blocks for commands, configuration snippets, and source code.
-The `{…}` attributes on the fence's info line control the title bar, copy behavior, line numbers, and line anchors.
-Diagram fences such as `mermaid`, `echarts`, and `filetree` use their own render hooks.
-
-## Optional presentation {#presentation}
-
-A one-line fence with `{class="td-code-command"}` becomes a compact command strip with a separate copy column. OINK 1.4.0 supports this variant; [see examples and fallback rules](/docs/components/presentation/#tabs). Multiline, numbered, or collapsed blocks warn and retain regular presentation.
+Commands, configuration files and source code go in an ordinary Markdown
+fence. Hugo's built-in Chroma highlighter colors it while the site builds, so
+the page ships highlighted HTML and the browser runs no highlighter. Attributes
+on the fence's opening line add what readers of technical docs rely on: a
+filename above the code, a copy button that copies exactly the right text, line
+numbers, folding for long files, and links to individual lines. Fences for
+diagrams and data, such as `mermaid`, `echarts` and `filetree`, are separate
+components with their own pages.
 
 ## Shortest form {#minimal}
 
@@ -29,12 +29,15 @@ SELECT datname, numbackends FROM pg_stat_database ORDER BY numbackends DESC;
 SELECT datname, numbackends FROM pg_stat_database ORDER BY numbackends DESC;
 ```
 
-A fence without attributes still has the complete shell and a copy button. Without a title, there is no empty title bar.
-The copy button appears at the top right on hover or when focus enters the block. It is always visible on touch devices.
-The shell does not display the language. It stores the lexer name in `data-language` for stylesheets and tests.
+Every fence gets the full frame and a copy button, even without attributes; a
+block without a title simply has no title bar. The copy button sits at the top
+right and appears when the pointer is over the block or focus is inside it, and
+on touch screens it is always visible. The language is not displayed, but site
+CSS can read it from the block's `data-language` attribute.
 
-The language tag is Chroma's lexer name. A `diff` fence displays a patch with Chroma's styles for added and removed lines.
-It needs no additional component:
+The language tag is a Chroma lexer name, and Chroma has a lexer for most
+languages and file formats. A `diff` fence, for example, shows added and
+removed lines in their own colors, with no extra component:
 
 ````markdown {title="Source"}
 ```diff {title="a change to hugo.yml"}
@@ -56,7 +59,9 @@ It needs no additional component:
 
 ## Filename titles {#title}
 
-`title` adds a visible title bar, usually containing a filename or path. It also sets the block's accessible name.
+`title` adds a title bar above the code, usually the file's name or path, so
+readers know where the snippet belongs. It also becomes the block's accessible
+name.
 
 ````markdown {title="Source"}
 ```yaml {title="hugo.yml"}
@@ -80,14 +85,15 @@ markup:
       unsafe: true
 ```
 
-`filename` is a historical alias for `title`. If you provide both, the theme warns and uses `filename`.
+`filename` is an alias for `title`. If a fence has both, the build warns and
+uses `filename`.
 
 ## Line numbers, start line and highlighting {#line-numbers}
 
-`lineNos` accepts `inline` or `table`. Inline numbers share the code column.
-Table numbers have a separate column, can be selected separately, and are never copied.
-`lineNoStart` sets the first displayed number. `hl_lines` marks source lines for emphasis.
-It counts from 1 inside the fence, independently of `lineNoStart`.
+`lineNos="inline"` puts line numbers in the code column, and `lineNoStart`
+sets the first number, which helps when the snippet is an excerpt of a longer
+file. `hl_lines` highlights the lines you want the reader to look at. It counts
+the lines inside the fence from 1, whatever `lineNoStart` says.
 
 ````markdown {title="Source"}
 ```ini {title="postgresql.conf" lineNos="inline" lineNoStart=120 hl_lines="2 4-5"}
@@ -107,7 +113,9 @@ wal_level = replica
 max_wal_senders = 10
 ```
 
-`lineNos="table"` puts numbers in a separate column. The copy button removes line numbers in both modes:
+`lineNos="table"` puts the numbers in a column of their own, so a reader who
+selects the code by hand does not pick up the numbers. The copy button leaves
+them out in both modes.
 
 ````markdown {title="Source"}
 ```bash {title="deployment in three commands" lineNos="table"}
@@ -123,13 +131,17 @@ pig ext install pg_duckdb
 pig ext install pg_duckdb
 ```
 
-`tabWidth` sets the number of spaces per tab. The theme passes it and `style` directly to Chroma.
-This site uses class-based Chroma palettes for light and dark modes.
-Here, `style` takes effect only if Hugo is changed to inline style mode.
+Hugo's other highlighting options, such as `tabWidth` for the number of
+spaces a tab expands to, pass straight through to Chroma. `style` has no
+effect by default: OINK highlights with CSS classes so that code colors follow
+light and dark mode, and a Chroma style applies only after you switch to
+inline styles with `params.highlight_classes: false`.
 
 ## Wrapping long lines {#wrap}
 
-`wrap=true` changes only the display. It preserves the source and copied text. Without it, long lines scroll horizontally.
+Long lines scroll sideways by default. `wrap=true` wraps them on screen
+instead, which suits long URLs and checksums; the source and the copied text
+keep their original lines.
 
 ````markdown {title="Source"}
 ```text {title="config/artifacts.env" wrap=true}
@@ -143,14 +155,15 @@ ARTIFACT_URL=https://repo.pigsty.io/pkg/infra/v3.6.0/infra-pkg-v3.6.0.el9.x86_64
 CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 ```
 
-`wrap=true` cannot be combined with table line numbers. Wrapping misaligns the separate number and code cells.
-If you provide both, the theme warns and disables wrapping. It suggests `lineNos="inline"` or removing wrapping.
+Wrapping does not combine with `lineNos="table"`, because a wrapped line would
+no longer line up with its number in the separate column. With both, the build
+warns and turns wrapping off; use `lineNos="inline"` if you need both.
 
 ## Folding long code {#collapse}
 
-`collapse=N` initially shows N lines, with a "show all N lines" button below them.
-The server emits complete code. After measuring line N, the browser clips the visual display.
-The complete code remains available without JavaScript, in screen readers, and in print.
+`collapse=N` shows the first N lines with a "show all N lines" button under
+them, so a complete configuration file does not push the explanation off the
+screen.
 
 ````markdown {title="Source"}
 ```yaml {title="hugo.yml" collapse=8}
@@ -188,13 +201,17 @@ params:
     sidebar_menu_foldable: true
 ```
 
-If the block is no longer than `collapse`, no button appears. Wrapping and folding can be combined.
-Folding measures the bottom of the Nth source-line node, so it never cuts a wrapped line in half.
+Folding only hides lines on screen. The page contains the whole file, so it
+is complete without JavaScript, for screen readers and on paper. A block no
+longer than N lines gets no button. Folding works together with wrapping and
+never cuts a wrapped line in half.
 
 ## What gets copied {#copy}
 
-By default, the copy button copies the complete source. For `console` and `shell-session` lexers, it copies only commands.
-It keeps prompted lines but removes prompts and output lines. The example below copies two commands, without `$` or output.
+The copy button copies the whole block, except for terminal sessions. In a
+`console` or `shell-session` fence it copies only the commands: it keeps the
+lines that start with a prompt, strips the prompt, and drops the output. The
+block below copies two commands, without `$` and without the output lines:
 
 ````markdown {title="Source"}
 ```console
@@ -214,14 +231,18 @@ $ pig ext install pg_duckdb
 INFO installing pg_duckdb
 ```
 
-To include prompts and output, use `copy="all"`.
-On ordinary lexers such as `bash` or `sh`, `copy="command"` warns and uses `copy="all"`, because those lexers cannot distinguish prompts, commands, and output.
-For multiline commands, put a continuation prompt, usually `>`, on each continuation line. Otherwise, those lines are treated as output and excluded.
+Write `copy="all"` to copy prompts and output as well. Other lexers such as
+`bash` or `sh` cannot tell a prompt from a command or its output, so on them
+`copy="command"` warns and copies everything. When a command continues over
+several lines, start each continuation line with its prompt, usually `>`;
+otherwise it counts as output and is left out.
 
-If a session-lexer block has no prompt, copying fails. The icon shows an error, and an error is logged to the console.
-The clipboard stays unchanged. The button never falls back to copying everything.
+A session block with no prompt at all cannot be copied: the button shows an
+error icon and logs an error to the browser console, and the clipboard keeps
+its previous content rather than receiving the whole block.
 
-`copy=false` removes a block's copy button. Use it for counter-examples that readers should not paste:
+`copy=false` removes the button, for a counter-example that nobody should
+paste:
 
 ````markdown {title="Source"}
 ```yaml {title="counter-example: an invalid boolean" copy=false}
@@ -237,15 +258,24 @@ params:
     image_zoom: sometimes   # wrong: use true or false
 ```
 
-To disable copying by default, use `params.ui.code_copy: false`. An explicit `copy` fence attribute overrides the default.
-See [Configuration](/docs/customize/config/).
-The copy button uses only an icon. Success or failure changes the icon and announces a localized status.
-Copied text keeps indentation, blank lines, and Unicode. It removes line numbers and ends with exactly one newline.
+`params.ui.code_copy: false` removes the button from every block that does
+not set `copy` itself (see [Configuration](/docs/customize/config/)). The
+button is an icon only; it changes icon and announces a localized status on
+success or failure. Copied text keeps indentation, blank lines and Unicode,
+leaves out line numbers, and ends with exactly one newline.
+
+## One-line commands {#presentation}
+
+A single command the reader is meant to paste can be a compact command strip
+with its copy button in a column of its own: add `{class="td-code-command"}`
+to a one-line fence. A block with more than one line, line numbers or
+`collapse` warns and keeps the regular frame. See
+[Component presentation](/docs/components/presentation/#tabs) for examples.
 
 ## Line links and stable IDs {#line-links}
 
-To link "see line 3", give the fence an explicit `id`, then enable `anchorLineNos=true`.
-Line numbers become links of the form `#<id>-<line>`.
+To link to "line 4" from your text, give the fence an `id` and set
+`anchorLineNos=true`. Each line number then becomes a link to `#<id>-<line>`:
 
 ````markdown {title="Source"}
 ```sql {id="ex-explain" title="explain.sql" lineNos="table" anchorLineNos=true}
@@ -269,16 +299,19 @@ ORDER BY n_live_tup DESC;
 
 Jump to [line 4](#ex-explain-4).
 
-Without an `id`, the theme generates an ID that is unique on the page. It depends on the fence's position.
-Adding another fence above it changes the ID. Only an author-provided `id` is a permanent link.
-IDs must contain no whitespace or control characters. They must not duplicate viewport, tab, panel, title, or line-anchor IDs on the page.
-Invalid or duplicate IDs warn and use a generated fallback.
+Write the `id` yourself whenever you plan to share a link. Without one, the
+theme generates an ID that is unique on the page but depends on the fence's
+position, so adding a fence above it changes the ID and breaks old links. An
+`id` must not contain spaces or control characters, and must not repeat
+another ID on the page; an invalid or duplicate `id` warns and is replaced by
+a generated one.
 
 ## Numbered examples {#numbered}
 
-For books or long manuals, use `num` and `caption` to create a numbered Book "example" target.
-`xref` can reference the target, which also appears in the book-wide list of examples.
-The author provides the number. The theme never counts examples. `id` defaults to `eg-<num>`.
+In a book or a long manual, `num` and `caption` turn a fence into a numbered
+example that [`xref`](/docs/write/book/#xref) can refer to and that appears in
+the book's list of examples. You write the number yourself; the theme never
+counts. The anchor defaults to `eg-<num>`.
 
 ````markdown {title="Source"}
 ```sql {num="4-1" caption="Bloat ratio per table" #eg-bloat}
@@ -298,14 +331,17 @@ WHERE n_dead_tup > n_live_tup * 0.2;
 
 See {{< xref eg="4-1" anchor="eg-bloat" />}}.
 
-`num` and `caption` must appear together. A caption without a number is ignored. A number without a caption is removed with a warning.
-`num` cannot be combined with the tab attribute `tab`.
-For figure, table, and equation numbering and indexing, see [publishing books](/docs/write/book/).
+`num` and `caption` go together: a caption without a number, or a number
+without a caption, warns and is dropped. A numbered example cannot also be a
+tab, so `num` with `tab` warns and ignores `tab`. Numbering for figures, tables
+and equations is covered in [Publishing books](/docs/write/book/).
 
 ## A set of fences as tabs {#tabs}
 
-The browser combines consecutive fences with `tab` into a tab set.
-Add `group` to the first fence to enable shared links, synchronization, and saved selections.
+Consecutive fences that each have a `tab` attribute become one tab set, which
+suits the same command for different package managers. A `group` on the first
+fence lets readers share a link to a tab, keeps groups with the same name in
+sync, and remembers the reader's choice.
 
 ````markdown {title="Source"}
 ```bash {tab="Homebrew" group="oink-install" value="brew"}
@@ -323,47 +359,42 @@ brew install hugo
 sudo apt install hugo
 ```
 
-See [Tabs](/docs/components/tabs/) for group syntax, URL hashes, synchronization across groups, and tabs in prose.
+[Tabs](/docs/components/tabs/) has the group syntax, URL hashes,
+synchronization and tabs that hold prose.
 
 ## Common errors {#pitfalls}
 
-- Showing a shortcode in the docs: a fence does not stop Hugo from parsing, so a
-  `{{</* tabs */>}}` written inside a code block still executes. To display it
-  verbatim, add a comment marker inside each delimiter —
-  <code>&#123;&#123;&lt;/&#42; tabs &#42;/&gt;&#125;&#125;</code>, and
+- **A shortcode inside a fence still runs.** A fence does not stop Hugo from
+  parsing shortcodes, so writing `{{</* tabs */>}}` in a code block executes
+  it. To show a shortcode as text, put a comment marker inside each delimiter:
+  <code>&#123;&#123;&lt;/&#42; tabs &#42;/&gt;&#125;&#125;</code>, or
   <code>&#123;&#123;%/&#42; steps &#42;/%&#125;&#125;</code> for the percent
   form. Every shortcode shown on this page is written that way.
-- Fences inside fences: four backticks outside, three inside — every "Source"
-  block on this page does it. Add another backtick when the inner block has
-  fences of its own.
-- Attributes go on the info line: a fence's attributes follow the language on
-  the opening line. Only tables and images take their attributes on the line
-  below. Put them on the next line and you get a visible line of braces.
-- Unknown, unsafe, and theme-reserved attributes warn and are ignored;
-  the message lists the allowed names.
-- Fences in list items: indent them to line up with the item's content (three
-  spaces after `1.`), or the fence leaves the list.
+- **Fences inside fences** need a longer outer fence: four backticks outside,
+  three inside, as in every "Source" block on this page. Add another backtick
+  when the inner block contains fences of its own.
+- **Attributes go on the opening line**, after the language. Tables and
+  images take their attribute line below the block, fences do not; a `{…}`
+  line under a fence shows up as text.
+- **Fences in list items** must be indented to the item's text (three spaces
+  after `1.`), or the fence ends the list.
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | A `<div class="td-code">` shell around Chroma's `.highlight`/`.chroma`; copy and fold buttons ship `hidden` and appear once the script confirms it can run |
-| Print | Complete code; copy, fold and the fade are removed; long blocks may break across pages; the title bar stays |
-| Markdown | The source fence, `{…}` attributes and all, emitted as written |
-| RSS | A static code block with no buttons |
-
-A page with no copy or fold control never loads `code-block.js`; print, Markdown
-and RSS never load it.
+The copy and fold buttons appear only once the page script is running, and a
+page with no copy or fold control does not load that script at all. Print
+shows every block in full, without buttons and with its title bar, and long
+blocks may break across pages. The page's Markdown output keeps each fence as
+written, attributes included.
 
 ## Parameter reference {#reference}
 
-Inside the `{…}` after the language on the opening line, OINK's own attributes:
+OINK's attributes, inside the `{…}` after the language on the opening line:
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `title` | non-empty string | none | The visible title bar (usually a filename) and the accessible name |
-| `filename` | non-empty string | none | Historical alias of `title`; both together warn and use `filename` |
+| `filename` | non-empty string | none | Alias of `title`; both together warn and use `filename` |
 | `copy` | `all` `command` `true` `false` | `command` for session lexers, `all` otherwise | `true` is `all`; `command` is allowed only on `console`/`shell-session` |
 | `wrap` | boolean | `false` | Visual wrapping, source unchanged; mutually exclusive with table line numbers |
 | `collapse` | positive integer | none | Lines shown initially; ignored when the block is shorter |
@@ -374,15 +405,18 @@ Inside the `{…}` after the language on the opening line, OINK's own attributes
 | `value` | `^[a-z0-9][a-z0-9_-]*$` | none | Required on every fence of a group, forbidden without one; requires `tab` |
 | `num` | `[0-9A-Za-z.-]+` | none | Numbered example (Book `eg`); must appear with `caption` |
 | `caption` | plain text | none | The numbered example's caption; must appear with `num` |
-| `class` | class list | none | Appended to the `.td-code` root element |
+| `class` | class list | none | Appended to the `.td-code` root element; `td-code-command` makes a [command strip](#presentation) |
 | `data-*` / `aria-*` / `role` | string | none | Passed through to the root element |
 {.fields meta="type default"}
 
-`title`, `filename`, and `label` give the block an accessible name and `role="group"`.
-If you also provide `aria-label`, `aria-labelledby`, or `role`, the theme warns and ignores the conflicting attribute.
-These three attributes pass through only if the block has neither a title nor `label`.
+`title`, `filename` and `label` already give the block an accessible name and
+`role="group"`, so `aria-label`, `aria-labelledby` or `role` next to any of
+them warns and is ignored; those three pass through only on a block with
+neither a title nor a `label`. Unknown, unsafe and theme-reserved attributes
+warn and are ignored, and the warning lists the allowed names.
 
-The same line accepts Chroma options. The theme passes them to Hugo unchanged:
+The same line also takes Chroma's options, which the theme hands to Hugo
+unchanged:
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -395,12 +429,15 @@ The same line accepts Chroma options. The theme passes them to Hugo unchanged:
 
 ## Limits {#limits}
 
-- The highlighter cannot be replaced. There is no Shiki, Twoslash, browser highlighting, or runnable playground.
-  For patches, use a `diff` fence. Chroma's `.gi`/`.gd` style added and removed lines.
-- `copy="command"` supports only session lexers. Other languages warn and copy everything.
-- Generated IDs are not permanent links. Write `id` for a link that you plan to share.
-- `mermaid`, `math`, `chem`, `markmap`, `plantuml`, `echarts`, `infographic`, `checksums`, `filetree`, and `gallery` are not code blocks.
-  Each has its own render hook, without a code shell or copy button.
+- Chroma is the only highlighter. There is no Shiki, Twoslash, in-browser
+  highlighting or runnable playground; for patches, use a `diff` fence.
+- `copy="command"` works only with the `console` and `shell-session` lexers;
+  anywhere else it warns and copies everything.
+- A generated ID is not a permanent link. Write `id` for any line or block you
+  link to from elsewhere.
+- `mermaid`, `math`, `chem`, `markmap`, `plantuml`, `echarts`, `infographic`,
+  `checksums`, `filetree` and `gallery` fences are not code blocks. Each
+  renders as its own component, without the code frame or copy button.
 
 ## Related {#related}
 

@@ -1,7 +1,7 @@
 ---
 title: 发布与下载页
 linkTitle: 发布与下载页
-description: 把版本号、标签、归档链接、校验和与安装命令写成本地事实，再让发布卡片、资产表、下载区块和索引页从同一份记录推导出来。
+description: 发布一个带 GitHub Release 卡片、校验和资产表与安装说明的版本页，全部内容都来自仓库里提交的事实。
 weight: 60
 search_keywords: [发布, 下载, release, download, 校验和, checksums, sha256, 发布卡片, 资产表, 滚动渠道, 固定版本]
 release_url: https://github.com/pgsty/oink/releases/tag/v0.4.0
@@ -9,34 +9,31 @@ aliases:
   - /docs/scenarios/releases/
 ---
 
-OINK 将发布元数据存放在两处本地文件中：页面 front matter 的 `release_url` 指明对应的 GitHub Release，`data/download/<key>.yaml` 记录安装渠道。发布卡片、资产表、下载区块与索引页均从这两份本地记录生成链接，构建期不请求 GitHub。
+发布页要告诉读者这一版发布了什么，并让他们安全地下载：一张链接到 GitHub Release 与源码归档的卡片，一张列出文件及其校验和的表格，以及每种获取方式的安装说明。OINK 从仓库里提交的事实生成这一切：页面 front matter 里的一个 `release_url`、粘贴进正文的 `sha256sum` 输出，以及一份 `data/download/<key>.yaml` 记录。因此构建时不会访问 GitHub。
 
-> [!NOTE] 本页自带演示用的发布事实
-> front matter 里放了一个 `release_url`（OINK v0.4.0），下面的卡片、资产表与下载区块都是真实渲染。校验和与资产文件名是构造的：URL 由组件按仓库与标签本地推导，指向的文件在真实发布里不存在，不要用这里的哈希校验产物。
+> [!NOTE] 本页的示例都是真实渲染的
+> 本页自己的 front matter 把 `release_url` 设为 OINK v0.4.0，所以下面的卡片、资产表与下载区块都是实际输出。但校验和与资产文件名是编造的，生成的下载链接指向并不存在的文件。不要用这些哈希校验任何东西。
 
-## 组件与事实来源 {#overview}
+## 发布页由什么组成 {#overview}
 
-| 你要的 | 用什么 | 事实来自 |
+| 你要的 | 用什么渲染 | 事实来自 |
 | --- | --- | --- |
-| 版本摘要卡片（标签、日期、归档、仓库） | `release-card` | 页面的 `release_url` |
-| 校验和资产表 | `checksums` 围栏 / `release-assets` | 正文里的 `sha*sum` 行 |
-| 多渠道下载区块 | `download` | `data/download/<key>.yaml` |
-| 按时间排序的发布索引页 | `layout: releases` | 各页的 `release_url`，没有则用标题 |
+| 摘要卡片：标签、日期、源码归档与仓库 | `release-card` | 页面的 `release_url` |
+| 带校验和的资产表 | `checksums` 围栏，或 `release-assets` | 正文里的 `sha*sum` 行 |
+| 多渠道安装说明 | `download` | `data/download/<key>.yaml` |
+| 按时间排列的发布索引 | `layout: releases` | 各页的 `release_url`，没有则用标题 |
 
-## 页面拥有发布事实 {#release-facts}
+## 关联版本发布 {#release-facts}
 
-发布页 front matter 里的一个键就是全部记录——精确到标签的 GitHub 发布 URL：
+发布页用一个 front matter 键指明对应的 GitHub Release，即精确到标签的发布地址：
 
 ```yaml {title="content/blog/release/0.4.0.zh.md"}
 release_url: https://github.com/pgsty/oink/releases/tag/v0.4.0
 ```
 
-owner、项目名与标签从 URL 里解析出来，日期用页面自己的 `date`。不是精确
-标签形式的 GitHub 发布 URL 会警告并跳过发布区块。0.5 的 `release` 映射（product / version / repo / tag / date /
-prev / checksums）及其字符串简写已移除；仍携带它的页面会收到指名
-`release_url` 的警告。
+owner、项目名与标签从 URL 中解析，日期取页面自己的 `date`。不是精确标签形式的 GitHub 发布地址会告警，并跳过发布区块。为 OINK 0.5 写的页面（`release` 映射、`release_products`、`release_group_by_product`）会收到指明替代写法的告警，见 [0.6.0 发布注记](/zh/release/0.6.0/#migration)。
 
-在需要摘要的位置放一个不带参数的 shortcode，调用里不接受任何事实：
+在需要摘要的位置放上卡片。这个 shortcode 不接受参数，因为所有事实都来自 front matter：
 
 ```markdown {title="源码"}
 {{</* release-card */>}}
@@ -44,31 +41,11 @@ prev / checksums）及其字符串简写已移除；仍携带它的页面会收�
 
 {{< release-card >}}
 
-卡片带着仅凭 URL 就能推导的四个链接——发布页、两种源码归档、仓库——全部本地推导。校验和文件放在正文下方的资产表里，版本对比在 GitHub 上看。
+卡片上有四个由 URL 推导出的链接：发布页本身、`.tar.gz` 与 `.zip` 两种源码归档，以及仓库。它不列校验和文件，那属于下面的资产表；也不和上一版做对比，GitHub 的发布页已经提供了。
 
-## 发布索引页 {#release-index}
+## 校验和与资产 {#assets}
 
-一个分区可以改用发布索引布局。它列出小节里的每一个常规页面，从新到旧
-——按页面日期排序，同一天内以标签里的版本号决胜（SemVer 优先级，非 SemVer
-标签用确定的字典序兜底）：
-
-```yaml {title="content/blog/release/_index.zh.md"}
----
-title: 版本发布
-layout: releases
----
-```
-
-`release_url` 可解析的条目读作「项目名 + 标签」——如 `oink v0.4.0`——下一行
-是页面描述；没有它的页面保留自己的标题，版本之间夹一篇普通短文是合法条目，
-不是警告。0.5 的 `release_products` 过滤与 `release_group_by_product` 分组
-已移除；写了会警告。
-
-本站的[版本发布](/zh/release/)目前用普通博客列表。需要严格时间序时改用 `layout: releases`。
-
-## 校验和资产 {#assets}
-
-`checksums` 围栏是校验和表的原生形态，围栏里写 `sha*sum` 命令的原样输出：
+把 `sha256sum`（或任何 `sha*sum` 命令）的输出粘贴进 `checksums` 围栏，页面上就会出现一张下载表：每个文件都带链接，哈希可以一键复制。
 
 ````markdown {title="源码"}
 ```checksums
@@ -82,17 +59,19 @@ layout: releases
 7b3d9e0c145a8f26d0b7e93c48156aa2f0d9c7b31e846a5029df1b6c7a3e8250 *oink-0.4.0-darwin-arm64.tar.gz
 ```
 
-只接受两种行格式：`<十六进制><两个空格><文件名>` 与 `<十六进制><空格>*<文件名>`，空行与 `#` 开头的注释行会被忽略。算法由哈希长度自动识别（MD5 / SHA-1 / SHA-256 / SHA-512），同一个代码块内只允许使用同一种算法；格式错误的行会输出带行号的警告并跳过。文件名必须是单个路径段；包类型、操作系统与架构徽章根据文件名自动推断，未命中时不显示徽章。
+每一行必须是 `<十六进制><两个空格><文件名>` 或 `<十六进制><空格>*<文件名>`，也就是这些工具原样打印的格式；空行和以 `#` 开头的行会被忽略。算法由哈希长度识别（MD5、SHA-1、SHA-256 或 SHA-512），一个代码块只能有一种算法。文件名必须是单个路径段；能从文件名识别出包类型、操作系统与架构时，会自动加上相应的徽章。格式错误的行，或算法与块内其它行不同的行，会带行号告警并被跳过，所以一处笔误只损失一行，而不是整张表。
 
-资产链接的基址：页面有 `release_url` front matter 时推导为 `https://github.com/<repo>/releases/download/<tag>/`；没有发布事实的页面必须显式写 `base=`。两者同时存在时报错。
+页面有 `release_url` 时，资产链接指向 `https://github.com/<owner>/<repo>/releases/download/<tag>/`。没有 `release_url` 的页面，要用 `base=` 写明文件的托管位置。两者同时存在或都没有时，会告警并跳过整个代码块，因为猜出来的基址会让链接指向错误的文件：
 
-````markdown {title="没有 release front matter 的页面"}
+````markdown {title="没有 release_url 的页面"}
 ```checksums {base="https://repo.pigsty.io/oink/v0.4.0/" algo="sha256"}
 1e2f4c8a9d05b7361f8ac25d0e7b4913a6c8df215047eb9c3a1d6b8250f9e7c4  oink-0.4.0-linux-amd64.tar.gz
 ```
 ````
 
-`release-assets` 是同一个解析器与渲染器的 shortcode 形态。它多一个围栏没有的 `src=`，可以把校验和文件本身提交为页面资源或全局资产（`src` 与围栏内容互斥）；`group="auto"` 按平台与架构分组：
+`algo=` 直接指定算法而不再自动识别，`group="auto"` 按平台与架构给行分组。
+
+`release-assets` 是同一张表的 shortcode 形态。它比围栏多一个参数 `src=`，可以直接从页面资源或全局资产读取校验和文件，而不是在正文里逐行粘贴；`src` 与行内内容只能二选一。
 
 ```markdown {title="源码"}
 {{</* release-assets group="auto" */>}}
@@ -106,11 +85,48 @@ c93f16a8d052b7e41ac68d3907b25fe0a41d8c7362b95e0187ac4d63f9520ea8  oink-0.4.0-1.e
 c93f16a8d052b7e41ac68d3907b25fe0a41d8c7362b95e0187ac4d63f9520ea8  oink-0.4.0-1.el9.aarch64.rpm
 {{< /release-assets >}}
 
-HTML 里哈希截断显示，完整哈希保留在无障碍名称与复制源里，复制按钮由按需加载的本地运行时提供。禁用 JavaScript 时仍是一张完整的带链接表格。打印展开完整哈希且不带控件，Markdown 与 RSS 是完整哈希的管道表。
+HTML 表格里的哈希会截短显示，屏幕阅读器与复制按钮拿到的仍是完整值；复制按钮的脚本只在有这类表格的页面上加载。禁用 JavaScript 时，表格依然完整且带链接。打印与 RSS 显示完整哈希、不带控件，页面的 Markdown 输出是一张包含完整哈希的管道表。
 
-## 下载渠道数据 {#download-data}
+## 下载区块 {#download-shortcode}
 
-安装方式属于产品，不属于某一次发布，因此存放在 `data/download/<key>.yaml`。本站真实的记录是 `data/download/prd5.yaml`：
+安装方式属于产品，而不属于某一次发布：安装脚本、源码归档、软件包仓库在各个版本之间都不变。把它们写进一份数据记录，再用 `download` 渲染。它唯一的参数是记录的键，即 `data/download/` 下去掉 `.yaml` 的文件名：
+
+```markdown {title="源码"}
+{{</* download "prd5" */>}}
+```
+
+{{< download "prd5" >}}
+
+区块开头是一排指向各渠道的链接，后面每个渠道一节。代码步骤使用增强代码块及其复制按钮，带校验和的渠道渲染成与上面相同的资产表。打印时内容完整展开，Markdown 输出保留标题、代码围栏与完整哈希，RSS 不输出这个区块。落地页的 `download` 分区读取的是同一份记录，首页和文档对当前版本的说法因此始终一致，见[首页与落地页](/zh/docs/customize/home/)。
+
+## 发布流程 {#release-notes}
+
+发布注记与下载数据分工不同。发布注记写成一篇[博客文章](/zh/docs/write/blog/#release-notes)，告诉读者这一版改了什么、怎么升级、有哪些破坏性变更；它带有 `release_url`，开头可以放一张 `release-card`。下载数据告诉读者该选哪个渠道、运行哪条命令、校验哪个哈希；版本变化时只需改这一处。
+
+按下面的顺序发布新版本，任何页面都不会链接到尚不存在的文件：
+
+1. 在 `data/download/<key>.yaml` 中把 `version` 改成新版本，并设置 `published: false`。滚动渠道照常可用；固定版本渠道显示「待发布」状态，省略其中的命令，资产链接与复制按钮也被禁用。
+2. 写好发布注记，例如 `content/blog/release/0.4.0.zh.md`，填上 `release_url`。
+3. 创建标签、上传资产，然后改为 `published: true`。在此之前，不要在正文里写入推测出来的下载链接。
+
+## 发布索引页 {#release-index}
+
+存放发布注记的分区可以改用严格的时间序索引，而不是博客列表：
+
+```yaml {title="content/blog/release/_index.zh.md"}
+---
+title: 版本发布
+layout: releases
+---
+```
+
+分区里的每个常规页面按 `date` 从新到旧排列；两页日期相同时，按标签里的版本号决定先后，采用 SemVer 优先级，非 SemVer 标签用确定的规则兜底。`release_url` 能解析的条目显示为「项目名 标签」，例如 `oink v0.4.0`，下面是页面描述。没有 `release_url` 的页面保留自己的标题，所以夹在两个版本之间的普通短文是正常条目，而不是错误。
+
+如果想保留博客外壳，`blog_index: table` 也能给出一份按日期排列的紧凑归档；本站的[发布注记](/zh/release/)用的就是它。
+
+## 下载数据格式 {#download-data}
+
+本站真实使用的记录是 `data/download/prd5.yaml`，也就是上面渲染的那一份：
 
 ```yaml {title="data/download/prd5.yaml"}
 version: 0.4.0
@@ -149,85 +165,54 @@ channels:
       aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  oink-0.4.0.tar.gz
 ```
 
-顶层记录只允许 `version`、`repo`、`tag`、`published`、`channels` 五个字段（出现未知字段时会告警并跳过整条记录）。`version` 也可省略，改由站点的 `params.version` 统一提供。
+记录只接受下表中的五个顶层字段，出现其它键时会告警并跳过整个区块。
 
 | 字段 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `version` | 字符串 | 站点 `params.version` | 两处都没有时告警并跳过区块 |
-| `repo` | `owner/name` | — | 固定版本渠道有链接或资产时必填 |
-| `tag` | 字符串 | `v{version}` | 只允许 URL 安全字符 |
-| `published` | 布尔 | `true` | `false` 表示不可变发布还不存在 |
-| `channels` | 数组 | — | 非空 |
+| `version` | 字符串 | 站点 `params.version` | 当前版本。记录与站点都没有时告警并跳过区块 |
+| `repo` | `owner/name` | — | GitHub 仓库；固定版本渠道有链接或资产时必填 |
+| `tag` | 字符串 | `v{version}` | 发布标签，只允许 URL 安全字符 |
+| `published` | 布尔 | `true` | 带标签的发布与资产尚不存在时设为 `false` |
+| `channels` | 数组 | — | 各渠道，按显示顺序排列。不能为空 |
 {.fields meta="type default"}
 
 每个渠道：
 
 | 字段 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `id` | `^[a-z][a-z0-9-]*$` | — | 记录内唯一，用作锚点 |
-| `kind` | `rolling` \| `pinned` | — | 决定能不能插值版本事实 |
-| `title` | 本地化字符串 | — | 必须能解析出非空值 |
-| `note` | 本地化字符串 | — | 渠道下方的一行说明 |
+| `id` | `^[a-z][a-z0-9-]*$` | — | 记录内唯一，同时用作渠道的锚点 |
+| `kind` | `rolling` \| `pinned` | — | 渠道跟随最新版本还是固定在某个版本，决定能否插值版本信息 |
+| `title` | 本地化字符串 | — | 渠道名称，必须能解析出非空值 |
+| `note` | 本地化字符串 | — | 渠道名称下方的一行说明 |
 | `icon` | Font Awesome class 对 | — | 例如 `fa-solid fa-bolt` |
-| `url` | http(s) 或站内路径 | — | 仅 `pinned` 可插值 |
-| `steps[]` | `title` / `code` / `lang` | `lang: text` | 代码步骤走 OINK 的增强代码渲染器 |
-| `checksums` | `sha*sum` 文本 | — | 仅 `pinned`；与 `checksums_src` 互斥 |
-| `checksums_src` | 资产路径 | — | 把校验和文件当作 Hugo 资产读入 |
+| `url` | http(s) URL 或站内路径 | — | 下载链接，仅 `pinned` 渠道插值 |
+| `steps[]` | `title` / `code` / `lang` | `lang: text` | 代码步骤，由 OINK 的增强代码块渲染 |
+| `checksums` | `sha*sum` 文本 | — | 本渠道的资产。仅限 `pinned`；与 `checksums_src` 二选一 |
+| `checksums_src` | 资产路径 | — | 把校验和文件作为 Hugo 资产读入 |
 {.fields meta="type default"}
 
-两条规则：
+文本字段遵循两条规则：
 
-- 本地化按后缀解析：`<字段>_<精确语言>` → `<字段>_<主语言>` → `<字段>`。中文站解析 `title_zh_cn`、`title_zh`、`title`。不接受 camelCase 别名。
-- 只有固定版本渠道的 `url` 与 `steps[].code` 能插值 `${version}` 与 `${tag}`。滚动渠道拒绝插值，避免稳定版安装命令被绑定到某个版本。标题与说明不插值。
-
-## 渲染下载区块 {#download-shortcode}
-
-`download` 接受恰好一个位置参数，即数据键：
-
-```markdown {title="源码"}
-{{</* download "prd5" */>}}
-```
-
-{{< download "prd5" >}}
-
-HTML 渲染一排锚点 chip 加各渠道分区，代码步骤复用增强代码块与按需加载的复制运行时，校验和渠道复用上面那张资产表。打印静态展开同样的内容，Markdown 输出标题、源码围栏与完整哈希，RSS 不输出这个组件。
-
-标签未打、资产未上传时，把记录标为未发布：
-
-```yaml {title="data/download/<key>.yaml"}
-published: false
-```
-
-滚动渠道照常可用。固定版本渠道变成不可点击的「待发布」状态，省略固定版本命令，禁用资产链接与复制控件。标签与资产可解析之后再翻转这个开关，不要先在正文里写入推测出来的链接。
-
-同一份记录也能被 Landing 页面的 `download` 分区消费，不需要第二套版本模型，见[首页与落地页](/zh/docs/customize/home/)。
-
-## 与博客发布注记的关系 {#release-notes}
-
-两者分工：
-
-- 发布注记（本站在 `content/release/`）是叙事：这一版改了什么、怎么升级、有什么破坏性变更。它的 front matter 里带 `release_url`，页首可以放一张 `release-card`。写法见[博客与文章](/zh/docs/write/blog/)。
-- 下载数据是操作：选哪个渠道、运行哪条命令、校验哪个哈希。它与版本号解耦，升级时只改一处。
-
-一次发布的顺序：更新 `data/download/<key>.yaml` 的 `version` → 新写一篇 `content/release/<version>.md` 并填 `release_url` → 标签与资产就绪后把 `published` 翻成 `true`。
+- 本地化字段按后缀解析，顺序是 `<字段>_<精确语言>` → `<字段>_<主语言>` → `<字段>`。`zh-cn` 页面依次尝试 `title_zh_cn`、`title_zh`、`title`。不接受 camelCase 写法。
+- 只有固定版本渠道的 `url` 与 `steps[].code` 会插值 `${version}` 与 `${tag}`。滚动渠道拒绝插值，这样用来安装最新版的命令就不会被悄悄绑死在某个版本上。标题与说明一律不插值。
 
 ## 验证 {#verify}
 
-1. 构建生产：`hugo --printPathWarnings`。哈希行格式、算法混用、缺 `base`、渠道字段拼错都在这一步失败。
-2. 页面上：卡片显示的标签与日期与仓库一致；资产表每行都能点开真实的下载 URL。
-3. 逐条核对哈希与实际产物：组件只负责排版，不验证内容。
-4. 检查非 HTML 输出里哈希是完整的：
+1. 带着诊断信息构建：`hugo --printPathWarnings`。哈希行格式错误、算法混用、缺少 `base`、渠道字段拼错，都会各自产生一条告警；逐条阅读，因为每一条都意味着页面上少了一行、一张表或一个渠道。
+2. 在页面上确认：卡片显示的标签与日期和仓库一致，资产表的每一行都能打开真实的下载地址。
+3. 亲自用真实产物逐个核对哈希。表格只负责展示你粘贴的哈希，不做任何校验。
+4. 确认 Markdown 输出里的哈希是完整的：
 
-```bash
-curl -s http://localhost:1313/zh/docs/write/releases/index.md | grep -c '^| '
-```
+   ```bash
+   curl -s http://localhost:1313/zh/docs/write/releases/index.md | grep -c '^| '
+   ```
 
-5. 发布前先用 `published: false` 走一遍，标签与资产确实存在后再改成 `true`；每种语言、子路径部署各测一次。
+5. 先用 `published: false` 预览一遍，标签与资产确实存在后再改成 `true`。每种语言都要检查；如果部署在子路径下，也要测一次。
 
 ## 相关 {#related}
 
-- [博客与文章](/zh/docs/write/blog/) — 发布注记住在哪、怎么排
+- [博客与文章](/zh/docs/write/blog/) — 发布注记放在哪里、如何排序
 - [代码块](/zh/docs/components/code/) — 下载步骤里的代码渲染与复制
 - [首页与落地页](/zh/docs/customize/home/) — Landing 的 `download` 分区
 - [配置总览](/zh/docs/customize/config/) — `params.version` 与相关站点参数
-- [版本升级](/zh/docs/admin/upgrade/) — 消费站怎么跟随主题版本
+- [版本升级](/zh/docs/admin/upgrade/) — 站点如何跟进新的 OINK 版本

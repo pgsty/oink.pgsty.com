@@ -9,13 +9,11 @@ aliases:
   - /docs/advanced/print/
 ---
 
-单页打印不需要配置：外壳（侧栏、目录、顶栏、按钮）都带 `d-print-none`，浏览器的 `Cmd/Ctrl+P` 得到的是一份干净的正文。主题因此没有页面级的「打印本页」按钮。
-
-需要配置的是另一件事：把一整个栏目（或一整本书）连同全部子页面合成一份带目录的连续文档。以下内容覆盖启用方式、打印视图的结构，以及排除页面的做法。
+文档被打印出来的机会比想象中多：带进没有网络的机房的操作手册，培训时发下去的一章讲义，附在变更申请里的一份 PDF。单个页面不需要任何配置，用浏览器的 `Cmd/Ctrl+P` 就能干净地打印：顶栏、侧栏、目录与各种按钮都带 Bootstrap 的 `d-print-none` 类，不会出现在纸上，所以主题没有「打印本页」按钮。要打印一整个栏目或一整本书，启用 `print` 输出格式。之后每个栏目都有一个打印视图，把其中的页面按侧栏顺序合成一份带目录的文档，可以直接打印，也可以存成 PDF。
 
 ## 启用整章打印 {#enable}
 
-`print` 是主题声明的自定义输出格式，主题不替站点打开它。在站点自己的 `hugo.yml` 里给 `section` 加上：
+`print` 输出格式由主题定义，但交给站点决定是否启用，因为它会让每次构建为每个栏目多生成一个页面。在自己的 `hugo.yml` 里把它加到 `section`：
 
 ```yaml {title="hugo.yml"}
 outputs:
@@ -24,9 +22,9 @@ outputs:
   section: [HTML, RSS, print, markdown]
 ```
 
-这是本站的配置。`outputs` 的每个键是 **整体替换** 而不是合并：加 `print` 时要把该类型原本有的格式（`HTML`、`RSS`、`markdown`）一起写全，漏一个就丢一种输出。
+`outputs` 下的每个键都会整体替换该页面类型的格式列表，而不是追加，所以要把该类型原有的格式（这里是 `HTML`、`RSS`、`markdown`）一并写上；漏掉哪一种，哪一种就不再生成。
 
-开启后，每个栏目多出一个 URL。路径段 `_print` 在最前面，语言前缀之后：
+每个栏目的打印视图位于 `_print` 下，`_print` 紧跟在语言前缀之后：
 
 | 页面 | 打印视图 |
 | --- | --- |
@@ -34,17 +32,18 @@ outputs:
 | `/zh/docs/` | `/zh/_print/docs/` |
 | `/zh/blog/release/` | `/zh/_print/blog/release/` |
 
-页面操作菜单里同时出现「打印完整章节」，命令面板里也能搜到同一条（操作 ID `print_section`）。它打印的是 **当前栏目**：在 `/zh/docs/customize/print/` 这页点它，得到的是整个「定制站点」栏目，不是这一页。
+读者通过页面操作菜单里的 **打印完整章节** 进入打印视图，也可以在命令面板里搜到同一个操作（`print_section`）。它打印的是当前页所属的栏目：在 `/zh/docs/customize/print/` 上点它，得到的是整个「定制站点」栏目，而不只是这一页。
 
 ## 打印视图的结构 {#anatomy}
-打开上面任意一个链接，从上到下是：
 
-1. 一条提示条：「这是本节的多页打印视图。点击此处打印。返回本页常规视图。」它带 `d-print-none`，只在屏幕上出现，不进纸。
+打印视图从上到下依次是：
+
+1. 一条提示：「这是本节的多页打印视图。点击此处打印。返回本页常规视图。」它只在屏幕上显示，不会印到纸上。
 2. 栏目标题与摘要。
-3. 全栏目目录，条目编号是 `1:`、`2:`、`2.1:` 这样的层级号，链接指向文档内的锚点。
-4. 每个页面依次排列，标题变成 `1 - 配置总览` 这种「编号 - 标题」，描述作为导语，正文原样渲染。
+3. 整个栏目的目录，按层级编号为 `1:`、`2:`、`2.1:`，链接指向文档内的锚点。
+4. 各个页面依次排列，标题写成「编号 - 标题」（例如「1 - 配置总览」），描述作为导语，正文原样呈现。
 
-页面顺序是侧栏顺序（`weight`），子栏目递归展开。第二页起每页都另起一页；第一页是否另起一页，取决于栏目首页自己的正文是否超过 50 个词：首页只有一句话时不单独占一张纸。阈值可以调整：
+页面按侧栏顺序（`weight`）排列，子栏目就地展开。从第二个页面起，每页都从新的一张纸开始；第一个页面只有在栏目索引页自身正文超过 50 个词时才另起一页，免得只有一句话的索引页单独占一张纸。调整这个阈值：
 
 ```yaml {title="hugo.yml"}
 params:
@@ -52,7 +51,7 @@ params:
     section_break_wordcount: 120
 ```
 
-不需要那份目录：
+全站去掉目录：
 
 ```yaml {title="hugo.yml"}
 params:
@@ -60,7 +59,7 @@ params:
     toc: false
 ```
 
-也可以只对某个栏目关闭，写在栏目首页 front matter 里：
+或者只对某个栏目去掉，写在该栏目索引页的 front matter 里：
 
 ```yaml {title="content/docs/components/_index.zh.md"}
 ---
@@ -72,7 +71,7 @@ print:
 
 ## 把某些页面排除在外 {#exclude-pages}
 
-纯链接页、只有一段跳转说明的页、体积巨大的截图页进纸意义不大。给它们写 `no_print`：
+有些页面印在纸上没有意义：只有链接的页面、一段跳转说明、一张巨大的截图。给它们设置 `no_print`：
 
 ```yaml {title="content/docs/about/showcase.zh.md"}
 ---
@@ -81,43 +80,42 @@ no_print: true
 ---
 ```
 
-它只影响整章打印视图，页面自己的 HTML 与浏览器 `Cmd/Ctrl+P` 不受影响。侧栏分隔项（`sidebar_divider`）也自动排除；分隔项为分区时，其子文档仍保留在打印顺序中。
+`no_print` 只影响整章打印视图，这一页本身仍然可以用 `Cmd/Ctrl+P` 打印。侧栏分隔项（`sidebar_divider`）会自动排除；但分隔项本身是分区时，它的子页面仍保留在打印顺序中。
 
 ## 组件在打印态的形态 {#components}
 
-打印是四态输出之一，每个组件都有确定的打印形态。整章打印视图与浏览器打印单个页面，规则一致：**能交互的降级成静态，可折叠的一律展开**。
+纸上的内容不能点击也不能展开，所以整章打印视图与浏览器打印单页遵循同一条规则：可交互的组件变成静态，折叠的内容全部展开。
 
 | 组件 | 打印形态 |
 | --- | --- |
-| [提示块](/zh/docs/components/callout/) | 静态块，折叠型（`-` / `+` / `DETAILS`）全部展开；边框转灰、去底色 |
-| [标签页](/zh/docs/components/tabs/) | 标签条消失，所有面板依次展开，每个面板带自己的标题 |
-| [代码块](/zh/docs/components/code/) | 去掉复制与展开按钮，取消最大高度与滚动，长行改为自动折行 |
-| [表格](/zh/docs/components/table/) | 完整静态表格；浏览器预览支持键盘滚动，打印媒体样式在纸张输出中展开区域，表头跨页重复 |
-| [图片](/zh/docs/components/image/) | 图与图注保留，缩放相关的属性被剥掉，宽度收进版心 |
-| [画廊](/zh/docs/components/gallery/) | 网格改为竖排堆叠 |
-| [文件树](/zh/docs/components/filetree/) | 静态面板，目录全部展开，分栏停在构建期宽度 |
-| [参数表](/zh/docs/components/fields/) | 完整定义列表，两种形态一致 |
+| [提示块](/zh/docs/components/callout/) | 静态块，所有可折叠类型（`-` / `+` / `DETAILS`）全部展开；边框变灰，去掉底色 |
+| [标签页](/zh/docs/components/tabs/) | 标签条消失，所有面板依次打印，每个面板带自己的标题 |
+| [代码块](/zh/docs/components/code/) | 去掉复制与折叠按钮，取消最大高度与滚动，长行自动折行 |
+| [表格](/zh/docs/components/table/) | 完整的静态表格；屏幕上的打印视图保留键盘滚动，纸上则完整展开，表头在每页重复 |
+| [图片](/zh/docs/components/image/) | 保留图片与图注，去掉缩放，宽度限制在正文栏内 |
+| [画廊](/zh/docs/components/gallery/) | 网格改为竖向堆叠 |
+| [文件树](/zh/docs/components/filetree/) | 所有目录展开的静态面板；分栏布局保持构建时的宽度 |
+| [参数表](/zh/docs/components/fields/) | 完整的定义列表，与屏幕上相同 |
 | [公式](/zh/docs/components/math/) | 静态渲染的 KaTeX / MathML |
-| [Mermaid](/zh/docs/components/mermaid/) | 独立 Print 保留源码且不加载引擎；打印普通 HTML 时显示已渲染图，未渲染时显示源码 |
-| [Markmap](/zh/docs/components/markmap/) | 独立 Print 保留大纲源码且不加载运行时；打印普通 HTML 时显示已渲染导图（隐藏浮层注释），未挂载时显示源码 |
-| [PlantUML](/zh/docs/components/plantuml/) | 独立 Print 保留源码，不加载运行时；打印普通 HTML 页面时保留已渲染图片，未渲染时显示源码 |
-| [ECharts](/zh/docs/components/echarts/) · [Infographic](/zh/docs/components/infographic/) | 独立 Print 保留围栏源码块且不绘制图表；打印普通 HTML 时显示已渲染图表，未挂载时显示声明的配置或 DSL |
-| [Asciinema](/zh/docs/components/asciinema/) · [OpenAPI](/zh/docs/write/openapi/) | 一行带标题的静态链接，录像或规范地址可见；三套运行时都不加载 |
+| [Mermaid](/zh/docs/components/mermaid/) | 打印视图保留源码，不加载引擎；浏览器打印的页面显示已渲染的图，尚未渲染时显示源码 |
+| [Markmap](/zh/docs/components/markmap/) | 打印视图保留大纲源码，不加载运行时；浏览器打印的页面显示已渲染的导图（不含浮层注释），尚未挂载时显示源码 |
+| [PlantUML](/zh/docs/components/plantuml/) | 打印视图保留源码，不加载运行时；浏览器打印的页面显示已渲染的图片，尚未渲染时显示源码 |
+| [ECharts](/zh/docs/components/echarts/) · [Infographic](/zh/docs/components/infographic/) | 打印视图保留围栏源码，不绘制图表；浏览器打印的页面显示已渲染的图表，尚未挂载时显示声明的配置或 DSL |
+| [Asciinema](/zh/docs/components/asciinema/) · [OpenAPI](/zh/docs/write/openapi/) | 一个带标题的静态链接，指向录像或规范；三套运行时都不加载 |
 | 卡片 / 步骤 / 徽章 / 按键 | 静态呈现，内容不变 |
 
-页面外壳不进纸：侧栏、目录、顶栏、页面操作菜单、反馈组件、标题旁的锚点链接、行内复制按钮。
-
-打印含浏览器渲染图表的普通 HTML 页面时，应先确认图表已经绘制完成。
+除了页面外壳，页面操作菜单、反馈组件、标题旁的锚点链接和行内复制按钮也不会打印。用浏览器打印含图表的页面前，先等图表绘制完成。
 
 ## 浏览器打印样式 {#print-css}
 
-主题自带一层 `@media print` 规则，单页打印与整章打印共用：
+主题自带一组 `@media print` 规则，单页打印与整章打印共用，负责纸面排版：
 
-- 纸张 `A4`，页边距 `18mm 16mm 20mm`；正文 `10.5pt`，强制浅色配色。
-- 字体切到 `--td-print-font-family` 这个排印令牌，见[品牌外观](/zh/docs/customize/brand/)。
-- 标题不与正文分家（`break-after: avoid-page`），段落与列表项保留 3 行孤行 / 寡行控制。
-- 表格、图片、块引用、提示块、卡片、标签页尽量不跨页断开；代码块允许跨页，但会自动折行而不是截断。
-- 链接加下划线、转深蓝色，不会在链接后面打印出 URL 文本。需要这个行为的站点自己加：
+- 纸张 `A4`，页边距 `18mm 16mm 20mm`，正文 10.5pt；即使读者在深色模式下浏览，也使用浅色配色。
+- 字体使用 `--td-print-font-family` 排印令牌，见[品牌外观](/zh/docs/customize/brand/)。
+- 标题不与后面的正文分开（`break-after: avoid-page`），段落与列表项在分页处至少保留三行在一起。
+- 表格、图片、块引用、提示块、卡片与标签页尽量不跨页断开；代码块允许跨页，长行折行而不是被截断。
+- 收起的 `<details>` 一律展开打印，折叠的提示块与文件树目录因此内容完整。
+- 链接显示为深蓝色并带下划线，后面不打印 URL。读者需要在纸上看到地址时，自己加上：
 
 ```css {title="assets/css/project.css"}
 @media print {
@@ -129,26 +127,18 @@ no_print: true
 }
 ```
 
-- 收起的 `<details>` 一律展开：折叠的提示块与文件树目录在纸上是完整的。
-
-自定义排版写在 `assets/css/project.css` 的 `@media print` 块里，不需要改模板。
+其它打印样式也写在 `assets/css/project.css` 的 `@media print` 块中，不需要改模板。
 
 ## 复制到富文本编辑器 {#typeset-copy}
 
-读者复制文章的一部分并粘贴到富文本编辑器（微信公众号、Word、邮件）时，得到的是
-排好版的文本，配色与打印相同的浅色色板。页面背景色、深色模式配色、标题锚点、
-复制按钮和行号不会被带走。全选页面（<kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd>）
-只复制文章本身：标题、描述与正文。
+读者还会把文章复制到微信公众号、Word 或邮件里。复制文章的一部分并粘贴到富文本编辑器时，得到的是排好版的文本，配色与打印相同的浅色色板，不带页面背景、深色模式配色、标题锚点、复制按钮和行号。全选页面（<kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd>）只复制文章本身：标题、描述与正文。
 
-- 标题、列表、引用、提示块、表格与代码块保留结构，尺寸使用像素，不保留样式表的
-  编辑器也能正常显示。
+- 标题、列表、引用、提示块、表格与代码块保留结构，尺寸使用像素，不保留样式表的编辑器也能正确显示。
 - 代码块保留语法着色。在深色模式下复制时，代码块仍是深色卡片，周围正文是白底深色字。
-- 在一个段落内选中几个词时，复制结果不带格式，沿用粘贴目标文档的样式。
-- 粘贴为纯文本的结果不变。
+- 在一个段落内只选中几个词时，复制结果不带格式，沿用粘贴目标文档的样式。
+- 以纯文本粘贴的结果不变。
 
-要调整粘贴结果的外观，在 `assets/css/project.css` 中覆盖打印色板，例如
-`--td-print-ink` 或 `--td-print-quote-line`。用 `rich_copy: false` 为整站或单个页面
-关闭这一行为：
+要调整粘贴结果的外观，在 `assets/css/project.css` 中覆盖打印色板，例如 `--td-print-ink` 或 `--td-print-quote-line`。要保留浏览器原本的复制行为，全站设置 `rich_copy: false`，或在页面 front matter 中只为该页设置：
 
 ```yaml {title="hugo.yml"}
 params:
@@ -156,27 +146,26 @@ params:
     rich_copy: false
 ```
 
-各编辑器对粘贴内容的过滤规则不同。重要的文章请先在实际发布的编辑器里检查效果。
+每个编辑器过滤粘贴内容的方式都不一样，重要的文章请先在实际发布用的编辑器里检查一遍。
 
 ## 替换打印模板 {#customize-templates}
 
-需要改结构（例如给每页加页眉、换编号格式）时，覆盖最窄的那个 partial，都在 `layouts/_partials/print/` 下：
+需要改结构时，例如加页眉、换编号格式，覆盖 `layouts/_partials/print/` 下范围最小的那个 partial：
 
 | Partial | 负责 |
 | --- | --- |
-| `print/render.html` | 整章视图的骨架：提示条、目录、递归内容 |
+| `print/render.html` | 整章视图的骨架：提示、目录、按顺序排列的页面 |
 | `print/page-heading.html` | 文档开头的标题与导语 |
-| `print/content.html` | 单个页面在整章视图里的呈现 |
-| `print/toc-li.html` | 目录里的一行 |
+| `print/content.html` | 单个页面在整章视图中的呈现 |
+| `print/toc-li.html` | 目录中的一行 |
 
-后三个支持 **按内容类型** 分化：建 `print/page-heading-blog.html`、`print/content-book.html`，主题会优先用带类型后缀的那个。
+后三个还可以按内容类型单独覆盖：`print/page-heading-blog.html`、`print/content-book.html` 这样的文件，对该类型的页面优先于通用 partial。
 
-整本书的打印（`type: book`）走另一条路径：章节编号、图表编号与交叉引用都保持全书连续，见[书籍出版](/zh/docs/write/book/)。
+整本书（`type: book`）走自己的打印路径，章节编号、图表编号与交叉引用在全书范围内连续，见[书籍出版](/zh/docs/write/book/)。
 
 ## 验证 {#verify}
 
-在自己的站点根目录构建，检查已启用 `print` 的分区产物。将示例路径换成该分区实际
-生成的文件；有语言前缀时也应包含在内：
+在站点根目录构建，确认启用了 `print` 的栏目生成了打印视图。把示例路径换成该栏目实际的产物路径，有语言前缀时一并写上：
 
 ```bash
 hugo --printPathWarnings
@@ -184,12 +173,12 @@ PRINT_PAGE=public/zh/_print/docs/index.html
 test -f "$PRINT_PAGE"
 ```
 
-随后在运行中的站点上，打开该分区的 **打印整个分区** 操作：
+然后在运行中的站点上打开 **打印完整章节**：
 
-- 确认打印视图包含该分区的页面，并排除了 `no_print: true` 的页。
-- 按 `Cmd/Ctrl+P`，打印预览中应没有提示条、顶栏和按钮。
-- 选择含标签页与折叠提示块的页面，确认预览里所有面板都展开；写法可参考[标签页](/zh/docs/components/tabs/)。
-- 打印一份 PDF，通读分页情况，必要时调整 `section_break_wordcount`。
+- 打印视图包含该栏目的页面，不含标记了 `no_print: true` 的页面。
+- 按 `Cmd/Ctrl+P`，预览中没有提示、顶栏和按钮。
+- 在含[标签页](/zh/docs/components/tabs/)与折叠提示块的页面上，预览中所有面板都已展开。
+- 存成 PDF 后，分页落在合适的位置；不合适时调整 `section_break_wordcount`。
 
 ## 相关 {#related}
 

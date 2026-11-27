@@ -9,18 +9,21 @@ aliases:
   - /docs/advanced/print/
 ---
 
-Printing one page needs no configuration. The sidebar, outline, navbar, and
-buttons have `d-print-none`. The browser's `Cmd/Ctrl+P` therefore prints only
-the body. The theme has no per-page "print this page" button.
-
-To combine a whole section or book and its pages into one continuous document,
-configure print output. This document includes a table of contents. This page
-explains how to enable the output, understand its structure, and exclude pages.
+Documentation ends up on paper more often than you might expect: a runbook
+taken into a server room with no network, a chapter handed out at a training,
+a PDF attached to a change request. Any single page already prints cleanly
+with the browser's `Cmd/Ctrl+P`: the navbar, sidebar, outline and buttons
+carry Bootstrap's `d-print-none` class and stay off the paper, so the theme
+needs no "print this page" button. For a whole section or book, turn on the
+`print` output format. Every section then gets a print view that joins its
+pages, in sidebar order, into one document with a table of contents, ready to
+print or save as a PDF.
 
 ## Enabling whole-section print {#enable}
 
-The theme declares the custom `print` output format but does not enable it for
-the site. Add it to `section` in the site's own `hugo.yml`:
+The theme defines the `print` output format but leaves it to the site, because
+it adds a page per section to every build. Add it to `section` in your
+`hugo.yml`:
 
 ```yaml {title="hugo.yml"}
 outputs:
@@ -29,13 +32,12 @@ outputs:
   section: [HTML, RSS, print, markdown]
 ```
 
-This site uses the configuration above. Each key under `outputs` is a
-**wholesale replacement**, not a merge. When you add `print`, retain every
-format that the page kind already used (`HTML`, `RSS`, `markdown`). If you
-omit a format, you lose that output.
+Each key under `outputs` replaces the list for that page kind rather than
+adding to it, so keep every format the kind already had (here `HTML`, `RSS`
+and `markdown`); a format you leave out is no longer generated.
 
-After you enable print output, each section has a print URL. The `_print`
-segment comes first after the language prefix:
+Each section's print view lives under `_print`, which comes right after the
+language prefix:
 
 | Page | Print view |
 | --- | --- |
@@ -43,23 +45,24 @@ segment comes first after the language prefix:
 | `/docs/` | `/_print/docs/` |
 | `/blog/release/` | `/_print/blog/release/` |
 
-"Print the whole section" appears in the page action menu. You can also find
-it in the command palette by action ID `print_section`. It prints the
-**current section**. On `/docs/customize/print/`, it prints the entire
-Customization section, not only this page.
+Readers reach it through **Print entire section** in the page action menu, or
+by searching the command palette for the same action (`print_section`). It
+prints the section the page belongs to: from `/docs/customize/print/` it
+prints the whole Customization section, not just this page.
 
 ## The structure of a print view {#anatomy}
-Each print view contains these items from top to bottom:
 
-1. A notice bar: "This is the multi-page printable view of this section. Click here to print. Return to the regular view of this page." It carries `d-print-none` and appears on screen only, never on paper.
+A print view contains, from top to bottom:
+
+1. A notice: "This is the multi-page printable view of this section. Click here to print. Return to the regular view of this page." It appears on screen only, never on paper.
 2. The section title and summary.
-3. A whole-section table of contents, numbered `1:`, `2:`, `2.1:` by level, linking to in-document anchors.
-4. Each page appears in sequence. Its title uses "number - title", such as "1 - Configuration". Its description introduces the body. The body is rendered unchanged.
+3. A table of contents for the whole section, numbered `1:`, `2:`, `2.1:` by level and linked to anchors in the document.
+4. Every page in turn, titled "number - title" (for example "1 - Configuration"), with its description as a standfirst and its body unchanged.
 
-Pages follow sidebar order (`weight`), with subsections expanded recursively.
-Each page after the first starts a new sheet. The first page starts a new
-sheet only if the section index body exceeds 50 words. A one-sentence index
-therefore does not occupy a separate sheet. You can adjust the threshold:
+Pages follow the sidebar order (`weight`), with subsections expanded in place.
+Every page after the first starts on a new sheet. The first page does so only
+when the section index's own body is longer than 50 words, so that an index of
+one sentence does not waste a sheet. To change the threshold:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -67,7 +70,7 @@ params:
     section_break_wordcount: 120
 ```
 
-To remove the table of contents:
+To leave out the table of contents for the whole site:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -75,7 +78,7 @@ params:
     toc: false
 ```
 
-It can also be turned off for one section, in the section index's front matter:
+or for one section, in its index's front matter:
 
 ```yaml {title="content/docs/components/_index.md"}
 ---
@@ -87,8 +90,8 @@ print:
 
 ## Excluding pages {#exclude-pages}
 
-To exclude link-only pages, redirect notes, or pages with one large screenshot,
-set `no_print`:
+Some pages add nothing on paper: a page of links, a redirect note, a single
+large screenshot. Set `no_print` to leave one out:
 
 ```yaml {title="content/docs/about/showcase.md"}
 ---
@@ -97,51 +100,50 @@ no_print: true
 ---
 ```
 
-This setting affects only the whole-section print view. It does not affect the
-page's HTML or browser `Cmd/Ctrl+P`. The view automatically excludes sidebar
-dividers (`sidebar_divider`). If a divider is a section, its child documents
-remain in the print sequence.
+`no_print` affects only the section print view; the page itself still prints
+with `Cmd/Ctrl+P`. Sidebar dividers (`sidebar_divider`) are left out
+automatically, but when a divider is a section, its child pages stay in the
+print sequence.
 
 ## How components look in print {#components}
 
-Print is one of four outputs. Each component has a defined print form.
-Whole-section print and single-page browser print use the same rule:
-**interactive content becomes static, and collapsible content expands**.
+On paper, nothing can be clicked or expanded, so the same rule applies to the
+section print view and to a single page printed from the browser: interactive
+components become static, and collapsed content is printed open.
 
 | Component | Print shape |
 | --- | --- |
-| [Callouts](/docs/components/callout/) | Static blocks. All collapsible kinds (`-` / `+` / `DETAILS`) expand. Borders become gray, and backgrounds are removed |
-| [Tabs](/docs/components/tabs/) | The tab bar disappears and every panel is expanded in turn, each with its own heading |
-| [Code Blocks](/docs/components/code/) | Copy and fold controls removed, max height and scrolling dropped, long lines wrapped |
-| [Tables](/docs/components/table/) | Complete static tables with a keyboard-scrollable browser preview; print-media CSS expands them for paper and headers repeat across pages |
-| [Images](/docs/components/image/) | Retains image and caption. Removes zoom attributes and limits width to the reading measure |
+| [Callouts](/docs/components/callout/) | Static blocks. All collapsible kinds (`-` / `+` / `DETAILS`) expand. Borders turn gray and backgrounds are removed |
+| [Tabs](/docs/components/tabs/) | The tab bar disappears and every panel is printed in turn, each under its own heading |
+| [Code Blocks](/docs/components/code/) | Copy and fold controls removed, maximum height and scrolling dropped, long lines wrapped |
+| [Tables](/docs/components/table/) | Complete static tables. On screen the print view keeps keyboard scrolling; on paper the table expands and its header repeats on every page |
+| [Images](/docs/components/image/) | Image and caption kept, zoom removed, width limited to the text column |
 | [Gallery](/docs/components/gallery/) | The grid becomes a vertical stack |
-| [FileTree](/docs/components/filetree/) | A static panel with all directories expanded. The split retains its build-time width |
-| [Fields](/docs/components/fields/) | A complete definition list, identical in both forms |
+| [FileTree](/docs/components/filetree/) | A static panel with every directory expanded. A split layout keeps its build-time width |
+| [Fields](/docs/components/fields/) | The complete definition list, the same as on screen |
 | [Math](/docs/components/math/) | Statically rendered KaTeX / MathML |
-| [Mermaid](/docs/components/mermaid/) | Dedicated Print retains source without an engine; ordinary HTML printing shows rendered diagrams or source when not rendered |
-| [Markmap](/docs/components/markmap/) | Dedicated Print keeps the outline source without loading a runtime; ordinary HTML printing shows the rendered map (hiding floating notes) or source when not mounted |
-| [PlantUML](/docs/components/plantuml/) | Dedicated Print keeps source without a runtime; printing ordinary HTML retains rendered images or source when not rendered |
-| [ECharts](/docs/components/echarts/) · [Infographic](/docs/components/infographic/) | Dedicated Print keeps the fence source block without drawing a chart; ordinary HTML printing shows the rendered diagram or the declared options / DSL if not mounted |
-| [Asciinema](/docs/components/asciinema/) · [OpenAPI](/docs/write/openapi/) | A labeled static link to the recording or specification. None of the three runtimes loads |
+| [Mermaid](/docs/components/mermaid/) | The print view keeps the source and loads no engine. A browser-printed page shows the rendered diagram, or the source if it has not rendered |
+| [Markmap](/docs/components/markmap/) | The print view keeps the outline source and loads no runtime. A browser-printed page shows the rendered map without its floating notes, or the source if it has not mounted |
+| [PlantUML](/docs/components/plantuml/) | The print view keeps the source and loads no runtime. A browser-printed page shows the rendered image, or the source if it has not rendered |
+| [ECharts](/docs/components/echarts/) · [Infographic](/docs/components/infographic/) | The print view keeps the fenced source and draws no chart. A browser-printed page shows the rendered chart, or the declared options / DSL if it has not mounted |
+| [Asciinema](/docs/components/asciinema/) · [OpenAPI](/docs/write/openapi/) | A labeled static link to the recording or specification; none of the three runtimes loads |
 | Cards / steps / badges / keys | Static, with content unchanged |
 
-Print excludes the page shell: sidebar, outline, navbar, page action menu,
-feedback widget, heading anchor links, and inline copy buttons.
-
-When printing an ordinary HTML page with browser-rendered diagrams, confirm
-that they have finished drawing before triggering print.
+Besides the shell, print leaves out the page action menu, the feedback widget,
+heading anchor links and inline copy buttons. Before printing a page with
+diagrams from the browser, wait until they have finished drawing.
 
 ## Browser print styles {#print-css}
 
-The theme ships a layer of `@media print` rules shared by single-page and
-whole-section printing:
+A set of `@media print` rules, shared by single pages and section print views,
+lays the page out for paper:
 
-- `A4` paper with `18mm 16mm 20mm` margins; 10.5pt body text; the light palette forced.
-- Fonts use the `--td-print-font-family` typography token. See [Brand and appearance](/docs/customize/brand/).
-- Headings do not separate from their body (`break-after: avoid-page`), and paragraphs and list items keep three-line orphan and widow control.
-- Tables, images, blockquotes, callouts, cards, and tabs avoid page breaks where possible. Code blocks may break across pages. Long lines wrap instead of truncating.
-- Links are underlined and dark blue. Print does not append URL text. To append it, add this rule:
+- `A4` paper with `18mm 16mm 20mm` margins, 10.5pt body text, and the light palette even when the reader browses in dark mode.
+- Text uses the `--td-print-font-family` typography token; see [Brand and appearance](/docs/customize/brand/).
+- Headings stay with the text that follows them (`break-after: avoid-page`), and paragraphs and list items keep at least three lines together at a page break.
+- Tables, images, blockquotes, callouts, cards and tabs avoid breaking across pages where they can. Code blocks may break, and long lines wrap rather than being cut off.
+- A closed `<details>` always prints open, so collapsed callouts and file tree directories show their content.
+- Links are dark blue and underlined, without the URL printed after them. If your readers need the addresses on paper, add them:
 
 ```css {title="assets/css/project.css"}
 @media print {
@@ -153,31 +155,31 @@ whole-section printing:
 }
 ```
 
-- A closed `<details>` always expands. Printed callouts and file tree directories therefore show all content.
-
-Custom print styling goes in a `@media print` block in
-`assets/css/project.css` and needs no template change.
+Put any other print styling in a `@media print` block in
+`assets/css/project.css`; no template change is needed.
 
 ## Copying into rich-text editors {#typeset-copy}
 
-A reader who copies part of an article and pastes it into a rich-text editor
-(WeChat, Word, mail) gets typeset text in the same light palette print uses.
-The page background, dark-mode colors, heading anchors, copy buttons and line
-numbers do not come along. Selecting the whole page (<kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd>)
-copies only the article: title, description and body.
+Readers also copy articles into WeChat, Word or an email. When they copy part
+of an article and paste it into a rich-text editor, they get typeset text in
+the same light palette print uses, without the page background, dark-mode
+colors, heading anchors, copy buttons or line numbers. Selecting the whole page
+(<kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd>) copies only the article: title,
+description and body.
 
 - Headings, lists, quotes, callouts, tables and code blocks keep their
-  structure and take sizes in pixels, so editors that drop stylesheets still
-  show them.
-- Code blocks keep syntax colors. Copied in dark mode, a code block stays a
-  dark card while the prose around it is dark ink on white.
+  structure, with sizes in pixels, so editors that drop stylesheets still show
+  them correctly.
+- Code blocks keep their syntax colors. Copied in dark mode, a code block stays
+  a dark card while the prose around it is dark text on white.
 - A few words selected inside one paragraph copy without formatting and take
   the style of the document they are pasted into.
-- Plain-text pastes are unchanged.
+- Pasting as plain text is unchanged.
 
-To restyle the result, override the print palette, for example
-`--td-print-ink` or `--td-print-quote-line`, in `assets/css/project.css`. Turn
-the behavior off for a site or a page with `rich_copy: false`:
+To restyle the pasted result, override the print palette, for example
+`--td-print-ink` or `--td-print-quote-line`, in `assets/css/project.css`. To
+keep the browser's own copy behavior, set `rich_copy: false` for the site, or
+in a page's front matter for that page:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -185,34 +187,34 @@ params:
     rich_copy: false
 ```
 
-Editors filter pasted HTML differently. Check an important article in the
-editor you publish to before relying on the result.
+Each editor filters pasted HTML in its own way, so check an important article
+in the editor you publish to.
 
 ## Replacing the print templates {#customize-templates}
 
-To add a running header or change numbering, override the partial with the
-smallest relevant scope. Print partials are under `layouts/_partials/print/`:
+To change the structure, for example to add a running header or a different
+numbering, override the narrowest partial under `layouts/_partials/print/`:
 
 | Partial | Responsibility |
 | --- | --- |
-| `print/render.html` | The whole-section skeleton: notice bar, contents, recursive content |
+| `print/render.html` | The section view's skeleton: notice, table of contents, the pages in order |
 | `print/page-heading.html` | The title and standfirst at the top of the document |
-| `print/content.html` | How one page appears inside the whole-section view |
+| `print/content.html` | How one page appears inside the section view |
 | `print/toc-li.html` | One row of the table of contents |
 
-The last three also support overrides **per content type**. Create
-`print/page-heading-blog.html` or `print/content-book.html`. The theme gives
-the type-suffixed partial precedence.
+The last three can also be overridden for one content type: a file such as
+`print/page-heading-blog.html` or `print/content-book.html` takes precedence
+over the generic partial for pages of that type.
 
-Whole-book printing (`type: book`) uses a separate path. Chapter numbers,
-figure numbers, and cross-references remain continuous across the book. See
+A whole book (`type: book`) prints through its own path, which keeps chapter
+numbers, figure numbers and cross-references continuous across the book; see
 [Books](/docs/write/book/).
 
 ## Verify {#verify}
 
-In your site's root, build and check the print output for a section where you
-enabled `print`. Replace the example path with that section's actual output,
-including its language prefix if applicable:
+From your site's root, build and check that a section where you enabled
+`print` has its print view. Replace the example path with that section's
+output, including its language prefix if it has one:
 
 ```bash
 hugo --printPathWarnings
@@ -220,12 +222,12 @@ PRINT_PAGE=public/_print/docs/index.html
 test -f "$PRINT_PAGE"
 ```
 
-Then open that section's **Print the whole section** action on the running site:
+Then open **Print entire section** on the running site:
 
-- Confirm the print view contains the section's pages, excluding `no_print: true` pages.
-- Press `Cmd/Ctrl+P`. Confirm that print preview shows no notice bar, navbar, or buttons.
-- Use a page with tabs and a collapsed callout. Confirm that every panel expands in preview. See [Tabs](/docs/components/tabs/) for authoring syntax.
-- Print a PDF and check pagination. If necessary, adjust `section_break_wordcount`.
+- The print view contains the section's pages, without those marked `no_print: true`.
+- `Cmd/Ctrl+P` shows no notice, navbar or buttons in the preview.
+- On a page with [tabs](/docs/components/tabs/) and a collapsed callout, every panel is open in the preview.
+- In a saved PDF, the page breaks fall where you want them; if not, adjust `section_break_wordcount`.
 
 ## Related {#related}
 

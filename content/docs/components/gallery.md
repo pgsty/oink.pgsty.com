@@ -1,19 +1,24 @@
 ---
 title: Gallery
 linkTitle: Gallery
-description: Use a `gallery` fence for a responsive image grid with optional descriptions and links. Images share the page zoom dialog.
+description: Lay out a set of related screenshots as a responsive grid with a `gallery` fence, each with an optional description or link.
 weight: 170
 search_keywords: [Gallery, screenshot grid, fence, image zoom, link, class]
 image_zoom: true
 ---
 
-A gallery displays related images in a responsive grid. Put one image per line inside the fence.
-Use it for multiple views of the same subject, such as screenshots, states, or color schemes.
-Use an [image](/docs/components/image/) for a single picture. Gallery images should have an order or support a comparison.
+A gallery puts related images side by side so readers can compare them: the
+screens of a setup wizard, the light and dark versions of a dashboard, the
+same chart before and after a fix. You write one image per line inside a
+`gallery` fence, and the theme lays them out as a grid that drops columns as
+the screen narrows.
+
+Use an [image](/docs/components/image/) for a single picture. Images without an
+order or a comparison between them are better as separate figures in the text.
 
 ## Shortest form {#minimal}
 
-Write one image per line with Markdown's `![alt](src)` syntax.
+Each line is a Markdown image, `![alt](src)`.
 
 ````markdown {title="Source"}
 ```gallery
@@ -27,13 +32,14 @@ Write one image per line with Markdown's `![alt](src)` syntax.
 ![The classic Docsy layout upstream](/images/docsy.webp)
 ```
 
-Alternative text is mandatory. It sets the item's title, supplies its only screen reader text, and determines zoom eligibility.
-There is no column parameter. The grid follows the container width and reduces columns on narrow screens.
+Always write the alt text. It is the item's title, the only text a screen
+reader announces for it, and what makes the image eligible for zoom. There is
+no column setting: the grid follows the width of its container.
 
 ## Descriptions {#description}
 
-Add ` # ` after the image to start a description below it.
-Descriptions are plain text. Markdown appears literally. Use `\#` for a literal hash.
+Put ` # ` after the image to add a description under it. Descriptions are
+plain text, so Markdown in them shows literally; write `\#` for a literal hash.
 
 ````markdown {title="Source"}
 ```gallery
@@ -49,12 +55,16 @@ Descriptions are plain text. Markdown appears literally. Use `\#` for a literal 
 ![A release notes page](/images/releasenote.webp) # Release cards use release_url and date; checksums blocks list download assets
 ```
 
-Descriptions can have different lengths. The grid aligns to the tallest item, and wrapped descriptions do not affect neighboring items.
-The image is parsed first. A `#` in alternative text or a path needs no escaping.
+Descriptions may differ in length: the items in a row line up with the tallest
+one, and a description that wraps does not push its neighbors around. The
+image is parsed before the description, so a `#` inside alt text or a path
+needs no escaping.
 
 ## A link per item {#link}
 
-Put `{link=…}` at the end of a line to make that item a link. Site paths, relative paths, and `http(s):` are supported.
+Add `{link=…}` at the end of a line to make that item a link, for example to
+the page that explains the screen. Site paths, relative paths and `http(s):`
+URLs are accepted.
 
 ````markdown {title="Source"}
 ```gallery
@@ -68,14 +78,17 @@ Put `{link=…}` at the end of a line to make that item a link. Site paths, rela
 ![A release notes page](/images/releasenote.webp) # Opens "Releases and downloads" {link=/docs/write/releases/}
 ```
 
-Linked items do not zoom because clicking opens their link. A gallery can contain both linked and unlinked items.
-Linked items open pages. Unlinked items open full images.
+A click on a linked item follows the link, so that item does not zoom. One
+gallery can mix both kinds: linked items open their page, the others open the
+full image.
 
 ## Where images come from {#sources}
 
-Sources use the plain-image resolution order: page resource in the page bundle → global resource in `assets/` → static path `/images/…` → remote URL.
-Local resources include intrinsic dimensions to prevent layout changes while loading.
-Remote images are not downloaded or measured at build time.
+Each source is looked up like a plain image: a page resource in the page
+bundle, then a global resource under `assets/`, then a static path such as
+`/images/…`, then a remote URL. The theme reads the size of local resources
+and writes it into the page, so the grid does not jump while images load.
+Remote images are neither downloaded nor measured at build time.
 
 ````markdown {title="Source"}
 ```gallery
@@ -89,14 +102,19 @@ Remote images are not downloaded or measured at build time.
 ![The light home page (static path)](/images/hero-light.webp) # Under static/images/…, published as is
 ```
 
-Unresolved page or global resources are kept as static paths. The theme does not check whether static or remote images exist.
+A page or global resource that cannot be found is kept as a static path. The
+theme does not check whether static paths or remote URLs exist, so a typo
+there shows up as a broken image in the browser.
 
 ## Decorative images and zoom {#zoom}
 
-Empty alternative text marks decorative images. They have no title, are skipped by screen readers, and never qualify for zoom.
+Empty alt text marks an image as decorative: it gets no title, screen readers
+skip it, and it never zooms.
 
-Image zoom is a site-level switch and is off by default. This page enables it in front matter.
-Images above with alternative text and no link open at full size. <kbd>Esc</kbd> closes the dialog and restores the previous focus.
+Image zoom is off by default and turned on with `params.ui.image_zoom` for the
+whole site or with `image_zoom` in a page's front matter; this page does the
+latter. Every image above that has alt text and no link opens at full size,
+and <kbd>Esc</kbd> closes it and returns focus to the image.
 
 ```yaml {title="this page's front matter"}
 image_zoom: true
@@ -114,14 +132,17 @@ image_zoom: true
 ![The Pigsty release notes page](/images/releasenote.webp) # Has alt text, so it opens
 ```
 
-Galleries share the page's image zoom dialog and have no separate zoom runtime.
-If no image on the page qualifies for zoom, this runtime does not load. See [Images · Zoom](/docs/components/image/#zoom).
+Galleries reuse the page's single zoom dialog instead of bringing their own,
+and the zoom script loads only when the page has at least one image that can
+zoom. [Images · Zoom](/docs/components/image/#zoom) lists the full rules.
 
 ## Classes and tabs {#class-and-tabs}
 
-Put `class` on the fence after the language, or on an item at the end of its line.
-The theme passes it through for site CSS without interpreting it.
-A fence with `tab=` and `group=` / `value=` becomes a [tab set](/docs/components/tabs/) panel.
+`class` adds a CSS class for your own styles, either to the whole fence (after
+the language) or to one item (at the end of its line); the theme passes it
+through without interpreting it. A fence with `tab=` (and `group=` /
+`value=`) becomes one panel of a [tab set](/docs/components/tabs/), which
+suits one gallery per platform or per color scheme.
 
 ````markdown {title="Source"}
 ```gallery {tab="OINK" group="shell" value="oink"}
@@ -141,14 +162,9 @@ A fence with `tab=` and `group=` / `value=` becomes a [tab set](/docs/components
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | `<ul class="td-gallery">` with one `<li>` per item; eligible images carry `data-td-image-zoom`; everything is lazy-loaded |
-| Print | The same images stacked, without zoom markers |
-| Markdown | The `gallery` fence, emitted as written |
-| RSS | The same static stack as print |
-
-Galleries load no JavaScript of their own.
+Galleries load no script of their own, and every image is lazy-loaded. Print
+and RSS stack the images without zoom, and the page's Markdown output keeps
+the `gallery` fence as you wrote it.
 
 ## Parameter reference {#reference}
 
@@ -172,21 +188,26 @@ Fence attributes:
 | `class` | class list | — | Passed through for site CSS |
 {.fields meta="type default"}
 
-There is no `columns`, `caption`, or `title` attribute.
-Malformed lines or attributes warn and remove only the invalid part or line. The warning identifies the line inside the fence.
+There is no `columns`, `caption` or `title` attribute. A malformed line or
+attribute warns with its line number in the fence, and only the broken part or
+line is dropped.
 
 ## Limits {#limits}
 
-- Fences are the only form. There is no `{.gallery}` list marker or shortcode.
-  GitHub does not display the source as images. The theme guarantees behavior across four outputs and applies zoom eligibility rules.
-- Column counts cannot be set. The grid follows the viewport, and images keep their proportions without aspect-ratio cropping.
-- There is no slideshow, carousel, or previous / next control. The zoom dialog displays one image at a time.
-- Remote images are not downloaded at build time. Their dimensions remain unknown until the browser loads them, so layout can change.
-- Descriptions do not support Markdown. Put rich text in a paragraph below the gallery.
+- The fence is the only form; there is no `{.gallery}` list marker and no
+  shortcode. GitHub therefore shows the source rather than the images.
+- You cannot set the number of columns, and images keep their own proportions
+  instead of being cropped to a common shape.
+- There is no slideshow, carousel or previous / next control; the zoom dialog
+  shows one image at a time.
+- Remote images are not downloaded at build time, so their size is unknown
+  until the browser loads them and the layout can shift.
+- Descriptions do not render Markdown; put rich text in a paragraph below the
+  gallery.
 
-For album navigation, image sequencing, and drag-to-pan viewing, use the
-[Expo layout](/docs/write/expo/) introduced in OINK 1.3.0. The `gallery` fence
-is for image groups inside text pages.
+For a whole album with a sidebar, page-by-page browsing and drag-to-pan
+viewing, use the [Expo layout](/docs/write/expo/); a `gallery` fence is for a
+group of images inside a text page.
 
 ## Related {#related}
 

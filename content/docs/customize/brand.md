@@ -1,7 +1,7 @@
 ---
 title: Brand and appearance
 linkTitle: Brand and appearance
-description: Change the site name, logo, favicon, accent color, light and dark palettes, and fonts. Use configuration and a plain CSS project stylesheet.
+description: Give the site your name, logo, favicon, accent color and fonts, choose a visual preset, and add your own CSS.
 weight: 20
 search_keywords:
   [brand, appearance, logo, favicon, accent colour, palette, dark mode, fonts, typography, scss]
@@ -12,203 +12,117 @@ aliases:
   - /docs/appearance/customize/
 ---
 
-This page assumes the site already builds ([Quick start](/docs/start/)).
-Configure the name, logo, page width, and footer in `hugo.yml`. To select an
-existing system or site font, use [`params.ui.fonts`](#fonts-in-config).
-[Section accent colors](#theme-color) also have configuration keys.
+A site starts to look like your own once it carries your name, your logo and
+your color. All three are settings in `hugo.yml`, so a first pass at a brand is
+one edit and a reload:
 
-Add icons under `static/`. Use [`assets/css/project.css`](#scss) for custom
-styles or new `@font-face` declarations only when needed. **Do not edit files inside the
-theme directory**. An upgrade replaces them.
+```yaml {title="hugo.yml"}
+title: Acme DB Docs
 
-## Visual presets {#visual-presets}
-
-OINK 1.2.0 defaults to Paper: ivory paper backgrounds,
-ink text, underlined blue links, a clay accent, Plex Sans and framed tables. Slate
-keeps OINK's existing cool blue-gray identity. Enable reader choice with:
-
-```yaml
 params:
+  logo: images/acme-mark.svg # under assets/ or static/
   ui:
-    preset: paper
-    preset_menu: true
+    theme_color: '#0f766e'
     dark_mode: true
 ```
 
-The theme default for `preset_menu` is `false`. Choose `preset: slate` to keep
-the previous appearance. Preset and mode are saved separately; selecting the
-site default (identified in its tooltip) restores the site policy. All styles use one stylesheet
-and local fonts.
-
-Ink and Terminal are available as explicit opt-ins in OINK 1.2.0:
-
-```yaml
-params:
-  ui:
-    preset: paper
-    preset_menu: [paper, slate, ink, terminal]
-    dark_mode: true
-```
-
-Ink uses black/white surfaces, red markers, square panels and underlined prose
-links. Terminal uses mono controls/headings, teal links, amber accents and
-compact desktop navigation; its prose is monospaced too. Both support
-light/dark mode and reuse existing fonts. The menu shows four compact style
-buttons in a two-column grid, each with a colored icon and no experiment badge.
-`preset_menu: true` offers Paper, Slate and the site default; it does not opt
-into every experiment. Set `preset: ink` or `preset: terminal` to make an
-experiment the site default, even without a reader menu. See the
-[experiment record](/docs/design/research/2026-10-05-ink-terminal-experiment/)
-for tested scope and remaining design work.
-
-Custom dark brand rules using only `[data-bs-theme='dark']` have lower
-specificity than Paper's dark palette. Retain Slate, or scope those rules to
-`[data-td-preset='paper'][data-bs-theme='dark']`. Font configuration and section
-`theme_color` overrides keep their precedence in every preset. Print remains
-light on white paper.
+Fonts, the overall look and the footer are settings too. For anything a
+setting cannot reach, write plain CSS in
+[`assets/css/project.css`](#scss), which loads after the theme's stylesheet.
+Leave the theme's own files alone, because the next `hugo mod get` replaces
+them.
 
 ## Site name {#site-title}
 
-The site name appears in the navbar, the browser title and the footer. A
-multilingual site writes one per language:
+The site name appears in the navbar, the browser tab and the footer. On a
+multilingual site, give each language its own under `languages.<lang>.title`;
+the top-level `title` is the fallback for a language that sets none.
 
 ```yaml {title="hugo.yml"}
-title: Product Docs
+title: Acme DB Docs
 
 languages:
   en:
-    title: Product Docs
+    title: Acme DB Docs
     label: English
     locale: en-US
     weight: 1
   zh:
-    title: 产品文档
+    title: Acme DB 文档
     label: 简体中文
     locale: zh-CN
     weight: 2
 ```
 
-The top-level `title` is the fallback. The value of `languages.<lang>.title` takes precedence.
-
 ## Logo and wordmark {#logo}
 
-The theme ships `assets/icons/logo.svg` and uses it by default. To replace it,
-put the icon file in the site's `assets/` or `static/` and point the
-configuration at it.
+Out of the box the navbar shows the theme's mark, `assets/icons/logo.svg`,
+beside the site name. Replace either half by putting an image in the site's
+`assets/` or `static/` directory and naming its path relative to that
+directory:
 
 ```yaml {title="hugo.yml"}
 params:
-  logo: images/product-mark.svg
-  wordmark: logo.svg
+  logo: images/acme-mark.svg
+  wordmark: images/acme-wordmark.svg # optional
 ```
 
-- `params.logo` is the square mark used by the navbar, sidebar, and footer. Under `assets/`, it uses Hugo's resource pipeline and can be fingerprinted. Under `static/`, Hugo publishes it unchanged. The path is relative to the `assets/` or `static/` root.
-- `params.wordmark` is the horizontal wordmark. If you set it, the navbar replaces "icon + site name" with it. On a narrow screen, the navbar falls back to `params.logo`. If you do not set it, the navbar retains "icon + site name".
+- `params.logo` is the square mark in the navbar, the sidebar header and the
+  footer. A file under `assets/` goes through Hugo's resource pipeline; a file
+  under `static/` is published unchanged.
+- `params.wordmark` is an image of the name that takes the place of the site
+  name text next to the mark. The navbar draws it 16px tall and, like the site
+  name, hides it below 992px, leaving the mark alone, so the wordmark should
+  contain the name only. The footer shows it on its own unless the
+  [footer data](/docs/customize/navigation/#footer) names a logo.
 
-Crop the source SVG closely around the artwork so that sizes align. The SVG
-must have a `viewBox`. Its colors should inherit `currentColor` or provide
-sufficient contrast in both light and dark modes.
+Crop the SVG tightly around the artwork and give it a `viewBox`, or it will not
+line up with the text beside it. The theme places both images with `<img>`,
+which page CSS cannot recolor and in which `currentColor` resolves to black.
+Choose colors that read on both the light and the dark canvas, or do what the
+theme's own mark does: put a `<style>` inside the SVG with a
+`@media (prefers-color-scheme: dark)` rule. That rule follows the reader's
+system setting, not the site's light/dark toggle.
 
-This site sets neither parameter. The navbar combines the theme's
-`assets/icons/logo.svg` with the site title in the display font.
+## Favicon {#favicon}
 
-## favicon {#favicon}
-
-The favicon has no parameter. The theme scans the site's `static/` directory
-for conventional filenames. For each file it finds, it emits the corresponding
-`<link>` on every page:
+There is no favicon setting. The theme looks in the site's `static/` directory
+for the conventional file names and adds a `<link>` to every page for each one
+it finds:
 
 | File | Link generated |
 | --- | --- |
 | `static/favicon.ico` | `rel="icon"` |
 | `static/favicon.svg` | `rel="icon"` `type="image/svg+xml"` |
-| `static/favicon-32x32.png` | `rel="icon"` with `sizes`, emitted in ascending size order |
+| `static/favicon-32x32.png` | `rel="icon"` `type="image/png"` with `sizes`; several sizes are linked smallest first |
 | `static/apple-touch-icon.png` | `rel="apple-touch-icon"` |
 | `static/apple-touch-icon-180x180.png` | `rel="apple-touch-icon"` with `sizes` |
 
-The minimum sufficient set is `favicon.ico`, `favicon.svg`, and
-`apple-touch-icon.png`. A file with a size suffix must be square (`NxN`).
-Otherwise, the theme does not recognize it.
+`favicon.ico`, `favicon.svg` and `apple-touch-icon.png` are enough for every
+browser. A file with a size in its name must be square (`NxN`); the theme
+ignores any other.
 
-Generate these with any graphics tool. The theme needs no Node.js, and Hugo
-simply publishes what is already in `static/`.
+Other head metadata, such as a Web App Manifest, goes in
+`layouts/_partials/hooks/head-end.html`. To look in another directory or
+accept other names, override `layouts/_partials/favicons.html` in the site.
 
-The scan does not cover extra head metadata, such as a Web App Manifest.
-Emit it through `layouts/_partials/hooks/head-end.html`. To change discovery
-rules, such as the directory or accepted filenames, override
-`layouts/_partials/favicons.html` in the site's `layouts/`.
+## Accent color {#theme-color}
 
-## Accent colour and palette {#colors}
-
-Color has two layers, and both are CSS custom properties that you override at
-run time in the project stylesheet. The theme's stylesheet is plain CSS, so
-Sass variables such as `$primary` no longer exist.
-
-Bootstrap's semantic colors tint Bootstrap components such as buttons and
-utilities. Override the properties, and the components that carry the color as
-a fixed value:
-
-```css {title="assets/css/project.css"}
-:root,
-[data-bs-theme='light'] {
-  --bs-primary: #315f8f;
-  --bs-primary-rgb: 49, 95, 143;
-}
-
-.btn-primary {
-  --bs-btn-bg: #315f8f;
-  --bs-btn-border-color: #315f8f;
-  --bs-btn-hover-bg: #2a5179;
-  --bs-btn-hover-border-color: #274c72;
-}
-```
-
-Link and accent colors do not follow `--bs-primary`. They come from the visual
-preset, the brand layer below, and [`theme_color`](#theme-color). A site that
-set Sass variables before can convert them once; see
-[Retired SCSS hooks](/docs/admin/upgrade/#sass-hooks).
-
-The brand layer also uses CSS custom properties. You **must override light and
-dark in pairs**. Otherwise, one mode retains the original color:
-
-```css {title="assets/css/project.css"}
-:root {
-  --td-brand-copper: #a66722;
-  --td-brand-mark-from: #1d588c;
-  --td-brand-mark-to: #a66722;
-}
-
-[data-bs-theme='dark'] {
-  --td-brand-copper: #e0a35c;
-  --td-brand-mark-from: #7fb8e8;
-  --td-brand-mark-to: #e0a35c;
-}
-```
-
-Available brand properties include `--td-brand-elev` for overlay backgrounds
-and `--td-brand-silk` for secondary text. The accent and muted accent use
-`--td-brand-copper` and `--td-brand-copper-dim`. Rules use `--td-brand-line-strong`,
-and the navbar background uses `--td-brand-header-bg`. Shadows use
-`--td-brand-shadow-sm` / `--td-brand-shadow-md`. The brand gradient uses
-`--td-brand-mark-from` / `--td-brand-mark-to` / `--td-brand-mark-gradient`.
-
-## Section theme colour {#theme-color}
-
-The brand palette above sets the site's overall color. The `theme_color` key
-uses one hex color to tint the shell's **accent backgrounds**. This color helps
-readers identify their current part of the site.
+The accent color marks where the reader is: the selected sidebar row and hover
+backgrounds, the outline's current-section marker and its rail, tag and chip
+hovers, card borders and share buttons on hover, text selection, focus rings,
+and each section's mark in the sidebar switcher. Set it with one hex value:
 
 ```yaml {title="hugo.yml"}
 params:
   ui:
-    theme_color: '#6d28d9'
-    theme_color_dark: '#a78bfa' # optional
+    theme_color: '#0f766e'
+    theme_color_dark: '#5eead4' # optional
 ```
 
-This key is more useful per section than for the entire site. Set it in the
-section root's `cascade` to give the section its own color. For example, Docs
-can use navy, Blog violet, and Book orange. The site default retains the brand
-color:
+It is most useful per section. Put the pair in a section root's `cascade` and
+the whole section, its index page included, takes that color, so readers can
+tell Docs from Blog at a glance while the rest of the site keeps the default:
 
 ```yaml {title="content/blog/_index.md"}
 cascade:
@@ -216,146 +130,101 @@ cascade:
   theme_color_dark: '#a78bfa'
 ```
 
-Hugo resolves these cascade values on the section page as well as its
-descendants, so the pair is declared once. The same resolved pair drives the
-page's accent and that section's mark in the root switcher.
+Prose links, external URLs and inline code keep the preset's colors in every
+section, because a reader should recognize a link or an identifier the same
+way everywhere. To change those, override the [palette](#colors).
 
-**What it touches:** the selected sidebar row, adjacent rows' gray hover
-backgrounds, and hover fills. It colors the outline pill and its moving rail
-and dot, Book chapter headings on hover, and tag and chip hover states. It
-also colors content card borders and share button fills on hover, text
-selection, focus rings, and sidebar switcher root marks.
+`theme_color_dark` is optional. Without it, the theme lightens the light color
+toward white until it reaches AA contrast for body text on the dark canvas;
+set it yourself when the derived shade drifts from your brand. The light color
+is required: a `theme_color_dark` on its own, or next to an invalid
+`theme_color`, is ignored with a warning, so a page is colored in both modes or
+in neither.
 
-**What it deliberately does not touch:** prose links, external URLs, and
-inline code. These use consistent reading conventions across sections. Readers
-should recognize code, prose, and links even on pages with many identifiers.
-Therefore, the accent uses its own custom property. It does not change
-Bootstrap's link color.
+To return one page to the default palette, set `theme_color: false` in its
+front matter; that drops the inherited dark color too, without a warning. Any
+other value that is not a `#rgb` or `#rrggbb` hex, such as a number, `true` or
+a color name, warns and keeps the default. Hugo merges parameters key by key,
+so a page that overrides only `theme_color` still inherits the section's
+`theme_color_dark`: override both or neither.
 
-The dark color is optional. If you omit it, the theme lightens the light color
-toward white until it meets AA body-text contrast on the dark canvas. This
-prevents an unreadable dark palette when you supply only one color. Set the
-dark color explicitly if the derived hue does not match your brand.
-The light color is required. If `theme_color_dark` is alone or accompanies an
-invalid `theme_color`, neither mode changes color. The theme warns and retains
-the default palette. It does not tint only dark mode.
-
-To remove the section color from one page, set `theme_color: false` in its
-front matter. This removes both the light color and inherited dark color. The
-page uses the default palette without a warning. Any other non-hex value,
-including a number, `true`, or a named color, produces a warning.
-
-> [!CAUTION] Contrast is checked, not enforced
-> The theme checks your color against its own canvases. It warns if contrast
-> is below AA body text (4.5:1). The color still appears in the output. You may
-> choose it for a custom canvas or brand requirement. The warning includes an
-> `ignoreLogs` id that can silence it. Review the contrast on the actual canvas and adjust the color when needed.
->
-> The check compares the color with the page canvas. Some interactive surfaces
-> use it for both text and a translucent background. For example, a linked
-> solid badge uses accent text over a 12% accent background. This combination
-> provides less contrast than the canvas check. If a color barely passes,
-> inspect these surfaces. Use a darker color when necessary.
-
-Hugo merges params by key. If a section cascade sets `theme_color_dark`, a page
-that overrides only `theme_color` still inherits that dark value. Override
-both values or neither.
-
-## Light and dark mode {#dark-mode}
-
-The theme does **not** show a light/dark control by default. To enable it:
-
-```yaml {title="hugo.yml"}
-params:
-  ui:
-    dark_mode: true
-```
-
-The sun/moon icon shows the current state: sun for light, moon for dark.
-Click Appearance in the navbar or footer to open the Light / Dark / System
-radio group. It supports touch and keyboard; on phones it opens a bottom
-sheet. The preference is saved locally and synchronized across tabs. No saved
-choice means follow `prefers-color-scheme`. The inline head script applies the
-resolved mode before the stylesheet loads.
-
-To enable the dark palette without the control, set
-`dark_mode: { show_menu: false, enable: true }`. The default,
-`dark_mode: false`, enables neither.
-
-Custom components need readable hover, focus, disabled and selected states in
-both modes, with at least 4.5:1 contrast for body text and 3:1 for large text.
+The theme checks each color you write against its own canvases and warns when
+contrast falls below 4.5:1, the AA level for body text. The color is still
+applied, since a custom canvas or a fixed brand color may justify it, and the
+warning carries an ID you can add to Hugo's `ignoreLogs` once you have checked
+it on the real background. A color that only just passes deserves a second
+look on interactive surfaces that use it for text over a 12% wash of itself,
+such as a linked badge; pick a darker shade if those read poorly.
 
 ## Fonts {#fonts}
 
-The typography policy is selected at build time; visual preset switching chooses its bundled faces:
+OINK bundles its Latin typefaces as local fonts served from your own site, so
+no page requests Google Fonts or any other font service. Chinese uses fonts already on
+the reader's system, and the theme ships no Chinese font file. Each
+[visual preset](#visual-presets) arranges the faces its own way:
+
+| Preset | Interface and body text | Headings | Chinese |
+| --- | --- | --- | --- |
+| Paper | IBM Plex Sans | A system serif | Song headings over Hei text |
+| Slate | Inter | Inter; Chakra Petch for display titles | Hei throughout |
+| Ink | Inter for the interface, a system serif for prose | Inter | Hei headings over Song text |
+| Terminal | IBM Plex Mono, IBM Plex Sans in print | IBM Plex Mono | Hei throughout |
+
+Code is IBM Plex Mono and the wordmark Chakra Petch in Paper and Slate. Plex
+Sans and Inter include Latin, Cyrillic, Greek and Vietnamese. Chinese emphasis
+and quotations switch to Kai where the reader has it installed, so Han is never
+slanted; Terminal colors emphasis instead.
+
+To use the platform's own fonts and load none of the bundled ones, switch the
+typography policy:
 
 ```yaml {title="hugo.yml"}
 params:
   ui:
-    typography: technical # technical | system
+    typography: system # technical (default) | system
 ```
 
-- `technical` (the default): Paper uses IBM Plex Sans for interface, body and display text and a system serif for headings; Slate uses Inter for interface/body and Chakra Petch for display. Both use Chakra Petch for the wordmark and IBM Plex Mono for code. Plex Sans and Inter include local Latin, Cyrillic, Greek and Vietnamese subsets. No Google Fonts request is made.
-- Experimental fonts: Ink uses Inter for UI and headings and a system serif for prose; Terminal uses IBM Plex Mono for controls, headings and prose, and Plex Sans in print. Explicit `fonts.ui` still supplies the main face; use `fonts.body` for a separate prose face.
-- Chinese uses fonts already on the reader's system, arranged per style: Paper sets Song headings over Hei text, Ink Hei headings over Song text, Slate and Terminal use Hei throughout. Emphasis and quotations use Kai where it is installed, so Han is never slanted; Terminal colors emphasis instead. The theme ships no Chinese font file.
-- `system`: interface, display, metadata, print, and monospace roles use the platform stack. The browser requests no brand font. Font files remain bundled with the theme, but the output does not reference them.
+With `system`, every role uses the platform font stack. An invalid value warns
+and falls back to `technical`. The policy in effect is written to
+`<html data-td-typography="…">`.
 
-If the value is invalid, the theme warns and falls back to `technical`. Normal
-`hugo server` preview remains usable. The selected value appears in
-`<html data-td-typography="…">`. Check it in the browser.
+### Use fonts readers already have {#fonts-in-config}
 
-### Custom fonts {#custom-fonts}
-Eight CSS custom properties define the font roles. Override these properties
-instead of searching for component selectors:
-
-| Property | Config key | Where it is used |
-| --- | --- | --- |
-| `--td-ui-font-family` | `ui` | Navigation, controls and interface text |
-| `--td-body-font-family` | `body` | Body text and blog posts |
-| `--td-heading-font-family` | `heading` | Headings in the body |
-| `--td-code-font-family` | `code` | Code and terminals |
-| `--td-display-font-family` | `display` | Display headings |
-| `--td-meta-font-family` | `meta` | Technical labels and metadata |
-| `--td-brand-font-family` | `brand` | Wordmark |
-| `--td-print-font-family` | `print` | Print body text |
-
-The `ui` role is the main font. The `body` role resolves through it, and
-`heading` resolves through `body`. One line can therefore change the interface,
-prose, and headings together.
-
-#### From configuration {#fonts-in-config}
-To change only font families, use `params.ui.fonts`. You do not need a stylesheet:
+To change a family without writing CSS, set `params.ui.fonts`:
 
 ```yaml {title="hugo.yml"}
 params:
   ui:
     fonts:
-      # The main face: interface, body and headings follow it
+      # The main face: body text follows it, and headings too outside Paper
       ui: "'Source Han Sans SC', 'PingFang SC', sans-serif"
-      # Monospace needs a CJK fallback, or mixed code blocks stop aligning
+      # Give monospace a CJK fallback, or mixed code blocks stop aligning
       code: "'Sarasa Mono SC', 'Noto Sans Mono CJK SC', monospace"
 ```
 
-These values are **family names, not font files**. This key never causes the
-theme to download or load a font. Each family must already exist on the reader's
-system or have a site `@font-face` declaration. End every list with a generic
-family (`sans-serif`, `monospace`, `serif`). Readers without your font use this
-fallback.
+`ui` is the main face. Body text follows it in every preset, and headings
+follow it in every preset except Paper, which keeps its serif headings until
+you also set `heading`. The other keys are listed under
+[Font roles](#custom-fonts).
 
-Values accept only plain font family syntax: quoted names, bare identifiers,
-a leading hyphen (`-apple-system`), and names in any script (`苹方` is a
-family name). They reject semicolons, braces, parentheses, `url()`, and angle
-brackets. An unknown role or unsafe value produces a warning. The theme drops
-**only that entry** and retains the rest of the map. If the site sets no values,
-the theme adds no style element to `<head>`.
+These values are family names, not files: the theme never downloads or loads a
+font because of this key. A family must already be on the reader's system or
+declared by your own [`@font-face`](#fonts-in-css), so end every list with a
+generic family (`sans-serif`, `serif`, `monospace`) for readers who have
+neither.
 
-The block renders after the stylesheet. At equal specificity, an authored font
-therefore takes precedence over the `typography` preset.
+A value may contain only font family syntax: quoted names, bare identifiers,
+a leading hyphen as in `-apple-system`, and names in any script (`苹方` is a
+family name). Semicolons, braces, parentheses, `url()` and angle brackets are
+rejected. An unknown role or an unsafe value warns and drops that one entry;
+the rest of the map still applies. The theme writes these values after its
+stylesheet, so they win over both the preset and `typography: system`.
 
-#### From a stylesheet {#fonts-in-css}
-To bundle your own font file or change the font for one content kind, use a
-stylesheet. Put the `.woff2` file in the site's `static/webfonts/`. Declare
-the font in the project stylesheet. Then override the roles:
+### Bundle your own font {#fonts-in-css}
+
+To ship a font file, or to give one kind of content its own face, use the
+project stylesheet. Put the `.woff2` file in the site's `static/webfonts/`,
+declare it, and point the roles at it:
 
 ```css {title="assets/css/project.css"}
 @font-face {
@@ -374,8 +243,8 @@ the font in the project stylesheet. Then override the roles:
 }
 ```
 
-Roles inherit through normal CSS rules. To change the font for one content
-kind, you do not need component selectors:
+Roles are ordinary inherited custom properties, so scoping one to a body class
+changes the face for that kind of page without touching component selectors:
 
 ```css {title="assets/css/project.css"}
 body.td-blog {
@@ -384,7 +253,8 @@ body.td-blog {
 }
 ```
 
-A monospace stack needs a CJK fallback, or mixed code blocks fail to align:
+A monospace stack needs a CJK fallback, or code that mixes Latin and Chinese
+stops aligning:
 
 ```css {title="assets/css/project.css"}
 :root {
@@ -392,31 +262,85 @@ A monospace stack needs a CJK fallback, or mixed code blocks fail to align:
 }
 ```
 
-Sass font variables no longer reach the theme, because the theme contains no
-Sass. This covers Docsy's `$td-fonts-serif`, `$font-family-sans-serif`,
-`$font-family-base`, `$headings-font-family`, `$font-family-code`,
-`$td-font-family-monospace` and `$font-family-monospace`, and its three Google
-Fonts variables. Set the roles with `params.ui.fonts` or the role properties
-above.
-The theme bundles IBM Plex Sans, Inter, Chakra Petch, and IBM Plex Mono. No preset
-requests Google Fonts. The print role `--td-print-font-family` follows the body
-role. The theme bundles no separate print font.
+### Font roles {#custom-fonts}
 
-YAML accepts only font family names. It accepts neither remote font URLs nor
-arbitrary CSS. Font files and styles must be auditable local inputs. A normal
-build makes no network request for a font.
+Eight CSS custom properties carry the font roles, and each can also be set by
+its key under `params.ui.fonts`:
 
-## Page width {#page-width}
+| Property | Config key | Where it is used |
+| --- | --- | --- |
+| `--td-ui-font-family` | `ui` | Navigation, controls and interface text |
+| `--td-body-font-family` | `body` | Body text and blog posts |
+| `--td-heading-font-family` | `heading` | Headings in the body |
+| `--td-code-font-family` | `code` | Code and terminals |
+| `--td-display-font-family` | `display` | Display headings |
+| `--td-meta-font-family` | `meta` | Technical labels and metadata |
+| `--td-brand-font-family` | `brand` | Wordmark |
+| `--td-print-font-family` | `print` | Print body text; follows `body` unless set |
+
+## Visual presets {#visual-presets}
+
+A preset is a complete look: palette, fonts, link style and table style, in
+light and dark. Pick the one closest to your brand before adjusting colors by
+hand.
+
+| Preset | Look |
+| --- | --- |
+| `paper` (default) | Ivory paper, ink text, underlined blue links, a clay accent, Plex Sans and framed tables |
+| `slate` | A cool blue-gray technical look |
+| `ink` (experimental) | Black and white surfaces, red markers, square panels and underlined prose links |
+| `terminal` (experimental) | Monospace controls, headings and prose, teal links, amber accents and compact desktop navigation |
+
+`params.ui.preset` sets the site's look. `params.ui.preset_menu` decides
+whether readers may choose another in the Appearance menu:
 
 ```yaml {title="hugo.yml"}
 params:
-  page_width: normal # normal | wide | full
+  ui:
+    preset: paper
+    preset_menu: [paper, slate, ink, terminal]
+    dark_mode: true
 ```
 
-The `page_width` key controls the overall shell width. Override it per page or
-per section through a cascade. Book pages also support `reading_width` (`slim` /
-`normal` / `wide`), which changes the body's reading width instead of the shell.
-If either key has an invalid value, the theme warns and uses a fallback.
+| `preset_menu` | Readers can choose |
+| --- | --- |
+| `false` (default) | Nothing; every page uses `preset` |
+| `true` | Paper, Slate and the site's own preset |
+| A list | Exactly the listed presets; the site's preset is added with a warning if missing |
+
+Ink and Terminal appear only when you name them, as `preset` or in the list.
+The [experiment record](/docs/design/research/2026-10-05-ink-terminal-experiment/)
+lists what has been tested on them. A reader's style and light/dark choice are
+saved separately in the browser, and choosing the entry marked as the site
+default goes back to following the site. Print always uses a light palette on
+white paper.
+
+Font settings and `theme_color` win in every preset. Dark palette overrides in
+your own CSS do not automatically: Paper scopes its dark palette to
+`[data-td-preset='paper'][data-bs-theme='dark']`, which outranks a bare
+`[data-bs-theme='dark']`. Write dark overrides as shown under
+[Palette colors](#colors).
+
+## Light and dark mode {#dark-mode}
+
+Sites are light-only until you turn dark mode on:
+
+```yaml {title="hugo.yml"}
+params:
+  ui:
+    dark_mode: true
+```
+
+This adds the dark palette and a Light / Dark / System choice to the
+Appearance control in the navbar and footer, whose sun or moon icon shows the
+current mode. The control works with touch and keyboard and opens as a bottom
+sheet on phones. A reader's choice is saved in the browser and shared across
+tabs; with no saved choice the page follows the system's
+`prefers-color-scheme`. A small inline script applies the mode before the
+stylesheet loads, so pages never flash the wrong palette.
+
+To support the dark palette for readers whose system asks for it, without
+showing the control, write `dark_mode: { enable: true, show_menu: false }`.
 
 ## Footer {#footer}
 
@@ -425,72 +349,136 @@ params:
   ui:
     footer_style: fat # fat | slim | none
   copyright:
-    authors: '[The product team](https://example.com/)'
+    authors: '[The Acme DB team](https://example.com/)'
     from_year: 2026
     to_year: present
   footer_center_info: 'Powered by [Oink](https://oink.pgsty.com)'
 ```
 
-- `fat` (the default): a multi-column link grid plus the copyright line;
-- `slim`: the copyright line only;
-- `none`: no footer at all.
-
-Page front matter, including a section cascade, can override the footer style.
-This site's documentation section uses `footer_style: slim`. An unrecognized
-value warns and falls back to `fat`.
-
-Store grid data in `data/footer/<language>.yaml`. See
-[Navigation and menus](/docs/customize/navigation/#footer). If `fat` is configured
-but no data exists, the footer automatically falls back to `slim`. You can
-therefore enable it before you write the content.
-
-The `params.copyright` key accepts a Markdown string or a map with `authors` /
-`from_year` / `to_year`. The value `present` means this year. The
-`footer_center_info` key accepts inline Markdown for the footer's center.
-Set it explicitly to an empty string to hide that region.
-
-## Project stylesheet, and what not to do {#scss}
-
-The theme's stylesheet is plain CSS, and a site build compiles nothing. A
-site's own rules are plain CSS too, under `assets/css/`:
-
-| File | When to use it |
+| `footer_style` | Footer |
 | --- | --- |
-| `project.css` | Selectors and CSS custom properties, loaded after the theme's stylesheet |
+| `fat` (default) | A grid of link columns above the copyright line |
+| `slim` | The copyright line only |
+| `none` | No footer |
+
+The link columns come from `data/footer/<language>.yaml`, described in
+[Navigation and menus](/docs/customize/navigation/#footer). Until that file
+exists, a `fat` footer renders as `slim`, so you can switch it on before you
+write the links. Front matter, or a section's `cascade`, can set a different
+style; this site's documentation section uses `slim`. An unknown value warns
+and uses `fat`.
+
+`params.copyright` is either a Markdown string or a map of `authors`,
+`from_year` and `to_year`, where `present` means the current year.
+`footer_center_info` is inline Markdown for the middle of the copyright line;
+set it to an empty string to leave that space blank.
+
+## Project stylesheet {#scss}
+
+Anything the settings above cannot reach is plain CSS in the site's
+`assets/css/`:
+
+| File | Use |
+| --- | --- |
+| `project.css` | Your selectors and custom property overrides |
 | `project/*.css` | Optional further files, appended to `project.css` in path order |
 
-The theme publishes them as one stylesheet, fingerprinted and with an integrity
-attribute in production, in a separate request after its own. Editing site
-styles leaves the theme's stylesheet and its cache entry unchanged.
+The theme publishes them as one stylesheet that loads after its own, minified,
+fingerprinted and with an integrity attribute in production. Because it is a
+separate file, editing your styles leaves the theme's stylesheet, and the copy
+in readers' caches, untouched.
 
-Write CSS, not SCSS. Hugo minifies the file and does not transform it: `//`
-comments, Sass variables, mixins, `@extend`, and `&-suffix` selectors are
-invalid here, and native CSS nesting reaches the browser as written. A relative
-URL resolves from `/css/`, so `../webfonts/my-font.woff2` is the site's
-`static/webfonts/my-font.woff2`.
+Hugo minifies this file but does not compile it, so write CSS, not SCSS:
+`//` comments, Sass variables, mixins, `@extend` and `&-suffix` selectors do not
+work, and native CSS nesting reaches the browser as written. Relative URLs
+resolve from `/css/`, so `../webfonts/my-font.woff2` is the site's
+`static/webfonts/my-font.woff2`. A site upgraded from an older OINK or from
+Docsy may still have files under `assets/scss/`; the build warns and ignores
+them until you convert them as described in
+[Retired SCSS hooks](/docs/admin/upgrade/#sass-hooks).
 
-The three SCSS hooks under `assets/scss/` are retired. If one remains, the
-build warns and ignores it. See
-[Retired SCSS hooks](/docs/admin/upgrade/#sass-hooks) for how to convert it.
+Rely only on the public part of the theme's CSS: the eight
+[font roles](#custom-fonts) and the `--td-brand-*` properties keep their names
+and meanings across minor releases. Component aliases such as
+`--td-asciinema-font-family` work only inside their component, and other
+variables, such as `--td-shell-*`, can change in any release. Use a variable
+where one exists, and otherwise the narrowest selector that works; overriding
+`baseof.html` to change a color makes every theme upgrade a merge.
 
-The CSS interface has a defined boundary. The eight font roles in
-[Fonts](#fonts) and the `--td-brand-*` properties are public. The theme preserves
-their names and meanings across minor versions. Component aliases such as
-`--td-asciinema-font-family` work only within their component. Undocumented
-variables, such as `--td-shell-*`, are implementation details. They may be
-renamed or removed at any time.
+To add a third-party stylesheet, copy it into the site and publish it as a
+local resource from `layouts/_partials/hooks/head-end.html`, not with a
+`<link>` in Markdown. Keep stylesheets and fonts local rather than pointing at
+a CDN, so the site keeps working when that host does not.
+
+### Palette colors {#colors}
+
+Colors other than the accent are CSS custom properties that you override in
+the project stylesheet. Each preset sets them in light and dark, so override
+both modes together, or one mode keeps the preset's color.
+
+Links use Bootstrap's link tokens, `--bs-link-color` and
+`--bs-link-hover-color` with their `-rgb` twins. Bootstrap components such as
+buttons use the semantic colors; override the property, and the button
+variables that hold the color as a fixed value:
+
+```css {title="assets/css/project.css"}
+:root,
+[data-bs-theme='light'] {
+  --bs-primary: #315f8f;
+  --bs-primary-rgb: 49, 95, 143;
+}
+
+.btn-primary {
+  --bs-btn-bg: #315f8f;
+  --bs-btn-border-color: #315f8f;
+  --bs-btn-hover-bg: #2a5179;
+  --bs-btn-hover-border-color: #274c72;
+}
+```
+
+The theme's brand layer works the same way. Write the dark block with both
+selectors below: the bare one covers Slate, and the preset-scoped one is needed
+to outrank Paper's dark palette.
+
+```css {title="assets/css/project.css"}
+:root {
+  --td-brand-copper: #a66722;
+  --td-brand-mark-from: #1d588c;
+  --td-brand-mark-to: #a66722;
+}
+
+[data-bs-theme='dark'],
+[data-td-preset='paper'][data-bs-theme='dark'] {
+  --td-brand-copper: #e0a35c;
+  --td-brand-mark-from: #7fb8e8;
+  --td-brand-mark-to: #e0a35c;
+}
+```
+
+| Property | Used for |
+| --- | --- |
+| `--td-brand-copper`, `--td-brand-copper-dim` | A warm secondary accent, used in the footer and Landing sections, and its muted form |
+| `--td-brand-mark-from`, `--td-brand-mark-to`, `--td-brand-mark-gradient` | The brand gradient, for example on the site name in the navbar |
+| `--td-brand-header-bg` | Navbar background |
+| `--td-brand-elev` | Overlay backgrounds |
+| `--td-brand-silk` | Secondary text |
+| `--td-brand-line-strong` | Strong rules |
+| `--td-brand-shadow-sm`, `--td-brand-shadow-md` | Shadows |
+
+Whatever you recolor, check hover, focus, disabled and selected states in both
+modes: body text needs 4.5:1 contrast and large text 3:1.
 
 ### Styles for a site-owned shell {#bundles}
 
-A page that keeps its own layout, such as a bespoke homepage, can borrow parts
-of the theme without the reading shell. Such a layout does not load `main`,
-the stylesheet of every OINK page. It asks for a smaller theme stylesheet by
-name:
+A page with its own layout, such as a hand-built home page, can use parts of
+the theme's styling without the reading shell. Instead of `main`, the
+stylesheet every OINK page loads, such a layout asks for a smaller stylesheet
+by name:
 
 | Name | Contents |
 | --- | --- |
 | `chrome` | Tokens, typography, the four palettes, the site navbar, and the language, theme and appearance controls |
-| `landing` | The Landing sections. Load it after `chrome` |
+| `landing` | The Landing sections; load it after `chrome` |
 | `search` | The command palette and local search |
 | `compare` | Duo View |
 
@@ -500,21 +488,12 @@ name:
 {{ end }}
 ```
 
-The partial returns the stylesheet as a Hugo resource and publishes it as
-`css/<name>.css`, one directory below the site root, where its `../webfonts/…`
-font references resolve. Nothing is compiled; the layout minifies and
-fingerprints the resource. An unknown name produces a build warning. These
-stylesheets follow the pinned theme version; do not copy them into the site.
-
-What not to do:
-
-- Do not edit any file inside the theme directory (`hugo mod` overwrites it);
-- Do not read the theme's layer files under `assets/css/td/` from your own templates. They are not a public interface; ask for a stylesheet by name;
-- Do not override `baseof.html` to change one color. If a design variable exists, use it. Otherwise, write the narrowest selector that works;
-- Do not reference a remote stylesheet or a font CDN.
-
-For additional third-party CSS, publish a local resource through
-`layouts/_partials/hooks/head-end.html`. Do not write a `<link>` in Markdown.
+The partial returns a Hugo resource published as `css/<name>.css`, one
+directory below the site root, where its `../webfonts/…` references resolve;
+your layout minifies and fingerprints it. An unknown name warns. These
+stylesheets follow the pinned theme version, so ask for them by name rather
+than copying them into the site, and do not read the layer files under the
+theme's `assets/css/td/`, which can change in any release.
 
 ## Verify {#verify}
 
@@ -522,20 +501,23 @@ For additional third-party CSS, publish a local resource through
 hugo --printPathWarnings
 ```
 
-- The build prints `Total in …` with no ERROR;
-- The page source has `data-td-typography="technical"` (or your chosen preset) on `<html>`;
-- In the browser the navbar shows your logo and site name, and the tab shows your favicon;
-- Switch to dark mode. Check body text, tables, callouts, code blocks, and focus rings again. Verify every color change in both modes;
-- Switch language and confirm the site name changes with it.
-
-To verify the font change, inspect a paragraph's `font-family` in the browser's
-developer tools. It should include your declared family. Check the rendered
-font as well to confirm that the local file or system fallback is being used.
+- The build ends with `Total in …` and reports no ERROR. Read any warnings: a
+  rejected color, font value or preset name is reported there and replaced by
+  the default.
+- The navbar shows your logo and site name, the browser tab shows your
+  favicon, and switching language switches the site name.
+- `<html>` carries the `data-td-typography` and `data-td-preset` values you
+  set.
+- In dark mode, body text, tables, callouts, code blocks and focus rings are
+  still readable. Check every color change in both modes and in each preset
+  you offer.
+- In the browser's developer tools, a paragraph's `font-family` lists your
+  family, and the rendered font is the file or system font you expect.
 
 ## Related {#related}
 
-- [Configuration](/docs/customize/config/#identity) — types and defaults of the brand parameters
+- [Configuration](/docs/customize/config/#identity) — types and defaults of the brand settings
 - [Navigation and menus](/docs/customize/navigation/) — navbar menu, page actions and footer data
-- [Layouts and page types](/docs/customize/layout/) — shell, sidebar and table of contents
+- [Layouts and page types](/docs/customize/layout/) — shells, sidebar, table of contents and page width
 - [Images](/docs/components/image/) — images in the body, light/dark pairs and captions
 - [Home and landing pages](/docs/customize/home/) — hero, sections and landing data

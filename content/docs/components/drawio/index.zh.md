@@ -1,18 +1,18 @@
 ---
 title: Draw.io
 linkTitle: Draw.io
-description: 把带着可编辑副本的 `.drawio.svg` 当普通图片放进页面，读者通过编辑按钮打开 Draw.io 编辑器改图。
+description: 把 Draw.io 导出的图当普通图片发布，读者可以在 Draw.io 编辑器里打开、修改并下载。
 weight: 140
 search_keywords: [drawio-server, Draw.io, diagrams.net, drawio, mxfile, 可编辑图, SVG, 编辑按钮]
 ---
 
-Draw.io 集成没有围栏也没有 shortcode，用的是普通 Markdown 图片。Draw.io 导出时勾上「Include a copy of my diagram」，SVG 或 PNG 里会带一份 `mxfile` 源码；主题的运行时识别这份副本后，给图片加一个编辑按钮。适合需要读者取走修改的图；只用于展示的图按普通[图片](/zh/docs/components/image/)处理。
+从 Draw.io 导出的图可以带着自己的源文件。把这样的导出文件当作普通 Markdown 图片放进页面，主题会给它加一个编辑按钮，在 Draw.io 编辑器里打开这张图；读者或同事可以直接修改并下载结果，不必对着截图重画。没有围栏，也没有 shortcode，唯一的要求是导出 SVG 或 PNG 时勾选「Include a copy of my diagram」。只供查看的图按普通[图片](/zh/docs/components/image/)处理即可。
 
 ## 最简例子 {#minimal}
 
-要显示编辑按钮，先设置 `params.drawio.enable: true`，并按[编辑器地址](#server)一节配置 `params.drawio.drawio_server`。未配置时，图仍按普通图片显示，不提供编辑功能。
+站点设置 `params.drawio.enable: true`，并在 `params.drawio.drawio_server` 里填好编辑器地址之后，编辑按钮才会出现，写法见[编辑器地址](#server)。在此之前，所有图都按普通图片显示。
 
-写法与普通图片相同，文件名不受限制，`.drawio.svg` 只是惯例。
+写法与普通图片相同。`.drawio.svg` 这个文件名只是方便你找出可编辑文件的惯例，主题并不看文件名。
 
 ```markdown {title="源码"}
 ![Hugo 构建流水线：content 目录经 Hugo 产出 public 目录](pipeline.drawio.svg)
@@ -22,14 +22,11 @@ Draw.io 集成没有围栏也没有 shortcode，用的是普通 Markdown 图片�
 ![Hugo 构建流水线：content 目录经 Hugo 产出 public 目录](pipeline.drawio.svg)
 {width="620" height="140"}
 
-这张图嵌着一份 `mxfile` 副本，因此被包进了 `.drawio` 容器。鼠标悬停或键盘聚焦时，
-右下角显示铅笔按钮；在触摸设备和强制颜色模式下，按钮始终可见。激活按钮后，
-在当前页面盖一层全屏 iframe，加载站点配置的编辑器。启用图片缩放时，编辑与缩放
-是同级的独立按钮，激活编辑不会同时打开缩放对话框。
+鼠标悬停在图上或键盘焦点移到图上时，右下角会出现一个铅笔按钮；在触屏设备与强制颜色模式下，按钮始终可见。点击按钮，站点配置的编辑器会铺满整个页面打开。同时开启了[图片缩放](/zh/docs/components/image/#zoom)时，编辑与缩放是两个独立的按钮，点编辑不会打开缩放对话框。
 
 ## 副本检测 {#detection}
 
-运行时的判断依据只有一条：文件内容里有没有 `mxfile` 字样，与文件名无关。下面这张同样是 SVG、同样是块级图片，但它是手写的，没有副本，也就没有按钮。
+起决定作用的是文件内容：嵌有 Draw.io 副本的导出文件会得到按钮，其它图片不会。下面这张手绘 SVG 与上面那张的写法、属性行完全相同，但它没有副本，所以没有按钮：
 
 ```markdown {title="源码"}
 ![文档外壳的三栏：侧栏、正文、目录](plain-shell.svg)
@@ -41,7 +38,7 @@ Draw.io 集成没有围栏也没有 shortcode，用的是普通 Markdown 图片�
 
 ## 带图注 {#caption}
 
-Draw.io 图片走的是普通图片渲染钩子，[图片](/zh/docs/components/image/)的属性照常可用。加 `caption` 得到带图注的 figure，编辑按钮仍然出现在图上。
+Draw.io 图由普通的图片渲染钩子处理，[图片](/zh/docs/components/image/)的所有属性都适用。加上 `caption` 得到带图注的 figure，编辑按钮仍在图上。
 
 ```markdown {title="源码"}
 ![Hugo 构建流水线](pipeline.drawio.svg)
@@ -53,7 +50,7 @@ Draw.io 图片走的是普通图片渲染钩子，[图片](/zh/docs/components/i
 
 ## 编号成书里的图 {#numbered}
 
-加 `{#id num=…}` 得到一张可交叉引用的编号图，与别的图片一样能被 `xref` 引用、进入图目录。
+加上 `{#id num=…}`，它就成为一张编号图，可以被 `xref` 引用，也会出现在图目录里：
 
 ```markdown {title="源码"}
 ![Hugo 构建流水线](pipeline.drawio.svg)
@@ -67,7 +64,7 @@ Draw.io 图片走的是普通图片渲染钩子，[图片](/zh/docs/components/i
 
 ## SVG 还是 PNG {#svg-or-png}
 
-两种都识别。Draw.io 导出 PNG 时同样能带上副本，存在 PNG 的文本块里，运行时的判断逻辑相同。
+两种都可以。PNG 导出把可编辑副本存放在图片的文本块里，按钮同样会出现：
 
 ```markdown {title="源码"}
 ![Hugo 构建流水线（PNG 导出）](pipeline.drawio.png)
@@ -77,35 +74,29 @@ Draw.io 图片走的是普通图片渲染钩子，[图片](/zh/docs/components/i
 ![Hugo 构建流水线（PNG 导出）](pipeline.drawio.png)
 {width="620" height="140"}
 
-文档里优先用 SVG：缩放不失真，文字是真实文本（可被搜索、可被读屏器读取），改动的 diff 也读得懂。图特别复杂、或目标平台不支持 SVG 时用 PNG。只有 PNG 能走 Hugo 的图片处理；SVG 上的处理操作会告警并保留原图。
+文档里优先用 SVG：放大缩小都清晰，图中文字是真实文本，搜索与读屏器都能读取，评审时 diff 也看得懂。图特别复杂、或者目标平台不支持 SVG 时再用 PNG。Hugo 的图片处理只对 PNG 生效；对 SVG 做处理会告警并保留原文件。
 
 ## 编辑流程 {#editing}
 
-按钮依次做三件事。
+编辑按钮把图交给编辑器，再把一个文件交还给读者，站点上的任何东西都不会改变。
 
 {{% steps %}}
 
-### 盖一层遮罩 {#editing-overlay}
+### 编辑器在页面上方打开 {#editing-overlay}
 
-OINK 1.3.0 使用全屏的 `<dialog class="drawioframe">`，其中包含 iframe。
-编辑器 URL
-保留 `drawio_server` 已有的查询参数和片段，并设置 `embed=1`、`ui=atlas`、
-`proto=json`、`saveAndEdit=1` 与 `noSaveBtn=1`。
-模态对话框包含本地化的关闭按钮，并约束键盘焦点。点击关闭按钮或背景可关闭。
-焦点在宿主对话框时，Escape 也可关闭；嵌入编辑器自行处理内部按键。关闭后焦点
-返回编辑按钮；若其他界面已经接管焦点，则保持该界面的焦点。
+页面上打开一个全屏对话框，里面是 Draw.io 编辑器，另有一个按读者语言显示的关闭按钮。键盘焦点被限制在对话框内。点关闭按钮、点击背景，或者在焦点不在编辑器内时按 Escape，都能关闭它；编辑器内部的按键由编辑器自己处理。关闭后焦点回到编辑按钮。
 
-### 把图送进编辑器 {#editing-load}
+### 图直接送进编辑器 {#editing-load}
 
-编辑器就绪后，运行时把这张图片的内容（含 `mxfile` 副本）作为 data URL 发进 iframe。这一步不经过你的服务器。
+编辑器就绪后，读者的浏览器把这张图连同嵌入的副本一起交给编辑器，图不经过你的网站服务器。
 
-### 保存与回写 {#editing-save}
+### 保存即下载新文件 {#editing-save}
 
-在编辑器里点保存，运行时让编辑器按原格式（SVG 或 PNG）导出，由浏览器下载成同名文件。运行时不写回仓库：把下载到的文件覆盖 `content/` 里那一份，再自行提交。
+在编辑器里保存，浏览器会按原来的格式（SVG 或 PNG）、用原来的文件名下载这张图。站点上的文件不会被改写：要发布改动，用下载的文件替换 `content/` 里的那一份，再提交。
 
 {{% /steps %}}
 
-编辑按钮供读者取走图去改，不是站点的在线编辑功能。
+这个按钮让读者把图带走修改，并不是站点的在线编辑功能。
 
 ## 编辑器地址 {#server}
 
@@ -116,29 +107,21 @@ params:
     drawio_server: https://drawio.internal.example/
 ```
 
-- `enable: true` 却没写 `drawio_server` 时会告警并关闭编辑；主题不代替站点选择公共服务。
-- 地址必须是 HTTP(S) URL 或本地路径；本地路径遵循 `baseURL` 中的部署子路径。
-  空白、控制字符、原始反斜杠、协议相对 URL（`//host/`）与其他 scheme 会告警并
-  关闭编辑。
-- 编辑过程必须留在组织内部时，部署一份[自托管编辑器](https://github.com/jgraph/docker-drawio)，把地址指向它。
-- 公共端点 `https://embed.diagrams.net/` 可用，读者的图会进入第三方页面。
+- 只写 `enable: true` 而没有 `drawio_server` 时会告警，编辑功能保持关闭。主题从不替你选择公共服务。
+- 地址必须是 `http(s)` URL 或本地路径；本地路径会跟随 `baseURL` 里的部署子路径。含空白、控制字符、反斜杠，或者写成协议相对 URL（`//host/`）、使用其它 scheme 时，会告警并关闭编辑功能。
+- 地址里已有的查询参数与片段（例如 `?lang=en`）会保留，主题再加上 Draw.io 嵌入模式所需的参数（`embed=1`、`proto=json` 等）。
+- 图不能离开组织内部时，部署一份[自托管编辑器](https://github.com/jgraph/docker-drawio)，把地址指向它。
+- 也可以用公共编辑器 `https://embed.diagrams.net/`，但读者的图会在第三方页面里打开。
 
-这两个键的完整定义在[配置总览](/zh/docs/customize/config/)。
+这两个键的定义见[配置总览](/zh/docs/customize/config/)。
 
 ## 输出形态 {#outputs}
 
-| 输出 | 呈现 |
-| --- | --- |
-| HTML | 普通 `<img>`（或 `<figure>`）；启用后运行时把带副本的图包进 `<div class="drawio">` 并加按钮 |
-| 打印 | 图片照常打印；该输出不加载 Draw.io 运行时，也不创建编辑按钮 |
-| Markdown | 普通 Markdown 图片语法 |
-| RSS | 普通 `<img>`，绝对 URL，没有按钮 |
-
-图片本身在四态里都在，编辑按钮是增量能力。
+在打印、RSS 与页面的 Markdown 输出里，这张图就是一张普通图片；只有 HTML 页面才有编辑按钮。
 
 ## 参数参考 {#reference}
 
-没有专属的围栏或 shortcode 参数。图片属性行沿用[图片](/zh/docs/components/image/)那一套（`caption` `width` `height` `link` `#id` `num` `command` `options`）。
+Draw.io 在页面上没有专属参数，属性行沿用[图片](/zh/docs/components/image/)那一套：`caption`、`width`、`height`、`link`、`#id`、`num`、`command` 与 `options`。
 
 站点参数（`hugo.yml`）：
 
@@ -150,10 +133,11 @@ params:
 
 ## 限制与常见问题 {#limits}
 
-- 运行时只在渲染内容含 `.svg` 或 `.png` 候选图的页面加载；同一 URL 的图片合并检查，只读取一次以查找 `mxfile`。
-- 导出时忘了勾「Include a copy of my diagram」，图就只是一张图，没有按钮。
-- 编辑依赖编辑器，且不写回仓库：离线环境里图片正常显示，按钮点了没有反应；编辑器保存等于浏览器下载，替换文件与提交都要手动做。
-- 配色不跟随深浅色：导出的 SVG 颜色是固定的；把填充设成 `none`、线条与文字用中性灰，两种模式下都能看（本页这两张图就是这么做的）。
+- 只有含 PNG 或 SVG 图片的页面才会检查可编辑副本，每个不同的图片地址只读取一次。
+- 导出时没有勾选「Include a copy of my diagram」的文件不带副本，也就没有按钮。
+- 编辑需要能访问编辑器。离线时图片照常显示，但编辑器无法加载。
+- 保存只是下载一个文件，替换仓库里的文件并提交要你自己完成。
+- 导出的 SVG 颜色是固定的，不会跟随深浅色。像本页这两张图一样，把填充设为 `none`、线条与文字用中性灰，两种模式下都清晰可读。
 
 ## 相关 {#related}
 

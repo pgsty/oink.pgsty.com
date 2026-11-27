@@ -9,21 +9,23 @@ aliases:
   - /docs/configure/overview/
 ---
 
-This page is the complete reference for site-level parameters in `hugo.yml`.
-Every key that the theme reads appears in a table below with its type, default,
-short description, and a link to its dedicated guide for copy-ready examples.
-For page-level front matter parameters, see
+Every site-wide setting OINK reads lives in `hugo.yml` and appears in a table
+on this page with its type, its default and a link to the guide that shows it
+in use. The defaults are conservative: local search, image zoom, comments, page
+feedback and the light/dark menu stay off until you turn them on, so your
+configuration only needs the keys you want to change. There is no master
+switch and no `params.oink.*` namespace, so a key that is not on this page does
+nothing. Settings for a single page are in
 [Page parameters](/docs/write/frontmatter/).
 
-The tables are grouped by function, with one `##` heading per group (so you can
-link directly to anchors such as `/docs/customize/config/#sidebar`). **An empty
-default column means the theme has no default**—if you omit the key, that
-feature stays off.
+An empty Default cell means the theme has no default and the feature stays off
+until you set the key. Each group has its own anchor, such as
+`/docs/customize/config/#sidebar`.
 
 ## The layers of hugo.yml {#layers}
 
-An OINK site's configuration has four kinds of key. Choose the layer that
-controls the feature you want to change:
+Configuration keys come in four layers, and the layer tells you where a key's
+behavior is documented:
 
 | Layer | Examples | Who defines it |
 | --- | --- | --- |
@@ -32,8 +34,8 @@ controls the feature you want to change:
 | `params.ui.*` | `navbar_enabled` `sidebar_width_min` `typography` `pager_types` | The shell, navigation and reading interface |
 | `params.<runtime>` | `mermaid` `plantuml` `drawio` `markmap` | Each content runtime's own switch and endpoint |
 
-A minimal working configuration needs only the first two layers (including the
-three Goldmark settings that power OINK's native Markdown components):
+A working site needs only the first two layers, including the Goldmark
+settings that OINK's Markdown components depend on:
 
 ```yaml {title="hugo.yml"}
 title: Product Docs
@@ -63,28 +65,57 @@ params:
   github_repo: https://github.com/example/product-docs
 ```
 
-## Configuration principles {#principles}
+## When a value is wrong {#principles}
 
-- **The theme's defaults are conservative; write only the keys you change.** Local search, image zoom, comments, feedback, and the light/dark menu are off by default. The site chooses its policy for these interactive features. Add keys as needed. Reducing a "complete configuration" can leave unnecessary keys.
-- **There is no theme master switch.** There is no `oink.enabled` or `params.oink.*` namespace. No option switches between a "Docsy shell" and an "OINK shell". A switch that is absent from this page does not exist.
-- **An invalid value warns and falls back to the documented default.** The setting `params.ui.typography: solarized` reports `invalid params.ui.typography "solarized" (allowed: technical | system) -- using "technical"`. The site still builds. The settings `footer_style: thin`, `page_width: huge`, and `section_index: grid` behave the same way. One typo therefore changes one setting instead of producing HTTP 500 on every URL under `hugo server`.
-- **One warning keeps the value instead of dropping it.** If `theme_color` is below AA body-text contrast (4.5:1) against the theme canvas, the color still appears in output. The author may choose it for a custom canvas or brand requirement. The warning includes the `ignoreLogs` id that can silence it. Use a darker color or silence the warning with one configuration line. Only an unparseable hex value is discarded and falls back to the default palette.
+OINK checks every value it reads. When it cannot use one, such as a misspelled
+choice, a string where a boolean belongs, or a color that is not hex, it prints
+a warning that names the key, the value and the fallback, then continues with
+the documented default:
 
-- **The theme itself never stops the build.** Its templates contain no `errorf`. Every invalid value uses the warning and fallback behavior above. Draw.io and Algolia warn and stay off when their required service configuration is missing. OINK 1.4.0's PlantUML renderer needs no endpoint for local mode; an invalid explicit endpoint warns and disables rendering. The theme never chooses a public service for you. Incomplete upstream attribution produces a warning and omits the entire notice. A partial notice could appear complete. Hugo can still stop a build if a content reference resolves to nothing or its version is below `module.hugoVersion.min`.
+```text
+WARN invalid params.ui.typography "solarized" (allowed: technical | system) -- using "technical"
+```
+
+The site keeps building, so a typo under `hugo server` changes one setting
+instead of taking every page down. The same applies to front matter overrides,
+where the warning also names the page. Read the warnings after each change,
+because a warning usually means a feature you expected is running on its
+default or is switched off; [Verifying a configuration change](#verify) lists
+the common ones.
+For the same reason, leave Hugo's `--panicOnWarning` off: OINK reports
+fallbacks as warnings on purpose, and the flag would turn each one into a
+failed build.
+
+Features that depend on an outside service stay off until their configuration
+is complete. Draw.io without `drawio_server`, maps without `tiles` and
+`attribution`, Algolia without all three keys and giscus without its four
+required values each warn and render nothing; the theme never substitutes a
+public service of its own choosing. Upstream attribution that is missing
+required fields also warns and is left out entirely, because a partial credit
+line would look complete.
+
+One check keeps your value. If `theme_color` reads below 4.5:1, the AA
+contrast for body text, against the theme's canvas, the color still ships,
+since a custom canvas or a brand rule may justify it. The warning prints an
+`ignoreLogs` id you can add to silence it. Only a value that is not a hex color
+is dropped, leaving the default palette.
+
+Hugo itself can still stop a build: when a content reference resolves to no
+page, or when Hugo is older than `module.hugoVersion.min`.
 
 ## Page-level override precedence {#overrides}
 
-Hugo's `.Param` lookup lets you override most parameters per page. It applies
-the following precedence, from highest to lowest:
+Most parameters can be overridden for one page or a whole section. Hugo's
+`.Param` lookup takes the first value it finds, in this order:
 
 1. The page's own front matter;
-2. `cascade` in an ancestor section's `_index.md` (nearer wins);
+2. `cascade` in an ancestor section's `_index.md` (the nearest wins);
 3. Site `params`.
 
-**Remove the `ui.` prefix in front matter.** The site key
-`params.ui.reading_time` becomes `reading_time` on a page. The theme ignores a
-front matter `ui:` block and does not report it. If a setting has no effect,
-first check [Page parameters](/docs/write/frontmatter/).
+**Drop the `ui.` prefix in front matter.** The site key `params.ui.reading_time`
+becomes `reading_time` on a page. The theme silently ignores a `ui:` block in
+front matter, so when an override seems to have no effect, check the key name
+against [Page parameters](/docs/write/frontmatter/) first.
 
 ```yaml {title="content/docs/wide-reference.md"}
 ---
@@ -108,14 +139,14 @@ cascade:
 ---
 ```
 
-Use overrides for actual content differences. Separate visual systems on
-individual pages can become inconsistent after a theme upgrade.
+Override where the content genuinely differs. A page that rebuilds its own
+visual system out of overrides tends to drift out of step with the rest of the
+site after a theme upgrade.
 
 ## The three Goldmark prerequisites {#goldmark}
 
-Hugo does **not** merge a theme module's `markup` configuration into the site.
-Put these three prerequisites in the site's own `hugo.yml`. Without them,
-attribute lines, component HTML, and mathematics do not work:
+Hugo does **not** merge a theme module's `markup` settings into the site, so
+these lines belong in your own `hugo.yml`:
 
 ```yaml {title="hugo.yml"}
 markup:
@@ -141,335 +172,341 @@ markup:
     endLevel: 4
 ```
 
-Without `attribute.block`, `{.fields}`, `{.steps}`, and `{caption=…}` render as
-literal text. Without `passthrough`, `\(x\)` does not become a formula.
-Without `unsafe`, Hugo escapes the structure of steps and cards.
+The first three settings are the prerequisites every OINK site needs; the rest
+switch on math, theme-aware highlighting and a deeper outline. Each one shows
+a visible symptom when it is missing:
 
-The setting `renderer.unsafe: true` also permits raw HTML in Markdown. It is
-for trusted authors and is not a submission filter. Review untrusted content
-in the contribution process.
+| Setting | Without it |
+| --- | --- |
+| `parser.attribute.block: true` | Attribute lines such as `{.fields}`, `{.steps}` and `{caption=…}` print as literal text |
+| `parser.wrapStandAloneImageWithinParagraph: false` | A standalone image cannot take an attribute line, so captions and numbered figures do not work |
+| `renderer.unsafe: true` | Hugo escapes the HTML that steps, cards and `{{%/* … */%}}` shortcodes produce |
+| `extensions.passthrough` | `\(x\)` and `$$…$$` stay as text instead of becoming formulas |
+| `highlight.noClasses: false` | Code is colored with inline styles, so it cannot switch palette with dark mode |
+| `tableOfContents.endLevel: 4` | Optional: without it the outline stops at `###` headings |
+
+`renderer.unsafe: true` also lets raw HTML in Markdown through. That suits a
+team writing its own documentation, but it is not a filter: if the site
+publishes contributions from untrusted authors, review them before they merge.
 
 ## Site identity and brand {#identity}
 
-Hugo's own top-level keys:
+Hugo's own keys name the site and turn on Git metadata:
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
 | `title` | string | | Site name, shown in the navbar, `<title>` and the footer |
 | `baseURL` | string | | The production domain. Include the path segment for a subpath deployment |
-| `copyright` | string | | Fallback for the copyright line, rendered as HTML when `params.copyright` is unset |
-| `enableGitInfo` | boolean | false | Required before "last modified" and commit information exist |
+| `copyright` | string | | Fallback copyright line, rendered as HTML when `params.copyright` is unset |
+| `enableGitInfo` | boolean | false | Needed for "last modified" dates and commit information |
 | `enableRobotsTXT` | boolean | false | Generates `robots.txt` |
-| `enableEmoji` | boolean | false | Allows `:smile:` shortcodes |
+| `enableEmoji` | boolean | false | Allows `:smile:` emoji shortcodes |
 {.fields meta="type default"}
 
-Theme parameters:
+The theme's keys add the logo, footer text and accent color:
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.logo` | string | icons/logo.svg | Brand mark. May use an `assets/` resource or a `static/` path. See [Brand and appearance](/docs/customize/brand/#logo) |
-| `params.wordmark` | string | | Horizontal wordmark. If set, replaces "icon + site name" in the navbar |
-| `params.description` | string | | Site description, the meta fallback when a page has no `description` |
-| `params.copyright` | string or map | | A string renders as Markdown. A map accepts `authors`, `from_year`, and `to_year`. The value `present` means this year |
-| `params.footer_center_info` | string | Powered by [Oink](https://oink.pgsty.com) | Inline Markdown in the footer center. An empty string hides it |
-| `params.author` | string or map | | The RSS author. A map accepts `name` and `email` |
-| `params.ui.theme_color` | string | | `#rgb`/`#rrggbb` hex color for shell accent backgrounds. Does not affect prose links or inline code. See [Brand and appearance](/docs/customize/brand/#theme-color) |
-| `params.ui.theme_color_dark` | string | derived | The dark accent color. If omitted, the theme derives it from `theme_color` until it meets AA contrast on the dark canvas |
+| `params.logo` | string | icons/logo.svg | Brand mark, from an `assets/` resource or a `static/` path. See [Brand and appearance](/docs/customize/brand/#logo) |
+| `params.wordmark` | string | | Horizontal wordmark. When set, it replaces "icon + site name" in the navbar |
+| `params.description` | string | | Site description, used as the meta description when a page has none |
+| `params.copyright` | string or map | | A string renders as Markdown. A map takes `authors`, `from_year` and `to_year`; `present` means the current year |
+| `params.footer_center_info` | string | Powered by [Oink](https://oink.pgsty.com) | Inline Markdown in the middle of the footer. An empty string hides it |
+| `params.author` | string or map | | The RSS author. A map takes `name` and `email` |
+| `params.ui.theme_color` | string | | `#rgb` or `#rrggbb` accent for the shell's colored backgrounds. Prose links and inline code keep their own colors. See [Brand and appearance](/docs/customize/brand/#theme-color) |
+| `params.ui.theme_color_dark` | string | derived | The dark-mode accent. When omitted, the theme lightens `theme_color` until it meets AA contrast on the dark canvas |
 {.fields meta="type default"}
 
-There is no favicon parameter. The theme scans `static/` for conventional names
-(`favicon.ico`, `favicon.svg`, `favicon-NxN.png`, `apple-touch-icon.png`,
-`apple-touch-icon-NxN.png`). See
+Favicons have no parameter: the theme picks up the conventional file names in
+`static/` (`favicon.ico`, `favicon.svg`, `favicon-NxN.png`,
+`apple-touch-icon.png`, `apple-touch-icon-NxN.png`). See
 [Brand and appearance](/docs/customize/brand/#favicon).
 
 ## Shell types and section roots {#shell}
 
-The shell follows the **page type**, not the path. Documentation can live in any
-directory, with a cascade giving it `type: docs`.
+The reading shell follows a page's **type**, not its folder, so documentation
+can live in any directory as long as a cascade gives it `type: docs`.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.shell_types` | list | [docs, book, blog, swagger, expo] | Which types use the reading shell with a sidebar — see [Layouts and page types](/docs/customize/layout/#shell-types) |
-| `params.ui.docs_section` | string | docs | The documentation section's root directory name, used for navigation resolution only |
-| `params.ui.blog_section` | string | blog | The blog section's root directory name |
-| `params.ui.docs_sidebar_root` | enum | section | With `section`, a docs sidebar starts at the documentation section. With `home`, it starts at the site home. An invalid value warns and uses a fallback |
-| `params.ui.quick_links` | list | [docs_section, blog_section] | Top-level menu identifiers listed by the command palette on an empty query — see [Command palette](/docs/customize/panel/) |
-| `params.ui.sidebar_root_enabled` | boolean | true | Allows a subsection to become its own sidebar tree with `sidebar_root_for: self` |
-| `params.ui.sidebar_root_menu` | boolean | true | Shows the section switcher above the sidebar. With only one entry, it becomes a plain link |
-| `params.ui.section_index` | enum | list | Child list style on a section index: `list` or `cards`, overridable per section |
-| `params.ui.section_index_columns` | integer | 2 | Column count when `section_index: cards` |
+| `params.ui.shell_types` | list | [docs, book, blog, swagger, expo] | Types that get the reading shell with a sidebar. See [Layouts and page types](/docs/customize/layout/#shell-types) |
+| `params.ui.docs_section` | string | docs | Folder name of the documentation section, used only to resolve navigation |
+| `params.ui.blog_section` | string | blog | Folder name of the blog section |
+| `params.ui.docs_sidebar_root` | enum | section | Where a docs sidebar starts: `section` at the documentation section, `home` at the site home |
+| `params.ui.quick_links` | list | [docs_section, blog_section] | Top-level menu identifiers the command palette lists before you type. See [Command palette](/docs/customize/panel/) |
+| `params.ui.sidebar_root_enabled` | boolean | true | Lets a subsection become its own sidebar tree with `sidebar_root_for: self` |
+| `params.ui.sidebar_root_menu` | boolean | true | Section switcher above the sidebar. With a single entry it becomes a plain link |
+| `params.ui.section_index` | enum | list | How a section index lists its children: `list` or `cards`. Overridable per section |
+| `params.ui.section_index_columns` | integer | 2 | Columns when `section_index: cards` |
 {.fields meta="type default"}
 
 ## Expo albums {#expo}
 
-OINK 1.3.0 adds `expo` to the default
-`shell_types` list and supports these settings:
+Site-wide defaults for [Expo albums](/docs/write/expo/). A page's own `expo`
+block replaces this block as a whole and takes built-in defaults for the fields
+it leaves out, and a reader's saved mode and size override both. The complete
+rules are in [Expo defaults](/docs/write/expo/#defaults).
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.expo.images` | string | `images/*` | Pattern for image resources in the bundle |
-| `params.ui.expo.mode` | enum | `wall` | `wall`, `cards`, or `seamless` |
-| `params.ui.expo.size` | integer | `240` | Target size from 160 to 360 CSS pixels |
+| `params.ui.expo.images` | string | `images/*` | Pattern that selects the image resources in the page bundle |
+| `params.ui.expo.mode` | enum | `wall` | `wall`, `cards` or `seamless` |
+| `params.ui.expo.size` | integer | `240` | Target tile size, from 160 to 360 CSS pixels |
 {.fields meta="type default"}
-
-A page's `expo` block replaces the site block. Absent fields use built-in
-defaults. Stored reader choices override the author defaults for mode and size.
-See [Expo defaults](/docs/write/expo/#defaults) for the complete rules.
 
 ## Blog {#blog}
 
-These settings shape a blog section. They apply to the section named by
-`params.ui.blog_section`, and each can be overridden per section through front
-matter or a `cascade` on the blog root.
-
-The [layout guide](/docs/write/blog/#list) compares rows, cards, tables, and
-galleries. OINK v1.4.0 supports all four layouts and the `blog_gallery` settings
-below.
+These keys shape the section named by `params.ui.blog_section`, and each can be
+overridden for one section through front matter or a `cascade` on the blog
+root. The [blog layout guide](/docs/write/blog/#list) compares the four index
+layouts side by side.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.featured_image` | enum | none | Controls the article's featured image on single pages and section indexes. The mode `none` renders nothing. The mode `banner` shows a 16:9 figure above the title. The mode `wash` shows the image behind the article header at a tenth of its opacity. The mode `hero` uses a full-bleed shell background and moves the opening down. It uses the same image as the page card and `og:image`, so they cannot differ. Without an image, every mode renders nothing |
-| `params.ui.blog_index` | enum | list | `list` shows horizontal entries, `cards` shows regular image cards, `table` shows compact rows, and `gallery` shows linked covers. All sort by date, newest first; `table` always lists the complete section without pagination |
-| `params.ui.blog_index_columns` | integer | 3 | Column count for `blog_index: cards`. Regardless of this value, uses two columns between md and xl breakpoints and one below md |
-| `params.ui.blog_index_size` | integer | 12 | Posts per page for `list`, `cards`, `gallery`, and all four views when switching is enabled. A standalone `table` ignores it |
-| `params.ui.blog_index_toggle` | boolean | false | Publishes all four layouts and lets readers cycle through `list` → `cards` → `table` → `gallery`, remembering their choice. When false, publishes only the configured layout |
-| `params.ui.blog_gallery.mode` | enum | wall | Gallery arrangement: `wall` has 6px gaps, `seamless` has no gaps, and `cards` uses masonry with visible captions. This is independent of the outer `blog_index` layout |
-| `params.ui.blog_gallery.size` | integer | 240 | Target gallery tile size, 160–360 CSS pixels. Does not set the number of posts per page |
-| `params.ui.toc_style` | enum | fixed | Right-rail presentation. The mode `fixed` pins a panel to the viewport. The mode `flow` uses a wider panel in content flow. It starts with the article and pins only on scroll |
-| `params.ui.toc_taxonomies` | boolean | true | Taxonomy term clouds in the right rail. If the rail has neither a table of contents nor clouds, it renders nothing |
+| `params.ui.featured_image` | enum | none | How a post's featured image appears on its page and in section indexes: `none` shows nothing, `banner` a 16:9 figure above the title, `wash` the image behind the article header at one-tenth opacity, `hero` a full-bleed background behind the shell that moves the opening down. It is the same image as the post card and `og:image`, so the three always agree. Without an image, every mode shows nothing |
+| `params.ui.blog_index` | enum | list | `list` horizontal entries, `cards` image cards, `table` compact rows, `gallery` linked covers. All are newest first; `table` always lists the whole section on one page |
+| `params.ui.blog_index_columns` | integer | 3 | Columns for `blog_index: cards` from the xl breakpoint up. Between md and xl there are always two columns, below md one |
+| `params.ui.blog_index_size` | integer | 12 | Posts per page for `list`, `cards` and `gallery`, and for all four layouts when `blog_index_toggle` is on. A standalone `table` ignores it |
+| `params.ui.blog_index_toggle` | boolean | false | Publishes all four layouts and lets readers cycle `list` → `cards` → `table` → `gallery`, remembering their choice. When false, only the configured layout is published |
+| `params.ui.blog_gallery.mode` | enum | wall | Tile arrangement inside `gallery`: `wall` with 6px gaps, `seamless` with none, `cards` as a masonry with visible captions. Independent of `blog_index` |
+| `params.ui.blog_gallery.size` | integer | 240 | Target gallery tile size, 160–360 CSS pixels. It does not change the number of posts per page |
+| `params.ui.toc_style` | enum | fixed | Right-rail presentation: `fixed` pins a panel to the viewport; `flow` uses a wider panel that starts level with the article and pins only once you scroll |
+| `params.ui.toc_taxonomies` | boolean | true | Taxonomy term clouds in the right rail. A rail with neither an outline nor clouds is not rendered |
 {.fields meta="type default"}
 
-A page or cascade `blog_gallery` block replaces the whole site block. Missing
-fields use `wall` and `240`; invalid values warn and fall back to those
-defaults. Saved gallery arrangement and size override the author defaults and
-are independent of Expo preferences. See [Gallery](/docs/write/blog/#list-gallery).
+A page or cascade `blog_gallery` block replaces the whole site block. Fields it
+leaves out take `wall` and `240`. A reader's saved arrangement and size
+override the author's defaults and are kept separately from Expo preferences.
+See [Gallery](/docs/write/blog/#list-gallery).
 
-Article authorship and series are taxonomies rather than parameters — see
+Authors and series are taxonomies rather than parameters; see
 [Taxonomies](/docs/customize/taxonomy/#authors) and
 [Writing a blog](/docs/write/blog/).
 
 ## Navbar and footer {#navbar-footer}
 
+The navbar, the footer and the page-action menu at the right end of the
+breadcrumb row:
+
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.navbar_enabled` | boolean | true | Whether the site navbar renders; overridable with a top-level `navbar_enabled` on a page — see [Navigation and menus](/docs/customize/navigation/#navbar) |
-| `params.ui.navbar_autohide` | boolean | false | The navbar retracts above the viewport. It returns when the pointer enters the wake zone. Inactive below 768px and on coarse pointers |
-| `params.ui.footer_style` | enum | fat | `fat` is a multi-column grid plus the copyright line, `slim` is the copyright line only, `none` renders nothing. An invalid value warns and falls back |
-| `params.ui.dark_mode` | boolean or map | false | `true` enables the dark palette and theme control. For only the control, use `dark_mode: { show_menu: true }` |
-| `params.ui.breadcrumb` | boolean | true | Breadcrumbs; `false` turns them off. A top-level section already omits a one-level breadcrumb |
-| `params.ui.page_context_menu.enable` | boolean | true | The page action split button beside the title |
-| `params.ui.page_context_menu.assistant_links` | boolean | false | Shows "Open in ChatGPT / Claude"; clicking sends the full URL off-site |
-| `params.ui.page_context_menu.links` | list | [] | Custom external actions; `url` supports the `{url}`, `{title}` and `{markdown_url}` placeholders |
-| `params.ui.github_stars` | string or number | | Star count on the navbar GitHub mark. Uses a local constant and makes no request |
-| `params.ui.alt_site` | map | | Sibling-site link in a single-language footer. Requires both `label` and an absolute `http(s)` `url` |
+| `params.ui.navbar_enabled` | boolean | true | Whether the site navbar renders. A page overrides it with a top-level `navbar_enabled`. See [Navigation and menus](/docs/customize/navigation/#navbar) |
+| `params.ui.navbar_autohide` | boolean | false | The navbar slides up out of view and returns when the pointer reaches its wake zone at the top. Inactive below 768px and on coarse pointers |
+| `params.ui.footer_style` | enum | fat | `fat` is a multi-column grid plus the copyright line, `slim` the copyright line only, `none` nothing |
+| `params.ui.dark_mode` | boolean or map | false | `true` turns on the dark palette and the light/dark control. `dark_mode: { show_menu: true }` adds only the control |
+| `params.ui.breadcrumb` | boolean | true | Breadcrumbs above the title. A top-level section never shows a one-level breadcrumb |
+| `params.ui.page_context_menu.enable` | boolean | true | The page-action split button at the right end of the breadcrumb row |
+| `params.ui.page_context_menu.assistant_links` | boolean | false | Adds "Open in ChatGPT" and "Open in Claude". A click sends the page's full URL to that site |
+| `params.ui.page_context_menu.links` | list | [] | Your own external actions. `url` may use the `{url}`, `{title}` and `{markdown_url}` placeholders |
+| `params.ui.github_stars` | string or number | | Star count on the navbar GitHub mark. It is a constant you write; the page makes no request |
+| `params.ui.alt_site` | map | | Link to a sibling site in a single-language footer. Needs both `label` and an absolute `http(s)` `url` |
 {.fields meta="type default"}
 
-The fat footer's column data comes from `data/footer/<language>.yaml` rather
-than from a parameter — see
-[Navigation and menus](/docs/customize/navigation/#footer).
+The fat footer's columns come from `data/footer/<language>.yaml`, not from a
+parameter; see [Navigation and menus](/docs/customize/navigation/#footer).
 
 ## Sidebar {#sidebar}
+
+How the left navigation tree renders. Its structure comes from the `content/`
+folders ([Organizing content](/docs/write/organize/)), and
+[Layouts and page types](/docs/customize/layout/#sidebar) shows these keys in
+use.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `params.ui.sidebar_menu_compact` | boolean | true | Expands only the current branch and its neighbours |
 | `params.ui.sidebar_menu_foldable` | boolean | true | Lets the reader expand and collapse sections |
-| `params.ui.sidebar_menu_truncate` | integer | 2000 | Maximum rendered entries in one section. Truncates the remaining entries |
-| `params.ui.sidebar_cache_limit` | integer | 500 | At this page count, reuses visible neutral navigation markup for matching language/root/effective settings. The browser adds active state |
-| `params.ui.sidebar_width_min` | integer | 220 | Lower bound in pixels for drag-resizing on the desktop |
-| `params.ui.sidebar_width_max` | integer | 480 | Upper bound in pixels for drag-resizing |
-| `params.ui.sidebar_item_overflow` | enum | ellipsis | `ellipsis` truncates a long title, `wrap` wraps it |
-| `params.ui.sidebar_icon_policy` | enum | all | Icon density: `all` everywhere, `groups` only on the root and nodes with children, `none` nowhere. An invalid value warns and falls back to `all` |
+| `params.ui.sidebar_menu_truncate` | integer | 2000 | Most entries rendered in one section; the rest are cut |
+| `params.ui.sidebar_cache_limit` | integer | 500 | From this page count on, pages that share a language, sidebar root and effective settings reuse one copy of the navigation markup, and the browser marks the active entry |
+| `params.ui.sidebar_width_min` | integer | 220 | Narrowest width, in pixels, the reader can drag the sidebar to on the desktop |
+| `params.ui.sidebar_width_max` | integer | 480 | Widest width, in pixels, for drag-resizing |
+| `params.ui.sidebar_item_overflow` | enum | ellipsis | A long title is cut with `ellipsis` or wraps with `wrap` |
+| `params.ui.sidebar_icon_policy` | enum | all | Icon density: `all` everywhere, `groups` only on the root and on entries with children, `none` nowhere |
 | `params.ui.sidebar_expand_levels` | integer | 2 | Tree levels expanded by default |
-| `params.ui.sidebar_headings` | boolean or integer | false | For `type: book` only. Expands a heading branch below the current sidebar row. Accepts an integer from 2 to 4. The value `true` means 2 |
-| `params.ui.sidebar_enabled` | boolean | true | The left sidebar. The value `false` disables it, usually per page instead of per site |
-| `params.ui.taxonomy_icons` | map | | Right-column group icons by taxonomy plural, for example `tags: fa-solid fa-tags` |
+| `params.ui.sidebar_headings` | boolean or integer | false | `type: book` only: shows the current page's headings as a branch under its sidebar row. Takes an integer from 2 to 4; `true` means 2 |
+| `params.ui.sidebar_enabled` | boolean | true | The left sidebar. Usually turned off per page rather than for the whole site |
+| `params.ui.taxonomy_icons` | map | built-in | Icons per taxonomy, keyed by plural. Each taxonomy has two: `taxonomy` for the whole classification, such as a right-rail cloud heading, and `term` for one term's badge. A string such as `tags: fa-solid fa-tags` sets both; a map with `taxonomy` and `term` sets them separately, and a key it leaves out keeps the built-in. Built-in pairs cover `tags`, `categories`, `modules`, `authors` and `series`; any other taxonomy uses a generic shapes icon |
 {.fields meta="type default"}
-
-For sidebar use, see [Layouts and page types](/docs/customize/layout/#sidebar).
-The tree uses the structure of `content/`. See
-[Organizing content](/docs/write/organize/).
 
 ## Table of contents {#toc}
 
-Hugo's configuration sets the outline levels. The theme controls only tracking
-behavior:
+Hugo decides which heading levels the right-hand outline collects; the theme
+only controls how it follows your reading. Hide the outline on one page with
+`notoc: true` ([Page parameters](/docs/write/frontmatter/)).
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `markup.tableOfContents.startLevel` | integer | 2 | Hugo's own: the highest heading level collected |
 | `markup.tableOfContents.endLevel` | integer | 3 | Hugo's own: the lowest heading level collected |
-| `params.ui.scroll_spy` | boolean | false | Quiet 1.x compatibility no-op; the normal shell runtime always tracks the active outline heading and this key emits no asset |
+| `params.ui.scroll_spy` | boolean | false | No effect: the outline always highlights the current heading. Safe to delete from older configurations |
 {.fields meta="type default"}
-
-Hide the outline on one page with the front matter `notoc: true` — see
-[Page parameters](/docs/write/frontmatter/).
 
 ## Pager and page end {#page-end}
 
-Page-end components have a fixed order: share → feedback → page information →
-pager → comments. Each has its own switch. Backlinks appear in the right rail
-beside the table of contents.
+The blocks at the end of a page always come in the same order: share,
+feedback, page information, pager, comments. Each has its own switch.
+Backlinks sit in the right rail beside the outline.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.share` | list | [] | Page-end share targets, in the order given, from `x` `bluesky` `mastodon` `facebook` `linkedin` `reddit` `hackernews` `telegram` `whatsapp` `line` `pinterest` `weibo` `chatgpt` `claude` `email` `copy`. An empty list disables the bar. Each target is a plain intent link. There is no SDK, iframe, third-party script, or share count. See [Writing a blog](/docs/write/blog/#share). An unknown target warns and is discarded |
-| `params.ui.pager_types` | list | [docs, book, blog] | Types that show previous / next links. To disable them on a page, use front matter `pager: false`. An unknown type warns and is discarded |
-| `params.ui.annotation` | boolean | true | The "last modified" and provenance block at the end of the body; the upstream attribution line is driven by the page's `upstream_link` family — see [Page parameters](/docs/write/frontmatter/#upstream) |
-| `params.ui.backlinks` | boolean | false | Lists the pages that link to this one as a "Backlinks" group in the right rail beside the table of contents, derived at build time from ordinary links — see [Navigation and menus](/docs/customize/navigation/#backlinks) |
-| `params.ui.compare` | boolean | false | Adds a two-pane Duo View to Docs, Book, and blog pages that have a same-origin HTML translation. A language can set it to `false` to opt out — see [Duo view](/docs/customize/i18n/#bilingual-view) |
-| `params.ui.translation_notice` | language code or false | false | The language code of the authoritative version, so a translated page shows a line pointing back at it; a page opts out with `translation_notice: false` |
-| `params.ui.reading_time` | boolean | false | Shows a reading time under the page title |
-| `params.ui.book_draft_banner` | boolean | false | Adds a banner at the top of a draft Book page |
+| `params.ui.share` | list | [] | Share targets at the page end, in the order listed, chosen from `x` `bluesky` `mastodon` `facebook` `linkedin` `reddit` `hackernews` `telegram` `whatsapp` `line` `pinterest` `weibo` `chatgpt` `claude` `email` `copy`. An empty list hides the bar. Each target is a plain link, with no SDK, iframe, third-party script or share count. An unknown target warns and is dropped. See [Writing a blog](/docs/write/blog/#share) |
+| `params.ui.pager_types` | list | [docs, book, blog] | Types that show previous and next links. Turn them off on one page with `pager: false`. An unknown type warns and is dropped |
+| `params.ui.annotation` | boolean | true | The "last modified" and provenance block at the end of the body. Upstream attribution comes from the page's `upstream_link` keys; see [Page parameters](/docs/write/frontmatter/#upstream) |
+| `params.ui.backlinks` | boolean | false | A "Backlinks" group in the right rail listing the pages that link here, worked out at build time from ordinary links. See [Navigation and menus](/docs/customize/navigation/#backlinks) |
+| `params.ui.compare` | boolean | false | Duo View: two panes side by side on Docs, Book and blog pages that have an HTML translation on the same site. A language can set it to `false` to opt out. See [Duo view](/docs/customize/i18n/#bilingual-view) |
+| `params.ui.translation_notice` | language code or false | false | The language code of the authoritative version, so that a translated page shows a line pointing back to it. A page opts out with `translation_notice: false` |
+| `params.ui.reading_time` | boolean | false | Reading time under the page title |
+| `params.ui.book_draft_banner` | boolean | false | A banner at the top of a draft Book page |
 {.fields meta="type default"}
 
 ## Search and command palette {#search}
 
-Local search is off by default, and the command palette appears only once it is
-on (the navbar magnifier, {{< kbd "Cmd/Ctrl" "K" >}}, `/`, `\`).
+Local search is off by default. Turning it on also brings up the command
+palette, which opens from the navbar magnifier, {{< kbd "Cmd/Ctrl" "K" >}}, `/`
+and `\`.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.offline_search` | boolean | false | Generates one local index per language and enables the command palette — see [Search](/docs/customize/search/) |
-| `params.offline_search_on_serve` | boolean | true | Also builds the index under `hugo server`, so preview matches production. For a very large site, set `false` to reduce local rebuild time |
-| `params.offline_search_index` | enum | content | Index scope, cumulative: `title`, `heading`, `summary`, `content`. An invalid value warns and uses `content` |
-| `params.offline_search_summary_length` | integer | 70 | Word cut-off for the `summary` scope's excerpt |
-| `params.offline_search_max_results` | integer | 10 | Maximum number of page results returned by local search |
-| `params.ui.landing_search` | boolean | true | Whether a `layout: landing` page keeps a search entry point |
-| `params.ui.command_palette.commands` | list | [] | Custom commands, each with either `url` or a built-in `action` — see [Command palette](/docs/customize/panel/#custom-commands) |
-| `params.gcs_engine_id` | string | | A Google Programmable Search engine ID; enabling it brings in an external service |
-| `params.search.algolia` | map | | Algolia DocSearch. You must supply `appId`, `apiKey`, and `indexName` explicitly. Otherwise, the theme warns and DocSearch remains off |
+| `params.offline_search` | boolean | false | Builds one local index per language and turns on the command palette. See [Search](/docs/customize/search/) |
+| `params.offline_search_on_serve` | boolean | true | Builds the index under `hugo server` too, so the preview searches like production. On a very large site, `false` speeds up local rebuilds |
+| `params.offline_search_index` | enum | content | How much of each page is indexed, each level adding to the one before: `title`, `heading`, `summary`, `content` |
+| `params.offline_search_summary_length` | integer | 70 | Length, in characters, of the excerpt stored for each page; a result shows it when no passage matches |
+| `params.offline_search_max_results` | integer | 10 | Most page results one search returns |
+| `params.ui.landing_search` | boolean | true | Keeps a search entry point on `layout: landing` pages |
+| `params.ui.command_palette.commands` | list | [] | Your own palette commands, each with either a `url` or a built-in `action`. See [Command palette](/docs/customize/panel/#custom-commands) |
+| `params.gcs_engine_id` | string | | A Google Programmable Search engine ID. Searches then go to Google |
+| `params.search.algolia` | map | | Algolia DocSearch. `appId`, `apiKey` and `indexName` are all required |
 {.fields meta="type default"}
 
-A custom command accepts only seven keys: `id`, `title`, `description`, `icon`,
-`keywords`, `url`, and `action`. The `id` must match `^[a-z][a-z0-9_-]*$` and
-must not duplicate a built-in action ID. Put per-language titles under
+A custom command takes only seven keys: `id`, `title`, `description`, `icon`,
+`keywords`, `url` and `action`. The `id` must match `^[a-z][a-z0-9_-]*$` and
+must not repeat a built-in action ID. Put per-language titles under
 `languages.<lang>.params.ui.command_palette.commands`.
 
 ## Keyboard {#keyboard}
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.keyboard_nav` | boolean | true | Single-key navigation for the tree (WASD / arrows), headings (j/k), paging (q/e), palette, and shell switches. With `false`, the runtime is excluded from the bundle. See [Keyboard navigation](/docs/customize/keyboard/) |
+| `params.ui.keyboard_nav` | boolean | true | Single-key navigation: WASD or arrows in the tree, j/k between headings, q/e between pages, plus keys for the palette and shell toggles. With `false`, the runtime is left out of the page. See [Keyboard navigation](/docs/customize/keyboard/) |
 {.fields meta="type default"}
 
 ## Image zoom {#image-zoom}
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.image_zoom` | boolean | false | Lets body images open at full size. Override per page with front matter `image_zoom`. A non-boolean warns and uses a fallback |
+| `params.ui.image_zoom` | boolean | false | Lets body images open full size. A page overrides it with `image_zoom` in front matter |
 {.fields meta="type default"}
 
-Which images become zoom candidates is in [Images](/docs/components/image/).
+[Images](/docs/components/image/) explains which images can be zoomed.
 
 ## Typography {#typography}
 
+The visual preset, the fonts and the page widths:
+
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.preset` | enum | paper | Site-wide visual preset: `paper`, `slate`, or the explicit experiments `ink`, `terminal`. Available in 1.2.0; choose `slate` to retain the previous appearance |
-| `params.ui.preset_menu` | boolean or list | false | `true` offers Paper, Slate and the site default; a list explicitly opts into experiments and must include the site default. Independent of `dark_mode` |
-| `params.ui.typography` | enum | technical | `technical` uses the selected preset’s local fonts (Paper: Plex Sans; Slate: Inter); `system` uses the platform stack only and requests no brand font. An invalid value warns and falls back |
-| `params.ui.fonts` | map | | Font-family names for the `ui`, `body`, `heading`, `code`, `display`, `meta`, `brand`, and `print` roles. The theme validates names but never loads font files. End each list with a generic family |
-| `params.page_width` | enum | normal | Overall shell width: `normal`, `wide`, `full`; overridable per page |
-| `params.reading_width` | enum | normal | Book body reading width: `slim`, `normal`, `wide`. Does not affect the shell |
+| `params.ui.preset` | enum | paper | Site-wide look: `paper` or `slate`, or the explicit experiments `ink` and `terminal` |
+| `params.ui.preset_menu` | boolean or list | false | `true` lets readers choose Paper, Slate or the site default. A list names the presets offered, may include the experiments, and must include the site default. Independent of `dark_mode` |
+| `params.ui.typography` | enum | technical | `technical` uses the selected preset's bundled fonts (Paper: Plex Sans; Slate: Inter); `system` uses the platform font stack and requests no brand font |
+| `params.ui.fonts` | map | | Font-family names for the `ui`, `body`, `heading`, `code`, `display`, `meta`, `brand` and `print` roles. The theme checks the names but loads no font files. End each list with a generic family |
+| `params.page_width` | enum | normal | Overall shell width: `normal`, `wide`, `full`. Overridable per page |
+| `params.reading_width` | enum | normal | Body text width on Book pages: `slim`, `normal`, `wide`. The shell is unaffected |
 {.fields meta="type default"}
 
-Use `params.ui.fonts` when the faces already exist on the reader's system or the
-site has declared them with `@font-face`. To bundle font files or change
-lower-level typography, use the project stylesheet. See
+`params.ui.fonts` suits faces that are already on the reader's system or that
+the site declares with `@font-face`. To ship font files with the site or
+change finer typography, use the project stylesheet; see
 [Brand and appearance](/docs/customize/brand/#fonts).
 
 ## Comments and feedback {#comments-feedback}
 
+Comments use giscus, which keeps each page's discussion in a GitHub repository;
+page feedback is two buttons with no backend of its own.
+
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.comments.enable` | boolean | false | The site-level comment switch; a page overrides it with the front matter `comments` — see [Comments](/docs/admin/comments/) |
-| `params.comments.type` | string | giscus | Only `giscus` actually renders today |
-| `params.comments.giscus.repo` | string | | The GitHub repository hosting the discussions; required |
+| `params.comments.enable` | boolean | false | Site-wide comment switch. A page overrides it with `comments` in front matter. See [Comments](/docs/admin/comments/) |
+| `params.comments.type` | string | giscus | Only `giscus` renders today |
+| `params.comments.giscus.repo` | string | | The GitHub repository that holds the discussions; required |
 | `params.comments.giscus.repoId` | string | | The repository ID; required |
 | `params.comments.giscus.category` | string | | The discussion category name; required |
 | `params.comments.giscus.categoryId` | string | | The discussion category ID; required |
 | `params.comments.giscus.mapping` | string | pathname | How pages map to discussions |
-| `params.comments.giscus.term` | string | | The discussion title or number when `mapping` is `specific` or `number`; the attribute is omitted when unset |
+| `params.comments.giscus.term` | string | | The discussion title or number when `mapping` is `specific` or `number`. Omitted when unset |
 | `params.comments.giscus.strict` | string | 0 | Strict title matching |
 | `params.comments.giscus.reactionsEnabled` | string | 1 | Shows reactions on the main post |
 | `params.comments.giscus.emitMetadata` | string | 0 | Sends discussion metadata to the parent page |
-| `params.comments.giscus.inputPosition` | string | top | Whether the input box sits above or below the list |
-| `params.comments.giscus.theme` | string | auto | The giscus theme; `auto` follows the site's light/dark state |
-| `params.comments.giscus.lightTheme` | string | light | The giscus theme or custom CSS URL used in light mode |
-| `params.comments.giscus.darkTheme` | string | dark | The giscus theme or custom CSS URL used in dark mode |
-| `params.comments.giscus.loading` | string | lazy | Loading strategy: `lazy` waits until the reader approaches the comments (except when returning from GitHub sign-in); `eager` requests the giscus script immediately |
-| `params.comments.giscus.lang` | string | derived from the site language | The giscus interface language. If unset, Chinese sites resolve `zh-CN` / `zh-TW` / `zh-HK`. Other languages use the base language code. Unsupported languages fall back to `en` |
-| `params.comments.giscus.ariaLabel` | string | Comments | The comment container's `aria-label`. The default is English. For a multilingual site, write one per language |
-| `params.comments.giscus.errorMessage` | string | Comments could not be loaded. | Text shown after loading fails. The default is English. For a multilingual site, write one per language |
-| `params.ui.feedback.enable` | boolean | false | The two "was this page helpful?" buttons at the page end. There is no backend. Records a structured event if `gtag` is present |
-| `params.ui.feedback.reasons` | boolean | true | Expands four optional reasons after "no" |
+| `params.comments.giscus.inputPosition` | string | top | Whether the input box sits above or below the comments |
+| `params.comments.giscus.theme` | string | auto | The giscus theme. `auto` follows the site's light/dark state |
+| `params.comments.giscus.lightTheme` | string | OINK palette | giscus theme name or custom CSS URL for light mode. By default, OINK's own stylesheet for the active preset, so comments match the page |
+| `params.comments.giscus.darkTheme` | string | OINK palette | giscus theme name or custom CSS URL for dark mode. By default, OINK's own stylesheet for the active preset |
+| `params.comments.giscus.loading` | string | lazy | `lazy` requests the giscus script only when the reader nears the comments, except on return from GitHub sign-in; `eager` requests it at once |
+| `params.comments.giscus.lang` | string | derived from the site language | The giscus interface language. When unset, Chinese sites resolve to `zh-CN`, `zh-TW` or `zh-HK` and other languages use their base code; a language giscus does not support falls back to `en` |
+| `params.comments.giscus.ariaLabel` | string | translated | The comment container's `aria-label`. The default is "Comments" in the page's language |
+| `params.comments.giscus.errorMessage` | string | translated | Text shown when loading fails. The default is "Comments could not be loaded." in the page's language |
+| `params.ui.feedback.enable` | boolean | false | "Was this page helpful?" buttons at the page end. There is no backend; when `gtag` is present, each answer is recorded as a structured event |
+| `params.ui.feedback.reasons` | boolean | true | Offers four optional reasons after "no" |
 {.fields meta="type default"}
 
-If a required giscus value is missing, the theme warns and skips the comment
-section. See [Comments](/docs/admin/comments/#enable) for the required fields.
+Without all four required giscus values, the page has no comment section.
+[Comments](/docs/admin/comments/#enable) shows where to find them.
 
 ## Repository links and page information {#repository}
 
+Links from each page back to its source, and the information block at its end:
+
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.github_repo` | string | | The content repository URL, resolving "edit this page", "view history", "create child page" and "open a documentation issue" — see [Repository links and page info](/docs/customize/repository/) |
-| `params.github_project_repo` | string | github_repo | The product repository URL, for "open a project issue" and the navbar GitHub entry |
-| `params.github_branch` | string | main | The branch edit links point at |
+| `params.github_repo` | string | | URL of the repository that holds the content. Drives "Edit this page", "View edit history", "Create child page" and "Create docs issue". See [Repository links and page info](/docs/customize/repository/) |
+| `params.github_project_repo` | string | github_repo | URL of the product repository, for "Create project issue" and the navbar GitHub entry |
+| `params.github_branch` | string | main | The branch that edit links point at |
 | `params.github_subdir` | string | | The content site's subdirectory inside a monorepo |
-| `params.path_base_for_github_subdir` | string or map | | Rewrites normalized `/` source paths. The map accepts `from` and `to`. External mounts require an explicit mapping to a repository-relative result. See [repository links](/docs/customize/repository/#imported-content). |
-| `params.github_url` | — | — | Removed. Use `params.github_repo`. The old migration registry no longer names the replacement. The theme now ignores an old key |
-| `params.ui.lastmod_commit` | enum | subject | What follows "last modified": `subject` the commit subject, `hash` the short hash, `none` nothing. An invalid value warns and falls back |
-| `params.images` | string array | — | Site-level social card. Supplies `og:image` if a page has no image. Used only for metadata. Never rendered as a list thumbnail |
-| `params.upstream_source` | string | — | Default `data/upstreams` record name for pages that declare `upstream_link`; page front matter can override it |
-| `params.upstream_modified` | boolean | `false` | Site default for whether attributed material is adapted. A page can override it. No attribution renders without `upstream_link` |
-| `params.default_featured` | — | — | Removed. Use `params.images` or a section `cascade` with `images`. As above, the theme now ignores an old key |
+| `params.path_base_for_github_subdir` | string or map | | Rewrites source paths (normalized to `/`) before they become repository links. A map takes `from` and `to`. Content mounted from outside the repository needs an explicit mapping to a repository-relative path. See [repository links](/docs/customize/repository/#imported-content) |
+| `params.github_url` | — | — | Removed and ignored. Use `params.github_repo` |
+| `params.ui.lastmod_commit` | enum | subject | What follows "last modified": `subject` the commit subject, `hash` the short hash, `none` nothing |
+| `params.images` | string array | — | Site-wide social card: supplies `og:image` for pages without their own image. Metadata only; never shown as a list thumbnail |
+| `params.upstream_source` | string | — | Default `data/upstreams` record for pages that declare `upstream_link`. A page's front matter can override it |
+| `params.upstream_modified` | boolean | `false` | Site default for whether attributed material has been adapted. A page can override it. Nothing renders without `upstream_link` |
+| `params.default_featured` | — | — | Removed and ignored. Use `params.images`, or `images` in a section `cascade` |
 {.fields meta="type default"}
 
 ## Content runtimes {#runtimes}
 
-The theme detects Mermaid, KaTeX, ECharts, Infographic, Asciinema, Swagger UI,
-and Redoc from content. They load only on pages that use them, and only in
-HTML output. They have no site switch. Only the features below need a switch
-or external endpoint:
-
-> [!NOTE] PlantUML in OINK 1.4.0
-> Local rendering is used when enabled without an endpoint. An explicit
-> `svg_image_url` selects server mode. Both modes and their limits are
-> described in [PlantUML](/docs/components/plantuml/).
-> Local-development Mermaid and local PlantUML load engines as diagrams approach
-> the viewport. Their shared viewer and source export need no new configuration.
-> Ordinary browser printing retains source for unrendered diagrams.
+Mermaid, KaTeX, ECharts, Infographic, Asciinema, Swagger UI and Redoc load by
+themselves on the pages that use them, and only in HTML output, so they have
+no switch. The features below need one, mostly because they talk to a service
+you choose. PlantUML renders in the reader's browser unless you set
+`svg_image_url`, which hands rendering to a server;
+[PlantUML](/docs/components/plantuml/) compares the two modes.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.markmap` | boolean | false | Enables the mind map fence site-wide — see [Markmap](/docs/components/markmap/) |
-| `params.mermaid` | map | | Configuration passed to `mermaid.initialize()`. Keys are lowercase. Dark mode automatically overrides `theme` |
-| `params.plantuml` | boolean or map | disabled | `true` enables local rendering; `false` disables all PlantUML rendering |
-| `params.plantuml.enable` | boolean | false | Enables local PlantUML rendering — see [PlantUML](/docs/components/plantuml/) |
-| `params.plantuml.svg_image_url` | string | | Optional PlantUML service endpoint; absent means local browser rendering |
+| `params.markmap` | boolean | false | Turns on the mind-map fence site-wide. See [Markmap](/docs/components/markmap/) |
+| `params.mermaid` | map | | Configuration passed to `mermaid.initialize()`. Keys are lowercase. Dark mode overrides `theme` automatically |
+| `params.plantuml` | boolean or map | disabled | `true` turns on local rendering; `false` turns off all PlantUML rendering |
+| `params.plantuml.enable` | boolean | false | Turns on local PlantUML rendering. See [PlantUML](/docs/components/plantuml/) |
+| `params.plantuml.svg_image_url` | string | | Optional PlantUML server endpoint. Without it, diagrams render in the browser |
 | `params.plantuml.svg` | boolean | false | Server mode only: inline SVG instead of an `<img>` |
-| `params.drawio.enable` | boolean | false | Enables the edit button on `.drawio.svg` images — see [Draw.io](/docs/components/drawio/) |
-| `params.drawio.drawio_server` | string | | Draw.io editor address. Required when enabled. If absent, the theme warns and leaves Diagrams.net off |
-| `params.video_embeds` | list | `[]` | Platforms (`youtube`, `bilibili`, `vimeo`) whose player loads in place after a reader clicks a video card — see [Video](/docs/components/video/#platforms). Empty: cards only link out |
-| `params.map` | boolean or map | disabled | Interactive maps above `map` place lists — see [Map](/docs/components/map/) |
-| `params.map.enable` | boolean | false | Enables interactive maps; needs `tiles` and `attribution` |
-| `params.map.tiles` | string | | HTTPS tile template with `{z}`, `{x}` and `{y}`. The theme names no service; required when enabled |
+| `params.drawio.enable` | boolean | false | Adds an edit button to `.drawio.svg` images. See [Draw.io](/docs/components/drawio/) |
+| `params.drawio.drawio_server` | string | | Address of the Draw.io editor. Required when `enable` is true |
+| `params.video_embeds` | list | `[]` | Platforms (`youtube`, `bilibili`, `vimeo`) whose player loads in place after a reader clicks a video card. Empty: cards only link out. See [Video](/docs/components/video/#platforms) |
+| `params.map` | boolean or map | disabled | Interactive maps above `map` place lists. See [Map](/docs/components/map/) |
+| `params.map.enable` | boolean | false | Turns on interactive maps; needs `tiles` and `attribution` |
+| `params.map.tiles` | string | | HTTPS tile template with `{z}`, `{x}` and `{y}`. The theme names no tile service; required when enabled |
 | `params.map.attribution` | string | | The plain-text attribution the tile service requires. Required when enabled |
-| `params.map.dark_tiles` | string | | Optional tile template used in dark mode |
+| `params.map.dark_tiles` | string | | Optional tile template for dark mode |
 | `params.map.max_zoom` | integer | 19 | Highest zoom level, 1–22 |
-| `params.highlight_classes` | boolean | true | Emits Chroma classes for highlighting; `false` returns to Hugo's inline styles |
-| `params.ui.code_copy` | boolean | true | Copy button on code blocks. The value `false` removes it globally. A fence's own `copy=` still takes precedence |
+| `params.highlight_classes` | boolean | true | Emits Chroma classes for syntax highlighting; `false` returns to Hugo's inline styles |
+| `params.ui.code_copy` | boolean | true | Copy button on code blocks. `false` removes it site-wide; a fence's own `copy=` still wins |
 {.fields meta="type default"}
 
-Mathematics needs no parameter, only the
-[`passthrough` prerequisite](#goldmark).
+Math needs no parameter, only the [`passthrough` setting](#goldmark).
 
 ## Output formats {#outputs}
 
-The theme declares custom output formats but **does not enable them for a
-site**. Request the formats you need under `outputs`. You must explicitly enable
-expensive aggregate and machine-readable outputs.
+The theme defines extra output formats but turns none of them on, because some
+are expensive to build and most sites need only a few. List the ones you want
+under `outputs`:
 
 ```yaml {title="hugo.yml"}
 outputs:
@@ -480,82 +517,82 @@ outputs:
 
 | Format | Output | Description |
 | --- | --- | --- |
-| `HTML` | `index.html` | The interactive form; required |
-| `markdown` | `index.md` | Plain Markdown version of each page. Required for "copy Markdown" and "view source". See [AI-agent support](/docs/customize/agents/) |
-| `LLMS` | `llms.txt` | A plain-text format the theme declares, usually attached to `home` only |
-| `LLMSFULL` | `llms-full.txt` | A top-level section opt-in: the same per-page Markdown concatenated in sidebar reading order, one bundle per language |
-| `NAVJSON` | `navigation.json` | A home opt-in: the sidebar/pager navigation authority serialized once per language, validated by `schema/nav.v1.schema.json` |
-| `print` | `_print/index.html` | The whole-section print page the theme declares — see [Print](/docs/customize/print/) |
-| `BookManifest` | `book.json` | Optional Book-root JSON input for EPUB/PDF packaging tools. It is not an ebook |
-| `RSS` | `index.xml` | Hugo's own format. Attach it to `section` to give each section a feed |
+| `HTML` | `index.html` | The interactive page; required |
+| `markdown` | `index.md` | A plain Markdown version of each page. "Copy Markdown" and "View markdown" need it. See [AI-agent support](/docs/customize/agents/) |
+| `LLMS` | `llms.txt` | A plain-text site index for language models, usually on `home` only |
+| `LLMSFULL` | `llms-full.txt` | Opt-in for a top-level section: its pages' Markdown joined in sidebar order, one file per language |
+| `NAVJSON` | `navigation.json` | Opt-in on `home`: the sidebar and pager tree as JSON, once per language, validated by `schema/nav.v1.schema.json` |
+| `print` | `_print/index.html` | A whole section as one printable page. See [Print](/docs/customize/print/) |
+| `BookManifest` | `book.json` | Optional JSON at a Book root for EPUB and PDF packaging tools. It is not an ebook itself |
+| `RSS` | `index.xml` | Hugo's own format. Add it to `section` to give each section a feed |
 
-`LLMSFULL` and `BookManifest` are enabled in the relevant top-level section's
-front matter rather than globally. `NAVJSON` belongs on `outputs.home`. The
-complete examples and constraints are in [AI-agent support](/docs/customize/agents/)
-and [Books](/docs/write/book/).
+`LLMSFULL` and `BookManifest` go in the front matter of the top-level section
+that publishes them, not in the site configuration, and `NAVJSON` belongs on
+`outputs.home`. [AI-agent support](/docs/customize/agents/) and
+[Books](/docs/write/book/) have complete examples.
 
-Two parameters for print output:
+Two parameters shape the print output:
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.print.toc` | boolean | true | Generates a table of contents at the top of the print page. The value `false` omits it |
-| `params.print.section_break_wordcount` | integer | 50 | How many words a section needs before it starts a new print page |
+| `params.print.toc` | boolean | true | A table of contents at the top of the print page. `false` leaves it out |
+| `params.print.section_break_wordcount` | integer | 50 | How many words a section needs before it starts on a new print page |
 {.fields meta="type default"}
 
 ## Languages and versions {#languages-versions}
 
-Define languages with Hugo's `languages` block. The theme reads the translation
-relationships that Hugo establishes:
+Languages are defined in Hugo's own `languages` block, and the theme reads the
+translation links Hugo builds from it:
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
 | `defaultContentLanguage` | string | en | The primary language, served without a path prefix |
-| `languages.<lang>.label` | string | | The language's endonym, shown in the language menu |
+| `languages.<lang>.label` | string | | The language's own name, shown in the language menu |
 | `languages.<lang>.locale` | string | | The full locale, used for `<html lang>` and SEO |
-| `languages.<lang>.weight` | integer | | Language order, and the cycle order when clicking the language icon |
+| `languages.<lang>.weight` | integer | | Language order, which is also the cycle order when the reader clicks the language icon |
 | `languages.<lang>.title` | string | | The site name in that language |
-| `languages.<lang>.direction` | string | ltr | Set `rtl` for a right-to-left language |
+| `languages.<lang>.direction` | string | ltr | `rtl` for a right-to-left language |
 {.fields meta="type default"}
 
-Paired files, anchor alignment and fallback for untranslated pages are in
-[Languages](/docs/customize/i18n/).
+Paired files, anchor alignment and fallback for untranslated pages are covered
+in [Languages](/docs/customize/i18n/).
 
-Version parameters:
+Version keys:
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.version` | string | | The identifier of this site variant, which need not be a Git ref — see [Versions](/docs/customize/versions/) |
-| `params.version_menu` | string | Version | The version menu's title |
-| `params.version_menu_pagelinks` | boolean | | On switching version, try the same path on the target site first |
-| `params.versions` | list | | Version entries: `version`, `url`, `kind`; `name: '---'` is a divider |
+| `params.version` | string | | Identifier of this site variant; it need not be a Git ref. See [Versions](/docs/customize/versions/) |
+| `params.version_menu` | string | Version | Title of the version menu |
+| `params.version_menu_pagelinks` | boolean | | When switching version, try the same path on the target site first |
+| `params.versions` | list | | Version entries with `version`, `url` and `kind`; `name: '---'` is a divider |
 | `params.archived_version` | boolean | | Shows the "this is an archived version" banner at the top |
-| `params.url_latest_version` | string | | The link to the current version inside that banner |
+| `params.url_latest_version` | string | | Link to the current version inside that banner |
 | `params.time_format_blog` | string | 2006-01-02 | Blog date format, overridable per language |
-| `params.time_format_default` | string | 2006-01-02 | All other date formats, overridable per language |
+| `params.time_format_default` | string | 2006-01-02 | Every other date format, overridable per language |
 {.fields meta="type default"}
 
 ## Miscellaneous {#misc}
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `taxonomies` | map | | Hugo's own: enables `tag: tags` / `category: categories` — see [Taxonomies](/docs/customize/taxonomy/) |
-| `params.taxonomy.page_header` | list | | Shows only listed taxonomies in a post header. If unset, shows all |
-| `services.googleAnalytics.id` | string | | Hugo's own: the analytics script is injected in production builds only — see [Analytics and SEO](/docs/admin/analytics/) |
-| `module.hugoVersion.min` | string | 0.169.0 | The theme's declared Hugo floor. An older version fails the build |
+| `taxonomies` | map | | Hugo's own: turns on `tag: tags` and `category: categories`. See [Taxonomies](/docs/customize/taxonomy/) |
+| `params.taxonomy.page_header` | list | | Taxonomies shown in a post header. When unset, all of them |
+| `services.googleAnalytics.id` | string | | Hugo's own: the analytics script is added to production builds only. See [Analytics and SEO](/docs/admin/analytics/) |
+| `module.hugoVersion.min` | string | 0.169.0 | The oldest Hugo that may build the site. Keep it equal to the theme's own minimum; an older Hugo fails the build |
 {.fields meta="type default"}
 
 ## Editor completion via generated schemas {#editor-schema}
 
-The theme ships two generated JSON Schemas under `schema/`:
-`site-params.schema.json` for site `hugo.yaml` and `front-matter.schema.json`
-for page front matter. They derive from the theme's `hugo.yaml` defaults and
-parameter-scan registry. Configuration comments supply hover text. Theme CI
-regenerates the schemas and fails if they differ. Use the schema from the same
-release tag as your theme pin.
+The theme publishes JSON Schemas for its configuration, so your editor can
+complete keys, show each key's documentation on hover and flag a wrong type as
+you type. `schema/site-params.schema.json` covers `hugo.yml`, and
+`schema/front-matter.schema.json` covers page front matter. Take them from the
+same release tag as the theme pinned in your `go.mod`, because keys change
+between releases.
 
 With the VS Code YAML extension, map the site schema in your settings. This
-example matches OINK v1.6.0; replace that tag with the one in your `go.mod`.
-Both common YAML configuration filenames are covered:
+example uses OINK v1.6.0 and covers both common file names; replace the tag
+with the one in your `go.mod`:
 
 ```json {title=".vscode/settings.json"}
 {
@@ -565,60 +602,47 @@ Both common YAML configuration filenames are covered:
 }
 ```
 
-To check the association, temporarily give a known boolean, such as
-`params.offline_search`, a string value. The editor should report the type
-mismatch. Then restore the valid value. Front matter completion depends on
-your Markdown tooling. Associate it with `front-matter.schema.json` in the
-same way. The front matter schema deliberately omits type constraints. Keys
-such as `share` and `theme_color` accept a bare-boolean opt-out as well as their
-normal type.
+To confirm the mapping works, give a boolean such as `params.offline_search` a
+string value for a moment: the editor should flag the type. Then put the valid
+value back. Front matter completion depends on your Markdown tooling; associate
+it with `front-matter.schema.json` in the same way. That schema does not
+enforce types, because keys such as `share` and `theme_color` also accept a
+bare boolean to opt out.
 
 ## Verifying a configuration change {#verify}
 
-Run a production build after changing configuration:
+Build once after each configuration change:
 
 ```bash
 hugo --printPathWarnings
 ```
 
-It passes when the output reads `Total in …` with no ERROR.
-Common warnings and what they mean:
+The build is good when it ends with `Total in …` and prints no `ERROR`. Then
+read each `WARN` line; these are the common ones:
 
 | Warning fragment | Cause |
 | --- | --- |
-| `invalid params.ui.typography` | The presets are `technical` and `system` |
-| `invalid footer_style … (allowed: fat \| slim \| none)` | A bad footer style; the warning names the page |
-| `invalid page_width … (allowed: normal \| wide \| full)` | A bad page width |
-| `invalid params.ui.section_index … (allowed: list \| cards)` | A bad section index style |
-| `invalid params.offline_search_index` | The scopes are `title`, `heading`, `summary`, `content` |
-| `params.drawio.enable requires an explicit params.drawio.drawio_server` | Draw.io enabled with no server address |
-| `params.map.enable requires params.map.tiles … and params.map.attribution` | Maps enabled without a complete tile service |
+| `invalid params.ui.typography` | The only choices are `technical` and `system` |
+| `invalid params.ui.footer_style … (allowed: fat \| slim \| none)` | A misspelled footer style. When it comes from front matter, the warning names the page |
+| `invalid params.page_width … (allowed: normal \| wide \| full)` | A misspelled page width |
+| `invalid params.ui.section_index … (allowed: list \| cards)` | A misspelled section index style |
+| `invalid params.offline_search_index` | The scopes are `title`, `heading`, `summary` and `content` |
+| `params.drawio.enable requires an explicit params.drawio.drawio_server` | Draw.io is enabled without an editor address |
+| `params.map.enable requires params.map.tiles … and params.map.attribution` | Maps are enabled without a complete tile service |
 | `params.video_embeds must be a list of platforms` | Written as a single string or a boolean |
-| `params.search.algolia requires explicit appId, apiKey, and indexName` | All three Algolia values are required |
-| `params.ui.image_zoom must be a boolean` | Written as the string `"true"` |
-| `theme_color … is not a #rgb or #rrggbb hex color` | The value is not a hex color; the default palette is kept |
-| `theme_color … reads at about N:1 against the theme's … canvas` | Advisory: the color ships, and the message prints the id that silences it |
-| `theme_color_dark … has no theme_color to pair with` | The dark half was set without a valid `theme_color`; it is ignored and the default palette is kept in both modes |
-| `command … must define exactly one of url or action` | A custom command gave both `url` and `action`, or neither |
-| `invalid params.ui.sidebar_icon_policy …; using all` | Only a warning, but the value is misspelled |
+| `params.search.algolia requires explicit appId, apiKey, and indexName` | One of the three Algolia values is missing |
+| `params.ui.image_zoom must be true or false` | Written as a string such as `"true"` |
+| `theme_color … is not a #rgb or #rrggbb hex color` | The value is not a hex color; the default palette stays |
+| `theme_color … reads at about N:1 against the theme's … canvas` | Advisory: the color still ships, and the message prints the id that silences it |
+| `theme_color_dark … has no theme_color to pair with` | Only the dark color was set. It is ignored, and both modes keep the default palette |
+| `command … must define exactly one of url or action` | A custom command has both `url` and `action`, or neither |
+| `invalid params.ui.sidebar_icon_policy …; using all` | A misspelled icon policy |
 
-After a configuration change, perform at least three checks. Open one page in
-each language. Open a page without a translation to check fallback. Check
-links under the production `baseURL`, including any deployment subpath.
-
-The theme requires Hugo `0.169.0` or newer, in any edition: its stylesheet is
-plain CSS and a site build compiles nothing. OINK 1.5.1 and older need Hugo's
-Extended edition.
-Validate configuration changes with the Hugo that builds the site:
-
-```bash
-# require v0.169.0 or newer in this output
-hugo version
-hugo --printPathWarnings
-```
-
-The theme declares the minimum in `hugo.yaml` and `theme.toml`. The site's
-`module.hugoVersion.min` should match it.
+Then check three things in a browser: one page in each language, one page
+without a translation to see the fallback, and links under the production
+`baseURL`, including any subpath the site is deployed under. Build with the
+same Hugo that builds the site in production; [Get started](/docs/start/#tools)
+lists the versions it needs.
 
 ## Related {#related}
 

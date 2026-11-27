@@ -1,39 +1,84 @@
 ---
 title: Home and landing pages
 linkTitle: Home and landing pages
-description: Build a home page from one local YAML file. Add hero, cards, capability panels, timeline, pricing, case studies, and downloads. Reuse these sections on landing pages.
+description: Build the home page, or any product or pricing page, from sections listed in a YAML data file, with no template to write.
 weight: 30
 search_keywords: [home page, landing page, landing, hero, sections, data/home, data/landing, product page]
 aliases:
   - /docs/scenarios/landing/
 ---
 
-Configure home page content in a data file. The `sections` list in
-`data/home/<language>.yaml` sets the sections and their order from top to bottom.
-The theme finds each section's content by name in the same file. An ordinary
-page with `layout: landing` uses the same sections.
+An OINK home page is data, not a template. `data/home/<language>.yaml` lists
+the sections from top to bottom (a hero, a grid of cards, pricing, a closing
+call to action) and holds the content of each, so you change the page by
+editing YAML and never touch HTML. Any other page can use the same sections as
+a [landing page](#landing-page).
 
-Hugo renders every section on the server. Prices, star counts, screenshots,
-avatars, and download states must exist in the repository before Hugo starts.
-No section fetches data in the browser.
+## Edit the Starter's home page {#minimal}
 
-If you migrate a Docsy `blocks/*` home page, you must rewrite it. OINK has no
-`blocks/cover`, `blocks/section`, or `blocks/feature` shortcodes. If you retain
-them, the build fails with `template for shortcode "blocks/cover" not found`.
-Use the `data/home/<language>.yaml` file described here, or set
-`layout: landing` on an ordinary page.
+The [OINK Starter](/docs/start/) ships a three-section home page in
+`data/home/en.yaml`. Replace the text and links with your own and the browser
+reloads with the result:
 
-## Where the home page's data lives {#home-data}
-The home page's content file keeps only a title and a description:
+```yaml {title="data/home/en.yaml"}
+sections: [hero, cards, cta]
+
+hero:
+  align: center
+  eyebrow: Open-source time-series database
+  title_lines:
+    - words: [{ text: Acme DB. }]
+    - words: [{ text: Fast queries over years of metrics. }]
+  lead: Install it, load your data and run your first query in ten minutes.
+  actions:
+    - { label: Install, url: docs/install/, icon: fa-solid fa-download, style: primary }
+    - { label: Read the docs, url: docs/, style: ghost }
+
+cards:
+  eyebrow: Where to start
+  title: Everything has a place
+  columns: 3
+  items:
+    - title: Install
+      desc: Packages for Linux and macOS, a container image, and a Helm chart.
+      icon: fa-solid fa-download
+      url: docs/install/
+    - title: Query language
+      desc: Every function and operator, with an example for each.
+      icon: fa-solid fa-terminal
+      url: docs/reference/
+    - title: Release notes
+      desc: What changed in each version, and how to upgrade.
+      icon: fa-solid fa-tag
+      url: blog/
+
+cta:
+  title: Run your first query today.
+  text: The quick start takes ten minutes on a laptop.
+  label: Get started
+  url: docs/install/
+  style: primary
+```
+
+Write internal links as site paths without a leading slash, such as
+`docs/install/`; the theme adds the language prefix, so the same link reaches
+`/zh/docs/install/` from the Chinese home page. To add a section, append its
+name to `sections` and give it a key of the same name; to reorder the page,
+reorder the list. The [section types](#registry) table lists everything
+available.
+
+## Where the data lives {#home-data}
+
+The home page's content file holds only its title and description:
 
 ```yaml {title="content/_index.md"}
 ---
-title: OINK
-description: A local-first, Hugo-only theme for technical documentation
+title: Acme DB
+description: An open-source time-series database
 ---
 ```
 
-Section data is a file per language:
+The sections live in one data file per language:
 
 ```filetree {title="home page data"}
 - data/
@@ -42,134 +87,100 @@ Section data is a file per language:
     - zh.yaml            # Chinese home page
 ```
 
-The lookup order is `data/home/<current language>.yaml` → `data/home/en.yaml` →
-`data/home.yaml` for a single-language site.
+For each language the theme reads `data/home/<language>.yaml`, falls back to
+`data/home/en.yaml`, and on a single-language site accepts a plain
+`data/home.yaml`.
 
-The file has two levels: a `sections` list and the named keys that the list
-references.
+Each file has two levels: the `sections` list, and the keys it names. A section
+normally reads the key that matches its type; give it a `key` to read another,
+which is how one page shows two card grids:
 
-```yaml {title="the skeleton of data/home/en.yaml"}
+```yaml {title="data/home/en.yaml"}
 sections:
-  - hero          # uses the hero: key
-  - capabilities
-  - type: cards   # uses the cards section, reading the release: key
+  - hero          # reads hero:
+  - cards         # reads cards:
+  - type: cards   # a second card grid, reading release:
     key: release
   - cta
 
 hero: { … }
-capabilities: { … }
+cards: { … }
 release: { … }
 cta: { … }
 ```
 
-This site uses that structure for its home page. The complete file is
-`data/home/en.yaml` in the repository.
+### Section entries {#entry}
 
-## A minimal working home page {#minimal}
+An entry in `sections` is either a type name or a map:
 
-Create the data file below. Replace the text and links with your own content.
-Put the two hero images in `static/images/hero-light.webp` and
-`static/images/hero-dark.webp`. For a text-only opening, omit the entire
-`hero.image` block. Write internal links as site paths without a leading slash.
-The theme adds the current language prefix (`docs/start/` → `/docs/start/`).
+| Key | What it does |
+| --- | --- |
+| `type` | The section type. If omitted, `key` is used as the type |
+| `key` | The top-level key that holds the data. Defaults to the type name; use it to tell two sections of the same type apart |
+| `data` | The section's data inline, instead of under a top-level key |
+| `id` | The section's anchor ID, generated from `key` or `type` by default |
+| `enabled: false` | Hides the section and keeps its data |
+| `partial` | Renders the data with one of the site's own partials. This ties the data to your templates, so it no longer moves between sites |
 
-```yaml {title="data/home/en.yaml"}
-sections:
-  - hero
-  - cards
-  - cta
-
-hero:
-  eyebrow: Local-first · Hugo only
-  title_lines:
-    - words:
-        - { text: PGSTY OINK }
-  lead: Components are written in Markdown, assets ship with the theme, and one source produces four outputs.
-  image:
-    light: images/hero-light.webp
-    dark: images/hero-dark.webp
-    alt: OINK engineering documentation illustration
-  actions:
-    - { label: Quick start, url: docs/start/, icon: fa-solid fa-rocket, style: primary }
-    - { label: See the components, url: docs/components/, style: ghost }
-
-cards:
-  eyebrow: What it does
-  title: Everything engineering documentation needs
-  columns: 3
-  items:
-    - title: Markdown-native components
-      desc: Callouts, tabs, field lists and file trees are all part of Markdown syntax.
-      icon: fa-solid fa-cubes
-      url: docs/components/
-    - title: Four outputs
-      desc: HTML, print, Markdown and RSS share one source; interactive components use static or source fallbacks.
-      icon: fa-solid fa-file-export
-      url: docs/customize/agents/
-    - title: Local-first
-      desc: Fonts, icons, search and diagram runtimes all ship with the theme; no CDN.
-      icon: fa-solid fa-plug-circle-xmark
-      url: docs/about/features/
-
-cta:
-  title: Start from a bilingual site that already works.
-  text: Start from OINK Starter, replace the project identity and content, then publish.
-  label: Get started
-  url: docs/start/
-  style: primary
-```
+Type names use hyphens (`logo-wall`); underscores are accepted and normalized.
+A misspelled type warns with `unknown section type` and the section is
+skipped. A home page migrated from Docsy's `blocks/*` shortcodes has to be
+rebuilt this way; see [Migrating from Docsy](/docs/admin/upgrade/#from-docsy).
 
 ## Hero {#hero}
 
-The hero is the first screen. It is the only section with a large title and
-an illustration.
+The hero is the first screen, and the only section with a large title and an
+illustration:
 
 ```yaml {title="data/home/en.yaml"}
 hero:
-  eyebrow: PROJECT 1.0 · Local-first       # small text above the title, with a status dot
-  title_lines:                             # the large title, controlled line by line
+  eyebrow: Acme DB 3.0 · Open source         # small text above the title, with a status dot
+  title_lines:                               # the large title, one entry per line
     - words:
-        - { text: PGSTY OINK }
-  lead: One sentence saying what this is.  # inline Markdown and <br> allowed
-  note: No Node.js required                # a supplementary line with an icon
+        - { text: Acme DB }
+  lead: One sentence saying what this is.    # inline Markdown and <br> allowed
+  note: Runs on a single binary              # a supplementary line with an icon
   note_icon: fa-solid fa-circle-check
-  title_size: 4.25rem                      # rem / em / px only
+  title_size: 4.25rem                        # rem, em or px only
   image:
     light: images/hero-light.webp
-    dark: images/hero-dark.webp            # with only one, both modes share it
-    alt: First-screen illustration
+    dark: images/hero-dark.webp              # with only one, both modes use it
+    alt: Query latency dashboard
   media:
-    ratio: '1fr 240px'                     # column widths for text and image
+    ratio: '1fr 240px'                       # column widths of text and image
     max_width: 240px
-    hide_below: md                         # hide the image below sm | md | lg | xl
+    hide_below: md                           # hide the image below sm | md | lg | xl
   actions:
-    - { label: Get started, url: docs/start/, icon: fa-solid fa-rocket, style: primary }
-    - { label: GitHub, url: 'https://github.com/pgsty/oink', external: true, style: ghost }
-  detail: { label: See what it looks like, url: docs/about/showcase/ }
+    - { label: Get started, url: docs/install/, icon: fa-solid fa-rocket, style: primary }
+    - { label: GitHub, url: 'https://github.com/example/acme-db', external: true, style: ghost }
+  detail: { label: See a live demo, url: docs/demo/ }
 ```
 
-If `title_lines` is absent, the hero uses `title`. If both are absent, it uses
-the site title. The image is a CSS background. If `alt` is present, its
-container has `role="img"`. Otherwise, the image is hidden from assistive technology.
+An image path names a file under the site's `static/` or `assets/`; the example
+expects `static/images/hero-light.webp` and `static/images/hero-dark.webp`.
+The image is a CSS background: with `alt` its container is announced as an image with
+that label, and without `alt` it is hidden from assistive technology. Without
+`title_lines` the hero shows `title`, and without either it shows the site
+title.
 
-The setting `align: center` creates a text-only centered first screen. It widens
-and centers the text block, balances title line breaks, and moves `note` below
-the buttons. If an image is also present, the theme warns and falls back
-to `start` so the image is preserved.
+`align: center` gives a text-only first screen, as in the Starter: the text
+block widens and centers, title lines are balanced, and `note` moves below the
+buttons. A centered hero cannot hold an image, so when both are present the
+theme warns and keeps `start` alignment and the image.
 
-## The section registry {#registry}
+## Section types {#registry}
 
-There are 22 section types. Their names use hyphens. The theme normalizes
-underscores in older data. Except for the hero, each type has three heading
-fields, `eyebrow` / `title` / `desc` (or `text`), and a `class`.
+There are 22 section types. Every type except `hero` accepts the same heading
+fields, `eyebrow`, `title` and `desc` (or `text`), plus a `class` for your own
+CSS.
 
 | Type | What it holds |
 | --- | --- |
-| `hero` | The first screen: large title, buttons, a theme-following image |
+| `hero` | The first screen: large title, buttons, an image that follows light and dark mode |
 | `metrics` | Numeric facts, with optional count animation and source links |
-| `capabilities` | Alternating left-right capability descriptions with a dedicated visual panel |
+| `capabilities` | Capabilities described one per row, alternating sides, each with a visual panel |
 | `principles` | Numbered product principles |
-| `cards` | A general card set: features, scenarios, entry points |
+| `cards` | A general card grid: features, use cases, entry points |
 | `logo-wall` | Tools and partners, as a grid or a pure-CSS marquee |
 | `gallery` | A wall of screenshots |
 | `testimonials` | Quotations with attribution |
@@ -184,17 +195,13 @@ fields, `eyebrow` / `title` / `desc` (or `text`), and a `class`.
 | `timeline` | Dated milestones |
 | `code-plate` | Code inside a presentation panel |
 | `preview` | Markdown source beside its rendered result |
-| `case-study` | A case: metrics plus a quotation plus a source |
+| `case-study` | A case: metrics, a quotation and its source |
 | `download` | One or more `data/download/` records |
-| `bar-chart` | Numeric comparison without chart JavaScript |
+| `bar-chart` | Numeric comparison drawn without chart JavaScript |
 
-If a type is misspelled, the build emits an `unknown section type` warning
-and skips the section.
+## Common sections {#section-examples}
 
-## The commonest sections, minimally {#section-examples}
-
-Cards and capability panels are the most common sections. The `cards` section
-sets its column count with `columns`:
+`cards` sets its column count with `columns`:
 
 ```yaml {title="data/home/en.yaml"}
 cards:
@@ -202,43 +209,40 @@ cards:
   columns: 4
   link_label: Learn more
   items:
-    - title: Book publishing
-      meta: Long form
-      icon: fa-solid fa-book-open
-      desc: Numbered figures and examples, cross-references, indexes and whole-book print.
-      url: docs/write/book/
+    - title: Monitoring
+      meta: Metrics
+      icon: fa-solid fa-chart-line
+      desc: Keep a year of per-second metrics queryable in milliseconds.
+      url: docs/use-cases/monitoring/
 ```
 
-The `capabilities` section shows one capability per screen with a structured
-visual panel on the right. The `visual.type` must be `shell`, `components`,
-`code`, `image`, or `card`:
+`capabilities` gives each capability a row of its own with a visual panel
+beside it. `visual.type` is one of `shell`, `components`, `code`, `image` or
+`card`:
 
 ```yaml {title="data/home/en.yaml"}
 capabilities:
-  eyebrow: Value
-  title: What engineering documentation needs, out of the box
+  eyebrow: Why Acme DB
+  title: Built for data that only grows
   items:
-    - ref: 01 / Engineering docs
-      title: Built for engineers and their documentation sites
-      url: docs/start/
-      motto: No extra friction from the first build to long-term maintenance
+    - ref: 01 / Operations
+      title: One binary, no cluster to babysit
+      url: docs/install/
+      motto: From the first install to the hundredth upgrade
       bullets:
-        - 'A [deployment](docs/admin/deploy/) experience that works out of the box'
-        - 'Built-in [search](docs/customize/search/) and [languages](docs/customize/i18n/)'
-      value: Content teams spend their time on documentation rather than rebuilding a site.
+        - 'Rolling [upgrades](docs/upgrade/) without downtime'
+        - 'Built-in [backups](docs/backup/) and point-in-time recovery'
+      value: Teams spend their time on queries, not on the database.
       visual:
         type: code
-        title: build.sh
+        title: install.sh
         lines:
-          - { class: c, prefix: '# ', text: One command, one deterministic output }
-          - { class: p, prefix: '$ ', text: hugo --gc --minify }
-          - { class: ok, prefix: '✓ ', text: public/ is ready to deploy }
+          - { class: c, prefix: '# ', text: One command, one running server }
+          - { class: p, prefix: '$ ', text: acme-db start --data ./data }
+          - { class: ok, prefix: '✓ ', text: listening on :5433 }
 ```
 
-> [!DETAILS] Minimal YAML for the other ten scenario sections
-> These fragments come from the theme repository's executable regression
-> fixture [`tests/site/data/landing/demo/en.yaml`](https://github.com/pgsty/oink/blob/main/tests/site/data/landing/demo/en.yaml).
-> You can copy the field names.
+> [!DETAILS] Minimal YAML for eleven more sections
 >
 > ```yaml
 > metrics:
@@ -331,15 +335,16 @@ capabilities:
 >     - { label: Warm cache, value: 1.6, group: warm, note: A repeat build on the same machine. }
 > ```
 
-The `download` section uses the same `data/download/<key>.yaml` record described
-in [Releases and downloads](/docs/write/releases/). It introduces no second
-version model.
+The `download` section reads the same `data/download/<key>.yaml` records as
+[Releases and downloads](/docs/write/releases/), so a version number is
+written once for both.
 
-## Turning any page into a landing page {#landing-page}
+## Landing pages {#landing-page}
 
-Two front matter lines convert an ordinary content page to a landing page.
-This full-width canvas retains the navbar, command palette, and footer. It
-removes the sidebar and outline.
+A pricing page, a product overview or an event page can use the same sections
+as the home page. Two front matter lines turn an ordinary page into a
+full-width landing page that keeps the navbar, the command palette and the
+footer and drops the sidebar and outline:
 
 ```yaml {title="content/pricing.md"}
 ---
@@ -349,8 +354,8 @@ landing: pricing
 ---
 ```
 
-The data lives in a directory parallel to the home page's, likewise split by
-language:
+`landing: pricing` names the data, which sits beside the home page's and is
+split by language the same way:
 
 ```filetree {title="landing page data"}
 - data/
@@ -360,16 +365,15 @@ language:
       - zh.yaml
 ```
 
-A non-home landing page searches for data in this order. If it finds no data,
-the theme warns and renders the landing shell without sections:
+A single `data/landing/pricing.yaml` also works: with `sections` at its top
+level it serves every language, and with one map per language code it works
+like the directory form. For a language tagged `zh-cn`, the theme tries
+`zh-cn`, then `zh`, then `en`. When it finds nothing, the page warns and
+renders the landing shell without sections.
 
-1. `sections` in the page's front matter;
-2. `data/landing/<key>/<exact language>.yaml`;
-3. The exact-language entry inside a single `data/landing/<key>.yaml`;
-4. The English or language-less record.
-
-You can put small amounts of data in front matter. However, `landing:` and
-`sections:` are **mutually exclusive**:
+A page with only a section or two can write them in its front matter instead,
+each with its data inline. Use either `landing:` or `sections:`, not both; with
+both, the theme warns and uses the inline sections.
 
 ```yaml {title="content/pricing.md"}
 ---
@@ -378,7 +382,7 @@ layout: landing
 sections:
   - type: hero
     data:
-      title: Publish a product page with Hugo alone
+      title: Acme DB Cloud, priced per node
       actions:
         - { label: Read the docs, url: docs/, style: primary }
   - type: cta
@@ -389,77 +393,70 @@ sections:
 ---
 ```
 
-## Writing a section entry {#entry}
-Each item in `sections` is either a type-name string or a map:
-
-| Key | What it does |
-| --- | --- |
-| `type` | The section type. If omitted, uses `key` as the type |
-| `key` | The key that supplies data. Defaults to the name in `type`. Use it to distinguish two instances of one section |
-| `data` | Inline data. No top-level key lookup is needed |
-| `id` | The section's anchor ID, generated from `key` / `type` by default |
-| `enabled: false` | Disables the section while keeping its data |
-| `partial` | Uses the site's own partial. This is a local template convention, not portable landing data |
+Landing pages show the search button and command palette when the site has
+[local search](/docs/customize/search/) on. To leave search off landing pages
+other than the home page, set `params.ui.landing_search: false`.
 
 ## Languages and local facts {#i18n}
 
-Put descriptive text in per-language files (`zh.yaml` / `en.yaml`). A shared
-fact record can also use per-field fallback: `<field>_<exact language>` →
-`<field>_<base language>` → `<field>`. The theme normalizes `-` in a language
-tag to `_`. A Chinese site resolves `title_zh_cn`, then `title_zh`, then
-`title`. The theme does not accept camelCase suffixes.
+Put each language's text in its own file (`en.yaml`, `zh.yaml`). A record that
+is mostly shared facts, such as a pricing tier, can instead carry per-language
+fields: the theme reads `<field>_<language>`, then `<field>_<base language>`,
+then `<field>`, with `-` in the language tag written as `_`. A page in `zh-cn`
+therefore reads `title_zh_cn`, then `title_zh`, then `title`. CamelCase
+suffixes are not recognized.
 
-Section display text belongs to site data. It does not use the theme's i18n
-strings. Only theme controls, such as marquee pause and pricing states, use
-translation keys. To configure the whole multilingual site, see
-[Languages](/docs/customize/i18n/).
+Section text is site data and does not go through the theme's interface
+strings; only the theme's own controls, such as the marquee's pause button and
+pricing states, are translated by the theme. For the rest of a multilingual
+setup, see [Languages](/docs/customize/i18n/).
 
-A few optional facts on the landing shell are local too, written in `hugo.yml`
-and never fetched at runtime:
+No section fetches anything in the browser: prices, star counts, screenshots,
+avatars and download states must all be in the repository when Hugo runs. The
+same holds for the two navbar facts you can set in `hugo.yml`:
 
 ```yaml {title="hugo.yml"}
 params:
-  offline_search: true
   ui:
-    landing_search: true          # boolean; the palette appears only if the site enabled offline_search
-    github_stars: 2189            # a committed number, never a GitHub API request
-    alt_site: { label: 中文站, url: 'https://example.cn/' }
+    github_stars: 2189            # shown on the GitHub link; never fetched from GitHub
+    alt_site: { label: 中文站, url: 'https://example.cn/' }  # sister-site link on a single-language site
 ```
 
-The footer uses separate data in `data/footer/<language>.yaml`, or
-`data/footer.yaml` for a single-language site. This site has one file per
-language. If `data/home/<language>.yaml` still contains a `footer` key, the
-theme warns, ignores it, and points to the new location. See
-[Navigation and menus](/docs/customize/navigation/) for authoring instructions.
+The footer has its own data, `data/footer/<language>.yaml` or `data/footer.yaml`
+on a single-language site; see [Navigation and menus](/docs/customize/navigation/#footer).
+A `footer` key left in `data/home/<language>.yaml` is ignored with a warning
+that names the new location.
 
 ## Output {#outputs}
 
 | Output | What appears |
 | --- | --- |
-| HTML | The full static section content, plus `landing.js` loaded on demand for reveal, counting, copying and theme image switching |
-| Print | Retains content. Converts dynamic surfaces, such as the marquee, to a static grid. Removes controls |
-| Markdown | Titles, prose, lists, tables and code, with no component classes |
-| RSS | Landing sections are not emitted |
+| HTML | Every section rendered on the server, plus `landing.js`, loaded only when needed, for reveal effects, counters, copy buttons and light/dark image switching |
+| Print | The content, with moving parts such as the marquee laid out as a static grid and controls removed |
+| Markdown | Titles, prose, lists, tables and code, without component classes |
+| RSS | No landing sections |
 
-If JavaScript is disabled or `landing.js` is unavailable, all server-rendered
-sections remain visible. Metrics include their configured number formatting,
-prefix, and suffix. Count animations finish on the same display text.
-The marquee's duplicate track stays outside the accessibility tree. Its pause
-checkbox works without JavaScript. If the reader enables reduced motion,
-movement and reveal are disabled.
+Without JavaScript, or if `landing.js` fails to load, every section is still
+visible: metrics already show their final formatted value, prefix and suffix,
+and the marquee's pause control works without script. Readers who ask for
+reduced motion get no movement or reveal effects.
 
 ## Verify {#verify}
 
-1. Run `hugo --printPathWarnings`. This detects misspelled types, missing data keys, and simultaneous `landing` and `sections`.
-2. Open the home page and any landing page. Compare sections with their data files. Check every language.
-3. Reload with JavaScript disabled. Confirm that content remains visible without motion.
-4. Check light and dark modes. Confirm that `image.light` and `image.dark` show the correct images.
-5. For a subpath deployment, confirm that all internal links and images include the prefix.
+1. Run `hugo --printPathWarnings`. Misspelled types, missing data keys and a
+   page with both `landing` and `sections` are reported here.
+2. Open the home page and each landing page in every language, and compare the
+   sections with their data files.
+3. Reload with JavaScript disabled; the content stays, only the motion goes.
+4. Switch between light and dark mode and check that `image.light` and
+   `image.dark` each appear in the right one.
+5. On a site deployed under a subpath, check that internal links and images
+   carry the prefix.
 
 ## Related {#related}
 
-- [Brand and appearance](/docs/customize/brand/) — site name, logo, colors, and fonts
+- [Brand and appearance](/docs/customize/brand/) — site name, logo, colors and fonts
 - [Navigation and menus](/docs/customize/navigation/) — navbar, footer and the language menu
 - [Releases and downloads](/docs/write/releases/) — the data behind the `download` section
 - [Languages](/docs/customize/i18n/) — enabling languages and splitting data by language
-- [Configuration](/docs/customize/config/) — full definitions of `params.ui.landing_search` and the rest
+- [Configuration](/docs/customize/config/) — `params.ui.landing_search`, `github_stars`, `alt_site` and the rest

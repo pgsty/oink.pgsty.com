@@ -7,54 +7,62 @@ comments: false
 search_keywords: [PlantUML, UML, local rendering, sequence, class, component, activity, usecase]
 ---
 
-Write PlantUML source in a `plantuml` fence. OINK renders it in the reader's
-browser with two bundled scripts. No Java, Graphviz executable, npm install,
-CDN or rendering service is needed. Diagram source stays in the browser when
-using local rendering.
+PlantUML is the text format many teams already use for UML: sequence, class,
+component, activity and use-case diagrams. A `plantuml` fence renders it in
+one of two ways, and you choose by what the diagrams need:
 
-> [!NOTE] Local rendering in OINK 1.4.0
-> Local rendering is available when PlantUML is enabled without an endpoint.
-> An explicit rendering endpoint continues to select server mode.
+- **Local mode**, the default, renders in the reader's browser with two
+  scripts that ship with the theme. It needs no Java, Graphviz, npm package,
+  CDN or rendering service, and the diagram source never leaves the browser.
+- **Server mode** sends each diagram to a PlantUML server you run, which you
+  need only for features the browser bundle lacks, such as `!include` or the C4
+  library. It requires an endpoint that you configure explicitly; OINK names
+  none.
 
-Enable it in your site configuration:
+## Shortest form {#minimal}
+
+PlantUML is off by default. Turn it on without an endpoint to get local mode:
 
 ```yaml {title="hugo.yml"}
 params:
   plantuml: true
 ```
 
-`plantuml: { enable: true }` also works. The default remains disabled. Enabled
-pages without PlantUML fences do not load either engine script.
+`plantuml: { enable: true }` is equivalent. Pages without a `plantuml` fence
+load neither engine script. Then write the diagram in a fence:
 
-## Sequence diagram {#minimal}
-
-Wrap the source in a `plantuml` fence. This live example renders entirely locally:
-
-````markdown
+````markdown {title="Source"}
 ```plantuml
 @startuml
-actor Reader
-participant Browser
-Reader -> Browser : open the page
-Browser -> Browser : render locally
-Browser --> Reader : SVG diagram
+actor Operator
+participant Patroni
+database PostgreSQL
+Operator -> Patroni : switch over to replica-2
+Patroni -> PostgreSQL : demote the old primary
+Patroni -> PostgreSQL : promote replica-2
+Patroni --> Operator : switchover complete
 @enduml
 ```
 ````
 
 ```plantuml
 @startuml
-actor Reader
-participant Browser
-Reader -> Browser : open the page
-Browser -> Browser : render locally
-Browser --> Reader : SVG diagram
+actor Operator
+participant Patroni
+database PostgreSQL
+Operator -> Patroni : switch over to replica-2
+Patroni -> PostgreSQL : demote the old primary
+Patroni -> PostgreSQL : promote replica-2
+Patroni --> Operator : switchover complete
 @enduml
 ```
 
+The fence may leave out `@startuml` and `@enduml`; local mode adds them.
+
 ## Class diagram {#class}
 
-Declare classes, fields and relationship cardinalities.
+Declare classes with their fields, then the relationships and their
+cardinalities.
 
 ```plantuml
 @startuml
@@ -80,7 +88,7 @@ Subscription "1" -- "1" ReplicationSlot : bound to
 
 ## Component diagram {#component}
 
-Packages group components; arrows show their dependencies.
+Packages group components, and arrows show which one depends on which.
 
 ```plantuml
 @startuml
@@ -104,24 +112,24 @@ grafana --> prom : PromQL
 
 ## Activity diagram {#activity}
 
-Use decisions and branches to explain a workflow.
+Decisions and branches lay out a workflow, such as a backup verification job.
 
 ```plantuml
 @startuml
 start
-:write content/docs/**/*.md;
-:add the translated peer, copying the rendered heading IDs;
-if (hugo passes?) then (yes)
-  :npm test;
+:take a base backup;
+:restore it on a scratch host;
+if (restore succeeded?) then (yes)
+  :run the smoke queries;
 else (no)
-  :fix using the file and line in the error;
+  :page the on-call engineer;
   stop
 endif
-if (tests green?) then (yes)
-  :open the PR;
+if (row counts match?) then (yes)
+  :mark the backup verified;
   stop
 else (no)
-  :back to editing;
+  :open an incident;
   stop
 endif
 @enduml
@@ -129,7 +137,7 @@ endif
 
 ## Use-case diagram {#usecase}
 
-Actors and use cases describe what each reader can do.
+Actors and use cases show what each kind of user can do with a system.
 
 ```plantuml
 @startuml
@@ -151,38 +159,30 @@ rectangle "Documentation site" {
 
 ## Dark mode {#dark-mode}
 
-Local diagrams follow light/dark mode; authored `skinparam` settings still apply.
-Obsolete render results are discarded when the mode changes. An open viewer
-retains its zoom and pan position.
+In local mode, diagrams follow the reader's light or dark mode, and any
+`skinparam` settings you write still apply. A mode change discards renders
+that are no longer current, and an open viewer keeps its zoom and position.
 
 ## Enlarge, source and download {#zoom}
 
-Local PlantUML uses [the same viewer as Mermaid](/docs/components/mermaid/#zoom).
-Use the corner button to open it, drag or arrow keys to pan, wheel/pinch/`+`/`-`
-to zoom, **Fit to window** or `0` to fit, and `Esc` to close and restore focus.
-The viewer reuses the Blob image without inserting PlantUML SVG markup or links
-into the page DOM, and without rendering again.
+In local mode each diagram has a corner button that opens
+[the same viewer as Mermaid](/docs/components/mermaid/#zoom): drag or use the
+arrow keys to pan; use the wheel, a pinch, `+` or `-` to zoom; choose **Fit to
+window** or press `0` to see it all; and press `Esc` to close it and return
+focus to the button. The viewer reuses the image already on the page instead
+of rendering again.
 
-**Source** and **Copy code** preserve arrows, quotes, ampersands and Chinese.
-**Download SVG** exports a styled standalone file; external resource dependencies
-prevent export. Failures show feedback in the toolbar. The source disclosure below each diagram also
-supports viewing and copying. Explicit server mode keeps its legacy behavior.
-
-## Demand loading and printing {#loading}
-
-The two local engines load once when a diagram comes within 320px of the viewport.
-Hidden tabs, disclosures and zero-width containers wait until shown. Browsers
-without IntersectionObserver use scroll and size checks. Mermaid and PlantUML
-render serially on the main thread. No installation or build step is added.
-
-Ordinary browser printing retains rendered images and shows source for unrendered
-diagrams. It cannot wait for asynchronous engines; visit and expand the diagrams
-first when you need pictures throughout. Dedicated Print, Markdown and RSS keep
-source fallback.
+**Source** and **Copy code** keep arrows, quotes, ampersands and non-Latin
+text intact. **Download SVG** saves a styled, self-contained file; a diagram
+that depends on external resources cannot be exported, and a failure shows a
+message in the toolbar. The source disclosure under each diagram can be opened
+and copied too. Server mode shows the image your server returns, without the
+viewer.
 
 ## Optional rendering service {#server}
 
-Existing sites can keep an explicitly configured endpoint:
+Switch to server mode when your diagrams need what the browser bundle lacks
+(see [Limits](#limits)) and you run a PlantUML server:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -192,58 +192,68 @@ params:
     svg: false
 ```
 
-A nonempty `svg_image_url` selects server rendering. Removing it selects local
-rendering. The server URL must end with the appropriate path separator and be
-an HTTP(S) URL with a host or a same-site path. Invalid endpoints warn and disable
-rendering; they do not silently switch modes. OINK supplies no public endpoint.
+A nonempty `svg_image_url` selects server mode; delete it, or leave it empty,
+to return to local mode. The theme appends each encoded diagram to this URL,
+so it must end with the path separator your server expects, usually `/`. It
+must be an HTTP(S) URL with a host, or a same-site path. An invalid endpoint
+warns and turns PlantUML rendering off instead of silently switching to local
+mode.
 
-Server mode sends encoded diagram source to that endpoint and retains its
-existing `svg` option. Local mode ignores `svg`: generated SVG is displayed as
-an image, so authored links and markup do not enter the page DOM.
+Server mode sends each diagram's encoded source to that endpoint, so use a
+server you trust with the content. `svg: true` inlines the returned SVG
+instead of showing an image. Local mode ignores `svg` and always shows the
+diagram as an image, so links and markup inside it never enter the page.
 
-## Outputs {#outputs}
+## Loading and output {#outputs}
 
-| Output | Result |
-| --- | --- |
-| HTML | Local SVG image when enabled; readable source until rendering succeeds |
-| Browser print of HTML | Rendered image scaled to fit, or readable source if not rendered |
-| Dedicated Print output | Readable source, with no PlantUML runtime |
-| Markdown and RSS | Original diagram source; no rendering request |
+In local mode, the two engine scripts load once per page, when the first
+diagram comes within 320px of the viewport. A diagram in a hidden tab, a
+closed disclosure or a zero-width container waits until it is shown, and
+browsers without IntersectionObserver fall back to scroll and resize checks.
+Mermaid and PlantUML diagrams render one at a time on the main thread.
 
-With JavaScript disabled, a failed engine download, unsupported input or a
-rendering error, the source remains readable. A failed diagram does not prevent
-other diagrams on the page from rendering.
+When JavaScript is off, the engine fails to download, or a diagram uses
+unsupported input or fails to render, the source stays readable, and the
+other diagrams on the page still render. Printing from the browser keeps
+rendered diagrams, scaled to the paper, and prints source for those not yet
+rendered; it cannot wait for the engines, so scroll through the diagrams you
+need, opening any tabs or disclosures that hold them, before you print. The
+site's Print view, the Markdown output and RSS carry the original source and
+make no rendering request.
 
-## Parameters {#reference}
+## Parameter reference {#reference}
 
-| Parameter | Type | Default | Meaning |
+| Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `params.plantuml` | boolean or map | disabled | `true` enables local rendering |
-| `params.plantuml.enable` | boolean | `false` | Enables the map form |
-| `params.plantuml.svg_image_url` | string | absent | Optional endpoint selecting legacy server rendering |
+| `params.plantuml.enable` | boolean | `false` | The switch in the map form |
+| `params.plantuml.svg_image_url` | string | absent | Server endpoint; a nonempty value selects server mode |
 | `params.plantuml.svg` | boolean | `false` | Server mode only: inline SVG instead of an image |
 {.fields meta="type default"}
 
-Fences do not accept code-block title, copy, line-number, numbering or zoom
-attributes. Source without `@startuml` / `@enduml` is wrapped for local rendering;
-explicit diagram delimiters are preserved.
+The fence takes none of the code-block attributes (title, copy, line numbers,
+numbering, zoom); they warn and are ignored.
 
 ## Limits {#limits}
 
-- The browser bundle includes the core engine and Graphviz layout only.
-  `!include`, `!includeurl`, external themes, C4, AWS and other optional sprite
-  libraries are not downloaded. Unsupported resources leave the source visible.
-  Use self-contained diagrams, pre-rendered images, or an explicit server for these.
-- The pinned engine is `@plantuml/core` 1.2026.9 with Viz.js 3.31.0. The two scripts
-  total about 4.7 MB before compression, or 1.6 MB with gzip. They load only as enabled diagrams approach the viewport; normal HTTP caching applies.
-- Rendering uses the browser's JavaScript and WebAssembly support. Sites with a
-  restrictive CSP need to allow their own scripts, WebAssembly compilation
-  (`wasm-unsafe-eval`) and `blob:` images. Blocked resources retain source.
-- Large diagrams still cost browser CPU and memory. Rendering proceeds one diagram
-  at a time; this is not a background-worker renderer.
-  After an uncancellable engine timeout, remaining PlantUML figures keep source
-  until the page is reloaded.
-- Diagrams are images: SVG hyperlinks are inactive. Numbering is not part of this integration.
+- The browser bundle contains the core engine and Graphviz layout only, so
+  `!include`, `!includeurl`, external themes, C4, AWS and the other optional
+  sprite libraries are not available. A diagram that uses them stays as
+  source. Make it self-contained, use a pre-rendered
+  [image](/docs/components/image/), or switch to [server mode](#server).
+- The engine is `@plantuml/core` 1.2026.9 with Viz.js 3.31.0. The two scripts
+  total about 4.7 MB, or 1.6 MB gzipped; they load only when a diagram
+  approaches the viewport, and normal HTTP caching applies.
+- Local rendering uses JavaScript and WebAssembly. A site with a strict
+  Content Security Policy must allow its own scripts, `wasm-unsafe-eval` for
+  WebAssembly compilation, and `blob:` images; when any of these is blocked,
+  diagrams stay as source.
+- Large diagrams cost the reader's CPU and memory, and rendering runs on the
+  main thread rather than in a worker. If the engine hits a timeout it cannot
+  cancel, the remaining PlantUML diagrams on the page stay as source until the
+  page is reloaded.
+- Diagrams are images, so links inside them are not clickable, and they cannot
+  be numbered.
 
 ## Related {#related}
 

@@ -1,6 +1,6 @@
 # Fields
 
-> Add `{.fields}` to a table to document configuration keys, command flags, and API fields. Entries adapt to narrow screens and have individual anchors.
+> Document configuration keys, command flags and API fields as a field list that stays readable on a phone and gives every entry its own link.
 
 ---
 
@@ -8,19 +8,22 @@ LLMS index: [llms.txt](/llms.txt)
 
 ---
 
-Fields display named values, metadata, and descriptions as a responsive definition list.
-Each name has its own line. Small chips beside it show type, required status, and default value.
-The description starts on the next line. Each entry has an anchor.
-Use fields for configuration keys, command flags, and API fields.
-Use a plain table to compare many rows across the same columns. Use steps for sequences of actions.
+A field list documents named settings: configuration keys, command-line flags,
+API fields. Each name sits on its own line with small chips for its type,
+whether it is required and its default, and the description runs underneath at
+full width, so a long description never gets squeezed into a narrow table
+column on a phone. Every entry also gets its own anchor, which you can paste
+into an issue or a chat to point at one setting.
 
-There are two forms. Use a plain table with `{.fields}` by default.
-Use `fields`/`field` shortcodes for descriptions with multiple paragraphs, lists, or code blocks. Both forms display the same entries.
+A field list suits reference material. When readers compare many rows across
+the same columns, keep a plain table; when the content is a sequence of
+actions, use [Steps](/docs/components/steps/).
 
 ## Shortest form {#minimal}
 
-Write a pipe table with at least two columns, then put `{.fields}` on the next line.
-The first column is the name. The last is the description. Middle columns are metadata labeled with their header text.
+Write a pipe table with at least two columns and put `{.fields}` on the line
+right after it. The first column is the name, the last column is the
+description, and every column in between is metadata.
 
 ```markdown {title="Source"}
 | Parameter | Type | Default | Description |
@@ -38,13 +41,17 @@ The first column is the name. The last is the description. Middle columns are me
 | `page_width` | string | `normal` | Reading column width: `normal` `wide` `full` |
 {.fields}
 
-Metadata appears as "Header: value". The theme does not infer meaning from headers. `Type` is only a label.
-The next section explains standard chips. Cells accept inline Markdown, including code, emphasis, and links. Empty middle cells are omitted.
+Each metadata cell is shown as "Header: value". The theme does not read
+meaning into header text, so `Type` here is only a label; to get the standard
+chips, assign roles with `meta` as described in the next section. Cells accept
+inline Markdown such as code, emphasis and links, and an empty metadata cell is
+left out.
 
 ## Semantic columns with `meta=` {#meta}
 
-`meta` assigns a role to each middle column, in order: `type`, `required`, `default`, or `-` for a plain header label.
-With this attribute, tables display the same chips as shortcodes.
+`meta` gives each metadata column a role, in column order: `type`,
+`required`, `default`, or `-` to keep the header as a plain label. With roles
+assigned, the table renders the same chips as the shortcode form.
 
 ```markdown {title="Source"}
 | Parameter | Type | Required | Default | Description |
@@ -62,35 +69,38 @@ With this attribute, tables display the same chips as shortcodes.
 | `defaultContentLanguage` | string | | `en` | Default language; decides which language unprefixed paths belong to |
 {.fields meta="type required default"}
 
-The rules:
+- Write exactly one role per metadata column, which is the column count minus
+  two. With too many or too few, the build warns and the table renders as if
+  `meta` were absent.
+- Any non-empty `required` cell means required, and it shows the English
+  `required` chip whether you wrote "yes", "是" or "✔". Leave optional rows
+  empty, because "no" and "否" count as required too.
+- `type` and `default` values without inline markup of their own are set as
+  code, matching the shortcode form.
+- The chips always appear in the order `type`, `required`, `default`,
+  whatever the column order; `-` columns follow in their own order.
 
-- `meta` should specify one role per middle column: the total column count minus two.
-  Too many or too few roles warns and ignores `meta`. Review the warning and rendered fallback before publication.
-- Every nonempty `required` cell means true. "yes", "是", and "✔" all display the untranslated `required` chip.
-  Empty cells display nothing. Leave optional fields empty, because `no` and `否` also mean true.
-- `type` and `default` cells without their own inline markup receive code formatting, as in the shortcode form.
-- Semantic chips always appear in this order: `type`, `required`, `default`, regardless of column order.
-  `-` columns follow in their original order.
-
-Combine `-` with semantic roles to keep a custom label:
+Mix `-` with roles to keep a column under its own label:
 
 ```markdown {title="Source"}
-| Environment variable | Type | Scope | Description |
+| Environment variable | Type | Read by | Description |
 | --- | --- | --- | --- |
-| `HUGO_MODULE_WORKSPACE` | string | build | Points at `go.work` so the theme resolves from a local checkout |
-| `HUGO_ENV` | string | build | Selects production mode; OINK fingerprints CSS/JS assets. Use `--minify` to minify HTML |
+| `PGHOST` | string | libpq clients | Server host name, or the directory of a Unix socket |
+| `PGDATA` | path | server tools | Data directory used by `initdb` and `pg_ctl` when `-D` is not given |
 {.fields meta="type -"}
 ```
 
-| Environment variable | Type | Scope | Description |
+| Environment variable | Type | Read by | Description |
 | --- | --- | --- | --- |
-| `HUGO_MODULE_WORKSPACE` | string | build | Points at `go.work` so the theme resolves from a local checkout |
-| `HUGO_ENV` | string | build | Selects production mode; OINK fingerprints CSS/JS assets. Use `--minify` to minify HTML |
+| `PGHOST` | string | libpq clients | Server host name, or the directory of a Unix socket |
+| `PGDATA` | path | server tools | Data directory used by `initdb` and `pg_ctl` when `-D` is not given |
 {.fields meta="type -"}
 
 ## Labels and container IDs {#caption-id}
 
-`caption` sets the list's visible label and accessible name. `id` identifies the outer container for links or styles.
+`caption` puts a visible label above the list and also names it for screen
+readers. `id` sets the ID of the outer container, so you can link to the whole
+list or style it from site CSS.
 
 ```markdown {title="Source"}
 | Parameter | Type | Default | Description |
@@ -108,17 +118,22 @@ Combine `-` with semantic roles to keep a custom label:
 
 ## Every entry is linkable {#anchors}
 
-Each entry has a `field-<name>` anchor. A self-link icon appears beside the name on hover.
-For example, `page_width` in the first table has [#field-page_width](#field-page_width). Share this link to refer to that entry.
+Each entry gets a `field-<name>` anchor, and a link icon appears beside the
+name on hover. `page_width` in the first list on this page, for example, is
+[#field-page_width](#field-page_width). When a name occurs twice on one page,
+the second anchor gets `-2`, the third `-3`, the same rule Goldmark applies to
+duplicate headings.
 
-Duplicate names on a page receive `-2` and `-3` suffixes, as Goldmark does for duplicate headings.
-In OINK 1.6.0, the `field` shortcode accepts an optional `id` parameter (for example `id="guc-work-mem"`) to preserve an established anchor instead of generating `field-<name>`; an empty, duplicate, or unsafe value warns and falls back to the generated anchor.
-Every anchored entry also carries `data-td-search-entry` with its plain name so [local search](/docs/customize/search/) opens the parameter directly.
-Only HTML generates these anchors. Print and RSS combine pages into one document, where these anchors would collide.
+To keep an anchor that other pages already link to, give the `field`
+shortcode an explicit `id`, such as `id="guc-work-mem"`; an empty, duplicate
+or unsafe value warns and falls back to the generated anchor.
+[Local search](/docs/customize/search/) indexes each anchored entry, so
+searching for a parameter name opens the page at that entry.
 
 ## The shortcode form {#shortcode}
 
-If a description needs multiple paragraphs, a list, or a code block, use `fields`/`field`. A table cell cannot contain these blocks.
+A table cell cannot hold paragraphs, lists or code blocks. When a description
+needs them, write the list with the `fields` and `field` shortcodes instead.
 
 ````markdown {title="Source"}
 {{< fields label="Common pig flags" >}}
@@ -152,7 +167,7 @@ pig ext install pg_duckdb --dry-run
   Path to the configuration file. Relative paths resolve against the working
   directory.
 
-  When `PIG_CONFIG` is also set, the command-line flag takes precedence.
+  When `PIG_CONFIG` is also set, the command-line flag wins.
 
 - `--log-level` — `string`; default: `info`
 
@@ -170,9 +185,11 @@ pig ext install pg_duckdb --dry-run
   pig ext install pg_duckdb --dry-run
   ```
 
-`required=true` and `default=false` are booleans. Do not quote them.
-`default` accepts any scalar. Both `default=0` and `default=""` display their values; the empty string appears as `""`.
-If you omit `default`, the chip is omitted. Every `field` needs a nonempty body and must be a direct child of `fields`.
+Write `required=true` and `default=false` without quotes, because quoted they
+are strings rather than booleans. `default` accepts any scalar and shows
+`default=0` and `default=""` as written, the empty string as `""`; without
+`default`, no default chip appears. Every `field` needs a non-empty body and
+must sit directly inside `fields`.
 
 ## Which form to use {#which}
 
@@ -183,22 +200,21 @@ If you omit `default`, the chip is omitted. Every `field` needs a nonempty body 
 | Readers comparing many rows across the same columns | a plain table, not a field list |
 | Content that is a sequence of actions | [Steps](/docs/components/steps/) |
 
-The table form stays readable on GitHub and remains a table in OINK's Markdown output. It is therefore the default.
+Prefer the table form whenever it fits: GitHub still shows it as a readable
+table, and the page's Markdown output keeps it as one.
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | `<div class="td-fields">` around a semantic `<dl>`; entries carry `#field-<name>` (or explicit `id`) anchors, self-links, and `data-td-search-entry` |
-| Print | The complete definition list, without entry anchors |
-| Markdown | The table form keeps the source table; the shortcode form emits a bulleted list of "`name` — type; required; default: value" plus the indented description |
-| RSS | The complete static `<dl>`, without entry anchors |
-
-No script is loaded.
+Field lists load no script. Print and RSS show the complete list without entry
+anchors, because a print view joins many pages into one document where the
+anchors would collide. In the page's Markdown output the table form stays the
+source table, while the shortcode form becomes a bulleted list,
+"`name` — type; required; default: value", with each description indented
+beneath its entry.
 
 ## Parameter reference {#reference}
 
-The table attribute line, on the row below the table:
+The table attribute line, on the line right after the table:
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -224,7 +240,7 @@ The `field` shortcode:
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
 | `name` | non-empty string | yes | The field name |
-| `id` | identifier | | Replaces the generated `field-<name>` anchor (since 1.6.0); no whitespace, quotes, `<`, `>`, or `&`, and must be unique among fields on the page |
+| `id` | identifier | | Replaces the generated `field-<name>` anchor; no whitespace, quotes, `<`, `>` or `&`, and unique among the fields on the page |
 | `type` | non-empty string | | Type label such as `boolean`, `string[]`, `duration` |
 | `required` | boolean | | `true` shows the untranslated `required` chip; defaults to `false` |
 | `default` | scalar | | String / boolean / integer / float; `false`, `0` and `""` all display |
@@ -232,13 +248,17 @@ The `field` shortcode:
 
 ## Limits {#limits}
 
-- The first column must be nonempty and unique within each table.
-  Empty or duplicate names warn and skip the row.
-- `.fields` cannot be combined with `.matrix`, `.full-width`, or `num`. `meta` requires a table with `.fields`.
-- Table cells cannot contain block content. Use shortcodes for paragraphs, lists, and fences.
-- `required` and `default` remain untranslated English API terms in every language. They are contract terms, not interface text.
-- Fields do not support `kind`, `since`, `deprecated`, `location`, per-field links, or nested structures.
-  They do not parse TypeScript or OpenAPI schemas at build time.
+- The first column must be non-empty and unique within the table; a row with
+  an empty or duplicate name warns and is skipped.
+- `.fields` cannot be combined with `.matrix`, `.full-width` or `num`, and
+  `meta` works only on a table that has `.fields`.
+- Table cells cannot hold block content; switch to the shortcode form for
+  paragraphs, lists and code blocks.
+- `required` and `default` stay in English in every language, because they
+  are API vocabulary rather than interface text.
+- There is no `kind`, `since`, `deprecated` or `location` metadata, no
+  per-field link and no nesting, and nothing is generated from TypeScript or
+  OpenAPI schemas.
 
 ## Related {#related}
 

@@ -6,21 +6,22 @@ weight: 70
 search_keywords: [Steps, ordered list, procedure, tutorial, ol, start, TOC]
 ---
 
-Steps display an ordered list with numbered dots and a connecting line. Add a `{.steps}` marker line to an ordered list.
-CSS draws the dots and line. No script loads. Use steps for ordered procedures.
-Use plain lists or cards for unordered items.
+Steps present a procedure as a numbered column of dots joined by a line, so a
+reader following an installation or an upgrade can see at a glance which step
+they are on and how many remain. Add a `{.steps}` line under an ordinary
+ordered list; CSS draws the dots and the line, and no script loads. Use steps
+only when the order matters. Options and related links belong in a plain list
+or in [cards](/docs/components/cards/).
 
-There are two forms. Use an ordered list with `{.steps}` by default.
-Use `{{%/* steps */%}}` when each step needs a heading in the table of contents.
-
-## Optional presentation {#presentation}
-
-Use `{.steps .td-steps-compact}` for a short procedure, or `steps variant="compact"` for the heading form. OINK 1.4.0 supports these opt-in variants; [compare the examples](/docs/components/presentation/#steps). Numbering, nesting, and heading anchors retain their existing meaning.
+The ordered list is the form to reach for first. Switch to the
+`{{%/* steps */%}}` shortcode when each step needs its own heading in the table
+of contents; [Which form to use](#which) compares the two.
 
 ## Shortest form {#minimal}
 
-Write `1.` for each item so Markdown counts automatically.
-Then you can add, remove, or reorder steps without renumbering. Content always uses three spaces of indentation.
+Number every item `1.` and let Markdown count, so you can add, remove or
+reorder steps without renumbering, and the content indent is always three
+spaces.
 
 ```markdown {title="Source"}
 1. Install Hugo
@@ -34,12 +35,14 @@ Then you can add, remove, or reorder steps without renumbering. Content always u
 1. Start the local preview
 {.steps}
 
-`{.steps}` must immediately follow the last list line. A blank line makes it display as text with braces.
+Put `{.steps}` on the line right after the last item. With a blank line in
+between, it no longer attaches to the list and shows up on the page as text in
+braces.
 
 ## What goes in a step {#blocks}
 
-List items accept block content: paragraphs, fenced code, callouts, tables, nested lists, and images.
-Align content with the item's content column, using three spaces.
+A step can hold any block content: paragraphs, fenced code, callouts, tables,
+nested lists and images. Indent it to the item's content column, three spaces.
 
 ````markdown {title="Source"}
 1. Clone OINK Starter; it is the small project template for the theme.
@@ -95,12 +98,13 @@ Align content with the item's content column, using three spaces.
    | `content/` | your content |
 {.steps}
 
-Shortcodes in `{{</* … */>}}` form, such as tabs, cards, and badges, also work inside list items.
-The `{{%/* … */%}}` form does not. See [Limits](#limits).
+Shortcodes written as `{{</* … */>}}`, such as tabs, cards and badges, work
+inside a step too. The `{{%/* … */%}}` form does not; see [Limits](#limits).
 
 ## Splitting one step per platform {#tabs-in-steps}
 
-If a step differs by platform, put adjacent `{tab=}` fences inside that list item. They still form a tab set.
+When one step differs by platform, write adjacent `{tab=}` fences inside that
+list item; they still combine into one set of tabs.
 
 `````markdown {title="Source"}
 1. Install Hugo.
@@ -134,8 +138,9 @@ If a step differs by platform, put adjacent `{tab=}` fences inside that list ite
 
 ## Continuing the numbering {#start}
 
-If prose interrupts a procedure, start the next group with its actual step number.
-Markdown emits `start` and continues numbering from that value, up to 40.
+When prose interrupts a procedure, start the next group with its real step
+number. Markdown writes that number as the list's `start`, and the dots
+continue from it; starts from 2 to 40 are supported.
 
 ```markdown {title="Source"}
 4. Configure `baseURL` and the deployment workflow.
@@ -149,16 +154,18 @@ Markdown emits `start` and continues numbering from that value, up to 40.
 
 ## Steps with headings {#shortcode}
 
-For long procedures with linked headings in the table of contents, use `{{%/* steps */%}}`.
-The body uses page-level Markdown without indentation. Each direct child heading is one step.
-The three headings below appear in this page's table of contents.
+A long procedure is easier to navigate when every step has a heading that
+appears in the table of contents and can be linked to. Wrap the procedure in
+`{{%/* steps */%}}`: its body is ordinary page Markdown, not indented, and
+each direct child heading starts a step. The three headings below are in this
+page's table of contents.
 
 ```markdown {title="Source"}
 {{%/* steps */%}}
 
 ### Install the toolchain {#install-toolchain}
 
-You need Hugo ≥ 0.169.0 and Go.
+Install Hugo and Go; [Get started](/docs/start/) lists the versions.
 
 ### Run the server {#run-server}
 
@@ -182,7 +189,7 @@ Push to `main`; the workflow the repository ships builds and publishes.
 
 ### Install the toolchain {#install-toolchain}
 
-You need Hugo ≥ 0.169.0 and Go.
+Install Hugo and Go; [Get started](/docs/start/) lists the versions.
 
 ### Run the server {#run-server}
 
@@ -201,11 +208,12 @@ Push to `main`; the workflow the repository ships builds and publishes.
 
 {{% /steps %}}
 
-This is the theme's only `{{%/* … */%}}` shortcode. The percent form gives its body to Goldmark as page-level Markdown.
-This allows headings in the table of contents and container shortcodes such as `tabs`, `cards`, and `fields` inside steps.
-It cannot nest inside list items or other percent containers.
-
-Use the same heading level for every step in a procedure. Never nest `steps` inside another steps container.
+`steps` is the theme's only shortcode written with percent delimiters. That
+form hands its body to Goldmark as page Markdown, which is what puts its
+headings in the table of contents and lets a step hold container shortcodes
+such as `tabs`, `cards` and `fields`. The cost is that it cannot sit inside a
+list item or inside another percent container, another `steps` included. Give
+every step in one procedure the same heading level.
 
 ## Which form to use {#which}
 
@@ -216,38 +224,40 @@ Use the same heading level for every step in a procedure. Never nest `steps` ins
 | A step must contain a `tabs`, `cards` or `fields` container | `{{%/* steps */%}}` |
 | The procedure itself has to nest inside another list item | ordered list + `{.steps}` |
 
+## Optional presentation {#presentation}
+
+For a short procedure, `{.steps .td-steps-compact}` and
+`steps variant="compact"` tighten the spacing; numbering, nesting and heading
+anchors work as before. The [presentation page](/docs/components/presentation/#steps)
+shows both next to the regular form.
+
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | The native form is `<ol class="steps">` with numbers and rule drawn in CSS; the shortcode form is `<div class="td-steps">` plus headings |
-| Print | Numbers and content unchanged, the rule stays |
-| Markdown | The source as written: an ordered list plus `{.steps}`, or headings plus bodies |
-| RSS | A static list or titled sections |
-
-Steps load no script. Disabling JavaScript does not change the result.
+Steps load no script, so they look the same with JavaScript off. Print keeps
+the numbers, content and connecting line; the Markdown output keeps the source
+as written, and RSS shows a plain list or titled sections.
 
 ## Parameter reference {#reference}
-
-OINK 1.4.0 supports the optional `variant="compact"` on the full form. Follow these conventions:
 
 | Spelling | Where | Description |
 | --- | --- | --- |
 | `{.steps}` | line below the ordered list | Required; has no effect on an unordered list |
+| `{.steps .td-steps-compact}` | line below the ordered list | Compact spacing for a short procedure |
 | `1.` | every item | Let Markdown count; the content indent is always three spaces |
 | `4.` (first item) | first item | Emits `<ol start="4">` and continues from 4; supported for 2–40 |
 | `{{%/* steps */%}}` | around a set of headings | Direct child headings (`##`–`######`) are the steps; the body is not indented |
+| `variant="compact"` | on `{{%/* steps */%}}` | Compact spacing; any other value warns and uses the regular layout |
 {.fields meta="-"}
 
 ## Limits {#limits}
 
-- Do not put `{{%/* … */%}}` inside list items. A percent shortcode's multiline output truncates the list.
-  To put a container in a step, use the shortcode form for the whole procedure.
-- `{{%/* steps */%}}` cannot be inside list items or other percent containers.
-- Put the marker immediately after the list, with no blank line before `{.steps}`.
-  With formatters such as Prettier, wrap it in `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->`.
-- `{.steps}` applies only to ordered lists. A `-` list has no numbers.
-- Steps do not collapse, expand, or track progress. There is no "done" state.
+- Do not put a `{{%/* … */%}}` shortcode inside a list item: its multiline
+  output ends the list early. To put a container in a step, write the whole
+  procedure with the shortcode form instead.
+- Formatters such as Prettier may separate `{.steps}` from its list. Wrap the
+  list in `<!-- prettier-ignore-start -->` and `<!-- prettier-ignore-end -->`.
+- `{.steps}` works only on ordered lists; a `-` list gets no numbers.
+- Steps do not collapse, expand or track progress; there is no "done" state.
 
 ## Related {#related}
 

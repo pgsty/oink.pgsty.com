@@ -1,21 +1,27 @@
 ---
 title: Tables
 linkTitle: Tables
-description: Add attributes to a GFM table for captions, compatibility matrices, field lists, numbering, or tabs. Wide tables scroll within their own regions.
+description: Turn an ordinary Markdown table into a captioned table, a compatibility matrix, a field list, a numbered book table or a tab set, and give wide technical tables room to read.
 weight: 50
 search_keywords: [Table, matrix, full-width, wide, technical tables, caption, numbered table, horizontal scroll, GFM]
 aliases:
   - /docs/components/tables/
 ---
 
-Tables use ordinary GFM pipe syntax. The table render hook wraps each table in a horizontally scrollable region.
-The `{…}` attribute line below selects captions, compatibility matrices, field lists, numbering, or tabs.
-Merged cells, sorting, and filtering are unsupported. If you need these features, change the presentation of the data.
+Tables are ordinary GFM pipe tables, so they read the same on GitHub and in any
+editor. OINK adds what long technical tables need: a wide table scrolls inside
+its own box instead of stretching the page, and one attribute line under the
+table turns it into a captioned table, a support matrix, a field list, a
+numbered book table or one panel of a tab set.
+
+GFM has no merged cells, sorting or filtering, and OINK does not add them. Data
+that needs merged headers usually reads better as two tables or a matrix, and a
+cell that needs paragraphs or a list belongs in a [field list](/docs/components/fields/).
 
 ## Shortest form {#minimal}
 
-Without an attribute line, the result is an ordinary table. The delimiter row controls alignment.
-Header cells use `th scope="col"`.
+A table without an attribute line renders as an ordinary table. The delimiter
+row sets each column's alignment, and header cells become `th scope="col"`.
 
 ```markdown {title="Source"}
 | Component | Port | Purpose |
@@ -33,9 +39,10 @@ Header cells use `th scope="col"`.
 
 ## Wide tables scroll themselves {#scroll}
 
-Wide tables scroll within their own region instead of widening the page.
-Press Tab to focus the region, then use arrow keys to scroll.
-Its accessible name is the localized "Scrollable table".
+A table wider than the reading column scrolls sideways inside its own region,
+so the rest of the page keeps its width on a phone. Keyboard users reach the
+region with Tab and scroll it with the arrow keys; screen readers announce it as
+"Scrollable table" in the page's language.
 
 ```markdown {title="Source"}
 | Cluster | Role | Version | State | Lag | Connections | Size | Backup |
@@ -52,30 +59,33 @@ Its accessible name is the localized "Scrollable table".
 
 ## Captions {#caption}
 
-`{caption="…"}` adds a visible `<caption>`. The caption is plain text and does not number the table.
-Its title has balanced padding inside the table frame and aligns with the column labels below it.
+`{caption="…"}` adds a visible `<caption>` in plain text. It does not number
+the table; for "Table 9-1" use [`num`](#numbered).
 
 ```markdown {title="Source"}
-| Item | Value |
+| Setting | Value |
 | --- | --- |
-| Theme version | v0.8.1 |
-| Hugo floor | 0.169.0 |
-| Licence | Apache-2.0 |
-{caption="Theme facts this site currently builds against"}
+| Port | 5432 |
+| Data directory | `/var/lib/pgsql/18/data` |
+| License | PostgreSQL License |
+{caption="PostgreSQL defaults on a fresh EL 9 node"}
 ```
 
-| Item | Value |
+| Setting | Value |
 | --- | --- |
-| Theme version | v0.8.1 |
-| Hugo floor | 0.169.0 |
-| Licence | Apache-2.0 |
-{caption="Theme facts this site currently builds against"}
+| Port | 5432 |
+| Data directory | `/var/lib/pgsql/18/data` |
+| License | PostgreSQL License |
+{caption="PostgreSQL defaults on a fresh EL 9 node"}
 
 ## Compatibility matrices {#matrix}
 
-Use `{.matrix}` for support matrices. The first column becomes a row header with `th scope="row"`.
-The header row and first column stay fixed while scrolling. Other cells are centered unless the delimiter row specifies another alignment.
-Authors write ✅ and ❌ characters. The theme does not interpret them.
+`{.matrix}` is for "what supports what" grids. The first column becomes a row
+header (`th scope="row"`), and the header row and first column stay pinned while
+the reader scrolls in either direction, so a cell deep in a large matrix still
+shows its row and column. Cells are centered unless the delimiter row sets
+another alignment. The ✅ and ❌ are ordinary characters you type; the theme
+gives them no meaning.
 
 ```markdown {title="Source"}
 | OS / PG | PG18 | PG17 | PG16 | PG15 | PG14 |
@@ -97,7 +107,8 @@ Authors write ✅ and ❌ characters. The theme does not interpret them.
 
 ## Using the whole canvas {#full-width}
 
-`{.full-width}` removes the reading-column limit and uses the article's full width. Use it for many short columns.
+`{.full-width}` lets the table leave the reading column and take the article's
+full width. Use it for many short columns that would otherwise scroll.
 
 ```markdown {title="Source"}
 | Language | Code | Sidebar | Search | TOC | Print | Status |
@@ -115,15 +126,14 @@ Authors write ✅ and ❌ characters. The theme does not interpret them.
 
 ## Technical wide tables {#wide}
 
-> [!NOTE] `.wide` in OINK 1.4.0
-> The short marker is included in the release. Existing technical-table markup
-> remains supported.
-
-Technical tables containing long configuration keys, environment variables, or
-identifiers can produce awkward token breaks and very tall rows when forced into
-the reading column. Adding `{.wide .expand}` to the attribute line opts the
-inner table into natural intrinsic sizing (`width: max-content`), scrolling
-horizontally within its wrapper when it exceeds the available space.
+Squeezed into the reading column, a table of configuration keys or environment
+variables breaks identifiers in odd places and grows very tall rows. `.wide`
+lets the table take its natural width (`width: max-content`) and scroll
+sideways when that is wider than the page. Cells break only between words
+(`overflow-wrap: break-word`, `word-break: normal`), and body cells have a soft
+`max-width: 40ch`, so a long description wraps into a readable column instead
+of one enormous line. A very long token can still wrap; the bound is not a
+fixed column width.
 
 ```markdown {title="Source"}
 | Variable | Required | Default | Configuration key | Description |
@@ -141,37 +151,22 @@ horizontally within its wrapper when it exceeds the available space.
 | `HG_PD_ACTUATOR_EXPOSURE` | No | `health,metrics,prometheus` | `management.endpoints.web.exposure.include` | Public Actuator endpoint allowlist; `*` is forbidden. |
 {.wide .expand}
 
-### Difference from .full-width {#wide-vs-full-width}
-
-- `.full-width` controls the **outer canvas**: it expands the table container to
-  break out of the reading column into the full width of the article layout.
-  It suits tables with many short columns.
-- `.wide` controls the **inner table sizing**: it sets the table to its
-  natural intrinsic width (`width: max-content`), using horizontal scrolling to
-  accommodate wide content. It suits tables with long technical identifiers.
-- Both can be combined: `{.full-width .wide}` expands the container to
-  the full canvas while allowing the inner table to keep its natural wide measure.
-
-### Applicability boundaries {#wide-boundaries}
-
-- **Explicit opt-in**: Ordinary tables keep their existing layout. Only tables
-  marked `.wide` use `overflow-wrap: break-word`, `word-break: normal`,
-  and a soft `max-width: 40ch` body-cell bound. Very long tokens may still wrap;
-  the bound is not a fixed column width.
-- **Static outputs**: This policy applies only on screen. Print and RSS use
-  static wrappers and retain their existing layout; Markdown preserves the authored
-  GFM table and attribute line. The marker has no effect on `.fields` definition lists.
+`.wide` and `.full-width` solve different problems and combine as
+`{.full-width .wide}`. `.full-width` widens the box the table sits in, which
+suits many short columns; `.wide` changes how the table inside sizes its
+columns, which suits long identifiers. `.wide` applies on screen only: print
+and RSS keep the ordinary layout, and it has no effect on `.fields`. The older
+`.td-table--wide` class still works as a synonym.
 
 ## Expand selected tables {#expand}
 
-> [!NOTE] `.expand` in OINK 1.4.0
-> The opt-in reader is included in the release.
-
-Add `.expand` only to tables that benefit from a larger reading area. A small
-expand icon sits at the top-right corner: desktop hover or keyboard focus reveals
-it; touch devices keep it visible. Click once to open the table, then use Close
-or Escape to return to the same reading position. Text size, links, and selection
-stay intact; wide content still scrolls horizontally on small screens.
+`.expand` puts a small expand icon at the table's top-right corner. It appears
+on hover or keyboard focus on desktop and stays visible on touch screens. One
+click opens the table in a dialog that fills the window, with the same
+text size, links and text selection; Close or Escape puts it back at the same
+reading position. On a narrow screen a wide table still scrolls sideways
+inside the dialog. Most examples on this page carry `.expand`, so you can try
+it on them.
 
 ```markdown {title="Source"}
 | Package | Version | Role |
@@ -187,28 +182,26 @@ stay intact; wide content still scrolls horizontally on small screens.
 | `pg_stat_statements` | `1.11` | Statement statistics |
 {.wide .expand caption="Example extension packages"}
 
-Goldmark accepts multiple classes: `{.wide .expand}` and
-`{class="wide expand"}` are equivalent. Enable
-`markup.goldmark.parser.attribute.block: true` and put the attribute line
-immediately after the last row, without a blank line.
+Add it only to the few tables that need more room: there is no size threshold
+and no site-wide switch, because an icon on every table is noise. `.expand`
+works alone or with `.wide`, `.full-width`, `.matrix`, a caption, a number or
+a tab. Several classes can be written either way, `{.wide .expand}` or
+`{class="wide expand"}`.
 
-`.wide` controls layout; `.expand` enables the reading action. Either works alone.
-You can also combine `.expand` with `.full-width`, `.matrix`, captions, numbering,
-or tabs. There is no automatic size threshold or site-wide switch. The existing
-`.td-table--wide` spelling remains compatible with `.wide`.
-
-Only pages with opted-in tables load the small reader script. Without JavaScript,
-a loaded script, or native dialog support, the complete inline table remains
-readable without a dead button. Print and RSS keep static tables; Markdown keeps
-the author syntax. Browser printing restores an open table to the article first.
-Tables whose `headers`, `aria-labelledby`, or `aria-describedby` reference nodes
-outside the table stay inline; custom styles depending on article ancestors
-should be reviewed in the reader.
+Only pages with an `.expand` table load the small reader script. Without
+JavaScript or native `<dialog>` support, the reader sees the complete table
+inline and no dead button. Printing first returns an open table to the article.
+A table whose `headers`, `aria-labelledby` or `aria-describedby` points at
+something outside the table stays inline, because the dialog would cut those
+references. If your site CSS styles tables through an article ancestor, check
+how such a table looks inside the dialog.
 
 ## Field lists {#fields}
 
-`{.fields}` converts a table to a definition list. The first column is the name, the last is the description, and middle columns are metadata.
-Use it for configuration keys, command flags, and API fields. See [Fields](/docs/components/fields/) for the complete syntax.
+`{.fields}` renders the table as a definition list: the first column is the
+name, the last is the description, and the columns between are metadata. It is
+the form for configuration keys, command flags and API fields. See
+[Fields](/docs/components/fields/) for everything it can do.
 
 ```markdown {title="Source"}
 | Parameter | Type | Default | Description |
@@ -226,10 +219,11 @@ Use it for configuration keys, command flags, and API fields. See [Fields](/docs
 
 ## Numbered tables {#numbered}
 
-For books or long manuals, add `num`, with optional `#id` and `caption`.
-The theme wraps the table in a `<figure>` with a localized "Table N." label and registers it as a Book target.
-`xref` can reference it, and it appears in the book-wide table list.
-Authors provide numbers. The theme never counts. `id` defaults to `tbl-<num>`.
+Books and long manuals refer to tables by number. Add `num`, with an optional
+`#id` and `caption`: the table is wrapped in a `<figure>` labeled "Table N." in
+the page's language, `xref` can link to it, and it appears in the book's list
+of tables. You choose the numbers; the theme does not count. The `id` defaults
+to `tbl-<num>`.
 
 ```markdown {title="Source"}
 | Isolation level | Dirty read | Non-repeatable read | Phantom read |
@@ -253,9 +247,10 @@ See {{< xref tbl="9-1" anchor="tbl-iso" />}}.
 
 ## Tables as tabs {#tabs}
 
-Adjacent tables with `{tab="…"}` form a tab set, using the same rules as adjacent fences.
-`group` on the first table enables URL hashes, synchronization, and saved selections. Each later table needs `value`.
-See [Tabs](/docs/components/tabs/) for the complete rules.
+Adjacent tables with `{tab="…"}` become one tab set, by the same rules as
+adjacent code fences. A `group` on the first table adds a shareable URL hash,
+syncing and a remembered choice, and then every table needs a `value`. See
+[Tabs](/docs/components/tabs/) for the full rules.
 
 ```markdown {title="Source"}
 | Directory | Contents |
@@ -285,14 +280,11 @@ See [Tabs](/docs/components/tabs/) for the complete rules.
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | A focusable `<div class="td-table-scroll">` around the `<table>`; matrix and full-width are modifier classes on that wrapper |
-| Print | Complete static content with a keyboard-scrollable region in the browser preview; print-media CSS expands the region for paper output |
-| Markdown | The source table and its attribute line, emitted as written |
-| RSS | The complete static table |
-
-Ordinary tables load no script; `.expand` loads its reader only in HTML, and tabbed tables load the tabs runtime.
+In HTML each table sits in a focusable `<div class="td-table-scroll">`;
+`.matrix` and `.full-width` add modifier classes to that wrapper, while your
+own classes stay on the `<table>`. Ordinary tables load no script. Print and
+RSS show the complete static table, with no reader and no tab bar, and the
+Markdown output keeps the table and its attribute line as written.
 
 ## Parameter reference {#reference}
 
@@ -300,31 +292,41 @@ The attribute line on the row below the table:
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `.full-width` | marker | none | Exceed the reading column and use the article canvas |
-| `.wide` | marker | none | Sizes the inner table to max-content; suits technical tables with long identifiers |
-| `.expand` | marker | none | Add an optional corner action for reading the table in a larger dialog |
-| `.matrix` | marker | none | First column as row header, header and first column pinned, other cells centred |
-| `.fields` | marker | none | Render as a definition list, see [Fields](/docs/components/fields/) |
+| `.full-width` | marker | none | Leaves the reading column and uses the article's full width |
+| `.wide` | marker | none | Sizes the inner table to `max-content`; for long technical identifiers |
+| `.expand` | marker | none | Adds a corner action that opens the table in a larger dialog |
+| `.matrix` | marker | none | First column becomes a row header; header row and first column are pinned; other cells are centered |
+| `.fields` | marker | none | Renders a definition list; see [Fields](/docs/components/fields/) |
 | `caption` | plain text | none | Visible table caption; on `.fields` it labels the list |
-| `meta` | role list | none | Names the meaning of the middle `.fields` columns: `type` `required` `default` `-`; requires `.fields` |
-| `#id` | identifier | `tbl-<num>` when `num` is set | `[A-Za-z][A-Za-z0-9_.:-]*`; lands on the `<table>`, or on the `<figure>` for a numbered table |
+| `meta` | role list | none | Meaning of the middle `.fields` columns: `type` `required` `default` `-`; requires `.fields` |
+| `#id` | identifier | `tbl-<num>` when `num` is set | `[A-Za-z][A-Za-z0-9_.:-]*`; lands on the `<table>`, or on the `<figure>` of a numbered table |
 | `num` | string | none | `[0-9A-Za-z.-]+`; registers a Book table target and prefixes the caption with "Table N." |
 | `tab` / `group` / `value` | see [Tabs](/docs/components/tabs/) | none | Adjacent tables become a tab set |
-| `class` | class list | none | Left on the `<table>` for site CSS |
+| `class` | class list | none | Kept on the `<table>` for site CSS |
 | `data-*` / `aria-*` | string | none | Passed through |
 {.fields meta="type default"}
 
-`style`, `on*`, and other keys warn and are ignored.
+Any other key, `style` and `on*` handlers included, is dropped with a build
+warning.
 
 ## Limits {#limits}
 
-- `.fields` cannot be combined with `.matrix`, `.full-width`, `.expand`, or `num`.
-  `num` and `tab` are mutually exclusive. `group`/`value` require `tab`, and `meta` requires `.fields`.
-- The attribute line must immediately follow the table. A blank line makes the braces appear as text.
-  To prevent formatters moving the line, wrap it in `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->`.
-- GFM tables do not support merged cells, sorting, or filtering. Split complex tables with merged headers into two tables or use a matrix.
-- Cells cannot contain block content. Use `fields`/`field` shortcodes for multiple paragraphs, lists, or fences.
-- `.matrix` centering uses CSS. Explicit delimiter-row alignment takes precedence.
+- Some attributes exclude each other. `.fields` wins over `.matrix`,
+  `.full-width`, `.expand` and `num`, and `num` wins over `tab`; the loser is
+  dropped with a warning. `group` and `value` need `tab`, and `meta` needs
+  `.fields`.
+- The attribute line must touch the last row: after a blank line Goldmark
+  drops it without a warning and the table renders plain. Without
+  `markup.goldmark.parser.attribute.block: true`, one of the
+  [site prerequisites](/docs/components/#prerequisites), the braces show up
+  as text. Formatters such as Prettier move the line; wrap the table in
+  `<!-- prettier-ignore-start -->` and `<!-- prettier-ignore-end -->`.
+- No merged cells, sorting or filtering. Split a table with merged headers
+  into two tables, or make it a matrix.
+- Cells hold inline content only. For several paragraphs, a list or a code
+  block, use the `fields`/`field` shortcodes.
+- `.matrix` centers cells with CSS, so an alignment written in the delimiter
+  row wins.
 
 ## Related {#related}
 

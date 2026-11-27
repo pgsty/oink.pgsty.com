@@ -8,72 +8,81 @@ aliases:
   - /docs/components/diagrams/
 ---
 
-A `mermaid` fence displays text as a flowchart, sequence diagram, Gantt chart, class diagram, ER diagram, or state diagram.
-Git stores the diagram source, diffs show changes, and search can find it.
-The reader's browser renders it with bundled Mermaid. It contacts no external service.
-If a diagram needs precise pixel control, use SVG as an [image](/docs/components/image/).
+A `mermaid` fence turns a few lines of text into a flowchart, sequence
+diagram, Gantt chart, class or ER diagram, or state diagram. Because the
+diagram lives in the page as text, a change to it shows up in review as a
+readable diff and site search finds the words in it, which a screenshot cannot
+offer. The Mermaid engine ships with the theme and runs in the reader's
+browser, so no external service sees your diagrams. When a picture needs
+pixel-level control, draw it as SVG and add it as an
+[image](/docs/components/image/).
 
 ## Shortest form {#minimal}
 
 ````markdown {title="Source"}
 ```mermaid
 flowchart LR
-  content["content/"] --> Hugo
-  config["hugo.yml"] --> Hugo
-  theme["OINK theme"] --> Hugo
-  Hugo --> site["public/"]
+  app["Application"] --> pool["PgBouncer"]
+  pool --> primary[("Primary")]
+  primary -->|streaming replication| replica[("Replica")]
 ```
 ````
 
 ```mermaid
 flowchart LR
-  content["content/"] --> Hugo
-  config["hugo.yml"] --> Hugo
-  theme["OINK theme"] --> Hugo
-  Hugo --> site["public/"]
+  app["Application"] --> pool["PgBouncer"]
+  pool --> primary[("Primary")]
+  primary -->|streaming replication| replica[("Replica")]
 ```
 
-Use `mermaid` as the fence language. No other switch is needed.
-Only pages with this fence load the Mermaid runtime. Even ten diagrams on one page load it only once.
+There is nothing to turn on: name the fence `mermaid`. Only pages that contain
+such a fence load the Mermaid runtime, and they load it once however many
+diagrams they hold.
 
 ## Sequence diagrams {#sequence}
 
-`sequenceDiagram` describes messages between participants over time. Use it for request paths and loading order.
+`sequenceDiagram` shows messages passing between participants over time, which
+suits request paths, handshakes and retries.
 
 ````markdown {title="Source"}
 ```mermaid
 sequenceDiagram
   autonumber
-  participant Reader as Reader's browser
-  participant CDN as Static hosting
-  participant JS as Page script bundle
-  Reader->>CDN: GET /docs/components/mermaid/
-  CDN-->>Reader: HTML (a figure plus the fence source)
-  Reader->>CDN: GET this page's bundle
-  CDN-->>Reader: mermaid.min.js
-  JS->>JS: render the fence source into SVG
-  Note over JS: runtimes the page never used are not downloaded
+  participant App as Application
+  participant Pool as PgBouncer
+  participant DB as PostgreSQL
+  App->>Pool: BEGIN
+  Pool->>DB: borrow a server connection
+  App->>Pool: UPDATE accounts
+  Pool->>DB: forward the statement
+  DB-->>App: UPDATE 1
+  App->>Pool: COMMIT
+  Pool->>DB: COMMIT
+  Note over Pool,DB: transaction pooling returns the connection after COMMIT
 ```
 ````
 
 ```mermaid
 sequenceDiagram
   autonumber
-  participant Reader as Reader's browser
-  participant CDN as Static hosting
-  participant JS as Page script bundle
-  Reader->>CDN: GET /docs/components/mermaid/
-  CDN-->>Reader: HTML (a figure plus the fence source)
-  Reader->>CDN: GET this page's bundle
-  CDN-->>Reader: mermaid.min.js
-  JS->>JS: render the fence source into SVG
-  Note over JS: runtimes the page never used are not downloaded
+  participant App as Application
+  participant Pool as PgBouncer
+  participant DB as PostgreSQL
+  App->>Pool: BEGIN
+  Pool->>DB: borrow a server connection
+  App->>Pool: UPDATE accounts
+  Pool->>DB: forward the statement
+  DB-->>App: UPDATE 1
+  App->>Pool: COMMIT
+  Pool->>DB: COMMIT
+  Note over Pool,DB: transaction pooling returns the connection after COMMIT
 ```
 
 ## Gantt charts {#gantt}
 
-`gantt` displays intervals. This example shows each PostgreSQL major version's five-year community support period, measured from release.
-`1825d` means five years.
+`gantt` draws intervals on a time axis. This chart shows the five years of
+community support each PostgreSQL major version receives from its release
+date; `1825d` is five years.
 
 ````markdown {title="Source"}
 ```mermaid
@@ -109,52 +118,52 @@ gantt
 
 ## Class and ER diagrams {#class-and-er}
 
-`classDiagram` displays types and relationships. `erDiagram` displays entities and cardinality. Use either to explain a data model.
+Use `classDiagram` for types, their members and how they relate, and
+`erDiagram` for entities and cardinality; both explain a data model faster
+than a paragraph can.
 
 ````markdown {title="Source"}
 ```mermaid
 classDiagram
-  class Page {
-    +string Title
-    +string Description
-    +int Weight
-    +Content()
-    +OutputFormats()
+  class Cluster {
+    +string name
+    +int port
+    +failover()
   }
-  class Resource {
-    +string Name
-    +string RelPermalink
-    +Resize(spec)
+  class Instance {
+    +string host
+    +string role
+    +promote()
   }
-  class OutputFormat {
-    +string Name
-    +string MediaType
+  class Database {
+    +string name
+    +string owner
+    +backup()
   }
-  Page "1" --> "0..*" Resource : page bundle resources
-  Page "1" --> "1..*" OutputFormat : html / print / markdown / rss
+  Cluster "1" --> "1..*" Instance : runs on
+  Cluster "1" --> "0..*" Database : hosts
 ```
 ````
 
 ```mermaid
 classDiagram
-  class Page {
-    +string Title
-    +string Description
-    +int Weight
-    +Content()
-    +OutputFormats()
+  class Cluster {
+    +string name
+    +int port
+    +failover()
   }
-  class Resource {
-    +string Name
-    +string RelPermalink
-    +Resize(spec)
+  class Instance {
+    +string host
+    +string role
+    +promote()
   }
-  class OutputFormat {
-    +string Name
-    +string MediaType
+  class Database {
+    +string name
+    +string owner
+    +backup()
   }
-  Page "1" --> "0..*" Resource : page bundle resources
-  Page "1" --> "1..*" OutputFormat : html / print / markdown / rss
+  Cluster "1" --> "1..*" Instance : runs on
+  Cluster "1" --> "0..*" Database : hosts
 ```
 
 ````markdown {title="Source"}
@@ -197,76 +206,79 @@ erDiagram
 
 ## State diagrams {#state}
 
-`stateDiagram-v2` displays states and transition conditions.
-This example shows the five stages of a theme release.
+`stateDiagram-v2` shows states and the events that move between them, here the
+roles a PostgreSQL instance passes through in a high-availability cluster.
 
 ````markdown {title="Source"}
 ```mermaid
 stateDiagram-v2
-  [*] --> SourceComplete
-  SourceComplete --> Validated : theme checks + site suite green
-  Validated --> Published : an immutable signed vX.Y.Z tag is pushed
-  Published --> Documented : the site's go.mod pins that tag
-  Documented --> Deployed : the production build goes live
-  Deployed --> [*]
-  Published --> SourceComplete : a problem means a new patch version; tags never move
+  [*] --> Provisioning
+  Provisioning --> Replica : base backup restored
+  Replica --> Primary : promoted after failover
+  Primary --> Replica : rejoined with pg_rewind
+  Replica --> Lagging : lag above 1 GB
+  Lagging --> Replica : caught up
+  Replica --> [*] : decommissioned
 ```
 ````
 
 ```mermaid
 stateDiagram-v2
-  [*] --> SourceComplete
-  SourceComplete --> Validated : theme checks + site suite green
-  Validated --> Published : an immutable signed vX.Y.Z tag is pushed
-  Published --> Documented : the site's go.mod pins that tag
-  Documented --> Deployed : the production build goes live
-  Deployed --> [*]
-  Published --> SourceComplete : a problem means a new patch version; tags never move
+  [*] --> Provisioning
+  Provisioning --> Replica : base backup restored
+  Replica --> Primary : promoted after failover
+  Primary --> Replica : rejoined with pg_rewind
+  Replica --> Lagging : lag above 1 GB
+  Lagging --> Replica : caught up
+  Replica --> [*] : decommissioned
 ```
 
 ## Per-diagram title and configuration {#per-diagram-config}
 
-A fence body can start with Mermaid's YAML header. This is not Hugo front matter.
-`title` sets the diagram title. `config` overrides Mermaid configuration for this diagram only.
-If a diagram fixes `config.theme`, it no longer follows the site's color scheme.
+Start the fence body with Mermaid's own YAML header (it belongs to the diagram,
+not to Hugo's front matter). `title` captions the diagram, and `config`
+overrides Mermaid settings for this diagram alone. Leave `config.theme` out:
+a diagram that sets it no longer follows the reader's light or dark mode.
 
 ````markdown {title="Source"}
 ```mermaid
 ---
-title: Only the runtimes a page used are bundled
+title: Choosing a restore source
 config:
   flowchart:
     curve: linear
 ---
 flowchart TD
-  Page --> Which{which components?}
-  Which -->|Mermaid fence| M[mermaid.min.js]
-  Which -->|ECharts fence| E[echarts.min.js]
-  Which -->|none| B[base bundle only]
+  Loss[Data lost] --> When{Restore to when?}
+  When -->|latest state| Promote[Promote a replica]
+  When -->|a point in time| PITR[Base backup plus WAL replay]
+  When -->|one table| Dump[Restore that table from pg_dump]
 ```
 ````
 
 ```mermaid
 ---
-title: Only the runtimes a page used are bundled
+title: Choosing a restore source
 config:
   flowchart:
     curve: linear
 ---
 flowchart TD
-  Page --> Which{which components?}
-  Which -->|Mermaid fence| M[mermaid.min.js]
-  Which -->|ECharts fence| E[echarts.min.js]
-  Which -->|none| B[base bundle only]
+  Loss[Data lost] --> When{Restore to when?}
+  When -->|latest state| Promote[Promote a replica]
+  When -->|a point in time| PITR[Base backup plus WAL replay]
+  When -->|one table| Dump[Restore that table from pg_dump]
 ```
 
 ## Light and dark {#dark-mode}
 
-At initialization, the theme reads the current color scheme. Dark mode uses Mermaid's `dark` theme.
-Light mode uses the site's configured theme. Changing the color scheme redraws diagrams in place without reloading the page.
-Each diagram keeps its height during redrawing, so page content does not move.
+Diagrams follow the reader's color scheme: dark mode draws them with Mermaid's
+`dark` theme, light mode with the theme your site configures. Switching
+redraws them in place without a reload, and each diagram keeps its height
+while it redraws, so the text around it does not jump.
 
-Put site-wide defaults in `hugo.yml` with lowercase keys. The theme maps them to Mermaid's key casing:
+Set site-wide defaults under `params.mermaid` in lowercase; the theme matches
+each key back to Mermaid's own casing.
 
 ```yaml {title="hugo.yml"}
 params:
@@ -276,129 +288,124 @@ params:
       diagrampadding: 6
 ```
 
-[Configuration](/docs/customize/config/) lists all keys.
-See the [Mermaid configuration reference](https://mermaid.js.org/config/schema-docs/config.html) for accepted values.
+The [Mermaid configuration reference](https://mermaid.js.org/config/schema-docs/config.html)
+lists the accepted keys and values.
 
 ## Inside tabs and steps {#compose}
 
-A `mermaid` fence has no `tab` attribute. Adjacent-fence tabs apply only to ordinary code fences.
-To compare two diagrams, use the `tabs` shortcode.
+The `tab` attribute that groups adjacent code fences into tabs does not apply
+to `mermaid` fences. To let readers switch between two diagrams, put them in
+the `tabs` shortcode.
 
 ````markdown {title="Source"}
 {{</* tabs */>}}
-{{</* tab label="By data flow" */>}}
+{{</* tab label="Physical replication" */>}}
 ```mermaid
 flowchart LR
-  Markdown --> Goldmark --> RenderHooks --> HTML
+  Primary -->|WAL stream| R1[Replica 1]
+  Primary -->|WAL stream| R2[Replica 2]
 ```
 {{</* /tab */>}}
-{{</* tab label="By output format" */>}}
+{{</* tab label="Logical replication" */>}}
 ```mermaid
 flowchart LR
-  Page --> HTML
-  Page --> Print
-  Page --> Markdown
-  Page --> RSS
+  Publisher -->|orders table| Reporting[Reporting database]
+  Publisher -->|products table| Search[Search index]
 ```
 {{</* /tab */>}}
 {{</* /tabs */>}}
 ````
 
 {{< tabs >}}
-{{< tab label="By data flow" >}}
+{{< tab label="Physical replication" >}}
 ```mermaid
 flowchart LR
-  Markdown --> Goldmark --> RenderHooks --> HTML
+  Primary -->|WAL stream| R1[Replica 1]
+  Primary -->|WAL stream| R2[Replica 2]
 ```
 {{< /tab >}}
-{{< tab label="By output format" >}}
+{{< tab label="Logical replication" >}}
 ```mermaid
 flowchart LR
-  Page --> HTML
-  Page --> Print
-  Page --> Markdown
-  Page --> RSS
+  Publisher -->|orders table| Reporting[Reporting database]
+  Publisher -->|products table| Search[Search index]
 ```
 {{< /tab >}}
 {{< /tabs >}}
 
-Each step in `{{%/* steps */%}}` uses page-level Markdown and can contain a `mermaid` fence.
-See [Steps](/docs/components/steps/).
+A step of the `{{%/* steps */%}}` shortcode is ordinary page Markdown, so it can
+hold a `mermaid` fence too; see [Steps](/docs/components/steps/).
 
-## Output {#outputs}
+## Enlarging a diagram {#zoom}
 
-| Output | Shape |
-| --- | --- |
-| HTML | A `figure` retaining readable source; the runtime draws SVG as it approaches the viewport |
-| Print | The source inside `<pre class="td-mermaid-source">`, static — no runtime runs there |
-| Markdown | The `mermaid` fence and its source, kept as written |
-| RSS | The source inside `<pre class="td-mermaid-source">` — subscribers see text |
+Each diagram has a corner button that opens it in a viewer, the same one local
+[PlantUML](/docs/components/plantuml/) diagrams use. The viewer reuses the
+drawing already on the page instead of rendering it again. Drag or use the
+arrow keys to pan; use the wheel, a pinch, `+` or `-` to zoom; choose **Fit to
+window** or press `0` to see the whole diagram; press `Esc` to close it and
+return focus to the button. A very wide diagram opens at its natural size so
+its labels stay readable, controls keep a touch-friendly size on phones, a
+color-scheme change keeps your place, and nothing animates when the reader
+prefers reduced motion.
+
+**Source** shows the original text and **Copy code** copies it with arrows,
+quotes, ampersands and non-Latin text intact. **Download SVG** saves a styled,
+self-contained image; a diagram that depends on external images or styles
+cannot be exported, and a failed copy or export says so. The source disclosure
+under each diagram can be opened and copied as well.
+
+## Loading and output {#outputs}
+
+A diagram renders once it is visible and within 320px of the viewport, so a
+long page does not pay for diagrams the reader never reaches. Diagrams share
+one engine and render one at a time. A diagram in a hidden tab, a closed
+disclosure or a zero-width container waits until it is shown, and browsers
+without IntersectionObserver fall back to scroll and resize checks. Pages
+without diagrams load neither the engine nor the viewer.
+
+When JavaScript is off, the engine is blocked or the diagram has a syntax
+error, the reader sees the source instead. Printing a page from the browser
+scales finished light-mode diagrams to the paper; dark-mode and not yet
+rendered diagrams print as black-on-white source. To print pictures
+throughout, switch to light mode and scroll through the diagrams you need,
+opening any tabs or disclosures that hold them, before you print. Printing
+leaves the reader's appearance setting untouched. The site's Print view, the
+Markdown output and RSS always carry the source.
 
 ## Parameter reference {#reference}
-
-A `mermaid` fence reads no attribute line. `{height=…}` and `{class=…}` have no effect and produce no error.
-The diagram and container width determine the size. The diagram is centered.
 
 Site parameters (`hugo.yml`):
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `params.mermaid` | map | unset | The whole map is passed to Mermaid's `initialize()`; write keys in lowercase and the theme matches them back to Mermaid's casing |
-| `params.mermaid.theme` | string | Mermaid's default | The light-mode theme; dark mode forces `dark` |
+| `params.mermaid.theme` | string | Mermaid's default | The light-mode theme; dark mode always uses `dark` |
 {.fields meta="type default"}
 
-Put per-diagram configuration (`title`, `config`) in the YAML header at the start of the fence body.
-These are Mermaid keys, not theme parameters.
+Settings for one diagram (`title`, `config`) go in the YAML header at the
+start of the fence body; they are Mermaid keys, not theme parameters.
 
-## Enlarging a diagram {#zoom}
-
-> [!NOTE] OINK 1.4.0 reading experience
-> This shared viewer and demand loading are part of OINK 1.4.0.
-
-Mermaid and local PlantUML share the corner-button viewer. It reuses the rendered
-result without running the engine again. Drag or use arrow keys to pan; use the
-wheel, pinch, `+` or `-` to zoom. Choose **Fit to window** or press `0` to see the
-whole diagram. `Esc` closes the viewer and restores focus to its opener. Very wide
-pictures initially open at natural size for readable labels. Controls retain touch
-size on phones. Theme changes retain your position; reduced motion adds no animation.
-
-Choose **Source** to inspect the original text and **Copy code** to copy it.
-Arrows, quotes, ampersands and Chinese stay intact. **Download SVG** exports a
-styled, standalone image requiring no remote resources. Copy and export failures show
-feedback. An SVG with external image or style dependencies
-cannot be exported. The source disclosure below each figure also supports copying.
-
-## Demand loading and printing {#loading}
-
-A visible diagram within 320px of the viewport loads its engine and renders.
-Multiple diagrams share engines and both types render serially. Hidden tabs,
-closed disclosures and zero-width containers wait until visible. Browsers without
-IntersectionObserver use scroll and size checks. Rapid theme changes discard
-obsolete results. Diagram-free pages load neither the viewer nor these engines.
-No installation dependency or build step is added.
-
-Disabled JavaScript, blocked engines and syntax errors retain readable source.
-In OINK 1.4.0, ordinary HTML printing scales completed light
-diagrams to the page. Dark diagrams and unrendered diagrams print black-on-white
-source with wrapping, without waiting for an asynchronous engine or requiring
-background printing. To print pictures throughout, switch to light mode, then
-visit and expand the diagrams you need before printing. Printing restores source
-disclosures afterward and does not change your appearance preference.
-Dedicated Print, Markdown and RSS continue to show source.
+Fence attributes accept only `class`, `data-*` and `aria-*`, which land on the
+diagram's `<figure>` for site CSS. Any other key, such as `height` or `align`,
+warns and is ignored: the diagram's own content and the column width set its
+size, and it is always centered.
 
 ## Limits {#limits}
 
-- Mermaid emits inline SVG instead of `<img>`, so `{#id num=}` numbering does not apply.
-  If you need numbering, export an image and use [image](/docs/components/image/) numbering.
-- Fence attributes have no effect. Control width through diagram syntax, such as flowchart direction or class-diagram layout, or CSS.
-  There is no alignment attribute. Diagrams are always centered.
-- Syntax errors appear only in the browser because Hugo does not parse Mermaid.
-  Invalid diagrams display an alert and keep readable source, but the build still passes. Check the browser before publishing.
-- RSS, Markdown, and Print include source instead of pictures. State conclusions in prose as well as in diagrams.
+- A diagram is inline SVG rather than an `<img>`, so `{#id num=}` numbering
+  does not apply. To number one, export it as an image and use
+  [image numbering](/docs/components/image/).
+- To change a diagram's width, change the diagram itself (flowchart direction,
+  class-diagram layout) or style its `class` in site CSS.
+- Hugo does not parse Mermaid, so a syntax error does not fail the build. The
+  page shows an alert and the source instead of the diagram, so open each
+  changed diagram in a browser before you publish.
+- Print, Markdown and RSS carry source rather than pictures, so state the
+  conclusion in prose as well as in the diagram.
 
 ## Related {#related}
 
-- [PlantUML](/docs/components/plantuml/) — UML diagrams; see its rendering modes and version requirements
+- [PlantUML](/docs/components/plantuml/) — UML diagrams, rendered locally or by a server you run
 - [Markmap](/docs/components/markmap/) — outline-shaped hierarchies
 - [ECharts](/docs/components/echarts/) — charts with numbers in them
 - [Images](/docs/components/image/) — hand-drawn SVG and numbering

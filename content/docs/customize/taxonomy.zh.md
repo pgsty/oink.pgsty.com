@@ -9,13 +9,13 @@ aliases:
   - /docs/content/taxonomy/
 ---
 
-目录树只有一条路径，分类体系（taxonomy）给页面加第二条：同一篇 PostgreSQL 备份文档既在「运维」目录下，又能从「备份」标签页找到。启用它只需要 Hugo 的 `taxonomies:` 配置，术语页、术语卡片、右栏分类云与顶栏分类面板都由主题自动生成，无需编写模板。
+目录树只给每个页面一个位置，标签和分类给它更多入口。一篇 PostgreSQL 备份指南可以放在「运维」目录下，同时在「备份」标签页上一键可达；按主题而不是按你的目录结构找东西的读者，也能找到它。在 `hugo.yml` 里声明分类法、给页面打上术语，术语页、术语卡片、右栏分类云和顶栏分类面板就由 OINK 自动生成，不需要自己写模板。
 
-本页带着一个分类：标题下面的「分类: 定制站点」一行，以及右栏目录下面那组带计数的芯片，都不需要在页面上写配置。
+本页就是例子：标题下方的「分类: 定制站点」一行，以及右栏目录下方那组带计数的芯片，都来自所在分区的分类，页面本身没有写任何配置。
 
 ## 启用分类法 {#enable}
 
-分类法由 Hugo 决定，主题不额外提供开关。在 `hugo.yml` **顶层** 写 `taxonomies:`，键是单数名、值是复数名：
+分类法是 Hugo 的功能，主题没有额外的开关。在 `hugo.yml` 的 **顶层** 写 `taxonomies:`，键是单数名，值是复数名：
 
 ```yaml {title="hugo.yml"}
 taxonomies:
@@ -23,13 +23,11 @@ taxonomies:
   category: categories
 ```
 
-这是本站的配置。三点需要注意：
-
-- 写了 `taxonomies:` 之后它就是 **完整列表**，不是追加。想在自定义分类法之外保留 `tags` / `categories`，必须把它们一起列出来。
+- 这是完整列表，不是在 Hugo 默认值上追加：一旦写了 `taxonomies:`，只有列出来的 `tags`、`categories` 才存在。
 - 复数名同时是 URL 段：`/zh/tags/`、`/zh/categories/`。
-- 全部关闭：`disableKinds: [taxonomy, term]`。
+- `disableKinds: [taxonomy, term]` 关闭全部分类法。
 
-加一个自己的分类法，例如按产品模块归类：
+再按产品模块归类：
 
 ```yaml {title="hugo.yml"}
 taxonomies:
@@ -38,7 +36,7 @@ taxonomies:
   module: modules
 ```
 
-分类法的显示名：`tag` `tags` `category` `categories` `module` `modules` 这六个键在主题的每个语言文件里都有本地化标题（中文分别是「标签」「分类」「模块」）。其它分类法用复数名的 humanize 结果（`products` → `Products`）。要自己定名字，在 `content/<复数名>/_index.md` 与 `_index.zh.md` 里写 `title` / `linkTitle`，主题会优先用它：
+`tags`、`categories`、`modules`、`authors`、`series` 及其单数形式，在主题的每个语言文件里都有译名（中文分别是「标签」「分类」「模块」「作者」「系列」）。其它分类法以复数名命名（`products` 显示为 `Products`）。要自己定名称，在 `content/<复数名>/_index.md` 及其译文（例如 `_index.zh.md`）里写 `title` / `linkTitle`，这个名称优先：
 
 ```yaml {title="content/modules/_index.zh.md"}
 ---
@@ -48,7 +46,8 @@ linkTitle: 模块
 ```
 
 ## 为页面添加标签 {#assign}
-front matter 里的键名用 **复数名**（`taxonomies` 的值那一列），值始终是列表，只有一项也要写成列表：
+
+front matter 里的键用 **复数名**（`taxonomies` 的值那一侧），值始终是列表，只有一个术语也要写成列表：
 
 ```yaml {title="content/docs/ha/patroni.zh.md"}
 ---
@@ -59,7 +58,7 @@ tags: [PostgreSQL, Patroni, 故障切换]
 ---
 ```
 
-整个栏目共用一个分类时，写在栏目首页的 `cascade` 里，无需每页重复：
+整个分区共用一个分类时，在分区索引页的 `cascade` 里写一次，不必每页重复：
 
 ```yaml {title="content/docs/customize/_index.zh.md"}
 ---
@@ -71,15 +70,13 @@ cascade:
 ---
 ```
 
-本站 docs 的六个栏目都是这样配置的。页面自己写 `categories:` 会覆盖 cascade，不合并：要在栏目分类之外再加一个，两个都要写出来。
+本站文档的六个分区都是这样配置的。页面自己写的 `categories:` 会替换 cascade 下来的值，而不是合并，所以要在分区分类之外再加一个分类，两个都要写上。
 
 ## 页面上的术语行 {#page-header}
 
-文档页与博客页在标题、摘要下面渲染一行已分配的术语，链接指向对应的术语页，本页顶部的「分类: 定制站点」即是。这一行的容器是 `.taxonomy-terms-article`，按分类法另带一个 `.taxo-<复数名>` 类，单独调样式时用这两个选择器。
+文档页与博客页在标题和摘要下方列出本页的术语，每个术语链接到对应的术语页；本页的这一行是「分类: 定制站点」。要单独调样式，选择容器 `.taxonomy-terms-article` 以及每种分类法附加的 `.taxo-<复数名>` 类。
 
-默认列出该页的 **全部** 分类法，只有 `authors` 与 `series` 这两个保留复数除外——它们各自有专门的呈现面（署名行与系列横幅），再列一遍标签等于把同一件事说两遍。在 `page_header` 里点名，就能把它放回去。
-
-只想显示其中几种、并固定顺序：
+这一行默认列出 **所有** 分类法，只有 `authors` 与 `series` 除外：它们的术语已经出现在署名行和系列横幅里，再列成芯片等于把同一件事说两遍。只想显示其中几种、并固定顺序时，在 `page_header` 中列出；在这里写上 `authors` 或 `series`，它们也会重新出现：
 
 ```yaml {title="hugo.yml"}
 params:
@@ -87,11 +84,11 @@ params:
     page_header: [categories]
 ```
 
-这一项由[配置总览](/zh/docs/customize/config/)收录。它不能用来隐藏这一行，见[限制](#limits)。
+`page_header` 不能用来隐藏这一行，见[限制](#limits)。这个键收录在[配置总览](/zh/docs/customize/config/)中。
 
 ## 主题认识名字的两个分类法 {#authors}
 
-`authors` 与 `series` 就是普通的 Hugo taxonomy，按普通方式声明——主题不为它们增加任何参数。主题增加的是各自的一套呈现，所以「声明」本身就是全部开关：
+`authors` 与 `series` 是普通的 Hugo 分类法，主题没有为它们增加任何参数。声明它们就是全部开关，因为主题为两者各准备了一套专门的呈现：
 
 ```yaml {title="hugo.yml"}
 taxonomies:
@@ -101,15 +98,15 @@ taxonomies:
   series: series
 ```
 
-| 复数名 | 声明之后打开了什么 | term 页变成什么 |
+| 复数名 | 声明之后打开了什么 | 术语页变成什么 |
 | --- | --- | --- |
-| `authors` | 文章头部的头像与带链接的名字、列表行上的名字、feed 里每位作者一条 `<dc:creator>` | 作者主页：显示名取 term 页的链接标题（有 `linkTitle` 用它，否则用 `title`），`description` 是一句话介绍，正文是长介绍，头像取题图解析器为这一页选中的那张 |
-| `series` | 正文上方一条横幅，写明系列名、本篇位置、下一篇，以及折在 `<details>` 里的完整列表 | 系列引言，成员按阅读顺序排列，而不是最新在前 |
+| `authors` | 文章头部的头像与带链接的姓名、列表行上的姓名、feed 中每位作者一条 `<dc:creator>` | 作者主页：显示名取 `linkTitle`，没有时取 `title`；`description` 是简短介绍，正文是详细介绍；头像由题图解析器选出 |
+| `series` | 正文上方一条横幅，写明系列名、本篇的位置与下一篇，完整列表收在 `<details>` 里 | 系列引言，成员按 **阅读顺序** 排列，而不是最新在前 |
 
-两者的完整说明与各自需要的 front matter 在[写博客](/zh/docs/write/blog/#authors)。这里只提两件事：
+两者的完整说明以及各自需要的 front matter 见[写博客](/zh/docs/write/blog/#authors)。有两个设计取舍值得提前知道：
 
-- 主题刻意不设 `data/authors` 文件。作者主页就是 term 页本身，因此不存在第二份权威跟它打架。
-- 系列 term 页是唯一不按时间倒序排列的 term 页。写了 `series_weight` 的成员按升序排在前，其余按日期升序跟在后。term 页没法把顺序交给 Hugo，所以主题自己算一次，两处呈现读同一份结果。
+- 没有 `data/authors` 文件。术语页本身就是作者主页，因此永远不会有第二份数据与它冲突。
+- 系列成员按阅读顺序排列：设置了 `series_weight` 的成员按升序排在前面，其余按日期升序排在后面。术语页无法把这种顺序交给 Hugo，所以主题计算一次，系列横幅和术语页共用同一结果。
 
 ## 标签页与分类页 {#term-pages}
 
@@ -117,43 +114,48 @@ taxonomies:
 
 | 页面 | URL | 内容 |
 | --- | --- | --- |
-| 分类法列表页 | `/zh/categories/` | 页头是分类法图标、本地化名（「分类」）与术语数，下面每个术语一张卡片，使用次数多者在前：术语图标（作者则是头像）、术语名与页面数 |
-| 术语页 | `/zh/categories/定制站点/` | 页头是术语标题与页面数（关闭面包屑时另有一行「分类」kicker 链回列表页），下面按日期倒序列出该术语的全部页面，样式与博客列表一致 |
+| 分类法列表页 | `/zh/categories/` | 页头是分类法图标、本地化名称（「分类」）与术语数；下面每个术语一张卡片，用得最多的在前，卡片上有术语图标（作者则是头像）、名称与页面数 |
+| 术语页 | `/zh/categories/定制站点/` | 页头是术语标题与页面数，关闭面包屑时另有一行「分类」引题链接回列表页；下面按日期倒序列出成员页面，样式与博客列表相同 |
 
-中文术语的 URL 使用中文字符（浏览器地址栏显示 `定制站点`，HTML 里是百分号编码），Hugo 不做拼音转写。需要 ASCII URL 时改用英文术语，再在 `content/categories/<术语>/_index.zh.md` 里用 `title` 给它一个中文显示名，这是 Hugo 的[术语页内容文件](https://gohugo.io/content-management/taxonomies/#add-custom-metadata-to-a-taxonomy-or-term)机制。
+术语卡片只出现在分类法列表页上，术语页上换成右栏的分类云。
 
-术语页在内容树里没有固定位置，它借用一个：某术语的成员全部位于同一个顶层栏目下时，术语页用那个栏目渲染侧栏树与根链接，读者从文档里点进标签仍留在文档导航中；成员跨栏目时回退到站点级的树。
+Hugo 不做拼音转写，所以中文术语得到中文 URL：浏览器地址栏显示 `定制站点`，HTML 里是百分号编码。需要 ASCII URL 时，改用英文术语，再在 `content/categories/<术语>/_index.zh.md` 里用 `title` 给它一个中文显示名，这是 Hugo 的[术语页内容文件](https://gohugo.io/content-management/taxonomies/#add-custom-metadata-to-a-taxonomy-or-term)机制。
 
-术语卡片只出现在分类法列表页；术语页上换成右栏的分类云。
+术语页在内容树中没有自己的位置，所以借用一个。它的成员都属于同一个顶层分区时，术语页显示该分区的侧栏树与根链接，读者从文档里点进一个标签，仍留在文档的导航中；成员跨越多个分区时，显示站点级的树。
 
 ## 右栏的分类云 {#rail-cloud}
 
-文档页、博客页与术语页的右栏（目录下面）每种分类法一组，标签带计数，可折叠。
-定义了分类法且当前范围内有术语时，默认自动出现。在页面 front matter 中设置
-`toc_taxonomies: false` 可隐藏该页的分类云与分类法切换器；在 `hugo.yml` 中设置
-`params.ui.toc_taxonomies: false` 则全站隐藏。这只改变右栏显示，不改变页面的标签、
-署名、系列或分类归属。
+文档页、博客页与术语页的右栏在目录下方为每种分类法显示一组带计数、可折叠的芯片。只要声明了该分类法、且当前范围内有术语，这组芯片就会出现。要隐藏分类云和分类法切换器，在页面 front matter 中设置 `toc_taxonomies: false`，或在 `hugo.yml` 中设置 `params.ui.toc_taxonomies: false` 全站隐藏。这只改变右栏，页面的术语、署名、系列与分类归属都不受影响。
 
-分类法列表页与术语页的右栏最上面是分类法切换器：声明的每种分类法一行，带图标、名称与术语数，链向各自的列表页，当前那一行高亮。列表页的分类云按全站统计，并略去自己这一种——它的术语就是旁边的卡片。只有一种分类法的站点不显示切换器。
+分类法列表页与术语页的右栏最上方是分类法切换器：每种已声明的分类法一行，带图标、名称与术语数，链接到各自的列表页，当前分类法高亮。只有一种分类法的站点不显示切换器。列表页的分类云按全站统计，并略去自己这种分类法，因为它的术语就是旁边的卡片。
 
-计数 **不是全站计数**，而是按顶层栏目统计：先看页面的 `type` 有没有同名栏目（`type: docs` 的页面用 `/docs/` 这棵树），没有就用页面所在的顶层栏目。博客页上的「标签: release 4」说的是博客里有 4 篇，不是全站有 4 篇。
+其它页面上的计数 **按顶层分区统计**，而不是全站。主题先找与页面 `type` 同名的分区，`type: docs` 的页面因此在 `/docs/` 范围内计数；找不到时，使用页面所在的顶层分区。博客页上的「标签: release 4」表示博客里有 4 篇，而不是全站有 4 页。
 
-图标按复数名配置：
+每种分类法有两个内置图标：一个用于分组标题，一个用于每个术语芯片。
+
+| 分类法 | 分组图标 | 术语图标 |
+| --- | --- | --- |
+| `categories` | `fa-solid fa-folder-open` | `fa-solid fa-folder` |
+| `tags` | `fa-solid fa-tags` | `fa-solid fa-tag` |
+| `modules` | `fa-solid fa-cubes` | `fa-solid fa-cube` |
+| `authors` | `fa-solid fa-users` | `fa-solid fa-user-pen` |
+| `series` | `fa-solid fa-book-bookmark` | `fa-solid fa-book` |
+| 其它 | `fa-solid fa-shapes` | `fa-solid fa-shapes` |
+
+按复数名覆盖。写成字符串时同时设置两个图标；写成带 `taxonomy` 与 `term` 的映射时分别设置，省略的那个保留内置图标。每个值都是一对 Font Awesome class：
 
 ```yaml {title="hugo.yml"}
 params:
   ui:
     taxonomy_icons:
       categories: fa-solid fa-folder
-      tags: fa-solid fa-tags
+      tags: { taxonomy: fa-solid fa-tags, term: fa-solid fa-hashtag }
       modules: fa-solid fa-cubes
 ```
 
-`categories` 与 `tags` 的默认值就是上面那两个，其它分类法默认 `fa-solid fa-shapes`。图标是一对 Font Awesome class，与站点其它地方的图标写法一致。
-
 ## 顶栏菜单里的分类面板 {#navbar-panel}
 
-主菜单里指向分类法列表页的条目，会自动变成一块术语芯片面板（按用量降序，带计数），无需手写下拉项：
+主菜单中指向分类法列表页的条目，会展开一块术语芯片面板，带计数，用得最多的在前。不需要为它写下拉子项：
 
 ```yaml {title="hugo.yml"}
 languages:
@@ -166,11 +168,11 @@ languages:
           weight: 60
 ```
 
-`pageRef: /tags` 与旧式的 `url: /zh/tags/` 都能识别：URL 形式的菜单先解析成本站页面再判断类型，从旧配置迁移时不必改写法。菜单本身的其它写法见[导航与菜单](/zh/docs/customize/navigation/)。
+旧式的 `url: /zh/tags/` 写法同样有效：主题会先把 URL 条目解析成它指向的站内页面，再判断该页面是不是分类法，因此现有菜单不必改写。菜单的其它写法见[导航与菜单](/zh/docs/customize/navigation/)。
 
 ## 双语标签 {#bilingual}
 
-Hugo 的分类按语言分开统计、分开链接：`/categories/` 与 `/zh/categories/` 是两棵互不相干的树，中文页只进中文那棵。术语要在各自语言的 front matter 里各写一遍：
+Hugo 按语言分别统计和链接分类法：`/categories/` 与 `/zh/categories/` 是两棵互不相干的树，中文页面只属于中文那一棵。术语要在各语言的 front matter 里分别写：
 
 ```yaml {title="content/docs/ha/patroni.md"}
 categories: [High availability]
@@ -182,16 +184,14 @@ categories: [高可用]
 tags: [PostgreSQL, Patroni, 故障切换]
 ```
 
-两条要注意：
+- 两种语言写同一个字符串（例如 `release`），仍然得到 `/categories/release/` 与 `/zh/categories/release/` 两个术语页，各自只统计本语言的页面。为了统一而在中文页面上写英文术语，得不到任何好处，只会让中文读者看到英文芯片。
+- 内置复数名对应的分类法名称会随语言翻译，但 **术语名不会**：术语就是 front matter 里写的那个字符串。在英文页面上写 `高可用`，芯片上显示的就是 `高可用`。
 
-- 同一个词在两种语言里写成同样的字符串（例如 `release`），得到的仍然是 `/categories/release/` 与 `/zh/categories/release/` 两个术语页，各自只统计本语言的页面。不要为了统一而在中文页里写英文词：右栏芯片会显示英文。
-- 分类法的显示名会跟着语言走（上面那六个内置键），但 **术语名不会**：术语就是你在 front matter 里写的那个字符串，主题不翻译它。英文页里写 `高可用`，英文站的芯片上显示的就是 `高可用`。
-
-多语言站点的其余部分见[多语言](/zh/docs/customize/i18n/)。
+多语言站点的其余内容见[多语言](/zh/docs/customize/i18n/)。
 
 ## 按内容类型开关 {#per-type}
 
-要在文档中保留右栏分类云、在博客分区隐藏它，为博客索引与子页设置显示开关：
+右栏分类云是显示设置。要在文档中保留、在整个博客中隐藏，就在博客索引页上设置开关并 cascade 到所有文章：
 
 ```yaml {title="content/blog/_index.zh.md front matter"}
 toc_taxonomies: false
@@ -199,24 +199,24 @@ cascade:
   toc_taxonomies: false
 ```
 
-分类归属是另一回事，由页面上设置的术语决定。例如，本站的内容分类如下：
+页面属于哪些分类是另一件事，由你分配的术语决定。例如，本站用分类区分分区，只在博客上使用标签：
 
 | 内容 | categories | tags | 效果 |
 | --- | --- | --- | --- |
-| `content/docs/**` | 栏目级 cascade（「定制站点」等六个） | 不打 | 术语行只有一行「分类」 |
+| `content/docs/**` | 分区级 cascade（「定制站点」等六个） | 不打 | 术语行只有一行「分类」 |
 | `content/blog/**` | 每篇写（`release`、`oink`） | 每篇写（`Oink`、`Release`） | 术语行两行，右栏两组芯片 |
 
-让整个栏目从分类里消失：删掉栏目首页 cascade 里的 `categories`，不需要别的配置。让某一页不进分类：在它自己的 front matter 里写 `categories: []`，空列表覆盖 cascade。
+要让整个分区退出某个分类法，删掉分区索引页 cascade 里的 `categories`。要让单个页面退出，在它的 front matter 里写 `categories: []`，空列表会覆盖 cascade。
 
 ## 验证 {#verify}
 
-在自己的站点选择一篇已设置分类术语的页面，检查：
+在自己站点里找一个已分配术语的页面，检查：
 
-- 标题区显示了 `params.taxonomy.page_header` 选定的术语；
-- 启用 `toc_taxonomies` 时，右栏有分类分组与计数；关闭后分类云消失，页面的术语仍保留；
-- 自己的分类法索引（例如 `/zh/categories/`）列出术语，点击后能看到所属页面。
+- 标题区显示了 `params.taxonomy.page_header` 选定的分类法；
+- `toc_taxonomies` 开启时，右栏有带计数的术语分组；关闭后分类云消失，页面的术语仍然保留；
+- 分类法列表页（例如 `/zh/categories/`）列出了术语，点进去能看到成员页面。
 
-在站点根目录执行，将两个示例路径换成自己的页面与分类法产物路径，并按需包含语言前缀：
+在站点根目录执行，把两个示例路径换成自己的路径，并带上语言前缀：
 
 ```bash
 hugo --printPathWarnings
@@ -228,9 +228,9 @@ test -f "$PAGE" && grep -o 'taxonomy-term' "$PAGE"
 
 ## 限制 {#limits}
 
-- `page_header: []` **不会** 隐藏术语行：空列表被当作未设置，回落到「列出全部分类法」。要去掉这行，就不要给这些页面打标签，或在 `assets/css/project.css` 里隐藏 `.taxonomy-terms-article`。
-- `toc_taxonomies: false` 可以隐藏右栏分类云，但配置不支持限制可见分类云的术语条数。
-- 术语页没有跨语言对等关系：语言切换在术语页上不保证落到「同一个术语的另一种语言」。
+- `page_header: []` **不会** 隐藏术语行：空列表被当作未设置，于是列出所有分类法。要去掉这一行，就不要给这些页面打术语，或者在 `assets/css/project.css` 中隐藏 `.taxonomy-terms-article`。
+- `toc_taxonomies: false` 可以隐藏右栏分类云，但没有设置能限制可见分类云显示的术语数量。
+- 术语页没有跨语言配对，在术语页上切换语言，不一定落到另一种语言里的同一个术语。
 
 ## 相关 {#related}
 

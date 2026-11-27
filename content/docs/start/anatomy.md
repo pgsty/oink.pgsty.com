@@ -1,197 +1,196 @@
 ---
 title: Starter repository tour
 linkTitle: Repository tour
-description: Find the oink-starter files that control identity, languages, home, content, navigation, brand, deployment, and the pinned theme.
+description: Find the OINK Starter file behind each part of your site, what you can delete, and what the build depends on.
 weight: 20
 search_keywords: [starter structure, repository tour, anatomy, hugo.yaml, content, data home, workflows]
 aliases:
   - /docs/about/architecture/
 ---
 
-This page walks through the repository layout created from
-[`pgsty/oink-starter`](https://github.com/pgsty/oink-starter). `go.mod` pins the
-OINK theme as a Hugo Module, and Hugo caches the resolved theme source in the Go
-module cache rather than copying it into your repository.
+Every file in the [OINK Starter](https://github.com/pgsty/oink-starter) has one
+job. Use this map to find the file behind a part of your site, to see what you
+can delete, and to know what the build depends on. The theme itself is not in
+the repository: `go.mod` pins it as a Hugo Module, and Hugo downloads it into
+the Go module cache on the first build. To change these files in a sensible
+order, follow [Use OINK Starter](/docs/start/starter/).
 
 ## Top-level map {#layout}
 
 ```filetree {title="oink-starter/"}
 - oink-starter/
-  - hugo.yaml                         # identity, languages, outputs, parameters, module import
-  - go.mod                            # site module and exact OINK release
-  - go.sum                            # module checksums
+  - hugo.yaml                         # the only site configuration: identity, languages, outputs, features, theme import
+  - go.mod                            # site module and the exact OINK release
+  - go.sum                            # checksums that verify that release
   - examples/
-    - hugo.single.yaml                # English-only complete profile
-    - hugo.bilingual.yaml             # English + Chinese complete profile
+    - hugo.single.yaml                # complete English-only configuration
+    - hugo.bilingual.yaml             # complete English + Chinese configuration
   - data/
     - home/
-      - en.yaml                       # one compact landing page per language
+      - en.yaml                       # one short home page per language
       - zh.yaml
       - fr.yaml
   - content/
-    - _index.md                       # language home roots
+    - _index.md                       # home page roots, one per language
     - _index.zh.md
     - _index.fr.md
     - docs/                           # Introduction, Get Started, Tutorial, Reference
-    - blog/                           # posts, design records, release announcements
-    - book/                           # sequential tutorial about the Starter
+    - blog/                           # post/, design/ and release/
+    - book/                           # a four-chapter guide to the Starter
   - assets/
-    - icons/logo.svg                  # processed project logo
+    - icons/logo.svg                  # project logo, processed by Hugo
   - static/
-    - favicon.svg                     # copied unchanged to the site root
+    - favicon.svg                     # browser icon, copied to the site root unchanged
   - i18n/
-    - fr.yaml                         # Starter-specific French interface overrides
+    - fr.yaml                         # French wording for a few interface strings
   - .github/workflows/
-    - github-pages.yaml               # production build and GitHub Pages deployment
-    - cloudflare-pages.yaml           # production build and Cloudflare Direct Upload
-  - README.md                         # operating summary for repository maintainers
-  - LICENSE                           # template source license
+    - github-pages.yaml               # production build, then GitHub Pages
+    - cloudflare-pages.yaml           # production build, then Cloudflare Direct Upload
+  - Makefile                          # dev, serve and build shortcuts
+  - .gitignore                        # keeps build output out of Git
+  - AGENTS.md                         # build baseline and rules for coding agents
+  - README.md                         # a one-page summary for repository maintainers
+  - LICENSE                           # MIT; put your own copyright line in it
 ```
 
-Generated `public/`, `resources/`, `.hugo_build.lock`, and module caches contain
-build state. Git ignores them. They are not source files.
+`.gitignore` already excludes what a build creates (`public/`, `resources/`,
+`.hugo_build.lock`, and the `.hugo_cache/` module cache the workflows use), so
+after a build `git status --short` lists only the files you edited.
 
 ## What to change first {#change-first}
 
-| Path | Responsibility | Initial action |
+| Path | Controls | First action |
 | --- | --- | --- |
-| `hugo.yaml` | Identity, canonical URL, languages, outputs, theme features, optional integrations | Change the two marked values. Choose a language profile before other edits |
-| `data/home/` | Home-page promise, cards, calls to action | Rewrite every enabled language after one language is approved |
-| `content/` | All reader-facing material | Replace example leaf pages. Keep each section root until you decide to remove the whole surface |
-| `assets/icons/logo.svg` | Processed logo | Replace only with final artwork |
-| `static/favicon.svg` | Browser icon | Replace together with the logo review |
-| `params.github_*` in `hugo.yaml` | Edit/history/new-page/issue links | Uncomment only after the destination repository exists |
+| `hugo.yaml` | Identity, canonical URL, languages, outputs, theme features, optional integrations | Choose the languages, then change the two values marked `CHANGE ME` |
+| `data/home/` | The home page's tagline, cards and call to action | Rewrite one language, then translate it into the others |
+| `content/` | Everything readers see besides the home page | Replace the sample pages; keep each section's `_index.md` until you decide to drop the whole part |
+| `assets/icons/logo.svg` | The logo in the navbar | Replace once you have final artwork |
+| `static/favicon.svg` | The browser tab icon | Replace together with the logo |
+| `params.github_*` in `hugo.yaml` | Edit, history, new-page and issue links | Uncomment once the repository exists |
 
 ## What to keep {#keep}
 
-- `go.mod` and `go.sum` pin and verify the template's selected OINK release.
-  Commit both. Record a later upgrade separately from this baseline.
-- The three Goldmark settings in `hugo.yaml`: native Steps, Cards, Fields,
-  image attributes, and Book targets depend on them.
-- `outputs`: if you remove `markdown`, `LLMS`, or `print`, you remove the
-  corresponding Markdown, agent-index, or print output.
-- `fetch-depth: 0` in workflows if `enableGitInfo` stays on. Last-modified and
-  contributor facts require repository history.
-- `GOWORK: off` and `HUGO_MODULE_WORKSPACE: off` in CI. A developer's local
-  workspace must not replace the published release under verification.
+- **`go.mod` and `go.sum`.** Together they pin the OINK release and verify its
+  download, so commit both. Upgrade the theme in a commit of its own, which
+  makes it easy to review and to revert.
+- **The three Goldmark settings and `markup.highlight.noClasses: false` in
+  `hugo.yaml`.** Steps, cards, field tables, image attributes and Book targets
+  are written as Markdown attribute lines, and they render as literal text
+  without these settings. See [the Goldmark prerequisites](/docs/customize/config/#goldmark).
+- **`outputs`.** Removing `markdown`, `LLMS` or `print` removes the page's
+  Markdown version, the `llms.txt` index for agents, or the print view.
+- **`fetch-depth: 0` in both workflows.** The Starter sets `enableGitInfo: true`;
+  with a shallow clone every page would show the same last-modified date.
+- **`GOWORK: off` and `HUGO_MODULE_WORKSPACE: off` in CI.** A Go workspace
+  could otherwise replace the published theme release with another copy, and
+  the site you deploy would not be the one you tested.
 
 ## Optional surfaces {#optional}
 
-Docs, Blog, and Book are independent top-level surfaces. To remove one safely:
+Docs, Blog and Book are independent parts of the site, and you can delete any
+of them. Its menu entry lives in its own `_index.md` files, so deleting the
+tree removes the entry too:
 
-1. Delete its `content/<surface>/` tree.
-1. Remove any home-page card or link that targets it.
-1. Confirm that no other page links to it.
-1. Run a build that keeps warnings visible for review. Inspect the remaining top navigation.
+1. Delete `content/<part>/` with all of its language files.
+1. Remove the home-page links to it from every `data/home/<lang>.yaml`. In the
+   Starter, the hero's second button points to `book/` and the cards point to
+   `blog/`, `docs/` and `book/`.
+1. Search `content/` for other links to it and mentions of it; in the
+   Starter, the Book's second chapter describes both `content/blog/` and
+   `content/docs/`.
+1. Build, read the warnings, and check the navbar in every language.
 {.steps}
 
-Do not delete only translated section roots. This creates language-specific
-navigation and fallback behavior that can appear to be an error. Remove a surface in all enabled languages or document the asymmetry.
+Remove a part in every enabled language at once. Deleting only one language's
+section root leaves a menu entry and a sidebar in the other languages that
+readers will take for a missing translation.
 
-The two configuration profiles under `examples/` are optional after the
-language decision. They are useful references, but the root `hugo.yaml` is the
-only active site configuration.
+After you have chosen your languages, the two files under `examples/` are only
+reference material. Keep or delete them; the root `hugo.yaml` is the only
+configuration Hugo reads.
 
 ## Content and navigation {#content-navigation}
 
-Under Docs and Book, directory structure and `weight` form the sidebar and
-pager sequence. Top navigation comes from `menus.main` on section roots. A
-translated root repeats the same `identifier`, `parent`, and weight while
-translating visible labels.
+Under Docs and Book, folders and `weight` set the order of the sidebar and of
+the previous/next links. The navbar comes from `menus.main` in each section's
+`_index.md`: the Docs subsections declare `parent: docs`, which turns them into
+the Docs dropdown. A translated `_index` repeats the same `identifier`,
+`parent` and `weight` and translates only the visible title.
 
-The Starter intentionally demonstrates the Documentation System model:
+The Docs tree follows a common documentation model, with one kind of answer per
+section:
 
-- Introduction explains what the project does and why.
-- Get Started helps a new user achieve a result.
-- Tutorial teaches a complete task.
-- Reference records exact supported behavior.
+- **Introduction** explains what the project does and why.
+- **Get Started** takes a new user to a first working result.
+- **Tutorial** teaches one complete task.
+- **Reference** records exact, supported behavior.
 
-Rename or restructure these sections for your project. Keep the learning paths
-separate. Do not combine every type of answer in one tree.
+Rename or reorganize these sections for your project, but keep the kinds of
+answer apart: a reader looking up a flag should not have to read a tutorial to
+find it.
 
 ## Language model {#languages}
 
-English source files end in `.md`; Chinese and French peers end in `.zh.md` and
-`.fr.md`. Home data uses language keys under `data/home/`. The root profile
-declares the languages, their locale, order, and site description.
+English files end in `.md`, and their Chinese and French translations sit
+beside them as `.zh.md` and `.fr.md`. The home page has one data file per
+language under `data/home/`. The `languages` block in `hugo.yaml` sets each
+language's label, locale, order, title and site description, and
+`i18n/fr.yaml` adjusts the French wording of a few theme interface strings.
 
-The single and bilingual profiles keep disabled languages declared. Hugo then
-recognizes unused suffixes as translations. It does not render several files
-to one English URL. Copy a profile only before you start project-specific
-configuration. After that, merge changes manually.
+The two profiles under `examples/` keep the languages they disable declared,
+so that Hugo still treats `.zh.md` and `.fr.md` as translations rather than as
+extra English pages. [Layer 1](/docs/start/starter/#languages) of the
+walkthrough explains how to choose a language set.
 
 ## Where OINK lives {#theme}
 
-Two files establish the module boundary:
+Two files connect the site to the theme:
 
 ```yaml {title="hugo.yaml"}
 module:
   imports:
     - path: github.com/pgsty/oink
-  hugoVersion:
-    min: '{{< param hugoMinVersion >}}'
 ```
 
 ```go-mod {title="go.mod"}
-module github.com/OWNER/PROJECT-DOCS
+module github.com/pgsty/oink-starter
 
 go 1.27.4
 
 require github.com/pgsty/oink v1.6.0
 ```
 
-This example pins `v1.6.0`. Check the pin in your Starter
-snapshot and follow the [upgrade guide](/docs/admin/upgrade/) if it is older.
+`hugo mod graph | grep github.com/pgsty/oink` prints the release a build
+actually resolved. If your copy of the Starter pins an older release, follow
+[Upgrade](/docs/admin/upgrade/).
 
-`hugo mod graph` displays the resolved version. Production builds use the exact
-tag in `go.mod`, while `HUGO_MODULE_REPLACEMENTS` can point to a local checkout
-during theme development. Keep local module replacements out of Git.
+The Makefile has three targets. `make serve` and `make build` run Hugo against
+the release in `go.mod`, with any local replacement switched off. `make dev`
+serves the site against a theme checkout in the sibling directory `../oink`
+(change it with `THEME_DIR=…`), which you only need when changing the theme
+itself; see [Developing against a local theme checkout](/docs/start/from-scratch/#local-theme-checkout).
 
 ## Deployment files {#deployment}
 
-The GitHub Pages workflow runs automatically on pushes to `main`. In repository
-settings, select GitHub Actions as the Pages source. The Cloudflare workflow
-runs manually, or automatically only after the repository variable
-`CLOUDFLARE_PAGES_ENABLED=true` is set. Its required account ID and API token
-remain repository secrets.
+Both workflows install Go 1.27.4 and the latest Hugo, download the pinned theme
+and run the same production build, then differ in where they publish:
 
-Keep only the workflows for deployment paths you use. For one project, choose
-either Cloudflare Direct Upload or Cloudflare Git integration. Do not run both
-as deployment checks.
+- `github-pages.yaml` runs on every push to `main` and on demand. It builds
+  with the address GitHub Pages assigns and publishes through the Pages API. It
+  needs only **Settings → Pages → Source: GitHub Actions**.
+- `cloudflare-pages.yaml` runs on demand, and on every push to `main` once the
+  repository variable `CLOUDFLARE_PAGES_ENABLED` is `true`. It reads the
+  account ID and API token from repository secrets, and the optional variables
+  `CLOUDFLARE_PROJECT_NAME` and `CLOUDFLARE_SITE_URL`.
 
-## Safe customization order {#order}
-
-1. Prove the untouched preview.
-1. Select languages, then change identity.
-1. Replace one home page and then its translations.
-1. Replace content and verify navigation.
-1. Change brand and reader features one group at a time.
-1. Enable complete external integrations.
-1. Run the production build.
-1. Deploy, then verify production independently.
-{.steps}
-
-If you own the repository, commit after each group of changes. This lets you
-identify the decision that caused a regression or needs a rollback.
-
-## Verify {#verify}
-
-```bash
-hugo mod graph | grep github.com/pgsty/oink
-hugo --cleanDestinationDir --gc --minify --environment production \
-  --printPathWarnings
-git status --short
-```
-
-Confirm that the module graph names the pinned release. The build must succeed
-and its diagnostics must be reviewed. Git status must contain source edits but no `public/` or
-cache files. Before deployment, open each enabled language root and one route
-from each of Docs, Blog, and Book.
+Delete the workflow for the host you do not use. For Cloudflare, a project uses
+either this Direct Upload workflow or Cloudflare's Git integration, never both.
+The setup steps are in [Build and deploy](/docs/start/starter/#build-deploy).
 
 ## Related {#related}
 
-- [Use OINK Starter](/docs/start/starter/) — the complete layered workflow
-- [From scratch](/docs/start/from-scratch/) — add OINK without adopting this content model
-- [Organizing content](/docs/write/organize/) — sidebar, pager, and menu authority
-- [Configuration](/docs/customize/config/) — every current site parameter
-- [Deploy](/docs/admin/deploy/) — host-specific setup and production checks
+- [Use OINK Starter](/docs/start/starter/) — change these files layer by layer
+- [From scratch](/docs/start/from-scratch/) — add OINK to a site without this content model
+- [Organizing content](/docs/write/organize/) — how folders, `weight` and `_index.md` build the sidebar
+- [Configuration](/docs/customize/config/) — every site parameter and its default
+- [Deploy](/docs/admin/deploy/) — hosts, `baseURL`, and checking the live site

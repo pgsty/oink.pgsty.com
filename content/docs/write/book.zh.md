@@ -9,15 +9,13 @@ aliases:
   - /docs/scenarios/reading/
 ---
 
-一本书是一棵 `type: book` 的内容树：目录决定章节顺序，front matter 决定章节编号，图 / 表 / 式 / 例各带一个手写编号与稳定锚点。交叉引用在四种输出里都能解析，书根页面可以生成整本打印 HTML。
+文档是拿来查的：读者从搜索进来，看完一页就走。书是按顺序读的，读者对它的期待来自纸书：章有编号，图和表能被引用为「图 2-1」，章节挪动后交叉引用依然有效，全书还能作为一份文档打印或导出。给一棵内容树设置 `type: book`，OINK 就提供这一切，而每一章仍然是普通的 Markdown 页面。
 
-前提两条：站点的 `markup.goldmark` 已开启属性行与 passthrough（见[组件总览](/zh/docs/components/)）；`params.ui.shell_types` 保留 `book`（主题默认包含）。
+一本书依赖两项站点设置：Goldmark 的块级属性与 passthrough 必须开启（见[三项 Goldmark 前提](/zh/docs/customize/config/#goldmark)）；`params.ui.shell_types` 必须包含 `book`，默认列表已经包含。书稿如果已经存在于另一个 Hugo 站点，先看[迁移既有书稿](#migrate)。
 
-新建一本书时，从下面的目录结构开始；已有书稿可先看[迁移既有书稿](#migrate)。
+## 一本最小的书 {#layout}
 
-## 一本书的目录 {#layout}
-
-书根是一个普通的 Hugo section，章是它的子目录，节是章里的页面。没有第二份章节清单：侧栏、翻页器、生成的目录读的都是这棵树。
+书根是一个普通的 Hugo 分区，子目录是章，章里的页面是节。这棵树就是唯一的章节清单：侧栏、翻页器、生成的目录和打印出来的整本书读的都是它，所以挪动一个文件，这一章在所有地方同时移动。
 
 ```filetree {title="content/handbook/ 一本书"}
 - content/handbook/
@@ -33,11 +31,7 @@ aliases:
   - appendix.md            # 不编号的附录，照样进侧栏与翻页顺序
 ```
 
-章节编号手写：`book_number` 写什么就显示什么，主题不按目录顺序自动编号。图 / 表 / 式 / 例的 `num` 同理，是作者掌握的字符串（`2-1`、`5.3`、`A-2` 均合法），不是渲染时计算的序号。重排目录因此不会让已经印出去的编号漂移。
-
-## 书首页与章首页 {#front-matter}
-
-书根声明类型、级联给后代，并显式请求 `print` 输出。这项聚合输出构建代价高，主题不替消费站开启：
+书根页面声明类型、把类型级联给下面的所有页面，并请求 `print` 输出，用来生成整本书的聚合文档。这项输出需要显式开启，因为把每一章聚合起来会明显拖慢构建：
 
 ```yaml {title="content/handbook/_index.md"}
 ---
@@ -50,18 +44,9 @@ outputs: [HTML, print, markdown]
 ---
 ```
 
-分区书对应 Hugo 的 `section` 输出类型，书位于站点根时才用 `home`：
+front matter 里的 `outputs` 会替换站点给这一页的输出列表，所以要把书根需要保留的格式全部写上。也可以改在 `hugo.yml` 里设置：把 `print` 加进 `outputs.section`，书位于站点根时则加进 `outputs.home`；这样做会为该类型的所有页面开启打印输出。
 
-```yaml {title="hugo.yml"}
-outputs:
-  section: [HTML, print, markdown]
-params:
-  ui:
-    sidebar_headings: false # 默认关闭；设为 3 可在当前章节下显示 h2–h3
-    book_draft_banner: true # 草稿章节页首多一条本地化提示
-```
-
-章首页只需要编号与顺序：
+章首页 `_index.md` 只需要标题、编号与位置：
 
 ```yaml {title="content/handbook/ch02/_index.md"}
 ---
@@ -72,19 +57,32 @@ weight: 20
 ---
 ```
 
-`book_number` 显示在页面标题、侧栏与生成目录里。`book_status: draft` 是可见的编辑状态标签，不改变 Hugo 的发布状态：草稿章节照常构建、照常发布。
+## 章节编号、草稿与标题 {#front-matter}
 
-`sidebar_headings` 默认为 `false`，也接受 `true`（只到 h2）或 2–4 的最大层级。页面或分区 cascade 可覆盖站点设置。关闭左侧标题分支不影响右侧目录。要被引用的标题一律写显式 ID，如 `## 同步复制 {#sync-replication}`：自动生成的 slug 适合导航，不适合作为长期引用目标。
+`book_number` 写什么就显示什么，出现在章标题之前、侧栏条目里和生成的目录里。主题从不按目录顺序推算编号，所以 `2`、`B`、`A` 都合法，重排目录树也不会改动读者已经引用过的编号。图、表、式、例的编号同理：每个 `num` 都是作者写下的字符串，如 `2-1`、`5.3`、`A-2`，而不是计数器。
 
-配置键的完整定义在[配置总览](/zh/docs/customize/config/)，页面参数在[页面参数](/zh/docs/write/frontmatter/)。
+`book_status: draft` 在侧栏和 `book-toc` 里给未完成的章节打上标签。它只是编辑状态，不是 Hugo 的 `draft`：这一章照常构建、照常发布。如果还想在每个草稿章节的正文上方显示一条本地化提示，打开默认关闭的横幅：
+
+```yaml {title="hugo.yml"}
+params:
+  ui:
+    book_draft_banner: true
+    sidebar_headings: 3
+```
+
+横幅只出现在 `type: book` 且 `book_status: draft` 的页面上，文案来自本地化字符串 `book_draft_notice`。
+
+`sidebar_headings` 在侧栏的当前条目下列出本页标题，章节较长时很有用。默认为 `false`；设为 `true` 列出 h2，设为 `2`、`3` 或 `4` 则指定列到哪一级。页面或分区 cascade 可以覆盖站点设置，右侧目录不受影响。
+
+凡是打算被链接的标题，都写上显式 ID，如 `## 同步复制 {#sync-replication}`。自动生成的 ID 会随标题文字变化，用来导航没问题，用作长期引用就会失效。配置键的完整定义见[配置总览](/zh/docs/customize/config/)与[页面参数](/zh/docs/write/frontmatter/#book)。
 
 ## 编号：原生形态 {#numbering-native}
 
-四种编号对象各有一种原生形态：一个 Markdown 块，紧跟其后一行属性行。属性行里 `num=` 是编号，`#id` 是锚点，`caption=` 是纯文本题注。
+图、表、式、例都通过一行属性行获得编号。属性行紧贴在 Markdown 块下方，中间不能有空行：`num=` 是编号，`#id` 是锚点，`caption=` 是纯文本题注。优先使用这种形态：源码在任何 Markdown 阅读器里都清晰可读，块里的脚注也照常工作。
 
 ### 图 {#figure}
 
-图片块后面跟属性行。`#id` 省略时默认是 `fig-<num>`。
+不写 `#id` 时，图的锚点是 `fig-<num>`。
 
 ```markdown {title="源码"}
 ![OINK 发布注记页面](/images/releasenote.webp)
@@ -94,11 +92,11 @@ weight: 20
 ![OINK 发布注记页面](/images/releasenote.webp)
 {#book-release-note num="2-1" caption="发布注记页面同时是发布事实的唯一来源。" width=600 height=300}
 
-原生图形态要求站点设置 `markup.goldmark.parser.wrapStandAloneImageWithinParagraph: false`，否则属性行会挂到段落上被忽略。替代文字取自 Markdown 图片本身，不会被题注替代。
+原生图形态要求站点设置 `markup.goldmark.parser.wrapStandAloneImageWithinParagraph: false`。否则 Hugo 会把图片包进段落，属性行挂到段落上，图就得不到编号。替代文字取自图片自己的 `![…]`，不会被题注替代。要让图可点击，在同一行属性里加 `link=` 即可，不必为此改用 `fig` 短代码。
 
 ### 表 {#table}
 
-管道表后面跟属性行，默认 ID 是 `tbl-<num>`。
+管道表下方跟一行属性行即可编号，默认锚点是 `tbl-<num>`。
 
 ```markdown {title="源码"}
 | 隔离级别 | 脏读 | 不可重复读 | 幻读 |
@@ -118,7 +116,7 @@ weight: 20
 
 ### 式 {#equation}
 
-`$$` 块后面跟属性行，默认 ID 是 `eq-<num>`。宽屏上，编号与题注排在公式右侧；窄屏上移到公式下方并换行，过宽的公式可以横向滚动。题注简短些更方便阅读。
+`$$` 块下方跟一行属性行即可给公式编号，默认锚点是 `eq-<num>`。宽屏上编号与题注排在公式右侧；窄屏上换到公式下方，比屏幕还宽的公式可以横向滚动。题注写短一些，公式更容易扫读。
 
 ```markdown {title="源码"}
 $$
@@ -132,12 +130,11 @@ A = \frac{\mathrm{MTBF}}{\mathrm{MTBF} + \mathrm{MTTR}}
 $$
 {#eq-2-1 num="2-1" caption="可用性与平均故障间隔、平均恢复时间的关系。"}
 
-原生形态依赖站点开启 Goldmark passthrough。未开启时用下面的 `eq` shortcode，它走本地服务端 KaTeX。
+这种形态依赖 Goldmark passthrough。没有开启 passthrough 的站点改用下文的 `eq` 短代码，它在构建时用 KaTeX 渲染公式。
 
 ### 例 {#example}
 
-代码围栏加 `num=` 与 `caption=` 即编号例，默认 ID 是 `eg-<num>`。围栏里写的 `#id`
-命名外层 `<figure>`（即引用目标），而非代码块本身。例的题注必填：只写 `caption` 时忽略题注，只写 `num` 时丢弃编号并告警。编号例渲染为一个整体：题注作为外框表头，正文置于框内；当正文恰好是单个代码块时直接贴合外框，不再叠加内层边框。
+代码围栏写上 `num=` 与 `caption=` 就成为编号示例，默认锚点是 `eg-<num>`。围栏上的 `#id` 命名的是外层 `<figure>`，引用指向的正是它。两个属性缺一不可：只写题注时题注被忽略，只写编号时编号被丢弃并告警。题注作为表头，与代码合成一个整体外框。
 
 ````markdown {title="源码"}
 ```sql {num="2-1" caption="按天统计主库写入量。" #eg-2-1}
@@ -153,11 +150,11 @@ FROM pg_stat_statements_history
 GROUP BY 1 ORDER BY 1 DESC LIMIT 7;
 ```
 
-## 编号：shortcode 形态 {#numbering-shortcodes}
+## 编号：短代码形态 {#numbering-shortcodes}
 
-四个短代码 `fig`、`tbl`、`eq`、`eg` 渲染出与原生形态一致的 `<figure>`，注册到同一个目标表，按源码位置排序。原生形态做不到时再使用：一幅图含多张图片或其他 Markdown、一个编号下放多张表、站点未开 passthrough，或示例包含多个围栏与说明。单张编号图片可以在原生属性行里写 `link`，无需仅为了外链改用 `fig`。
+`fig`、`tbl`、`eq`、`eg` 四个短代码渲染出与原生形态相同的 `<figure>`，注册到同一张目标表，按源码位置排序。一个 Markdown 块装不下内容时才用它们：一幅图由多张图片或其他 Markdown 组成、一个编号下放多张表、站点没有开启 passthrough 却要写公式，或者示例由多个围栏加说明文字组成。
 
-`fig` 用 `src=`（也接受内部 Markdown 内容，二者互斥），并额外支持 `link` `alt` `width` `height` `class` 与迁移用的 `title` 别名：
+`fig` 的图片来自 `src=` 或内部 Markdown，二者只能取其一。它还接受 `link`、`alt`、`width`、`height` 与 `class`，迁移来的内容可以用 `title` 作为 `caption` 的别名：
 
 ```markdown {title="源码"}
 {{</* fig num="2-2" src="/images/docsy.webp" alt="Docsy 主题的默认外壳"
@@ -166,7 +163,7 @@ GROUP BY 1 ORDER BY 1 DESC LIMIT 7;
 
 {{< fig num="2-2" src="/images/docsy.webp" alt="Docsy 主题的默认外壳" caption="OINK 的上游：Docsy 的内容模型仍在下面。" width="600" height="300" />}}
 
-`tbl` 把标签、表格、题注与锚点包进一个语义 figure：
+`tbl` 把标签、表格、题注与锚点包进同一个 figure：
 
 ```markdown {title="源码"}
 {{</* tbl num="2-2" caption="四种输出下编号组件的形态。" */>}}
@@ -184,7 +181,7 @@ GROUP BY 1 ORDER BY 1 DESC LIMIT 7;
 | 打印 | 可见 | 稳定 |
 {{< /tbl >}}
 
-`eq` 的内容交给本地服务端 KaTeX，因此不依赖 passthrough：
+`eq` 在构建时用 KaTeX 渲染内容，因此不依赖 passthrough：
 
 ```markdown {title="源码"}
 {{</* eq num="2-2" caption="连接池饱和度。" */>}}U = \frac{\lambda}{\mu \cdot c}{{</* /eq */>}}
@@ -192,9 +189,9 @@ GROUP BY 1 ORDER BY 1 DESC LIMIT 7;
 
 {{< eq num="2-2" caption="连接池饱和度。" >}}U = \frac{\lambda}{\mu \cdot c}{{< /eq >}}
 
-不带参数的 `{{</* eq */>}}` 是无编号的块级公式兜底：不注册目标，不能被 `xref` 引用，也不出现在公式索引里。
+不带参数的 `{{</* eq */>}}` 就是普通的块级公式：没有编号也没有锚点，`xref` 引用不到，也不会出现在公式索引里。
 
-`eg` 是包装型 shortcode，正文按页面的 Markdown 策略渲染，通常装一个或多个围栏：
+`eg` 可以包住任意 Markdown，通常是一个或多个围栏：
 
 ````markdown {title="源码"}
 {{</* eg num="2-2" caption="用 pg_basebackup 拉起一个新从库。" */>}}
@@ -210,18 +207,16 @@ pg_basebackup -h primary -U replicator -D /pg/data -Fp -Xs -P -R
 ```
 {{< /eg >}}
 
-同一页内 ID 必须唯一，同一类型下一个编号也只能对应一个 ID。遇到重复时，主题会保留首次注册的条目，并在告警中指出首次占用的行号。
+无论哪种形态，ID 在同一页内必须唯一，同一类型下一个编号也只能对应一个 ID。出现重复时保留首次注册的条目，并在告警中给出首次注册所在的行号。
 
-> [!IMPORTANT] shortcode 正文里不能写脚注
-> Hugo 将每个 shortcode 的正文作为独立的 Goldmark 文档渲染，而脚注属于页面级状态。若在 `tbl`、`eg`、`fig`、`card`、`tab`、`field` 或 `include` 的正文中出现 `[^label]`，主题会输出包含文件名、行号与标签的警告：若脚注定义写在页面正文中，引用会原样输出为 `[^label]`；若定义写在 shortcode 内部，则会生成第二份脚注列表，导致 `fn:N` 与页面自身的脚注 ID 冲突。
+> [!IMPORTANT] 短代码正文里不能写脚注
+> Hugo 把每个短代码的正文当作独立文档渲染，而脚注属于整个页面。因此在 `tbl`、`eg`、`fig`、`card`、`tab`、`field` 或 `include` 的正文中写 `[^label]`：脚注定义在页面正文里时，引用会原样输出为 `[^label]`；定义写在短代码内部时，会生成第二份脚注列表，其 `fn:N` 与页面自身的脚注 ID 冲突。构建时会告警，并给出文件、行号与标签。
 >
-> 需要脚注的表格或代码块改用原生形态：表格、图片、围栏加 `{num=… caption=…}`，内容留在页面文档里，脚注照常编号、跳转与回链。渲染出来的图表与 shortcode 形态一致，所以这通常是一行改动。代码里形似脚注的文本（列表里的 `[^0-9]` 字符类、行内代码）不受影响。
+> 需要脚注的表格或代码块请用原生形态。表格、图片或围栏加上 `{num=… caption=…}` 后内容仍留在页面文档里，脚注照常编号与跳转，渲染出的图表也完全相同。代码里形似脚注的文本（如字符类 `[^0-9]`）不受影响。
 
 ## 交叉引用 {#xref}
 
-引用同页目标可以用普通 Markdown 链接：[表 2-1](#tbl-2-1) 指向上面那张隔离级别表。代价是标签与编号手写，改编号时需要自己检索。
-
-`xref` 把标签、编号与锚点合成一处，并支持跨页与跨语言：
+同一页内用普通链接就行：[表 2-1](#tbl-2-1) 指向上面那张隔离级别表。只是标签和编号要自己手写，改编号时还得把这些链接一一找出来。`xref` 根据类型与编号自动生成标签、编号和链接，并且可以跨页、跨语言：
 
 ```markdown {title="源码"}
 参见 {{</* xref fig="2-2" /*/>}} 与 {{</* xref eg="2-1" /*/>}}；
@@ -231,19 +226,17 @@ pg_basebackup -h primary -U replicator -D /pg/data -Fp -Xs -P -R
 参见 {{< xref fig="2-2" />}} 与 {{< xref eg="2-1" />}}；
 显式锚点：{{< xref fig="2-1" anchor="book-release-note" />}}。
 
-规则：
+- 最多给一个类型键：`fig`、`tbl`、`eq` 或 `eg`。类型决定本地化标签（图、表、公式、示例）和默认锚点 `<kind>-<num>`。
+- 目标自己声明了 `#id` 时，用 `anchor=` 替换默认锚点。
+- `page=` 指向另一页，按当前语言查找页面，源码里不必硬编码 `/zh/` 前缀。
+- 不给类型时，必须同时给出 `anchor=` 和链接文字：`{{</* xref page="../ch01/install" anchor="sync-replication" */>}}同步复制{{</* /xref */>}}`。
+- 引用可以出现在目标之前，无论目标在同一页还是在后面的章节里。
 
-- 最多一个类型键（`fig` `tbl` `eq` `eg`）。类型提供本地化标签（图 / 表 / 公式 / 示例）并推导出默认锚点 `<kind>-<num>`。
-- `anchor=` 覆盖推导出的锚点，用于目标写了显式 `#id` 的情况。
-- `page=` 跨页引用，走 Hugo 当前语言的页面查找，源码里不必硬编码 `/zh/` 前缀。
-- 不给类型时必须同时给 `anchor=` 和内部链接文字：`{{</* xref page="../ch01/install" anchor="sync-replication" */>}}同步复制{{</* /xref */>}}`。
-- 引用可以出现在目标之前，渲染时不读注册表，因此前向引用合法。
-
-跨页的普通 Markdown 链接在整本打印里仍然是站点 URL。需要在聚合文档里也能跳转的引用写成 `xref`。
+在整本打印里，`xref` 会变成文档内跳转，而指向其他页面的普通 Markdown 链接仍然指向网站。凡是在打印版里也要能跳转的引用，都写成 `xref`。
 
 ## 索引：目录与图表清单 {#indexes}
 
-五个索引 shortcode 遍历同一棵书树，触发后代内容并聚合注册结果。它们通常放在书首页（`_index.md`）或专门的「插图目录」页上。
+五个短代码生成纸书卷首的那些内容：目录，以及图、表、公式、示例清单。它们遍历书的目录树，渲染当前导航根以下的页面并汇总其中注册的编号对象，因此通常放在书根 `_index.md` 或一个专门的页面上：
 
 ```markdown {title="content/handbook/_index.md"}
 {{</* book-toc depth=3 */>}}
@@ -261,16 +254,16 @@ pg_basebackup -h primary -U replicator -D /pg/data -Fp -Xs -P -R
 {{</* book-examples */>}}
 ```
 
-这五个 shortcode 在本页只给源码。它们从当前页所在的导航根向下遍历，放在一棵普通文档树里会把整棵 docs 树当作书列出。真实效果见[《使用 OINK 创作优美的内容》](/zh/book/)，源码位于
+本页只给出源码，因为放在这里它们会把整个文档树都列出来。实际效果见[《使用 OINK 创作优美的内容》](/zh/book/)，源码在
 [`content/book/_index.md`](https://github.com/pgsty/oink.pgsty.com/blob/main/content/book/_index.md)。
 
-- `book-toc` 的 `depth` 取 1–3：1 列章，2 加入嵌套分区，3 再投射每页的标题树；`drafts=false` 只把 `book_status: draft` 的行从这份生成列表里滤掉，不影响页面发布。
-- `book-figures` / `book-tables` / `book-equations` / `book-examples` 不接受任何参数，各列一类，条目形如「图 2-1 — 题注」并链到稳定 ID。
-- 整本打印时，这些链接全部变成文档内片段。
+- `book-toc` 在 `depth=1` 时只列章，`2`（默认）加入嵌套的节，`3` 再列出每页的标题。`drafts=false` 把 `book_status: draft` 的章节从这份清单里去掉，但不影响它们发布。
+- `book-figures`、`book-tables`、`book-equations`、`book-examples` 不接受参数。每个条目形如「图 2-1 — 题注」，链接到目标锚点。
+- 在整本打印里，这些链接全部变成文档内跳转。
 
-## 顺序阅读与草稿 {#reading}
+## 阅读顺序 {#reading}
 
-翻页器默认对 `docs`、`book`、`blog` 三种类型开启，顺序是侧栏那棵树的前序遍历：分区首页在前，子页按 `weight`。关闭整类改 `params.ui.pager_types`，关闭单页写 `pager: false`。
+读者靠每页末尾的翻页器在书里前后移动。翻页顺序是侧栏目录树的前序遍历：先是分区首页，再按 `weight` 排列其子页。翻页器对 `docs`、`book`、`blog` 默认开启；用 `params.ui.pager_types` 改变这份类型列表，单页关闭则写 `pager: false`：
 
 ```yaml {title="hugo.yml"}
 params:
@@ -278,52 +271,44 @@ params:
     pager_types: [docs, book]
 ```
 
-`toc_hide`、`manual_link` 纯链接占位、`sidebar_divider` 分隔行都不会成为翻页目的地。
-
-草稿章节除了侧栏上的「草稿」标签，还可以开启页首横幅：
-
-```yaml {title="hugo.yml"}
-params:
-  ui:
-    book_draft_banner: true
-```
-
-横幅只在 `type: book` 且 `book_status: draft` 的页面出现，文案来自本地化键 `book_draft_notice`。
+用 `toc_hide` 隐藏的条目、`manual_link` 纯链接条目和 `sidebar_divider` 分隔行都不会成为翻页目的地。
 
 ## 打印整本 {#print}
 
-书根有了 `print` 输出后，按可见的阅读顺序生成封面、本地目录、根页面正文与每个后代章节，全部装在一个 HTML 文档里。`no_print: true` 的页面、纯链接节点、分隔行与隐藏占位不会成为章节。
+书根开启 `print` 输出后，`/_print/handbook/` 就是整本书的单一 HTML 文档：封面、目录、书根页面正文，以及按阅读顺序排列的每一章。设置了 `no_print: true` 的页面、纯链接条目、分隔行与隐藏占位不会进入。单章打印与打印相关开关见[打印支持](/zh/docs/customize/print/)。
 
-聚合文档里，编号组件的 ID 逐字节保留。页面内的 Markdown 标题与脚注 ID
-会加上来源页面前缀，避免多章共有 `summary` 这类锚点、或都从 `fn:1` 开始时冲突；
-生成的链接同步改写。页面单独渲染为 Print 时，与普通 HTML 保持相同的页面局部
-ID——只有多页分区或整书聚合才增加命名空间。
+编号的图、表、式、例在聚合文档里原样保留 ID，所以 `xref` 链接在文档内也能解析。标题与脚注 ID 会加上来源页面的前缀，因为好几章可能都有 `summary` 标题、都从脚注 `fn:1` 开始；主题生成的链接同步改写。单独打印一个页面时，ID 与普通 HTML 保持一致。
 
-产物是面向打印的 HTML。可选的 `BookManifest` 输出会把同一份阅读顺序记成 JSON，
-主题另外提供 `bin/book-epub.py` 与 `bin/book-pdf.py`，把清单与打印 HTML 打包成
-EPUB 和 PDF。
+要导出 EPUB 或 PDF，再把 `BookManifest` 加进书根的 `outputs`。构建会在书根页面旁边写出 `book.json`，记录阅读顺序、标题、编号对象与引用。主题仓库里的两个脚本把这份清单和打印 HTML 转成文件：`bin/book-epub.py` 需要 Pandoc 3，以及一份写有书名、作者的 Pandoc 元数据文件；`bin/book-pdf.py` 需要 Chrome 或 Chromium，输出 A4 页面。它们在构建之后运行，Hugo 本身不会生成这两种文件。下面及后文的 `/path/to/oink` 指主题仓库的一份 checkout，版本与站点固定的发布版本一致：
 
-具体开关与整章打印见[打印支持](/zh/docs/customize/print/)。
+```bash {title="终端"}
+python3 /path/to/oink/bin/book-epub.py --manifest public/handbook/book.json \
+  --public public --metadata epub.yaml --output handbook.epub
+python3 /path/to/oink/bin/book-pdf.py --manifest public/handbook/book.json \
+  --public public --output handbook.pdf
+```
 
 ## 迁移既有书稿 {#migrate}
 
-已有的中文书稿通常用站点自己的 `figure` shortcode、加粗的假题注、指向 `#fig_*` 的裸链接来表示图表编号。主题仓库带一个迁移脚本，把这些旧形态改写成 `fig`、`tbl` 与 `xref`，并保留原有的公开锚点。站点先固定到一个包含 Book 组件的已发布 OINK 版本，再迁移内容。
+为其他 Hugo 主题写的书稿，通常用站点自己的 `figure` 短代码、加粗的假题注和指向 `#fig_*` 的裸链接来表示图表编号。`bin/migrations/book_figures.py` 把这些旧形态改写成 `fig`、`tbl` 与 `xref`，并保留已经公开的锚点，外部链接因此不会失效。先把站点固定到当前的 OINK 发布版本，再在专用分支上迁移内容，第一步是干跑：
 
 ```bash {title="干跑：只看 diff 与报告，不改文件"}
-python3 ~/pgsty/oink/bin/migrations/book_figures.py \
+python3 /path/to/oink/bin/migrations/book_figures.py \
   --profile tpme \
   --root /path/to/your-book \
   --report /tmp/book-migrate.json > /tmp/book-migrate.diff
 ```
 
-四个配方对应三份真实书稿的旧约定（DDIA 的 v1 与 v2 各一个），只识别在那些书稿里观测到的形态：
+每个配方对应一份真实书稿的旧约定，并且只识别在那份书稿里实际出现过的形态。DDIA 的两个版本各有一个配方：
 
 | `--profile` | 识别的旧形态 |
 | --- | --- |
 | `tpme` | 假 h6 题注加相邻图片、题注加相邻表格、`/en/...#fragment` 裸链接 |
-| `ddia-v2` | 站点自有的 `figure` shortcode，按编号图 / 表 / 代码例分类 |
+| `ddia-v2` | 站点自有的 `figure` 短代码，按编号分为图 / 表 / 代码例 |
 | `ddia-v1` | 裸图片加相邻的一条加粗编号题注，ID 由图片文件名推导 |
 | `pg-internal` | 加粗或斜体的中英文「图 N」题注紧邻一张图片，编号表题注紧邻一张表格 |
+
+书稿的约定与四个配方都不匹配时，需要手工改写成[原生形态](#numbering-native)。
 
 | 选项 | 作用 |
 | --- | --- |
@@ -335,39 +320,35 @@ python3 ~/pgsty/oink/bin/migrations/book_figures.py \
 | `--report` | 写出机器可读的 JSON 报告 |
 {.fields}
 
-diff 走标准输出，摘要走标准错误，报告含 `files_scanned`、`files_changed`、`counts`、`skipped`、`idempotent` 五项。脚本只改写能唯一确定的目标：无法确定编号、题注不唯一、标记形态不认识的地方原样保留，逐条记进 `skipped` 供人工处理。旧题注里的粗体、行内代码与公式会降级为纯文本，因为 Book 的题注契约是纯文本。
+diff 输出到标准输出，摘要输出到标准错误。报告包含 `files_scanned`、`files_changed`、`counts`、`skipped`、`idempotent` 五项。脚本只改写能唯一确定的目标；编号不明、题注不唯一或标记形态无法识别的地方原样保留，记入 `skipped` 留给你处理。旧题注里的粗体、行内代码与公式会变成纯文本，因为 Book 的题注只能是纯文本。
 
-审阅 diff 之后在专用分支上应用，再运行第二遍确认幂等：
+审阅 diff 之后应用改写，再运行一遍，确认已经没有可改的内容：
 
 ```bash {title="应用并验证幂等"}
-python3 ~/pgsty/oink/bin/migrations/book_figures.py \
+python3 /path/to/oink/bin/migrations/book_figures.py \
   --profile tpme --root /path/to/your-book --write \
   --report /tmp/book-migrate-written.json
 
-python3 ~/pgsty/oink/bin/migrations/book_figures.py \
+python3 /path/to/oink/bin/migrations/book_figures.py \
   --profile tpme --root /path/to/your-book --no-diff \
   --report /tmp/book-migrate-second.json
 ```
 
-第二份报告应当是 `files_changed: 0`、`counts` 为空、`idempotent: true`；脚本以退出码 0 表示幂等。
-
-配方只识别这三份书稿里实际观测到的旧形态；书稿的旧约定不在这四个配方之内时，脚本不适用，需要按[编号：原生形态](#numbering-native)手工改写。主题仓库的 `bin/check-book-migrations.py` 用干跑与幂等两项检查覆盖这四个配方。
+第二份报告应当是 `files_changed: 0`、`counts` 为空、`idempotent: true`，脚本以退出码 0 结束。
 
 ## 验证 {#verify}
 
-1. 构建生产：`hugo --printPathWarnings`。编号写错、ID 重复、题注缺失都在这一步失败。
-2. 页面上应看到「图 2-1」这样的本地化标签、可点的 `xref` 链接，以及点击后正确跳转的锚点。
-3. 对比侧栏、翻页器、`book-toc` 与整本打印四处的章节顺序是否一致。
-4. 检查 Markdown 输出：`curl -s http://localhost:1313/zh/handbook/ch02/index.md`。shortcode 形态应退化成 `**图 2-2.** 题注` 加原始正文，原生形态原样保留源码块与属性行。
-5. 从主题仓库对构建产物跑一遍锚点检查：
+1. 用 `hugo --printPathWarnings` 构建，逐条阅读告警：编号格式错误、ID 重复、示例缺少题注都会各自产生一条告警。
+2. 在页面上确认出现「图 2-1」这样的本地化标签，`xref` 链接点击后落在目标上。
+3. 对比侧栏、翻页器、`book-toc` 与整本打印四处的章节顺序。
+4. 用 `curl -s http://localhost:1313/zh/handbook/ch02/index.md` 检查 Markdown 输出。短代码形态的图会变成 `**图 2-2.** 题注` 加正文，原生形态保留原来的源码块与属性行。
+5. 用主题提供的锚点检查扫描构建产物。它确认每个引用的目标存在、类型与编号一致、页内 ID 唯一、编号图片带替代文字；产物里至少要有一个编号对象和一个 `xref`。
 
-```bash
-python3 ~/pgsty/oink/bin/check-book.py --site-public public
+```bash {title="终端"}
+python3 /path/to/oink/bin/check-book.py --site-public public
 ```
 
-它校验每个引用的目标锚点存在、类型与编号匹配、页内 ID 唯一，以及编号图片有与题注相称的替代文字。
-
-## Book shortcode 参数 {#reference}
+## Book 短代码参数 {#reference}
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
@@ -401,12 +382,10 @@ python3 ~/pgsty/oink/bin/check-book.py --site-public public
 
 ## 限制与常见问题 {#limits}
 
-- 没有自动编号。章节号、图号、表号都手写；改编号是一次有意的编辑，不是构建的副作用。
-- 属性行必须紧贴块，中间不能有空行。被 Prettier 之类工具移动过的属性行静默失效，图退化成普通图片。
-- `book_kind` 与 `book_part` 是契约认可的元数据键，当前主题模板不渲染它们；有视觉效果的是 `book_number` 与 `book_status`。
-- 索引 shortcode 会触发后代内容渲染，在超大树上明显拉长构建时间。整本 `print` 需要显式开启也是同一原因。
-- shortcode 正文内不支持脚注引用；出现时会触发告警并提示改用原生形态，详见上文[编号：shortcode 形态](#numbering-shortcodes)。
-- 打包是可选的，且在构建之外运行。`BookManifest` 加上 `bin/book-epub.py` / `bin/book-pdf.py` 可以产出 EPUB 与 PDF，但没有任何一次 Hugo 构建会自己生成这两个文件；专业排版的分页、字体嵌入与索引编制仍在契约之外。
+- 属性行必须紧贴所属的块。Prettier 之类的格式化工具一旦把它隔开或挪走，编号图就会退化成普通图片，而且没有任何告警。
+- `book_kind` 与 `book_part` 可以作为元数据写入，但不会改变页面；有可见效果的只有 `book_number` 与 `book_status`。
+- 索引短代码会渲染书根以下的每一页，书很大时会拉长构建时间。整本 `print` 需要显式开启也是这个原因。
+- EPUB 与 PDF 只能由上面两个脚本生成，Hugo 本身不会产出。专业排版的分页控制、字体嵌入与书末索引编制不在支持范围内。
 
 ## 相关 {#related}
 

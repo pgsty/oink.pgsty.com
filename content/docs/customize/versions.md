@@ -1,29 +1,36 @@
 ---
 title: Versions
 linkTitle: Versions
-description: Configure the version switcher and archive banner, and select a deployment layout for multiple documentation versions.
+description: Publish documentation for several product versions side by side, with a version switcher and a banner that marks unmaintained versions as archives.
 weight: 100
 search_keywords: [versions, versioning, version menu, version_menu_pagelinks, archived_version, url_latest_version, archive, subpath deployment]
 aliases:
   - /docs/configure/versioning/
 ---
 
-If a product supports several versions, its documentation usually needs
-versions too. The theme provides a navbar version switcher and an archive
-banner on older sites. The site selects the deployment layout. The theme does
-not build across versions. Each version requires a separate Hugo build.
+A site needs versioned documentation when readers run different releases of
+your product at the same time and those releases differ in ways a reader acts
+on: commands, configuration keys, defaults. If most readers can move to the
+latest release, or old releases differ only in fixed bugs, keep one site and
+mark the exceptions in the text; a single site is easier to maintain and to
+search.
+
+OINK treats each version as a separate site: its own Hugo build, usually from
+its own Git branch or tag, published at its own address. The theme connects
+those sites with a version menu in the navbar and an archive banner on the
+versions you no longer maintain.
 
 ## The version switcher {#version-menu}
 
-List the menu versions under `params.versions`. If the list is nonempty, a
-branch-icon menu appears in the navbar's utility area. An icon-only upward
-menu in the footer's bottom bar shows the same content.
+List the versions under `params.versions`. When the list is not empty, a
+branch icon in the navbar opens the version menu, and an icon-only menu in the
+footer's bottom bar opens upward with the same entries.
 
 ```yaml {title="hugo.yml"}
 params:
-  # which version this site is
+  # the version this site is
   version: v2.1
-  # the accessible menu name; bottom-bar trigger remains icon-only
+  # the menu's accessible name and tooltip (default: Version)
   version_menu: v2.1
   versions:
     - version: v2.1
@@ -34,13 +41,13 @@ params:
       url: https://v1-9.docs.example.com
 ```
 
-A menu entry shows its `version` value by default. If `name` is given, it
-shows that name. An entry is selected if its `version` equals
-`params.version` or its `url` equals the site's `baseURL`.
+An entry shows its `version`, or its `name` when it has one. The entry whose
+`version` equals `params.version`, or whose `url` equals the site's `baseURL`
+(a trailing slash aside), is marked as the current one.
 
-An entry without a `url` is a gray item that cannot be clicked. You can use
-it as a group heading. `name: '---'` creates a divider. A `url` on a divider
-causes a warning. `name` accepts inline Markdown:
+An entry without a `url` is a gray item that cannot be clicked, which makes a
+group heading, and `name: '---'` draws a divider (a `url` on a divider warns).
+`name` accepts inline Markdown:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -54,19 +61,20 @@ params:
       url: https://v1-9.docs.example.com
 ```
 
-The same list supplies "switch version" in the
-[command palette](/docs/customize/panel/). The menu and palette therefore agree.
+The same list feeds "switch version" in the
+[command palette](/docs/customize/panel/), so the menu and the palette always
+agree.
 
 ## The trade-off in page-for-page links {#pagelinks}
 
+By default a menu entry opens the target version's home page.
 `version_menu_pagelinks: true` appends the current page's path to the target
-version's URL. Version switching thus **keeps the reader on the same document**.
+URL instead, so switching version keeps the reader on the same document. The
+risk is a 404: documentation structure changes between versions, and a page
+added in v2.1 does not exist in v1.9. This site leaves the option off.
 
-The target version may not have that page. Documentation structure can change
-between versions. If an older version lacks a new page, switching to it
-produces a 404. This site leaves the option off.
-
-A single entry can override the global setting:
+When most versions share a structure and one does not, turn the option on and
+opt that one entry out:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -76,16 +84,18 @@ params:
       url: https://docs.example.com
     - version: v1.9
       url: https://v1-9.docs.example.com
-      pagelinks: false # this version's structure differs; go to its home page
+      pagelinks: false # restructured since; go to its home page
 ```
 
-> [!TIP] Judge by how stable the structure is, not by how far apart the versions are
-> Enable it where the structure is stable. Disable it where the structure changed.
-> An extra step to a version's home page is preferable to a 404.
+`pagelinks: false` is the only per-entry setting; an entry cannot turn page
+links on when the site-wide option is off. Decide by how stable the structure
+is rather than by how far apart the version numbers are: one extra click from
+a version's home page costs the reader less than a 404.
 
 ## The archive banner {#archived-banner}
 
-If a version is no longer maintained, identify its site as a snapshot:
+When you stop maintaining a version, mark its site as a snapshot so that
+readers arriving from a search engine know to look for something newer:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -94,51 +104,58 @@ params:
   url_latest_version: https://docs.example.com
 ```
 
-With `archived_version: true`, a banner appears at the top of every
-documentation and book page body. It states that the current version is no
-longer actively maintained and links to `url_latest_version`. The text uses
-the site's language. You do not need to write it. The banner shows the
-`version` value as its version number.
-
-The banner appears on documentation and book pages only, not on blog or landing
-pages.
+With `archived_version: true`, every page of the site, blog and landing pages
+included, opens with a banner saying that version v1.9 is no longer actively
+maintained and that this is an archived snapshot, with a link to
+`url_latest_version`. The text comes in the site's language, so you write none
+of it. The version number in the banner is `params.version`; without it the
+banner has no text, so set both. A `url_latest_version` that fails the theme's
+URL check warns, and the banner appears without the link.
 
 ## `params.version` versus `params.versions` {#site-version}
 
-These two parameters have different purposes:
+The two keys look alike but describe different things:
 
-- `params.versions` is **a cross-site list**. It identifies the versions available in the menu and their locations. It describes other sites.
-- `params.version` identifies this build's version. It selects the menu entry and supplies the archive banner's version number. It is also the fallback when `data/download/*.yaml` omits `version`. See [Releases and downloads](/docs/write/releases/).
+- `params.versions` is a list of sites: the versions in the menu and where
+  each one lives.
+- `params.version` names the version this build is. It marks the current menu
+  entry, supplies the banner's version number, and is the fallback when a
+  `data/download/*.yaml` file omits `version` (see
+  [Releases and downloads](/docs/write/releases/)).
 
-It does not have to be a Git ref. If you need a resolvable release tag, declare
-a separate parameter. For example, an install command can use that parameter.
-Do not reuse `params.version` for this purpose. The full definitions of both keys are in
-[Configuration](/docs/customize/config/).
+`params.version` is a label for readers and need not be a Git ref. When
+content needs a release tag that resolves, such as the version in an install
+command, declare a separate parameter for it instead of reusing
+`params.version`. Both keys are defined in
+[Configuration](/docs/customize/config/#languages-versions).
 
 ## Deployment layouts for multiple versions {#deployment}
+
 | Layout | `baseURL` | Characteristics |
 | --- | --- | --- |
-| Subdomain | `https://v1-9.docs.example.com/` | Versions are fully independent. Each needs its own DNS and certificate |
-| Subpath | `https://docs.example.com/v1.9/` | One domain concentrates SEO weight. The host must route paths to different artifacts |
+| Subdomain | `https://v1-9.docs.example.com/` | Versions are fully independent; each needs its own DNS record and certificate |
+| Subpath | `https://docs.example.com/v1.9/` | One domain collects all search ranking; the host must route each path to a different build |
 
-Each version is an independent build. Check out its content from the branch or
-tag. Build with that version's `hugo.yml`. Publish to the matching address.
-The current version's site lists every version. Older sites list them and add
-the archive banner.
+Build each version on its own: check out its branch or tag, build with that
+version's `hugo.yml`, and publish to its address. Because the menu is part of
+each build, adding a version means updating `params.versions` on every branch
+you still publish and rebuilding those sites; an old site that is not rebuilt
+keeps its old menu. Archived sites carry the same list plus
+`archived_version: true`.
 
 > [!IMPORTANT] On a subpath deployment, `baseURL` must include the path segment
 > Otherwise the search index, page actions and asset links all point at the
-> domain root. The page looks correct, but search returns nothing. This is the
-> most common subpath failure. For deployment details, see
-> [Deploy](/docs/admin/deploy/).
+> domain root. The page looks correct, but search returns nothing, which makes
+> this the most common subpath failure. See [Deploy](/docs/admin/deploy/) for
+> the rest of the host setup.
 
 ## Verify {#verify}
 
-Run from your site's root after a production build. In the commands below, replace
-`public/docs/getting-started/index.html` with an actual generated documentation
-page in your site (including a language prefix if needed).
+Run these from your site's root after a production build. Replace
+`public/docs/getting-started/index.html` with a documentation page your site
+actually generates, including the language prefix if it has one.
 
-1. After a build, confirm the version menu reached the page:
+1. Confirm that the version menu reached the page:
 
    ```bash
    hugo --printPathWarnings
@@ -146,23 +163,26 @@ page in your site (including a language prefix if needed).
    test -f "$PAGE" && grep -c 'nav-version-menu' "$PAGE"
    ```
 
-   With `params.versions` empty or unset, the menu is not generated at all.
+   With `params.versions` empty or unset there is no menu at all.
 
-2. Check whether the current version is marked selected:
+2. Check that the current version is marked:
 
    ```bash
    grep -o 'td-nav-hover-menu__option td-is-active[^>]*' "$PAGE"
    ```
 
-   If there is no result, `params.version` does not match an entry's `version`
-   field, or `baseURL` does not match that entry's `url`. Check the trailing
-   slash.
+   No result means that no entry's `version` equals `params.version` and no
+   entry's `url` equals `baseURL`.
 
-3. Visit each menu link. With `version_menu_pagelinks` enabled, switch from a document that an older version lacks. Confirm that the destination is acceptable.
+3. Follow each menu link. With `version_menu_pagelinks` on, switch from a page
+   that an older version lacks and check that the reader lands somewhere
+   acceptable.
 
-4. On an archived site, open a documentation page. Confirm that the banner appears at the top of the body. It should use the site's language and link to the current version.
+4. On an archived site, open any page and check that the banner is at the top,
+   in the site's language, with a working link to the current version.
 
-5. Press <kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>K</kbd> to open the command palette. Confirm that "switch version" lists the same versions.
+5. Press <kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>K</kbd> and check that "switch
+   version" lists the same versions as the menu.
 
 ## Related {#related}
 

@@ -1,14 +1,21 @@
 ---
 title: FileTree
 linkTitle: FileTree
-description: Write directory listings in a `filetree` fence. Use indentation for depth, trailing slashes for directories, and aligned comments for explanations.
+description: Draw an annotated directory tree in a `filetree` fence, with aligned comments, per-entry icons and collapsible directories.
 weight: 90
 search_keywords: [FileTree, directory tree, tree, repository layout, fence, icon, tone, open]
 ---
 
-A `filetree` fence contains a directory listing. Indentation sets depth, a trailing `/` marks a directory, and text after `#` is a comment.
-Use it to explain the relevant directory structure, with one annotation per entry.
-If readers need to copy the exact listing, use an ordinary code block.
+A file tree explains a directory layout one entry at a time: where the
+configuration lives, which directory holds data, what a reader may delete. You
+write it in a `filetree` fence, where indentation sets the depth, a trailing
+`/` marks a directory and the text after `#` is a comment. The theme lines the
+comments up in their own column and turns directories into folders that
+readers can open and close.
+
+A file tree shows the part of a layout that matters and says why. When readers
+need to copy the exact listing, use an ordinary [code block](/docs/components/code/)
+instead.
 
 ## Shortest form {#minimal}
 
@@ -32,13 +39,15 @@ If readers need to copy the exact listing, use an ordinary code block.
 - go.mod
 ```
 
-Bullets (`-`, `*`, `+`) are optional and do not change the result.
-Entries with children are directories. For entries without children, a trailing `/` marks a directory.
+The bullets (`-`, `*` or `+`) are optional and change nothing. An entry with
+children is a directory; an entry without children is a directory only when
+its name ends in `/`.
 
 ## Adding comments {#comments}
 
-Text after the first whitespace-preceded `#` is a comment. Comments appear in an aligned column on the right.
-They are plain text, so Markdown appears literally. Use `\#` for a literal hash.
+Everything after the first `#` that follows whitespace is a comment, shown in
+an aligned column on the right. Comments are plain text, so Markdown in them
+shows literally; write `\#` for a literal hash.
 
 ````markdown {title="Source"}
 ```filetree
@@ -62,13 +71,16 @@ They are plain text, so Markdown appears literally. Use `\#` for a literal hash.
 - hugo.yml         # site configuration: languages, menus, params.ui
 ```
 
-At build time, the widest row determines the comment column's starting position. Each `#` aligns even if the source does not.
-The comment column occupies at least three tenths and at most half of the panel.
-Drag the dashed splitter to change the width. Alternatively, focus it with <kbd>Tab</kbd> and move it with arrow keys.
-<kbd>Home</kbd> / <kbd>End</kbd> move it to the limits.
+You do not need to align the `#` signs in the source: the theme starts the
+comment column after the widest name, so every comment lines up anyway. The
+comment column takes between three tenths and half of the panel. Readers can
+drag the dashed splitter between the columns, or focus it with <kbd>Tab</kbd>
+and move it with the arrow keys, <kbd>Home</kbd> and <kbd>End</kbd> jumping to
+the limits. The splitter is the tree's only script, so a tree without comments
+loads no JavaScript.
 
-By default (`wrap=false`), long names and comments are truncated with an ellipsis within their columns. Hover to see the full text in `title`.
-Only trees **with comments** load JavaScript. This script controls the splitter.
+A long name or comment is cut off with an ellipsis inside its column, and
+hovering shows the full text:
 
 ````markdown {title="Source"}
 ```filetree {title="truncation in both columns"}
@@ -83,13 +95,17 @@ Only trees **with comments** load JavaScript. This script controls the splitter.
   - a-deliberately-long-runbook-filename-for-a-failover-drill.md  # an equally overlong comment, kept on one line so it has to be clipped inside the comment column
   - restart.md                                                    # short
 ```
+
+On screens narrower than the `sm` breakpoint the tree becomes a single column:
+each comment moves under its name and shows in full, and the splitter is
+hidden.
 
 ## Wrap long comments {#wrap}
 
-Use `wrap=true` on the `filetree` fence to show complete comments in their
-column. Rows grow as needed, including for unbroken identifiers. The default
-`wrap=false` keeps compact rows with ellipsis. Names, folding, splitter controls,
-mobile layout, and expanded Print output retain their existing behavior.
+When the comments are the point of the tree and must be read in full, add
+`wrap=true` to the fence. Comments then wrap inside their column, even unbroken
+identifiers, and rows grow to fit; names keep their ellipsis. Everything else
+works as before: folding, the splitter, the narrow-screen layout and print.
 
 ````markdown {title="Source"}
 ```filetree {title="Complete storage comments" wrap=true}
@@ -104,44 +120,37 @@ mobile layout, and expanded Print output retain their existing behavior.
   - metadata/ # Schema definitions: property keys, vertex and edge labels, indexes, and counters.
   - graph/    # Graph data: vertices, edges, index tables, and OLAP analysis data.
 ```
-
-Invalid `wrap` values warn and fall back to `false`. Review the warning and fallback before publication.
 
 ## Title bars {#title}
 
-The fence attribute `{title="…"}` adds a title bar above the tree. Without it, no title bar appears.
+`{title="…"}` on the fence adds a title bar above the tree, which helps when
+the reader needs to know which machine or repository the tree describes.
 
 ````markdown {title="Source"}
-```filetree {title="the oink.pgsty.com repository root"}
-- content/          # pages
-- assets/           # resources that take part in the build
-- data/             # data for the home page, landings and downloads
-- layouts/          # template overrides
-- static/           # files copied verbatim
-- tests/            # Playwright and node --test
-- hugo.yml
-- go.mod            # the theme, imported as a Hugo Module
-- Makefile          # make d / make b / make c
+```filetree {title="pgBackRest repository on the backup host"}
+- /pg/backup/
+  - archive/         # WAL segments, needed for point-in-time recovery
+  - backup/          # full, differential and incremental backups
+- /etc/pgbackrest/
+  - pgbackrest.conf  # stanza, retention and repository settings
 ```
 ````
 
-```filetree {title="the oink.pgsty.com repository root"}
-- content/          # pages
-- assets/           # resources that take part in the build
-- data/             # data for the home page, landings and downloads
-- layouts/          # template overrides
-- static/           # files copied verbatim
-- tests/            # Playwright and node --test
-- hugo.yml
-- go.mod            # the theme, imported as a Hugo Module
-- Makefile          # make d / make b / make c
+```filetree {title="pgBackRest repository on the backup host"}
+- /pg/backup/
+  - archive/         # WAL segments, needed for point-in-time recovery
+  - backup/          # full, differential and incremental backups
+- /etc/pgbackrest/
+  - pgbackrest.conf  # stanza, retention and repository settings
 ```
 
 ## Indentation and depth {#indent}
 
-Indentation sets depth. Two spaces, four spaces, and tabs, counted as four columns, are supported.
-Indentation widths can vary within one tree, but every level that you return to must have been opened previously.
-You can paste complete `tree` command output, including the root and summary lines. The summary is removed.
+Indentation sets the depth. Two spaces, four spaces and tabs (counted as four
+columns) all work and may even be mixed in one tree, as long as every level you
+return to was opened earlier. That makes it easy to paste the output of the
+`tree` command as it is, root line and summary included; the summary line is
+dropped.
 
 ````markdown {title="Source"}
 ```filetree
@@ -173,13 +182,16 @@ content/docs
 3 directories, 5 files
 ```
 
-Returning to an unopened indentation level warns and skips that line. The warning identifies the line inside the fence.
+A line that returns to a level that was never opened warns, naming its line in
+the fence, and is skipped.
 
 ## Folding and explicit types {#dir-file}
 
-Directories with children are open by default. `{open=false}` makes a directory initially closed.
-Directories use native `<details>` and work with the keyboard without JavaScript. Only directories accept `open`.
-An entry without children or a trailing `/` is a file. `{type=dir}` forces a directory, and `{type=file}` forces a file.
+Directories with children start open; `{open=false}` at the end of a line
+starts one closed, which keeps a large tree focused on the part you are
+explaining. Directories are native `<details>` elements, so they open and close
+with the keyboard and need no JavaScript. When the name alone does not reveal
+the type, `{type=dir}` or `{type=file}` sets it.
 
 ````markdown {title="Source"}
 ```filetree {title="the content directory"}
@@ -211,12 +223,15 @@ An entry without children or a trailing `/` is a file. `{type=dir}` forces a dir
 
 ## Icons and tones {#icon-tone}
 
-The theme infers icons from names. Directory icons follow the open state.
-Files are matched first by full filename (`LICENSE`, `Makefile`, `go.mod`, `package.json`, `.gitignore` …), then by extension (`md yml toml json
-sh py go js sql css png svg pdf zip` …). Other files use a generic file icon.
+The theme picks each icon from the name. Directory icons follow the open or
+closed state. Files match first on the full name (`LICENSE`, `Makefile`,
+`go.mod`, `package.json`, `.gitignore` …), then on the extension (`md yml toml
+json sh py go js sql css png svg pdf zip` …), and anything else gets a generic
+file icon.
 
-`{icon=…}` overrides the icon with exactly one Font Awesome class pair.
-`{tone=…}` colors the icon. It uses the [badges](/docs/components/badge/) vocabulary: `neutral` `info` `success` `warning` `danger`.
+`{icon=…}` replaces the icon with one Font Awesome class pair. `{tone=…}`
+colors the icon with the [badge](/docs/components/badge/) vocabulary: `neutral`,
+`info`, `success`, `warning`, `danger`.
 
 ````markdown {title="Source"}
 ```filetree {title="deployment layout: permissions and what matters"}
@@ -240,39 +255,42 @@ sh py go js sql css png svg pdf zip` …). Other files use a generic file icon.
 - /usr/bin/pig                 # 0755 root:root · command-line tool         {icon="fa-solid fa-terminal" tone=success}
 ```
 
-`tone` colors only the icon. It never colors the text. State the meaning in the name or comment; color supplements it.
+`tone` colors the icon and never the text, so put the meaning in the name or
+the comment; readers who cannot tell the colors apart still get it there.
 
 ## Linked entries {#link}
 
-Write `[name](link)` to make an entry name a link. Site paths, relative paths, and `http(s):` are supported.
-Links use the same URL validation as other components.
+Write an entry as `[name](link)` to make it a link, for example to the page
+that documents that file. Site paths, relative paths and `http(s):` URLs are
+accepted, and they pass the same URL checks as links in other components.
 
 ````markdown {title="Source"}
 ```filetree {title="this site's component pages"}
-- content/docs/
+- content/docs/components/
   - [callout.md](/docs/components/callout/)     # callouts
   - [filetree.md](/docs/components/filetree/)   # this page
   - [gallery.md](/docs/components/gallery/)     # galleries
   - image/                                      # page bundle
     - [index.md](/docs/components/image/)       # images
-- [hugo.yml](https://github.com/pgsty/oink/blob/main/tests/site/hugo.yaml)   # fixture configuration on GitHub
+- [hugo.yml](https://github.com/pgsty/oink.pgsty.com/blob/main/hugo.yml)   # this site's configuration on GitHub
 ```
 ````
 
 ```filetree {title="this site's component pages"}
-- content/docs/
+- content/docs/components/
   - [callout.md](/docs/components/callout/)     # callouts
   - [filetree.md](/docs/components/filetree/)   # this page
   - [gallery.md](/docs/components/gallery/)     # galleries
   - image/                                      # page bundle
     - [index.md](/docs/components/image/)       # images
-- [hugo.yml](https://github.com/pgsty/oink/blob/main/tests/site/hugo.yaml)   # fixture configuration on GitHub
+- [hugo.yml](https://github.com/pgsty/oink.pgsty.com/blob/main/hugo.yml)   # this site's configuration on GitHub
 ```
 
 ## One tree per platform {#tabs}
 
-A fence carrying `tab=` (and `group=` / `value=`) becomes one panel of a
-[tab set](/docs/components/tabs/) and can sit alongside code fences.
+When the layout differs by platform, give each fence `tab=` (and `group=` /
+`value=`); adjacent fences then become one [tab set](/docs/components/tabs/),
+which can mix trees and code fences.
 
 ````markdown {title="Source"}
 ```filetree {tab="Linux" group="platform" value="linux"}
@@ -298,15 +316,9 @@ A fence carrying `tab=` (and `group=` / `value=`) becomes one panel of a
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | `<div class="td-filetree">`, an optional title bar, directories as native `<details>`; a tree with comments also gets the draggable splitter, its only runtime |
-| Print | The same tree, fully expanded, no splitter, comments wrapped instead of truncated |
-| Markdown | The `filetree` fence, emitted as written |
-| RSS | The fence source inside a `<pre>` |
-
-Below the `sm` breakpoint, the layout becomes one column. Comments move below names, display without truncation, and the splitter is hidden.
-Trees without comments always use one column and load no script.
+Print shows every directory expanded, with comments wrapped instead of cut off
+and no splitter. The page's Markdown output keeps the `filetree` fence as you
+wrote it, and RSS shows that same source in a `<pre>` block.
 
 ## Parameter reference {#reference}
 
@@ -315,7 +327,7 @@ Fence attributes, after ```` ```filetree ````:
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
 | `title` | plain text | — | Title bar above the tree; omitted when absent; must not be empty |
-| `wrap` | boolean | `false` | Wrap long comments and grow rows; filenames keep ellipsis |
+| `wrap` | boolean | `false` | Wrap long comments and grow rows; names keep the ellipsis; an invalid value warns and uses `false` |
 | `tab` | plain text | — | Makes this tree one panel of a tab set |
 | `group` / `value` | string | — | Tab group and sync value; must appear with `tab` |
 | `class` | class list | — | Passed through for site CSS |
@@ -326,12 +338,12 @@ Entry attributes, in the `{…}` at the end of a line:
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
 | `icon` | Font Awesome class pair | matched by name / extension | For example `fa-solid fa-lock`; a malformed value warns and uses the default icon |
-| `tone` | enum | `neutral` | `neutral` `info` `success` `warning` `danger`; colours the icon only |
+| `tone` | enum | `neutral` | `neutral` `info` `success` `warning` `danger`; colors the icon only |
 | `open` | boolean | `true` | Directories only; `false` starts it closed |
 | `type` | enum | inferred | `dir` or `file`, overriding the inference |
 {.fields meta="type default"}
 
-The line syntax itself:
+The line syntax:
 
 | Element | Description |
 | --- | --- |
@@ -343,16 +355,22 @@ The line syntax itself:
 | `N directories, M files` | The `tree` summary line, dropped automatically |
 {.fields}
 
-Unknown attributes or values, `open` on files, malformed `{…}`, and dedents to unopened levels warn.
-The theme uses a safe fallback or skips the invalid line. The message identifies the line.
+Unknown attributes or values, `open` on a file, a malformed `{…}` and a
+return to an unopened level all warn with the line number in the fence; the
+theme then uses a safe default or skips the line.
 
 ## Limits {#limits}
 
-- `filetree` fences are the only form. There is no `{.filetree}` list marker or shortcode.
-- Names and comments are plain text. `**bold**` appears literally, so the source remains readable in other tools.
-- The tree reads nothing from disk. You write or paste static content, which does not track the repository.
-- There is no search, multiple selection, or control to copy the whole tree. Use a code block when readers must copy the exact listing.
-- Split positions are not saved. Reloading restores the width calculated at build time.
+- The `filetree` fence is the only form; there is no `{.filetree}` list marker
+  and no shortcode.
+- Names and comments are plain text, so `**bold**` shows literally and the
+  source stays readable in any Markdown viewer.
+- The tree reads nothing from disk. It is the text you wrote or pasted and does
+  not follow later changes to the repository.
+- There is no search, multiple selection or copy-the-whole-tree control; use a
+  code block when readers must copy the listing.
+- A dragged splitter position is not saved, so a reload restores the width
+  computed at build time.
 
 ## Related {#related}
 

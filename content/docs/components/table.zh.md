@@ -1,18 +1,20 @@
 ---
 title: 表格
 linkTitle: 表格
-description: 普通 GFM 表格加一行属性，就得到标题、兼容矩阵、参数表、编号表或标签页；宽表格自己横向滚动，不撑宽页面。
+description: 给普通 Markdown 表格加一行属性，做成带标题的表、兼容矩阵、参数表、编号表或标签页，并让宽幅技术表格有足够的阅读空间。
 weight: 50
 search_keywords: [表格, Table, matrix, 矩阵, full-width, 全宽, wide, 技术表格, caption, 表格标题, 编号表, 横向滚动, GFM]
 aliases:
   - /docs/components/tables/
 ---
 
-表格是普通的 GFM 管道表格。主题的表格渲染钩子把每张表包进一块可横向滚动的区域，表格下面那一行 `{…}` 属性决定它是哪一种表：带标题的表、兼容矩阵、参数表、编号表或标签页。合并单元格、排序与筛选不在能力范围内，需要它们的场景请改换呈现方式。
+表格就是普通的 GFM 管道表格，在 GitHub 和任何编辑器里都照常显示。OINK 补上长篇技术表格需要的东西：宽表格在自己的区域里横向滚动，不会把整页撑宽；表格下面再写一行属性，就能把它变成带标题的表、兼容矩阵、参数表、编号表，或者一组标签页中的一页。
+
+GFM 没有合并单元格、排序和筛选，OINK 也不补这些。需要合并表头的数据，拆成两张表或改成矩阵通常更好读；单元格里要放多段文字或列表时，改用[参数表](/zh/docs/components/fields/)。
 
 ## 最简例子 {#minimal}
 
-不写属性行就是一张普通表。对齐方式照旧来自分隔行，表头单元格是 `th scope="col"`。
+不写属性行就是一张普通表格。分隔行决定各列的对齐方式，表头单元格输出为 `th scope="col"`。
 
 ```markdown {title="源码"}
 | 组件 | 端口 | 用途 |
@@ -30,7 +32,7 @@ aliases:
 
 ## 宽表格自己滚动 {#scroll}
 
-列太多的表不会把页面撑宽，它在自己的区域里横向滚动。这块区域可以用键盘聚焦：Tab 停入后方向键滚动，无障碍名称是本地化的「可横向滚动的表格」。
+比正文栏更宽的表格在自己的区域里横向滚动，手机上页面的其余部分不会跟着变宽。键盘用户用 Tab 进入这块区域，再用方向键滚动；读屏器按页面语言把它读作「可横向滚动的表格」。
 
 ```markdown {title="源码"}
 | 集群 | 角色 | 版本 | 状态 | 延迟 | 连接数 | 大小 | 备份 |
@@ -47,28 +49,27 @@ aliases:
 
 ## 表格标题 {#caption}
 
-`{caption="…"}` 加一个可见的 `<caption>`，纯文本，不给表编号。
-标题在表格框内保留上下留白，并与下方列名的起始位置对齐。
+`{caption="…"}` 给表格加一个纯文本的可见 `<caption>`。它不给表格编号；需要「表 9-1」这样的编号时用 [`num`](#numbered)。
 
 ```markdown {title="源码"}
-| 条目 | 取值 |
+| 设置 | 取值 |
 | --- | --- |
-| 主题版本 | v0.8.1 |
-| Hugo 下限 | 0.169.0 |
-| 许可证 | Apache-2.0 |
-{caption="本站当前使用的主题事实"}
+| 端口 | 5432 |
+| 数据目录 | `/var/lib/pgsql/18/data` |
+| 许可证 | PostgreSQL License |
+{caption="全新 EL 9 节点上的 PostgreSQL 默认值"}
 ```
 
-| 条目 | 取值 |
+| 设置 | 取值 |
 | --- | --- |
-| 主题版本 | v0.8.1 |
-| Hugo 下限 | 0.169.0 |
-| 许可证 | Apache-2.0 |
-{caption="本站当前使用的主题事实"}
+| 端口 | 5432 |
+| 数据目录 | `/var/lib/pgsql/18/data` |
+| 许可证 | PostgreSQL License |
+{caption="全新 EL 9 节点上的 PostgreSQL 默认值"}
 
 ## 兼容矩阵 {#matrix}
 
-`{.matrix}` 用于「行 × 列 = 支持与否」的对照表：第一列成为行表头（`th scope="row"`），滚动时表头行与第一列吸附不动，其余单元格居中，分隔行另有对齐时以分隔行为准。✅ 与 ❌ 是作者写的字符，主题不解析它们。
+`{.matrix}` 用于「什么支持什么」的对照表。第一列成为行表头（`th scope="row"`），无论横向还是纵向滚动，表头行和第一列都固定不动，因此大矩阵深处的单元格也看得到自己属于哪一行哪一列。单元格默认居中，分隔行另写了对齐方式时以分隔行为准。✅ 与 ❌ 只是你自己输入的普通字符，主题不赋予它们任何含义。
 
 ```markdown {title="源码"}
 | OS / PG | PG18 | PG17 | PG16 | PG15 | PG14 |
@@ -90,7 +91,7 @@ aliases:
 
 ## 用整个画布 {#full-width}
 
-`{.full-width}` 让表格越出正文栏宽，占满文章可用的宽度。适合列多但每列都短的表。
+`{.full-width}` 让表格越出正文栏，占满文章的全部宽度。列多而每列都短、否则就要横向滚动的表格适合用它。
 
 ```markdown {title="源码"}
 | 语言 | 代码 | 侧栏 | 搜索 | 目录 | 打印 | 状态 |
@@ -108,13 +109,7 @@ aliases:
 
 ## 技术宽表格 {#wide}
 
-> [!NOTE] OINK 1.4.0 的 `.wide`
-> 这个简短标记随 v1.4.0 发布，沿用已有技术宽表样式并兼容旧写法。
-
-包含长配置键、环境变量或长标识符的技术表格，若默认压在正文列宽内排版，
-容易导致标识符异常断行或描述列被极度压缩。在属性行中显式添加 `{.wide .expand}`，
-内部表格会采用按内容最大尺寸（`width: max-content`）排版，并在超出视口时触发
-横向滚动。
+配置键、环境变量这类表格硬塞进正文栏宽，标识符会在奇怪的位置断开，行也会被挤得很高。`.wide` 让表格按内容的自然宽度排版（`width: max-content`），超出页面宽度时横向滚动。单元格只在词与词之间换行（`overflow-wrap: break-word`、`word-break: normal`），正文单元格另有 `max-width: 40ch` 的软上限，长描述会折成一栏易读的文字，而不是一整行。特别长的标识符仍可能换行，这个上限也不是固定列宽。
 
 ```markdown {title="源码"}
 | 变量 | 必填 | 默认值 | 对应配置项 | 描述 |
@@ -132,28 +127,11 @@ aliases:
 | `HG_PD_ACTUATOR_EXPOSURE` | 否 | `health,metrics,prometheus` | `management.endpoints.web.exposure.include` | 对外开放的监控端点白名单，不允许使用通配符。 |
 {.wide .expand}
 
-### 与 .full-width 的区别 {#wide-vs-full-width}
-
-- `.full-width` 控制「外层画布」：让表格外层容器突破正文栏宽限制，扩展至整页可用宽度；适合列数较多但各列内容较短的表格。
-- `.wide` 控制「内部表格排版」：让内部 `<table>` 以自身内容的最大自然宽度（`width: max-content`）排版，依靠横向滚动容纳长内容；适合包含长代码标识符的技术表格。
-- 两者可以结合使用：例如 `{.full-width .wide}` 既让外层容器占满全宽画布，又让内部列保持宽松的自然宽度。
-
-### 适用边界与排版策略 {#wide-boundaries}
-
-- **显式开启**：普通表格保持现有布局。只有 `.wide` 表格使用
-  `overflow-wrap: break-word`、`word-break: normal`，并以 `max-width: 40ch`
-  作为正文单元格的软宽度约束。特别长的标识符仍可换行，该约束不是固定列宽。
-- **静态输出**：此策略只作用于屏幕。Print 与 RSS 使用静态包装并保留原有布局；
-  Markdown 保留作者的 GFM 表格及属性行。该标记对 `.fields` 定义列表没有作用。
+`.wide` 与 `.full-width` 解决的是两个问题，也可以合写成 `{.full-width .wide}`。`.full-width` 加宽表格所在的外框，适合列多而短的表；`.wide` 改变框内表格分配列宽的方式，适合长标识符。`.wide` 只作用于屏幕：打印和 RSS 保持普通排版，对 `.fields` 也不起作用。旧的 `.td-table--wide` class 仍然有效，与 `.wide` 等价。
 
 ## 展开指定表格 {#expand}
 
-> [!NOTE] OINK 1.4.0 的 `.expand`
-> 此功能随 v1.4.0 发布，为少数需要更大空间的表格提供角落阅读入口。
-
-只给需要更大阅读空间的表格加 `.expand`。小展开图标位于表格右上角：桌面端
-悬停或键盘聚焦时显示，触屏设备常显。点击即可展开，使用关闭按钮或 Escape
-回到原来的阅读位置。字号、链接和文字选择保持不变；小屏幕上的宽内容仍可横向滚动。
+`.expand` 在表格右上角放一个小小的展开图标：桌面端悬停或键盘聚焦时出现，触屏设备上一直显示。点一下，表格就在一个占满窗口的对话框里打开，字号、链接和文字选择都与正文相同；点关闭或按 Escape，表格回到原处，阅读位置不变。窄屏上的宽表格在对话框里仍可横向滚动。本页大多数示例都带了 `.expand`，可以直接试。
 
 ```markdown {title="源码"}
 | 扩展包 | 版本 | 用途 |
@@ -169,23 +147,13 @@ aliases:
 | `pg_stat_statements` | `1.11` | 语句统计 |
 {.wide .expand caption="扩展包示例"}
 
-Goldmark 支持多个 class：`{.wide .expand}` 与 `{class="wide expand"}` 等价。
-需要开启 `markup.goldmark.parser.attribute.block: true`，属性行紧接表格最后一行，
-中间不要留空行。
+只给少数确实需要更大空间的表格加：主题没有按尺寸自动判断的阈值，也没有全站开关，因为每张表都带一个图标只会添乱。`.expand` 可以单独使用，也可以与 `.wide`、`.full-width`、`.matrix`、标题、编号或标签页组合。多个 class 有两种等价写法：`{.wide .expand}` 或 `{class="wide expand"}`。
 
-`.wide` 控制布局，`.expand` 提供阅读入口，两者均可独立使用。
-`.expand` 还可以与 `.full-width`、`.matrix`、标题、编号或标签页组合。
-没有自动判断大小的阈值，也没有全站开关。原有的 `.td-table--wide` 写法继续兼容 `.wide`。
-
-只有包含显式标记表格的页面才加载小型阅读脚本。没有 JavaScript、脚本未加载或
-浏览器不支持原生对话框时，保留完整的正文表格，不显示无效按钮。
-Print 和 RSS 保持静态表格，Markdown 保留作者语法；浏览器打印前会先将展开的表格
-还原到正文。`headers`、`aria-labelledby` 或 `aria-describedby` 引用了表格外节点时，
-保持正文阅读；依赖文章祖先元素的自定义样式，需要检查阅读器中的效果。
+只有含 `.expand` 表格的页面才加载这个小型阅读脚本。没有 JavaScript 或浏览器不支持原生 `<dialog>` 时，读者看到的是完整的正文表格，也不会出现点不动的按钮。打印前，已展开的表格会先回到正文。表格的 `headers`、`aria-labelledby` 或 `aria-describedby` 指向表格之外的元素时，它保持在正文中不展开，因为放进对话框会切断这些引用。站点 CSS 如果通过文章的祖先元素给表格加样式，请检查这类表格在对话框里的效果。
 
 ## 参数表 {#fields}
 
-`{.fields}` 把表格变成定义列表：第一列是名称，最后一列是说明，中间列是元数据。它是记录配置项、命令参数、API 字段的形态，写法见[参数表](/zh/docs/components/fields/)。
+`{.fields}` 把表格渲染成定义列表：第一列是名称，最后一列是说明，中间各列是元数据。配置项、命令参数、API 字段都适合这种形态，完整写法见[参数表](/zh/docs/components/fields/)。
 
 ```markdown {title="源码"}
 | 参数 | 类型 | 默认值 | 说明 |
@@ -203,7 +171,7 @@ Print 和 RSS 保持静态表格，Markdown 保留作者语法；浏览器打印
 
 ## 编号表 {#numbered}
 
-写书或长手册时给表编号：`num` 加可选的 `#id` 与 `caption`。表格会被包进一个带本地化「表 N.」标签的 `<figure>`，并注册成 Book 目标，可以被 `xref` 引用、进入全书表格目录。编号由作者书写，主题不自动计数；`id` 缺省是 `tbl-<num>`。
+书籍和长篇手册按编号引用表格。加上 `num`，再按需写 `#id` 与 `caption`：表格会被包进一个 `<figure>`，带有按页面语言显示的「表 N.」标签，可以被 `xref` 引用，并进入全书的表格目录。编号由你决定，主题不自动计数；`id` 缺省为 `tbl-<num>`。
 
 ```markdown {title="源码"}
 | 隔离级别 | 脏读 | 不可重复读 | 幻读 |
@@ -227,7 +195,7 @@ Print 和 RSS 保持静态表格，Markdown 保留作者语法；浏览器打印
 
 ## 表格做成标签页 {#tabs}
 
-连着的表格加 `{tab="…"}` 就组成一组标签页，规则与相邻围栏一致：第一张表上的 `group` 启用 hash、同步与持久化，此后每张表都要 `value`。完整规则见[标签页](/zh/docs/components/tabs/)。
+相邻的表格加上 `{tab="…"}` 就组成一组标签页，规则与相邻代码围栏相同。第一张表写了 `group`，这组标签页就有可分享的 URL hash、同组联动和记住的选择，此时每张表都要写 `value`。完整规则见[标签页](/zh/docs/components/tabs/)。
 
 ```markdown {title="源码"}
 | 目录 | 内容 |
@@ -257,14 +225,7 @@ Print 和 RSS 保持静态表格，Markdown 保留作者语法；浏览器打印
 
 ## 输出形态 {#outputs}
 
-| 输出 | 呈现 |
-| --- | --- |
-| HTML | `<div class="td-table-scroll">` 可聚焦滚动区 + `<table>`；矩阵与全宽是这个包装器上的修饰 class |
-| 打印 | 保留完整静态内容；浏览器预览提供可键盘滚动的区域，打印媒体样式在实际打印时展开区域 |
-| Markdown | 原样输出源码表格与属性行 |
-| RSS | 完整静态表格 |
-
-普通表格不加载脚本；`.expand` 仅在 HTML 中加载阅读器，标签页表格还会加载标签页运行时。
+HTML 中每张表都放在一个可聚焦的 `<div class="td-table-scroll">` 里；`.matrix` 与 `.full-width` 在这个外层包装上加修饰 class，你自己写的 class 留在 `<table>` 上。普通表格不加载脚本。打印与 RSS 输出完整的静态表格，没有阅读器，也没有标签栏；Markdown 输出原样保留表格和它的属性行。
 
 ## 参数参考 {#reference}
 
@@ -272,29 +233,29 @@ Print 和 RSS 保持静态表格，Markdown 保留作者语法；浏览器打印
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `.full-width` | 标记 | 无 | 越出正文栏宽，占满文章画布 |
-| `.wide` | 标记 | 无 | 内部表格采用 max-content 宽度排版，适合配置项等技术宽表 |
-| `.expand` | 标记 | 无 | 在角落提供可选的表格阅读对话框入口 |
-| `.matrix` | 标记 | 无 | 第一列作行表头，表头与首列吸附，其余单元格居中 |
+| `.full-width` | 标记 | 无 | 越出正文栏，占满文章宽度 |
+| `.wide` | 标记 | 无 | 内部表格按 `max-content` 宽度排版，适合含长标识符的技术表格 |
+| `.expand` | 标记 | 无 | 在角落加一个入口，在更大的对话框里阅读表格 |
+| `.matrix` | 标记 | 无 | 第一列作行表头，表头行与第一列固定，其余单元格居中 |
 | `.fields` | 标记 | 无 | 渲染成定义列表，见[参数表](/zh/docs/components/fields/) |
-| `caption` | 纯文本 | 无 | 可见表格标题；在 `.fields` 上是列表的标签 |
-| `meta` | 角色列表 | 无 | 命名 `.fields` 中间列的语义，取值 `type` `required` `default` `-`；必须与 `.fields` 同用 |
-| `#id` | 标识符 | 有 `num` 时为 `tbl-<num>` | `[A-Za-z][A-Za-z0-9_.:-]*`；写在 `<table>`（编号表则写在 `<figure>`）上 |
-| `num` | 字符串 | 无 | `[0-9A-Za-z.-]+`；注册为 Book 表目标，标题前加「表 N.」 |
+| `caption` | 纯文本 | 无 | 可见的表格标题；用在 `.fields` 上时是列表的标签 |
+| `meta` | 角色列表 | 无 | `.fields` 中间各列的含义，取值 `type` `required` `default` `-`；需要 `.fields` |
+| `#id` | 标识符 | 有 `num` 时为 `tbl-<num>` | `[A-Za-z][A-Za-z0-9_.:-]*`；写在 `<table>` 上，编号表则写在 `<figure>` 上 |
+| `num` | 字符串 | 无 | `[0-9A-Za-z.-]+`；注册为 Book 表格目标，标题前加「表 N.」 |
 | `tab` / `group` / `value` | 见[标签页](/zh/docs/components/tabs/) | 无 | 相邻表格组成标签页 |
-| `class` | class 列表 | 无 | 站点 CSS 用，原样留在 `<table>` 上 |
-| `data-*` / `aria-*` | 字符串 | 无 | 透传 |
+| `class` | class 列表 | 无 | 留在 `<table>` 上，供站点 CSS 使用 |
+| `data-*` / `aria-*` | 字符串 | 无 | 原样透传 |
 {.fields meta="type default"}
 
-`style`、`on*` 与其它键会告警并忽略。
+其它键（包括 `style` 与 `on*` 事件属性）会被丢弃，并在构建时告警。
 
 ## 限制与常见问题 {#limits}
 
-- 互斥规则：`.fields` 不能和 `.matrix`、`.full-width`、`.expand` 或 `num` 一起用；`num` 与 `tab` 互斥；`group`/`value` 需要 `tab`；`meta` 需要 `.fields`。
-- 属性行必须紧贴表格：中间空一行，它就变成正文里一段可见的花括号。Markdown 格式化工具常移动这一行，把它包进 `<!-- prettier-ignore-start -->` / `<!-- prettier-ignore-end -->`。
-- 没有合并单元格、没有排序、没有筛选：GFM 管道表格能表达的就是全部。需要合并表头的复杂表请拆成两张表或改成一张矩阵。
-- 单元格里放不下块内容：多段说明、列表、围栏要用 `fields`/`field` shortcode。
-- `.matrix` 的居中由 CSS 实现：分隔行里写了对齐就以分隔行为准。
+- 有些属性互斥。`.fields` 优先于 `.matrix`、`.full-width`、`.expand` 和 `num`，`num` 优先于 `tab`；被压下的一方告警并丢弃。`group` 与 `value` 需要 `tab`，`meta` 需要 `.fields`。
+- 属性行必须紧贴表格最后一行：中间隔一个空行，Goldmark 会悄悄丢掉它，表格按普通表渲染，没有任何告警。站点没有开启 `markup.goldmark.parser.attribute.block: true`（[站点前置配置](/zh/docs/components/#prerequisites)之一）时，花括号会作为文字显示出来。Prettier 等格式化工具会挪动这一行，用 `<!-- prettier-ignore-start -->` 与 `<!-- prettier-ignore-end -->` 把表格包起来。
+- 没有合并单元格、排序和筛选。带合并表头的表请拆成两张，或改成矩阵。
+- 单元格只能放行内内容。多段说明、列表或代码块要用 `fields`/`field` shortcode。
+- `.matrix` 的居中由 CSS 实现，分隔行里写了对齐方式就以分隔行为准。
 
 ## 相关 {#related}
 

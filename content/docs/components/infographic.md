@@ -1,54 +1,62 @@
 ---
 title: Infographic
 linkTitle: Infographic
-description: Use an `infographic` fence and AntV template to display a title and items as a flow, timeline, funnel, grid, or hierarchy.
+description: Turn a title and a short list of items into a flow, timeline, funnel, grid or hierarchy graphic with an `infographic` fence and an AntV template.
 weight: 160
 search_keywords: [Infographic, AntV, flow, timeline, funnel, template]
 ---
 
-An `infographic` fence selects an AntV template to display a title and item list.
-Use it for order, hierarchy, or comparison. Use [ECharts](/docs/components/echarts/) for axes and precise numbers.
-Use [Mermaid](/docs/components/mermaid/) for flows with conditional branches.
-The fence contains data and stays readable as text on GitHub.
+An infographic turns a short list into a picture of its structure: three
+steps in a row, five years on a timeline, stages that narrow like a funnel, a
+two-level hierarchy. You write the title and the items as plain data in an
+`infographic` fence, name one of the AntV templates on the first line, and the
+browser draws it; on GitHub the fence stays readable as text.
+
+Reach for an infographic when the shape of the information is the message.
+When readers need axes and exact numbers, use [ECharts](/docs/components/echarts/);
+for a flow with conditions and branches, use [Mermaid](/docs/components/mermaid/).
 
 ## Shortest form {#minimal}
 
-Start with `infographic <template>`, then add a `data` block. `title` sets the title.
-Every entry under `items` needs at least a `label`.
+The first line is `infographic <template>`, followed by a `data` block with a
+`title` and an `items` list in which every item has at least a `label`.
 
 ````markdown {title="Source"}
 ```infographic
 infographic list-row-simple-horizontal-arrow
 data
-  title Three steps in one documentation change
+  title Upgrading to a new PostgreSQL major version
   items
-    - label Write
-      desc Start with the source language
-    - label Check
-      desc Zero build warnings, every example really rendered
-    - label Ship
-      desc Add the translated peer, open the PR
+    - label Back up
+      desc Take a base backup and prove it restores
+    - label Upgrade
+      desc Run pg_upgrade on a replica first
+    - label Switch over
+      desc Promote the upgraded node, retire the old one
 ```
 ````
 
 ```infographic
 infographic list-row-simple-horizontal-arrow
 data
-  title Three steps in one documentation change
+  title Upgrading to a new PostgreSQL major version
   items
-    - label Write
-      desc Start with the source language
-    - label Check
-      desc Zero build warnings, every example really rendered
-    - label Ship
-      desc Add the translated peer, open the PR
+    - label Back up
+      desc Take a base backup and prove it restores
+    - label Upgrade
+      desc Run pg_upgrade on a replica first
+    - label Switch over
+      desc Promote the upgraded node, retire the old one
 ```
 
-Use two spaces per indentation level to define structure. Keep labels short and put explanations in `desc`.
+Indentation defines the structure, two spaces per level. Keep labels to a word
+or two and put the explanation in `desc`, because long labels get squeezed or
+cut off on a phone.
 
 ## Timelines {#timeline}
 
-The `sequence-timeline-*` family arranges items on a time axis. `label` gives the point in time, and `desc` gives the event.
+The `sequence-timeline-*` templates place items along a time axis: `label` is
+the point in time and `desc` the event.
 
 ````markdown {title="Source"}
 ```infographic {height="420px"}
@@ -88,123 +96,126 @@ data
 
 ## Funnels {#funnel}
 
-`sequence-funnel-simple` displays narrowing stages.
-This example shows the five stages of a theme release.
+`sequence-funnel-simple` draws stages that narrow, such as the path from a
+first visit to production use.
 
 ````markdown {title="Source"}
 ```infographic {height="420px"}
 infographic sequence-funnel-simple
 data
-  title The five states a theme release passes through
+  title From first visit to production
   items
-    - label Source complete
-      desc The code is written, and that is all
-    - label Validated
-      desc Theme checks and the site suite are green
-    - label Published
-      desc An immutable signed tag, resolvable through the Go proxy
-    - label Documented
-      desc The documentation site pins that tag
-    - label Deployed
-      desc Production runs this version
+    - label Visited
+      desc Landed on any page of the site
+    - label Read Get started
+      desc Opened the tutorial
+    - label Installed
+      desc Ran the installer on a test machine
+    - label First cluster
+      desc Created a cluster and connected to it
+    - label In production
+      desc Serves real traffic
 ```
 ````
 
 ```infographic {height="420px"}
 infographic sequence-funnel-simple
 data
-  title The five states a theme release passes through
+  title From first visit to production
   items
-    - label Source complete
-      desc The code is written, and that is all
-    - label Validated
-      desc Theme checks and the site suite are green
-    - label Published
-      desc An immutable signed tag, resolvable through the Go proxy
-    - label Documented
-      desc The documentation site pins that tag
-    - label Deployed
-      desc Production runs this version
+    - label Visited
+      desc Landed on any page of the site
+    - label Read Get started
+      desc Opened the tutorial
+    - label Installed
+      desc Ran the installer on a test machine
+    - label First cluster
+      desc Created a cluster and connected to it
+    - label In production
+      desc Serves real traffic
 ```
 
 ## Grid cards {#grid}
 
-For unordered items, `list-grid-*` uses a grid instead of a sequence.
+When the items have no order, `list-grid-*` lays them out as a grid of cards
+instead of a sequence. A `desc` under `data` adds a subtitle.
 
 ````markdown {title="Source"}
 ```infographic {height="380px"}
 infographic list-grid-compact-card
 data
-  title One page, four outputs
-  desc Every content component has to produce something usable in all four
+  title Four ways to install
+  desc Pick the one that matches how you already run servers
   items
-    - label HTML
-      desc Interactive, runtimes loaded on demand
-    - label Print
-      desc Disclosures expanded, zoom and copy removed
-    - label Markdown
-      desc Plain text, compared byte for byte against goldens
-    - label RSS
-      desc Static, from the same source as print
+    - label Packages
+      desc RPM and DEB from the project repository
+    - label Containers
+      desc One image per major version
+    - label Ansible
+      desc Playbooks that build whole clusters
+    - label Source
+      desc Build with your own flags
 ```
 ````
 
 ```infographic {height="380px"}
 infographic list-grid-compact-card
 data
-  title One page, four outputs
-  desc Every content component has to produce something usable in all four
+  title Four ways to install
+  desc Pick the one that matches how you already run servers
   items
-    - label HTML
-      desc Interactive, runtimes loaded on demand
-    - label Print
-      desc Disclosures expanded, zoom and copy removed
-    - label Markdown
-      desc Plain text, compared byte for byte against goldens
-    - label RSS
-      desc Static, from the same source as print
+    - label Packages
+      desc RPM and DEB from the project repository
+    - label Containers
+      desc One image per major version
+    - label Ansible
+      desc Playbooks that build whole clusters
+    - label Source
+      desc Build with your own flags
 ```
 
 ## Items with values {#values}
 
-Add `value` to an item for templates that show proportions, such as pies, doughnuts, or progress displays.
+Templates that show proportions, such as pies, doughnuts and progress
+displays, read a `value` on each item.
 
 ````markdown {title="Source"}
 ```infographic {height="400px"}
 infographic chart-pie-donut-plain-text
 data
-  title How the 30 shortcodes break down
+  title Where a 200 GB database's disk goes
   items
-    - label Core components
-      value 15
-    - label Book numbering and indexes
+    - label Tables
+      value 120
+    - label Indexes
+      value 50
+    - label WAL
+      value 20
+    - label Temporary files
       value 10
-    - label Releases and downloads
-      value 3
-    - label OpenAPI
-      value 2
 ```
 ````
 
 ```infographic {height="400px"}
 infographic chart-pie-donut-plain-text
 data
-  title How the 30 shortcodes break down
+  title Where a 200 GB database's disk goes
   items
-    - label Core components
-      value 15
-    - label Book numbering and indexes
+    - label Tables
+      value 120
+    - label Indexes
+      value 50
+    - label WAL
+      value 20
+    - label Temporary files
       value 10
-    - label Releases and downloads
-      value 3
-    - label OpenAPI
-      value 2
 ```
 
 ## Hierarchy and hand-drawn style {#hierarchy-and-theme}
 
-Nest items with `children`. `hierarchy-mindmap-*` displays two levels of structure.
-A top-level `theme` block sets the appearance. `type` accepts `light`, `dark`, or `hand-drawn`.
+Nest items with `children`, and a `hierarchy-mindmap-*` template draws two
+levels of structure. A top-level `theme` block changes the look of the whole
+graphic; its `type` is `light`, `dark` or `hand-drawn`.
 
 ````markdown {title="Source"}
 ```infographic {height="320px"}
@@ -213,24 +224,24 @@ theme
   type hand-drawn
 data
   root
-    label Theme repository
+    label Hugo site
     children
-      - label layouts
-        desc templates
+      - label content
+        desc pages
         children
-          - label _markup
-            desc render hooks
-          - label _partials
-            desc shell and helpers
+          - label docs
+            desc documentation
+          - label blog
+            desc articles
       - label assets
-        desc resources
+        desc build inputs
         children
           - label css
-            desc tokens and component styles
-          - label js
-            desc browser runtimes
-          - label third_party
-            desc libraries shipped with the theme
+            desc site styles
+          - label images
+            desc processed images
+          - label parts
+            desc shared fragments
 ```
 ````
 
@@ -240,36 +251,37 @@ theme
   type hand-drawn
 data
   root
-    label Theme repository
+    label Hugo site
     children
-      - label layouts
-        desc templates
+      - label content
+        desc pages
         children
-          - label _markup
-            desc render hooks
-          - label _partials
-            desc shell and helpers
+          - label docs
+            desc documentation
+          - label blog
+            desc articles
       - label assets
-        desc resources
+        desc build inputs
         children
           - label css
-            desc tokens and component styles
-          - label js
-            desc browser runtimes
-          - label third_party
-            desc libraries shipped with the theme
+            desc site styles
+          - label images
+            desc processed images
+          - label parts
+            desc shared fragments
 ```
 
-`theme` belongs to the DSL. In OINK 1.4.0, each diagram has its own
-canvas: transparent default and hand-drawn diagrams use white, and an authored
-background takes priority. A `type dark` diagram keeps its dark background even
-on a light page. Site mode changes preserve the palette, text colors, and drawing
-style without rerendering. Explicit transparency or custom text colors still
-require checking contrast in both modes.
+Each graphic sits on its own canvas, which does not follow the site's light or
+dark mode. The default and hand-drawn styles use a white canvas, a background
+you set in the DSL wins, and a `type dark` graphic stays dark even on a light
+page. Switching the site's mode leaves the graphic exactly as drawn, so if you
+set a transparent background or your own text colors, check the contrast in
+both modes.
 
 ## Picking a template {#templates}
 
-Template names use `structure-variant`. Each structure has several visual variants. Common families are listed below:
+Template names read `structure-variant`, and each structure comes in several
+visual variants. The common families:
 
 | Structure prefix | What it expresses | Example |
 | --- | --- | --- |
@@ -283,19 +295,17 @@ Template names use `structure-variant`. Each structure has several visual varian
 | `chart-pie-*` `chart-bar-*` `chart-column-*` | Illustrative charts, with `value` | `chart-pie-donut-plain-text` |
 | `relation-network-*` `relation-dagre-flow` | Networks and flows, with `relations` | `relation-dagre-flow` |
 
-Choose the simplest form that explains the relationship.
-See the full [AntV Infographic](https://infographic.antv.vision/gallery) gallery. Template names match the version bundled with the theme.
+Pick the simplest form that shows the relationship. The
+[AntV Infographic gallery](https://infographic.antv.vision/gallery) shows every
+template; the names match the version bundled with the theme.
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | A canvas container inside `<div class="td-infographic">` plus the DSL; the local AntV runtime loads and draws the SVG as the reader approaches it |
-| Print | No diagram; the DSL source inside `<pre class="td-infographic-source">` |
-| Markdown | The `infographic` fence and its DSL, kept as written |
-| RSS | Same as print — source only |
-
-Explain the diagram's information in prose. Print and RSS include only the DSL source.
+On the web the theme's bundled AntV runtime draws the graphic as SVG when the
+reader scrolls near it, so a page with several graphics stays fast. Print and
+RSS draw nothing and show the DSL source in a `<pre>` block instead, so state
+the conclusion in the surrounding prose; the page's Markdown output keeps the
+fence as written.
 
 ## Parameter reference {#reference}
 
@@ -308,9 +318,10 @@ The fence attribute line (```` ```infographic {…} ````):
 | `class` | space-separated classes | — | Passed through to the container |
 {.fields meta="type default"}
 
-`style`, `on*`, and unknown attributes warn and are ignored. Empty DSL bodies warn and render nothing.
+`style`, `on*` and unknown attributes warn and are ignored. An empty fence
+warns and renders nothing.
 
-AntV defines these top-level DSL keys:
+The top-level DSL keys, defined by AntV:
 
 | Key | Description |
 | --- | --- |
@@ -322,20 +333,20 @@ AntV defines these top-level DSL keys:
 {.fields}
 
 Each entry under `items` accepts `label`, `desc`, `value`, `icon`, `children`,
-`group` and `id`. The DSL is defined by the
-[AntV Infographic documentation](https://infographic.antv.vision/learn); the
-version shipped with the theme and its checksum are recorded in the theme's
-`VENDOR.json`.
+`group` and `id`. The [AntV Infographic documentation](https://infographic.antv.vision/learn)
+defines the full DSL; the theme's `VENDOR.json` records the bundled version and
+its checksum.
 
 ## Limits {#limits}
 
-- Incorrect template names do not fail the build. Hugo checks only fence attributes; the browser runtime parses the DSL.
-  Missing templates display error text in the container. Check the page after changing template names.
-- `theme` is part of the DSL and does not follow the site's color scheme. Check contrast in both modes.
-- Print and RSS include only the DSL. State conclusions in prose.
-- SVG does not provide semantic structure. Screen reader order can differ from visual order.
-  Prefer headings, lists, or tables when they can express the information.
-- Keep labels short. Narrow screens can truncate or compress long text. Check at phone width after editing.
+- A misspelled template name does not fail the build, because Hugo checks only
+  the fence attributes and the DSL is parsed in the browser. The graphic area
+  shows an error line instead, so look at the page after changing a template.
+- SVG carries no semantic structure, and screen readers may not read the items
+  in visual order. When a heading, a list or a table can say the same thing,
+  prefer it.
+- Long labels are squeezed or cut off on narrow screens; check the page at
+  phone width after editing.
 
 ## Related {#related}
 

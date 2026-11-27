@@ -9,23 +9,26 @@ aliases:
   - /docs/scenarios/reading/
 ---
 
-A book is a content tree with `type: book`. The directory determines chapter
-order. Front matter determines chapter numbers. Each figure, table, equation,
-and example has a manually assigned number and stable anchor. Cross-references
-resolve in all four outputs. The book root can generate whole-book print HTML.
+Documentation is consulted: readers arrive from search, read one page and
+leave. A book is read in order, and its readers expect what print taught them:
+numbered chapters, figures and tables they can cite as "Figure 2-1",
+cross-references that keep working when chapters move, and the whole text as
+one document they can print or export. Set `type: book` on a content tree and
+OINK provides all of that while every chapter stays an ordinary Markdown page.
 
-Two settings are required. Enable attribute lines and passthrough in the site's
-`markup.goldmark` (see [Components](/docs/components/)). Keep `book` in
-`params.ui.shell_types`. The theme default includes it.
+A book needs two site settings. Goldmark block attributes and passthrough must
+be on, as listed in
+[the three Goldmark prerequisites](/docs/customize/config/#goldmark), and
+`params.ui.shell_types` must contain `book`, which the default list already
+does. If the manuscript already exists in another Hugo site, read
+[Migrating an existing manuscript](#migrate) first.
 
-For a new book, start with the directory below. For an existing manuscript,
-see [Migrating an existing manuscript](#migrate).
+## A minimal book {#layout}
 
-## A book's directory {#layout}
-
-The book root is an ordinary Hugo section. Chapters are its subdirectories.
-Sections are pages inside each chapter. There is no second chapter list. The
-sidebar, pager, and generated contents all read this tree.
+The book root is an ordinary Hugo section, its subdirectories are chapters, and
+the pages inside them are sections. That tree is the only chapter list: the
+sidebar, the pager, the generated contents and the printed book all read it,
+so moving a file moves the chapter everywhere at once.
 
 ```filetree {title="content/handbook/, one book"}
 - content/handbook/
@@ -41,17 +44,9 @@ sidebar, pager, and generated contents all read this tree.
   - appendix.md            # an unnumbered appendix, still in the sidebar and the reading order
 ```
 
-Assign chapter numbers manually. `book_number` displays exactly what you write.
-The theme never numbers chapters by directory order. The `num` on a figure,
-table, equation, or example also uses an author-controlled string.
-`2-1`, `5.3`, and `A-2` are valid. Rendering does not compute an index.
-Rearranging the tree never changes a number that has already been printed.
-
-## The book home and chapter pages {#front-matter}
-
-The book root declares the type, cascades it to descendants, and explicitly
-requests the `print` output. That aggregate is expensive to build, so the theme
-does not turn it on for a consuming site:
+The root page declares the type, cascades it to every page below, and asks for
+the `print` output that produces the whole-book document. Print is opt-in
+because aggregating every chapter makes the build noticeably slower:
 
 ```yaml {title="content/handbook/_index.md"}
 ---
@@ -64,19 +59,12 @@ outputs: [HTML, print, markdown]
 ---
 ```
 
-A book section uses Hugo's `section` output kind. `home` applies
-only when the book sits at the site root:
+Front matter `outputs` replaces the site's list for that page, so name every
+format the root should keep. To set it in `hugo.yml` instead, add `print` to
+`outputs.section`, or to `outputs.home` when the book is the site root; that
+turns print on for every page of that kind.
 
-```yaml {title="hugo.yml"}
-outputs:
-  section: [HTML, print, markdown]
-params:
-  ui:
-    sidebar_headings: false # default; use 3 to add h2–h3 below the current entry
-    book_draft_banner: true # draft chapters get a localized banner above the body
-```
-
-A chapter page needs only its number and its order:
+A chapter's `_index.md` needs only a title, its number and its position:
 
 ```yaml {title="content/handbook/ch02/_index.md"}
 ---
@@ -87,30 +75,54 @@ weight: 20
 ---
 ```
 
-`book_number` appears before the page title, in the sidebar and in the generated
-contents. `book_status: draft` is a visible editorial label and does not change
-Hugo's publication state. A draft chapter builds and publishes as usual.
+## Chapter numbers, drafts and headings {#front-matter}
 
-`sidebar_headings` defaults to `false` and accepts `true` (h2 only) or a maximum
-level from 2 to 4. A page or section cascade can override the site setting.
-The right outline remains available when this left branch is disabled.
-Give every heading that will be referenced an explicit ID, such as
-`## Synchronous replication {#sync-replication}`. A generated slug works for
-navigation. Do not use it as a long-term reference target.
+`book_number` is shown exactly as written before the chapter title, in the
+sidebar entry and in the generated contents. The theme never derives a number
+from directory order, so `2`, `B` and `A` are all valid, and rearranging the
+tree never changes a number a reader has already cited. Figure, table,
+equation and example numbers follow the same rule: each `num` is a string you
+write, such as `2-1`, `5.3` or `A-2`, not a counter.
 
-The full key definitions are in [Configuration](/docs/customize/config/) and
-[Page parameters](/docs/write/frontmatter/).
+`book_status: draft` labels an unfinished chapter in the sidebar and in
+`book-toc`. It is an editorial label, not Hugo's `draft`: the chapter still
+builds and publishes. To also put a localized notice above the body of every
+draft chapter, turn on the banner, which is off by default:
+
+```yaml {title="hugo.yml"}
+params:
+  ui:
+    book_draft_banner: true
+    sidebar_headings: 3
+```
+
+The banner appears only on `type: book` pages with `book_status: draft`, and its
+text is the `book_draft_notice` localization string.
+
+`sidebar_headings` lists the current page's headings under its sidebar entry,
+which helps in long chapters. It is `false` by default; `true` lists h2
+headings, and `2`, `3` or `4` sets the deepest level listed. A page or a
+section cascade can override the site value, and the table of contents on the
+right is unaffected either way.
+
+Give every heading you plan to link to an explicit ID, such as
+`## Synchronous replication {#sync-replication}`. A generated ID changes when
+the heading text does, which is fine for navigation but breaks references that
+must last. The complete key definitions are in
+[Configuration](/docs/customize/config/) and
+[Page parameters](/docs/write/frontmatter/#book).
 
 ## Numbering: the native form {#numbering-native}
 
-Each of the four numbered kinds has a native form. Put an attribute line
-immediately after one Markdown block. Use `num=` for the number, `#id` for
-the anchor, and `caption=` for a plain-text caption.
+Figures, tables, equations and examples each get a number from an attribute
+line placed directly under the Markdown block, with no blank line between them:
+`num=` sets the number, `#id` the anchor, and `caption=` a plain-text caption.
+This is the form to reach for first, because the source stays readable in any
+Markdown viewer and footnotes inside the block keep working.
 
 ### Figures {#figure}
 
-An attribute line follows the image block. Omitting `#id` defaults it to
-`fig-<num>`.
+Without an `#id`, a figure's anchor is `fig-<num>`.
 
 ```markdown {title="Source"}
 ![The OINK release notes page](/images/releasenote.webp)
@@ -120,14 +132,18 @@ An attribute line follows the image block. Omitting `#id` defaults it to
 ![The OINK release notes page](/images/releasenote.webp)
 {#book-release-note num="2-1" caption="The release notes page is also the single source of release facts." width=600 height=300}
 
-The native figure form requires the site to set
-`markup.goldmark.parser.wrapStandAloneImageWithinParagraph: false`. Otherwise,
-the attribute line attaches to the paragraph and is ignored. The alternative
-text comes from the Markdown image itself and is never replaced by the caption.
+Native figures need
+`markup.goldmark.parser.wrapStandAloneImageWithinParagraph: false`; otherwise
+Hugo wraps the image in a paragraph, the attribute line attaches to the
+paragraph, and the figure gets no number. The alternative text comes from the
+image's own `![…]`, never from the caption. To make the figure a link, add
+`link=` to the same attribute line; you do not need the `fig` shortcode for
+that.
 
 ### Tables {#table}
 
-An attribute line follows a pipe table, and the default ID is `tbl-<num>`.
+An attribute line under a pipe table numbers it, with `tbl-<num>` as the
+default anchor.
 
 ```markdown {title="Source"}
 | Isolation level | Dirty read | Non-repeatable read | Phantom read |
@@ -147,10 +163,10 @@ An attribute line follows a pipe table, and the default ID is `tbl-<num>`.
 
 ### Equations {#equation}
 
-An attribute line follows a `$$` block, and the default ID is `eq-<num>`. The
-number and caption sit to the right of the formula on wider screens. On narrow
-screens, they move below it and wrap. A wide formula can scroll horizontally.
-Short captions keep the equation easy to scan.
+An attribute line under a `$$` block numbers the formula, with `eq-<num>` as the
+default anchor. On wide screens the number and caption sit to the right of the
+formula; on narrow screens they wrap below it, and a formula wider than the
+screen scrolls sideways. Short captions keep equations easy to scan.
 
 ```markdown {title="Source"}
 $$
@@ -164,18 +180,17 @@ A = \frac{\mathrm{MTBF}}{\mathrm{MTBF} + \mathrm{MTTR}}
 $$
 {#eq-2-1 num="2-1" caption="Availability from MTBF and MTTR."}
 
-The native form depends on the site enabling Goldmark passthrough. Without it,
-use the `eq` shortcode below, which goes through local server-side KaTeX.
+This form needs Goldmark passthrough. A site without it uses the `eq`
+shortcode below, which renders the formula with KaTeX during the build.
 
 ### Examples {#example}
 
-A code fence with `num=` and `caption=` is a numbered example, and the default
-ID is `eg-<num>`. An `#id` on the fence names the enclosing `<figure>`, which
-is the reference target. The caption is required: a caption without a number is
-ignored, and a number without a caption is dropped with a warning. A numbered
-example renders in one frame where the caption forms the header and the body
-sits inside; a single code block shares the frame border without adding a
-second border.
+A code fence with `num=` and `caption=` becomes a numbered example, with
+`eg-<num>` as the default anchor. An `#id` on the fence names the surrounding
+`<figure>`, which is what references point to. An example needs both
+attributes: a caption without a number is ignored, and a number without a
+caption is dropped with a warning. The caption heads a single frame around the
+code.
 
 ````markdown {title="Source"}
 ```sql {num="2-1" caption="Daily write volume on the primary." #eg-2-1}
@@ -193,17 +208,16 @@ GROUP BY 1 ORDER BY 1 DESC LIMIT 7;
 
 ## Numbering: the shortcode form {#numbering-shortcodes}
 
-The four shortcodes `fig`, `tbl`, `eq` and `eg` render a `<figure>` identical to
-the native form, register into the same target table, and sort by source
-position. Use them when the native form is insufficient. Examples include figures with
-several images or other Markdown, several tables under one number, sites without
-passthrough, and examples with several fences and prose. A single
-numbered image can use `link` in its native attribute line. It does not need
-`fig` just for an outbound link.
+The shortcodes `fig`, `tbl`, `eq` and `eg` render the same `<figure>` as the
+native form, register in the same target table, and sort by their position in
+the source. Use them when a single Markdown block cannot hold the content: a
+figure made of several images or other Markdown, several tables under one
+number, an equation on a site without passthrough, or an example with several
+fences and prose between them.
 
-`fig` takes `src=` (it also accepts inner Markdown content, and the two are
-mutually exclusive) and additionally supports `link`, `alt`, `width`, `height`,
-`class`, and the migration alias `title`:
+`fig` takes its image from `src=` or from its inner Markdown, never both. It
+also accepts `link`, `alt`, `width`, `height` and `class`, and `title` as an
+alias of `caption` for migrated content:
 
 ```markdown {title="Source"}
 {{</* fig num="2-2" src="/images/docsy.webp" alt="The default Docsy shell"
@@ -212,8 +226,7 @@ mutually exclusive) and additionally supports `link`, `alt`, `width`, `height`,
 
 {{< fig num="2-2" src="/images/docsy.webp" alt="The default Docsy shell" caption="OINK's upstream: the Docsy content model is still underneath." width="600" height="300" />}}
 
-`tbl` wraps the label, the table, the caption and the anchor in one semantic
-figure:
+`tbl` wraps the label, the table, the caption and the anchor in one figure:
 
 ```markdown {title="Source"}
 {{</* tbl num="2-2" caption="How a numbered component appears in each of the four outputs." */>}}
@@ -231,7 +244,7 @@ figure:
 | Print | Visible | Stable |
 {{< /tbl >}}
 
-`eq` hands its content to local server-side KaTeX, so it does not depend on
+`eq` renders its content with KaTeX during the build, so it works without
 passthrough:
 
 ```markdown {title="Source"}
@@ -240,12 +253,11 @@ passthrough:
 
 {{< eq num="2-2" caption="Connection pool saturation." >}}U = \frac{\lambda}{\mu \cdot c}{{< /eq >}}
 
-Use a bare `{{</* eq */>}}` without parameters for unnumbered display math.
-It registers no target. `xref` cannot reference it. It does not appear in the
-equation index.
+Written without parameters, `{{</* eq */>}}` is plain display math: it has no
+number and no anchor, `xref` cannot point at it, and it is not listed among the
+equations.
 
-`eg` is a wrapping shortcode whose body renders under the page's Markdown
-policy, usually holding one or more fences:
+`eg` wraps any Markdown, usually one or more fences:
 
 ````markdown {title="Source"}
 {{</* eg num="2-2" caption="Bringing up a new replica with pg_basebackup." */>}}
@@ -261,34 +273,30 @@ pg_basebackup -h primary -U replicator -D /pg/data -Fp -Xs -P -R
 ```
 {{< /eg >}}
 
-IDs must be unique within a page, and within one kind a number maps to a single
-ID. A duplicate logs a warning with the first registration's line number and
-keeps the first registration.
+In both forms, an ID must be unique within its page, and within one kind a
+number maps to a single ID. A duplicate keeps the first registration and logs a
+warning that gives the line of the first one.
 
-> [!IMPORTANT] Footnotes cannot appear in a shortcode body
-> Hugo renders each shortcode body as a separate Goldmark document, whereas
-> footnotes belong to the page. A `[^label]` inside the body of `tbl`, `eg`,
-> `fig`, `card`, `tab`, `field`, or `include` logs a warning naming the file,
-> line, and label: if the definition sits on the page, the reference would print
-> literally as `[^label]`; if the definition sits inside the shortcode body, it
-> would generate a second footnote list whose `fn:N` IDs collide with the page's
-> own footnotes.
+> [!IMPORTANT] No footnotes inside a shortcode body
+> Hugo renders each shortcode body as a separate document, but footnotes belong
+> to the page. A `[^label]` inside the body of `tbl`, `eg`, `fig`, `card`,
+> `tab`, `field` or `include` therefore either prints literally, when the
+> definition is on the page, or starts a second footnote list whose `fn:N` IDs
+> collide with the page's own, when the definition is inside the body. The
+> build warns with the file, line and label.
 >
-> If a table or code block needs footnotes, use the native form. A table,
-> image, or fence with `{num=… caption=…}` keeps its content in the page
-> document. Its footnotes then use normal numbering, links, and backlinks.
-> The rendered figure is the same either way, so this is usually a one-line
-> change. Text that resembles a footnote in code remains unchanged. This includes a
-> `[^0-9]` character class in a listing or a code span.
+> Use the native form for a table or code block that needs footnotes. A table,
+> image or fence with `{num=… caption=…}` stays in the page document, so its
+> footnotes number and link normally, and the rendered figure is the same.
+> Footnote-like text in code, such as a `[^0-9]` character class, is not
+> affected.
 
 ## Cross-references {#xref}
 
-A target on the same page can be reached with a plain Markdown link:
-[Table 2-1](#tbl-2-1) points at the isolation table above. You must write the
-label and number manually. If you change a number, you must find its references
-yourself.
-
-`xref` combines the label, number, and anchor. It works across pages and
+On the same page an ordinary link works: [Table 2-1](#tbl-2-1) points at the
+isolation-level table above. You type the label and number yourself, though,
+and must find every such link when a number changes. `xref` builds the label,
+number and link from the kind and number, and works across pages and
 languages:
 
 ```markdown {title="Source"}
@@ -299,23 +307,23 @@ with an explicit anchor: {{</* xref fig="2-1" anchor="book-release-note" /*/>}}.
 See {{< xref fig="2-2" />}} and {{< xref eg="2-1" />}};
 with an explicit anchor: {{< xref fig="2-1" anchor="book-release-note" />}}.
 
-The rules:
+- Give at most one kind key: `fig`, `tbl`, `eq` or `eg`. It supplies the localized label (Figure, Table, Equation, Example) and the default anchor `<kind>-<num>`.
+- `anchor=` replaces that anchor when the target declared its own `#id`.
+- `page=` points at another page, looked up in the current language, so the source never hard-codes a `/zh/` prefix.
+- Without a kind, give both `anchor=` and the link text: `{{</* xref page="../ch01/install" anchor="sync-replication" */>}}synchronous replication{{</* /xref */>}}`.
+- A reference may come before its target, on the same page or in a later chapter.
 
-- At most one kind key (`fig`, `tbl`, `eq`, `eg`). The kind supplies the localized label (Figure / Table / Equation / Example) and derives the default anchor `<kind>-<num>`.
-- `anchor=` overrides the derived anchor, for a target that wrote an explicit `#id`.
-- `page=` references another page through Hugo's page lookup in the current language, so the source never hard-codes a `/zh/` prefix.
-- Without a kind, both `anchor=` and inner link text are required: `{{</* xref page="../ch01/install" anchor="sync-replication" */>}}synchronous replication{{</* /xref */>}}`.
-- A reference may precede its target. Nothing reads the registry at render time. Forward references are valid.
-
-A plain cross-page Markdown link is still a site URL inside the whole-book
-print. A reference that must also jump within the aggregate document is written
-as an `xref`.
+In the whole-book print, an `xref` becomes a jump within the document, while a
+plain Markdown link to another page still points at the website. Write any
+reference that should also work in print as an `xref`.
 
 ## Indexes: contents and lists of figures {#indexes}
 
-Five index shortcodes walk the same book tree, triggering descendant content and
-aggregating what it registered. They usually sit on the book home
-(`_index.md`) or on a dedicated "list of figures" page.
+Five shortcodes generate what a printed book carries up front: a table of
+contents and lists of figures, tables, equations and examples. Each walks the
+book tree, renders the pages below the current navigation root and collects
+what they registered, so they usually sit on the book root (`_index.md`) or a
+dedicated page:
 
 ```markdown {title="content/handbook/_index.md"}
 {{</* book-toc depth=3 */>}}
@@ -333,23 +341,22 @@ aggregating what it registered. They usually sit on the book home
 {{</* book-examples */>}}
 ```
 
-These five appear here only as source. They start at the current page's
-navigation root and process its descendants. In an ordinary documentation tree,
-one would list the whole docs tree as a book. For the real effect, read
-[Write Beautiful Docs](/book/) and inspect its
-[`content/book/_index.md`](https://github.com/pgsty/oink.pgsty.com/blob/main/content/book/_index.md)
-source.
+They appear here only as source, because on this page they would list the
+entire Docs tree. [Write Beautiful Docs](/book/) shows them at work; its source
+is
+[`content/book/_index.md`](https://github.com/pgsty/oink.pgsty.com/blob/main/content/book/_index.md).
 
-- `book-toc` takes a `depth` of 1 to 3: 1 lists chapters, 2 adds nested sections, 3 also projects each page's heading tree. `drafts=false` filters `book_status: draft` rows out of this generated list only, and does not affect publication.
-- `book-figures`, `book-tables`, `book-equations` and `book-examples` take no parameters. Each lists one kind, with entries like "Figure 2-1 — caption" linked to the stable ID.
-- In whole-book print, all of these links become in-document fragments.
+- `book-toc` lists chapters at `depth=1`, adds nested sections at `2` (the default), and adds each page's headings at `3`. `drafts=false` leaves `book_status: draft` chapters out of this list without unpublishing them.
+- `book-figures`, `book-tables`, `book-equations` and `book-examples` take no parameters. Each entry reads like "Figure 2-1 — caption" and links to the target's anchor.
+- In the whole-book print, every one of these links becomes a jump within the document.
 
-## Sequential reading and drafts {#reading}
+## Reading order {#reading}
 
-The pager is on by default for `docs`, `book`, and `blog`. It uses a pre-order
-walk of the sidebar tree. The section index comes first, followed by its
-children in `weight` order. Turn a whole type off with `params.ui.pager_types`, and a
-single page off with `pager: false`.
+Readers move through a book with the pager at the end of each page. It follows
+the sidebar tree in pre-order, a section's index page first and then its
+children by `weight`, and it is on for `docs`, `book` and `blog` by default.
+Set `params.ui.pager_types` to change those types, or `pager: false` to remove
+it from one page:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -357,63 +364,58 @@ params:
     pager_types: [docs, book]
 ```
 
-Entries hidden with `toc_hide`, `manual_link` link-only placeholders and
-`sidebar_divider` rows never become pager destinations.
-
-Besides the "draft" label in the sidebar, a draft chapter can carry a banner
-above its body:
-
-```yaml {title="hugo.yml"}
-params:
-  ui:
-    book_draft_banner: true
-```
-
-The banner appears only on pages that are both `type: book` and
-`book_status: draft`, and its wording comes from the localization key
-`book_draft_notice`.
+Entries hidden with `toc_hide`, link-only `manual_link` entries and
+`sidebar_divider` rows are never pager destinations.
 
 ## Printing the whole book {#print}
 
-Once the book root has the `print` output, it generates a cover, a local table
-of contents, the root page's body and every descendant chapter in visible
-reading order, all inside one HTML document. Pages with `no_print: true`,
-link-only nodes, divider rows and hidden placeholders never become chapters.
+Once the root has the `print` output, `/_print/handbook/` holds the whole book
+as one HTML document: a cover, a table of contents, the root page's body, and
+every chapter in reading order. Pages with `no_print: true`, link-only entries,
+divider rows and hidden placeholders are left out. Per-chapter print and the
+print switches are covered in [Print](/docs/customize/print/).
 
-Inside the aggregate, the IDs of numbered components are preserved byte for
-byte. Markdown heading and footnote IDs within a page are prefixed with their
-source page to avoid collisions when several chapters share an anchor such as
-`summary` or start with `fn:1`. Generated links are rewritten to match. A
-page rendered alone as Print keeps the same page-local IDs as ordinary HTML.
-Only a multi-page section or whole-Book aggregate adds the namespace.
+Numbered figures, tables, equations and examples keep their IDs exactly, so
+`xref` links resolve inside the document. Heading and footnote IDs get a
+prefix naming their source page, because several chapters may each have a
+`summary` heading or a first footnote `fn:1`; the links the theme generates
+are rewritten to match. A single page printed on its own keeps its ordinary
+IDs.
 
-The output is print-oriented HTML. An opt-in `BookManifest` output records that
-same reading order as JSON, and the theme ships `bin/book-epub.py` and
-`bin/book-pdf.py`, which turn the manifest and the print HTML into EPUB and
-PDF.
+For EPUB or PDF, also list `BookManifest` in the root's `outputs`. The build
+then writes `book.json` beside the root page, recording the reading order,
+headings, numbered targets and references. Two scripts in the theme repository
+turn the manifest and the print HTML into files: `bin/book-epub.py` needs
+Pandoc 3 and a Pandoc metadata file with the book's title and author, and
+`bin/book-pdf.py` needs Chrome or Chromium and produces A4 pages. Run them after
+the build; Hugo itself produces neither file. Here and below, `/path/to/oink`
+is a checkout of the theme repository at the release your site pins:
 
-The switches themselves, and per-chapter print, are covered in
-[Print](/docs/customize/print/).
+```bash {title="Terminal"}
+python3 /path/to/oink/bin/book-epub.py --manifest public/handbook/book.json \
+  --public public --metadata epub.yaml --output handbook.epub
+python3 /path/to/oink/bin/book-pdf.py --manifest public/handbook/book.json \
+  --public public --output handbook.pdf
+```
 
 ## Migrating an existing manuscript {#migrate}
 
-An existing manuscript usually expresses figure and table numbering with the
-site's own `figure` shortcode, bold pseudo-captions, and bare links to `#fig_*`.
-The theme repository ships a migration script that rewrites those legacy forms
-into `fig`, `tbl` and `xref` while preserving the public anchors already
-published. Pin the site to a released OINK version that includes the Book
-components first, then migrate the content.
+A manuscript written for another Hugo theme usually numbers figures with a
+site-specific `figure` shortcode, bold pseudo-captions and bare links to
+`#fig_*` anchors. `bin/migrations/book_figures.py` rewrites those forms into
+`fig`, `tbl` and `xref` and keeps the anchors already published, so inbound
+links keep working. Pin the site to the current OINK release first, then
+migrate the content on a dedicated branch, starting with a dry run:
 
 ```bash {title="Dry run: diff and report only, no files changed"}
-python3 ~/pgsty/oink/bin/migrations/book_figures.py \
+python3 /path/to/oink/bin/migrations/book_figures.py \
   --profile tpme \
   --root /path/to/your-book \
   --report /tmp/book-migrate.json > /tmp/book-migrate.diff
 ```
 
-Four profiles cover the legacy conventions of three real manuscripts (DDIA
-contributes one each for v1 and v2), and each recognizes only the forms actually
-observed in them:
+Each profile recognizes the conventions of one real manuscript, and only the
+forms actually found in it. DDIA has one profile for each of its two editions:
 
 | `--profile` | Legacy form it recognizes |
 | --- | --- |
@@ -421,6 +423,9 @@ observed in them:
 | `ddia-v2` | The site's own `figure` shortcode, classified by number into figure / table / code example |
 | `ddia-v1` | A bare image with an adjacent bold numbered caption, with the ID derived from the image filename |
 | `pg-internal` | A bold or italic "Figure N" caption in Chinese or English next to an image, and a numbered table caption next to a table |
+
+A manuscript whose conventions match none of them is rewritten by hand into
+[the native form](#numbering-native).
 
 | Option | What it does |
 | --- | --- |
@@ -432,52 +437,41 @@ observed in them:
 | `--report` | Writes the machine-readable JSON report |
 {.fields}
 
-The diff goes to standard output, the summary to standard error, and the report
+The diff goes to standard output and the summary to standard error. The report
 carries `files_scanned`, `files_changed`, `counts`, `skipped` and `idempotent`.
-The script rewrites only targets it can identify uniquely. If the number is
-unclear, the caption is not unique, or the marker form is unrecognized, it
-preserves the text. It records the item in `skipped` for human review. Bold text, inline
-code and formulas inside a legacy caption degrade to plain text, because a Book
-caption is plain text by contract.
+The script rewrites only targets it can identify uniquely; where the number is
+unclear, the caption is not unique or the marker form is unknown, it leaves the
+text alone and records the item in `skipped` for you to handle. Bold text,
+inline code and formulas inside a legacy caption become plain text, because a
+Book caption is plain text.
 
-After reviewing the diff, apply it on a dedicated branch and run a second pass
-to confirm idempotency:
+After reviewing the diff, apply it, then run the script again to confirm there
+is nothing left to change:
 
 ```bash {title="Apply, then verify idempotency"}
-python3 ~/pgsty/oink/bin/migrations/book_figures.py \
+python3 /path/to/oink/bin/migrations/book_figures.py \
   --profile tpme --root /path/to/your-book --write \
   --report /tmp/book-migrate-written.json
 
-python3 ~/pgsty/oink/bin/migrations/book_figures.py \
+python3 /path/to/oink/bin/migrations/book_figures.py \
   --profile tpme --root /path/to/your-book --no-diff \
   --report /tmp/book-migrate-second.json
 ```
 
-The second report should show `files_changed: 0`, empty `counts`, and
-`idempotent: true`. The script signals idempotency with exit code 0.
-
-The profiles recognize only the legacy forms actually observed in those three
-manuscripts. Where a manuscript's conventions fall outside the four, the script
-does not apply and the rewrite is manual, following
-[Numbering: the native form](#numbering-native). The theme repository's
-`bin/check-book-migrations.py` covers all four profiles with a dry-run and an
-idempotency check.
+The second report should show `files_changed: 0`, empty `counts` and
+`idempotent: true`, and the script exits with code 0.
 
 ## Verify {#verify}
 
-1. Build with visible diagnostics: `hugo --printPathWarnings`. A malformed number, a duplicate ID and a missing caption all produce warnings that need review.
-2. The page should show a localized label such as "Figure 2-1", clickable `xref` links, and anchors that land correctly.
-3. Compare the chapter order across all four places: sidebar, pager, `book-toc` and whole-book print.
-4. Check the Markdown output: `curl -s http://localhost:1313/handbook/ch02/index.md`. The shortcode form should degrade to `**Figure 2-2.** caption` plus the original body, and the native form should keep its source block and attribute line as they are.
-5. Run the anchor check from the theme repository against the build output:
+1. Build with `hugo --printPathWarnings` and read every warning: a malformed number, a duplicate ID and an example without a caption each produce one.
+2. On a page, check for localized labels such as "Figure 2-1" and for `xref` links that land on their targets.
+3. Compare the chapter order in the sidebar, the pager, `book-toc` and the whole-book print.
+4. Check the Markdown output with `curl -s http://localhost:1313/handbook/ch02/index.md`. A shortcode figure becomes `**Figure 2-2.** caption` followed by its body; a native figure keeps its source block and attribute line.
+5. Run the theme's anchor check against the build output. It confirms that every reference's target exists, that kind and number agree, that IDs are unique within each page, and that numbered images have alternative text; it expects at least one numbered target and one `xref`.
 
-```bash
-python3 ~/pgsty/oink/bin/check-book.py --site-public public
+```bash {title="Terminal"}
+python3 /path/to/oink/bin/check-book.py --site-public public
 ```
-
-It verifies that every reference's target anchor exists, that kind and number
-agree, that page-local IDs are unique, and that a numbered image has
-alternative text appropriate for its caption.
 
 ## Book shortcode parameters {#reference}
 
@@ -514,12 +508,10 @@ parameters.
 
 ## Limits {#limits}
 
-- There is no automatic numbering. Assign chapter, figure, and table numbers manually. Only an explicit edit changes a number. A build does not change it.
-- The attribute line must touch its block, with no blank line between. If a tool such as Prettier moves an attribute line, it fails silently. The figure becomes a plain image.
-- `book_kind` and `book_part` are metadata keys the contract acknowledges but the current templates do not render. The ones with a visible effect are `book_number` and `book_status`.
-- The index shortcodes trigger descendant content rendering, which noticeably lengthens the build on a very large tree. The same reason is why whole-book `print` has to be requested explicitly.
-- A footnote reference cannot appear inside a shortcode body; the theme logs a warning and points to the native form instead (see [Numbering: the shortcode form](#numbering-shortcodes)).
-- Packaging requires explicit selection and runs outside the build. `BookManifest` plus `bin/book-epub.py` / `bin/book-pdf.py` produce EPUB and PDF. Hugo alone emits neither file. Typeset pagination, font embedding, and index compilation remain outside the contract.
+- An attribute line must touch its block. A formatter such as Prettier that separates or moves it turns a numbered figure back into a plain image without any warning.
+- `book_kind` and `book_part` are accepted as metadata but change nothing on the page; only `book_number` and `book_status` have a visible effect.
+- The index shortcodes render every page below the root, which lengthens the build of a very large book. Whole-book `print` is opt-in for the same reason.
+- EPUB and PDF come from the two scripts, never from Hugo alone. Typeset pagination, font embedding and back-of-book index compilation are not provided.
 
 ## Related {#related}
 

@@ -1,7 +1,7 @@
 ---
 title: 发布上线
 linkTitle: 发布上线
-description: 把 public/ 部署到 GitHub Pages、Cloudflare Pages 或任何静态托管：baseURL 配对、内容安全策略、验收清单与回滚。
+description: 把 public/ 发布到 GitHub Pages、Cloudflare Pages 或任何静态托管，配好 baseURL、CI 设置与安全策略，上线后验收并保留回滚路径。
 weight: 20
 search_keywords: [部署, 发布, 上线, GitHub Pages, Cloudflare Pages, Netlify, Vercel, Nginx, 对象存储, hugo deploy, baseURL, 子路径, CSP, deploy, hosting]
 aliases:
@@ -11,46 +11,41 @@ aliases:
   - /docs/deploy/other/
 ---
 
-OINK 站点的产物是一个纯静态目录，任何能托管静态文件的地方都能部署，不需要 Node 运行时、服务端渲染或构建插件。托管商一侧只有三件事：用正确的 Hugo 版本执行一条命令、发布 `public/`、让 `baseURL` 与最终访问地址一致。
-
-先使用 Hugo {{< param hugoMinVersion >}} 或更新版本在本机完成[生产构建](/zh/docs/admin/preview/#production-build)。当前主题不限 edition，构建过程不做任何编译；固定在 OINK 1.5.1 或更早版本的站点需要 Hugo 的 Extended 版。请勿启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`，保持告警可见并审阅。
+OINK 站点构建出来是一个纯静态目录，任何能托管静态文件的地方都能部署，不需要 Node 运行时、服务端渲染或构建插件。部署归结为三件事：执行[生产构建](/zh/docs/admin/preview/#production-build)、发布 `public/`、让 `baseURL` 与读者实际访问的地址一致。用 OINK Starter 创建的站点已经带有 GitHub Pages 与 Cloudflare Pages 两套工作流，这三件事都替你做好了。
 
 ## 确定 baseURL {#baseurl}
-`baseURL` 是最常见的故障源，失败方式也隐蔽：页面能打开，但搜索索引 404、页面操作链接指向错误位置、部分资源加载失败。
 
-部署到域名根目录：
+`baseURL` 配错是最常见的部署故障，而且不显眼：页面能打开，但搜索索引 404、页面操作链接指错地方、部分资源加载失败。
+
+部署在域名根目录：
 
 ```yaml {title="hugo.yml"}
-baseURL: https://oink.pgsty.com
+baseURL: https://docs.example.com
 ```
 
-部署到子路径（`https://example.com/docs/`）时，路径必须写进 `baseURL`：
+部署在 `https://example.com/docs/` 这样的子路径下，路径要写进 `baseURL`：
 
 ```yaml {title="hugo.yml"}
 baseURL: https://example.com/docs/
 ```
 
-也可以在构建时覆盖，让同一份源码部署到不同位置：
+也可以在构建时覆盖，同一份源码就能部署到多个地址：
 
 ```bash {title="终端"}
 hugo --gc --minify --baseURL "https://example.com/docs/"
 ```
 
 > [!WARNING] 不要用 `canonifyURLs` 修子路径
-> Hugo 的 `canonifyURLs` 默认 `false`，保持这个默认值。OINK 的模板与内容链接都基于 `baseURL` 解析：路径不对是 `baseURL` 不对，打开 `canonifyURLs` 会把本来正确的相对链接一起改写，让问题更难定位。
+> `canonifyURLs` 保持 Hugo 的默认值 `false`。OINK 的模板与内容链接都基于 `baseURL` 解析，路径不对就是 `baseURL` 不对。打开 `canonifyURLs` 还会改写原本正确的相对链接，让故障更难定位。
 
-启用本地搜索后，打开搜索，在浏览器 Network 面板检查实际索引请求：语言与部署子路径
-应正确，响应应为 200。页面的 `data-td-index-src` 属性给出完整地址；生产文件名是
-`offline-search-index.<语言>.<hash>.json`，开发环境不带 hash。不要通过猜文件名来验证。
+启用了本地搜索时，在线上站点打开搜索，从浏览器 Network 面板查看索引请求：语言和子路径都要正确，响应为 200。索引地址以页面 `data-td-index-src` 属性为准，不要自己猜，因为生产构建的文件名带内容 hash（`offline-search-index.<语言>.<hash>.json`）。
 
 ## 选一个托管商 {#hosts}
 
 {{< tabs group="host" default="ghpages" label="托管商" >}}
 {{< tab label="GitHub Pages" value="ghpages" >}}
 
-源码托管在 GitHub 时，一份 Actions 工作流就够：构建在 Actions 里执行，产物通过
-Pages 部署 API 发布，不需要维护 `gh-pages` 分支。OINK Starter 已经包含下面的文件；
-只有手工组装站点时才需要复制。
+源码在 GitHub 上时，一份 Actions 工作流就能完成构建，并通过 Pages 部署 API 发布，不需要维护 `gh-pages` 分支。OINK Starter 已经带有这个文件，只有自己组装站点时才需要复制。
 
 ```yaml {title=".github/workflows/github-pages.yaml" lineNos="inline" collapse=30}
 name: Deploy to GitHub Pages
@@ -70,7 +65,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  GO_VERSION: stable
+  GO_VERSION: 1.27.4
   # 同级 checkout 的 workspace 绝不能参与 CI 构建
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
@@ -134,54 +129,37 @@ jobs:
         uses: actions/deploy-pages@v5
 ```
 
-这是 OINK Starter 内置的工作流。几处不能删：
+每项设置的用意见 [CI 构建设置](#ci)，修改这个文件时请保留它们。只有一项是 GitHub Pages 特有的：`--baseURL` 取 `configure-pages` 算出的地址，项目站点形如 `https://<OWNER>.github.io/<REPO>/`，不必手写。
 
-- `fetch-depth: 0` — 站点开了 `enableGitInfo` 时，「最后修改时间」和贡献者信息要读完整 Git 历史，浅克隆会让它们为空。
-- `setup-go` + `go mod download` — Hugo Module 方式引入主题时，Hugo 需要 Go 才能解析模块。用 submodule 安装主题的站点改成 `submodules: recursive`，用离线归档的站点把 `themes/oink/` 提交进仓库，这两步都可以去掉。
-- `GOWORK: off` 与 `HUGO_MODULE_WORKSPACE: off` — 防止本地开发用的 `go.work` 意外参与 CI 构建，保证 CI 验证的是 `go.mod` 里固定的那个公开标签。
-- `hugo-version: latest` — 当前主题可用 {{< param hugoMinVersion >}} 及以上的任何 edition 构建，因此工作流安装当前版本。固定在 OINK 1.5.1 或更早版本的站点必须改装 Extended 版：加上 `extended: true`，并把 `hugo-version` 设为不高于 0.169 的版本，因为那个主题版本在 Hugo 0.170 上构建失败。
-- `--baseURL "${{ steps.pages.outputs.base_url }}/"` — 项目站点的 URL 形如 `https://<OWNER>.github.io/<REPO>/`，`configure-pages` 会把它算出来，不用手写。
-告警保持可见并接受审阅。禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。
+在仓库 Settings → Pages → Build and deployment 中把 Source 设为 GitHub Actions，推送一次 `main`，到 Actions 标签页查看第一次运行。
 
-在仓库 Settings → Pages → Build and deployment 里把 Source 设为 GitHub Actions，推一次 `main`，在 Actions 标签页查看第一次运行。
-
-自定义域名在同一设置页的 Custom domain 里填写，并按提示配置 DNS，随后把
-`hugo.yaml` 里的 `baseURL` 换成这个域名。发布流程需要产物里带 `CNAME` 文件时，
-把它放进 `static/CNAME`，Hugo 会原样复制到 `public/`。
+使用自定义域名时，在同一设置页的 Custom domain 中填入域名，按提示配置 DNS，再把 `hugo.yaml` 里的 `baseURL` 改成这个域名。发布流程需要 `CNAME` 文件时，把它放在 `static/CNAME`，Hugo 会原样复制到 `public/`。
 
 {{< /tab >}}
 {{< tab label="Cloudflare Pages" value="cloudflare" >}}
 
-OINK Starter 内置 `.github/workflows/cloudflare-pages.yaml`，使用 Direct Upload。
-生产构建留在 GitHub Actions，Wrangler 把同一份 `public/` 产物上传到 Cloudflare
-Pages 项目。
+OINK Starter 带有 `.github/workflows/cloudflare-pages.yaml`，采用 Direct Upload：生产构建在 GitHub Actions 里完成，[构建设置](#ci)与 GitHub Pages 工作流相同，再由 Wrangler 把得到的 `public/` 上传到 Cloudflare Pages 项目。Starter 站点推荐走这条路。
 
-1. 创建一个 **Direct Upload** Pages 项目。项目名默认与仓库相同，也可用仓库变量
-   `CLOUDFLARE_PROJECT_NAME` 覆盖。
-1. 添加仓库 secrets：`CLOUDFLARE_ACCOUNT_ID` 与 `CLOUDFLARE_API_TOKEN`。token 需要
+1. 创建一个 **Direct Upload** 类型的 Pages 项目。项目名默认与仓库同名，想用别的名字就设置仓库变量
+   `CLOUDFLARE_PROJECT_NAME`。
+1. 添加仓库 secrets `CLOUDFLARE_ACCOUNT_ID` 与 `CLOUDFLARE_API_TOKEN`。token 需要
    **Account → Cloudflare Pages → Edit** 权限。
-1. 手动运行一次 **Deploy to Cloudflare Pages**。设置仓库变量
-   `CLOUDFLARE_PAGES_ENABLED=true` 后，每次推送 `main` 才自动部署。
-1. 规范 URL 默认是 `https://<project>.pages.dev/`；自定义域名成为生产地址时设置
-   `CLOUDFLARE_SITE_URL`。
+1. 手动运行一次 **Deploy to Cloudflare Pages**。要让每次推送 `main` 都自动部署，设置仓库变量
+   `CLOUDFLARE_PAGES_ENABLED=true`。
+1. 规范 URL 默认是 `https://<project>.pages.dev/`。自定义域名成为生产地址后，把
+   `CLOUDFLARE_SITE_URL` 设为该域名。
 {.steps}
 
-workflow 安装当前的 Hugo 版本，从 `go.mod` 读取 Go 版本，关闭本地模块
-workspace，并在上传前完成构建，保留可见告警。这是推荐 Starter 用户使用的路径。
-
-Cloudflare Git integration 仍然是另一种可选模式：构建命令设为
-`hugo --gc --minify --printPathWarnings`，输出目录 `public`，Hugo
-设为 {{< param hugoMinVersion >}} 或更新版本，Go 设为 `1.27`。同一个项目只选 Git integration 或 Direct Upload
-workflow 其中一种；预览部署应按预览 URL 和非生产环境构建，避免被搜索引擎收录。
+也可以用 Cloudflare 的 Git integration，由 Cloudflare 执行构建：构建命令设为 `hugo --gc --minify --printPathWarnings`，输出目录 `public`，Hugo 不低于 {{< param hugoMinVersion >}}，Go 不低于 `1.27.4`。同一个项目只选一种模式，Git integration **或** Direct Upload 工作流；预览部署用各自的预览 URL，并以[非生产环境](#preview-builds)构建。
 
 {{< /tab >}}
 {{< tab label="其它" value="other" >}}
 
-**Netlify** — 构建命令 `hugo --gc --minify`，发布目录 `public`，环境变量 `HUGO_VERSION`。同样的设置可以写进仓库：
+**Netlify** — 构建命令设为 `hugo --gc --minify`，发布目录 `public`，并设置环境变量 `HUGO_VERSION`。同样的设置也可以写进仓库：
 
 ```toml {title="netlify.toml"}
 [build]
-command = "hugo --gc --minify --printPathWarnings "
+command = "hugo --gc --minify --printPathWarnings"
 publish = "public"
 
 [build.environment]
@@ -189,13 +167,11 @@ publish = "public"
 HUGO_VERSION = "0.169.0"
 ```
 
-用 submodule 安装主题就打开递归 submodule 检出；用 Hugo Module 就要求构建环境有 Git 和 Go。生产与预览应使用同一个 Hugo 版本，除非预览环境本来就是用来测升级的。
+主题以 submodule 安装时要开启递归 submodule 检出；以 Hugo Module 安装时，构建镜像里要有 Git 和 Go。预览与生产使用同一个 Hugo 版本，除非这个预览本来就是为了测试升级。
 
-**Vercel** — 同样的三件事：构建命令 `hugo --gc --minify`、输出目录 `public`、环境变量 `HUGO_VERSION`。它同样不需要安装 npm 依赖。
+**Vercel** — 构建命令设为 `hugo --gc --minify`，输出目录 `public`，并设置环境变量 `HUGO_VERSION`。不需要 npm install 步骤。
 
-**任意静态服务器（Nginx / Caddy）** — 原样提供 `public/` 的内容。下例通过
-`current` 符号链接指向一份发布目录，创建方法见下方离线打包步骤。配置 Nginx 或
-Caddy 时，将宿主的站点根目录设为这个链接：
+**任意静态服务器（Nginx、Caddy）** — 原样提供 `public/` 的内容。下例的站点根目录是 `/var/www/oink/current`，它是指向某个发布目录的符号链接，由下文离线打包的步骤创建：
 
 ```nginx {title="/etc/nginx/conf.d/docs.conf"}
 server {
@@ -214,7 +190,7 @@ server {
 
 站点是纯静态的，没有需要转发给应用服务器的路径。
 
-**对象存储** — Hugo 自带 `deploy` 命令，把目标写进配置即可：
+**对象存储** — Hugo 的 `deploy` 命令可以上传到 S3、Google Cloud Storage 或 Azure，在配置里写明目标：
 
 ```yaml {title="hugo.yml"}
 deployment:
@@ -224,22 +200,16 @@ deployment:
       cloudFrontDistributionID: E9RZ8T1EXAMPLEID
 ```
 
-构建之后执行 `hugo deploy`：它比对远端与 `public/` 的差异，只上传变化的文件，并在给了 `cloudFrontDistributionID` 时使 CDN 缓存失效。不带 `--target` 时用第一个目标，`--dryRun` 先看要改什么。两个前提：Hugo 二进制带 `withdeploy`（`hugo version` 的输出里能看到），云厂商凭据由标准环境变量或配置文件提供（AWS 上先用 `aws s3 ls` 确认）。
+构建之后执行 `hugo deploy`：它比对存储桶与 `public/`，只上传变化的文件，设置了 `cloudFrontDistributionID` 时还会让 CDN 缓存失效。不带 `--target` 时使用第一个目标；先加 `--dryRun` 看看它打算改什么。Hugo 二进制必须带 `withdeploy`（`hugo version` 的输出里能看到），云厂商凭据由其标准环境变量或配置文件提供；在 AWS 上先用 `aws s3 ls` 确认有权限。
 
-**离线打包** — 网络隔离环境里，在能联网的机器上构建，把产物打成一个包带过去。
-先将归档路径换成自己的值，每份产物使用新的发布名称。Linux 宿主上的命令需要
-`/var/www/oink` 的写权限及 GNU `mv`；`current` 应不存在或为符号链接，
-`current.next` 应不存在。按上例配置 Nginx 或 Caddy，从 `current` 提供文件；
-这是宿主配置，不是 Hugo 选项。
+**离线打包** — 服务器处在网络隔离环境时，在能联网的机器上按目标环境的 `baseURL` 构建，把产物打成一个归档带过去。每个归档都用新的发布名称：
 
 ```bash {title="终端"}
 hugo --cleanDestinationDir --gc --minify --baseURL "https://docs.internal.example.com/" &&
   tar -czf oink-site-20260929-01.tar.gz -C public .
-
 ```
 
-仅在构建与打包成功后，把这份归档传到 Linux 宿主，再在那里执行以下命令。
-每份产物使用新的发布名称：
+Linux 宿主上需要 `/var/www/oink` 的写权限和 GNU `mv`；`current` 要么不存在、要么是符号链接，`current.next` 不能已经存在。每个版本解压到新目录，再把 `current` 切过去：
 
 ```bash {title="Linux 宿主"}
 release_dir=/var/www/oink/releases/20260929-01
@@ -251,77 +221,88 @@ mkdir "$release_dir" &&
   mv -Tf /var/www/oink/current.next /var/www/oink/current
 ```
 
-这组命令只有在新目录创建成功、解压完成且 `index.html` 存在时才切换 `current`。
-随后检查线上页面，并保留上一份发布目录用于回滚。不要把新包解压覆盖到已有发布目录。
+只有新目录创建成功、归档解压完成并且找到 `index.html`，这串命令才会切换 `current`；最后的 `mv` 一步替换链接，读者不会看到写了一半的站点。不要解压覆盖已有的发布目录，上一个版本也要留着，它就是[回滚](#rollback)的依据。换 `baseURL` 要重新构建，不能去改产物。
 
-构建时就要用目标环境的 `baseURL`；需要改变它时重新构建。
-
-**托管商没有 Go** — 用 Hugo Module 引入主题需要构建环境有 Go。平台不提供时，改用 Git submodule（构建前执行 `git submodule update --init`）或离线归档（把 `themes/oink/` 提交进仓库），见[从零建站与其它安装方式](/zh/docs/start/from-scratch/)。
+**托管商没有 Go** — 以 Hugo Module 方式安装主题时，构建环境里必须有 Go。平台不提供 Go，就改用 Git submodule（构建前执行 `git submodule update --init`），或把离线归档提交到 `themes/oink/`，见[从零建站与其它安装方式](/zh/docs/start/from-scratch/)。
 
 {{< /tab >}}
 {{< /tabs >}}
 
+## CI 构建设置 {#ci}
+
+无论产物发到哪个托管商，OINK 站点的 CI 构建都应该包含下面这些设置。Starter 的工作流里已经都有了。
+
+- checkout 时 `fetch-depth: 0` — 开启 `enableGitInfo` 后，最后修改时间和贡献者名单都来自 Git 历史；浅克隆会让每个页面显示同一个日期。
+- 安装 Go，再执行 `go mod download github.com/pgsty/oink` — 主题以 Hugo Module 方式安装时，Hugo 要靠 Go 获取它。用 submodule 安装时改为 `submodules: recursive` 检出，用离线归档时把它提交在 `themes/oink/` 下；这两种情况都可以删掉两个 Go 步骤。
+- `GOWORK: off` 与 `HUGO_MODULE_WORKSPACE: off` — 把开发者的 Go workspace 挡在构建之外，CI 构建的就只是 `go.mod` 固定的那个版本。
+- Hugo 用 `latest` — 主题可以用 {{< param hugoMinVersion >}} 及以上的任何 Hugo edition 构建，CI 可以一直跟随最新版本。仍固定在 OINK 1.5.1 或更早版本的站点不行，见[版本升级](/zh/docs/admin/upgrade/#hugo-extended)。
+- `--environment production` 与真实的 `--baseURL` — 构建环境决定是否收录、是否统计（见[下文](#preview-builds)），`baseURL` 决定所有绝对链接。
+- 加 `--printPathWarnings`，不加 `--panicOnWarning` — OINK 的告警是有意设计的：键名写错或集成配置不全时，主题告警并回退到安全的默认值，站点照常构建。用 `--panicOnWarning` 或 `HUGO_PANICONWARNING` 把告警升级为错误，会让本来没问题的构建失败。告警应当在构建日志里阅读。
+
 ## 预览部署不要被收录 {#preview-builds}
 
-Hugo 的 `-e` / `--environment` 只选择构建期行为，不改变站点内容，但 OINK 有三处会跟着它变：`production` 环境才输出 `<meta name="robots" content="index, follow">`、才让 `robots.txt` 变成 `Allow: /`、才渲染 Google Analytics 模板。PR preview、staging 这类构建不要用 `--environment production`：
+Hugo 的 `-e` / `--environment` 改变的是 OINK 的构建方式，而不是站点内容。只有 `production` 构建才会：
+
+- 输出 `<meta name="robots" content="index, follow">`（其它环境输出 `noindex, nofollow`）；
+- 在 `robots.txt` 里写 `Allow: /` 和一行 `Sitemap:`（其它环境写 `Disallow: /`）；
+- 渲染 Google Analytics 代码；
+- 给主题的脚本与样式表加指纹，并附上 SRI `integrity` 属性。
+
+`hugo` 默认就是 `production`，在预览宿主上也一样，所以 PR 预览与 staging 站点要显式换一个环境构建：
 
 ```bash {title="终端"}
 hugo --gc --minify --environment staging --baseURL "$PREVIEW_URL"
 ```
 
-出来的产物自带 `noindex, nofollow` 与 `Disallow: /`，也不会向分析服务上报数据。
+这样构建出的产物会请搜索引擎不要收录，也不会向统计服务上报任何数据。
 
 ## 内容安全策略 {#csp}
 
-主题自带的运行时、字体与图标都是同源资源，但仅有
-`script-src 'self'; style-src 'self'` 并不能覆盖普通 OINK 页面。主题会输出行内的
-主题初始化与外壳预绘制脚本、初始画布及主题色和字体角色样式，以及部分组件的
-style 属性；Markmap 还会增加行内配置与样式。主题不提供通用策略，也不自动生成
-CSP 哈希或注入 nonce；部署方需根据实际构建产物制定策略。
+主题的脚本、字体与图标都由站点自己的源提供，但只写 `script-src 'self'; style-src 'self'` 仍会拦掉普通 OINK 页面的一部分。主题会输出几段行内脚本，在首次绘制前设置配色模式和页面外壳的状态；还有初始画布、主题色与字体角色的行内样式，以及部分组件上的 `style` 属性；Markmap 另外会加行内配置与样式。OINK 不提供现成的策略，也不生成 CSP 哈希或注入 nonce，策略需要根据你自己的构建产物来定。
 
-额外功能也会改变所需指令：
+启用的功能会各自带来额外要求：
 
-- 作者写的行内 HTML 与行内脚本，`renderer.unsafe: true` 之下由作者负责。
-- [ECharts 的 `$fn:` 回调](/zh/docs/components/echarts/#callbacks)：回调函数由站点注册到 `window.OinkEchartsFunctions`，注册脚本的来源要进 `script-src`。
-- [分析脚本](/zh/docs/admin/analytics/#other-analytics)：站点自己插入的那段脚本与它上报的目标。
-- OINK 1.4.0 提供 [PlantUML 本地渲染](/zh/docs/components/plantuml/#limits)，需要允许同源脚本、在 `script-src` 中允许 `wasm-unsafe-eval` 以编译 WebAssembly，并在 `img-src` 中允许 `blob:`，无需放行渲染服务来源。
-- [远程 API 规范](/zh/docs/write/openapi/#spec-file)与[自建图表服务](/zh/docs/components/plantuml/#server)：落在 `connect-src` 与 `img-src`。
-- [giscus](/zh/docs/admin/comments/#privacy)：`script-src` 与 `frame-src` 要一起放行。
-- [双列视图](/zh/docs/customize/i18n/#bilingual-view)：窗格是同源 frame，`frame-src`（或 `child-src`）需要允许 `'self'`，响应也要允许同源嵌入（不能有 `X-Frame-Options: DENY` 或 `frame-ancestors 'none'`）。开启后每个 HTML 页面多一段内联启动脚本，脚本 hash 随之变化。
+- 作者在 `renderer.unsafe: true` 下写的行内 HTML 与脚本，由站点自行审查。
+- [ECharts 的 `$fn:` 回调](/zh/docs/components/echarts/#callbacks)：站点把函数注册到 `window.OinkEchartsFunctions`，注册脚本的来源要加入 `script-src`。
+- [分析脚本](/zh/docs/admin/analytics/#other-analytics)：你插入的脚本，以及它上报的主机。
+- [PlantUML 本地渲染](/zh/docs/components/plantuml/#limits)：允许同源脚本，在 `script-src` 中允许 `wasm-unsafe-eval` 以编译 WebAssembly，在 `img-src` 中允许 `blob:`；不需要放行任何渲染服务。
+- [远程 API 规范](/zh/docs/write/openapi/#spec-file)与[自建图表服务](/zh/docs/components/plantuml/#server)：它们的来源加入 `connect-src` 与 `img-src`。
+- [giscus](/zh/docs/admin/comments/#privacy)：`script-src` 与 `frame-src` 都要放行。
+- [双列视图](/zh/docs/customize/i18n/#bilingual-view)与 ReDoc API 文档在同源 frame 中渲染，`frame-src`（或 `child-src`）必须允许 `'self'`，响应头也要允许同源嵌入（不能有 `X-Frame-Options: DENY` 或 `frame-ancestors 'none'`）。双列视图还会给每个 HTML 页面加一段行内启动脚本，脚本哈希随之改变。
 
-对允许执行的行内脚本和样式块，按最终部署字节计算哈希，或由托管层在每次响应时向策略头和对应标签注入新的 nonce。`<style>` 标签上的 nonce 不会授权行内 `style="..."` 属性，后者需在 `style-src-attr` 下单独配置。正文、配置、压缩方式或主题更新后，请重新核对哈希。建议先以 `Content-Security-Policy-Report-Only` 模式上线观察，在浏览器中验证深浅色启动、外壳状态、菜单及全部已启用组件无误后，再切换为强制执行。
+允许执行的行内脚本和样式块，按最终部署的字节计算哈希；或者由托管层在每次响应时，向策略头和对应标签同时注入新的 nonce。`<style>` 上的 nonce 管不到 `style="…"` 属性，后者要单独用 `style-src-attr` 放行。正文、配置、压缩方式或主题版本一变，哈希就会变，每次都要重新计算。
 
-从只覆盖已审查功能的最小策略起步，逐项放行：不需要回调时让 ECharts 选项保持纯数据，审查作者写的行内脚本，只为站点主动启用的集成添加远程来源。产物里的子资源来源可以先用[断网构建验证](/zh/docs/admin/preview/#air-gapped)里的脚本扫一遍。
+从只覆盖已审查功能的最小策略起步，一项一项放行：不需要回调时让 ECharts 选项保持纯数据，审查作者写的行内脚本，只为站点明确启用的集成添加远程来源。[断网构建验证](/zh/docs/admin/preview/#air-gapped)里的输出检查器会列出所有子资源来源，适合作为起始清单。策略先以 `Content-Security-Policy-Report-Only` 上线观察，在浏览器里确认深浅色启动、外壳状态、菜单和每个已启用的组件都正常后，再切换为强制执行。
 
 ## 验收清单 {#checklist}
 
-部署完成后按这张表走一遍。前四项是构建期的，后面几项要在真实 URL 上查。
+每次部署后按这张表走一遍。前四项在构建产物里就能查，后面几项要在真实 URL 上看。
 
 | 检查 | 怎么确认 |
 | --- | --- |
-| 生产构建 | 构建命令带 `--printPathWarnings `，日志里有 `Total in …` |
-| `baseURL` 正确 | 页面源码里 `<link rel="canonical">` 指向真实生产地址（含子路径） |
-| 站点地图 | `<baseURL>/sitemap.xml` 可访问；多语言站点是一个索引，指向 `/en/sitemap.xml`、`/zh/sitemap.xml` |
-| robots | `<baseURL>/robots.txt` 是 `Allow: /` 并带 `Sitemap:` 行；预览部署应该是 `Disallow: /` |
-| 搜索索引 | 启用本地搜索后，`data-td-index-src` 指定的实际 URL 返回 200；生产文件名带 hash，站内搜索有结果 |
-| Markdown 输出 | 任一页面 URL 后面加 `index.md` 能取到纯文本（站点在 `outputs.page` 里开了 `markdown` 时） |
-| `llms.txt` | 站点在 `outputs.home` 里开了 `LLMS` 时，首要语言与每种已启用语言根都能访问 `llms.txt` |
-| 已启用语言 | 每种语言的文档页、博客页、首页都能打开，语言切换落到对应页面而不是首页 |
-| 外观与交互 | 深浅色切换、打印视图、代表性组件（提示块、标签页、代码块复制）正常 |
-| 404 | 访问一个不存在的路径，看到站点自己的 404 页 |
+| 构建成功，告警已读过 | 带 `--printPathWarnings` 的构建日志以 `Total in …` 结束 |
+| `baseURL` 正确 | 页面源码里的 `<link rel="canonical">` 指向真实的生产地址，包括子路径 |
+| 站点地图 | `<baseURL>/sitemap.xml` 可以访问；多语言站点是一个索引，指向 `/en/sitemap.xml`、`/zh/sitemap.xml` 等 |
+| robots | `<baseURL>/robots.txt` 是 `Allow: /` 并带 `Sitemap:` 行；预览部署应为 `Disallow: /` |
+| 搜索索引 | 启用本地搜索时，`data-td-index-src` 给出的 URL 返回 200，文件名带 hash，站内搜索有结果 |
+| Markdown 输出 | 站点在 `outputs.page` 里启用了 `markdown` 时，页面 URL 后加 `index.md` 能取到纯文本 |
+| `llms.txt` | 站点在 `outputs.home` 里启用了 `LLMS` 时，每种已启用语言的根路径都能访问 `llms.txt` |
+| 每种语言 | 文档页、博客页、首页都能打开，语言切换落到对应页面而不是首页 |
+| 外观与交互 | 深浅色切换、打印视图和常用组件（提示块、标签页、代码块复制）正常 |
+| 404 | 访问一个不存在的路径，显示站点自己的 404 页 |
 {.fields}
 
-`sitemap.xml`、`robots.txt`、`.md` 与 `llms.txt` 这几项的开关在[配置总览](/zh/docs/customize/config/)，Agent 输出的细节见 [Agent 支持](/zh/docs/customize/agents/)。
+`sitemap.xml`、`robots.txt`、`.md` 与 `llms.txt` 的开关在[配置总览](/zh/docs/customize/config/)，面向 Agent 的输出见 [Agent 支持](/zh/docs/customize/agents/)。
 
 ## 回滚 {#rollback}
 
-静态站点的回滚就是重新发布上一个已知可用的 commit，不要在生产上手工改文件。
+静态站点的回滚就是重新发布上一个已知可用的构建。不要在生产主机上手工改文件：下一次部署会悄悄冲掉这些改动，而且没有任何记录说明改过什么。
 
-- GitHub Pages：在 Actions 里找到上一次成功的 `Deploy to GitHub Pages` 运行，点 Re-run all jobs；或者 `git revert` 出问题的提交再推一次。
-- Cloudflare Pages / Netlify / Vercel：在部署列表里选上一个成功的部署，用平台的 Rollback / Publish deploy 把它重新设为生产版本。
-- 自建静态服务器：把 `current` 切回[离线打包](#hosts)时保留的上一份发布目录。不要把旧包覆盖到新文件上，否则新版本独有的路径仍会在线上保留。
+- GitHub Pages：在 Actions 里找到上一次成功的 `Deploy to GitHub Pages` 运行，选择 Re-run all jobs；或者 `git revert` 出问题的提交后重新推送。
+- Cloudflare Pages、Netlify、Vercel：在平台的部署列表里选上一个可用的部署，用 Rollback 或 Publish deploy 把它重新设为生产版本。
+- 自建静态服务器：把 `current` 指回[离线打包](#hosts)时保留的上一个发布目录。不要把旧归档解压到新文件上，否则只有新版本才有的路径会继续留在线上。
 
-在 Linux 宿主上，把示例路径换成保留的已知可用版本。符号链接与 GNU `mv` 的前提同上：
+在 Linux 宿主上，符号链接与 GNU `mv` 的前提同上，把示例路径换成你保留的那个版本：
 
 ```bash {title="终端"}
 previous_release=/var/www/oink/releases/20260928-01
@@ -330,14 +311,14 @@ test -d "$previous_release" &&
   mv -Tf /var/www/oink/current.next /var/www/oink/current
 ```
 
-通过线上 URL 检查一个旧版代表页，并确认仅在被撤回版本中新增的路径已不再提供。
+然后通过公网 URL 打开一个旧页面，并确认只在被撤回版本中新增的路径已经访问不到。
 
-问题出在主题升级而不是内容时，回滚的是 `go.mod` 里固定的版本，见[版本升级](/zh/docs/admin/upgrade/#rollback)。
+问题出在主题升级时，要回滚的是 `go.mod` 里固定的版本，见[版本升级](/zh/docs/admin/upgrade/#rollback)。
 
 ## 相关 {#related}
 
-- [本地预览](/zh/docs/admin/preview/) — 生产构建的完整命令、清缓存与断网验证
-- [排错与检查](/zh/docs/admin/troubleshooting/) — 404、搜索无结果、平台相关故障
-- [分析与 SEO](/zh/docs/admin/analytics/) — 上线之后让搜索引擎正确收录
-- [版本升级](/zh/docs/admin/upgrade/) — 升级主题版本与回滚
+- [本地预览](/zh/docs/admin/preview/) — 生产构建、清缓存与断网验证
+- [排错与检查](/zh/docs/admin/troubleshooting/) — 404、搜索无结果与平台相关故障
+- [分析与 SEO](/zh/docs/admin/analytics/) — 上线之后被正确收录
+- [版本升级](/zh/docs/admin/upgrade/) — 升级主题与回滚
 - [配置总览](/zh/docs/customize/config/) — `baseURL`、`outputs` 与其它站点键
