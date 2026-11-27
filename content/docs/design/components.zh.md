@@ -319,11 +319,11 @@ Goldmark 会给每个标题加上 `id` 属性，因此当该 id 是唯一属性�
 更新样式独立于 `assets/css/td/update.css`，用 `:has(+ .td-update-meta)` 与各项自身的块向外边距替代负外边距，打印时无论屏幕配色如何都映射到 `--td-print-*` 令牌并抑制 `h2.update` 的底边线；`rich-copy.js` 在纸张调色板上将 `.td-update-meta` 格式化为分隔的元数据项。
 
 目标为视频或音频文件，或 YouTube、Bilibili、Vimeo URL 的块级图片属于媒体，由 `content/media.html` 处理。
-文件按解析到的资源的 Hugo 媒体类型识别，否则按扩展名识别。图片行为、其他非图片资源的告警以及查找顺序都不变；这套顺序现在由 `content/resource-lookup.html` 统一提供给两个解析器。
-视频接受 `caption`、`num`（Book `fig` 目标）、`id`、`poster`、`track`（一个页面语言的 WebVTT 文件）、`autoplay`、`width` 与 `height`。音频接受 `caption` 与 `id`，并把方括号文字显示为可见标题。
+文件按解析到的资源的 Hugo 媒体类型识别，否则按扩展名识别；解析到的本地资源会保留查询参数与片段（如 `#t=30,60`）。图片行为、其他非图片资源的告警以及查找顺序都不变；这套顺序现在由 `content/resource-lookup.html` 统一提供给两个解析器。
+视频接受 `caption`、`num`（Book `fig` 目标）、`id`、`poster`、`track`（一个页面语言的 WebVTT 文件；本地资源保留查询参数）、`autoplay`、`width` 与 `height`（须为成对正整数；只设定容器宽高比，不覆盖海报 `<img>` 的固有尺寸）。音频接受 `caption` 与 `id`，并把方括号文字显示为可见标题。
 `autoplay=true` 输出 `muted loop playsinline`，但不输出 `autoplay` 属性；`js/chunks/media.js` 只在视频至少一半可见时播放，读者要求减少动态效果时绝不播放，离开视口即暂停。原生控件始终保留。
-平台 URL 渲染为链接卡片。对 `params.video_embeds` 列出的平台，普通点击会加载播放器，其 URL 由主题根据校验过的 ID 推导（`youtube-nocookie.com`、带 `danmaku=0` 的 Bilibili、带 `dnt=1` 的 Vimeo）；点击之前不发出任何请求。
-行内媒体渲染为链接。Print 与 RSS 得到含海报图、名称与 URL 的静态 figure；Markdown 保留作者写下的那一行。
+平台 URL 渲染为链接卡片（YouTube `/shorts/` 在未给海报或尺寸时默认按 `9:16` 占位；空名称回退为观看地址；Draw.io 跳过 `a.td-media-card` 内的图片，其他带链接的图片照常检测）。卡片以 `--td-media-ratio` 携带比例，`media.css` 据此为卡片及替换它的播放器推导宽高比与 `min(100%, 80vh × 比例)` 的宽度上限；支持容器单位时，比例改为按 figure 宽度计算的最小高度，换行的长标题在各引擎中都会撑高卡片。对 `params.video_embeds` 列出的平台，普通点击会加载带沙箱的播放器 iframe（`allow="autoplay; picture-in-picture; fullscreen"`、`sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox"`），其 URL 由主题根据校验过的 ID 推导（`youtube-nocookie.com`、带 `danmaku=0` 的 Bilibili、带 `dnt=1` 的 Vimeo，支持 `youtube-nocookie.com`、`music.youtube.com`、`player.vimeo.com`、Vimeo `?h=`/`#t=`、`b23.tv/BV…`、Bilibili 嵌入代码地址 `player.bilibili.com/player.html?bvid=…|aid=…` 与十进制前导零时间戳）；点击之前不发出任何请求。
+行内媒体渲染为链接。专用 Print 输出带可见 `.td-media__link` URL 的静态 figure（包含平台观看地址）；直接用浏览器打印 HTML 页面时则显示屏幕上隐藏的 `.td-media__url` 行，卡片替换为 iframe 后仍保留回退地址；RSS 为视频/平台输出静态 figure（含观看地址与真实海报尺寸）；Markdown 保留作者写下的那一行；`rich-copy.js` 保留可点击的媒体 URL（未点击的平台卡片不重复输出 URL，点击替换后仍保留回退地址）。不带 `.td-figure` 的媒体 figure 通过 `:where(.td-media):not(.td-figure)` 保持 1.5rem/1.75rem 外边距，比 Bootstrap 的 `figure` 重置多一级类选择器权重。
 
 `social` 只用页面内容引用一条帖子，参数为 `author`、`handle`、`avatar`、`date`、`url` 与 `platform`（顶层卡片默认 `x`，嵌套引用默认 `none`，另有 `bluesky`、`mastodon`、`threads`、`weibo`、`zhihu`、`telegram`、`linkedin`，决定图标以及向辅助技术播报、写入 Markdown 与 RSS 的平台名；嵌套省略 `platform` 时同时省略图标与视觉隐藏平台名，显式指定则两者同时呈现）。
 参数校验字符串类型并拒绝未知或位置参数；`avatar` 以 `parameter="avatar"` 经过 `content/image-resolve.html`，并在项目自己的 `static/` 目录存在时，对解码、规范化后在该目录中找不到的静态头像离线告警，告警 ID 为可关闭的 `social:avatar-static`（检查看不到模块挂载与自定义 `staticDir`）；用 `..` 越出站点根目录的静态路径总是告警。无头像时，先剥离开头的 `@`、Unicode 空白、控制字符与不可见格式字符，再按首个字素簇绘制首字符（剥离后为空时回退人物图标）。

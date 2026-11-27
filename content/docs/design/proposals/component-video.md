@@ -175,7 +175,8 @@ URL. No iframe, script, or thumbnail request.
 With the platform listed in `params.video_embeds`, the card also carries the
 derived player URL. On click, the runtime replaces the card with an iframe that
 has the bracket text as `title`,
-`allow="autoplay; encrypted-media; picture-in-picture; fullscreen"`,
+`allow="autoplay; picture-in-picture; fullscreen"`,
+`sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox"`,
 `allowfullscreen`, and `referrerpolicy="strict-origin-when-cross-origin"`, and
 moves focus into it. Without JavaScript the link still opens the platform.
 
@@ -237,7 +238,7 @@ Costs of the chosen form:
 
 Additive. A video destination produces a warning and no output today, so no
 page depends on that behavior. Image output must stay byte-identical, which the
-existing goldens verify. `params.video` is a new key.
+existing goldens verify. `params.video_embeds` is a new key.
 
 ## Implementation plan {#implementation}
 
@@ -251,7 +252,7 @@ existing goldens verify. `params.video` is a new key.
 4. S4: platform patterns, `params.video_embeds` in `hugo.yaml`,
    `bin/check-params.py`, and the generated configuration schema.
 5. Locale keys in all 32 files: `ui_video_play` ("Play video") and
-   `ui_video_open` ("Watch on the platform's site"), checked by
+   `ui_video_open` ("Open on the video site"), checked by
    `bin/check-i18n.py`.
 6. Fixtures: files from each source kind, poster with and without size,
    subtitles, autoplay, inline video, each platform pattern, invalid IDs, short
@@ -265,7 +266,7 @@ existing goldens verify. `params.video` is a new key.
 ## Acceptance criteria {#acceptance}
 
 - A page without autoplay videos or enabled players loads no media runtime.
-- With `embeds: []`, the HTML contains no player host URL.
+- With `video_embeds: []`, the HTML contains no player host URL.
 - Autoplay never starts under `prefers-reduced-motion: reduce` and pauses
   off-screen.
 - Print, RSS, Markdown, and LLMS contain no `<video>`, `<iframe>`, or runtime
@@ -290,3 +291,5 @@ existing goldens verify. `params.video` is a new key.
   attributes, an accessible autoplay gate, platform URLs as identity, and a
   per-platform `params.video_embeds` list.
 - **2026-11-27 (implementation).** Implemented in `content/media-detect.html`, `content/media.html`, `content/video-embeds.html`, `assets/js/media.js` and `assets/css/td/media.css`, with the lookup extracted into `content/resource-lookup.html`. Differences from this draft: the configuration key is the flat list `params.video_embeds` (the parameter contract flattens single-key maps); a video without caption or number keeps a `td-media` wrapper without a figcaption; Print and RSS name the video beside its URL; the locale keys are `ui_video_play` and `ui_video_open`. Both network settings are validated on every page. Eight invalid-input cases were added to `bin/check-media-primitives.py`, and `tests/js/media.test.js` covers the runtime.
+- **2026-11-27 (review hardening).** Fixed decimal parsing for leading-zero timestamps (`08s`, `010`), expanded platform URL parsing (`youtube-nocookie.com`, `music.youtube.com`, `player.vimeo.com`, Vimeo `?h=` and `#t=`, uppercase `AV`, `b23.tv/BV…`, trailing slashes, and `9:16` default ratio for YouTube Shorts), decoupled poster image dimensions from paired `width`/`height` aspect ratios, replaced `setTimeout(0)` autoplay event tracking with a FIFO expected-event queue, added iframe `sandbox` and tightened `allow` and the runtime player-URL regex, excluded `.td-media-card__poster` from Draw.io detection, fixed dark-mode play-button contrast, poster scrim contrast, narrow-screen card grid overlap, portrait `80vh` symmetry, forced-colors styling, RTL play-icon alignment, and Print/RSS watch URLs (including browser print after iframe replacement). Added zero-binary media-type and video matrix checks in `bin/check-media-primitives.py`, `video_embeds` item enum generation in `bin/generate-config-schema.py`, and `tests/browser/video.spec.mjs`.
+- **2026-11-27 (acceptance review fixes).** Cards carry their ratio as `--td-media-ratio` and cap their width at `min(100%, 80vh × ratio)` (card and player), because WebKit does not narrow a box whose `aspect-ratio` height `max-block-size` clamps; where container units exist the ratio is a minimum height measured from the figure, because WebKit also keeps an `aspect-ratio` box at its ratio height and clipped wrapped titles. Browser print gives poster-less card text the paper ink in dark mode. Draw.io skips only images inside `a.td-media-card` again, leaving other linked diagrams editable. Bilibili's embed-code `src`, `player.bilibili.com/player.html?bvid=…|aid=…`, is recognized instead of rendering as a remote image. Covered by the video matrix and a stylesheet contract in `bin/check-media-primitives.py`, `tests/js/drawio.test.js` and `tests/browser/video.spec.mjs`.

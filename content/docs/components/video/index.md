@@ -28,14 +28,16 @@ an opted-in platform.
 ![A tour of three OINK pages](tour.mp4)
 
 The file sits beside this page in its bundle: a 9-second, 1200×600 MP4 of
-109 KB. The bracket text is the player's accessible name, so write it as you
+123 KB. The bracket text is the player's accessible name, so write it as you
 would alt text. When it is empty the caption names the player, and when both
-are empty the theme warns and falls back to the file name.
+are empty the theme warns and falls back to the file name (or the watch URL for
+platform links).
 
 The player has native controls and `preload="metadata"`, so until the reader
 presses play the browser fetches only enough to show the duration. Without a
 known size the box reserves 16:9, then takes the video's own shape once its
-metadata arrives.
+metadata arrives; add a local `poster` or `width` and `height` if the video is
+not 16:9 and you want zero layout shift.
 
 Like a block image, a video needs
 `markup.goldmark.parser.wrapStandAloneImageWithinParagraph: false`; see
@@ -89,7 +91,9 @@ attributes.
 - `track` is one WebVTT subtitle file, found the same way. The theme writes
   `kind="subtitles"`, takes `srclang` from the page language, labels the track
   with the language name and turns it on by default. Each translation names
-  its own file: the Chinese page uses `tour.zh.vtt`.
+  its own file: the Chinese page uses `tour.zh.vtt`. Keep `.vtt` files on the
+  same origin (in the page bundle or `static/`), because browsers block
+  cross-origin `<track>` files without CORS headers.
 - `caption` is plain text in a `<figcaption>`, exactly as for images; it is
   not parsed as Markdown.
 
@@ -100,17 +104,20 @@ gains a "Figure N" prefix in the page's language, `#id` defaults to
 
 ## Size {#size}
 
-`width` and `height` take positive integers and, given together, set the box's
-aspect ratio, overriding the poster's. Use them for a video without a local
-poster whose shape is not 16:9:
+`width` and `height` take positive integers and must be given together; they
+set the player or card box's aspect ratio, overriding the poster's ratio while
+leaving the poster image's own dimensions intact in Print and RSS. Use them for
+a video without a local poster whose shape is not 16:9:
 
 ```markdown {title="Source"}
 ![A 4:3 screen recording](https://cdn.example.com/oink/settings.mp4)
 {width="1024" height="768"}
 ```
 
-Unlike image sizes they do not shrink the player, which always spans the
-reading width. A value that is not a positive integer warns and is ignored.
+Unlike image sizes they do not shrink a landscape player, which spans the
+reading width; portrait boxes still cap at 80% of the viewport height and
+center horizontally. A non-positive value or a single dimension without its
+pair warns and is ignored.
 
 ## Looping demos instead of GIFs {#autoplay}
 
@@ -123,7 +130,7 @@ reading width. A value that is not a positive integer warns and is ignored.
 {autoplay=true poster="appearance-poster.jpg" caption="A muted loop: it plays while in view and pauses when you scroll away"}
 
 `autoplay=true` is for the short, silent demos usually published as animated
-GIFs, and it costs far less: this 6-second clip is 233 KB, while the same clip
+GIFs, and it costs far less: this 6-second clip is 246 KB, while the same clip
 as a 15 fps GIF is 4.4 MB and cannot be paused.
 
 The video is written out `muted loop` with a `data-td-media-autoplay` marker
@@ -161,19 +168,26 @@ the player in place; see [the next section](#embeds).
 
 The accepted URLs:
 
-- YouTube: `youtube.com/watch?v=ID`, `youtu.be/ID`, `youtube.com/shorts/ID`,
-  `/live/ID` and `/embed/ID`, with an 11-character ID. `t` or `start` sets the
-  start time, in seconds (`90`) or as `1m30s`.
-- Bilibili: `bilibili.com/video/BV…` or `bilibili.com/video/av…`. `p` picks a
-  part of a multi-part video and `t` sets the start time.
-- Vimeo: `vimeo.com/NUMBER`, or `vimeo.com/NUMBER/HASH` for an unlisted video.
-  The player starts at the beginning.
+- YouTube: `youtube.com/watch?v=ID`, `music.youtube.com/watch?v=ID`,
+  `youtu.be/ID`, `youtube.com/shorts/ID`, `/live/ID`, `/embed/ID`, and
+  `youtube-nocookie.com/embed/ID`, with an 11-character ID. `t`, `start` or
+  `#t=` sets the start time, in seconds (`90`) or as `1m30s`. Shorts default
+  to a `9:16` frame unless a `poster` or `width`/`height` overrides it.
+- Bilibili: `bilibili.com/video/BV…`, `bilibili.com/video/av…`,
+  `b23.tv/BV…` / `b23.tv/av…`, or the `src` of Bilibili's embed code,
+  `https://player.bilibili.com/player.html?bvid=…` (or `?aid=…`; prefix the
+  `//` it is copied with by `https:`). `p` picks a part of a multi-part video and `t`
+  sets the start time.
+- Vimeo: `vimeo.com/NUMBER`, `vimeo.com/manage/videos/NUMBER`, or
+  `player.vimeo.com/video/NUMBER`, with `/HASH` or `?h=HASH` for an unlisted
+  video. `#t=` or `t` sets the start time.
 
 Hosts may carry `www.` or `m.`. The theme validates the video ID and builds
 the player address from it, so no author text ever reaches an iframe. A URL on
 these hosts without a recognizable ID warns and renders a card without a
-player. So does a `b23.tv` short link, which cannot be resolved without the
-network; write the full `bilibili.com/video/BV…` URL instead.
+player. So does an opaque `b23.tv` short link (such as `b23.tv/abc`), which
+cannot be resolved without the network; write the full `bilibili.com/video/BV…`
+URL instead.
 
 Cards accept `caption`, `num`, `id`, `poster`, `width` and `height`; `track`
 and `autoplay` warn on a card. The theme never fetches the platform's
@@ -200,11 +214,15 @@ YouTube in place and leaves Vimeo as a link. A value that is not a list warns
 and leaves every card as a link, and an unknown name warns and is ignored.
 
 For an opted-in platform, a plain click replaces the card with the platform's
-player and moves focus into it. The player takes the bracket text as its title
-and starts at once, from the URL's start time. A click with <kbd>Ctrl</kbd>,
-<kbd>Cmd</kbd>, <kbd>Shift</kbd> or <kbd>Alt</kbd>, or with the middle button,
-still opens the link, and without JavaScript the card stays a link. Each player
-loads with its platform's most private settings:
+player and moves focus into it. The player takes the bracket text as its title,
+loads in a sandboxed iframe (`allow-scripts allow-same-origin
+allow-presentation allow-popups allow-popups-to-escape-sandbox`,
+`allow="autoplay; picture-in-picture; fullscreen"`,
+`referrerpolicy="strict-origin-when-cross-origin"`), and starts at once from
+the URL's start time. A click with <kbd>Ctrl</kbd>, <kbd>Cmd</kbd>,
+<kbd>Shift</kbd> or <kbd>Alt</kbd>, or with the middle button, still opens the
+link, and without JavaScript the card stays a link. Each player loads with its
+platform's most private settings:
 
 | Platform | Player host | Privacy setting |
 | --- | --- | --- |
@@ -220,7 +238,7 @@ click.
 ## Large files {#large-files}
 
 A video in a page bundle is committed to Git with the page, which suits clips
-like the two on this page, 109 KB and 233 KB. Anything beyond a few megabytes
+like the two on this page, 123 KB and 246 KB. Anything beyond a few megabytes
 makes every clone of the repository heavier, so upload it to object storage or
 a CDN and write its HTTPS URL. The poster and subtitle file can stay in the
 bundle:
@@ -230,8 +248,10 @@ bundle:
 {poster="install-poster.webp" track="install.en.vtt" caption="A single-node install, start to finish"}
 ```
 
-Use a stable public URL: a signed URL that expires breaks the page later, and
-the theme does not check remote files. An H.264 MP4 plays in every current
+Use a stable public URL on a host that supports HTTP Range requests (standard
+on object storage and CDNs) so browsers can read metadata and seek without
+downloading the whole file. A signed URL that expires breaks the page later,
+and the theme does not check remote files. An H.264 MP4 plays in every current
 browser, and a command such as this keeps a screen recording small:
 
 ```sh
@@ -249,11 +269,12 @@ native `<video controls preload="metadata" playsinline>`; a caption or number
 adds `td-figure` and a `<figcaption>`, and a platform URL is an
 `<a class="td-media-card">` that carries `data-td-media-embed` when its
 platform is opted in. Paper and feeds have no player, so Print and RSS show the
-poster if there is one, the name as a link, the caption, and the file's full
-address or the platform's name, with absolute URLs in RSS. Printing the HTML
-page from the browser shows the poster or the current frame with the file
-address below it. Markdown and LLMS output keep the image line and attribute
-line as written.
+poster if there is one, the name as a link, the platform name when applicable,
+the full file or watch URL, and the caption, with absolute URLs in RSS.
+Printing the HTML page from the browser shows the poster or the current frame
+with the file or watch URL below it, and still prints the title, platform and
+watch URL even after an opted-in card has been replaced by an iframe. Markdown
+and LLMS output keep the image line and attribute line as written.
 
 ## Parameter reference {#reference}
 
@@ -292,9 +313,10 @@ The site setting:
 - Three platforms only. Other video sites and arbitrary iframe addresses are
   not supported; link to them in prose.
 - No remote thumbnails. A card shows your `poster` or a plain surface.
-- `width` and `height` set the shape, not the size. A player is never taller
-  than 80% of the viewport, so a portrait recording is letterboxed within that
-  height.
+- `width` and `height` set the aspect ratio, not pixel dimensions, and must be
+  paired. A player or card is never taller than 80% of the viewport, so a
+  portrait recording is pillarboxed inside `<video>` and a portrait card or
+  embedded player centers within that height.
 - Static paths and URLs are recognized by extension only, so a streaming URL
   without a video extension renders as an image.
 - The theme measures no file sizes and checks no static or remote files.

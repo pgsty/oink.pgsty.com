@@ -18,9 +18,9 @@ search_keywords: [视频, Video, mp4, webm, 海报图, poster, 字幕, subtitles
 
 ![三个 OINK 页面的快速浏览](tour.mp4)
 
-这个文件与本页放在同一个页面包里：9 秒、1200×600、109 KB 的 MP4。方括号里的文字是播放器的无障碍名称，按替代文字的标准来写；它为空时由图注充当名称，两者都为空时，主题告警并改用文件名。
+这个文件与本页放在同一个页面包里：9 秒、1200×600、123 KB 的 MP4。方括号里的文字是播放器的无障碍名称，按替代文字的标准来写；它为空时由图注充当名称，两者都为空时，主题告警并改用文件名（平台链接则改用观看地址）。
 
-播放器带原生控件和 `preload="metadata"`，读者按下播放之前，浏览器只取显示时长所需的那一小部分。尺寸未知时先按 16:9 占位，元数据到达后改为视频自身的比例。
+播放器带原生控件和 `preload="metadata"`，读者按下播放之前，浏览器只取显示时长所需的那一小部分。尺寸未知时先按 16:9 占位，元数据到达后改为视频自身的比例；如果视频比例不是 16:9 又希望避免布局偏移，可补充本地 `poster` 或 `width` 与 `height`。
 
 与块级图片一样，视频需要站点设置 `markup.goldmark.parser.wrapStandAloneImageWithinParagraph: false`，见[图片 · 行内与块级](/zh/docs/components/image/#inline-vs-block)。
 
@@ -61,21 +61,21 @@ search_keywords: [视频, Video, mp4, webm, 海报图, poster, 字幕, subtitles
 {caption="文档外壳、它的上游 Docsy 与一个版本发布页，九秒看完" poster="tour-poster.jpg" track="tour.zh.vtt"}
 
 - `poster` 是播放前显示的海报图，查找方式与图片相同。本地位图海报还会给播放器提供宽高（这里是 1200×600），视频加载之前占位框就是正确的比例。
-- `track` 是一个 WebVTT 字幕文件，查找方式相同。主题写出 `kind="subtitles"`，`srclang` 取页面语言，标签取语言名称，并默认打开字幕。每个语言版本写自己的文件：英文页用 `tour.en.vtt`，本页用 `tour.zh.vtt`。
+- `track` 是一个 WebVTT 字幕文件，查找方式相同。主题写出 `kind="subtitles"`，`srclang` 取页面语言，标签取语言名称，并默认打开字幕。每个语言版本写自己的文件：英文页用 `tour.en.vtt`，本页用 `tour.zh.vtt`。请把 `.vtt` 文件放在同源位置（页面包或 `static/`），浏览器默认会因 CORS 阻止跨域 `<track>` 字幕文件。
 - `caption` 是 `<figcaption>` 里的纯文本，与图片完全相同，不解析 Markdown。
 
 `num` 让视频成为 Book 编号图，与图片一样：图注前加按页面语言显示的「图 N」，`#id` 缺省为 `fig-<num>`，普通链接与 `xref` 都能引用它。见[书籍出版](/zh/docs/write/book/)。
 
 ## 尺寸 {#size}
 
-`width` 与 `height` 取正整数，同时给出时设定占位框的宽高比，并覆盖海报图的尺寸。没有本地海报图、比例又不是 16:9 的视频用它们：
+`width` 与 `height` 取正整数且必须成对给出，用于设定播放器或卡片容器的宽高比，并覆盖海报图的比例（Print 与 RSS 中的海报 `<img>` 仍保留海报图自身尺寸）。没有本地海报图、比例又不是 16:9 的视频用它们：
 
 ```markdown {title="源码"}
 ![一段 4:3 的屏幕录制](https://cdn.example.com/oink/settings.mp4)
 {width="1024" height="768"}
 ```
 
-与图片尺寸不同，它们不会把播放器缩小，视频总是占满正文宽度。不是正整数的值告警并忽略。
+与图片尺寸不同，它们不会把横屏播放器缩小，播放器仍占满正文宽度；竖屏视频卡片与播放器仍以视口高度的 80% 为上限并水平居中。不是正整数或只给了一边尺寸的值都会告警并被忽略。
 
 ## 用循环短片代替 GIF {#autoplay}
 
@@ -87,7 +87,7 @@ search_keywords: [视频, Video, mp4, webm, 海报图, poster, 字幕, subtitles
 ![OINK 在浅色与深色之间切换](appearance.mp4)
 {autoplay=true poster="appearance-poster.jpg" caption="静音循环：进入视野时播放，滚出视野时暂停"}
 
-`autoplay=true` 用于通常做成 GIF 动图的那种无声短演示，体积却小得多：这段 6 秒的短片 233 KB，同样内容转成 15 fps 的 GIF 是 4.4 MB，而且 GIF 无法暂停。
+`autoplay=true` 用于通常做成 GIF 动图的那种无声短演示，体积却小得多：这段 6 秒的短片 246 KB，同样内容转成 15 fps 的 GIF 是 4.4 MB，而且 GIF 无法暂停。
 
 输出的视频带 `muted loop` 和一个 `data-td-media-autoplay` 标记，但不带 `autoplay` 属性。小型运行时 `js/chunks/media.js` 只在以下三个条件同时成立时播放：
 
@@ -113,11 +113,11 @@ YouTube、Bilibili 或 Vimeo 的链接渲染为一张卡片：
 
 接受的 URL：
 
-- YouTube：`youtube.com/watch?v=ID`、`youtu.be/ID`、`youtube.com/shorts/ID`、`/live/ID` 与 `/embed/ID`，ID 为 11 个字符。`t` 或 `start` 设定起始时间，写秒数（`90`）或 `1m30s` 形式。
-- Bilibili：`bilibili.com/video/BV…` 或 `bilibili.com/video/av…`。`p` 选择多 P 视频中的某一 P，`t` 设定起始时间。
-- Vimeo：`vimeo.com/NUMBER`，不公开视频为 `vimeo.com/NUMBER/HASH`。播放器总是从头开始。
+- YouTube：`youtube.com/watch?v=ID`、`music.youtube.com/watch?v=ID`、`youtu.be/ID`、`youtube.com/shorts/ID`、`/live/ID`、`/embed/ID` 与 `youtube-nocookie.com/embed/ID`，ID 为 11 个字符。`t`、`start` 或 `#t=` 设定起始时间，写秒数（`90`）或 `1m30s` 形式。Shorts 链接在未指定 `poster` 或 `width`/`height` 时默认按 `9:16` 占位。
+- Bilibili：`bilibili.com/video/BV…`、`bilibili.com/video/av…`、直接携带 ID 的 `b23.tv/BV…` / `b23.tv/av…`，以及 Bilibili 嵌入代码里的 `src`，即 `https://player.bilibili.com/player.html?bvid=…`（或 `?aid=…`；复制来的地址以 `//` 开头，需补上 `https:`）。`p` 选择多 P 视频中的某一 P，`t` 设定起始时间。
+- Vimeo：`vimeo.com/NUMBER`、`vimeo.com/manage/videos/NUMBER` 或 `player.vimeo.com/video/NUMBER`，不公开视频支持 `/HASH` 或 `?h=HASH`；`#t=` 或 `t` 设定起始时间。
 
-主机名可以带 `www.` 或 `m.`。主题先校验视频 ID，再用它拼出播放器地址，作者写的文字不会进入 iframe。这些主机上认不出 ID 的 URL 告警，渲染为没有播放器的卡片；`b23.tv` 短链接不联网无法解析，同样如此，改写完整的 `bilibili.com/video/BV…` 地址即可。
+主机名可以带 `www.` 或 `m.`。主题先校验视频 ID，再用它拼出播放器地址，作者写的文字不会进入 iframe。这些主机上认不出 ID 的 URL 告警，渲染为没有播放器的卡片；不直接包含 ID 的 `b23.tv` 短链接（例如 `b23.tv/abc`）不联网无法解析，同样如此，改写完整的 `bilibili.com/video/BV…` 地址即可。
 
 卡片接受 `caption`、`num`、`id`、`poster`、`width` 与 `height`；`track` 与 `autoplay` 写在卡片上会告警。主题从不抓取平台缩略图，想要配图就把一张截图存进页面包，作为 `poster`。
 
@@ -132,7 +132,7 @@ params:
 
 `params.video_embeds` 是从 `youtube`、`bilibili`、`vimeo` 中选取的列表，默认为空。就地播放会把平台的播放器加载进你的页面，读者的浏览器随即与该平台通信，平台能看到读者的地址，并适用它自己的隐私条款。这是否可以接受由站点所有者决定，所以在你列出平台之前，什么都不会加载。用列表而不是开关，是为了让站点就地播放一个平台，而对部分读者无法访问的另一个平台只给链接；本站就地播放 Bilibili 与 YouTube，Vimeo 保持外链。不是列表的值告警，所有卡片保持外链；未知的平台名告警并忽略。
 
-对已启用的平台，普通点击会把卡片替换为平台播放器，并把焦点移进去。播放器以方括号文字为标题，加载后立即从 URL 指定的起始时间播放。按住 <kbd>Ctrl</kbd>、<kbd>Cmd</kbd>、<kbd>Shift</kbd> 或 <kbd>Alt</kbd> 点击，或用中键点击时，仍按链接打开；没有 JavaScript 时卡片始终是链接。每个播放器都以该平台最注重隐私的设置加载：
+对已启用的平台，普通点击会把卡片替换为平台播放器，并把焦点移进去。播放器以方括号文字为标题，运行在带 `sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox"`、`allow="autoplay; picture-in-picture; fullscreen"` 与 `referrerpolicy="strict-origin-when-cross-origin"` 的 iframe 中，加载后立即从 URL 指定的起始时间播放。按住 <kbd>Ctrl</kbd>、<kbd>Cmd</kbd>、<kbd>Shift</kbd> 或 <kbd>Alt</kbd> 点击，或用中键点击时，仍按链接打开；没有 JavaScript 时卡片始终是链接。每个播放器都以该平台最注重隐私的设置加载：
 
 | 平台 | 播放器主机 | 隐私设置 |
 | --- | --- | --- |
@@ -144,14 +144,14 @@ params:
 
 ## 大文件 {#large-files}
 
-页面包里的视频会随页面提交进 Git。本页这两段 109 KB 与 233 KB 的短片适合这样放；超过几 MB 的文件会让仓库的每一次克隆都变重，应上传到对象存储或 CDN，在源码里写它的 HTTPS 地址。海报图与字幕文件可以继续留在页面包里：
+页面包里的视频会随页面提交进 Git。本页这两段 123 KB 与 246 KB 的短片适合这样放；超过几 MB 的文件会让仓库的每一次克隆都变重，应上传到对象存储或 CDN，在源码里写它的 HTTPS 地址。海报图与字幕文件可以继续留在页面包里：
 
 ```markdown {title="源码"}
 ![在一台新节点上安装 Pigsty](https://cdn.example.com/oink/install.mp4)
 {poster="install-poster.webp" track="install.zh.vtt" caption="单节点安装的完整过程"}
 ```
 
-使用稳定的公开地址：会过期的签名 URL 日后会让页面失效，而主题不检查远程文件。H.264 编码的 MP4 在所有现行浏览器中都能播放，屏幕录制可以用类似下面的命令压小：
+使用稳定的公开地址，并确保对象存储或 CDN 支持 HTTP Range 请求（S3、R2、GCS 与主流 CDN 默认支持），这样浏览器不必下载整个文件就能读取时长并拖动进度条；会过期的签名 URL 日后会让页面失效，而主题不检查远程文件。H.264 编码的 MP4 在所有现行浏览器中都能播放，屏幕录制可以用类似下面的命令压小：
 
 ```sh
 ffmpeg -i recording.mov -c:v libx264 -crf 28 -preset slow -pix_fmt yuv420p -an -movflags +faststart demo.mp4
@@ -161,7 +161,7 @@ ffmpeg -i recording.mov -c:v libx264 -crf 28 -preset slow -pix_fmt yuv420p -an -
 
 ## 输出形态 {#outputs}
 
-HTML 中，视频是 `<figure class="td-media td-media--video">` 包着的原生 `<video controls preload="metadata" playsinline>`；有图注或编号时加上 `td-figure` 与 `<figcaption>`；平台链接是 `<a class="td-media-card">`，平台已启用时带 `data-td-media-embed`。纸面和订阅源里没有播放器，所以打印与 RSS 显示海报图（如果有）、作为链接的名称、图注，以及文件的完整地址或平台名称，RSS 中的 URL 改为绝对地址。在浏览器里打印 HTML 页面时，显示海报图或当前画面，文件地址印在下方。Markdown 与 LLMS 输出原样保留图片行与属性行。
+HTML 中，视频是 `<figure class="td-media td-media--video">` 包着的原生 `<video controls preload="metadata" playsinline>`；有图注或编号时加上 `td-figure` 与 `<figcaption>`；平台链接是 `<a class="td-media-card">`，平台已启用时带 `data-td-media-embed`。纸面和订阅源里没有播放器，所以打印与 RSS 显示海报图（如果有）、作为链接的名称、平台名称（若适用）、文件或观看页的完整地址与图注，RSS 中的 URL 改为绝对地址。在浏览器里打印 HTML 页面时，显示海报图或当前画面，文件或观看地址印在下方；即便平台卡片点击后已被替换为 iframe，打印时仍会保留标题、平台名与观看地址。Markdown 与 LLMS 输出原样保留图片行与属性行。
 
 ## 参数参考 {#reference}
 
@@ -195,7 +195,7 @@ HTML 中，视频是 `<figure class="td-media td-media--video">` 包着的原生
 - 只有一个源文件：没有多个 `<source>` 的编码回退，没有自适应流（HLS 或 DASH），也没有章节、播放列表或自定义控件。
 - 只支持三个平台：其他视频网站与任意 iframe 地址都不支持，在正文里给链接即可。
 - 不抓取远程缩略图：卡片显示你提供的 `poster` 或素色底面。
-- `width` 与 `height` 决定比例而非大小。播放器最高为视口高度的 80%，竖屏录制在这个高度内加黑边显示。
+- `width` 与 `height` 决定比例而非像素大小，且必须成对给出。播放器与卡片最高为视口高度的 80%，竖屏文件在 `<video>` 内左右留黑边（pillarbox），竖屏卡片与就地播放器则按该高度上限水平居中缩放。
 - 静态路径与 URL 只按扩展名识别，没有视频扩展名的流媒体地址会按图片渲染。
 - 主题不测量文件大小，也不检查静态或远程文件。
 

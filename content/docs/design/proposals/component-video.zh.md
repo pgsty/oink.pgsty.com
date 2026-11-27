@@ -128,7 +128,7 @@ proposal_date: 2026-11-27
 
 默认输出是一张卡片：海报图或中性底面、播放符号、方括号文本和平台名称，全部包在一个指向规范观看 URL 的链接内。不产生 iframe、脚本或缩略图请求。
 
-平台列在 `params.video_embeds` 中时，卡片还携带推导出的播放器 URL。点击后，运行时把卡片替换为 iframe，并把焦点移入其中。该 iframe 以方括号文本作为 `title`，并带有 `allow="autoplay; encrypted-media; picture-in-picture; fullscreen"`、`allowfullscreen` 和 `referrerpolicy="strict-origin-when-cross-origin"`。没有 JavaScript 时，链接仍会打开平台页面。
+平台列在 `params.video_embeds` 中时，卡片还携带推导出的播放器 URL。点击后，运行时把卡片替换为 iframe，并把焦点移入其中。该 iframe 以方括号文本作为 `title`，并带有 `allow="autoplay; picture-in-picture; fullscreen"`、`sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox"`、`allowfullscreen` 和 `referrerpolicy="strict-origin-when-cross-origin"`。没有 JavaScript 时，链接仍会打开平台页面。
 
 ### 配置 {#configuration}
 
@@ -175,7 +175,7 @@ params:
 
 ## 兼容性 {#compatibility}
 
-纯增量变更。目前视频目标地址只产生告警、没有输出，因此没有页面依赖这一行为。图片输出必须保持逐字节一致，由现有 golden 验证。`params.video` 是新增的键。
+纯增量变更。目前视频目标地址只产生告警、没有输出，因此没有页面依赖这一行为。图片输出必须保持逐字节一致，由现有 golden 验证。`params.video_embeds` 是新增的键。
 
 ## 实现计划 {#implementation}
 
@@ -183,14 +183,14 @@ params:
 2. 新增 `content/media.html`（识别、属性、输出），并在 `render-image.html` 中、进入图片专属处理之前分派给它。
 3. 新增 `assets/js/media.js`，作为稳定 chunk `js/chunks/media.js`，由 `scripts.html` 根据 Page Store 标志选择加载；在 `tests/js/` 下编写单元测试，模拟 `IntersectionObserver` 与 `matchMedia`。
 4. S4：平台模式、`hugo.yaml` 中的 `params.video_embeds`、`bin/check-params.py`，以及生成的配置 schema。
-5. 在全部 32 个语言文件中加入 `ui_video_play`（英文 “Play video”）与 `ui_video_open`（英文 “Watch on the platform's site”）两个键，由 `bin/check-i18n.py` 检查。
+5. 在全部 32 个语言文件中加入 `ui_video_play`（英文 “Play video”）与 `ui_video_open`（英文 “Open on the video site”）两个键，由 `bin/check-i18n.py` 检查。
 6. 测试夹具：每种来源的文件、带尺寸和不带尺寸的海报图、字幕、自动播放、行内视频、每种平台模式、无效 ID、短链接，以及每种输出。所属检查器：`check-media-primitives.py`（图片钩子与共享解析）、`check-runtime-isolation.py`（chunk 标志）、`check-output.py`、`check-output-security.py`、`check-goldens.py`、`check-stylesheets.py`、`check-params.py`、`check-i18n.py`、`node --test`。
 7. 在本站进行浏览器评审：键盘操作、播放器加载后的焦点、减少动态效果、预设、移动端与打印。
 
 ## 验收标准 {#acceptance}
 
 - 没有自动播放视频或已启用播放器的页面，不加载媒体运行时。
-- `embeds: []` 时，HTML 中不出现任何播放器主机 URL。
+- `video_embeds: []` 时，HTML 中不出现任何播放器主机 URL。
 - 在 `prefers-reduced-motion: reduce` 下绝不自动播放，离开屏幕时暂停。
 - Print、RSS、Markdown 与 LLMS 中不含 `<video>`、`<iframe>` 或运行时标记。
 - 现有图片 golden 逐字节一致。
@@ -207,3 +207,5 @@ params:
 - **2026-11-27（初稿）**：`video` 短代码，带多种来源模式、约二十个参数、`gif=true` 以及需显式启用的 facade 占位。
 - **2026-11-27（评审）**：改用原生图片语法，包含三个媒体属性、无障碍的自动播放门控、以平台 URL 为身份，以及按平台配置的 `params.video_embeds` 列表。
 - **2026-11-27（实现）。** 在 `content/media-detect.html`、`content/media.html`、`content/video-embeds.html`、`assets/js/media.js` 与 `assets/css/td/media.css` 中实现，查找逻辑抽取到 `content/resource-lookup.html`。与本草案的差异：配置键是扁平列表 `params.video_embeds`（参数契约要求拍平单键 map）；没有图注或编号的视频保留 `td-media` 包裹，但没有 figcaption；Print 与 RSS 在 URL 旁写出视频名称；语言键为 `ui_video_play` 与 `ui_video_open`。两项联网设置在每个页面上校验。`bin/check-media-primitives.py` 新增八个无效输入用例，`tests/js/media.test.js` 覆盖运行时。
+- **2026-11-27（评审加固）。** 修复前导零时间戳（`08s`、`010`）按十进制解析；扩展平台 URL 识别（`youtube-nocookie.com`、`music.youtube.com`、`player.vimeo.com`、Vimeo `?h=` 与 `#t=`、大写 `AV`、`b23.tv/BV…`、尾部斜杠，以及 YouTube Shorts 默认 `9:16` 比例）；解耦海报图尺寸与成对 `width`/`height` 宽高比；用 FIFO 预期事件队列替代 `setTimeout(0)` 自动播放事件追踪；为 iframe 增加 `sandbox` 并收紧 `allow` 与运行时白名单正则；排除 Draw.io 对 `.td-media-card__poster` 的检测；修复深色模式播放按钮对比度、海报渐变对比度、窄屏卡片文字与播放按钮重叠、竖屏 `80vh` 高度一致、强制颜色样式、RTL 播放三角偏移以及 Print/RSS 观看地址（含点击替换为 iframe 后的浏览器打印恢复）。在 `bin/check-media-primitives.py` 补齐零二进制媒体类型与视频矩阵测试，在 `bin/generate-config-schema.py` 推导 `video_embeds` 平台枚举，并在文档站补充 `tests/browser/video.spec.mjs`。
+- **2026-11-27（验收评审修复）。** 卡片以 `--td-media-ratio` 携带比例，卡片与播放器的宽度上限改为 `min(100%, 80vh × 比例)`，因为 WebKit 不会在 `max-block-size` 截住 `aspect-ratio` 高度时相应收窄宽度；支持容器单位时，比例改为按 figure 宽度计算的最小高度，因为 WebKit 还会把 `aspect-ratio` 盒子固定在比例高度、裁掉换行的长标题。深色模式下浏览器打印时，无海报卡片的文字改用纸面墨色。Draw.io 恢复为只跳过 `a.td-media-card` 内的图片，其他带链接的图表仍可编辑。识别 Bilibili 嵌入代码中的 `src`，即 `player.bilibili.com/player.html?bvid=…|aid=…`，不再渲染为远程图片。由 `bin/check-media-primitives.py` 的视频矩阵与样式表契约、`tests/js/drawio.test.js` 和 `tests/browser/video.spec.mjs` 覆盖。
