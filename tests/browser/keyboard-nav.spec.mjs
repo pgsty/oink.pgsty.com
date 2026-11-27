@@ -552,19 +552,56 @@ test('v cycles layout modes on blog and release index pages and m/,/. control vi
   await page.keyboard.press('v');
   await expect(page.locator('html')).toHaveAttribute('data-td-blog-index', 'gallery');
 
-  // Once gallery view is visible, m cycles modes and ,/< ./> adjust tile size.
+  // Once gallery view is visible, m cycles modes and ,/< ./> adjust tile size and reflow geometry.
   for (const expected of ['cards', 'seamless', 'wall']) {
     await page.keyboard.press('m');
     await expect(gallery).toHaveAttribute('data-td-mode', expected);
   }
+  const tileHeight = () =>
+    gallery.locator('.td-blog-gallery__media').first().evaluate((el) => el.getBoundingClientRect().height);
+  const initialHeight = await tileHeight();
+
   await page.keyboard.press(',');
   await expect(slider).toHaveValue('220');
   await page.keyboard.press('<');
+  await expect(slider).toHaveValue('200');
+  await page.keyboard.press(',');
+  await expect(slider).toHaveValue('180');
+  await page.keyboard.press('<');
+  await expect(slider).toHaveValue('160');
+  await expect.poll(tileHeight).toBeLessThan(initialHeight);
+
+  await page.keyboard.press('.');
+  await expect(slider).toHaveValue('180');
+  await page.keyboard.press('>');
   await expect(slider).toHaveValue('200');
   await page.keyboard.press('.');
   await expect(slider).toHaveValue('220');
   await page.keyboard.press('>');
   await expect(slider).toHaveValue('240');
+  for (const expected of ['260', '280', '300', '320', '340', '360']) {
+    await page.keyboard.press(expected === '360' ? '>' : '.');
+    await expect(slider).toHaveValue(expected);
+  }
+  await expect.poll(tileHeight).toBeGreaterThan(initialHeight);
+
+  // Clicking a layout radio or focusing the range slider must not trap m/,/. shortcuts.
+  await gallery.locator('label.td-expo-mode').nth(1).click();
+  await expect(gallery).toHaveAttribute('data-td-mode', 'cards');
+  await page.keyboard.press('m');
+  await expect(gallery).toHaveAttribute('data-td-mode', 'seamless');
+  await slider.focus();
+  await expect(slider).toBeFocused();
+  await page.keyboard.press(',');
+  await expect(slider).toHaveValue('340');
+  await page.keyboard.press('.');
+  await expect(slider).toHaveValue('360');
+  expect(
+    await page.evaluate(() => [
+      localStorage.getItem('td-blog-gallery-mode'),
+      localStorage.getItem('td-blog-gallery-size'),
+    ]),
+  ).toEqual(['seamless', '360']);
 
   // Continue V cycle gallery -> list -> cards.
   await page.keyboard.press('v');

@@ -328,10 +328,30 @@ test('Expo album shortcuts switch layout with m and adjust tile size with ,/< an
   await page.keyboard.press('m');
   await expect(expo).toHaveAttribute('data-td-expo-mode',expected);
  }
+ const tileHeight=()=>expo.locator('.td-expo-image').first().evaluate(el=>el.getBoundingClientRect().height);
+ const baseHeight=await tileHeight();
  await page.keyboard.press(',');await expect(slider).toHaveValue('220');
  await page.keyboard.press('<');await expect(slider).toHaveValue('200');
+ await expect.poll(tileHeight).toBeLessThan(baseHeight);
  await page.keyboard.press('.');await expect(slider).toHaveValue('220');
  await page.keyboard.press('>');await expect(slider).toHaveValue('240');
+ await page.keyboard.press('>');await expect(slider).toHaveValue('260');
+ await page.keyboard.press('.');await expect(slider).toHaveValue('280');
+ await expect.poll(tileHeight).toBeGreaterThan(baseHeight);
+
+ // Clicking a layout radio or focusing the size slider must not block m/,/..
+ await expo.locator('label.td-expo-mode').nth(1).click();
+ await expect(expo).toHaveAttribute('data-td-expo-mode','cards');
+ await page.keyboard.press('m');
+ await expect(expo).toHaveAttribute('data-td-expo-mode','seamless');
+ await slider.focus();
+ await expect(slider).toBeFocused();
+ await page.keyboard.press(',');await expect(slider).toHaveValue('260');
+ await page.keyboard.press(',');await expect(slider).toHaveValue('240');
+ await page.keyboard.press('m');
+ await expect(expo).toHaveAttribute('data-td-expo-mode','wall');
+ expect(await page.evaluate(()=>[localStorage.getItem('td-expo-mode'),localStorage.getItem('td-expo-size')])).toEqual(['wall','240']);
+
  // Opening the viewer dialog pauses album-grid shortcuts.
  await open(page,'small');
  await page.keyboard.press('m');await page.keyboard.press('.');

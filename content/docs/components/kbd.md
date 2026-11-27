@@ -28,13 +28,15 @@ Each parameter represents one key. Write symbol keys as displayed on the keyboar
 ```markdown {title="Source"}
 {{</* kbd "Escape" */>}} closes a dialog;
 {{</* kbd "/" */>}} jumps to search;
-{{</* kbd "t" */>}} toggles light and dark;
+{{</* kbd "t" */>}} cycles visual styles;
+{{</* kbd "y" */>}} cycles light, dark, and system;
 {{</* kbd "l" */>}} cycles through languages.
 ```
 
 {{< kbd "Escape" >}} closes a dialog;
 {{< kbd "/" >}} jumps to search;
-{{< kbd "t" >}} toggles light and dark;
+{{< kbd "t" >}} cycles visual styles;
+{{< kbd "y" >}} cycles light, dark, and system;
 {{< kbd "l" >}} cycles through languages.
 
 ## Chords {#combo}
@@ -71,7 +73,8 @@ Keys are common in cheatsheets. This table shows some global keys that the site 
 | --- | --- |
 | {{</* kbd "Ctrl" "K" */>}} | Open the command palette ({{</* kbd "⌘" "K" */>}} on macOS) |
 | {{</* kbd "/" */>}} | The palette's full search state |
-| {{</* kbd "t" */>}} | Toggle light and dark |
+| {{</* kbd "t" */>}} | Cycle visual styles |
+| {{</* kbd "y" */>}} | Cycle light, dark, and system |
 | {{</* kbd "q" */>}} / {{</* kbd "e" */>}} | Previous / next page |
 | {{</* kbd "w" */>}} {{</* kbd "s" */>}} {{</* kbd "a" */>}} {{</* kbd "d" */>}} | Move, collapse and expand in the sidebar tree |
 | {{</* kbd "Escape" */>}} | Leave the sidebar tree for the article |
@@ -81,7 +84,8 @@ Keys are common in cheatsheets. This table shows some global keys that the site 
 | --- | --- |
 | {{< kbd "Ctrl" "K" >}} | Open the command palette ({{< kbd "⌘" "K" >}} on macOS) |
 | {{< kbd "/" >}} | The palette's full search state |
-| {{< kbd "t" >}} | Toggle light and dark |
+| {{< kbd "t" >}} | Cycle visual styles |
+| {{< kbd "y" >}} | Cycle light, dark, and system |
 | {{< kbd "q" >}} / {{< kbd "e" >}} | Previous / next page |
 | {{< kbd "w" >}} {{< kbd "s" >}} {{< kbd "a" >}} {{< kbd "d" >}} | Move, collapse and expand in the sidebar tree |
 | {{< kbd "Escape" >}} | Leave the sidebar tree for the article |

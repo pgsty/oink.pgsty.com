@@ -473,12 +473,12 @@ columns:
 
 The `fat` footer's copyright row has a collapse arrow at its right end. It
 hides or restores the link grid above. The grid starts expanded. localStorage
-stores the reader's choice under `td-footer-collapsed` across pages. The styles
-`slim` and `none` have no collapse button. This state is independent of focused
-reading mode.
+stores the reader's choice under `td-footer-collapsed` across pages. The styles `slim` and `none` have no collapse button. This state is independent of Zen Mode.
 
 Every rendered bottom bar ends with an icon dock in this order: version,
-language, theme, then keyboard help. Configured menus open upward. The version
+language, theme, then keyboard help. Configured menus open upward; on desktop,
+hovering keyboard help previews the two-column cheat sheet and clicking it
+opens the centered modal dialog. The version
 trigger shows only an icon. Its choices retain full labels. The `fat` footer's
 collapse arrow follows the four controls. The sidebar has no duplicate dock.
 The setting `footer_style: none` removes both the footer and bar.

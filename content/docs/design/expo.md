@@ -173,9 +173,11 @@ Viewer shortcuts apply inside the open dialog. They ignore text input, input
 method composition, and Ctrl/Command/Alt combinations. Page-level single-key
 navigation pauses while the dialog is open. When the dialog is closed and
 `keyboard_nav` is enabled, `m` cycles gallery layout modes (`wall` → `cards` →
-`seamless`), `,` / `<` shrinks the tile-size slider by one 20 px step, and `.` /
-`>` enlarges it by one 20 px step. `keyboard_nav` controls those page-level
-bindings; it does not disable Expo's viewer runtime.
+`seamless`), `,` / `<` shrinks the tile-size slider by one 20 px step (down to
+160 px), and `.` / `>` enlarges it by one 20 px step (up to 360 px). Focus on
+the toolbar's layout radio inputs or range slider does not suppress these keys.
+`keyboard_nav` controls those page-level bindings; it does not disable Expo's
+viewer runtime.
 
 | Key | Action |
 | --- | --- |

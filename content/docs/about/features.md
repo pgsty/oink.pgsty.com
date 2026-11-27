@@ -121,11 +121,12 @@ previous and next heading. `t` steps through the visual styles. `y` cycles light
 dark, and system color modes. `l` or `x` switches language. `b` opens or closes
 the duo view when a translation is available. `h` or `z` toggles Zen Mode.
 `v` switches index layout modes on blog, release, and case indexes; on Expo
-albums, `m` cycles gallery layouts and `,`/`<` or `.`/`>` shrinks or enlarges
-tiles. `;` opens or closes the shortcut help dialog. Single-key
-shortcuts are inactive while an input or textarea has focus, or while an input
-method is composing. The question-mark button in the footer's bottom bar also
-opens the cheatsheet.
+albums and visible blog/case/release `gallery` views, `m` cycles gallery layouts
+and `,`/`<` or `.`/`>` shrinks or enlarges tiles. `;` opens or closes the
+centered two-column shortcut help dialog. Single-key shortcuts yield to
+text-entry controls and IME composition. Hovering the question-mark button in
+the footer's bottom bar previews the two-column cheatsheet on desktop, and
+clicking it opens the same modal dialog.
 
 → [Keyboard navigation](/docs/customize/keyboard/)
 

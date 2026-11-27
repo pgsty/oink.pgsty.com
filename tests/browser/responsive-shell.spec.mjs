@@ -382,36 +382,72 @@ for (const [locale, path] of [
   ['zh', '/zh/docs/customize/config/'],
 ]) {
   for (const theme of ['light', 'dark']) {
-    test(`${locale} ${theme} shortcut help stays compact on desktop and phone`, async ({
+    test(`${locale} ${theme} shortcut help previews two columns on desktop and opens modal on click`, async ({
       page,
     }) => {
       await page.addInitScript((colorTheme) => {
         localStorage.setItem('td-color-theme', colorTheme);
       }, theme);
 
-      for (const width of [1280, 360]) {
+      for (const width of [1280, 768, 360]) {
         await page.setViewportSize({ width, height: 900 });
         await openCleanPage(page, path);
         await expect(page.locator('html')).toHaveAttribute('data-bs-theme', theme);
 
         const trigger = page.locator('.td-shell-keyboard__trigger');
         const help = page.locator('.td-shell-keyboard-help');
+        const dialog = page.locator('[data-td-keyboard-dialog]');
         await trigger.scrollIntoViewIfNeeded();
-        if (width >= 768) await trigger.hover();
-        else await trigger.click();
-        await expect(help).toBeVisible();
-        await expect(help.locator('.td-kbd-sequence kbd')).not.toHaveCount(0);
-        await expect(help.locator('pre, code')).toHaveCount(0);
 
-        const box = await help.boundingBox();
-        expect(box).not.toBeNull();
-        expect(box.width).toBeLessThanOrEqual(336.5);
-        expect(box.x).toBeGreaterThanOrEqual(0);
-        expect(box.x + box.width).toBeLessThanOrEqual(width + 0.5);
-        expect(
-          await page.evaluate(() => document.documentElement.scrollWidth),
-        ).toBeLessThanOrEqual(width);
-        if (width === 360) {
+        if (width >= 768) {
+          // Hovering ? previews the two-column cheat sheet above the footer.
+          await trigger.hover();
+          await expect(help).toBeVisible();
+          await expect(help.locator('.td-kbd-sequence kbd')).not.toHaveCount(0);
+          await expect(help.locator('pre, code')).toHaveCount(0);
+
+          const hoverGeo = await help.evaluate((el) => {
+            const box = el.getBoundingClientRect();
+            const sections = Array.from(el.querySelectorAll('.td-shell-keyboard-help__section'));
+            return {
+              box,
+              sections: sections.map((s) => s.getBoundingClientRect()),
+              scrollWidth: document.documentElement.scrollWidth,
+            };
+          });
+          expect(hoverGeo.sections).toHaveLength(2);
+          expect(hoverGeo.box.width).toBeLessThanOrEqual(640.5);
+          expect(hoverGeo.box.x).toBeGreaterThanOrEqual(0);
+          expect(hoverGeo.box.x + hoverGeo.box.width).toBeLessThanOrEqual(width + 0.5);
+          expect(Math.abs(hoverGeo.sections[0].top - hoverGeo.sections[1].top)).toBeLessThanOrEqual(2);
+          expect(hoverGeo.sections[1].left).toBeGreaterThan(hoverGeo.sections[0].left + 200);
+          expect(hoverGeo.scrollWidth).toBeLessThanOrEqual(width);
+
+          // Clicking ? promotes to the centered two-column modal dialog and hides the hover card.
+          await trigger.click();
+          await expect(dialog).toBeVisible();
+          await expect(help).toBeHidden();
+          await page.keyboard.press('Escape');
+          await expect(dialog).toBeHidden();
+          await expect(trigger).toBeFocused();
+          await expect(help).toBeHidden();
+        } else {
+          // On phones, tapping ? opens the centered single-column modal dialog cleanly inside the viewport.
+          await trigger.click();
+          await expect(dialog).toBeVisible();
+          await expect(dialog.locator('.td-kbd-sequence kbd')).not.toHaveCount(0);
+          await expect(dialog.locator('pre, code')).toHaveCount(0);
+
+          const box = await dialog.boundingBox();
+          expect(box).not.toBeNull();
+          expect(box.x).toBeGreaterThanOrEqual(0);
+          expect(box.x + box.width).toBeLessThanOrEqual(width + 0.5);
+          expect(
+            await page.evaluate(() => document.documentElement.scrollWidth),
+          ).toBeLessThanOrEqual(width);
+          await dialog.locator('[data-td-keyboard-dialog-close]').click();
+          await expect(dialog).toBeHidden();
+
           const dockBox = await page
             .locator('.td-shell-footline__right')
             .boundingBox();

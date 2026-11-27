@@ -201,6 +201,9 @@ blog_gallery:
 `blog_gallery.mode: cards` 才是画廊内的瀑布流。`blog_gallery.size` 设置目标格子
 大小，范围是 160–360 CSS 像素，默认 240；它与控制每页文章数的
 `blog_index_size` 相互独立。读者可以调整排布和大小，选择独立于 Expo 相册记忆。
+开启 `keyboard_nav` 且当前处于画廊视图时，也可按 {{< kbd "M" >}} 在展墙、卡片与
+无缝之间切换，按 {{< kbd "," >}} / {{< kbd "<" >}} 或 {{< kbd "." >}} /
+{{< kbd ">" >}} 以 `20 px` 为步长缩小或放大图片尺寸。
 
 站点默认值使用 `params.ui` 下的同名 `blog_gallery` 块，页面或 cascade 块会
 整体替换它。未给出的字段使用 `wall` 与 `240`；无效值告警并回退到这些默认值。

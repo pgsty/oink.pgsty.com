@@ -241,7 +241,10 @@ The gallery toolbar offers three arrangements:
 `blog_gallery.size` sets the target tile size, from 160 to 360 CSS pixels,
 with a default of 240. It is independent of `blog_index_size`, the number of
 posts per page. Readers can change the arrangement and size; their choices
-are remembered separately from Expo albums.
+are remembered separately from Expo albums. With `keyboard_nav` enabled while
+the gallery view is visible, {{< kbd "M" >}} cycles `wall` → `cards` →
+`seamless`, and {{< kbd "," >}} / {{< kbd "<" >}} or {{< kbd "." >}} /
+{{< kbd ">" >}} shrinks or enlarges tiles by `20 px`.
 
 Site defaults use the same `blog_gallery` block under `params.ui`; a page or
 cascade block replaces it in full. Omitted fields use `wall` and `240`;

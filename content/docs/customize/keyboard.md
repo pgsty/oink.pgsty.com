@@ -8,11 +8,16 @@ aliases:
   - /docs/advanced/keyboard/
 ---
 
-OINK's interactive pages have single-key shortcuts. WASD moves through the
-sidebar tree. {{< kbd "J" >}} {{< kbd "K" >}} move between headings.
-{{< kbd "Q" >}} {{< kbd "E" >}} open previous and next pages. Other shortcuts
-switch the theme, language, and command palette. Shortcuts are on by default.
-Typing disables every binding. You can disable shortcuts per site or per page.
+OINK's interactive pages ship with single-key shortcuts: WASD moves through the
+sidebar tree, {{< kbd "K" >}} {{< kbd "J" >}} jump between headings,
+{{< kbd "Q" >}} {{< kbd "E" >}} turn pages, {{< kbd "H" >}} / {{< kbd "Z" >}}
+toggle Zen Mode, {{< kbd "V" >}} switches index layouts, {{< kbd "M" >}} and
+{{< kbd "," >}} / {{< kbd "." >}} adjust Expo and blog gallery views,
+{{< kbd "L" >}} / {{< kbd "X" >}} / {{< kbd "T" >}} / {{< kbd "Y" >}} /
+{{< kbd "R" >}} control language, appearance, and section routing,
+{{< kbd "F" >}} / {{< kbd "C" >}} open the command palette, and
+{{< kbd ";" >}} opens the shortcut help dialog. Shortcuts are on by default,
+yield to text entry and overlays, and can be disabled per site or per page.
 
 Keyboard navigation keeps no separate state. Expansion and collapse use the
 sidebar's arrow buttons. Section jumps use the right-hand outline. Language
@@ -58,7 +63,7 @@ If the group is open, it moves to the first visible child. Page navigation with
 | {{< kbd "H" >}} {{< kbd "Z" >}} | Zen Mode: hide / restore the navigation shell |
 | {{< kbd "B" >}} | Open or close the [duo view](/docs/customize/i18n/#bilingual-view) when the site enables `params.ui.compare` and the page has a translation |
 
-{{< kbd "J" >}} {{< kbd "K" >}} use the same target sequence as the right-hand
+{{< kbd "K" >}} and {{< kbd "J" >}} use the same target sequence as the right-hand
 outline. They reach the same location as an outline click. Each jump uses a
 100 ms ease, regardless of distance. You can press again before the animation
 finishes. If you have scrolled into a section, {{< kbd "K" >}} first returns
@@ -89,19 +94,23 @@ While the shell is hidden, WASD cannot focus the invisible sidebar.
 | {{< kbd "R" >}} | Switch section: cycle among same-origin top-level navbar entries |
 | {{< kbd ";" >}} | Open or close the shortcut help dialog |
 
-These shortcuts work on every interactive page, including pages outside
-the documentation shell. {{< kbd "V" >}} applies only to index pages that render
-the layout toggle button (`blog_index_toggle: true`). {{< kbd "L" >}} and {{< kbd "X" >}} do nothing on a single-language site.
+{{< kbd "L" >}} / {{< kbd "X" >}}, {{< kbd "T" >}}, {{< kbd "Y" >}},
+{{< kbd "R" >}}, and {{< kbd ";" >}} work on every interactive page, including
+pages outside the reading shell. {{< kbd "V" >}} applies only to index pages
+that render the layout switch (`blog_index_toggle: true`).
+{{< kbd "L" >}} and {{< kbd "X" >}} do nothing on a single-language site.
 {{< kbd "T" >}} does nothing unless the site offers a style choice
 (`preset_menu`); it wraps from the last style back to the first.
 {{< kbd "Y" >}} steps through Light, Dark, and System in order and does nothing
 if the color-mode menu is off. {{< kbd "R" >}}
 does nothing if there is only one top-level entry. {{< kbd "R" >}} cycles only
 same-origin top-level menu items. It excludes external links and navbar utility
-controls. {{< kbd ";" >}} opens a centered top-layer dialog showing the
-shortcuts available on the current page—even mid-scroll, in Zen Mode, or when
-`footer_style: none` removes the bottom bar—and closes on a second {{< kbd ";" >}},
-{{< kbd "Esc" >}}, its close button, or a backdrop click.
+controls. {{< kbd ";" >}} opens a centered top-layer two-column dialog showing
+the shortcuts available on the current page—even mid-scroll, in Zen Mode, or
+when `footer_style: none` removes the bottom bar—and closes on a second
+{{< kbd ";" >}}, {{< kbd "Esc" >}}, its close button, or a backdrop click.
+Clicking the `?` button in the footer's bottom bar opens the same dialog, while
+hovering or focusing `?` on desktop previews a two-column card above the bar.
 
 ## Search and commands {#search}
 
@@ -117,17 +126,25 @@ as aliases for the same palette. Backslash is difficult to use on some non-US
 layouts. You can also type a `>` prefix in the palette to select command-only
 mode. See [Command palette](/docs/customize/panel/) for its contents.
 
-## Expo image viewer {#expo-viewer}
+## Expo and gallery controls {#expo-viewer}
 
-On an [Expo album](/docs/write/expo/#shortcuts) page or in a blog/case/release
-index's `gallery` view, page-level keyboard navigation adds gallery layout and
-tile-size shortcuts while browsing the grid:
+On an individual [Expo album](/docs/write/expo/#shortcuts) page (not the album
+directory index) or on a blog, case, or release index page while its
+[`gallery` view](/docs/write/blog/#list-gallery) is visible (press
+{{< kbd "V" >}} to switch into `gallery`), page-level keyboard navigation adds
+gallery layout and tile-size shortcuts while browsing the grid:
 
-| Key | Album grid action |
+| Key | Gallery grid action |
 | --- | --- |
-| {{< kbd "M" >}} | Cycle image layout (`wall` → `cards` → `seamless`) |
-| {{< kbd "," >}} or {{< kbd "<" >}} | Shrink album image size by one step (`−20 px`) |
-| {{< kbd "." >}} or {{< kbd ">" >}} | Enlarge album image size by one step (`+20 px`) |
+| {{< kbd "M" >}} | Cycle gallery layout (`wall` → `cards` → `seamless`) |
+| {{< kbd "," >}} or {{< kbd "<" >}} | Shrink target tile size by one step (`−20 px`, down to `160 px`) |
+| {{< kbd "." >}} or {{< kbd ">" >}} | Enlarge target tile size by one step (`+20 px`, up to `360 px`) |
+
+Both controls update the toolbar, re-lay out the grid immediately, and persist
+in `localStorage` (`td-expo-mode` / `td-expo-size` on Expo albums,
+`td-blog-gallery-mode` / `td-blog-gallery-size` on blog/case/release galleries).
+Clicking a layout radio or dragging the tile-size slider does not block these
+shortcuts.
 
 The [Expo viewer](/docs/write/expo/#shortcuts) has its own
 shortcuts. Page-level single-key navigation pauses while an image is open.
@@ -142,28 +159,33 @@ It resumes when the viewer closes.
 | F | Expand to fit the whole image in the viewing area |
 | Escape | Close the viewer |
 
-Album grid bindings follow `keyboard_nav`; viewer actions apply inside the
+Gallery grid bindings follow `keyboard_nav`; viewer actions apply inside the
 viewer regardless of `keyboard_nav`. Expo is available in OINK 1.3.0.
 
 ## Keys deliberately left free {#reserved}
 
 {{< kbd "?" >}} is reserved and unbound. Press {{< kbd ";" >}} anywhere on the
-page to open the shortcut help dialog, or use the question mark button in the
-footer's bottom bar (which opens on hover, keyboard focus, or touch). Both show
-only keys available on the current page. A single-language site therefore has
-no language row.
+page—or click the question-mark button in the footer's bottom bar—to open the
+centered two-column shortcut help dialog. Hovering or focusing that button on
+desktop (`≥ 768 px`) previews the same two-column cheat sheet directly above
+the footer; closing the dialog returns focus to the button without reopening
+the hover card. When `keyboard_nav: false` and local search is enabled, the
+button keeps a compact single-column popover for search shortcuts. Both views
+show only keys available on the current page; a single-language site therefore
+has no language row.
 
 {{< kbd "G" >}} {{< kbd "G" >}}, {{< kbd "Shift" "G" >}} and the digits are
 likewise reserved, as possible future jump sequences.
 
 ## When shortcuts stand down {#stand-down}
-Each binding is a bare single key. The following conditions disable all
-bindings to prevent conflicts with typing or overlays:
 
-- Focus is in an input, textarea, select or `contenteditable` region;
+Every binding is a single key. The following conditions disable bindings to
+prevent conflicts with typing or overlays:
+
+- Focus is in a text-entry control (`<textarea>`, `<select>`, `contenteditable`, or a text-entry `<input>` such as text, search, email, password, or number). Non-text controls like gallery layout radio buttons and tile-size range sliders still allow page shortcuts while retaining native arrow-key behavior;
 - An input method is composing (a hard requirement on a Chinese site);
-- A modifier is held. {{< kbd "⌘" "C" >}} still copies, and {{< kbd "Shift" "↓" >}} remains a browser action;
-- The command palette, another open native dialog, or a visible ARIA dialog owns the keyboard. This includes fixed-position ARIA dialogs; hidden ARIA dialogs do not block shortcuts.
+- A modifier key is held—except {{< kbd "Shift" >}} for {{< kbd "<" >}} (`Shift+,`) and {{< kbd ">" >}} (`Shift+.`), which require Shift on standard keyboards. {{< kbd "⌘" "C" >}} still copies, {{< kbd "Shift" "M" >}} does nothing, and {{< kbd "Shift" "↓" >}} remains a browser action;
+- The command palette, another open native dialog (including the `;` shortcut help dialog or Expo viewer), or a visible ARIA dialog owns the keyboard. This includes fixed-position ARIA dialogs; hidden ARIA dialogs do not block shortcuts.
 
 The comment section uses an iframe. Its key events do not propagate to the
 page. No additional isolation is needed.
@@ -235,7 +257,11 @@ page in your site (including a language prefix if needed).
 
 5. Enable "reduce motion" in the system and press {{< kbd "J" >}}. Confirm instant positioning without animation.
 
-6. For the 1.1 focus fixes, follow the skip link and check the title's focus
+6. Press {{< kbd ";" >}} mid-scroll or in Zen Mode ({{< kbd "H" >}} / {{< kbd "Z" >}}), and hover then click the footer `?` button. Confirm desktop hover shows the two-column cheat sheet, clicking `?` or pressing {{< kbd ";" >}} opens the centered two-column dialog, and closing restores focus without reopening the hover card.
+
+7. Open an Expo album or switch `/blog/` to `gallery` with {{< kbd "V" >}}. Press {{< kbd "M" >}}, {{< kbd "," >}} / {{< kbd "<" >}}, and {{< kbd "." >}} / {{< kbd ">" >}}—including after clicking a layout icon or adjusting the slider—and confirm the grid reflows and persists across reload.
+
+8. For the 1.1 focus fixes, follow the skip link and check the title's focus
    indication. Collapse the sidebar and use {{< kbd "Tab" >}}: its hidden links
    should be skipped, while the restore control remains reachable.
 
