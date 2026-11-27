@@ -52,7 +52,9 @@ for (const locale of ['', '/zh']) {
       const link = tiles(page).first().locator('a');
       await link.focus();
       await expect(link.locator('.td-blog-gallery__caption')).toHaveCSS('opacity', '1');
-      const scan = await new AxeBuilder({ page }).include('[data-td-blog-gallery]').withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+      const caption = await link.locator('.td-blog-gallery__caption').innerText();
+      await expect(link).toHaveAccessibleName(caption.replace(/\s+/g, ' ').trim());
+      const scan = await new AxeBuilder({ page }).include('[data-td-blog-gallery]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
       expect(scan.violations).toEqual([]);
       await page.screenshot({ path: test.info().outputPath('gallery.png') });
       await link.press('Enter');

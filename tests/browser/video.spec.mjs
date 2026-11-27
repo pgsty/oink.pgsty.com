@@ -81,7 +81,17 @@ test.describe('Video component', () => {
 
     // A modified click must not swap the card into an iframe.
     await card.scrollIntoViewIfNeeded();
-    await card.dispatchEvent('click', { button: 0, metaKey: true, cancelable: true, bubbles: true });
+    const preventedByPlayer = await card.evaluate(link => {
+      let prevented;
+      // Observe the click after the player's document handler, then keep native navigation local to the test.
+      window.addEventListener('click', event => {
+        prevented = event.defaultPrevented;
+        event.preventDefault();
+      }, { once: true });
+      link.dispatchEvent(new MouseEvent('click', { button: 0, metaKey: true, cancelable: true, bubbles: true }));
+      return prevented;
+    });
+    expect(preventedByPlayer).toBe(false);
     await expect(card).toBeVisible();
     await expect(page.locator('.td-media-player iframe')).toHaveCount(0);
     expect(externalBeforeClick).toEqual([]);

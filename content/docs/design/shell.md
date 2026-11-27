@@ -69,6 +69,8 @@ Root candidates are linkable, non-divider top-level sections, followed by sectio
 Candidates are deduplicated by URL. Both sources honor `sidebar_root_menu: false`. Absent or true values preserve inclusion.
 The current resolved root is appended even if excluded from global choices.
 Zero entries render no control. One entry renders a static link.
+With multiple entries, the button's accessible name starts with its visible
+section title, followed by the localized prompt to choose a section.
 Every URL keeps language and deployment prefixes.
 Dividers and sections with `build.render: never` cannot be switcher links.
 
@@ -705,7 +707,7 @@ Wall and Seamless reveal titles and descriptions on hover or keyboard focus.
 Without hover, captions remain below images, and row spacing includes their
 height. Cards always shows captions. Covers without images retain a linked,
 named placeholder; failed images receive the same fallback after enhancement.
-The title names the link and the cover is decorative. Hidden forms use lazy
+The title and optional summary name the link. The cover is decorative. Hidden forms use lazy
 images. Reappearing forms, resized sidebars, fonts, and late image dimensions
 trigger layout without overlapping items. Without JavaScript, a responsive
 grid keeps links and captions visible and hides the inactive controls.
@@ -714,6 +716,7 @@ grid keeps links and captions visible and hides the inactive controls.
 Docs, Book, Blog, and Swagger share one shell model.
 Page-end order is Share, Feedback, Annotation, Pager, Comments.
 Docs/Book pagers follow sidebar preorder. Blog pagers use weight, then reverse date.
+Each link announces its direction and the visible `linkTitle` of the destination.
 `pager: false` disables the pager. Static outputs omit pager controls.
 
 Every rendered footer has an icon-only utility dock at the end of its bottom line.

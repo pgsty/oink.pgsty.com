@@ -54,7 +54,7 @@ async function unavailableRows(dialog) {
   );
 }
 
-test('a reader can turn off single-key shortcuts and restore them by keyboard across languages', async ({ page }) => {
+test('a reader can turn off single-key shortcuts and restore them by keyboard across languages', async ({ page, browserName }) => {
   await recordPageActions(page);
   await openDocs(page);
   const dialog = await openHelp(page);
@@ -72,9 +72,11 @@ test('a reader can turn off single-key shortcuts and restore them by keyboard ac
 
   await page.goto('/zh' + docsPath);
   const preference = page.getByRole('checkbox', { name: '单键快捷键' });
-  await page.keyboard.press('Tab');
+  // macOS WebKit uses Option+Tab to visit links and controls with its default keyboard settings.
+  const nextControl = browserName === 'webkit' && process.platform === 'darwin' ? 'Alt+Tab' : 'Tab';
+  await page.keyboard.press(nextControl);
   await expect(page.locator('a.td-skip-link')).toBeFocused();
-  await page.keyboard.press('Tab');
+  await page.keyboard.press(nextControl);
   await expect(preference).toBeFocused();
   await expect(preference).not.toBeChecked();
   await page.keyboard.press('Space');

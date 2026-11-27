@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const wcagTags = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
+const wcagTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22a', 'wcag22aa'];
 const widths = [360, 768, 820, 1024, 1200, 1440];
 const locales = [
   ['en', '/docs/customize/config/'],
