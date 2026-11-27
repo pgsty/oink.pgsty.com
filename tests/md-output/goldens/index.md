@@ -11,7 +11,7 @@ LLMS index: [llms.txt](/llms.txt)
 Section pages:
 
 - [OINK Documentation](/docs/): Build a technical content site. Use shared navigation, multilingual support, and search for documentation, blogs, books, and API references.
-- [Write Beautiful Docs](/book/): A practical tutorial for creating clear, beautiful, and maintainable technical content with Oink.
+- [OINK Hands-On](/book/): Get a working OINK site from one prompt, then learn its features one layer at a time, from a single page to a published bilingual site.
 - [OINK Case](/case/): Forty-five real sites across third-party open-source projects, enterprise teams, personal blogs, books, and the PGSTY ecosystem built with Oink.
 - [Expo](/expo/): Browse image albums and inspect each original.
 - [Blog](/blog/): Oink engineering notes, design stories, and reading shell guides

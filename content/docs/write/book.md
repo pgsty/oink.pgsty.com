@@ -342,7 +342,7 @@ dedicated page:
 ```
 
 They appear here only as source, because on this page they would list the
-entire Docs tree. [Write Beautiful Docs](/book/) shows them at work; its source
+entire Docs tree. [OINK Hands-On](/book/) shows them at work; its source
 is
 [`content/book/_index.md`](https://github.com/pgsty/oink.pgsty.com/blob/main/content/book/_index.md).
 

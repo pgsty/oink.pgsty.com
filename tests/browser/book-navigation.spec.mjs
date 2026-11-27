@@ -16,7 +16,7 @@ async function openClean(page, path, width = 1440) {
 
 for (const prefix of ['', '/zh']) {
   test(`Book ${prefix || 'en'} keeps left headings off and the outline reachable`, async ({ page }) => {
-    await openClean(page, `${prefix}/book/02-structure/`);
+    await openClean(page, `${prefix}/book/03-pages/`);
     await expect(page.locator('[data-td-book-headings]')).toHaveCount(0);
     await expect(page.locator('.td-shell-toc__panel #TableOfContents')).toBeVisible();
 
@@ -147,7 +147,7 @@ test('the fixed outline and its reserved column resize together on every frame',
 for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
   for (const mode of ['light', 'dark']) {
     for (const [name, path, minimum, fraction, maximum] of [
-      ['Book', '/zh/book/02-structure/', 286, 0.2, 420],
+      ['Book', '/zh/book/03-pages/', 286, 0.2, 420],
       ['Docs', '/docs/customize/layout/', 286, 0.2, 420],
       ['flow', `${fixture}flow/`, 340, 0.22, 440],
     ]) {

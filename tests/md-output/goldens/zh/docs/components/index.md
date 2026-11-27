@@ -125,7 +125,8 @@ markup:
 反链：
 
 - [OINK 实现预览](/zh/blog/oink-announcement/)
-- [组合页面](/zh/book/03-compose/)
+- [组件](/zh/book/04-components/)
+- [上线](/zh/book/10-ship/)
 - [OINK 文档](/zh/case/oink/)
 - [文档](/zh/docs/)
 - [简介](/zh/docs/about/)

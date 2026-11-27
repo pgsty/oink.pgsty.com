@@ -1,61 +1,123 @@
 ---
 title: Front Matter 模式
 linkTitle: 附录：模式
-description: 可复制调整的 Book 根页、章节、沉浸式 Blog 文章与整书输出契约。
+description: 可直接复制改写的 front matter：Docs 分组与页面、博客根页、沉浸式专栏、博客文章、作者主页、Book 根页与章节，均取自本书。
 book_kind: appendix
 book_number: A
-weight: 70
+weight: 110
 ---
 
-这些模式刻意保持精简。先复制建立内容契约所需的字段；只有在真实的读者需求出现时，
-才加入额外的展示选项。
+每个模式只保留确立页面角色所需的键；等读者确实有需要时，再加入控制展示的键。各模式下注明的章节解释了其中的每个键。
 
-## Book 栏目根页 {#section-root}
+## Docs 分组 {#docs-group}
 
-```yaml
+```yaml {title="content/docs/operations/_index.md"}
+title: Operations
+description: Back up, upgrade and monitor a running server.
+weight: 35
+icon: fa-solid fa-screwdriver-wrench
+```
+
+目录里放入这个 `_index.md`，就成为侧栏中的一个分组，分组页面会列出它的子页面。见[第 3 章](/zh/book/03-pages/#tree)。
+
+## Docs 页面 {#docs-page}
+
+```yaml {title="content/docs/get-started/quick-start.md"}
+title: Quick start
+description: Start a server, write a data point and query it back in five minutes.
+weight: 30
+search_keywords: [getting started, first query]
+```
+
+对应的中文页面 `quick-start.zh.md` 使用相同的 `weight` 和相同的标题 ID。见[第 3 章](/zh/book/03-pages/#first-page)。
+
+## 博客根页 {#blog-root}
+
+```yaml {title="content/blog/_index.md"}
+title: Blog
+type: blog
+sidebar_root_for: self
+blog_index: cards
+blog_index_toggle: true
+cascade:
+  type: blog
+  feedback: false
+```
+
+见[第 6 章](/zh/book/06-blog/#index)。
+
+## 沉浸式专栏 {#immersive}
+
+```yaml {title="content/blog/post/_index.md"}
+title: Posts
+cascade:
+  featured_image: hero
+  toc_style: flow
+  toc_taxonomies: false
+  sidebar_enabled: false
+```
+
+这个专栏下的文章以全宽图片开篇，大纲排进正文栏，没有侧栏；订阅源、署名和系列都不受影响。见[第 6 章](/zh/book/06-blog/#immersive)。
+
+## 博客文章 {#post}
+
+```yaml {title="content/blog/post/why-monthly-partitions/index.md"}
+title: Why Acme DB partitions by month
+date: 2026-11-02
+description: Monthly partitions make retention a file deletion.
+authors: [mei-lin]
+series: [storage-internals]
+series_weight: 10
+tags: [storage, design]
+```
+
+放在 `index.md` 旁边的 `featured.webp` 会成为缩略图和分享图片。使用 `authors` 和 `series` 之前，要先在 `hugo.yaml` 中声明对应的分类法。见[第 6 章](/zh/book/06-blog/#post)。
+
+## 作者主页 {#author}
+
+```yaml {title="content/authors/mei-lin/_index.md"}
+title: Mei Lin
+description: Maintains the Acme DB storage engine.
+images: [portrait.webp]
+```
+
+见[第 6 章](/zh/book/06-blog/#authors)。
+
+## Book 根页 {#book-root}
+
+```yaml {title="content/book/_index.md"}
+title: The Acme DB Operations Handbook
 type: book
 book_kind: book
 outputs: [HTML, print, markdown]
 cascade:
   type: book
-  book_draft_banner: true
+  sidebar_headings: 3
 ```
 
-根页声明 Book 外壳与生成输出。它不需要章节编号；编号属于阅读顺序中真正出现的内容。
+根页放置 `book-toc` 和各类索引短代码，它的 `print` 输出就是合成一份文档的整本书。见[第 7 章](/zh/book/07-book/#root)。
 
-## Book 章节 {#chapter-pattern}
+## Book 章节 {#chapter}
 
-```yaml
+```yaml {title="content/book/03-capacity.md"}
+title: Plan capacity
 book_kind: chapter
-book_number: 1
+book_number: 3
 book_status: draft
-weight: 10
+weight: 30
 ```
 
-使用 `book_status: draft` 表达可见的编辑状态。它与 Hugo 的 `draft: true` 不同：
-页面会保留在普通构建中，审阅者仍然可以阅读尚未完成的章节。
+`book_number` 按原样显示；`book_status: draft` 只给章节加上草稿标记，并不会取消发布。见[第 7 章](/zh/book/07-book/#chapters)。
 
-## 沉浸式 Blog 文章 {#article-pattern}
+## 每个键在哪里生效 {#key-map}
 
-```yaml
-type: blog
-authors: [oink, vonng]
-featured_image: hero
-toc_style: flow
-toc_taxonomies: false
-sidebar_enabled: false
-```
-
-文章仍然属于 Blog 家族，Feed、作者、系列与分享能力都会保留；以上字段只改变阅读呈现。
-
-## 生成输出矩阵 {#output-matrix}
-
-| 输出 | 范围 | 典型用途 |
+| 键 | 写在哪里 | 作用 |
 | --- | --- | --- |
-| HTML | 单个根页或章节 | 阅读、导航与搜索 |
-| print | 完整的 Book | 审阅、打印与 PDF 转换 |
-| markdown | 保留源码结构的 Book | 导出与下游处理 |
-{#tbl-output-matrix num="A-1" caption="同一棵内容树可以生成多种面向不同用途的 Book 输出。"}
-
-Book 根页生成的目录、插图、表格、公式与示例索引会一起证明这些契约。中英文页面必须对齐
-显式标题 ID 与对象 ID，确保每种格式都保留相同的引用关系。
+| `weight` | 任意页面 | 决定页面在侧栏、翻页导航和全书目录中相对同级页面的顺序 |
+| `type` | 分区根页，经 `cascade` 向下传递 | 阅读外壳：`docs`、`blog` 或 `book` |
+| `cascade` | 分区根页 | 把其中的键应用到下面的每个页面 |
+| `blog_index` | 博客根页或专栏 | `list`、`cards`、`table` 或 `gallery` |
+| `featured_image` | 博客专栏或文章 | 文章顶部的 `none`、`banner`、`wash` 或 `hero` |
+| `book_number` | Book 章节 | 章节编号，按原样显示 |
+| `outputs` | 分区根页 | 替换站点为该页面设置的输出列表 |
+{#tbl-key-map num="A-1" caption="本书用到的 front matter 键，以及每个键在哪里生效。"}

@@ -295,7 +295,7 @@ for (const preset of ['ink', 'terminal']) for (const mode of ['light', 'dark']) 
       localStorage.setItem('td-preset', preset);
       localStorage.setItem('td-color-theme', mode);
     }, { preset, mode });
-    const paths = ['/', docs, '/docs/components/callout/', '/docs/components/tabs/', '/docs/components/code/', '/docs/components/fields/', '/blog/', '/book/04-design/', '/docs/write/openapi/', '/docs/components/mermaid/', '/docs/components/echarts/'];
+    const paths = ['/', docs, '/docs/components/callout/', '/docs/components/tabs/', '/docs/components/code/', '/docs/components/fields/', '/blog/', '/book/08-design/', '/docs/write/openapi/', '/docs/components/mermaid/', '/docs/components/echarts/'];
     for (const path of paths) {
       const response = await page.goto(path);
       expect(response.status()).toBe(200);

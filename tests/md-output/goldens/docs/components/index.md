@@ -170,7 +170,8 @@ Section pages:
 Backlinks:
 
 - [Introducing OINK](/blog/oink-announcement/)
-- [Compose the page](/book/03-compose/)
+- [Components](/book/04-components/)
+- [Ship](/book/10-ship/)
 - [OINK Docs](/case/oink/)
 - [Docs](/docs/)
 - [Introduction](/docs/about/)

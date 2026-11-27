@@ -143,6 +143,8 @@ Section pages:
 Backlinks:
 
 - [Six years to Oink](/blog/oink-release/)
+- [Start from a prompt](/book/01-start/)
+- [Ship](/book/10-ship/)
 - [Le Shi Handbook](/case/le-shi/)
 - [Docs](/docs/)
 - [Introduction](/docs/about/)

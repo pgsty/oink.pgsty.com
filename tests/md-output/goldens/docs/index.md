@@ -23,7 +23,7 @@ OINK? Read the [1.6.0 release notes](/release/1.6.0/), then follow the
 
 - [Get started](/docs/start/) — Clone the Starter, preview it, replace its content, deploy it.
 - [Components](/docs/components/) — Callouts, tabs, diagrams, cards and more, each with its source beside the result.
-- [Write Beautiful Docs](/book/) — A six-chapter course that takes one site from an empty repository to a published bilingual release.
+- [OINK Hands-On](/book/) — Build a site from one prompt, then learn every layer of it in ten hands-on chapters.
 - [Case studies](/case/) — How production sites solved navigation, migration and landing-page design.
 {.cards}
 

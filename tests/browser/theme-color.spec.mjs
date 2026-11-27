@@ -12,7 +12,7 @@ import { expect, test } from '@playwright/test';
 // against hard-coded hexes, so re-colouring a section in its cascade is not a
 // test failure -- only breaking the wiring is.
 
-const BOOK = '/book/04-design/';
+const BOOK = '/book/08-design/';
 const DOCS = '/docs/';
 const BLOG = '/blog/';
 

@@ -254,7 +254,7 @@ pg_basebackup -h primary -U replicator -D /pg/data -Fp -Xs -P -R
 {{</* book-examples */>}}
 ```
 
-本页只给出源码，因为放在这里它们会把整个文档树都列出来。实际效果见[《使用 OINK 创作优美的内容》](/zh/book/)，源码在
+本页只给出源码，因为放在这里它们会把整个文档树都列出来。实际效果见[《OINK 上手教程》](/zh/book/)，源码在
 [`content/book/_index.md`](https://github.com/pgsty/oink.pgsty.com/blob/main/content/book/_index.md)。
 
 - `book-toc` 在 `depth=1` 时只列章，`2`（默认）加入嵌套的节，`3` 再列出每页的标题。`drafts=false` 把 `book_status: draft` 的章节从这份清单里去掉，但不影响它们发布。
