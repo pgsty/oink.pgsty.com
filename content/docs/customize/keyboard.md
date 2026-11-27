@@ -51,10 +51,11 @@ If the group is open, it moves to the first visible child. Page navigation with
 
 | Key | Behaviour |
 | --- | --- |
-| {{< kbd "J" >}} {{< kbd "K" >}} | Jump to the next / previous section along the page outline |
+| {{< kbd "K" >}} | Jump to the previous heading along the page outline |
+| {{< kbd "J" >}} | Jump to the next heading along the page outline |
 | {{< kbd "N" >}} | Home page only: jump to the next top-level section (a mnemonic alias for {{< kbd "J" >}} there) |
 | {{< kbd "Q" >}} {{< kbd "E" >}} | Previous / next page |
-| {{< kbd "H" >}} | Focused reading: hide / restore the navigation shell |
+| {{< kbd "H" >}} {{< kbd "Z" >}} | Zen Mode: hide / restore the navigation shell |
 | {{< kbd "B" >}} | Open or close the [duo view](/docs/customize/i18n/#bilingual-view) when the site enables `params.ui.compare` and the page has a translation |
 
 {{< kbd "J" >}} {{< kbd "K" >}} use the same target sequence as the right-hand
@@ -71,8 +72,8 @@ first post of the next section". Collapsed branches are excluded. Paging and
 focus use the same order. Without a sidebar tree, paging uses the page-end
 pager. Without that pager, it uses `rel=prev/next` in `<head>`.
 
-On the home page, {{< kbd "H" >}} hides only the navbar and footer. On a
-documentation page, it also hides the left and right columns and floating
+On the home page, {{< kbd "H" >}} and {{< kbd "Z" >}} hide only the navbar and footer. On a
+documentation page, they also hide the left and right columns and floating
 buttons. The tab session stores this state and restores it before the first
 frame. Paging with {{< kbd "Q" >}} {{< kbd "E" >}} preserves it without flicker.
 While the shell is hidden, WASD cannot focus the invisible sidebar.
@@ -81,20 +82,26 @@ While the shell is hidden, WASD cannot focus the invisible sidebar.
 
 | Key | Behaviour |
 | --- | --- |
-| {{< kbd "L" >}} | Cycle the language |
+| {{< kbd "V" >}} | Switch layout on blog, release, or case index pages (`list`, `cards`, `table`, `gallery`) when `blog_index_toggle` is enabled |
+| {{< kbd "L" >}} {{< kbd "X" >}} | Cycle the language |
 | {{< kbd "T" >}} | Cycle visual styles in offered order (Paper, Slate, Ink, Terminal) |
 | {{< kbd "Y" >}} | Cycle color mode across Light, Dark, and System |
-| {{< kbd "R" >}} | Cycle among same-origin top-level navbar entries |
+| {{< kbd "R" >}} | Switch section: cycle among same-origin top-level navbar entries |
+| {{< kbd ";" >}} | Open or close the shortcut help dialog |
 
 These shortcuts work on every interactive page, including pages outside
-the documentation shell. {{< kbd "L" >}} does nothing on a single-language site.
+the documentation shell. {{< kbd "V" >}} applies only to index pages that render
+the layout toggle button (`blog_index_toggle: true`). {{< kbd "L" >}} and {{< kbd "X" >}} do nothing on a single-language site.
 {{< kbd "T" >}} does nothing unless the site offers a style choice
 (`preset_menu`); it wraps from the last style back to the first.
 {{< kbd "Y" >}} steps through Light, Dark, and System in order and does nothing
 if the color-mode menu is off. {{< kbd "R" >}}
 does nothing if there is only one top-level entry. {{< kbd "R" >}} cycles only
 same-origin top-level menu items. It excludes external links and navbar utility
-controls.
+controls. {{< kbd ";" >}} opens a centered top-layer dialog showing the
+shortcuts available on the current page—even mid-scroll, in Zen Mode, or when
+`footer_style: none` removes the bottom bar—and closes on a second {{< kbd ";" >}},
+{{< kbd "Esc" >}}, its close button, or a backdrop click.
 
 ## Search and commands {#search}
 
@@ -112,6 +119,16 @@ mode. See [Command palette](/docs/customize/panel/) for its contents.
 
 ## Expo image viewer {#expo-viewer}
 
+On an [Expo album](/docs/write/expo/#shortcuts) page or in a blog/case/release
+index's `gallery` view, page-level keyboard navigation adds gallery layout and
+tile-size shortcuts while browsing the grid:
+
+| Key | Album grid action |
+| --- | --- |
+| {{< kbd "M" >}} | Cycle image layout (`wall` → `cards` → `seamless`) |
+| {{< kbd "," >}} or {{< kbd "<" >}} | Shrink album image size by one step (`−20 px`) |
+| {{< kbd "." >}} or {{< kbd ">" >}} | Enlarge album image size by one step (`+20 px`) |
+
 The [Expo viewer](/docs/write/expo/#shortcuts) has its own
 shortcuts. Page-level single-key navigation pauses while an image is open.
 It resumes when the viewer closes.
@@ -125,15 +142,16 @@ It resumes when the viewer closes.
 | F | Expand to fit the whole image in the viewing area |
 | Escape | Close the viewer |
 
-These actions apply inside the viewer. `keyboard_nav: false` disables page
-shortcuts; it does not disable the viewer controls. Expo is available in OINK 1.3.0.
+Album grid bindings follow `keyboard_nav`; viewer actions apply inside the
+viewer regardless of `keyboard_nav`. Expo is available in OINK 1.3.0.
 
 ## Keys deliberately left free {#reserved}
 
-{{< kbd "?" >}} is reserved and unbound. The cheatsheet uses the question mark
-button in the footer's bottom bar. It opens on hover, keyboard focus, or touch.
-It lists only keys available on the current page. A single-language site
-therefore has no language row.
+{{< kbd "?" >}} is reserved and unbound. Press {{< kbd ";" >}} anywhere on the
+page to open the shortcut help dialog, or use the question mark button in the
+footer's bottom bar (which opens on hover, keyboard focus, or touch). Both show
+only keys available on the current page. A single-language site therefore has
+no language row.
 
 {{< kbd "G" >}} {{< kbd "G" >}}, {{< kbd "Shift" "G" >}} and the digits are
 likewise reserved, as possible future jump sequences.

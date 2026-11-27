@@ -159,7 +159,7 @@ params:
 ### 表格与布局切换 {#list-switching}
 
 无论是否开启布局切换，`blog_index: table` 始终以紧凑表格列出整个栏目的全部文章，
-不分页。设置 `blog_index_toggle: true`，标题旁就会出现布局切换按钮。切换顺序是
+不分页。设置 `blog_index_toggle: true`，标题旁就会出现布局切换按钮（开启键盘导航时也可按 {{< kbd "V" >}} 切换）。切换顺序是
 `list` → `cards` → `table` → `gallery` → `list`：
 
 ```yaml {title="content/blog/_index.zh.md"}

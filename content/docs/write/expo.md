@@ -208,6 +208,11 @@ occupies one CSS pixel.
 
 ## Use keyboard shortcuts {#shortcuts}
 
+While browsing an album grid with `keyboard_nav` enabled, {{< kbd "M" >}} cycles
+between `wall`, `cards`, and `seamless`, {{< kbd "," >}} / {{< kbd "<" >}}
+shrinks the tile size by one step (`−20 px`), and {{< kbd "." >}} /
+{{< kbd ">" >}} enlarges it by one step (`+20 px`).
+
 These shortcuts work while the viewer is open. They take precedence over the
 page's single-key navigation. They do not handle text input, input method
 composition, or Ctrl/Command/Alt combinations.

@@ -194,7 +194,7 @@ processing, Hugo applies `.Fill`, so readers download cropped previews.
 `blog_index: table` always lists the entire section as a compact archive table
 without pagination — both standalone (`blog_index_toggle: false`) and when
 reached through the layout switch. Set `blog_index_toggle: true` to add the
-layout switch beside the title. It cycles through
+layout switch beside the title (also bound to {{< kbd "V" >}} when keyboard navigation is enabled). It cycles through
 `list` → `cards` → `table` → `gallery` → `list`:
 
 ```yaml {title="content/blog/_index.md"}

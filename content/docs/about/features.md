@@ -116,11 +116,16 @@ Use the same entry point to search and run actions.
 
 Keyboard navigation is on by default. You can turn it off per site or section.
 `w` and `s` move up and down the sidebar tree. `a` and `d` collapse and expand
-it. `q` and `e` go to the previous and next page. `j` and `k` move through the
-page's table of contents. `t` or `y` toggles light and dark mode. `v` steps
-through the visual styles. `l` switches language. `b` opens or closes the duo view when a translation is available. `h` hides the reading shell. Single-key shortcuts are inactive while
-an input or textarea has focus, or while an input method is composing. The question-mark button in the
-footer's bottom bar opens the cheatsheet.
+it. `q` and `e` go to the previous and next page. `k` and `j` jump to the
+previous and next heading. `t` steps through the visual styles. `y` cycles light,
+dark, and system color modes. `l` or `x` switches language. `b` opens or closes
+the duo view when a translation is available. `h` or `z` toggles Zen Mode.
+`v` switches index layout modes on blog, release, and case indexes; on Expo
+albums, `m` cycles gallery layouts and `,`/`<` or `.`/`>` shrinks or enlarges
+tiles. `;` opens or closes the shortcut help dialog. Single-key
+shortcuts are inactive while an input or textarea has focus, or while an input
+method is composing. The question-mark button in the footer's bottom bar also
+opens the cheatsheet.
 
 → [Keyboard navigation](/docs/customize/keyboard/)
 

@@ -349,7 +349,7 @@ The Palette has empty, text-search, and `>` command modes. Quick links come from
 It provides no history, semantic search, personalization, or remote fallback.
 Queries stay in the browser. No default telemetry is sent.
 
-`OinkSurfaceCoordinator` coordinates the Palette, Appearance, Draw.io, Expo viewer, drawer, root, language, and version menus.
+`OinkSurfaceCoordinator` coordinates the Palette, Appearance, keyboard shortcuts help dialog, Draw.io, Expo viewer, drawer, root, language, and version menus.
 Each surface controls focus restoration and Escape.
 Already closed Appearance menus do not restore focus when the coordinator closes them.
 Keyboard navigation ignores editable controls and modals. The desktop nonmodal Appearance panel permits search shortcuts; its mobile modal sheet and other open dialogs, including fixed-position ARIA dialogs, retain keyboard ownership.
@@ -358,8 +358,8 @@ The version disclosure opens on hover, focus or tap. Tab and the up/down arrows 
 Escape dismisses the list even when a touch browser leaves focus on the page body. A second Escape closes the drawer.
 The list wraps long labels and scrolls above the bottom bar. In the phone drawer it expands in the flow so the drawer can scroll to its last link.
 A press outside a floating list closes it at once, because iOS sends no click for a tap on plain content. The drawer's list closes on the click, so the row under the finger stays in place.
-`/`, `\`, `f`, and `c` open search or commands. `j`/`k` move between headings. `q`/`e` move between pages.
-`h` changes presentation. `l` cycles the language, `t`/`y` toggle light and dark, `v` steps to the next offered visual preset, and `r` cycles root choices.
+`/`, `\`, `f`, and `c` open search or commands. `k`/`j` jump to the previous/next heading (listed on separate rows in shortcut help). `q`/`e` move between pages.
+`h`/`z` toggle chrome-free Zen Mode. `v` switches the layout form on index pages that enable `blog_index_toggle`. On Expo album pages and visible blog/case/release `gallery` views, `m` cycles gallery layout modes and `,`/`<` and `.`/`>` shrink or enlarge the tile size slider. `l`/`x` cycle the language, `t` steps to the next offered visual preset, `y` cycles light, dark, and system color modes, `;` toggles the top-layer shortcut help dialog (including in Zen Mode and on `footer_style: none` pages), and `r` switches top-level sections.
 Sidebar WASD/Arrow navigation uses real focus without changing Tab order.
 Non-link divider buttons participate in tree navigation.
 From a child, Left/`a` focuses its parent group. A second press collapses it.

@@ -312,6 +312,34 @@ test('Expo shows the grid preview while an original loads and warms the next ima
  await expect(image).toHaveCSS('background-image','none');
 });
 
+test('Expo album shortcuts switch layout with m and adjust tile size with ,/< and ./>',async({page})=>{
+ await page.setViewportSize({width:1280,height:800});
+ await page.addInitScript(()=>{localStorage.removeItem('td-expo-mode');localStorage.removeItem('td-expo-size');});
+ await page.goto(album);
+ const expo=page.locator('[data-td-expo]');
+ const slider=page.locator('input[data-td-expo-size]');
+ await expect(expo).toHaveAttribute('data-td-expo-mode','wall');
+ await expect(slider).toHaveValue('240');
+ // Shortcut help lists M and < > on Expo album pages.
+ for(const keycap of ['M','<','>']) {
+  await expect(page.locator('.td-shell-keyboard-help kbd',{hasText:new RegExp(`^${keycap}$`)})).toHaveCount(1);
+ }
+ for(const expected of ['cards','seamless','wall']) {
+  await page.keyboard.press('m');
+  await expect(expo).toHaveAttribute('data-td-expo-mode',expected);
+ }
+ await page.keyboard.press(',');await expect(slider).toHaveValue('220');
+ await page.keyboard.press('<');await expect(slider).toHaveValue('200');
+ await page.keyboard.press('.');await expect(slider).toHaveValue('220');
+ await page.keyboard.press('>');await expect(slider).toHaveValue('240');
+ // Opening the viewer dialog pauses album-grid shortcuts.
+ await open(page,'small');
+ await page.keyboard.press('m');await page.keyboard.press('.');
+ await page.keyboard.press('Escape');
+ await expect(expo).toHaveAttribute('data-td-expo-mode','wall');
+ await expect(slider).toHaveValue('240');
+});
+
 test.describe('touch',()=>{
  test.use({hasTouch:true,viewport:{width:390,height:844}});
  test('Expo swipes between fitted images and leaves enlarged images to native scrolling',async({page})=>{

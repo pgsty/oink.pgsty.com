@@ -304,7 +304,7 @@ test.describe('WCAG AA contract', () => {
     });
   }
 
-  for (const { label, path, viewport, open } of [
+  for (const { label, path, viewport, theme, open } of [
     {
       label: 'desktop navbar panel',
       path: '/',
@@ -327,9 +327,33 @@ test.describe('WCAG AA contract', () => {
         );
       },
     },
+    {
+      label: 'shortcut help dialog · en · light',
+      path: '/docs/customize/config/',
+      viewport: { width: 1280, height: 720 },
+      open: async (page) => {
+        await page.keyboard.press(';');
+        await expect(page.locator('[data-td-keyboard-dialog]')).toBeVisible();
+      },
+    },
+    {
+      label: 'shortcut help dialog · zh · dark',
+      path: '/zh/docs/customize/config/',
+      viewport: { width: 390, height: 844 },
+      theme: 'dark',
+      open: async (page) => {
+        await page.keyboard.press(';');
+        await expect(page.locator('[data-td-keyboard-dialog]')).toBeVisible();
+      },
+    },
   ]) {
     test(`open ${label}`, async ({ page }) => {
       await page.setViewportSize(viewport);
+      if (theme) {
+        await page.addInitScript((selectedTheme) => {
+          localStorage.setItem('td-color-theme', selectedTheme);
+        }, theme);
+      }
       await page.goto(path, { waitUntil: 'domcontentloaded' });
       await open(page);
       const { violations } = await scan(page);
