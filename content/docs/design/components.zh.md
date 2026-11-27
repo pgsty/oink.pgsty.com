@@ -312,9 +312,11 @@ Swagger 与 Redoc 接受 HTTP(S) 规范 URL 或以 `static/` 为根的路径，�
 紧跟 `{.timeline}` 的定义列表就是时间轴：术语是自由文本的标记，定义是可含块级内容的事件。
 `<dl>` 由 Goldmark 生成；主题只添加作用域为 `.td-content dl.timeline` 的 CSS，宽屏时分出标记列，窄屏时为单列。
 
-带 `{.update}` 标记的标题就是一条更新日志条目，另外接受 `date`（`YYYY`、`YYYY-MM` 或 `YYYY-MM-DD`，渲染为 `<time datetime>`）与 `tags`（逗号分隔的纯文本，渲染为中性 chip）。
-标题本身保持不变，因此 TOC 条目、锚点、搜索小节与 Print ID 都与普通标题一样；标题之后跟一行 `td-update-meta`。
-无效日期会告警并给出页面路径，然后被丢弃；没有该标记时，`date` 与 `tags` 属于未知属性。不带标记的标题与此前版本的输出逐字节一致。
+带 `{.update}` 标记的标题就是一条更新日志条目，另外接受字符串型 `date`（`YYYY`、`YYYY-MM` 或合法日历 `YYYY-MM-DD`，渲染为 `<time datetime>`）与字符串型 `tags`（支持 `,` 与中文全角 `，` 分隔的纯文本，渲染为中性 chip）。
+标题本身保持不变，因此 TOC 条目、锚点、搜索小节与 Print ID 都与普通标题一样；标题之后跟一行 `td-update-meta`，各项之间插入 `<span class="td-update-sep">, </span>` 分隔符。这一行采用行内排版而非 flex，分隔符是 `font-size: 0` 的文档流内文本，且不设 `user-select: none`，因此 Chromium、Firefox 与 WebKit 的纯文本复制、离线搜索（`offline_search_index: content`）、RSS 阅读器与无障碍树都能保持词项独立；flex 子项会被块级化，复制出的文本因而断行或粘连。
+无效日历日期及非字符串的 `date`、`tags` 取值会按页面路径告警并被丢弃，同时保留标题与其余合法元数据；没有该标记时，`date` 与 `tags` 属于未知属性。
+Goldmark 会给每个标题加上 `id` 属性，因此当该 id 是唯一属性时，`render-heading.html` 走快速路径、跳过属性校验 partial，输出与完整路径逐字节一致。
+更新样式独立于 `assets/css/td/update.css`，用 `:has(+ .td-update-meta)` 与各项自身的块向外边距替代负外边距，打印时无论屏幕配色如何都映射到 `--td-print-*` 令牌并抑制 `h2.update` 的底边线；`rich-copy.js` 在纸张调色板上将 `.td-update-meta` 格式化为分隔的元数据项。
 
 目标为视频或音频文件，或 YouTube、Bilibili、Vimeo URL 的块级图片属于媒体，由 `content/media.html` 处理。
 文件按解析到的资源的 Hugo 媒体类型识别，否则按扩展名识别。图片行为、其他非图片资源的告警以及查找顺序都不变；这套顺序现在由 `content/resource-lookup.html` 统一提供给两个解析器。

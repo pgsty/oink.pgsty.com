@@ -102,9 +102,9 @@ one page has no component.
 | Attribute | Rule | Invalid input |
 | --- | --- | --- |
 | `.update` | Author marker on any heading level; usually `##` for entries | — |
-| `date` | Optional. `YYYY`, `YYYY-MM`, or `YYYY-MM-DD` | Warns and drops the date; the entry stays |
-| `tags` | Optional. Comma-separated plain text; items are trimmed, empty items skipped | Non-string warns and drops the tags |
-| `id` | Existing heading rule | Existing behavior |
+| `date` | Optional. String `YYYY`, `YYYY-MM`, or valid calendar `YYYY-MM-DD` | Non-string or invalid calendar date warns and drops the date; the entry and valid tags stay |
+| `tags` | Optional. String of `,` or `，` separated plain text; items are trimmed, empty items skipped | Non-string warns and drops the tags |
+| `id` | Existing heading rule; explicit `#id` recommended for version headings | Existing behavior |
 
 `date` and `tags` on a heading without `.update` warn and are dropped. That is
 the heading hook's existing rule for unsupported attributes, so no new
@@ -119,7 +119,7 @@ inside an entry are ordinary lower-level headings and nest under it in the TOC.
 
 ```html
 <h2 id="v160--plain-css-stylesheets" class="update">v1.6.0 — Plain CSS stylesheets<a class="td-heading-self-link" …></a></h2>
-<div class="td-update-meta"><time datetime="2026-11-23">2026-11-23</time><span class="td-update-tag">Breaking</span><span class="td-update-tag">Performance</span></div>
+<div class="td-update-meta"><time datetime="2026-11-23">2026-11-23</time><span class="td-update-sep">, </span><span class="td-update-tag">Breaking</span><span class="td-update-sep">, </span><span class="td-update-tag">Performance</span></div>
 ```
 
 The metadata line sits after the heading, not inside it, so heading text, the
@@ -225,3 +225,5 @@ depend on them.
 - **2026-11-27 (review).** Replaced by the `.update` heading marker with `date`
   and `tags`; rail, tone mapping, and per-entry links removed.
 - **2026-11-27 (implementation).** Implemented in `render-heading.html` and `assets/css/td/timeline.css`. Headings without the marker stay byte-identical (the theme goldens prove it); invalid input is covered by `check_update_headings` in `bin/check-content-primitives.py`. No locale key was needed.
+- **2026-11-27 (post-review hardening).** Extracted styles to `assets/css/td/update.css`; added visually hidden `, ` separators inside `.td-update-meta` to fix search-index, RSS, screen-reader, and copy token gluing; added `rich-copy.js` support; fixed dark-mode print contrast (`--td-print-*`) and `h2.update` bottom-border sandwich; replaced negative margin with `:has(+ .td-update-meta)` and tightened first-entry / `h2+h3.update` spacing; aligned Ink top border and tag surface; added `if not .Attributes` fast path, `printf "%T"` string type guards, real calendar date checks via `time.AsTime`, and full-width `，` tag splitting.
+- **2026-11-27 (acceptance review).** Firefox still copied the tags glued (`FixDocs`) and WebKit put each comma on its own line, because flex items are blockified and `user-select: none` removed the separators from the selection. The metadata line is now inline flow with `<span class="td-update-sep">, </span>` separators at `font-size: 0`, and all three engines copy `2026-11-23, Fix, Docs`. The `if not .Attributes` fast path never ran, since Goldmark gives every heading an `id`; it now applies when that id is the only attribute, roughly halving the heading hook's template time on the documentation site with byte-identical output. The fixture goldens record the separator markup and the new word count.

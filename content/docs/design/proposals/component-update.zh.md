@@ -79,9 +79,9 @@ Mintlify 的 `<Update>` 说明了这类需求的存在。OINK 已有 `layout: re
 | 属性 | 规则 | 无效输入 |
 | --- | --- | --- |
 | `.update` | 作者标记，可用于任意级别的标题；条目通常用 `##` | — |
-| `date` | 可选。`YYYY`、`YYYY-MM` 或 `YYYY-MM-DD` | 告警并丢弃日期；条目保留 |
-| `tags` | 可选。逗号分隔的纯文本；各项去除首尾空白，跳过空项 | 非字符串值告警并丢弃标签 |
-| `id` | 沿用现有标题规则 | 沿用现有行为 |
+| `date` | 可选。字符串 `YYYY`、`YYYY-MM` 或合法日历 `YYYY-MM-DD` | 非字符串或无效日历日期告警并丢弃日期；条目与有效标签保留 |
+| `tags` | 可选。`,` 或 `，` 分隔的纯文本字符串；各项去除首尾空白，跳过空项 | 非字符串值告警并丢弃标签 |
+| `id` | 沿用现有标题规则；版本条目建议显式写出 `#id` | 沿用现有行为 |
 
 不带 `.update` 的标题上出现 `date` 与 `tags` 时，会告警并被丢弃。这本就是标题钩子对不支持属性的现有规则，因此无需新增诊断路径。没有日期的条目（例如「Unreleased」）同样有效。
 
@@ -91,7 +91,7 @@ Mintlify 的 `<Update>` 说明了这类需求的存在。OINK 已有 `layout: re
 
 ```html
 <h2 id="v160--plain-css-stylesheets" class="update">v1.6.0 — Plain CSS stylesheets<a class="td-heading-self-link" …></a></h2>
-<div class="td-update-meta"><time datetime="2026-11-23">2026-11-23</time><span class="td-update-tag">Breaking</span><span class="td-update-tag">Performance</span></div>
+<div class="td-update-meta"><time datetime="2026-11-23">2026-11-23</time><span class="td-update-sep">, </span><span class="td-update-tag">Breaking</span><span class="td-update-sep">, </span><span class="td-update-tag">Performance</span></div>
 ```
 
 元数据行位于标题之后，而不在标题内部，因此标题文本、无障碍名称、自链接与搜索小节标题都保持干净。日期直接显示作者写下的 ISO 字符串，它在所有语言区域中都已与 OINK 的默认日期格式一致。
@@ -169,3 +169,5 @@ Mintlify 的 `<Update>` 说明了这类需求的存在。OINK 已有 `layout: re
 - **2026-11-27（初稿）**：百分号分隔的 `update` 短代码，带粘性侧栏与七个参数。
 - **2026-11-27（评审）**：改为带 `date` 与 `tags` 的 `.update` 标题标记；移除侧栏、色调映射与条目级链接。
 - **2026-11-27（实现）。** 在 `render-heading.html` 与 `assets/css/td/timeline.css` 中实现。不带标记的标题保持逐字节一致（由主题 golden 证明）；无效输入由 `bin/check-content-primitives.py` 中的 `check_update_headings` 覆盖。无需新增语言键。
+- **2026-11-27（评审后加固）。** 将样式拆出至独立的 `assets/css/td/update.css`；在 `.td-update-meta` 各项间插入视觉隐藏的 `, ` 分隔符以解决搜索索引、RSS、读屏与复制粘连；补充 `rich-copy.js` 支持；修复暗色模式打印对比度（`--td-print-*`）与 `h2.update` 打印双线夹心；用 `:has(+ .td-update-meta)` 取代负外边距并修正首条条目与 `h2 + h3.update` 间距；对齐 Ink 顶边线与标签底色；在标题钩子中加入 `if not .Attributes` 快速路径、`printf "%T"` 字符串类型校验、`time.AsTime` 真实日历校验及中文全角 `，` 分隔支持。
+- **2026-11-27（验收评审）。** Firefox 复制时标签仍然粘连（`FixDocs`），WebKit 则把每个逗号单独放在一行，原因是 flex 子项会被块级化，而 `user-select: none` 把分隔符排除出了选区。元数据行改为行内排版，分隔符改为 `font-size: 0` 的 `<span class="td-update-sep">, </span>`，三个引擎复制出的都是 `2026-11-23, Fix, Docs`。`if not .Attributes` 快速路径从未生效，因为 Goldmark 会给每个标题加 `id`；现在改为 id 是唯一属性时走快速路径，文档站上标题钩子的模板耗时约减半，输出逐字节不变。测试夹具的 golden 记录了新的分隔符标记与字数。

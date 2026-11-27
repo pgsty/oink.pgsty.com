@@ -340,9 +340,11 @@ Only HTML is interactive. Print, Markdown, and RSS provide static specification 
 A definition list followed by `{.timeline}` is a timeline: terms are markers in free text, definitions are events with block content.
 Goldmark emits the `<dl>`; the theme adds only CSS scoped to `.td-content dl.timeline`, with a marker column on wide screens and one column on narrow ones.
 
-A heading marked `{.update}` is a changelog entry. It also accepts `date` (`YYYY`, `YYYY-MM` or `YYYY-MM-DD`, rendered as `<time datetime>`) and `tags` (comma-separated plain text, rendered as neutral chips).
-The heading itself is unchanged, so its TOC entry, anchor, search section and Print ID behave as for any heading; a `td-update-meta` line follows it.
-An invalid date warns with the page path and is dropped; `date` and `tags` without the marker are unknown attributes. Headings without the marker render byte-identically to earlier releases.
+A heading marked `{.update}` is a changelog entry. It also accepts string `date` (`YYYY`, `YYYY-MM` or valid calendar `YYYY-MM-DD`, rendered as `<time datetime>`) and string `tags` (comma-separated plain text accepting `,` and `，`, rendered as neutral chips).
+The heading itself is unchanged, so its TOC entry, anchor, search section and Print ID behave as for any heading; a `td-update-meta` line follows it with `<span class="td-update-sep">, </span>` separators between items. The line is inline flow, not flex, and the separators are in-flow text set to `font-size: 0` without `user-select: none`, so plain-text copy in Chromium, Firefox and WebKit, offline search (`offline_search_index: content`), RSS readers and the accessibility tree all keep tokens distinct; flex items are blockified and broke or glued the copied text.
+Invalid calendar dates and non-string `date` or `tags` values warn with the page path and are dropped while keeping the heading and any remaining valid metadata; `date` and `tags` without the marker are unknown attributes.
+Goldmark gives every heading an `id` attribute, so `render-heading.html` takes a fast path, skipping the attribute partials, when that id is the only attribute; its output is byte-identical to the full path.
+Update styles live in `assets/css/td/update.css`, using `:has(+ .td-update-meta)` and the items' own block margins instead of negative margins, mapping print rules to `--td-print-*` tokens regardless of screen color mode, and suppressing `h2.update` bottom rules in print; `rich-copy.js` formats `.td-update-meta` as separated metadata on the paper palette.
 
 A block image whose destination is a video or audio file, or a YouTube, Bilibili or Vimeo URL, is media (`content/media.html`).
 Files are recognized by the Hugo media type of a resolved resource, otherwise by extension. Images, the warning for other non-image resources, and the lookup order are unchanged; `content/resource-lookup.html` now holds that order for both resolvers.
