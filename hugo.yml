@@ -415,6 +415,7 @@ params:
     enable: true
     tiles: https://tile.openstreetmap.org/{z}/{x}/{y}.png
     attribution: "© OpenStreetMap contributors"
+    attribution_url: https://www.openstreetmap.org/copyright
 
 baseURL: *productionURL
 

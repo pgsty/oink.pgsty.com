@@ -68,34 +68,70 @@ The body is parsed as YAML, and since JSON is valid YAML,
 Maps are off by default. To turn them on, choose a tile service and add it to
 `hugo.yml`. This site uses OpenStreetMap's standard tiles:
 
-```yaml {title="hugo.yml"}
+```yaml {title="hugo.yml — OpenStreetMap (light use)"}
 params:
   map:
     enable: true
     tiles: https://tile.openstreetmap.org/{z}/{x}/{y}.png
     attribution: "© OpenStreetMap contributors"
+    attribution_url: https://www.openstreetmap.org/copyright
 ```
 
-- `tiles` is an `https://` URL template containing `{z}`, `{x}` and `{y}`.
-  An optional `dark_tiles`, with the same rules, is used in dark mode.
+```yaml {title="hugo.yml — commercial service with dark tiles & subdomains"}
+params:
+  map:
+    enable: true
+    tiles: https://{s}.tiles.example.com/light/{z}/{x}/{y}{r}.png?apikey=YOUR_DOMAIN_RESTRICTED_KEY
+    dark_tiles: https://{s}.tiles.example.com/dark/{z}/{x}/{y}{r}.png?apikey=YOUR_DOMAIN_RESTRICTED_KEY
+    subdomains: abcd
+    attribution: "© Example Maps, © OpenStreetMap contributors"
+    attribution_url: https://www.openstreetmap.org/copyright
+    max_zoom: 20
+```
+
+```yaml {title="hugo.yml — self-hosted tiles with click-to-load"}
+params:
+  map:
+    enable: true
+    tiles: https://tiles.your-domain.example/styles/basic/{z}/{x}/{y}.png
+    attribution: "Map data © OpenStreetMap contributors"
+    attribution_url: https://www.openstreetmap.org/copyright
+    loading: click
+```
+
+- `tiles` is an `https://` URL template containing `{z}`, `{x}` and `{y}`
+  (`{s}` for subdomains, `{r}` for high-DPI tiles and `{-y}` for TMS row order
+  are allowed). Any other placeholder, such as `{apikey}` or `{accessToken}`,
+  has no value to fill: write the key into the URL itself, or the template
+  warns and is ignored. An optional `dark_tiles`, with the same rules, is used
+  in dark mode.
 - `attribution` is the plain-text credit the tile service requires; it appears
-  in the corner of every map.
+  in the corner of every map. Add `attribution_url` (`https://`) to turn the
+  credit into a clickable link without accepting author HTML — OpenStreetMap's
+  [attribution guidelines](https://osmfoundation.org/wiki/Licence/Attribution_Guidelines)
+  require interactive web maps to link to `https://www.openstreetmap.org/copyright`.
+- `subdomains` overrides Leaflet's default `abc` when `tiles` uses `{s}` (for
+  example `abcd` or `01234567`).
 - `max_zoom` is a whole number from 1 to 22 and defaults to 19.
+- `loading` is `lazy` (load within 320px of the viewport, default) or `click`
+  (show a button naming every tile host the map may contact, `dark_tiles`
+  included and `{s}` written as `*`, and send no tile requests until clicked;
+  a button activated from the keyboard hands focus to the map it loads).
 - `enable: true` without a valid `tiles` and an `attribution` warns and leaves
   maps off, so a half-finished configuration never sends readers to a service
   you have not agreed to. Fences keep rendering their lists.
 
 Pick a service that fits your traffic. The OpenStreetMap Foundation's
 [tile usage policy](https://operations.osmfoundation.org/policies/tiles/)
-allows light use of its standard tiles with attribution; a busy site should
-use a commercial tile service with a domain-restricted key, or
+allows light use of its standard tiles with linked attribution; a busy site
+should use a commercial tile service with a domain-restricted key, or
 host its own tiles. A key in the tile URL is visible to every reader, which is
 why the restriction to your domain matters.
 
 Each tile request sends the reader's IP address and the area being viewed to
 the tile service. Requests start only on sites that enable maps, and only when
-a map scrolls into view, so mention the service in your privacy notice if you
-have one.
+a map scrolls into view (or after a reader clicks when `loading: click` is set),
+so mention the service in your privacy notice if you have one.
 
 ## Place fields {#places}
 
@@ -218,20 +254,28 @@ default.
 ## The interactive map {#interactive}
 
 - The theme bundles Leaflet 1.9.4. Only pages with a map link its stylesheet,
-  and the script loads when a map comes within 320px of the viewport.
-- Scroll-wheel zoom is off, so scrolling the page never zooms a map by
-  accident. Readers zoom with the buttons, with the keyboard (focus the map,
-  then use the arrow keys and <kbd>+</kbd> / <kbd>-</kbd>) or with a pinch.
-- Selecting a marker, by pointer or with <kbd>Enter</kbd>, opens its popup.
+  and the script loads when a map comes within 320px of the viewport (or when
+  the reader clicks the load button under `loading: click`).
+- Scroll-wheel zoom is off, and on touchscreens single-finger swipes keep
+  scrolling the page instead of trapping the reader inside the map. Readers
+  pan and zoom with two-finger pinch, the zoom buttons, a mouse or pen drag, or the
+  keyboard (focus the map, then use the arrow keys and <kbd>+</kbd> / <kbd>-</kbd>;
+  site-wide single-key shortcuts yield while focus is inside the map).
+- Selecting a marker by pointer or with <kbd>Enter</kbd>, or clicking a place
+  entry in the list below, pans to the place and opens its popup. A popup
+  opened with <kbd>Enter</kbd> takes focus, so its link and close button come
+  next; <kbd>Escape</kbd> or the close button closes it and returns focus to
+  the marker.
 - In dark mode the map switches to `dark_tiles` when the site configures them,
-  and switches back when the reader changes the color scheme; otherwise the
-  light tiles stay.
-- The map resizes with its container, including when a tab panel is shown or a
-  disclosure opens.
-- If the script or the tiles fail to load, the list is still there.
+  and switches back when the reader changes the color scheme; without
+  `dark_tiles`, light tiles are gently dimmed without inverting map colors.
+  If every `dark_tiles` request fails, the map keeps the dimmed light tiles.
+- The map resizes and frames with its container, including when a tab panel is
+  shown or a disclosure opens, without fetching tiles for hidden tabs ahead of time.
+- If Leaflet or all light tiles fail to load, the canvas hides and the list remains.
 
-The list stays under the map as its legend and as the accessible alternative,
-and it uses two columns on wide screens.
+The list stays under the map as its interactive legend and accessible
+alternative, and it uses two columns on wide screens.
 
 ## Coordinates {#coordinates}
 
@@ -241,8 +285,11 @@ GeoJSON's `[lng, lat]` order causes. To look up a place, open it on
 openstreetmap.org: the address bar ends with `#map=zoom/lat/lng`.
 
 Tile services in mainland China commonly use GCJ-02 or BD-09 coordinates, on
-which WGS 84 markers land hundreds of meters off. The theme converts no
-coordinates, so pick a tile service that works in WGS 84.
+which WGS 84 markers land hundreds of meters off. The theme does not ship
+unofficial coordinate transforms; choose a WGS 84 / CGCS2000 tile service
+(such as compliant self-hosted tiles, a global commercial provider, or Tianditu
+with `subdomains: "01234567"` — note that Tianditu splits base imagery and
+place labels into two separate layers while `params.map.tiles` configures one).
 
 ## Output {#outputs}
 
@@ -286,15 +333,20 @@ Site parameters (`hugo.yml`):
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `params.map.enable` | bool | `false` | Turns on interactive maps; requires `tiles` and `attribution` |
-| `params.map.tiles` | URL template | — | `https://` with `{z}`, `{x}`, `{y}` |
+| `params.map.tiles` | URL template | — | `https://` with `{z}`, `{x}`, `{y}` (`{s}`, `{r}` and `{-y}` allowed; other placeholders warn) |
 | `params.map.attribution` | string | — | The plain-text attribution the tile service requires |
+| `params.map.attribution_url` | URL | — | Optional `https://` URL that turns `attribution` into a link |
 | `params.map.dark_tiles` | URL template | — | Optional; used in dark mode |
+| `params.map.subdomains` | string | — | Optional `{s}` subdomain characters (e.g. `abcd`, `01234567`); empty uses Leaflet's `abc` |
 | `params.map.max_zoom` | whole number | `19` | 1 to 22 |
+| `params.map.loading` | `lazy` \| `click` | `lazy` | `lazy` mounts near the viewport; `click` waits for a reader click |
 {.fields meta="type default"}
 
 ## Limits {#limits}
 
 - Coordinates are WGS 84 only; markers on GCJ-02 or BD-09 tiles appear offset.
+- Routes connect places directly in coordinate space and do not wrap across
+  the antimeridian.
 - There are no GPX or GeoJSON tracks, no marker clustering, search or
   geocoding, and no custom marker icons.
 - Markers are not read from photo GPS metadata; write the coordinates.

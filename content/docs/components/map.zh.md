@@ -50,22 +50,47 @@ search_keywords: [地图, 地点, 标记点, 路线, 弹窗, 瓦片, 坐标, 旅
 
 地图默认关闭。要开启它，先选定一家瓦片服务，再写进 `hugo.yml`。本站使用 OpenStreetMap 的标准瓦片：
 
-```yaml {title="hugo.yml"}
+```yaml {title="hugo.yml — OpenStreetMap（轻度使用）"}
 params:
   map:
     enable: true
     tiles: https://tile.openstreetmap.org/{z}/{x}/{y}.png
     attribution: "© OpenStreetMap contributors"
+    attribution_url: https://www.openstreetmap.org/copyright
 ```
 
-- `tiles` 是 `https://` 开头的 URL 模板，必须包含 `{z}`、`{x}` 和 `{y}`。可选的 `dark_tiles` 规则相同，在深色模式下使用。
-- `attribution` 是瓦片服务要求的纯文本署名，显示在每张地图的角落。
+```yaml {title="hugo.yml — 商业服务（带暗色瓦片与子域名）"}
+params:
+  map:
+    enable: true
+    tiles: https://{s}.tiles.example.com/light/{z}/{x}/{y}{r}.png?apikey=YOUR_DOMAIN_RESTRICTED_KEY
+    dark_tiles: https://{s}.tiles.example.com/dark/{z}/{x}/{y}{r}.png?apikey=YOUR_DOMAIN_RESTRICTED_KEY
+    subdomains: abcd
+    attribution: "© Example Maps, © OpenStreetMap contributors"
+    attribution_url: https://www.openstreetmap.org/copyright
+    max_zoom: 20
+```
+
+```yaml {title="hugo.yml — 自建瓦片并开启点击后加载"}
+params:
+  map:
+    enable: true
+    tiles: https://tiles.your-domain.example/styles/basic/{z}/{x}/{y}.png
+    attribution: "Map data © OpenStreetMap contributors"
+    attribution_url: https://www.openstreetmap.org/copyright
+    loading: click
+```
+
+- `tiles` 是 `https://` 开头的 URL 模板，必须包含 `{z}`、`{x}` 和 `{y}`（支持 `{s}` 子域名、`{r}` 高清后缀与按 TMS 行序编号的 `{-y}`）。其他占位符（如 `{apikey}`、`{accessToken}`）没有可填的值：请把密钥直接写进 URL，否则该模板会告警并被忽略。可选的 `dark_tiles` 规则相同，在深色模式下使用。
+- `attribution` 是瓦片服务要求的纯文本署名，显示在每张地图的角落。补充 `attribution_url`（`https://`）可在不接受作者 HTML 的前提下把署名渲染为可点击链接——OpenStreetMap 的[署名规范](https://osmfoundation.org/wiki/Licence/Attribution_Guidelines)要求网页交互地图链接到 `https://www.openstreetmap.org/copyright`。
+- `subdomains` 在 `tiles` 使用 `{s}` 时覆盖 Leaflet 默认的 `abc`（例如 `abcd` 或 `01234567`）。
 - `max_zoom` 是 1 到 22 的整数，默认 19。
+- `loading` 可选 `lazy`（距视口 320px 内加载，默认）或 `click`（先显示按钮，列出地图可能请求的全部瓦片域名，包括 `dark_tiles`，`{s}` 写作 `*`；读者点击后才发瓦片请求；从键盘激活按钮时，焦点随后移到加载出的地图上）。
 - 写了 `enable: true` 却缺少有效的 `tiles` 或 `attribution` 时，构建告警，地图保持关闭。这样，一份没写完的配置不会把读者引向你尚未同意其条款的服务；围栏照常渲染地点列表。
 
-按访问量选择服务。OpenStreetMap 基金会的[瓦片使用政策](https://operations.osmfoundation.org/policies/tiles/)允许在注明署名的前提下少量使用其标准瓦片；访问量大的站点应改用带域名限制密钥的商业瓦片服务，或自建瓦片服务。写在瓦片 URL 里的密钥对每位读者都可见，所以必须把它限制在你自己的域名上。
+按访问量选择服务。OpenStreetMap 基金会的[瓦片使用政策](https://operations.osmfoundation.org/policies/tiles/)允许在附带版权链接署名的前提下少量使用其标准瓦片；访问量大的站点应改用带域名限制密钥的商业瓦片服务，或自建瓦片服务。写在瓦片 URL 里的密钥对每位读者都可见，所以必须把它限制在你自己的域名上。
 
-每次瓦片请求都会把读者的 IP 地址和正在查看的区域发给瓦片服务。只有开启了地图的站点才会发出这些请求，而且只在地图滚动进入视野时才开始；如果站点有隐私声明，请把这家服务写进去。
+每次瓦片请求都会把读者的 IP 地址和正在查看的区域发给瓦片服务。只有开启了地图的站点才会发出这些请求，而且只在地图滚动进入视野时才开始（设为 `loading: click` 时则只在读者点击后才开始）；如果站点有隐私声明，请把这家服务写进去。
 
 ## 地点字段 {#places}
 
@@ -166,20 +191,20 @@ params:
 
 ## 交互地图 {#interactive}
 
-- 主题自带 Leaflet 1.9.4。只有含地图的页面才引用它的样式表，脚本在地图进入视口 320px 范围内时才加载。
-- 滚轮缩放是关闭的，滚动页面时不会误缩放地图。读者可以用缩放按钮、键盘（先聚焦地图，再用方向键和 <kbd>+</kbd> / <kbd>-</kbd>）或双指捏合来缩放。
-- 用指针或 <kbd>Enter</kbd> 选中一个标记点，会打开它的弹窗。
-- 深色模式下，站点配置了 `dark_tiles` 时地图改用它，读者切换配色时随之切回；没有配置时保持浅色瓦片。
-- 地图随容器尺寸变化重新计算大小，标签页切换显示、折叠内容展开时也一样。
-- 脚本或瓦片加载失败时，列表依然完好。
+- 主题自带 Leaflet 1.9.4。只有含地图的页面才引用它的样式表，脚本在地图进入视口 320px 范围内时才加载（设为 `loading: click` 时则点击按钮后才加载）。
+- 滚轮缩放默认关闭；在触屏设备上单指滑动会继续滚动页面，不会把读者困在地图里。读者可以用双指捏合平移和缩放、缩放按钮、鼠标或触控笔拖拽，或键盘操作（先聚焦地图，再用方向键和 <kbd>+</kbd> / <kbd>-</kbd>；焦点位于地图内时全站单键快捷键会自动让位）。
+- 用指针或 <kbd>Enter</kbd> 选中标记点，或点击下方列表中的地点条目，都会平移地图并打开对应弹窗。用 <kbd>Enter</kbd> 打开的弹窗会获得焦点，接下来就能依次到达其中的链接和关闭按钮；按 <kbd>Escape</kbd> 或关闭按钮关闭弹窗后，焦点交回标记点。
+- 深色模式下，站点配置了 `dark_tiles` 时地图改用它，读者切换配色时随之切回；没有配置时仅对浅色瓦片做温和降亮，不对地图图像做反色。`dark_tiles` 的请求全部失败时，地图改用降亮后的浅色瓦片。
+- 地图随容器尺寸变化重新计算大小与视野，标签页切换显示、折叠内容展开时也一样，且不会为未打开的标签页提前请求瓦片。
+- 脚本或浅色瓦片全部加载失败时，画布自动隐藏，地点列表依然完好。
 
-列表始终留在地图下方，既是图例，也是无障碍的替代内容；宽屏上它排成两栏。
+列表始终留在地图下方，既是可点击定位的交互图例，也是无障碍的替代内容；宽屏上它排成两栏。
 
 ## 坐标 {#coordinates}
 
 坐标使用 WGS 84 十进制度数，也就是 GPS、照片元数据和 OpenStreetMap 采用的坐标系。显式的 `lat` 与 `lng` 键避免了 GeoJSON `[lng, lat]` 顺序带来的混淆。要查某个地点的坐标，在 openstreetmap.org 上打开它，地址栏末尾就是 `#map=缩放级别/纬度/经度`。
 
-中国大陆的瓦片服务通常使用 GCJ-02 或 BD-09 坐标，WGS 84 标记点放在这些瓦片上会偏移数百米。主题不做坐标转换，请选用以 WGS 84 为准的瓦片服务。
+中国大陆的瓦片服务通常使用 GCJ-02 或 BD-09 坐标，WGS 84 标记点放在这些瓦片上会偏移数百米。主题不内置非官方坐标纠偏，请选用以 WGS 84 / CGCS2000 为准的合规瓦片服务（例如自建合规瓦片、全球商业服务，或天地图 CGCS2000 并配 `subdomains: "01234567"`——注意天地图将底图与中文注记拆分为两个独立图层，而 `params.map.tiles` 仅配置单层）。
 
 ## 输出形态 {#outputs}
 
@@ -220,15 +245,19 @@ params:
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
 | `params.map.enable` | 布尔 | `false` | 开启交互地图；需要 `tiles` 与 `attribution` |
-| `params.map.tiles` | URL 模板 | — | `https://`，包含 `{z}`、`{x}`、`{y}` |
+| `params.map.tiles` | URL 模板 | — | `https://`，包含 `{z}`、`{x}`、`{y}`（支持 `{s}`、`{r}` 与 `{-y}`；其他占位符会告警） |
 | `params.map.attribution` | 字符串 | — | 瓦片服务要求的纯文本署名 |
+| `params.map.attribution_url` | URL | — | 可选的 `https://` 链接，为署名加上版权超链接 |
 | `params.map.dark_tiles` | URL 模板 | — | 可选；深色模式下使用 |
+| `params.map.subdomains` | 字符串 | — | 可选的 `{s}` 子域名字符集（如 `abcd`、`01234567`）；留空时沿用 Leaflet 的 `abc` |
 | `params.map.max_zoom` | 整数 | `19` | 1 到 22 |
+| `params.map.loading` | `lazy` \| `click` | `lazy` | `lazy` 接近视口时挂载；`click` 点击按钮后再加载 |
 {.fields meta="type default"}
 
 ## 限制与常见问题 {#limits}
 
 - 只支持 WGS 84 坐标；放在 GCJ-02 或 BD-09 瓦片上，标记点会偏移。
+- 路线按坐标直线连接，不会自动跨国际日期变更线折返。
 - 不支持 GPX 或 GeoJSON 轨迹，没有标记点聚合、搜索、地理编码，也不能自定义标记点图标。
 - 不会从照片的 GPS 元数据读取位置，请手写坐标。
 - `name`、`text` 与 `caption` 都是纯文本，富文本请写在围栏旁边的段落里。

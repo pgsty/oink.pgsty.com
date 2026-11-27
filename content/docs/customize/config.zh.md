@@ -410,10 +410,13 @@ Mermaid、KaTeX、ECharts、Infographic、Asciinema、Swagger UI 与 Redoc 会�
 | `params.video_embeds` | list | `[]` | 读者点击视频卡片后可就地加载播放器的平台（`youtube`、`bilibili`、`vimeo`）；留空时卡片只链接到平台，见[视频](/zh/docs/components/video/#platforms) |
 | `params.map` | boolean 或 map | 关闭 | 在 `map` 地点列表上方显示交互地图，见[地图](/zh/docs/components/map/) |
 | `params.map.enable` | boolean | false | 启用交互地图；需要同时配置 `tiles` 与 `attribution` |
-| `params.map.tiles` | string | | 含 `{z}`、`{x}`、`{y}` 的 HTTPS 瓦片模板。主题不指定任何服务；启用时必填 |
+| `params.map.tiles` | string | | 含 `{z}`、`{x}`、`{y}` 的 HTTPS 瓦片模板（支持 `{s}`、`{r}` 与 `{-y}`；其他占位符会告警，该模板被忽略）。主题不指定任何服务；启用时必填 |
 | `params.map.attribution` | string | | 瓦片服务要求的纯文本署名；启用时必填 |
+| `params.map.attribution_url` | string | | 可选的 `https://` 链接，将署名渲染为可点击超链接 |
 | `params.map.dark_tiles` | string | | 可选，深色模式下使用的瓦片模板 |
+| `params.map.subdomains` | string | | 可选的 `{s}` 子域名字符集（如 `abcd`、`01234567`）；留空时沿用 Leaflet 的 `abc` |
 | `params.map.max_zoom` | integer | 19 | 最大缩放级别，1–22 |
+| `params.map.loading` | `lazy` \| `click` | `lazy` | 接近视口加载（`lazy`）或点击按钮后加载（`click`） |
 | `params.highlight_classes` | boolean | true | 语法高亮输出 Chroma class；设为 `false` 回到 Hugo 的行内样式 |
 | `params.ui.code_copy` | boolean | true | 代码块的复制按钮；设为 `false` 全站去掉，围栏自己写的 `copy=` 仍然优先 |
 {.fields meta="type default"}
@@ -527,6 +530,7 @@ hugo --printPathWarnings
 | `invalid params.offline_search_index` | 索引范围只有 `title`、`heading`、`summary`、`content` |
 | `params.drawio.enable requires an explicit params.drawio.drawio_server` | 开了 Draw.io 却没给编辑器地址 |
 | `params.map.enable requires params.map.tiles … and params.map.attribution` | 开了地图却没有配齐瓦片服务 |
+| `params.map.tiles may use only the {s}, {z}, {x}, {y}, {-y} and {r} placeholders` | 模板里有 `{apikey}` 这类无值可填的占位符；请把密钥直接写进 URL |
 | `params.video_embeds must be a list of platforms` | 写成了单个字符串或布尔值 |
 | `params.search.algolia requires explicit appId, apiKey, and indexName` | Algolia 三项缺了一项 |
 | `params.ui.image_zoom must be true or false` | 写成了 `"true"` 这样的字符串 |

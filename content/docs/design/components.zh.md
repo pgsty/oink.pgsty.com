@@ -333,8 +333,8 @@ Markdown 通过上下文感知的行内转义（`content/markdown-escape-inline.
 缺少 `author` 与 `handle` 时，有正文则渲染为普通引用块（`url` 只保留为 `cite`，Markdown 中省略；`date`、`platform` 与 `avatar` 被忽略），空正文且有 `url` 则在全部四种输出中渲染含原帖链接的引用块并发出单条告警；正文与 `url` 皆空时不输出。Hugo 内置的 `x` 短代码不被覆盖。
 
 `map` 围栏承载一个 YAML 或 JSON 地点列表（`name`、`lat`、`lng`、`text`、`image`、`link`），按名称以 YAML 解析，而不是靠内容猜测格式。围栏属性为 `caption`、`route`、`zoom`、`height`、`id` 以及相邻标签页的键。
-所有输出都渲染带 OpenStreetMap 坐标链接的编号地点列表。`params.map` 配置完整时，HTML 另加画布和校验后的地点 JSON；`content-components.js` 只在这些页面加载随主题内置的 Leaflet 引擎与样式表。
-地图关闭滚轮缩放，使用带编号的 HTML 标记点，弹窗与署名都由纯文本构建。无效地点告警并被跳过；浏览器打印时隐藏画布。
+所有输出都渲染带编号的地点列表：坐标链接带 `dir="ltr"` 隔离并以十进制格式化（不输出科学计数法），装饰缩略图在 DOM 顺序中位于地点文字之后。`params.map` 配置完整时（`tiles` 支持 `{s}`、`{r}` 与 `{-y}`，其他占位符因 Leaflet 无值可填会抛错而在构建时告警，必填纯文本 `attribution`，以及可选的 `attribution_url`、`dark_tiles`、`subdomains`、`max_zoom` 与 `loading: lazy | click`），HTML 另加画布和校验后的地点 JSON；`content-components.js`（在 `tabs.js` 隐藏非激活面板之后于 `DOMContentLoaded` 注册观察器）只在这些页面加载随主题内置的 Leaflet 引擎与样式表。
+地图关闭滚轮缩放；由于 Leaflet 在所有支持 Pointer Events 的浏览器上都报告触屏，拖拽默认关闭，鼠标或触控笔进入或按下地图时开启、手指按下时关闭，单指滑动始终滚动页面；焦点位于画布内时全站 `keyboard-nav.js` 单键快捷键自动让位；遵守 `prefers-reduced-motion`；带编号的 HTML 标记点附带完整 `aria-label` 地名；弹窗与可选版权链接均通过 DOM API（`textContent`）构建；用 `Enter` 打开的弹窗获得焦点，按 `Escape` 或关闭按钮关闭后焦点回到标记点；点击列表条目可平移定位并打开对应弹窗；未配 `dark_tiles` 时深色模式仅温和降亮瓦片而不反色；`dark_tiles` 全部失败时改用降亮后的浅色瓦片；引擎或浅色瓦片全部加载失败时隐藏画布并保留列表，且等 Leaflet 分发完失败图层的 `load` 后才移除地图。`loading: click` 的加载按钮列出地图可能请求的全部域名（`{s}` 写作 `*`，含 `dark_tiles` 域名，按从左到右隔离显示），从键盘激活时焦点移到挂载后的地图。无效地点（含 `NaN`/`Inf` 坐标）告警并跳过；浏览器打印隐藏画布并使用打印墨色令牌；`rich-copy.js` 排除画布元素。
 
 ### Book {#book}
 

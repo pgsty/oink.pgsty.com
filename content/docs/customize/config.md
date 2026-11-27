@@ -492,10 +492,13 @@ you choose. PlantUML renders in the reader's browser unless you set
 | `params.video_embeds` | list | `[]` | Platforms (`youtube`, `bilibili`, `vimeo`) whose player loads in place after a reader clicks a video card. Empty: cards only link out. See [Video](/docs/components/video/#platforms) |
 | `params.map` | boolean or map | disabled | Interactive maps above `map` place lists. See [Map](/docs/components/map/) |
 | `params.map.enable` | boolean | false | Turns on interactive maps; needs `tiles` and `attribution` |
-| `params.map.tiles` | string | | HTTPS tile template with `{z}`, `{x}` and `{y}`. The theme names no tile service; required when enabled |
+| `params.map.tiles` | string | | HTTPS tile template with `{z}`, `{x}` and `{y}` (`{s}`, `{r}` and `{-y}` allowed; any other placeholder warns and the template is ignored). The theme names no tile service; required when enabled |
 | `params.map.attribution` | string | | The plain-text attribution the tile service requires. Required when enabled |
+| `params.map.attribution_url` | string | | Optional `https://` URL turning `attribution` into a clickable link |
 | `params.map.dark_tiles` | string | | Optional tile template for dark mode |
+| `params.map.subdomains` | string | | Optional `{s}` subdomain characters (e.g. `abcd`, `01234567`); empty uses Leaflet's `abc` |
 | `params.map.max_zoom` | integer | 19 | Highest zoom level, 1–22 |
+| `params.map.loading` | `lazy` \| `click` | `lazy` | Mount near viewport (`lazy`) or wait for a reader click (`click`) |
 | `params.highlight_classes` | boolean | true | Emits Chroma classes for syntax highlighting; `false` returns to Hugo's inline styles |
 | `params.ui.code_copy` | boolean | true | Copy button on code blocks. `false` removes it site-wide; a fence's own `copy=` still wins |
 {.fields meta="type default"}
@@ -629,6 +632,7 @@ read each `WARN` line; these are the common ones:
 | `invalid params.offline_search_index` | The scopes are `title`, `heading`, `summary` and `content` |
 | `params.drawio.enable requires an explicit params.drawio.drawio_server` | Draw.io is enabled without an editor address |
 | `params.map.enable requires params.map.tiles … and params.map.attribution` | Maps are enabled without a complete tile service |
+| `params.map.tiles may use only the {s}, {z}, {x}, {y}, {-y} and {r} placeholders` | The template has a placeholder such as `{apikey}` that nothing fills; write the key into the URL |
 | `params.video_embeds must be a list of platforms` | Written as a single string or a boolean |
 | `params.search.algolia requires explicit appId, apiKey, and indexName` | One of the three Algolia values is missing |
 | `params.ui.image_zoom must be true or false` | Written as a string such as `"true"` |
