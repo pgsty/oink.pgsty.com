@@ -124,7 +124,7 @@ Quote version numbers. YAML reads unquoted `10` and `9.6` as numbers. Category-a
 
 ## Pie and doughnut charts {#pie}
 
-Give `radius` two values to create a doughnut chart. This example groups OINK's 29 shortcodes by purpose.
+Give `radius` two values to create a doughnut chart. This example groups OINK's 30 shortcodes by purpose.
 
 ````markdown {title="Source"}
 ```echarts {height="340px"}
@@ -142,7 +142,7 @@ series:
     label:
       formatter: "{b} {c}"
     data:
-      - { value: 14, name: Core components }
+      - { value: 15, name: Core components }
       - { value: 10, name: Book numbering and indexes }
       - { value: 3, name: Releases and downloads }
       - { value: 2, name: OpenAPI }
@@ -164,7 +164,7 @@ series:
     label:
       formatter: "{b} {c}"
     data:
-      - { value: 14, name: Core components }
+      - { value: 15, name: Core components }
       - { value: 10, name: Book numbering and indexes }
       - { value: 3, name: Releases and downloads }
       - { value: 2, name: OpenAPI }

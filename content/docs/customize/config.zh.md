@@ -406,6 +406,13 @@ Mermaid、KaTeX、ECharts、Infographic、Asciinema、Swagger UI 与 Redoc 按�
 | `params.plantuml.svg` | boolean | false | 仅服务端模式有效：使用内联 SVG 而非 `<img>` |
 | `params.drawio.enable` | boolean | false | 启用 `.drawio.svg` 图片的编辑按钮，见 [Draw.io](/zh/docs/components/drawio/) |
 | `params.drawio.drawio_server` | string | | Draw.io 编辑器地址，启用时必填，缺失则告警并保持 Diagrams.net 关闭 |
+| `params.video_embeds` | list | `[]` | 读者点击视频卡片后可就地加载播放器的平台（`youtube`、`bilibili`、`vimeo`），见 [视频](/zh/docs/components/video/#platforms)；留空时卡片只链接到平台 |
+| `params.map` | boolean 或 map | 关闭 | 在 `map` 地点列表上方显示交互地图，见 [地图](/zh/docs/components/map/) |
+| `params.map.enable` | boolean | false | 启用交互地图；需要同时配置 `tiles` 与 `attribution` |
+| `params.map.tiles` | string | | 含 `{z}`、`{x}`、`{y}` 的 HTTPS 瓦片模板。主题不指定任何服务；启用时必填 |
+| `params.map.attribution` | string | | 瓦片服务要求的纯文本署名。启用时必填 |
+| `params.map.dark_tiles` | string | | 可选，暗色模式下使用的瓦片模板 |
+| `params.map.max_zoom` | integer | 19 | 最大缩放级别，1–22 |
 | `params.highlight_classes` | boolean | true | 代码高亮输出 Chroma class；设 `false` 回到 Hugo 的行内样式 |
 | `params.ui.code_copy` | boolean | true | 代码块的复制按钮；设为 `false` 全局去掉，围栏上的 `copy=` 仍然优先 |
 {.fields meta="type default"}
@@ -530,6 +537,8 @@ hugo --printPathWarnings
 | `invalid params.ui.section_index … (allowed: list \| cards)` | 栏目首页样式写错 |
 | `invalid params.offline_search_index` | 索引范围只有 `title` `heading` `summary` `content` |
 | `params.drawio.enable requires an explicit params.drawio.drawio_server` | 开了 Draw.io 却没给服务地址 |
+| `params.map.enable requires params.map.tiles … and params.map.attribution` | 开了地图却没有完整配置瓦片服务 |
+| `params.video_embeds must be a list of platforms` | 写成了单个字符串或布尔值 |
 | `params.search.algolia requires explicit appId, apiKey, and indexName` | Algolia 三项必须齐全 |
 | `params.ui.image_zoom must be a boolean` | 写成了字符串 `"true"` |
 | `theme_color … is not a #rgb or #rrggbb hex color` | 值不是十六进制颜色，保留默认配色 |

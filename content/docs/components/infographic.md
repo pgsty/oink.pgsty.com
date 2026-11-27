@@ -173,10 +173,10 @@ Add `value` to an item for templates that show proportions, such as pies, doughn
 ```infographic {height="400px"}
 infographic chart-pie-donut-plain-text
 data
-  title How the 29 shortcodes break down
+  title How the 30 shortcodes break down
   items
     - label Core components
-      value 14
+      value 15
     - label Book numbering and indexes
       value 10
     - label Releases and downloads
@@ -189,10 +189,10 @@ data
 ```infographic {height="400px"}
 infographic chart-pie-donut-plain-text
 data
-  title How the 29 shortcodes break down
+  title How the 30 shortcodes break down
   items
     - label Core components
-      value 14
+      value 15
     - label Book numbering and indexes
       value 10
     - label Releases and downloads

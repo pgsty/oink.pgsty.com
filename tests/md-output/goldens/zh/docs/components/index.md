@@ -61,6 +61,8 @@ OINK 1.4.0 启用 PlantUML 后，使用两份随主题提供的脚本在浏览�
 | [表格](/zh/docs/components/table/) | 普通表格，加满宽、矩阵、标题与编号 | `{.full-width}` | 原生 | 标签页或 `.expand` 时加载 |
 | [参数表](/zh/docs/components/fields/) | 参数清单，带类型 / 必填 / 默认值芯片 | `{.fields meta="type default"}` | 原生 + shortcode | 无 |
 | [步骤](/zh/docs/components/steps/) | 有先后的流程 | `{.steps}` | 原生 + shortcode | 无 |
+| [时间轴](/zh/docs/components/timeline/) | 轴线上的日期或有序事件 | 定义列表加 `{.timeline}` | 原生 | 无 |
+| [更新](/zh/docs/components/update/) | 仍然是标题的更新日志条目 | `## v1.6 {.update date="2026-11-23"}` | 原生 | 无 |
 | [卡片](/zh/docs/components/cards/) | 一组并列的去处 | `{.cards}` | 原生 + shortcode | 无 |
 | [文件树](/zh/docs/components/filetree/) | 目录结构与对齐的注释列 | ```` ```filetree ```` | 围栏 | 按页加载 |
 | [公式](/zh/docs/components/math/) | KaTeX 行内与块级公式 | `$$ … $$` | 原生 | 无 |
@@ -71,18 +73,23 @@ OINK 1.4.0 启用 PlantUML 后，使用两份随主题提供的脚本在浏览�
 | [ECharts](/zh/docs/components/echarts/) | 声明式数据图表 | ```` ```echarts ```` | 围栏 | 按页加载 |
 | [Infographic](/zh/docs/components/infographic/) | AntV 信息图 | ```` ```infographic ```` | 围栏 | 按页加载 |
 | [画廊](/zh/docs/components/gallery/) | 一组图片共用一个缩放对话框 | ```` ```gallery ```` | 围栏 | 需站点开关 |
+| [视频](/zh/docs/components/video/) | 视频文件、循环演示、YouTube 与 Bilibili 卡片 | `![名称](demo.mp4)` | 原生 | 按页加载；播放器需站点开关 |
+| [音频](/zh/docs/components/audio/) | 带标题的原生音频播放器 | `![名称](episode.mp3)` | 原生 | 无 |
+| [社交帖子](/zh/docs/components/social/) | 离线引用社交平台的帖子 | `{{< social author="…" >}}` | shortcode | 无 |
+| [地图](/zh/docs/components/map/) | 地点列表，启用后上方附带地图 | ```` ```map ```` | 围栏 | 需站点开关 |
 | [徽章](/zh/docs/components/badge/) | 行内状态标记 | `{{< badge text="Beta" >}}` | shortcode | 无 |
 | [按键](/zh/docs/components/kbd/) | 键位与组合键 | `{{< kbd "Ctrl" "K" >}}` | shortcode | 无 |
 | [引用](/zh/docs/components/include/) | 引入文件、插入站点参数、构建期注释 | `{{< include file="parts/x.md" >}}` | shortcode | 无 |
 | [Asciinema](/zh/docs/components/asciinema/) | 终端录像 | `{{< asciinema file="images/x.cast" >}}` | shortcode | 按页加载 |
 {.wide .expand}
 
-「运行时」列的四条细则：
+「运行时」列的五条细则：
 
 - 代码块只在块上有复制或折叠按钮时加载 `code-block.js`；文件树只在树带注释列时加载 `filetree.js`，它负责拖动那条分栏线。
 - 图片与画廊共用一个缩放对话框运行时，需要站点开启 `ui.image_zoom`，且页面上确有候选图。
 - 公式在构建期由 KaTeX 渲染成 HTML 与 MathML，页面上只多一份 KaTeX 样式表与字体，没有脚本。
 - Draw.io 只在渲染内容含 PNG 或 SVG 候选图的页面加载，并且每个不同的图片 URL 只检查一次。
+- 视频只在有自动播放视频、或卡片所属平台列在 `video_embeds` 中时加载 `media.js`；地图只在站点配置了 `params.map` 时加载 Leaflet，否则只是地点列表。
 
 每个组件在 HTML、打印、Markdown、RSS 四种输出下都有确定形态，见各页的「输出形态」一节。
 
@@ -97,6 +104,8 @@ OINK 1.4.0 启用 PlantUML 后，使用两份随主题提供的脚本在浏览�
 - [表格](/zh/docs/components/table/): 普通 GFM 表格加一行属性，就得到标题、兼容矩阵、参数表、编号表或标签页；宽表格自己横向滚动，不撑宽页面。
 - [参数表](/zh/docs/components/fields/): 用一张普通表格加 `{.fields}` 记录配置项、命令参数与 API 字段：名称、类型、默认值、说明各就各位，窄屏不挤，每条都能单独链接。
 - [步骤](/zh/docs/components/steps/): 有序列表加 `{.steps}` 就是带编号圆点与竖线的操作步骤；步骤要带标题、要进目录时改用 steps shortcode。
+- [时间轴](/zh/docs/components/timeline/): 在 Markdown 定义列表下一行写 `{.timeline}`，把带日期或有先后的事件排在一条轴线上。标记是自由文本，事件可含块级内容，不加载脚本。
+- [更新](/zh/docs/components/update/): 给标题加上 `{.update}`，按需再写 `date` 与 `tags`，它就成为一条更新日志条目，同时在目录、搜索和打印中仍是普通标题。
 - [卡片](/zh/docs/components/cards/): 用带 `{.cards}` 的链接列表排出导航卡片网格；需要图标、徽章、图片时改用 shortcode。
 - [文件树](/zh/docs/components/filetree/): 用 `filetree` 围栏画带注释的目录结构：对齐的注释列、逐条目图标、可折叠目录、可拖动的分栏。
 - [公式](/zh/docs/components/math/): 用 KaTeX 写行内与块级数学公式，构建期渲染完毕，读者不下载任何脚本。
@@ -108,6 +117,10 @@ OINK 1.4.0 启用 PlantUML 后，使用两份随主题提供的脚本在浏览�
 - [ECharts](/zh/docs/components/echarts/): 在 `echarts` 围栏里用 YAML 或 JSON 写图表选项，Hugo 构建期校验，浏览器用本地 ECharts 画出跟随深浅色的统计图。
 - [Infographic](/zh/docs/components/infographic/): 用 `infographic` 围栏挑一个 AntV 模板，把标题与条目渲染成流程、时间线、漏斗、网格或层级信息图。
 - [画廊](/zh/docs/components/gallery/): 用 `gallery` 围栏把一组相关截图排成响应式网格，每张可带说明或链接，并复用页面的图片缩放对话框。
+- [视频](/zh/docs/components/video/): 用 Markdown 图片语法写视频：文件用浏览器原生播放器播放，静音循环短片代替 GIF 动图，YouTube、Bilibili 与 Vimeo 链接渲染为点击之前不联系任何第三方的卡片。
+- [音频](/zh/docs/components/audio/): 用 Markdown 图片语法写音频：渲染为带标题的原生播放器，适用于播客单集、语音样例与录音；文字稿写在折叠提示块里，不加载 JavaScript。
+- [社交帖子](/zh/docs/components/social/): 用 `social` 短代码引用 X、Bluesky、Mastodon 等平台上的帖子。卡片内容写在页面里，不抓取任何数据，也不加载脚本。
+- [地图](/zh/docs/components/map/): 在 `map` 围栏里列出地点。每种输出都显示带编号的地点列表；站点配置了瓦片服务时，HTML 还会加上一张交互地图，标记点编号与列表一一对应。
 - [徽章](/zh/docs/components/badge/): 在功能名、版本号或表格单元格旁边放一枚语义状态标签，五种 tone，不需要自定义颜色。
 - [按键](/zh/docs/components/kbd/): 用 `kbd` 写快捷键：一个 shortcode 接一串按键名，输出语义化的按键序列，打印与 Markdown 输出里同样可读。
 - [引用](/zh/docs/components/include/): 用 include 插入外部文件，用 param 插入站点参数，用 comment 写不会出现在任何输出里的注释。
@@ -125,7 +138,9 @@ OINK 1.4.0 启用 PlantUML 后，使用两份随主题提供的脚本在浏览�
 - [特性](/zh/docs/about/features/)
 - [版本升级](/zh/docs/admin/upgrade/)
 - [组件呈现](/zh/docs/components/presentation/)
+- [时间轴](/zh/docs/components/timeline/)
 - [组件](/zh/docs/design/components/)
+- [内容组件扩展](/zh/docs/design/proposals/content-components-expansion/)
 - [快速上手](/zh/docs/start/)
 - [创作内容](/zh/docs/write/)
 - [博客与文章](/zh/docs/write/blog/)

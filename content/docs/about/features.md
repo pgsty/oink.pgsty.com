@@ -22,7 +22,7 @@ trees, galleries, Mermaid, and ECharts use data fences named after their
 language. On GitHub or in a plain Markdown reader, these appear as
 blockquotes, tables, lists, and code blocks. They retain all content.
 
-29 shortcodes provide forms that native Markdown cannot express. These include
+30 shortcodes provide forms that native Markdown cannot express. These include
 cards with icons and images, and field entries with several Markdown paragraphs.
 
 → [Components](/docs/components/)

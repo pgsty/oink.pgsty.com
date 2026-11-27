@@ -451,6 +451,13 @@ or external endpoint:
 | `params.plantuml.svg` | boolean | false | Server mode only: inline SVG instead of an `<img>` |
 | `params.drawio.enable` | boolean | false | Enables the edit button on `.drawio.svg` images — see [Draw.io](/docs/components/drawio/) |
 | `params.drawio.drawio_server` | string | | Draw.io editor address. Required when enabled. If absent, the theme warns and leaves Diagrams.net off |
+| `params.video_embeds` | list | `[]` | Platforms (`youtube`, `bilibili`, `vimeo`) whose player loads in place after a reader clicks a video card — see [Video](/docs/components/video/#platforms). Empty: cards only link out |
+| `params.map` | boolean or map | disabled | Interactive maps above `map` place lists — see [Map](/docs/components/map/) |
+| `params.map.enable` | boolean | false | Enables interactive maps; needs `tiles` and `attribution` |
+| `params.map.tiles` | string | | HTTPS tile template with `{z}`, `{x}` and `{y}`. The theme names no service; required when enabled |
+| `params.map.attribution` | string | | The plain-text attribution the tile service requires. Required when enabled |
+| `params.map.dark_tiles` | string | | Optional tile template used in dark mode |
+| `params.map.max_zoom` | integer | 19 | Highest zoom level, 1–22 |
 | `params.highlight_classes` | boolean | true | Emits Chroma classes for highlighting; `false` returns to Hugo's inline styles |
 | `params.ui.code_copy` | boolean | true | Copy button on code blocks. The value `false` removes it globally. A fence's own `copy=` still takes precedence |
 {.fields meta="type default"}
@@ -585,6 +592,8 @@ Common warnings and what they mean:
 | `invalid params.ui.section_index … (allowed: list \| cards)` | A bad section index style |
 | `invalid params.offline_search_index` | The scopes are `title`, `heading`, `summary`, `content` |
 | `params.drawio.enable requires an explicit params.drawio.drawio_server` | Draw.io enabled with no server address |
+| `params.map.enable requires params.map.tiles … and params.map.attribution` | Maps enabled without a complete tile service |
+| `params.video_embeds must be a list of platforms` | Written as a single string or a boolean |
 | `params.search.algolia requires explicit appId, apiKey, and indexName` | All three Algolia values are required |
 | `params.ui.image_zoom must be a boolean` | Written as the string `"true"` |
 | `theme_color … is not a #rgb or #rrggbb hex color` | The value is not a hex color; the default palette is kept |

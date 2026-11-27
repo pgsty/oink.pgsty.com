@@ -28,6 +28,8 @@ markup:
       attribute: { block: true }
 ```
 
+原生时间轴还需要 Goldmark 定义列表（`markup.goldmark.extensions.definitionList`），Hugo 默认启用。
+
 只有 `{{%/* steps */%}}` 使用百分号分隔符，因为它的正文属于页面大纲；其它
 shortcode 一律使用尖括号分隔符。复合正文通过 `content/render-block.html`
 处理，并使用唯一的 ID 作用域。Shortcode 与组件参数中的 caption、label、title
@@ -37,10 +39,10 @@ shortcode 一律使用尖括号分隔符。复合正文通过 `content/render-bl
 
 ## 公共 API {#public-api}
 
-OINK 有 29 个 shortcode：
+OINK 有 30 个 shortcode：
 
 - 核心：`tabs`、`tab`、`steps`、`cards`、`card`、`fields`、`field`、`include`、
-  `kbd`、`badge`、`param`、`comment`、`contributors`、`asciinema`；
+  `kbd`、`badge`、`param`、`comment`、`contributors`、`asciinema`、`social`；
 - Book：`fig`、`tbl`、`eq`、`eg`、`xref`、`book-toc`、`book-figures`、
   `book-tables`、`book-equations`、`book-examples`；
 - 发布：`release-card`、`release-assets`、`download`；
@@ -61,6 +63,12 @@ OINK 有 29 个 shortcode：
 | 发布资产 | `checksums` 数据围栏 | `release-assets` | HTML 中加载复制功能 |
 | 数学与化学公式 | passthrough、`math`、`chem` 围栏 | `eq` | 无；构建期渲染并加载本地样式 |
 | 图表与数据 | `mermaid`、`plantuml`、`markmap`、`echarts`、`infographic` 围栏 | 无 | 只加载选中的本地运行时 |
+| 时间轴 | 定义列表加 `{.timeline}` | 无 | 无 |
+| 更新 | 标题加 `{.update date= tags=}` | 无 | 无 |
+| 视频 | 指向视频文件或平台 URL 的块级图片加 `{caption= poster= track= autoplay=}` | 无 | 自动播放或已启用播放器时加载 `media` |
+| 音频 | 指向音频文件的块级图片加 `{caption=}` | 无 | 无 |
+| 社交帖子 | 无 | `social` | 无 |
+| 地图 | `map` 数据围栏 | 无 | 仅在 `params.map` 完整时加载 Leaflet |
 
 > [!NOTE] OINK 1.4.0 的统一图表阅读
 > Mermaid 与本地 PlantUML 共用查看器，支持平移、缩放、适应窗口、源码查看与
@@ -277,6 +285,33 @@ OINK 1.4.0 按阅读列的实际可用宽度为编号公式保留阅读空间，
 Swagger 与 Redoc 接受 HTTP(S) 规范 URL 或以 `static/` 为根的路径，都不解析页面
 资源。Redoc 将开头有无斜杠视为等价，并把本地路径与 `baseURL` 拼接。只有 HTML
 输出可交互；Print、Markdown 与 RSS 输出静态规范链接。
+
+### 时间轴、更新、媒体、社交帖子与地图 {#timeline-media-social-and-maps}
+
+> [!NOTE] 尚未发布
+> 已在主题 main 分支实现，晚于 v1.6.0；目前没有包含它的版本标签。
+
+紧跟 `{.timeline}` 的定义列表就是时间轴：术语是自由文本的标记，定义是可含块级内容的事件。
+`<dl>` 由 Goldmark 生成；主题只添加作用域为 `.td-content dl.timeline` 的 CSS，宽屏时分出标记列，窄屏时为单列。
+
+带 `{.update}` 标记的标题就是一条更新日志条目，另外接受 `date`（`YYYY`、`YYYY-MM` 或 `YYYY-MM-DD`，渲染为 `<time datetime>`）与 `tags`（逗号分隔的纯文本，渲染为中性 chip）。
+标题本身保持不变，因此 TOC 条目、锚点、搜索小节与 Print ID 都与普通标题一样；标题之后跟一行 `td-update-meta`。
+无效日期会告警并给出页面路径，然后被丢弃；没有该标记时，`date` 与 `tags` 属于未知属性。不带标记的标题与此前版本的输出逐字节一致。
+
+目标为视频或音频文件，或 YouTube、Bilibili、Vimeo URL 的块级图片属于媒体，由 `content/media.html` 处理。
+文件按解析到的资源的 Hugo 媒体类型识别，否则按扩展名识别。图片行为、其他非图片资源的告警以及查找顺序都不变；这套顺序现在由 `content/resource-lookup.html` 统一提供给两个解析器。
+视频接受 `caption`、`num`（Book `fig` 目标）、`id`、`poster`、`track`（一个页面语言的 WebVTT 文件）、`autoplay`、`width` 与 `height`。音频接受 `caption` 与 `id`，并把方括号文字显示为可见标题。
+`autoplay=true` 输出 `muted loop playsinline`，但不输出 `autoplay` 属性；`js/chunks/media.js` 只在视频至少一半可见时播放，读者要求减少动态效果时绝不播放，离开视口即暂停。原生控件始终保留。
+平台 URL 渲染为链接卡片。对 `params.video_embeds` 列出的平台，普通点击会加载播放器，其 URL 由主题根据校验过的 ID 推导（`youtube-nocookie.com`、带 `danmaku=0` 的 Bilibili、带 `dnt=1` 的 Vimeo）；点击之前不发出任何请求。
+行内媒体渲染为链接。Print 与 RSS 得到含海报图、名称与 URL 的静态 figure；Markdown 保留作者写下的那一行。
+
+`social` 只用页面内容引用一条帖子，参数为 `author`、`handle`、`avatar`、`date`、`url` 与 `platform`（默认 `x`，另有 `bluesky`、`mastodon`、`threads`、`weibo`、`linkedin`，只决定图标）。
+正文是 Markdown，因此图片、`gallery` 围栏以及嵌套的 `social`（引用帖）都可以在正文中组合。HTML 是带 `blockquote cite` 与署名行的 figure；Markdown 是以署名结尾的引用块；RSS 是引用块。
+缺少 `author` 与 `handle` 时，正文渲染为普通引用块；没有正文时，有 `url` 则渲染为链接卡片，否则不输出。Hugo 内置的 `x` 短代码不被覆盖。
+
+`map` 围栏承载一个 YAML 或 JSON 地点列表（`name`、`lat`、`lng`、`text`、`image`、`link`），按名称以 YAML 解析，而不是靠内容猜测格式。围栏属性为 `caption`、`route`、`zoom`、`height`、`id` 以及相邻标签页的键。
+所有输出都渲染带 OpenStreetMap 坐标链接的编号地点列表。`params.map` 配置完整时，HTML 另加画布和校验后的地点 JSON；`content-components.js` 只在这些页面加载随主题内置的 Leaflet 引擎与样式表。
+地图关闭滚轮缩放，使用带编号的 HTML 标记点，弹窗与署名都由纯文本构建。无效地点告警并被跳过；浏览器打印时隐藏画布。
 
 ### Book {#book}
 

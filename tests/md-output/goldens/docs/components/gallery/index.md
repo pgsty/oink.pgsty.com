@@ -203,6 +203,8 @@ Backlinks:
 - [Cards](/docs/components/cards/)
 - [FileTree](/docs/components/filetree/)
 - [Images](/docs/components/image/)
+- [Maps](/docs/components/map/)
+- [Social posts](/docs/components/social/)
 - [Print](/docs/customize/print/)
 - [Expo albums](/docs/write/expo/)
 - [OINK v1.3.0](/release/1.3.0/)

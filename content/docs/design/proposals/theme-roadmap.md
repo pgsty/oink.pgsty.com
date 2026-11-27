@@ -26,7 +26,7 @@ proposal_date: 2026-11-21
 
 Make the next theme release about one thing: **leaving LibSass without asking consumers to install Dart Sass**. Hugo v0.170.0 removed LibSass and the extended edition. When this roadmap was drafted, OINK was pinned to 0.169.0, the last release that can build published v1.5.1, and its contract forbade the only upstream replacement. [R0](#sass-exit) settles this on the theme's main branch: the stylesheet is plain CSS, nothing compiles it, and no Hugo release is pinned. Until a release carries that work, published OINK cannot adopt any later Hugo release.
 
-After that, add no new component family. Close what is half-built: first the small reader and author gaps that other frameworks treat as baseline, then version lifecycle, then a static API reference. Keep one content-model project active at a time, as the [CLI roadmap](/docs/design/proposals/oink-cli-roadmap/#roadmap) already requires.
+After that, close what is half-built: first the small reader and author gaps that other frameworks treat as baseline, then version lifecycle, then a static API reference. Keep one content-model project active at a time, as the [CLI roadmap](/docs/design/proposals/oink-cli-roadmap/#roadmap) already requires.
 
 | Stage | Subject | Why in this position |
 | --- | --- | --- |
@@ -110,7 +110,7 @@ Hugo itself added relevant capabilities since v0.153.0: a site matrix of languag
 
 ### What already works {#existing-strengths}
 
-OINK has 29 shortcodes, 22 Landing sections, Book publication, Duo View, visual presets, static backlinks, and local search with mixed CJK and Latin terms. Its static agent outputs are more complete than most open-source frameworks in the survey. Community issues mostly ask for correctness and reading comfort, not for more component families. This is why R1 closes gaps and adds no new family.
+OINK has 29 shortcodes, 22 Landing sections, Book publication, Duo View, visual presets, static backlinks, and local search with mixed CJK and Latin terms. Its static agent outputs are more complete than most open-source frameworks in the survey. Community issues mostly ask for correctness and reading comfort, not for more component families. R1 therefore concentrates on those gaps.
 
 ## Goals and non-goals {#goals-and-non-goals}
 
@@ -301,6 +301,7 @@ Each stage moves its accepted behavior to the owning contract in both languages 
 - 2026-11-22: Verified on Hugo 0.170.1 after upgrading the local Hugo. With only the Hugo binary on `PATH`, the theme checkers pass, the regression fixture's 686 output files match the previous pipeline apart from the main stylesheet, the documentation site passes its checks and 546 browser tests, and 50 of 51 consumer checkouts build after conversion. Published v1.5.1 fails on that Hugo because it needs Dart Sass. At that point the maintainer-side compiler was still the LibSass in Hugo Extended 0.169.0.
 - 2026-11-23: The stylesheet source is plain CSS, assembled by Hugo from the layer files under `assets/css/td/`. `assets/scss/`, the vendored SCSS of Bootstrap, Font Awesome, Inter and IBM Plex Sans, the compiled bundles under `assets/oink/`, `bin/build-css.py` and the CI job that recompiled the bundles are deleted. `bin/check-stylesheets.py` replaces `bin/check-scss.py`, and stylesheets are published under `/css/` instead of `/scss/`. Verified with Hugo 0.170.1: the production `main` stylesheet is byte-identical (556,437 bytes) to the last one compiled from Sass, and the regression fixture's 683 output files are identical apart from the stylesheet path. The maintainer-compiler question is closed because there is no compiler. No Hugo release is pinned. On the theme's main branch; no tag contains it.
 - 2026-11-23: The theme no longer loads or vendors Bootstrap's JavaScript, and Popper went with it. Only two controls used the script: the version menu of the bottom bar and the phone drawer, and the Landing `download` channels. The first is now the hover popover the navbar version menu already was, placed by CSS; the second switches in the Landing runtime. Both keep their markup classes and look. The core script every page loads, `js/core.js`, went from 92,443 to 8,740 bytes minified. A site that uses a Bootstrap script component in its own markup must load the script itself; none of the 48 inventoried module consumers does. On the theme's main branch working tree; no tag contains it.
+- 2026-11-27: Removed the sentence "add no new component family" from the summary and from R1's rationale. It had been drafted by an agent and never decided by the owner. New content components proceed under their own [proposals](/docs/design/proposals/content-components-expansion/).
 
 Sources read on 2026-11-21:
 

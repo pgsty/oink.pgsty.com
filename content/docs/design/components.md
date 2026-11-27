@@ -29,6 +29,8 @@ markup:
       attribute: { block: true }
 ```
 
+The native timeline also needs Goldmark definition lists (`markup.goldmark.extensions.definitionList`), which Hugo enables by default.
+
 Only `{{%/* steps */%}}` uses percent delimiters because its body belongs to the page outline.
 Other shortcodes use angle delimiters. Compound bodies use `content/render-block.html` with a unique ID scope.
 Shortcode and component captions, labels, titles, and names are plain text. Put Markdown in bodies.
@@ -37,10 +39,10 @@ Components expose safe classes and attributes. They do not expose arbitrary colo
 
 ## Public API {#public-api}
 
-OINK has 29 shortcodes:
+OINK has 30 shortcodes:
 
 - core: `tabs`, `tab`, `steps`, `cards`, `card`, `fields`, `field`, `include`,
-  `kbd`, `badge`, `param`, `comment`, `contributors`, `asciinema`;
+  `kbd`, `badge`, `param`, `comment`, `contributors`, `asciinema`, `social`;
 - Book: `fig`, `tbl`, `eq`, `eg`, `xref`, `book-toc`, `book-figures`,
   `book-tables`, `book-equations`, `book-examples`;
 - release: `release-card`, `release-assets`, `download`;
@@ -61,6 +63,12 @@ OINK has 29 shortcodes:
 | Release assets | `checksums` data fence | `release-assets` | copy in HTML |
 | Math and chemistry | passthrough, `math`, `chem` fences | `eq` | none; build-time rendering and local styles |
 | Diagram/data | `mermaid`, `plantuml`, `markmap`, `echarts`, `infographic` fences | none | selected local runtime only |
+| Timeline | definition list + `{.timeline}` | none | none |
+| Update | heading + `{.update date= tags=}` | none | none |
+| Video | block image of a video file or platform URL + `{caption= poster= track= autoplay=}` | none | `media` for autoplay or enabled players |
+| Audio | block image of an audio file + `{caption=}` | none | none |
+| Social post | none | `social` | none |
+| Map | `map` data fence | none | Leaflet only with complete `params.map` |
 
 > [!NOTE] Unified diagram reading in OINK 1.4.0
 > Mermaid and local PlantUML share pan/zoom, fit, source viewing/copy and standalone
@@ -302,6 +310,33 @@ neither squeeze the formula to zero nor widen the page.
 Swagger and Redoc accept HTTP(S) specification URLs or paths rooted under `static/`. Neither resolves page resources.
 Redoc handles paths with or without leading slashes identically and joins local paths to `baseURL`.
 Only HTML is interactive. Print, Markdown, and RSS provide static specification links.
+
+### Timeline, updates, media, social posts, and maps {#timeline-media-social-and-maps}
+
+> [!NOTE] Unreleased
+> Implemented on the theme's main branch after v1.6.0; no tagged release contains it yet.
+
+A definition list followed by `{.timeline}` is a timeline: terms are markers in free text, definitions are events with block content.
+Goldmark emits the `<dl>`; the theme adds only CSS scoped to `.td-content dl.timeline`, with a marker column on wide screens and one column on narrow ones.
+
+A heading marked `{.update}` is a changelog entry. It also accepts `date` (`YYYY`, `YYYY-MM` or `YYYY-MM-DD`, rendered as `<time datetime>`) and `tags` (comma-separated plain text, rendered as neutral chips).
+The heading itself is unchanged, so its TOC entry, anchor, search section and Print ID behave as for any heading; a `td-update-meta` line follows it.
+An invalid date warns with the page path and is dropped; `date` and `tags` without the marker are unknown attributes. Headings without the marker render byte-identically to earlier releases.
+
+A block image whose destination is a video or audio file, or a YouTube, Bilibili or Vimeo URL, is media (`content/media.html`).
+Files are recognized by the Hugo media type of a resolved resource, otherwise by extension. Images, the warning for other non-image resources, and the lookup order are unchanged; `content/resource-lookup.html` now holds that order for both resolvers.
+Video accepts `caption`, `num` (a Book `fig` target), `id`, `poster`, `track` (one WebVTT file in the page language), `autoplay`, `width` and `height`. Audio accepts `caption` and `id` and shows its bracket text as a visible title.
+`autoplay=true` emits `muted loop playsinline` without the `autoplay` attribute; `js/chunks/media.js` plays the video while at least half of it is visible, never under reduced motion, and pauses it off-screen. Native controls remain.
+A platform URL renders a link card. For platforms listed in `params.video_embeds`, a plain click loads a player whose URL the theme derived from validated IDs (`youtube-nocookie.com`, Bilibili with `danmaku=0`, Vimeo with `dnt=1`); nothing is requested earlier.
+Inline media render as links. Print and RSS receive static figures with the poster, name and URL; Markdown keeps the authored line.
+
+`social` quotes a post from the page alone, with `author`, `handle`, `avatar`, `date`, `url` and `platform` (`x` by default, `bluesky`, `mastodon`, `threads`, `weibo`, `linkedin`; it selects the icon only).
+The body is Markdown, so images, a `gallery` fence and a nested `social` (a quoted post) compose in it. HTML is a figure with a `blockquote cite` and an attribution line; Markdown is a blockquote ending with the attribution; RSS is a blockquote.
+Without `author` and `handle`, the body renders as a plain blockquote; without a body, the card links to `url` or renders nothing. Hugo's embedded `x` shortcode is not overridden.
+
+A `map` fence holds a YAML or JSON list of places (`name`, `lat`, `lng`, `text`, `image`, `link`), parsed as YAML by name rather than by content sniffing. Its attributes are `caption`, `route`, `zoom`, `height`, `id` and the adjacent-tab keys.
+Every output renders the numbered place list with OpenStreetMap coordinate links. When `params.map` is complete, HTML adds a canvas and the validated places as JSON; `content-components.js` loads the vendored Leaflet engine and stylesheet only on those pages.
+The map keeps scroll-wheel zoom off, uses numbered HTML markers, and builds popups and attribution from text. Invalid places warn and are skipped; browser print hides the canvas.
 
 ### Book {#book}
 

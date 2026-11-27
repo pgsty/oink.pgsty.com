@@ -235,6 +235,9 @@ Network-capable features require explicit configuration and remain disabled when
 OINK 1.4.0 renders PlantUML locally when it is enabled without an endpoint;
 an explicit `plantuml.svg_image_url` keeps server mode. Draw.io requires
 `drawio.drawio_server`. Algolia requires `appId`, `apiKey`, and `indexName`.
+Maps require `map.tiles` (an HTTPS template with `{z}`, `{x}` and `{y}`) and
+`map.attribution`; the theme names no tile service. Video-platform players load
+only for platforms listed in `video_embeds`, and only after a reader's click.
 Incomplete configuration warns and sends no request.
 Draw.io loads only if rendered content has PNG or SVG candidates. It inspects each distinct image URL once.
 Diagram endpoints must be strings with an HTTP(S) URL containing a host or a same-site path.

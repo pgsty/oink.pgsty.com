@@ -405,6 +405,16 @@ params:
   drawio:
     enable: true
     drawio_server: https://embed.diagrams.net/
+  # Video cards for these platforms load the platform player in place after a
+  # reader clicks; nothing is requested before that click.
+  video_embeds: [bilibili, youtube]
+  # Interactive maps above ```map place lists. Tiles come from the
+  # OpenStreetMap Foundation's standard server, which permits light use with
+  # attribution under its tile usage policy; a busy site names its own service.
+  map:
+    enable: true
+    tiles: https://tile.openstreetmap.org/{z}/{x}/{y}.png
+    attribution: "© OpenStreetMap contributors"
 
 baseURL: *productionURL
 

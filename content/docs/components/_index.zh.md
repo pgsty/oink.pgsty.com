@@ -62,6 +62,8 @@ OINK 1.4.0 启用 PlantUML 后，使用两份随主题提供的脚本在浏览�
 | [表格](/zh/docs/components/table/) | 普通表格，加满宽、矩阵、标题与编号 | `{.full-width}` | 原生 | 标签页或 `.expand` 时加载 |
 | [参数表](/zh/docs/components/fields/) | 参数清单，带类型 / 必填 / 默认值芯片 | `{.fields meta="type default"}` | 原生 + shortcode | 无 |
 | [步骤](/zh/docs/components/steps/) | 有先后的流程 | `{.steps}` | 原生 + shortcode | 无 |
+| [时间轴](/zh/docs/components/timeline/) | 轴线上的日期或有序事件 | 定义列表加 `{.timeline}` | 原生 | 无 |
+| [更新](/zh/docs/components/update/) | 仍然是标题的更新日志条目 | `## v1.6 {.update date="2026-11-23"}` | 原生 | 无 |
 | [卡片](/zh/docs/components/cards/) | 一组并列的去处 | `{.cards}` | 原生 + shortcode | 无 |
 | [文件树](/zh/docs/components/filetree/) | 目录结构与对齐的注释列 | ```` ```filetree ```` | 围栏 | 按页加载 |
 | [公式](/zh/docs/components/math/) | KaTeX 行内与块级公式 | `$$ … $$` | 原生 | 无 |
@@ -72,17 +74,22 @@ OINK 1.4.0 启用 PlantUML 后，使用两份随主题提供的脚本在浏览�
 | [ECharts](/zh/docs/components/echarts/) | 声明式数据图表 | ```` ```echarts ```` | 围栏 | 按页加载 |
 | [Infographic](/zh/docs/components/infographic/) | AntV 信息图 | ```` ```infographic ```` | 围栏 | 按页加载 |
 | [画廊](/zh/docs/components/gallery/) | 一组图片共用一个缩放对话框 | ```` ```gallery ```` | 围栏 | 需站点开关 |
+| [视频](/zh/docs/components/video/) | 视频文件、循环演示、YouTube 与 Bilibili 卡片 | `![名称](demo.mp4)` | 原生 | 按页加载；播放器需站点开关 |
+| [音频](/zh/docs/components/audio/) | 带标题的原生音频播放器 | `![名称](episode.mp3)` | 原生 | 无 |
+| [社交帖子](/zh/docs/components/social/) | 离线引用社交平台的帖子 | `{{</* social author="…" */>}}` | shortcode | 无 |
+| [地图](/zh/docs/components/map/) | 地点列表，启用后上方附带地图 | ```` ```map ```` | 围栏 | 需站点开关 |
 | [徽章](/zh/docs/components/badge/) | 行内状态标记 | `{{</* badge text="Beta" */>}}` | shortcode | 无 |
 | [按键](/zh/docs/components/kbd/) | 键位与组合键 | `{{</* kbd "Ctrl" "K" */>}}` | shortcode | 无 |
 | [引用](/zh/docs/components/include/) | 引入文件、插入站点参数、构建期注释 | `{{</* include file="parts/x.md" */>}}` | shortcode | 无 |
 | [Asciinema](/zh/docs/components/asciinema/) | 终端录像 | `{{</* asciinema file="images/x.cast" */>}}` | shortcode | 按页加载 |
 {.wide .expand}
 
-「运行时」列的四条细则：
+「运行时」列的五条细则：
 
 - 代码块只在块上有复制或折叠按钮时加载 `code-block.js`；文件树只在树带注释列时加载 `filetree.js`，它负责拖动那条分栏线。
 - 图片与画廊共用一个缩放对话框运行时，需要站点开启 `ui.image_zoom`，且页面上确有候选图。
 - 公式在构建期由 KaTeX 渲染成 HTML 与 MathML，页面上只多一份 KaTeX 样式表与字体，没有脚本。
 - Draw.io 只在渲染内容含 PNG 或 SVG 候选图的页面加载，并且每个不同的图片 URL 只检查一次。
+- 视频只在有自动播放视频、或卡片所属平台列在 `video_embeds` 中时加载 `media.js`；地图只在站点配置了 `params.map` 时加载 Leaflet，否则只是地点列表。
 
 每个组件在 HTML、打印、Markdown、RSS 四种输出下都有确定形态，见各页的「输出形态」一节。

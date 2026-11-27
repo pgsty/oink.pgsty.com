@@ -200,7 +200,9 @@ OINK 没有通用的键名重命名注册表。仍需给出迁移诊断的过渡
 可能联网的功能必须显式启用，并以关闭方式降级。OINK 1.4.0 启用 PlantUML 且未配置端点时
 使用本地渲染，显式 `plantuml.svg_image_url` 才选择服务端模式。Draw.io 需要
 `drawio.drawio_server`，Algolia 需要
-`appId`、`apiKey` 与 `indexName`；配置不完整时发出警告，而且不产生网络请求。
+`appId`、`apiKey` 与 `indexName`；地图需要 `map.tiles`（含 `{z}`、`{x}`、`{y}`
+的 HTTPS 模板）与 `map.attribution`，主题不指定任何瓦片服务；视频平台播放器只对
+`video_embeds` 列出的平台、且只在读者点击之后加载。配置不完整时发出警告，而且不产生网络请求。
 Draw.io 只在渲染内容含 PNG 或 SVG 候选图片时加载，并且每个不同的图片 URL
 只检查一次。
 图表端点必须是字符串，内容为带主机的 HTTP(S) URL 或同站路径。不支持的协议、

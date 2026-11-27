@@ -168,10 +168,10 @@ data
 ```infographic {height="400px"}
 infographic chart-pie-donut-plain-text
 data
-  title 29 个 shortcode 的构成
+  title 30 个 shortcode 的构成
   items
     - label 核心组件
-      value 14
+      value 15
     - label Book 编号与索引
       value 10
     - label 发布与下载
@@ -184,10 +184,10 @@ data
 ```infographic {height="400px"}
 infographic chart-pie-donut-plain-text
 data
-  title 29 个 shortcode 的构成
+  title 30 个 shortcode 的构成
   items
     - label 核心组件
-      value 14
+      value 15
     - label Book 编号与索引
       value 10
     - label 发布与下载

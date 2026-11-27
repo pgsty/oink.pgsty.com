@@ -14,7 +14,7 @@ aliases:
 
 提示块是 `> [!NOTE]` 块引用（十种语义类型加一个中性折叠块），参数表是表格加一行 `{.fields}`，步骤与卡片是列表加 `{.steps}` / `{.cards}`，图注是图片下面一行 `{caption="…"}`。标签页是几个相邻围栏各带一个 `{tab="…"}`；文件树、画廊、Mermaid、ECharts 是以语言命名的数据围栏。这些写法在 GitHub 或普通 Markdown 阅读器中退化为块引用、表格、列表与代码块，内容不丢失。
 
-29 个 shortcode 覆盖原生形态表达不了的场景：卡片带图标与图片、参数表条目正文是多段 Markdown。
+30 个 shortcode 覆盖原生形态表达不了的场景：卡片带图标与图片、参数表条目正文是多段 Markdown。
 
 → [组件总览](/zh/docs/components/)
 
