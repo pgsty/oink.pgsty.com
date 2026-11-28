@@ -592,13 +592,13 @@ same release tag as the theme pinned in your `go.mod`, because keys change
 between releases.
 
 With the VS Code YAML extension, map the site schema in your settings. This
-example uses OINK v1.7.0 and covers both common file names; replace the tag
+example uses OINK v1.8.0 and covers both common file names; replace the tag
 with the one in your `go.mod`:
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/v1.7.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
+    "https://raw.githubusercontent.com/pgsty/oink/v1.8.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```

@@ -11,9 +11,9 @@ not a projection of a second theme-local document tree.
 
 ## Current baseline
 
-The documentation target is OINK `v1.7.0`. Verify the actual published theme
+The documentation target is OINK `v1.8.0`. Verify the actual published theme
 version in `go.mod` and public tags before claiming release or deployment.
-The Design contracts and release notes describe the 1.7.0 behavior. Use
+The Design contracts and release notes describe the 1.8.0 behavior. Use
 sibling-checkout Make targets for development; validate the
 published pin separately with replacements and both workspaces disabled.
 CLI documentation describes the separate local `0.1.0-dev` candidate. Recheck
@@ -94,12 +94,14 @@ themselves; use the Make targets for local theme acceptance. The local `check`,
 do not clear inherited replacements or workspaces; use the published-pin
 commands below to establish release identity. Node >= 26.13.0 and npm >= 12.2.2
 are contributor test dependencies, not ordinary Hugo consumer requirements.
-Theme development and published-pin builds for OINK `v1.7.0` use any installed
-Hugo meeting the minimum in the theme's `theme.toml` and Go `1.27.4`. The stylesheet is
-plain CSS in `assets/css/project.css` with no Sass compiler. Never enable
-`--panicOnWarning` or `HUGO_PANICONWARNING`. Warnings remain visible and are
-reviewed. CI uses Node 26.13.0 and pins Go 1.27.4. Test
-overlays do not change the single-root-config rule for the production site.
+Theme development and published-pin builds for OINK `v1.8.0` use the installed
+Hugo (tested on `0.170+`) and Go for module resolution; do not state a minimum
+Hugo version or prescribe a Go version for users, and do not test older Hugo
+releases in CI. The stylesheet is plain CSS in `assets/css/project.css` with no
+Sass compiler. Never enable `--panicOnWarning` or `HUGO_PANICONWARNING`.
+Warnings remain visible and are reviewed. CI uses Node 26.13.0, Hugo `latest`,
+and stable Go. Test overlays do not change the single-root-config rule for the
+production site.
 
 For published-pin acceptance, disable environment replacements and both
 workspace mechanisms, verify advertised/pinned versions, and build:

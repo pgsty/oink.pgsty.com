@@ -4,24 +4,23 @@ linkTitle: 参与贡献
 description: 把问题报告或修复提交到负责它的仓库，并在评审前跑完主题或文档改动所需的检查。
 weight: 40
 icon: fa-solid fa-code-pull-request
-search_keywords: [参与贡献, 贡献者, pull request, 问题报告, 翻译, OINK 1.7.0]
+search_keywords: [参与贡献, 贡献者, pull request, 问题报告, 翻译, OINK 1.8.0]
 ---
 
 欢迎报告问题、纠错、翻译，以及提交范围明确的 pull request。OINK 的工作分布在三个仓库里，第一步是找到负责你要改动的那部分行为的仓库。
 
 ## 选择贡献仓库 {#where-to-contribute}
 
-| 改动 | 仓库 |
-| --- | --- |
-| 模板、样式、浏览器运行时、默认配置与主题专项检查器 | [pgsty/oink](https://github.com/pgsty/oink) |
-| 文档、翻译、示例、集成测试与浏览器回归覆盖 | [pgsty/oink.pgsty.com](https://github.com/pgsty/oink.pgsty.com) |
-| 可选 CLI 命令与原生站点检查 | [pgsty/oink-cli](https://github.com/pgsty/oink-cli) |
+- [pgsty/oink](https://github.com/pgsty/oink) — 模板、样式、浏览器运行时、默认配置与主题专项检查器。
+- [pgsty/oink.pgsty.com](https://github.com/pgsty/oink.pgsty.com) — 文档、翻译、示例、集成测试与浏览器回归覆盖。
+- [pgsty/oink-cli](https://github.com/pgsty/oink-cli) — 可选 CLI 命令与原生站点检查。
+{.cards .td-cards-list}
 
 问题请报告到负责相应行为的仓库。CLI 有独立的版本与发布周期，普通 Hugo 站点用不到它。
 
 ## 提供可复现的问题报告 {#report-a-problem}
 
-别人能复现的问题修得最快，所以请先确认问题在[最新版本](/zh/release/)上依然存在。报告中写明 OINK 版本、`hugo version` 的输出、使用 Hugo Module 构建时的 Go 版本、相关配置与最小内容示例。显示类问题再补充页面、视口宽度、浏览器、视觉预设以及当时是浅色还是深色模式，并说明预期效果与实际表现。提交报告与复现材料之前，先移除其中的凭据与私有内容。
+别人能复现的问题修得最快，所以请先确认问题在[最新版本](/zh/release/)上依然存在。报告中写明 OINK 版本、`hugo version` 的输出、相关配置与最小内容示例。显示类问题再补充页面、视口宽度、浏览器、视觉预设以及当时是浅色还是深色模式，并说明预期效果与实际表现。提交报告与复现材料之前，先移除其中的凭据与私有内容。
 
 ## 构建与检查 {#build-and-check}
 

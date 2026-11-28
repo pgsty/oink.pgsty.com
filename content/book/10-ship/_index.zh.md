@@ -68,7 +68,7 @@ Starter 在 `.github/workflows/` 中带了两个工作流。选定托管平台�
 站点在 `go.mod` 中固定到一个 OINK 版本，所以在你决定升级之前，它的构建结果始终不变。要换到新版本，先读它的发布说明，再固定到确切的标签：
 
 ```bash
-hugo mod get github.com/pgsty/oink@v1.7.0
+hugo mod get github.com/pgsty/oink@v1.8.0
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```

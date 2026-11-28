@@ -1,15 +1,15 @@
 ---
 title: OINK migration boundary
 linkTitle: Migration boundary
-description: Supported source, configuration, and validation boundaries for OINK migration, including the 1.6.0 and 1.7.0 upgrades.
+description: Supported source, configuration, and validation boundaries for OINK migration, including the 1.6.0, 1.7.0, and 1.8.0 upgrades.
 weight: 50
 icon: fa-solid fa-code-compare
 search_keywords: [OINK migration contract, 0.4 migration, 0.5 migration, configuration rename, migration toolkit]
-contract_status: v1.7.0
+contract_status: v1.8.0
 ---
 
-> [!NOTE] OINK 1.7.0 contract
-> This contract describes OINK v1.7.0.
+> [!NOTE] OINK 1.8.0 contract
+> This contract describes OINK v1.8.0.
 
 This page defines the maintainer migration toolkit and configuration boundaries.
 See [Upgrade](/docs/admin/upgrade/) for the reader-facing upgrade guide.
@@ -47,8 +47,8 @@ The tool ships with OINK 1.2.0. Run it from the theme checkout to inventory
 consumers and upgrade them to the published tag.
 
 ```sh
-python3 bin/update-consumers.py v1.7.0 --roots ~/www ~/pgsty
-python3 bin/update-consumers.py v1.7.0 --roots ~/www ~/pgsty --write --check --check-appearance
+python3 bin/update-consumers.py v1.8.0 --roots ~/www ~/pgsty
+python3 bin/update-consumers.py v1.8.0 --roots ~/www ~/pgsty --write --check --check-appearance
 ```
 
 The first command only reports adoption.
@@ -67,18 +67,18 @@ Manually resolve OINK replacements in `go.mod`.
 Review vendored themes separately before `--refresh-vendor`, which backs up and regenerates `_vendor/`.
 Changing a module pin alone does not update vendored themes. Hugo's resolved module graph determines whether OINK actually uses vendor output. A retained snapshot bypassed by `ignoreVendorPaths` is preserved and does not block a published-module upgrade.
 
-To offer all four styles with Paper as the site default, set the site configuration explicitly:
+To offer all six styles with Paper as the site default, set the site configuration explicitly:
 
 ```yaml
 params:
   ui:
     preset: paper
-    preset_menu: [paper, slate, ink, terminal]
+    preset_menu: [paper, slate, github, ink, news, terminal]
 ```
 
-`preset_menu: true` offers the stable styles and the site default; the explicit list also opts into Ink and Terminal. These settings persist across later pin upgrades. Review sites with a custom shell separately: configuration alone does not add appearance controls to templates that bypass OINK's shell.
+`preset_menu: true` offers the stable styles and the site default; the explicit list also opts into GitHub, Ink, News and Terminal. Maintained sites adopt the six-style list from OINK 1.8.0 onward; sites pinned to 1.7.0 keep the four styles it has. These settings persist across later pin upgrades. Review sites with a custom shell separately: configuration alone does not add appearance controls to templates that bypass OINK's shell.
 
-The maintainer checkout also supports `--check-appearance` together with `--check`. It checks the fresh rendered home pages, including localized entries, for Paper as the default and all four style controls. Sites that disable Home are checked at their documentation entries; redirect aliases are omitted. Browser interaction and each site's owning checks remain separate.
+The maintainer checkout also supports `--check-appearance` together with `--check`. It checks the fresh rendered home pages, including localized entries, for Paper as the default and all six style controls. Sites that disable Home are checked at their documentation entries; redirect aliases are omitted. Browser interaction and each site's owning checks remain separate.
 
 Preserve unrelated work. Update current theme-version references in site READMEs and configuration.
 Run each site's owning checks and visual review.

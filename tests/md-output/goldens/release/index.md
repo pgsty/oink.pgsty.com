@@ -11,14 +11,13 @@ LLMS index: [llms.txt](/llms.txt)
 > [!NOTE] Versioned history
 > Each release note records the requirements and validation of that version at release time. For current Hugo and Go requirements, see the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
 
-The current release is [OINK 1.7.0](/release/1.7.0/): six new content components
-(Timeline, Update, Video, Audio, Social, and Map with vendored Leaflet
-1.9.4), typeset rich-text copy, a sheet of 29 single-key shortcuts with local
-browsing history, fold-all, reading-width steps, and a reader opt-out, refined
-presets with Paper's ivory-and-clay palette and preset-specific CJK system
-typography, plus Markmap corner SVG download controls, site ECharts themes, and
-styled archived-version banners. Keep warnings visible, and never enable
-`--panicOnWarning` or `HUGO_PANICONWARNING`. No Sass compiler is required.
+The current release is [OINK 1.8.0](/release/1.8.0/): six visual styles with
+dedicated dark modes (Paper restored, Slate, new GitHub and News, manuscript
+Ink, and phosphor Dark Terminal), an updated Appearance menu with interactive
+landing style tiles, a unified single-bar control row for local audio and video
+players, and Markdown-native `> [!SOCIAL]` quoted-post callouts. Keep warnings
+visible, and never enable `--panicOnWarning` or `HUGO_PANICONWARNING`. No Sass
+compiler is required.
 
 For the changes contributed in 1.3.1, see its
 [reading repairs and contributor credits](/release/1.3.1/#thanks).
@@ -27,6 +26,7 @@ For the changes contributed in 1.3.1, see its
 
 Section pages:
 
+- [OINK 1.8.0 — Six visual styles, unified media controls, and native social callouts](/release/1.8.0/): Expand the visual system to six styles with dedicated dark modes (Paper, Slate, GitHub, Ink, News, Terminal), replace native audio/video strips with one themed progress bar, and quote social posts as native `> [!SOCIAL]` callouts.
 - [OINK 1.7.0 — Six components, typeset copy, and 29 shortcuts](/release/1.7.0/): Add Timeline, Update, Video, Audio, Social, and Map components; introduce typeset rich-text copy, a sheet of 29 shortcuts with browsing history and reading-width steps, and preset-specific CJK typography.
 - [OINK 1.6.0 — Plain CSS and BM25 local search](/release/1.6.0/): Replace Sass with plain CSS for Hugo 0.170+ compatibility, remove Bootstrap JS and Lunr, introduce scanning BM25 local search with split indexes and field anchors, and upgrade bundled runtimes.
 - [OINK 1.5.1 — Duo View and publishing fixes](/release/1.5.1/): Stabilize Duo View, correct RSS and Print output, and harden navigation, validation, search, and accessibility after the 1.5.0 review.

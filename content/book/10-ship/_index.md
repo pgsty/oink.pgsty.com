@@ -102,7 +102,7 @@ until you decide otherwise. To move to a new release, read its notes first,
 then pin the exact tag:
 
 ```bash
-hugo mod get github.com/pgsty/oink@v1.7.0
+hugo mod get github.com/pgsty/oink@v1.8.0
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```

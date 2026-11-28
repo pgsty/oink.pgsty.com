@@ -8,34 +8,34 @@ The bilingual maintainer contracts under `content/docs/design/` are the
 canonical prose source for OINK architecture, components, reading shells,
 Landing pages, and migration boundaries.
 
-The site documents OINK `v1.7.0`. The bilingual release notes cover the six new
-content components, typeset copy, the map of 29 shortcuts with browsing history
-and adjustable reading width, preset and CJK typography refinements, and
-upgrade steps. Local theme development uses a sibling `../oink` checkout, while
-`make build` and `make serve` use the published version pinned in `go.mod`.
-`content/docs/cli{,.zh}.md` introduces the separate, unreleased OINK CLI.
+The site documents OINK `v1.8.0`. The bilingual release notes cover the six
+visual presets with distinct dark modes, Appearance trigger and menu layout
+updates, unified single-bar audio and video controls, `> [!SOCIAL]` quoted-post
+callouts, and upgrade steps. Local theme development uses a sibling `../oink`
+checkout, while `make build` and `make serve` use the published version pinned
+in `go.mod`. `content/docs/cli{,.zh}.md` introduces the separate, unreleased
+OINK CLI.
 
-## OINK 1.7.0
+## OINK 1.8.0
 
-[OINK v1.7.0](https://github.com/pgsty/oink/releases/tag/v1.7.0) is dated
-2026-11-28. It adds six content components (Timeline, Update, Video, Audio,
-Social, and Map with vendored Leaflet 1.9.4), typeset rich-text copy, a
-system of 29 single-key shortcuts with a top-layer sheet, local browsing
-history (`H`), fold-all (`O`), reading-width steps (`-`/`=`), and a reader
-opt-out; refines all four visual presets with Paper's ivory sheet, clay accent,
-and preset-specific CJK system typography; and adds Markmap corner SVG download
-controls, site ECharts themes (`window.OinkEchartsThemes`), and styled
-archived-version banners.
+[OINK v1.8.0](https://github.com/pgsty/oink/releases/tag/v1.8.0) is dated
+2026-11-28. It restores Paper to its classic warm-paper and link-blue look,
+introduces the GitHub and News presets, redesigns Ink as a brush-written page
+and calibrates Dark Terminal as a restrained phosphor screen, updates the
+Appearance menu to a 3×2 style grid with a color-mode trigger icon, unifies
+local audio and video players on one themed control bar with a three-color
+progress track, formats quoted social posts as native `> [!SOCIAL]` Markdown
+callouts, and removes the Hugo minimum-version floor.
 
-- Release notes: [English](https://oink.pgsty.com/release/1.7.0/) /
-  [简体中文](https://oink.pgsty.com/zh/release/1.7.0/)
+- Release notes: [English](https://oink.pgsty.com/release/1.8.0/) /
+  [简体中文](https://oink.pgsty.com/zh/release/1.8.0/)
 - Contribution guide: [English](https://oink.pgsty.com/docs/about/contributing/) /
   [简体中文](https://oink.pgsty.com/zh/docs/about/contributing/)
 - [Upgrade and migration](https://oink.pgsty.com/docs/admin/upgrade/)
 
-OINK `v1.7.0` builds with any Hugo edition meeting the minimum in the theme's
-[`theme.toml`](https://github.com/pgsty/oink/blob/main/theme.toml) and Go **1.27.4**. Historical release notes retain the
-toolchain facts of their own versions.
+OINK `v1.8.0` uses plain CSS and is tested on Hugo `0.170+` (no Sass compiler or
+Extended edition required). Go is only used to resolve Hugo Modules. Historical
+release notes retain the toolchain facts of their own versions.
 
 ## Starting a new OINK site
 
@@ -95,7 +95,7 @@ checker and the English/Chinese Design contract.
 
 Thank you to [@imbajin](https://github.com/imbajin) for the reading repairs,
 fixtures, tests, and bilingual documentation delivered in 1.3.1 and retained in
-1.7.0. [Acknowledgements](https://oink.pgsty.com/docs/about/license/#community-contributors)
+1.8.0. [Acknowledgements](https://oink.pgsty.com/docs/about/license/#community-contributors)
 link each contribution to its pull request. OINK preserves Docsy's history and
 notices; bundled runtimes, fonts, and icons keep their own licences, recorded in
 the theme's [VENDOR.json](https://github.com/pgsty/oink/blob/main/VENDOR.json).

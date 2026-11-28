@@ -5,24 +5,27 @@ description: Repository assembly, configuration, diagnostics, localization, outp
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK architecture, repository boundary, runtime, i18n, Docsy locales, output formats, security, accessibility, performance]
-contract_status: v1.7.0
+contract_status: v1.8.0
 ---
 
-> [!NOTE] OINK 1.7.0 contract
-> This contract describes OINK v1.7.0.
+> [!NOTE] OINK 1.8.0 contract
+> This contract describes OINK v1.8.0.
 
 ## Hugo toolchain {#hugo-toolchain}
 
-**OINK v1.7.0** builds in any Hugo edition and uses **Go 1.27.4** for modules.
-The oldest supported Hugo is declared in the theme's [`theme.toml`](https://github.com/pgsty/oink/blob/main/theme.toml)
-and `hugo.yaml`. Development and checks use the installed Hugo. Theme CI installs
-the current release. See [Runtime dependencies and 1.7.0 baseline](#unreleased-dependencies).
+**OINK v1.8.0** uses plain CSS and is tested on **Hugo 0.170+** (no Sass
+compiler or Extended edition). It does not test older Hugo releases in CI:
+development and checks use the installed Hugo, and CI installs `latest`.
+Neither `theme.toml` nor `module.hugoVersion` declares a minimum Hugo version
+(dropped in v1.8.0; the v1.7.0 tag still carried one, which Hugo reported only
+as a warning). See
+[Runtime dependencies and 1.8.0 baseline](#unreleased-dependencies).
 
 Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Warnings remain
 visible and are reviewed. Invalid-input tests verify their specific warning
 and safe fallback output directly.
 
-OINK v1.7.0 contains no Sass: its stylesheet is plain CSS that Hugo
+OINK v1.8.0 contains no Sass: its stylesheet is plain CSS that Hugo
 concatenates; see [Plain CSS stylesheet delivery](#stylesheet-delivery).
 Ordinary consumers need no Dart Sass, LibSass, or other Sass executable—a site
 build needs only the Hugo binary. Releases up to v1.5.1 compiled main and ReDoc
@@ -60,14 +63,14 @@ The [shell contract](/docs/design/shell/) defines immersive pages as a blog pres
 Layouts must render through `content/render.html` before `scripts.html` because render hooks and shortcodes register capability flags in the Page Store.
 Override the narrowest partial. Keep similar base templates separate when merging them would change Hugo lookup precedence.
 
-## Runtime dependencies and 1.7.0 baseline {#unreleased-dependencies}
+## Runtime dependencies and 1.8.0 baseline {#unreleased-dependencies}
 
 The [Hugo toolchain](#hugo-toolchain) applies to development and CI. The stylesheet
 is plain CSS that Hugo concatenates, and the consumer SCSS hooks are retired;
 see [Plain CSS stylesheet delivery](#stylesheet-delivery). Contributor browser checks
 use Node 26.13.0 and npm 12.2.2; these are not consumer build dependencies.
 Blog cards, galleries and external rows read authored fallback summaries through
-`RawSummary`. Hugo 0.169.0's `plainify` supplies improved spacing between HTML
+`RawSummary`. Hugo's `plainify` supplies improved spacing between HTML
 blocks; summaries and word counts follow that behavior. Publication CI pins
 Pandoc 3.13, EPUBCheck 5.4.0 and Chrome headless shell 157.0.8103.50, with Java 27.
 The search close button's localized accessible name includes its visible

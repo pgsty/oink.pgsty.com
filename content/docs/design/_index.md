@@ -15,14 +15,14 @@ search_keywords:
     proposal,
     PRD,
   ]
-contract_status: v1.7.0
+contract_status: v1.8.0
 cascade:
   search_boost: 0.6
   categories: [Design]
 ---
 
-> [!NOTE] OINK 1.7.0 contract
-> These contracts describe OINK v1.7.0. Release acceptance checks the published
+> [!NOTE] OINK 1.8.0 contract
+> These contracts describe OINK v1.8.0. Release acceptance checks the published
 > module with replacements and workspaces disabled.
 
 This section explains how OINK works and why it has its present shape. It brings

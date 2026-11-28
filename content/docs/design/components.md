@@ -5,11 +5,11 @@ description: The maintainer contract for OINK authoring primitives, validation, 
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK component contract, shortcode API, Markdown components, Book, release, validation]
-contract_status: v1.7.0
+contract_status: v1.8.0
 ---
 
-> [!NOTE] OINK 1.7.0 contract
-> This contract describes OINK v1.7.0.
+> [!NOTE] OINK 1.8.0 contract
+> This contract describes OINK v1.8.0.
 
 The reader-facing [Components](/docs/components/) section provides tutorials and complete examples.
 This page defines the API and behavior used by those guides.
@@ -337,8 +337,8 @@ Only HTML is interactive. Print, Markdown, and RSS provide static specification 
 ### Timeline, updates, media, social, and maps {#timeline-media-social-and-maps}
 
 > [!NOTE] Available since OINK 1.7.0
-> Timeline, updates, video, audio, social, and maps ship in OINK v1.7.0. Social shipped there as the `social`
-> shortcode; it is now the `[!SOCIAL]` callout, and the shortcode is removed.
+> Timeline, updates, video, audio, social, and maps ship in 1.7.0.
+> OINK 1.8.0 adds the themed `.td-media__controls` bar for audio and video and uses the `> [!SOCIAL]` callout form for quoted posts.
 
 A definition list followed by `{.timeline}` is a timeline: terms are markers in free text, definitions are events with block content.
 Goldmark emits the `<dl>`; the theme adds only CSS scoped to `.td-content dl.timeline`, with a marker column on wide screens and one column on narrow viewports or inside `.td-content-card` containers.

@@ -15,12 +15,12 @@ sections:
     key: faq
 
 hero:
-  eyebrow: OINK 1.7.0 · 本地优先 · Hugo 构建
+  eyebrow: OINK 1.8.0 · 本地优先 · Hugo 构建
   title_lines:
     - words:
         - { text: PGSTY OINK }
   # prettier-ignore
-  lead: 用 Markdown 创作技术内容。<br>用四套风格呈现文档、博客、书籍与相册。
+  lead: 用 Markdown 创作技术内容。<br>用六套风格呈现文档、博客、书籍与相册。
   image:
     light: images/hero-light.webp
     dark: images/hero-dark.webp
@@ -30,8 +30,8 @@ hero:
       url: docs/start/
       icon: fa-solid fa-rocket
       style: primary
-    - label: 查看 1.7.0 新特性
-      url: release/1.7.0/
+    - label: 查看 1.8.0 新特性
+      url: release/1.8.0/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -304,17 +304,17 @@ faq:
   eyebrow: 选型之前
   title: 值得先问的几个问题
   items:
-    - question: OINK 1.7.0 有哪些变化？
+    - question: OINK 1.8.0 有哪些变化？
       answer: >-
-        [OINK 1.7.0](release/1.7.0/) 新增六种内容组件（时间线、更新条目、视频、音频、
-        帖子与内置 Leaflet 1.9.4 的地图），加入面向富文本编辑器的排版复制，将快捷键
-        重构为 29 个单键快捷键与顶层速查表并新增本地浏览历史（`H`）、一键折叠（`O`）、正文宽度调节
-        （`-`/`=`）与读者关闭开关；精细打磨四套视觉预设，为 Paper 换上暖白纸面、陶红强调色
-        与各预设独立的系统中文排版；并新增 Markmap 导图下载图标、自定义 ECharts 主题与归档版本横幅样式。
+        [OINK 1.8.0](release/1.8.0/) 将视觉体系扩展为六套风格与各自独立的深色模式
+        （Paper 回归经典暖纸配色、新增 GitHub 与 News、Ink 重构为楷体笔墨写本、深色
+        Terminal 变为克制的荧光屏），更新外观菜单的三列排布与首页交互式风格卡片，用统一
+        的三色单进度条控件栏取代浏览器原生音视频条，并以原生 Markdown 的 `> [!SOCIAL]`
+        提示块引用社交帖子。
     - question: 哪里需要 Node.js、npm 或打包器吗？
       answer: >-
-        不需要。站点只依赖任意 edition 的 Hugo（0.169.0+）与纯 CSS 构建，无需 Sass 编译器、
-        Node.js、npm 或打包器。Go 1.27.4+ 用来把主题解析为模块；使用离线归档或
+        不需要。站点只依赖 Hugo 与纯 CSS 构建（已在 0.170+ 上测试），无需 Sass 编译器、
+        Node.js、npm 或打包器。以 Hugo Module 方式引入主题时需要 Go；使用离线归档或
         Git submodule 时不需要 Go。浏览器脚本随主题分发，只在用到时加载。
       open: true
     - question: 我有一个 Docsy 站，迁移有多难？

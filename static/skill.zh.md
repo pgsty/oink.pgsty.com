@@ -5,21 +5,21 @@ description: "Oink 建站：用 OINK 主题（github.com/pgsty/oink，文档 oin
 
 # Oink 建站
 
-> OINK 建站技能的公开版：<https://oink.pgsty.com/skill.zh.md> · English：<https://oink.pgsty.com/skill.md>。保存为技能目录 `oink-site/` 下的 `SKILL.md`，或直接把地址交给任何 agent。本文写于 2026-11-27，对应 OINK v1.7.0。
+> OINK 建站技能的公开版：<https://oink.pgsty.com/skill.zh.md> · English：<https://oink.pgsty.com/skill.md>。保存为技能目录 `oink-site/` 下的 `SKILL.md`，或直接把地址交给任何 agent。本文写于 2026-11-28，对应 OINK v1.8.0。
 
 这份文件是一张地图，不是说明书。它告诉你 OINK 能提供什么、哪些真实站点和你要建的站点相像、每项任务该读文档的哪一页。细节都在那些站点和文档里：需要时再去打开，其间的事情交给你自己判断。
 
 ## OINK 是什么
 
-OINK 是本地优先的 Hugo 模块主题，硬分叉自 Docsy。一个 OINK 站点就是普通的 Hugo 仓库：一份配置文件、一个固定 `github.com/pgsty/oink@<tag>` 的 `go.mod`、`content/`、`data/`，以及可选的 `assets/` 和 `layouts/`。用满足[模块最低要求](https://github.com/pgsty/oink/blob/main/theme.toml)的 Hugo 构建（不限 edition），Go 负责拉取模块；不需要 Node、npm、Sass 或 CDN。
+OINK 是本地优先的 Hugo 模块主题，硬分叉自 Docsy。一个 OINK 站点就是普通的 Hugo 仓库：一份配置文件、一个固定 `github.com/pgsty/oink@<tag>` 的 `go.mod`、`content/`、`data/`，以及可选的 `assets/` 和 `layouts/`。用 Hugo 构建（已在 0.170+ 上测试），Go 负责拉取模块；不需要 Node、npm、Sass 或 CDN。
 
 可以用上的东西：
 
 - Docs、Book、Blog、Swagger 四种阅读外壳，以及 Expo 相册；
 - 用 YAML 数据拼出来的首页和落地页，有 22 种区块可选；
-- 内容组件，大多是纯 Markdown 加一行属性：提示框、步骤、卡片、标签页、带注释的代码、图表、时间线、更新日志条目、视频和音频播放器、帖子引用、地图；
+- 内容组件，大多是纯 Markdown 加一行属性：提示框、步骤、卡片、标签页、带注释的代码、图表、时间线、更新日志条目、主题化视频和音频播放器、帖子引用（`> [!SOCIAL]`）、地图；
 - 带命令面板的本地搜索、29 个单键快捷键与本地浏览历史、排版富文本复制、32 种界面语言、对照译文的双列视图、多版本、分类标签；
-- 四种外观预设（默认暖白陶红 Paper、Slate、Ink、Terminal）及各自独立的系统中文排版、亮暗模式、打印，以及给 agent 读的 Markdown 和 `llms.txt` 输出。
+- 六套外观预设（默认 Paper、Slate、GitHub、Ink、News、Terminal）及各自独立的深色模式与系统中文排版、打印，以及给 agent 读的 Markdown 和 `llms.txt` 输出。
 
 它不提供 CMS、登录、数据库或自动翻译。
 

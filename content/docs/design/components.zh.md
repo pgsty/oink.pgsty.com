@@ -5,11 +5,11 @@ description: OINK 创作原语、校验、Book、发布行为与输出降级的�
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK 组件契约, shortcode API, Markdown 组件, Book, 发布, 校验]
-contract_status: v1.7.0
+contract_status: v1.8.0
 ---
 
-> [!NOTE] OINK 1.7.0 契约
-> 本契约描述 OINK v1.7.0。
+> [!NOTE] OINK 1.8.0 契约
+> 本契约描述 OINK v1.8.0。
 
 教程与完整示例位于面向读者的[组件](/zh/docs/components/)专栏。本页定义这些
 指南所依赖的 API 与行为。
@@ -307,8 +307,8 @@ Swagger 与 Redoc 接受 HTTP(S) 规范 URL 或以 `static/` 为根的路径，�
 ### 时间轴、更新、媒体、帖子与地图 {#timeline-media-social-and-maps}
 
 > [!NOTE] 自 OINK 1.7.0 起提供
-> 时间轴、更新条目、视频、音频、帖子与地图随 OINK v1.7.0 发布。帖子在该版本中是 `social` 短代码，
-> 现已改为 `[!SOCIAL]` 提示块，短代码已移除。
+> 时间轴、更新条目、视频、音频、帖子与地图随 1.7.0 发布。
+> OINK 1.8.0 为音视频加入主题化的 `.td-media__controls` 控件栏，并以 `> [!SOCIAL]` 提示块承载帖子引用。
 
 紧跟 `{.timeline}` 的定义列表就是时间轴：术语是自由文本的标记，定义是可含块级内容的事件。
 `<dl>` 由 Goldmark 生成；主题只添加作用域为 `.td-content dl.timeline` 的 CSS，宽屏时分出标记列，窄屏或位于 `.td-content-card` 容器内时保持单列。

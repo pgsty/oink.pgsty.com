@@ -491,19 +491,18 @@ outputs:
 | `taxonomies` | map | | Hugo 原生：启用 `tag: tags` 与 `category: categories`，见[分类体系](/zh/docs/customize/taxonomy/) |
 | `params.taxonomy.page_header` | list | | 文章头部显示哪些分类法；不设则全部显示 |
 | `services.googleAnalytics.id` | string | | Hugo 原生：分析脚本只加进生产构建，见[分析与 SEO](/zh/docs/admin/analytics/) |
-| `module.hugoVersion.min` | string | 0.169.0 | 允许构建本站的最低 Hugo 版本，应与主题自己声明的最低版本一致；Hugo 低于它时构建失败 |
 {.fields meta="type default"}
 
 ## 通过生成式 Schema 获得编辑器补全 {#editor-schema}
 
 主题为自己的配置发布了 JSON Schema，编辑器据此可以补全键名、悬停显示每个键的说明，并在你输入时标出类型错误。`schema/site-params.schema.json` 对应 `hugo.yml`，`schema/front-matter.schema.json` 对应页面 front matter。请从与 `go.mod` 中固定的主题版本相同的标签下取用，因为不同版本之间的键会变。
 
-使用 VS Code YAML 扩展时，在设置里映射站点 Schema。下例以 OINK v1.7.0 为例，同时覆盖两种常见文件名；把标签换成你 `go.mod` 里的版本：
+使用 VS Code YAML 扩展时，在设置里映射站点 Schema。下例以 OINK v1.8.0 为例，同时覆盖两种常见文件名；把标签换成你 `go.mod` 里的版本：
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/v1.7.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
+    "https://raw.githubusercontent.com/pgsty/oink/v1.8.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```

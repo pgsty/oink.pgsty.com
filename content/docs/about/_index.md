@@ -67,19 +67,28 @@ supplies the shell and the reusable parts.
 
 ## Is OINK for me {#is-oink-for-me}
 
-| OINK fits when | Look elsewhere when |
-| --- | --- |
-| The site has many pages and mixes documentation, a blog, a book, release pages and an API reference | The site has one or two pages and needs no navigation; a README or a lighter Hugo theme is simpler |
-| You publish full translations, not an English site with a translate link | The site is mostly application UI; OINK can carry its documentation, but product components stay in your site |
-| Builds must be reproducible, and the build machine may have no network access | You want interactive React components inside your prose (MDX) |
-| Several sites should share one shell without copying layouts and shortcodes | You want a completely different look from one switch; beyond the four presets, appearance changes go through CSS tokens and partial overrides |
-| Nobody on the team is a front-end engineer or wants to maintain a Node toolchain | You need a CMS or a WYSIWYG editor |
+{{< cards >}}
+{{< card title="OINK fits when" icon="fa-solid fa-circle-check" >}}
+- The site has many pages and mixes documentation, a blog, a book, release pages and an API reference
+- You publish full translations, not an English site with a translate link
+- Builds must be reproducible, and the build machine may have no network access
+- Several sites should share one shell without copying layouts and shortcodes
+- Nobody on the team is a front-end engineer or wants to maintain a Node toolchain
+{{< /card >}}
+{{< card title="Look elsewhere when" icon="fa-solid fa-arrow-right-from-bracket" >}}
+- The site has one or two pages and needs no navigation; a README or a lighter Hugo theme is simpler
+- The site is mostly application UI; OINK can carry its documentation, but product components stay in your site
+- You want interactive React components inside your prose (MDX)
+- You want a completely different look from one switch; beyond the six presets, appearance changes go through CSS tokens and partial overrides
+- You need a CMS or a WYSIWYG editor
+{{< /card >}}
+{{< /cards >}}
 
 Weigh two more things. Most features are off until you configure them,
 including search, dark mode, image zoom, comments, feedback and the Markdown
 and agent outputs; the [Starter](https://github.com/pgsty/oink-starter) turns
 the common ones on for you. And OINK is young and moves quickly: 1.0.0 shipped
-in August 2026 and 1.7.0 three months later. Each site pins an exact release,
+in August 2026 and 1.8.0 three months later. Each site pins an exact release,
 so nothing changes until you raise the pin, and the
 [upgrade guide](/docs/admin/upgrade/) has a section for every release that asks
 you to change something.
@@ -118,4 +127,4 @@ history, Apache-2.0 obligations and attribution; see
 
 Found a problem or want to send a fix? The
 [contribution guide](/docs/about/contributing/) says where it goes. The
-[1.7.0 release notes](/release/1.7.0/) describe the current release.
+[1.8.0 release notes](/release/1.8.0/) describe the current release.

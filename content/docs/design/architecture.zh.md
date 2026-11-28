@@ -5,28 +5,28 @@ description: 仓库装配、配置、诊断、本地化、输出、性能、安�
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK 架构, 仓库边界, 运行时, i18n, Docsy 语言, 输出格式, 安全, 无障碍, 性能]
-contract_status: v1.7.0
+contract_status: v1.8.0
 ---
 
-> [!NOTE] OINK 1.7.0 契约
-> 本契约描述 OINK v1.7.0。
+> [!NOTE] OINK 1.8.0 契约
+> 本契约描述 OINK v1.8.0。
 
 ## Hugo 工具链 {#hugo-toolchain}
 
-**OINK v1.7.0** 支持任意 Hugo edition，使用 Hugo Modules 时需要 **Go 1.27.4**。
-主题的 [`theme.toml`](https://github.com/pgsty/oink/blob/main/theme.toml) 和 `hugo.yaml` 声明支持的最低 Hugo 版本。
-开发和检查使用本机安装的 Hugo，主题 CI 安装当前版本。
-详见[运行时依赖与 1.7.0 基线](#unreleased-dependencies)。
+**OINK v1.8.0** 使用纯 CSS，已在 **Hugo 0.170+** 上测试（无需 Sass 编译器，也不区分 Extended 版）。
+CI 跟随 `latest` 构建，不测试更老版本 Hugo 的兼容性；开发和检查使用本机安装的 Hugo。
+`theme.toml` 与 `module.hugoVersion` 均不再声明最低 Hugo 版本（自 v1.8.0 起移除；v1.7.0 标签仍保留过该声明，Hugo 对此只发出告警）。
+详见[运行时依赖与 1.8.0 基线](#unreleased-dependencies)。
 
 禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。告警保持可见并接受审阅。
 无效输入测试直接检查对应告警和安全降级产物。
 
-OINK v1.7.0 不含任何 Sass：样式表是纯 CSS，由 Hugo 拼接，见[纯 CSS 样式表的交付](#stylesheet-delivery)。
+OINK v1.8.0 不含任何 Sass：样式表是纯 CSS，由 Hugo 拼接，见[纯 CSS 样式表的交付](#stylesheet-delivery)。
 普通用户无需安装 Dart Sass、LibSass 或其他 Sass 程序，站点构建只需要 Hugo 这一个程序。
 1.5.1 及更早版本曾用 Hugo 内置 LibSass 编译主样式与 ReDoc 样式（需要 Hugo Extended 0.168.0 与 Go 1.27.3）。
 后续变更必须保持仅依赖 Hugo 的边界；要求、检查器与双语契约须同步修改，历史发布和研究记录保留当时的工具版本。
 
-Go 用于解析 Hugo Modules；已准备好传统主题副本的站点无需 Go。
+Go 仅用于解析 Hugo Modules，已准备好传统主题副本的站点无需 Go；面向用户的文档不要求特定 Go 版本。
 
 ## 仓库与装配 {#repository-and-assembly}
 
@@ -57,14 +57,14 @@ Hugo 类型 `docs`、`book`、`blog` 与 `swagger` 选择阅读外壳；
 会在 Page Store 中登记能力标志。覆盖时应选择范围最窄的 partial；若合并会改变
 Hugo 的查找优先级，即使几个基础模板看起来相似，也应保持分离。
 
-## 运行时依赖与 1.7.0 基线 {#unreleased-dependencies}
+## 运行时依赖与 1.8.0 基线 {#unreleased-dependencies}
 
 开发和 CI 均遵循 [Hugo 工具链](#hugo-toolchain)契约。
 样式表是由 Hugo 拼接的纯 CSS，消费站点的 SCSS 钩子已退役，
 见[纯 CSS 样式表的交付](#stylesheet-delivery)。贡献者浏览器检查使用
 Node 26.13.0 与 npm 12.2.2；它们不是普通消费站点的构建依赖。
 博客卡片、图库和外链列表通过 `RawSummary` 读取作者提供的后备摘要。
-Hugo 0.169.0 的 `plainify` 改进了 HTML 块之间的空白，摘要与字数统计遵循该行为。
+Hugo 的 `plainify` 改进了 HTML 块之间的空白，摘要与字数统计遵循该行为。
 出版 CI 固定 Pandoc 3.13、EPUBCheck 5.4.0 和 Chrome headless shell
 157.0.8103.50，Java 使用 27。
 搜索关闭按钮的本地化无障碍名称包含可见的 `Esc` 标签，并通过

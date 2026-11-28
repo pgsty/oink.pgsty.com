@@ -10,10 +10,8 @@ design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] Accepted in OINK 1.7.0; revised after it
-> OINK v1.7.0 shipped the card as the `social` shortcode. On 2026-11-28 the
-> owner moved it to the native `> [!SOCIAL]` callout, which is implemented on
-> `main` and removes the shortcode. The
+> [!NOTE] Shipped in OINK 1.8.0 as `> [!SOCIAL]`
+> The `> [!SOCIAL]` callout form ships in OINK v1.8.0. The
 > [Social posts guide](/docs/components/social/) documents it, the
 > [Components contract](/docs/design/components/#timeline-media-social-and-maps)
 > governs it, and shared decisions are in the
@@ -21,7 +19,7 @@ proposal_date: 2026-11-27
 
 | Record | Value |
 | --- | --- |
-| Status | Accepted; shortcode shipped in OINK v1.7.0 (2026-11-27); callout form implemented 2026-11-28, unreleased |
+| Status | Accepted and shipped in OINK v1.8.0 (`> [!SOCIAL]` callout form, 2026-11-28) |
 | Owner | OINK maintainers |
 | Delivery stage | S3 |
 | Form | Callout with a Markdown body: ``> [!SOCIAL] Name `@handle` `` plus a block attribute line |

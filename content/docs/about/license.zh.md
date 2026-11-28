@@ -21,7 +21,7 @@ CC BY 4.0 只覆盖原创文档内容，不覆盖主题代码、商标、截图�
 
 ## 社区贡献者 {#community-contributors}
 
-OINK 由 PGSTY 维护。感谢 [@imbajin](https://github.com/imbajin) 报告并贡献了下列阅读体验修复，并一同提供了夹具、回归测试与双语文档。这些修复首次随 1.3.1 发布，**1.7.0** 继续保留。
+OINK 由 PGSTY 维护。感谢 [@imbajin](https://github.com/imbajin) 报告并贡献了下列阅读体验修复，并一同提供了夹具、回归测试与双语文档。这些修复首次随 1.3.1 发布，**1.8.0** 继续保留。
 
 | 贡献 | Pull request |
 | --- | --- |
@@ -48,7 +48,7 @@ OINK 由 PGSTY 维护。感谢 [@imbajin](https://github.com/imbajin) 报告并�
 
 浏览器需要的资源全部提交在主题仓库的 `assets/third_party/` 与 `static/webfonts/` 下，无需 npm 步骤，构建时也不下载任何东西；以 Hugo Module 方式解析主题时仍需要 Go 与可用的模块来源。`VENDOR.json` 是这批资源的机器可读清单，逐项记录名称、固定版本、来源 URL、许可证文件路径，以及每个选取产物的 SHA-256；清单还为两棵资源目录各记录一个整体校验值。
 
-下表与 [OINK v1.7.0 清单](https://github.com/pgsty/oink/blob/v1.7.0/VENDOR.json)一致（`VENDOR.json` 生成于 2026-11-28，schema 1，共 26 项）。版本随主题发布而变化，**请以所固定主题版本的清单为准**。全部来源都是 npm registry（`https://registry.npmjs.org/…`）。
+下表与 [OINK v1.8.0 清单](https://github.com/pgsty/oink/blob/v1.8.0/VENDOR.json)一致（`VENDOR.json` 生成于 2026-11-28，schema 1，共 26 项）。版本随主题发布而变化，**请以所固定主题版本的清单为准**。全部来源都是 npm registry（`https://registry.npmjs.org/…`）。
 
 | 项目                               | 版本     | 许可证                        | 在主题里做什么                             |
 |------------------------------------|----------|-------------------------------|--------------------------------------------|
@@ -86,7 +86,7 @@ OINK 由 PGSTY 维护。感谢 [@imbajin](https://github.com/imbajin) 报告并�
 
 ## 字体与图标 {#fonts-and-icons}
 
-Inter、IBM Plex Sans、Chakra Petch 与 IBM Plex Mono 四种字体采用 SIL Open Font License 1.1。OINK 1.7.0 在 `static/webfonts/` 下包含 33 个文件：14 个 Inter 子集、12 个 IBM Plex Sans 子集、4 个品牌字体文件和 3 个 Font Awesome 文件。Font Awesome Free 7.3.1 采用复合许可：图标图形为 CC BY 4.0，字体文件为 SIL OFL 1.1，代码为 MIT，原文见 `assets/third_party/Font-Awesome/LICENSE.txt`。
+Inter、IBM Plex Sans、Chakra Petch 与 IBM Plex Mono 四种字体采用 SIL Open Font License 1.1。OINK 1.8.0 在 `static/webfonts/` 下包含 33 个文件：14 个 Inter 子集、12 个 IBM Plex Sans 子集、4 个品牌字体文件和 3 个 Font Awesome 文件。Font Awesome Free 7.3.1 采用复合许可：图标图形为 CC BY 4.0，字体文件为 SIL OFL 1.1，代码为 MIT，原文见 `assets/third_party/Font-Awesome/LICENSE.txt`。
 
 主题不向任何远程字体服务发出请求：仓库里没有 Google Fonts 链接，字体只从站点自己的 `baseURL` 下发。更换字体或改用系统字体栈，见[品牌外观](/zh/docs/customize/brand/)。
 

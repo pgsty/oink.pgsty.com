@@ -46,7 +46,7 @@ produces the same site. Check that the tag is published and resolves before
 you pin it:
 
 ```bash {title="Terminal"}
-hugo mod get github.com/pgsty/oink@v1.7.0   # the published release tag
+hugo mod get github.com/pgsty/oink@v1.8.0   # the published release tag
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -58,9 +58,7 @@ above, `go.mod` reads:
 ```go {title="go.mod"}
 module github.com/example/product-docs
 
-go 1.27.4
-
-require github.com/pgsty/oink v1.7.0
+require github.com/pgsty/oink v1.8.0
 ```
 
 If you also preview against a local theme checkout, that replacement
@@ -73,7 +71,7 @@ check out the exact release rather than following a remote branch:
 
 ```bash {title="Terminal"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.7.0
+git -C themes/oink checkout --detach v1.8.0
 git add themes/oink
 ```
 
@@ -140,13 +138,47 @@ hugo --gc --minify
 Republishing the previous deployment itself is covered in
 [Deploy](/docs/admin/deploy/#rollback).
 
+## Upgrade to 1.8.0 {#preparing-1-8-0}
+
+Review the [1.8.0 release notes](/release/1.8.0/) and check these items before
+pinning `v1.8.0`:
+
+- **Six visual presets and distinct dark modes.** Paper returns to its classic
+  warm-paper and link-blue look (`#f7f6f3`, `#21201c`, `#2b5f8c`, IBM Plex Sans
+  over Hei). `github` and `news` join the preset list, `ink` is redesigned as a
+  written page (Palatino, Kai, Fangsong/Song and vermilion; silver and gold on
+  indigo-violet in dark mode), and Dark Terminal is calibrated as a restrained
+  phosphor screen. To offer all six styles, set
+  `params.ui.preset_menu: [paper, slate, github, ink, news, terminal]`. See
+  [Brand and appearance](/docs/customize/brand/#visual-presets).
+- **Appearance trigger and menu layout.** Three, five or six presets arrange in
+  three columns above the three Color cards, with `Style (T)` and `Color (Y)`
+  legends when keyboard navigation is on. The navbar trigger displays the
+  active color mode (sun, moon or half-filled circle) whenever Color is offered.
+- **Unified audio and video controls.** Local audio and video files replace
+  native browser controls with the theme's `.td-media__controls` row, featuring
+  a single three-color progress bar, playback speed toggle, volume slider, and
+  captions and fullscreen controls for video. Sites with custom CSS targeting
+  the former `.td-media__progress` element should update to
+  `.td-media__controls` and `.td-media__seek`.
+- **Quoted posts as `> [!SOCIAL]` callouts.** Quoted social posts use the
+  `> [!SOCIAL]` Markdown callout form with a trailing block attribute line
+  (`{avatar="…" date="…" url="…" platform="…"}`), keeping the quote readable as
+  an ordinary blockquote in plain Markdown; see
+  [Social](/docs/components/social/). If a site has legacy `social` shortcode
+  calls, convert them with
+  `python3 bin/migrations/oink06.py migrate --site <dir> --only social --write`
+  from the theme repository, then run
+  `python3 bin/migrations/oink06.py check --site <dir>` to list any call it
+  left unchanged.
+
 ## Upgrade to 1.7.0 {#preparing-1-7}
 
 Sites already on 1.6.0 need no template or stylesheet migration. Review the
 [1.7.0 release notes](/release/1.7.0/) and check these behavior and appearance
 updates before pinning `v1.7.0`:
 
-- **Paper accent and preset typography.** Paper moves to an ivory canvas (`#faf9f5`) and a clay UI accent (`#9b4a28`, dark `#de8460`) while keeping blue underlined links in prose. To keep Paper's previous blue accent, set `params.ui.theme_color: '#2b5f8c'`. Terminal now sets screen prose in IBM Plex Mono (keeping IBM Plex Sans in print), and an explicit `params.ui.fonts.ui` or `fonts.body` reaches the headings in every preset unless `fonts.heading` names its own face. See [Brand and appearance](/docs/customize/brand/#visual-presets).
+- **Paper accent and preset typography.** Paper moves to an ivory canvas (`#faf9f5`) and a clay UI accent (`#9b4a28`, dark `#de8460`) while keeping blue underlined links in prose. To keep Paper's previous blue accent, set `params.ui.theme_color: '#2b5f8c'`. Terminal now sets screen prose in IBM Plex Mono (keeping IBM Plex Sans in print), and an explicit `params.ui.fonts.ui` or `fonts.body` reaches the headings in every preset unless `fonts.heading` names its own face. See [Brand and appearance](/docs/customize/brand/#visual-presets). OINK 1.8.0 returns Paper to its 1.6.0 look and adds `preset: news`, which grew out of this 1.7.0 look and is the closest choice for a site that preferred it; see [Upgrade to 1.8.0](#preparing-1-8-0).
 - **Updated single-key shortcuts.** The shortcut map reorganized into twenty-nine bindings (10 navigation, 9 actions, 10 view): Zen Mode moves from `H` to `Z` (`H` opens local browsing history), language cycling is `X`, preset cycling is `T`, color mode is `Y`, blog index layout is `L`, version cycling is `V`, language home is `G`, command-only palette stays on `\` (with `C`), and `[` and `]` trigger ChatGPT and Claude. `G` no longer opens the focused tree item (`Enter` and `Space` still do), and the home page's `N` section alias is gone (`J` remains). Update any site-specific help copy or keyboard tests that mention pre-1.7 keys; see [Keyboard shortcuts](/docs/customize/keyboard/).
 - **Typeset copy.** Copying article prose now emits clean print-palette rich text by default so editors such as WeChat no longer keep page canvas backgrounds. Set `params.ui.rich_copy: false` (or front matter `rich_copy: false`) if your site needs the browser's default HTML copy.
 - **New opt-in components and CSP.** Timeline, Update, Social, and local Video/Audio work without external requests. If you enable `params.map` or `params.video_embeds`, allow your tile origin in `img-src` and enabled video hosts in `frame-src`; see [Deploy](/docs/admin/deploy/#csp).

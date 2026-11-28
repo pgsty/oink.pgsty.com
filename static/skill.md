@@ -8,7 +8,7 @@ description: "Oink 建站: build, migrate, and polish Hugo sites on the OINK the
 > Public edition of the OINK site-building skill: <https://oink.pgsty.com/skill.md>
 > · 中文：<https://oink.pgsty.com/skill.zh.md>. Save it as `SKILL.md` in an
 > `oink-site/` skills directory, or hand the URL to any agent. Written
-> 2026-11-27 for OINK v1.7.0.
+> 2026-11-28 for OINK v1.8.0.
 
 This file is a map, not a manual. It tells you what OINK offers, which real
 sites look like the one you are about to build, and which page of the

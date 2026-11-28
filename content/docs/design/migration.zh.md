@@ -1,15 +1,15 @@
 ---
 title: OINK 迁移边界
 linkTitle: 迁移边界
-description: OINK 迁移所支持的源码、配置与验证边界，包含 1.6.0 与 1.7.0 升级。
+description: OINK 迁移所支持的源码、配置与验证边界，包含 1.6.0、1.7.0 与 1.8.0 升级。
 weight: 50
 icon: fa-solid fa-code-compare
 search_keywords: [OINK 迁移契约, 0.4 迁移, 0.5 迁移, 配置重命名, 迁移工具]
-contract_status: v1.7.0
+contract_status: v1.8.0
 ---
 
-> [!NOTE] OINK 1.7.0 契约
-> 本契约描述 OINK v1.7.0。
+> [!NOTE] OINK 1.8.0 契约
+> 本契约描述 OINK v1.8.0。
 
 本页定义维护者迁移工具与配置边界；面向读者的升级步骤见
 [版本升级](/zh/docs/admin/upgrade/)。
@@ -49,8 +49,8 @@ pg-internal profile；它不是通用解析器。
 此工具随 OINK 1.2.0 发布。在主题 checkout 中执行，先清点，再升级到正式标签。
 
 ```sh
-python3 bin/update-consumers.py v1.7.0 --roots ~/www ~/pgsty
-python3 bin/update-consumers.py v1.7.0 --roots ~/www ~/pgsty --write --check --check-appearance
+python3 bin/update-consumers.py v1.8.0 --roots ~/www ~/pgsty
+python3 bin/update-consumers.py v1.8.0 --roots ~/www ~/pgsty --write --check --check-appearance
 ```
 
 第一条命令只报告版本采用情况。第二条更新 `go.mod`（含新版本所需的最低 Go 版本指令同步）和 `go.sum` 中的 OINK
@@ -74,21 +74,23 @@ Git 的源目录。自动扫描会跳过无 Git 目录，显式选中后执行�
 中的主题。是否实际使用 vendor 输出以 Hugo 解析的模块图为准；通过 `ignoreVendorPaths`
 绕过的历史快照会保留，不会阻塞已发布模块的升级。
 
-要开启四种风格，并以 Paper 为站点默认值，在站点配置中显式设置：
+要开启全部六种风格，并以 Paper 为站点默认值，在站点配置中显式设置：
 
 ```yaml
 params:
   ui:
     preset: paper
-    preset_menu: [paper, slate, ink, terminal]
+    preset_menu: [paper, slate, github, ink, news, terminal]
 ```
 
-`preset_menu: true` 只提供稳定风格与站点默认值；显式列表还会开启 Ink 与 Terminal。
+`preset_menu: true` 只提供稳定风格与站点默认值；显式列表还会开启 GitHub、Ink、
+News 与 Terminal。维护中的站点从 OINK 1.8.0 起改用六种
+风格的列表；仍固定在 1.7.0 的站点保留该版本已有的四种风格。
 这些设置会在后续版本升级时保留。自定义外壳的站点需单独检查：绕过 OINK 外壳的模板
 不会仅因配置更新就获得外观控件。
 
 维护者 checkout 还支持将 `--check-appearance` 与 `--check` 一起使用，检查新构建的
-首页及各语言入口是否以 Paper 为默认值并渲染四种风格控件。禁用首页的站点改查文档
+首页及各语言入口是否以 Paper 为默认值并渲染六种风格控件。禁用首页的站点改查文档
 入口，跳过重定向别名。浏览器交互和各站点自身的检查仍需独立执行。
 
 保留无关改动，同步站点 README 和配置中的当前主题版本说明，并运行站点自身的

@@ -48,8 +48,8 @@ script, font and stylesheet it uses, so the build needs no Node.js, npm or CDN.
 
 New to OINK? [Get started](/docs/start/) has this site running locally in two
 minutes and shows how to build your own with an AI agent. Already running
-OINK? Read the [1.7.0 release notes](/release/1.7.0/), then follow the
-[upgrade guide](/docs/admin/upgrade/#preparing-1-7).
+OINK? Read the [1.8.0 release notes](/release/1.8.0/), then follow the
+[upgrade guide](/docs/admin/upgrade/#preparing-1-8-0).
 
 ## Where to start {#five-entries}
 

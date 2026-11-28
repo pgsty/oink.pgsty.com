@@ -15,12 +15,12 @@ sections:
     key: faq
 
 hero:
-  eyebrow: OINK 1.7.0 · Local-first · Built with Hugo
+  eyebrow: OINK 1.8.0 · Local-first · Built with Hugo
   title_lines:
     - words:
         - { text: PGSTY OINK }
   # prettier-ignore
-  lead: Technical content, written in Markdown.<br>Four styles for docs, blogs, books and albums.
+  lead: Technical content, written in Markdown.<br>Six styles for docs, blogs, books and albums.
   image:
     light: images/hero-light.webp
     dark: images/hero-dark.webp
@@ -30,8 +30,8 @@ hero:
       url: docs/start/
       icon: fa-solid fa-rocket
       style: primary
-    - label: What's new in 1.7.0
-      url: release/1.7.0/
+    - label: What's new in 1.8.0
+      url: release/1.8.0/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -309,24 +309,23 @@ faq:
   eyebrow: Before you commit
   title: Questions worth asking first
   items:
-    - question: What's new in OINK 1.7.0?
+    - question: What's new in OINK 1.8.0?
       answer: >-
-        [OINK 1.7.0](release/1.7.0/) adds six content components (Timeline,
-        Update, Video, Audio, Social, and Map with vendored Leaflet
-        1.9.4), typeset rich-text copy for pasting cleanly into external
-        editors, 29 single-key shortcuts on a top-layer sheet,
-        local browsing history (`H`), fold-all (`O`), adjustable reading width
-        (`-`/`=`), and a reader opt-out; refines all four presets with Paper's
-        ivory sheet, clay accent, and preset-specific CJK system typography;
-        and adds Markmap corner SVG download controls, site ECharts themes, and
-        styled archived-version banners.
+        [OINK 1.8.0](release/1.8.0/) expands the visual system to six styles
+        with dedicated dark modes (restoring Paper's classic warm palette,
+        adding GitHub and News, rewriting Ink as a brush-written manuscript,
+        and turning Dark Terminal into a restrained phosphor screen), updates
+        the Appearance menu with three-column alignment and interactive landing
+        style tiles, replaces native audio and video strips with one themed
+        three-color progress bar, and quotes social posts as Markdown-native
+        `> [!SOCIAL]` callouts.
     - question: Do I need Node.js, npm or a bundler anywhere?
       answer: >-
-        No. Site builds use Hugo alone (0.169.0 or newer, any edition) and plain
-        CSS; no Sass compiler, Node.js, npm, or bundler is required. Go 1.27.4+
-        resolves the theme as a module; an offline archive or Git submodule
-        works without it. Browser scripts ship with the theme and load only
-        where they are used.
+        No. Site builds use Hugo alone (tested on 0.170+) and plain CSS; no
+        Sass compiler, Node.js, npm, or bundler is required. Go resolves the
+        theme as a module; an offline archive or Git submodule works without
+        it. Browser scripts ship with the theme and load only where they are
+        used.
       open: true
     - question: I have a Docsy site. How hard is the move?
       answer: >-

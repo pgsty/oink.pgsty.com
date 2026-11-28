@@ -30,7 +30,7 @@ aliases:
 固定一个已发布的版本标签，或者一个你主动选定的不可变 commit，不要跟随分支，也不要用 `@latest`，这样同一个站点 commit 每次构建出来的都是同一个站点。固定之前，先确认标签已经发布并且能够解析：
 
 ```bash {title="终端"}
-hugo mod get github.com/pgsty/oink@v1.7.0   # 已发布的版本标签
+hugo mod get github.com/pgsty/oink@v1.8.0   # 已发布的版本标签
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -40,9 +40,7 @@ hugo mod graph | grep github.com/pgsty/oink
 ```go {title="go.mod"}
 module github.com/example/product-docs
 
-go 1.27.4
-
-require github.com/pgsty/oink v1.7.0
+require github.com/pgsty/oink v1.8.0
 ```
 
 如果你同时在对着本地主题 checkout 预览，这个替换会盖掉固定的版本；信任构建结果之前，先看[对着本地主题预览](/zh/docs/admin/preview/#theme-workspace)。
@@ -51,7 +49,7 @@ require github.com/pgsty/oink v1.7.0
 
 ```bash {title="终端"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.7.0
+git -C themes/oink checkout --detach v1.8.0
 git add themes/oink
 ```
 
@@ -103,11 +101,20 @@ hugo --gc --minify
 
 重新发布上一个部署本身，见[发布上线](/zh/docs/admin/deploy/#rollback)。
 
+## 升级到 1.8.0 {#preparing-1-8-0}
+
+固定 `v1.8.0` 之前，先阅读 [1.8.0 发布说明](/zh/release/1.8.0/)并核对以下更新：
+
+- **六套视觉预设与独立深色模式**：Paper 回归经典暖纸与链接蓝风格（`#f7f6f3`、`#21201c`、`#2b5f8c`，IBM Plex Sans 配黑体）。新增 `github` 与 `news` 两套预设，`ink` 重写为手写笔墨页面（Palatino、楷体、仿宋或宋体与朱色；夜间为绀纸金银字），深色 Terminal 校准为克制的荧光屏配色。如需向读者开放全部六套风格，将 `params.ui.preset_menu` 设为 `[paper, slate, github, ink, news, terminal]`，详见[品牌外观](/zh/docs/customize/brand/#visual-presets)。
+- **外观按钮与菜单排布**：提供三、五或六套预设时，菜单按三列排布于三张明暗卡片之上；开启键盘导航时，分组标题注明 `T` 与 `Y` 快捷键。启用明暗模式时，顶栏触发按钮重新以太阳、月亮或半实心圆图标显示当前模式。
+- **统一的音视频控件栏**：本地音频与视频文件改用主题的 `.td-media__controls` 控件栏替代浏览器原生控件，提供三色单轨进度条、倍速切换、音量条以及视频字幕与全屏控制。站点 CSS 如曾定制旧的 `.td-media__progress` 选择器，请改用 `.td-media__controls` 与 `.td-media__seek`。
+- **使用 `> [!SOCIAL]` 提示块引用帖子**：社交帖子采用 `> [!SOCIAL]` 提示块加紧邻块属性行（`{avatar="…" date="…" url="…" platform="…"}`）书写，在纯 Markdown 查看器中保持普通引用块可读性，详见[帖子](/zh/docs/components/social/)。如果站点中仍存有旧的 `social` 短代码调用，可在主题仓库运行 `python3 bin/migrations/oink06.py migrate --site <dir> --only social --write` 批量转换，再运行 `python3 bin/migrations/oink06.py check --site <dir>` 列出仍未转换的调用。
+
 ## 升级到 1.7.0 {#preparing-1-7}
 
 已在 1.6.0 上的站点无需修改模板或样式表。固定 `v1.7.0` 之前，先阅读 [1.7.0 发布说明](/zh/release/1.7.0/)并核对以下外观与交互更新：
 
-- **Paper 强调色与预设排版**：Paper 底色调整为暖白（`#faf9f5`），界面强调色改为陶红（`#9b4a28`，暗色 `#de8460`），正文行内链接仍为蓝色细下划线。若想沿用之前的蓝色强调色，设置 `params.ui.theme_color: '#2b5f8c'`。Terminal 屏幕正文同步改用 IBM Plex Mono（打印仍用 IBM Plex Sans）；显式设置的 `params.ui.fonts.ui` 或 `fonts.body` 会作用于所有预设的标题，除非 `fonts.heading` 另行指定。详见[品牌外观](/zh/docs/customize/brand/#visual-presets)。
+- **Paper 强调色与预设排版**：Paper 底色调整为暖白（`#faf9f5`），界面强调色改为陶红（`#9b4a28`，暗色 `#de8460`），正文行内链接仍为蓝色细下划线。若想沿用之前的蓝色强调色，设置 `params.ui.theme_color: '#2b5f8c'`。Terminal 屏幕正文同步改用 IBM Plex Mono（打印仍用 IBM Plex Sans）；显式设置的 `params.ui.fonts.ui` 或 `fonts.body` 会作用于所有预设的标题，除非 `fonts.heading` 另行指定。详见[品牌外观](/zh/docs/customize/brand/#visual-presets)。OINK 1.8.0 让 Paper 回到 1.6.0 的样子，并新增由这套 1.7.0 外观发展而来的 `preset: news`，偏爱 1.7.0 Paper 的站点可改用它，见[升级到 1.8.0](#preparing-1-8-0)。
 - **单键快捷键重排**：快捷键调整为二十九个快捷键、三栏布局（导航十项、操作九项、样式十项）：禅意模式从 `H` 改到 `Z`（`H` 改为本地浏览历史），切换语言改为 `X`，切换视觉预设为 `T`，切换明暗模式为 `Y`，切换博客索引视图为 `L`，切换版本为 `V`，回到语言首页为 `G`，纯命令面板仍保留在 `\`（并与 `C` 对应），`[`、`]` 分别打开 ChatGPT 与 Claude。`G` 不再打开侧栏中聚焦的条目（`Enter` 与 `Space` 照旧可用），首页的 `N` 分节别名已移除（`J` 保留）。如有站点自写帮助文案或快捷键测试引用了旧键位，请一并更新；详见[键盘快捷键](/zh/docs/customize/keyboard/)。
 - **排版复制**：复制正文选区默认输出基于打印调色板的干净富文本，避免粘贴到微信公众号等编辑器时带入页面背景色。如需恢复浏览器默认富文本复制，设置 `params.ui.rich_copy: false`（或页面 front matter `rich_copy: false`）。
 - **新增按需组件与 CSP**：时间线、更新条目、帖子与本地音视频不产生外部请求；如果启用 `params.map` 或 `params.video_embeds`，请在 CSP 中放行瓦片服务的 `img-src` 与已启用视频平台的 `frame-src`，见[发布上线](/zh/docs/admin/deploy/#csp)。

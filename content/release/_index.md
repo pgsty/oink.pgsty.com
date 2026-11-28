@@ -45,14 +45,13 @@ cascade:
 > [!NOTE] Versioned history
 > Each release note records the requirements and validation of that version at release time. For current Hugo and Go requirements, see the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
 
-The current release is [OINK 1.7.0](/release/1.7.0/): six new content components
-(Timeline, Update, Video, Audio, Social, and Map with vendored Leaflet
-1.9.4), typeset rich-text copy, a sheet of 29 single-key shortcuts with local
-browsing history, fold-all, reading-width steps, and a reader opt-out, refined
-presets with Paper's ivory-and-clay palette and preset-specific CJK system
-typography, plus Markmap corner SVG download controls, site ECharts themes, and
-styled archived-version banners. Keep warnings visible, and never enable
-`--panicOnWarning` or `HUGO_PANICONWARNING`. No Sass compiler is required.
+The current release is [OINK 1.8.0](/release/1.8.0/): six visual styles with
+dedicated dark modes (Paper restored, Slate, new GitHub and News, manuscript
+Ink, and phosphor Dark Terminal), an updated Appearance menu with interactive
+landing style tiles, a unified single-bar control row for local audio and video
+players, and Markdown-native `> [!SOCIAL]` quoted-post callouts. Keep warnings
+visible, and never enable `--panicOnWarning` or `HUGO_PANICONWARNING`. No Sass
+compiler is required.
 
 For the changes contributed in 1.3.1, see its
 [reading repairs and contributor credits](/release/1.3.1/#thanks).

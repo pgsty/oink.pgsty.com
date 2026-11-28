@@ -119,7 +119,7 @@
   - [2026-09-20 release review](http://localhost/docs/design/research/2026-09-20-release-review/index.md): Five reproduced runtime defects, documentation corrections, validation evidence, and the OINK 1.1 publication follow-up.
   - [CLI contract](http://localhost/docs/design/decisions/cli/index.md): Executable ownership, versioned diagnostics, isolated validation, and guarded maintenance plans for the current local CLI candidate.
   - [Component refinement](http://localhost/docs/design/decisions/component-refinement/index.md): Consistent component surfaces and controls, with three optional Markdown presentation variants.
-  - [Migration boundary](http://localhost/docs/design/migration/index.md): Supported source, configuration, and validation boundaries for OINK migration, including the 1.6.0 and 1.7.0 upgrades.
+  - [Migration boundary](http://localhost/docs/design/migration/index.md): Supported source, configuration, and validation boundaries for OINK migration, including the 1.6.0, 1.7.0, and 1.8.0 upgrades.
   - [Visual presets](http://localhost/docs/design/decisions/visual-presets/index.md): Accepted phase-one visual identity and appearance controls, with separate reader style and mode state.
   - [2026-10-03 CLI maintenance](http://localhost/docs/design/research/2026-10-03-cli-maintenance-acceptance/index.md): Dated source and binary evidence for the local R1–R8/A18 program, preserving the initial audit, failed trials, and final acceptance scope.
   - [2026-10-03 CLI maintenance · R1–R5](http://localhost/docs/design/research/2026-10-03-cli-maintenance-acceptance-r1-r5/index.md): R1–R5 local validation and acceptance evidence from the dated CLI maintenance record.

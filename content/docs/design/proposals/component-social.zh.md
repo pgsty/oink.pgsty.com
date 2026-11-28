@@ -10,12 +10,12 @@ design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] 已随 OINK 1.7.0 接受，之后又作修订
-> OINK v1.7.0 以 `social` 短代码发布了这张卡片。2026-11-28 负责人决定改用原生的 `> [!SOCIAL]` 提示块，`main` 上已实现并移除了短代码。[社交帖子指南](/zh/docs/components/social/)记录用法，规范行为归属[组件契约](/zh/docs/design/components/#timeline-media-social-and-maps)，共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
+> [!NOTE] 随 OINK 1.8.0 以 `> [!SOCIAL]` 发布
+> 原生 `> [!SOCIAL]` 提示块形态随 OINK v1.8.0 发布。[社交帖子指南](/zh/docs/components/social/)记录用法，规范行为归属[组件契约](/zh/docs/design/components/#timeline-media-social-and-maps)，共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 已接受；短代码随 OINK v1.7.0 发布（2026-11-27）；提示块形态于 2026-11-28 实现，尚未发布 |
+| 状态 | 已接受并随 OINK v1.8.0 发布（`> [!SOCIAL]` 提示块形态，2026-11-28） |
 | 负责人 | OINK 维护者 |
 | 交付阶段 | S3 |
 | 形态 | 带 Markdown 正文的提示块：``> [!SOCIAL] 名字 `@handle` `` 加一行块属性 |

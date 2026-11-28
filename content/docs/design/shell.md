@@ -5,11 +5,11 @@ description: Navigation authorities, immersive blog presentation, search, action
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK shell, navigation contract, search, actions, blog presentation, authors, series, pager]
-contract_status: v1.7.0
+contract_status: v1.8.0
 ---
 
-> [!NOTE] OINK 1.7.0 contract
-> This contract describes OINK v1.7.0.
+> [!NOTE] OINK 1.8.0 contract
+> This contract describes OINK v1.8.0.
 
 ## Authorities and navigation {#authorities-and-navigation}
 

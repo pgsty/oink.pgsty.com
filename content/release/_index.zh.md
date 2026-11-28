@@ -44,10 +44,10 @@ cascade:
 > [!NOTE] 按版本保留的历史记录
 > 每篇发布说明记录对应版本发布时的要求与验收结果。当前 Hugo 与 Go 要求见[工具链契约](/zh/docs/design/architecture/#hugo-toolchain)。
 
-当前版本为 [OINK 1.7.0](/zh/release/1.7.0/)：新增时间线、更新条目、视频、音频、帖子与内置
-Leaflet 1.9.4 的地图六种组件，加入排版富文本复制、29 个快捷键的速查面板、本地浏览历史、一键折叠、
-正文宽度调节与读者开关，完成四套预设配色与中文排版打磨（Paper 暖白与陶红强调色），并新增
-Markmap 导图下载图标、自定义 ECharts 主题与归档版本横幅样式。保持构建告警可见，禁止启用
-`--panicOnWarning` 或 `HUGO_PANICONWARNING`，无需任何 Sass 编译器。
+当前版本为 [OINK 1.8.0](/zh/release/1.8.0/)：六套视觉风格与各自独立的深色模式（恢复经典
+Paper、保留 Slate、新增 GitHub 与 News、写本化 Ink 与荧光屏深色 Terminal），更新外观菜单与
+交互式风格卡片，为本地音视频提供统一的三色单进度条控件栏，并采用原生 Markdown 的 `> [!SOCIAL]`
+提示块引用社交帖子。保持构建告警可见，禁止启用 `--panicOnWarning` 或
+`HUGO_PANICONWARNING`，无需任何 Sass 编译器。
 
 1.3.1 引入的改动及其作者见[阅读修复与贡献者致谢](/zh/release/1.3.1/#thanks)。
