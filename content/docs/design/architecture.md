@@ -656,8 +656,9 @@ Tables stay open between an ink hairline above the labels and one below the
 last row, with uppercase tracked labels. Quotations are pull quotes, a step
 larger between a heavy rule above and a hairline below, with no side bar and
 their start alignment kept. Callouts, search, menus and the Appearance panel
-have square edges. Navigation controls, Landing tiles, article actions and
-portrait frames also use square edges without shadows. The current navigation row takes a black rule and
+have square edges. Navigation controls, search keycaps, Landing tiles, article
+actions, thumbnails and portrait frames use square edges without shadows.
+File trees, tab titles and taxonomy counts follow the same rule. The current navigation row takes a black rule and
 bold type instead of a tint. GitHub follows github-markdown-css 5.9.0 and
 @primer/primitives 11.10.0 (both MIT): 16 px prose at line height 1.5,
 semibold untracked headings with a hairline under `h1` and `h2`, a chain-link

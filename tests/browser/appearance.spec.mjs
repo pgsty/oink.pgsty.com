@@ -151,6 +151,41 @@ test('News keeps navigation, style tiles and article surfaces square and flat', 
   }
 });
 
+for (const mode of ['light', 'dark']) {
+  test(`News ${mode} keeps component frames, taxonomy pages and search keycaps flat`, async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('td-preset', 'news'));
+    await page.emulateMedia({ colorScheme: mode });
+    for (const [path, selectors] of [
+      ['/docs/components/filetree/', ['.td-filetree']],
+      ['/docs/components/tabs/', ['.td-tab-block__title']],
+      ['/authors/', ['.td-taxonomy-card__avatar', '.td-taxonomy-head__count', '.td-shell-taxonomies__count', '.td-shell-toc__title-btn']],
+      ['/authors/oink/', ['.td-author-profile__avatar', '.td-blog-posts-list__thumbnail img']],
+      ['/blog/oink-announcement/', ['.td-featured-banner img']],
+      ['/docs/customize/repository/', ['.td-feedback__choice']],
+    ]) {
+      await page.goto(path);
+      await expect(page.locator('html')).toHaveAttribute('data-bs-theme', mode);
+      for (const selector of selectors) {
+        const surface = page.locator(selector).first();
+        await expect(surface, selector).toHaveCSS('border-radius', '0px');
+        await expect(surface, selector).toHaveCSS('box-shadow', 'none');
+      }
+    }
+    await page.locator('[data-td-shell-search-open]:visible').first().click();
+    const keycap = page.locator('.td-shell-search__esc kbd:visible').first();
+    await expect(keycap).toBeVisible();
+    await expect(keycap).toHaveCSS('border-radius', '0px');
+    await page.goto('/docs/components/code/');
+    const line = page.locator('.chroma .hl').first();
+    await expect(page.locator('.td-content .chroma').first()).toHaveCSS('box-shadow', 'none');
+    await expect(line).toHaveCSS('box-shadow', 'none');
+    await expect(line).toHaveCSS('background-image', /linear-gradient/);
+    await page.setViewportSize({ width: 320, height: 800 });
+    await page.locator('[data-td-shell-drawer-open]:visible').first().click();
+    await expect(page.locator('.td-shell-search-btn__keys kbd:visible').first()).toHaveCSS('border-radius', '0px');
+  });
+}
+
 test('independent state, native keyboard, navigation, default reset and cross-tab sync', async ({ page, context }) => {
   await page.goto(docs);
   await page.emulateMedia({ colorScheme: 'light' });
