@@ -633,9 +633,10 @@ chancery italic beside upright Kai, gold on the dark paper, under a deeper top
 margin; Landing section titles are at text weight too. A section opens under a tapered brush stroke (a 2 px rule under
 forced colors), `hr` is one short tapered stroke, and table and callout labels
 are written in the heading face at their own case and weight. Chinese
-`strong` in Ink prose takes vermilion emphasis dots instead of bold; the first
-paragraph of a Blog post or Book chapter (not an index page) opens on a
-three-line initial in the heading face and the accent ink; and the current
+`strong` in Ink prose takes vermilion emphasis dots instead of bold. The first
+paragraph of a Blog post or Book chapter opens on a three-line initial in the
+heading face and the accent ink. This includes a numbered Book branch bundle
+with prose and no child index. Index pages keep a plain opening. The current
 navigation row carries a vermilion dot. The paper's shade and News's glow are screen-only and yield to
 the system canvas under forced colors. Ink quotes hang from a 3 px
 cinnabar stroke that fades as it descends; Terminal quotes use its accent

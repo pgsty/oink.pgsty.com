@@ -186,6 +186,33 @@ for (const mode of ['light', 'dark']) {
   });
 }
 
+test('Ink opens numbered Book branch chapters with an initial and leaves indexes plain', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('td-preset', 'ink'));
+  for (const prefix of ['', '/zh']) {
+    for (const [path, initial] of [['/book/01-start/', true], ['/book/', false]]) {
+      await page.goto(prefix + path);
+      const paragraph = page.locator('.td-content > p').first();
+      const geometry = () => paragraph.evaluate(p => ({
+        text: parseFloat(getComputedStyle(p).fontSize),
+        initial: parseFloat(getComputedStyle(p, '::first-letter').fontSize),
+        float: getComputedStyle(p, '::first-letter').float,
+      }));
+      const style = await geometry();
+      if (initial) {
+        expect(style.initial).toBeGreaterThan(style.text * 2);
+        expect(style.float).toBe('inline-start');
+        await paragraph.evaluate(p => { p.lang = 'ar'; p.dir = 'rtl'; p.textContent = 'هذا فصل من الكتاب'; });
+        const arabic = await geometry();
+        expect(arabic.initial).toBe(arabic.text);
+        expect(arabic.float).toBe('none');
+      } else {
+        expect(style.initial).toBe(style.text);
+        expect(style.float).toBe('none');
+      }
+    }
+  }
+});
+
 test('independent state, native keyboard, navigation, default reset and cross-tab sync', async ({ page, context }) => {
   await page.goto(docs);
   await page.emulateMedia({ colorScheme: 'light' });
