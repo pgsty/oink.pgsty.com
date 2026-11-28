@@ -1,0 +1,7 @@
+# Preserve literal module references in HTML, including installation examples.
+
+/
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
+/*/
+  Cache-Control: public, max-age=0, must-revalidate, no-transform

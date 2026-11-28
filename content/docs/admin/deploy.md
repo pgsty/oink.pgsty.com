@@ -187,6 +187,8 @@ an older Hugo). Choose one mode per project, Git integration **or** the
 Direct Upload workflow, and build preview deployments with their own URL and a
 [non-production environment](#preview-builds).
 
+On a custom domain, Cloudflare can mistake `module@version` in an install command for an email address. This documentation site adds `no-transform` to the HTML response's `Cache-Control` header in `static/_headers`. After deploying, open an install example on the production domain with JavaScript disabled and copy the command. [Cloudflare email obfuscation](https://developers.cloudflare.com/waf/tools/scrape-shield/email-address-obfuscation/)
+
 {{< /tab >}}
 {{< tab label="Others" value="other" >}}
 

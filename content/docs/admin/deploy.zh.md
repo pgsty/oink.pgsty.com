@@ -150,6 +150,8 @@ OINK Starter 带有 `.github/workflows/cloudflare-pages.yaml`，采用 Direct Up
 
 也可以用 Cloudflare 的 Git integration，由 Cloudflare 执行构建：构建命令设为 `hugo --gc --minify --printPathWarnings`，输出目录 `public`，并设置 `HUGO_VERSION` 为当前版本（如 `0.170.1`；OINK 已在 `0.170+` 上测试，而 Cloudflare 默认镜像内置的是较旧版本）。同一个项目只选一种模式，Git integration **或** Direct Upload 工作流；预览部署用各自的预览 URL，并以[非生产环境](#preview-builds)构建。
 
+在自定义域名上，Cloudflare 可能把安装命令中的 `module@version` 识别为邮箱地址。本文档站通过 `static/_headers` 给 HTML 响应的 `Cache-Control` 头加上 `no-transform`。部署后，关闭 JavaScript，在正式域名打开安装示例并复制命令。[Cloudflare 邮箱地址混淆说明](https://developers.cloudflare.com/waf/tools/scrape-shield/email-address-obfuscation/)
+
 {{< /tab >}}
 {{< tab label="其它" value="other" >}}
 
