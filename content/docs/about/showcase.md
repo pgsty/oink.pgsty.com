@@ -9,8 +9,8 @@ aliases:
 ---
 
 The quickest way to design an OINK site is to find a live one shaped like
-yours and see how it was built. The [case library](/case/) documents 45 of
-them: 14 independent community sites and 31 from the PGSTY and Vonng
+yours and see how it was built. The [case library](/case/) documents 79 of
+them: 48 independent community sites and 31 from the PGSTY and Vonng
 ecosystem, this documentation site included. Each case links to the live site
 (and to its source repository where that is public), explains the design and
 its trade-offs, and separates the code the site wrote itself from what the
@@ -22,18 +22,20 @@ when the case was written.
 ## Choosing a starting point {#choosing-a-starting-point}
 
 - A branded open-source project: look at
-  [Apache HugeGraph](/case/apache-hugegraph/), [Stashix](/case/stashix/) or
-  [Barn](/case/barn/).
+  [Apache HugeGraph](/case/apache-hugegraph/), [Cortrix](/case/cortrix/),
+  [Stashix](/case/stashix/) or [Barn](/case/barn/).
 - A conventional product manual: start with [PIG](/case/pig/),
-  [SOW](/case/sow/) or [AGW](/case/agw/).
+  [SOW](/case/sow/), [AGW](/case/agw/) or [GPUWorks](/case/gpuworks/).
 - A large multilingual or migrated corpus: compare
-  [PG.CENTER](/case/doc-pg-center/), [SILO](/case/silo/) and
-  [Red Hat CAI](/case/redhat-cai/).
+  [PG.CENTER](/case/doc-pg-center/), [SILO](/case/silo/), [OPIC](/case/opic/)
+  and [Red Hat CAI](/case/redhat-cai/).
 - A book or course library: compare [TPME](/case/tpme/),
-  [SSG Book](/case/ssg-book/) and [DDIA](/case/ddia/), or see
-  [PG Internal](/case/pg-internal/) for a single-language edition.
+  [SSG Book](/case/ssg-book/), [PMPP 5th Ed](/case/pmpp5-zh/) and
+  [DDIA](/case/ddia/), or see [PG Internal](/case/pg-internal/) for a
+  single-language edition.
 - A personal blog or digital garden: compare [VONNG](/case/vonng-com/),
-  [Nekonull's Garden](/case/nekonull/) and [blog.xjkj.org](/case/xjkj-blog/).
+  [Zhang Muchuan](/case/zhangmuchuan/), [Nekonull's Garden](/case/nekonull/)
+  and [blog.xjkj.org](/case/xjkj-blog/).
 - A standard, an archive or a queryable dataset: look at
   [Cloud Exit](/case/cloudexit/), [Feng Zhenbiao Archive](/case/fzb/) or
   [ext.pgsty.com](/case/pgext-cloud/).
@@ -59,10 +61,21 @@ documentation pages.
 This Red Hat AI Services Business Unit team portal configures nine languages on
 OINK Paper and pairs with companion OpenShift AI field manuals.
 
+### [Cortrix](/case/cortrix/) {#cortrix}
+
+Open-source semantic storage and memory docs for AI agents on OINK Slate,
+combining `{.wide .expand}` reference tables, Mermaid diagrams, and OpenAPI
+specs under `/docs/`.
+
 ### [Stashix](/case/stashix/) {#stashix}
 
 This self-hosted comic and manga library website uses OINK's high-contrast Ink
 preset with a custom violet accent, announcement bar, and dark product preview.
+
+### [GPUWorks](/case/gpuworks/) {#gpuworks}
+
+Bilingual GPU compute management documentation built with OINK and hosted as
+versioned release manuals on Read the Docs.
 
 ### [SSG Book](/case/ssg-book/) {#ssg-book}
 
@@ -79,6 +92,11 @@ hero for membership onboarding, timelines, club news, and merchandise.
 This self-hosted AI Agent Workspace and Gateway keeps its centered product site
 and 88 bilingual documentation pages inside the `site/` directory of its main
 application repository.
+
+### [Zhang Muchuan](/case/zhangmuchuan/) {#zhangmuchuan}
+
+Personal essay and translation blog layering a custom Paper, Ink, and Vermilion
+editorial design and seal mark over OINK while keeping all four visual presets.
 
 ### [Nekonull's Garden](/case/nekonull/) {#nekonull}
 
@@ -120,6 +138,162 @@ to route readers straight into deep backend documentation trees.
 
 This living personal systems manual records verified Linux Mint and Windows 11
 configurations and recovery steps in a focused Chinese docs tree.
+
+### [CAI Field Manual Library](/case/cai-field-manual-library/) {#cai-field-manual-library}
+
+Red Hat AI Services aggregated bookshelf site that mounts multiple OpenShift AI
+manual repositories over a shared Hugo Module layered on OINK.
+
+### [OPIC](/case/opic/) {#opic}
+
+Bilingual Open Intelligent Computing platform site that migrated from Docusaurus
+3 to single-binary Hugo + OINK with local BM25 Chinese search.
+
+### [Tasklane](/case/tasklane/) {#tasklane}
+
+TypeScript background-task runtime website and 49-page Diátaxis documentation
+hub on OINK Slate with an asymmetric architecture hero.
+
+### [pgcli](/case/pgcli/) {#pgcli}
+
+218-page bilingual PostgreSQL instance manager and Patroni operations manual on
+OINK Paper deployed to Cloudflare Pages.
+
+### [ansible-vms](/case/ansible-vms/) {#ansible-vms}
+
+Bilingual KVM and libvirt virtual machine automation manual on OINK Paper
+sharing a sibling family design with `pgcli.pages.dev`.
+
+### [YourBuddy](/case/yourbuddy/) {#yourbuddy}
+
+Desktop macOS AI workbench product site combining a centered landing hero,
+plugin documentation, and release downloads.
+
+### [CC4PM Docs](/case/cc4pm/) {#cc4pm}
+
+89-lesson Chinese AI coding course documentation site built on OINK, including a
+dedicated curriculum module teaching OINK site building.
+
+### [CheeseSec Docs](/case/cheesesec-docs/) {#cheesesec-docs}
+
+96-page bilingual security product manual covering CheeseWAF and plugins
+directly inside OINK's three-column reading shell.
+
+### [kbdiag](/case/kbdiag-docs/) {#kbdiag-docs}
+
+62-page bilingual KingbaseES command-line diagnostics manual bootstrapped
+directly from OINK Starter.
+
+### [grelease](/case/ggrelease/) {#ggrelease}
+
+Compact Chinese documentation site for a Spring Cloud Gateway and etcd
+canary-release framework with dual user and maintainer entry points.
+
+### [Claude API Proxy](/case/claude-api-proxy-docs/) {#claude-api-proxy-docs}
+
+Focused 15-page Chinese engineering manual written directly in OINK's
+three-column docs shell for engineers and handoff AI agents.
+
+### [Modern Front-End Engineering](/case/frontend-book/) {#frontend-book}
+
+63-page open-source front-end engineering textbook on OINK Book pairing
+chapters, lecture slides, learning paths, and a playground.
+
+### [OOD & Agile Book](/case/ood-agile-book/) {#ood-agile-book}
+
+65-page postgraduate software engineering textbook combining manuscript
+chapters, companion code, syllabus, and slides on OINK Book.
+
+### [PMPP 5th Ed](/case/pmpp5-zh/) {#pmpp5-zh}
+
+27-chapter Chinese-English parallel reading edition of *Programming Massively
+Parallel Processors* using OINK Duo View across 230 aligned anchors.
+
+### [Turing Award Lectures](/case/turing-lectures/) {#turing-lectures}
+
+Chinese archive of 42 ACM Turing Award lectures (1966–2024) and 100+ Turing
+papers rendered with OINK's build-time KaTeX math and `hypothes.is`.
+
+### [Designing Virtual Worlds](/case/vgbaike-dvw/) {#vgbaike-dvw}
+
+285-page Chinese edition of Richard Bartle's *Designing Virtual Worlds* mounted
+at `/dvw/` with cover artwork and whole-book print.
+
+### [Selected Works Reader](/case/maoxuan/) {#maoxuan}
+
+229-article five-volume classical reading edition showcasing archival Paper
+typography, book-style dotted TOCs, clickable endnotes, and locally subsetted
+CJK fonts.
+
+### [Growth Hacker Notes](/case/growth-hacker-notes/) {#growth-hacker-notes}
+
+Searchable written edition of a 41-episode video course transcribed with FunASR
+and structured into seven chapters on OINK.
+
+### [Elias Zhao](/case/eliaszhao/) {#eliaszhao}
+
+Bilingual personal engineering and quant blog migrated from Blowfish to OINK
+v1.6.0 Paper with a custom photographic hero and Duo View.
+
+### [karmine's notes](/case/dirtyfrag-blog/) {#dirtyfrag-blog}
+
+English security operations and detection engineering blog migrated from
+Blowfish to OINK Slate with every existing URL preserved.
+
+### [YHY Study Website](/case/yhy-website/) {#yhy-website}
+
+86-page bilingual robotics and AI study hub with a bespoke dark pixel-terminal
+hero, shared Giscus comments across hosts, and Obsidian-to-OINK notes.
+
+### [Yongjie Xue](/case/yongjiexue/) {#yongjiexue}
+
+335-page bilingual distributed systems, database, and AI engineering blog on
+OINK Slate with multi-column navigation and custom hero artwork.
+
+### [KK's Blog](/case/spin6lock/) {#spin6lock}
+
+217-post Chinese engineering blog migrated from Jekyll to OINK Paper using a
+clean chronological list-first homepage.
+
+### [Zhuifeng Notes](/case/88ok/) {#88ok}
+
+60-page banking architecture and payment clearing personal hub on OINK Paper
+with custom SVG hero art and browser-local PlantUML.
+
+### [Donny's Blog](/case/donnyguo-blog/) {#donnyguo-blog}
+
+Self-hosting and open-source engineering blog pairing OINK's Paper preset with a
+custom illustrated portrait hero.
+
+### [Kina's Blog](/case/kinaz-blog/) {#kinaz-blog}
+
+Minimalist bilingual personal blog on OINK Paper deployed to Cloudflare Pages
+with Giscus comments and an editorial still-life hero.
+
+### [Leafz](/case/leafz/) {#leafz}
+
+Minimalist Chinese engineering blog on OINK Paper created by the maintainer of a
+community OINK Agent Skill.
+
+### [Fang Sun](/case/sunfang3/) {#sunfang3}
+
+Bilingual academic index portal using OINK landing cards to link separate
+textbook companion sites and frontier paper notes.
+
+### [WHLLE_YI](/case/whlle-yi/) {#whlle-yi}
+
+Creative bilingual CS portfolio combining vendored OINK with a pixel-art hero
+and an interactive browser terminal widget.
+
+### [Nicole's Notes](/case/nicole-ya/) {#nicole-ya}
+
+Personal homepage and learning journal organizing coursework, projects,
+bookmarks, skills, and growth logs across six OINK sections.
+
+### [Zhangyi's Notes](/case/zhangyi-page/) {#zhangyi-page}
+
+Bilingual personal engineering log on Cloudflare Pages demonstrating pinned Hugo
+builds and dual human/agent Markdown publishing.
 
 ## Distribution documentation {#pigsty-sites}
 
@@ -285,4 +459,4 @@ design contracts, multiple content shells, and regression coverage in one reposi
 This PostgreSQL extension catalog uses a queryable dataset as its primary object.
 It indexes 2,241 extensions and 576 packaged builds across 16 platforms.
 
-→ [Browse all cases](/case/) · [Get started](/docs/start/) · [Starter repository tour](/docs/start/anatomy/)
+→ [Browse all cases](/case/) · [Get started](/docs/start/) · [From scratch](/docs/start/from-scratch/)

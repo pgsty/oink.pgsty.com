@@ -26,4 +26,4 @@ documentation subtrees into an approachable personal knowledge portal.
 - Maintaining a fast, locally searchable personal knowledge base with zero
   server infrastructure.
 
-→ [Docs structure](/docs/start/anatomy/) · [All OINK cases](/case/)
+→ [From scratch](/docs/start/from-scratch/) · [All OINK cases](/case/)

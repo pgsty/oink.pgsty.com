@@ -34,4 +34,4 @@ keeps product counters outside the prose. For a small product, start with
 ordinary Docs files and extract structured data into `data/` only for counters
 or tables reused across multiple pages.
 
-→ [Docs structure](/docs/start/anatomy/) · [All OINK cases](/case/)
+→ [From scratch](/docs/start/from-scratch/) · [All OINK cases](/case/)

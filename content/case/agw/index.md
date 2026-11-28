@@ -28,4 +28,4 @@ release downloads.
   downloads for an AI developer tool.
 - Maintaining synchronized English and Chinese guides alongside application code.
 
-→ [Home and landing pages](/docs/customize/home/) · [Docs structure](/docs/start/anatomy/) · [All OINK cases](/case/)
+→ [Home and landing pages](/docs/customize/home/) · [Add docs to a project](/docs/start/add-docs/) · [All OINK cases](/case/)

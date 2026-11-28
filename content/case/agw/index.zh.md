@@ -21,4 +21,4 @@ tags: [社区, 文档, 双语]
 - 用克制的纯文字居中首屏承接开发者工具的快速开始、文档与下载路径。
 - 在同一套配置下保持中英双语文档树结构同步。
 
-→ [首页与落地页](/zh/docs/customize/home/) · [文档仓库结构](/zh/docs/start/anatomy/) · [全部 OINK 案例](/zh/case/)
+→ [首页与落地页](/zh/docs/customize/home/) · [加装文档](/zh/docs/start/add-docs/) · [全部 OINK 案例](/zh/case/)

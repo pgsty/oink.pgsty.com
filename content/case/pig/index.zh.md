@@ -31,4 +31,4 @@ case_group: ecosystem
 [`data/home/metrics.yaml`](https://github.com/pgsty/pig.pgsty.com/blob/d9065c0b4b04285f230f7af7e24d7f3bc12c4cde/data/home/metrics.yaml)
 把产品计数从正文中分离出来。小型产品可以先使用普通 Docs 文件，只有多处复用的统计数字或表格才提取到 `data/` 目录中。
 
-→ [文档仓库结构](/zh/docs/start/anatomy/) · [全部 OINK 案例](/zh/case/)
+→ [从零开始](/zh/docs/start/from-scratch/) · [全部 OINK 案例](/zh/case/)

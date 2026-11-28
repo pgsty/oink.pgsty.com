@@ -19,4 +19,4 @@ tags: [社区, 文档, 个人站]
 - 用首页卡片网格把 150 篇个人技术笔记清晰分类，直接衔接深层文档侧栏树。
 - 零后端运维即可持续扩展本地可搜索的个人工程维基。
 
-→ [文档仓库结构](/zh/docs/start/anatomy/) · [全部 OINK 案例](/zh/case/)
+→ [从零开始](/zh/docs/start/from-scratch/) · [全部 OINK 案例](/zh/case/)
