@@ -127,7 +127,9 @@ Terminal 使用等宽标题、2 px 圆角、琥珀主按钮与静态光标形装
 `capabilities` 中 `visual.type: components` 的条目可以附带 `preset` 字段。当交互式
 HTML 通过 `params.ui.preset_menu` 提供该预设时，条目渲染为位于 `role="group"` 内
 的 `button[data-td-preset-select]`，通过 `aria-pressed` 与 `appearance.js` 保持
-同步，并在点击时锚定当前视口位置；Print 输出与未提供的预设退化为静态 `span`。
+同步，并在点击时锚定当前视口位置。Print 输出与未提供的预设使用静态 `span` 磁贴。
+Landing 页和首页的 Markdown 在对应能力条目下列出每张风格磁贴的标题及可选说明。
+每次构建对同一未知预设名只警告一次。
 
 ## 本地操作控件精修 {#action-refinement}
 

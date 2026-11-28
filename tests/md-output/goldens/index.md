@@ -8,6 +8,22 @@ LLMS index: [llms.txt](/llms.txt)
 
 ---
 
+- **Six styles. One site.**
+
+  - Paper — warm paper · default
+
+  - Slate — classic technical look
+
+  - GitHub — GitHub Markdown look
+
+  - Ink — brush · Kai · vermilion
+
+  - News — newsprint · serif · blue
+
+  - Terminal — all\-mono · phosphor
+
+---
+
 Section pages:
 
 - [OINK Documentation](/docs/): Build a technical content site. Use shared navigation, multilingual support, and search for documentation, blogs, books, and API references.

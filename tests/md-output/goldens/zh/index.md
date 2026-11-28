@@ -8,6 +8,22 @@ LLMS 索引： [llms.txt](/zh/llms.txt)
 
 ---
 
+- **六套风格，同一个站点**
+
+  - Paper — 暖白纸面 · 蓝链 · 默认
+
+  - Slate — 原有技术风格
+
+  - GitHub — 还原 GitHub Markdown
+
+  - Ink — 笔墨 · 楷体 · 朱砂
+
+  - News — 衬线报栏 · 新闻纸 · 专色蓝
+
+  - Terminal — 全等宽 · 夜间荧光绿
+
+---
+
 本节页面：
 
 - [OINK 文档](/zh/docs/): 为文档、博客、书籍与 API 参考建立统一的技术内容站点，共用导航、多语言与搜索。

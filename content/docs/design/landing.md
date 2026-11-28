@@ -138,8 +138,9 @@ A `capabilities` item with `visual.type: components` may attach `preset` to its
 tiles. When interactive HTML offers that preset through `params.ui.preset_menu`,
 the tile renders a `button[data-td-preset-select]` inside `role="group"`, stays
 synchronized with `appearance.js` via `aria-pressed`, and anchors its viewport
-position on click; Print output and unoffered presets degrade to static `span`
-tiles.
+position on click. Print output and unoffered presets use static `span` tiles.
+Landing and home Markdown list each preset tile's title and optional detail
+under its capability. An unknown preset name produces one warning per build.
 
 ## Local action refinement {#action-refinement}
 
