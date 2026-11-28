@@ -176,34 +176,40 @@ test.describe('WCAG AA contract', () => {
     );
   });
 
-  test('every page in the multilingual sitemap', async ({ page, request }) => {
-    test.setTimeout(20 * 60_000);
-    await page.setViewportSize({ width: 1440, height: 900 });
-    const paths = requestedPaths.length
-      ? requestedPaths
-      : await sitemapPaths(request);
-    expect(paths.length).toBeGreaterThan(0);
+  // The sitemap grows with the case library; four interleaved shards keep each
+  // scan well inside its own budget on a CI worker.
+  const SITEMAP_SHARDS = 4;
+  for (let shard = 0; shard < SITEMAP_SHARDS; shard += 1) {
+    test(`every page in the multilingual sitemap (${shard + 1}/${SITEMAP_SHARDS})`, async ({ page, request }) => {
+      test.setTimeout(20 * 60_000);
+      await page.setViewportSize({ width: 1440, height: 900 });
+      const allPaths = requestedPaths.length
+        ? requestedPaths
+        : await sitemapPaths(request);
+      expect(allPaths.length).toBeGreaterThan(0);
+      const paths = allPaths.filter((_, index) => index % SITEMAP_SHARDS === shard);
 
-    const failures = [];
-    for (const path of paths) {
-      const response = await page.goto(path, { waitUntil: 'domcontentloaded' });
-      if (!response?.ok()) {
-        failures.push(`${path}: HTTP ${response?.status() || 'no response'}`);
-        continue;
+      const failures = [];
+      for (const path of paths) {
+        const response = await page.goto(path, { waitUntil: 'domcontentloaded' });
+        if (!response?.ok()) {
+          failures.push(`${path}: HTTP ${response?.status() || 'no response'}`);
+          continue;
+        }
+        // Markmap replaces every source block asynchronously and fades each SVG
+        // label through a d3 transition. On slower CI workers, a fixed delay can
+        // scan later maps mid-fade and report phantom contrast failures.
+        await mountDeferredComponents(page);
+        await waitForStableMarkmaps(page);
+        const { violations } = await scan(page);
+        if (violations.length) {
+          failures.push(`${path}\n${describeViolations(path, violations)}`);
+        }
       }
-      // Markmap replaces every source block asynchronously and fades each SVG
-      // label through a d3 transition. On slower CI workers, a fixed delay can
-      // scan later maps mid-fade and report phantom contrast failures.
-      await mountDeferredComponents(page);
-      await waitForStableMarkmaps(page);
-      const { violations } = await scan(page);
-      if (violations.length) {
-        failures.push(`${path}\n${describeViolations(path, violations)}`);
-      }
-    }
 
-    expect(failures.length, failures.join('\n\n')).toBe(0);
-  });
+      expect(failures.length, failures.join('\n\n')).toBe(0);
+    });
+  }
 
   for (const width of widths) {
     for (const [locale, path] of locales) {
