@@ -2,7 +2,7 @@
 title: Maps
 linkTitle: Maps
 description: List places in a `map` fence to get a numbered place list in HTML, Print and RSS, plus an interactive map once the site names a tile service.
-weight: 360
+weight: 290
 search_keywords: [map, maps, places, markers, route, popup, OpenStreetMap, Leaflet, tiles, coordinates, WGS 84, travel, Beijing]
 ---
 

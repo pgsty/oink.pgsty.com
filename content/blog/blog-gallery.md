@@ -66,6 +66,7 @@ Inside Gallery, readers have three arrangements:
 | `wall` | Rows with 6px gaps | Revealed on hover or keyboard focus |
 | `seamless` | The same rows with no gaps | Revealed on hover or keyboard focus |
 | `cards` | Masonry, placing each entry in the shortest column | Always visible below the image |
+{.wide}
 
 The gallery's `cards` mode is the masonry arrangement, separate from the
 blog's regular card view. A size slider changes the target tile size from

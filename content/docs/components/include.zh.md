@@ -2,7 +2,7 @@
 title: 引用
 linkTitle: 引用
 description: 让多页共用一份源头：include 引入共享片段与文件，param 打印站点或页面参数，comment 写永不发布的注释。
-weight: 260
+weight: 190
 search_keywords: [引用, include, 引入文件, 片段, snippet, 复用, readfile, param, 参数, 插值, comment, 注释]
 params:
   pigsty_pg_major: 18
@@ -45,11 +45,10 @@ hugo server
 
 `file` 按下面的顺序查找，先命中的胜出：
 
-| 顺序 | 找哪里 | 写法 |
-| --- | --- | --- |
-| 1 | 当前页面的页面资源（页面包里的文件） | `file="config.yaml"` |
-| 2 | 全局资源 `assets/` 下的文件 | `file="snippets/dsn.txt"` |
-| 3 | `content/` 下的文件：`/` 开头是内容根目录，否则相对当前页面所在目录 | `file="notes/caveat.md"`、`file="/shared/notice.md"` |
+1. **当前页面的页面资源**（页面包里的文件） — 写作 `file="config.yaml"`。
+1. **全局资源 `assets/` 下的文件** — 写作 `file="snippets/dsn.txt"`。
+1. **`content/` 下的文件**（`/` 开头是内容根目录，否则相对当前页面所在目录） — 写作 `file="notes/caveat.md"` 或 `file="/shared/notice.md"`。
+{.steps .td-steps-compact}
 
 引用只会读取 `content/` 与 `assets/` 里的文件。路径含 `..`，或者三处都找不到时，构建告警，什么也不插入。
 

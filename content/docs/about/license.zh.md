@@ -94,12 +94,11 @@ Inter、IBM Plex Sans、Chakra Petch 与 IBM Plex Mono 四种字体采用 SIL Op
 
 代码上游只有 Docsy 一个。下面这些项目只在设计语言上提供了参考：OINK 没有移植它们的代码，运行时也不依赖其中任何一个。
 
-| 项目                                       | 借鉴之处                                                                                   |
-|--------------------------------------------|--------------------------------------------------------------------------------------------|
-| [Fumadocs](https://www.fumadocs.dev/)      | 以内容为中心的呈现、信息层级、文件树与参数表一类的写作组件（主题 `NOTICE` 记录了这条致敬） |
-| [Nextra](https://nextra.site/)             | 精炼的文档外壳、代码块的文件名与复制交互、按页布局开关                                     |
-| [Hextra](https://imfing.github.io/hextra/) | Hugo 原生的实现取向、文件树、徽章、标签页                                                  |
-| [Mintlify](https://mintlify.com/)          | 结构化导航分层、同步的代码分组、API 参考的阅读体验                                         |
+- [Fumadocs](https://www.fumadocs.dev/) — 以内容为中心的呈现、信息层级、文件树与参数表一类的写作组件（主题 `NOTICE` 记录了这条致敬）。
+- [Nextra](https://nextra.site/) — 精炼的文档外壳、代码块的文件名与复制交互、按页布局开关。
+- [Hextra](https://imfing.github.io/hextra/) — Hugo 原生的实现取向、文件树、徽章、标签页。
+- [Mintlify](https://mintlify.com/) — 结构化导航分层、同步的代码分组、API 参考的阅读体验。
+{.cards .td-cards-list}
 
 [Hugo](https://gohugo.io/) 是构建平台，以 Hugo Module 方式安装主题时由 Go 解析模块。两者都是前提条件，主题不重新分发它们的可执行文件。
 

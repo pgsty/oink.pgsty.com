@@ -2,7 +2,7 @@
 title: Mermaid
 linkTitle: Mermaid
 description: Use a `mermaid` fence for flowcharts, sequence diagrams, Gantt charts, class diagrams, and state diagrams. Bundled Mermaid follows the color scheme; source diffs show changes.
-weight: 310
+weight: 210
 search_keywords: [Mermaid, flowchart, sequence, gantt, classDiagram, erDiagram, stateDiagram, diagram]
 aliases:
   - /docs/components/diagrams/

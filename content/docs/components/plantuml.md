@@ -2,7 +2,7 @@
 title: PlantUML
 linkTitle: PlantUML
 description: Render sequence, class, component, activity and use-case diagrams in the browser with bundled assets and no rendering service.
-weight: 320
+weight: 220
 comments: false
 search_keywords: [PlantUML, UML, local rendering, sequence, class, component, activity, usecase]
 ---

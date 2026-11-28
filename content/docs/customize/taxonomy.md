@@ -125,10 +125,18 @@ taxonomies:
   series: series
 ```
 
-| Plural | What the declaration turns on | The term page becomes |
-| --- | --- | --- |
-| `authors` | Portraits and linked names in the article head, names on list rows, one `<dc:creator>` per author in the feed | The author's profile. The display name is `linkTitle`, or `title` if absent; `description` is the short introduction and the body the long one; the featured-image resolver picks the portrait |
-| `series` | A strip above the article body naming the series, this article's position and the next part, with the whole list behind a `<details>` | The series introduction, listing its members in **reading order** rather than newest first |
+{{< fields >}}
+{{< field name="authors" >}}
+**What the declaration turns on:** portraits and linked names in the article head, names on list rows, and one `<dc:creator>` per author in the feed.
+
+**The term page becomes:** the author's profile. The display name is `linkTitle`, or `title` if absent; `description` is the short introduction and the body the long one; the featured-image resolver picks the portrait.
+{{< /field >}}
+{{< field name="series" >}}
+**What the declaration turns on:** a strip above the article body naming the series, this article's position and the next part, with the whole list behind a `<details>`.
+
+**The term page becomes:** the series introduction, listing its members in **reading order** rather than newest first.
+{{< /field >}}
+{{< /fields >}}
 
 [Writing a blog](/docs/write/blog/#authors) covers both in full, with the front
 matter each needs. Two design choices are worth knowing in advance:
@@ -140,10 +148,14 @@ matter each needs. Two design choices are worth knowing in advance:
 
 Each taxonomy generates two levels of page:
 
-| Page | URL | Contents |
-| --- | --- | --- |
-| Taxonomy list | `/categories/` | A heading with the taxonomy's icon, its localized name ("Categories") and the number of terms, then one card per term, most-used first, each with its icon (an author's portrait), name and page count |
-| Term page | `/categories/customization/` | A heading with the term's title and page count, plus a "Categories" kicker linking to the list when breadcrumbs are off. The member pages follow, newest first, styled like a blog list |
+{{< cards variant="list" >}}
+{{< card title="Taxonomy list" badge="/categories/" >}}
+A heading with the taxonomy's icon, its localized name ("Categories") and the number of terms, then one card per term, most-used first, each with its icon (an author's portrait), name and page count.
+{{< /card >}}
+{{< card title="Term page" badge="/categories/customization/" >}}
+A heading with the term's title and page count, plus a "Categories" kicker linking to the list when breadcrumbs are off. The member pages follow, newest first, styled like a blog list.
+{{< /card >}}
+{{< /cards >}}
 
 Term cards appear only on the taxonomy list page; term pages show the rail
 cloud instead.

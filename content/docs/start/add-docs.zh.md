@@ -163,6 +163,7 @@ go.work.sum
 | `go.work`、`go.work.sum` | **忽略** | 本机路径工作区，提交会破坏他人与 CI 的构建 |
 | `docs/hugo.yml`、`docs/go.mod`、`docs/go.sum` | **提交** | 文档配置与经过校验和锁定的 OINK 版本 |
 | `docs/content/`、`docs/data/`、`docs/assets/`、`docs/static/` | **提交** | 文档正文、首页数据、Logo、自定义 CSS 与静态资源 |
+{.wide}
 
 跑一遍生产构建并用 `git status --short` 验证工作区干净，没有任何构建产物变成未跟踪文件：
 

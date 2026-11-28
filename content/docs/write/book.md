@@ -423,6 +423,7 @@ forms actually found in it. DDIA has one profile for each of its two editions:
 | `ddia-v2` | The site's own `figure` shortcode, classified by number into figure / table / code example |
 | `ddia-v1` | A bare image with an adjacent bold numbered caption, with the ID derived from the image filename |
 | `pg-internal` | A bold or italic "Figure N" caption in Chinese or English next to an image, and a numbered table caption next to a table |
+{.fields}
 
 A manuscript whose conventions match none of them is rewritten by hand into
 [the native form](#numbering-native).

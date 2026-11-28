@@ -2,7 +2,7 @@
 title: Images
 linkTitle: Images
 description: Add images with plain Markdown, then use one attribute line for a caption, a size, zoom, a link, a figure number or Hugo image processing.
-weight: 410
+weight: 310
 search_keywords: [Image, Figure, caption, zoom, image processing, imgproc, width, height, numbering]
 image_zoom: true
 aliases:
@@ -41,6 +41,7 @@ Put each image where it is easiest to maintain and use the matching path form:
 | Global resource `assets/images/…` | `![…](images/logo/oink.webp)` | Images several pages share, especially ones needing processing (resize / crop) |
 | Static directory `static/images/…` | `![…](/images/hero-light.webp)` | Large images and downloads that need no processing; supply `width`/`height` where the theme cannot measure them |
 | Remote URL | `![…](https://example.com/a.png)` | Rare: nothing is downloaded at build time and nothing can be processed |
+{.wide}
 
 A relative path is looked up as a page resource, then a resource of the
 current section, then a global resource. When none matches, the path is

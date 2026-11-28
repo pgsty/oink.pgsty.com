@@ -2,7 +2,7 @@
 title: Tables
 linkTitle: Tables
 description: Turn an ordinary Markdown table into a captioned table, a compatibility matrix, a field list, a numbered book table or a tab set, and give wide technical tables room to read.
-weight: 130
+weight: 140
 search_keywords: [Table, matrix, full-width, wide, technical tables, caption, numbered table, horizontal scroll, GFM]
 aliases:
   - /docs/components/tables/

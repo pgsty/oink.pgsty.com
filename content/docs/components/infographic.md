@@ -2,7 +2,7 @@
 title: Infographic
 linkTitle: Infographic
 description: Turn a title and a short list of items into a flow, timeline, funnel, grid or hierarchy graphic with an `infographic` fence and an AntV template.
-weight: 350
+weight: 250
 search_keywords: [Infographic, AntV, flow, timeline, funnel, template]
 ---
 
@@ -294,6 +294,7 @@ visual variants. The common families:
 | `hierarchy-mindmap-*` `hierarchy-structure-*` | Hierarchy, with `children` | `hierarchy-mindmap-level-gradient-compact-card` |
 | `chart-pie-*` `chart-bar-*` `chart-column-*` | Illustrative charts, with `value` | `chart-pie-donut-plain-text` |
 | `relation-network-*` `relation-dagre-flow` | Networks and flows, with `relations` | `relation-dagre-flow` |
+{.wide .expand}
 
 Pick the simplest form that shows the relationship. The
 [AntV Infographic gallery](https://infographic.antv.vision/gallery) shows every

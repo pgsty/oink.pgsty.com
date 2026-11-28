@@ -1,8 +1,8 @@
 ---
 title: Audio
 linkTitle: Audio
-description: Put a podcast episode, voice sample or recorded talk on a page with image syntax, as a titled native player with its transcript beside it.
-weight: 440
+description: Put a podcast episode, voice sample or recorded talk on a page with image syntax, as a titled player with its transcript beside it.
+weight: 340
 search_keywords: [Audio, mp3, m4a, ogg, wav, flac, podcast, voice sample, transcript, player]
 ---
 
@@ -60,6 +60,7 @@ Audio files are looked up in the same order as images and video:
 | Global resource `assets/…` | `![…](audio/episode.mp3)` | The same extensions |
 | Static directory `static/…` | `![…](/audio/episode.mp3)` | The same extensions |
 | Object storage or a CDN | `![…](https://cdn.example.com/episode-12.mp3)` | The same extensions |
+{.wide}
 
 Hugo defines no `audio/*` media type of its own. If your site declares one in
 `mediaTypes`, a page or global resource of that type is audio whatever its

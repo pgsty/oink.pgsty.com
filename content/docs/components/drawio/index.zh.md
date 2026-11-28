@@ -2,7 +2,7 @@
 title: Draw.io
 linkTitle: Draw.io
 description: 把 Draw.io 导出的图当普通图片发布，读者可以在 Draw.io 编辑器里打开、修改并下载。
-weight: 330
+weight: 230
 search_keywords: [drawio-server, Draw.io, diagrams.net, drawio, mxfile, 可编辑图, SVG, 编辑按钮]
 ---
 

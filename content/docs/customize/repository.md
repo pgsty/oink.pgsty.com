@@ -184,6 +184,7 @@ itself, override the narrowest of three partials:
 | `layouts/_partials/annotation-items.html` | Add, remove or reorder the lines, keeping the theme's markup, icons, print rules and accessible label |
 | `layouts/_partials/page-meta-lastmod.html` | Replace the markup those lines render as |
 | `layouts/_partials/page-annotation.html` | Replace the block's outer container |
+{.fields}
 
 ## What the page end is made of {#page-end}
 

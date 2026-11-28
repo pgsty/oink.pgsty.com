@@ -35,32 +35,32 @@
 - [Components](http://localhost/docs/components/index.md): Pick the component that fits what you are writing and look up its shortest syntax, its form and whether it loads a script.
   - [Callouts](http://localhost/docs/components/callout/index.md): Write notes, warnings, and collapsible asides with colors, icons, and titles. Use `> [!NOTE]` blockquotes without shortcodes.
   - [Code Blocks](http://localhost/docs/components/code/index.md): Show commands, configuration and source code in a Markdown fence with a filename, exact copying, line numbers, highlighting, wrapping, folding and linkable lines.
+  - [Tabs](http://localhost/docs/components/tabs/index.md): Put equivalent alternatives such as package managers or config formats side by side, and let one reader choice follow them across every page.
   - [Tables](http://localhost/docs/components/table/index.md): Turn an ordinary Markdown table into a captioned table, a compatibility matrix, a field list, a numbered book table or a tab set, and give wide technical tables room to read.
   - [Fields](http://localhost/docs/components/fields/index.md): Document configuration keys, command flags and API fields as a field list that stays readable on a phone and gives every entry its own link.
+  - [Steps](http://localhost/docs/components/steps/index.md): Add `{.steps}` to an ordered list for a numbered procedure. Use the steps shortcode when each step needs a table-of-contents heading.
   - [Badge](http://localhost/docs/components/badge/index.md): Mark a feature, version or table cell with a short status label such as Beta or deprecated, in one of five semantic tones.
   - [Kbd](http://localhost/docs/components/kbd/index.md): Use `kbd` with one key name per parameter to display a semantic key sequence. Instructions remain readable in print and Markdown.
-  - [Tabs](http://localhost/docs/components/tabs/index.md): Put equivalent alternatives such as package managers or config formats side by side, and let one reader choice follow them across every page.
-  - [Steps](http://localhost/docs/components/steps/index.md): Add `{.steps}` to an ordered list for a numbered procedure. Use the steps shortcode when each step needs a table-of-contents heading.
-  - [Timeline](http://localhost/docs/components/timeline/index.md): Turn a Markdown definition list into a vertical timeline of dated or ordered events, for milestones, incident write-ups, product history or an agenda.
-  - [Update](http://localhost/docs/components/update/index.md): Write a changelog, a "What's new" page or weekly notes as ordinary headings marked `{.update}`, with an optional date and tags under each entry.
-  - [Cards](http://localhost/docs/components/cards/index.md): Turn a Markdown link list into a grid of navigation cards, and use the shortcode when cards need icons, badges or images.
   - [Includes](http://localhost/docs/components/include/index.md): Reuse one source across pages with include for shared fragments and files, param for site and page values, and comment for notes that never publish.
   - [Mermaid](http://localhost/docs/components/mermaid/index.md): Use a `mermaid` fence for flowcharts, sequence diagrams, Gantt charts, class diagrams, and state diagrams. Bundled Mermaid follows the color scheme; source diffs show changes.
   - [PlantUML](http://localhost/docs/components/plantuml/index.md): Render sequence, class, component, activity and use-case diagrams in the browser with bundled assets and no rendering service.
   - [Draw.io](http://localhost/docs/components/drawio/index.md): Publish a Draw.io export as an ordinary image that readers can open in the Draw.io editor, change and download.
   - [ECharts](http://localhost/docs/components/echarts/index.md): Draw bar, line and pie charts by writing ECharts options as YAML or JSON in an `echarts` fence, with colors that follow light and dark mode.
   - [Infographic](http://localhost/docs/components/infographic/index.md): Turn a title and a short list of items into a flow, timeline, funnel, grid or hierarchy graphic with an `infographic` fence and an AntV template.
-  - [Maps](http://localhost/docs/components/map/index.md): List places in a `map` fence to get a numbered place list in HTML, Print and RSS, plus an interactive map once the site names a tile service.
   - [Markmap](http://localhost/docs/components/markmap/index.md): Use a `markmap` fence for an expandable mind map with zoom controls. Its source remains a readable Markdown outline.
   - [FileTree](http://localhost/docs/components/filetree/index.md): Draw an annotated directory tree in a `filetree` fence, with aligned comments, per-entry icons and collapsible directories.
   - [Math](http://localhost/docs/components/math/index.md): Use KaTeX for inline and display mathematics at build time. Readers download no script.
+  - [Maps](http://localhost/docs/components/map/index.md): List places in a `map` fence to get a numbered place list in HTML, Print and RSS, plus an interactive map once the site names a tile service.
   - [Images](http://localhost/docs/components/image/index.md): Add images with plain Markdown, then use one attribute line for a caption, a size, zoom, a link, a figure number or Hugo image processing.
   - [Gallery](http://localhost/docs/components/gallery/index.md): Lay out a set of related screenshots as a responsive grid with a `gallery` fence, each with an optional description or link.
   - [Video](http://localhost/docs/components/video/index.md): Embed product demos, screen recordings and muted loops that replace GIFs, and link YouTube, Bilibili or Vimeo talks without contacting the platform until a reader clicks.
-  - [Audio](http://localhost/docs/components/audio/index.md): Put a podcast episode, voice sample or recorded talk on a page with image syntax, as a titled native player with its transcript beside it.
+  - [Audio](http://localhost/docs/components/audio/index.md): Put a podcast episode, voice sample or recorded talk on a page with image syntax, as a titled player with its transcript beside it.
   - [Asciinema](http://localhost/docs/components/asciinema/index.md): Embed a .cast terminal recording that readers can play, pause and copy text from, with the player shipped in the theme.
   - [Social](http://localhost/docs/components/social/index.md): Quote a post from X, Bluesky, Mastodon, or another platform with a `> [!SOCIAL]` callout. The page supplies the quote and attribution without a platform script, and plain Markdown viewers show an ordinary blockquote.
-  - [Presentation](http://localhost/docs/components/presentation/index.md): Cards, disclosures, tabs, and compact procedures across OINK's four visual presets.
+  - [Cards](http://localhost/docs/components/cards/index.md): Turn a Markdown link list into a grid of navigation cards, and use the shortcode when cards need icons, badges or images.
+  - [Timeline](http://localhost/docs/components/timeline/index.md): Turn a Markdown definition list into a vertical timeline of dated or ordered events, for milestones, incident write-ups, product history or an agenda.
+  - [Update](http://localhost/docs/components/update/index.md): Write a changelog, a "What's new" page or weekly notes as ordinary headings marked `{.update}`, with an optional date and tags under each entry.
+  - [Presentation](http://localhost/docs/components/presentation/index.md): Cards, disclosures, tabs, and compact procedures across OINK's six visual presets.
 - [Customization](http://localhost/docs/customize/index.md): Configure the site brand, navigation, layout, search, languages, versions, print output, and agent output.
   - [Configuration](http://localhost/docs/customize/config/index.md): Find every site parameter that the theme reads, with its type, default, description, and related guide.
   - [Brand and appearance](http://localhost/docs/customize/brand/index.md): Give the site your name, logo, favicon, accent color and fonts, choose a visual preset, and add your own CSS.

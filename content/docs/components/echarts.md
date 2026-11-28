@@ -2,7 +2,7 @@
 title: ECharts
 linkTitle: ECharts
 description: Draw bar, line and pie charts by writing ECharts options as YAML or JSON in an `echarts` fence, with colors that follow light and dark mode.
-weight: 340
+weight: 240
 search_keywords: [ECharts, chart, bar, line, pie, height, theme, OinkEchartsFunctions, OinkEchartsThemes, registerTheme]
 ---
 

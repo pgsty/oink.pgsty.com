@@ -2,7 +2,7 @@
 title: Math
 linkTitle: Math
 description: Use KaTeX for inline and display mathematics at build time. Readers download no script.
-weight: 390
+weight: 280
 search_keywords: [Math, KaTeX, LaTeX, TeX, passthrough, chem, mhchem, chemistry, numbered equation, eq]
 ---
 

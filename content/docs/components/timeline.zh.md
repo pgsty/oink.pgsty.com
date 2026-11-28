@@ -2,7 +2,7 @@
 title: 时间轴
 linkTitle: 时间轴
 description: 把 Markdown 定义列表变成一条竖直的时间轴，按日期或先后排列事件，适合里程碑、故障复盘、产品历史与议程。
-weight: 230
+weight: 380
 search_keywords: [时间轴, Timeline, 时间线, 大事记, 里程碑, 故障复盘, 议程, 定义列表, dl, dt, dd]
 ---
 

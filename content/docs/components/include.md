@@ -2,7 +2,7 @@
 title: Includes
 linkTitle: Includes
 description: Reuse one source across pages with include for shared fragments and files, param for site and page values, and comment for notes that never publish.
-weight: 260
+weight: 190
 search_keywords: [include, file, snippet, reuse, readfile, param, interpolation, comment]
 params:
   pigsty_pg_major: 18
@@ -52,11 +52,10 @@ translation of its own.
 
 `file` is looked up in this order, and the first match wins:
 
-| Order | Looked up as | Written as |
-| --- | --- | --- |
-| 1 | A page resource — a file in this page's bundle | `file="config.yaml"` |
-| 2 | A global resource under `assets/` | `file="snippets/dsn.txt"` |
-| 3 | A file under `content/`: a leading `/` is the content root, otherwise relative to the page's directory | `file="notes/caveat.md"`, `file="/shared/notice.md"` |
+1. **A page resource** — a file in this page's bundle, written as `file="config.yaml"`.
+1. **A global resource under `assets/`** — written as `file="snippets/dsn.txt"`.
+1. **A file under `content/`** — a leading `/` starts at the content root, otherwise relative to the page's directory, written as `file="notes/caveat.md"` or `file="/shared/notice.md"`.
+{.steps .td-steps-compact}
 
 Include never reads outside `content/` and `assets/`. A path containing `..`,
 or one that matches nothing, warns and includes nothing.

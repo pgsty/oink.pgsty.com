@@ -142,12 +142,11 @@ Docsy is the only code upstream. The projects below influenced the design
 language only: OINK has ported no code from them and depends on none of them at
 runtime.
 
-| Project                                    | What was learned from it                                                                                                                                         |
-|--------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Fumadocs](https://www.fumadocs.dev/)      | Content-first presentation, information hierarchy, and writing components such as file trees and field lists (the theme's `NOTICE` records this acknowledgement) |
-| [Nextra](https://nextra.site/)             | A simple documentation shell, filename labels and copy controls on code blocks, and per-page layout switches                                                     |
-| [Hextra](https://imfing.github.io/hextra/) | A Hugo-native approach to implementation, file trees, badges, tabs                                                                                               |
-| [Mintlify](https://mintlify.com/)          | Layered navigation structure, synchronized code groups, the reading experience of an API reference                                                               |
+- [Fumadocs](https://www.fumadocs.dev/) — Content-first presentation, information hierarchy, and writing components such as file trees and field lists (the theme's `NOTICE` records this acknowledgement).
+- [Nextra](https://nextra.site/) — A simple documentation shell, filename labels and copy controls on code blocks, and per-page layout switches.
+- [Hextra](https://imfing.github.io/hextra/) — A Hugo-native approach to implementation, file trees, badges, and tabs.
+- [Mintlify](https://mintlify.com/) — Layered navigation structure, synchronized code groups, and the reading experience of an API reference.
+{.cards .td-cards-list}
 
 [Hugo](https://gohugo.io/) is the build platform, and Go resolves modules when
 the theme is installed as a Hugo Module. Both are prerequisites; the theme

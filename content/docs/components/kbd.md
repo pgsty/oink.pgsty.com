@@ -2,7 +2,7 @@
 title: Kbd
 linkTitle: Kbd
 description: Use `kbd` with one key name per parameter to display a semantic key sequence. Instructions remain readable in print and Markdown.
-weight: 160
+weight: 180
 search_keywords: [Kbd, shortcut, keyboard, Ctrl, Cmd, chord]
 ---
 
@@ -122,12 +122,10 @@ Press <kbd>F5</kbd> to reload. In an editor, <kbd>Ctrl</kbd>+<kbd>S</kbd> saves.
 
 ## Output {#outputs}
 
-| Output | Shape |
-| --- | --- |
-| HTML | `<span class="td-kbd-sequence">` around one `<kbd>` per key; the visible `+` is hidden from screen readers, which get a localized connector |
-| Print | Same as HTML, static |
-| Markdown | Plain text: `Ctrl + K`, `⌘ + Shift + P` |
-| RSS | Same as print |
+- **HTML:** `<span class="td-kbd-sequence">` around one `<kbd>` per key; the visible `+` is hidden from screen readers, which get a localized connector.
+- **Print:** same as HTML, static.
+- **Markdown:** plain text: `Ctrl + K`, `⌘ + Shift + P`.
+- **RSS:** same as print.
 
 The instruction remains readable without CSS or JavaScript.
 

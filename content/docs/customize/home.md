@@ -429,12 +429,10 @@ that names the new location.
 
 ## Output {#outputs}
 
-| Output | What appears |
-| --- | --- |
-| HTML | Every section rendered on the server, plus `landing.js`, loaded only when needed, for reveal effects, counters, copy buttons and light/dark image switching |
-| Print | The content, with moving parts such as the marquee laid out as a static grid and controls removed |
-| Markdown | Titles, prose, lists, tables and code, without component classes |
-| RSS | No landing sections |
+- **HTML:** every section rendered on the server, plus `landing.js`, loaded only when needed, for reveal effects, counters, copy buttons and light/dark image switching.
+- **Print:** the content, with moving parts such as the marquee laid out as a static grid and controls removed.
+- **Markdown:** titles, prose, lists, tables and code, without component classes.
+- **RSS:** no landing sections.
 
 Without JavaScript, or if `landing.js` fails to load, every section is still
 visible: metrics already show their final formatted value, prefix and suffix,

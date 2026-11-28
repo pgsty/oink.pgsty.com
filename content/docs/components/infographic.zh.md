@@ -2,7 +2,7 @@
 title: Infographic
 linkTitle: Infographic
 description: 用 `infographic` 围栏和一个 AntV 模板，把标题与几个条目画成流程、时间线、漏斗、网格或层级信息图。
-weight: 350
+weight: 250
 search_keywords: [Infographic, 信息图, AntV, 流程图, 时间线, 漏斗, timeline, funnel, 模板, template]
 ---
 
@@ -273,6 +273,7 @@ data
 | `hierarchy-mindmap-*` `hierarchy-structure-*` | 层级（配合 `children`） | `hierarchy-mindmap-level-gradient-compact-card` |
 | `chart-pie-*` `chart-bar-*` `chart-column-*` | 带 `value` 的示意图 | `chart-pie-donut-plain-text` |
 | `relation-network-*` `relation-dagre-flow` | 网络与流向（配合 `relations`） | `relation-dagre-flow` |
+{.wide .expand}
 
 选能把关系讲清楚的最简单的形式。全部模板见 [AntV Infographic 图库](https://infographic.antv.vision/gallery)，模板名与随主题分发的版本一致。
 

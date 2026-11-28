@@ -62,6 +62,7 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 | Switching language lands on the home page | Hugo found no translation | The switcher falls back to the target language's home page when a page has no translation. Add the translation file to link the two pages |
 | An anchor link opens the page but does not scroll | The translated heading text differs, so the generated ID does too | Set the English ID explicitly on the translated heading: `## 安装 {#installation}`. If a heading contains a shortcode or inline HTML, read its ID from the English page's rendered HTML instead of guessing |
 | Menus or home page sections are untranslated | They live in configuration and data files, not pages | Menus are in `languages.<lang>.menus`, home sections in `data/home/<lang>.yaml`, interface strings in `i18n/<lang>.yaml`. See [Languages](/docs/customize/i18n/) |
+{.wide .expand}
 
 ## Search {#search}
 
@@ -74,6 +75,7 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 | A new page is not found while old ones are | The index is build output | Rebuild. Under `hugo server`, wait for the rebuild after editing |
 | `params.search.algolia requires explicit appId, apiKey, and indexName values` | The three Algolia keys are incomplete | Give all three explicitly; the theme never falls back to another project's DocSearch credentials. If you do not want Algolia, delete the block |
 | The command palette finds no content | Commands and full-text search are separate | Without an index the palette still opens, says the index is unavailable, and runs page actions and commands. See [Command palette](/docs/customize/panel/) |
+{.wide .expand}
 
 ## Platform {#platform}
 

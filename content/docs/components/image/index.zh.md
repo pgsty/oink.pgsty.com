@@ -2,7 +2,7 @@
 title: 图片
 linkTitle: 图片
 description: 用普通 Markdown 插图，再加一行属性，就能设置图注、尺寸、缩放、链接、编号或 Hugo 图片处理。
-weight: 410
+weight: 310
 search_keywords: [图片, Image, Figure, 图注, caption, 缩放, zoom, 图片处理, imgproc, width, height, 编号]
 image_zoom: true
 aliases:
@@ -33,6 +33,7 @@ aliases:
 | 全局资源 `assets/images/…` | `![…](images/logo/oink.webp)` | 多页共用、还要做处理（缩放 / 裁切）的图 |
 | 静态目录 `static/images/…` | `![…](/images/hero-light.webp)` | 不需要处理的大图、下载物；主题拿不到尺寸时可以用 `width`/`height` 补 |
 | 远程 URL | `![…](https://example.com/a.png)` | 少用：构建期不会下载，也不能处理 |
+{.wide}
 
 相对路径依次按页面资源、当前分区资源、全局资源查找，都找不到时按静态路径发布。主题不检查静态路径和远程 URL 是否存在，路径写错时浏览器里会出现一张破图。要求处理（`command=`）的图片如果找不到可处理的资源，构建会告警，并发布未经处理的原图。
 

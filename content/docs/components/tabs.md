@@ -2,7 +2,7 @@
 title: Tabs
 linkTitle: Tabs
 description: Put equivalent alternatives such as package managers or config formats side by side, and let one reader choice follow them across every page.
-weight: 210
+weight: 130
 search_keywords: [Tabs, tab, group, value, sync, persistence, localStorage, hash]
 ---
 

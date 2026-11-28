@@ -2,7 +2,7 @@
 title: Timeline
 linkTitle: Timeline
 description: Turn a Markdown definition list into a vertical timeline of dated or ordered events, for milestones, incident write-ups, product history or an agenda.
-weight: 230
+weight: 380
 search_keywords: [Timeline, chronology, milestones, history, postmortem, agenda, definition list, dl, dt, dd]
 ---
 

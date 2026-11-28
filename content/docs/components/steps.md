@@ -2,7 +2,7 @@
 title: Steps
 linkTitle: Steps
 description: Add `{.steps}` to an ordered list for a numbered procedure. Use the steps shortcode when each step needs a table-of-contents heading.
-weight: 220
+weight: 160
 search_keywords: [Steps, ordered list, procedure, tutorial, ol, start, TOC]
 ---
 

@@ -33,6 +33,7 @@ search_keywords: [音频, Audio, mp3, m4a, ogg, wav, flac, 播客, podcast, 语�
 | 全局资源 `assets/…` | `![…](audio/episode.mp3)` | 同上扩展名 |
 | 静态目录 `static/…` | `![…](/audio/episode.mp3)` | 同上扩展名 |
 | 对象存储或 CDN | `![…](https://cdn.example.com/episode-12.mp3)` | 同上扩展名 |
+{.wide}
 
 Hugo 本身不定义任何 `audio/*` 媒体类型。如果站点在 `mediaTypes` 中声明了一个，那么属于该类型的页面资源或全局资源无论文件名如何都按音频处理。
 

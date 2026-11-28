@@ -2,7 +2,7 @@
 title: 帖子
 linkTitle: 帖子
 description: 用 `> [!SOCIAL]` 提示块引用 X、Bluesky、Mastodon 等平台上的帖子。正文和署名都写在页面里，无需平台脚本；在纯 Markdown 查看器里它就是一个普通引用块。
-weight: 460
+weight: 360
 search_keywords: [帖子, 社交帖子, 引用帖子, 推文, 微博, 知乎, Telegram, 离线嵌入, 头像, 引用帖, 提示块, social, tweet, X, Twitter, Bluesky, Mastodon, Threads, Weibo, Zhihu, LinkedIn, callout]
 image_zoom: true
 ---

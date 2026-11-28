@@ -2,7 +2,7 @@
 title: Update
 linkTitle: Update
 description: Write a changelog, a "What's new" page or weekly notes as ordinary headings marked `{.update}`, with an optional date and tags under each entry.
-weight: 240
+weight: 390
 search_keywords: [Update, changelog, what's new, release notes, heading attributes, date, tags, time]
 ---
 

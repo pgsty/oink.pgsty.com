@@ -97,6 +97,7 @@ the choice:
 | Search | Bundled BM25 engine, one index per language, unspaced CJK included | Lunr offline search, or a hosted service | Algolia DocSearch, or a community plugin for local search |
 | Fonts and scripts | Bundled and served from your own domain; no jQuery | Google Fonts unless switched off; jQuery on every page | Scripts bundled by the Node build |
 | Home page | Sections listed in `data/home/<lang>.yaml` | `blocks/*` shortcodes in a Markdown page | A React page |
+{.wide .expand}
 
 If you already run Docsy, your content and most front matter carry over;
 [Migrating from Docsy](/docs/admin/upgrade/#from-docsy) lists what to delete

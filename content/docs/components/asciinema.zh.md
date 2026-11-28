@@ -2,7 +2,7 @@
 title: Asciinema
 linkTitle: Asciinema
 description: 在页面里嵌入 .cast 终端录像，读者可以播放、暂停并从中复制文字，播放器随主题分发。
-weight: 450
+weight: 350
 search_keywords: [Asciinema, 终端录像, cast, asciicast, 录屏, 演示, terminal recording, 播放器, 章节, markers]
 ---
 

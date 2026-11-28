@@ -2,7 +2,7 @@
 title: 更新
 linkTitle: 更新
 description: 用带 `{.update}` 标记的普通标题写更新日志、「新功能」页或周报，每个条目下方可以附上日期与标签。
-weight: 240
+weight: 390
 search_keywords: [更新, Update, 更新日志, changelog, 新功能, 发布说明, 标题属性, date, tags, time]
 ---
 

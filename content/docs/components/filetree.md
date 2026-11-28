@@ -2,7 +2,7 @@
 title: FileTree
 linkTitle: FileTree
 description: Draw an annotated directory tree in a `filetree` fence, with aligned comments, per-entry icons and collapsible directories.
-weight: 380
+weight: 270
 search_keywords: [FileTree, directory tree, tree, repository layout, fence, icon, tone, open]
 ---
 

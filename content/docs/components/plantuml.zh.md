@@ -2,7 +2,7 @@
 title: PlantUML
 linkTitle: PlantUML
 description: 使用随主题提供的资源，在浏览器中渲染时序图、类图、组件图、活动图与用例图，无需渲染服务。
-weight: 320
+weight: 220
 comments: false
 search_keywords: [PlantUML, UML, 本地渲染, 时序图, 类图, 组件图, 活动图, 用例图]
 ---

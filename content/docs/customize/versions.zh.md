@@ -92,10 +92,18 @@ params:
 
 ## 多版本部署布局 {#deployment}
 
-| 布局 | `baseURL` | 特点 |
-| --- | --- | --- |
-| 子域名 | `https://v1-9.docs.example.com/` | 各版本完全独立；每个版本都要单独配置 DNS 记录与证书 |
-| 子路径 | `https://docs.example.com/v1.9/` | 所有版本共用一个域名，搜索排名集中；需要托管方按路径把请求路由到不同的构建产物 |
+{{< cards >}}
+{{< card title="子域名" icon="fa-solid fa-globe" >}}
+`baseURL: https://v1-9.docs.example.com/`
+
+各版本完全独立；每个版本都要单独配置 DNS 记录与证书。
+{{< /card >}}
+{{< card title="子路径" icon="fa-solid fa-folder-tree" >}}
+`baseURL: https://docs.example.com/v1.9/`
+
+所有版本共用一个域名，搜索排名集中；需要托管方按路径把请求路由到不同的构建产物。
+{{< /card >}}
+{{< /cards >}}
 
 每个版本单独构建：检出它的分支或 tag，用那一版自己的 `hugo.yml` 构建，再发布到它的地址。版本菜单是每次构建的一部分，所以新增一个版本时，要在每个仍在发布的分支上更新 `params.versions` 并重新构建；没有重建的旧站点，菜单还是旧的。归档站点使用同一份清单，再加上 `archived_version: true`。
 

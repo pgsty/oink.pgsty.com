@@ -2,7 +2,7 @@
 title: 表格
 linkTitle: 表格
 description: 给普通 Markdown 表格加一行属性，做成带标题的表、兼容矩阵、参数表、编号表或标签页，并让宽幅技术表格有足够的阅读空间。
-weight: 130
+weight: 140
 search_keywords: [表格, Table, matrix, 矩阵, full-width, 全宽, wide, 技术表格, caption, 表格标题, 编号表, 横向滚动, GFM]
 aliases:
   - /docs/components/tables/

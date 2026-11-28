@@ -2,7 +2,7 @@
 title: 地图
 linkTitle: 地图
 description: 在 `map` 围栏里列出地点，HTML、打印与 RSS 都显示带编号的地点列表。站点指定瓦片服务后，网页上还会多一张交互地图。
-weight: 360
+weight: 290
 search_keywords: [地图, 地点, 标记点, 路线, 弹窗, 瓦片, 坐标, 旅行, 北京, 故宫, map, OpenStreetMap, Leaflet, tiles, WGS 84]
 ---
 

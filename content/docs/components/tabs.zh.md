@@ -2,7 +2,7 @@
 title: 标签页
 linkTitle: 标签页
 description: 把包管理器、配置格式这类可互相替代的写法并排放在一组标签页里，读者选一次，全站同组的标签页都跟着切换。
-weight: 210
+weight: 130
 search_keywords: [标签页, Tabs, tab, group, value, 同步, 持久化, localStorage, hash, 选项卡]
 ---
 

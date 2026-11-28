@@ -2,7 +2,7 @@
 title: Draw.io
 linkTitle: Draw.io
 description: Publish a Draw.io export as an ordinary image that readers can open in the Draw.io editor, change and download.
-weight: 330
+weight: 230
 search_keywords: [drawio-server, Draw.io, diagrams.net, drawio, mxfile, editable diagram, SVG, edit button]
 ---
 

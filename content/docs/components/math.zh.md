@@ -2,7 +2,7 @@
 title: 公式
 linkTitle: 公式
 description: 用 KaTeX 写行内与块级数学公式，构建期渲染完毕，读者不下载任何脚本。
-weight: 390
+weight: 280
 search_keywords: [公式, 数学, Math, KaTeX, LaTeX, TeX, passthrough, chem, mhchem, 化学式, 编号公式, eq]
 ---
 

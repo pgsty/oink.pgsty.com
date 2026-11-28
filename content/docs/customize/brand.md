@@ -97,6 +97,7 @@ it finds:
 | `static/favicon-32x32.png` | `rel="icon"` `type="image/png"` with `sizes`; several sizes are linked smallest first |
 | `static/apple-touch-icon.png` | `rel="apple-touch-icon"` |
 | `static/apple-touch-icon-180x180.png` | `rel="apple-touch-icon"` with `sizes` |
+{.fields}
 
 `favicon.ico`, `favicon.svg` and `apple-touch-icon.png` are enough for every
 browser. A file with a size in its name must be square (`NxN`); the theme
@@ -463,6 +464,7 @@ to outrank Paper's dark palette.
 | `--td-brand-silk` | Secondary text |
 | `--td-brand-line-strong` | Strong rules |
 | `--td-brand-shadow-sm`, `--td-brand-shadow-md` | Shadows |
+{.wide}
 
 Whatever you recolor, check hover, focus, disabled and selected states in both
 modes: body text needs 4.5:1 contrast and large text 3:1.

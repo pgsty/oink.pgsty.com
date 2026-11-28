@@ -2,7 +2,7 @@
 title: 步骤
 linkTitle: 步骤
 description: 有序列表加 `{.steps}` 就是带编号圆点与竖线的操作步骤；步骤要带标题、要进目录时改用 steps shortcode。
-weight: 220
+weight: 160
 search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 目录, TOC]
 ---
 

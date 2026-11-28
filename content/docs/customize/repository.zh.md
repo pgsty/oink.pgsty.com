@@ -140,6 +140,7 @@ params:
 | `layouts/_partials/annotation-items.html` | 增删或重排这些行，保留主题的标记、图标、打印规则与无障碍标签 |
 | `layouts/_partials/page-meta-lastmod.html` | 换掉这些行的渲染标记 |
 | `layouts/_partials/page-annotation.html` | 换掉整个区块的外层容器 |
+{.fields}
 
 ## 页尾的组成 {#page-end}
 

@@ -195,7 +195,7 @@ agent 的输出一起讲解。
 | 课程或教程书 | [pgexp.pgsql.cc](/zh/case/pgexp-pgsql/) | 以 Book 章节组织课程，附带可运行的示例和下载 |
 | 相册或展览 | [fzb.vonng.com](/zh/case/fzb/) | Expo 相册与长篇 Book 页面并列 |
 | 迁移到 OINK 的现有 Docsy 站点 | [hugegraph.apache.org](/zh/case/apache-hugegraph/) | Slate 预设上的品牌首屏，配合迁移过来的双语文档 |
-{#tbl-model-sites num="1-1" caption="可供新站点参照的更多 OINK 生产站点，按站点类型列出。"}
+{#tbl-model-sites .wide num="1-1" caption="可供新站点参照的更多 OINK 生产站点，按站点类型列出。"}
 
 如果要迁移现有的 Hugo 或 Docsy 站点而不是新建，就在那个站点的仓库里运行 agent，并把
 {{< xref eg="1-5" anchor="eg-prompt-shape" />}} 的头几行换成“阅读

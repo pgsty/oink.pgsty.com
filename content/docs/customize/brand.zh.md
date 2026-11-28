@@ -72,6 +72,7 @@ favicon 没有配置项。主题在站点的 `static/` 目录里查找约定的�
 | `static/favicon-32x32.png` | `rel="icon"` `type="image/png"`，带 `sizes`；有多个尺寸时从小到大输出 |
 | `static/apple-touch-icon.png` | `rel="apple-touch-icon"` |
 | `static/apple-touch-icon-180x180.png` | `rel="apple-touch-icon"`，带 `sizes` |
+{.fields}
 
 有 `favicon.ico`、`favicon.svg` 和 `apple-touch-icon.png` 三个文件，所有浏览器就都够用了。文件名带尺寸的必须是正方形（`NxN`），否则主题会忽略它。
 
@@ -332,6 +333,7 @@ Hugo 只压缩这个文件、不编译它，所以要写 CSS 而不是 SCSS：`/
 | `--td-brand-silk` | 次要文字 |
 | `--td-brand-line-strong` | 加重的分隔线 |
 | `--td-brand-shadow-sm`、`--td-brand-shadow-md` | 阴影 |
+{.wide}
 
 无论改了哪些颜色，都要在两种模式下检查悬停、聚焦、禁用与选中状态：正文对比度至少 4.5:1，大号文字至少 3:1。
 

@@ -2,7 +2,7 @@
 title: ECharts
 linkTitle: ECharts
 description: 在 `echarts` 围栏里用 YAML 或 JSON 写 ECharts 选项，画出跟随深浅色的柱状图、折线图与饼图。
-weight: 340
+weight: 240
 search_keywords: [ECharts, 图表, 统计图, 柱状图, 折线图, 饼图, chart, bar, line, pie, height, theme, OinkEchartsFunctions, OinkEchartsThemes, registerTheme, 主题]
 ---
 

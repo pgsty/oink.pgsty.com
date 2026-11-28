@@ -2,7 +2,7 @@
 title: 徽章
 linkTitle: 徽章
 description: 用五种语义 tone 之一，给功能名、版本号或表格单元格标上 Beta、已弃用这类简短状态。
-weight: 150
+weight: 170
 search_keywords: [徽章, Badge, 状态标签, tone, Beta, 已弃用, neutral, info, success, warning, danger]
 ---
 

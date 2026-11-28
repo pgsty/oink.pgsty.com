@@ -1,7 +1,7 @@
 sections:
   - hero
   - capabilities
-  - type: cards
+  - type: logo-wall
     key: content_types
   - type: logo-wall
     key: components
@@ -46,8 +46,8 @@ capabilities:
       url: docs/start/
       motto: Ship docs, not build pipelines
       bullets:
-        - '[Quick-start, AI prompt and project-docs guides](docs/start/) for your first site'
-        - '[Search](docs/customize/search/), [29 keyboard shortcuts](docs/customize/keyboard/), [Duo View](docs/customize/i18n/#bilingual-view) and [versioning](docs/customize/versions/) built in'
+        - '[Quick-start, AI & add-docs guides](docs/start/) ready to run'
+        - '[Search](docs/customize/search/), [29 shortcuts](docs/customize/keyboard/), [Duo View](docs/customize/i18n/#bilingual-view) & [versions](docs/customize/versions/) built in'
         - '[Typeset copy](docs/customize/print/#typeset-copy), [RSS](docs/write/blog/), [SEO](docs/admin/analytics/) and [Google Analytics](docs/admin/analytics/) ready'
       value: Focus on documentation, not site plumbing.
       visual:
@@ -129,7 +129,7 @@ capabilities:
         - '[Code Groups](docs/components/tabs/), [FileTree](docs/components/filetree/) and [Fields](docs/components/fields/) for daily writing'
         - '[Gallery](docs/components/gallery/), [Image Zoom](docs/components/image/) and diagrams built in'
         - '[Components](docs/components/) support Markdown and print with fallbacks'
-      value: Heavy component engines load on approach, and only on pages that use them.
+      value: Heavy engines load on demand, only where used.
       visual:
         type: components
         aria_label: Browse shortcodes and content components
@@ -204,88 +204,60 @@ content_types:
   columns: 3
   class: td-home-content-types
   items:
-    - title: Documentation
-      meta: The shell
-      icon: fa-solid fa-book
-      desc: Sidebar tree, page outline, breadcrumbs, pager and edit links reused everywhere.
-      url: docs/write/pages/
-    - title: Blog and RSS
-      meta: Updates
-      icon: fa-solid fa-rss
-      desc: Dated posts, four index views, tag clouds and a separate RSS feed per language.
-      url: docs/write/blog/
-    - title: Books
-      meta: Long-form
-      icon: fa-solid fa-book-open
-      desc: Chapter numbers, numbered figures and equations, `xref` links and whole-book print.
-      url: docs/write/book/
-    - title: Landing pages
-      meta: Presentation
-      icon: fa-solid fa-layer-group
-      desc: Twenty-two server-rendered sections compose a page, including the one you are reading.
-      url: docs/customize/home/
-    - title: Expo image albums
-      meta: Visual
-      icon: fa-solid fa-images
-      desc: Resource-backed photo collections with wall, cards, seamless views and original zoom.
-      url: docs/write/expo/
-    - title: API references
-      meta: OpenAPI
-      icon: fa-solid fa-plug
-      desc: Local Swagger UI and Redoc runtimes that render repository specs completely offline.
-      url: docs/write/openapi/
+    - { title: Documentation,     icon: fa-solid fa-book,        desc: 'sidebar · outline · pager',    url: docs/write/pages/ }
+    - { title: Blog and RSS,      icon: fa-solid fa-rss,         desc: 'posts · 4 views · tags · RSS', url: docs/write/blog/ }
+    - { title: Books,             icon: fa-solid fa-book-open,   desc: 'chapters · xref · book print', url: docs/write/book/ }
+    - { title: Landing pages,     icon: fa-solid fa-layer-group, desc: '22 server-rendered sections',  url: docs/customize/home/ }
+    - { title: Expo image albums, icon: fa-solid fa-images,      desc: 'wall · cards · original zoom', url: docs/write/expo/ }
+    - { title: API references,    icon: fa-solid fa-plug,        desc: 'offline Swagger UI & Redoc',   url: docs/write/openapi/ }
 
 components:
   eyebrow: Component reference
   title: 27 components, loaded on demand
   text: Each component has its own guide across HTML, print, Markdown and RSS; scripts load only where used.
   columns: 3
-  # Ordered into four cognitive domains matching the docs sidebar and overview
-  # (6 + 6 + 9 + 6 = 27, every group fills complete 3-column rows).
+  # Ordered into three balanced 3×3 groups matching the docs sidebar and overview
+  # (9 + 9 + 9 = 27, every group fills three complete 3-column rows).
   groups:
     - key: writing
-      title: Core writing
-      meta: 6 components · prose, code, tables & inline
+      title: Writing & structure
+      meta: 9 components · prose, code, tables, steps & reuse
       items:
-        - { title: Callouts,    icon: fa-solid fa-circle-info,          desc: '`> [!NOTE]` · 10 types',         url: docs/components/callout/ }
-        - { title: Code Blocks, icon: fa-solid fa-code,                 desc: 'Chroma · lines · copy · fold',   url: docs/components/code/ }
-        - { title: Tables,      icon: fa-solid fa-table,                desc: 'captions · numbers · matrix',    url: docs/components/table/ }
-        - { title: Fields,      icon: fa-solid fa-table-list,           desc: 'a table plus `{.fields}`',       url: docs/components/fields/ }
-        - { title: Badge,       icon: fa-solid fa-tag,                  desc: 'inline status, five tones',      url: docs/components/badge/ }
-        - { title: Kbd,         icon: fa-solid fa-keyboard,             desc: 'key names and chords',           url: docs/components/kbd/ }
-    - key: structure
-      title: Structure & flow
-      meta: 6 components · tabs, sequences, cards & reuse
-      items:
-        - { title: Tabs,        icon: fa-solid fa-folder,               desc: 'fences with `{tab=}`',           url: docs/components/tabs/ }
-        - { title: Steps,       icon: fa-solid fa-list-ol,              desc: 'a list plus `{.steps}`',         url: docs/components/steps/ }
-        - { title: Timeline,    icon: fa-solid fa-timeline,             desc: 'definition list + `{.timeline}`', url: docs/components/timeline/ }
-        - { title: Update,      icon: fa-solid fa-clock-rotate-left,    desc: 'heading + `{.update}`',          url: docs/components/update/ }
-        - { title: Cards,       icon: fa-solid fa-table-cells-large,    desc: 'a list plus `{.cards}`',         url: docs/components/cards/ }
-        - { title: Includes,    icon: fa-solid fa-file-import,          desc: 'files, params, build notes',     url: docs/components/include/ }
+        - { title: Callouts,    icon: fa-solid fa-circle-info,          desc: '`> [!NOTE]` · 10 types',           url: docs/components/callout/ }
+        - { title: Code Blocks, icon: fa-solid fa-code,                 desc: 'Chroma · lines · copy · fold',     url: docs/components/code/ }
+        - { title: Tabs,        icon: fa-solid fa-folder,               desc: 'fences with `{tab=}`',             url: docs/components/tabs/ }
+        - { title: Tables,      icon: fa-solid fa-table,                desc: 'captions · numbers · matrix',      url: docs/components/table/ }
+        - { title: Fields,      icon: fa-solid fa-table-list,           desc: 'a table plus `{.fields}`',         url: docs/components/fields/ }
+        - { title: Steps,       icon: fa-solid fa-list-ol,              desc: 'a list plus `{.steps}`',           url: docs/components/steps/ }
+        - { title: Badge,       icon: fa-solid fa-tag,                  desc: 'inline status, five tones',        url: docs/components/badge/ }
+        - { title: Kbd,         icon: fa-solid fa-keyboard,             desc: 'key names and chords',             url: docs/components/kbd/ }
+        - { title: Includes,    icon: fa-solid fa-file-import,          desc: 'files, params, build notes',       url: docs/components/include/ }
     - key: diagrams
       title: Diagrams, charts & math
-      meta: 9 components · diagrams, data, trees & formulas
+      meta: 9 components · diagrams, charts, trees, math & maps
       items:
-        - { title: Mermaid,     icon: fa-solid fa-diagram-project,      desc: 'local diagram runtime',          url: docs/components/mermaid/ }
-        - { title: PlantUML,    icon: fa-solid fa-project-diagram,      desc: 'local or server UML',            url: docs/components/plantuml/ }
-        - { title: Draw.io,     icon: fa-solid fa-pen-ruler,            desc: 'diagrams that stay editable',    url: docs/components/drawio/ }
-        - { title: ECharts,     icon: fa-solid fa-chart-line,           desc: '`echarts` data fence',           url: docs/components/echarts/ }
-        - { title: Infographic, icon: fa-solid fa-chart-pie,            desc: 'declarative data fence',         url: docs/components/infographic/ }
-        - { title: Maps,        icon: fa-solid fa-map-location-dot,     desc: '`map` fence · local Leaflet',    url: docs/components/map/ }
-        - { title: Markmap,     icon: fa-solid fa-sitemap,              desc: 'mind maps from headings',        url: docs/components/markmap/ }
-        - { title: FileTree,    icon: fa-solid fa-folder-tree,          desc: '`filetree` data fence',          url: docs/components/filetree/ }
-        - { title: Math,        icon: fa-solid fa-square-root-variable, desc: 'KaTeX at build time',            url: docs/components/math/ }
+        - { title: Mermaid,     icon: fa-solid fa-diagram-project,      desc: 'local diagram runtime',            url: docs/components/mermaid/ }
+        - { title: PlantUML,    icon: fa-solid fa-project-diagram,      desc: 'local or server UML',              url: docs/components/plantuml/ }
+        - { title: Draw.io,     icon: fa-solid fa-pen-ruler,            desc: 'diagrams that stay editable',      url: docs/components/drawio/ }
+        - { title: ECharts,     icon: fa-solid fa-chart-line,           desc: '`echarts` data fence',             url: docs/components/echarts/ }
+        - { title: Infographic, icon: fa-solid fa-chart-pie,            desc: 'declarative data fence',           url: docs/components/infographic/ }
+        - { title: Markmap,     icon: fa-solid fa-sitemap,              desc: 'mind maps from headings',          url: docs/components/markmap/ }
+        - { title: FileTree,    icon: fa-solid fa-folder-tree,          desc: '`filetree` data fence',            url: docs/components/filetree/ }
+        - { title: Math,        icon: fa-solid fa-square-root-variable, desc: 'KaTeX at build time',              url: docs/components/math/ }
+        - { title: Maps,        icon: fa-solid fa-map-location-dot,     desc: '`map` fence · local Leaflet',      url: docs/components/map/ }
     - key: media
-      title: Media & embeds
-      meta: 6 components · images, audio, video & quotes
+      title: Media & showcase
+      meta: 9 components · images, video, audio, quotes & timelines
       items:
-        - { title: Images,      icon: fa-solid fa-image,                desc: 'captions · sizing · zoom',       url: docs/components/image/ }
-        - { title: Gallery,     icon: fa-solid fa-images,               desc: '`gallery` data fence',           url: docs/components/gallery/ }
-        - { title: Video,       icon: fa-solid fa-film,                 desc: 'native players · platform cards', url: docs/components/video/ }
-        - { title: Audio,       icon: fa-solid fa-volume-high,          desc: 'titled players · single-active', url: docs/components/audio/ }
-        - { title: Asciinema,   icon: fa-solid fa-terminal,             desc: 'terminal casts, local player',   url: docs/components/asciinema/ }
-        - { title: Social,      icon: fa-solid fa-quote-left,           desc: 'offline quoted post cards',      url: docs/components/social/ }
+        - { title: Images,      icon: fa-solid fa-image,                desc: 'captions · sizing · zoom',         url: docs/components/image/ }
+        - { title: Gallery,     icon: fa-solid fa-images,               desc: '`gallery` data fence',             url: docs/components/gallery/ }
+        - { title: Video,       icon: fa-solid fa-film,                 desc: 'themed player · platform cards',   url: docs/components/video/ }
+        - { title: Audio,       icon: fa-solid fa-volume-high,          desc: 'themed player · single-active',    url: docs/components/audio/ }
+        - { title: Asciinema,   icon: fa-solid fa-terminal,             desc: 'terminal casts, local player',     url: docs/components/asciinema/ }
+        - { title: Social,      icon: fa-solid fa-quote-left,           desc: '`> [!SOCIAL]` quoted post cards',  url: docs/components/social/ }
+        - { title: Cards,       icon: fa-solid fa-table-cells-large,    desc: 'a list plus `{.cards}`',           url: docs/components/cards/ }
+        - { title: Timeline,    icon: fa-solid fa-timeline,             desc: 'definition list + `{.timeline}`',  url: docs/components/timeline/ }
+        - { title: Update,      icon: fa-solid fa-clock-rotate-left,    desc: 'heading + `{.update}`',            url: docs/components/update/ }
 
 cases:
   eyebrow: Showcase

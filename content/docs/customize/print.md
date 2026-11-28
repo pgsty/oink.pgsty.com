@@ -205,6 +205,7 @@ numbering, override the narrowest partial under `layouts/_partials/print/`:
 | `print/page-heading.html` | The title and standfirst at the top of the document |
 | `print/content.html` | How one page appears inside the section view |
 | `print/toc-li.html` | One row of the table of contents |
+{.fields}
 
 The last three can also be overridden for one content type: a file such as
 `print/page-heading-blog.html` or `print/content-book.html` takes precedence

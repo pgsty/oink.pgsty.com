@@ -30,27 +30,18 @@ line, **fence** is a code fence with a language tag, **shortcode** is
 for it: **none**, **per page** (only on pages that use it), or **site switch**
 (off until you enable it in `hugo.yml`, then per page).
 
-### Core writing {#writing}
+### Writing & structure {#writing}
 
 | Component | Use it for | Shortest form | Form | Runtime |
 | --- | --- | --- | --- | --- |
 | [Callouts](/docs/components/callout/) | A prerequisite, warning or aside the reader must not miss | `> [!NOTE]` | native | none |
 | [Code Blocks](/docs/components/code/) | Commands and source with a filename, exact copy, folding and line links | ```` ```sh ```` | fence | per page |
+| [Tabs](/docs/components/tabs/) | The same instructions for several platforms or languages | attribute `{tab="Linux"}` | native + shortcode | per page |
 | [Tables](/docs/components/table/) | Comparisons and matrices, full-width, captioned or numbered | `{.full-width}` | native | tabs or `.expand` only |
 | [Fields](/docs/components/fields/) | Parameter lists with type, required and default chips | `{.fields meta="type default"}` | native + shortcode | none |
+| [Steps](/docs/components/steps/) | A procedure the reader carries out in order | `{.steps}` | native + shortcode | none |
 | [Badge](/docs/components/badge/) | A one- or two-word status beside a name, such as Beta | `{{</* badge text="Beta" */>}}` | shortcode | none |
 | [Kbd](/docs/components/kbd/) | Key names and keyboard shortcuts | `{{</* kbd "Ctrl" "K" */>}}` | shortcode | none |
-{.wide}
-
-### Structure & flow {#structure}
-
-| Component | Use it for | Shortest form | Form | Runtime |
-| --- | --- | --- | --- | --- |
-| [Tabs](/docs/components/tabs/) | The same instructions for several platforms or languages | attribute `{tab="Linux"}` | native + shortcode | per page |
-| [Steps](/docs/components/steps/) | A procedure the reader carries out in order | `{.steps}` | native + shortcode | none |
-| [Timeline](/docs/components/timeline/) | Dated or ordered events on an axis | `{.timeline}` on a definition list | native | none |
-| [Update](/docs/components/update/) | Changelog entries that stay headings in the table of contents | `## v1.6 {.update date="2026-11-23"}` | native | none |
-| [Cards](/docs/components/cards/) | A few parallel destinations for the reader to choose from | `{.cards}` | native + shortcode | none |
 | [Includes](/docs/components/include/) | Reuse a file, print a site parameter, keep a note out of the output | `{{</* include file="parts/x.md" */>}}` | shortcode | none |
 {.wide}
 
@@ -63,22 +54,25 @@ for it: **none**, **per page** (only on pages that use it), or **site switch**
 | [Draw.io](/docs/components/drawio/) | Diagrams readers can open in the Draw.io editor; needs an editor address | `![alt](arch.drawio.svg)` | native | site switch |
 | [ECharts](/docs/components/echarts/) | Bar, line and pie charts declared as data | ```` ```echarts ```` | fence | per page |
 | [Infographic](/docs/components/infographic/) | AntV infographics that show order, hierarchy or comparison | ```` ```infographic ```` | fence | per page |
-| [Maps](/docs/components/map/) | Places as a list, plus an interactive map when enabled | ```` ```map ```` | fence | site switch |
 | [Markmap](/docs/components/markmap/) | A Markdown outline drawn as a mind map | ```` ```markmap ```` | fence | site switch |
 | [FileTree](/docs/components/filetree/) | A directory layout with an aligned comment beside each entry | ```` ```filetree ```` | fence | per page |
 | [Math](/docs/components/math/) | Inline and display formulas, rendered by KaTeX at build time | `$$ … $$` | native | none |
+| [Maps](/docs/components/map/) | Places as a list, plus an interactive map when enabled | ```` ```map ```` | fence | site switch |
 {.wide}
 
-### Media & embeds {#media}
+### Media & showcase {#media}
 
 | Component | Use it for | Shortest form | Form | Runtime |
 | --- | --- | --- | --- | --- |
 | [Images](/docs/components/image/) | Screenshots and figures with captions, sizing, zoom and numbering | `![alt](oink.webp)` | native | site switch |
 | [Gallery](/docs/components/gallery/) | A set of images browsed in one shared zoom dialog | ```` ```gallery ```` | fence | site switch |
 | [Video](/docs/components/video/) | Video files, looping demos, YouTube and Bilibili cards | `![name](demo.mp4)` | native | per page; players need a site switch |
-| [Audio](/docs/components/audio/) | Podcast episodes and voice samples in a titled native player | `![name](episode.mp3)` | native | per page |
+| [Audio](/docs/components/audio/) | Podcast episodes and voice samples in a titled player | `![name](episode.mp3)` | native | per page |
 | [Asciinema](/docs/components/asciinema/) | Terminal sessions replayed as selectable text | `{{</* asciinema file="images/x.cast" */>}}` | shortcode | per page |
 | [Social](/docs/components/social/) | Quote a social post without contacting its platform | ``> [!SOCIAL] Name `@handle` `` | native | none |
+| [Cards](/docs/components/cards/) | A few parallel destinations for the reader to choose from | `{.cards}` | native + shortcode | none |
+| [Timeline](/docs/components/timeline/) | Dated or ordered events on an axis | `{.timeline}` on a definition list | native | none |
+| [Update](/docs/components/update/) | Changelog entries that stay headings in the table of contents | `## v1.7 {.update date="2026-11-28"}` | native | none |
 {.wide}
 
 A few entries in the *Runtime* column depend on what is on the page:

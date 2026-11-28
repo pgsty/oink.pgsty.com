@@ -17,22 +17,31 @@
   background: var(--bs-body-bg);
 }
 
-/* Home content-type cards use their existing, title-named link as the full
-   click target. The link stays focusable without a separate footer row. */
-.td-home-content-types .td-landing-card {
-  position: relative;
+/* Home content-type section uses the theme's compact horizontal logo-wall
+   cards on a plain canvas so it separates cleanly from the tinted component
+   reference wall below while giving top-level content shapes slightly larger
+   type than individual component tiles. */
+.td-landing-logo-wall-section.td-home-content-types {
+  background: transparent;
 }
 
-.td-home-content-types .td-landing-card .td-landing-card-link {
-  position: absolute;
-  inset: 0;
-  margin: 0;
-  padding: 0;
-  border-radius: inherit;
+.td-home-content-types .td-landing-logo-card {
+  padding: 18px 20px;
 }
 
-.td-home-content-types .td-landing-card .td-landing-card-link i {
-  display: none;
+.td-home-content-types .td-landing-logo-card__copy h3 {
+  font-size: 0.98rem;
+}
+
+.td-home-content-types .td-landing-logo-card__copy p {
+  margin-top: 3px;
+  font-size: 0.76rem;
+}
+
+@media (max-width: 900px) and (min-width: 561px) {
+  .td-home-content-types .td-landing-logo-wall {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* -- Home: grouped component reference wall --------------------------------

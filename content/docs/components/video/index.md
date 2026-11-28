@@ -2,7 +2,7 @@
 title: Video
 linkTitle: Video
 description: Embed product demos, screen recordings and muted loops that replace GIFs, and link YouTube, Bilibili or Vimeo talks without contacting the platform until a reader clicks.
-weight: 430
+weight: 330
 search_keywords: [Video, mp4, webm, poster, subtitles, WebVTT, autoplay, GIF, YouTube, Bilibili, Vimeo, embed, video_embeds]
 ---
 

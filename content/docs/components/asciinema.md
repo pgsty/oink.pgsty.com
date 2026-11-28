@@ -2,7 +2,7 @@
 title: Asciinema
 linkTitle: Asciinema
 description: Embed a .cast terminal recording that readers can play, pause and copy text from, with the player shipped in the theme.
-weight: 450
+weight: 350
 search_keywords: [Asciinema, terminal recording, cast, asciicast, screencast, demo, player, chapters, markers]
 ---
 

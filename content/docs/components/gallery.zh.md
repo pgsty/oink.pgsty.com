@@ -2,7 +2,7 @@
 title: 画廊
 linkTitle: 画廊
 description: 用 `gallery` 围栏把一组相关截图排成响应式网格，每张图可以带说明或链接。
-weight: 420
+weight: 320
 search_keywords: [画廊, Gallery, 图库, 截图网格, 围栏, 图片缩放, image zoom, link, class]
 image_zoom: true
 ---

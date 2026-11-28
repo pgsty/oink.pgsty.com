@@ -2,7 +2,7 @@
 title: 卡片
 linkTitle: 卡片
 description: 把 Markdown 链接列表变成导航卡片网格；卡片需要图标、徽章或图片时改用 shortcode。
-weight: 250
+weight: 370
 search_keywords: [卡片, Cards, card, 链接卡片, 导航卡片, 栏目首页, section-index, 图标, 徽章]
 ---
 

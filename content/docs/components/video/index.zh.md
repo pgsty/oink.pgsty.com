@@ -2,7 +2,7 @@
 title: 视频
 linkTitle: 视频
 description: 在页面里放产品演示、屏幕录制和代替 GIF 的静音循环短片，并为 YouTube、Bilibili、Vimeo 上的视频生成卡片，读者点击之前不联系任何平台。
-weight: 430
+weight: 330
 search_keywords: [视频, Video, mp4, webm, 海报图, poster, 字幕, subtitles, WebVTT, 自动播放, autoplay, GIF, YouTube, Bilibili, B 站, Vimeo, 嵌入, 就地播放]
 ---
 

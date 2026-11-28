@@ -162,6 +162,7 @@ params:
 | `print/page-heading.html` | 文档开头的标题与导语 |
 | `print/content.html` | 单个页面在整章视图中的呈现 |
 | `print/toc-li.html` | 目录中的一行 |
+{.fields}
 
 后三个还可以按内容类型单独覆盖：`print/page-heading-blog.html`、`print/content-book.html` 这样的文件，对该类型的页面优先于通用 partial。
 

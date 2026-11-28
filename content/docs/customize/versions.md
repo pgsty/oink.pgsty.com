@@ -132,10 +132,18 @@ command, declare a separate parameter for it instead of reusing
 
 ## Deployment layouts for multiple versions {#deployment}
 
-| Layout | `baseURL` | Characteristics |
-| --- | --- | --- |
-| Subdomain | `https://v1-9.docs.example.com/` | Versions are fully independent; each needs its own DNS record and certificate |
-| Subpath | `https://docs.example.com/v1.9/` | One domain collects all search ranking; the host must route each path to a different build |
+{{< cards >}}
+{{< card title="Subdomain" icon="fa-solid fa-globe" >}}
+`baseURL: https://v1-9.docs.example.com/`
+
+Versions are fully independent; each needs its own DNS record and certificate.
+{{< /card >}}
+{{< card title="Subpath" icon="fa-solid fa-folder-tree" >}}
+`baseURL: https://docs.example.com/v1.9/`
+
+One domain collects all search ranking; the host must route each path to a different build.
+{{< /card >}}
+{{< /cards >}}
 
 Build each version on its own: check out its branch or tag, build with that
 version's `hugo.yml`, and publish to its address. Because the menu is part of

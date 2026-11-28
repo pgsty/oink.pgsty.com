@@ -2,7 +2,7 @@
 title: 按键
 linkTitle: 按键
 description: 用 `kbd` 写快捷键：一个 shortcode 接一串按键名，输出语义化的按键序列，打印与 Markdown 输出里同样可读。
-weight: 160
+weight: 180
 search_keywords: [按键, Kbd, 快捷键, 键盘, shortcut, keyboard, Ctrl, Cmd, 组合键]
 ---
 
@@ -115,12 +115,10 @@ Markdown 里写原始的 `<kbd>` 标签得到同样的样式，GitHub 也这么�
 
 ## 输出形态 {#outputs}
 
-| 输出 | 呈现 |
-| --- | --- |
-| HTML | `<span class="td-kbd-sequence">` 包着每个键一个 `<kbd>`；可见的 `+` 对读屏器隐藏，另有一个本地化连接词 |
-| 打印 | 同 HTML，静态 |
-| Markdown | 纯文本 `Ctrl + K`、`⌘ + Shift + P` |
-| RSS | 同打印 |
+- **HTML**：`<span class="td-kbd-sequence">` 包着每个键一个 `<kbd>`；可见的 `+` 对读屏器隐藏，另有一个本地化连接词。
+- **打印**：同 HTML，静态。
+- **Markdown**：纯文本 `Ctrl + K`、`⌘ + Shift + P`。
+- **RSS**：同打印。
 
 没有 CSS 与 JavaScript 时，操作说明仍然可读。
 

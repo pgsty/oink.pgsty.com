@@ -2,7 +2,7 @@
 title: Markmap
 linkTitle: Markmap
 description: Use a `markmap` fence for an expandable mind map with zoom controls. Its source remains a readable Markdown outline.
-weight: 370
+weight: 260
 search_keywords: [Markmap, mind map, outline, tree diagram]
 ---
 

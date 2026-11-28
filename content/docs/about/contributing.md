@@ -13,11 +13,10 @@ owns the behavior you want to change.
 
 ## Where to contribute {#where-to-contribute}
 
-| Change | Repository |
-| --- | --- |
-| Templates, styles, browser runtimes, defaults, and focused theme checkers | [pgsty/oink](https://github.com/pgsty/oink) |
-| Documentation, translations, examples, integration tests, and browser regression coverage | [pgsty/oink.pgsty.com](https://github.com/pgsty/oink.pgsty.com) |
-| Optional CLI commands and native site checks | [pgsty/oink-cli](https://github.com/pgsty/oink-cli) |
+- [pgsty/oink](https://github.com/pgsty/oink) — Templates, styles, browser runtimes, defaults, and focused theme checkers.
+- [pgsty/oink.pgsty.com](https://github.com/pgsty/oink.pgsty.com) — Documentation, translations, examples, integration tests, and browser regression coverage.
+- [pgsty/oink-cli](https://github.com/pgsty/oink-cli) — Optional CLI commands and native site checks.
+{.cards .td-cards-list}
 
 Report a problem in the repository that owns the affected behavior. The CLI
 has its own version and release cycle, and ordinary Hugo sites do not need it.
@@ -26,8 +25,8 @@ has its own version and release cycle, and ordinary Hugo sites do not need it.
 
 A report that someone else can reproduce gets fixed fastest, so first check
 that the problem still occurs on the [latest release](/release/). Then include
-the OINK version, the output of `hugo version`, the Go version if you build
-with Hugo Modules, the relevant configuration and a minimal content example.
+the OINK version, the output of `hugo version`, the relevant configuration and
+a minimal content example.
 For a display problem, add the page, the viewport width, the browser, the
 visual preset and whether light or dark mode was on, and say what you expected
 and what happened instead. Remove credentials and private content from the

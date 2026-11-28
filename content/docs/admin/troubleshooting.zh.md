@@ -59,6 +59,7 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 | 语言切换跳到了首页 | Hugo 没找到对应译文 | 页面没有译文时，切换器回退到目标语言首页。补上译文文件，两个页面就能互相跳转 |
 | 锚点链接打开了页面却不定位 | 译文标题文字不同，自动生成的 ID 也不同 | 在译文标题上显式写英文 ID：`## 安装 {#installation}`。标题里含短代码或行内 HTML 时，去看英文页渲染出来的 HTML，不要凭文字猜 ID |
 | 菜单或首页分区没翻译 | 这些内容在配置和数据文件里，不在页面里 | 菜单在 `languages.<lang>.menus`，首页分区在 `data/home/<lang>.yaml`，界面字符串在 `i18n/<lang>.yaml`，见[多语言](/zh/docs/customize/i18n/) |
+{.wide .expand}
 
 ## 搜索 {#search}
 
@@ -71,6 +72,7 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 | 新页面搜不到，旧页面正常 | 索引是构建产物 | 重新构建。`hugo server` 下改了页面要等它重建完 |
 | `params.search.algolia requires explicit appId, apiKey, and indexName values` | Algolia 三个键没配全 | 三个键必须显式给全，主题不会退而使用别的项目的 DocSearch 凭据。不用 Algolia 就把这段配置删掉 |
 | 命令面板搜不到内容 | 命令与全文检索是两回事 | 没有索引时命令面板照样能打开，会提示索引不可用，页面操作与命令照常执行，见[命令面板](/zh/docs/customize/panel/) |
+{.wide .expand}
 
 ## 平台 {#platform}
 

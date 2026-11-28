@@ -2,7 +2,7 @@
 title: Social
 linkTitle: Social
 description: Quote a post from X, Bluesky, Mastodon, or another platform with a `> [!SOCIAL]` callout. The page supplies the quote and attribution without a platform script, and plain Markdown viewers show an ordinary blockquote.
-weight: 460
+weight: 360
 search_keywords: [social, social post, quote a post, tweet, X, Twitter, Bluesky, Mastodon, Threads, Weibo, Zhihu, Telegram, LinkedIn, offline embed, avatar, quoted post, callout]
 image_zoom: true
 ---

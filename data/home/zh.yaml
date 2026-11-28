@@ -1,7 +1,7 @@
 sections:
   - hero
   - capabilities
-  - type: cards
+  - type: logo-wall
     key: content_types
   - type: logo-wall
     key: components
@@ -200,87 +200,59 @@ content_types:
   columns: 3
   class: td-home-content-types
   items:
-    - title: 文档
-      meta: 阅读外壳
-      icon: fa-solid fa-book
-      desc: 侧栏树、页内目录、面包屑、翻页与编辑链接，供其它内容形态复用。
-      url: docs/write/pages/
-    - title: 博客与 RSS
-      meta: 更新
-      icon: fa-solid fa-rss
-      desc: 按时间排列的文章、四种索引视图、标签面板与分语种订阅源。
-      url: docs/write/blog/
-    - title: 书籍
-      meta: 长篇
-      icon: fa-solid fa-book-open
-      desc: 章节编号、图表公式 `{#id num=}` 编号、`xref` 引用与整本打印。
-      url: docs/write/book/
-    - title: Landing 页
-      meta: 展示
-      icon: fa-solid fa-layer-group
-      desc: 用二十二种服务端渲染分区拼装落地页，当前首页就是其中之一。
-      url: docs/customize/home/
-    - title: Expo 图片相册
-      meta: 画册
-      icon: fa-solid fa-images
-      desc: 页面资源包中的图片收藏，支持展墙、卡片、无缝布局与原图查看器。
-      url: docs/write/expo/
-    - title: API 参考
-      meta: OpenAPI
-      icon: fa-solid fa-plug
-      desc: Swagger UI 与 Redoc 都是本地运行时，规范放在仓库即可离线浏览。
-      url: docs/write/openapi/
+    - { title: 文档,          icon: fa-solid fa-book,        desc: '侧栏树 · 目录 · 翻页与编辑',     url: docs/write/pages/ }
+    - { title: 博客与 RSS,    icon: fa-solid fa-rss,         desc: '时间线 · 四视图 · 标签与订阅',   url: docs/write/blog/ }
+    - { title: 书籍,          icon: fa-solid fa-book-open,   desc: '章节编号 · 图表引用 · 整本打印', url: docs/write/book/ }
+    - { title: Landing 页,    icon: fa-solid fa-layer-group, desc: '22 种服务端渲染分区',            url: docs/customize/home/ }
+    - { title: Expo 图片相册, icon: fa-solid fa-images,      desc: '展墙 · 卡片 · 无缝 · 原图缩放',  url: docs/write/expo/ }
+    - { title: API 参考,      icon: fa-solid fa-plug,        desc: 'Swagger UI 与 Redoc 离线浏览',   url: docs/write/openapi/ }
 
 components:
   eyebrow: 组件参考
   title: 二十七个组件，按需加载
   text: 每个组件均有独立指南与 HTML、打印、Markdown、RSS 输出，脚本按需下发。
   columns: 3
-  # 按四大认知域排列，与文档侧栏及总览完全同构（6 + 6 + 9 + 6 = 27，每组均为 3 列满行）。
+  # 按三大 3×3 分组排列，与文档侧栏及总览完全同构（9 + 9 + 9 = 27，每组均为 3 行 3 列满行）。
   groups:
     - key: writing
-      title: 基础写作
-      meta: 6 个组件 · 正文、代码、表格与行内
+      title: 写作与排版
+      meta: 9 个组件 · 正文、代码、表格、步骤与复用
       items:
-        - { title: 提示块,    icon: fa-solid fa-circle-info,          desc: '`> [!NOTE]` · 十种类型',      url: docs/components/callout/ }
-        - { title: 代码块,    icon: fa-solid fa-code,                 desc: 'Chroma · 行号 · 复制 · 折叠', url: docs/components/code/ }
-        - { title: 表格,      icon: fa-solid fa-table,                desc: '标题 · 编号 · 矩阵',          url: docs/components/table/ }
-        - { title: 参数表,    icon: fa-solid fa-table-list,           desc: '表格加 `{.fields}`',          url: docs/components/fields/ }
-        - { title: 徽章,      icon: fa-solid fa-tag,                  desc: '行内状态，五种 tone',          url: docs/components/badge/ }
-        - { title: 按键,      icon: fa-solid fa-keyboard,             desc: '键位与组合键',                 url: docs/components/kbd/ }
-    - key: structure
-      title: 结构与流程
-      meta: 6 个组件 · 切换、流程、导航与复用
-      items:
-        - { title: 标签页,    icon: fa-solid fa-folder,               desc: '围栏加 `{tab=}`',             url: docs/components/tabs/ }
-        - { title: 步骤,      icon: fa-solid fa-list-ol,              desc: '列表加 `{.steps}`',           url: docs/components/steps/ }
-        - { title: 时间轴,    icon: fa-solid fa-timeline,             desc: '定义列表加 `{.timeline}`',    url: docs/components/timeline/ }
-        - { title: 更新,      icon: fa-solid fa-clock-rotate-left,    desc: '标题加 `{.update}`',          url: docs/components/update/ }
-        - { title: 卡片,      icon: fa-solid fa-table-cells-large,    desc: '列表加 `{.cards}`',           url: docs/components/cards/ }
-        - { title: 引用,      icon: fa-solid fa-file-import,          desc: '引入文件、参数与构建注释',     url: docs/components/include/ }
+        - { title: 提示块,    icon: fa-solid fa-circle-info,          desc: '`> [!NOTE]` · 十种类型',        url: docs/components/callout/ }
+        - { title: 代码块,    icon: fa-solid fa-code,                 desc: 'Chroma · 行号 · 复制 · 折叠',   url: docs/components/code/ }
+        - { title: 标签页,    icon: fa-solid fa-folder,               desc: '围栏加 `{tab=}`',               url: docs/components/tabs/ }
+        - { title: 表格,      icon: fa-solid fa-table,                desc: '标题 · 编号 · 矩阵',            url: docs/components/table/ }
+        - { title: 参数表,    icon: fa-solid fa-table-list,           desc: '表格加 `{.fields}`',            url: docs/components/fields/ }
+        - { title: 步骤,      icon: fa-solid fa-list-ol,              desc: '列表加 `{.steps}`',             url: docs/components/steps/ }
+        - { title: 徽章,      icon: fa-solid fa-tag,                  desc: '行内状态，五种 tone',            url: docs/components/badge/ }
+        - { title: 按键,      icon: fa-solid fa-keyboard,             desc: '键位与组合键',                   url: docs/components/kbd/ }
+        - { title: 引用,      icon: fa-solid fa-file-import,          desc: '引入文件、参数与构建注释',       url: docs/components/include/ }
     - key: diagrams
       title: 图表与公式
-      meta: 9 个组件 · 工程图示、数据地图、结构树与公式
+      meta: 9 个组件 · 工程图示、数据图表、文件树、公式与地图
       items:
-        - { title: Mermaid,   icon: fa-solid fa-diagram-project,      desc: '本地图示运行时',              url: docs/components/mermaid/ }
-        - { title: PlantUML,  icon: fa-solid fa-project-diagram,      desc: 'UML 图，支持本地渲染',        url: docs/components/plantuml/ }
-        - { title: Draw.io,   icon: fa-solid fa-pen-ruler,            desc: '可回编辑的图',                url: docs/components/drawio/ }
-        - { title: ECharts,   icon: fa-solid fa-chart-line,           desc: '`echarts` 数据围栏',          url: docs/components/echarts/ }
-        - { title: 信息图,    icon: fa-solid fa-chart-pie,            desc: '声明式数据围栏',              url: docs/components/infographic/ }
-        - { title: 地图,      icon: fa-solid fa-map-location-dot,     desc: '`map` 围栏 · 内置 Leaflet',   url: docs/components/map/ }
-        - { title: 思维导图,  icon: fa-solid fa-sitemap,              desc: '大纲变成导图',                url: docs/components/markmap/ }
-        - { title: 文件树,    icon: fa-solid fa-folder-tree,          desc: '`filetree` 数据围栏',         url: docs/components/filetree/ }
-        - { title: 公式,      icon: fa-solid fa-square-root-variable, desc: 'KaTeX 构建期渲染',            url: docs/components/math/ }
+        - { title: Mermaid,   icon: fa-solid fa-diagram-project,      desc: '本地图示运行时',                url: docs/components/mermaid/ }
+        - { title: PlantUML,  icon: fa-solid fa-project-diagram,      desc: 'UML 图，支持本地渲染',          url: docs/components/plantuml/ }
+        - { title: Draw.io,   icon: fa-solid fa-pen-ruler,            desc: '可回编辑的图',                  url: docs/components/drawio/ }
+        - { title: ECharts,   icon: fa-solid fa-chart-line,           desc: '`echarts` 数据围栏',            url: docs/components/echarts/ }
+        - { title: 信息图,    icon: fa-solid fa-chart-pie,            desc: '声明式数据围栏',                url: docs/components/infographic/ }
+        - { title: 思维导图,  icon: fa-solid fa-sitemap,              desc: '大纲变成导图',                  url: docs/components/markmap/ }
+        - { title: 文件树,    icon: fa-solid fa-folder-tree,          desc: '`filetree` 数据围栏',           url: docs/components/filetree/ }
+        - { title: 公式,      icon: fa-solid fa-square-root-variable, desc: 'KaTeX 构建期渲染',              url: docs/components/math/ }
+        - { title: 地图,      icon: fa-solid fa-map-location-dot,     desc: '`map` 围栏 · 内置 Leaflet',     url: docs/components/map/ }
     - key: media
-      title: 媒体与嵌入
-      meta: 6 个组件 · 图片、音视频、终端录像与帖子
+      title: 媒体与展示
+      meta: 9 个组件 · 图片、音视频、帖子、卡片与时间轴
       items:
-        - { title: 图片,      icon: fa-solid fa-image,                desc: '图注 · 尺寸 · 缩放',          url: docs/components/image/ }
-        - { title: 画廊,      icon: fa-solid fa-images,               desc: '`gallery` 数据围栏',          url: docs/components/gallery/ }
-        - { title: 视频,      icon: fa-solid fa-film,                 desc: '原生播放 · 平台点击加载',     url: docs/components/video/ }
-        - { title: 音频,      icon: fa-solid fa-volume-high,          desc: '带标题播放 · 单声源互斥',     url: docs/components/audio/ }
-        - { title: Asciinema, icon: fa-solid fa-terminal,             desc: '终端录像，本地播放',          url: docs/components/asciinema/ }
-        - { title: 帖子,      icon: fa-solid fa-quote-left,           desc: '离线引用卡片，支持嵌套',      url: docs/components/social/ }
+        - { title: 图片,      icon: fa-solid fa-image,                desc: '图注 · 尺寸 · 缩放',            url: docs/components/image/ }
+        - { title: 画廊,      icon: fa-solid fa-images,               desc: '`gallery` 数据围栏',            url: docs/components/gallery/ }
+        - { title: 视频,      icon: fa-solid fa-film,                 desc: '统一控件栏 · 平台卡片',         url: docs/components/video/ }
+        - { title: 音频,      icon: fa-solid fa-volume-high,          desc: '统一控件栏 · 单声源互斥',       url: docs/components/audio/ }
+        - { title: Asciinema, icon: fa-solid fa-terminal,             desc: '终端录像，本地播放',            url: docs/components/asciinema/ }
+        - { title: 帖子,      icon: fa-solid fa-quote-left,           desc: '`> [!SOCIAL]` 离线引用卡片',    url: docs/components/social/ }
+        - { title: 卡片,      icon: fa-solid fa-table-cells-large,    desc: '列表加 `{.cards}`',             url: docs/components/cards/ }
+        - { title: 时间轴,    icon: fa-solid fa-timeline,             desc: '定义列表加 `{.timeline}`',      url: docs/components/timeline/ }
+        - { title: 更新,      icon: fa-solid fa-clock-rotate-left,    desc: '标题加 `{.update}`',            url: docs/components/update/ }
 
 cases:
   eyebrow: 案例

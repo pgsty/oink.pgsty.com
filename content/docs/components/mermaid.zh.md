@@ -2,7 +2,7 @@
 title: Mermaid
 linkTitle: Mermaid
 description: 用 `mermaid` 围栏把文本写成流程图、时序图、甘特图、类图与状态图，本地渲染、跟随深浅色、diff 友好。
-weight: 310
+weight: 210
 search_keywords: [Mermaid, 流程图, 时序图, 甘特图, 类图, ER 图, 状态图, flowchart, sequence, gantt, classDiagram, erDiagram, stateDiagram, 图表]
 aliases:
   - /docs/components/diagrams/

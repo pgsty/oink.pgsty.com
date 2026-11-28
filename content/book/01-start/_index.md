@@ -231,7 +231,7 @@ common kinds of site:
 | A course or tutorial book | [pgexp.pgsql.cc](/case/pgexp-pgsql/) | Lessons as Book chapters with runnable examples and downloads |
 | A photo archive or exhibition | [fzb.vonng.com](/case/fzb/) | Expo albums beside long-form Book pages |
 | An existing Docsy site, moved to OINK | [hugegraph.apache.org](/case/apache-hugegraph/) | A brand hero on the Slate preset over migrated bilingual docs |
-{#tbl-model-sites num="1-1" caption="More production OINK sites to model a new site on, by kind of site."}
+{#tbl-model-sites .wide num="1-1" caption="More production OINK sites to model a new site on, by kind of site."}
 
 To move an existing Hugo or Docsy site instead of starting a new one, run the
 agent in that site's repository and replace the first lines of

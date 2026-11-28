@@ -53,6 +53,7 @@ OINK 由 [Docsy](https://github.com/google/docsy) fork 而来，保留了 Docsy 
 | 搜索 | 随主题分发的 BM25 引擎，每种语言一份索引，支持不加空格的中日韩查询 | Lunr 离线搜索，或托管搜索服务 | Algolia DocSearch，或社区提供的本地搜索插件 |
 | 字体与脚本 | 随主题分发，从站点自己的域名加载；不使用 jQuery | 默认使用 Google Fonts，可关闭；每个页面加载 jQuery | 脚本由 Node 构建打包 |
 | 首页 | 在 `data/home/<lang>.yaml` 中列出各个分区 | 在 Markdown 页面中使用 `blocks/*` shortcode | 一个 React 页面 |
+{.wide .expand}
 
 如果你已经在用 Docsy，内容与大部分 front matter 都可以直接沿用，需要删除和转换的东西见[从 Docsy 迁移](/zh/docs/admin/upgrade/#from-docsy)。如果你在 Docsy、Hextra 等 Hugo 主题之间比较，最好用自己的内容树在每个主题上各搭一份再做决定：模板覆盖与语言需求上的差别，功能清单是看不出来的。
 

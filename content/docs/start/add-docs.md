@@ -187,6 +187,7 @@ Know which files stay out of Git and which ones CI requires:
 | `go.work`, `go.work.sum` | **Ignore** | Machine-local Go workspace paths break other contributors and CI |
 | `docs/hugo.yml`, `docs/go.mod`, `docs/go.sum` | **Commit** | Site configuration and exact checksum-verified OINK release |
 | `docs/content/`, `docs/data/`, `docs/assets/`, `docs/static/` | **Commit** | Authored Markdown, landing data, logos, CSS and static files |
+{.wide}
 
 Run a production build once and check `git status --short` to verify that zero
 generated files show up as untracked:

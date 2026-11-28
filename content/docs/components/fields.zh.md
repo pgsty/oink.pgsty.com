@@ -2,7 +2,7 @@
 title: 参数表
 linkTitle: 参数表
 description: 把配置项、命令参数与 API 字段写成参数表：手机上也不挤，每一条都能单独链接。
-weight: 140
+weight: 150
 search_keywords: [参数表, Fields, field, 配置项, 参数, API 字段, meta, type, required, default, 定义列表, 锚点]
 ---
 
