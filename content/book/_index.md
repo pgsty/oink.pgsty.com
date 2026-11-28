@@ -34,10 +34,18 @@ change any of it yourself.
 
 ## How to read this book {#reading-path}
 
-| Part | Chapters | Afterwards you can |
-| --- | --- | --- |
-| I. Quick start | [1. Start from a prompt](/book/01-start/) · [2. Take over the site](/book/02-take-over/) | Build a blog, a project site, a CLI manual or a book from one prompt, preview it, review it and keep improving it with follow-up prompts |
-| II. Step by step | [3. Pages](/book/03-pages/) · [4. Components](/book/04-components/) · [5. Diagrams and media](/book/05-media/) · [6. Blog](/book/06-blog/) · [7. Book](/book/07-book/) · [8. Home and appearance](/book/08-design/) · [9. Navigation, search and languages](/book/09-navigation/) · [10. Ship](/book/10-ship/) | Write and structure content, use every kind of component, publish posts and books, shape the home page and the look, help readers find their way in several languages, and deploy and upgrade the site |
+{{< cards variant="list" >}}
+{{< card title="Part I · Quick start" icon="fa-solid fa-bolt" badge="Chapters 1–2" >}}
+Build a blog, a project site, a CLI manual or a book from one prompt, preview it, review it and keep improving it with follow-up prompts.
+
+[1. Start from a prompt](/book/01-start/) · [2. Take over the site](/book/02-take-over/)
+{{< /card >}}
+{{< card title="Part II · Step by step" icon="fa-solid fa-layer-group" badge="Chapters 3–10" >}}
+Write and structure content, use every kind of component, publish posts and books, shape the home page and the look, help readers find their way in several languages, and deploy and upgrade the site.
+
+[3. Pages](/book/03-pages/) · [4. Components](/book/04-components/) · [5. Diagrams and media](/book/05-media/) · [6. Blog](/book/06-blog/) · [7. Book](/book/07-book/) · [8. Home and appearance](/book/08-design/) · [9. Navigation, search and languages](/book/09-navigation/) · [10. Ship](/book/10-ship/)
+{{< /card >}}
+{{< /cards >}}
 
 If you only want a site, Chapter 1 may be all you need. Part II works on one
 sample project, the documentation site for Acme DB, an open-source time-series

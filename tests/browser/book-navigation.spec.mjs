@@ -144,7 +144,7 @@ test('the fixed outline and its reserved column resize together on every frame',
   }
 });
 
-for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+for (const preset of ['paper', 'slate', 'github', 'ink', 'news', 'terminal']) {
   for (const mode of ['light', 'dark']) {
     for (const [name, path, minimum, fraction, maximum] of [
       ['Book', '/zh/book/03-pages/', 286, 0.2, 420],

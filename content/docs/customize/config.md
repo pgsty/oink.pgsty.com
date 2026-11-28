@@ -403,7 +403,7 @@ The visual preset, the fonts and the page widths:
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.preset` | enum | paper | Site-wide look: `paper` or `slate`, or the explicit experiments `ink` and `terminal` |
+| `params.ui.preset` | enum | paper | Site-wide look: `paper` or `slate`, or the explicit experiments `github`, `ink`, `news` and `terminal` |
 | `params.ui.preset_menu` | boolean or list | false | `true` lets readers choose Paper, Slate or the site default. A list names the presets offered, may include the experiments, and must include the site default. Independent of `dark_mode` |
 | `params.ui.typography` | enum | technical | `technical` uses the selected preset's bundled fonts (Paper: Plex Sans; Slate: Inter); `system` uses the platform font stack and requests no brand font |
 | `params.ui.fonts` | map | | Font-family names for the `ui`, `body`, `heading`, `code`, `display`, `meta`, `brand` and `print` roles. The theme checks the names but loads no font files. End each list with a generic family |

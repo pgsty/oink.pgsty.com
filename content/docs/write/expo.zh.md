@@ -182,7 +182,7 @@ W、A、S、D 每按一次移动 80 CSS 像素，且只沿图片超出显示区�
 
 ## 外观与页宽 {#appearance}
 
-Expo 没有自己的外观设置。相册沿用站点的视觉预设（Paper、Slate、Ink 或 Terminal）及亮暗模式，读者和在其他页面上一样，从共享导航里切换；切换预设后网格会重新排布。要让读者在四种预设间选择，设置 `params.ui.preset_menu: [paper, slate, ink, terminal]`，详见[视觉预设](/zh/docs/customize/brand/#visual-presets)。顶部导航栏遵循站点的导航栏设置；相册页显示图片工具栏，不显示文章操作菜单。
+Expo 没有自己的外观设置。相册沿用站点的视觉预设（Paper、Slate、GitHub、Ink、News 或 Terminal）及亮暗模式，读者和在其他页面上一样，从共享导航里切换；切换预设后网格会重新排布。要让读者在全部预设间选择，设置 `params.ui.preset_menu: [paper, slate, github, ink, news, terminal]`，详见[视觉预设](/zh/docs/customize/brand/#visual-presets)。顶部导航栏遵循站点的导航栏设置；相册页显示图片工具栏，不显示文章操作菜单。
 
 相册默认占满页面的全部可用宽度，右侧没有大纲。需要较窄的正文时，在相册 front matter 中设置 `page_width`。如果站点设置了 `params.ui.shell_types`，务必保留 `expo`，否则相册会失去侧栏。
 

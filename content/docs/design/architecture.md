@@ -160,7 +160,7 @@ as `css/<name>.css`. An unknown name warns.
 | --- | --- |
 | `main` | Every theme page; 123 layers. `head-css.html` publishes it as `css/main.css`, or minified, fingerprinted and with an integrity attribute in production |
 | `redoc.css` | Pages that register ReDoc. It is the single file `assets/css/td/redoc.css`, outside the layer lists, published the same way as `css/redoc.css` |
-| `chrome` | A site-owned shell that does not load `main`: tokens, typography, the four palettes, the site navbar, and the language, theme and appearance controls |
+| `chrome` | A site-owned shell that does not load `main`: tokens, typography, the six palettes, the site navbar, and the language, theme and appearance controls |
 | `landing` | Landing sections for a site-owned shell, loaded after `chrome`. It repeats the palettes, because they restyle Landing sections at equal specificity and must follow them |
 | `search`, `compare` | The command palette with local search, and Duo View, for a site-owned shell |
 
@@ -499,11 +499,15 @@ One resolver supplies page colors to both the head block and sidebar root switch
 ## Visual presets {#visual-presets}
 
 OINK 1.2.0 defaults to Paper. `params.ui.preset` accepts
-`paper`, `slate`, and the explicit experimental presets `ink`, `terminal`.
-Invalid and reserved names (`folio`, `canvas`) warn and fall back to `paper`.
-`params.ui.preset_menu` defaults to `false`; `true` offers Paper, Slate and the
-site default. A list selects available choices, including experiments. A list must include the site default; missing it
-warns and adds it. There is no page-level preset override.
+`paper`, `slate`, and the explicit experimental presets `github`, `ink`,
+`news` and `terminal`. Invalid and reserved names (`folio`, `canvas`) warn
+and fall back to `paper`. `params.ui.preset_menu` defaults to `false`; `true`
+offers Paper, Slate and the site default. A list selects available choices,
+including experiments. A list must include the site default; missing it warns
+and adds it. The menu lists presets in one order, whatever order a list gives:
+Paper, Slate and GitHub, then Ink, News and Terminal, two rows of three in the
+Style menu; the `t` key steps through them in the same order. There is no
+page-level preset override.
 
 Hugo renders `data-td-preset` and `data-td-site-preset` on every document root,
 including 404 and print output. With reader choice enabled, an inline head
@@ -516,22 +520,57 @@ Mode remains independent: `data-bs-theme`, `td-color-theme`, and
 resolved mode and preset. Without JavaScript, the site default light palette
 renders; appearance controls require JavaScript.
 
-All four presets are part of the one stylesheet. Slate retains the v1.1.0 base
+All six presets are part of the one stylesheet. Slate retains the v1.1.0 base
 palette selectors and values. Paper changes palette and selected component
 rules without changing shell columns, breakpoints, or global spacing. Paper's
-canvas is ivory `#faf9f5` with ink `#1f1e1c`; its links stay blue, and it sets
-a clay accent of its own (`#9b4a28`, dark `#de8460`) through the optional
-`--td-preset-accent` properties, as Ink and Terminal do. A published
-`theme_color` replaces that accent in every preset. Dark
-Paper redeclares every light palette token, including nested dark islands.
+canvas is warm `#f7f6f3` with ink `#21201c`; its blue links (`#2b5f8c`, dark
+`#7db5e6`) are also its accent, so selected rows, the outline cursor and
+selections are blue. GitHub uses GitHub's `#ffffff` and `#1f2328` (dark
+`#0d1117` and `#f0f6fc`) with its link blue `#0969da` (dark `#4493f8`) as the
+accent. Ink is the written page and News the printed one. Ink writes ink
+`#241a10` on paper `#f3ead7` with vermilion `#a8321b` as its accent; the paper
+darkens toward `#e8dabd` at the edges of the window. News prints press black
+`#161616` on grey newsprint `#f0eee8` with one spot blue `#1f4f7a` for links
+and accent, flat, with no radius or shadow. A dark
+palette is not its light palette inverted: each preset has a night of its
+own, and fonts never change with the mode. Paper keeps its warm dark grey
+`#161513`, Slate its v1.1.0 navy and GitHub GitHub's own dark. Dark Ink is a
+sutra written in gold and silver: silver type `#e3ddd0` with gold headings and
+accent `#dcb766` on indigo-violet paper `#1b1730` that darkens to `#120f22`.
+Dark News is the darkroom where the
+paper's photographs were developed: silver type `#d8d6d1` on `#0f0f0f`, links
+and accent in safelight orange `#f2804a`, and a faint glow of that orange in
+one corner of the window. Ink and News name the extreme of their canvas shade
+`--td-preset-canvas-edge`, and every text color clears AA there as on the flat
+canvas. Dark
+Terminal is a phosphor screen used with restraint: pale grey-green type
+`#c9d2cc` on `#050806`, with phosphor green `#3dff7a` kept for headings,
+links, the accent and the current row's cursor bar, and amber `#e5b45a` for
+heading marks, emphasis and quotation rules.
+GitHub, Ink, News and Terminal set their accents through the optional
+`--td-preset-accent` properties. A published `theme_color` replaces the
+accent in every preset. Every dark palette redeclares every token of its
+light palette, including nested dark islands.
 Font roles have equal selector specificity: preset, then `typography: system`,
 then the site's own styles, then head-emitted `params.ui.fonts`.
 `brand` controls the wordmark independently from display headings. Slate keeps
-Inter. Paper uses local IBM Plex Sans for interface and prose and a system
-serif for headings. Both retain Chakra Petch for the wordmark and IBM Plex Mono
-for code. Ink uses Inter for interface and headings and a system serif for
-prose, with red markers, underlined prose links, square geometry and no
-shadows. Terminal uses IBM Plex Mono for chrome, headings and prose, teal
+Inter. Paper uses local IBM Plex Sans for interface, prose and headings. Both
+retain Chakra Petch for the wordmark and IBM Plex Mono for code. News sets
+prose in a system serif and headlines in Times New Roman (Liberation Serif on
+Linux) beside Songti's heaviest weight, sets the interface, search, menus,
+lists, table labels and the dateline in the same text serif, and sets the
+wordmark as a masthead in Didot or Bodoni 72 where installed. GitHub uses GitHub's system stack (`-apple-system`, BlinkMacSystemFont,
+Segoe UI, Noto Sans, Helvetica, Arial) for every text role and GitHub's code
+stack (`ui-monospace`, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation
+Mono). Ink is written by hand in one voice: Latin is Palatino everywhere
+(Palatino Linotype or Book Antiqua on Windows, URW Palladio, P052 or TeX Gyre
+Pagella on Linux), the page title and the Landing hero upright and sections in
+its chancery italic; Han takes Kai in headings and in the interface, search,
+menus and lists, and Fangsong in prose, or Song where Kai or Fangsong is
+missing. The display role and the wordmark take the heading face; Arabic and
+Hebrew headings reach Diwan Thuluth, Arabic Typesetting or Corsiva Hebrew by
+glyph fallback. It has vermilion marks, underlined prose links, square
+geometry and no shadows. Terminal uses IBM Plex Mono for chrome, headings and prose, teal
 links, amber accents, 2 px corners and no shadows; its print role stays IBM
 Plex Sans. System typography requests no bundled text face unless the site
 explicitly overrides a role. No external font is introduced. Terminal's
@@ -547,10 +586,12 @@ class wherever they share a line: a sans beside Hei, a serif beside Song.
 
 | Preset | Latin and Han in prose | Latin and Han in headings | Emphasis and citation | Quotation |
 | --- | --- | --- | --- | --- |
-| Paper | IBM Plex Sans; Hiragino Sans GB, then the platform Hei | System serif (Charter, Iowan Old Style, Cambria, Georgia); Song | Kai | Kai |
+| Paper | IBM Plex Sans; platform Hei | IBM Plex Sans; platform Hei | Kai | Text face |
 | Slate | Inter; platform Hei | Inter; platform Hei | Kai | Text face |
-| Ink | System serif; Song, at 17 px because Song is lighter | Inter; platform Hei | Kai | Kai |
+| Ink | Palatino; Fangsong at `size-adjust: 108%`, or Song where none is installed, at 17 px | Palatino, italic for sections; Kai, or Song where no Kai is installed | Kai | Kai |
 | Terminal | IBM Plex Mono; platform Hei | IBM Plex Mono; platform Hei | Text face, upright, accent color | Text face |
+| News | System serif (Charter, Iowan Old Style, Cambria, Georgia); Song, at 17 px | Times New Roman; Songti Black, or bold Hei on Windows | Kai | Kai, with Latin in italic |
+| GitHub | GitHub's system stack; platform Hei | GitHub's system stack; platform Hei | Kai | Text face |
 
 Three roles serve this: `--td-emphasis-font-family` for `em`, `cite`, `dfn` and
 an `i` without a class, `--td-heading-emphasis-font-family` inside headings, and
@@ -559,34 +600,85 @@ emphasis role. These roles are not `params.ui.fonts` keys; a site sets them in
 its own CSS. Kai comes from `OINK Kai`, a `local()`-only face (Kaiti SC,
 STKaiti, KaiTi) limited to CJK code points with `size-adjust: 114%`, declared
 both normal and italic so Han is never slanted while Latin in the same phrase
-keeps its true italic. Where no Kai is installed, as on Android, the face never
-loads and the stack behind it answers. Paper's heading stack names Microsoft
-YaHei before `serif`, so a Windows system without a usable Song shows a bold
-Hei; Ink's prose stack ends in STSong and SimSun. These stacks have been
-reviewed on macOS only.
+keeps its true italic. A second pair of faces at weights 600 to 900 names only
+installed bold Kai (Kaiti SC Bold, Kaiti TC Bold), so Kai headings and bold
+Han emphasis draw a real bold; where none is installed that face never loads
+and the regular face answers with a synthesized bold. Where no Kai is
+installed at all, as on Android, the face never loads and the stack behind it
+answers. Fangsong comes the same way from `OINK Fangsong` (STFangsong,
+FangSong), limited to CJK code points with `size-adjust: 108%` and declared
+normal and italic; Ink uses it for prose only. Chinese Windows carries Kai and
+Fangsong; macOS readers download them; phones and most Linux systems have
+neither, so Ink's Chinese there reads in Song, or in the platform's fallback
+where no Song is installed by name, as on iOS. A `local()` alias also reaches
+a downloaded face that WebKit hides from a plain family-name lookup. The Ink
+and News heading stacks name Microsoft YaHei before `serif`,
+so a Windows system without a usable Song shows a bold Hei; the Ink and News
+prose stacks end in STSong and SimSun. These stacks have been reviewed on
+macOS only.
 
-Prose craft is shared by all four presets. A bare `<kbd>` draws the keycap of
-the `kbd` shortcode, and list markers use the tertiary ink. Headings in a
+Prose craft is shared by every preset. A bare `<kbd>` draws the keycap of
+the `kbd` shortcode, and list markers use the tertiary ink; GitHub restates
+both as GitHub draws them. Headings in a
 Chinese, Japanese or Korean passage (`:lang(zh)`, `:lang(ja)`, `:lang(ko)`)
 have zero tracking; each preset's negative tracking applies to other languages.
 `.td-content` sets `text-autospace: normal`, and code, `kbd` and `samp` opt
 out; paragraphs, list items and quotes use `text-wrap: pretty`. Browsers
-without these properties render as before. Ink headings use weight 700 and a
-one-pixel rule above second-level headings. Ink and Terminal quotes use the
-preset accent rule on screen, in print and in a typeset copy. Terminal's
-generated heading marks have weight 400 and `0.12em` tracking.
+without these properties render as before. Ink sets every heading at text
+weight with a faint ink bleed: the page title upright, sections in the
+chancery italic beside upright Kai, gold on the dark paper, under a deeper top
+margin; Landing section titles are at text weight too. A section opens under a tapered brush stroke (a 2 px rule under
+forced colors), `hr` is one short tapered stroke, and table and callout labels
+are written in the heading face at their own case and weight. Chinese
+`strong` in Ink prose takes vermilion emphasis dots instead of bold; the first
+paragraph of a Blog post or Book chapter (not an index page) opens on a
+three-line initial in the heading face and the accent ink; and the current
+navigation row carries a vermilion dot. The paper's shade and News's glow are screen-only and yield to
+the system canvas under forced colors. Ink quotes hang from a 3 px
+cinnabar stroke that fades as it descends; Terminal quotes use its accent
+rule. Both keep the rule in print and in a typeset copy, where Ink headings
+are set in Kai. Terminal's generated heading marks have weight 400 and
+`0.12em` tracking. Dark Terminal adds faintly glowing green headings, a glow
+on a link under the pointer, faint scan lines, the current navigation and
+search row as a green cursor bar, and a syntax palette that keeps its parts
+apart: keywords in phosphor green, strings in amber, numbers in cyan, names
+pale, comments dim.
 
-Links in running text carry a non-color cue in every preset. Paper and Ink use
-an underline at the weight of the surrounding text: Paper's is one pixel at
-half the link color's strength and takes the full color on hover or focus;
-Ink's is solid. Slate and Terminal keep weight 600 without an underline.
+News sets the page title at its heaviest weight, tight, over a double rule;
+the description below it becomes a deck, italic in Latin and upright in
+scripts without an italic, and the date line an uppercase line in the
+interface serif between hairlines. Each section opens under a thick-and-thin rule, `hr` is the
+double rule, and the site header closes on a double rule like a masthead.
+Tables stay open between an ink hairline above the labels and one below the
+last row, with uppercase tracked labels. Quotations are pull quotes, a step
+larger between a heavy rule above and a hairline below, with no side bar and
+their start alignment kept. Callouts, search, menus and the Appearance panel
+lose their rounding, and the current navigation row takes a black rule and
+bold type instead of a tint. GitHub follows github-markdown-css 5.9.0 and
+@primer/primitives 11.10.0 (both MIT): 16 px prose at line height 1.5,
+semibold untracked headings with a hairline under `h1` and `h2`, a chain-link
+anchor before the heading on wide screens, grey code blocks (a titled block
+is a framed file box), every table cell ruled with even rows shaded and the
+table as wide as its content, a 0.25em `hr`, GFM alert colors on callouts, a
+4 px bar on the current sidebar row and green primary buttons. Three GitHub
+values move for contrast: the dark primary hover is `#268838`, the light
+selected-tab underline `#bc4c00` instead of a 2.15:1 coral, and the dark
+focus ring keeps the link blue.
+
+Links in running text carry a non-color cue in every preset. News, Ink
+and GitHub use an underline at the weight of the surrounding text. In News
+the underline is one pixel at half the link color's strength and takes the
+full color on hover or focus; in Ink it is solid in the accent ink under
+ink-colored text, and in GitHub solid. Paper, Slate and
+Terminal keep weight 600 without an underline.
 Running text here means a paragraph, a table cell, a caption, or an item of a
 list that has no class or is a `.steps` or task list. A list with any other
 class is a component: its links, such as card titles, Book contents and file
 tree entries, keep weight 600 and take no underline in any preset. Heading
 anchors, badges, buttons and footnote references are excluded. Inline
-code is weight 600 in Slate and Ink and weight 400 in Paper and Terminal,
-where a chip or a border already marks it; bold code is 600 everywhere. These
+code is weight 600 in Paper, Slate and Ink and weight 400 in News,
+Terminal and GitHub, where a chip or a border already marks it; bold code is
+600 everywhere. These
 rules stay at element specificity, so the theme's semantic `code` elements and
 a site's own styles still override them. Table cells use tabular numerals. The
 table viewport rounds its top corners by 8 px unless a preset frames or squares
@@ -653,12 +745,13 @@ serialization:
 
 `--td-copy-heading-rule` (`under`, `over` or `none`) and
 `--td-copy-heading-font` let a preset place the second-level heading rule and
-name a heading face for the clipboard. Ink uses `over`; Terminal uses `none`
-and a platform monospace stack.
+name a heading face for the clipboard. Ink uses `over` and Kai; Terminal uses
+`none` and a platform monospace stack; News keeps the default rule and names
+Times New Roman over Song; GitHub writes out the default `under`.
 
 `tests/js/rich-copy.test.js` owns the serializer; `bin/check-params.py` owns
 the setting; the documentation site's `rich-copy.spec.mjs` tests real pages in
-all four presets. Paste results in WeChat, Word and other editors depend on
+every preset. Paste results in WeChat, Word and other editors depend on
 each editor's own sanitizer and are not covered by automated tests.
 
 ## Translation reader runtime {#translation-reader-runtime}

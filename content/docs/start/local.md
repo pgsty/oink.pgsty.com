@@ -53,8 +53,9 @@ experience that plain Markdown viewers cannot render:
   and ECharts diagrams, and galleries render natively with no network
   dependencies. Maps render their place list offline too; map tiles load only
   when the site has configured a tile service.
-- **Reader comfort**: switch between Paper, Slate, Ink and Terminal, toggle
-  light and dark mode, open Duo View on bilingual sites, or print clean PDFs.
+- **Reader comfort**: switch between Paper, Slate, GitHub, Ink, News and
+  Terminal, toggle light and dark mode, open Duo View on bilingual sites, or
+  print clean PDFs.
 
 If the repository includes unpublished drafts (`draft: true` in front matter),
 start the server with `hugo serve -D` so those pages appear in the sidebar too.

@@ -132,17 +132,19 @@ style. Choose the one closest to your brand before changing colors by hand:
 
 | Preset | Look |
 | --- | --- |
-| `paper` | Ivory paper, clay accent, ink text, underlined blue links, framed tables. The default |
+| `paper` | Warm paper, ink text, blue links and accent, Plex Sans and framed tables. The default |
 | `slate` | A cool blue-gray technical look |
-| `ink` | Black and white surfaces, red markers, square panels. Experimental |
-| `terminal` | Monospace throughout, teal links, amber accents, compact navigation. Experimental |
-{#tbl-presets num="8-1" caption="The four visual presets."}
+| `github` | GitHub README typography, colors, ruled tables and green buttons. Experimental |
+| `ink` | Written page on warm paper, Palatino and Kai with Fangsong or Song text and vermilion marks. Experimental |
+| `news` | Printed page on grey newsprint, heavy serif and Song headlines, spot blue and double rules. Experimental |
+| `terminal` | Monospace throughout, teal links, amber accents, compact navigation; phosphor screen at night. Experimental |
+{#tbl-presets num="8-1" caption="The six visual presets."}
 
 ```yaml {title="hugo.yaml"}
 params:
   ui:
     preset: paper
-    preset_menu: [paper, slate, ink, terminal]
+    preset_menu: [paper, slate, github, ink, news, terminal]
     dark_mode: true
 ```
 
@@ -184,7 +186,7 @@ lists the font roles and palette variables you can rely on across releases.
 - The home page shows the hero, three metrics, three cards, the install command with a copy button, and the closing call to action, in both languages.
 - The Quick start button leads to `/docs/get-started/quick-start/` in English and `/zh/docs/get-started/quick-start/` in Chinese.
 - The blog uses the purple accent and the rest of the site teal.
-- The Appearance menu offers four presets and three modes, and every combination stays readable.
+- The Appearance menu offers six presets and three modes, and every combination stays readable.
 
 ## Ask your agent {#agent}
 
@@ -194,7 +196,7 @@ metrics, cards, command-box, cta, following
 https://oink.pgsty.com/docs/customize/home/. Take every fact from README.md;
 do not invent numbers. Link internal pages as site paths without a leading
 slash. Set theme_color to <#0f766e> for the site and give the blog its own
-color in a cascade. Keep preset paper with preset_menu [paper, slate, ink,
-terminal] and dark mode on. Then check all four presets in light and dark
-mode at desktop and phone widths, and report any section that warns.
+color in a cascade. Keep preset paper with preset_menu [paper, slate, github,
+ink, news, terminal] and dark mode on. Then check all six presets in light and
+dark mode at desktop and phone widths, and report any section that warns.
 ```

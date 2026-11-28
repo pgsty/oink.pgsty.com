@@ -114,9 +114,9 @@ The browser stores the selected mode and size in `td-expo-mode` and
 the author default. It applies across albums and reloads on the same origin.
 Invalid or unavailable storage leaves the author defaults in effect.
 
-Display mode and size are independent of appearance. Paper, Slate, Ink, and
-Terminal use the shared colors, type styles, and corner settings in light and
-dark mode. A preset change recalculates the grid after typography changes.
+Display mode and size are independent of appearance. Paper, Slate, GitHub,
+Ink, News, and Terminal use the shared colors, type styles, and corner settings
+in light and dark mode. A preset change recalculates the grid after typography changes.
 It preserves the reader's display mode and size.
 
 GIFs play by default in the grid and viewer. The play/pause control changes

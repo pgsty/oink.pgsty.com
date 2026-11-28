@@ -244,7 +244,7 @@ test.describe('Video component', () => {
     await expect.poll(() => video.evaluate((el) => el.paused)).toBe(true);
   });
 
-  for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+  for (const preset of ['paper', 'slate', 'github', 'ink', 'news', 'terminal']) {
     for (const mode of ['light', 'dark']) {
       test(`${preset} ${mode} maintains >= 3:1 hover contrast on the play button`, async ({ page }) => {
         await stubPlayers(page);

@@ -65,43 +65,59 @@ capabilities:
         eyebrow: 工程文档 / 快速上线
         title_lines: [开箱即用。, 持续维护。]
         rules: ['88%', '72%', '55%']
-    - ref: 02 / 四套风格
-      title: 四套风格，同一个站点
+    - ref: 02 / 六套风格
+      title: 六套风格，同一个站点
       url: docs/customize/brand/#visual-presets
-      motto: Paper · Slate · Ink · Terminal
+      motto: Paper · Slate · GitHub · Ink · News · Terminal
       bullets:
-        - '[Paper](docs/customize/brand/#visual-presets) 以暖白纸面搭配陶红强调色；Slate 保留原有技术风格'
-        - 'Ink 用黑白与红色建立对比；Terminal 正文与标题全用等宽字体'
-        - '每套风格各自配备系统中文排版；风格与明暗独立选择并持久保存'
-      value: 内容不变，风格自选。字体与核心脚本均由本地提供。
+        - '[Paper](docs/customize/brand/#visual-presets) 默认纸面，Slate 技术原貌，GitHub 像 README'
+        - 'Ink 楷体笔墨，News 衬线报栏，Terminal 通篇等宽'
+        - '六套独立深色模式，从绀纸金字到荧光绿；按 T 换风格、Y 换明暗'
+      value: 内容不变，六种读法；点击风格卡片即可原地切换。
       visual:
         type: components
-        aria_label: OINK 的四套视觉风格
+        aria_label: OINK 的六套视觉风格
         items:
           - {
               icon: fa-solid fa-file-lines,
               title: Paper,
-              detail: 暖白 · 陶红 · 默认风格,
+              detail: 暖白纸面 · 蓝链 · 默认,
+              preset: paper,
             }
           - {
               icon: fa-solid fa-layer-group,
               title: Slate,
               detail: 原有技术风格,
+              preset: slate,
+            }
+          - {
+              icon: fa-brands fa-github,
+              title: GitHub,
+              detail: 还原 GitHub Markdown,
+              preset: github,
             }
           - {
               icon: fa-solid fa-pen-nib,
               title: Ink,
-              detail: 黑 · 白 · 红,
+              detail: 笔墨 · 楷体 · 朱砂,
+              preset: ink,
+            }
+          - {
+              icon: fa-solid fa-newspaper,
+              title: News,
+              detail: 衬线报栏 · 新闻纸 · 专色蓝,
+              preset: news,
             }
           - {
               icon: fa-solid fa-terminal,
               title: Terminal,
-              detail: 全等宽 · 青绿 · 琥珀,
+              detail: 全等宽 · 夜间荧光绿,
+              preset: terminal,
             }
     - ref: 03 / 本地优先
       title: 使用 Hugo 构建
       url: docs/about/features/
-      motto: 纯 CSS，内置资源，Hugo 0.169+
+      motto: 纯 CSS，内置资源，Hugo 0.170+
       bullets:
         - '一条 [**hugo**](https://gohugo.io/) 命令完成全部构建'
         - '[无需 **npm install**、Sass 编译器或 PostCSS 构建](docs/about/features/)'
@@ -318,9 +334,10 @@ faq:
         简体中文（`zh-cn`、`zh`）和繁体中文（`zh-tw`）。支持 RTL 布局。
     - question: 怎样选择风格？可以保留旧版外观吗？
       answer: >-
-        点击太阳或月亮按钮打开外观菜单，选择 Paper、Slate、Ink 或 Terminal，
-        再独立选择亮色、暗色或跟随系统。Paper 是新默认风格，Slate 保留原有外观。
-        本站提供全部四套风格，站点作者通过配置显式指定菜单。
+        点击顶栏外观按钮打开外观菜单，选择 Paper、Slate、GitHub、Ink、News 或
+        Terminal，再独立选择亮色、暗色或跟随系统；T 键与 Y 键可依次切换两者。
+        Paper 是默认风格，Slate 保留原有外观。本站提供全部六套风格，站点作者通过
+        配置显式指定菜单。
         字体和核心脚本均从本地加载，详见[外观指南](docs/customize/brand/#visual-presets)。
     - question: AI 助手与爬虫拿到的是什么？
       answer: >-

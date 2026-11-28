@@ -129,7 +129,7 @@ OINK 站点就是一个标准的 Hugo 仓库。主题代码本身不进入你的
        from_year: 2026
      ui:
        preset: paper
-       preset_menu: [paper, slate, ink, terminal]
+       preset_menu: [paper, slate, github, ink, news, terminal]
        dark_mode: true
        sidebar_menu_foldable: true
        section_index: cards

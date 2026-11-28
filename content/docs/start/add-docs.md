@@ -127,7 +127,7 @@ these steps from your project's repository root:
      github_subdir: docs # required when the Hugo site lives in docs/
      ui:
        preset: paper
-       preset_menu: [paper, slate, ink, terminal]
+       preset_menu: [paper, slate, github, ink, news, terminal]
        dark_mode: true
        sidebar_menu_foldable: true
        section_index: cards

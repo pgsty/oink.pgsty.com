@@ -52,7 +52,7 @@ function canvasOf(page) {
 test.describe('Typeset copy', () => {
   test('select all copies the article without canvas or interface', async ({ page }) => {
     await open(page);
-    expect(await canvasOf(page)).toBe('#faf9f5');
+    expect(await canvasOf(page)).toBe('#f7f6f3');
     await page.locator('.td-content > p').first().click();
     await page.keyboard.press(`${mod}+a`);
     const { handled, html, text, selection } = await copy(page);
@@ -122,7 +122,7 @@ test.describe('Typeset copy', () => {
     expect(chrome.handled).toBe(false);
   });
 
-  for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+  for (const preset of ['paper', 'slate', 'github', 'ink', 'news', 'terminal']) {
     test(`${preset} dark mode still copies ink on paper`, async ({ page }) => {
       await open(page, { preset, mode: 'dark' });
       await expect(page.locator('html')).toHaveAttribute('data-bs-theme', 'dark');

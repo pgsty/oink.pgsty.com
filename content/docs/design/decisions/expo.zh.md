@@ -45,7 +45,7 @@ Expo 采用第三种模型。相册拥有页面 URL 和浏览序列，每张图�
 
 ### 共享外观与紧凑控件 {#shared-appearance-and-compact-controls}
 
-Expo 是一种布局，沿用 Paper、Slate、Ink、Terminal 四种预设及其亮暗模式。
+Expo 是一种布局，沿用 Paper、Slate、GitHub、Ink、News、Terminal 六种预设及其亮暗模式。
 共享的颜色、字体、导航与圆角设置，让相册与站点其余页面保持一致。
 
 三个相邻的单选格同时呈现展墙、卡片和无缝选项，后接播放／暂停按钮和尺寸滑杆。

@@ -39,14 +39,31 @@ Inside the palette, use <kbd>↑</kbd> <kbd>↓</kbd> to select an item. Press
 focus to the opening control.
 
 ## What the palette holds {#contents}
+
 With nothing typed, the palette lists four groups in a fixed order:
 
-| Group | Contents | Decided by |
-| --- | --- | --- |
-| Quick links | A few entry points chosen from the navbar's top-level menu | `params.ui.quick_links` |
-| Page actions | Copy Markdown, Open in ChatGPT / Claude, view Markdown source, view history, edit this page, create a child page, create docs/project issue, print the section, open the duo view (`compare_translations`) | Repository configuration, `assistant_links`, whether this page has a Markdown output, and for the duo view `params.ui.compare` plus a same-origin translation |
-| Preferences | Switch version → switch language → switch style → switch theme | Whether the site configures versions, languages, the preset menu (`preset_menu`), and the light/dark menu |
-| Commands | Copy link (`copy_link`), open the GitHub repository, open the [browsing history](/docs/customize/keyboard/#history), then the site's own commands | Always available for `copy_link`, `params.github_project_repo` (falling back to `github_repo`), whether keyboard navigation is on, and `ui.command_palette.commands` |
+{{< cards variant="list" >}}
+{{< card title="Quick links" icon="fa-solid fa-compass" badge="1" >}}
+A few entry points chosen from the navbar's top-level menu.
+
+**Decided by:** `params.ui.quick_links`.
+{{< /card >}}
+{{< card title="Page actions" icon="fa-solid fa-file-lines" badge="2" >}}
+Copy Markdown, Open in ChatGPT / Claude, view Markdown source, view history, edit this page, create a child page, create docs/project issue, print the section, open the duo view (`compare_translations`).
+
+**Decided by:** repository configuration, `assistant_links`, whether this page has a Markdown output, and for the duo view `params.ui.compare` plus a same-origin translation.
+{{< /card >}}
+{{< card title="Preferences" icon="fa-solid fa-sliders" badge="3" >}}
+Switch version → switch language → switch style → switch theme.
+
+**Decided by:** whether the site configures versions, languages, the preset menu (`preset_menu`), and the light/dark menu.
+{{< /card >}}
+{{< card title="Commands" icon="fa-solid fa-terminal" badge="4" >}}
+Copy link (`copy_link`), open the GitHub repository, open the [browsing history](/docs/customize/keyboard/#history), then the site's own commands.
+
+**Decided by:** always available for `copy_link`, `params.github_project_repo` (falling back to `github_repo`), whether keyboard navigation is on, and `ui.command_palette.commands`.
+{{< /card >}}
+{{< /cards >}}
 
 The four preferences follow the navbar order: version, language, style, theme.
 Selecting a preference such as "switch language" does not navigate immediately.

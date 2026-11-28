@@ -63,8 +63,11 @@ for (const engine of [chromium, firefox, webkit]) {
         await expect(page.locator('html')).toHaveAttribute('data-bs-theme', 'light');
         for (const preset of ['ink', 'terminal']) {
           await page.locator('[data-td-appearance-trigger]:visible').first().click();
-          if (preset === 'ink') await page.keyboard.press('ArrowRight'); // Paper -> Slate
-          await page.keyboard.press('ArrowRight'); // Slate -> Ink -> Terminal
+          // The menu reads Paper, Slate, GitHub over Ink, News, Terminal:
+          // Ink is three steps from Paper, and Terminal two steps from Ink.
+          await page.keyboard.press('ArrowRight');
+          await page.keyboard.press('ArrowRight');
+          if (preset === 'ink') await page.keyboard.press('ArrowRight');
           await expect(page.locator('html')).toHaveAttribute('data-td-preset', preset);
           await page.keyboard.press('Escape');
           await page.reload();

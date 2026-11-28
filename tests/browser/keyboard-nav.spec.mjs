@@ -505,8 +505,8 @@ test('t steps the visual style, y cycles light/dark/system, and x switches the l
 }) => {
   await openDocs(page);
 
-  // T cycles Paper, Slate, Ink and Terminal in offered order.
-  const offered = ['paper', 'slate', 'ink', 'terminal'];
+  // T cycles the six offered styles in the menu's order.
+  const offered = ['paper', 'slate', 'github', 'ink', 'news', 'terminal'];
   const style = () =>
     page.evaluate(() => document.documentElement.getAttribute('data-td-preset'));
   const first = await style();

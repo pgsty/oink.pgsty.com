@@ -187,7 +187,7 @@ cards:
       url: docs/use-cases/monitoring/
 ```
 
-`capabilities` 让每项能力独占一行，旁边配一块视觉面板。`visual.type` 取 `shell`、`components`、`code`、`image`、`card` 之一：
+`capabilities` 让每项能力独占一行，旁边配一块视觉面板。`visual.type` 取 `shell`、`components`、`code`、`image`、`card` 之一。`components` 面板中的条目填写 `url` 时渲染为链接，填写 `preset` 且该预设在 `params.ui.preset_menu` 中提供时渲染为原地风格切换按钮：
 
 ```yaml {title="data/home/zh.yaml"}
 capabilities:

@@ -29,12 +29,12 @@ What you have to work with:
 - home and landing pages assembled from YAML data out of 22 section types;
 - content components, most of them plain Markdown with one attribute line:
   callouts, steps, cards, tabs, annotated code, diagrams and charts, timelines,
-  changelog entries, video and audio players, quoted posts (`social`), maps;
+  changelog entries, themed video and audio players, quoted posts (`> [!SOCIAL]`), maps;
 - local search with a command palette, 29 single-key shortcuts with local
   browsing history, typeset rich-text copy, 32 interface languages, Duo View
   for translations, versions, and taxonomies;
-- four visual presets (Paper ivory+clay default, Slate, Ink, Terminal) with
-  preset-specific CJK system typography, light and dark modes, print, and
+- six visual presets (Paper default, Slate, GitHub, Ink, News, Terminal) with
+  distinct dark modes and preset-specific CJK system typography, print, and
   Markdown and `llms.txt` outputs for agents.
 
 There is no CMS, login, database, or automatic translation.

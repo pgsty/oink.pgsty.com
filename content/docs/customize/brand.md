@@ -166,10 +166,13 @@ the reader's system, and the theme ships no Chinese font file. Each
 
 | Preset | Interface and body text | Headings | Chinese |
 | --- | --- | --- | --- |
-| Paper | IBM Plex Sans | A system serif | Song headings over Hei text |
+| Paper | IBM Plex Sans | IBM Plex Sans | Hei throughout |
 | Slate | Inter | Inter; Chakra Petch for display titles | Hei throughout |
-| Ink | Inter for the interface, a system serif for prose | Inter | Hei headings over Song text |
+| GitHub | GitHub's system font stack | GitHub's system font stack | Hei throughout |
+| Ink | Palatino | Palatino; italic for sections | Kai headings and chrome over Fangsong text, or Song where they are missing |
+| News | A system serif | Times New Roman, heavy | Song throughout, heaviest in headlines |
 | Terminal | IBM Plex Mono, IBM Plex Sans in print | IBM Plex Mono | Hei throughout |
+{.wide}
 
 Code is IBM Plex Mono and the wordmark Chakra Petch in Paper and Slate. Plex
 Sans and Inter include Latin, Cyrillic, Greek and Vietnamese. Chinese emphasis
@@ -203,7 +206,7 @@ params:
       code: "'Sarasa Mono SC', 'Noto Sans Mono CJK SC', monospace"
 ```
 
-Setting `ui` changes body text and headings in all four presets. Set
+Setting `ui` changes body text and headings in every preset. Set
 `heading` to choose a separate face for headings. The other keys are listed under
 [Font roles](#custom-fonts).
 
@@ -286,10 +289,16 @@ hand.
 
 | Preset | Look |
 | --- | --- |
-| `paper` (default) | Ivory paper, ink text, underlined blue links, a clay accent, Plex Sans and framed tables |
+| `paper` (default) | Warm paper, ink text, blue links and accent, Plex Sans and framed tables |
 | `slate` | A cool blue-gray technical look |
-| `ink` (experimental) | Black and white surfaces, red markers, square panels and underlined prose links |
-| `terminal` (experimental) | Monospace controls, headings and prose, teal links, amber accents and compact desktop navigation |
+| `github` (experimental) | Markdown as GitHub shows a README: GitHub's fonts and colors, ruled tables, alert colors and green buttons |
+| `ink` (experimental) | A written page on warm paper, Palatino and Kai throughout the chrome and headings, Fangsong or Song text, vermilion marks (emphasis dots, a first letter, the current row), brush-stroke rules and underlined prose links; at night gold and silver writing on indigo-violet paper |
+| `news` (experimental) | A printed page on grey newsprint: heavy Times New Roman and Song headlines, serif text and chrome, one spot blue, a masthead rule, a deck and dateline under the title, thick-and-thin section rules, pull quotes and open tables; at night a darkroom, silver type on black with a safelight orange |
+| `terminal` (experimental) | Monospace controls, headings and prose, teal links, amber accents and compact desktop navigation; at night a phosphor screen, grey type on black with green headings, links and cursor |
+
+Each preset's dark mode keeps the fonts of its light mode but has a palette of
+its own, so switching to dark is a different experience rather than an
+inverted page.
 
 `params.ui.preset` sets the site's look. `params.ui.preset_menu` decides
 whether readers may choose another in the Appearance menu:
@@ -298,7 +307,7 @@ whether readers may choose another in the Appearance menu:
 params:
   ui:
     preset: paper
-    preset_menu: [paper, slate, ink, terminal]
+    preset_menu: [paper, slate, github, ink, news, terminal]
     dark_mode: true
 ```
 
@@ -308,9 +317,11 @@ params:
 | `true` | Paper, Slate and the site's own preset |
 | A list | Exactly the listed presets; the site's preset is added with a warning if missing |
 
-Ink and Terminal appear only when you name them, as `preset` or in the list.
+GitHub, Ink, News and Terminal appear only when you name them, as
+`preset` or in the list. The menu always lists them in the order of the table
+above.
 The [experiment record](/docs/design/research/2026-10-05-ink-terminal-experiment/)
-lists what has been tested on them. A reader's style and light/dark choice are
+lists what has been tested on Ink and Terminal. A reader's style and light/dark choice are
 saved separately in the browser, and choosing the entry marked as the site
 default goes back to following the site. Print always uses a light palette on
 white paper.
@@ -332,8 +343,9 @@ params:
 ```
 
 This adds the dark palette and a Light / Dark / System choice to the
-Appearance control in the navbar and footer, whose sun or moon icon shows the
-current mode. The control works with touch and keyboard and opens as a bottom
+Appearance control in the navbar and footer, whose icon shows the reader's
+choice: a sun for Light, a moon for Dark, and a half-filled circle for System,
+which stays while the system switches between modes. The control works with touch and keyboard and opens as a bottom
 sheet on phones. A reader's choice is saved in the browser and shared across
 tabs; with no saved choice the page follows the system's
 `prefers-color-scheme`. A small inline script applies the mode before the
@@ -341,6 +353,7 @@ stylesheet loads, so pages never flash the wrong palette.
 
 To support the dark palette for readers whose system asks for it, without
 showing the control, write `dark_mode: { enable: true, show_menu: false }`.
+If `preset_menu` still offers styles, the control stays and shows a palette.
 
 ## Footer {#footer}
 
@@ -478,10 +491,11 @@ by name:
 
 | Name | Contents |
 | --- | --- |
-| `chrome` | Tokens, typography, the four palettes, the site navbar, and the language, theme and appearance controls |
+| `chrome` | Tokens, typography, the six palettes, the site navbar, and the language, theme and appearance controls |
 | `landing` | The Landing sections; load it after `chrome` |
 | `search` | The command palette and local search |
 | `compare` | Duo View |
+{.fields}
 
 ```go-html-template {title="layouts/_partials/my-head.html"}
 {{ with partial "css/bundle.html" "chrome" }}

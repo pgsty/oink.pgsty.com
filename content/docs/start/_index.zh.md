@@ -50,7 +50,7 @@ hugo serve
 
 第一次启动会花几秒钟把固定版本的 OINK 主题下载到本机 Go 模块缓存，之后每次启动都是秒开。打开 <http://localhost:1313/>，亲手试一遍：
 
-- 逛逛 **文档**、**教程**、**案例** 与 **博客**，点右上角外观菜单，在浅色与深色模式下切换 Paper、Slate、Ink、Terminal 四套风格。
+- 逛逛 **文档**、**教程**、**案例** 与 **博客**，点右上角外观菜单，在浅色与深色模式下切换 Paper、Slate、GitHub、Ink、News、Terminal 六套风格。
 - 按 {{< kbd "/" >}} 试试本地全文搜索，并在顶栏切换中英文。
 - 用编辑器打开 `content/docs/components/` 下的任意一页，改一句话保存，浏览器会自动刷新——你立刻能看到 Markdown 源码与页面效果的对应关系。
 
@@ -82,7 +82,7 @@ claude   # 或 codex，或任意能执行命令的编程 Agent
 - 关于页：包含个人简介、正在做的项目与联系方式。
 
 外观与工程规范：
-- 默认使用 Paper 预设，开启深色模式，外观菜单里提供 Paper、Slate、Ink、Terminal 四套风格。
+- 默认使用 Paper 预设，开启深色模式，外观菜单里提供 Paper、Slate、GitHub、Ink、News、Terminal 六套风格。
 - 开启本地全文搜索、每页的 Markdown 输出与 llms.txt；配置 .gitignore 排除 public/、resources/、.hugo_build.lock 与 .hugo_cache/。
 - 在 go.mod 中固定当前最新发布的 OINK 标签版本，不要跟踪 main。
 
@@ -109,9 +109,8 @@ curl -fsSL https://oink.pgsty.com/skill.zh.md -o ~/.codex/skills/oink-site/SKILL
 
 看完演示、跑通第一站之后，按你手头项目的实际情况选下一篇：
 
-| 你当前的场景 | 阅读 | 你会学到 |
-| --- | --- | --- |
-| 手上已经有一个 OINK 站点仓库，想在本地舒服地阅读、边写边看，或实时查看 AI Agent 的工作报告 | [本地浏览](/zh/docs/start/local/) | 用 `hugo serve` 跑起本地服务器，实时阅读与编辑，并把浏览器变成 AI Agent 产出的实时看板 |
-| 想不靠模板，从零搭一个结构干净的独立 OINK 项目，或把已有 Hugo 站点切到 OINK | [从零开始](/zh/docs/start/from-scratch/) | 最小目录骨架、`hugo.yml` 核心配置、第一页写法，以及离线归档与 submodule 等安装方式 |
-| 已经有一个开源代码仓库，想在它的 `docs/` 目录下加装文档站并自动部署 | [加装文档](/zh/docs/start/add-docs/) | 独立的 `docs/` Hugo 子项目结构、`.gitignore` 排错与 GitHub / Cloudflare 自动构建配置 |
-| 正在升级旧版 OINK，或从 Docsy 迁移 | [版本升级](/zh/docs/admin/upgrade/) | 版本升级、语法迁移与站点覆盖项检查 |
+- [本地浏览](/zh/docs/start/local/) — 手上已有 OINK 站点仓库？用 `hugo serve` 跑起本地服务器，边写边看，并把浏览器变成 AI Agent 产出的实时看板。
+- [从零开始](/zh/docs/start/from-scratch/) — 不靠模板搭一个结构干净的独立 OINK 项目，或把已有 Hugo 站点切到 OINK：最小目录骨架、`hugo.yml` 核心配置、第一页写法，以及离线归档与 submodule 等安装方式。
+- [加装文档](/zh/docs/start/add-docs/) — 已有开源代码仓库？在 `docs/` 目录下加装独立的 Hugo 子项目，配好 `.gitignore` 与 GitHub / Cloudflare 自动构建。
+- [版本升级](/zh/docs/admin/upgrade/) — 升级旧版 OINK 或从 Docsy 迁移：版本升级步骤、语法迁移与站点覆盖项检查。
+{.cards .td-cards-list}

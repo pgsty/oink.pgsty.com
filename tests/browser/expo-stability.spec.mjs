@@ -23,7 +23,7 @@ async function sampleGeometry(page) {
   });
 }
 
-for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+for (const preset of ['paper', 'slate', 'github', 'ink', 'news', 'terminal']) {
   for (const mode of ['wall', 'cards', 'seamless']) {
     test(`Expo ${preset} ${mode}: real scrollbars settle at the viewport threshold`, async ({ page }) => {
       await page.emulateMedia({ reducedMotion: 'reduce' });

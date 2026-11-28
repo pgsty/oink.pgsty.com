@@ -46,7 +46,7 @@ for (const language of ['', '/zh']) {
       await expect(canvas).toHaveCSS('background-color', background);
       const markup = await svg.evaluate(el => el.outerHTML);
       expect(markup).toContain('#123456');
-      for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+      for (const preset of ['paper', 'slate', 'github', 'ink', 'news', 'terminal']) {
         for (const mode of ['light', 'dark']) {
           await page.evaluate(({ preset, mode }) => {
             document.documentElement.dataset.tdPreset = preset;

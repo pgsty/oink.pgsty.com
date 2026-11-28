@@ -48,8 +48,8 @@ resource pagination or separate image database.
 
 ### Shared appearance and compact controls {#shared-appearance-and-compact-controls}
 
-Expo is a layout. It uses the existing Paper, Slate, Ink, and Terminal presets
-and their light/dark modes. Shared colors, type styles, navigation, and corner
+Expo is a layout. It uses the existing Paper, Slate, GitHub, Ink, News, and
+Terminal presets and their light/dark modes. Shared colors, type styles, navigation, and corner
 settings keep the album consistent with the rest of the site.
 
 Three adjacent radio cells expose all display choices: Wall, Cards, and Seamless.

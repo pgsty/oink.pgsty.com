@@ -112,7 +112,7 @@ search_keywords:
      github_subdir: docs # Hugo 站点放在 docs/ 子目录时必填
      ui:
        preset: paper
-       preset_menu: [paper, slate, ink, terminal]
+       preset_menu: [paper, slate, github, ink, news, terminal]
        dark_mode: true
        sidebar_menu_foldable: true
        section_index: cards

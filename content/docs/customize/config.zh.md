@@ -331,7 +331,7 @@ favicon 没有参数：主题按约定文件名在 `static/` 里查找（`favico
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `params.ui.preset` | enum | paper | 站点整体外观：`paper` 或 `slate`，或者显式选择的实验预设 `ink`、`terminal` |
+| `params.ui.preset` | enum | paper | 站点整体外观：`paper` 或 `slate`，或者显式选择的实验预设 `github`、`ink`、`news`、`terminal` |
 | `params.ui.preset_menu` | boolean 或 list | false | `true` 让读者在 Paper、Slate 与站点默认值之间选择；列表则列出提供哪些预设，可以包含实验预设，但必须包含站点默认值。与 `dark_mode` 互不影响 |
 | `params.ui.typography` | enum | technical | `technical` 使用所选预设自带的字体（Paper：Plex Sans；Slate：Inter）；`system` 只用平台字体栈，不请求品牌字体 |
 | `params.ui.fonts` | map | | 为 `ui`、`body`、`heading`、`code`、`display`、`meta`、`brand`、`print` 八个角色指定字体族名。主题检查名称，但不加载字体文件；每份列表都以通用字体族收尾 |

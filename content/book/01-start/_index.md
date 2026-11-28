@@ -64,7 +64,7 @@ Model it on https://vonng.com (source: https://github.com/Vonng/vonng.com):
   text, and end with share buttons.
 - Author pages, series and tags are enabled; the home page introduces me
   with a photo and then lists the columns.
-- Paper look by default, with dark mode and all four presets in the
+- Paper look by default, with dark mode and all six presets in the
   Appearance menu.
 
 About me: <name>, <one-line bio>, writing about <databases and operations>.

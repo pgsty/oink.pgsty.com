@@ -1,13 +1,13 @@
 ---
 title: 组件呈现
 linkTitle: 组件呈现
-description: 在 OINK 四种视觉预设中查看卡片、折叠块、标签页和紧凑流程。
+description: 在 OINK 六套视觉预设中查看卡片、折叠块、标签页和紧凑流程。
 weight: 910
 outputs: [HTML, markdown, print]
 search_keywords: [组件样式, 卡片列表, 紧凑步骤, 命令条, 预设]
 ---
 
-本页把常用组件和它们的紧凑变体并排放在一起，方便你选用之前先看效果：在外观菜单里切换 Paper、Slate、Ink、Terminal 以及明暗模式，对照着看即可。每种变体只是在你原本的 Markdown 上多加一个 class 或一个 `variant` 参数，不加载脚本，也不改变链接、键盘操作、复制出的文字、打印与 Markdown 输出；写了未知的变体会告警，并回退到常规样式。
+本页把常用组件和它们的紧凑变体并排放在一起，方便你选用之前先看效果：在外观菜单里切换 Paper、Slate、GitHub、Ink、News、Terminal 以及明暗模式，对照着看即可。每种变体只是在你原本的 Markdown 上多加一个 class 或一个 `variant` 参数，不加载脚本，也不改变链接、键盘操作、复制出的文字、打印与 Markdown 输出；写了未知的变体会告警，并回退到常规样式。
 
 ## 卡片与卡片列表 {#cards}
 

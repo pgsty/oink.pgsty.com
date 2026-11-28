@@ -242,10 +242,11 @@ instead. In right-to-left languages the arrows follow the reading direction.
 ## Appearance and page width {#appearance}
 
 Expo has no appearance settings of its own. Albums use the site's visual
-preset (Paper, Slate, Ink or Terminal) and its light or dark mode, readers
-switch them from the shared navigation as on any other page, and the grid
-re-lays itself out after a preset change. To offer all four presets, set
-`params.ui.preset_menu: [paper, slate, ink, terminal]`; see
+preset (Paper, Slate, GitHub, Ink, News or Terminal) and its light or
+dark mode, readers switch them from the shared navigation as on any other
+page, and the grid re-lays itself out after a preset change. To offer every
+preset, set
+`params.ui.preset_menu: [paper, slate, github, ink, news, terminal]`; see
 [Visual presets](/docs/customize/brand/#visual-presets). The top navbar follows
 the site's navbar settings, and the album page shows its image toolbar instead
 of the article action menu.

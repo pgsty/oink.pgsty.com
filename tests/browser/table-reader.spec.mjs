@@ -196,7 +196,7 @@ for (const locale of ['', '/zh']) {
     test(`${locale || 'en'}: ${width}px preset compatibility and accessible dialog`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
       await page.goto(path);
-      for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+      for (const preset of ['paper', 'slate', 'github', 'ink', 'news', 'terminal']) {
         for (const color of ['light', 'dark']) {
           await page.evaluate(({ preset, color }) => {
             document.documentElement.dataset.tdPreset = preset;

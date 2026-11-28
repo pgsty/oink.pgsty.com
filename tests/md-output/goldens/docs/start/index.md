@@ -44,8 +44,8 @@ your local Go module cache; every subsequent start takes a second. Open
 <http://localhost:1313/> to explore the live site:
 
 - Click through **Docs**, **Book**, **Case** and **Blog**, and open the
-  **Appearance** menu to switch between Paper, Slate, Ink and Terminal in both
-  light and dark mode.
+  **Appearance** menu to switch between Paper, Slate, GitHub, Ink, News and
+  Terminal in both light and dark mode.
 - Press \/ to try local full-text search, and switch between
   English and Chinese from the top bar.
 - Open any page under `content/docs/components/` in your editor, change a
@@ -88,8 +88,8 @@ Site structure:
 - An About page with my bio, current projects, and contact links.
 
 Appearance and hygiene:
-- Default to the Paper preset, enable dark mode, and offer Paper, Slate, Ink
-  and Terminal in the Appearance menu.
+- Default to the Paper preset, enable dark mode, and offer Paper, Slate,
+  GitHub, Ink, News and Terminal in the Appearance menu.
 - Enable local search, Markdown outputs, and llms.txt; include a .gitignore
   that excludes public/, resources/, .hugo_build.lock and .hugo_cache/.
 - Pin the latest published OINK release in go.mod rather than tracking main.
@@ -126,12 +126,11 @@ CLI manuals and books—read [Build a site from one prompt](/book/01-start/).
 
 From here, follow the guide that matches where your site lives today:
 
-| Your situation | Read | What you learn |
-| --- | --- | --- |
-| You already have an OINK repository and want to read, edit, or follow an AI agent's output locally | [Browse locally](/docs/start/local/) | Run `hugo serve`, read live docs in the browser, edit with auto-reload, and monitor reports written by coding agents |
-| You want to assemble a minimal standalone site file by file, or switch an existing Hugo site to OINK | [From scratch](/docs/start/from-scratch/) | Minimal project layout, `hugo.yml` prerequisites, first page, and offline / submodule install methods |
-| You already have an open-source codebase and want a documentation site inside its `docs/` directory | [Add docs to a project](/docs/start/add-docs/) | Isolated `docs/` Hugo sub-project, `.gitignore` hygiene, and GitHub Pages + Cloudflare Pages auto-builds |
-| You are upgrading an older OINK site or migrating from Docsy | [Upgrade](/docs/admin/upgrade/) | Version upgrades, syntax migration, and override review |
+- [Browse locally](/docs/start/local/) — Already have an OINK repository? Run `hugo serve`, read live docs in the browser, edit with auto-reload, and monitor reports written by coding agents.
+- [From scratch](/docs/start/from-scratch/) — Assemble a minimal standalone site file by file, or switch an existing Hugo site to OINK: project layout, `hugo.yml` prerequisites, first page, and offline or submodule installs.
+- [Add docs to a project](/docs/start/add-docs/) — Already have an open-source codebase? Add an isolated `docs/` Hugo sub-project with `.gitignore` hygiene and GitHub Pages or Cloudflare Pages auto-builds.
+- [Upgrade](/docs/admin/upgrade/) — Upgrading an older OINK site or migrating from Docsy: version upgrades, syntax migration, and override review.
+{.cards .td-cards-list}
 
 ---
 

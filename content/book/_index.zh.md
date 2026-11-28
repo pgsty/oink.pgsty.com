@@ -30,10 +30,18 @@ agent，一次会话就能拿到一个能运行的站点。第二部分再把同
 
 ## 阅读路线 {#reading-path}
 
-| 部分 | 章节 | 读完之后你能 |
-| --- | --- | --- |
-| 第一部分：快速开始 | [1. 从提示词开始](/zh/book/01-start/) · [2. 接手站点](/zh/book/02-take-over/) | 用一句提示词建出博客、项目网站、命令行手册或一本书，预览并审阅它，再用后续提示词持续改进 |
-| 第二部分：逐步掌握 | [3. 页面](/zh/book/03-pages/) · [4. 组件](/zh/book/04-components/) · [5. 图表与媒体](/zh/book/05-media/) · [6. 博客](/zh/book/06-blog/) · [7. 书籍](/zh/book/07-book/) · [8. 首页与外观](/zh/book/08-design/) · [9. 导航、搜索与多语言](/zh/book/09-navigation/) · [10. 发布上线](/zh/book/10-ship/) | 撰写和组织内容，用好每一类组件，发布文章和书籍，塑造首页与外观，让不同语言的读者都能找到想看的内容，并部署、升级站点 |
+{{< cards variant="list" >}}
+{{< card title="第一部分：快速开始" icon="fa-solid fa-bolt" badge="第 1–2 章" >}}
+用一句提示词建出博客、项目网站、命令行手册或一本书，预览并审阅它，再用后续提示词持续改进。
+
+[1. 从提示词开始](/zh/book/01-start/) · [2. 接手站点](/zh/book/02-take-over/)
+{{< /card >}}
+{{< card title="第二部分：逐步掌握" icon="fa-solid fa-layer-group" badge="第 3–10 章" >}}
+撰写和组织内容，用好每一类组件，发布文章和书籍，塑造首页与外观，让不同语言的读者都能找到想看的内容，并部署、升级站点。
+
+[3. 页面](/zh/book/03-pages/) · [4. 组件](/zh/book/04-components/) · [5. 图表与媒体](/zh/book/05-media/) · [6. 博客](/zh/book/06-blog/) · [7. 书籍](/zh/book/07-book/) · [8. 首页与外观](/zh/book/08-design/) · [9. 导航、搜索与多语言](/zh/book/09-navigation/) · [10. 发布上线](/zh/book/10-ship/)
+{{< /card >}}
+{{< /cards >}}
 
 如果你只想要一个站点，读完第 1 章也许就够了。第二部分始终围绕同一个示例项目展开：开源时序数据库
 Acme DB 的文档站，它基于 [OINK Starter](https://github.com/pgsty/oink-starter)

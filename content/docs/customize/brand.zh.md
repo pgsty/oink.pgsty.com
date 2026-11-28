@@ -111,10 +111,13 @@ OINK 把西文字体作为本地字体随主题分发、从你自己的站点加
 
 | 预设 | 界面与正文 | 标题 | 中文 |
 | --- | --- | --- | --- |
-| Paper | IBM Plex Sans | 系统衬线字体 | 宋体标题配黑体正文 |
+| Paper | IBM Plex Sans | IBM Plex Sans | 通篇黑体 |
 | Slate | Inter | Inter；展示标题用 Chakra Petch | 通篇黑体 |
-| Ink | 界面用 Inter，正文用系统衬线字体 | Inter | 黑体标题配宋体正文 |
+| GitHub | GitHub 的系统字体栈 | GitHub 的系统字体栈 | 通篇黑体 |
+| Ink | Palatino | Palatino，章节为斜体 | 标题与界面用楷体，正文用仿宋，缺少时为宋体 |
+| News | 系统衬线字体 | 粗重的 Times New Roman | 通篇宋体，标题用最粗的一档 |
 | Terminal | IBM Plex Mono，打印时用 IBM Plex Sans | IBM Plex Mono | 通篇黑体 |
+{.wide}
 
 Paper 与 Slate 的代码字体是 IBM Plex Mono，字标是 Chakra Petch。Plex Sans 与 Inter 包含拉丁、西里尔、希腊与越南语字符。中文的强调与引文在读者装有楷体时改用楷体，汉字不会被强行倾斜；Terminal 则改为给强调文字着色。
 
@@ -136,13 +139,13 @@ params:
 params:
   ui:
     fonts:
-      # 四种预设的正文和标题都跟随这款字体
+      # 所有预设的正文和标题都跟随这款字体
       ui: "'Source Han Sans SC', 'PingFang SC', sans-serif"
       # 等宽字体要带中文兜底，否则中英混排的代码块会对不齐
       code: "'Sarasa Mono SC', 'Noto Sans Mono CJK SC', monospace"
 ```
 
-设置 `ui` 会同时改变四种预设的正文和标题字体。要为标题单独选字体，设置 `heading`。其余键见[字体角色](#custom-fonts)。
+设置 `ui` 会同时改变所有预设的正文和标题字体。要为标题单独选字体，设置 `heading`。其余键见[字体角色](#custom-fonts)。
 
 这里写的是字体族名，不是字体文件，主题不会因为这个键下载或加载任何字体。所写的字体族要么已经装在读者系统里，要么由你自己的 [`@font-face`](#fonts-in-css) 声明，所以每个列表都要以通用族（`sans-serif`、`serif`、`monospace`）结尾，两者都没有的读者会落到这里。
 
@@ -207,10 +210,14 @@ body.td-blog {
 
 | 预设 | 外观 |
 | --- | --- |
-| `paper`（默认） | 象牙纸色背景、墨色正文、带下划线的蓝色链接、陶红色强调、Plex Sans 与外框表格 |
+| `paper`（默认） | 暖白纸色背景、墨色正文、蓝色链接与强调色、Plex Sans 与外框表格 |
 | `slate` | 冷灰蓝的技术风格 |
-| `ink`（实验） | 黑白底色、红色标记、直角面板、带下划线的正文链接 |
-| `terminal`（实验） | 控件、标题与正文都用等宽字体，青色链接、琥珀色强调、紧凑的桌面导航 |
+| `github`（实验） | 像 GitHub 显示 README 那样呈现 Markdown：GitHub 的字体与配色、带边框的表格、提示块配色与绿色按钮 |
+| `ink`（实验） | 写在暖色纸上的页面：界面与标题通篇用 Palatino 与楷体，正文用仿宋或宋体，朱色标记（着重号、首字、当前行），笔触分隔线与带下划线的正文链接；夜间是紫青色绀纸上的金银字 |
+| `news`（实验） | 灰色新闻纸上的印刷版面：粗重的 Times New Roman 与宋体标题、衬线正文与界面、一种专色蓝、报头双线、标题下的副题与日期线、粗细双线分节、拉引与敞开的表格；夜间是暗房，黑底银字配安全灯橙 |
+| `terminal`（实验） | 控件、标题与正文都用等宽字体，青色链接、琥珀色强调、紧凑的桌面导航；夜间是一块荧光屏，黑底灰字，标题、链接与光标为绿色 |
+
+每套预设的深色模式沿用浅色模式的字体，但配色各自独立，切换到深色是另一种阅读体验，而不是把页面反相。
 
 `params.ui.preset` 决定站点的外观，`params.ui.preset_menu` 决定读者能否在「外观」菜单里换成别的预设：
 
@@ -218,7 +225,7 @@ body.td-blog {
 params:
   ui:
     preset: paper
-    preset_menu: [paper, slate, ink, terminal]
+    preset_menu: [paper, slate, github, ink, news, terminal]
     dark_mode: true
 ```
 
@@ -228,7 +235,7 @@ params:
 | `true` | Paper、Slate 与站点自己的预设 |
 | 列表 | 恰好是列出的这些；漏写站点预设时主题会补上并告警 |
 
-Ink 与 Terminal 只有被点名（写在 `preset` 或列表里）时才会出现，已测试的范围见[实验记录](/zh/docs/design/research/2026-10-05-ink-terminal-experiment/)。读者选的风格与明暗分别保存在浏览器里；选回标注为站点默认的那一项，就恢复跟随站点。打印始终使用白纸上的浅色配色。
+GitHub、Ink、News 与 Terminal 只有被点名（写在 `preset` 或列表里）时才会出现，菜单始终按上表的顺序排列。Ink 与 Terminal 已测试的范围见[实验记录](/zh/docs/design/research/2026-10-05-ink-terminal-experiment/)。读者选的风格与明暗分别保存在浏览器里；选回标注为站点默认的那一项，就恢复跟随站点。打印始终使用白纸上的浅色配色。
 
 字体设置与 `theme_color` 在所有预设下都优先生效，但你在自己 CSS 里写的深色覆盖不一定：Paper 的深色配色限定在 `[data-td-preset='paper'][data-bs-theme='dark']` 上，优先级高于单独的 `[data-bs-theme='dark']`。深色覆盖请按[配色](#colors)一节的写法来写。
 
@@ -242,9 +249,9 @@ params:
     dark_mode: true
 ```
 
-开启后，主题加入深色配色，并在顶栏与页脚的「外观」控件里加入浅色、深色、跟随系统三个选项，控件图标会显示为太阳或月亮，表示当前模式。控件支持触屏与键盘，在手机上以底部面板打开。读者的选择保存在浏览器里并在各标签页之间同步；没有保存过选择时，页面跟随系统的 `prefers-color-scheme`。一小段内联脚本在样式表加载前就应用好明暗模式，页面不会先闪一下错误的配色。
+开启后，主题加入深色配色，并在顶栏与页脚的「外观」控件里加入浅色、深色、跟随系统三个选项，控件图标显示读者的选择：浅色为太阳，深色为月亮，跟随系统为半实心圆，系统在明暗之间切换时它保持不变。控件支持触屏与键盘，在手机上以底部面板打开。读者的选择保存在浏览器里并在各标签页之间同步；没有保存过选择时，页面跟随系统的 `prefers-color-scheme`。一小段内联脚本在样式表加载前就应用好明暗模式，页面不会先闪一下错误的配色。
 
-只想在读者系统要求时提供深色配色、不显示控件，写 `dark_mode: { enable: true, show_menu: false }`。
+只想在读者系统要求时提供深色配色、不显示控件，写 `dark_mode: { enable: true, show_menu: false }`。如果 `preset_menu` 仍提供风格选择，控件会保留，图标改为调色板。
 
 ## 页脚 {#footer}
 
@@ -343,10 +350,11 @@ Hugo 只压缩这个文件、不编译它，所以要写 CSS 而不是 SCSS：`/
 
 | 名称 | 内容 |
 | --- | --- |
-| `chrome` | 设计变量、排版、四套配色、站点顶栏，以及语言、明暗与外观控件 |
+| `chrome` | 设计变量、排版、六套配色、站点顶栏，以及语言、明暗与外观控件 |
 | `landing` | Landing 分区，须在 `chrome` 之后加载 |
 | `search` | 命令面板与本地搜索 |
 | `compare` | 双列视图 |
+{.fields}
 
 ```go-html-template {title="layouts/_partials/my-head.html"}
 {{ with partial "css/bundle.html" "chrome" }}

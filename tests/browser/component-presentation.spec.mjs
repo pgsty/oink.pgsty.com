@@ -2,7 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 const route = '/docs/components/presentation/';
-const presets = ['paper', 'slate', 'ink', 'terminal'];
+const presets = ['paper', 'slate', 'github', 'ink', 'news', 'terminal'];
 
 test.beforeEach(async ({ context }) => {
   await context.route('https://giscus.app/**', route => route.abort());

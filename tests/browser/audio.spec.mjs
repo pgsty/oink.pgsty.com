@@ -181,7 +181,7 @@ test.describe('Audio component', () => {
   });
 
   test('dark mode browser print resets audio figures to paper palette', async ({ page }) => {
-    for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+    for (const preset of ['paper', 'slate', 'github', 'ink', 'news', 'terminal']) {
       await open(page, '/docs/components/audio/', { preset, mode: 'dark' });
       await page.emulateMedia({ media: 'print' });
 

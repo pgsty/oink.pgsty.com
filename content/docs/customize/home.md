@@ -218,7 +218,9 @@ cards:
 
 `capabilities` gives each capability a row of its own with a visual panel
 beside it. `visual.type` is one of `shell`, `components`, `code`, `image` or
-`card`:
+`card`. In a `components` panel, items with `url` become links, and items with
+`preset` become in-place style switchers whenever `params.ui.preset_menu` offers
+that preset:
 
 ```yaml {title="data/home/en.yaml"}
 capabilities:

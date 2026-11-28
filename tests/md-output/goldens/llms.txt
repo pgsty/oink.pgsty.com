@@ -129,6 +129,7 @@
   - [Ink and Terminal stabilization](http://localhost/docs/design/proposals/ink-terminal-stabilization/index.md): A conditional stabilization plan for two distinct reading styles, with a shared footer blocker and explicit bilingual accessibility gates.
   - [Blog gallery](http://localhost/docs/design/decisions/blog-gallery/index.md): Keep articles as the content model while reusing Expo geometry for a fourth blog index view.
   - [Component refinement review](http://localhost/docs/design/research/2026-10-25-component-refinement/index.md): Local four-preset component validation, asset measurements, and separately reproduced gallery baseline failures.
+  - [Ink and News](http://localhost/docs/design/proposals/ink-news-presets/index.md): A partly implemented proposal that makes Ink the written style and News the printed style, with font coverage, light and dark palettes, detail specifications and acceptance gates.
   - [Table reading](http://localhost/docs/design/decisions/large-table-reading/index.md): Separate technical table layout from an optional corner action for reading in a larger viewport.
   - [v1.5.0 review repairs](http://localhost/docs/design/research/2026-11-06-review-repairs/index.md): Reproduced build, feed, navigation and interaction defects, bounded repairs, and remaining review work.
   - [Ink and Terminal review](http://localhost/docs/design/research/2026-10-26-ink-terminal-stabilization/index.md): Source review, bounded visual evidence, current failures and promotion limits for Ink and Terminal on 2026-10-26.

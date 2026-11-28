@@ -106,17 +106,19 @@ cascade:
 
 | 预设 | 外观 |
 | --- | --- |
-| `paper` | 象牙色纸面、陶红强调色、墨色文字、带下划线的蓝色链接、带边框的表格。默认值 |
+| `paper` | 暖白纸色、墨色文字、蓝色链接与强调色、Plex Sans 与外框表格。默认值 |
 | `slate` | 冷调蓝灰的技术风格 |
-| `ink` | 黑白底色、红色标记、直角面板。实验性 |
-| `terminal` | 通篇等宽字体、青色链接、琥珀色强调、紧凑的导航。实验性 |
-{#tbl-presets num="8-1" caption="四套视觉预设。"}
+| `github` | GitHub README 风格的字体、配色、边框表格与绿色按钮。实验性 |
+| `ink` | 暖色纸上的手写页面，Palatino 与楷体配仿宋/宋体正文及朱色标记。实验性 |
+| `news` | 灰色新闻纸上的印刷版面，粗重衬线与宋体标题、专色蓝与双线分节。实验性 |
+| `terminal` | 通篇等宽字体、青色链接、琥珀色强调、紧凑导航，夜间为荧光屏。实验性 |
+{#tbl-presets num="8-1" caption="六套视觉预设。"}
 
 ```yaml {title="hugo.yaml"}
 params:
   ui:
     preset: paper
-    preset_menu: [paper, slate, ink, terminal]
+    preset_menu: [paper, slate, github, ink, news, terminal]
     dark_mode: true
 ```
 
@@ -144,7 +146,7 @@ params:
 - 首页在两种语言下都显示首屏 Hero、三个指标、三张卡片、带复制按钮的安装命令，以及结尾的行动号召。
 - 快速上手按钮在英文首页指向 `/docs/get-started/quick-start/`，在中文首页指向 `/zh/docs/get-started/quick-start/`。
 - 博客使用紫色强调色，站点其余部分使用青绿色。
-- “外观”菜单提供四套预设和三种明暗模式，每种组合都清晰可读。
+- “外观”菜单提供六套预设和三种明暗模式，每种组合都清晰可读。
 
 ## 交给 agent {#agent}
 
@@ -153,6 +155,6 @@ params:
 data/home/zh.yaml 重写为五个分区：hero、metrics、cards、command-box、cta。所有
 事实都取自 README.md，不要编造数字。站内页面链接写成不带前导斜杠的站点路径。全站
 theme_color 设为 <#0f766e>，并在 cascade 里给博客单独设一个颜色。保持 preset 为
-paper、preset_menu 为 [paper, slate, ink, terminal]，并开启深色模式。然后在桌面
-和手机两种宽度下，逐一检查四套预设的浅色与深色模式，并报告所有产生告警的分区。
+paper、preset_menu 为 [paper, slate, github, ink, news, terminal]，并开启深色模式。然后在桌面
+和手机两种宽度下，逐一检查六套预设的浅色与深色模式，并报告所有产生告警的分区。
 ```

@@ -149,7 +149,7 @@ Make sure Git, Go and Hugo are installed per
        from_year: 2026
      ui:
        preset: paper
-       preset_menu: [paper, slate, ink, terminal]
+       preset_menu: [paper, slate, github, ink, news, terminal]
        dark_mode: true
        sidebar_menu_foldable: true
        section_index: cards

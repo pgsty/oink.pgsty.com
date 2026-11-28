@@ -65,48 +65,64 @@ capabilities:
         eyebrow: ENGINEERING DOCS / SHIP FAST
         title_lines: [Ready to use., Built to last.]
         rules: ['88%', '72%', '55%']
-    - ref: 02 / FOUR STYLES
-      title: Four styles. One site.
+    - ref: 02 / SIX STYLES
+      title: Six styles. One site.
       url: docs/customize/brand/#visual-presets
-      motto: Paper · Slate · Ink · Terminal
+      motto: Paper · Slate · GitHub · Ink · News · Terminal
       bullets:
-        - '[Paper](docs/customize/brand/#visual-presets) pairs ivory sheets with a clay accent; Slate keeps the technical look'
-        - 'Ink contrasts black, white and red; Terminal sets prose and headings in mono'
-        - 'Each style sets its own CJK system typography; Style and Light persist separately'
-      value: Same content, a different feel. Fonts and core scripts stay local.
+        - '[Paper](docs/customize/brand/#visual-presets) warm sheet, Slate technical, GitHub README'
+        - 'Ink Kai brush, News serif column, Terminal all-mono'
+        - 'Six dark modes too; press T for style, Y for light'
+      value: Same content, six styles. Click any tile to preview.
       visual:
         type: components
-        aria_label: Four visual styles in OINK
+        aria_label: Six visual styles in OINK
         items:
           - {
               icon: fa-solid fa-file-lines,
               title: Paper,
-              detail: ivory · clay · default,
+              detail: warm paper · default,
+              preset: paper,
             }
           - {
               icon: fa-solid fa-layer-group,
               title: Slate,
-              detail: the original technical look,
+              detail: classic technical look,
+              preset: slate,
+            }
+          - {
+              icon: fa-brands fa-github,
+              title: GitHub,
+              detail: GitHub Markdown look,
+              preset: github,
             }
           - {
               icon: fa-solid fa-pen-nib,
               title: Ink,
-              detail: black · white · red,
+              detail: brush · Kai · vermilion,
+              preset: ink,
+            }
+          - {
+              icon: fa-solid fa-newspaper,
+              title: News,
+              detail: newsprint · serif · blue,
+              preset: news,
             }
           - {
               icon: fa-solid fa-terminal,
               title: Terminal,
-              detail: all-mono · teal · amber,
+              detail: all-mono · phosphor,
+              preset: terminal,
             }
     - ref: 03 / LOCAL FIRST
       title: Build with Hugo
       url: docs/about/features/
-      motto: Plain CSS, bundled assets, Hugo 0.169+
+      motto: Plain CSS, bundled assets, Hugo 0.170+
       bullets:
         - 'One [**hugo**](https://gohugo.io/) command builds everything'
         - '[No **npm install**, Sass compiler, or PostCSS.](docs/about/features/)'
         - '[Local bundled assets](docs/about/features/), ready for [offline builds](docs/start/from-scratch/)'
-      value: Hugo Modules need Go for resolution; external integrations remain your choice.
+      value: Zero Node toolchain; external services stay opt-in.
       visual:
         type: code
         aria_label: Hugo build example
@@ -335,10 +351,11 @@ faq:
         `zh`) and Traditional Chinese (`zh-tw`). RTL layouts are supported.
     - question: How do I choose a style, and can I keep the old look?
       answer: >-
-        Open Appearance from the sun or moon button, choose Paper, Slate, Ink
-        or Terminal, then select light, dark or system mode. Paper is the new
-        default; Slate preserves the previous look. This site offers all four
-        styles. Site owners select the menu explicitly in configuration.
+        Open Appearance from the top-bar button, choose Paper, Slate, GitHub,
+        Ink, News or Terminal, then select light, dark or system mode; the T
+        and Y keys step through both. Paper is the default; Slate preserves
+        the original look. This site offers all six styles. Site owners
+        select the menu explicitly in configuration.
         Fonts and core scripts are served locally. See the
         [appearance guide](docs/customize/brand/#visual-presets).
     - question: What do AI assistants and crawlers get?

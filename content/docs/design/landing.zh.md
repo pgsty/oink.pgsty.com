@@ -117,9 +117,17 @@ Paper 去掉首屏网格与光晕，使用暖色阴影、Plex Sans 展示标题�
 Slate 保留技术网格、光晕、Chakra Petch 标题与原有主按钮颜色。两者共用分区结构，
 不改变密度。手机抽屉包含共用外观表单，参见[外壳契约](/zh/docs/design/shell/#appearance-control)。
 
-显式开启的 Ink/Terminal 实验也去掉网格、光晕与阴影。Ink 使用高字重 Inter 标题、
-直角卡片与红色主按钮；Terminal 使用等宽标题、2 px 圆角、琥珀主按钮与静态光标形
-装饰。两者都不新增动画，不改变分区列结构。
+显式开启的实验预设也去掉网格与光晕，Ink、News 与 Terminal 还去掉阴影。Ink 用
+Palatino 与楷体以正文字重书写首屏标题和分区标题，带一层淡淡的墨晕，配直角卡片与
+朱红主按钮（深色 Ink 中为金色）；News 的首屏标题使用 Times 标题字体，配直角卡片与
+链接蓝主按钮；GitHub 保留 6 px 圆角与浅阴影，使用半粗首屏标题与 GitHub 的绿色主按钮；
+Terminal 使用等宽标题、2 px 圆角、琥珀主按钮与静态光标形装饰。它们都不新增动画，
+不改变分区列结构。
+
+`capabilities` 中 `visual.type: components` 的条目可以附带 `preset` 字段。当交互式
+HTML 通过 `params.ui.preset_menu` 提供该预设时，条目渲染为位于 `role="group"` 内
+的 `button[data-td-preset-select]`，通过 `aria-pressed` 与 `appearance.js` 保持
+同步，并在点击时锚定当前视口位置；Print 输出与未提供的预设退化为静态 `span`。
 
 ## 本地操作控件精修 {#action-refinement}
 

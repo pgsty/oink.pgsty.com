@@ -26,7 +26,7 @@ for (const [typography, override] of [['system', false], ['system', true], ['tec
         try { await route.fulfill({ body: readFileSync(join(temp, 'public', path)), contentType: types[extname(path)] || 'application/octet-stream' }); }
         catch { await route.fulfill({ status: 404, body: '' }); }
       });
-      for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+      for (const preset of ['paper', 'slate', 'github', 'ink', 'news', 'terminal']) {
         const page = await context.newPage();
         const fonts = [];
         page.on('request', request => { if (request.resourceType() === 'font') fonts.push(request.url()); });
@@ -45,8 +45,10 @@ for (const [typography, override] of [['system', false], ['system', true], ['tec
           await page.locator('[data-td-appearance-trigger]:visible').first().click();
           const panel = page.locator('dialog[open]');
           await expect(panel.locator('[data-td-preset-value="terminal"]')).toBeChecked();
-          const name = panel.locator('[data-td-preset-value="terminal"] + .td-appearance__card .td-appearance__name');
-          expect(await name.evaluate(el => el.scrollWidth <= el.clientWidth + 1)).toBe(true);
+          // Mono is the widest face: every name, News the longest, fits.
+          const names = panel.locator('.td-appearance__name');
+          await expect(names).toHaveCount(6);
+          expect(await names.evaluateAll(els => els.every(el => el.scrollWidth <= el.clientWidth + 1))).toBe(true);
         }
         await page.close();
       }

@@ -43,7 +43,7 @@ which spans nearly 5,000 Markdown files in eight languages, Arabic included.
   source still reads as a quote, a table and an image.
 - **A complete reading shell.** Sidebar tree, table of contents, breadcrumbs,
   pager, a `Cmd/Ctrl + K` command palette, keyboard navigation, light and dark
-  modes and four visual presets.
+  modes and six visual presets.
 - **Search without a service.** A BM25 engine in the browser queries an index
   Hugo builds for each language, and it finds Chinese, Japanese and Korean
   text typed without spaces.

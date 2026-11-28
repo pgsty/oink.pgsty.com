@@ -1,7 +1,7 @@
 ---
 title: Component presentation
 linkTitle: Presentation
-description: Cards, disclosures, tabs, and compact procedures across OINK's four visual presets.
+description: Cards, disclosures, tabs, and compact procedures across OINK's six visual presets.
 weight: 910
 outputs: [HTML, markdown, print]
 search_keywords: [component styles, card list, compact steps, command strip, presets]
@@ -9,8 +9,8 @@ search_keywords: [component styles, card list, compact steps, command strip, pre
 
 This page shows the everyday components side by side with their compact
 variants, so you can judge how each looks before choosing it: switch between
-Paper, Slate, Ink and Terminal, light or dark, from the Appearance menu and
-compare. Each variant is one extra class or a `variant` parameter on the
+Paper, Slate, GitHub, Ink, News and Terminal, light or dark, from the
+Appearance menu and compare. Each variant is one extra class or a `variant` parameter on the
 Markdown you already write. None loads a script or changes links, keyboard
 use, copied text, print or Markdown output, and an unknown variant warns and
 falls back to the regular look.

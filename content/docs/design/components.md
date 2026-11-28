@@ -128,9 +128,9 @@ Unrecognized `variant` values warn and fall back to the default layout. A comman
 
 Native and full cards share surface and title rules. Only cards with links receive hover emphasis; secondary body links remain operable above a stretched title link. Tabs have transparent individual backgrounds at rest, a subtle hover fill on hover-capable devices, and a thin underline plus link color for selection. Labels keep the same weight and position between states; keyboard focus remains a distinct outline. Native disclosures retain an independently operable summary. Copy controls preserve their target geometry and existing success/error semantics. Coarse-pointer copy and tab controls have at least 44px height.
 
-Preset colors and font roles remain authoritative. Ink/Terminal keep flat surfaces and square/2px geometry. Print, RSS, Markdown, and LLMS keep the content and their existing output semantics; presentation adds no hidden content or extra controls to static output.
+Preset colors and font roles remain authoritative. Ink, News and Terminal keep flat surfaces and square/2px geometry. Print, RSS, Markdown, and LLMS keep the content and their existing output semantics; presentation adds no hidden content or extra controls to static output.
 
-Field names use unboxed, emphasized monospace text in all four presets, including Terminal, for both Markdown tables and full shortcodes.
+Field names use unboxed, emphasized monospace text in every preset, including Terminal, for both Markdown tables and full shortcodes.
 
 ## Validation {#validation}
 

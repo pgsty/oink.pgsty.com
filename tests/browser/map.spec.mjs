@@ -193,7 +193,7 @@ test.describe('Map component', () => {
     await stubTiles(page);
     await page.setViewportSize({ width: 1280, height: 900 });
 
-    for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+    for (const preset of ['paper', 'slate', 'github', 'ink', 'news', 'terminal']) {
       for (const theme of ['light', 'dark']) {
         await page.addInitScript(
           ({ p, t }) => {

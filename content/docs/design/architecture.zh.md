@@ -137,7 +137,7 @@ Bootstrap 组件拆分：其中带有主题的调色板，与某条 Bootstrap �
 | --- | --- |
 | `main` | 所有主题页面，共 123 层。`head-css.html` 把它发布为 `css/main.css`；生产构建中压缩、加指纹并带完整性属性 |
 | `redoc.css` | 登记了 ReDoc 的页面。它是单独的一个文件 `assets/css/td/redoc.css`，不在各层清单之内，按同样方式发布为 `css/redoc.css` |
-| `chrome` | 不加载 `main` 的站点自有外壳：令牌、排版、四套配色、站点导航栏，以及语言、明暗与外观控件 |
+| `chrome` | 不加载 `main` 的站点自有外壳：令牌、排版、六套配色、站点导航栏，以及语言、明暗与外观控件 |
 | `landing` | 站点自有外壳使用的 Landing 区块，在 `chrome` 之后加载。它重复了配色规则，因为配色以同等优先级改写 Landing 区块，必须排在其后 |
 | `search`、`compare` | 站点自有外壳使用的命令面板与本地搜索，以及双列视图 |
 
@@ -423,7 +423,7 @@ CSS 或 SVG 发起的请求也受此限制。
 不再包围整篇文章。强制颜色模式保留键盘提示，不使用全局焦点边框重置。
 
 字体角色为 `ui`、`body`、`heading`、`code`、`display`、`meta`、`brand` 与 `print`，
-通过 `--td-*-font-family` 暴露。显式设置 `fonts.ui` 会同时改变四种预设的界面、正文与标题字体，包括 Paper。
+通过 `--td-*-font-family` 暴露。显式设置 `fonts.ui` 会同时改变每种预设的界面、正文与标题字体，包括 Paper。
 显式设置 `fonts.body` 时，无论是否同时设置了 `fonts.ui`，它都提供正文字体和标题字体，除非 `fonts.heading` 另行指定标题字体。`params.ui.typography`
 可取 `technical` 或 `system`；两者都在同一份样式表中，不加载运行时。自 OINK 1.6.0 起，样式表是纯 CSS，不读取消费站的任何 Sass 变量（1.5.1 及更早版本曾由旧 Bootstrap/Docsy Sass 变量提供初值）。
 
@@ -456,9 +456,12 @@ CSS 或 SVG 发起的请求也受此限制。
 ## 视觉预设 {#visual-presets}
 
 OINK 1.2.0 默认使用 Paper。`params.ui.preset` 接受 `paper`、`slate`，以及显式
-选择的实验预设 `ink`、`terminal`；非法值与保留名称（`folio`、`canvas`）告警并回退到
-`paper`。`params.ui.preset_menu` 默认 `false`；`true` 提供 Paper、Slate 与站点默认值，
-列表指定可选项并可显式开启实验。列表必须包含站点默认值，缺失时告警并补入。不支持页面级预设。
+选择的实验预设 `github`、`ink`、`news` 与 `terminal`；非法值与保留名称（`folio`、
+`canvas`）告警并回退到 `paper`。`params.ui.preset_menu` 默认 `false`；`true` 提供
+Paper、Slate 与站点默认值，列表指定可选项并可显式开启实验。列表必须包含站点默认值，
+缺失时告警并补入。无论列表顺序如何，菜单都按同一顺序排列：Paper、Slate、GitHub，
+然后是 Ink、News、Terminal，在风格菜单中排成两行三列；`t` 键也按此顺序切换。
+不支持页面级预设。
 
 Hugo 为所有文档根元素输出 `data-td-preset` 与 `data-td-site-preset`，包括 404
 和打印输出。开启读者选择时，head 内联脚本在 CSS 加载前校验 `td-preset`。选择
@@ -468,16 +471,38 @@ Hugo 为所有文档根元素输出 `data-td-preset` 与 `data-td-site-preset`�
 `td-color-theme` 与 `td-theme-change`。浏览器栏颜色跟随实际明暗和预设。禁用
 JavaScript 时显示站点默认的浅色预设；外观控件需要 JavaScript。
 
-四套预设编入同一个样式表。Slate 保留 v1.1.0 的基础色板选择器与值。Paper 调整
-配色和少量组件规则，不改变外壳列宽、断点或全局间距。Paper 的画布为象牙色
-`#faf9f5`，墨色为 `#1f1e1c`；链接保持蓝色，并与 Ink、Terminal 一样通过可选的
-`--td-preset-accent` 属性设置自己的陶红强调色（`#9b4a28`，深色 `#de8460`）。
-已发布的 `theme_color` 在任何预设下都会替换该强调色。Paper 深色块重声明浅色块的
-每个色板 token，并覆盖嵌套深色区域。字体角色保持同等选择器优先级，顺序为预设、
+六套预设编入同一个样式表。Slate 保留 v1.1.0 的基础色板选择器与值。Paper 调整
+配色和少量组件规则，不改变外壳列宽、断点或全局间距。Paper 的画布为暖白色
+`#f7f6f3`，墨色为 `#21201c`；蓝色链接（`#2b5f8c`，深色 `#7db5e6`）同时充当强调色，
+因此选中行、大纲光标与文字选区都是蓝色。GitHub 采用 GitHub 的 `#ffffff` 与
+`#1f2328`（深色 `#0d1117` 与 `#f0f6fc`），以链接蓝 `#0969da`（深色 `#4493f8`）为
+强调色。Ink 是写出来的页面，News 是印出来的页面。Ink 在纸色 `#f3ead7` 上用墨色
+`#241a10` 书写，强调色为朱色 `#a8321b`；纸面向窗口边缘渐深至 `#e8dabd`。News 在
+灰色新闻纸 `#f0eee8` 上印油墨黑 `#161616`，链接与强调色只用一种专色蓝 `#1f4f7a`，
+版面平整，没有圆角与阴影。深色色板并不是浅色色板的反相：每套预设都有自己的夜色，
+字体不随明暗改变。Paper 保留暖深灰 `#161513`，Slate 保留 v1.1.0 的深蓝，GitHub 采用
+GitHub 自己的深色。深色 Ink 是一卷金银写经：紫青色绀纸 `#1b1730` 上写泥银色文字
+`#e3ddd0`，标题与强调色为泥金 `#dcb766`，纸面向边缘渐深至 `#120f22`。深色 News 是报社冲洗新闻照片的暗房：`#0f0f0f` 上的银盐色文字 `#d8d6d1`，
+链接与强调色为安全灯橙 `#f2804a`，窗口一角有一点淡淡的橙色光晕。Ink 与 News 把画布
+渐变的极值命名为 `--td-preset-canvas-edge`，所有文字色在这里和在平整画布上一样都要
+达到 AA。深色 Terminal 是一块克制使用的荧光屏：`#050806` 上的浅灰绿文字 `#c9d2cc`，
+荧光绿 `#3dff7a` 只用于标题、链接、强调色与当前行的光标条，标题标记、强调与引用竖线
+用琥珀色 `#e5b45a`。GitHub、Ink、News 与 Terminal 通过可选的
+`--td-preset-accent` 属性设置强调色。已发布的 `theme_color` 在任何预设下都会替换
+强调色。每个深色色板都重声明对应浅色色板的全部 token，并覆盖嵌套深色区域。字体角色保持同等选择器优先级，顺序为预设、
 `typography: system`、站点自有样式、head 输出的 `params.ui.fonts`。`brand` 单独控制字标。Slate 保留 Inter。
-Paper 的界面与正文使用本地 IBM Plex Sans，标题使用系统衬线字体。两者的字标保留
-Chakra Petch，代码保留 IBM Plex Mono。Ink 的界面与标题使用 Inter，正文使用系统
-衬线字体，配合红色标记、正文链接下划线、直角与无阴影。Terminal 的界面、标题与
+Paper 的界面、正文与标题都使用本地 IBM Plex Sans。两者的字标保留 Chakra Petch，
+代码保留 IBM Plex Mono。News 的正文使用系统衬线字体，标题使用 Times New Roman
+（Linux 上为 Liberation Serif），汉字配宋体-简最粗的一档；界面、搜索、菜单、列表、
+表格标签与日期线使用同一款正文衬线字体；字标排成报头，已安装时用 Didot 或 Bodoni 72。GitHub 的所有文字角色
+使用 GitHub 的系统字体栈（`-apple-system`、BlinkMacSystemFont、Segoe UI、Noto Sans、
+Helvetica、Arial），代码使用 GitHub 的代码字体栈（`ui-monospace`、SFMono-Regular、
+SF Mono、Menlo、Consolas、Liberation Mono）。Ink 是手写的，全页一种声音：西文处处
+使用 Palatino（Windows 上为 Palatino Linotype 或 Book Antiqua，Linux 上为 URW Palladio、
+P052 或 TeX Gyre Pagella），页面标题与 Landing 大标题为正体，章节标题为其书写体斜体；
+汉字在标题以及界面、搜索、菜单与列表中用楷体，正文用仿宋，缺少楷体或仿宋时为宋体。
+展示角色与字标采用标题字体；阿拉伯文与希伯来文标题按字形回退到 Diwan Thuluth、
+Arabic Typesetting 或 Corsiva Hebrew。配合朱色标记、正文链接下划线、直角与无阴影。Terminal 的界面、标题与
 正文都使用 IBM Plex Mono，配合青色链接、琥珀强调、2 px 圆角与无阴影，打印角色
 仍为 IBM Plex Sans。系统排版模式不请求内置文字字体，除非站点显式覆盖角色。
 没有新增外部字体请求。Terminal 仅压紧
@@ -490,10 +515,12 @@ Chakra Petch，代码保留 IBM Plex Mono。Ink 的界面与标题使用 Inter�
 
 | 预设 | 正文的西文与汉字 | 标题的西文与汉字 | 强调与引称 | 引用 |
 | --- | --- | --- | --- | --- |
-| Paper | IBM Plex Sans；冬青黑体，其次平台黑体 | 系统衬线（Charter、Iowan Old Style、Cambria、Georgia）；宋体 | 楷体 | 楷体 |
+| Paper | IBM Plex Sans；平台黑体 | IBM Plex Sans；平台黑体 | 楷体 | 正文字体 |
 | Slate | Inter；平台黑体 | Inter；平台黑体 | 楷体 | 正文字体 |
-| Ink | 系统衬线；宋体，字号 17 px，因为宋体更轻 | Inter；平台黑体 | 楷体 | 楷体 |
+| Ink | Palatino；仿宋（`size-adjust: 108%`），未安装时为宋体，字号 17 px | Palatino，章节为斜体；楷体，未安装楷体时为宋体 | 楷体 | 楷体 |
 | Terminal | IBM Plex Mono；平台黑体 | IBM Plex Mono；平台黑体 | 正文字体，直立，强调色 | 正文字体 |
+| News | 系统衬线（Charter、Iowan Old Style、Cambria、Georgia）；宋体，字号 17 px | Times New Roman；宋体-简 Black，Windows 上为粗黑体 | 楷体 | 楷体，西文为斜体 |
+| GitHub | GitHub 系统字体栈；平台黑体 | GitHub 系统字体栈；平台黑体 | 楷体 | 正文字体 |
 
 为此新增三个角色：`--td-emphasis-font-family` 用于 `em`、`cite`、`dfn` 与无类名的
 `i`，`--td-heading-emphasis-font-family` 用于标题内的强调，`--td-quote-font-family`
@@ -501,26 +528,57 @@ Chakra Petch，代码保留 IBM Plex Mono。Ink 的界面与标题使用 Inter�
 `params.ui.fonts` 的键，站点在自己的 CSS 中设置。楷体来自 `OINK Kai`：只用
 `local()` 引用（Kaiti SC、STKaiti、KaiTi），仅覆盖中日韩码位，`size-adjust: 114%`，
 同时声明为正体与斜体，因此汉字从不被推歪，同一短语中的西文仍保留真斜体。未安装
-楷体时（如 Android），该字体不会加载，由其后的字体栈接替。Paper 的标题字体栈在
-`serif` 之前列出 Microsoft YaHei，没有可用宋体的 Windows 显示粗黑体；Ink 的正文
-字体栈以 STSong 与 SimSun 结尾。这些字体栈只在 macOS 上审阅过。
+楷体时（如 Android），该字体不会加载，由其后的字体栈接替。另有一组 600 至 900
+字重的字体只引用系统已安装的粗楷体（Kaiti SC Bold、Kaiti TC Bold），楷体标题与加粗
+的汉字强调因此显示真正的粗体；未安装粗楷体时这组字体不加载，由常规字体合成粗体。
+仿宋以同样方式来自 `OINK Fangsong`（STFangsong、FangSong），仅覆盖中日韩码位，
+`size-adjust: 108%`，同时声明为正体与斜体，只用于 Ink 的正文。中文 Windows 自带楷体与
+仿宋，macOS 读者需要自行下载，手机与多数 Linux 两者都没有，因此 Ink 的中文在那里显示为
+宋体；在没有可按名称引用的宋体的平台上（如 iOS），显示为平台的回退字体。`local()`
+别名还能命中 WebKit 按字体族名查不到的已下载字体。Ink 与 News 的标题字体栈在 `serif` 之前列出 Microsoft YaHei，没有可用宋体的 Windows
+显示粗黑体；Ink 与 News 的正文字体栈以 STSong 与 SimSun 结尾。这些字体栈只在
+macOS 上审阅过。
 
-四套预设共用同一组正文细节。Markdown 中的裸 `<kbd>` 采用 `kbd` 短代码的键帽
-样式，列表符号使用三级墨色。中文、日文、韩文段落（`:lang(zh)`、`:lang(ja)`、
+所有预设共用同一组正文细节。Markdown 中的裸 `<kbd>` 采用 `kbd` 短代码的键帽
+样式，列表符号使用三级墨色；GitHub 按 GitHub 的画法重新设定这两项。中文、日文、韩文段落（`:lang(zh)`、`:lang(ja)`、
 `:lang(ko)`）中的标题字距为零；各预设的负字距只作用于其他语言。`.td-content`
 设置 `text-autospace: normal`，代码、`kbd` 与 `samp` 不参与；段落、列表项与引用
-使用 `text-wrap: pretty`。不支持这些属性的浏览器保持原有渲染。Ink 标题使用
-700 字重，二级标题上方为 1 像素横线。Ink 与 Terminal 的引用块在屏幕、打印与
-排版复制中都使用预设强调色竖线。Terminal 生成的标题标记使用 400 字重与
-`0.12em` 字距。
+使用 `text-wrap: pretty`。不支持这些属性的浏览器保持原有渲染。Ink 的所有标题都用
+正文字重并带一丝洇墨：页面标题为正体，章节标题用书写体斜体配直立楷体，在深色纸面
+上为金色，标题上方留出更深的天头；Landing 分区标题同样用正文字重。每节开头有一道由浓到淡的笔触（强制色彩模式下为
+2 px 横线），`hr` 是一道两头收锋的短笔画，表格与提示块标签用标题字体书写，保持原有
+大小写与字重。Ink 正文中的中文 `strong` 不加粗，改为朱色着重号；Blog 文章与 Book
+章节（不含索引页）的首段以标题字体、强调墨色的三行首字开篇；导航当前行用一个朱色
+圆点标出。纸面渐变与 News 的光晕只在屏幕上显示，
+强制色彩模式下让位于系统画布。Ink 的引用挂在一道 3 px、向下渐淡的朱砂笔触
+上；Terminal 的引用使用其强调色竖线。两者在打印与排版复制中保留这道竖线，Ink 的
+标题在这两处使用楷体。Terminal 生成的标题标记使用 400 字重与 `0.12em` 字距。深色
+Terminal 另有带淡淡辉光的绿色标题、指针悬停时发光的链接、淡淡的扫描线、以绿色光标条
+标出的导航与搜索当前行，以及各部分区分清楚的语法配色：关键字荧光绿、字符串琥珀、
+数字青色、名称浅灰、注释暗淡。
 
-正文中的链接在每套预设下都带有不依赖颜色的线索。Paper 与 Ink 使用下划线，字重与
-周围文字相同：Paper 的下划线为 1 像素、链接色的一半浓度，悬停或聚焦时变为完整颜色；
-Ink 的为实线。Slate 与 Terminal 保持 600 字重、不加下划线。这里的正文指段落、表格
+News 的页面标题用最粗的字重、收紧字距，下方加双线；其下的页面描述成为副题，西文为
+斜体，没有斜体的文字保持直立；日期线为界面衬线字体的大写小字，夹在两道细线之间。每节开头
+有一道粗细双线，`hr` 画成双线，站点页头下缘也收在一道双线上，像报头。表格不加外框，
+标签上方与末行下方各一条墨线，标签大写并加宽字距。引用是拉引：字号大一级，上方一道
+粗线、下方一道细线，侧边不加竖线，保持起始对齐。提示块、搜索、菜单与外观面板去掉
+圆角，导航当前行用黑色栏线与粗体标出，不加底色。GitHub 遵循
+github-markdown-css 5.9.0 与 @primer/primitives 11.10.0（均为 MIT 许可）：正文
+16 px、行高 1.5；标题为半粗体、零字距，`h1` 与 `h2` 下方各一条细线，宽屏时锚点以
+链接图标置于标题前；代码块为灰底，带标题的代码块是带框的文件框；表格每个单元格
+都有边框，偶数行加底色，宽度随内容收缩；`hr` 为 0.25em 粗条；提示块采用 GFM alert
+配色；侧栏当前行左侧加 4 px 竖条；主按钮为绿色。为满足对比度，GitHub 的三个数值有所
+调整：深色主按钮悬停色为 `#268838`；浅色选中标签页下划线用 `#bc4c00`，替代对比度
+仅 2.15:1 的珊瑚色；深色焦点环沿用链接蓝。
+
+正文中的链接在每套预设下都带有不依赖颜色的线索。News、Ink 与 GitHub 使用
+下划线，字重与周围文字相同：News 的下划线为 1 像素、链接色的一半浓度，悬停或
+聚焦时变为完整颜色；Ink 的为实线，以强调墨色画在墨色文字下；GitHub 的为实线。Paper、Slate 与 Terminal 保持 600 字重、
+不加下划线。这里的正文指段落、表格
 单元格、图注，以及没有类名的列表或 `.steps` 列表、任务列表的条目。带有其他类名的列表
 属于组件：其中的链接（如卡片标题、Book 目录、文件树条目）在所有预设下都保持 600 字重、
-不加下划线。标题锚点、徽章、按钮与脚注引用除外。行内代码在 Slate 与 Ink 中为 600 字重，在 Paper 与 Terminal 中为 400
-字重，因为底板或边框已经标明了代码；加粗的代码在所有预设中均为 600。这些规则保持
+不加下划线。标题锚点、徽章、按钮与脚注引用除外。行内代码在 Paper、Slate 与 Ink 中为 600 字重，
+在 News、Terminal 与 GitHub 中为 400 字重，因为底板或边框已经标明了代码；加粗的代码在所有预设中均为 600。这些规则保持
 元素级优先级，主题的语义 `code` 元素与站点自有样式仍可覆盖。表格单元格使用等宽数字。
 表格视口的顶部圆角为 8 px，除非预设为其加了外框或改为直角。深色模式使用灰度字体平滑。
 
@@ -568,11 +626,12 @@ HTML 由选中的节点重建，不使用浏览器带样式的序列化结果：
   的裸标记，由粘贴目标决定格式。选区超出文章范围时只复制文章。
 
 `--td-copy-heading-rule`（`under`、`over` 或 `none`）与 `--td-copy-heading-font`
-让预设决定剪贴板中二级标题横线的位置和标题字体。Ink 使用 `over`；Terminal 使用
-`none` 与平台等宽字体栈。
+让预设决定剪贴板中二级标题横线的位置和标题字体。Ink 使用 `over` 与楷体；Terminal 使用
+`none` 与平台等宽字体栈；News 保留默认横线，标题字体为 Times New Roman 配宋体；GitHub
+显式写出默认值 `under`。
 
 `tests/js/rich-copy.test.js` 负责序列化器，`bin/check-params.py` 负责配置项，
-文档站的 `rich-copy.spec.mjs` 在四套预设下测试真实页面。在微信、Word 等编辑器中的
+文档站的 `rich-copy.spec.mjs` 在每套预设下测试真实页面。在微信、Word 等编辑器中的
 粘贴结果取决于各编辑器自己的过滤规则，不在自动化测试范围内。
 
 ## 译文阅读运行时 {#translation-reader-runtime}

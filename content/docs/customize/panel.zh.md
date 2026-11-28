@@ -28,14 +28,31 @@ search_keywords: [命令面板, command palette, Cmd+K, Ctrl+K, 快捷键, 页�
 面板内：<kbd>↑</kbd> <kbd>↓</kbd> 选择，<kbd>Enter</kbd> 执行，<kbd>Esc</kbd> 关闭并把焦点交还给打开它的控件。
 
 ## 面板内容 {#contents}
+
 不输入任何内容时，面板按固定顺序列出四组：
 
-| 分组 | 内容 | 谁决定 |
-| --- | --- | --- |
-| 快速链接 | 顶栏一级菜单里选出的几个入口 | `params.ui.quick_links` |
-| 页面操作 | 复制 Markdown、在 ChatGPT / Claude 中打开、查看 Markdown 源码、查看修改历史、编辑本页、新建子页、提交文档／项目议题、打印整节、打开双列视图（`compare_translations`） | 仓库配置、`assistant_links`、本页是否有 Markdown 输出；双列视图还取决于 `params.ui.compare` 与同源译文 |
-| 偏好设置 | 切换版本 → 切换语言 → 切换风格 → 切换主题 | 站点是否配了多版本、多语言、视觉预设菜单（`preset_menu`）与深浅色菜单 |
-| 命令 | 复制链接（`copy_link`）、打开 GitHub 仓库、打开[浏览历史](/zh/docs/customize/keyboard/#history)，之后是站点自定义命令 | `copy_link` 始终可用；其余取决于 `params.github_project_repo`（缺省回退到 `github_repo`）、是否开启键盘导航，以及 `ui.command_palette.commands` |
+{{< cards variant="list" >}}
+{{< card title="快速链接" icon="fa-solid fa-compass" badge="1" >}}
+顶栏一级菜单里选出的几个入口。
+
+**由以下配置决定**：`params.ui.quick_links`。
+{{< /card >}}
+{{< card title="页面操作" icon="fa-solid fa-file-lines" badge="2" >}}
+复制 Markdown、在 ChatGPT / Claude 中打开、查看 Markdown 源码、查看修改历史、编辑本页、新建子页、提交文档／项目议题、打印整节、打开双列视图（`compare_translations`）。
+
+**由以下配置决定**：仓库配置、`assistant_links`、本页是否有 Markdown 输出；双列视图还取决于 `params.ui.compare` 与同源译文。
+{{< /card >}}
+{{< card title="偏好设置" icon="fa-solid fa-sliders" badge="3" >}}
+切换版本 → 切换语言 → 切换风格 → 切换主题。
+
+**由以下配置决定**：站点是否配了多版本、多语言、视觉预设菜单（`preset_menu`）与深浅色菜单。
+{{< /card >}}
+{{< card title="命令" icon="fa-solid fa-terminal" badge="4" >}}
+复制链接（`copy_link`）、打开 GitHub 仓库、打开[浏览历史](/zh/docs/customize/keyboard/#history)，之后是站点自定义命令。
+
+**由以下配置决定**：`copy_link` 始终可用；其余取决于 `params.github_project_repo`（缺省回退到 `github_repo`）、是否开启键盘导航，以及 `ui.command_palette.commands`。
+{{< /card >}}
+{{< /cards >}}
 
 偏好设置四项的顺序与顶栏控件一致（版本、语言、风格、主题），面板与顶栏是同一个次序。选中「切换语言」这类项后，面板不立即跳转，而是就地展开可选项，再选一次。
 

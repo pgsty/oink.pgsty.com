@@ -124,10 +124,22 @@ glow, Chakra Petch headings, and original primary-action colors. Shared section
 geometry and density remain unchanged. The mobile drawer includes the shared
 Appearance sheet; see the [shell contract](/docs/design/shell/#appearance-control).
 
-The explicit Ink/Terminal experiments also remove the grid, glow and shadows.
-Ink uses heavy Inter headings, square cards and a red primary action. Terminal
-uses mono headings, 2 px corners and an amber primary action with a static
-cursor-shaped decoration. Neither adds animation or changes section columns.
+The explicit experiments also remove the grid and glow; Ink, News and Terminal
+drop the shadows too. Ink writes the hero and section titles in Palatino and
+Kai at text weight with a faint ink bleed, over square cards and a vermilion
+primary action (gold in dark Ink). News sets the hero in its Times headline
+face over square cards with a link-blue primary action. GitHub keeps 6 px
+corners, light shadows, a semibold hero title and GitHub's green primary
+button. Terminal uses mono headings, 2 px corners and an amber primary action
+with a static cursor-shaped decoration. None adds animation or changes section
+columns.
+
+A `capabilities` item with `visual.type: components` may attach `preset` to its
+tiles. When interactive HTML offers that preset through `params.ui.preset_menu`,
+the tile renders a `button[data-td-preset-select]` inside `role="group"`, stays
+synchronized with `appearance.js` via `aria-pressed`, and anchors its viewport
+position on click; Print output and unoffered presets degrade to static `span`
+tiles.
 
 ## Local action refinement {#action-refinement}
 

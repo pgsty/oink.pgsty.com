@@ -41,7 +41,7 @@ for (const locale of ['', '/zh']) {
     const label = page.locator('.td-content .markmap svg text tspan').first();
     await expect(label).toBeVisible();
     expect(await label.evaluate(el => getComputedStyle(el).fill === getComputedStyle(el.closest('.td-content')).color)).toBe(true);
-    for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+    for (const preset of ['paper', 'slate', 'github', 'ink', 'news', 'terminal']) {
       for (const color of ['light', 'dark']) {
         await page.evaluate(({ preset, color }) => {
           // These are the public appearance attributes observed by CSS.
@@ -92,7 +92,7 @@ for (const locale of ['', '/zh']) {
       await expect(table).toHaveClass('wide td-table--wide');
       await expect(legacy).toHaveClass('td-table--wide');
       await page.evaluate(() => document.fonts.ready);
-      for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+      for (const preset of ['paper', 'slate', 'github', 'ink', 'news', 'terminal']) {
         for (const color of ['light', 'dark']) {
           const layouts = await page.evaluate(({ preset, color }) => {
             document.documentElement.setAttribute('data-td-preset', preset);

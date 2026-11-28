@@ -841,13 +841,23 @@ mobile drawer also provides a labeled Appearance row. The panel offers native
 Style radios when `preset_menu` allows a choice and native Light/Dark/System
 radios when `dark_mode.show_menu` is enabled. Selection is immediate and keeps
 the panel open. Enter, Space, or ArrowDown opens it; arrow keys select within
-a group; Tab moves between groups; Escape closes and returns focus. Sun/moon
-trigger icons show the resolved current state: sun for light and moon for
-dark, including changes while following the system.
+a group; Tab moves between groups; Escape closes and returns focus. Whenever
+the panel offers Color, the trigger shows the reader's choice there: a sun for
+Light, a moon for Dark and a half-filled circle for System, which stays while
+the system flips between modes. The head script sets `data-td-color-mode` on
+the root before paint, so the right icon shows without a flash. A panel that
+offers only Style shows a palette.
 
-The English group labels are Style and Light. Style options are independent
-buttons in a two-column grid, with a colored page, layers, pen-nib or terminal
-icon and the preset name. There are no Aa previews or experiment badges.
+The English group labels are Style and Color. With keyboard navigation
+on, each label names its key: Style (T) and Color (Y). The hint is
+hidden from assistive technology, which reads `aria-keyshortcuts` on the
+group instead. It disappears when the reader turns single-key shortcuts off
+and on devices without hover. Style options are independent buttons with a
+colored page, layers, GitHub, pen-nib, newspaper or terminal icon and the
+preset name, in two rows: Paper, Slate and GitHub over Ink, News and Terminal. Three, five or six presets take three columns and the panel
+widens to 24rem; two or four keep two columns. The three color modes are
+buttons of the same shape and gap, so six styles stand in the columns of the
+three modes. There are no Aa previews or experiment badges.
 The site default is identified in its tooltip and accessible name; selecting
 it clears the saved preset. A tinted background and border show selection,
 and keyboard focus has a separate outline.
@@ -857,16 +867,16 @@ focus leaving closes it. Below 768 px and inside the Landing drawer,
 `showModal()` opens a bottom sheet in the browser top layer with a close
 button and 44 px option targets. Closing the sheet preserves the underlying
 drawer. The surface coordinator closes unrelated popovers before opening.
-The `t` shortcut runs `switch_preset` with the next offered preset in order (Paper, Slate, Ink, Terminal) and wraps after the last; it does nothing when the site offers no preset choice. The `y` shortcut cycles color mode through `light`, `dark`, and `auto` (system) via `switch_theme`. `switch_preset` is also the command-palette choice.
+The `t` shortcut runs `switch_preset` with the next offered preset in order (Paper, Slate, GitHub, Ink, News, Terminal) and wraps after the last; it does nothing when the site offers no preset choice. The `y` shortcut cycles color mode through `light`, `dark`, and `auto` (system) via `switch_theme`. `switch_preset` is also the command-palette choice.
 
 > [!NOTE] Fixed in OINK 1.3.0
 > A queued close event from an earlier appearance dialog must not clear the
 > expanded state of a newly reopened dialog.
 
-The Ink and Terminal experimental presets require explicit configuration;
-`preset_menu: true` continues
-to offer Paper/Slate plus the site default. Both reuse the same state, keyboard,
-command-palette and bottom-sheet mechanisms. Terminal compacts desktop
+The GitHub, Ink, News and Terminal experimental presets require explicit
+configuration; `preset_menu: true` continues to offer Paper/Slate plus the site
+default. All four reuse the same state, keyboard, command-palette and
+bottom-sheet mechanisms. Terminal compacts desktop
 navigation rows, while prose and mobile touch targets retain their sizes.
 
 ## Expo albums {#expo-albums}

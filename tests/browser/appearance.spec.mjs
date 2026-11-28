@@ -12,16 +12,25 @@ test('coordinated closure leaves focus alone when Appearance is closed', async (
   await expect(main).toBeFocused();
 });
 
-const canvases = { ink: { light: 'rgb(255, 255, 255)', dark: 'rgb(11, 11, 11)' }, terminal: { light: 'rgb(244, 245, 242)', dark: 'rgb(12, 15, 14)' }, paper: { light: 'rgb(250, 249, 245)', dark: 'rgb(22, 21, 19)' }, slate: { light: 'rgb(241, 244, 248)', dark: 'rgb(11, 17, 25)' } };
+const presets = ['paper', 'slate', 'github', 'ink', 'news', 'terminal'];
+const canvases = { ink: { light: 'rgb(243, 234, 215)', dark: 'rgb(27, 23, 48)' }, terminal: { light: 'rgb(244, 245, 242)', dark: 'rgb(5, 8, 6)' }, paper: { light: 'rgb(247, 246, 243)', dark: 'rgb(22, 21, 19)' }, slate: { light: 'rgb(241, 244, 248)', dark: 'rgb(11, 17, 25)' }, news: { light: 'rgb(240, 238, 232)', dark: 'rgb(15, 15, 15)' }, github: { light: 'rgb(255, 255, 255)', dark: 'rgb(13, 17, 23)' } };
 
-async function expectModeIcons(page, mode) {
-  const slots = page.locator('[data-td-theme-icon]:visible');
-  expect(await slots.count()).toBeGreaterThan(0);
-  for (const slot of await slots.all()) {
-    const shown = mode === 'light' ? 'sun' : 'moon';
-    const hidden = mode === 'light' ? 'moon' : 'sun';
-    await expect(slot.locator(`.td-shell-icon--${shown}.fa-${shown}`)).toBeVisible();
-    await expect(slot.locator(`.td-shell-icon--${hidden}`)).toBeHidden();
+// The site offers Color, so every Appearance trigger shows the reader's
+// choice there -- sun, moon, or the half-filled circle for System -- whatever
+// mode System resolves to; the mode itself lives on the root element.
+async function expectModeIcons(page, mode, choice = mode) {
+  await expect(page.locator('html')).toHaveAttribute('data-bs-theme', mode);
+  await expect(page.locator('html')).toHaveAttribute('data-td-color-mode', choice);
+  const glyph = { light: 'sun', dark: 'moon', auto: 'contrast' }[choice];
+  const triggers = page.locator('[data-td-appearance-trigger]:visible');
+  expect(await triggers.count()).toBeGreaterThan(0);
+  for (const trigger of await triggers.all()) {
+    await expect(trigger.locator('.td-shell-icon--palette')).toHaveCount(0);
+    for (const icon of ['sun', 'moon', 'contrast']) {
+      const locator = trigger.locator(`[data-td-theme-icon] > .td-shell-icon--${icon}`);
+      if (icon === glyph) await expect(locator).toBeVisible();
+      else await expect(locator).toBeHidden();
+    }
   }
 }
 
@@ -37,7 +46,7 @@ test.beforeEach(async ({ context }) => {
   await context.route('https://giscus.app/**', route => route.abort());
 });
 
-for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+for (const preset of presets) {
   for (const mode of ['light', 'dark']) {
     for (const locale of ['', '/zh']) {
       for (const width of [390, 1440]) {
@@ -70,21 +79,38 @@ for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
           expect(await panel.evaluate(el => el.matches(':modal'))).toBe(width < 768);
           await expect(panel.locator(`[data-td-preset-value="${preset}"]`)).toBeChecked();
           await expect(panel.locator(`[data-bs-theme-value="${mode}"]`)).toBeChecked();
-          await expect(panel.locator('legend')).toHaveText(locale ? ['风格', '明暗'] : ['Style', 'Color mode']);
+          // Each legend names the key that steps its group.
+          await expect(panel.locator('legend')).toHaveText(locale ? ['风格 (T)', '明暗 (Y)'] : ['Style (T)', 'Color (Y)']);
+          await expect(panel.locator('fieldset').nth(0)).toHaveAttribute('aria-keyshortcuts', 'T');
+          await expect(panel.locator('fieldset').nth(1)).toHaveAttribute('aria-keyshortcuts', 'Y');
           await expect(panel.locator('.td-appearance__swatch, .td-appearance__experimental')).toHaveCount(0);
           const buttons = panel.locator('.td-appearance__card');
-          await expect(buttons).toHaveCount(4);
+          await expect(buttons).toHaveCount(6);
           const layout = await buttons.evaluateAll(items => items.map(item => {
             const box = item.getBoundingClientRect();
             const icon = item.querySelector('.td-appearance__preset-icon .td-shell-icon');
-            return { x: box.x, y: box.y, height: box.height, color: getComputedStyle(icon).color, glyph: getComputedStyle(icon, '::before').content };
+            const name = item.querySelector('.td-appearance__name');
+            return { x: box.x, y: box.y, width: box.width, height: box.height, color: getComputedStyle(icon).color, glyph: getComputedStyle(icon, '::before').content, clipped: name.scrollWidth > name.clientWidth };
           }));
+          // Six styles in two rows of three, in the columns of the three modes.
           expect(layout[0].y).toBe(layout[1].y);
-          expect(layout[2].y).toBe(layout[3].y);
-          expect(layout[0].x).toBe(layout[2].x);
-          expect(layout[2].y).toBeGreaterThan(layout[0].y);
-          expect(new Set(layout.map(item => item.color)).size).toBe(4);
-          expect(new Set(layout.map(item => item.glyph)).size).toBe(4);
+          expect(layout[1].y).toBe(layout[2].y);
+          expect(layout[3].y).toBe(layout[4].y);
+          expect(layout[4].y).toBe(layout[5].y);
+          expect(layout[3].y).toBeGreaterThan(layout[0].y);
+          const modes = await panel.locator('.td-appearance__segment').evaluateAll(items => items.map(item => {
+            const box = item.getBoundingClientRect();
+            return { x: box.x, width: box.width };
+          }));
+          expect(modes).toHaveLength(3);
+          for (const column of [0, 1, 2]) {
+            expect(layout[column].x).toBe(layout[column + 3].x);
+            expect(Math.abs(modes[column].x - layout[column].x)).toBeLessThan(1);
+            expect(Math.abs(modes[column].width - layout[column].width)).toBeLessThan(1);
+          }
+          expect(layout.some(item => item.clipped)).toBe(false);
+          expect(new Set(layout.map(item => item.color)).size).toBe(6);
+          expect(new Set(layout.map(item => item.glyph)).size).toBe(6);
           if (width < 768) expect(layout.every(item => item.height >= 44)).toBe(true);
           const scan = await new AxeBuilder({ page }).include('dialog[open]').withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
           expect(scan.violations).toEqual([]);
@@ -95,7 +121,9 @@ for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
           await expect(trigger).toBeFocused();
           expect(fontRequests.length).toBeGreaterThan(0);
           expect(fontRequests.every(url => new URL(url).origin === new URL(page.url()).origin)).toBe(true);
-          expect(fontRequests.some(url => url.includes(['paper', 'terminal'].includes(preset) ? '/inter/' : '/ibm-plex-sans/'))).toBe(false);
+          // GitHub sets every role in system stacks and loads neither face.
+          const unused = { paper: ['/inter/'], terminal: ['/inter/'], news: ['/inter/', '/ibm-plex-sans/'], slate: ['/ibm-plex-sans/'], ink: ['/ibm-plex-sans/', '/inter/'], github: ['/inter/', '/ibm-plex-sans/'] }[preset];
+          expect(fontRequests.some(url => unused.some(face => url.includes(face)))).toBe(false);
         });
       }
     }
@@ -105,7 +133,7 @@ for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
 test('independent state, native keyboard, navigation, default reset and cross-tab sync', async ({ page, context }) => {
   await page.goto(docs);
   await page.emulateMedia({ colorScheme: 'light' });
-  await expectModeIcons(page, 'light');
+  await expectModeIcons(page, 'light', 'auto');
   await expect(page.locator('html')).toHaveAttribute('data-td-preset', 'paper');
   let { trigger, panel } = await openAppearance(page);
   await expect(panel.locator('[data-td-preset-value="paper"]')).toBeFocused();
@@ -137,10 +165,10 @@ test('independent state, native keyboard, navigation, default reset and cross-ta
   await page.emulateMedia({ colorScheme: 'dark' });
   await expect(page.locator('html')).toHaveAttribute('data-bs-theme', 'dark');
   await expect(panel.locator('[data-bs-theme-value="auto"]')).toBeChecked();
-  await expectModeIcons(page, 'dark');
+  await expectModeIcons(page, 'dark', 'auto');
   expect(await page.locator('meta[name="theme-color"]').getAttribute('content')).toBe('#161513');
   await page.emulateMedia({ colorScheme: 'light' });
-  await expectModeIcons(page, 'light');
+  await expectModeIcons(page, 'light', 'auto');
   await page.keyboard.press('Escape');
   await page.locator('[aria-controls="td-appearance-footer"]').click();
   const footerPanel = page.locator('#td-appearance-footer');
@@ -223,7 +251,7 @@ test('no JavaScript uses Paper and light print stays readable from either mode',
   await page.evaluate(() => { document.documentElement.setAttribute('data-bs-theme', 'dark'); });
   await page.emulateMedia({ media: 'print' });
   await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
-  await expect(page.locator('.td-content')).toHaveCSS('color', 'rgb(31, 30, 28)');
+  await expect(page.locator('.td-content')).toHaveCSS('color', 'rgb(33, 32, 28)');
 });
 
 test('preset is a command-palette choice using the shared executor', async ({ page }) => {
@@ -277,17 +305,18 @@ test('comment stylesheet output provides offered preset palettes without font im
   const section = page.locator('[data-td-giscus]').first();
   await expect(section).toBeAttached();
   const palettes = await section.evaluate(el => JSON.parse(el.dataset.tdPresetThemes));
-  for (const preset of ['paper', 'slate', 'ink', 'terminal']) for (const mode of ['light', 'dark']) {
+  const giscusCanvas = { paper: ['#f7f6f3', '#161513'], github: ['#ffffff', '#0d1117'], ink: ['#f3ead7', '#1b1730'], news: ['#f0eee8', '#0f0f0f'], terminal: ['#f4f5f2', '#050806'] };
+  for (const preset of presets) for (const mode of ['light', 'dark']) {
     const response = await page.request.get(palettes[preset][mode]);
     expect(response.ok()).toBe(true);
     const css = await response.text();
     expect(css).toContain(`color-scheme: ${mode}`);
-    if (preset === 'paper') expect(css).toContain(`--color-canvas-default: ${mode === 'light' ? '#faf9f5' : '#161513'}`);
+    if (giscusCanvas[preset]) expect(css).toContain(`--color-canvas-default: ${giscusCanvas[preset][mode === 'light' ? 0 : 1]}`);
     expect(css).not.toMatch(/@import|fonts\.google/);
   }
 });
 
-for (const preset of ['ink', 'terminal']) for (const mode of ['light', 'dark']) {
+for (const preset of ['github', 'ink', 'news', 'terminal']) for (const mode of ['light', 'dark']) {
   test(`${preset} ${mode}: experimental geometry, reading fonts, search and print on real site`, async ({ page }, info) => {
     test.setTimeout(120_000);
     await page.setViewportSize({ width: 1440, height: 900 });
@@ -306,13 +335,43 @@ for (const preset of ['ink', 'terminal']) for (const mode of ['light', 'dark']) 
       expect(scan.violations, `${preset} ${mode} ${path}`).toEqual([]);
       if (path === docs) {
         const article = page.locator('.td-content').first();
-        // Ink sets prose in a system serif with Song beside it; Terminal sets
-        // it in mono with the platform Hei for Han.
-        await expect(article).toHaveCSS('font-family', preset === 'ink' ? /^Charter,.*"Songti SC"/ : /^"IBM Plex Mono",.*"PingFang SC"/);
-        await expect(page.locator('h1').first()).toHaveCSS('font-family', preset === 'ink' ? /Inter/ : /IBM Plex Mono/);
-        await expect(page.locator('.td-nav-search-box:visible')).toHaveCSS('border-radius', preset === 'ink' ? '0px' : '2px');
-        if (preset === 'ink') await expect(article.locator('p a').first()).toHaveCSS('text-decoration-line', 'underline');
-        else await expect(article.locator('table').first()).toHaveCSS('font-family', /^"IBM Plex Mono"/);
+        // Ink sets prose in Palatino beside Fangsong, then Song, and headings
+        // and chrome in Palatino beside Kai; News sets prose and chrome in a
+        // system serif with Song and headlines in Times New Roman; Terminal
+        // sets prose in mono with the platform Hei for Han; GitHub uses
+        // GitHub's own system stack.
+        const prose = { ink: /^Palatino,.*"OINK Fangsong", "Songti SC"/, news: /^Charter,.*"Songti SC"/, terminal: /^"IBM Plex Mono",.*"PingFang SC"/, github: /^-apple-system,.*"PingFang SC"/ }[preset];
+        const heading = { ink: /^"OINK Kai", "OINK Kai Synth", Palatino,/, news: /^"Times New Roman",.*"Songti SC"/, terminal: /IBM Plex Mono/, github: /^-apple-system/ }[preset];
+        await expect(article).toHaveCSS('font-family', prose);
+        await expect(page.locator('h1').first()).toHaveCSS('font-family', heading);
+        if (preset === 'ink' || preset === 'terminal') await expect(page.locator('.td-nav-search-box:visible')).toHaveCSS('border-radius', preset === 'ink' ? '0px' : '2px');
+        // Ink writes every heading at text weight, sections in italic under a
+        // brush stroke, on a shaded paper; News sets a heavy headline and
+        // opens a section under a thick-and-thin rule, and its darkroom glows
+        // in one corner; dark Terminal's headings glow.
+        if (preset === 'ink') {
+          await expect(page.locator('h1').first()).toHaveCSS('font-weight', '400');
+          await expect(article.locator(':scope > h2').first()).toHaveCSS('font-weight', '400');
+          await expect(article.locator(':scope > h2').first()).toHaveCSS('font-style', 'italic');
+          await expect(article.locator(':scope > h2').first()).toHaveCSS('background-image', /linear-gradient/);
+          await expect(page.locator('body')).toHaveCSS('background-image', /radial-gradient/);
+          await expect(page.locator('.td-shell-tree__link').first()).toHaveCSS('font-family', /^Palatino,.*"OINK Kai"/);
+        }
+        if (preset === 'news') {
+          await expect(page.locator('h1').first()).toHaveCSS('font-weight', '800');
+          await expect(article.locator(':scope > h2').first()).toHaveCSS('border-top-style', 'solid');
+          await expect(article.locator(':scope > h2').first()).toHaveCSS('border-top-width', '3px');
+          await expect(page.locator('body')).toHaveCSS('background-image', mode === 'dark' ? /radial-gradient/ : 'none');
+          await expect(page.locator('.td-shell-tree__link').first()).toHaveCSS('font-family', /^Charter,.*"Songti SC"/);
+        }
+        if (preset === 'terminal') await expect(article.locator(':scope > h2').first()).toHaveCSS('text-shadow', mode === 'dark' ? /rgba\(61, 255, 122/ : 'none');
+        // Dark Terminal keeps green for headings and links; text stays grey.
+        if (preset === 'terminal' && mode === 'dark') {
+          await expect(article).toHaveCSS('color', 'rgb(201, 210, 204)');
+          await expect(article.locator(':scope > h2').first()).toHaveCSS('color', 'rgb(61, 255, 122)');
+        }
+        if (preset === 'terminal') await expect(article.locator('table').first()).toHaveCSS('font-family', /^"IBM Plex Mono"/);
+        else await expect(article.locator('p a').first()).toHaveCSS('text-decoration-line', 'underline');
       }
     }
     await page.goto(docs);
@@ -328,7 +387,7 @@ for (const preset of ['ink', 'terminal']) for (const mode of ['light', 'dark']) 
     await page.keyboard.press('Escape');
     await page.emulateMedia({ media: 'print' });
     await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
-    await expect(page.locator('.td-content')).toHaveCSS('color', preset === 'ink' ? 'rgb(20, 20, 20)' : 'rgb(29, 33, 31)');
+    await expect(page.locator('.td-content')).toHaveCSS('color', { ink: 'rgb(36, 26, 16)', terminal: 'rgb(29, 33, 31)', news: 'rgb(22, 22, 22)', github: 'rgb(31, 35, 40)' }[preset]);
     // Paper output keeps a reading face: Terminal prints in Plex Sans.
     if (preset === 'terminal') await expect(page.locator('.td-content')).toHaveCSS('font-family', /^"IBM Plex Sans"/);
   });
@@ -339,13 +398,42 @@ test('Mermaid keeps one mode palette across all presets with readable dark label
   await page.addInitScript(() => localStorage.setItem('td-color-theme', 'dark'));
   await page.goto('/docs/components/mermaid/');
   await expect(page.locator('[data-td-diagram-stage] svg').first()).toBeVisible();
-  for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+  for (const preset of presets) {
     await page.evaluate(preset => window.OinkAppearance.applyPreset(preset, true), preset);
     expect(await page.evaluate(() => window.mermaid.mermaidAPI.getConfig().themeVariables.edgeLabelBackground)).toBe('#404040');
     const result = await new AxeBuilder({ page }).include('[data-td-diagram]').withTags(['wcag2a', 'wcag2aa']).analyze();
     expect(result.violations).toEqual([]);
   }
 });
+
+for (const prefix of ['', '/zh']) {
+  test(`${prefix || 'en'} home style board switches presets in place and stays synced with Appearance`, async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(`${prefix}/`);
+    await page.evaluate(() => document.fonts.ready);
+    const board = page.locator('.td-landing-component-board[role="group"]').first();
+    await board.scrollIntoViewIfNeeded();
+    const tiles = board.locator('button[data-td-preset-select]');
+    await expect(tiles).toHaveCount(presets.length);
+    await expect(board.locator('[data-td-preset-select="paper"]')).toHaveAttribute('aria-pressed', 'true');
+    for (const preset of ['terminal', 'ink', 'news', 'github', 'slate', 'paper']) {
+      const tile = board.locator(`[data-td-preset-select="${preset}"]`);
+      const beforeTop = await tile.evaluate(el => el.getBoundingClientRect().top);
+      await tile.click();
+      await page.evaluate(() => document.fonts.ready);
+      await expect(page.locator('html')).toHaveAttribute('data-td-preset', preset);
+      await expect(tile).toHaveAttribute('aria-pressed', 'true');
+      await expect(board.locator('[data-td-preset-select][aria-pressed="true"]')).toHaveCount(1);
+      await expect.poll(async () => Math.abs(await tile.evaluate(el => el.getBoundingClientRect().top) - beforeTop)).toBeLessThan(28);
+    }
+    await board.locator('[data-td-preset-select="terminal"]').click();
+    const { panel } = await openAppearance(page);
+    await expect(panel.locator('[data-td-preset-value="terminal"]')).toBeChecked();
+    await page.reload();
+    await expect(page.locator('html')).toHaveAttribute('data-td-preset', 'terminal');
+    await expect(page.locator('[data-td-preset-select="terminal"]')).toHaveAttribute('aria-pressed', 'true');
+  });
+}
 
 for (const prefix of ['', '/zh']) {
   test(`${prefix || 'en'} nonmodal Appearance permits search while modal dialogs retain keys`, async ({ page }) => {
