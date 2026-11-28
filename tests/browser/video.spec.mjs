@@ -58,35 +58,48 @@ async function openVideo(page, url, { preset = 'paper', mode = 'light', reducedM
 
 test.describe('Video component', () => {
   for (const kind of ['audio', 'video']) {
-    test(`native ${kind} progress follows seeking and has visible contrast in every preset`, async ({ page }) => {
+    test(`${kind} control row draws one progress bar that follows seeking and keeps contrast in every preset`, async ({ page }) => {
       await page.goto(`/zh/docs/components/${kind}/`);
       const player = page.locator(`.td-media > ${kind}:not([data-td-media-autoplay])`).first();
       const figure = player.locator('..');
-      await player.scrollIntoViewIfNeeded();
+      // The enhanced <audio> element is hidden; its figure carries the row.
+      await figure.scrollIntoViewIfNeeded();
+      await expect(figure).toHaveClass(/td-media--controlled/);
       await expect(figure).toHaveClass(/td-media--timed/);
-      expect(await player.evaluate(el => el.controls)).toBe(true);
-      const indicator = figure.locator('.td-media__progress');
-      if (await indicator.count()) {
-        await expect(indicator).toBeVisible();
-        await expect(indicator).toHaveCSS('background-image', /linear-gradient/);
-        await expect(indicator).toHaveAttribute('aria-hidden', 'true');
-        expect(await indicator.evaluate(el => el.tabIndex)).toBe(-1);
-      }
+      expect(await player.evaluate(el => el.controls)).toBe(false);
+      const row = figure.locator('.td-media__controls');
+      await expect(row).toHaveCount(1);
+      await expect(row).toHaveAttribute('role', 'group');
+      await expect(row).toHaveAttribute('dir', 'ltr');
+      const seek = row.locator('input[type="range"].td-media__seek');
+      await expect(seek).toHaveCount(1);
+      await expect(seek).toHaveAttribute('aria-label', '播放进度');
+      await expect(row.locator('.td-media__play')).toHaveAttribute('aria-label', '播放');
+      // One bar: no second strip beside the player, and the volume range stays folded at rest.
+      await expect(figure.locator('.td-media__progress')).toHaveCount(0);
+      await page.mouse.move(0, 0);
+      await expect.poll(() => row.locator('.td-media__volume').evaluate(el => el.getBoundingClientRect().width)).toBeLessThan(1);
       for (const fraction of [0.5, 0.1, 1]) {
         await player.evaluate((el, value) => { el.currentTime = el.duration * value; }, fraction);
         await expect.poll(() => figure.evaluate(el => parseFloat(el.style.getPropertyValue('--td-media-played')))).toBeCloseTo(100 * fraction, 1);
       }
-      for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+      await seek.focus();
+      await page.keyboard.press('Home');
+      await expect.poll(() => player.evaluate(el => el.currentTime)).toBe(0);
+      await page.keyboard.press('End');
+      await expect.poll(() => player.evaluate(el => el.duration - el.currentTime)).toBeLessThan(0.05);
+      for (const preset of ['paper', 'slate', 'github', 'ink', 'news', 'terminal']) {
         for (const mode of ['light', 'dark']) {
-          const [sectionAccent, presetAccent, remaining] = await figure.evaluate((el, { preset, mode }) => {
+          const [fill, presetAccent, buffer, remaining] = await figure.evaluate((el, { preset, mode }) => {
             document.documentElement.dataset.tdPreset = preset;
             document.documentElement.dataset.bsTheme = mode;
             const probe = document.createElement('span');
             el.append(probe);
             const ctx = document.createElement('canvas').getContext('2d');
             // The Docs section overrides the accent. Check the published preset as well.
-            const colors = ['--td-accent', '--td-preset-accent', '--td-media-track'].map(name => {
+            const colors = ['--td-media-fill', '--td-preset-accent', '--td-media-buffer', '--td-media-track'].map(name => {
               probe.style.color = 'var(' + name + ')';
+              ctx.clearRect(0, 0, 1, 1);
               ctx.fillStyle = getComputedStyle(probe).color;
               ctx.fillRect(0, 0, 1, 1);
               return [...ctx.getImageData(0, 0, 1, 1).data];
@@ -94,17 +107,20 @@ test.describe('Video component', () => {
             probe.remove();
             return colors;
           }, { preset, mode });
-          expect(contrastRatio(sectionAccent, remaining), `${kind} ${preset}/${mode}, section accent`).toBeGreaterThanOrEqual(3);
-          expect(contrastRatio(presetAccent, remaining), `${kind} ${preset}/${mode}, preset accent`).toBeGreaterThanOrEqual(3);
+          for (const [name, neutral] of [['buffered', buffer], ['unloaded', remaining]]) {
+            expect(contrastRatio(fill, neutral), `${kind} ${preset}/${mode}, section accent vs ${name}`).toBeGreaterThanOrEqual(3);
+            expect(contrastRatio(presetAccent, neutral), `${kind} ${preset}/${mode}, preset accent vs ${name}`).toBeGreaterThanOrEqual(3);
+          }
+          expect(contrastRatio(buffer, remaining), `${kind} ${preset}/${mode}, buffered vs unloaded`).toBeGreaterThan(1.15);
         }
       }
-      if (await indicator.count()) {
-        await page.emulateMedia({ media: 'print' });
-        await expect(indicator).toBeHidden();
-      }
+      await page.emulateMedia({ media: 'print' });
+      await expect(row).toBeHidden();
+      await page.emulateMedia({ media: 'screen' });
       await player.evaluate(el => { el.removeAttribute('src'); el.load(); });
       await expect(figure).not.toHaveClass(/td-media--timed/);
       expect(await figure.evaluate(el => el.style.getPropertyValue('--td-media-played'))).toBe('');
+      await expect(seek).toBeDisabled();
     });
   }
 
@@ -191,13 +207,16 @@ test.describe('Video component', () => {
     const reducedState = await reducedVideo.evaluate((el) => ({
       paused: el.paused,
       muted: el.muted,
-      controls: el.hasAttribute('controls'),
+      nativeControls: el.hasAttribute('controls'),
+      controlRow: Boolean(el.parentElement.querySelector(':scope > .td-media__controls .td-media__play')),
       autoplayAttr: el.hasAttribute('autoplay'),
     }));
+    // The theme control row replaces the native strip and can always pause the loop.
     expect(reducedState).toEqual({
       paused: true,
       muted: true,
-      controls: true,
+      nativeControls: false,
+      controlRow: true,
       autoplayAttr: false,
     });
 

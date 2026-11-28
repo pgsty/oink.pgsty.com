@@ -22,7 +22,7 @@ proposal_date: 2026-11-27
 | Delivery stage | S2, with video files |
 | Form | Native: a block Markdown image whose destination is an audio file |
 | New public API | None beyond accepting audio destinations; attributes `caption`, `id`, and `preload` |
-| Runtime | Shared `js/chunks/media.js` for progress and single-active playback |
+| Runtime | Shared `js/chunks/media.js` for the control row and single-active playback |
 | Affected surface | The media partial shared with Video, a stylesheet section, a new guide at `/docs/components/audio/` |
 
 ## Summary {#summary}
@@ -53,9 +53,10 @@ Print, or RSS form. A bare player tells the reader nothing about what it plays.
    lookup, and static outputs for both.
 2. **The name is visible.** A video shows its picture; audio has none, so the
    bracket text doubles as the visible title and the player's accessible name.
-3. **Native controls are the player.** Every supported browser provides play,
-   seek, volume, and keyboard access; Chromium-based browsers also offer speed
-   and download in the control menu.
+3. **The page owns the controls; the browser owns playback.** The native
+   `<audio controls>` is the no-JavaScript player. With the runtime, one
+   theme control row with a single seek bar replaces it in every browser
+   (revised 2026-11-28; the native strip first stood as the player).
 4. **Compose, don't absorb.** A transcript is content, and OINK already has a
    folded container that prints expanded. The component does not grow a body.
 
@@ -66,14 +67,14 @@ Print, or RSS form. A bare player tells the reader nothing about what it plays.
 - Local, bundle, global-asset, `static/`, and object-storage audio files.
 - A visible, accessible title; an optional caption.
 - Static Print, RSS, Markdown, and LLMS forms with a usable link.
-- Native playback works without JavaScript. The shared runtime colors elapsed time and pauses other audible players.
+- Native playback works without JavaScript. The shared runtime draws the control row and pauses other audible players.
 
 ### Non-goals {#non-goals}
 
 - An `audio` shortcode or a transcript body inside the component.
 - Hand-typed metadata that can drift from the file: `duration`, `artist`.
 - Codec fallbacks (`mp3=`, `ogg=`, `m4a=`).
-- In the first stage: cover art, chapters, a custom speed control, waveforms.
+- In the first stage: cover art, chapters, waveforms.
 - Podcast feeds or RSS `<enclosure>` elements; podcast distribution is a site
   concern.
 
@@ -130,10 +131,10 @@ ordinary media margins, 1.5rem above and 1.75rem below, around each group
 (`:where(.td-media):not(.td-figure)`, one class of weight above Bootstrap's
 `figure` reset). Presets style the
 frame and title (the card takes `--td-code-radius` like callouts; Paper and Ink align its surface with adjacent callouts;
-Terminal uses `--td-brand-line-strong` and `--td-ui-font-family`); the native
-control keeps the browser's look, with `color-scheme` following light and dark
-mode in Chromium-based browsers (Firefox and Safari keep fixed native bar
-chrome).
+Terminal uses `--td-brand-line-strong` and `--td-ui-font-family`); the control
+row follows the preset and color mode in every browser (see
+[Components](/docs/design/components/#timeline-media-social-and-maps)), and the
+no-JavaScript native player keeps the browser's look.
 
 `preload="metadata"` lets the browser show the duration without downloading
 the file; switching the default to `preload="none"` from the seventh audio
@@ -143,7 +144,7 @@ player onward prevents connection bursts on long sample pages.
 
 | Output | Result |
 | --- | --- |
-| HTML | Native controls with progress in the page accent from `js/chunks/media.js` |
+| HTML | `<audio controls>`, replaced by the theme control row from `js/chunks/media.js` |
 | Print | Title, caption, and the file URL as a visible `.td-media__link` on screen and paper (paper-palette overrides in `@media print`) |
 | Markdown / LLMS | The authored source; a following transcript callout stays readable text |
 | RSS | Title as a direct link to the file (absolute URL) and the caption |
@@ -165,7 +166,7 @@ committed to Git.
 | Option | Decision | Reason |
 | --- | --- | --- |
 | First-draft `{{</* audio */>}}` with `src`, `mp3`, `ogg`, `m4a`, `title`, `artist`, `cover`, `duration`, `chapters`, `caption`, `preload`, `loop`, `download`, `compact`, and a transcript body | Rejected | Codec fallbacks are obsolete, `duration` and `artist` are facts that drift from the file, `cover` and `compact` create two layouts, and the body duplicates a folded callout |
-| A runtime for a speed toggle and chapters | Deferred | Native controls cover speed in Chromium-based browsers; chapters need WebVTT evidence before growing the UI. The shared media script handles single-active playback |
+| A runtime for a speed toggle and chapters | Speed adopted 2026-11-28; chapters deferred | The theme control row cycles speed in every browser; chapters need WebVTT evidence before growing the UI. The shared media script handles single-active playback |
 | Hidden bracket text, as for images | Rejected | A bare player is unlabeled for sighted readers |
 | Numbering as a Book figure | Rejected | A recording is not a figure; a numbered audio kind would need its own Book index, which nothing requests |
 
@@ -223,3 +224,4 @@ partial, and fixtures. Specific work:
 - **2026-11-27 (implementation).** Implemented in the shared media partial and `assets/css/td/media.css`; no runtime and no locale key. Two invalid-input cases were added to `bin/check-media-primitives.py`.
 - **2026-11-27 (review revision).** Addressed deep-review findings: dedicated Print now uses visible `.td-media__link`; `@media print` resets audio cards to paper-palette tokens in dark mode; removed `.td-figure` from audio and enforced start alignment; switched `<audio>` accessible naming to `aria-labelledby`/`aria-describedby` (with `render-block.html` ID rewriting); preserved query strings and `#t=` Media Fragments on local resources; replaced negative margins with `:has()` positive margins for consecutive cards and Audio+Transcript pairing; aligned Paper and Terminal frame/title styling; preserved audio URL and start alignment in `rich-copy.js`; added `preload` attribute with 6-player auto-threshold (`none` from 7th onward); added unnumbered duplicate `#id` detection and accurate `audio:` warning prefix; enabled single-active playback in `js/chunks/media.js` only when 2+ players exist on a page; added nested `<a>` guard in `check-output.py`, expanded `check-media-primitives.py`, JS unit tests, and `tests/browser/audio.spec.mjs`.
 - **2026-11-27 (adversarial review fixes).** Restored the 24px/28px margins that `:where(.td-media)` had lost to Bootstrap's `figure { margin: 0 0 1rem }` (now `:where(.td-media):not(.td-figure)`), so the 8px/24px pairing holds; single-active playback now treats any muted or zero-volume player as silent and also reacts to `volumechange`, so unmuting a playing loop pauses other audio and an author's own muted loop is left alone; `book/register-target.html` checks unnumbered media IDs, making the duplicate-ID check two-way; local fragments keep their percent-encoding (`EscapedFragment`); `preload` warns only in HTML; the audio card takes `--td-code-radius` in every preset and Ink's callout surface. The browser suite asserts absolute spacing and uses real `play()`; `check_audio_matrix()` covers upper-case extensions, a site-defined `audio/*` media type, encoded fragments, Book-target ID clashes in both orders, and a subpath `baseURL`.
+- **2026-11-28 (control row).** The owner judged the native strip plus the theme's separate accent strip as two progress bars and asked for one bar that tells played and loaded time apart by color, styled per preset. Firefox and Safari do not expose their native track, so `js/chunks/media.js` now removes `controls` and draws one control row (play, time, a single seek bar, speed, mute and volume) with eight `ui_media_*` labels in all 32 locales; the native player remains the no-JavaScript fallback. Played, buffered and unloaded time keep at least 3:1 between played and each neutral in every preset and mode.

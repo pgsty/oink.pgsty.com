@@ -80,7 +80,7 @@ built-in `youtube` or `vimeo` shortcode.
    page. With a site opt-in, the platform is contacted only after a reader
    clicks.
 5. **Progressive enhancement.** Every form works without JavaScript; the runtime
-   colors file playback progress, coordinates audible players, gates autoplay on visibility, and opens enabled embeds in place.
+   replaces native file controls with the theme control row, coordinates audible players, gates autoplay on visibility, and opens enabled embeds in place.
 
 ## Goals and non-goals {#goals}
 
@@ -151,8 +151,8 @@ without `caption` or `num`.
 `autoplay=true` emits `muted loop playsinline` and a `data-td-media-autoplay`
 marker, but not the `autoplay` attribute. The runtime starts playback when at
 least half of the video is visible, the page is visible, and the reader has not
-asked for reduced motion; it pauses when the video leaves the viewport. Native
-controls stay, so the motion can always be paused. Without JavaScript the
+asked for reduced motion; it pauses when the video leaves the viewport. The
+control row stays, so the motion can always be paused. Without JavaScript the
 reader sees the poster or first frame and plays it by hand.
 
 ### Platform URLs {#platforms}
@@ -295,3 +295,4 @@ existing goldens verify. `params.video_embeds` is a new key.
 - **2026-11-27 (implementation).** Implemented in `content/media-detect.html`, `content/media.html`, `content/video-embeds.html`, `assets/js/media.js` and `assets/css/td/media.css`, with the lookup extracted into `content/resource-lookup.html`. Differences from this draft: the configuration key is the flat list `params.video_embeds` (the parameter contract flattens single-key maps); a video without caption or number keeps a `td-media` wrapper without a figcaption; Print and RSS name the video beside its URL; the locale keys are `ui_video_play` and `ui_video_open`. Both network settings are validated on every page. Eight invalid-input cases were added to `bin/check-media-primitives.py`, and `tests/js/media.test.js` covers the runtime.
 - **2026-11-27 (review hardening).** Fixed decimal parsing for leading-zero timestamps (`08s`, `010`), expanded platform URL parsing (`youtube-nocookie.com`, `music.youtube.com`, `player.vimeo.com`, Vimeo `?h=` and `#t=`, uppercase `AV`, `b23.tv/BV…`, trailing slashes, and `9:16` default ratio for YouTube Shorts), decoupled poster image dimensions from paired `width`/`height` aspect ratios, replaced `setTimeout(0)` autoplay event tracking with a FIFO expected-event queue, added iframe `sandbox` and tightened `allow` and the runtime player-URL regex, excluded `.td-media-card__poster` from Draw.io detection, fixed dark-mode play-button contrast, poster scrim contrast, narrow-screen card grid overlap, portrait `80vh` symmetry, forced-colors styling, RTL play-icon alignment, and Print/RSS watch URLs (including browser print after iframe replacement). Added zero-binary media-type and video matrix checks in `bin/check-media-primitives.py`, `video_embeds` item enum generation in `bin/generate-config-schema.py`, and `tests/browser/video.spec.mjs`.
 - **2026-11-27 (acceptance review fixes).** Cards carry their ratio as `--td-media-ratio` and cap their width at `min(100%, 80vh × ratio)` (card and player), because WebKit does not narrow a box whose `aspect-ratio` height `max-block-size` clamps; where container units exist the ratio is a minimum height measured from the figure, because WebKit also keeps an `aspect-ratio` box at its ratio height and clipped wrapped titles. Browser print gives poster-less card text the paper ink in dark mode. Draw.io skips only images inside `a.td-media-card` again, leaving other linked diagrams editable. Bilibili's embed-code `src`, `player.bilibili.com/player.html?bvid=…|aid=…`, is recognized instead of rendering as a remote image. Covered by the video matrix and a stylesheet contract in `bin/check-media-primitives.py`, `tests/js/drawio.test.js` and `tests/browser/video.spec.mjs`.
+- **2026-11-28 (control row).** File videos share audio's theme control row: one seek bar whose colors tell played, buffered and unloaded time apart, speed, a captions toggle for the one track, mute and volume, and full screen on the figure with the row kept under the picture (iPhone falls back to the native player). Clicking the picture toggles playback. Native `controls` remain the no-JavaScript fallback.

@@ -54,7 +54,7 @@ proposal_date: 2026-11-27
 2. **已有先例**：GitLab Flavored Markdown 会把指向视频或音频文件的图片语法渲染为播放器，Obsidian 也会嵌入用图片语法书写的 YouTube 视频。OINK 自己的 Draw.io 组件就是一种原生图片形态。
 3. **URL 即身份**：读者、订阅源和 Agent 能理解的是平台 URL，它还携带起始时间。主题在构建期由它推导出播放器 URL，不抓取任何内容。
 4. **未经同意，不发第三方请求**：默认情况下，没有任何请求离开页面。站点显式启用后，也只在读者点击之后才连接平台。
-5. **渐进增强**：所有形态在没有 JavaScript 时都可用；运行时着色显示文件播放进度、协调有声播放、按可见性控制自动播放，并在原位打开已启用的嵌入播放器。
+5. **渐进增强**：所有形态在没有 JavaScript 时都可用；运行时把文件播放器的原生控件换成主题控件栏、协调有声播放、按可见性控制自动播放，并在原位打开已启用的嵌入播放器。
 
 ## 目标与非目标 {#goals}
 
@@ -114,7 +114,7 @@ proposal_date: 2026-11-27
 
 与块级图片不同，视频始终带 `<figure>` 包裹，有没有 `caption` 或 `num` 都一样。
 
-`autoplay=true` 输出 `muted loop playsinline` 和 `data-td-media-autoplay` 标记，但不输出 `autoplay` 属性。只有当视频至少一半可见、页面处于可见状态、且读者没有要求减少动态效果时，运行时才开始播放；视频离开视口时暂停。原生控件保留，因此动画随时可以暂停。没有 JavaScript 时，读者看到海报图或首帧，可以手动播放。
+`autoplay=true` 输出 `muted loop playsinline` 和 `data-td-media-autoplay` 标记，但不输出 `autoplay` 属性。只有当视频至少一半可见、页面处于可见状态、且读者没有要求减少动态效果时，运行时才开始播放；视频离开视口时暂停。控件栏保留，因此动画随时可以暂停。没有 JavaScript 时，读者看到海报图或首帧，可以手动播放。
 
 ### 平台 URL {#platforms}
 
@@ -209,3 +209,4 @@ params:
 - **2026-11-27（实现）。** 在 `content/media-detect.html`、`content/media.html`、`content/video-embeds.html`、`assets/js/media.js` 与 `assets/css/td/media.css` 中实现，查找逻辑抽取到 `content/resource-lookup.html`。与本草案的差异：配置键是扁平列表 `params.video_embeds`（参数契约要求拍平单键 map）；没有图注或编号的视频保留 `td-media` 包裹，但没有 figcaption；Print 与 RSS 在 URL 旁写出视频名称；语言键为 `ui_video_play` 与 `ui_video_open`。两项联网设置在每个页面上校验。`bin/check-media-primitives.py` 新增八个无效输入用例，`tests/js/media.test.js` 覆盖运行时。
 - **2026-11-27（评审加固）。** 修复前导零时间戳（`08s`、`010`）按十进制解析；扩展平台 URL 识别（`youtube-nocookie.com`、`music.youtube.com`、`player.vimeo.com`、Vimeo `?h=` 与 `#t=`、大写 `AV`、`b23.tv/BV…`、尾部斜杠，以及 YouTube Shorts 默认 `9:16` 比例）；解耦海报图尺寸与成对 `width`/`height` 宽高比；用 FIFO 预期事件队列替代 `setTimeout(0)` 自动播放事件追踪；为 iframe 增加 `sandbox` 并收紧 `allow` 与运行时白名单正则；排除 Draw.io 对 `.td-media-card__poster` 的检测；修复深色模式播放按钮对比度、海报渐变对比度、窄屏卡片文字与播放按钮重叠、竖屏 `80vh` 高度一致、强制颜色样式、RTL 播放三角偏移以及 Print/RSS 观看地址（含点击替换为 iframe 后的浏览器打印恢复）。在 `bin/check-media-primitives.py` 补齐零二进制媒体类型与视频矩阵测试，在 `bin/generate-config-schema.py` 推导 `video_embeds` 平台枚举，并在文档站补充 `tests/browser/video.spec.mjs`。
 - **2026-11-27（验收评审修复）。** 卡片以 `--td-media-ratio` 携带比例，卡片与播放器的宽度上限改为 `min(100%, 80vh × 比例)`，因为 WebKit 不会在 `max-block-size` 截住 `aspect-ratio` 高度时相应收窄宽度；支持容器单位时，比例改为按 figure 宽度计算的最小高度，因为 WebKit 还会把 `aspect-ratio` 盒子固定在比例高度、裁掉换行的长标题。深色模式下浏览器打印时，无海报卡片的文字改用纸面墨色。Draw.io 恢复为只跳过 `a.td-media-card` 内的图片，其他带链接的图表仍可编辑。识别 Bilibili 嵌入代码中的 `src`，即 `player.bilibili.com/player.html?bvid=…|aid=…`，不再渲染为远程图片。由 `bin/check-media-primitives.py` 的视频矩阵与样式表契约、`tests/js/drawio.test.js` 和 `tests/browser/video.spec.mjs` 覆盖。
+- **2026-11-28（控件栏）。** 视频文件与音频共用主题控件栏：一条以颜色区分已播放、已缓冲与未加载的进度条，倍速，单条字幕轨道的开关，静音与音量，以及作用于 figure、画面下方保留控件栏的全屏（iPhone 回退到原生播放器）。点击画面切换播放。原生 `controls` 保留为无 JavaScript 时的回退。

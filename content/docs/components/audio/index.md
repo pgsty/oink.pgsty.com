@@ -7,12 +7,14 @@ search_keywords: [Audio, mp3, m4a, ogg, wav, flac, podcast, voice sample, transc
 ---
 
 Write an audio file the way you write an image, `![title](episode.mp3)`, and
-it becomes a titled figure with the browser's own audio player. Use it for
-podcast episodes, voice samples, pronunciation guides and recorded talks. There
-is no shortcode to learn and nothing to configure. The played portion uses the page’s
-accent color. A small shared script updates progress and pauses other audible players
-when you start a recording. The
-browser's playback controls also work with JavaScript off.
+it becomes a titled player. Use it for podcast episodes, voice samples,
+pronunciation guides and recorded talks. There is no shortcode to learn and
+nothing to configure. A small shared script gives the player the theme's
+control row: play, the elapsed time, one progress bar, the duration, speed and
+sound. The bar is a single track in three colors: played time in the page's
+accent color, buffered time a deeper neutral and the rest a light one. The
+script also pauses other audible players when you start a recording. With
+JavaScript off, the browser's own controls remain.
 
 ## Shortest form {#minimal}
 
@@ -201,12 +203,13 @@ in the Book sense.
   `<audio>` and `<video>` players on the page. Muted or silent players, such
   as autoplay loops, keep running. Opening a platform card pauses audible
   players; once playing, that cross-site player cannot be paused locally.
-- The theme adds no speed control. Chromium-based browsers offer one in the
-  native control menu; other browsers vary.
-- The native player looks different in each browser: Chromium-based browsers
-  follow the site's light and dark `color-scheme`, while Firefox and Safari
-  keep fixed native control styling in dark mode.
-- Site single-key shortcuts yield while focus is in a native player.
+- The speed button cycles 1×, 1.25×, 1.5×, 2× and 0.75×. The volume bar opens
+  beside the speaker button when you point at or focus it; touch screens use
+  the device's own volume buttons.
+- The control row looks the same in every browser and follows the preset and
+  light or dark mode. Without JavaScript, the browser's native player and its
+  own styling remain.
+- Site single-key shortcuts yield while focus is in the player's controls.
 - One source file per recording, with no fallback formats. MP3 plays in every
   current browser.
 - No podcast feed: the RSS output carries no `<enclosure>`, so podcast

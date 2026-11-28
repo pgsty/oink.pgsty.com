@@ -20,7 +20,7 @@ proposal_date: 2026-11-27
 | 交付阶段 | S2，与视频文件一同交付 |
 | 形态 | 原生形态：目标为音频文件的块级 Markdown 图片 |
 | 新增公共 API | 除接受音频目标外没有新增；属性为 `caption`、`id` 与 `preload` |
-| 运行时 | 共享 `js/chunks/media.js` 显示播放进度并协调同页有声播放 |
+| 运行时 | 共享 `js/chunks/media.js` 绘制控件栏并协调同页有声播放 |
 | 受影响范围 | 与 Video 共用的媒体 partial、一个样式表分节，以及新指南 `/docs/components/audio/` |
 
 ## 概要 {#summary}
@@ -48,8 +48,8 @@ Print 或 RSS 形态。光有一个播放器，读者无从得知它播放的是
 1. **与视频共用语法和分支。** 一个媒体 partial 统一负责两者的识别、查找与静态输出。
 2. **名称必须可见。** 视频有画面，音频没有，因此方括号文字同时充当可见标题和播放器的
    无障碍名称。
-3. **原生控件就是播放器。** 所有受支持的浏览器都提供播放、拖动进度、音量与键盘操作；
-   基于 Chromium 的浏览器还在控件菜单中提供倍速和下载。
+3. **页面负责控件，浏览器负责播放。** 原生 `<audio controls>` 是无 JavaScript 时的播放器。
+   有运行时时，在所有浏览器中改用带单条进度条的主题控件栏（2026-11-28 修订；最初以原生控件栏为播放器）。
 4. **组合，而不是吸收。** 文字稿属于正文内容，而 OINK 已有打印时展开的折叠容器。组件
    不另设正文。
 
@@ -60,14 +60,14 @@ Print 或 RSS 形态。光有一个播放器，读者无从得知它播放的是
 - 支持本地、页面包、全局 assets、`static/` 与对象存储中的音频文件。
 - 可见且具备无障碍名称的标题；可选的题注。
 - 带可用链接的静态 Print、RSS、Markdown 与 LLMS 形态。
-- 关闭 JavaScript 仍可原生播放。共享脚本以强调色显示已播进度，并暂停同页其他有声播放器。
+- 关闭 JavaScript 仍可原生播放。共享脚本绘制控件栏，并暂停同页其他有声播放器。
 
 ### 非目标 {#non-goals}
 
 - `audio` 短代码，或组件内部的文字稿正文。
 - 手工填写、可能与文件脱节的元数据：`duration`、`artist`。
 - 编解码器回退（`mp3=`、`ogg=`、`m4a=`）。
-- 第一阶段不做：封面图、章节、自定义倍速控件、波形。
+- 第一阶段不做：封面图、章节、波形。
 - 播客 feed 或 RSS `<enclosure>` 元素；播客分发属于站点自己的事。
 
 ## 提议行为 {#design}
@@ -115,8 +115,8 @@ Fragments `#t=30,60`），包括其中的百分号编码。
 8px，连续录音之间 16px，每组外侧保持普通媒体外边距，上方 1.5rem、下方 1.75rem
 （`:where(.td-media):not(.td-figure)`，比 Bootstrap 的 `figure` 重置多一级类选择器权重）。预设负责外框和标题样式
 （卡片与提示块一样使用 `--td-code-radius`；Paper 与 Ink 让卡片表面与相邻提示块一致；Terminal 使用 `--td-brand-line-strong` 边框与
-`--td-ui-font-family` 标题）；原生控件保留浏览器自身外观，Chromium 浏览器中 `color-scheme`
-随明暗切换，Firefox 与 Safari 保持固定原生栏样式。
+`--td-ui-font-family` 标题）；控件栏在所有浏览器中跟随预设与明暗模式（见
+[组件](/zh/docs/design/components/#timeline-media-social-and-maps)），无 JavaScript 时的原生播放器保留浏览器自身外观。
 
 `preload="metadata"` 让浏览器无须下载整个文件即可显示时长；从第 7 个音频起默认切为
 `preload="none"`，避免多样例页面并发发起大量元数据请求。
@@ -125,7 +125,7 @@ Fragments `#t=30,60`），包括其中的百分号编码。
 
 | 输出 | 结果 |
 | --- | --- |
-| HTML | 原生控件配合 `js/chunks/media.js` 以页面强调色显示进度 |
+| HTML | `<audio controls>`，由 `js/chunks/media.js` 替换为主题控件栏 |
 | Print | 标题、题注，以及在屏幕与纸面均可见的 `.td-media__link` 文件 URL（`@media print` 强制纸张调色板） |
 | Markdown / LLMS | 作者编写的源码；随后的文字稿提示块保持为可读文本 |
 | RSS | 直接链接到文件绝对 URL 的标题，以及题注 |
@@ -145,7 +145,7 @@ Fragments `#t=30,60`），包括其中的百分号编码。
 | 方案 | 决定 | 理由 |
 | --- | --- | --- |
 | 初稿的 `{{</* audio */>}}`，带 `src`、`mp3`、`ogg`、`m4a`、`title`、`artist`、`cover`、`duration`、`chapters`、`caption`、`preload`、`loop`、`download`、`compact` 参数和文字稿正文 | 否决 | 编解码器回退已经过时；`duration` 与 `artist` 是会与文件脱节的事实；`cover` 与 `compact` 会造成两种布局；正文与折叠提示块重复 |
-| 用运行时实现倍速切换和章节 | 推迟 | 基于 Chromium 的浏览器中，原生控件已覆盖倍速；章节需要 WebVTT 实际需求再做。共享媒体脚本处理同页互斥播放 |
+| 用运行时实现倍速切换和章节 | 倍速于 2026-11-28 采纳；章节推迟 | 主题控件栏在所有浏览器中循环切换倍速；章节需要 WebVTT 实际需求再做。共享媒体脚本处理同页互斥播放 |
 | 像图片那样隐藏方括号文字 | 否决 | 只剩一个播放器时，视力正常的读者看不到任何标签 |
 | 作为 Book 图编号 | 否决 | 录音不是图；带编号的音频类别需要单独的 Book 索引，而目前没有这种需求 |
 
@@ -198,3 +198,4 @@ Fragments `#t=30,60`），包括其中的百分号编码。
 - **2026-11-27（实现）。** 在共享媒体 partial 与 `assets/css/td/media.css` 中实现；没有运行时，也没有语言键。`bin/check-media-primitives.py` 新增两个无效输入用例。
 - **2026-11-27（评审修订）。** 修复深度评审问题：专用 Print 改用可见 `.td-media__link`；`@media print` 强制纸张调色板以修复深色打印黑卡片；音频去掉 `.td-figure` 并强制起始对齐；`<audio>` 改用 `aria-labelledby`/`aria-describedby`（并在 `render-block.html` 中同步重写作用域 ID）；本地资源保留查询参数与 `#t=` 时间片段；用 `:has()` 正向边距替代负外边距并修复音频与文字稿的邻近层级；对齐 Paper 与 Terminal 预设边框、圆角与标题字体；`rich-copy.js` 保留录音 URL 与起始对齐；新增 `preload` 属性及 6 个以上自动切 `none` 阈值；补齐无编号重复 `#id` 检测与 `audio:` 告警前缀；在 `js/chunks/media.js` 中按需启用同页互斥播放（单音频仍零 JS）；补齐 `check-output.py` 嵌套 `<a>` 守卫、`check-media-primitives.py` 矩阵、JS 单测与 `tests/browser/audio.spec.mjs`。
 - **2026-11-27（对抗评审修复）。** 恢复被 Bootstrap `figure { margin: 0 0 1rem }` 覆盖的 24px/28px 外边距（`:where(.td-media)` 改为 `:where(.td-media):not(.td-figure)`），使 8px/24px 编组成立；同页互斥播放把任何静音或音量为 0 的播放器视为无声，并同时响应 `volumechange`，因此正在播放的循环视频被取消静音时会暂停其它音频，作者自写的静音循环不受影响；`book/register-target.html` 检查无编号媒体 ID，重复 ID 检测变为双向；本地片段保留原有百分号编码（`EscapedFragment`）；`preload` 只在 HTML 中告警；音频卡片在所有预设中使用 `--td-code-radius`，Ink 下使用提示块表面。浏览器回归改为断言绝对间距并使用真实 `play()`；`check_audio_matrix()` 覆盖大写扩展名、站点自定义 `audio/*` 媒体类型、编码片段、与 Book 目标的双向 ID 冲突以及子路径 `baseURL`。
+- **2026-11-28（控件栏）。** 负责人认为原生控件栏加上主题另画的强调色条是两条进度条，要求只用一条、以颜色区分已播放与已加载，并按预设配色。Firefox 与 Safari 不开放原生轨道，因此 `js/chunks/media.js` 改为移除 `controls`，绘制一行控件（播放、时间、单条进度条、倍速、静音与音量），并在全部 32 个语言中新增 8 个 `ui_media_*` 文案；原生播放器保留为无 JavaScript 时的回退。在每个预设与明暗模式下，已播放色与两种中性色的对比度都不低于 3:1。

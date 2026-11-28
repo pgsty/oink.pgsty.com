@@ -31,7 +31,12 @@ test.describe('Audio component', () => {
         const caption = fig.querySelector('.td-fig-caption');
         const lbl = audio?.getAttribute('aria-labelledby') || '';
         const desc = audio?.getAttribute('aria-describedby') || '';
+        const row = fig.querySelector(':scope > .td-media__controls');
+        const seek = row?.querySelector('.td-media__seek');
         return {
+          rowNamedByTitle: !!row && row.getAttribute('aria-labelledby') === title?.id,
+          // A narrow row gives the one progress bar a line of its own.
+          seekFillsRow: !!seek && Math.abs(seek.getBoundingClientRect().width - row.getBoundingClientRect().width) < 1,
           hasTdFigure: fig.classList.contains('td-figure'),
           hasAriaLabel: audio?.hasAttribute('aria-label'),
           lblMatches: !!lbl && lbl === title?.id,
@@ -42,7 +47,8 @@ test.describe('Audio component', () => {
       });
       const summaries = [...document.querySelectorAll('figure.td-media--audio + details.td-callout--details > summary')]
         .map((el) => el.textContent.trim());
-      return { audioCheck, summaries };
+      const overflowX = document.documentElement.scrollWidth > document.documentElement.clientWidth;
+      return { audioCheck, summaries, overflowX };
     });
 
     expect(audit.audioCheck.length).toBeGreaterThanOrEqual(5);
@@ -50,10 +56,13 @@ test.describe('Audio component', () => {
       expect(item.hasTdFigure).toBe(false);
       expect(item.hasAriaLabel).toBe(false);
       expect(item.lblMatches).toBe(true);
+      expect(item.rowNamedByTitle).toBe(true);
+      expect(item.seekFillsRow).toBe(true);
       expect(item.descMatches).toBe(true);
       expect(['start', 'left']).toContain(item.figAlign);
       if (item.captionAlign) expect(['start', 'left']).toContain(item.captionAlign);
     }
+    expect(audit.overflowX).toBe(false);
     expect(audit.summaries.length).toBe(2);
     expect(new Set(audit.summaries).size).toBe(2);
   });

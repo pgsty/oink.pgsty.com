@@ -7,17 +7,20 @@ search_keywords: [Video, mp4, webm, poster, subtitles, WebVTT, autoplay, GIF, Yo
 ---
 
 A video is written like an image, `![name](tour.mp4)`, with an optional
-attribute line below it. A video file plays in the browser's own `<video>`
-player, so it needs no configuration and no third-party service. A YouTube,
+attribute line below it. A video file plays in the page's own `<video>`
+element, so it needs no configuration and no third-party service. A YouTube,
 Bilibili or Vimeo URL in the same place becomes a card that links to the
 platform; it plays in the page only on a site that has opted that platform in,
 because playing there connects the reader to the platform.
 
 Use a file for product demos, screen recordings and the short silent loops
 usually published as animated GIFs, and a platform card for talks and
-interviews that already live on a video site. The browser provides seeking, captions
-and fullscreen. The played portion uses the page’s accent color. Platform embeds
-use the provider's controls.
+interviews that already live on a video site. A video file gets the theme's
+control row under the picture: play, the elapsed time, one progress bar, the
+duration, speed, captions, sound and full screen. The bar is a single track in
+three colors: played time in the page's accent color, buffered time a deeper
+neutral and the rest a light one. Clicking the picture also plays or pauses.
+Platform embeds use the provider's controls.
 
 ## Shortest form {#minimal}
 
@@ -33,7 +36,7 @@ would alt text. When it is empty the caption names the player, and when both
 are empty the theme warns and falls back to the file name (or the watch URL for
 platform links).
 
-The player has native controls and `preload="metadata"`, so until the reader
+The player uses `preload="metadata"`, so until the reader
 presses play the browser fetches only enough to show the duration. Without a
 known size the box reserves 16:9, then takes the video's own shape once its
 metadata arrives; add a local `poster` or `width` and `height` if the video is
@@ -143,8 +146,8 @@ runtime plays it only while all three of these hold:
 - the reader has not asked for reduced motion.
 
 It pauses as soon as one stops holding. If the reader pauses or plays the
-video, their choice wins until it next leaves the viewport. The native
-controls stay, so the motion can always be stopped (WCAG 2.2.2, Pause, Stop,
+video, their choice wins until it next leaves the viewport. The control row
+stays, so the motion can always be stopped (WCAG 2.2.2, Pause, Stop,
 Hide) and the sound turned on. Without JavaScript nothing starts by itself:
 the reader sees the poster and presses play. `autoplay=false` is the same as
 leaving it out, and any other value warns and counts as `false`.
@@ -268,7 +271,8 @@ the whole file.
 ## Output {#outputs}
 
 In HTML a video is a `<figure class="td-media td-media--video">` around a
-native `<video controls preload="metadata" playsinline>`; a caption or number
+native `<video controls preload="metadata" playsinline>`, whose `controls`
+the shared script swaps for the theme's `.td-media__controls` row; a caption or number
 adds `td-figure` and a `<figcaption>`, and a platform URL is an
 `<a class="td-media-card">` that carries `data-td-media-embed` when its
 platform is opted in. Paper and feeds have no player, so Print and RSS show the
@@ -312,9 +316,12 @@ The site setting:
 - One subtitle track per video. Each language page names its own file; there
   is no track list or subtitle menu.
 - One source file: no codec fallbacks across several `<source>` elements, no
-  adaptive streaming (HLS or DASH), and no chapters, playlists or custom
-  controls.
-- Site single-key shortcuts yield while focus is in a native player.
+  adaptive streaming (HLS or DASH), and no chapters or playlists.
+- The captions button switches the one track on and off. Safari may start with
+  it off when the reader's system caption setting asks for that.
+- Full screen shows the picture with the control row below it. On iPhone the
+  system player takes over with its own controls.
+- Site single-key shortcuts yield while focus is in the player's controls.
 - Three platforms only. Other video sites and arbitrary iframe addresses are
   not supported; link to them in prose.
 - No remote thumbnails. A card shows your `poster` or a plain surface.
