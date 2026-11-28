@@ -106,7 +106,7 @@ hugo --gc --minify
 固定 `v1.8.0` 之前，先阅读 [1.8.0 发布说明](/zh/release/1.8.0/)并核对以下更新：
 
 - **六套视觉预设与独立深色模式**：Paper 回归经典暖纸与链接蓝风格（`#f7f6f3`、`#21201c`、`#2b5f8c`，IBM Plex Sans 配黑体）。新增 `github` 与 `news` 两套预设，`ink` 重写为手写笔墨页面（Palatino、楷体、仿宋或宋体与朱色；夜间为绀纸金银字），深色 Terminal 校准为克制的荧光屏配色。如需向读者开放全部六套风格，将 `params.ui.preset_menu` 设为 `[paper, slate, github, ink, news, terminal]`，详见[品牌外观](/zh/docs/customize/brand/#visual-presets)。
-- **外观按钮与菜单排布**：提供三、五或六套预设时，菜单按三列排布于三张明暗卡片之上；开启键盘导航时，分组标题注明 `T` 与 `Y` 快捷键。启用明暗模式时，顶栏触发按钮重新以太阳、月亮或半实心圆图标显示当前模式。
+- **外观按钮与菜单排布**：提供三、五或六套预设时，菜单按三列排布于三张明暗卡片之上；开启键盘导航时，分组标题注明 `T` 与 `Y` 快捷键。菜单提供明暗选项时，顶栏按钮显示读者的选择。浅色显示太阳，深色显示月亮，跟随系统显示半实心圆，即使系统切换明暗，半实心圆也会保留。
 - **统一的音视频控件栏**：本地音频与视频文件改用主题的 `.td-media__controls` 控件栏替代浏览器原生控件，提供三色单轨进度条、倍速切换、音量条以及视频字幕与全屏控制。站点 CSS 如曾定制旧的 `.td-media__progress` 选择器，请改用 `.td-media__controls` 与 `.td-media__seek`。
 - **使用 `> [!SOCIAL]` 提示块引用帖子**：社交帖子采用 `> [!SOCIAL]` 提示块加紧邻块属性行（`{avatar="…" date="…" url="…" platform="…"}`）书写，在纯 Markdown 查看器中保持普通引用块可读性，详见[帖子](/zh/docs/components/social/)。如果站点中仍存有旧的 `social` 短代码调用，可在主题仓库运行 `python3 bin/migrations/oink06.py migrate --site <dir> --only social --write` 批量转换，再运行 `python3 bin/migrations/oink06.py check --site <dir>` 列出仍未转换的调用。
 

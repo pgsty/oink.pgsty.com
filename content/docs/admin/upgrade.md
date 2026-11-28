@@ -153,8 +153,9 @@ pinning `v1.8.0`:
   [Brand and appearance](/docs/customize/brand/#visual-presets).
 - **Appearance trigger and menu layout.** Three, five or six presets arrange in
   three columns above the three Color cards, with `Style (T)` and `Color (Y)`
-  legends when keyboard navigation is on. The navbar trigger displays the
-  active color mode (sun, moon or half-filled circle) whenever Color is offered.
+  legends when keyboard navigation is on. When the menu offers Color, the navbar
+  trigger shows the reader's choice. Light uses a sun, Dark a moon, and System a
+  half-filled circle even when the system switches between light and dark.
 - **Unified audio and video controls.** Local audio and video files replace
   native browser controls with the theme's `.td-media__controls` row, featuring
   a single three-color progress bar, playback speed toggle, volume slider, and
