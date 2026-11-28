@@ -130,6 +130,27 @@ for (const preset of presets) {
   }
 }
 
+test('News keeps navigation, style tiles and article surfaces square and flat', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('td-preset', 'news'));
+  for (const mode of ['light', 'dark']) {
+    await page.emulateMedia({ colorScheme: mode });
+    for (const [path, selectors] of [
+      ['/', ['.td-site-header .nav-link', '.td-landing-component-board [aria-pressed="true"]', '.td-landing-logo-card', '.td-case-mini__tag', '.td-landing-faq']],
+      [docs, ['.td-shell-tree__chevron', '.td-page-actions__item', '.td-content > h2']],
+      ['/blog/immersive-reading/', ['.td-byline__avatar', '.td-share__item']],
+      ['/docs/components/social/', ['.td-social', '.td-social__avatar']],
+    ]) {
+      await page.goto(path);
+      await expect(page.locator('html')).toHaveAttribute('data-bs-theme', mode);
+      for (const selector of selectors) {
+        const surface = page.locator(selector).first();
+        await expect(surface, selector).toHaveCSS('border-radius', '0px');
+        await expect(surface, selector).toHaveCSS('box-shadow', 'none');
+      }
+    }
+  }
+});
+
 test('independent state, native keyboard, navigation, default reset and cross-tab sync', async ({ page, context }) => {
   await page.goto(docs);
   await page.emulateMedia({ colorScheme: 'light' });

@@ -204,6 +204,10 @@
   line-height: 1.4;
 }
 
+[data-td-preset='news'] .td-case-mini__tag {
+  border-radius: 0;
+}
+
 .td-case-mini__desc {
   color: var(--td-silk, var(--bs-secondary-color));
   font-size: 0.84rem;
