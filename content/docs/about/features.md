@@ -28,8 +28,9 @@ fall back to blockquotes, tables, lists, headings and code blocks with nothing
 lost.
 
 For what plain Markdown cannot express, such as cards with icons and images,
-offline quoted social posts (`social`), or a field entry several paragraphs
-long, there are 30 shortcodes. Typeset copy (`params.ui.rich_copy`, on by
+or a field entry several paragraphs long, there are 29 shortcodes. Offline
+quoted social posts are `> [!SOCIAL]` callouts, so they stay blockquotes in
+plain Markdown. Typeset copy (`params.ui.rich_copy`, on by
 default) also keeps pasted selections clean in rich-text editors such as Notion,
 Feishu and Word.
 

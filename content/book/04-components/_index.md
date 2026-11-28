@@ -268,7 +268,7 @@ Stop the server with {{</* kbd "Ctrl" "C" */>}}. Tiered storage is
 Stop the server with {{< kbd "Ctrl" "C" >}}. Tiered storage is
 {{< badge text="Experimental" tone="warning" >}} in Acme DB 3.0.
 
-OINK has 30 shortcodes, for cards with icons, multi-paragraph tabs, numbered
+OINK has 29 shortcodes, for cards with icons, multi-paragraph tabs, numbered
 book figures and the like; [Components](/docs/components/) has a page for each.
 Reach for one only when the Markdown form cannot say it, because shortcodes are
 Hugo syntax and show up literally on GitHub.

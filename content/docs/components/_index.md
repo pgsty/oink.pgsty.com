@@ -78,7 +78,7 @@ for it: **none**, **per page** (only on pages that use it), or **site switch**
 | [Video](/docs/components/video/) | Video files, looping demos, YouTube and Bilibili cards | `![name](demo.mp4)` | native | per page; players need a site switch |
 | [Audio](/docs/components/audio/) | Podcast episodes and voice samples in a titled native player | `![name](episode.mp3)` | native | per page |
 | [Asciinema](/docs/components/asciinema/) | Terminal sessions replayed as selectable text | `{{</* asciinema file="images/x.cast" */>}}` | shortcode | per page |
-| [Social](/docs/components/social/) | Quote a social post without contacting its platform | `{{</* social author="…" */>}}` | shortcode | none |
+| [Social](/docs/components/social/) | Quote a social post without contacting its platform | ``> [!SOCIAL] Name `@handle` `` | native | none |
 {.wide}
 
 A few entries in the *Runtime* column depend on what is on the page:

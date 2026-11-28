@@ -27,12 +27,12 @@ proposal_date: 2026-11-27
 | --- | --- | --- | --- | --- |
 | Timeline | 定义列表加 `{.timeline}` | 无（作者标记） | 无 | [Timeline 组件](/zh/docs/design/proposals/component-timeline/) |
 | Update | 标题加 `{.update date="…" tags="…"}` | 两个标题属性 | 无 | [Update 组件](/zh/docs/design/proposals/component-update/) |
-| 社交帖子 | `{{</* social */>}}…{{</* /social */>}}` | 一个短代码 | 无 | [社交帖子组件](/zh/docs/design/proposals/component-social/) |
+| 社交帖子 | `> [!SOCIAL]` 提示块加块属性（v1.7.0 中为短代码） | 一个提示块类型 | 无 | [社交帖子组件](/zh/docs/design/proposals/component-social/) |
 | Video | `![name](demo.mp4)` 与平台 URL | 图片钩子上的媒体属性；`params.video_embeds` | 文件播放器和已启用的嵌入共享 `media.js` | [Video 组件](/zh/docs/design/proposals/component-video/) |
 | Audio | `![name](episode.mp3)` | 图片钩子上的媒体属性 | 文件播放器共享 `media.js` | [Audio 组件](/zh/docs/design/proposals/component-audio/) |
 | Map | `map` 数据围栏 | 一个围栏；`params.map` | 随主题内置（vendored）的 Leaflet，仅在启用时加载 | [Map 组件](/zh/docs/design/proposals/component-map/) |
 
-文档中的组件目录从 21 个增加到 27 个，短代码从 29 个增加到 30 个（新增 `social`）。图片与标题渲染钩子各增加分支，另新增一个围栏钩子（`map`）。
+文档中的组件目录从 21 个增加到 27 个。v1.7.0 中短代码从 29 个增加到 30 个（新增 `social`），之后改为提示块形态又回到 29 个。图片与标题渲染钩子各增加分支，另新增一个围栏钩子（`map`）。
 
 ## 评审结论 {#verdict}
 
@@ -81,7 +81,7 @@ proposal_date: 2026-11-27
 | 标题渲染钩子 | `id`、class 透传 | 带 `date` 与 `tags` 的 `.update` |
 | 图片渲染钩子 | 图片、figure、Book 编号、图片缩放、Draw.io 候选 | 视频文件、音频文件、可识别的视频平台 URL |
 | 数据围栏 | `gallery`、`filetree`、`echarts`、… | `map` |
-| 带 Markdown 正文的尖括号短代码 | `card`、`tab`、`field`、… | `social` |
+| 引用块提示钩子 | 提示块类型、折叠标记、`{icon=}` | 带 `avatar`、`date`、`url`、`platform` 的 `[!SOCIAL]`（由 v1.7.0 的 `social` 短代码修订而来） |
 
 没有组件新增百分号分隔的短代码，`steps` 仍是唯一一个。
 
@@ -152,3 +152,4 @@ Markdown、Print 与 RSS 不设置其中任何标志。
 - **2026-11-27（评审）。** 拆分为六项提案加本概览页。把公共接口缩减为一个短代码（`x`）、一个围栏（`map`），以及图片与标题钩子中的分支。记录了上文的探针证据、`x` 解析问题、EXIF 配置要求和路线图冲突。
 - **2026-11-27（负责人）。** 把离线帖子组件改名为 `social`，不再与 Hugo 的 `x` 冲突。删去主题路线图中“不再新增组件家族”的表述，它从来不是负责人的决定；本页的路线图冲突一节随之删除。
 - **2026-11-27（实现与接受）。** 六个组件已在主题 `main` 分支实现并纳入 OINK v1.7.0，附带夹具、golden、无效输入用例与运行时单元测试；本站补齐了指南与演示。与草案的差异记录在各组件提案的决策日志中。
+- **2026-11-28（负责人）。** 对社交帖子同样套用 Markdown 优先检验：短代码改为 `> [!SOCIAL]` 提示块，这组组件因此不再需要任何新短代码。详见[社交帖子组件的决策日志](/zh/docs/design/proposals/component-social/#decision-log)。

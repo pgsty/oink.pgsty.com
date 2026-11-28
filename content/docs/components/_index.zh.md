@@ -66,7 +66,7 @@ no_list: true
 | [视频](/zh/docs/components/video/) | 视频文件、循环演示、YouTube 与 Bilibili 卡片 | `![名称](demo.mp4)` | 原生 | 按页加载；播放器需站点开关 |
 | [音频](/zh/docs/components/audio/) | 播客单集与语音样例，带标题的原生播放器 | `![名称](episode.mp3)` | 原生 | 按页加载 |
 | [Asciinema](/zh/docs/components/asciinema/) | 回放终端会话，文字仍可选中 | `{{</* asciinema file="images/x.cast" */>}}` | shortcode | 按页加载 |
-| [帖子](/zh/docs/components/social/) | 在页面中引用帖子，无需向社交平台取回原帖 | `{{</* social author="…" */>}}` | shortcode | 无 |
+| [帖子](/zh/docs/components/social/) | 在页面中引用帖子，无需向社交平台取回原帖 | ``> [!SOCIAL] 名字 `@handle` `` | 原生 | 无 |
 {.wide}
 
 「运行时」列里有几项取决于页面上的内容：

@@ -14,7 +14,7 @@ aliases:
 
 多数组件就是普通 Markdown 加一行属性，源码在 GitHub 和任何编辑器里都照样可读。提示块是 `> [!NOTE]` 块引用，有十种语义类型和一个中性折叠块；参数表是表格下面加一行 `{.fields}`；步骤与卡片是列表加 `{.steps}` 或 `{.cards}`；时间轴与更新日志条目是定义列表加 `{.timeline}` 和标题加 `{.update}`；图片、视频与音频共用带 `{caption="…"}` 的 Markdown 图片语法。标签页是几个相邻的代码围栏，各带一个 `{tab="…"}` 属性；文件树、画廊、地图、Mermaid、ECharts 则是以数据语言命名的围栏。离开 OINK，这些写法会退化为块引用、表格、列表、标题与代码块，内容一点不丢。
 
-原生 Markdown 表达不了的场景，比如带图标与图片的卡片、离线帖子引用（`social`）、正文长达几段的参数条目，交给 30 个 shortcode。默认开启的排版复制（`params.ui.rich_copy`）还会把正文选区干净地粘贴进 Notion、飞书、Word 等富文本编辑器。
+原生 Markdown 表达不了的场景，比如带图标与图片的卡片、正文长达几段的参数条目，交给 29 个 shortcode。离线帖子引用写成 `> [!SOCIAL]` 提示块，在纯 Markdown 里仍是引用块。默认开启的排版复制（`params.ui.rich_copy`）还会把正文选区干净地粘贴进 Notion、飞书、Word 等富文本编辑器。
 
 → [组件总览](/zh/docs/components/)
 

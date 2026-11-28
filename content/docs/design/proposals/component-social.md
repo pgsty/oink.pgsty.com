@@ -1,48 +1,52 @@
 ---
 title: "Social post component"
 linkTitle: Social post component
-description: A static, offline card for quoting a post from X or another social platform — author, handle, avatar, date, link, and a Markdown body — with no build-time fetch and no runtime.
+description: A static, offline card for quoting a post from X or another social platform, written as a `> [!SOCIAL]` callout — author, handle, avatar, date, link, and a Markdown body — with no build-time fetch and no runtime.
 weight: 29
 icon: fa-solid fa-comment-dots
-search_keywords: [social, x, twitter, tweet, social post, bluesky, mastodon, threads, weibo, offline embed, quote, component]
+search_keywords: [social, x, twitter, tweet, social post, bluesky, mastodon, threads, weibo, offline embed, quote, callout, component]
 design_kind: proposal
 design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] Accepted in OINK 1.7.0
-> The `social` shortcode ships in OINK v1.7.0, is documented in the
-> [Social posts guide](/docs/components/social/), and is governed by the
-> [Components contract](/docs/design/components/#timeline-media-social-and-maps).
-> Shared decisions are in the [overview](/docs/design/proposals/content-components-expansion/).
+> [!NOTE] Accepted in OINK 1.7.0; revised after it
+> OINK v1.7.0 shipped the card as the `social` shortcode. On 2026-11-28 the
+> owner moved it to the native `> [!SOCIAL]` callout, which is implemented on
+> `main` and removes the shortcode. The
+> [Social posts guide](/docs/components/social/) documents it, the
+> [Components contract](/docs/design/components/#timeline-media-social-and-maps)
+> governs it, and shared decisions are in the
+> [overview](/docs/design/proposals/content-components-expansion/).
 
 | Record | Value |
 | --- | --- |
-| Status | Accepted and shipped in OINK v1.7.0 (implemented 2026-11-27) |
+| Status | Accepted; shortcode shipped in OINK v1.7.0 (2026-11-27); callout form implemented 2026-11-28, unreleased |
 | Owner | OINK maintainers |
 | Delivery stage | S3 |
-| Form | Shortcode with a Markdown body: `{{</* social … */>}}…{{</* /social */>}}` |
-| New public API | Shortcode `social` with `author`, `handle`, `avatar`, `date`, `url`, `platform`; locale key `ui_social_view_original` |
+| Form | Callout with a Markdown body: ``> [!SOCIAL] Name `@handle` `` plus a block attribute line |
+| Public API | Callout type `social`; title as the identity line; attributes `avatar`, `date`, `url`, `platform`; locale key `ui_social_view_original` |
 | Runtime | None |
-| Implementation | `layouts/_shortcodes/social.html`, `layouts/_partials/content/markdown-escape-inline.html`, `assets/css/td/social.css`, fixture `tests/site/content/fixtures/social.md` |
+| Implementation | `layouts/_markup/render-blockquote-alert.html`, `layouts/_partials/content/social.html`, `assets/css/td/social.css`, fixture `tests/site/content/fixtures/social.md`, migration `bin/migrations/oink06/transforms/social.py` |
 
 ## Summary {#summary}
 
 ```markdown
-{{</* social author="OINK Example" handle="@oink_example" avatar="/logo.svg"
-            date="2026-02-15" url="https://example.com/oink_example/status/1" */>}}
-The post text, in ordinary **Markdown**, with its line breaks and links.
-
-![The screenshot attached to the post](demo.webp)
-{{</* /social */>}}
+> [!SOCIAL] OINK Example `@oink_example`
+>
+> The post text, in ordinary **Markdown**, with its line breaks and links.
+>
+> ![The screenshot attached to the post](demo.webp)
+{avatar="/logo.svg" date="2026-02-15" url="https://example.com/oink_example/status/1" platform="x"}
 ```
 
 The card shows the avatar, name, handle, platform icon, body, attached images,
 date, and a link to the original. Everything comes from the page; nothing is
-fetched at build or view time. `platform` (default `x` on top-level cards,
-`none` when nested) selects the icon for Bluesky, Mastodon, Threads, Weibo,
-Zhihu, Telegram, or LinkedIn posts with the same layout, or omits the icon
-with `none`.
+fetched at build or view time. `platform` (default `none`) selects the icon
+for X, Bluesky, Mastodon, Threads, Weibo, Zhihu, Telegram, or LinkedIn posts
+with the same layout. Outside Hugo the source is an ordinary blockquote, so
+GitHub, an editor preview, or Obsidian shows the name, text, images, and any
+quoted post.
 
 ## Problem {#problem}
 
@@ -57,6 +61,12 @@ that means:
 - the quote disappears when the post is deleted, made private, or the account
   is renamed;
 - the card ignores OINK's presets, color schemes, Print, Markdown, and RSS.
+
+The v1.7.0 `social` shortcode solved those, but its source read poorly outside
+Hugo: in plain Markdown the opening tag and the first line of the post merge
+into one paragraph, the closing tag hangs off the last one, and a parameter
+avatar never shows. Its Markdown output also needed a second, hand-built
+attribution renderer.
 
 The common workaround, a screenshot, is inaccessible (text in pixels), not
 searchable, and absent from LLMS output.
@@ -74,6 +84,10 @@ searchable, and absent from LLMS output.
    platforms; `platform` changes only the icon.
 5. **Leave Hugo's names alone.** The component has its own name, so Hugo's
    embedded `x` keeps working exactly as Hugo documents it.
+6. **Markdown first.** A quoted post is a blockquote with attribution, which
+   Markdown already writes. The callout title is the one slot Goldmark hands
+   over separately, so it carries the identity line, and block attributes
+   carry the facts Markdown has no syntax for.
 
 ## Goals and non-goals {#goals}
 
@@ -83,8 +97,9 @@ searchable, and absent from LLMS output.
   JavaScript.
 - Text, links, images (with Image Zoom), multi-image grids, and one level of
   quoted post.
-- The same static card in Print, and a blockquote with attribution in
-  Markdown, LLMS, and RSS.
+- The same static card in Print, the author's own blockquote in Markdown and
+  LLMS, and a blockquote with attribution in RSS.
+- A source that reads as a quotation in any Markdown viewer.
 
 ### Non-goals {#non-goals}
 
@@ -101,43 +116,48 @@ searchable, and absent from LLMS output.
 
 ## Behavior {#design}
 
-### Parameters {#parameters}
+### Title and attributes {#parameters}
 
-| Parameter | Rule | Invalid input |
+| Part | Rule | Invalid input |
 | --- | --- | --- |
-| `author` | Display name, plain text | Non-string: warns and ignored |
-| `handle` | Plain text shown verbatim (`@name`, `@user@mastodon.social`) | Non-string: warns and ignored |
+| Title | The identity line, rendered as written with inline Markdown. Each code span becomes the handle (`<span class="td-social__handle" dir="ltr">`); the rest is the name | Missing: see below |
 | `avatar` | Image path through `content/image-resolve.html` (`parameter="avatar"`); decorative (`alt=""`) because the name is adjacent | Unsafe scheme or non-image resource: warns naming `avatar` and drops; a static path missing from the project's own `static/` (checked only when that directory exists, after decoding and cleaning the path): warns with the ID `social:avatar-static`, which a site using module mounts or a custom `staticDir` can list in `ignoreLogs`, and keeps the path; a static path that climbs above the site root with `..`: warns (`social:avatar-static`), is dropped, and the card draws the initial; remote HTTPS URLs are never fetched |
-| `date` | Plain text. `YYYY-MM`, or `YYYY-MM-DD` optionally followed by `T` or a space, `HH:MM`, optional `:SS`, and an optional `Z` or `±HH:MM`, on a real calendar day, becomes `<time datetime>` (the space written as `T`); anything else renders as `<span class="td-social__date">` | Non-string: warns and ignored |
+| `date` | Plain text. `YYYY-MM`, or `YYYY-MM-DD` optionally followed by `T` or a space, `HH:MM`, optional `:SS`, and an optional `Z` or `±HH:MM`, on a real calendar day, becomes `<time datetime>` (the space written as `T`); anything else renders as `<span class="td-social__date">` | — |
 | `url` | Original post, through the shared URL policy (HTTP/HTTPS with `rel="external"`, or site-internal path without `rel="external"`). Optional, so a deleted post can still be quoted | Invalid: warns and is dropped |
-| `platform` | `x` (default top-level), `bluesky`, `mastodon`, `threads`, `weibo`, `zhihu`, `telegram`, `linkedin`, `none` (default nested) | Unknown, empty, or non-string: warns, uses context default |
+| `platform` | `x`, `bluesky`, `mastodon`, `threads`, `weibo`, `zhihu`, `telegram`, `linkedin`, `none` (default at every depth) | Unknown or empty: warns, uses `none` |
 
-At least one of `author` and `handle` is required. Without both, the shortcode
-warns and renders the body as a plain blockquote (or a blockquote link when
-the body is empty and `url` is valid), so the quoted words are not lost. With a
-body, `url` survives only as the quote's `cite` attribute and is left out of
-Markdown; `date`, `platform` and `avatar` are ignored. Without an avatar, a
-circle shows the first grapheme cluster of `author` (or `handle`) after leading
-`@`, spaces, and invisible format characters are removed, falling back to a
-person icon if nothing visible remains; no
-default avatar or Gravatar is requested. Named parameters only; unknown
-parameters warn.
+`content/attributes.html` validates the attribute line: `class`, `data-*` and
+`aria-*` pass to the figure, and any other name warns. Attribute values are
+strings, so the shortcode's type warnings have no counterpart. A `+` or `-`
+fold marker warns and is ignored.
+
+A title is required. Without one, the callout warns and renders the body as a
+plain blockquote (or a blockquote link when the body is empty and `url` is
+valid), so the quoted words are not lost. With a body, `url` survives only as
+the quote's `cite` attribute; `date`, `platform` and `avatar` are ignored.
+Without an avatar, a circle shows the first grapheme cluster of the title's
+plain text after leading `@`, spaces, and invisible format characters are
+removed, falling back to a person icon if nothing visible remains; no default
+avatar or Gravatar is requested.
+
+The render hook cannot see an enclosing callout, which is why the default
+platform is the same at every depth instead of `x` on top-level cards.
 
 ### Body {#body}
 
-The body is rendered through `content/render-block.html` with its own ID scope:
+The body is the callout's own Markdown, rendered with the page:
 
 | Content | Written as |
 | --- | --- |
 | Text, line breaks, links, code | Ordinary Markdown |
 | One attached image | A Markdown image; it gets Image Zoom when eligible |
 | Several images | A `gallery` fence inside the body (compact grid matching the card radius) |
-| A quoted post | A nested `social` shortcode; `platform` defaults to `none` (or renders a compact icon + label when set explicitly); nesting deeper than one level warns |
+| A quoted post | A nested `> [!SOCIAL]`, whose attribute line carries one `>`; it is styled by the `.td-social .td-social` descendant selector |
 | A video | A Video image line |
 
-Footnote references in the body warn and stay literal, as in every shortcode
-body. An empty body warns; with a valid `url` the card renders as a link-only
-card (or a blockquote link if anonymous), otherwise it renders nothing.
+Footnotes in the body resolve like any page footnote. An empty body warns;
+with a valid `url` the card renders as a link-only card (or a blockquote link
+without a title), otherwise it renders nothing.
 
 ### Rendering {#rendering}
 
@@ -145,12 +165,12 @@ card (or a blockquote link if anonymous), otherwise it renders nothing.
 <figure class="td-social td-social--x">
   <figcaption class="td-social__author">
     <img class="td-social__avatar" src="/logo.svg" alt="" loading="lazy" decoding="async">
-    <span class="td-social__names"><span class="td-social__name" dir="auto">OINK Example</span> <span class="td-social__handle" dir="ltr">@oink_example</span></span>
+    <span class="td-social__names" dir="auto">OINK Example <span class="td-social__handle" dir="ltr">@oink_example</span></span>
     <i class="td-social__platform fa-brands fa-x-twitter" aria-hidden="true"></i>
     <span class="visually-hidden"> · X</span>
   </figcaption>
   <blockquote class="td-social__body" cite="https://example.com/oink_example/status/1">…</blockquote>
-  <p class="td-social__meta"><a href="https://example.com/oink_example/status/1" rel="external"><time datetime="2026-02-15">2026-02-15</time> · View original<span class="visually-hidden"> — OINK Example</span></a></p>
+  <p class="td-social__meta"><a href="https://example.com/oink_example/status/1" rel="external"><time datetime="2026-02-15">2026-02-15</time> · View original<span class="visually-hidden"> — OINK Example @oink_example</span></a></p>
 </figure>
 ```
 
@@ -182,14 +202,15 @@ handles and URLs wrap.
 | --- | --- |
 | HTML | The card; no runtime. Body images opt into the shared Image Zoom as usual |
 | Print | The static card on the paper palette with the URL visible |
-| Markdown / LLMS | A blockquote: the body lines, then ``— OINK Example (`@oink_example`) · X · 2026-02-15 · [View original](url)``; a nested post becomes a nested blockquote. Attribution text goes through `content/markdown-escape-inline.html` |
-| RSS | A `<figure>` with `<blockquote cite>` (omitted on link-only cards) and an attribution line using absolute URLs; no avatar |
+| Markdown / LLMS | The callout exactly as written, with its attribute line; a nested post stays a nested blockquote |
+| RSS | A `<figure>` with `<blockquote cite>` (omitted on link-only cards) and an attribution line using absolute URLs, the handle as plain text; no avatar |
 
 ### Hugo's own `x` {#hugo-x}
 
 Hugo's embedded `x` shortcode remains available and unchanged: it fetches
 oEmbed data at build time and loads X's script in the browser. OINK does not
-intercept it. The guide recommends `social` for offline, permanent quotes.
+intercept it. The guide recommends the `[!SOCIAL]` callout for offline,
+permanent quotes.
 
 Overriding `x` was the first plan and was rejected after a probe on Hugo
 0.170.1: a shortcode template that reads `.Inner` makes Hugo's parser require
@@ -218,38 +239,57 @@ optional so the author can drop a link that no longer resolves.
 | `github`, `hackernews`, `reddit` platforms | Removed | Titles, threads, and missing avatars are a different component |
 | Automatic handle prefixes per platform | Removed | Handles are shown as written |
 | Per-platform styles | One layout | Presets own color; platform redesigns would otherwise date the theme |
+| The `social` shortcode with six parameters (shipped in v1.7.0) | Replaced by the `[!SOCIAL]` callout (owner, 2026-11-28) | The source reads as a quotation in any Markdown viewer, Markdown and LLMS output is the source itself, and footnotes, Image Zoom and other hooks apply to the body without a block renderer |
+| A plain blockquote with a closing `— Author` line and `{.social}` | Rejected | The hook would have to parse the attribution out of rendered HTML to lay out the header and the date line |
+| An avatar written as a Markdown image in the title | Rejected | A probe on Hugo 0.170.1 shows that an image ends the alert title: text after it moves into the body, and a trailing image leaves an empty paragraph |
+| The date link written in the title | Rejected | It would hide the date and URL in a presentation string and lose `<time>`, `cite`, and the RSS absolute URL |
+| Reusing `[!QUOTE]` with social attributes | Rejected | Attributes would decide whether one type renders as a callout box or a card |
 
 ## Companion helper {#helper}
 
 Writing the parameters by hand is the main friction. A future
 `oink fetch social <url>` in `../oink-cli` could, once at writing time,
 download the avatar and media into the page bundle and print a ready
-`social` shortcode. It is outside this proposal and needs its own `oink-cli`
+`[!SOCIAL]` callout. It is outside this proposal and needs its own `oink-cli`
 proposal, because the endpoints it would use are unofficial, may change or be
 restricted, and raise terms-of-use questions. The theme never depends on it.
 
 ## Compatibility {#compatibility}
 
-- A new shortcode name; Hugo's built-in shortcodes are untouched.
-- The shortcode count grows from 29 to 30.
+- v1.7.0 added the `social` shortcode, taking the count from 29 to 30.
+- The callout form removes it again (30 back to 29) and adds the `social`
+  callout type. A page that still calls the shortcode fails to build with
+  `template for shortcode "social" not found`.
+- `bin/migrations/oink06.py migrate --only social` rewrites every call:
+  `author` becomes the title text, `handle` a code span, the other parameters
+  the attribute line, and a nested call a nested callout. It writes
+  `platform="x"` on top-level cards that relied on the shortcode's default and
+  reports calls it cannot express. On vonng.com it converted 492 calls (89
+  nested) in 149 files with no findings, and 88 cards rendered from four
+  converted bundles matched the v1.7.0 cards in platform, nesting, images,
+  links, dates and visible text.
+- Block attributes need `markup.goldmark.parser.attribute.block: true`, which
+  OINK already requires.
 
 ## Implementation and checks {#implementation}
 
 | Part | Where |
 | --- | --- |
-| Template | `layouts/_shortcodes/social.html` (shared parameter, URL, image and block-rendering partials; static Markdown, Print and RSS branches) |
+| Template | `layouts/_partials/content/social.html`, reached from the `social` branch of `layouts/_markup/render-blockquote-alert.html` (shared attribute, URL and image partials; static Print and RSS branches) |
 | Styles | `assets/css/td/social.css` |
 | Locale | `ui_social_view_original` in all 32 catalogs |
-| Fixture | `tests/site/content/fixtures/social.md` and its Chinese peer, pinned by HTML, Markdown and Print goldens |
-| Invalid input | Seventeen `social-*` cases plus `check_social_posts()` and template/CSS contract checks in `bin/check-content-primitives.py`, and Playwright coverage in `tests/browser/social.spec.mjs` |
+| Fixture | `tests/site/content/fixtures/social.md` and its Chinese peer, pinned by HTML, Markdown, Print and RSS goldens |
+| Invalid input | Thirteen `social-*` cases plus `check_social_posts()` and template/CSS contract checks in `bin/check-content-primitives.py`; `bin/check-components.py` keeps the shortcode deleted and failing as missing; Playwright coverage in `tests/browser/social.spec.mjs` |
+| Migration | `bin/migrations/oink06/transforms/social.py`, frozen by `tests/migrations/test_oink06.py` |
 | Guide | [Social posts](/docs/components/social/) |
 
 ## Acceptance criteria {#acceptance}
 
 - A build with network access disabled renders every fixture.
 - No `social` page requests anything from a platform host, at build or view time.
-- Markdown and LLMS contain a readable blockquote with attribution and no
-  component HTML.
+- Markdown and LLMS contain the source callout and no component HTML.
+- A plain Markdown viewer shows the name, handle, body, images and quoted post
+  as a blockquote.
 - Invalid input warns and keeps the quoted words whenever a body exists.
 - Preset, color-scheme, narrow-screen, RTL, forced-colors, and print reviews
   pass.
@@ -288,3 +328,16 @@ restricted, and raise terms-of-use questions. The theme never depends on it.
   Markdown ends every card with a blank line so adjacent cards stay separate
   quotations; the guide's date, avatar-resolution and anonymous-card wording
   now matches the implementation.
+- **2026-11-28 (owner).** Markdown first: what Markdown can present is not
+  converted. The shortcode's source read poorly in plain Markdown, so the card
+  becomes the `> [!SOCIAL]` callout; the title is the identity line with the
+  handle as a code span, and `avatar`, `date`, `url` and `platform` become
+  block attributes. Probes on Hugo 0.170.1 confirmed that the title keeps
+  inline Markdown, that attributes attach directly under a callout and under a
+  nested one with a single `>`, and that an image cannot sit in the title.
+- **2026-11-28 (implementation).** The shortcode and
+  `content/markdown-escape-inline.html` are deleted; the card renders from
+  `content/social.html`; `platform` defaults to `none` at every depth because
+  the hook cannot see a parent; nested styling moves to a descendant selector
+  and the deeper-nesting warning is dropped; Markdown and LLMS keep the
+  source; the migration toolkit gains a `social` transformation.

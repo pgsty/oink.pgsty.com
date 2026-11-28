@@ -39,10 +39,10 @@ shortcode 一律使用尖括号分隔符。复合正文通过 `content/render-bl
 
 ## 公共 API {#public-api}
 
-OINK 有 30 个 shortcode：
+OINK 有 29 个 shortcode：
 
 - 核心：`tabs`、`tab`、`steps`、`cards`、`card`、`fields`、`field`、`include`、
-  `kbd`、`badge`、`param`、`comment`、`contributors`、`asciinema`、`social`；
+  `kbd`、`badge`、`param`、`comment`、`contributors`、`asciinema`；
 - Book：`fig`、`tbl`、`eq`、`eg`、`xref`、`book-toc`、`book-figures`、
   `book-tables`、`book-equations`、`book-examples`；
 - 发布：`release-card`、`release-assets`、`download`；
@@ -67,7 +67,7 @@ OINK 有 30 个 shortcode：
 | 更新 | 标题加 `{.update date= tags=}` | 无 | 无 |
 | 视频 | 指向视频文件或平台 URL 的块级图片加 `{caption= poster= track= autoplay=}` | 无 | 文件播放器或已启用的平台卡片加载 `media` |
 | 音频 | 指向音频文件的块级图片加 `{caption= id= preload=}` | 无 | 文件播放器加载 `media` |
-| 帖子 | 无 | `social` | 无 |
+| 帖子 | `> [!SOCIAL]` 提示块 + `{avatar= date= url= platform=}` | 无 | 无 |
 | 地图 | `map` 数据围栏 | 无 | 仅在 `params.map` 完整时加载 Leaflet |
 
 > [!NOTE] OINK 1.4.0 的统一图表阅读
@@ -151,6 +151,7 @@ URL 使用 `content/url.html`；不允许原始反斜杠，因为浏览器可能
 提示块类型包括 `note`、`tip`、`important`、`warning`、`caution`、`success`、
 `danger`、`question`、`example`、`quote` 与 `details`；`-` 表示初始折叠，`+`
 表示初始展开。未知类型渲染为保留原标记的普通块引用，不依赖 JavaScript。
+`social` 也是一种提示块类型，但它渲染的是帖子卡片而不是提示框，见[帖子](#timeline-media-social-and-maps)。
 
 只有连续且区块类型相同的相邻标签页才会分组。`group` 启用
 `#<group>-<value>` hash 与 `td-tabs:v1:<group>` 存储键；未分组标签页两者都不用。
@@ -306,7 +307,8 @@ Swagger 与 Redoc 接受 HTTP(S) 规范 URL 或以 `static/` 为根的路径，�
 ### 时间轴、更新、媒体、帖子与地图 {#timeline-media-social-and-maps}
 
 > [!NOTE] 自 OINK 1.7.0 起提供
-> 时间轴、更新条目、视频、音频、帖子与地图随 OINK v1.7.0 发布。
+> 时间轴、更新条目、视频、音频、帖子与地图随 OINK v1.7.0 发布。帖子在该版本中是 `social` 短代码，
+> 现已改为 `[!SOCIAL]` 提示块，短代码已移除。
 
 紧跟 `{.timeline}` 的定义列表就是时间轴：术语是自由文本的标记，定义是可含块级内容的事件。
 `<dl>` 由 Goldmark 生成；主题只添加作用域为 `.td-content dl.timeline` 的 CSS，宽屏时分出标记列，窄屏或位于 `.td-content-card` 容器内时保持单列。
@@ -331,13 +333,14 @@ Goldmark 会给每个标题加上 `id` 属性，因此当该 id 是唯一属性�
 Bilibili 嵌入地址带有正十进制整数 `cid` 时，播放器保留该分 P 的内容 ID，其余情况使用 `p` 选择分 P。作者提供的海报会从指定的 URL 独立加载。
 行内媒体渲染为链接。专用 Print 输出带可见 `.td-media__link` URL 的静态 figure（包含平台观看地址）；直接用浏览器打印 HTML 页面时则显示屏幕上隐藏的 `.td-media__url` 行，并在 `@media print` 下无论屏幕主题如何都重置为纸张调色板，卡片替换为 iframe 后仍保留回退地址；RSS 为视频/平台输出静态 figure（含观看地址与真实海报尺寸），为音频将标题直接链接到绝对文件 URL；Markdown 保留作者写下的那一行；`rich-copy.js` 保留起始对齐与可点击录音 URL（未点击的平台卡片不重复输出 URL，点击替换后仍保留回退地址）。不带 `.td-figure` 的媒体 figure 通过 `:where(.td-media):not(.td-figure)` 保持 1.5rem/1.75rem 外边距，比 Bootstrap 的 `figure` 重置多一级类选择器权重。连续音频 figure（间距 16px）以及紧随其后的 `.td-callout--details` 文字稿（间距 8px）通过 `:has()` 正向边距编组，使音频与文字稿的间距小于相邻两组之间的间距（24px）。
 
-`social` 只用页面内容引用一条帖子，参数为 `author`、`handle`、`avatar`、`date`、`url` 与 `platform`（顶层卡片默认 `x`，嵌套引用默认 `none`，另有 `bluesky`、`mastodon`、`threads`、`weibo`、`zhihu`、`telegram`、`linkedin`，决定图标以及向辅助技术播报、写入 Markdown 与 RSS 的平台名；嵌套省略 `platform` 时同时省略图标与视觉隐藏平台名，显式指定则两者同时呈现）。
-参数校验字符串类型并拒绝未知或位置参数；`avatar` 以 `parameter="avatar"` 经过 `content/image-resolve.html`，并在项目自己的 `static/` 目录存在时，对解码、规范化后在该目录中找不到的静态头像离线告警，告警 ID 为可关闭的 `social:avatar-static`（检查看不到模块挂载与自定义 `staticDir`）；用 `..` 越出站点根目录的静态路径总是以同一 ID 告警并被丢弃，卡片改画首字符。无头像时，先剥离开头的 `@`、Unicode 空白、控制字符与不可见格式字符，再按首个字素簇绘制首字符（剥离后为空时回退人物图标）。
-作者显式填写远程头像或附件地址时，读者的浏览器会在显示时请求该资源。
+`> [!SOCIAL]` 提示块只用页面内容引用一条帖子（`content/social.html`，由 `render-blockquote-alert.html` 在任何提示框逻辑之前转交）。
+标题是身份行，按原样渲染：Goldmark 的行内 Markdown 保留，每个行内代码变为 `<span class="td-social__handle" dir="ltr">`，即做了 LTR 隔离的账号；标题的纯文本用来生成首字符头像，以及原帖链接里的作者上下文。
+提示块下方的块属性承载 `avatar`、`date`、`url` 与 `platform`（`x`、`bluesky`、`mastodon`、`threads`、`weibo`、`zhihu`、`telegram`、`linkedin`、`none`）；由 `content/attributes.html` 校验，`class`、`data-*` 与 `aria-*` 传给 figure，其他名称告警。渲染钩子看不到外层上下文，因此 `platform` 在任何层级都默认 `none`；它决定图标，以及向辅助技术播报并写入 RSS 的平台名。`+` 或 `-` 折叠标记告警并被忽略。
+`avatar` 以 `parameter="avatar"` 经过 `content/image-resolve.html`，并在项目自己的 `static/` 目录存在时，对解码、规范化后在该目录中找不到的静态路径离线告警，告警 ID 为可屏蔽的 `social:avatar-static`（检查看不到模块挂载和自定义 `staticDir`）；用 `..` 越出站点根目录的静态路径始终以同一 ID 告警并被丢弃，卡片改画首字符。作者显式填写远程头像或附件地址时，读者的浏览器会在显示时请求该资源。
 `date` 仅在 `YYYY-MM`，或 `YYYY-MM-DD` 带可选 `HH:MM[:SS]` 与可选 `Z`／`±HH:MM`，且为真实日历日期时输出 `<time datetime>`，否则输出 `<span class="td-social__date">`；`url` 仅对外链输出 `rel="external"`。
-正文是 Markdown，图片、`gallery` 围栏（在卡片内采用适配预设圆角的紧凑网格）与嵌套 `social`（超过一层时告警）都在正文中组合；HTML 在 RTL 下对账号名和 ISO 时间戳执行 LTR 双向隔离，打印时无论屏幕配色都映射至 `--td-print-*` 纸张令牌，并在原帖链接中附加视觉隐藏的作者名上下文。
-Markdown 通过上下文感知的行内转义（`content/markdown-escape-inline.html`）与行内代码账号名生成可读引用块，并在其后留一个空行，使相邻卡片保持为独立的引用；RSS 在仅含链接的卡片上省略空 `<blockquote>`。社交引用和地图地点链接如果只含查询串或片段，RSS 使用原文 HTML 页面的永久链接补全地址。
-缺少 `author` 与 `handle` 时，有正文则渲染为普通引用块（`url` 只保留为 `cite`，Markdown 中省略；`date`、`platform` 与 `avatar` 被忽略），空正文且有 `url` 则在全部四种输出中渲染含原帖链接的引用块并发出单条告警；正文与 `url` 皆空时不输出。Hugo 内置的 `x` 短代码不被覆盖。
+正文是提示块所在页面的 Markdown，图片（含图片缩放）、脚注、`gallery` 围栏（在卡片内采用适配预设圆角的紧凑网格）与嵌套的 `[!SOCIAL]` 都在正文中组合；嵌套卡片由后代选择器 `.td-social .td-social` 设定样式。HTML 在 RTL 下对账号和 ISO 时间戳执行 LTR 双向隔离，打印时无论屏幕配色都映射至 `--td-print-*` 令牌，并为原帖链接补充作者上下文。
+Markdown 与 LLMS 保留源码中的提示块及其属性行；RSS 在署名行中把账号写成纯文本，并在仅含链接的卡片上省略空 `<blockquote>`。订阅源中的社交引用和地图地点链接，其仅含查询参数或片段的引用按源文章的 HTML 永久链接解析。
+没有标题时，有正文则渲染为普通引用块（`url` 只保留为 `cite`；`date`、`platform` 与 `avatar` 被忽略），空正文且有 `url` 则渲染含原帖链接的引用块并发出单条告警；正文与 `url` 皆空时不渲染任何内容。1.7.0 的 `social` 短代码已移除，调用它会因找不到模板而构建失败；`bin/migrations/oink06.py migrate --only social` 改写这些调用，并把短代码在顶层卡片上默认画出的 X 图标显式写出。Hugo 内置的 `x` 短代码不被覆盖。
 
 `map` 围栏承载一个 YAML 或 JSON 地点列表（`name`、`lat`、`lng`、`text`、`image`、`link`），按名称以 YAML 解析，而不是靠内容猜测格式。围栏属性为 `caption`、`route`、`zoom`（1–22 无前导零整数）、`height`（正的 `px`、`rem`、`em`、`vh` 或 `vw` 长度；百分比在没有自身高度的 figure 中无从计算，零长度也看不见，两者都告警并使用默认高度）、`id` 以及相邻标签页的键。`style` 与 `on*` 在进入渲染钩子之前就被 Hugo 取走或剥离，因此会被忽略且不告警；`num` 等其他未知属性会告警。列表中没有任何有效地点时（包括 `[]`）告警且不输出。
 浅色和深色瓦片主机名都只接受 `{s}` 占位。用键盘加载时，按钮保留焦点至引擎就绪。如果读者已移开焦点，挂载时保留新焦点。如果焦点所在的地图加载失败，焦点移到首个坐标链接。Markdown 与 LLMS 保留原始围栏。HTML、打印与 RSS 渲染带编号的地点列表：坐标链接以空格分隔、带 `dir="ltr"` 隔离并以十进制格式化（不输出科学计数法），外链地点名带 `rel="external"`，装饰缩略图在 DOM 顺序中位于地点文字之后；非字符串的 `name` 或 `text` 会告警而不会静默转字符串。`params.map` 配置完整时（`enable: true`，`tiles` 支持 `{s}`、`{r}` 与 `{-y}`，其他占位符因 Leaflet 无值可填会抛错而在构建时告警，必填纯文本 `attribution`，以及可选的 `attribution_url`、`dark_tiles`、`subdomains`、`max_zoom`（1–22 无前导零整数）与 `loading: lazy | click`；`tiles`、`dark_tiles`、`attribution_url` 与 `subdomains` 的首尾空白会被去掉，未知键（例如被 Hugo 转成小写的 `maxZoom`）告警，`subdomains` 不是带引号的字符串时（YAML 会把不加引号的数字读成数值）告警并沿用 Leaflet 默认值），HTML 另加画布和校验后的地点 JSON，弹窗缩略图带宽高；`content-components.js`（在 `tabs.js` 隐藏非激活面板之后于 `DOMContentLoaded` 注册观察器）只在这些页面加载随主题内置的 Leaflet 引擎与样式表。共享加载器在地图位于屏幕内、视口下方 320px 以内，或位于阅读位置上方任意处时挂载它；读者从链接直接打开靠后的小节时，上方的地图立即加载，正在读的文字不会在稍后被推下去。只有 `loading: click` 在点击按钮之前不发任何请求。

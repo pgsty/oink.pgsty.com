@@ -118,7 +118,7 @@ series:
 
 ## 饼图与环形图 {#pie}
 
-给 `radius` 两个值，饼图中间就挖出一个洞，成为环形图。下面是 OINK 的 30 个 shortcode 按用途的构成：
+给 `radius` 两个值，饼图中间就挖出一个洞，成为环形图。下面是 OINK 的 29 个 shortcode 按用途的构成：
 
 ````markdown {title="源码"}
 ```echarts {height="340px"}
@@ -136,7 +136,7 @@ series:
     label:
       formatter: "{b} {c}"
     data:
-      - { value: 15, name: 核心组件 }
+      - { value: 14, name: 核心组件 }
       - { value: 10, name: Book 编号与索引 }
       - { value: 3, name: 发布与下载 }
       - { value: 2, name: OpenAPI }
@@ -158,7 +158,7 @@ series:
     label:
       formatter: "{b} {c}"
     data:
-      - { value: 15, name: 核心组件 }
+      - { value: 14, name: 核心组件 }
       - { value: 10, name: Book 编号与索引 }
       - { value: 3, name: 发布与下载 }
       - { value: 2, name: OpenAPI }

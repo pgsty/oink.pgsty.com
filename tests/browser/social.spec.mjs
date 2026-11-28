@@ -53,14 +53,14 @@ for (const language of ['', '/zh']) {
     expect(external, 'social page must not request any external host').toEqual([]);
 
     const check = await page.evaluate(() => {
-      const cards = Array.from(document.querySelectorAll('.td-content figure.td-social:not(.td-social--nested)'));
-      const nested = document.querySelector('.td-content figure.td-social--nested');
+      const cards = Array.from(document.querySelectorAll('.td-content figure.td-social:not(.td-social .td-social)'));
+      const nested = document.querySelector('.td-content .td-social figure.td-social');
       const fullCard = cards.find((c) => c.querySelector('img.td-image'));
       const galleryCard = cards.find((c) => c.querySelector('.td-gallery'));
       const galleryItems = Array.from(galleryCard.querySelectorAll('.td-gallery__item'));
       const pairedNames = cards
         .map((c) => c.querySelector('.td-social__names'))
-        .filter((el) => el.querySelector('.td-social__name') && el.querySelector('.td-social__handle'));
+        .filter((el) => el.querySelector('.td-social__handle') && el.firstChild?.nodeType === Node.TEXT_NODE && el.firstChild.textContent.trim());
       const nestedCaption = nested.querySelector('figcaption');
       const metaLink = fullCard.querySelector('.td-social__meta a');
       const proseP = document.querySelector('.td-content > p');
@@ -70,7 +70,7 @@ for (const language of ['', '/zh']) {
         outerCount: cards.length,
         nestedExists: Boolean(nested),
         captionHasSpace: pairedNames.length > 0 && pairedNames.every((el) => {
-          const name = el.querySelector('.td-social__name').textContent;
+          const name = el.firstChild.textContent.trim();
           const handle = el.querySelector('.td-social__handle').textContent;
           return el.textContent.includes(`${name} ${handle}`);
         }),
@@ -136,8 +136,8 @@ test('social adapts geometry, contrast and nested surfaces across all four prese
       await page.goto('/docs/components/social/', { waitUntil: 'domcontentloaded' });
 
       const metrics = await page.evaluate(() => {
-        const outer = document.querySelector('.td-content figure.td-social:not(.td-social--nested)');
-        const nested = document.querySelector('.td-content figure.td-social--nested');
+        const outer = document.querySelector('.td-content figure.td-social:not(.td-social .td-social)');
+        const nested = document.querySelector('.td-content .td-social figure.td-social');
         const avatar = outer.querySelector('.td-social__avatar');
         const initialOuter = outer.querySelector('.td-social__avatar--initial');
         const initialNested = nested.querySelector('.td-social__avatar--initial');
@@ -182,9 +182,9 @@ test('social switches cleanly to paper palette in dark-mode browser print across
     await page.goto('/docs/components/social/', { waitUntil: 'domcontentloaded' });
 
     const data = await page.evaluate(() => {
-      const card = document.querySelector('.td-content figure.td-social:has(figure.td-social--nested)');
+      const card = document.querySelector('.td-content figure.td-social:has(figure.td-social)');
       const body = card.querySelector(':scope > .td-social__body');
-      const nested = card.querySelector('figure.td-social--nested');
+      const nested = card.querySelector('figure.td-social');
       const nestedBody = nested.querySelector(':scope > .td-social__body');
       const metaLink = card.querySelector(':scope > .td-social__meta a');
       const linkAfter = getComputedStyle(metaLink, '::after').content;
@@ -229,7 +229,7 @@ test('social preserves forced colors and RTL handle/timestamp isolation', async 
   await page.evaluate(() => { document.documentElement.dir = 'rtl'; });
 
   const rtl = await page.evaluate(() => {
-    const card = Array.from(document.querySelectorAll('.td-content figure.td-social:not(.td-social--nested)'))
+    const card = Array.from(document.querySelectorAll('.td-content figure.td-social:not(.td-social .td-social)'))
       .find((c) => c.querySelector('.td-social__handle') && c.querySelector('time[datetime]'));
     const avatar = card.querySelector('.td-social__avatar').getBoundingClientRect();
     const handle = card.querySelector('.td-social__handle');

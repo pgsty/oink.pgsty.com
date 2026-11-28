@@ -74,7 +74,7 @@ for it: **none**, **per page** (only on pages that use it), or **site switch**
 | [Video](/docs/components/video/) | Video files, looping demos, YouTube and Bilibili cards | `![name](demo.mp4)` | native | per page; players need a site switch |
 | [Audio](/docs/components/audio/) | Podcast episodes and voice samples in a titled native player | `![name](episode.mp3)` | native | per page |
 | [Asciinema](/docs/components/asciinema/) | Terminal sessions replayed as selectable text | `{{< asciinema file="images/x.cast" >}}` | shortcode | per page |
-| [Social](/docs/components/social/) | Quote a social post without contacting its platform | `{{< social author="…" >}}` | shortcode | none |
+| [Social](/docs/components/social/) | Quote a social post without contacting its platform | ``> [!SOCIAL] Name `@handle` `` | native | none |
 {.wide}
 
 A few entries in the *Runtime* column depend on what is on the page:
@@ -184,7 +184,7 @@ Section pages:
 - [Video](/docs/components/video/): Embed product demos, screen recordings and muted loops that replace GIFs, and link YouTube, Bilibili or Vimeo talks without contacting the platform until a reader clicks.
 - [Audio](/docs/components/audio/): Put a podcast episode, voice sample or recorded talk on a page with image syntax, as a titled native player with its transcript beside it.
 - [Asciinema](/docs/components/asciinema/): Embed a .cast terminal recording that readers can play, pause and copy text from, with the player shipped in the theme.
-- [Social](/docs/components/social/): Quote a post from X, Bluesky, Mastodon, or another platform with the `social` shortcode. The page supplies the quote and attribution without a platform script.
+- [Social](/docs/components/social/): Quote a post from X, Bluesky, Mastodon, or another platform with a `> [!SOCIAL]` callout. The page supplies the quote and attribution without a platform script, and plain Markdown viewers show an ordinary blockquote.
 - [Component presentation](/docs/components/presentation/): Cards, disclosures, tabs, and compact procedures across OINK's four visual presets.
 
 ---

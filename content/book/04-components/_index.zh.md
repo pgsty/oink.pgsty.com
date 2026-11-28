@@ -232,7 +232,7 @@ Quick start 的结尾要把读者送往下一站。在链接列表下一行加�
 
 用 {{< kbd "Ctrl" "C" >}} 停止服务。分层存储在 Acme DB 3.0 中仍是 {{< badge text="实验性" tone="warning" >}} 功能。
 
-OINK 共有 30 个短代码，用于带图标的卡片、包含多段内容的标签页、带编号的书籍插图等；[组件](/zh/docs/components/)为每一个都准备了单独的页面。只有 Markdown 写法表达不了时才用短代码，因为短代码是 Hugo 语法，在 GitHub 上会原样显示出来。
+OINK 共有 29 个短代码，用于带图标的卡片、包含多段内容的标签页、带编号的书籍插图等；[组件](/zh/docs/components/)为每一个都准备了单独的页面。只有 Markdown 写法表达不了时才用短代码，因为短代码是 Hugo 语法，在 GitHub 上会原样显示出来。
 
 ## 看看它如何降级 {#fallback}
 

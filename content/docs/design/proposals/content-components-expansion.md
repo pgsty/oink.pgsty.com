@@ -30,14 +30,14 @@ proposal_date: 2026-11-27
 | --- | --- | --- | --- | --- |
 | Timeline | Definition list + `{.timeline}` | None (author marker) | None | [Timeline component](/docs/design/proposals/component-timeline/) |
 | Update | Heading + `{.update date="…" tags="…"}` | Two heading attributes | None | [Update component](/docs/design/proposals/component-update/) |
-| Social posts | `{{</* social */>}}…{{</* /social */>}}` | One shortcode | None | [Social post component](/docs/design/proposals/component-social/) |
+| Social posts | `> [!SOCIAL]` callout + block attributes (a shortcode in v1.7.0) | One callout type | None | [Social post component](/docs/design/proposals/component-social/) |
 | Video | `![name](demo.mp4)` and platform URLs | Media attributes on the image hook; `params.video_embeds` | Shared `media.js` for file players and enabled embeds | [Video component](/docs/design/proposals/component-video/) |
 | Audio | `![name](episode.mp3)` | Media attributes on the image hook | Shared `media.js` for file players | [Audio component](/docs/design/proposals/component-audio/) |
 | Map | `map` data fence | One fence; `params.map` | Vendored Leaflet, only when enabled | [Map component](/docs/design/proposals/component-map/) |
 
-The documented component catalog grows from 21 to 27. The shortcode count grows
-from 29 to 30 (`social`). The image and heading render hooks gain branches, and one
-fence hook (`map`) is added.
+The documented component catalog grows from 21 to 27. In v1.7.0 the shortcode count
+grew from 29 to 30 (`social`); the later callout form returns it to 29. The image and
+heading render hooks gain branches, and one fence hook (`map`) is added.
 
 ## Review verdict {#verdict}
 
@@ -105,7 +105,7 @@ justified one:
 | Heading render hook | `id`, class pass-through | `.update` with `date` and `tags` |
 | Image render hook | Images, figures, Book numbering, Zoom, Draw.io candidates | Video files, audio files, recognized video platform URLs |
 | Data fence | `gallery`, `filetree`, `echarts`, … | `map` |
-| Angle shortcode with a Markdown body | `card`, `tab`, `field`, … | `social` |
+| Blockquote alert hook | Callout types, fold markers, `{icon=}` | `[!SOCIAL]` with `avatar`, `date`, `url`, `platform` (the v1.7.0 `social` shortcode, revised) |
 
 No component adds a percent-delimited shortcode. `steps` remains the only one.
 
@@ -212,3 +212,7 @@ reworking an earlier one.
   runtime unit tests, accepted for OINK v1.7.0, and documented with guides and
   demos on this site. Deviations from the drafts are recorded in each
   component's decision log.
+- **2026-11-28 (owner).** Applied the Markdown-first test to Social posts as
+  well: the shortcode becomes the `> [!SOCIAL]` callout, so no component in
+  this set needs a new shortcode. See the
+  [Social post decision log](/docs/design/proposals/component-social/#decision-log).
