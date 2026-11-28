@@ -86,7 +86,7 @@ ECharts 6.1.0 与字体包维持当前稳定版。
 Mermaid 显式保留 `layout: dagre`、`theme: default`、`look: classic`，不会因为
 上游改用 ELK、neo 与新颜色主题而默默改变已有图表。Mermaid 12 要求浏览器支持
 ES2024（Safari 至少 17.4）；加载或渲染失败时保留源码。KaTeX 0.19.1 的样式与
-字体保留对 Hugo 0.169.0 内置公式渲染器的类名归一化。含公式的页面只发布 KaTeX 的
+字体保留对 Hugo 内置公式渲染器的类名归一化。含公式的页面只发布 KaTeX 的
 二十个 woff2 字体，以及只引用它们的样式表；woff 与 ttf 副本留在模块里，不发布。
 DocSearch 使用关键词搜索包，
 把现有 `indexName` 设置转换为上游的 `indices` API，不启用 Ask AI。

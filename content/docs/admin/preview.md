@@ -118,19 +118,17 @@ toolchain, or does not want Hugo installed on every machine.
 ```dockerfile {title="Dockerfile" collapse=16}
 FROM debian:bookworm-slim
 
-ARG HUGO_VERSION=0.169.0
-ARG GO_VERSION=1.27.4
+ARG HUGO_VERSION=0.170.1
 ARG TARGETARCH
+
+COPY --from=golang:1 /usr/local/go /usr/local/go
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates curl git \
     && curl --fail --location -o /tmp/hugo.deb \
       "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-${TARGETARCH}.deb" \
     && apt-get install -y /tmp/hugo.deb \
-    && curl --fail --location -o /tmp/go.tgz \
-      "https://go.dev/dl/go${GO_VERSION}.linux-${TARGETARCH}.tar.gz" \
-    && tar -C /usr/local -xzf /tmp/go.tgz \
-    && rm -rf /var/lib/apt/lists/* /tmp/hugo.deb /tmp/go.tgz
+    && rm -rf /var/lib/apt/lists/* /tmp/hugo.deb
 
 ENV PATH="/usr/local/go/bin:${PATH}"
 WORKDIR /src
@@ -154,9 +152,9 @@ docker run --rm --user "$(id -u):$(id -g)" \
   oink-hugo --gc --minify
 ```
 
-Set `HUGO_VERSION` to the release your team builds with,
-{{< param hugoMinVersion >}} or newer. A site still pinned to OINK 1.5.1 or
-older needs a different package; see [Upgrade](/docs/admin/upgrade/#hugo-extended).
+Set `HUGO_VERSION` to the release your team builds with (OINK is tested on
+`0.170+`). A site still pinned to OINK 1.5.1 or older needs a different
+package; see [Upgrade](/docs/admin/upgrade/#hugo-extended).
 
 Go is in the image because Hugo needs it to download a theme installed as a
 Hugo Module. A site that uses a submodule, an offline archive or a plain clone

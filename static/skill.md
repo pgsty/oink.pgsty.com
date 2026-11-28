@@ -20,7 +20,7 @@ open them when you need them, and use your own judgment in between.
 OINK is a local-first Hugo Module theme, a hard fork of Docsy. An OINK site is
 an ordinary Hugo repository: a config file, a `go.mod` that pins
 `github.com/pgsty/oink@<tag>`, `content/`, `data/`, and optionally `assets/`
-and `layouts/`. Any Hugo edition meeting the [module minimum](https://github.com/pgsty/oink/blob/main/theme.toml) builds it and Go fetches
+and `layouts/`. Hugo builds it (tested on 0.170+) and Go fetches
 the module; there is no Node, npm, Sass, or CDN step.
 
 What you have to work with:

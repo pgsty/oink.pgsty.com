@@ -99,7 +99,7 @@ hugo mod get github.com/pgsty/oink@{{</* param tdVersion.latest */>}}
 | 项目 | 值 |
 | --- | --- |
 | 当前版本 | {{</* param version */>}} |
-| Hugo 下限 | {{</* param hugoMinVersion */>}} |
+| 视觉预设 | {{</* param ui.preset */>}} |
 
 [发布说明](https://github.com/pgsty/oink/releases/tag/{{</* param tdVersion.latest */>}})
 ````
@@ -111,7 +111,7 @@ hugo mod get github.com/pgsty/oink@{{< param tdVersion.latest >}}
 | 项目 | 值 |
 | --- | --- |
 | 当前版本 | {{< param version >}} |
-| Hugo 下限 | {{< param hugoMinVersion >}} |
+| 视觉预设 | {{< param ui.preset >}} |
 
 [发布说明](https://github.com/pgsty/oink/releases/tag/{{< param tdVersion.latest >}})
 

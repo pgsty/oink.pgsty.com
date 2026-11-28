@@ -24,7 +24,7 @@ upstream Docsy's build steps; see [Migrating from Docsy](/docs/admin/upgrade/#fr
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| The build demands a newer Hugo | The Hugo that runs is older than {{< param hugoMinVersion >}} | Check `hugo version`; any edition works. If several Hugo binaries are installed, check `PATH` and the version pinned in CI before installing another |
+| Build fails on an older Hugo release | The Hugo that runs is older than the tested `0.170+` releases | Check `hugo version` and update to a current release (`0.170+`). If several Hugo binaries are installed, check `PATH` and the version configured in CI before installing another |
 | `TOCSS-DART: … You need to install Dart Sass` | The site pins OINK 1.5.1 or older, which compiles Sass, and Hugo 0.170 or newer no longer has a built-in Sass compiler | Upgrade the site to the current OINK release, see [Upgrade to 1.6.0](/docs/admin/upgrade/#preparing-1-6), or build it with Hugo Extended 0.169 or older until you do |
 | `module "github.com/pgsty/oink" not found` | The theme did not resolve | Hugo Module: check `hugo mod graph`, `go.mod`, `go.sum`, and unexpected workspaces or replacements. Submodule: confirm that CI runs `git submodule update --init` before Hugo. Archive / clone: `theme:` must match the directory name under `themes/` |
 | Module download hangs or times out | The Go module proxy is unreachable | Hugo downloads modules through Go, so `GOPROXY` applies. In mainland China, use `export GOPROXY=https://goproxy.cn,direct`. In an isolated environment, use an offline archive or commit `themes/oink/` |
@@ -81,13 +81,14 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 | --- | --- | --- |
 | A 404 or missing styles on GitHub Pages | A project site's URL carries the repository path and `baseURL` does not | Pass `--baseURL "${{ steps.pages.outputs.base_url }}/"` from the workflow instead of hard-coding the address. See the complete workflow in [Deploy](/docs/admin/deploy/#hosts) |
 | "Last modified" and contributors are empty on GitHub Pages | The checkout is shallow | Add `fetch-depth: 0` to `actions/checkout`, because `enableGitInfo` reads the complete history |
-| A Cloudflare Pages build says Hugo is too old | The build image's default Hugo is older than the theme requires | Set `HUGO_VERSION` in both the Production and Preview environments, and set `SKIP_DEPENDENCY_INSTALL=1` |
+| A Cloudflare Pages build fails with Hugo template errors | The build image's default Hugo is outdated | Set `HUGO_VERSION` to a current release (for example `0.170.1`) in both the Production and Preview environments, and set `SKIP_DEPENDENCY_INSTALL=1` |
 | The host's build cannot fetch the theme | The build environment has no Go | Hugo Modules need Go. If the platform does not provide it, use a submodule or commit `themes/oink/` |
 | CI output differs from local | `go.work` took part in the CI build | Set `GOWORK: off` and `HUGO_MODULE_WORKSPACE: off` in CI so it uses only the version pinned in `go.mod` |
 | A preview deployment got indexed | The preview was built in the production environment | Drop `--environment production` from preview builds; a non-production build emits `noindex` and `Disallow: /`. See [Analytics and SEO](/docs/admin/analytics/#robots) |
 | macOS reports too many open files | Live preview watches more files than the shell limit allows | Exclude generated and irrelevant directories from the watch first, since they are the usual cause; raise `ulimit -n` only if that is not enough |
 | Slow, or missed changes, under WSL | The site sits on a Windows mount point | Keep the site inside the Linux filesystem; change notifications and permissions across filesystems break live reload |
 | Bootstrap / Font Awesome / Mermaid assets are missing | An incomplete copy of the theme | Do not substitute a CDN URL. Confirm that `assets/third_party/`, `static/webfonts/` and `VENDOR.json` are present, and download the same pinned release again if anything is missing |
+{.wide .expand}
 
 ## Checks a site can run {#site-checks}
 

@@ -44,9 +44,9 @@ site's checks build against the sibling theme checkout:
 └── oink.pgsty.com/
 ```
 
-Use Go 1.27.4 or newer, the module's minimum, and whatever Hugo you have
-installed, {{< param hugoMinVersion >}} or newer in any edition; the theme pins
-no Hugo release, and its CI tests against the current one. The site's
+Use Hugo (tested on `0.170+`) and Go for Hugo Modules; the theme declares no
+minimum Hugo release, and its CI tests against `latest` without maintaining
+older-Hugo compatibility jobs. The site's
 regression tests also need Node.js 26.13.0 and npm 12.2.2 or newer, although
 no theme or site build uses them. Before you start, read each repository's
 `AGENTS.md`, this site's `WRITING.md` and `TRANSLATION.md`, and the

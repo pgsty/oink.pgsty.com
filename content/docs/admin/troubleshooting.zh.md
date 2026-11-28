@@ -21,7 +21,7 @@ OINK 站点的构建就只有这一条 Hugo 命令。日志里如果出现 npm�
 
 | 症状 | 原因 | 修法 |
 | --- | --- | --- |
-| 构建报要求更高的 Hugo 版本 | 实际运行的 Hugo 低于 {{< param hugoMinVersion >}} | 先看 `hugo version`，任何 edition 都可以。装了多个 Hugo 时，先查 `PATH` 和 CI 里固定的版本，不要急着再装一份 |
+| 旧版 Hugo 构建报错 | 实际运行的 Hugo 老于已测试的 `0.170+` 版本 | 先看 `hugo version`，升级到当前版本（`0.170+`）。装了多个 Hugo 时，先查 `PATH` 和 CI 里配置的版本，不要急着再装一份 |
 | `TOCSS-DART: … You need to install Dart Sass` | 站点固定在需要编译 Sass 的 OINK 1.5.1 或更早版本，而 Hugo 0.170 起不再内置 Sass 编译器 | 把站点升级到当前 OINK 版本，见[升级到 1.6.0](/zh/docs/admin/upgrade/#preparing-1-6)；升级之前可先用 0.169 或更早的 Hugo Extended 构建 |
 | `module "github.com/pgsty/oink" not found` | 主题没解析出来 | Hugo Module：看 `hugo mod graph`、`go.mod`、`go.sum`，以及有没有多余的 workspace / replace。submodule：CI 有没有在 Hugo 之前跑 `git submodule update --init`。归档 / 克隆：`theme:` 的值要与 `themes/` 下的目录名一致 |
 | 模块下载卡住或超时 | Go 的模块代理不通 | Hugo 通过 Go 拉模块，所以走 `GOPROXY`。国内网络可以 `export GOPROXY=https://goproxy.cn,direct`；隔离环境改用离线归档或提交 `themes/oink/` |
@@ -78,13 +78,14 @@ ERROR error building site: assemble: failed to create page from pageMetaSource /
 | --- | --- | --- |
 | GitHub Pages 上页面 404 或样式全丢 | 项目站点的 URL 带仓库路径，`baseURL` 没带 | 用工作流传入的 `--baseURL "${{ steps.pages.outputs.base_url }}/"`，不要手写地址。完整工作流见[发布上线](/zh/docs/admin/deploy/#hosts) |
 | GitHub Pages 上「最后修改时间」「贡献者」全空 | checkout 是浅克隆 | `actions/checkout` 加 `fetch-depth: 0`，因为 `enableGitInfo` 要读完整历史 |
-| Cloudflare Pages 构建报 Hugo 版本太低 | 构建镜像的默认 Hugo 低于主题要求 | 在 Production 和 Preview 两个环境都设 `HUGO_VERSION`，并设 `SKIP_DEPENDENCY_INSTALL=1` |
+| Cloudflare Pages 构建报 Hugo 模板错误 | 构建镜像的默认 Hugo 版本过旧 | 在 Production 和 Preview 两个环境都将 `HUGO_VERSION` 设为当前版本（如 `0.170.1`），并设 `SKIP_DEPENDENCY_INSTALL=1` |
 | 托管平台构建时拉不到主题 | 构建环境没有 Go | Hugo Module 需要 Go。平台不提供就改用 submodule，或把 `themes/oink/` 提交进仓库 |
 | CI 上构建结果和本地不一样 | `go.work` 参与了 CI 构建 | CI 里设 `GOWORK: off` 与 `HUGO_MODULE_WORKSPACE: off`，让它只用 `go.mod` 里固定的版本 |
 | 预览部署被搜索引擎收录了 | 预览也用 production 环境构建 | 预览构建去掉 `--environment production`，非 production 构建自带 `noindex` 与 `Disallow: /`，见[分析与 SEO](/zh/docs/admin/analytics/#robots) |
 | macOS 报打开文件过多 | 实时预览监视的文件超过了 shell 限制 | 先把生成目录与无关目录排除出监视范围，它们通常才是根因；仍不够时再调大 `ulimit -n` |
 | WSL 下很慢或漏掉改动 | 站点放在 Windows 挂载点上 | 把站点放进 Linux 文件系统，跨文件系统的变更通知与权限行为会让实时重载失效 |
 | 缺 Bootstrap / Font Awesome / Mermaid 之类资源 | 主题副本不完整 | 不要用 CDN URL 顶替。确认 `assets/third_party/`、`static/webfonts/`、`VENDOR.json` 都在，缺了就重新获取同一个固定版本 |
+{.wide .expand}
 
 ## 站点自带检查 {#site-checks}
 

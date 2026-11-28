@@ -47,8 +47,6 @@ markup:
 module:
   imports:
     - path: github.com/pgsty/oink
-  hugoVersion:
-    min: 0.169.0
 
 params:
   offline_search: true
@@ -69,7 +67,7 @@ WARN invalid params.ui.typography "solarized" (allowed: technical | system) -- u
 
 只有一项检查会保留你写的值。`theme_color` 在主题画布上的对比度低于正文 AA 标准 4.5:1 时，颜色照常生效，因为自定义画布或品牌规范可能正需要它；告警里附带一个 id，加进 `ignoreLogs` 即可静音。只有不是十六进制颜色的值才会被丢弃，回到默认配色。
 
-真正还会中断构建的是 Hugo 本身：内容引用解析不到目标页面，或者 Hugo 版本低于 `module.hugoVersion.min`。
+真正还会中断构建的是 Hugo 本身：内容引用解析不到目标页面时，构建会失败。
 
 ## 页面级覆盖优先级 {#overrides}
 

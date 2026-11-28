@@ -320,7 +320,7 @@ outline levels.
 
 Mathematics uses Hugo's build-time KaTeX output and local CSS, without a browser mathematics runtime.
 HTML and Print use the vendored stylesheet and preserve MathML and authored TeX.
-Validate mathematics with a Hugo release that meets the minimum in the [architecture contract](/docs/design/architecture/#hugo-toolchain).
+Validate mathematics with the installed Hugo, as the [architecture contract](/docs/design/architecture/#hugo-toolchain) describes.
 OINK 1.6.0 renders Markmap formulas on demand with local MathJax (1.5.1 and
 older used KaTeX inside Markmap).
 In OINK 1.4.0, numbered equations reserve readable formula space based

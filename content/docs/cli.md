@@ -44,8 +44,7 @@ write in your usual editor, preview with `oink dev`, and use `oink inspect` or
 
 ## Try the local candidate {#try-locally}
 
-Build the binary from a checkout of `oink-cli` with Go 1.27.4 or newer and
-Make:
+Build the binary from a checkout of `oink-cli` with Go and Make:
 
 ```sh
 cd oink-cli
@@ -61,11 +60,11 @@ that downloads anything (the Go build dependencies); the CLI itself runs
 offline unless you pass `--network` to a command that needs remote inputs it
 has not cached.
 
-The candidate still expects Hugo Extended {{< param hugoMinVersion >}} or newer
-for its site commands, even though OINK itself builds with any edition, and its
-module operations need Go 1.27 or newer. `oink init` copies a Starter snapshot
-pinned to OINK v1.3.2, so follow the [upgrade guide](/docs/admin/upgrade/) to
-bring a generated site to the current release.
+The candidate's site commands still expect an older Hugo Extended build, even
+though OINK itself uses plain CSS and is tested on Hugo `0.170+`. `oink init`
+copies a Starter snapshot pinned to OINK v1.3.2, so follow the
+[upgrade guide](/docs/admin/upgrade/) to bring a generated site to the current
+release.
 
 Previews change nothing: `new`, `move` and `upgrade` leave site sources
 untouched until you run the explicit apply step (`oink plans apply` for a

@@ -142,8 +142,6 @@ OINK 站点就是一个标准的 Hugo 仓库。主题代码本身不进入你的
    module:
      imports:
        - path: github.com/pgsty/oink
-     hugoVersion:
-       min: '{{< param hugoMinVersion >}}'
    ```
 
    每一段各司其职：
@@ -154,7 +152,7 @@ OINK 站点就是一个标准的 Hugo 仓库。主题代码本身不进入你的
    | `markup.goldmark` | OINK 组件必需的三项解析设置 | 属性行会以 `{.steps}` 原文显示在正文里 |
    | `params` | 本地搜索、仓库链接、外观预设与阅读外壳开关 | 可选功能默认关闭，不会擅自开启 |
    | `outputs` | 每页的 `.md` 副本、`llms.txt` 与打印视图 | 页面菜单里没有「复制 Markdown」与打印入口 |
-   | `module` | 主题导入与 Hugo 最低版本 | 构建时找不到 OINK 主题 |
+   | `module` | 主题导入 | 构建时找不到 OINK 主题 |
 
    若要写数学公式，请按[公式](/zh/docs/components/math/)补上 Goldmark passthrough 扩展。所有站点参数及默认值见[配置总览](/zh/docs/customize/config/)。
 
@@ -313,7 +311,7 @@ tar -xzf oink-{{< param tdVersion.latest >}}.tar.gz -C themes
 ```filetree {title="themes/oink/"}
 - oink/
   - go.mod        # 模块路径声明
-  - hugo.yaml     # 主题默认参数与 Hugo 版本下限
+  - hugo.yaml     # 主题默认参数与挂载配置
   - theme.toml    # theme: oink 方式所需的主题元数据
   - LICENSE       # Apache-2.0
   - NOTICE        # 上游署名

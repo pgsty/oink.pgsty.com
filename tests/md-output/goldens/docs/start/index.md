@@ -15,13 +15,11 @@ one prompt to an AI coding agent to build your own site.
 
 ## Prerequisites {#tools}
 
-You need Git, Go 1.27.4 or newer, and Hugo 0.169.0 or
-newer in any edition. Go is required because Hugo fetches the theme as a Go
-module; building an OINK site never needs Node.js, npm or a Sass compiler.
+You need Git, Go, and Hugo (tested on `0.170+`). Go is required because Hugo
+fetches the theme as a Go module; building an OINK site never needs Node.js,
+npm or a Sass compiler.
 
 ```console
-$ go version
-go version go1.27.4 darwin/arm64
 $ hugo version
 hugo v0.170.1+withdeploy darwin/arm64
 ```

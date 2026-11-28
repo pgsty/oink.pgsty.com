@@ -56,10 +56,10 @@ private repositories. Installation is described in
 
 ## Local development
 
-Use Go 1.27.4 and an installed Hugo meeting the module minimum for both
-published-pin builds and sibling theme development. No Sass compiler is
-required. Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Keep
-warnings visible. See the [architecture contract](content/docs/design/architecture.md#hugo-toolchain).
+Use your installed Hugo (tested on `0.170+`) and Go for both published-pin
+builds and sibling theme development. No Sass compiler is required. Do not
+enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Keep warnings visible. See
+the [architecture contract](content/docs/design/architecture.md#hugo-toolchain).
 
 For theme development, clone both repositories as siblings:
 

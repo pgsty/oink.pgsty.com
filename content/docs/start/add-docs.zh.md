@@ -125,8 +125,6 @@ search_keywords:
    module:
      imports:
        - path: github.com/pgsty/oink
-     hugoVersion:
-       min: '{{< param hugoMinVersion >}}'
    ```
 
 1. ### 写第一页并本地预览 {#init-preview}
@@ -198,7 +196,6 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  GO_VERSION: 1.27.4
   # 禁止工作区覆盖 docs/go.mod 固定的主题版本
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
@@ -220,8 +217,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ${{ env.GO_VERSION }}
-          check-latest: true
+          go-version: stable
           cache-dependency-path: docs/go.sum
 
       - name: Configure GitHub Pages
@@ -276,7 +272,7 @@ Cloudflare Pages 同样支持直接发布 `docs/` 子目录，有两种模式。
 {{< tabs group="cf-mode" default="cf-actions" label="Cloudflare 部署模式" >}}
 {{< tab label="GitHub Actions Direct Upload（推荐）" value="cf-actions" >}}
 
-在 GitHub Actions 中完成构建，再用 Wrangler 上传 `docs/public`。好处是你能精确掌控 Hugo 和 Go 版本（即使 Cloudflare 内置镜像尚未跟进到 `0.169.0+` 或 Go `1.27.4` 也不受影响），并且可以复用 `paths:` 过滤，只在 `docs/` 变化时部署。
+在 GitHub Actions 中完成构建，再用 Wrangler 上传 `docs/public`。好处是直接跟随最新 Hugo 版本（不受 Cloudflare 默认镜像版本滞后影响），并且可以复用 `paths:` 过滤，只在 `docs/` 变化时部署。
 
 ```yaml {title=".github/workflows/docs-cloudflare.yaml" lineNos="inline" collapse=30}
 name: Deploy Docs to Cloudflare Pages
@@ -298,7 +294,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  GO_VERSION: 1.27.4
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
   HUGO_CACHEDIR: ${{ github.workspace }}/docs/.hugo_cache
@@ -319,8 +314,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ${{ env.GO_VERSION }}
-          check-latest: true
+          go-version: stable
           cache-dependency-path: docs/go.sum
 
       - name: Install Hugo
@@ -366,8 +360,7 @@ jobs:
 | Build command（构建命令） | `hugo --cleanDestinationDir --gc --minify --environment production --printPathWarnings` | 与 OINK 生产构建参数保持一致 |
 | Build output directory（输出目录） | `public` | 相对于根目录 `docs`，实际发布 `docs/public` |
 | Include watch paths（监听路径） | `docs/*` | 仅改动主项目代码时跳过文档构建 |
-| `HUGO_VERSION` | `{{< param hugoMinVersion >}}` 或更高 | 满足 OINK 的 Hugo 最低版本要求 |
-| `GO_VERSION` | `1.27.4` 或更高 | Hugo Module 拉取 `github.com/pgsty/oink` 需要 Go |
+| `HUGO_VERSION` | `0.170.1`（或当前版本） | 覆盖 Cloudflare 较旧的默认 Hugo（OINK 已在 `0.170+` 上测试） |
 | `GOWORK` / `HUGO_MODULE_WORKSPACE` | `off` | 防止工作区覆盖 `docs/go.mod` 中的锁定版本 |
 
 配置分支预览时，把预览环境的构建命令改为附带 `--environment staging --baseURL "$CF_PAGES_URL"`，这样预览地址会输出 `noindex`，不会与生产域名争抢搜索引擎收录。

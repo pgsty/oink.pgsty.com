@@ -14,7 +14,7 @@ aliases:
 升级 OINK，就是换掉站点固定的版本，再核对新版本渲染出来有哪些不同。大部分内容不需要改动。某个版本退役了某种写法或接口时，下文对应的小节会说明影响谁、要改什么；旧 shortcode 则有迁移工具批量改写，默认先干跑。请在单独的分支上升级，放弃升级时丢掉这个分支就行。
 
 > [!IMPORTANT] Hugo 与 OINK 要一起升级
-> OINK 1.6.0 及更新版本可用 Hugo 0.169.0 或更新版本构建，不限 edition，构建过程不做任何编译。OINK 1.5.1 及更早版本需要 Hugo 的 Extended 版，而 Extended 版止于 Hugo 0.169，所以停留在旧版本的站点在升级之前，Hugo 无法越过 0.169。详见[暂时停留在 1.5.1 或更早版本](#hugo-extended)。
+> OINK 1.6.0 及更新版本使用纯 CSS，已在 Hugo 0.170+ 上测试，构建过程不做任何编译。OINK 1.5.1 及更早版本需要 Hugo 的 Extended 版，而 Extended 版止于 Hugo 0.169，所以停留在旧版本的站点在升级之前，Hugo 无法越过 0.169。详见[暂时停留在 1.5.1 或更早版本](#hugo-extended)。
 
 ## 先看发布说明 {#release-notes}
 
@@ -117,7 +117,7 @@ hugo --gc --minify
 
 升级到 1.6.0 的每个站点都要读这一节。这个版本保留 `github.com/pgsty/oink` 模块路径，但有意退役了 Sass、Bootstrap 的 JavaScript 与 Lunr，主题因此才能在 Hugo 0.170 及更新版本上构建。先读 [1.6.0 发布说明](/zh/release/1.6.0/)，再逐项检查：
 
-- **工具链**：Go 升级到 **1.27.4** 或更新，Hugo 升级到 **0.169.0** 或更新，不限 edition。你要构建的所有分支都用上 OINK 1.6.0 或更新版本后，从 CI 工作流中删掉 `extended: true`。
+- **工具链**：使用当前 Hugo 版本（已在 `0.170+` 上测试，无需 Extended 版或 Sass 编译器）。你要构建的所有分支都用上 OINK 1.6.0 或更新版本后，从 CI 工作流中删掉 `extended: true`。
 - **样式表**：把已退役的 `assets/scss/_*_project*.scss` 改写成纯 CSS，放进 `assets/css/project.css`；模板里写死的 `/scss/*.css` 路径改成 `/css/*.css`；站点自有外壳的布局改用 `partial "css/bundle.html"`。见[已退役的 SCSS 钩子](#sass-hooks)。
 - **Bootstrap JavaScript**：去掉对主题提供的 `window.bootstrap` 或 `data-bs-toggle` 钩子的依赖；Landing 下载标签页改为监听 `td:tab-shown` 而不是 `shown.bs.tab`；版本列表上的 `.dropdown-menu` 选择器改为 `.td-version-menu__list`。见[Bootstrap 的 JavaScript](#bootstrap-script)。
 - **本地搜索**：去掉站点脚本对 `window.lunr` 的依赖，调用形式改为 `OinkSearchEngine.create(documents, maxResults)`。超过 2 MiB 的 `content` 索引现在会把正文拆到 `offline-search-body.<lang>.json`。见[去掉 Lunr 的本地搜索](#search-engine)。

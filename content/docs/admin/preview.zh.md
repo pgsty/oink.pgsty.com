@@ -96,19 +96,17 @@ hugo --cleanDestinationDir --gc --minify --printPathWarnings
 ```dockerfile {title="Dockerfile" collapse=16}
 FROM debian:bookworm-slim
 
-ARG HUGO_VERSION=0.169.0
-ARG GO_VERSION=1.27.4
+ARG HUGO_VERSION=0.170.1
 ARG TARGETARCH
+
+COPY --from=golang:1 /usr/local/go /usr/local/go
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates curl git \
     && curl --fail --location -o /tmp/hugo.deb \
       "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-${TARGETARCH}.deb" \
     && apt-get install -y /tmp/hugo.deb \
-    && curl --fail --location -o /tmp/go.tgz \
-      "https://go.dev/dl/go${GO_VERSION}.linux-${TARGETARCH}.tar.gz" \
-    && tar -C /usr/local -xzf /tmp/go.tgz \
-    && rm -rf /var/lib/apt/lists/* /tmp/hugo.deb /tmp/go.tgz
+    && rm -rf /var/lib/apt/lists/* /tmp/hugo.deb
 
 ENV PATH="/usr/local/go/bin:${PATH}"
 WORKDIR /src
@@ -132,7 +130,7 @@ docker run --rm --user "$(id -u):$(id -g)" \
   oink-hugo --gc --minify
 ```
 
-`HUGO_VERSION` 设为团队实际使用的版本，不低于 {{< param hugoMinVersion >}}。仍固定在 OINK 1.5.1 或更早版本的站点要换一个软件包，见[版本升级](/zh/docs/admin/upgrade/#hugo-extended)。
+`HUGO_VERSION` 设为团队实际使用的版本（OINK 已在 `0.170+` 上测试）。仍固定在 OINK 1.5.1 或更早版本的站点要换一个软件包，见[版本升级](/zh/docs/admin/upgrade/#hugo-extended)。
 
 镜像里装 Go，是因为主题以 Hugo Module 方式引入时，Hugo 要靠 Go 下载模块。用 submodule、离线归档或直接克隆的站点可以去掉 Go，镜像会小很多。镜像里没有任何东西需要 Node.js、npm 或 PostCSS，构建也不下载浏览器资源，因此在网络隔离环境里，只需预先镜像基础镜像以及 Hugo、Go 两个软件包。
 

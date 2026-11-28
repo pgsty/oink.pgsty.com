@@ -33,7 +33,7 @@ aliases:
 > 用 `hugo server -D` 可以预览草稿。
 
 > [!IMPORTANT]
-> 主题下限是 Hugo 0.169.0，低于它构建直接失败。
+> 在 `hugo.yml` 中开启 Goldmark 块级属性，否则组件属性行会原样显示成文字。
 
 > [!WARNING]
 > `hugo --cleanDestinationDir` 会清空 `public/`。
@@ -61,7 +61,7 @@ aliases:
 > 用 `hugo server -D` 可以预览草稿。
 
 > [!IMPORTANT]
-> 主题下限是 Hugo 0.169.0，低于它构建直接失败。
+> 在 `hugo.yml` 中开启 Goldmark 块级属性，否则组件属性行会原样显示成文字。
 
 > [!WARNING]
 > `hugo --cleanDestinationDir` 会清空 `public/`。
@@ -152,13 +152,13 @@ aliases:
 ````markdown {title="源码"}
 > [!DETAILS] 完整的 `hugo version` 输出
 > ```text
-> hugo v0.169.0+extended+withdeploy darwin/arm64
+> hugo v0.170.1+withdeploy darwin/arm64
 > ```
 ````
 
 > [!DETAILS] 完整的 `hugo version` 输出
 > ```text
-> hugo v0.169.0+extended+withdeploy darwin/arm64
+> hugo v0.170.1+withdeploy darwin/arm64
 > ```
 
 ## 自定义图标 {#icon}

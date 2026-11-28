@@ -1,5 +1,3 @@
 module:
   imports:
     - path: github.com/pgsty/oink
-  hugoVersion:
-    min: 0.169.0

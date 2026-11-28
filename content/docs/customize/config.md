@@ -57,8 +57,6 @@ markup:
 module:
   imports:
     - path: github.com/pgsty/oink
-  hugoVersion:
-    min: 0.169.0
 
 params:
   offline_search: true
@@ -100,8 +98,8 @@ since a custom canvas or a brand rule may justify it. The warning prints an
 `ignoreLogs` id you can add to silence it. Only a value that is not a hex color
 is dropped, leaving the default palette.
 
-Hugo itself can still stop a build: when a content reference resolves to no
-page, or when Hugo is older than `module.hugoVersion.min`.
+Hugo itself can still stop a build when a content reference resolves to no
+page.
 
 ## Page-level override precedence {#overrides}
 
@@ -582,7 +580,6 @@ Version keys:
 | `taxonomies` | map | | Hugo's own: turns on `tag: tags` and `category: categories`. See [Taxonomies](/docs/customize/taxonomy/) |
 | `params.taxonomy.page_header` | list | | Taxonomies shown in a post header. When unset, all of them |
 | `services.googleAnalytics.id` | string | | Hugo's own: the analytics script is added to production builds only. See [Analytics and SEO](/docs/admin/analytics/) |
-| `module.hugoVersion.min` | string | 0.169.0 | The oldest Hugo that may build the site. Keep it equal to the theme's own minimum; an older Hugo fails the build |
 {.fields meta="type default"}
 
 ## Editor completion via generated schemas {#editor-schema}

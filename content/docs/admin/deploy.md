@@ -84,7 +84,6 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  GO_VERSION: 1.27.4
   # a workspace from a sibling checkout must never take part in a CI build
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
@@ -103,8 +102,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ${{ env.GO_VERSION }}
-          check-latest: true
+          go-version: stable
           cache-dependency-path: go.sum
 
       - name: Configure GitHub Pages
@@ -183,8 +181,9 @@ for Starter sites.
 
 Cloudflare's Git integration also works, with Cloudflare running the build:
 set the build command to `hugo --gc --minify --printPathWarnings`, the output
-directory to `public`, Hugo to {{< param hugoMinVersion >}} or newer and Go to
-`1.27.4` or newer. Choose one mode per project, Git integration **or** the
+directory to `public`, and `HUGO_VERSION` to a current release such as
+`0.170.1` (OINK is tested on `0.170+`, while Cloudflare's default image ships
+an older Hugo). Choose one mode per project, Git integration **or** the
 Direct Upload workflow, and build preview deployments with their own URL and a
 [non-production environment](#preview-builds).
 
@@ -201,8 +200,8 @@ command = "hugo --gc --minify --printPathWarnings"
 publish = "public"
 
 [build.environment]
-# the platform needs an explicit release; 0.169.0 is the theme's minimum
-HUGO_VERSION = "0.169.0"
+# override the platform's default with a current Hugo release (tested on 0.170+)
+HUGO_VERSION = "0.170.1"
 ```
 
 A theme installed as a submodule needs recursive submodule checkout enabled;
@@ -302,7 +301,7 @@ receives the output. The Starter's workflows already contain them.
 - `fetch-depth: 0` on checkout — with `enableGitInfo`, last-modified dates and contributor lists come from Git history, and a shallow clone gives every page the same date.
 - Go, then `go mod download github.com/pgsty/oink` — Hugo needs Go to fetch a theme installed as a Hugo Module. A submodule install checks out with `submodules: recursive` instead, and an offline archive is committed under `themes/oink/`; either way, drop both Go steps.
 - `GOWORK: off` and `HUGO_MODULE_WORKSPACE: off` — keep a developer's Go workspace out of the build, so CI builds the release pinned in `go.mod` and nothing else.
-- Hugo `latest` — the theme builds with any Hugo edition from {{< param hugoMinVersion >}}, so CI can follow current releases. A site still pinned to OINK 1.5.1 or older cannot; see [Upgrade](/docs/admin/upgrade/#hugo-extended).
+- Hugo `latest` — OINK uses plain CSS and is tested on Hugo `0.170+`, so CI can follow current releases. A site still pinned to OINK 1.5.1 or older cannot; see [Upgrade](/docs/admin/upgrade/#hugo-extended).
 - `--environment production` and the real `--baseURL` — the environment decides indexing and analytics (see [below](#preview-builds)), and `baseURL` every absolute link.
 - `--printPathWarnings`, and no `--panicOnWarning` — OINK's warnings are deliberate: a mistyped key or an incomplete integration warns and falls back to a safe default so the site still builds. Turning warnings into errors with `--panicOnWarning` or `HUGO_PANICONWARNING` would fail builds that are fine. Read the warnings in the build log instead.
 

@@ -110,9 +110,8 @@ manifest records pinned third-party sources, licenses, artifacts, and checksums.
 
 > [!NOTE] Historical preview post
 > This article records OINK's original implementation preview. Current releases
-> build with Hugo `0.169.0` or newer in any edition (no Sass compiler needed)
-> and Go `1.27.4` for Hugo Modules; follow [Get started](/docs/start/) for
-> up-to-date setup instructions.
+> use plain CSS and are tested on Hugo `0.170+` (no Sass compiler needed);
+> follow [Get started](/docs/start/) for up-to-date setup instructions.
 
 Install Git, Go, and Hugo per [Get started](/docs/start/#tools), then evaluate the
 [official Starter](https://github.com/pgsty/oink-starter):

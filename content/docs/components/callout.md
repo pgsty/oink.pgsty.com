@@ -43,7 +43,7 @@ something breaks or slows down, and `DANGER` marks what cannot be undone.
 > `hugo server -D` previews drafts.
 
 > [!IMPORTANT]
-> The floor is Hugo 0.169.0; anything older fails the build outright.
+> Enable Goldmark block attributes in `hugo.yml`, or component attribute lines render as plain text.
 
 > [!WARNING]
 > `hugo --cleanDestinationDir` empties `public/`.
@@ -71,7 +71,7 @@ something breaks or slows down, and `DANGER` marks what cannot be undone.
 > `hugo server -D` previews drafts.
 
 > [!IMPORTANT]
-> The floor is Hugo 0.169.0; anything older fails the build outright.
+> Enable Goldmark block attributes in `hugo.yml`, or component attribute lines render as plain text.
 
 > [!WARNING]
 > `hugo --cleanDestinationDir` empties `public/`.
@@ -176,13 +176,13 @@ player.
 ````markdown {title="Source"}
 > [!DETAILS] Full `hugo version` output
 > ```text
-> hugo v0.169.0+extended+withdeploy darwin/arm64
+> hugo v0.170.1+withdeploy darwin/arm64
 > ```
 ````
 
 > [!DETAILS] Full `hugo version` output
 > ```text
-> hugo v0.169.0+extended+withdeploy darwin/arm64
+> hugo v0.170.1+withdeploy darwin/arm64
 > ```
 
 ## Custom icon {#icon}

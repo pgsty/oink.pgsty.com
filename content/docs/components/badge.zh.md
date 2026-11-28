@@ -90,13 +90,13 @@ search_keywords: [徽章, Badge, 状态标签, tone, Beta, 已弃用, neutral, i
 ## 列表与步骤里 {#in-lists}
 
 ```markdown {title="源码"}
-1. 安装 Hugo {{</* badge text="≥ 0.169.0" tone="info" */>}}
+1. 安装 Hugo {{</* badge text="0.170+" tone="info" */>}}
 1. 从 OINK Starter 创建站点，修改 `hugo.yaml` 里的 `baseURL`
 1. `hugo server` 预览 {{</* badge text="1313 端口" tone="neutral" */>}}
 {.steps}
 ```
 
-1. 安装 Hugo {{< badge text="≥ 0.169.0" tone="info" >}}
+1. 安装 Hugo {{< badge text="0.170+" tone="info" >}}
 1. 从 OINK Starter 创建站点，修改 `hugo.yaml` 里的 `baseURL`
 1. `hugo server` 预览 {{< badge text="1313 端口" tone="neutral" >}}
 {.steps}

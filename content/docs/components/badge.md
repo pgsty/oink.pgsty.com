@@ -101,13 +101,13 @@ In a comparison table, a column of badges is quicker to scan than a column of
 ## In lists and steps {#in-lists}
 
 ```markdown {title="Source"}
-1. Install Hugo {{</* badge text="≥ 0.169.0" tone="info" */>}}
+1. Install Hugo {{</* badge text="0.170+" tone="info" */>}}
 1. Create a site from OINK Starter and change `baseURL` in `hugo.yaml`
 1. `hugo server` to preview {{</* badge text="port 1313" tone="neutral" */>}}
 {.steps}
 ```
 
-1. Install Hugo {{< badge text="≥ 0.169.0" tone="info" >}}
+1. Install Hugo {{< badge text="0.170+" tone="info" >}}
 1. Create a site from OINK Starter and change `baseURL` in `hugo.yaml`
 1. `hugo server` to preview {{< badge text="port 1313" tone="neutral" >}}
 {.steps}

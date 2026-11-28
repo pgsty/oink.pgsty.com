@@ -19,10 +19,10 @@ bulk, dry run first. Do the work on a branch, so that abandoning an upgrade
 costs nothing but the branch.
 
 > [!IMPORTANT] Upgrade Hugo and OINK together
-> OINK 1.6.0 and newer build with Hugo 0.169.0 or newer in any edition, and
-> the build compiles nothing. OINK 1.5.1 and older need Hugo's Extended
-> edition, which ended with Hugo 0.169, so a site on an older release cannot
-> follow Hugo past 0.169 until it upgrades; see
+> OINK 1.6.0 and newer use plain CSS and are tested on Hugo 0.170+, so the
+> build compiles nothing. OINK 1.5.1 and older need Hugo's Extended edition,
+> which ended with Hugo 0.169, so a site on an older release cannot follow
+> Hugo past 0.169 until it upgrades; see
 > [Staying on 1.5.1 or older](#hugo-extended).
 
 ## Read the release notes first {#release-notes}
@@ -160,7 +160,7 @@ Bootstrap's JavaScript and Lunr, which is what lets Hugo 0.170 and newer
 build the theme. Read the [1.6.0 release notes](/release/1.6.0/), then check
 each item:
 
-- **Toolchain.** Upgrade Go to **1.27.4** or newer and Hugo to **0.169.0** or newer, any edition. Remove `extended: true` from CI workflows once every branch you build uses OINK 1.6.0 or newer.
+- **Toolchain.** Use a current Hugo release (tested on `0.170+`; no Extended edition or Sass compiler needed). Remove `extended: true` from CI workflows once every branch you build uses OINK 1.6.0 or newer.
 - **Stylesheets.** Convert retired `assets/scss/_*_project*.scss` files to plain CSS in `assets/css/project.css`, change hard-coded `/scss/*.css` paths to `/css/*.css`, and switch custom-shell layouts to `partial "css/bundle.html"`. See [Retired SCSS hooks](#sass-hooks).
 - **Bootstrap JavaScript.** Remove dependencies on a theme-provided `window.bootstrap` or on `data-bs-toggle` hooks, listen for `td:tab-shown` instead of `shown.bs.tab` on Landing download tabs, and change `.dropdown-menu` selectors on version lists to `.td-version-menu__list`. See [Bootstrap's JavaScript](#bootstrap-script).
 - **Local search.** Remove site-script dependencies on `window.lunr` and call `OinkSearchEngine.create(documents, maxResults)`. A `content` index over 2 MiB now moves page text into `offline-search-body.<lang>.json`. See [Local search without Lunr](#search-engine).

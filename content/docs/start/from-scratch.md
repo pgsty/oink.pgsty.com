@@ -162,8 +162,6 @@ Make sure Git, Go and Hugo are installed per
    module:
      imports:
        - path: github.com/pgsty/oink
-     hugoVersion:
-       min: '{{< param hugoMinVersion >}}'
    ```
 
    Each block has one job:
@@ -174,7 +172,7 @@ Make sure Git, Go and Hugo are installed per
    | `markup.goldmark` | The three parser settings OINK components need | Attribute lines render as literal `{.steps}` text |
    | `params` | Local search, repository links, presets and shell switches | Optional features stay off by design |
    | `outputs` | Per-page `.md` copies, `llms.txt` and print views | No "Copy as Markdown" or print view |
-   | `module` | Theme import and minimum Hugo version | Hugo cannot locate OINK |
+   | `module` | Theme import | Hugo cannot locate OINK |
 
    For math equations, also add Goldmark's passthrough extension from
    [Math](/docs/components/math/). Every site parameter and its default lives
@@ -369,7 +367,7 @@ and keep `LICENSE`, `NOTICE` and `VENDOR.json` when redistributing:
 ```filetree {title="themes/oink/"}
 - oink/
   - go.mod        # module path declaration
-  - hugo.yaml     # theme default parameters and Hugo version floor
+  - hugo.yaml     # theme default parameters and mounts
   - theme.toml    # theme metadata required by theme: oink
   - LICENSE       # Apache-2.0
   - NOTICE        # upstream attribution

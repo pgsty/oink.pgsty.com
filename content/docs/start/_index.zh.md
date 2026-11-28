@@ -29,11 +29,9 @@ aliases:
 
 ## 准备工具 {#tools}
 
-需要 Git、Go 1.27.4 或更新版本，以及 Hugo {{% param hugoMinVersion %}} 或更新版本（不限 edition）。需要 Go，是因为 Hugo 以 Go 模块的方式拉取主题；整个构建过程不需要 Node.js、npm 或 Sass 编译器。
+需要 Git、Go 与 Hugo（已在 `0.170+` 上测试）。需要 Go，是因为 Hugo 以 Go 模块的方式拉取主题；整个构建过程不需要 Node.js、npm 或 Sass 编译器。
 
 ```console
-$ go version
-go version go1.27.4 darwin/arm64
 $ hugo version
 hugo v0.170.1+withdeploy darwin/arm64
 ```

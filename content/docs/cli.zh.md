@@ -32,7 +32,7 @@ aliases:
 
 ## 本地试用 {#try-locally}
 
-在 `oink-cli` 的源码检出中，用 Go 1.27.4 或更新版本加 Make 构建可执行文件：
+在 `oink-cli` 的源码检出中，用 Go 和 Make 构建可执行文件：
 
 ```sh
 cd oink-cli
@@ -45,7 +45,7 @@ make build
 
 把 `../my-docs` 换成你的站点路径。只有 `make deps` 会下载东西（Go 编译依赖）；CLI 本身离线运行，只有某条命令需要尚未缓存的远程输入时，才需要显式传入 `--network`。
 
-尽管 OINK 本身任意 edition 的 Hugo 都能构建，这个候选版的站点命令仍要求 Hugo Extended {{< param hugoMinVersion >}} 或更新版本，模块操作需要 Go 1.27 或更新版本。`oink init` 复制的 Starter 快照固定在 OINK v1.3.2，生成站点后请按[升级指南](/zh/docs/admin/upgrade/)升级到当前版本。
+尽管 OINK 本身已使用纯 CSS 并在 Hugo `0.170+` 上测试，这个候选版的站点命令仍预期旧版 Hugo Extended。`oink init` 复制的 Starter 快照固定在 OINK v1.3.2，生成站点后请按[升级指南](/zh/docs/admin/upgrade/)升级到当前版本。
 
 预览不会改动任何东西：`new`、`move` 与 `upgrade` 在你执行显式的应用步骤之前不会修改站点源文件（保存的计划用 `oink plans apply` 应用，升级用 `oink upgrade --write --expect-plan ID` 应用）。`dev` 与 `build` 则会照常写入 Hugo 的构建产物与缓存。
 

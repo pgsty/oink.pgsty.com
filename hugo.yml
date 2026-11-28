@@ -310,7 +310,6 @@ params:
       kind: latest
       url: https://oink.pgsty.com
 
-  hugoMinVersion: &hugoMinVersion 0.169.0
   productionURL: &productionURL https://oink.pgsty.com
   copyright:
     authors: >-
@@ -432,8 +431,6 @@ taxonomies:
 module:
   imports:
     - path: github.com/pgsty/oink
-  hugoVersion:
-    min: *hugoMinVersion
   mounts:
     # English sources and colocated .zh.md translations.
     - source: content

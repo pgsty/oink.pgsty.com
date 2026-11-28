@@ -140,8 +140,6 @@ these steps from your project's repository root:
    module:
      imports:
        - path: github.com/pgsty/oink
-     hugoVersion:
-       min: '{{< param hugoMinVersion >}}'
    ```
 
 1. ### Add your first page and preview {#init-preview}
@@ -227,7 +225,6 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  GO_VERSION: 1.27.4
   # Never let a workspace override the release pinned in docs/go.mod.
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
@@ -249,8 +246,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ${{ env.GO_VERSION }}
-          check-latest: true
+          go-version: stable
           cache-dependency-path: docs/go.sum
 
       - name: Configure GitHub Pages
@@ -315,10 +311,10 @@ Direct Upload to the same project:
 {{< tabs group="cf-mode" default="cf-actions" label="Cloudflare deploy mode" >}}
 {{< tab label="GitHub Actions Direct Upload (recommended)" value="cf-actions" >}}
 
-Building in GitHub Actions and uploading `docs/public` via Wrangler gives you
-exact control over the Hugo and Go versions (even when Cloudflare's build image
-lags behind `0.169.0+` or Go `1.27.4`), plus native `paths:` filtering so
-application-only pushes skip doc deploys.
+Building in GitHub Actions and uploading `docs/public` via Wrangler lets you
+run the latest Hugo release (even when Cloudflare's default build image ships
+an older Hugo), plus native `paths:` filtering so application-only pushes skip
+doc deploys.
 
 ```yaml {title=".github/workflows/docs-cloudflare.yaml" lineNos="inline" collapse=30}
 name: Deploy Docs to Cloudflare Pages
@@ -340,7 +336,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  GO_VERSION: 1.27.4
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
   HUGO_CACHEDIR: ${{ github.workspace }}/docs/.hugo_cache
@@ -361,8 +356,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ${{ env.GO_VERSION }}
-          check-latest: true
+          go-version: stable
           cache-dependency-path: docs/go.sum
 
       - name: Install Hugo
@@ -413,8 +407,7 @@ and configure these build settings:
 | Build command | `hugo --cleanDestinationDir --gc --minify --environment production --printPathWarnings` | Matches OINK's production build flags |
 | Build output directory | `public` | Relative to Root directory (`docs`), publishing `docs/public` |
 | Include watch paths | `docs/*` | Skips doc builds on commits that only touch application source code |
-| `HUGO_VERSION` | `{{< param hugoMinVersion >}}` or newer | Ensures Cloudflare's image meets OINK's Hugo floor |
-| `GO_VERSION` | `1.27.4` or newer | Required for Hugo Modules to fetch `github.com/pgsty/oink` |
+| `HUGO_VERSION` | `0.170.1` (or current release) | Overrides Cloudflare's older default Hugo (OINK is tested on `0.170+`) |
 | `GOWORK` / `HUGO_MODULE_WORKSPACE` | `off` | Prevents workspaces from overriding `docs/go.mod` |
 
 For branch preview builds, override the preview build command with

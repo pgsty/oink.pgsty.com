@@ -128,7 +128,7 @@ hugo mod get github.com/pgsty/oink@{{</* param tdVersion.latest */>}}
 | Item | Value |
 | --- | --- |
 | Current version | {{</* param version */>}} |
-| Hugo floor | {{</* param hugoMinVersion */>}} |
+| Visual preset | {{</* param ui.preset */>}} |
 
 [Release notes](https://github.com/pgsty/oink/releases/tag/{{</* param tdVersion.latest */>}})
 ````
@@ -140,7 +140,7 @@ hugo mod get github.com/pgsty/oink@{{< param tdVersion.latest >}}
 | Item | Value |
 | --- | --- |
 | Current version | {{< param version >}} |
-| Hugo floor | {{< param hugoMinVersion >}} |
+| Visual preset | {{< param ui.preset >}} |
 
 [Release notes](https://github.com/pgsty/oink/releases/tag/{{< param tdVersion.latest >}})
 

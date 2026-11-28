@@ -33,7 +33,7 @@ search_keywords: [参与贡献, 贡献者, pull request, 问题报告, 翻译, O
 └── oink.pgsty.com/
 ```
 
-Go 需要 1.27.4 或更新版本（即模块声明的最低版本）；Hugo 用本机已安装的即可，{{< param hugoMinVersion >}} 或更新、任意 edition 均可。主题不固定 Hugo 版本，CI 使用当前最新版本测试。本站的回归测试还需要 Node.js 26.13.0 与 npm 12.2.2 或更新版本，但主题与站点的构建都用不到它们。动手之前，请先阅读各仓库的 `AGENTS.md`、本站的 `WRITING.md` 与 `TRANSLATION.md`，以及你要改动部分对应的[设计契约](/zh/docs/design/)。
+使用本机安装的 Hugo（已在 `0.170+` 上测试）和 Go 即可。主题不声明最低 Hugo 版本，CI 跟随 `latest` 测试，不额外测试更老版本 Hugo 的兼容性。本站的回归测试还需要 Node.js 26.13.0 与 npm 12.2.2 或更新版本，但主题与站点的构建都用不到它们。动手之前，请先阅读各仓库的 `AGENTS.md`、本站的 `WRITING.md` 与 `TRANSLATION.md`，以及你要改动部分对应的[设计契约](/zh/docs/design/)。
 
 主题的样式表是纯 CSS：直接编辑 `assets/css/td/` 下的分层文件，由 Hugo 负责拼接。改完某一层就是全部改动，没有构建步骤，也没有需要提交的生成文件；`python3 bin/check-stylesheets.py` 会检查各层及其拼接结果。
 

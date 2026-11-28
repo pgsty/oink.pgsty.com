@@ -65,7 +65,6 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  GO_VERSION: 1.27.4
   # 同级 checkout 的 workspace 绝不能参与 CI 构建
   GOWORK: off
   HUGO_MODULE_WORKSPACE: off
@@ -84,8 +83,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ${{ env.GO_VERSION }}
-          check-latest: true
+          go-version: stable
           cache-dependency-path: go.sum
 
       - name: Configure GitHub Pages
@@ -150,7 +148,7 @@ OINK Starter 带有 `.github/workflows/cloudflare-pages.yaml`，采用 Direct Up
    `CLOUDFLARE_SITE_URL` 设为该域名。
 {.steps}
 
-也可以用 Cloudflare 的 Git integration，由 Cloudflare 执行构建：构建命令设为 `hugo --gc --minify --printPathWarnings`，输出目录 `public`，Hugo 不低于 {{< param hugoMinVersion >}}，Go 不低于 `1.27.4`。同一个项目只选一种模式，Git integration **或** Direct Upload 工作流；预览部署用各自的预览 URL，并以[非生产环境](#preview-builds)构建。
+也可以用 Cloudflare 的 Git integration，由 Cloudflare 执行构建：构建命令设为 `hugo --gc --minify --printPathWarnings`，输出目录 `public`，并设置 `HUGO_VERSION` 为当前版本（如 `0.170.1`；OINK 已在 `0.170+` 上测试，而 Cloudflare 默认镜像内置的是较旧版本）。同一个项目只选一种模式，Git integration **或** Direct Upload 工作流；预览部署用各自的预览 URL，并以[非生产环境](#preview-builds)构建。
 
 {{< /tab >}}
 {{< tab label="其它" value="other" >}}
@@ -163,8 +161,8 @@ command = "hugo --gc --minify --printPathWarnings"
 publish = "public"
 
 [build.environment]
-# 平台需要显式指定版本；0.169.0 是主题要求的最低版本
-HUGO_VERSION = "0.169.0"
+# 用当前版本覆盖平台默认 Hugo（OINK 已在 0.170+ 上测试）
+HUGO_VERSION = "0.170.1"
 ```
 
 主题以 submodule 安装时要开启递归 submodule 检出；以 Hugo Module 安装时，构建镜像里要有 Git 和 Go。预览与生产使用同一个 Hugo 版本，除非这个预览本来就是为了测试升级。
@@ -235,7 +233,7 @@ mkdir "$release_dir" &&
 - checkout 时 `fetch-depth: 0` — 开启 `enableGitInfo` 后，最后修改时间和贡献者名单都来自 Git 历史；浅克隆会让每个页面显示同一个日期。
 - 安装 Go，再执行 `go mod download github.com/pgsty/oink` — 主题以 Hugo Module 方式安装时，Hugo 要靠 Go 获取它。用 submodule 安装时改为 `submodules: recursive` 检出，用离线归档时把它提交在 `themes/oink/` 下；这两种情况都可以删掉两个 Go 步骤。
 - `GOWORK: off` 与 `HUGO_MODULE_WORKSPACE: off` — 把开发者的 Go workspace 挡在构建之外，CI 构建的就只是 `go.mod` 固定的那个版本。
-- Hugo 用 `latest` — 主题可以用 {{< param hugoMinVersion >}} 及以上的任何 Hugo edition 构建，CI 可以一直跟随最新版本。仍固定在 OINK 1.5.1 或更早版本的站点不行，见[版本升级](/zh/docs/admin/upgrade/#hugo-extended)。
+- Hugo 用 `latest` — 主题使用纯 CSS，已在 Hugo `0.170+` 上测试，CI 可以一直跟随最新版本。仍固定在 OINK 1.5.1 或更早版本的站点不行，见[版本升级](/zh/docs/admin/upgrade/#hugo-extended)。
 - `--environment production` 与真实的 `--baseURL` — 构建环境决定是否收录、是否统计（见[下文](#preview-builds)），`baseURL` 决定所有绝对链接。
 - 加 `--printPathWarnings`，不加 `--panicOnWarning` — OINK 的告警是有意设计的：键名写错或集成配置不全时，主题告警并回退到安全的默认值，站点照常构建。用 `--panicOnWarning` 或 `HUGO_PANICONWARNING` 把告警升级为错误，会让本来没问题的构建失败。告警应当在构建日志里阅读。
 
