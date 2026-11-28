@@ -99,7 +99,7 @@ languages:
           weight: 20
           params:
             icon: fa-solid fa-rocket
-            description: Start from OINK Starter, customize in layers, deploy
+            description: Run the docs locally, build with an AI agent, or add docs to a repo
         - identifier: docs-write
           parent: docs
           name: Authoring
@@ -220,7 +220,7 @@ languages:
           weight: 20
           params:
             icon: fa-solid fa-rocket
-            description: 从 OINK Starter 起步，分层定制并部署上线
+            description: 本地跑起文档站、用 AI Agent 建站，或为项目加装文档
         - identifier: docs-write
           parent: docs
           name: 创作内容
@@ -299,9 +299,9 @@ params:
   # version menu) and is not always a git ref. Content that needs a resolvable
   # release ref -- install commands, for example -- uses `tdVersion.latest`.
   tdVersion:
-    latest: &tdLatestVers v1.6.0
-  version: v1.6.0
-  version_menu: v1.6.0
+    latest: &tdLatestVers v1.7.0
+  version: v1.7.0
+  version_menu: v1.7.0
   version_menu_pagelinks: false
   # Populate to enable the navbar version menu, for example:
   versions: # []
@@ -433,7 +433,6 @@ module:
   imports:
     - path: github.com/pgsty/oink
   hugoVersion:
-    extended: true
     min: *hugoMinVersion
   mounts:
     # English sources and colocated .zh.md translations.
