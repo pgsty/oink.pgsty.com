@@ -30,6 +30,7 @@ design_status: active
 | [内容组件扩展](/zh/docs/design/proposals/content-components-expansion/) | 已接受并纳入 v1.7.0。六个组件——[Timeline](/zh/docs/design/proposals/component-timeline/)、[Update](/zh/docs/design/proposals/component-update/)、[社交帖子](/zh/docs/design/proposals/component-social/)、[Video](/zh/docs/design/proposals/component-video/)、[Audio](/zh/docs/design/proposals/component-audio/) 与 [Map](/zh/docs/design/proposals/component-map/)——均随 v1.7.0 交付，将组件目录由 21 个扩充至 27 个，只新增一个 shortcode（`social`，之后已修订为 `[!SOCIAL]` 提示块）、一个围栏（`map`）并扩展图片与标题渲染钩子；规范行为已移入[组件](/zh/docs/design/components/#timeline-media-social-and-maps)与[架构](/zh/docs/design/architecture/#configuration-and-diagnostics)契约 |
 | [OINK CLI 与下一阶段产品路线](/zh/docs/design/proposals/oink-cli-roadmap/) | 独立 Go 仓库与首期边界已接受，本地 CLI 候选已实现、尚未公开发布；后续主题、迁移、采用、版本管理、OpenAPI 与平台阶段保持提案 |
 | [视觉预设与外观切换](/zh/docs/design/proposals/visual-presets/) | Paper/Slate 随 v1.2.0 发布，四套预设于 v1.7.0 完成精修（见 [Ink 与 Terminal 稳定化](/zh/docs/design/proposals/ink-terminal-stabilization/)）；Ink/Terminal 仍为显式启用项；当前行为与证据见已接受决策和带日期验收记录 |
+| [oink：预览与多版本服务](/zh/docs/design/proposals/oink-serve/) | PRD 草案，起草于 2026-11-28。一个内嵌 Hugo 与 OINK 的 `oink` 二进制，提供本地预览、Git 感知的多版本服务与 `.oink` 包，以及基于 SQLite 的搜索、账号、评论与浏览量；被接受时取代 CLI 契约与 CLI 路线图的版本阶段；尚未实现 |
 
 组件精修、统一图表阅读与本地搜索改进已随 1.4.0 发布，现归入[已接受决策](/zh/docs/design/decisions/)。译文对照随 1.5.0 发布，记录为[已接受决策](/zh/docs/design/decisions/document-comparison/)，草案已退役。
 
