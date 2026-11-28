@@ -8,7 +8,7 @@
 - [navigation.json](http://localhost/navigation.json)
 - [Docs](http://localhost/docs/index.md): Build a technical content site. Use shared navigation, multilingual support, and search for documentation, blogs, books, and API references.
 - [Book](http://localhost/book/index.md): Get a working OINK site from one prompt, then learn its features one layer at a time, from a single page to a published bilingual site.
-- [Case](http://localhost/case/index.md): Forty-five real sites across third-party open-source projects, enterprise teams, personal blogs, books, and the PGSTY ecosystem built with Oink.
+- [Case](http://localhost/case/index.md): Seventy-nine real sites across third-party open-source projects, enterprise teams, personal blogs, books, and the PGSTY ecosystem built with Oink.
 - [Blog](http://localhost/blog/index.md): Oink engineering notes, design stories, and reading shell guides
 - [Release](http://localhost/release/index.md): Oink release notes, Hugo-only build requirements, and versioned upgrade history
 
@@ -19,10 +19,10 @@
   - [Cases](http://localhost/docs/about/showcase/index.md): Find the OINK production case closest to your documentation, book, blog, catalog, or community site.
   - [License](http://localhost/docs/about/license/index.md): Find which license covers the theme, this documentation and each bundled third-party runtime, and what you must keep when you reuse them.
   - [Contributing](http://localhost/docs/about/contributing/index.md): Report a problem or send a fix to the repository that owns it, with the checks a theme or documentation change needs before review.
-- [Get started](http://localhost/docs/start/index.md): Start from the official OINK Starter. Verify the local site, then customize content, language, brand, integrations, and deployment in that order.
-  - [OINK Starter](http://localhost/docs/start/starter/index.md): Turn the OINK Starter into your project's site one layer at a time: languages, identity, home page, content, brand, integrations, and deployment.
-  - [Repository tour](http://localhost/docs/start/anatomy/index.md): Find the OINK Starter file behind each part of your site, what you can delete, and what the build depends on.
-  - [From scratch](http://localhost/docs/start/from-scratch/index.md): Add OINK to an existing Hugo site or build a minimal one by hand, and install the theme as a Module, submodule, offline archive, or source copy.
+- [Get started](http://localhost/docs/start/index.md): Clone the OINK docs site to run a full site locally in two minutes, then build your own personal or project site with an AI agent, from scratch, or inside a project's docs/ folder.
+  - [Browse locally](http://localhost/docs/start/local/index.md): Clone an existing OINK repository and run hugo serve to read docs in your browser, preview edits as you type, and watch AI agents' latest reports render live.
+  - [From scratch](http://localhost/docs/start/from-scratch/index.md): See what a minimal standalone OINK project looks like, build one from an empty directory, add OINK to an existing Hugo site, or install it without Go modules.
+  - [Add docs to a project](http://localhost/docs/start/add-docs/index.md): Add a self-contained OINK documentation site inside an existing open-source repository's docs/ directory, keep build outputs out of Git, and wire GitHub Pages and Cloudflare Pages auto-builds.
 - [Authoring](http://localhost/docs/write/index.md): Write documentation pages, blog posts, books, image albums, release pages and API references, and arrange them into a sidebar.
   - [Writing pages](http://localhost/docs/write/pages/index.md): Create a documentation page, from where the file goes and the front matter it needs to stable anchors, links, images, drafts and the controls the theme adds at the end.
   - [Organizing content](http://localhost/docs/write/organize/index.md): Arrange folders and `_index.md` files into the sidebar you want, then control order, section indexes, icons, folding, hidden pages and where documentation lives.
@@ -34,33 +34,33 @@
   - [API reference](http://localhost/docs/write/openapi/index.md): Render an OpenAPI specification as a browsable API reference with the bundled Swagger UI or Redoc, without a CDN.
 - [Components](http://localhost/docs/components/index.md): Pick the component that fits what you are writing and look up its shortest syntax, its form and whether it loads a script.
   - [Callouts](http://localhost/docs/components/callout/index.md): Write notes, warnings, and collapsible asides with colors, icons, and titles. Use `> [!NOTE]` blockquotes without shortcodes.
-  - [Images](http://localhost/docs/components/image/index.md): Add images with plain Markdown, then use one attribute line for a caption, a size, zoom, a link, a figure number or Hugo image processing.
   - [Code Blocks](http://localhost/docs/components/code/index.md): Show commands, configuration and source code in a Markdown fence with a filename, exact copying, line numbers, highlighting, wrapping, folding and linkable lines.
-  - [Tabs](http://localhost/docs/components/tabs/index.md): Put equivalent alternatives such as package managers or config formats side by side, and let one reader choice follow them across every page.
   - [Tables](http://localhost/docs/components/table/index.md): Turn an ordinary Markdown table into a captioned table, a compatibility matrix, a field list, a numbered book table or a tab set, and give wide technical tables room to read.
   - [Fields](http://localhost/docs/components/fields/index.md): Document configuration keys, command flags and API fields as a field list that stays readable on a phone and gives every entry its own link.
+  - [Badge](http://localhost/docs/components/badge/index.md): Mark a feature, version or table cell with a short status label such as Beta or deprecated, in one of five semantic tones.
+  - [Kbd](http://localhost/docs/components/kbd/index.md): Use `kbd` with one key name per parameter to display a semantic key sequence. Instructions remain readable in print and Markdown.
+  - [Tabs](http://localhost/docs/components/tabs/index.md): Put equivalent alternatives such as package managers or config formats side by side, and let one reader choice follow them across every page.
   - [Steps](http://localhost/docs/components/steps/index.md): Add `{.steps}` to an ordered list for a numbered procedure. Use the steps shortcode when each step needs a table-of-contents heading.
   - [Timeline](http://localhost/docs/components/timeline/index.md): Turn a Markdown definition list into a vertical timeline of dated or ordered events, for milestones, incident write-ups, product history or an agenda.
   - [Update](http://localhost/docs/components/update/index.md): Write a changelog, a "What's new" page or weekly notes as ordinary headings marked `{.update}`, with an optional date and tags under each entry.
   - [Cards](http://localhost/docs/components/cards/index.md): Turn a Markdown link list into a grid of navigation cards, and use the shortcode when cards need icons, badges or images.
-  - [FileTree](http://localhost/docs/components/filetree/index.md): Draw an annotated directory tree in a `filetree` fence, with aligned comments, per-entry icons and collapsible directories.
-  - [Math](http://localhost/docs/components/math/index.md): Use KaTeX for inline and display mathematics at build time. Readers download no script.
+  - [Includes](http://localhost/docs/components/include/index.md): Reuse one source across pages with include for shared fragments and files, param for site and page values, and comment for notes that never publish.
   - [Mermaid](http://localhost/docs/components/mermaid/index.md): Use a `mermaid` fence for flowcharts, sequence diagrams, Gantt charts, class diagrams, and state diagrams. Bundled Mermaid follows the color scheme; source diffs show changes.
-  - [Presentation](http://localhost/docs/components/presentation/index.md): Cards, disclosures, tabs, and compact procedures across OINK's four visual presets.
   - [PlantUML](http://localhost/docs/components/plantuml/index.md): Render sequence, class, component, activity and use-case diagrams in the browser with bundled assets and no rendering service.
-  - [Markmap](http://localhost/docs/components/markmap/index.md): Use a `markmap` fence for an expandable mind map with zoom controls. Its source remains a readable Markdown outline.
   - [Draw.io](http://localhost/docs/components/drawio/index.md): Publish a Draw.io export as an ordinary image that readers can open in the Draw.io editor, change and download.
   - [ECharts](http://localhost/docs/components/echarts/index.md): Draw bar, line and pie charts by writing ECharts options as YAML or JSON in an `echarts` fence, with colors that follow light and dark mode.
   - [Infographic](http://localhost/docs/components/infographic/index.md): Turn a title and a short list of items into a flow, timeline, funnel, grid or hierarchy graphic with an `infographic` fence and an AntV template.
+  - [Maps](http://localhost/docs/components/map/index.md): List places in a `map` fence to get a numbered place list in HTML, Print and RSS, plus an interactive map once the site names a tile service.
+  - [Markmap](http://localhost/docs/components/markmap/index.md): Use a `markmap` fence for an expandable mind map with zoom controls. Its source remains a readable Markdown outline.
+  - [FileTree](http://localhost/docs/components/filetree/index.md): Draw an annotated directory tree in a `filetree` fence, with aligned comments, per-entry icons and collapsible directories.
+  - [Math](http://localhost/docs/components/math/index.md): Use KaTeX for inline and display mathematics at build time. Readers download no script.
+  - [Images](http://localhost/docs/components/image/index.md): Add images with plain Markdown, then use one attribute line for a caption, a size, zoom, a link, a figure number or Hugo image processing.
   - [Gallery](http://localhost/docs/components/gallery/index.md): Lay out a set of related screenshots as a responsive grid with a `gallery` fence, each with an optional description or link.
   - [Video](http://localhost/docs/components/video/index.md): Embed product demos, screen recordings and muted loops that replace GIFs, and link YouTube, Bilibili or Vimeo talks without contacting the platform until a reader clicks.
   - [Audio](http://localhost/docs/components/audio/index.md): Put a podcast episode, voice sample or recorded talk on a page with image syntax, as a titled native player with its transcript beside it.
-  - [Social posts](http://localhost/docs/components/social/index.md): Quote a post from X, Bluesky, Mastodon, or another platform with the `social` shortcode. The page supplies the quote and attribution without a platform script.
-  - [Maps](http://localhost/docs/components/map/index.md): List places in a `map` fence to get a numbered place list everywhere, plus an interactive map once the site names a tile service.
-  - [Badge](http://localhost/docs/components/badge/index.md): Mark a feature, version or table cell with a short status label such as Beta or deprecated, in one of five semantic tones.
-  - [Kbd](http://localhost/docs/components/kbd/index.md): Use `kbd` with one key name per parameter to display a semantic key sequence. Instructions remain readable in print and Markdown.
-  - [Includes](http://localhost/docs/components/include/index.md): Reuse one source across pages with include for shared fragments and files, param for site and page values, and comment for notes that never publish.
   - [Asciinema](http://localhost/docs/components/asciinema/index.md): Embed a .cast terminal recording that readers can play, pause and copy text from, with the player shipped in the theme.
+  - [Social](http://localhost/docs/components/social/index.md): Quote a post from X, Bluesky, Mastodon, or another platform with the `social` shortcode. The page supplies the quote and attribution without a platform script.
+  - [Presentation](http://localhost/docs/components/presentation/index.md): Cards, disclosures, tabs, and compact procedures across OINK's four visual presets.
 - [Customization](http://localhost/docs/customize/index.md): Configure the site brand, navigation, layout, search, languages, versions, print output, and agent output.
   - [Configuration](http://localhost/docs/customize/config/index.md): Find every site parameter that the theme reads, with its type, default, description, and related guide.
   - [Brand and appearance](http://localhost/docs/customize/brand/index.md): Give the site your name, logo, favicon, accent color and fonts, choose a visual preset, and add your own CSS.
@@ -118,7 +118,7 @@
   - [2026-09-20 release review](http://localhost/docs/design/research/2026-09-20-release-review/index.md): Five reproduced runtime defects, documentation corrections, validation evidence, and the OINK 1.1 publication follow-up.
   - [CLI contract](http://localhost/docs/design/decisions/cli/index.md): Executable ownership, versioned diagnostics, isolated validation, and guarded maintenance plans for the current local CLI candidate.
   - [Component refinement](http://localhost/docs/design/decisions/component-refinement/index.md): Consistent component surfaces and controls, with three optional Markdown presentation variants.
-  - [Migration boundary](http://localhost/docs/design/migration/index.md): Supported source, configuration, and validation boundaries for OINK migration, including the 1.6.0 upgrade.
+  - [Migration boundary](http://localhost/docs/design/migration/index.md): Supported source, configuration, and validation boundaries for OINK migration, including the 1.6.0 and 1.7.0 upgrades.
   - [Visual presets](http://localhost/docs/design/decisions/visual-presets/index.md): Accepted phase-one visual identity and appearance controls, with separate reader style and mode state.
   - [2026-10-03 CLI maintenance](http://localhost/docs/design/research/2026-10-03-cli-maintenance-acceptance/index.md): Dated source and binary evidence for the local R1–R8/A18 program, preserving the initial audit, failed trials, and final acceptance scope.
   - [2026-10-03 CLI maintenance · R1–R5](http://localhost/docs/design/research/2026-10-03-cli-maintenance-acceptance-r1-r5/index.md): R1–R5 local validation and acceptance evidence from the dated CLI maintenance record.
@@ -134,7 +134,7 @@
   - [Ink and Terminal review](http://localhost/docs/design/research/2026-10-26-ink-terminal-stabilization/index.md): Source review, bounded visual evidence, current failures and promotion limits for Ink and Terminal on 2026-10-26.
   - [Translation comparison](http://localhost/docs/design/decisions/document-comparison/index.md): Compare a page with an existing same-origin translation in a two-pane reader that loads only when asked.
   - [1.5.1 readiness review](http://localhost/docs/design/research/2026-11-06-v1-5-1-release-review/index.md): Three reproduced candidate regressions, complete browser acceptance, and remaining publication gates.
-  - [Keyboard map](http://localhost/docs/design/decisions/keyboard-map/index.md): Record why OINK binds thirty single keys in three groups of ten, dims what a page cannot run, and adds local history, fold-all, and a reader width.
+  - [Keyboard map](http://localhost/docs/design/decisions/keyboard-map/index.md): Record why OINK binds twenty-nine single-key shortcuts in three groups, dims what a page cannot run, and adds local history, fold-all, and a reader width.
   - [Dependency acceptance](http://localhost/docs/design/research/2026-11-11-dependency-acceptance/index.md): Functional, failure-path and browser acceptance of the local dependency migration after OINK 1.5.1.
   - [2026-10-13 theme review](http://localhost/docs/design/research/2026-10-13-theme-review/index.md): Reproduced image escaping and interaction defects, their repairs, and local theme and consumer validation.
   - [Large-table reading research](http://localhost/docs/design/research/2026-10-26-large-table-reading/index.md): Framework and component evidence, measured reading concepts, and a bounded direction for OINK technical tables.

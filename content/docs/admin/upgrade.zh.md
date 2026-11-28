@@ -30,7 +30,7 @@ aliases:
 固定一个已发布的版本标签，或者一个你主动选定的不可变 commit，不要跟随分支，也不要用 `@latest`，这样同一个站点 commit 每次构建出来的都是同一个站点。固定之前，先确认标签已经发布并且能够解析：
 
 ```bash {title="终端"}
-hugo mod get github.com/pgsty/oink@v1.6.0   # 已发布的版本标签
+hugo mod get github.com/pgsty/oink@v1.7.0   # 已发布的版本标签
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -42,7 +42,7 @@ module github.com/example/product-docs
 
 go 1.27.4
 
-require github.com/pgsty/oink v1.6.0
+require github.com/pgsty/oink v1.7.0
 ```
 
 如果你同时在对着本地主题 checkout 预览，这个替换会盖掉固定的版本；信任构建结果之前，先看[对着本地主题预览](/zh/docs/admin/preview/#theme-workspace)。
@@ -51,7 +51,7 @@ require github.com/pgsty/oink v1.6.0
 
 ```bash {title="终端"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.6.0
+git -C themes/oink checkout --detach v1.7.0
 git add themes/oink
 ```
 
@@ -91,7 +91,7 @@ env -u HUGO_MODULE_REPLACEMENTS GOWORK=off HUGO_MODULE_WORKSPACE=off \
 回滚主题，就是恢复之前的固定版本：
 
 ```bash {title="终端"}
-hugo mod get github.com/pgsty/oink@v1.5.1   # 示例：站点上一个已知可用的标签
+hugo mod get github.com/pgsty/oink@v1.6.0   # 示例：站点上一个已知可用的标签
 hugo mod tidy
 rm -rf public resources/_gen
 hugo --gc --minify
@@ -102,6 +102,16 @@ hugo --gc --minify
 - 升级分支和验证中积累的结论都留着。回滚是为了先恢复线上，不是丢掉已经完成的升级工作。
 
 重新发布上一个部署本身，见[发布上线](/zh/docs/admin/deploy/#rollback)。
+
+## 升级到 1.7.0 {#preparing-1-7}
+
+已在 1.6.0 上的站点无需修改模板或样式表。固定 `v1.7.0` 之前，先阅读 [1.7.0 发布说明](/zh/release/1.7.0/)并核对以下外观与交互更新：
+
+- **Paper 强调色与预设排版**：Paper 底色调整为暖白（`#faf9f5`），界面强调色改为陶红（`#9b4a28`，暗色 `#de8460`），正文行内链接仍为蓝色细下划线。若想沿用之前的蓝色强调色，设置 `params.ui.theme_color: '#2b5f8c'`。Terminal 屏幕正文同步改用 IBM Plex Mono（打印仍用 IBM Plex Sans）；显式设置的 `params.ui.fonts.ui` 或 `fonts.body` 会作用于所有预设的标题，除非 `fonts.heading` 另行指定。详见[品牌外观](/zh/docs/customize/brand/#visual-presets)。
+- **单键快捷键重排**：快捷键调整为二十九个快捷键、三栏布局（导航十项、操作九项、样式十项）：禅意模式从 `H` 改到 `Z`（`H` 改为本地浏览历史），切换语言改为 `X`，切换视觉预设为 `T`，切换明暗模式为 `Y`，切换博客索引视图为 `L`，切换版本为 `V`，回到语言首页为 `G`，纯命令面板仍保留在 `\`（并与 `C` 对应），`[`、`]` 分别打开 ChatGPT 与 Claude。`G` 不再打开侧栏中聚焦的条目（`Enter` 与 `Space` 照旧可用），首页的 `N` 分节别名已移除（`J` 保留）。如有站点自写帮助文案或快捷键测试引用了旧键位，请一并更新；详见[键盘快捷键](/zh/docs/customize/keyboard/)。
+- **排版复制**：复制正文选区默认输出基于打印调色板的干净富文本，避免粘贴到微信公众号等编辑器时带入页面背景色。如需恢复浏览器默认富文本复制，设置 `params.ui.rich_copy: false`（或页面 front matter `rich_copy: false`）。
+- **新增按需组件与 CSP**：时间线、更新条目、帖子与本地音视频不产生外部请求；如果启用 `params.map` 或 `params.video_embeds`，请在 CSP 中放行瓦片服务的 `img-src` 与已启用视频平台的 `frame-src`，见[发布上线](/zh/docs/admin/deploy/#csp)。
+- **归档版本横幅**：开启 `params.archived_version: true` 的站点现获得带样式的 `role="note"` 横幅，且需要非空的 `params.version`（缺省时会告警一次并省略空横幅）。
 
 ## 升级到 1.6.0 {#preparing-1-6}
 
@@ -172,7 +182,7 @@ OINK Landing 的下载标签页上，把 `shown.bs.tab` 换成监听 `td:tab-sho
 - 某种语言既不显示阅读器入口、也不作为目标语言时，设置 `languages.<lang>.params.ui.compare: false`。
 - 用 `window.OinkComparePane` 守住 `head-end.html` 里的自定义统计脚本，避免窗格加载被重复计数。开启对照期间，站点对 Hugo `google_analytics.html` partial 的本地覆盖不会被使用，见[分析与 SEO](/zh/docs/admin/analytics/#bilingual-view)。
 - 在内容安全策略中允许同源 frame（`frame-src 'self'`），并确认服务器没有用 `X-Frame-Options: DENY` 或 `frame-ancestors 'none'` 禁止同源嵌入。
-- 打开一篇有译文的 Docs、Book 或博客页面，确认「打开双语视图」能加载目标语言、按共同的标题同步滚动，并在窄屏下正确切换。
+- 打开一篇有译文的 Docs、Book 或博客页面，确认「打开双列视图」（1.5.1 起由「打开双语视图」改名）能加载目标语言、按共同的标题同步滚动，并在窄屏下正确切换。
 
 ## 升级到 1.4.0 与 1.3.1 {#preparing-1-4}
 

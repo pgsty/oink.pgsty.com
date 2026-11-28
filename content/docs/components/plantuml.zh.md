@@ -2,7 +2,7 @@
 title: PlantUML
 linkTitle: PlantUML
 description: 使用随主题提供的资源，在浏览器中渲染时序图、类图、组件图、活动图与用例图，无需渲染服务。
-weight: 120
+weight: 320
 comments: false
 search_keywords: [PlantUML, UML, 本地渲染, 时序图, 类图, 组件图, 活动图, 用例图]
 ---
@@ -195,7 +195,7 @@ params:
 ## 限制与常见问题 {#limits}
 
 - 浏览器资源只包含核心引擎和 Graphviz 布局库，`!include`、`!includeurl`、外部主题、C4、AWS 以及其他可选图标库都用不了，用到它们的图保留为源码。可以把图改成自包含的，改用预渲染的[图片](/zh/docs/components/image/)，或者切换到[服务端模式](#server)。
-- 引擎为 `@plantuml/core` 1.2026.9，布局库为 Viz.js 3.31.0。两份脚本合计约 4.7 MB，gzip 后约 1.6 MB；只在图接近视口时加载，可以正常利用 HTTP 缓存。
+- 引擎为 `@plantuml/core` 1.2026.10，布局库为 Viz.js 3.31.0。两份脚本合计约 4.6 MB，gzip 后约 1.5 MB；只在图接近视口时加载，可以正常利用 HTTP 缓存。
 - 本地渲染依赖 JavaScript 和 WebAssembly。设置了严格内容安全策略（CSP）的站点，需要允许同站脚本、用于 WebAssembly 编译的 `wasm-unsafe-eval`，以及 `blob:` 图片；其中任何一项被拦截，图都会保留为源码。
 - 大图会消耗读者的 CPU 和内存，而且渲染在主线程上进行，不在 Worker 里。引擎一旦遇到无法取消的超时，本页剩余的 PlantUML 图保留源码，刷新页面后才会重试。
 - 图以图片呈现，里面的链接不可点击，也不能编号。

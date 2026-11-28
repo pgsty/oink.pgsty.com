@@ -6,23 +6,23 @@ weight: 28
 icon: fa-solid fa-headphones
 search_keywords: [audio, mp3, podcast, voice sample, transcript, player, component]
 design_kind: proposal
-design_status: implemented
+design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] Implemented, awaiting release
-> Implemented on the theme's `main` branch and documented in the
-> [Audio guide](/docs/components/audio/). Not yet in a tagged release. The shared decisions
-> are in the [overview](/docs/design/proposals/content-components-expansion/).
+> [!NOTE] Accepted in OINK 1.7.0
+> Shipped in OINK v1.7.0, documented in the [Audio guide](/docs/components/audio/),
+> and governed by the [Components contract](/docs/design/components/#timeline-media-social-and-maps).
+> Shared decisions are in the [overview](/docs/design/proposals/content-components-expansion/).
 
 | Record | Value |
 | --- | --- |
-| Status | Implemented 2026-11-27 on `main`; awaiting release |
+| Status | Accepted and shipped in OINK v1.7.0 (implemented 2026-11-27) |
 | Owner | OINK maintainers |
 | Delivery stage | S2, with video files |
 | Form | Native: a block Markdown image whose destination is an audio file |
 | New public API | None beyond accepting audio destinations; attributes `caption`, `id`, and `preload` |
-| Runtime | None for a single player; shared `js/chunks/media.js` when a page has 2+ `<audio>`/`<video>` players (single-active playback) |
+| Runtime | Shared `js/chunks/media.js` for progress and single-active playback |
 | Affected surface | The media partial shared with Video, a stylesheet section, a new guide at `/docs/components/audio/` |
 
 ## Summary {#summary}
@@ -66,7 +66,7 @@ Print, or RSS form. A bare player tells the reader nothing about what it plays.
 - Local, bundle, global-asset, `static/`, and object-storage audio files.
 - A visible, accessible title; an optional caption.
 - Static Print, RSS, Markdown, and LLMS forms with a usable link.
-- Zero JavaScript for a single player; shared `js/chunks/media.js` for single-active playback when a page has two or more players; zero configuration.
+- Native playback works without JavaScript. The shared runtime colors elapsed time and pauses other audible players.
 
 ### Non-goals {#non-goals}
 
@@ -143,7 +143,7 @@ player onward prevents connection bursts on long sample pages.
 
 | Output | Result |
 | --- | --- |
-| HTML | As above; no runtime for one player, `js/chunks/media.js` for 2+ players |
+| HTML | Native controls with progress in the page accent from `js/chunks/media.js` |
 | Print | Title, caption, and the file URL as a visible `.td-media__link` on screen and paper (paper-palette overrides in `@media print`) |
 | Markdown / LLMS | The authored source; a following transcript callout stays readable text |
 | RSS | Title as a direct link to the file (absolute URL) and the caption |
@@ -165,7 +165,7 @@ committed to Git.
 | Option | Decision | Reason |
 | --- | --- | --- |
 | First-draft `{{</* audio */>}}` with `src`, `mp3`, `ogg`, `m4a`, `title`, `artist`, `cover`, `duration`, `chapters`, `caption`, `preload`, `loop`, `download`, `compact`, and a transcript body | Rejected | Codec fallbacks are obsolete, `duration` and `artist` are facts that drift from the file, `cover` and `compact` create two layouts, and the body duplicates a folded callout |
-| A runtime for a speed toggle and chapters | Deferred | Native controls cover speed in Chromium-based browsers; chapters need WebVTT evidence before growing the UI. Single-active playback was promoted into `js/chunks/media.js` only when 2+ players exist on a page |
+| A runtime for a speed toggle and chapters | Deferred | Native controls cover speed in Chromium-based browsers; chapters need WebVTT evidence before growing the UI. The shared media script handles single-active playback |
 | Hidden bracket text, as for images | Rejected | A bare player is unlabeled for sighted readers |
 | Numbering as a Book figure | Rejected | A recording is not a figure; a numbered audio kind would need its own Book index, which nothing requests |
 
@@ -203,7 +203,7 @@ partial, and fixtures. Specific work:
 
 ## Acceptance criteria {#acceptance}
 
-- Single-audio pages load no runtime; pages with 2+ players load `js/chunks/media.js` for single-active playback.
+- A single player shows elapsed time in the page accent. Starting a second audible player pauses the first.
 - Each audio figure has a visible title and an accessible name via `aria-labelledby` (plus `aria-describedby` when captioned).
 - Print, RSS, Markdown, and LLMS contain no `<audio>` element and keep a usable
   link (visible on screen and paper in Print; linked title in RSS).
@@ -212,7 +212,7 @@ partial, and fixtures. Specific work:
 ## Open decisions {#open-decisions}
 
 1. **Title placement.** Resolved: above the player, start-aligned.
-2. **Single-active playback in S2.** Resolved: enabled via `js/chunks/media.js` only on pages with 2+ players (zero JS on single-audio pages).
+2. **Single-active playback in S2.** Resolved: the same runtime handles progress for every file player and coordinates multiple audible players.
 
 ## Decision log {#decision-log}
 

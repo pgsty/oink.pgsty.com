@@ -4,7 +4,7 @@ linkTitle: Contributing
 description: Report a problem or send a fix to the repository that owns it, with the checks a theme or documentation change needs before review.
 weight: 40
 icon: fa-solid fa-code-pull-request
-search_keywords: [contributing, contributors, pull request, bug report, translation, OINK 1.6.0]
+search_keywords: [contributing, contributors, pull request, bug report, translation, OINK 1.7.0]
 ---
 
 Bug reports, corrections, translations and focused pull requests are all

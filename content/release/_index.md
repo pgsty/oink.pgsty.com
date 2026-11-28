@@ -43,13 +43,15 @@ cascade:
 ---
 
 > [!NOTE] Versioned history
-> Each release note records the requirements and validation of that version at release time. OINK 1.6.0+ builds with Hugo 0.169.0+ in any edition and Go 1.27.4; see the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
+> Each release note records the requirements and validation of that version at release time. For current Hugo and Go requirements, see the [toolchain contract](/docs/design/architecture/#hugo-toolchain).
 
-The current release is [OINK 1.6.0](/release/1.6.0/): plain CSS assembled
-by Hugo for Hugo 0.170+ compatibility, Bootstrap JS and Lunr removal, scanning
-BM25 local search with split indexes and field anchors, Markmap 1.1.0, ReDoc
-3.1.0, on-approach component loading, single-line navbar overflow, and 32
-tightened locale catalogs. Keep warnings visible, and never enable
+The current release is [OINK 1.7.0](/release/1.7.0/): six new content components
+(Timeline, Update, Video, Audio, Social, and Map with vendored Leaflet
+1.9.4), typeset rich-text copy, a sheet of 29 single-key shortcuts with local
+browsing history, fold-all, reading-width steps, and a reader opt-out, refined
+presets with Paper's ivory-and-clay palette and preset-specific CJK system
+typography, plus Markmap corner SVG download controls, site ECharts themes, and
+styled archived-version banners. Keep warnings visible, and never enable
 `--panicOnWarning` or `HUGO_PANICONWARNING`. No Sass compiler is required.
 
 For the changes contributed in 1.3.1, see its

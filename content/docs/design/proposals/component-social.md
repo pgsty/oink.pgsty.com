@@ -6,19 +6,19 @@ weight: 29
 icon: fa-solid fa-comment-dots
 search_keywords: [social, x, twitter, tweet, social post, bluesky, mastodon, threads, weibo, offline embed, quote, component]
 design_kind: proposal
-design_status: implemented
+design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] Implemented, awaiting release
-> The `social` shortcode is implemented on the theme's `main` branch
-> and documented in the [Social posts guide](/docs/components/social/).
-> Not yet in a tagged release. The shared decisions behind it are in the
-> [overview](/docs/design/proposals/content-components-expansion/).
+> [!NOTE] Accepted in OINK 1.7.0
+> The `social` shortcode ships in OINK v1.7.0, is documented in the
+> [Social posts guide](/docs/components/social/), and is governed by the
+> [Components contract](/docs/design/components/#timeline-media-social-and-maps).
+> Shared decisions are in the [overview](/docs/design/proposals/content-components-expansion/).
 
 | Record | Value |
 | --- | --- |
-| Status | Implemented 2026-11-27 on `main`; awaiting release |
+| Status | Accepted and shipped in OINK v1.7.0 (implemented 2026-11-27) |
 | Owner | OINK maintainers |
 | Delivery stage | S3 |
 | Form | Shortcode with a Markdown body: `{{</* social … */>}}…{{</* /social */>}}` |
@@ -107,7 +107,7 @@ searchable, and absent from LLMS output.
 | --- | --- | --- |
 | `author` | Display name, plain text | Non-string: warns and ignored |
 | `handle` | Plain text shown verbatim (`@name`, `@user@mastodon.social`) | Non-string: warns and ignored |
-| `avatar` | Image path through `content/image-resolve.html` (`parameter="avatar"`); decorative (`alt=""`) because the name is adjacent | Unsafe scheme or non-image resource: warns naming `avatar` and drops; a static path missing from the project's own `static/` (checked only when that directory exists, after decoding and cleaning the path): warns with the ID `social:avatar-static`, which a site using module mounts or a custom `staticDir` can list in `ignoreLogs`, and keeps the path; a static path that climbs above the site root with `..`: warns and keeps the path; remote HTTPS URLs are never fetched |
+| `avatar` | Image path through `content/image-resolve.html` (`parameter="avatar"`); decorative (`alt=""`) because the name is adjacent | Unsafe scheme or non-image resource: warns naming `avatar` and drops; a static path missing from the project's own `static/` (checked only when that directory exists, after decoding and cleaning the path): warns with the ID `social:avatar-static`, which a site using module mounts or a custom `staticDir` can list in `ignoreLogs`, and keeps the path; a static path that climbs above the site root with `..`: warns (`social:avatar-static`), is dropped, and the card draws the initial; remote HTTPS URLs are never fetched |
 | `date` | Plain text. `YYYY-MM`, or `YYYY-MM-DD` optionally followed by `T` or a space, `HH:MM`, optional `:SS`, and an optional `Z` or `±HH:MM`, on a real calendar day, becomes `<time datetime>` (the space written as `T`); anything else renders as `<span class="td-social__date">` | Non-string: warns and ignored |
 | `url` | Original post, through the shared URL policy (HTTP/HTTPS with `rel="external"`, or site-internal path without `rel="external"`). Optional, so a deleted post can still be quoted | Invalid: warns and is dropped |
 | `platform` | `x` (default top-level), `bluesky`, `mastodon`, `threads`, `weibo`, `zhihu`, `telegram`, `linkedin`, `none` (default nested) | Unknown, empty, or non-string: warns, uses context default |
@@ -241,7 +241,7 @@ restricted, and raise terms-of-use questions. The theme never depends on it.
 | Styles | `assets/css/td/social.css` |
 | Locale | `ui_social_view_original` in all 32 catalogs |
 | Fixture | `tests/site/content/fixtures/social.md` and its Chinese peer, pinned by HTML, Markdown and Print goldens |
-| Invalid input | Fifteen `social-*` cases plus `check_social_posts()` and template/CSS contract checks in `bin/check-content-primitives.py`, and Playwright coverage in `tests/browser/social.spec.mjs` |
+| Invalid input | Seventeen `social-*` cases plus `check_social_posts()` and template/CSS contract checks in `bin/check-content-primitives.py`, and Playwright coverage in `tests/browser/social.spec.mjs` |
 | Guide | [Social posts](/docs/components/social/) |
 
 ## Acceptance criteria {#acceptance}

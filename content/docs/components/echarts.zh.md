@@ -2,7 +2,7 @@
 title: ECharts
 linkTitle: ECharts
 description: 在 `echarts` 围栏里用 YAML 或 JSON 写 ECharts 选项，画出跟随深浅色的柱状图、折线图与饼图。
-weight: 150
+weight: 340
 search_keywords: [ECharts, 图表, 统计图, 柱状图, 折线图, 饼图, chart, bar, line, pie, height, theme, OinkEchartsFunctions, OinkEchartsThemes, registerTheme, 主题]
 ---
 
@@ -376,7 +376,7 @@ Hugo 不会在围栏里展开 shortcode、front matter 值或 `data/` 目录下�
 | `class` | 空格分隔的 class | — | 透传给容器，供站点 CSS 使用 |
 {.fields meta="type default"}
 
-`style`、`on*` 事件属性与未知属性会告警并被忽略。空围栏会告警，什么也不渲染。选项键本身属于 ECharts，以它的[选项手册](https://echarts.apache.org/zh/option.html)为准。ECharts 在 `hugo.yml` 里没有任何站点级设置。
+未知属性告警并忽略；`style` 被 Hugo 当作高亮选项取走，`on*` 被 Hugo 剥离，二者静默忽略。空围栏会告警，什么也不渲染。选项键本身属于 ECharts，以它的[选项手册](https://echarts.apache.org/zh/option.html)为准。ECharts 在 `hugo.yml` 里没有任何站点级设置。
 
 ## 限制与常见问题 {#limits}
 

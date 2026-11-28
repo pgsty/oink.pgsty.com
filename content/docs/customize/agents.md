@@ -307,7 +307,7 @@ tree.
 
 ## Agent actions on the page {#page-actions}
 
-The page-action menu at the right end of the breadcrumb row has five entries
+The page-action menu at the right end of the breadcrumb row has four entries
 for agents and chat assistants:
 
 | Entry | What it does | When it appears |
@@ -316,13 +316,12 @@ for agents and chat assistants:
 | View markdown | Opens the `.md` in a new tab | This page has a `markdown` output |
 | Open in ChatGPT | Opens ChatGPT with a prompt about this page | `assistant_links: true` |
 | Open in Claude | Opens Claude with a prompt about this page | `assistant_links: true` |
-| Open in Gemini | Copies the prompt to the clipboard and opens Gemini | `assistant_links: true` |
 
 The first two come with the `markdown` output. **Copy Markdown** is also the
 left half of the split button, shown as a clipboard icon that briefly turns
 into a check mark after a successful copy.
 
-The three assistant entries are off until you turn them on:
+The two assistant entries are off until you turn them on:
 
 ```yaml {title="hugo.yml"}
 params:
@@ -335,8 +334,7 @@ params:
 When a reader clicks one, the page builds a prompt from the full URL in the
 address bar, including the real domain, query string and anchor. In English
 the prompt reads "Read from <URL> so I can ask questions about it.", and the
-other site opens with it (Gemini has no documented prompt URL parameter, so
-OINK also copies the prompt to the clipboard before opening the tab). **Only
+other site opens with it. **Only
 the URL leaves your site; the page body is never uploaded,** and the assistant
 fetches the content itself. Keep confidential information out of URLs, and
 mention this third-party hand-off in the site's privacy statement.

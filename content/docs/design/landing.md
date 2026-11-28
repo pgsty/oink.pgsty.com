@@ -5,11 +5,11 @@ description: The maintainer contract for landing data, the built-in section regi
 weight: 40
 icon: fa-solid fa-panorama
 search_keywords: [OINK landing contract, landing sections, homepage data, progressive enhancement, landing outputs]
-contract_status: v1.6.0
+contract_status: v1.7.0
 ---
 
-> [!NOTE] OINK 1.6.0 contract
-> This contract describes OINK v1.6.0.
+> [!NOTE] OINK 1.7.0 contract
+> This contract describes OINK v1.7.0.
 
 The [architecture](/docs/design/architecture/) and [component](/docs/design/components/) contracts define shared rules.
 The [migration contract](/docs/design/migration/) defines migration rules.

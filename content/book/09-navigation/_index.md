@@ -79,9 +79,9 @@ params:
           keywords: [install, first steps]
 ```
 
-The keyboard reaches everything without the mouse. Thirty single keys are on
-by default and stand aside while you type in a field; these are the ones
-readers use most:
+The keyboard reaches everything without the mouse. Twenty-nine single-key
+shortcuts are on by default and stand aside while you type in a field; these
+are the ones readers use most:
 
 | Key | Action |
 | --- | --- |
@@ -90,7 +90,7 @@ readers use most:
 | {{< kbd "H" >}} | The pages you read recently |
 | {{< kbd "X" >}} | The next language |
 | {{< kbd "Z" >}} | Zen Mode, the article alone |
-| {{< kbd "'" >}} | All thirty shortcuts |
+| {{< kbd "'" >}} | All twenty-nine shortcuts |
 {#tbl-common-keys num="9-1" caption="The keyboard shortcuts readers use most."}
 
 Press {{< kbd "E" >}} now to go to Chapter 10, or {{< kbd "'" >}} to see the
@@ -160,7 +160,7 @@ paragraph shows up as a gap. This chapter has a Chinese edition, so press
 
 - The Docs dropdown lists Operations with its icon in both languages.
 - Searching for "hello world" finds Quick start first.
-- The palette, opened with `>`, lists the Quick start command.
+- The palette, opened with `\` (or by typing `>`), lists the Quick start command.
 - Back up a server shows Quick start under Backlinks.
 - The language picker offers English and 简体中文 only, and the duo view pairs every translated page.
 

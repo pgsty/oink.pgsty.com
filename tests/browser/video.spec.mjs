@@ -57,6 +57,57 @@ async function openVideo(page, url, { preset = 'paper', mode = 'light', reducedM
 }
 
 test.describe('Video component', () => {
+  for (const kind of ['audio', 'video']) {
+    test(`native ${kind} progress follows seeking and has visible contrast in every preset`, async ({ page }) => {
+      await page.goto(`/zh/docs/components/${kind}/`);
+      const player = page.locator(`.td-media > ${kind}:not([data-td-media-autoplay])`).first();
+      const figure = player.locator('..');
+      await player.scrollIntoViewIfNeeded();
+      await expect(figure).toHaveClass(/td-media--timed/);
+      expect(await player.evaluate(el => el.controls)).toBe(true);
+      const indicator = figure.locator('.td-media__progress');
+      if (await indicator.count()) {
+        await expect(indicator).toBeVisible();
+        await expect(indicator).toHaveCSS('background-image', /linear-gradient/);
+        await expect(indicator).toHaveAttribute('aria-hidden', 'true');
+        expect(await indicator.evaluate(el => el.tabIndex)).toBe(-1);
+      }
+      for (const fraction of [0.5, 0.1, 1]) {
+        await player.evaluate((el, value) => { el.currentTime = el.duration * value; }, fraction);
+        await expect.poll(() => figure.evaluate(el => parseFloat(el.style.getPropertyValue('--td-media-played')))).toBeCloseTo(100 * fraction, 1);
+      }
+      for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+        for (const mode of ['light', 'dark']) {
+          const [sectionAccent, presetAccent, remaining] = await figure.evaluate((el, { preset, mode }) => {
+            document.documentElement.dataset.tdPreset = preset;
+            document.documentElement.dataset.bsTheme = mode;
+            const probe = document.createElement('span');
+            el.append(probe);
+            const ctx = document.createElement('canvas').getContext('2d');
+            // The Docs section overrides the accent. Check the published preset as well.
+            const colors = ['--td-accent', '--td-preset-accent', '--td-media-track'].map(name => {
+              probe.style.color = 'var(' + name + ')';
+              ctx.fillStyle = getComputedStyle(probe).color;
+              ctx.fillRect(0, 0, 1, 1);
+              return [...ctx.getImageData(0, 0, 1, 1).data];
+            });
+            probe.remove();
+            return colors;
+          }, { preset, mode });
+          expect(contrastRatio(sectionAccent, remaining), `${kind} ${preset}/${mode}, section accent`).toBeGreaterThanOrEqual(3);
+          expect(contrastRatio(presetAccent, remaining), `${kind} ${preset}/${mode}, preset accent`).toBeGreaterThanOrEqual(3);
+        }
+      }
+      if (await indicator.count()) {
+        await page.emulateMedia({ media: 'print' });
+        await expect(indicator).toBeHidden();
+      }
+      await player.evaluate(el => { el.removeAttribute('src'); el.load(); });
+      await expect(figure).not.toHaveClass(/td-media--timed/);
+      expect(await figure.evaluate(el => el.style.getPropertyValue('--td-media-played'))).toBe('');
+    });
+  }
+
   test('makes zero third-party requests before click, honors modified clicks, and loads a hardened iframe on Enter', async ({ page }) => {
     const externalBeforeClick = [];
     const baseHost = new URL(process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173').host;

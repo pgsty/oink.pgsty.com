@@ -9,8 +9,8 @@ design_status: draft
 proposal_date: 2026-10-26
 ---
 
-> [!WARNING] Draft — promotion blocked
-> **Enlarged text overflows the shared footer.** At 320px with a 32px root/default font, English Ink reaches 424px document width and Terminal 408px. The comparison overlay does not repair this shared failure. Neither prototype is stable or accepted for promotion.
+> [!WARNING] Draft — dated October 26 snapshot; superseded in typography by v1.7.0
+> **Enlarged text overflows the shared footer** in the October 26 probe: at 320px with a 32px root/default font, English Ink reached 424px document width and Terminal 408px. OINK v1.7.0 later revised the typography of Ink (system serif / Song prose) and Terminal (all-mono screen, IBM Plex Sans print) — see the [architecture contract](/docs/design/architecture/#visual-presets) and [accepted decision](/docs/design/decisions/visual-presets/) for current behavior. Neither preset is yet promoted from explicit opt-in to the default pair.
 
 ## Status, ownership and scope {#status}
 

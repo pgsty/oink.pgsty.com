@@ -6,20 +6,19 @@ weight: 26
 icon: fa-solid fa-puzzle-piece
 search_keywords: [components, timeline, update, changelog, x, tweet, social post, video, audio, map, openstreetmap, leaflet, review]
 design_kind: proposal
-design_status: implemented
+design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] Implemented, awaiting release
-> All six components are implemented on the theme's `main` branch,
-> documented in the [component guides](/docs/components/), and recorded in the
+> [!NOTE] Accepted in OINK 1.7.0
+> All six components ship in OINK v1.7.0, are documented in the
+> [component guides](/docs/components/), and are governed by the
 > [Components contract](/docs/design/components/#timeline-media-social-and-maps).
-> Not yet in a tagged release. This page replaces the first, single-page
-> draft of the same date; each component has its own proposal.
+> This proposal is preserved as design rationale.
 
 | Record | Value |
 | --- | --- |
-| Status | Implemented 2026-11-27 on `main`; awaiting release |
+| Status | Accepted and shipped in OINK v1.7.0 (implemented 2026-11-27) |
 | Owner | OINK maintainers |
 | Scope | OINK theme; this documentation site; one optional `oink-cli` helper (separate proposal) |
 | Affected contracts | [Components](/docs/design/components/), [Architecture](/docs/design/architecture/), the [component guides](/docs/components/), configuration reference |
@@ -32,8 +31,8 @@ proposal_date: 2026-11-27
 | Timeline | Definition list + `{.timeline}` | None (author marker) | None | [Timeline component](/docs/design/proposals/component-timeline/) |
 | Update | Heading + `{.update date="…" tags="…"}` | Two heading attributes | None | [Update component](/docs/design/proposals/component-update/) |
 | Social posts | `{{</* social */>}}…{{</* /social */>}}` | One shortcode | None | [Social post component](/docs/design/proposals/component-social/) |
-| Video | `![name](demo.mp4)` and platform URLs | Media attributes on the image hook; `params.video_embeds` | Only for autoplay or enabled embeds | [Video component](/docs/design/proposals/component-video/) |
-| Audio | `![name](episode.mp3)` | Media attributes on the image hook | None for one player; shared `media.js` for 2+ | [Audio component](/docs/design/proposals/component-audio/) |
+| Video | `![name](demo.mp4)` and platform URLs | Media attributes on the image hook; `params.video_embeds` | Shared `media.js` for file players and enabled embeds | [Video component](/docs/design/proposals/component-video/) |
+| Audio | `![name](episode.mp3)` | Media attributes on the image hook | Shared `media.js` for file players | [Audio component](/docs/design/proposals/component-audio/) |
 | Map | `map` data fence | One fence; `params.map` | Vendored Leaflet, only when enabled | [Map component](/docs/design/proposals/component-map/) |
 
 The documented component catalog grows from 21 to 27. The shortcode count grows
@@ -48,7 +47,7 @@ new shortcode, a long parameter list, and a runtime. Taken together that was
 7 new shortcodes, about a hundred parameters, fields, and configuration keys,
 3 new runtime chunks, and 16 locale keys. The final design has one new
 shortcode, about 35 parameters and keys (most of them existing figure and fence
-attributes), one small chunk plus one vendored engine, and five locale keys.
+attributes), one small chunk plus one vendored engine, and six locale keys.
 The accepted [Markdown-first decision](/docs/design/decisions/authoring/#consequences)
 requires a proposal to show first why Markdown plus an existing hook is
 insufficient. Applied to each component, that test removes most of the surface:
@@ -59,7 +58,7 @@ insufficient. Applied to each component, that test removes most of the surface:
 | `{{%/* update */%}}` with seven parameters and a sticky rail | `.update` heading marker with `date` and `tags` | A heading already carries outline, anchor, search, and Print IDs; the rail duplicates the TOC |
 | `x` with metrics, verified badges, image lists, quote parameters, data files, and an author registry | `social` with six parameters and a Markdown body | Images, galleries, and quoted posts compose from existing syntax; snapshots rot |
 | `video` shortcode with about twenty parameters | Image syntax for video files and platform URLs | The image hook already resolves, captions, numbers, and degrades media; it drops `.mp4` today |
-| `audio` shortcode with chapters, speed, mutex, and transcript body | Image syntax; transcripts use a folded callout | Native controls cover playback; chapters and mutex wait for evidence |
+| `audio` shortcode with chapters, speed, mutex, and transcript body | Image syntax; transcripts use a folded callout | Native controls cover playback; single-active playback ships in shared `media.js` for 2+ players, while chapters wait for evidence |
 | `map` fence plus single-point shortcode, named styles, CARTO default | One fence; no default tile provider | One form; the theme must not choose a commercial tile service for every site |
 | New `file-resolve.html` copying the image lookup order | Extract the existing lookup and share it | One lookup order, not two |
 
@@ -141,10 +140,8 @@ local or object-storage media need no configuration.
 
 | Component | HTML runtime | Loaded when |
 | --- | --- | --- |
-| Timeline, Update, Social posts, Audio | None | — |
-| Video files | None | Default |
-| Video `autoplay=true` | `js/chunks/media.js` (about 2 KB) | The page has an autoplay video |
-| Video platform player | Same chunk | The page has a card for an enabled provider |
+| Timeline, Update, Social posts | None | — |
+| Video or Audio | `js/chunks/media.js` | Page has a file player or an enabled platform card |
 | Map | `content-components.js` adapter plus vendored Leaflet and its CSS | `params.map` is complete and the page has a map |
 
 Markdown, Print, and RSS set none of these flags.
@@ -158,8 +155,8 @@ and `print`. They use `--td-*` tokens, logical properties, and preset geometry
 narrow screens, long tokens, and print. Author markers (`.timeline`, `.update`)
 stay unprefixed; generated classes use `td-`.
 
-The six components together add five locale keys (Social posts: one; Video:
-two; Map: two, with its zoom buttons reusing the diagram keys), in all 32 locale
+The six components together add six locale keys (Social posts: one; Video:
+two; Map: three, with its zoom buttons reusing the diagram keys), in all 32 locale
 files with native translations, checked by `bin/check-i18n.py`.
 
 ## Answers to the first draft's questions {#draft-questions}
@@ -181,7 +178,7 @@ files with native translations, checked by `bin/check-i18n.py`.
 | S3 | Social posts | One shortcode, one locale key |
 | S4 | Video platform cards and opt-in players (`params.video_embeds`) | Third-party iframes; needs CSP and privacy review |
 | S5 | Map: vendored Leaflet, `params.map`, the fence | The only new vendored engine |
-| Later | Map photo pins from GPS metadata; audio chapters and single-active playback; `oink fetch social` | Each waits for its own evidence |
+| Later | Map photo pins from GPS metadata; audio chapters; `oink fetch social` | Each waits for its own evidence |
 
 Each stage ships with fixtures under `tests/site/`, intentional golden updates,
 EN/ZH guides under `/docs/components/`, contract updates, and browser review on
@@ -190,9 +187,8 @@ reworking an earlier one.
 
 ## Open decisions {#open-decisions}
 
-1. **Acceptance and release.** Accept all six into the next release, or
-   accept them stage by stage. Acceptance moves the behavior into the
-   contracts (already drafted there) and retires these proposals.
+1. **Acceptance and release (resolved).** All six components ship in OINK v1.7.0;
+   normative behavior now lives in the [Components contract](/docs/design/components/#timeline-media-social-and-maps).
 2. **Demo media in Git.** The guides' video and audio demos add about 600 KB
    of binary files to this site's repository. Keep them in the page bundles,
    or move them to object storage and reference them by HTTPS URL, which the
@@ -211,8 +207,8 @@ reworking an earlier one.
   longer conflicts with Hugo's `x`. Removed the theme roadmap's "add no new
   component family" sentence, which had never been an owner decision; the
   roadmap conflict section of this page went with it.
-- **2026-11-27 (implementation).** All six components implemented on the
-  theme's main branch working tree with fixtures, goldens, invalid-input cases
-  and runtime unit tests; the full theme check suite passes. Guides and demos
-  added to this site. Deviations from the drafts are recorded in each
+- **2026-11-27 (implementation and acceptance).** All six components were
+  implemented on `main` with fixtures, goldens, invalid-input cases, and
+  runtime unit tests, accepted for OINK v1.7.0, and documented with guides and
+  demos on this site. Deviations from the drafts are recorded in each
   component's decision log.

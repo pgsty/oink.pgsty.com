@@ -2,7 +2,7 @@
 title: Kbd
 linkTitle: Kbd
 description: Use `kbd` with one key name per parameter to display a semantic key sequence. Instructions remain readable in print and Markdown.
-weight: 190
+weight: 160
 search_keywords: [Kbd, shortcut, keyboard, Ctrl, Cmd, chord]
 ---
 
@@ -147,7 +147,7 @@ Hugo cannot combine positional and named parameters in one shortcode call.
   press {{< kbd "Escape" >}}, then {{< kbd "Enter" >}}.
 - There is no platform detection. The page never replaces `Ctrl` with `⌘` based on the visitor's operating system.
 - There is no key mapping or recording. Menu paths, gestures, and gamepads are outside the scope.
-- Missing quotes fail the build. `Ctrl` in `{{</* kbd Ctrl K */>}}` is not a string parameter.
+- Quote every key: unquoted words happen to work, but an unquoted number such as `1` is not a string; it warns and is skipped.
 - Do not use keys for commands. `hugo server` is inline code; `Ctrl` is a key.
 
 ## Related {#related}

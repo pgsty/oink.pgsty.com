@@ -46,7 +46,7 @@ produces the same site. Check that the tag is published and resolves before
 you pin it:
 
 ```bash {title="Terminal"}
-hugo mod get github.com/pgsty/oink@v1.6.0   # the published release tag
+hugo mod get github.com/pgsty/oink@v1.7.0   # the published release tag
 hugo mod tidy
 hugo mod graph | grep github.com/pgsty/oink
 ```
@@ -60,7 +60,7 @@ module github.com/example/product-docs
 
 go 1.27.4
 
-require github.com/pgsty/oink v1.6.0
+require github.com/pgsty/oink v1.7.0
 ```
 
 If you also preview against a local theme checkout, that replacement
@@ -73,7 +73,7 @@ check out the exact release rather than following a remote branch:
 
 ```bash {title="Terminal"}
 git -C themes/oink fetch origin --tags
-git -C themes/oink checkout --detach v1.6.0
+git -C themes/oink checkout --detach v1.7.0
 git add themes/oink
 ```
 
@@ -127,7 +127,7 @@ smoke-test production once it is live.
 To roll the theme back, restore the previous pin:
 
 ```bash {title="Terminal"}
-hugo mod get github.com/pgsty/oink@v1.5.1   # example: the site's last known-good tag
+hugo mod get github.com/pgsty/oink@v1.6.0   # example: the site's last known-good tag
 hugo mod tidy
 rm -rf public resources/_gen
 hugo --gc --minify
@@ -139,6 +139,18 @@ hugo --gc --minify
 
 Republishing the previous deployment itself is covered in
 [Deploy](/docs/admin/deploy/#rollback).
+
+## Upgrade to 1.7.0 {#preparing-1-7}
+
+Sites already on 1.6.0 need no template or stylesheet migration. Review the
+[1.7.0 release notes](/release/1.7.0/) and check these behavior and appearance
+updates before pinning `v1.7.0`:
+
+- **Paper accent and preset typography.** Paper moves to an ivory canvas (`#faf9f5`) and a clay UI accent (`#9b4a28`, dark `#de8460`) while keeping blue underlined links in prose. To keep Paper's previous blue accent, set `params.ui.theme_color: '#2b5f8c'`. Terminal now sets screen prose in IBM Plex Mono (keeping IBM Plex Sans in print), and an explicit `params.ui.fonts.ui` or `fonts.body` reaches the headings in every preset unless `fonts.heading` names its own face. See [Brand and appearance](/docs/customize/brand/#visual-presets).
+- **Updated single-key shortcuts.** The shortcut map reorganized into twenty-nine bindings (10 navigation, 9 actions, 10 view): Zen Mode moves from `H` to `Z` (`H` opens local browsing history), language cycling is `X`, preset cycling is `T`, color mode is `Y`, blog index layout is `L`, version cycling is `V`, language home is `G`, command-only palette stays on `\` (with `C`), and `[` and `]` trigger ChatGPT and Claude. `G` no longer opens the focused tree item (`Enter` and `Space` still do), and the home page's `N` section alias is gone (`J` remains). Update any site-specific help copy or keyboard tests that mention pre-1.7 keys; see [Keyboard shortcuts](/docs/customize/keyboard/).
+- **Typeset copy.** Copying article prose now emits clean print-palette rich text by default so editors such as WeChat no longer keep page canvas backgrounds. Set `params.ui.rich_copy: false` (or front matter `rich_copy: false`) if your site needs the browser's default HTML copy.
+- **New opt-in components and CSP.** Timeline, Update, Social, and local Video/Audio work without external requests. If you enable `params.map` or `params.video_embeds`, allow your tile origin in `img-src` and enabled video hosts in `frame-src`; see [Deploy](/docs/admin/deploy/#csp).
+- **Archived-version banner.** Sites with `params.archived_version: true` now receive a styled `role="note"` notice and require a non-empty `params.version` (omitting it warns once and drops the empty banner).
 
 ## Upgrade to 1.6.0 {#preparing-1-6}
 
@@ -265,7 +277,7 @@ If you turn on `params.ui.compare: true`:
 - Set `languages.<lang>.params.ui.compare: false` for any language that should neither show the reader nor appear as a target language.
 - Guard custom analytics in `head-end.html` with `window.OinkComparePane` so pane loads are not counted twice. A local override of Hugo's `google_analytics.html` partial is not used while `compare` is on; see [Analytics and SEO](/docs/admin/analytics/#bilingual-view).
 - Allow same-origin frames (`frame-src 'self'`) in your Content Security Policy, and make sure the server does not forbid same-origin framing with `X-Frame-Options: DENY` or `frame-ancestors 'none'`.
-- Open a translated Docs, Book or blog page and check that **Open bilingual view** loads the target language, syncs scrolling across shared headings, and switches cleanly on narrow screens.
+- Open a translated Docs, Book or blog page and check that **Open duo view** (renamed from **Open bilingual view** in 1.5.1) loads the target language, syncs scrolling across shared headings, and switches cleanly on narrow screens.
 
 ## Upgrade to 1.4.0 and 1.3.1 {#preparing-1-4}
 

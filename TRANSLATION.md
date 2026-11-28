@@ -19,7 +19,7 @@
 | `content/series/`  |            2 |
 | 合计               |          127 |
 
-以上数量保留为历史基线。当前覆盖检查逐一核对首页以及 `docs/`、`blog/`、
+以上数量保留为历史基线。当前覆盖检查逐一核对首页以及 `docs/`、`blog/`、`release/`、
 `book/`、`expo/`、`case/`、`authors/` 与 `series/`，包括 `docs/cli` 的 CLI 草案介绍。
 以下命令同时检查文件覆盖率、显式锚点、中英文渲染 ID
 和站内链接：
@@ -43,7 +43,7 @@ npm run _check:rendered-links
 - 不翻译命令、代码、配置键、文件名、URL、版本号、HTML 属性和 shortcode 名称。
 - 英文是第一语言，简体中文 `zh` 是第二语言。
 - 中文页面不得以英文原文作为缺失译文的静默回退；覆盖检查必须保证首页以及
-  `docs/`、`blog/`、`book/`、`expo/`、`case/`、`authors/` 与 `series/` 一一配对。
+  `docs/`、`blog/`、`release/`、`book/`、`expo/`、`case/`、`authors/` 与 `series/` 一一配对。
 
 ## 稳定锚点
 
@@ -66,7 +66,7 @@ npm run _check:rendered-links
 | ----------------------- | -------------------------- | ------------------------------------- |
 | OINK                    | OINK                       | 当前项目工作名称，不翻译              |
 | Docsy                   | Docsy                      | 上游项目名，不翻译                    |
-| Hugo Extended           | Hugo Extended              | 产品名，不翻译                        |
+| Hugo Extended           | Hugo Extended              | 产品名，不翻译（仅 OINK 1.5.1 及更早历史语境使用） |
 | theme                   | 主题                       | 指 Hugo 主题                          |
 | static site generator   | 静态站点生成器             | 首次出现可保留英文缩写                |
 | front matter            | front matter（前置元数据） | 首次双写，后文可直接使用 front matter |
@@ -105,7 +105,7 @@ npm run _check:rendered-links
 
 - 中文与英文单词、阿拉伯数字之间留一个半角空格；中文标点前后不加空格。
 - 正文使用全角中文标点；代码、命令、URL、版本和原样引用保持半角。
-- 强调标记与前后普通文字之间各留一个半角空格；紧邻中文标点时不加空格。Prettier可能把
+- 强调标记与前后普通文字之间各留一个半角空格；紧邻中文标点时不加空格。Prettier 可能把
   `*强调*` 规范化为 `_强调_`，两种形式都必须保留清晰的外部边界，不要写作
   `正文_强调_正文`。加粗标签后紧接正文时，把中文标点放在标记之外，例如写作
   `**适用条件**：正文`，不要写作可能无法闭合的 `**适用条件：**正文`。

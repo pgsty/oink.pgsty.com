@@ -4,7 +4,7 @@ linkTitle: 参与贡献
 description: 把问题报告或修复提交到负责它的仓库，并在评审前跑完主题或文档改动所需的检查。
 weight: 40
 icon: fa-solid fa-code-pull-request
-search_keywords: [参与贡献, 贡献者, pull request, 问题报告, 翻译, OINK 1.6.0]
+search_keywords: [参与贡献, 贡献者, pull request, 问题报告, 翻译, OINK 1.7.0]
 ---
 
 欢迎报告问题、纠错、翻译，以及提交范围明确的 pull request。OINK 的工作分布在三个仓库里，第一步是找到负责你要改动的那部分行为的仓库。

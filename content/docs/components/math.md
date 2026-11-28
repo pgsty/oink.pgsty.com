@@ -2,7 +2,7 @@
 title: Math
 linkTitle: Math
 description: Use KaTeX for inline and display mathematics at build time. Readers download no script.
-weight: 100
+weight: 390
 search_keywords: [Math, KaTeX, LaTeX, TeX, passthrough, chem, mhchem, chemistry, numbered equation, eq]
 ---
 
@@ -182,9 +182,12 @@ c_{\text{seq}} \cdot P = c_{\text{rand}} \cdot \sigma \cdot T
 
 No form loads JavaScript. A page with formulas loads a local `katex.min.css`
 and the WOFF2 fonts it names; a page without formulas loads neither. Print
-shows formulas the same way, without scrolling. The Markdown output and RSS
-keep the TeX source as written, except that an `eq` shortcode becomes
-`**Equation 3-2.** caption` followed by a `$$` block.
+shows formulas the same way, without scrolling. The Markdown output keeps the
+TeX source as written, except that an `eq` shortcode becomes
+`**Equation 3-2.** caption` followed by a `$$` block. RSS carries rendered
+KaTeX HTML and MathML; a numbered `$$` block gets a bold "Equation N." line
+before it, and a numbered `eq` keeps its "Equation N" caption below the
+formula.
 
 ## Parameter reference {#reference}
 

@@ -1,9 +1,9 @@
 ---
-title: 社交帖子
-linkTitle: 社交帖子
+title: 帖子
+linkTitle: 帖子
 description: 用 `social` 短代码引用 X、Bluesky、Mastodon 等平台上的帖子。正文和署名都写在页面里，无需平台脚本。
-weight: 176
-search_keywords: [社交帖子, 引用帖子, 推文, 微博, 知乎, Telegram, 离线嵌入, 头像, 引用帖, social, tweet, X, Twitter, Bluesky, Mastodon, Threads, Weibo, Zhihu, LinkedIn]
+weight: 460
+search_keywords: [帖子, 社交帖子, 引用帖子, 推文, 微博, 知乎, Telegram, 离线嵌入, 头像, 引用帖, social, tweet, X, Twitter, Bluesky, Mastodon, Threads, Weibo, Zhihu, LinkedIn]
 image_zoom: true
 ---
 
@@ -14,40 +14,36 @@ image_zoom: true
 一张卡片需要 `author` 或 `handle` 之一，再加一段用 Markdown 写的帖子正文。
 
 ````markdown {title="源码"}
-{{</* social author="林舒" handle="@linshu_dba" */>}}
-周末把报表集群升级到了 PostgreSQL 18，`pg_upgrade --link`，四分钟搞定。
+{{</* social author="Ron" handle="@RonVonng" */>}}
+PostgreSQL 并不是一个简单的关系型数据库，而是一个数据管理的抽象框架，具有囊括一切、吞噬整个数据库世界的潜力。用 Postgres 替代 Kafka、ES、Mongo 和 Redis 是一种切实可行的方式，可以极大降低系统复杂度。
 {{</* /social */>}}
 ````
 
-{{< social-preview unavailable="本页保留了示例源码。构建文档站的主题包含 OINK 1.6.0 之后新增的 social 短代码时，示例也会显示为卡片。" >}}
-{{</* social author="林舒" handle="@linshu_dba" */>}}
-周末把报表集群升级到了 PostgreSQL 18，`pg_upgrade --link`，四分钟搞定。
-{{</* /social */>}}
-{{< /social-preview >}}
+{{< social author="Ron" handle="@RonVonng" >}}
+PostgreSQL 并不是一个简单的关系型数据库，而是一个数据管理的抽象框架，具有囊括一切、吞噬整个数据库世界的潜力。用 Postgres 替代 Kafka、ES、Mongo 和 Redis 是一种切实可行的方式，可以极大降低系统复杂度。
+{{< /social >}}
 
 没有 `avatar` 时，卡片在圆形里画出 `author`（或 `handle`）的第一个字符（先去掉开头的 `@`、空白以及零宽空格等不可见字符，保留完整 emoji 与组合字符；去掉后没有可见字符时回退到人物图标），不会去请求默认头像或 Gravatar。顶层卡片省略 `platform` 时显示 X 图标。参数只接受命名形式，位置参数会告警并被忽略。
 
 ## 完整卡片 {#full}
 
-六个参数全部写上，帖子里再附一张图：
+写上除 `platform`（默认 `x`）外的全部参数，帖子里再附一张图：
 
 ````markdown {title="源码"}
-{{</* social author="冈田纯" handle="@jun_draws" avatar="/favicon.svg"
-           date="2026-11-23" url="https://example.com/jun_draws/status/1001" */>}}
-文档站的字标画好了：一支钢笔笔尖，一行衬线字，**不用渐变**。
+{{</* social author="Ron" handle="@RonVonng" avatar="images/ron-vonng.webp"
+           date="2024-12-23" url="https://x.com/RonVonng/status/1871040275575124082" */>}}
+PostgreSQL 扩展管理工具暨 Pigsty 管控命令行 `pig` 发布了。一条命令在主流 Linux 发行版上配置 PG 仓库，并用系统原生包管理器丝滑安装 **数百个 PostgreSQL 扩展**。
 
-![Oink 字标，旁边是圆形的钢笔徽标](/images/oink.webp)
+![pig.pgsty.com 首页：PostgreSQL 扩展包管理器](/case/pig/featured.webp)
 {{</* /social */>}}
 ````
 
-{{< social-preview >}}
-{{</* social author="冈田纯" handle="@jun_draws" avatar="/favicon.svg"
-           date="2026-11-23" url="https://example.com/jun_draws/status/1001" */>}}
-文档站的字标画好了：一支钢笔笔尖，一行衬线字，**不用渐变**。
+{{< social author="Ron" handle="@RonVonng" avatar="images/ron-vonng.webp"
+           date="2024-12-23" url="https://x.com/RonVonng/status/1871040275575124082" >}}
+PostgreSQL 扩展管理工具暨 Pigsty 管控命令行 `pig` 发布了。一条命令在主流 Linux 发行版上配置 PG 仓库，并用系统原生包管理器丝滑安装 **数百个 PostgreSQL 扩展**。
 
-![Oink 字标，旁边是圆形的钢笔徽标](/images/oink.webp)
-{{</* /social */>}}
-{{< /social-preview >}}
+![pig.pgsty.com 首页：PostgreSQL 扩展包管理器](/case/pig/featured.webp)
+{{< /social >}}
 
 - `avatar` 按普通图片的规则解析：远程图片由读者的浏览器直接加载；其他值依次查找页面资源（或所在栏目分支包的资源）、`assets/` 下的全局资源，都找不到时作为站点静态文件的路径使用。建议优先使用页面资源或 `assets/`，构建期一定能找到。名字就在旁边，所以头像是装饰图（`alt=""`）。卡片把它缩小并裁切填满头像框，最好用方图。
 - `date` 是纯文本，按原样显示。写成年月（`2026-11`）、日期（`2026-11-23`），或带时分、可选秒数和可选 `Z`／`±HH:MM` 时区偏移的日期时间（`2026-11-23 08:30`、`2026-11-23T08:30:00+08:00`），并且是真实存在的日历日期时，会生成机器可读的 `<time datetime>`；时间前的空格在属性里写成 `T`。其他写法，包括带小数秒或 `+0800` 偏移的，都按纯文本输出，不套 `<time>`。
@@ -71,26 +67,24 @@ image_zoom: true
 | `none`（嵌套默认） | 无（省略图标与平台名） |
 
 ````markdown {title="源码"}
-{{</* social author="林舒" handle="@linshu@fosstodon.example" platform="mastodon"
-           date="2026-11-20 08:30" url="https://example.com/@linshu/1002" */>}}
-升级笔记也同步到这里：`pg_upgrade --link`，停机四分钟，一切顺利。
+{{</* social author="Ron" handle="@ron@fosstodon.example" platform="mastodon"
+           date="2025-05-19 11:27" url="https://fosstodon.example/@ron/1002" */>}}
+OpenAI 用单一未分片的 PostgreSQL 集群（一主四十多从）支撑核心业务。扎实做好索引和读写分离，单集群的上限远比想象中高。
 {{</* /social */>}}
 
-{{</* social handle="@pgnotes.example" platform="bluesky" */>}}
-VACUUM 不是可选项，盯着它也不是。
+{{</* social handle="@pigsty.io" platform="bluesky" */>}}
+PostgreSQL 是数据库界的 Linux：一套内核，数百个扩展，没有厂商锁定。
 {{</* /social */>}}
 ````
 
-{{< social-preview >}}
-{{</* social author="林舒" handle="@linshu@fosstodon.example" platform="mastodon"
-           date="2026-11-20 08:30" url="https://example.com/@linshu/1002" */>}}
-升级笔记也同步到这里：`pg_upgrade --link`，停机四分钟，一切顺利。
-{{</* /social */>}}
+{{< social author="Ron" handle="@ron@fosstodon.example" platform="mastodon"
+           date="2025-05-19 11:27" url="https://fosstodon.example/@ron/1002" >}}
+OpenAI 用单一未分片的 PostgreSQL 集群（一主四十多从）支撑核心业务。扎实做好索引和读写分离，单集群的上限远比想象中高。
+{{< /social >}}
 
-{{</* social handle="@pgnotes.example" platform="bluesky" */>}}
-VACUUM 不是可选项，盯着它也不是。
-{{</* /social */>}}
-{{< /social-preview >}}
+{{< social handle="@pigsty.io" platform="bluesky" >}}
+PostgreSQL 是数据库界的 Linux：一套内核，数百个扩展，没有厂商锁定。
+{{< /social >}}
 
 第二张卡片只用账号引用，所以没有名字、日期和链接。图标是装饰性的，读屏器读到的是平台名称，卡片把它作为视觉隐藏文字放在图标旁边（`platform="none"` 时省略）。未知或空的 `platform` 会告警并回退到 `x`（嵌套卡片回退到 `none`）。`handle` 完全按原样显示，主题既不补 `@`，也没有各平台的账号规则：X 写 `@name`，Mastodon 写 `@user@instance`。
 
@@ -107,8 +101,8 @@ VACUUM 不是可选项，盯着它也不是。
 | 视频 | 用图片语法写的[视频](/zh/docs/components/video/)：`![名称](clip.mp4)` |
 
 ````markdown {title="源码"}
-{{</* social author="林舒" handle="@linshu_dba" avatar="/favicon.svg" date="2026-11-24" */>}}
-同一个首页，两种配色：
+{{</* social author="Ron" handle="@RonVonng" avatar="images/ron-vonng.webp" date="2026-11-24" */>}}
+同一套 PostgreSQL 文档主题，两种配色：
 
 ```gallery
 ![浅色模式下的 OINK 首页](/images/hero-light.webp)
@@ -117,16 +111,14 @@ VACUUM 不是可选项，盯着它也不是。
 {{</* /social */>}}
 ````
 
-{{< social-preview >}}
-{{</* social author="林舒" handle="@linshu_dba" avatar="/favicon.svg" date="2026-11-24" */>}}
-同一个首页，两种配色：
+{{< social author="Ron" handle="@RonVonng" avatar="images/ron-vonng.webp" date="2026-11-24" >}}
+同一套 PostgreSQL 文档主题，两种配色：
 
 ```gallery
 ![浅色模式下的 OINK 首页](/images/hero-light.webp)
 ![深色模式下的 OINK 首页](/images/hero-dark.webp)
 ```
-{{</* /social */>}}
-{{< /social-preview >}}
+{{< /social >}}
 
 正文里的脚注引用会告警，这一点与所有短代码正文相同，脚注请写在页面自己的 Markdown 里。
 
@@ -135,28 +127,26 @@ VACUUM 不是可选项，盯着它也不是。
 帖子本身引用了另一条帖子时，把被引用的那条写成正文里的第二个 `social`。内层卡片更紧凑：头像更小，名字和账号排在同一行，省略 `platform` 时默认为 `none`（不重复图标与隐藏平台名），但保留自己的日期和链接。跨平台引用时，在内层显式写明 `platform` 即可显示紧凑平台图标并供读屏器播报。嵌套超过一层引用帖会发出告警。
 
 ````markdown {title="源码"}
-{{</* social author="林舒" handle="@linshu_dba" avatar="/favicon.svg"
-           date="2026-11-25" url="https://example.com/linshu_dba/status/1003" */>}}
-所以我们的日历上一直留着恢复演练。
+{{</* social author="Ron" handle="@RonVonng" avatar="images/ron-vonng.webp"
+           date="2024-09-27" url="https://x.com/RonVonng/status/1839521052843442618" */>}}
+PostgreSQL 17 发布：社区官宣 PG 是世界上最先进的开源数据库。用不了多久，“开源”这个定语可能都会成为多余的。
 
-{{</* social author="周远" handle="@zhouyuan_ops"
-           date="2026-11-24" url="https://example.com/zhouyuan_ops/status/2001" */>}}
-从没恢复过的备份只是一个愿望，算不上备份。
+{{</* social author="PostgreSQL" handle="@PostgreSQL"
+           date="2024-09-26" url="https://x.com/PostgreSQL/status/1839292604854223176" */>}}
+News: PostgreSQL 17 Released!
 {{</* /social */>}}
 {{</* /social */>}}
 ````
 
-{{< social-preview >}}
-{{</* social author="林舒" handle="@linshu_dba" avatar="/favicon.svg"
-           date="2026-11-25" url="https://example.com/linshu_dba/status/1003" */>}}
-所以我们的日历上一直留着恢复演练。
+{{< social author="Ron" handle="@RonVonng" avatar="images/ron-vonng.webp"
+           date="2024-09-27" url="https://x.com/RonVonng/status/1839521052843442618" >}}
+PostgreSQL 17 发布：社区官宣 PG 是世界上最先进的开源数据库。用不了多久，“开源”这个定语可能都会成为多余的。
 
-{{</* social author="周远" handle="@zhouyuan_ops"
-           date="2026-11-24" url="https://example.com/zhouyuan_ops/status/2001" */>}}
-从没恢复过的备份只是一个愿望，算不上备份。
-{{</* /social */>}}
-{{</* /social */>}}
-{{< /social-preview >}}
+{{< social author="PostgreSQL" handle="@PostgreSQL"
+           date="2024-09-26" url="https://x.com/PostgreSQL/status/1839292604854223176" >}}
+News: PostgreSQL 17 Released!
+{{< /social >}}
+{{< /social >}}
 
 ## 缺失与无效输入 {#degraded}
 
@@ -172,7 +162,7 @@ VACUUM 不是可选项，盯着它也不是。
 | 非字符串的 `author`、`handle` 或 `date` | 告警；忽略 |
 | 无效的 `url` 或 `avatar` | 告警；丢弃该属性 |
 | 项目 `static/` 目录里找不到的静态 `avatar` | 存在 `static/` 目录时离线告警（ID 为 `social:avatar-static`）；保留路径 |
-| 用 `..` 越出站点根目录的静态 `avatar` | 告警；保留路径 |
+| 用 `..` 越出站点根目录的静态 `avatar` | 告警（ID 同为 `social:avatar-static`）；丢弃头像，卡片改画首字符 |
 | 嵌套超过一层引用帖 | 告警；正常渲染且不丢失正文 |
 | 未知参数或位置参数 | 告警；忽略 |
 

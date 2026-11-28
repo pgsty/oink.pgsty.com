@@ -19,14 +19,19 @@ Most components are ordinary Markdown plus an attribute line, so the source
 stays readable on GitHub and in any editor. A callout is a `> [!NOTE]`
 blockquote, with ten semantic types and one neutral disclosure. A parameter
 list is a table followed by `{.fields}`, steps and cards are lists followed by
-`{.steps}` or `{.cards}`, and a caption is a `{caption="…"}` line under an
-image. Tabs are adjacent code fences, each with a `{tab="…"}` attribute, and
-file trees, galleries, Mermaid and ECharts are fences named after their data
-language. Outside OINK, all of these fall back to blockquotes, tables, lists
-and code blocks with nothing lost.
+`{.steps}` or `{.cards}`, timelines and changelog updates are definition lists
+with `{.timeline}` and headings with `{.update}`, and images, videos and audio
+share Markdown image syntax with `{caption="…"}`. Tabs are adjacent code fences,
+each with a `{tab="…"}` attribute, and file trees, galleries, maps, Mermaid and
+ECharts are fences named after their data language. Outside OINK, all of these
+fall back to blockquotes, tables, lists, headings and code blocks with nothing
+lost.
 
-For what plain Markdown cannot express, such as cards with icons and images or
-a field entry several paragraphs long, there are 30 shortcodes.
+For what plain Markdown cannot express, such as cards with icons and images,
+offline quoted social posts (`social`), or a field entry several paragraphs
+long, there are 30 shortcodes. Typeset copy (`params.ui.rich_copy`, on by
+default) also keeps pasted selections clean in rich-text editors such as Notion,
+Feishu and Word.
 
 → [Components](/docs/components/)
 
@@ -48,7 +53,7 @@ ones its content uses.
 
 Everything the browser needs is committed to the theme repository: Bootstrap
 styles, Font Awesome, four font families, Mermaid, KaTeX, Markmap, Swagger UI,
-Redoc, Asciinema, ECharts, Infographic and a local PlantUML engine, among
+Redoc, Asciinema, ECharts, Infographic, Leaflet and a local PlantUML engine, among
 others. `VENDOR.json` records the version, source, license file and SHA-256
 checksum of each one, so you can audit exactly what your site serves.
 
@@ -123,17 +128,17 @@ to search, and a query that starts with `>` lists only commands.
 
 ## Keyboard navigation {#keyboard}
 
-Thirty single-key shortcuts are on by default, ten each for navigation,
-actions and the view, and can be turned off for a site, a section or a single
+Twenty-nine single-key shortcuts are on by default (ten for navigation, nine for
+actions and ten for the view), and can be turned off for a site, a section or a single
 page. `w` and `s` move through the sidebar tree and `a` and `d` collapse and
 expand it, `q` and `e` go to the previous and next page, `k` and `j` jump to the
 previous and next heading, `h` lists the pages you read recently and `g` goes
-home. Other keys search, edit or print the page, hand it to ChatGPT, Claude or
-Gemini, fold or unfold everything at once, switch the preset, color mode and
+home. Other keys search, edit or print the page, hand it to ChatGPT or Claude,
+fold or unfold everything at once, switch the preset, color mode and
 language, open the duo view, toggle Zen Mode, and widen or narrow the reading
 column. Every shortcut stands aside while you type in a text field or compose
 with an input method. Press `'`, or click the question-mark button in the
-footer, to see all thirty in three columns; keys a page cannot use are dimmed.
+footer, to see all twenty-nine in three columns; keys a page cannot use are dimmed.
 
 → [Keyboard navigation](/docs/customize/keyboard/)
 
@@ -173,7 +178,7 @@ its sidebar tree as data in one `navigation.json` per language. This site
 publishes both: <https://oink.pgsty.com/docs/llms-full.txt> and
 <https://oink.pgsty.com/navigation.json>.
 
-"Open in ChatGPT / Claude / Gemini" links are off by default, because a click
+"Open in ChatGPT / Claude" links are off by default, because a click
 sends the page's URL to a third party. A site turns them on with
 `params.ui.page_context_menu.assistant_links`.
 

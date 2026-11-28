@@ -221,11 +221,12 @@ group of images inside a text page.
 
 Backlinks:
 
+- [Components](/docs/components/)
 - [Cards](/docs/components/cards/)
 - [FileTree](/docs/components/filetree/)
 - [Images](/docs/components/image/)
 - [Maps](/docs/components/map/)
-- [Social posts](/docs/components/social/)
+- [Social](/docs/components/social/)
 - [Print](/docs/customize/print/)
 - [Expo albums](/docs/write/expo/)
 - [OINK v1.3.0](/release/1.3.0/)

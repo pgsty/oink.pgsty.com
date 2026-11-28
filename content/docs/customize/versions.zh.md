@@ -132,7 +132,7 @@ params:
 
 ## 相关 {#related}
 
-- [导航与菜单](/zh/docs/customize/navigation/) — 版本菜单在顶栏与侧栏里的位置
+- [导航与菜单](/zh/docs/customize/navigation/) — 版本菜单在顶栏与页脚里的位置
 - [命令面板](/zh/docs/customize/panel/) — 面板里的「切换版本」
 - [发布上线](/zh/docs/admin/deploy/) — `baseURL`、子路径与多目标发布
 - [发布与下载页](/zh/docs/write/releases/) — 用 `params.version` 兜底的下载数据

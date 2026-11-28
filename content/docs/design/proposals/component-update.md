@@ -6,18 +6,18 @@ weight: 27
 icon: fa-solid fa-clock-rotate-left
 search_keywords: [update, changelog, what's new, release notes, heading attributes, Mintlify Update, component]
 design_kind: proposal
-design_status: implemented
+design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] Implemented, awaiting release
-> Implemented on the theme's `main` branch and documented in the
-> [Update guide](/docs/components/update/). Not yet in a tagged release. The shared decisions
-> are in the [overview](/docs/design/proposals/content-components-expansion/).
+> [!NOTE] Accepted in OINK 1.7.0
+> Shipped in OINK v1.7.0, documented in the [Update guide](/docs/components/update/),
+> and governed by the [Components contract](/docs/design/components/#timeline-media-social-and-maps).
+> Shared decisions are in the [overview](/docs/design/proposals/content-components-expansion/).
 
 | Record | Value |
 | --- | --- |
-| Status | Implemented 2026-11-27 on `main`; awaiting release |
+| Status | Accepted and shipped in OINK v1.7.0 (implemented 2026-11-27) |
 | Owner | OINK maintainers |
 | Delivery stage | S1, with [Timeline](/docs/design/proposals/component-timeline/) |
 | Form | Native: a Markdown heading with `{.update date="…" tags="…"}` |

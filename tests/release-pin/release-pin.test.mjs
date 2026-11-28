@@ -125,6 +125,22 @@ test('rejects disagreement between the advertised current and latest versions', 
   );
 });
 
+test('rejects disagreement between the advertised version and version_menu', () => {
+  const result = runCheck(
+    'module example.test/site\n\nrequire github.com/pgsty/oink v0.3.0\n',
+    [
+      'params:',
+      '  version: v0.3.0',
+      '  version_menu: v0.2.1',
+      '  tdVersion:',
+      '    latest: v0.3.0',
+      '',
+    ].join('\n'),
+  );
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /version_menu v0\.2\.1 differs from v0\.3\.0/);
+});
+
 test('CI resolves a public pin with current Hugo and visible warnings', () => {
   // These steps lived in the GitHub Pages deploy workflow until that second,
   // unused publication target was removed -- Cloudflare Pages serves the site.
@@ -132,6 +148,8 @@ test('CI resolves a public pin with current Hugo and visible warnings', () => {
     new URL('../../.github/workflows/site-checks.yml', import.meta.url),
     'utf8',
   );
+  const hugoConfig = readFileSync(new URL('../../hugo.yml', import.meta.url), 'utf8');
+  assert.doesNotMatch(hugoConfig, /^\s+extended:\s*true\b/m);
   assert.match(workflow, /^  GOWORK: off$/m);
   assert.match(workflow, /^  HUGO_MODULE_WORKSPACE: off$/m);
   assert.match(workflow, /go mod download github\.com\/pgsty\/oink/);

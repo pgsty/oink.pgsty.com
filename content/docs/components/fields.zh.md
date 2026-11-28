@@ -2,7 +2,7 @@
 title: 参数表
 linkTitle: 参数表
 description: 把配置项、命令参数与 API 字段写成参数表：手机上也不挤，每一条都能单独链接。
-weight: 60
+weight: 140
 search_keywords: [参数表, Fields, field, 配置项, 参数, API 字段, meta, type, required, default, 定义列表, 锚点]
 ---
 
@@ -93,7 +93,7 @@ search_keywords: [参数表, Fields, field, 配置项, 参数, API 字段, meta,
 
 ## 每一条都能单独链接 {#anchors}
 
-每个条目都有一个 `field-<名称>` 形式的锚点，鼠标悬停时名称旁边会出现链接图标。例如本页第一张表里的 `page_width` 就是 [#field-page_width](#field-page_width)。同一页里名称重复时，第二个锚点加 `-2`，第三个加 `-3`，与 Goldmark 处理重名标题的规则相同。
+每个条目都有一个 `field-<名称>` 形式的锚点，鼠标悬停时名称旁边会出现链接图标。例如本页第一张表里的 `page_width` 就是 [#field-page_width](#field-page_width)。同一页里名称重复时，第二个锚点加 `-2`，第三个加 `-3`（与重名标题的 `-1`、`-2` 不同）。
 
 如果别的页面已经链接到某个锚点，想保住它，可以给 `field` shortcode 写一个显式的 `id`，例如 `id="guc-work-mem"`；值为空、重复或含有不安全字符时会告警，并回退到自动生成的锚点。[本地搜索](/zh/docs/customize/search/)会为每个带锚点的条目建立索引，搜索参数名就能直接跳到这一条。
 
@@ -201,7 +201,7 @@ pig ext install pg_duckdb --dry-run
 ## 限制与常见问题 {#limits}
 
 - 第一列必须非空，且在同一张表内唯一；名称为空或重复的行会告警并被跳过。
-- `.fields` 不能与 `.matrix`、`.full-width`、`num` 组合，`meta` 只能用在带 `.fields` 的表上。
+- `.fields` 不能与 `.matrix`、`.full-width`、`.expand`、`num` 组合，`meta` 只能用在带 `.fields` 的表上。
 - 表格单元格放不下块级内容，需要段落、列表、代码块时换用 shortcode 形态。
 - `required` 与 `default` 在所有语言下都显示英文，因为它们是 API 词汇，不是界面文案。
 - 没有 `kind`、`since`、`deprecated`、`location` 之类的元数据，没有字段级链接，也不支持嵌套，更不会从 TypeScript 或 OpenAPI schema 生成条目。

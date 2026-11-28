@@ -2,7 +2,7 @@
 title: 步骤
 linkTitle: 步骤
 description: 有序列表加 `{.steps}` 就是带编号圆点与竖线的操作步骤；步骤要带标题、要进目录时改用 steps shortcode。
-weight: 70
+weight: 220
 search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 目录, TOC]
 ---
 
@@ -26,7 +26,7 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 1. 启动本地预览
 {.steps}
 
-`{.steps}` 要写在最后一项的下一行。中间隔了空行，它就不再附着在列表上，而是作为一段带花括号的文字出现在页面上。
+`{.steps}` 要写在最后一项的下一行。中间隔了空行，Goldmark 会静默丢掉这一行，列表按普通有序列表渲染。
 
 ## 步骤内容 {#blocks}
 
@@ -186,7 +186,7 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 
 {{% /steps %}}
 
-`steps` 是主题里唯一用百分号分隔符书写的 shortcode。百分号形式把正文交给 Goldmark 当作页面 Markdown 处理，所以里面的标题能进目录，步骤里也能放 `tabs`、`cards`、`fields` 这类容器 shortcode。代价是它不能放进列表项，也不能套在另一个百分号容器里，包括另一个 `steps`。同一组步骤的标题请保持同一层级。
+`steps` 是主题里唯一用百分号分隔符书写的 shortcode。百分号形式把正文交给 Goldmark 当作页面 Markdown 处理，让步骤里的标题进入目录。代价是它不能放进列表项，也不能套在另一个百分号容器里，包括另一个 `steps`。同一组步骤的标题请保持同一层级。
 
 ## 两种形态的选择 {#which}
 
@@ -194,7 +194,6 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 | --- | --- |
 | 步骤是一两句话加一段命令 | 有序列表 + `{.steps}` |
 | 每一步需要标题、需要被链接、需要进目录 | `{{%/* steps */%}}` |
-| 步骤里要放 `tabs`、`cards`、`fields` 容器 | `{{%/* steps */%}}` |
 | 步骤本身要嵌在另一个列表项里 | 有序列表 + `{.steps}` |
 
 ## 可选呈现 {#presentation}
@@ -219,7 +218,7 @@ search_keywords: [步骤, Steps, 有序列表, 操作步骤, 教程, ol, start, 
 
 ## 限制与常见问题 {#limits}
 
-- 不要在列表项里写 `{{%/* … */%}}` 形式的 shortcode：它的多行输出会让列表提前结束。要在步骤里放容器，就把整段流程改用 shortcode 形态。
+- 不要在列表项里写 `{{%/* … */%}}` 形式的 shortcode：它的多行输出会让列表提前结束。要在步骤里放 `{{%/* … */%}}` shortcode，改用 shortcode 形态。
 - Prettier 之类的格式化工具可能把 `{.steps}` 和列表拆开，用 `<!-- prettier-ignore-start -->` 与 `<!-- prettier-ignore-end -->` 把列表包起来。
 - `{.steps}` 只对有序列表有效，写在 `-` 开头的无序列表上不会有编号。
 - 步骤不能折叠或展开，也不记录进度，没有「已完成」状态。

@@ -50,8 +50,8 @@ lands in one of five places:
 once, and `go.mod` changes only when you upgrade OINK. `layouts/` deserves a
 look on day one: a file there replaces a theme template and stops receiving the
 theme's fixes, so every override should exist for a reason you can name.
-[Starter repository tour](/docs/start/anatomy/) explains each file the Starter
-ships.
+[From scratch](/docs/start/from-scratch/#anatomy) explains what each file in a
+minimal OINK site does.
 
 ## Review what you got {#review}
 

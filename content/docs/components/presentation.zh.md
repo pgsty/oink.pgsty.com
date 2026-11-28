@@ -2,7 +2,7 @@
 title: 组件呈现
 linkTitle: 组件呈现
 description: 在 OINK 四种视觉预设中查看卡片、折叠块、标签页和紧凑流程。
-weight: 115
+weight: 910
 outputs: [HTML, markdown, print]
 search_keywords: [组件样式, 卡片列表, 紧凑步骤, 命令条, 预设]
 ---

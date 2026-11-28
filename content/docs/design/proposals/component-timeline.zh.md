@@ -6,16 +6,16 @@ weight: 27
 icon: fa-solid fa-timeline
 search_keywords: [时间轴, timeline, 时间线, 里程碑, 故障复盘, postmortem, 议程, 定义列表, 组件]
 design_kind: proposal
-design_status: implemented
+design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] 已实现，等待发布
-> 已在主题 `main` 分支实现并写入了[时间轴指南](/zh/docs/components/timeline/)。尚未包含在发布标签中。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
+> [!NOTE] 已随 OINK 1.7.0 接受并发布
+> 已随 OINK v1.7.0 发布并写入[时间轴指南](/zh/docs/components/timeline/)，规范行为归属[组件契约](/zh/docs/design/components/#timeline-media-social-and-maps)。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 2026-11-27 在 `main` 实现；等待发布 |
+| 状态 | 已接受并随 OINK v1.7.0 发布（2026-11-27 实现） |
 | 负责人 | OINK 维护者 |
 | 交付阶段 | S1，与 [Update](/zh/docs/design/proposals/component-update/) 同批 |
 | 形态 | 原生：Markdown 定义列表后接 `{.timeline}` |

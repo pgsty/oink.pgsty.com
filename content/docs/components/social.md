@@ -1,8 +1,8 @@
 ---
-title: Social posts
-linkTitle: Social posts
+title: Social
+linkTitle: Social
 description: Quote a post from X, Bluesky, Mastodon, or another platform with the `social` shortcode. The page supplies the quote and attribution without a platform script.
-weight: 176
+weight: 460
 search_keywords: [social, social post, quote a post, tweet, X, Twitter, Bluesky, Mastodon, Threads, Weibo, Zhihu, Telegram, LinkedIn, offline embed, avatar, quoted post]
 image_zoom: true
 ---
@@ -19,16 +19,14 @@ To quote a book or a paper, an ordinary Markdown blockquote is enough.
 A card needs `author` or `handle`, and a body with the post text in Markdown.
 
 ````markdown {title="Source"}
-{{</* social author="Mara Lindqvist" handle="@mara_dba" */>}}
-Upgraded our reporting cluster to PostgreSQL 18 over the weekend. `pg_upgrade --link` took four minutes.
+{{</* social author="Ron" handle="@RonVonng" */>}}
+PostgreSQL is not just a relational database; it is a data-management framework capable of absorbing almost every workload. Replacing Kafka, Elasticsearch, MongoDB, and Redis with Postgres is a practical way to cut system complexity.
 {{</* /social */>}}
 ````
 
-{{< social-preview unavailable="The examples show their source here. Live cards require the social shortcode introduced after OINK 1.6.0." >}}
-{{</* social author="Mara Lindqvist" handle="@mara_dba" */>}}
-Upgraded our reporting cluster to PostgreSQL 18 over the weekend. `pg_upgrade --link` took four minutes.
-{{</* /social */>}}
-{{< /social-preview >}}
+{{< social author="Ron" handle="@RonVonng" >}}
+PostgreSQL is not just a relational database; it is a data-management framework capable of absorbing almost every workload. Replacing Kafka, Elasticsearch, MongoDB, and Redis with Postgres is a practical way to cut system complexity.
+{{< /social >}}
 
 Without `avatar`, the card draws the first character (preserving emoji and
 combining marks, after removing leading `@`, spaces, and invisible characters
@@ -39,27 +37,23 @@ icon. Parameters must be named; positional ones warn and are ignored.
 
 ## A complete card {#full}
 
-All six parameters, with an image attached to the post:
+Every parameter except `platform` (default `x`), with an image attached to the post:
 
 ````markdown {title="Source"}
-{{</* social author="Jun Okada" handle="@jun_draws" avatar="/favicon.svg"
-           date="2026-11-23" url="https://example.com/jun_draws/status/1001" */>}}
-Finished the wordmark for the documentation site: a fountain-pen nib, a serif
-name, and **no gradients**.
+{{</* social author="Ron" handle="@RonVonng" avatar="images/ron-vonng.webp"
+           date="2024-12-23" url="https://x.com/RonVonng/status/1871040275575124082" */>}}
+Released `pig`, the PostgreSQL extension package manager and Pigsty CLI. One command configures PG repositories on mainstream Linux distros and installs **hundreds of PostgreSQL extensions** through the native package manager.
 
-![The Oink wordmark beside a round fountain-pen logo](/images/oink.webp)
+![The pig.pgsty.com home page showing the Postgres Install Guide CLI](/case/pig/featured.webp)
 {{</* /social */>}}
 ````
 
-{{< social-preview >}}
-{{</* social author="Jun Okada" handle="@jun_draws" avatar="/favicon.svg"
-           date="2026-11-23" url="https://example.com/jun_draws/status/1001" */>}}
-Finished the wordmark for the documentation site: a fountain-pen nib, a serif
-name, and **no gradients**.
+{{< social author="Ron" handle="@RonVonng" avatar="images/ron-vonng.webp"
+           date="2024-12-23" url="https://x.com/RonVonng/status/1871040275575124082" >}}
+Released `pig`, the PostgreSQL extension package manager and Pigsty CLI. One command configures PG repositories on mainstream Linux distros and installs **hundreds of PostgreSQL extensions** through the native package manager.
 
-![The Oink wordmark beside a round fountain-pen logo](/images/oink.webp)
-{{</* /social */>}}
-{{< /social-preview >}}
+![The pig.pgsty.com home page showing the Postgres Install Guide CLI](/case/pig/featured.webp)
+{{< /social >}}
 
 - `avatar` resolves like any image. A value with a URL scheme is a remote
   image that the reader’s browser loads directly. Any other value is looked up as a page resource (or a
@@ -102,26 +96,24 @@ own interface. Use `none` when quoting a platform that has no icon here.
 | `none` (default when nested) | None (omits icon and platform name) |
 
 ````markdown {title="Source"}
-{{</* social author="Mara Lindqvist" handle="@mara@fosstodon.example" platform="mastodon"
-           date="2026-11-20 08:30" url="https://example.com/@mara/1002" */>}}
-Cross-posting the upgrade notes here: `pg_upgrade --link`, four minutes of downtime, no surprises.
+{{</* social author="Ron" handle="@ron@fosstodon.example" platform="mastodon"
+           date="2025-05-19 11:27" url="https://fosstodon.example/@ron/1002" */>}}
+OpenAI runs a single unsharded PostgreSQL cluster (one primary with 40+ read replicas) for its core workload. Vertical scale plus disciplined indexing still goes a very long way.
 {{</* /social */>}}
 
-{{</* social handle="@pgnotes.example" platform="bluesky" */>}}
-Vacuum is not optional. Neither is watching it.
+{{</* social handle="@pigsty.io" platform="bluesky" */>}}
+PostgreSQL is the Linux of databases: one kernel, hundreds of extensions, zero vendor lock-in.
 {{</* /social */>}}
 ````
 
-{{< social-preview >}}
-{{</* social author="Mara Lindqvist" handle="@mara@fosstodon.example" platform="mastodon"
-           date="2026-11-20 08:30" url="https://example.com/@mara/1002" */>}}
-Cross-posting the upgrade notes here: `pg_upgrade --link`, four minutes of downtime, no surprises.
-{{</* /social */>}}
+{{< social author="Ron" handle="@ron@fosstodon.example" platform="mastodon"
+           date="2025-05-19 11:27" url="https://fosstodon.example/@ron/1002" >}}
+OpenAI runs a single unsharded PostgreSQL cluster (one primary with 40+ read replicas) for its core workload. Vertical scale plus disciplined indexing still goes a very long way.
+{{< /social >}}
 
-{{</* social handle="@pgnotes.example" platform="bluesky" */>}}
-Vacuum is not optional. Neither is watching it.
-{{</* /social */>}}
-{{< /social-preview >}}
+{{< social handle="@pigsty.io" platform="bluesky" >}}
+PostgreSQL is the Linux of databases: one kernel, hundreds of extensions, zero vendor lock-in.
+{{< /social >}}
 
 The second card is quoted by handle alone, so it has no name, date or link.
 Screen readers hear the platform name, which the card carries as visually
@@ -147,8 +139,8 @@ for it.
 | A video | A [video](/docs/components/video/) written as an image, `![name](clip.mp4)` |
 
 ````markdown {title="Source"}
-{{</* social author="Mara Lindqvist" handle="@mara_dba" avatar="/favicon.svg" date="2026-11-24" */>}}
-One home page, two color schemes:
+{{</* social author="Ron" handle="@RonVonng" avatar="images/ron-vonng.webp" date="2026-11-24" */>}}
+One PostgreSQL documentation theme, two color schemes:
 
 ```gallery
 ![The OINK home page in light mode](/images/hero-light.webp)
@@ -157,16 +149,14 @@ One home page, two color schemes:
 {{</* /social */>}}
 ````
 
-{{< social-preview >}}
-{{</* social author="Mara Lindqvist" handle="@mara_dba" avatar="/favicon.svg" date="2026-11-24" */>}}
-One home page, two color schemes:
+{{< social author="Ron" handle="@RonVonng" avatar="images/ron-vonng.webp" date="2026-11-24" >}}
+One PostgreSQL documentation theme, two color schemes:
 
 ```gallery
 ![The OINK home page in light mode](/images/hero-light.webp)
 ![The OINK home page in dark mode](/images/hero-dark.webp)
 ```
-{{</* /social */>}}
-{{< /social-preview >}}
+{{< /social >}}
 
 Footnote references warn in the body, as in every shortcode body, so keep
 footnotes in the page's own Markdown.
@@ -181,28 +171,26 @@ the inner card for a cross-platform quote to show a compact icon and announce
 that platform. Nesting deeper than one quoted post warns.
 
 ````markdown {title="Source"}
-{{</* social author="Mara Lindqvist" handle="@mara_dba" avatar="/favicon.svg"
-           date="2026-11-25" url="https://example.com/mara_dba/status/1003" */>}}
-This is why the restore drill stays on our calendar.
+{{</* social author="Ron" handle="@RonVonng" avatar="images/ron-vonng.webp"
+           date="2024-09-27" url="https://x.com/RonVonng/status/1839521052843442618" */>}}
+PostgreSQL 17 is out — billed as the world's most advanced open-source database. Before long, "open-source" may be the redundant part.
 
-{{</* social author="Theo Brandt" handle="@theo_ops"
-           date="2026-11-24" url="https://example.com/theo_ops/status/2001" */>}}
-A backup you have never restored is a hope, not a backup.
+{{</* social author="PostgreSQL" handle="@PostgreSQL"
+           date="2024-09-26" url="https://x.com/PostgreSQL/status/1839292604854223176" */>}}
+News: PostgreSQL 17 Released!
 {{</* /social */>}}
 {{</* /social */>}}
 ````
 
-{{< social-preview >}}
-{{</* social author="Mara Lindqvist" handle="@mara_dba" avatar="/favicon.svg"
-           date="2026-11-25" url="https://example.com/mara_dba/status/1003" */>}}
-This is why the restore drill stays on our calendar.
+{{< social author="Ron" handle="@RonVonng" avatar="images/ron-vonng.webp"
+           date="2024-09-27" url="https://x.com/RonVonng/status/1839521052843442618" >}}
+PostgreSQL 17 is out — billed as the world's most advanced open-source database. Before long, "open-source" may be the redundant part.
 
-{{</* social author="Theo Brandt" handle="@theo_ops"
-           date="2026-11-24" url="https://example.com/theo_ops/status/2001" */>}}
-A backup you have never restored is a hope, not a backup.
-{{</* /social */>}}
-{{</* /social */>}}
-{{< /social-preview >}}
+{{< social author="PostgreSQL" handle="@PostgreSQL"
+           date="2024-09-26" url="https://x.com/PostgreSQL/status/1839292604854223176" >}}
+News: PostgreSQL 17 Released!
+{{< /social >}}
+{{< /social >}}
 
 ## Missing or invalid input {#degraded}
 
@@ -219,7 +207,7 @@ kept.
 | Non-string `author`, `handle`, or `date` | Warns; ignored |
 | Invalid `url` or `avatar` | Warns; the attribute is dropped |
 | Static `avatar` not under the project's `static/` | Warns when `static/` exists (ID `social:avatar-static`); keeps the path |
-| Static `avatar` that climbs above the site root with `..` | Warns; keeps the path |
+| Static `avatar` that climbs above the site root with `..` | Warns (ID `social:avatar-static`); the avatar is dropped and the card draws the initial instead |
 | Nested deeper than one quoted post | Warns; renders cleanly without dropping content |
 | Unknown or positional parameters | Warn; ignored |
 

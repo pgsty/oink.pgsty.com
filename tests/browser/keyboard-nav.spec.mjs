@@ -2,12 +2,12 @@ import { expect, test } from '@playwright/test';
 
 const docsPath = '/docs/customize/config/';
 
-// The 3 x 10 shortcut sheet, in help order.
+// The 29-key shortcut sheet (10 / 9 / 10), in help order.
 const SHORTCUT_ROWS = [
   ['tree-move', 'tree-toggle', 'tree-open', 'page-move', 'heading-move',
     'language', 'route', 'version', 'history', 'home'],
   ['search', 'commands', 'edit', 'new-page', 'issue', 'expand-all', 'print',
-    'chatgpt', 'claude', 'gemini'],
+    'chatgpt', 'claude'],
   ['duo', 'zen', 'markdown', 'style', 'theme', 'layout', 'gallery',
     'image-size', 'page-width', 'help'],
 ];
@@ -54,13 +54,24 @@ async function unavailableRows(dialog) {
   );
 }
 
+test('shortcut help updates reading-width availability while the sheet stays open', async ({ page }) => {
+  await openDocs(page, { width: 1440, height: 800 });
+  const sheet = await openHelp(page);
+  const width = sheet.locator('[data-td-shortcut="page-width"]');
+  await expect(width).not.toHaveClass(/td-is-unavailable/);
+  await page.setViewportSize({ width: 390, height: 660 });
+  await expect(width).toHaveClass(/td-is-unavailable/);
+  await page.setViewportSize({ width: 1440, height: 800 });
+  await expect(width).not.toHaveClass(/td-is-unavailable/);
+});
+
 test('a reader can turn off single-key shortcuts and restore them by keyboard across languages', async ({ page, browserName }) => {
   await recordPageActions(page);
   await openDocs(page);
   const dialog = await openHelp(page);
-  await dialog.getByRole('checkbox', { name: 'Single-key shortcuts' }).uncheck();
+  await dialog.getByRole('checkbox', { name: 'Enable shortcuts' }).uncheck();
   await page.keyboard.press('Escape');
-  for (const key of ['p', 'h', '/', '`', "'"]) await page.keyboard.press(key);
+  for (const key of ['p', 'h', '/', '\\', "'"]) await page.keyboard.press(key);
   await expect(dialog).toBeHidden();
   await expect(page.locator('#td-shell-history')).toBeHidden();
   await expect(page.locator('#td-shell-search')).toBeHidden();
@@ -71,7 +82,7 @@ test('a reader can turn off single-key shortcuts and restore them by keyboard ac
   await page.keyboard.press('Escape');
 
   await page.goto('/zh' + docsPath);
-  const preference = page.getByRole('checkbox', { name: '单键快捷键' });
+  const preference = page.getByRole('checkbox', { name: '启用快捷键' });
   // macOS WebKit uses Option+Tab to visit links and controls with its default keyboard settings.
   const nextControl = browserName === 'webkit' && process.platform === 'darwin' ? 'Alt+Tab' : 'Tab';
   await page.keyboard.press(nextControl);
@@ -535,7 +546,7 @@ test('t steps the visual style, y cycles light/dark/system, and x switches the l
   await page.waitForURL((url) => url.pathname === docsPath);
 });
 
-test("' toggles the 3 x 10 shortcut help anywhere and dims what the page cannot run", async ({
+test("' toggles the 29-key shortcut help anywhere and dims what the page cannot run", async ({
   page,
 }) => {
   await openDocs(page, { width: 1280, height: 720 });
@@ -551,7 +562,7 @@ test("' toggles the 3 x 10 shortcut help anywhere and dims what the page cannot 
     "Escape '",
   );
 
-  // Three groups of ten, in help order, side by side on desktop without duplicate IDs.
+  // Twenty-nine keys in three groups, in help order, side by side on desktop without duplicate IDs.
   const layout = await page.evaluate(() => {
     const el = document.querySelector('[data-td-keyboard-dialog]');
     const sections = Array.from(el.querySelectorAll('.td-shell-keyboard-help__section'));
@@ -581,8 +592,10 @@ test("' toggles the 3 x 10 shortcut help anywhere and dims what the page cannot 
   const keycaps = (id) => dialog.locator(`[data-td-shortcut="${id}"] kbd`).allTextContents();
   expect(await keycaps('history')).toEqual(['H']);
   expect(await keycaps('home')).toEqual(['G']);
-  expect(await keycaps('commands')).toEqual(['C', '`']);
-  expect(await keycaps('gemini')).toEqual(['\\']);
+  expect(await keycaps('commands')).toEqual(['\\', 'C']);
+  expect(await keycaps('chatgpt')).toEqual(['[']);
+  expect(await keycaps('claude')).toEqual([']']);
+  await expect(dialog.locator('[data-td-shortcut="gemini"]')).toHaveCount(0);
   expect(await keycaps('layout')).toEqual(['L']);
   expect(await keycaps('gallery')).toEqual([';']);
   expect(await keycaps('page-width')).toEqual(['-', '=']);
@@ -661,10 +674,10 @@ test('the Chinese shortcut help keeps the same grid with localized groups', asyn
   const dialog = await openHelp(page);
   const titles = await dialog.locator('.td-shell-keyboard-help__section-title').allTextContents();
   expect(titles.map((title) => title.trim())).toEqual(['导航', '操作', '样式']);
-  await expect(dialog.locator('[data-td-shortcut]')).toHaveCount(30);
+  await expect(dialog.locator('[data-td-shortcut]')).toHaveCount(29);
   await expect(dialog.locator('[data-td-shortcut="history"]')).toContainText('浏览历史');
   await expect(dialog.locator('[data-td-shortcut="home"]')).toContainText('回到首页');
-  await expect(dialog.locator('[data-td-shortcut="gemini"]')).toContainText('Gemini');
+  await expect(dialog.locator('[data-td-shortcut="gemini"]')).toHaveCount(0);
   await expect(
     dialog.locator('[data-td-shortcut="version"] [data-td-shortcut-state]'),
   ).toHaveText(/暂不可用/);
@@ -781,12 +794,41 @@ test('f and c open the palette in search and command mode', async ({
   const dialog = page.locator('#td-shell-search');
   const input = dialog.locator('.td-shell-search__input');
 
-  for (const [key, value] of [['f', ''], ['/', ''], ['c', '>'], ['`', '>'], ['~', '>']]) {
+  for (const [key, value] of [['f', ''], ['/', ''], ['c', '>'], ['\\', '>']]) {
     await page.keyboard.press(key);
     await expect(dialog).toBeVisible();
     await expect(input).toHaveValue(value);
     await page.keyboard.press('Escape');
     await expect(dialog).toBeHidden();
+  }
+  for (const unbound of ['`', '~']) {
+    await page.keyboard.press(unbound);
+    await expect(dialog).toBeHidden();
+  }
+});
+
+test('closing the palette or history over the footer ? leaves its hover sheet closed', async ({
+  page,
+}) => {
+  // Help returns focus to the footer ? button on purpose. A palette or
+  // history that later closes puts focus back there too, and that focus must
+  // not raise the full hover sheet: it looked as if Escape had done nothing.
+  await openDocs(page, { width: 1280, height: 800 });
+  const trigger = page.locator('.td-shell-keyboard__trigger').first();
+  const hoverSheet = page.locator('.td-shell-keyboard[data-td-nav-hover]').first();
+  await trigger.scrollIntoViewIfNeeded();
+  await trigger.click();
+  await expect(page.locator('dialog[data-td-keyboard-dialog]')).toBeVisible();
+  await page.mouse.move(10, 10);
+  await page.keyboard.press('Escape');
+  await expect(trigger).toBeFocused();
+  for (const [key, surface] of [['c', '#td-shell-search'], ['/', '#td-shell-search'], ['h', '#td-shell-history']]) {
+    await page.keyboard.press(key);
+    await expect(page.locator(surface)).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.locator(surface)).toBeHidden();
+    await expect(trigger).toBeFocused();
+    await expect(hoverSheet).not.toHaveClass(/td-is-open/);
   }
 });
 
@@ -916,12 +958,12 @@ test('h then Enter returns to the previous page, and the palette opens the same 
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto(docsPath, { waitUntil: 'domcontentloaded' });
 
-  // First visit: only the current page is stored, so Clear history starts disabled.
+  // The current visit is stored even though the list omits the current page.
   const root = page.locator('#td-shell-history');
   await page.keyboard.press('h');
   await expect(root).toBeVisible();
   await expect(root.locator('[role="option"]')).toHaveCount(0);
-  await expect(root.locator('[data-td-history-clear]')).toBeDisabled();
+  await expect(root.locator('[data-td-history-clear]')).toBeEnabled();
 
   // Escape during IME composition must not close the history overlay.
   await root.locator('.td-shell-search__input').evaluate((input) => {
@@ -1191,17 +1233,12 @@ test('page action keys run the same actions as the page menu', async ({ page }) 
   for (const [key, origin, parameter] of [
     ['[', 'https://chatgpt.com', 'prompt'],
     [']', 'https://claude.ai', 'q'],
-    ['\\', 'https://gemini.google.com', 'q'],
   ]) {
     await page.keyboard.press(key);
     await expect.poll(async () => new URL((await opened()).at(-1)).origin).toBe(origin);
     const prompt = new URL((await opened()).at(-1)).searchParams.get(parameter);
     expect(prompt).toContain(page.url());
   }
-  // Gemini also gets the prompt on the clipboard, copied before its tab opens.
-  const gemini = new URL((await opened()).at(-1));
-  expect(gemini.pathname).toBe('/app');
-  expect(await page.evaluate(() => window.__copied)).toEqual([gemini.searchParams.get('q')]);
 
   // The same keys are inert inside a text field.
   const count = (await opened()).length;
@@ -1214,8 +1251,8 @@ test('page action keys run the same actions as the page menu', async ({ page }) 
   await field.focus();
   await field.press('u');
   await field.press('[');
-  await field.press('\\');
-  await expect(field).toHaveValue('u[\\');
+  await field.press(']');
+  await expect(field).toHaveValue('u[]');
   expect((await opened()).length).toBe(count);
   expect(await page.evaluate(() => window.__printed)).toBe(1);
 });

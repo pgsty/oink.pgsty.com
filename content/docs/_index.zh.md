@@ -33,11 +33,11 @@ cascade:
 OINK 是一款面向技术文档的 Hugo 主题，适合产品手册、项目官网、书籍与 API
 参考，单语多语皆可。你只写 Markdown，执行一次 `hugo`，就得到一个静态站点：导航树、本地全文搜索、深浅色模式与打印视图一应俱全。主题用到的脚本、字体与样式都随主题分发，构建不需要 Node.js、npm，也不访问 CDN。
 
-第一次用 OINK？[快速上手](/zh/docs/start/)带你五分钟跑起一个完整站点，再一块一块换成自己的内容。已经在用？先读 [1.6.0 发布说明](/zh/release/1.6.0/)，再按[升级指南](/zh/docs/admin/upgrade/#preparing-1-6)操作。
+第一次用 OINK？[快速上手](/zh/docs/start/)带你两分钟在本地跑起文档站，并用一段提示词让 AI Agent 搭建自己的站点。已经在用？先读 [1.7.0 发布说明](/zh/release/1.7.0/)，再按[升级指南](/zh/docs/admin/upgrade/#preparing-1-7)操作。
 
 ## 从哪里开始 {#five-entries}
 
-- [快速上手](/zh/docs/start/) — 克隆 Starter，预览，换成自己的内容，部署上线。
+- [快速上手](/zh/docs/start/) — 克隆文档站本地跑起来、用 AI Agent 建站，或为开源项目加装文档。
 - [组件总览](/zh/docs/components/) — 提示块、标签页、图表、卡片等组件，源码与效果并排展示。
 - [OINK 上手教程](/zh/book/) — 用一句提示词建站，再用十章动手练习逐层掌握它。
 - [案例](/zh/case/) — 看生产站点怎样解决导航、迁移与首页设计问题。

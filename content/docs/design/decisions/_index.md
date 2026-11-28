@@ -12,7 +12,7 @@ design_status: active
 
 > [!NOTE] Accepted rationale
 > A decision explains why OINK selected one compatible design instead of another.
-> The five contracts define the required current behavior. The implementation
+> The six contracts define the required current behavior. The implementation
 > and its checkers define the executable facts.
 
 OINK previously kept reviews, PRDs, and execution notes in a local `plan/`
@@ -34,11 +34,10 @@ contracts it supports, in the same bilingual, versioned site.
 | [Blog gallery](/docs/design/decisions/blog-gallery/) | Article covers, shared Expo geometry, independent preferences, and readable captions |
 | [Table reading](/docs/design/decisions/large-table-reading/) | Explicit `.expand`, independent `.wide`, and a direct corner action with native table restoration |
 | [Translation comparison](/docs/design/decisions/document-comparison/) | One switch, real same-origin translations, a lazy two-pane reader, and heading-based sync |
-
 | [Component refinement](/docs/design/decisions/component-refinement/) | Shared styling, divided cards, compact steps and command strips |
 | [Unified diagram reading](/docs/design/decisions/diagram-reading/) | Shared Mermaid and local PlantUML viewing, source export and demand loading |
 | [Local search refinement](/docs/design/decisions/local-search/) | Mixed queries, real section anchors, partial matches and section scope |
-| [Keyboard map](/docs/design/decisions/keyboard-map/) | Thirty single keys in three groups of ten, dimmed unavailable rows, local history, fold-all and a reader width |
+| [Keyboard map](/docs/design/decisions/keyboard-map/) | Twenty-nine single-key shortcuts in three groups, dimmed unavailable rows, local history, fold-all and a reader width |
 
 ## Record format {#record-format}
 

@@ -5,6 +5,7 @@ sections:
     key: content_types
   - type: logo-wall
     key: components
+    partial: landing/sections/component-groups.html
   - type: cards
     key: cases
     partial: landing/sections/case-cards.html
@@ -14,7 +15,7 @@ sections:
     key: faq
 
 hero:
-  eyebrow: OINK 1.6.0 · 本地优先 · Hugo 构建
+  eyebrow: OINK 1.7.0 · 本地优先 · Hugo 构建
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -25,12 +26,12 @@ hero:
     dark: images/hero-dark.webp
     alt: OINK 工程文档插图
   actions:
-    - label: 从 OINK Starter 开始
-      url: docs/start/starter/
+    - label: 快速上手
+      url: docs/start/
       icon: fa-solid fa-rocket
       style: primary
-    - label: 查看 1.6.0 新特性
-      url: release/1.6.0/
+    - label: 查看 1.7.0 新特性
+      url: release/1.7.0/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -45,9 +46,9 @@ capabilities:
       url: docs/start/
       motto: 从可运行的模板开始，逐步完善自己的站点
       bullets:
-        - '[Starter 与部署指南](docs/start/)帮助你完成第一个站点'
-        - '自带[全文检索](docs/customize/search/)、[i18n](docs/customize/i18n/)、[双列视图](docs/customize/i18n/#bilingual-view)与[多版本](docs/customize/versions/)'
-        - '自带 [RSS](docs/write/blog/)、[SEO](docs/admin/analytics/) 与 [Google Analytics](docs/admin/analytics/) 集成'
+        - '[快速上手、AI 建站与项目加装文档指南](docs/start/)带你跑通第一个站点'
+        - '自带[全文检索](docs/customize/search/)、[29 个单键快捷键](docs/customize/keyboard/)、[双列视图](docs/customize/i18n/#bilingual-view)与[多版本](docs/customize/versions/)'
+        - '自带[排版复制](docs/customize/print/#typeset-copy)、[RSS](docs/write/blog/)、[SEO](docs/admin/analytics/) 与 [Google Analytics](docs/admin/analytics/) 集成'
       value: 内容团队可以把时间用在文档上，而不是重复搭建站点基础设施。
       visual:
         type: shell
@@ -69,9 +70,9 @@ capabilities:
       url: docs/customize/brand/#visual-presets
       motto: Paper · Slate · Ink · Terminal
       bullets:
-        - '[Paper](docs/customize/brand/#visual-presets) 使用暖色纸面与克制排版；Slate 保留原有技术风格'
-        - 'Ink 用黑白与红色建立对比；Terminal 将等宽标题与无衬线正文搭配'
-        - '在外观菜单中独立选择风格与明暗，翻页后仍保留你的偏好'
+        - '[Paper](docs/customize/brand/#visual-presets) 以暖白纸面搭配陶红强调色；Slate 保留原有技术风格'
+        - 'Ink 用黑白与红色建立对比；Terminal 正文与标题全用等宽字体'
+        - '每套风格各自配备系统中文排版；风格与明暗独立选择并持久保存'
       value: 内容不变，风格自选。字体与核心脚本均由本地提供。
       visual:
         type: components
@@ -80,7 +81,7 @@ capabilities:
           - {
               icon: fa-solid fa-file-lines,
               title: Paper,
-              detail: 暖色纸面 · 默认风格,
+              detail: 暖白 · 陶红 · 默认风格,
             }
           - {
               icon: fa-solid fa-layer-group,
@@ -95,7 +96,7 @@ capabilities:
           - {
               icon: fa-solid fa-terminal,
               title: Terminal,
-              detail: 等宽 · 青绿 · 琥珀,
+              detail: 全等宽 · 青绿 · 琥珀,
             }
     - ref: 03 / 本地优先
       title: 使用 Hugo 构建
@@ -133,38 +134,38 @@ capabilities:
         items:
           - {
               icon: fa-solid fa-code,
-              title: Code Groups,
-              url: docs/components/tabs/,
+              title: 代码块,
+              url: docs/components/code/,
             }
           - {
-              icon: fa-solid fa-tags,
-              title: Badge,
-              url: docs/components/badge/,
-            }
-          - {
-              icon: fa-solid fa-keyboard,
-              title: Kbd,
-              url: docs/components/kbd/,
-            }
-          - {
-              icon: fa-solid fa-list-check,
-              title: Fields,
+              icon: fa-solid fa-table-list,
+              title: 参数表,
               url: docs/components/fields/,
             }
           - {
-              icon: fa-solid fa-folder-tree,
-              title: FileTree,
-              url: docs/components/filetree/,
+              icon: fa-solid fa-tag,
+              title: 徽章,
+              url: docs/components/badge/,
             }
           - {
-              icon: fa-solid fa-magnifying-glass-plus,
-              title: Image Zoom,
-              url: docs/components/image/,
+              icon: fa-solid fa-folder,
+              title: 标签页,
+              url: docs/components/tabs/,
             }
           - {
-              icon: fa-solid fa-images,
-              title: Gallery,
-              url: docs/components/gallery/,
+              icon: fa-solid fa-list-ol,
+              title: 步骤,
+              url: docs/components/steps/,
+            }
+          - {
+              icon: fa-solid fa-timeline,
+              title: 时间轴,
+              url: docs/components/timeline/,
+            }
+          - {
+              icon: fa-solid fa-diagram-project,
+              title: Mermaid,
+              url: docs/components/mermaid/,
             }
           - {
               icon: fa-solid fa-chart-line,
@@ -172,24 +173,24 @@ capabilities:
               url: docs/components/echarts/,
             }
           - {
-              icon: fa-solid fa-diagram-project,
-              title: Diagrams,
-              url: docs/components/mermaid/,
+              icon: fa-solid fa-folder-tree,
+              title: 文件树,
+              url: docs/components/filetree/,
+            }
+          - {
+              icon: fa-solid fa-magnifying-glass-plus,
+              title: 图片缩放,
+              url: docs/components/image/,
+            }
+          - {
+              icon: fa-solid fa-images,
+              title: 画廊,
+              url: docs/components/gallery/,
             }
           - {
               icon: fa-solid fa-terminal,
               title: Asciinema,
               url: docs/components/asciinema/,
-            }
-          - {
-              icon: fa-solid fa-chart-simple,
-              title: Infographic,
-              url: docs/components/infographic/,
-            }
-          - {
-              icon: fa-solid fa-file-code,
-              title: API Docs,
-              url: docs/write/openapi/,
             }
 
 content_types:
@@ -232,39 +233,60 @@ content_types:
 
 components:
   eyebrow: 组件参考
-  title: 二十一个组件，按需加载
+  title: 二十七个组件，按需加载
   text: 每个组件均有独立指南与 HTML、打印、Markdown、RSS 输出，脚本按需下发。
-  layout: grid
   columns: 3
-  # 按特色程度排列：先是别处少见的，再是日常写作最常用的。
-  items:
-    - { title: ECharts,   icon: fa-solid fa-chart-line,           desc: '`echarts` 数据围栏',          url: docs/components/echarts/ }
-    - { title: 信息图,    icon: fa-solid fa-chart-pie,            desc: '声明式数据围栏',              url: docs/components/infographic/ }
-    - { title: 思维导图,  icon: fa-solid fa-sitemap,              desc: '大纲变成导图',                url: docs/components/markmap/ }
-    - { title: Asciinema, icon: fa-solid fa-terminal,             desc: '终端录像，本地播放',          url: docs/components/asciinema/ }
-    - { title: PlantUML,  icon: fa-solid fa-project-diagram,      desc: 'UML 图，支持本地渲染',          url: docs/components/plantuml/ }
-    - { title: Draw.io,   icon: fa-solid fa-pen-ruler,            desc: '可回编辑的图',                  url: docs/components/drawio/ }
-    - { title: Mermaid,   icon: fa-solid fa-diagram-project,      desc: '本地图示运行时',              url: docs/components/mermaid/ }
-    - { title: 数学公式,  icon: fa-solid fa-square-root-variable, desc: 'KaTeX 构建期渲染',            url: docs/components/math/ }
-    - { title: 文件树,    icon: fa-solid fa-folder-tree,          desc: '`filetree` 数据围栏',         url: docs/components/filetree/ }
-    - { title: 画廊,      icon: fa-solid fa-images,               desc: '`gallery` 数据围栏',          url: docs/components/gallery/ }
-    - { title: 代码块,    icon: fa-solid fa-code,                 desc: 'Chroma · 行号 · 复制 · 折叠', url: docs/components/code/ }
-    - { title: 图片,      icon: fa-solid fa-image,                desc: '图注 · 尺寸 · 缩放',          url: docs/components/image/ }
-    - { title: 表格,      icon: fa-solid fa-table,                desc: '标题 · 编号 · 矩阵',          url: docs/components/table/ }
-    - { title: 参数表,    icon: fa-solid fa-table-list,           desc: '表格加 `{.fields}`',          url: docs/components/fields/ }
-    - { title: 提示块,    icon: fa-solid fa-circle-info,          desc: '`> [!NOTE]` · 十种类型',      url: docs/components/callout/ }
-    - { title: 标签页,    icon: fa-solid fa-folder,               desc: '围栏加 `{tab=}`',             url: docs/components/tabs/ }
-    - { title: 步骤,      icon: fa-solid fa-list-ol,              desc: '列表加 `{.steps}`',           url: docs/components/steps/ }
-    - { title: 卡片,      icon: fa-solid fa-table-cells-large,    desc: '列表加 `{.cards}`',           url: docs/components/cards/ }
-    - { title: 徽章,      icon: fa-solid fa-tag,                  desc: '行内状态，五种 tone',          url: docs/components/badge/ }
-    - { title: 按键,      icon: fa-solid fa-keyboard,             desc: '键位与组合键',                  url: docs/components/kbd/ }
-    - { title: 引用,      icon: fa-solid fa-file-import,          desc: '引入文件、参数与构建注释',      url: docs/components/include/ }
+  # 按四大认知域排列，与文档侧栏及总览完全同构（6 + 6 + 9 + 6 = 27，每组均为 3 列满行）。
+  groups:
+    - key: writing
+      title: 基础写作
+      meta: 6 个组件 · 正文、代码、表格与行内
+      items:
+        - { title: 提示块,    icon: fa-solid fa-circle-info,          desc: '`> [!NOTE]` · 十种类型',      url: docs/components/callout/ }
+        - { title: 代码块,    icon: fa-solid fa-code,                 desc: 'Chroma · 行号 · 复制 · 折叠', url: docs/components/code/ }
+        - { title: 表格,      icon: fa-solid fa-table,                desc: '标题 · 编号 · 矩阵',          url: docs/components/table/ }
+        - { title: 参数表,    icon: fa-solid fa-table-list,           desc: '表格加 `{.fields}`',          url: docs/components/fields/ }
+        - { title: 徽章,      icon: fa-solid fa-tag,                  desc: '行内状态，五种 tone',          url: docs/components/badge/ }
+        - { title: 按键,      icon: fa-solid fa-keyboard,             desc: '键位与组合键',                 url: docs/components/kbd/ }
+    - key: structure
+      title: 结构与流程
+      meta: 6 个组件 · 切换、流程、导航与复用
+      items:
+        - { title: 标签页,    icon: fa-solid fa-folder,               desc: '围栏加 `{tab=}`',             url: docs/components/tabs/ }
+        - { title: 步骤,      icon: fa-solid fa-list-ol,              desc: '列表加 `{.steps}`',           url: docs/components/steps/ }
+        - { title: 时间轴,    icon: fa-solid fa-timeline,             desc: '定义列表加 `{.timeline}`',    url: docs/components/timeline/ }
+        - { title: 更新,      icon: fa-solid fa-clock-rotate-left,    desc: '标题加 `{.update}`',          url: docs/components/update/ }
+        - { title: 卡片,      icon: fa-solid fa-table-cells-large,    desc: '列表加 `{.cards}`',           url: docs/components/cards/ }
+        - { title: 引用,      icon: fa-solid fa-file-import,          desc: '引入文件、参数与构建注释',     url: docs/components/include/ }
+    - key: diagrams
+      title: 图表与公式
+      meta: 9 个组件 · 工程图示、数据地图、结构树与公式
+      items:
+        - { title: Mermaid,   icon: fa-solid fa-diagram-project,      desc: '本地图示运行时',              url: docs/components/mermaid/ }
+        - { title: PlantUML,  icon: fa-solid fa-project-diagram,      desc: 'UML 图，支持本地渲染',        url: docs/components/plantuml/ }
+        - { title: Draw.io,   icon: fa-solid fa-pen-ruler,            desc: '可回编辑的图',                url: docs/components/drawio/ }
+        - { title: ECharts,   icon: fa-solid fa-chart-line,           desc: '`echarts` 数据围栏',          url: docs/components/echarts/ }
+        - { title: 信息图,    icon: fa-solid fa-chart-pie,            desc: '声明式数据围栏',              url: docs/components/infographic/ }
+        - { title: 地图,      icon: fa-solid fa-map-location-dot,     desc: '`map` 围栏 · 内置 Leaflet',   url: docs/components/map/ }
+        - { title: 思维导图,  icon: fa-solid fa-sitemap,              desc: '大纲变成导图',                url: docs/components/markmap/ }
+        - { title: 文件树,    icon: fa-solid fa-folder-tree,          desc: '`filetree` 数据围栏',         url: docs/components/filetree/ }
+        - { title: 公式,      icon: fa-solid fa-square-root-variable, desc: 'KaTeX 构建期渲染',            url: docs/components/math/ }
+    - key: media
+      title: 媒体与嵌入
+      meta: 6 个组件 · 图片、音视频、终端录像与帖子
+      items:
+        - { title: 图片,      icon: fa-solid fa-image,                desc: '图注 · 尺寸 · 缩放',          url: docs/components/image/ }
+        - { title: 画廊,      icon: fa-solid fa-images,               desc: '`gallery` 数据围栏',          url: docs/components/gallery/ }
+        - { title: 视频,      icon: fa-solid fa-film,                 desc: '原生播放 · 平台点击加载',     url: docs/components/video/ }
+        - { title: 音频,      icon: fa-solid fa-volume-high,          desc: '带标题播放 · 单声源互斥',     url: docs/components/audio/ }
+        - { title: Asciinema, icon: fa-solid fa-terminal,             desc: '终端录像，本地播放',          url: docs/components/asciinema/ }
+        - { title: 帖子,      icon: fa-solid fa-quote-left,           desc: '离线引用卡片，支持嵌套',      url: docs/components/social/ }
 
 cases:
   eyebrow: 案例
   title: 生产站点案例
   # Items come from content/case/ — see layouts/_partials/landing/sections/case-cards.html
-  text: 第三方社区项目与 PGSTY 生态真实站点，完整收录于[案例库](case/)。
+  text: 第三方社区项目与 PGSTY 生态 79 个真实站点，完整收录于[案例库](case/)。
   columns: 3
   groups:
     - key: community
@@ -272,7 +294,7 @@ cases:
     - key: ecosystem
       title: PGSTY 生态
   footer_cta:
-    label: 浏览全部 45 个案例
+    label: 浏览全部 79 个案例
     url: case/
     icon: fa-solid fa-layer-group
   footer_guide:
@@ -294,12 +316,13 @@ faq:
   eyebrow: 选型之前
   title: 值得先问的几个问题
   items:
-    - question: OINK 1.6.0 有哪些变化？
+    - question: OINK 1.7.0 有哪些变化？
       answer: >-
-        [OINK 1.6.0](release/1.6.0/) 将样式表改为纯 CSS 以兼容 Hugo 0.170+，
-        移除 Bootstrap JS 与 Lunr，引入支持无空格中文查询、大索引自动拆分与参数锚点的
-        扫描式 BM25 本地搜索，并升级 Markmap、ReDoc、Mermaid、KaTeX 等全部随包运行时。
-        任意 edition 的 Hugo（0.169.0+）即可构建，无需 Sass 编译器。
+        [OINK 1.7.0](release/1.7.0/) 新增六种内容组件（时间线、更新条目、视频、音频、
+        帖子与内置 Leaflet 1.9.4 的地图），加入面向富文本编辑器的排版复制，将快捷键
+        重构为 29 个单键快捷键与顶层速查表并新增本地浏览历史（`H`）、一键折叠（`O`）、正文宽度调节
+        （`-`/`=`）与读者关闭开关；精细打磨四套视觉预设，为 Paper 换上暖白纸面、陶红强调色
+        与各预设独立的系统中文排版；并新增 Markmap 导图下载图标、自定义 ECharts 主题与归档版本横幅样式。
     - question: 哪里需要 Node.js、npm 或打包器吗？
       answer: >-
         不需要。站点只依赖任意 edition 的 Hugo（0.169.0+）与纯 CSS 构建，无需 Sass 编译器、
@@ -313,7 +336,7 @@ faq:
         见[升级与迁移](docs/admin/upgrade/)。
     - question: OINK 只适合大型文档树吗？
       answer: >-
-        不是。[45 个案例站点](docs/about/showcase/)里既有两页的小工具和个人博客，
+        不是。[79 个案例站点](docs/about/showcase/)里既有两页的小工具和个人博客，
         也有近五千页的八语种文档中心、在线书籍与 Expo 影像档案馆。外壳向下缩放和向上扩展一样自然。
     - question: 中文与其它非拉丁文字的内容怎么处理？
       answer: >-
@@ -330,8 +353,8 @@ faq:
     - question: AI 助手与爬虫拿到的是什么？
       answer: >-
         `outputs` 里加上 `markdown`，每个页面就有一份 `index.md`，由 `rel="alternate"` 指过去；
-        `LLMS` 输出格式在站点根目录写出 `llms.txt`。「在 ChatGPT / Claude 中打开」这类页面动作
-        存在，但默认关闭，因为它会把读者的 URL 交给第三方。
+        `LLMS` 输出格式在站点根目录写出 `llms.txt`。「在 ChatGPT / Claude 中打开」
+        这类页面动作存在，但默认关闭，因为它会把读者的 URL 交给第三方。
     - question: 许可证是什么？和 Docsy 是什么关系？
       answer: >-
         Apache License 2.0。OINK 是 Docsy 的分叉并独立演化；Docsy 的源码历史、署名与 Apache-2.0

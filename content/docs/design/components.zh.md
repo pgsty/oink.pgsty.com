@@ -5,11 +5,11 @@ description: OINK 创作原语、校验、Book、发布行为与输出降级的�
 weight: 20
 icon: fa-solid fa-cubes-stacked
 search_keywords: [OINK 组件契约, shortcode API, Markdown 组件, Book, 发布, 校验]
-contract_status: v1.6.0
+contract_status: v1.7.0
 ---
 
-> [!NOTE] 组件版本
-> 当前发布版本为 OINK v1.6.0。时间线、更新条目、视频、音频、社交引用和地图已在 `main` 实现，拟随 v1.7.0 发布。
+> [!NOTE] OINK 1.7.0 契约
+> 本契约描述 OINK v1.7.0。
 
 教程与完整示例位于面向读者的[组件](/zh/docs/components/)专栏。本页定义这些
 指南所依赖的 API 与行为。
@@ -65,9 +65,9 @@ OINK 有 30 个 shortcode：
 | 图表与数据 | `mermaid`、`plantuml`、`markmap`、`echarts`、`infographic` 围栏 | 无 | 只加载选中的本地运行时 |
 | 时间轴 | 定义列表加 `{.timeline}` | 无 | 无 |
 | 更新 | 标题加 `{.update date= tags=}` | 无 | 无 |
-| 视频 | 指向视频文件或平台 URL 的块级图片加 `{caption= poster= track= autoplay=}` | 无 | 自动播放、已启用播放器或同页 2 个及以上播放器时加载 `media` |
-| 音频 | 指向音频文件的块级图片加 `{caption= id= preload=}` | 无 | 同页 2 个及以上播放器时加载 `media` |
-| 社交帖子 | 无 | `social` | 无 |
+| 视频 | 指向视频文件或平台 URL 的块级图片加 `{caption= poster= track= autoplay=}` | 无 | 文件播放器或已启用的平台卡片加载 `media` |
+| 音频 | 指向音频文件的块级图片加 `{caption= id= preload=}` | 无 | 文件播放器加载 `media` |
+| 帖子 | 无 | `social` | 无 |
 | 地图 | `map` 数据围栏 | 无 | 仅在 `params.map` 完整时加载 Leaflet |
 
 > [!NOTE] OINK 1.4.0 的统一图表阅读
@@ -92,21 +92,21 @@ OINK 有 30 个 shortcode：
 > 文字与背景 token 改为 `--mm-text` 和 `--mm-bg`。SVG 链接具备无障碍名称，
 > 注释支持键盘打开，Escape 关闭后恢复焦点。
 > 已打开的注释随外观变化更新，浏览器打印时隐藏。注释 chunk 加载失败时恢复
-> 对应导图的完整源码与焦点，不影响其他导图。
+> 对应导图的完整源码与焦点，并从浮层协调器注销这张导图的注释处理函数。
 > 注释链接使用正文链接颜色，并带有下划线。
 > 打印结束后恢复注释焦点；若浮层已关闭，则恢复到对应标记。
 > Asciinema 在播放器挂载前保留录像链接，禁用 JavaScript 或播放器资源不可用时
 > 也能访问原始录像。录像获取或解析失败时恢复链接，并转移播放器原有的焦点。
 
-> [!NOTE] 尚未发布
-> 已在主题 main 分支实现，晚于 v1.6.0；目前没有包含它的版本标签。
->
+> [!NOTE] OINK 1.7.0 修复
 > Asciinema 的 `markers="时间:标签, …"` 以 `[时间, 标签]` 对的列表交给播放器，
-> 标签去掉首尾空白；这是 asciinema-player 3.18 除纯数字外唯一接受的写法。标签
+> 标签去掉首尾空白；这是内置播放器除纯数字外唯一接受的写法。标签
 > 中的冒号保留，只写时间的标记得到空标签。此前的输出把这些对摊平成一个扁平列表，
 > 播放器会拒绝它，所以只要写了 `markers`，页面上就只剩录像链接。
 
 ## 可选组件呈现 {#component-refinement}
+
+当标签面板只含一张表格时，表格滚动区铺满面板。宽表在该区域内横向滚动。
 
 OINK 1.4.0 支持以下可选呈现变体。示例见[组件呈现](/zh/docs/components/presentation/)。
 
@@ -261,9 +261,7 @@ FileTree 围栏参数 `wrap` 接受 `true` 或 `false`，默认 `false`；设置
 ECharts 输入是声明式 JSON/YAML；回调使用
 `window.OinkEchartsFunctions` 中的 `$fn:<name>`，绝不执行嵌入脚本。
 
-> [!NOTE] 尚未发布
-> 已在主题 main 分支实现，晚于 v1.6.0；目前没有包含它的版本标签。
->
+> [!NOTE] 自 OINK 1.7.0 起提供
 > 围栏的 `theme` 不是 ECharts 内置的 `dark` 时，指向 `window.OinkEchartsThemes`
 > 中的条目；该对象把主题名映射到 ECharts 主题对象。引擎要等图表到期才加载，
 > 站点脚本没有调用 `echarts.registerTheme()` 的时机，所以运行时在每张图表初始化前
@@ -287,9 +285,10 @@ Markmap 节点文字在屏幕显示下通过 `--markmap-text-color` 继承页面
 
 OINK 1.4.0 中，Markmap 在首次可测量显示和容器尺寸变化时适配，也覆盖
 隐藏面板展开的情况。读者平移或缩放后暂停自动适配，布局变化保留当前视图。
-可用键盘操作的 **适应窗口** 按钮恢复完整导图并重新启用自动适配。布局适配不加
-动画，减少动态效果偏好也会关闭节点过渡。打印时隐藏该按钮。解析前会移除首尾
-空行和共同缩进，保留 YAML 配置与大纲层级。
+导图右下角的无边框小图标按钮提供可用键盘操作的 **适应窗口**（恢复完整导图并
+重新启用自动适配）与 **下载 SVG**（导出内联主题配色与背景的独立 SVG）。布局
+适配不加动画，减少动态效果偏好也会关闭节点过渡。打印时隐藏这组按钮。解析前会
+移除首尾空行和共同缩进，保留 YAML 配置与大纲层级。
 
 数学公式使用 Hugo 构建时生成的 KaTeX 产物和本地 CSS，不加载浏览器数学运行时。
 HTML 和 Print 使用本地样式表，并保留 MathML 与作者的 TeX 源文。
@@ -304,10 +303,10 @@ Swagger 与 Redoc 接受 HTTP(S) 规范 URL 或以 `static/` 为根的路径，�
 资源。Redoc 将开头有无斜杠视为等价，并把本地路径与 `baseURL` 拼接。只有 HTML
 输出可交互；Print、Markdown 与 RSS 输出静态规范链接。
 
-### 时间轴、更新、媒体、社交帖子与地图 {#timeline-media-social-and-maps}
+### 时间轴、更新、媒体、帖子与地图 {#timeline-media-social-and-maps}
 
-> [!NOTE] 尚未发布
-> 已在主题 main 分支实现，晚于 v1.6.0；目前没有包含它的版本标签。
+> [!NOTE] 自 OINK 1.7.0 起提供
+> 时间轴、更新条目、视频、音频、帖子与地图随 OINK v1.7.0 发布。
 
 紧跟 `{.timeline}` 的定义列表就是时间轴：术语是自由文本的标记，定义是可含块级内容的事件。
 `<dl>` 由 Goldmark 生成；主题只添加作用域为 `.td-content dl.timeline` 的 CSS，宽屏时分出标记列，窄屏或位于 `.td-content-card` 容器内时保持单列。
@@ -320,28 +319,29 @@ Swagger 与 Redoc 接受 HTTP(S) 规范 URL 或以 `static/` 为根的路径，�
 带 `{.update}` 标记的标题就是一条更新日志条目，另外接受字符串型 `date`（`YYYY`、`YYYY-MM` 或合法日历 `YYYY-MM-DD`，渲染为 `<time datetime>`）与字符串型 `tags`（支持 `,` 与中文全角 `，` 分隔的纯文本，渲染为中性 chip）。
 标题本身保持不变，因此 TOC 条目、锚点、搜索小节与 Print ID 都与普通标题一样；标题之后跟一行 `td-update-meta`，各项之间插入 `<span class="td-update-sep">, </span>` 分隔符。这一行采用行内排版而非 flex，分隔符是 `font-size: 0` 的文档流内文本，且不设 `user-select: none`，因此 Chromium、Firefox 与 WebKit 的纯文本复制、离线搜索（`offline_search_index: content`）、RSS 阅读器与无障碍树都能保持词项独立；flex 子项会被块级化，复制出的文本因而断行或粘连。
 无效日历日期及非字符串的 `date`、`tags` 取值会按页面路径告警并被丢弃，同时保留标题与其余合法元数据；没有该标记时，`date` 与 `tags` 属于未知属性。
+不加引号的完整日期（如 `{.update date=2026-11-01}`）会让 Goldmark 丢弃整个属性块并把它留在标题文字里；只要标题文字末尾是一个未被解析、含 `.update` 的 `{…}` 块，无论前面有没有 `#id`（`{.update date=2026-11-01}` 或 `{#v1-6-0 .update date=2026-11-01}`），`render-heading.html` 都会告警，说明这些属性没有被解析、仍留在标题文字中，并提示每个值都加引号。
 Goldmark 会给每个标题加上 `id` 属性，因此当该 id 是唯一属性时，`render-heading.html` 走快速路径、跳过属性校验 partial，输出与完整路径逐字节一致。
 更新样式独立于 `assets/css/td/update.css`，用 `:has(+ .td-update-meta)` 与各项自身的块向外边距替代负外边距，打印时无论屏幕配色如何都映射到 `--td-print-*` 令牌并抑制 `h2.update` 的底边线；`rich-copy.js` 在纸张调色板上将 `.td-update-meta` 格式化为分隔的元数据项。
 
 目标为视频或音频文件，或 YouTube、Bilibili、Vimeo URL 的块级图片属于媒体，由 `content/media.html` 处理。
 文件按解析到的资源的 Hugo 媒体类型识别，否则按扩展名识别；解析到的本地资源会保留查询参数与片段（如 `#t=30,60`）。图片行为、其他非图片资源的告警以及查找顺序都不变；这套顺序现在由 `content/resource-lookup.html` 统一提供给两个解析器。
-视频接受 `caption`、`num`（Book `fig` 目标）、`id`、`poster`、`track`（一个页面语言的 WebVTT 文件；本地资源保留查询参数；远程 `track` URL 会在 `<video>` 上输出 `crossorigin="anonymous"`）、`autoplay`、`width` 与 `height`（须为成对正整数；只设定容器宽高比，不覆盖海报 `<img>` 的固有尺寸）。音频接受 `caption`、`id` 与 `preload`（`metadata` 或 `none`；同页前 6 个音频默认 `metadata`，第 7 个起默认 `none`；`id` 与同页另一个无编号音视频 figure 或编号 Book 目标重复时告警，无论谁先出现都从后出现的一方丢弃；不与标题或普通图片的 ID 比较）。音频 figure 不携带 `.td-figure`，将方括号文字显示为可见标题，并通过 `aria-labelledby`（带说明时另加 `aria-describedby`）关联到 `<audio>`；在 `content/render-block.html` 内会自动重写生成的 ID 作用域。
-`autoplay=true` 输出 `muted loop playsinline`，但不输出 `autoplay` 属性；`js/chunks/media.js` 只在视频至少一半可见时播放，读者要求减少动态效果时绝不播放，离开视口即暂停。原生控件始终保留。页面上有两个及以上 `<audio>` 或 `<video>` 播放器时，`js/chunks/media.js` 同时负责同页互斥播放：播放器变为有声时（带声音开始播放，或正在播放时被取消静音；在捕获阶段监听 `play` 与 `volumechange`），会暂停页面上其它所有有声播放器；点击展开已启用的平台视频卡片时也会先暂停本地有声播放器。静音或音量为 0 的播放器（包括自动播放循环与作者自写的静音循环）既不打断别人也不被打断；跨域 iframe 中的平台播放器此后无法被本地播放器暂停。只有一个音频播放器的页面不加载脚本。
-平台 URL 渲染为链接卡片（YouTube `/shorts/` 在未给海报或尺寸时默认按 `9:16` 占位；空名称回退为观看地址；Draw.io 跳过 `a.td-media-card` 内的图片，其他带链接的图片照常检测）。卡片以 `--td-media-ratio` 携带比例，`media.css` 据此为卡片及替换它的播放器推导宽高比与 `min(100%, 80vh × 比例)` 的宽度上限；支持容器单位时，比例改为按 figure 宽度计算的最小高度，换行的长标题在各引擎中都会撑高卡片。对 `params.video_embeds` 列出的平台，普通点击会加载带沙箱的播放器 iframe（`allow="autoplay; picture-in-picture; fullscreen"`、`sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox"`），其 URL 由主题根据校验过的 ID 推导（`youtube-nocookie.com`、带 `danmaku=0` 的 Bilibili、带 `dnt=1` 的 Vimeo，支持 `youtube-nocookie.com`、`music.youtube.com`、`player.vimeo.com`、Vimeo `?h=`/`#t=`、`b23.tv/BV…`、Bilibili 嵌入代码地址 `player.bilibili.com/player.html?bvid=…|aid=…` 与十进制前导零时间戳）；点击之前不发出任何请求。
+视频接受 `caption`、`num`（Book `fig` 目标）、`id`、`poster`、`track`（一个页面语言的 WebVTT 文件；本地资源保留查询参数；远程 `track` URL 会在 `<video>` 上输出 `crossorigin="anonymous"`）、`autoplay`、`width` 与 `height`（须为成对正整数；只设定容器宽高比，不覆盖海报 `<img>` 的固有尺寸）。音频接受 `caption`、`id` 与 `preload`（`metadata` 或 `none`；同页前 6 个音频默认 `metadata`，第 7 个起默认 `none`，计数沿用 Hugo 的渲染顺序：先数直接写在页面中的播放器，再数 shortcode 正文（`tabs`、`social`、`include`、卡片）里的播放器；`id` 与同页另一个无编号音视频 figure 或编号 Book 目标重复时告警，无论谁先出现都从后出现的一方丢弃；不与标题或普通图片的 ID 比较）。音频 figure 不携带 `.td-figure`，将方括号文字显示为可见标题，并通过 `aria-labelledby`（带说明时另加 `aria-describedby`）关联到 `<audio>`；在 `content/render-block.html` 内会自动重写生成的 ID 作用域。
+`autoplay=true` 输出 `muted loop playsinline`，但不输出 `autoplay` 属性；`js/chunks/media.js` 只在视频至少一半可见时播放，读者要求减少动态效果时绝不播放，离开视口即暂停。原生控件始终保留。页面上有两个及以上 `<audio>` 或 `<video>` 播放器时，`js/chunks/media.js` 同时负责同页互斥播放：播放器变为有声时（带声音开始播放，或正在播放时被取消静音；在捕获阶段监听 `play` 与 `volumechange`），会暂停页面上其它所有有声播放器；点击展开已启用的平台视频卡片时也会先暂停本地有声播放器。静音或音量为 0 的播放器（包括自动播放循环与作者自写的静音循环）既不打断别人也不被打断；跨域 iframe 中的平台播放器此后无法被本地播放器暂停。含文件播放器的 HTML 页面均加载共享媒体脚本。时长已知时，已播部分使用 `--td-accent`，默认取自预设，页面可用 `theme_color` 和 `theme_color_dark` 覆盖。浏览器开放原生时间轴时直接给轨道着色，其余浏览器在播放器正下方显示相同的色带。拖动、字幕与音量继续使用原生控件。焦点位于原生播放器内时，全站单键快捷键自动让位。打印采用静态输出，强制颜色模式使用系统控件。
+平台 URL 渲染为链接卡片（YouTube `/shorts/` 在未给海报或尺寸时默认按 `9:16` 占位；空名称回退为观看地址；Draw.io 跳过 `a.td-media-card` 内的图片以及 `img.td-social__avatar`、`img.td-map__thumb`，其他带链接的图片照常检测）。卡片以 `--td-media-ratio` 携带比例，`media.css` 据此为卡片及替换它的播放器推导宽高比与 `min(100%, 80vh × 比例)` 的宽度上限；支持容器单位时，比例改为按 figure 宽度计算的最小高度，换行的长标题在各引擎中都会撑高卡片。对 `params.video_embeds` 列出的平台，普通点击会加载带沙箱的播放器 iframe（`allow="autoplay; picture-in-picture; fullscreen"`、`sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox"`），其 URL 由主题根据校验过的 ID 推导（`youtube-nocookie.com`、带 `danmaku=0` 的 Bilibili、带 `dnt=1` 的 Vimeo，支持 `youtube-nocookie.com`、`music.youtube.com`、`player.vimeo.com`、Vimeo `?h=`/`#t=`、`b23.tv/BV…`、Bilibili 嵌入代码地址 `player.bilibili.com/player.html?bvid=…|aid=…` 与十进制前导零时间戳；起始时间既不是秒数也不是 `1h2m3s` 形式时，例如 `t=1:30`，告警并从 0 开始）。播放器在点击后才加载。
 Bilibili 嵌入地址带有正十进制整数 `cid` 时，播放器保留该分 P 的内容 ID，其余情况使用 `p` 选择分 P。作者提供的海报会从指定的 URL 独立加载。
 行内媒体渲染为链接。专用 Print 输出带可见 `.td-media__link` URL 的静态 figure（包含平台观看地址）；直接用浏览器打印 HTML 页面时则显示屏幕上隐藏的 `.td-media__url` 行，并在 `@media print` 下无论屏幕主题如何都重置为纸张调色板，卡片替换为 iframe 后仍保留回退地址；RSS 为视频/平台输出静态 figure（含观看地址与真实海报尺寸），为音频将标题直接链接到绝对文件 URL；Markdown 保留作者写下的那一行；`rich-copy.js` 保留起始对齐与可点击录音 URL（未点击的平台卡片不重复输出 URL，点击替换后仍保留回退地址）。不带 `.td-figure` 的媒体 figure 通过 `:where(.td-media):not(.td-figure)` 保持 1.5rem/1.75rem 外边距，比 Bootstrap 的 `figure` 重置多一级类选择器权重。连续音频 figure（间距 16px）以及紧随其后的 `.td-callout--details` 文字稿（间距 8px）通过 `:has()` 正向边距编组，使音频与文字稿的间距小于相邻两组之间的间距（24px）。
 
 `social` 只用页面内容引用一条帖子，参数为 `author`、`handle`、`avatar`、`date`、`url` 与 `platform`（顶层卡片默认 `x`，嵌套引用默认 `none`，另有 `bluesky`、`mastodon`、`threads`、`weibo`、`zhihu`、`telegram`、`linkedin`，决定图标以及向辅助技术播报、写入 Markdown 与 RSS 的平台名；嵌套省略 `platform` 时同时省略图标与视觉隐藏平台名，显式指定则两者同时呈现）。
-参数校验字符串类型并拒绝未知或位置参数；`avatar` 以 `parameter="avatar"` 经过 `content/image-resolve.html`，并在项目自己的 `static/` 目录存在时，对解码、规范化后在该目录中找不到的静态头像离线告警，告警 ID 为可关闭的 `social:avatar-static`（检查看不到模块挂载与自定义 `staticDir`）；用 `..` 越出站点根目录的静态路径总是告警。无头像时，先剥离开头的 `@`、Unicode 空白、控制字符与不可见格式字符，再按首个字素簇绘制首字符（剥离后为空时回退人物图标）。
+参数校验字符串类型并拒绝未知或位置参数；`avatar` 以 `parameter="avatar"` 经过 `content/image-resolve.html`，并在项目自己的 `static/` 目录存在时，对解码、规范化后在该目录中找不到的静态头像离线告警，告警 ID 为可关闭的 `social:avatar-static`（检查看不到模块挂载与自定义 `staticDir`）；用 `..` 越出站点根目录的静态路径总是以同一 ID 告警并被丢弃，卡片改画首字符。无头像时，先剥离开头的 `@`、Unicode 空白、控制字符与不可见格式字符，再按首个字素簇绘制首字符（剥离后为空时回退人物图标）。
 作者显式填写远程头像或附件地址时，读者的浏览器会在显示时请求该资源。
 `date` 仅在 `YYYY-MM`，或 `YYYY-MM-DD` 带可选 `HH:MM[:SS]` 与可选 `Z`／`±HH:MM`，且为真实日历日期时输出 `<time datetime>`，否则输出 `<span class="td-social__date">`；`url` 仅对外链输出 `rel="external"`。
 正文是 Markdown，图片、`gallery` 围栏（在卡片内采用适配预设圆角的紧凑网格）与嵌套 `social`（超过一层时告警）都在正文中组合；HTML 在 RTL 下对账号名和 ISO 时间戳执行 LTR 双向隔离，打印时无论屏幕配色都映射至 `--td-print-*` 纸张令牌，并在原帖链接中附加视觉隐藏的作者名上下文。
 Markdown 通过上下文感知的行内转义（`content/markdown-escape-inline.html`）与行内代码账号名生成可读引用块，并在其后留一个空行，使相邻卡片保持为独立的引用；RSS 在仅含链接的卡片上省略空 `<blockquote>`。社交引用和地图地点链接如果只含查询串或片段，RSS 使用原文 HTML 页面的永久链接补全地址。
 缺少 `author` 与 `handle` 时，有正文则渲染为普通引用块（`url` 只保留为 `cite`，Markdown 中省略；`date`、`platform` 与 `avatar` 被忽略），空正文且有 `url` 则在全部四种输出中渲染含原帖链接的引用块并发出单条告警；正文与 `url` 皆空时不输出。Hugo 内置的 `x` 短代码不被覆盖。
 
-`map` 围栏承载一个 YAML 或 JSON 地点列表（`name`、`lat`、`lng`、`text`、`image`、`link`），按名称以 YAML 解析，而不是靠内容猜测格式。围栏属性为 `caption`、`route`、`zoom`（1–22 无前导零整数）、`height`、`id` 以及相邻标签页的键。
-所有输出都渲染带编号的地点列表：坐标链接以空格分隔、带 `dir="ltr"` 隔离并以十进制格式化（不输出科学计数法），外链地点名带 `rel="external"`，装饰缩略图在 DOM 顺序中位于地点文字之后；非字符串的 `name` 或 `text` 会告警而不会静默转字符串。`params.map` 配置完整时（`tiles` 支持 `{s}`、`{r}` 与 `{-y}`，其他占位符因 Leaflet 无值可填会抛错而在构建时告警，必填纯文本 `attribution`，以及可选的 `attribution_url`、`dark_tiles`、`subdomains`、`max_zoom`（1–22 无前导零整数）与 `loading: lazy | click`），HTML 另加画布和校验后的地点 JSON；`content-components.js`（在 `tabs.js` 隐藏非激活面板之后于 `DOMContentLoaded` 注册观察器）只在这些页面加载随主题内置的 Leaflet 引擎与样式表。
-地图关闭滚轮缩放；由于 Leaflet 在所有支持 Pointer Events 的浏览器上都报告触屏，拖拽默认关闭，鼠标或触控笔进入或按下地图时开启、手指按下时关闭，单指滑动始终滚动页面；焦点位于画布内时全站 `keyboard-nav.js` 单键快捷键自动让位；遵守 `prefers-reduced-motion`；多地点且显式指定 `zoom` 时直接按边界中心执行单次 `setView`，避免浪费瓦片请求；带编号的 HTML 标记点附带完整 `aria-label` 地名；弹窗与可选版权链接均通过 DOM API（`textContent`，并校验 `href` 协议且为外链地点补上 `rel="external"`）构建；用 `Enter` 打开的弹窗获得焦点，按 `Escape` 或关闭按钮关闭后焦点回到标记点；点击列表条目可平移定位并打开对应弹窗；未配 `dark_tiles` 时深色模式仅温和降亮瓦片而不反色；`dark_tiles` 全部失败时改用降亮后的浅色瓦片；引擎或浅色瓦片全部加载失败时隐藏画布并保留列表，且等 Leaflet 分发完失败图层的 `load` 后才移除地图。`loading: click` 的加载按钮列出地图可能请求的全部域名（`{s}` 写作 `*`，含 `dark_tiles` 域名，按从左到右隔离显示），从键盘激活时焦点移到挂载后的地图。无效地点（含 `NaN`/`Inf` 坐标）告警并跳过；浏览器打印隐藏画布并使用打印墨色令牌；`rich-copy.js` 排除画布与社交装饰头像，将地图与社交卡片保持起始对齐，并将地图缩略图独立换行。
+`map` 围栏承载一个 YAML 或 JSON 地点列表（`name`、`lat`、`lng`、`text`、`image`、`link`），按名称以 YAML 解析，而不是靠内容猜测格式。围栏属性为 `caption`、`route`、`zoom`（1–22 无前导零整数）、`height`（正的 `px`、`rem`、`em`、`vh` 或 `vw` 长度；百分比在没有自身高度的 figure 中无从计算，零长度也看不见，两者都告警并使用默认高度）、`id` 以及相邻标签页的键。`style` 与 `on*` 在进入渲染钩子之前就被 Hugo 取走或剥离，因此会被忽略且不告警；`num` 等其他未知属性会告警。列表中没有任何有效地点时（包括 `[]`）告警且不输出。
+浅色和深色瓦片主机名都只接受 `{s}` 占位。用键盘加载时，按钮保留焦点至引擎就绪。如果读者已移开焦点，挂载时保留新焦点。如果焦点所在的地图加载失败，焦点移到首个坐标链接。Markdown 与 LLMS 保留原始围栏。HTML、打印与 RSS 渲染带编号的地点列表：坐标链接以空格分隔、带 `dir="ltr"` 隔离并以十进制格式化（不输出科学计数法），外链地点名带 `rel="external"`，装饰缩略图在 DOM 顺序中位于地点文字之后；非字符串的 `name` 或 `text` 会告警而不会静默转字符串。`params.map` 配置完整时（`enable: true`，`tiles` 支持 `{s}`、`{r}` 与 `{-y}`，其他占位符因 Leaflet 无值可填会抛错而在构建时告警，必填纯文本 `attribution`，以及可选的 `attribution_url`、`dark_tiles`、`subdomains`、`max_zoom`（1–22 无前导零整数）与 `loading: lazy | click`；`tiles`、`dark_tiles`、`attribution_url` 与 `subdomains` 的首尾空白会被去掉，未知键（例如被 Hugo 转成小写的 `maxZoom`）告警，`subdomains` 不是带引号的字符串时（YAML 会把不加引号的数字读成数值）告警并沿用 Leaflet 默认值），HTML 另加画布和校验后的地点 JSON，弹窗缩略图带宽高；`content-components.js`（在 `tabs.js` 隐藏非激活面板之后于 `DOMContentLoaded` 注册观察器）只在这些页面加载随主题内置的 Leaflet 引擎与样式表。共享加载器在地图位于屏幕内、视口下方 320px 以内，或位于阅读位置上方任意处时挂载它；读者从链接直接打开靠后的小节时，上方的地图立即加载，正在读的文字不会在稍后被推下去。只有 `loading: click` 在点击按钮之前不发任何请求。
+地图关闭滚轮缩放；由于 Leaflet 在所有支持 Pointer Events 的浏览器上都报告触屏，拖拽默认关闭，鼠标或触控笔进入或按下地图时开启、手指按下时关闭，单指滑动始终滚动页面；焦点位于画布内时全站 `keyboard-nav.js` 单键快捷键自动让位；遵守 `prefers-reduced-motion`；多地点且显式指定 `zoom` 时直接按边界中心执行单次 `setView`，避免浪费瓦片请求；带编号的 HTML 标记点附带完整 `aria-label` 地名；弹窗与可选版权链接均通过 DOM API（`textContent`，并校验 `href` 协议且为外链地点补上 `rel="external"`）构建；`.td-map__popup` 采用块级布局并设置 `overflow-wrap: break-word`，弹窗内段落重置 `text-wrap: inherit`，避免网格最小宽度或正文的 `text-wrap: pretty` 干扰 Leaflet 测宽时的 `white-space: nowrap` 而导致气泡过窄，宽度上限为 `min(18rem, calc(100vw - 5.5rem))`；用 `Enter` 打开的弹窗获得焦点，按 `Escape` 或关闭按钮关闭后焦点回到标记点；点击列表条目可平移定位并打开对应弹窗；未配 `dark_tiles` 时深色模式仅温和降亮瓦片而不反色；`dark_tiles` 全部失败时改用降亮后的浅色瓦片；引擎或浅色瓦片全部加载失败时隐藏画布并保留列表，且等 Leaflet 分发完失败图层的 `load` 后才移除地图。`loading: click` 的加载按钮列出地图可能请求的全部域名（`{s}` 写作 `*`，含 `dark_tiles` 域名，按从左到右隔离显示），加载完成时，若按钮仍有焦点，将焦点移到地图。无效地点（含 `NaN`/`Inf` 坐标）告警并跳过；浏览器打印隐藏画布并使用打印墨色令牌；`rich-copy.js` 排除画布与社交装饰头像，将地图与社交卡片保持起始对齐，并将地图缩略图独立换行。
 
 ### Book {#book}
 

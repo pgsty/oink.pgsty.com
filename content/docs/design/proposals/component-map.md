@@ -6,24 +6,24 @@ weight: 29
 icon: fa-solid fa-map-location-dot
 search_keywords: [map, openstreetmap, leaflet, places, markers, route, travel, tiles, gps, exif, component]
 design_kind: proposal
-design_status: implemented
+design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] Implemented, awaiting release
-> Implemented on the theme's `main` branch and documented in the
-> [Map guide](/docs/components/map/). Not yet in a tagged release. The shared decisions
-> are in the [overview](/docs/design/proposals/content-components-expansion/).
+> [!NOTE] Accepted in OINK 1.7.0
+> Shipped in OINK v1.7.0, documented in the [Map guide](/docs/components/map/),
+> and governed by the [Components contract](/docs/design/components/#timeline-media-social-and-maps).
+> Shared decisions are in the [overview](/docs/design/proposals/content-components-expansion/).
 
 | Record | Value |
 | --- | --- |
-| Status | Implemented 2026-11-27 on `main`; awaiting release |
+| Status | Accepted and shipped in OINK v1.7.0 (implemented 2026-11-27) |
 | Owner | OINK maintainers |
 | Delivery stage | S5; photo pins from GPS metadata later |
 | Form | Data fence: ```` ```map ```` with a YAML or JSON list of places |
 | New public API | The `map` fence and its fields; configuration `params.map` |
 | Runtime | None by default; vendored Leaflet through `content-components.js` when maps are enabled |
-| Affected surface | `layouts/_markup/render-codeblock-map.html`, `scripts.html`, `content-components.js`, `VENDOR.json`, a stylesheet layer, the configuration schema, two locale keys, a new guide at `/docs/components/map/` |
+| Affected surface | `layouts/_markup/render-codeblock-map.html`, `scripts.html`, `content-components.js`, `VENDOR.json`, a stylesheet layer, the configuration schema, three locale keys, a new guide at `/docs/components/map/` |
 
 ## Summary {#summary}
 
@@ -41,8 +41,8 @@ proposal_date: 2026-11-27
 ```
 ````
 
-Every output renders the places as a numbered list with names, notes,
-thumbnails, and coordinate links to OpenStreetMap. That list is the content.
+HTML, Print and RSS render a numbered list with names, notes, thumbnails and
+OpenStreetMap coordinate links. Markdown and LLMS preserve the authored fence.
 When a site enables maps and names its tile service, an interactive map with
 matching numbered markers appears above the list in HTML. Nothing is enabled,
 and no tile service is chosen, by default.
@@ -58,7 +58,7 @@ regional blocking, third-party scripts), or nothing. OINK has no way to say
 ## Design principles {#principles}
 
 1. **The list is the content; the map enhances it.** A reader without the map
-   (Print, RSS, LLMS, no JavaScript, a blocked tile host) gets the same places,
+   (Print, RSS, no JavaScript, a blocked tile host) gets the same places,
    in the same order, with working links.
 2. **Network only after complete configuration.** Tiles are third-party
    requests from the reader's browser. As with Draw.io, the theme ships no
@@ -76,7 +76,7 @@ regional blocking, third-party scripts), or nothing. OINK has no way to say
 
 ### Goals {#goals-list}
 
-- A readable place list in every output, with zero configuration.
+- A static list in HTML, Print and RSS and the original place data in Markdown and LLMS, with zero configuration.
 - An opt-in interactive map: numbered markers, popups with name, note,
   thumbnail, and link, an optional route line, and dark tiles when provided.
 - No page scroll hijacking, keyboard operation, and localized controls.
@@ -117,8 +117,8 @@ GeoJSON's `[lng, lat]` arrays.
 | --- | --- |
 | `caption` | Plain text figure caption |
 | `route` | `true` connects places in list order with a line |
-| `zoom` | Integer 1–19. Default: 15 for one place; fit all places otherwise |
-| `height` | Same validation as the Infographic fence's `height`; default is a responsive frame capped below the viewport height |
+| `zoom` | Integer 1–22 (implemented range; drafted as 1–19). Default: 15 for one place; fit all places otherwise |
+| `height` | A positive `px`, `rem`, `em`, `vh` or `vw` length; a percentage or zero warns and keeps the default, a responsive frame capped below the viewport height |
 | `id` | Validated element ID |
 | `tab`, `group`, `value` | The shared adjacent-tab behavior; the map resizes when its panel is shown |
 
@@ -127,7 +127,7 @@ when a Book number is needed.
 
 ### Static form {#static-form}
 
-Always rendered, in every output:
+HTML, Print and RSS use this static list.
 
 ```html
 <figure class="td-map">
@@ -257,7 +257,7 @@ The first stage documents this and supports only WGS 84 tiles. A later
 | `styles`, `center`, marker `icon` and `tone`, `fallback` image, `full` | Removed for now | Numbered markers tie the map to the list; a fallback image duplicates the list |
 | Hiding the list when the map mounts | Rejected | The list is the legend, the accessible alternative, and the print form |
 | Static map images rendered at build | Rejected | Needs tiles at build time, contradicting offline builds |
-| Click-to-load maps | Deferred | Lazy loading on approach is the engine norm; revisit if privacy review or touch scrolling demands it |
+| Click-to-load maps | Shipped as `loading: click` | Lazy loading on approach is the engine norm and stays the default; `params.map.loading: click` waits for an explicit button where privacy review or touch scrolling demands it |
 
 Costs: a vendored engine to maintain, a configuration step before any map
 appears, and no default look out of the box. These follow directly from the

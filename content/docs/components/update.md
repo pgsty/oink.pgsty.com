@@ -2,7 +2,7 @@
 title: Update
 linkTitle: Update
 description: Write a changelog, a "What's new" page or weekly notes as ordinary headings marked `{.update}`, with an optional date and tags under each entry.
-weight: 74
+weight: 240
 search_keywords: [Update, changelog, what's new, release notes, heading attributes, date, tags, time]
 ---
 
@@ -57,6 +57,13 @@ Any other value — including an impossible calendar date such as `2026-02-30` o
 as `date=2026` — warns, naming the heading and the page. The date is dropped
 while the heading, any valid `tags` and the rest of the entry stay. Leap days
 such as `2024-02-29` pass.
+
+An unquoted full date such as `{.update date=2026-11-01}` goes further wrong:
+Goldmark cannot parse it, drops the whole attribute block and leaves it in the
+heading text. The build warns whenever a heading ends in an unparsed `{…}`
+block containing `.update`, with or without a leading `#id`, as in
+`{.update date=2026-11-01}` or `{#v1-6-0 .update date=2026-11-01}`. Quote
+every value.
 
 ## Tags {#tags}
 

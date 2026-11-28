@@ -87,13 +87,19 @@ async function scan(page, include) {
   return builder.analyze();
 }
 
+// 1x1 light gray PNG returned for tile requests so sitemap scans stay offline.
+const TILE_PNG = Buffer.from(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+X2dIAAAAASUVORK5CYII=',
+  'base64',
+);
+
 // Players, charts, infographics and maps mount as a reader approaches them,
 // and everything above the reader is due at once. Standing at the end of the
 // page therefore mounts every visible one, so the scan still covers what a
 // reader ends up looking at rather than a link or a source block.
 async function mountDeferredComponents(page) {
   const deferred =
-    '[data-td-asciinema], [data-td-echarts], [data-td-infographic], pre > code.language-markmap';
+    '[data-td-asciinema], [data-td-echarts], [data-td-infographic], [data-td-map], pre > code.language-markmap';
   if (!(await page.locator(deferred).count())) return;
 
   await page.waitForFunction(
@@ -109,11 +115,21 @@ async function mountDeferredComponents(page) {
         [...document.querySelectorAll(selector)]
           .filter(shown)
           .some((node) => !node.querySelector(mounted));
+      const waitingMap = () =>
+        [...document.querySelectorAll('[data-td-map]')]
+          .filter(shown)
+          .some(
+            (node) =>
+              !node.classList.contains('td-map--mounted') &&
+              !node.querySelector('[data-td-map-load]') &&
+              !node.querySelector('[data-td-map-canvas][hidden]'),
+          );
       return (
         ![...document.querySelectorAll('pre > code.language-markmap')].some(shown) &&
         !waiting('[data-td-asciinema]', '.ap-player') &&
         !waiting('[data-td-echarts]', 'canvas, pre.td-echarts-source, [role="alert"]') &&
-        !waiting('[data-td-infographic]', 'svg, pre.td-infographic-source, [role="alert"]')
+        !waiting('[data-td-infographic]', 'svg, pre.td-infographic-source, [role="alert"]') &&
+        !waitingMap()
       );
     },
     undefined,
@@ -151,9 +167,13 @@ async function waitForStableMarkmaps(page) {
 
 test.describe('WCAG AA contract', () => {
   test.beforeEach(async ({ page }) => {
-    // Giscus owns its cross-origin widget DOM. Keep the OINK accessibility
-    // contract deterministic and scan only surfaces maintained by this site.
+    // Giscus owns its cross-origin widget DOM, and interactive maps request
+    // tiles from OSM. Keep the OINK accessibility contract deterministic and
+    // offline, scanning only surfaces maintained by this site.
     await page.route('https://giscus.app/**', (route) => route.abort());
+    await page.route(/tile\.openstreetmap\.org/i, (route) =>
+      route.fulfill({ status: 200, contentType: 'image/png', body: TILE_PNG }),
+    );
   });
 
   test('every page in the multilingual sitemap', async ({ page, request }) => {

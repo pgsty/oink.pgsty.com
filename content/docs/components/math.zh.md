@@ -2,7 +2,7 @@
 title: 公式
 linkTitle: 公式
 description: 用 KaTeX 写行内与块级数学公式，构建期渲染完毕，读者不下载任何脚本。
-weight: 100
+weight: 390
 search_keywords: [公式, 数学, Math, KaTeX, LaTeX, TeX, passthrough, chem, mhchem, 化学式, 编号公式, eq]
 ---
 
@@ -144,7 +144,7 @@ c_{\text{seq}} \cdot P = c_{\text{rand}} \cdot \sigma \cdot T
 
 ## 输出形态 {#outputs}
 
-任何写法都不加载 JavaScript。含公式的页面加载一份本地 `katex.min.css` 及其引用的 WOFF2 字体，不含公式的页面两者都不加载。打印时公式照常显示，长公式不滚动。Markdown 输出与 RSS 原样保留 TeX 源码，只有 `eq` shortcode 会变成 `**公式 3-2.** 说明` 加一个 `$$` 块。
+任何写法都不加载 JavaScript。含公式的页面加载一份本地 `katex.min.css` 及其引用的 WOFF2 字体，不含公式的页面两者都不加载。打印时公式照常显示，长公式不滚动。Markdown 输出原样保留 TeX 源码，只有 `eq` shortcode 会变成 `**公式 3-2.** 说明` 加一个 `$$` 块。RSS 中是 KaTeX 渲染好的 HTML 与 MathML：带编号的 `$$` 块前有一行粗体「公式 N.」，带编号的 `eq` 则在公式下方保留「公式 N」图注。
 
 ## 参数参考 {#reference}
 

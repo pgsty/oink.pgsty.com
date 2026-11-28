@@ -1,6 +1,6 @@
 # Get started
 
-> Start from the official OINK Starter. Verify the local site, then customize content, language, brand, integrations, and deployment in that order.
+> Clone the OINK docs site to run a full site locally in two minutes, then build your own personal or project site with an AI agent, from scratch, or inside a project's docs/ folder.
 
 ---
 
@@ -8,112 +8,107 @@ LLMS index: [llms.txt](/llms.txt)
 
 ---
 
-The fastest way to a working OINK site is the
-[OINK Starter](https://github.com/pgsty/oink-starter), a GitHub template
-repository. It pins the current OINK release, builds as soon as you clone it,
-and already contains a three-language Docs, Blog and Book site with deployment
-workflows. You begin by editing a site that works instead of assembling one
-from parts.
+The fastest way to understand OINK is to clone this documentation site and run
+it on your machine. In two minutes you have a complete live site to click
+through—with real Markdown source right beside it—and from there you can hand
+one prompt to an AI coding agent to build your own site.
 
-## Choose a path {#choose}
+## Prerequisites {#tools}
 
-| You have | Take this path | You end up with |
-| --- | --- | --- |
-| Nothing yet | [OINK Starter](/docs/start/starter/) | A small Docs, Blog and Book site in English, Chinese and French, with GitHub Pages and Cloudflare Pages workflows |
-| A Hugo site with its own content | [From scratch](/docs/start/from-scratch/) | Your existing content rendered by OINK, after adding the module and three Goldmark settings |
-| A Docsy site or an older OINK site | [Upgrade](/docs/admin/upgrade/) | The same content, with supported syntax migrated and your overrides reviewed |
+You need Git, Go 1.27.4 or newer, and Hugo 0.169.0 or
+newer in any edition. Go is required because Hugo fetches the theme as a Go
+module; building an OINK site never needs Node.js, npm or a Sass compiler.
 
-## Five-minute baseline {#baseline}
-
-1. ### Install the tools {#tools}
-
-   You need Git, Go 1.27.4 or newer, and Hugo 0.169.0 or
-   newer in any edition. Go is there because Hugo downloads the theme as a Go
-   module; nothing in the build needs Node.js, npm or a Sass compiler.
-
-   ```console
-   $ go version
-   go version go1.27.4 darwin/arm64
-   $ hugo version
-   hugo v0.169.0+extended+withdeploy darwin/arm64
-   ```
-
-   On macOS, `brew install git go hugo` installs all three. On Linux and
-   Windows, follow the [Hugo installation guide](https://gohugo.io/installation/)
-   and the [Go downloads page](https://go.dev/dl/).
-
-1. ### Create the site {#clone}
-
-   To keep what you build, open the
-   [Starter](https://github.com/pgsty/oink-starter), choose
-   **Use this template**, and clone the repository GitHub creates for you. To
-   try it first, clone the original:
-
-   ```bash
-   git clone https://github.com/pgsty/oink-starter.git my-docs
-   cd my-docs
-   hugo server
-   ```
-
-   The first start takes longer while Hugo downloads the theme into its module
-   cache.
-
-1. ### Look around {#open}
-
-   Open <http://localhost:1313/>. Before you change anything, click through
-   Docs, Blog and Book, switch to Chinese (`/zh/`) and French (`/fr/`), try
-   search, and toggle light and dark mode. Anything that misbehaves now was
-   not caused by your edits, which makes it much easier to report or fix.
-
-1. ### Make one visible change {#first-change}
-
-   Change `title` and `baseURL` at the top of `hugo.yaml`, then edit a
-   sentence in `data/home/en.yaml`. The browser reloads by itself. When both
-   changes show up, your configuration, your content and the pinned theme are
-   wired together.
-{.steps}
-
-## Make it yours {#learning-path}
-
-Change one layer at a time and preview after each, so that when something
-breaks you know which change did it.
-
-- [Use OINK Starter](/docs/start/starter/) — The full walkthrough: languages, identity, home page, content, navigation, brand, integrations and deployment, in that order.
-- [Starter repository tour](/docs/start/anatomy/) — Which file controls which part of the site, and what you can delete.
-- [Writing pages](/docs/write/pages/) — Front matter, headings, links, images and drafts.
-- [Components](/docs/components/) — Callouts, tabs, diagrams and the rest, once your content tree has settled.
-- [Brand and appearance](/docs/customize/brand/) — Logo, accent color, fonts, page width and your own CSS.
-- [Deploy](/docs/admin/deploy/) — The supplied GitHub Pages or Cloudflare Pages workflow, and how to check the live site.
-{.cards}
-
-## Before you publish {#publication-gate}
-
-Run the same production build the Starter's workflows run:
-
-```bash
-hugo --cleanDestinationDir --gc --minify --environment production \
-  --printPathWarnings
+```console
+$ go version
+go version go1.27.4 darwin/arm64
+$ hugo version
+hugo v0.170.1+withdeploy darwin/arm64
 ```
 
-It ends with a `Total in …` line, and `public/` holds one folder per language
-plus your Docs, Blog and Book pages. Read the warnings before you push. OINK
-reports a mistyped setting or an incomplete integration as a warning and keeps
-building with a safe default, so a warning usually means a feature you expect
-is switched off. After you push, check that the workflow passed and open the
-live URL.
+On macOS, `brew install git go hugo` installs all three. On Linux and Windows,
+follow the [Hugo installation guide](https://gohugo.io/installation/) and the
+[Go downloads page](https://go.dev/dl/).
 
-## Build with an AI agent {#agent-skill}
+## Step 1: Clone the docs site and run it locally {#clone}
 
-OINK publishes an agent skill, **Oink 建站** (`oink-site`): one Markdown file
-that teaches a coding agent to build, migrate and polish an OINK site, carrying
-the review standards of OINK's own sites and lessons from the
-[case library](/case/). It sends the agent to this documentation for syntax and
-has it check its work in a browser.
+Instead of staring at an empty skeleton, clone `oink.pgsty.com` itself and
+start Hugo's local server:
 
-- English: <https://oink.pgsty.com/skill.md>
-- 简体中文: <https://oink.pgsty.com/skill.zh.md>
+```bash {title="Terminal"}
+git clone https://github.com/pgsty/oink.pgsty.com.git
+cd oink.pgsty.com
+hugo serve
+```
 
-Install it as a skill, then start a new agent session:
+The first run takes a moment while Hugo downloads the pinned OINK theme into
+your local Go module cache; every subsequent start takes a second. Open
+<http://localhost:1313/> to explore the live site:
+
+- Click through **Docs**, **Book**, **Case** and **Blog**, and open the
+  **Appearance** menu to switch between Paper, Slate, Ink and Terminal in both
+  light and dark mode.
+- Press \/ to try local full-text search, and switch between
+  English and Chinese from the top bar.
+- Open any page under `content/docs/components/` in your editor, change a
+  sentence, and save: the browser reloads automatically so you can see how
+  Markdown maps to rendered components.
+
+Because this repository doubles as OINK's integration test suite, treat it as a
+live reference rather than a template to deploy. Once you know what you want,
+create your own site in a fresh directory below.
+
+## Step 2: Build your own site with an AI agent {#agent-skill}
+
+Once Git, Go and Hugo work on your machine, the fastest way to build your own
+site is to open a coding agent such as Claude Code or Codex in an empty folder
+and give it a concrete prompt backed by the OINK site-building skill
+(`oink-site`):
+
+```bash {title="Terminal"}
+mkdir my-site && cd my-site
+claude   # or codex, or any coding agent that runs shell commands
+```
+
+Paste this prompt after replacing the `<angle brackets>` with your own details:
+
+```text {title="Prompt: build a personal site with Hugo and OINK"}
+Read https://oink.pgsty.com/skill.md and follow it to build my personal site
+with Hugo and the OINK theme in this empty directory.
+
+About me: <Your Name>, <one-line bio, e.g. backend engineer writing about
+databases and distributed systems>.
+Domain: <https://you.example.com>.
+Languages: <English, or English and Simplified Chinese>.
+
+Site structure:
+- Home page assembled from OINK landing data: a concise hero introducing me,
+  cards linking to my main sections, and links to GitHub / X.
+- A Blog section with card-grid indexes, tags, RSS feed, and three realistic
+  starter posts in my voice.
+- A Notes section using the Docs shell for evergreen technical notes.
+- An About page with my bio, current projects, and contact links.
+
+Appearance and hygiene:
+- Default to the Paper preset, enable dark mode, and offer Paper, Slate, Ink
+  and Terminal in the Appearance menu.
+- Enable local search, Markdown outputs, and llms.txt; include a .gitignore
+  that excludes public/, resources/, .hugo_build.lock and .hugo_cache/.
+- Pin the latest published OINK release in go.mod rather than tracking main.
+
+When the production build passes with zero unexpected warnings, run hugo serve,
+check the site in a browser on desktop and mobile widths, and tell me what
+placeholders I should replace next.
+```
+
+The skill file (`https://oink.pgsty.com/skill.md`, or
+`https://oink.pgsty.com/skill.zh.md` for Simplified Chinese) sends the agent to
+these docs for current OINK syntax, warns it away from retired Docsy or older
+OINK keys, and maps each kind of site to real examples in the
+[case library](/case/).
+
+To keep the skill installed across sessions instead of referencing its URL each
+time, download it once and start a new agent session:
 
 ```bash {tab="Claude Code"}
 mkdir -p ~/.claude/skills/oink-site
@@ -125,27 +120,39 @@ mkdir -p ~/.codex/skills/oink-site
 curl -fsSL https://oink.pgsty.com/skill.md -o ~/.codex/skills/oink-site/SKILL.md
 ```
 
-Then describe the site you want, for example "Use the oink-site skill to build
-a bilingual documentation site for this project." An agent without a skills
-directory can read the file straight from its URL. Download it again to
-update; the file names the OINK release it was written for.
+Download the file again whenever you want to refresh it; the header notes the
+OINK release it targets. For more prompt patterns—open-source project sites,
+CLI manuals and books—read [Build a site from one prompt](/book/01-start/).
+
+## Choose your next guide {#choose}
+
+From here, follow the guide that matches where your site lives today:
+
+| Your situation | Read | What you learn |
+| --- | --- | --- |
+| You already have an OINK repository and want to read, edit, or follow an AI agent's output locally | [Browse locally](/docs/start/local/) | Run `hugo serve`, read live docs in the browser, edit with auto-reload, and monitor reports written by coding agents |
+| You want to assemble a minimal standalone site file by file, or switch an existing Hugo site to OINK | [From scratch](/docs/start/from-scratch/) | Minimal project layout, `hugo.yml` prerequisites, first page, and offline / submodule install methods |
+| You already have an open-source codebase and want a documentation site inside its `docs/` directory | [Add docs to a project](/docs/start/add-docs/) | Isolated `docs/` Hugo sub-project, `.gitignore` hygiene, and GitHub Pages + Cloudflare Pages auto-builds |
+| You are upgrading an older OINK site or migrating from Docsy | [Upgrade](/docs/admin/upgrade/) | Version upgrades, syntax migration, and override review |
 
 ---
 
 Section pages:
 
-- [Use OINK Starter](/docs/start/starter/): Turn the OINK Starter into your project's site one layer at a time: languages, identity, home page, content, brand, integrations, and deployment.
-- [Starter repository tour](/docs/start/anatomy/): Find the OINK Starter file behind each part of your site, what you can delete, and what the build depends on.
-- [From scratch and other install methods](/docs/start/from-scratch/): Add OINK to an existing Hugo site or build a minimal one by hand, and install the theme as a Module, submodule, offline archive, or source copy.
+- [Browse locally](/docs/start/local/): Clone an existing OINK repository and run hugo serve to read docs in your browser, preview edits as you type, and watch AI agents' latest reports render live.
+- [From scratch](/docs/start/from-scratch/): See what a minimal standalone OINK project looks like, build one from an empty directory, add OINK to an existing Hugo site, or install it without Go modules.
+- [Add docs to a project](/docs/start/add-docs/): Add a self-contained OINK documentation site inside an existing open-source repository's docs/ directory, keep build outputs out of Git, and wire GitHub Pages and Cloudflare Pages auto-builds.
 
 ---
 
 Backlinks:
 
+- [Introducing OINK](/blog/oink-announcement/)
 - [Six years to Oink](/blog/oink-release/)
 - [Start from a prompt](/book/01-start/)
 - [Ship](/book/10-ship/)
 - [Le Shi Handbook](/case/le-shi/)
+- [Leafz](/case/leafz/)
 - [Docs](/docs/)
 - [Introduction](/docs/about/)
 - [Highlights](/docs/about/features/)
@@ -156,6 +163,7 @@ Backlinks:
 - [Steps](/docs/components/steps/)
 - [Configuration](/docs/customize/config/)
 - [Home and landing pages](/docs/customize/home/)
+- [Add docs to a project](/docs/start/add-docs/)
 - [From scratch](/docs/start/from-scratch/)
-- [OINK Starter](/docs/start/starter/)
+- [Browse locally](/docs/start/local/)
 - [Writing pages](/docs/write/pages/)

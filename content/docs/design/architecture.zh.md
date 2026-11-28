@@ -5,23 +5,23 @@ description: 仓库装配、配置、诊断、本地化、输出、性能、安�
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK 架构, 仓库边界, 运行时, i18n, Docsy 语言, 输出格式, 安全, 无障碍, 性能]
-contract_status: v1.6.0
+contract_status: v1.7.0
 ---
 
-> [!NOTE] 架构版本
-> 当前发布版本为 OINK v1.6.0。下文的地图瓦片与媒体播放器网络策略适用于 `main` 上拟随 v1.7.0 发布的实现。
+> [!NOTE] OINK 1.7.0 契约
+> 本契约描述 OINK v1.7.0。
 
 ## Hugo 工具链 {#hugo-toolchain}
 
-**OINK v1.6.0** 要求 **Hugo 0.169.0** 或更新版本（不限 edition，已在 **Hugo 0.170.1** 上验证）以及 **Go 1.27.4**。
-开发与检查不固定任何 Hugo 版本：直接使用本机安装的 Hugo，主题 CI 安装当前版本。
-`theme.toml` 与 `hugo.yaml` 声明支持的最低版本为 **0.169.0**。
-详见[运行时依赖与 1.6.0 基线](#unreleased-dependencies)。
+**OINK v1.7.0** 支持任意 Hugo edition，使用 Hugo Modules 时需要 **Go 1.27.4**。
+主题的 [`theme.toml`](https://github.com/pgsty/oink/blob/main/theme.toml) 和 `hugo.yaml` 声明支持的最低 Hugo 版本。
+开发和检查使用本机安装的 Hugo，主题 CI 安装当前版本。
+详见[运行时依赖与 1.7.0 基线](#unreleased-dependencies)。
 
 禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`。告警保持可见并接受审阅。
 无效输入测试直接检查对应告警和安全降级产物。
 
-OINK v1.6.0 不含任何 Sass：样式表是纯 CSS，由 Hugo 拼接，见[纯 CSS 样式表的交付](#stylesheet-delivery)。
+OINK v1.7.0 不含任何 Sass：样式表是纯 CSS，由 Hugo 拼接，见[纯 CSS 样式表的交付](#stylesheet-delivery)。
 普通用户无需安装 Dart Sass、LibSass 或其他 Sass 程序，站点构建只需要 Hugo 这一个程序。
 1.5.1 及更早版本曾用 Hugo 内置 LibSass 编译主样式与 ReDoc 样式（需要 Hugo Extended 0.168.0 与 Go 1.27.3）。
 后续变更必须保持仅依赖 Hugo 的边界；要求、检查器与双语契约须同步修改，历史发布和研究记录保留当时的工具版本。
@@ -43,8 +43,8 @@ Font Awesome 发行包，因为用户编写的内容可能使用主题模板本�
 
 Font Awesome 官方编译 CSS 作为一份稳定、带指纹的 vendor 样式表发布，并排在
 带指纹的主题样式表 `main.css` 与站点自有样式之前。站点样式的普通修改不会再让图标
-发行包失效，同时常规层叠顺序仍允许站点覆盖它。KaTeX、DocSearch、Swagger 与
-Asciinema 等能力样式继续保持独立，只在实际使用时加载。内容指纹使不可变 URL 成为
+发行包失效，同时常规层叠顺序仍允许站点覆盖它。KaTeX、DocSearch、Swagger、Asciinema 与
+Leaflet 等能力样式继续保持独立，只在实际使用时加载。内容指纹使不可变 URL 成为
 可能；HTTP 缓存响应头属于部署宿主，而不是 Hugo 主题的职责。
 
 Hugo 类型 `docs`、`book`、`blog` 与 `swagger` 选择阅读外壳；
@@ -57,10 +57,9 @@ Hugo 类型 `docs`、`book`、`blog` 与 `swagger` 选择阅读外壳；
 会在 Page Store 中登记能力标志。覆盖时应选择范围最窄的 partial；若合并会改变
 Hugo 的查找优先级，即使几个基础模板看起来相似，也应保持分离。
 
-## 运行时依赖与 1.6.0 基线 {#unreleased-dependencies}
+## 运行时依赖与 1.7.0 基线 {#unreleased-dependencies}
 
-OINK v1.6.0 要求 **Go 1.27.4** 和 **Hugo 0.169.0** 或更新版本，不限 edition。
-不再固定任何 Hugo 版本：开发与检查使用本机安装的版本，主题 CI 安装当前版本。
+开发和 CI 均遵循 [Hugo 工具链](#hugo-toolchain)契约。
 样式表是由 Hugo 拼接的纯 CSS，消费站点的 SCSS 钩子已退役，
 见[纯 CSS 样式表的交付](#stylesheet-delivery)。贡献者浏览器检查使用
 Node 26.13.0 与 npm 12.2.2；它们不是普通消费站点的构建依赖。
@@ -71,11 +70,11 @@ Hugo 0.169.0 的 `plainify` 改进了 HTML 块之间的空白，摘要与字数�
 搜索关闭按钮的本地化无障碍名称包含可见的 `Esc` 标签，并通过
 `aria-keyshortcuts="Escape"` 声明快捷键，支持语音与键盘操作。
 
-更新后的运行时集合（`VENDOR.json` 共收录 25 项内置依赖）包括 DocSearch 5.2.0、Mermaid 12.3.0、KaTeX 0.19.1、
-Markmap 1.1.0、Swagger UI 5.34.1、ReDoc 3.1.0、Asciinema 3.18.0、
-Infographic 0.2.20、Pako 3.0.3、idb-keyval 6.3.0 与 Viz.js 3.31.0
-（Graphviz 16.1.0、Expat 2.8.5）。Font Awesome 7.3.1、Bootstrap 5.3.8、
-ECharts 6.1.0、字体包与 PlantUML core 1.2026.9 维持当前稳定版。
+更新后的运行时集合（`VENDOR.json` 共收录 26 项内置依赖）包括 DocSearch 5.2.0、Mermaid 12.4.0、KaTeX 0.19.1、
+Markmap 1.1.1、Swagger UI 5.36.0、ReDoc 3.2.0、Asciinema 3.19.0、
+Infographic 0.2.20、Pako 3.0.3、idb-keyval 6.3.0、PlantUML core 1.2026.10、Viz.js 3.31.0
+（Graphviz 16.1.0、Expat 2.8.5）以及 Leaflet 1.9.4（BSD-2-Clause）。Font Awesome 7.3.1、Bootstrap 5.3.8、
+ECharts 6.1.0 与字体包维持当前稳定版。
 精确清单仍以 `VENDOR.json` 为准。
 
 `main` 样式表保留 Bootstrap 的组件样式，包括模态框、侧滑面板和轮播图，供站点自己的模板使用。
@@ -93,7 +92,7 @@ DocSearch 使用关键词搜索包，
 把现有 `indexName` 设置转换为上游的 `indices` API，不启用 Ask AI。
 
 Markmap 的本地 ESM 资源由 `@markmap/core`、`parse`、`render`、`view` 与
-`plugin-math` 1.1.0 构建，内置所需 D3 模块、高亮与按需加载的 MathJax。旧的全局
+`plugin-math` 1.1.1 构建，内置所需 D3 模块、高亮与按需加载的 MathJax。旧的全局
 自动加载器、独立 D3 包与 WebFontLoader 已退役。所有相对路径 chunk 一同发布。
 更新内容前请阅读 [Markmap 迁移说明](/zh/docs/components/markmap/#migration)。
 适配层从 Markdown 链接文字生成 SVG 链接的无障碍名称，并在动画折叠与重绘期间保留名称与可见键盘焦点。
@@ -136,7 +135,7 @@ Bootstrap 组件拆分：其中带有主题的调色板，与某条 Bootstrap �
 
 | 样式表 | 使用方 |
 | --- | --- |
-| `main` | 所有主题页面，共 118 层。`head-css.html` 把它发布为 `css/main.css`；生产构建中压缩、加指纹并带完整性属性 |
+| `main` | 所有主题页面，共 123 层。`head-css.html` 把它发布为 `css/main.css`；生产构建中压缩、加指纹并带完整性属性 |
 | `redoc.css` | 登记了 ReDoc 的页面。它是单独的一个文件 `assets/css/td/redoc.css`，不在各层清单之内，按同样方式发布为 `css/redoc.css` |
 | `chrome` | 不加载 `main` 的站点自有外壳：令牌、排版、四套配色、站点导航栏，以及语言、明暗与外观控件 |
 | `landing` | 站点自有外壳使用的 Landing 区块，在 `chrome` 之后加载。它重复了配色规则，因为配色以同等优先级改写 Landing 区块，必须排在其后 |
@@ -210,7 +209,7 @@ Draw.io 只在渲染内容含 PNG 或 SVG 候选图片时加载，并且每个�
 
 > [!NOTE] 自包含 PlantUML（自 OINK 1.4.0 起）
 > `plantuml: true` 或未配置端点的 `plantuml.enable: true` 选择浏览器渲染。固定的两份本地
-> 资源（`@plantuml/core` 1.2026.9 与 1.6.0 的 Viz.js 3.31.0）仅在包含 PlantUML 围栏的 HTML 页面
+> 资源（`@plantuml/core` 1.2026.10 与 Viz.js 3.31.0）仅在包含 PlantUML 围栏的 HTML 页面
 > 加载。普通构建和读者无需安装 Java、Graphviz 可执行程序或 npm 包，也不依赖 CDN 或
 > 渲染服务。非空端点继续选择服务端模式，保留地址校验与 `svg` 行为；非法端点不回退到
 > 本地模式。本地渲染不会下载可选库、主题、include 文件或外部资源。生成的 SVG 以 Blob
@@ -228,13 +227,14 @@ Draw.io 只在渲染内容含 PNG 或 SVG 候选图片时加载，并且每个�
 > 或构建步骤。缺少 IntersectionObserver 时使用滚动与尺寸检查。普通浏览器打印不等待
 > 异步渲染：已有图显示图片，其余保留源码。独立输出不变。
 
-Asciinema、ECharts、Infographic 与 Markmap 在 HTML 页面上遵循同一规则。页面只发布
+Asciinema、ECharts、Infographic、Markmap 与地图（Leaflet）在 HTML 页面上遵循同一规则。页面只发布
 各自的引擎，不主动请求。位于屏幕内、下方一小段滚动距离内，或在读者上方任意位置的
-组件会加载引擎并挂载；更靠下的组件等待，隐藏的组件等到显示时再挂载。在读者上方
+组件会加载引擎并挂载；更靠下的组件等待，隐藏的组件等到显示时再挂载，配置了
+`loading: click` 的地图则等到读者显式点击后再挂载。在读者上方
 挂载会推动正在阅读的文字，因此上方的组件一律立即到期。挂载之前，播放器是录像链接，
-导图是源码，图表与信息图是一个空画框。普通浏览器打印不等待脚本：已挂载的组件照原样
+Markmap 导图是源码，地理地图保留带编号的地点列表，图表与信息图是一个空画框。普通浏览器打印不等待脚本：已挂载的组件照原样
 打印，未挂载的图表与信息图打印其声明的选项或 DSL，与 Print 输出一致。引擎无法加载时，
-图表与信息图显示这份源码，播放器保留链接。站点自行加载过的引擎不会被重复请求。
+图表与信息图显示这份源码，播放器保留链接，地理地图隐藏画布并保留地点列表。站点自行加载过的引擎不会被重复请求。
 Giscus 以同样的方式请求：读者滚动到评论区附近，或已经滚过评论区时。从登录回跳的访问
 （会话仍在地址里）与设置了 `loading: eager` 的站点会立即请求。
 
@@ -423,10 +423,9 @@ CSS 或 SVG 发起的请求也受此限制。
 不再包围整篇文章。强制颜色模式保留键盘提示，不使用全局焦点边框重置。
 
 字体角色为 `ui`、`body`、`heading`、`code`、`display`、`meta`、`brand` 与 `print`，
-通过 `--td-*-font-family` 暴露。设置 `fonts.ui` 会同时改变四种预设的界面、正文与标题字体，包括 Paper。
-此时单独设置的 `fonts.body` 也用于标题，显式设置 `fonts.heading` 可为标题另选字体。`params.ui.typography`
-可取 `technical` 或 `system`；两者都在同一份样式表中，不加载运行时。已发布的
-OINK 1.6.0 的样式表是纯 CSS，不读取消费站的任何 Sass 变量（1.5.1 及更早版本曾由旧 Bootstrap/Docsy Sass 变量提供初值）。
+通过 `--td-*-font-family` 暴露。显式设置 `fonts.ui` 会同时改变四种预设的界面、正文与标题字体，包括 Paper。
+显式设置 `fonts.body` 时，无论是否同时设置了 `fonts.ui`，它都提供正文字体和标题字体，除非 `fonts.heading` 另行指定标题字体。`params.ui.typography`
+可取 `technical` 或 `system`；两者都在同一份样式表中，不加载运行时。自 OINK 1.6.0 起，样式表是纯 CSS，不读取消费站的任何 Sass 变量（1.5.1 及更早版本曾由旧 Bootstrap/Docsy Sass 变量提供初值）。
 
 `params.ui.fonts` 让配置层触达同一组角色，供不愿新增样式表的站点
 使用。它只写字体族名，绝不加载字体文件：所写字体族必须是读者已有的，或站点
@@ -472,7 +471,7 @@ JavaScript 时显示站点默认的浅色预设；外观控件需要 JavaScript�
 四套预设编入同一个样式表。Slate 保留 v1.1.0 的基础色板选择器与值。Paper 调整
 配色和少量组件规则，不改变外壳列宽、断点或全局间距。Paper 的画布为象牙色
 `#faf9f5`，墨色为 `#1f1e1c`；链接保持蓝色，并与 Ink、Terminal 一样通过可选的
-`--td-preset-accent` 属性设置自己的陶土强调色（`#9b4a28`，深色 `#de8460`）。
+`--td-preset-accent` 属性设置自己的陶红强调色（`#9b4a28`，深色 `#de8460`）。
 已发布的 `theme_color` 在任何预设下都会替换该强调色。Paper 深色块重声明浅色块的
 每个色板 token，并覆盖嵌套深色区域。字体角色保持同等选择器优先级，顺序为预设、
 `typography: system`、站点自有样式、head 输出的 `params.ui.fonts`。`brand` 单独控制字标。Slate 保留 Inter。
@@ -483,8 +482,8 @@ Chakra Petch，代码保留 IBM Plex Mono。Ink 的界面与标题使用 Inter�
 仍为 IBM Plex Sans。系统排版模式不请求内置文字字体，除非站点显式覆盖角色。
 没有新增外部字体请求。Terminal 仅压紧
 桌面导航，保留正文行长与手机触控目标。CSS 标题标记使用空的无障碍替代文字，
-不支持的浏览器省略标记。显式 `fonts.ui` 仍控制主字体，除非设置了有效的
-`fonts.body`。参见[实验记录](/zh/docs/design/research/2026-10-05-ink-terminal-experiment/)。
+不支持的浏览器省略标记。显式 `fonts.ui` 仍控制主字体（含标题），除非设置了有效的
+`fonts.body` 或 `fonts.heading`。参见[实验记录](/zh/docs/design/research/2026-10-05-ink-terminal-experiment/)。
 
 汉字使用读者系统已有的字体，主题不分发任何中日韩字体文件。每套预设以不同方式
 编排中文骨架；西文与汉字同处一行时类别一致：无衬线配黑体，衬线配宋体。

@@ -11,7 +11,7 @@ design_status: active
 ---
 
 > [!NOTE] 已接受的理由
-> 决策记录解释 OINK 为什么在多个兼容方案中选择了当前设计。上方五份契约仍是
+> 决策记录解释 OINK 为什么在多个兼容方案中选择了当前设计。上方六份契约仍是
 > 现行行为的规范描述；实现与归属检查器仍是可执行事实。
 
 OINK 过去把评审、PRD 与执行记录放在本地 `plan/` 目录中。这样既不便发现有价值的
@@ -32,11 +32,10 @@ OINK 过去把评审、PRD 与执行记录放在本地 `plan/` 目录中。这�
 | [博客画廊](/zh/docs/design/decisions/blog-gallery/) | 文章封面、共享 Expo 排布、独立偏好与可读的文字说明 |
 | [表格阅读](/zh/docs/design/decisions/large-table-reading/) | 显式 `.expand`、独立 `.wide`，以及可还原原表格的角落直接展开入口 |
 | [译文对照](/zh/docs/design/decisions/document-comparison/) | 一个开关、真实同源译文、按需加载的双栏阅读器和基于标题的同步 |
-
 | [组件精修](/zh/docs/design/decisions/component-refinement/) | 共用样式、分隔式卡片、紧凑步骤与命令条 |
 | [统一图表阅读](/zh/docs/design/decisions/diagram-reading/) | Mermaid 与本地 PlantUML 共用查看器、源码导出与按需加载 |
 | [本地搜索改进](/zh/docs/design/decisions/local-search/) | 混合查询、真实小节锚点、部分匹配与栏目范围 |
-| [键位表](/zh/docs/design/decisions/keyboard-map/) | 三组、每组十个单键，变暗显示不可用的行，本地历史、全部折叠与读者宽度 |
+| [键位表](/zh/docs/design/decisions/keyboard-map/) | 三组共二十九个单键快捷键，变暗显示不可用的行，本地历史、全部折叠与读者宽度 |
 
 ## 记录格式 {#record-format}
 

@@ -14,36 +14,56 @@ LLMS 索引： [llms.txt](/zh/llms.txt)
 
 「形态」列说明怎么写：**原生** 是 Markdown 语法加属性行，**围栏** 是带语言标记的代码围栏，**shortcode** 是 `{{< … >}}`。「运行时」列说明读者的浏览器是否要为它下载脚本：**无**；**按页加载**，只有用到它的页面才加载；**需站点开关**，在 `hugo.yml` 里启用之前不加载，启用后同样按页加载。
 
+### 基础写作 {#writing}
+
 | 组件 | 用途 | 最短写法 | 形态 | 运行时 |
 | --- | --- | --- | --- | --- |
 | [提示块](/zh/docs/components/callout/) | 读者绝不能漏看的前提、警告或补充说明 | `> [!NOTE]` | 原生 | 无 |
-| [图片](/zh/docs/components/image/) | 截图与插图，带图注、尺寸、缩放与编号 | `![说明](oink.webp)` | 原生 | 需站点开关 |
 | [代码块](/zh/docs/components/code/) | 命令与源码，带文件名、精确复制、折叠与行链接 | ```` ```sh ```` | 围栏 | 按页加载 |
-| [标签页](/zh/docs/components/tabs/) | 同一套操作在不同平台或语言下的写法 | 属性行 `{tab="Linux"}` | 原生 + shortcode | 按页加载 |
 | [表格](/zh/docs/components/table/) | 对比表与矩阵，可满宽、加标题或编号 | `{.full-width}` | 原生 | 标签页或 `.expand` 时加载 |
 | [参数表](/zh/docs/components/fields/) | 参数清单，带类型、必填、默认值标签 | `{.fields meta="type default"}` | 原生 + shortcode | 无 |
+| [徽章](/zh/docs/components/badge/) | 名字旁边一两个词的状态，例如 Beta | `{{< badge text="Beta" >}}` | shortcode | 无 |
+| [按键](/zh/docs/components/kbd/) | 键名与快捷键 | `{{< kbd "Ctrl" "K" >}}` | shortcode | 无 |
+{.wide}
+
+### 结构与流程 {#structure}
+
+| 组件 | 用途 | 最短写法 | 形态 | 运行时 |
+| --- | --- | --- | --- | --- |
+| [标签页](/zh/docs/components/tabs/) | 同一套操作在不同平台或语言下的写法 | 属性行 `{tab="Linux"}` | 原生 + shortcode | 按页加载 |
 | [步骤](/zh/docs/components/steps/) | 读者要按顺序完成的操作流程 | `{.steps}` | 原生 + shortcode | 无 |
 | [时间轴](/zh/docs/components/timeline/) | 轴线上按日期或先后排列的事件 | 定义列表加 `{.timeline}` | 原生 | 无 |
 | [更新](/zh/docs/components/update/) | 仍然作为目录标题出现的更新日志条目 | `## v1.6 {.update date="2026-11-23"}` | 原生 | 无 |
 | [卡片](/zh/docs/components/cards/) | 几个并列去处，供读者挑一个 | `{.cards}` | 原生 + shortcode | 无 |
-| [文件树](/zh/docs/components/filetree/) | 目录结构，每一项旁边对齐一列注释 | ```` ```filetree ```` | 围栏 | 按页加载 |
-| [公式](/zh/docs/components/math/) | 行内与块级公式，构建期由 KaTeX 渲染 | `$$ … $$` | 原生 | 无 |
+| [引用](/zh/docs/components/include/) | 复用文件、插入站点参数、留下不进输出的注释 | `{{< include file="parts/x.md" >}}` | shortcode | 无 |
+{.wide}
+
+### 图表与公式 {#diagrams}
+
+| 组件 | 用途 | 最短写法 | 形态 | 运行时 |
+| --- | --- | --- | --- | --- |
 | [Mermaid](/zh/docs/components/mermaid/) | 用文本画流程图、时序图与甘特图 | ```` ```mermaid ```` | 围栏 | 按页加载 |
 | [PlantUML](/zh/docs/components/plantuml/) | UML 图，在浏览器内或由自建服务渲染 | ```` ```plantuml ```` | 围栏 | 需站点开关 |
-| [思维导图](/zh/docs/components/markmap/) | 把 Markdown 大纲画成思维导图 | ```` ```markmap ```` | 围栏 | 需站点开关 |
 | [Draw.io](/zh/docs/components/drawio/) | 读者可以在 Draw.io 编辑器里打开修改的图；需配置编辑器地址 | `![说明](arch.drawio.svg)` | 原生 | 需站点开关 |
 | [ECharts](/zh/docs/components/echarts/) | 用数据声明的柱状图、折线图与饼图 | ```` ```echarts ```` | 围栏 | 按页加载 |
 | [Infographic](/zh/docs/components/infographic/) | 表达顺序、层级或对比的 AntV 信息图 | ```` ```infographic ```` | 围栏 | 按页加载 |
+| [地图](/zh/docs/components/map/) | 地点列表，启用后上方附带交互地图 | ```` ```map ```` | 围栏 | 需站点开关 |
+| [思维导图](/zh/docs/components/markmap/) | 把 Markdown 大纲画成思维导图 | ```` ```markmap ```` | 围栏 | 需站点开关 |
+| [文件树](/zh/docs/components/filetree/) | 目录结构，每一项旁边对齐一列注释 | ```` ```filetree ```` | 围栏 | 按页加载 |
+| [公式](/zh/docs/components/math/) | 行内与块级公式，构建期由 KaTeX 渲染 | `$$ … $$` | 原生 | 无 |
+{.wide}
+
+### 媒体与嵌入 {#media}
+
+| 组件 | 用途 | 最短写法 | 形态 | 运行时 |
+| --- | --- | --- | --- | --- |
+| [图片](/zh/docs/components/image/) | 截图与插图，带图注、尺寸、缩放与编号 | `![说明](oink.webp)` | 原生 | 需站点开关 |
 | [画廊](/zh/docs/components/gallery/) | 一组图片，在同一个缩放对话框里翻看 | ```` ```gallery ```` | 围栏 | 需站点开关 |
 | [视频](/zh/docs/components/video/) | 视频文件、循环演示、YouTube 与 Bilibili 卡片 | `![名称](demo.mp4)` | 原生 | 按页加载；播放器需站点开关 |
-| [音频](/zh/docs/components/audio/) | 播客单集与语音样例，带标题的原生播放器 | `![名称](episode.mp3)` | 原生 | 单个无；两个及以上按页加载 |
-| [社交帖子](/zh/docs/components/social/) | 在页面中引用帖子，无需向社交平台取回原帖 | `{{< social author="…" >}}` | shortcode | 无 |
-| [地图](/zh/docs/components/map/) | 地点列表，启用后上方附带交互地图 | ```` ```map ```` | 围栏 | 需站点开关 |
-| [徽章](/zh/docs/components/badge/) | 名字旁边一两个词的状态，例如 Beta | `{{< badge text="Beta" >}}` | shortcode | 无 |
-| [按键](/zh/docs/components/kbd/) | 键名与快捷键 | `{{< kbd "Ctrl" "K" >}}` | shortcode | 无 |
-| [引用](/zh/docs/components/include/) | 复用文件、插入站点参数、留下不进输出的注释 | `{{< include file="parts/x.md" >}}` | shortcode | 无 |
+| [音频](/zh/docs/components/audio/) | 播客单集与语音样例，带标题的原生播放器 | `![名称](episode.mp3)` | 原生 | 按页加载 |
 | [Asciinema](/zh/docs/components/asciinema/) | 回放终端会话，文字仍可选中 | `{{< asciinema file="images/x.cast" >}}` | shortcode | 按页加载 |
-{.wide .expand}
+| [帖子](/zh/docs/components/social/) | 在页面中引用帖子，无需向社交平台取回原帖 | `{{< social author="…" >}}` | shortcode | 无 |
+{.wide}
 
 「运行时」列里有几项取决于页面上的内容：
 
@@ -51,7 +71,7 @@ LLMS 索引： [llms.txt](/zh/llms.txt)
 - 图片与画廊共用一个缩放对话框，需要 `params.ui.image_zoom: true`，且页面上至少有一张可缩放的图片。
 - 公式在构建期已经渲染成 HTML 与 MathML，所以页面只加载 KaTeX 样式表与字体，不加载脚本。
 - Draw.io 只在含 PNG 或 SVG 图片的页面加载，每个不同的图片地址只下载一次，用来查找可编辑副本。
-- 视频与音频共用 `media.js`，只在有自动播放的视频、卡片所属平台列在 `params.video_embeds` 中，或同页有两个及以上音视频播放器（用于同页互斥播放）时加载。地图只在配置了 `params.map` 时加载 Leaflet，否则就是一份地点列表。
+- 视频与音频共用 `media.js`：页面上有本地音频或视频播放器（显示进度、同页互斥播放），或有平台列在 `params.video_embeds` 中的卡片时加载。地图只在 `params.map` 启用（`enable: true` 且 `tiles`、`attribution` 有效）时加载 Leaflet，否则就是一份地点列表。
 
 打印、Markdown 与 RSS 输出里，任何组件都不加载脚本。这几种输出的形态与预期不同时，各组件页会单独说明。
 
@@ -92,33 +112,33 @@ markup:
 本节页面：
 
 - [提示块](/zh/docs/components/callout/): 用 `> [!NOTE]` 这样的块引用写出带颜色、图标与标题的提示、警告与折叠块，不需要短代码。
-- [图片](/zh/docs/components/image/): 用普通 Markdown 插图，再加一行属性，就能设置图注、尺寸、缩放、链接、编号或 Hugo 图片处理。
 - [代码块](/zh/docs/components/code/): 用普通 Markdown 围栏展示命令、配置与源码，带文件名标题、精确复制、行号、高亮、换行、折叠与可链接的行。
-- [标签页](/zh/docs/components/tabs/): 把包管理器、配置格式这类可互相替代的写法并排放在一组标签页里，读者选一次，全站同组的标签页都跟着切换。
 - [表格](/zh/docs/components/table/): 给普通 Markdown 表格加一行属性，做成带标题的表、兼容矩阵、参数表、编号表或标签页，并让宽幅技术表格有足够的阅读空间。
 - [参数表](/zh/docs/components/fields/): 把配置项、命令参数与 API 字段写成参数表：手机上也不挤，每一条都能单独链接。
+- [徽章](/zh/docs/components/badge/): 用五种语义 tone 之一，给功能名、版本号或表格单元格标上 Beta、已弃用这类简短状态。
+- [按键](/zh/docs/components/kbd/): 用 `kbd` 写快捷键：一个 shortcode 接一串按键名，输出语义化的按键序列，打印与 Markdown 输出里同样可读。
+- [标签页](/zh/docs/components/tabs/): 把包管理器、配置格式这类可互相替代的写法并排放在一组标签页里，读者选一次，全站同组的标签页都跟着切换。
 - [步骤](/zh/docs/components/steps/): 有序列表加 `{.steps}` 就是带编号圆点与竖线的操作步骤；步骤要带标题、要进目录时改用 steps shortcode。
 - [时间轴](/zh/docs/components/timeline/): 把 Markdown 定义列表变成一条竖直的时间轴，按日期或先后排列事件，适合里程碑、故障复盘、产品历史与议程。
 - [更新](/zh/docs/components/update/): 用带 `{.update}` 标记的普通标题写更新日志、「新功能」页或周报，每个条目下方可以附上日期与标签。
 - [卡片](/zh/docs/components/cards/): 把 Markdown 链接列表变成导航卡片网格；卡片需要图标、徽章或图片时改用 shortcode。
-- [文件树](/zh/docs/components/filetree/): 用 `filetree` 围栏画一棵带注释的目录树：注释列自动对齐，条目带图标，目录可以折叠。
-- [公式](/zh/docs/components/math/): 用 KaTeX 写行内与块级数学公式，构建期渲染完毕，读者不下载任何脚本。
+- [引用](/zh/docs/components/include/): 让多页共用一份源头：include 引入共享片段与文件，param 打印站点或页面参数，comment 写永不发布的注释。
 - [Mermaid](/zh/docs/components/mermaid/): 用 `mermaid` 围栏把文本写成流程图、时序图、甘特图、类图与状态图，本地渲染、跟随深浅色、diff 友好。
-- [组件呈现](/zh/docs/components/presentation/): 在 OINK 四种视觉预设中查看卡片、折叠块、标签页和紧凑流程。
 - [PlantUML](/zh/docs/components/plantuml/): 使用随主题提供的资源，在浏览器中渲染时序图、类图、组件图、活动图与用例图，无需渲染服务。
-- [思维导图](/zh/docs/components/markmap/): 用 `markmap` 围栏把一段 Markdown 大纲变成可展开、可缩放的思维导图，源码本身就是能读的提纲。
 - [Draw.io](/zh/docs/components/drawio/): 把 Draw.io 导出的图当普通图片发布，读者可以在 Draw.io 编辑器里打开、修改并下载。
 - [ECharts](/zh/docs/components/echarts/): 在 `echarts` 围栏里用 YAML 或 JSON 写 ECharts 选项，画出跟随深浅色的柱状图、折线图与饼图。
 - [Infographic](/zh/docs/components/infographic/): 用 `infographic` 围栏和一个 AntV 模板，把标题与几个条目画成流程、时间线、漏斗、网格或层级信息图。
+- [地图](/zh/docs/components/map/): 在 `map` 围栏里列出地点，HTML、打印与 RSS 都显示带编号的地点列表。站点指定瓦片服务后，网页上还会多一张交互地图。
+- [思维导图](/zh/docs/components/markmap/): 用 `markmap` 围栏把一段 Markdown 大纲变成可展开、可缩放的思维导图，源码本身就是能读的提纲。
+- [文件树](/zh/docs/components/filetree/): 用 `filetree` 围栏画一棵带注释的目录树：注释列自动对齐，条目带图标，目录可以折叠。
+- [公式](/zh/docs/components/math/): 用 KaTeX 写行内与块级数学公式，构建期渲染完毕，读者不下载任何脚本。
+- [图片](/zh/docs/components/image/): 用普通 Markdown 插图，再加一行属性，就能设置图注、尺寸、缩放、链接、编号或 Hugo 图片处理。
 - [画廊](/zh/docs/components/gallery/): 用 `gallery` 围栏把一组相关截图排成响应式网格，每张图可以带说明或链接。
 - [视频](/zh/docs/components/video/): 在页面里放产品演示、屏幕录制和代替 GIF 的静音循环短片，并为 YouTube、Bilibili、Vimeo 上的视频生成卡片，读者点击之前不联系任何平台。
 - [音频](/zh/docs/components/audio/): 用图片语法把播客单集、语音样例或讲座录音放进页面，渲染为带标题的原生播放器，文字稿紧随其后。
-- [社交帖子](/zh/docs/components/social/): 用 `social` 短代码引用 X、Bluesky、Mastodon 等平台上的帖子。正文和署名都写在页面里，无需平台脚本。
-- [地图](/zh/docs/components/map/): 在 `map` 围栏里列出地点，任何输出都得到带编号的地点列表；站点指定瓦片服务后，网页上还会多一张交互地图。
-- [徽章](/zh/docs/components/badge/): 用五种语义 tone 之一，给功能名、版本号或表格单元格标上 Beta、已弃用这类简短状态。
-- [按键](/zh/docs/components/kbd/): 用 `kbd` 写快捷键：一个 shortcode 接一串按键名，输出语义化的按键序列，打印与 Markdown 输出里同样可读。
-- [引用](/zh/docs/components/include/): 让多页共用一份源头：include 引入共享片段与文件，param 打印站点或页面参数，comment 写永不发布的注释。
 - [Asciinema](/zh/docs/components/asciinema/): 在页面里嵌入 .cast 终端录像，读者可以播放、暂停并从中复制文字，播放器随主题分发。
+- [帖子](/zh/docs/components/social/): 用 `social` 短代码引用 X、Bluesky、Mastodon 等平台上的帖子。正文和署名都写在页面里，无需平台脚本。
+- [组件呈现](/zh/docs/components/presentation/): 在 OINK 四种视觉预设中查看卡片、折叠块、标签页和紧凑流程。
 
 ---
 
@@ -138,7 +158,6 @@ markup:
 - [时间轴](/zh/docs/components/timeline/)
 - [组件](/zh/docs/design/components/)
 - [内容组件扩展](/zh/docs/design/proposals/content-components-expansion/)
-- [快速上手](/zh/docs/start/)
 - [创作内容](/zh/docs/write/)
 - [博客与文章](/zh/docs/write/blog/)
 - [编写页面](/zh/docs/write/pages/)

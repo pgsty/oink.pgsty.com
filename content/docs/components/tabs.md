@@ -2,7 +2,7 @@
 title: Tabs
 linkTitle: Tabs
 description: Put equivalent alternatives such as package managers or config formats side by side, and let one reader choice follow them across every page.
-weight: 40
+weight: 210
 search_keywords: [Tabs, tab, group, value, sync, persistence, localStorage, hash]
 ---
 
@@ -13,8 +13,9 @@ them for ordered steps or unrelated content: a reader sees one panel at a time
 and may never open the others.
 
 There are two forms with the same runtime, markup and keyboard behavior. The
-common one is a `tab` attribute on adjacent code fences or tables. When a panel
-needs prose, lists or callouts, use the `tabs`/`tab` shortcodes.
+common one is a `tab` attribute on adjacent code fences (as well as `filetree`,
+`gallery` and `map` data fences) or tables. When a panel needs prose, lists or
+callouts, use the `tabs`/`tab` shortcodes.
 
 ## Shortest form {#minimal}
 
@@ -249,7 +250,7 @@ Attributes on a fence info line or a table attribute line:
 | --- | --- | --- | --- |
 | `tab` | non-empty string | none | The visible label; on a lone block it is simply that block's title |
 | `group` | `^[a-z][a-z0-9_-]*$` | none | On the first block of a set only; enables the hash, in-page sync and persistence; requires `tab` |
-| `value` | `^[a-z0-9][a-z0-9_-]*$` | none | Required on every block of a grouped set, forbidden without a group; requires `tab` |
+| `value` | `^[a-z0-9][a-z0-9_-]*$` | none | Required on every block of a grouped set; ungrouped it only names the panel; requires `tab` |
 {.fields meta="type default"}
 
 The `tabs` shortcode:

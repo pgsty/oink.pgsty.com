@@ -2,7 +2,7 @@
 title: 表格
 linkTitle: 表格
 description: 给普通 Markdown 表格加一行属性，做成带标题的表、兼容矩阵、参数表、编号表或标签页，并让宽幅技术表格有足够的阅读空间。
-weight: 50
+weight: 130
 search_keywords: [表格, Table, matrix, 矩阵, full-width, 全宽, wide, 技术表格, caption, 表格标题, 编号表, 横向滚动, GFM]
 aliases:
   - /docs/components/tables/
@@ -195,7 +195,7 @@ GFM 没有合并单元格、排序和筛选，OINK 也不补这些。需要合�
 
 ## 表格做成标签页 {#tabs}
 
-相邻的表格加上 `{tab="…"}` 就组成一组标签页，规则与相邻代码围栏相同。第一张表写了 `group`，这组标签页就有可分享的 URL hash、同组联动和记住的选择，此时每张表都要写 `value`。完整规则见[标签页](/zh/docs/components/tabs/)。
+相邻的表格加上 `{tab="…"}` 就组成一组标签页，规则与相邻代码围栏相同。第一张表写了 `group`，这组标签页就有可分享的 URL hash、同组联动和记住的选择，此时每张表都要写 `value`。即使只有两列短文本，表格也会铺满面板。宽表在面板内横向滚动。完整规则见[标签页](/zh/docs/components/tabs/)。
 
 ```markdown {title="源码"}
 | 目录 | 内容 |
@@ -247,7 +247,7 @@ HTML 中每张表都放在一个可聚焦的 `<div class="td-table-scroll">` 里
 | `data-*` / `aria-*` | 字符串 | 无 | 原样透传 |
 {.fields meta="type default"}
 
-其它键（包括 `style` 与 `on*` 事件属性）会被丢弃，并在构建时告警。
+其它键（包括 `style`）会被丢弃，并在构建时告警；`on*` 事件属性在主题读到之前已被 Hugo 剥离，静默丢弃。
 
 ## 限制与常见问题 {#limits}
 

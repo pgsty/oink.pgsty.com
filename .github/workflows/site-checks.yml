@@ -64,6 +64,7 @@ jobs:
       - name: Install pinned npm
         run: npm install --global npm@${{ env.NPM_VERSION }} --ignore-scripts
       - run: npm ci --ignore-scripts
+      - run: node scripts/check-vendor-docs.mjs "$RUNNER_TEMP/oink/VENDOR.json"
       - run: npm test
 
   # What readers get: the module pinned in go.mod, with no replacement. These

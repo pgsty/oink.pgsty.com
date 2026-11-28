@@ -11,7 +11,7 @@ cascade:
 
 OINK 是一款 [Hugo](https://gohugo.io/) 主题，面向已经超出一份 README 体量的技术文档：产品手册、API 参考、书籍、发布页与博客，常常还要多语言，并且由工程师而不是前端团队来维护。你写 Markdown，运行 `hugo`，得到一个静态站点：侧栏由目录结构自动生成，自带本地全文检索、打印视图，每个页面还有一份供 AI Agent 读取的 Markdown。主题自带全部脚本、字体与样式表，构建不需要 Node.js、npm、Sass 或 CDN；只要你没有接入分析、评论这类集成，主题就不会让读者的浏览器向任何第三方发请求。
 
-OINK 由 [Docsy](https://github.com/google/docsy) fork 而来，保留了 Docsy 的内容模型与多语言行为，外壳、导航、搜索与组件则全部重写。目前已有[四十五个生产站点](/zh/docs/about/showcase/)运行在 OINK 上：十四个独立项目，包括 Apache HugeGraph 的中英双语文档和 Red Hat AI Services 的九语言团队门户；另外 31 个来自 PGSTY 与 Vonng 生态，其中最大的一个包含近 5,000 个 Markdown 文件、八种语言，阿拉伯语也在其中。
+OINK 由 [Docsy](https://github.com/google/docsy) fork 而来，保留了 Docsy 的内容模型与多语言行为，外壳、导航、搜索与组件则全部重写。目前已有[七十九个生产站点](/zh/docs/about/showcase/)运行在 OINK 上：48 个独立项目，包括 Apache HugeGraph 的中英双语文档、Red Hat AI Services 的九语言团队门户和 Cortrix 的 AI Agent 记忆文档；另外 31 个来自 PGSTY 与 Vonng 生态，其中最大的一个包含近 5,000 个 Markdown 文件、八种语言，阿拉伯语也在其中。
 
 ![OINK 把 Markdown 内容、配置与本地资源汇成一个静态文档站](/images/hero-light.webp)
 {width="900" height="600" caption="一次 Hugo 构建，产出可直接托管的静态站点"}
@@ -40,7 +40,7 @@ OINK 由 [Docsy](https://github.com/google/docsy) fork 而来，保留了 Docsy 
 | 多个站点要共用一套外壳，而不必各自复制布局与 shortcode | 想靠一个开关换成截然不同的外观；四种预设之外的外观调整，要通过 CSS token 与 partial 覆盖完成 |
 | 团队里没有前端工程师，也不想维护 Node 工具链 | 需要内容管理后台或所见即所得编辑器 |
 
-另外还有两点值得权衡。第一，多数功能默认关闭，需要配置后才生效，包括搜索、深色模式、图片缩放、评论、反馈，以及 Markdown 与 Agent 输出；[Starter](/zh/docs/start/) 已经替你打开了常用的那些。第二，OINK 还年轻，迭代很快：1.0.0 发布于 2026 年 8 月，三个月后就到了 1.6.0。每个站点都固定一个确切的版本，你不主动升级就什么都不会变；凡是需要站点配合改动的版本，[升级指南](/zh/docs/admin/upgrade/)里都有对应的章节。
+另外还有两点值得权衡。第一，多数功能默认关闭，需要配置后才生效，包括搜索、深色模式、图片缩放、评论、反馈，以及 Markdown 与 Agent 输出；[Starter](https://github.com/pgsty/oink-starter) 已经替你打开了常用的那些。第二，OINK 还年轻，迭代很快：1.0.0 发布于 2026 年 8 月，三个月后就到了 1.7.0。每个站点都固定一个确切的版本，你不主动升级就什么都不会变；凡是需要站点配合改动的版本，[升级指南](/zh/docs/admin/upgrade/)里都有对应的章节。
 
 ## 与其它文档方案的差别 {#comparison}
 
@@ -62,7 +62,7 @@ OINK 是 fork 之后独立演化的主题，而不是叠在 Docsy 上的一层�
 
 - [快速上手](/zh/docs/start/) — 克隆 Starter、本地预览，逐步改成自己的站点，再部署上线。
 - [组件总览](/zh/docs/components/) — 一个组件一页，先看源码，再看效果。
-- [示例站点](/zh/docs/about/showcase/) — 45 个生产站点，以及各自用到了 OINK 的哪些能力。
+- [示例站点](/zh/docs/about/showcase/) — 79 个生产站点，以及各自用到了 OINK 的哪些能力。
 {.cards}
 
-发现问题或想提交修复，[贡献指南](/zh/docs/about/contributing/)说明了该提交到哪里。当前版本的变化见 [1.6.0 发布说明](/zh/release/1.6.0/)。
+发现问题或想提交修复，[贡献指南](/zh/docs/about/contributing/)说明了该提交到哪里。当前版本的变化见 [1.7.0 发布说明](/zh/release/1.7.0/)。

@@ -2,7 +2,7 @@
 title: 图片
 linkTitle: 图片
 description: 用普通 Markdown 插图，再加一行属性，就能设置图注、尺寸、缩放、链接、编号或 Hugo 图片处理。
-weight: 20
+weight: 410
 search_keywords: [图片, Image, Figure, 图注, caption, 缩放, zoom, 图片处理, imgproc, width, height, 编号]
 image_zoom: true
 aliases:
@@ -201,7 +201,7 @@ html:not([data-bs-theme="dark"]) .only-dark { display: none; }
 | --- | --- | --- | --- |
 | `caption` | 纯文本 | — | 有它就渲染成 figure；不解析 Markdown |
 | `#id` | 标识符 | 有 `num` 时 `fig-<num>` | `[A-Za-z][A-Za-z0-9_.:-]*`；作为锚点与 Book 目标 ID |
-| `num` | 字符串 | — | `[0-9A-Za-z.-]+`；注册为 Book 图目标，图注加「图 N.」前缀 |
+| `num` | 字符串 | — | `[0-9A-Za-z.-]+`；注册为 Book 图目标，图注加「图 N」前缀 |
 | `width` / `height` | 正整数 | 资源固有尺寸 | 覆盖尺寸；静态 / 远程图靠它避免跳版 |
 | `command` | 枚举 | — | `Fit` `Resize` `Fill` `Crop`；必须与 `options` 同给；仅页面 / 全局资源 |
 | `options` | 字符串 | — | Hugo 图片处理选项，如 `600x300`、`300x150 Left`、`800x webp q80` |
@@ -210,7 +210,7 @@ html:not([data-bs-theme="dark"]) .only-dark { display: none; }
 | `data-*` / `aria-*` | 字符串 | — | 透传 |
 {.fields meta="type default"}
 
-属性行上的 `style`、`on*`、`alt`、`title`、`src` 以及其它不支持的键会告警并被忽略。替代文字、标题与来源写在 Markdown 图片本身里。
+属性行上的 `style`、`alt`、`title`、`src` 以及其它不支持的键会告警并被忽略；`on*` 事件属性在主题读到之前已被 Hugo 剥离，静默丢弃。替代文字、标题与来源写在 Markdown 图片本身里。
 
 ## 限制与常见问题 {#limits}
 

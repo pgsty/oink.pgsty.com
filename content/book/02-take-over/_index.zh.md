@@ -42,8 +42,7 @@ OINK 站点就是一个普通的 Hugo 仓库。你要做的几乎所有改动，
 ```
 
 `content/` 和 `data/` 每周都在变；`hugo.yaml` 一改就影响整个站点；`go.mod` 只在升级 OINK
-时才会改动。`layouts/` 值得在第一天就看一眼：放在这里的文件会替换主题模板，从此收不到主题的修复，所以每个覆盖都应该有一个你说得出的理由。[Starter 仓库导览](/zh/docs/start/anatomy/)逐一介绍了
-Starter 自带的每个文件。
+时才会改动。`layouts/` 值得在第一天就看一眼：放在这里的文件会替换主题模板，从此收不到主题的修复，所以每个覆盖都应该有一个你说得出的理由。[从零开始](/zh/docs/start/from-scratch/#anatomy)逐一介绍了最小 OINK 站点里每个文件的职责。
 
 ## 审阅成果 {#review}
 

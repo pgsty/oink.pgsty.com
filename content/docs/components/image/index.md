@@ -2,7 +2,7 @@
 title: Images
 linkTitle: Images
 description: Add images with plain Markdown, then use one attribute line for a caption, a size, zoom, a link, a figure number or Hugo image processing.
-weight: 20
+weight: 410
 search_keywords: [Image, Figure, caption, zoom, image processing, imgproc, width, height, numbering]
 image_zoom: true
 aliases:
@@ -259,7 +259,7 @@ The attribute line `{…}`, on the line right after a block image:
 | --- | --- | --- | --- |
 | `caption` | plain text | — | Its presence makes a figure; not parsed as Markdown |
 | `#id` | identifier | `fig-<num>` when `num` is set | `[A-Za-z][A-Za-z0-9_.:-]*`; the anchor and the Book target ID |
-| `num` | string | — | `[0-9A-Za-z.-]+`; registers a Book figure target and prefixes the caption with "Figure N." |
+| `num` | string | — | `[0-9A-Za-z.-]+`; registers a Book figure target and prefixes the caption with "Figure N" |
 | `width` / `height` | positive integer | the resource's intrinsic size | Overrides the size; static and remote images use it to avoid layout shift |
 | `command` | enum | — | `Fit`, `Resize`, `Fill`, `Crop`; must accompany `options`; page and global resources only |
 | `options` | string | — | Hugo image processing options such as `600x300`, `300x150 Left`, `800x webp q80` |
@@ -268,8 +268,9 @@ The attribute line `{…}`, on the line right after a block image:
 | `data-*` / `aria-*` | string | — | Passed through |
 {.fields meta="type default"}
 
-`style`, `on*`, `alt`, `title`, `src` and any other key on the attribute line
-warn and are ignored. Alt text, title and source belong in the Markdown image
+`style`, `alt`, `title`, `src` and any other key on the attribute line warn
+and are ignored; Hugo strips `on*` handlers before the theme sees them, so
+they are dropped silently. Alt text, title and source belong in the Markdown image
 itself.
 
 ## Limits {#limits}

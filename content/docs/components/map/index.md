@@ -1,17 +1,16 @@
 ---
 title: Maps
 linkTitle: Maps
-description: List places in a `map` fence to get a numbered place list everywhere, plus an interactive map once the site names a tile service.
-weight: 178
-search_keywords: [map, maps, places, markers, route, popup, OpenStreetMap, Leaflet, tiles, coordinates, WGS 84, travel]
+description: List places in a `map` fence to get a numbered place list in HTML, Print and RSS, plus an interactive map once the site names a tile service.
+weight: 360
+search_keywords: [map, maps, places, markers, route, popup, OpenStreetMap, Leaflet, tiles, coordinates, WGS 84, travel, Beijing]
 ---
 
 A map fence suits places that belong together in an order: the stops of a
 trip, a company's offices, the venues of a conference, the sites of a field
-survey. You write the places as a short YAML list, and every output renders
-them as a numbered list with names, notes, thumbnails and coordinates that link
-to OpenStreetMap. That list is the content, and it works in print, in RSS and
-without JavaScript.
+survey. HTML, Print and RSS show a numbered list with names, notes, thumbnails
+and OpenStreetMap coordinates. The list works without JavaScript. Markdown and
+LLMS keep the original YAML fence.
 
 The interactive map above the list is something your site turns on. Map tiles
 are images fetched from a third-party tile service in the reader's browser,
@@ -30,28 +29,28 @@ Each place needs a `name`, a `lat` and a `lng`.
 
 ````markdown {title="Source"}
 ```map
-- name: Kinkaku-ji
-  lat: 35.0394
-  lng: 135.7292
-- name: Kiyomizu-dera
-  lat: 34.9949
-  lng: 135.7850
-- name: Fushimi Inari Taisha
-  lat: 34.9671
-  lng: 135.7727
+- name: Forbidden City
+  lat: 39.9159
+  lng: 116.3908
+- name: Temple of Heaven
+  lat: 39.8822
+  lng: 116.4066
+- name: Summer Palace
+  lat: 39.9901
+  lng: 116.2647
 ```
 ````
 
 ```map
-- name: Kinkaku-ji
-  lat: 35.0394
-  lng: 135.7292
-- name: Kiyomizu-dera
-  lat: 34.9949
-  lng: 135.7850
-- name: Fushimi Inari Taisha
-  lat: 34.9671
-  lng: 135.7727
+- name: Forbidden City
+  lat: 39.9159
+  lng: 116.3908
+- name: Temple of Heaven
+  lat: 39.8822
+  lng: 116.4066
+- name: Summer Palace
+  lat: 39.9901
+  lng: 116.2647
 ```
 
 This site has a tile service configured, so a map appears above the list, with
@@ -61,7 +60,7 @@ to the place on openstreetmap.org; that is an ordinary link the reader may
 follow, not a request the page makes.
 
 The body is parsed as YAML, and since JSON is valid YAML,
-`[{"name": "Kyoto Station", "lat": 34.9858, "lng": 135.7589}]` works too.
+`[{"name": "Forbidden City", "lat": 39.9159, "lng": 116.3908}]` works too.
 
 ## Site configuration {#configuration}
 
@@ -104,22 +103,28 @@ params:
   are allowed). Any other placeholder, such as `{apikey}` or `{accessToken}`,
   has no value to fill: write the key into the URL itself, or the template
   warns and is ignored. An optional `dark_tiles`, with the same rules, is used
-  in dark mode.
+  in dark mode. Only `{s}` may vary in either host. Put tile coordinates in the path or query.
 - `attribution` is the plain-text credit the tile service requires; it appears
   in the corner of every map. Add `attribution_url` (`https://`) to turn the
   credit into a clickable link without accepting author HTML — OpenStreetMap's
   [attribution guidelines](https://osmfoundation.org/wiki/Licence/Attribution_Guidelines)
   require interactive web maps to link to `https://www.openstreetmap.org/copyright`.
 - `subdomains` overrides Leaflet's default `abc` when `tiles` uses `{s}` (for
-  example `abcd` or `01234567`).
+  example `abcd` or `"01234567"`). Quote digits: YAML reads an unquoted
+  `01234567` as a number, which warns and falls back to Leaflet's default.
 - `max_zoom` is a whole number from 1 to 22 and defaults to 19.
-- `loading` is `lazy` (load within 320px of the viewport, default) or `click`
+- `loading` is `lazy` (the default: a map loads once it is on screen, within
+  320px below the viewport, or anywhere above the reading position) or `click`
   (show a button naming every tile host the map may contact, `dark_tiles`
   included and `{s}` written as `*`, and send no tile requests until clicked;
-  a button activated from the keyboard hands focus to the map it loads).
+  if the button still holds focus, it moves to the map on success or the first coordinate link on failure).
 - `enable: true` without a valid `tiles` and an `attribution` warns and leaves
   maps off, so a half-finished configuration never sends readers to a service
   you have not agreed to. Fences keep rendering their lists.
+- Surrounding whitespace in `tiles`, `dark_tiles`, `attribution_url` and
+  `subdomains` is trimmed. An unknown key warns and is ignored, including a
+  camel-case spelling such as `maxZoom`, which Hugo lowercases; write
+  `max_zoom`.
 
 Pick a service that fits your traffic. The OpenStreetMap Foundation's
 [tile usage policy](https://operations.osmfoundation.org/policies/tiles/)
@@ -129,9 +134,12 @@ host its own tiles. A key in the tile URL is visible to every reader, which is
 why the restriction to your domain matters.
 
 Each tile request sends the reader's IP address and the area being viewed to
-the tile service. Requests start only on sites that enable maps, and only when
-a map scrolls into view (or after a reader clicks when `loading: click` is set),
-so mention the service in your privacy notice if you have one.
+the tile service. Requests start only on sites that enable maps. Under the
+default `lazy` loading they start as a map nears the viewport, and a reader who
+opens a link to a later section loads every map above it at once, so the text
+being read is not pushed down later. If no tile request may happen before the
+reader agrees, set `loading: click`: nothing is requested until the button is
+pressed. Either way, mention the service in your privacy notice if you have one.
 
 ## Place fields {#places}
 
@@ -139,89 +147,94 @@ Besides `name` and the coordinates, a place can carry a note, a thumbnail and a
 link:
 
 ```yaml {title="One place with every field"}
-- name: Kinkaku-ji
-  lat: 35.0394
-  lng: 135.7292
-  text: Arrive at opening time to avoid the crowds.
-  image: kinkakuji.webp
-  link: "#day-1"
+- name: Forbidden City
+  lat: 39.9159
+  lng: 116.3908
+  text: Enter through the Meridian Gate in the morning.
+  image: forbidden-city.webp
+  link: "#single"
 ```
 
 - `name` and `text` are plain text: Markdown and HTML in them show literally,
   and popups are built from this text, never from HTML.
 - `image` is resolved like any image: page resource, then global resource,
   then static path, then remote URL. Local raster images are resized to fit
-  480×360 for the list and the popup; remote images are used as they are.
+  480×360 for the list and the popup, and carry their width and height in
+  both, so the popup keeps its size while the image loads; remote images are
+  used as they are.
   Thumbnails are decorative (`alt=""`), since the name beside them already says
-  what they show.
+  what they show. The route map below uses four images stored beside this
+  page's `index.md`.
 - `link` turns the name into a link in the list and in the popup, typically to
   a `#anchor` on the same page. Quote it, because YAML reads an unquoted `#` as
   the start of a comment.
 - A place without a name, without numeric coordinates, or with coordinates out
-  of range warns and is skipped. A quoted number such as `lat: "35.0394"` is a
+  of range warns and is skipped. A quoted number such as `lat: "39.9159"` is a
   string, so that place is skipped too.
-- Unknown fields warn and are ignored. A fence with no valid place warns and
-  renders nothing.
+- Unknown fields warn and are ignored. A fence with no valid place, including
+  an empty list `[]`, warns and renders nothing.
 
-## Routes and captions {#route}
+## Routes, thumbnails and captions {#route}
 
-`route=true` joins the places with a line in list order. `caption` adds a
+`route=true` joins the places with a line in list order, and `image` adds a
+resized thumbnail to both the list entry and its marker popup. `caption` adds a
 plain-text caption under the list, and screen readers announce it as the name
 of the map.
 
 ````markdown {title="Source"}
-```map {caption="Kyoto in one day" route=true}
-- name: Kyoto Station
-  lat: 34.9858
-  lng: 135.7589
-  text: Start here. The station has its own map below.
+```map {caption="Beijing Central Axis walk" route=true}
+- name: Forbidden City
+  lat: 39.9159
+  lng: 116.3908
+  text: Start at the Hall of Supreme Harmony; close-up below.
+  image: forbidden-city.webp
   link: "#single"
-- name: Fushimi Inari Taisha
-  lat: 34.9671
-  lng: 135.7727
-  text: Thousands of vermilion torii gates climb the hill.
-- name: Kiyomizu-dera
-  lat: 34.9949
-  lng: 135.7850
-  text: The wooden stage looks out over the city.
-- name: Ginkaku-ji
-  lat: 35.0270
-  lng: 135.7982
-  text: The Philosopher's Path starts at its gate.
-- name: Kinkaku-ji
-  lat: 35.0394
-  lng: 135.7292
-  text: The gold-leaf pavilion over its pond.
+- name: Jingshan Park
+  lat: 39.9245
+  lng: 116.3904
+  text: Climb Wanchun Pavilion to overlook the palace roofs.
+  image: jingshan.webp
+- name: Beihai Park
+  lat: 39.9264
+  lng: 116.3825
+  text: Cross Yong'an Bridge toward the White Dagoba.
+  image: beihai.webp
+- name: Drum Tower
+  lat: 39.9393
+  lng: 116.3898
+  text: End the walk at the northern drum plaza.
+  image: drum-tower.webp
 ```
 ````
 
-```map {caption="Kyoto in one day" route=true}
-- name: Kyoto Station
-  lat: 34.9858
-  lng: 135.7589
-  text: Start here. The station has its own map below.
+```map {caption="Beijing Central Axis walk" route=true}
+- name: Forbidden City
+  lat: 39.9159
+  lng: 116.3908
+  text: Start at the Hall of Supreme Harmony; close-up below.
+  image: forbidden-city.webp
   link: "#single"
-- name: Fushimi Inari Taisha
-  lat: 34.9671
-  lng: 135.7727
-  text: Thousands of vermilion torii gates climb the hill.
-- name: Kiyomizu-dera
-  lat: 34.9949
-  lng: 135.7850
-  text: The wooden stage looks out over the city.
-- name: Ginkaku-ji
-  lat: 35.0270
-  lng: 135.7982
-  text: The Philosopher's Path starts at its gate.
-- name: Kinkaku-ji
-  lat: 35.0394
-  lng: 135.7292
-  text: The gold-leaf pavilion over its pond.
+- name: Jingshan Park
+  lat: 39.9245
+  lng: 116.3904
+  text: Climb Wanchun Pavilion to overlook the palace roofs.
+  image: jingshan.webp
+- name: Beihai Park
+  lat: 39.9264
+  lng: 116.3825
+  text: Cross Yong'an Bridge toward the White Dagoba.
+  image: beihai.webp
+- name: Drum Tower
+  lat: 39.9393
+  lng: 116.3898
+  text: End the walk at the northern drum plaza.
+  image: drum-tower.webp
 ```
 
-Select a marker to open its popup with the name, the note and the thumbnail
-when there is one; the first place links to the next section. The route is a
-straight line from place to place, not a computed walking or driving route.
+Select a marker or a row in the list below to open its popup with the
+thumbnail, the name and the note; the first place links to the next section.
+The route is a straight line from place to place, not a computed walking or
+driving route.
 
 ## One place and zoom {#single}
 
@@ -230,32 +243,36 @@ whole world) to 22 (a street corner, capped by `params.map.max_zoom`), and
 `height` sets the map's height as a CSS length.
 
 ````markdown {title="Source"}
-```map {zoom=17 height="18rem"}
-- name: Kyoto Station
-  lat: 34.9858
-  lng: 135.7589
-  text: Trains from Osaka and Tokyo arrive here.
+```map {zoom=16 height="18rem"}
+- name: Forbidden City
+  lat: 39.9159
+  lng: 116.3908
+  text: Hall of Supreme Harmony, centered inside the palace moat.
+  image: forbidden-city.webp
 ```
 ````
 
-```map {zoom=17 height="18rem"}
-- name: Kyoto Station
-  lat: 34.9858
-  lng: 135.7589
-  text: Trains from Osaka and Tokyo arrive here.
+```map {zoom=16 height="18rem"}
+- name: Forbidden City
+  lat: 39.9159
+  lng: 116.3908
+  text: Hall of Supreme Harmony, centered inside the palace moat.
+  image: forbidden-city.webp
 ```
 
 With several places, `zoom` replaces the fitted zoom level but keeps the
 fitted center. Without `height` the map is `min(26rem, 60vh)` tall, so a reader
-on a phone can always scroll past it. `height` takes a number followed by
-`px`, `rem`, `em`, `vh`, `vw` or `%`; anything else warns and keeps the
-default.
+on a phone can always scroll past it. `height` takes a positive number
+followed by `px`, `rem`, `em`, `vh` or `vw`. A percentage has no height to
+resolve against and a zero height leaves nothing to see, so both, like anything
+else, warn and keep the default.
 
 ## The interactive map {#interactive}
 
 - The theme bundles Leaflet 1.9.4. Only pages with a map link its stylesheet,
-  and the script loads when a map comes within 320px of the viewport (or when
-  the reader clicks the load button under `loading: click`).
+  and the script loads when the first map is due: on screen, within 320px
+  below the viewport, or anywhere above the reading position (or when the
+  reader clicks the load button under `loading: click`).
 - Scroll-wheel zoom is off, and on touchscreens single-finger swipes keep
   scrolling the page instead of trapping the reader inside the map. Readers
   pan and zoom with two-finger pinch, the zoom buttons, a mouse or pen drag, or the
@@ -319,14 +336,16 @@ Fence attributes:
 | `caption` | plain text | — | Caption under the list; also labels the map region |
 | `route` | bool | `false` | `true` connects the places in list order |
 | `zoom` | whole number | fit | 1 to 22 (capped by `params.map.max_zoom`). Without it: 15 for one place, otherwise fit all places |
-| `height` | CSS length | `min(26rem, 60vh)` | A number plus `px` `rem` `em` `vh` `vw` `%` |
+| `height` | CSS length | `min(26rem, 60vh)` | A positive number plus `px` `rem` `em` `vh` `vw` |
 | `tab` | plain text | — | Makes this map one panel of a [tab set](/docs/components/tabs/) |
 | `group` / `value` | string | — | Tab group and sync value; must appear with `tab` |
 | `id` | element ID | generated | The figure's ID, for links to the map |
 | `class` | class list | — | Passed through to the figure for site CSS |
 {.fields meta="type default"}
 
-`num`, `style`, `on*` and other attributes warn and are ignored.
+`num` and other unknown attributes warn and are ignored. Hugo consumes
+`style` and strips `on*` attributes before the theme sees the fence, so those
+are ignored without a warning.
 
 Site parameters (`hugo.yml`):
 
@@ -337,9 +356,9 @@ Site parameters (`hugo.yml`):
 | `params.map.attribution` | string | — | The plain-text attribution the tile service requires |
 | `params.map.attribution_url` | URL | — | Optional `https://` URL that turns `attribution` into a link |
 | `params.map.dark_tiles` | URL template | — | Optional; used in dark mode |
-| `params.map.subdomains` | string | — | Optional `{s}` subdomain characters (e.g. `abcd`, `01234567`); empty uses Leaflet's `abc` |
+| `params.map.subdomains` | string | — | Optional `{s}` subdomain characters as a quoted string (e.g. `abcd`, `"01234567"`); empty uses Leaflet's `abc` |
 | `params.map.max_zoom` | whole number | `19` | 1 to 22 |
-| `params.map.loading` | `lazy` \| `click` | `lazy` | `lazy` mounts near the viewport; `click` waits for a reader click |
+| `params.map.loading` | `lazy` \| `click` | `lazy` | `lazy` mounts on, near or above the reading position; `click` waits for a reader click |
 {.fields meta="type default"}
 
 ## Limits {#limits}

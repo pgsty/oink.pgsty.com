@@ -46,14 +46,14 @@ Markdown, run `hugo`, and get a static site with a navigation tree, local
 full-text search, light and dark modes, and a print view. The theme ships every
 script, font and stylesheet it uses, so the build needs no Node.js, npm or CDN.
 
-New to OINK? [Get started](/docs/start/) has a working site running in five
-minutes, which you then make your own one piece at a time. Already running
-OINK? Read the [1.6.0 release notes](/release/1.6.0/), then follow the
-[upgrade guide](/docs/admin/upgrade/#preparing-1-6).
+New to OINK? [Get started](/docs/start/) has this site running locally in two
+minutes and shows how to build your own with an AI agent. Already running
+OINK? Read the [1.7.0 release notes](/release/1.7.0/), then follow the
+[upgrade guide](/docs/admin/upgrade/#preparing-1-7).
 
 ## Where to start {#five-entries}
 
-- [Get started](/docs/start/) — Clone the Starter, preview it, replace its content, deploy it.
+- [Get started](/docs/start/) — Clone the docs locally, try the AI agent prompt, or add OINK to a project.
 - [Components](/docs/components/) — Callouts, tabs, diagrams, cards and more, each with its source beside the result.
 - [OINK Hands-On](/book/) — Build a site from one prompt, then learn every layer of it in ten hands-on chapters.
 - [Case studies](/case/) — How production sites solved navigation, migration and landing-page design.

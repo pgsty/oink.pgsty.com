@@ -12,9 +12,9 @@ aliases:
 
 ## 组件写在 Markdown 里 {#native-components}
 
-多数组件就是普通 Markdown 加一行属性，源码在 GitHub 和任何编辑器里都照样可读。提示块是 `> [!NOTE]` 块引用，有十种语义类型和一个中性折叠块；参数表是表格下面加一行 `{.fields}`；步骤与卡片是列表加 `{.steps}` 或 `{.cards}`；图注是图片下面一行 `{caption="…"}`。标签页是几个相邻的代码围栏，各带一个 `{tab="…"}` 属性；文件树、画廊、Mermaid、ECharts 则是以数据语言命名的围栏。离开 OINK，这些写法会退化为块引用、表格、列表与代码块，内容一点不丢。
+多数组件就是普通 Markdown 加一行属性，源码在 GitHub 和任何编辑器里都照样可读。提示块是 `> [!NOTE]` 块引用，有十种语义类型和一个中性折叠块；参数表是表格下面加一行 `{.fields}`；步骤与卡片是列表加 `{.steps}` 或 `{.cards}`；时间轴与更新日志条目是定义列表加 `{.timeline}` 和标题加 `{.update}`；图片、视频与音频共用带 `{caption="…"}` 的 Markdown 图片语法。标签页是几个相邻的代码围栏，各带一个 `{tab="…"}` 属性；文件树、画廊、地图、Mermaid、ECharts 则是以数据语言命名的围栏。离开 OINK，这些写法会退化为块引用、表格、列表、标题与代码块，内容一点不丢。
 
-原生 Markdown 表达不了的场景，比如带图标与图片的卡片、正文长达几段的参数条目，交给 30 个 shortcode。
+原生 Markdown 表达不了的场景，比如带图标与图片的卡片、离线帖子引用（`social`）、正文长达几段的参数条目，交给 30 个 shortcode。默认开启的排版复制（`params.ui.rich_copy`）还会把正文选区干净地粘贴进 Notion、飞书、Word 等富文本编辑器。
 
 → [组件总览](/zh/docs/components/)
 
@@ -28,7 +28,7 @@ aliases:
 
 ## 本地优先 {#local-first}
 
-浏览器需要的一切都提交在主题仓库里：Bootstrap 样式、Font Awesome、四款字体、Mermaid、KaTeX、Markmap、Swagger UI、Redoc、Asciinema、ECharts、Infographic、本地 PlantUML 引擎等。`VENDOR.json` 逐项记录它们的版本、来源、许可证文件与 SHA-256 校验值，站点实际下发了什么，一查便知。
+浏览器需要的一切都提交在主题仓库里：Bootstrap 样式、Font Awesome、四款字体、Mermaid、KaTeX、Markmap、Swagger UI、Redoc、Asciinema、ECharts、Infographic、Leaflet、本地 PlantUML 引擎等。`VENDOR.json` 逐项记录它们的版本、来源、许可证文件与 SHA-256 校验值，站点实际下发了什么，一查便知。
 
 凡是可能连接其它服务器的功能，配置完整之前都保持关闭。PlantUML 默认在浏览器内渲染，除非设置了 `params.plantuml.svg_image_url`。Diagrams.net 需要 `params.drawio.drawio_server`，Algolia 需要 `appId`、`apiKey` 与 `indexName`；缺少任何一项，构建时都会告警并保持关闭，而不会退回到某个公共服务。交互地图同样要等你在 `params.map` 里指定瓦片服务；视频卡片只有在站点把平台列入 `params.video_embeds`、并且读者点击之后，才会连接该平台。
 
@@ -64,7 +64,7 @@ OINK 沿用 Hugo 原生的多语言模型：译文路由、按权重排序的语
 
 ## 键盘导航 {#keyboard}
 
-三十个单键快捷键默认开启，导航、操作与样式各十个，可以按站点、栏目或单个页面关闭。`w` `s` 在侧栏树中上下移动，`a` `d` 折叠与展开，`q` `e` 跳到上一篇与下一篇，`k` `j` 跳到上一个与下一个标题，`h` 列出最近读过的页面，`g` 回到首页。其它按键用来搜索、编辑或打印页面，把页面交给 ChatGPT、Claude 或 Gemini，一次展开或折叠全部内容，切换视觉预设、明暗模式与语言，打开双列视图，切换禅意模式，以及加宽或收窄正文栏。在文本框中输入或输入法正在组字时，所有快捷键都会让行。按 `'` 或点击页脚的问号按钮，即可分三栏看到全部三十个快捷键，当前页面用不上的键会变暗显示。
+二十九个单键快捷键默认开启（导航十个、操作九个、样式十个），可以按站点、栏目或单个页面关闭。`w` `s` 在侧栏树中上下移动，`a` `d` 折叠与展开，`q` `e` 跳到上一篇与下一篇，`k` `j` 跳到上一个与下一个标题，`h` 列出最近读过的页面，`g` 回到首页。其它按键用来搜索、编辑或打印页面，把页面交给 ChatGPT 或 Claude，一次展开或折叠全部内容，切换视觉预设、明暗模式与语言，打开双列视图，切换禅意模式，以及加宽或收窄正文栏。在文本框中输入或输入法正在组字时，所有快捷键都会让行。按 `'` 或点击页脚的问号按钮，即可分三栏看到全部二十九个快捷键，当前页面用不上的键会变暗显示。
 
 → [键盘导航](/zh/docs/customize/keyboard/)
 
@@ -91,7 +91,7 @@ OINK 沿用 Hugo 原生的多语言模型：译文路由、按权重排序的语
 
 另有两种输出，服务于想一次拿到全部内容的 Agent。栏目开启 `LLMSFULL` 后，整个栏目拼成一份 `llms-full.txt`，Agent 一次请求即可取完；站点开启 `NAVJSON` 后，每种语言发布一份 `navigation.json`，把侧栏树作为数据提供。本站两者都已开启：<https://oink.pgsty.com/zh/docs/llms-full.txt> 与 <https://oink.pgsty.com/zh/navigation.json>。
 
-「在 ChatGPT / Claude / Gemini 中打开」链接默认关闭，因为读者一点击，当前页面的 URL 就会交给第三方。站点需要显式打开 `params.ui.page_context_menu.assistant_links`。
+「在 ChatGPT / Claude 中打开」链接默认关闭，因为读者一点击，当前页面的 URL 就会交给第三方。站点需要显式打开 `params.ui.page_context_menu.assistant_links`。
 
 → [Agent 支持](/zh/docs/customize/agents/)
 

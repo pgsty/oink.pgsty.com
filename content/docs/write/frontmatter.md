@@ -109,7 +109,7 @@ or when a section index should list its children differently.
 | `theme_color` | string | site value | `#rgb` or `#rrggbb` accent for this page. In a section root's `cascade`, it gives the whole section its own color. See [Brand and appearance](/docs/customize/brand/#theme-color) |
 | `theme_color_dark` | string | derived | The dark-mode accent. A page that overrides only `theme_color` under a cascade that sets this key inherits the cascade's dark value, so override both. `theme_color: false` opts the page out of an inherited section color |
 | `page_context_menu` | boolean | site value (`true`) | The page action menu on the title row: copy Markdown, edit this page, print and so on |
-| `page_context_menu.assistant_links` | boolean | site value (`false`) | The ChatGPT, Claude and Gemini items, written `page_context_menu: { assistant_links: false }`. A page can only turn them off; it cannot turn them on when the site has not |
+| `page_context_menu.assistant_links` | boolean | site value (`false`) | The ChatGPT and Claude items, written `page_context_menu: { assistant_links: false }`. A page can only turn them off; it cannot turn them on when the site has not |
 {.fields meta="type default"}
 
 ## Page shell {#shell}
@@ -132,6 +132,7 @@ in [Layouts and page types](/docs/customize/layout/).
 | `sidebar_expand_levels`, `sidebar_menu_compact`, `sidebar_menu_foldable`, `sidebar_item_overflow` | as the site parameter | site value | Per-page sidebar behavior; the values are in [Configuration](/docs/customize/config/) |
 | `sidebar_width_min`, `sidebar_width_max` | positive integer | site value (`220` / `480`) | Limits for resizing the desktop sidebar on this page. A minimum above its maximum warns and restores the site pair |
 | `code_copy` | boolean | site value (`true`) | Default copy button on this page's code blocks. A fence's own `copy=` wins |
+| `rich_copy` | boolean | site value (`true`) | Typeset HTML copy for prose selections pasted into rich-text editors |
 | `toc_style` | `fixed` / `flow` | site value (`fixed`) | A fixed right-rail panel, or a wider rail that starts in the content flow |
 | `toc_taxonomies` | boolean | site value (`true`) | Whether taxonomy clouds join the outline in the right rail |
 | `taxonomy_icons` | map | site value | Per-taxonomy icon overrides for this page, or for a section through `cascade` |
@@ -163,8 +164,8 @@ printed chapter. The guides are [AI-agent support](/docs/customize/agents/)
 
 ## Page end: comments, feedback and provenance {#page-end}
 
-These decide what follows the article. The order is fixed: feedback, then
-provenance, then the pager, then comments. See
+These decide what follows the article. The order is fixed: share bar, then
+feedback, then provenance, then the pager, then comments. See
 [Writing pages](/docs/write/pages/#page-end).
 
 | Key | Type | Default | Description |

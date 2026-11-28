@@ -287,6 +287,30 @@ test('compare: content components, fragment history and nested Escape keep worki
   await closed(page);
 });
 
+test('compare: Escape first belongs to the IME in either pane', async ({ page }) => {
+  const panes = await open(page);
+  for (const pane of panes) {
+    const input = pane.locator('#compare-ime');
+    await pane.evaluate(() => {
+      const field = document.createElement('input');
+      field.id = 'compare-ime';
+      document.querySelector('main').append(field);
+      field.focus();
+    });
+    await input.dispatchEvent('keydown', { key: 'Escape', isComposing: true });
+    // Safari ends the composition first, then reports the Escape that
+    // dismissed the candidates as keyCode 229 without isComposing.
+    await input.dispatchEvent('compositionend');
+    await input.dispatchEvent('keydown', { key: 'Escape', keyCode: 229 });
+    await input.dispatchEvent('compositionstart');
+    await input.dispatchEvent('keydown', { key: 'Escape', keyCode: 229, isComposing: true });
+    await expect(page.locator(reader)).toBeVisible();
+    await input.dispatchEvent('compositioncancel');
+  }
+  await panes[1].locator('#compare-ime').press('Escape');
+  await closed(page);
+});
+
 test('compare: a fragment link into a hidden tab reveals its panel without adding history', async ({ page }) => {
   const [left] = await open(page);
   const length = await page.evaluate(() => history.length);

@@ -2,16 +2,17 @@
 title: Audio
 linkTitle: Audio
 description: Put a podcast episode, voice sample or recorded talk on a page with image syntax, as a titled native player with its transcript beside it.
-weight: 174
+weight: 440
 search_keywords: [Audio, mp3, m4a, ogg, wav, flac, podcast, voice sample, transcript, player]
 ---
 
 Write an audio file the way you write an image, `![title](episode.mp3)`, and
 it becomes a titled figure with the browser's own audio player. Use it for
 podcast episodes, voice samples, pronunciation guides and recorded talks. There
-is no shortcode to learn and nothing to configure. A page with one audio player
-loads no script at all; a page with two or more players loads the small shared
-media runtime so starting one pauses the others.
+is no shortcode to learn and nothing to configure. The played portion uses the page’s
+accent color. A small shared script updates progress and pauses other audible players
+when you start a recording. The
+browser's playback controls also work with JavaScript off.
 
 ## Shortest form {#minimal}
 
@@ -33,8 +34,12 @@ markup.
 The first six audio players on a page default to `preload="metadata"`, so the
 duration appears without downloading the recording; from the seventh player
 onward, the default switches to `preload="none"` to avoid a burst of metadata
-requests on long sample pages. You can override either with
-`{preload="none"}` or `{preload="metadata"}`. Chromium-based browsers also put
+requests on long sample pages. The count follows Hugo's render order: players
+written directly in the page come first, then players inside shortcode bodies
+such as tabs, social posts, includes and cards. You can override either default
+with `{preload="none"}` or `{preload="metadata"}`; set `{preload="metadata"}`
+explicitly on a player inside a shortcode that must show its duration.
+Chromium-based browsers also put
 a playback speed control in the player's menu.
 
 This file is an 8-second, 50 KB MP3 stored beside the page in its bundle. Like
@@ -182,8 +187,9 @@ The attribute line `{…}` directly after a block audio file:
 {.fields meta="type default"}
 
 `num`, `poster`, `autoplay`, `track`, `width`, `height`, `link`, `command`,
-`options` and any other key warn as unknown and are dropped; `style` and `on*`
-warn as unsafe. A recording takes no figure number, because it is not a figure
+`options` and any other key warn as unknown and are dropped; `style` warns as
+unsafe. Hugo strips `on*` handlers before the theme sees them, so they are
+dropped silently. A recording takes no figure number, because it is not a figure
 in the Book sense.
 
 ## Limits {#limits}
@@ -193,13 +199,14 @@ in the Book sense.
 - Single-active playback: a player that becomes audible, by starting with
   sound or by being unmuted while it plays, pauses the other audible
   `<audio>` and `<video>` players on the page. Muted or silent players, such
-  as autoplay loops, keep running. YouTube, Bilibili and Vimeo players run in
-  frames from another site, so they neither pause nor get paused.
+  as autoplay loops, keep running. Opening a platform card pauses audible
+  players; once playing, that cross-site player cannot be paused locally.
 - The theme adds no speed control. Chromium-based browsers offer one in the
   native control menu; other browsers vary.
 - The native player looks different in each browser: Chromium-based browsers
   follow the site's light and dark `color-scheme`, while Firefox and Safari
   keep fixed native control styling in dark mode.
+- Site single-key shortcuts yield while focus is in a native player.
 - One source file per recording, with no fallback formats. MP3 plays in every
   current browser.
 - No podcast feed: the RSS output carries no `<enclosure>`, so podcast

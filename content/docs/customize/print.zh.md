@@ -102,6 +102,10 @@ no_print: true
 | [PlantUML](/zh/docs/components/plantuml/) | 打印视图保留源码，不加载运行时；浏览器打印的页面显示已渲染的图片，尚未渲染时显示源码 |
 | [ECharts](/zh/docs/components/echarts/) · [Infographic](/zh/docs/components/infographic/) | 打印视图保留围栏源码，不绘制图表；浏览器打印的页面显示已渲染的图表，尚未挂载时显示声明的配置或 DSL |
 | [Asciinema](/zh/docs/components/asciinema/) · [OpenAPI](/zh/docs/write/openapi/) | 一个带标题的静态链接，指向录像或规范；三套运行时都不加载 |
+| [时间轴](/zh/docs/components/timeline/) · [更新](/zh/docs/components/update/) | 纸张浅色配色下的静态时间轴或标题与元数据行，尽量避免在条目内部分页 |
+| [视频](/zh/docs/components/video/) · [音频](/zh/docs/components/audio/) | 静态 figure，带海报图（视频）、图注以及可见的文件或观看 URL；打印视图不含 `<video>`、`<audio>` 或 `<iframe>` |
+| [帖子](/zh/docs/components/social/) | 纸张配色下的静态引用卡片，保留作者、正文、附图与原帖链接 |
+| [地图](/zh/docs/components/map/) | 带编号与坐标链接的地点列表，不输出 Leaflet 地图画布 |
 | 卡片 / 步骤 / 徽章 / 按键 | 静态呈现，内容不变 |
 
 除了页面外壳，页面操作菜单、反馈组件、标题旁的锚点链接和行内复制按钮也不会打印。用浏览器打印含图表的页面前，先等图表绘制完成。

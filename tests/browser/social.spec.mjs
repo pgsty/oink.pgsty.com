@@ -206,7 +206,7 @@ test('social switches cleanly to paper palette in dark-mode browser print across
     expect(contrastOnWhite(data.bodyColor), `${preset} dark print body contrast`).toBeGreaterThanOrEqual(10);
     expect(contrastOnWhite(data.linkColor), `${preset} dark print link contrast`).toBeGreaterThanOrEqual(4.5);
     expect(contrastBetween(data.nestedBodyColor, data.nestedBg), `${preset} dark print nested contrast`).toBeGreaterThanOrEqual(10);
-    expect(data.linkAfter, `${preset} print exposes original URL`).toContain('https://example.com/');
+    expect(data.linkAfter, `${preset} print exposes original URL`).toContain('https://x.com/RonVonng/');
   }
 });
 

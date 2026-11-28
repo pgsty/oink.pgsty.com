@@ -2,7 +2,7 @@
 title: 提示块
 linkTitle: 提示块
 description: 用 `> [!NOTE]` 这样的块引用写出带颜色、图标与标题的提示、警告与折叠块，不需要短代码。
-weight: 10
+weight: 110
 search_keywords: [提示块, Callout, Alert, Admonition, 告警, 折叠块, note, tip, warning, caution, details]
 aliases:
   - /docs/components/layout/
@@ -22,7 +22,7 @@ aliases:
 > [!NOTE]
 > Hugo Module 需要本机安装 Go；只用离线归档时不需要。
 
-不写标题时，显示当前语言的类型名：中文页面是「注意」，英文页面是 "Note"。
+不写标题时，显示当前语言的类型名：中文页面是「说明」，英文页面是 "Note"。
 
 ## 十种类型 {#types}
 
@@ -229,16 +229,16 @@ aliases:
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
 | `icon` | Font Awesome class 对 | 类型默认图标 | 例如 `fa-solid fa-database`；`DETAILS` 默认无图标 |
-| `class` | 空格分隔的 class | — | 原样透传给站点 CSS |
+| `class` | 空格分隔的 class | — | 经校验的类名，供站点 CSS 使用；`data-*` 与 `aria-*` 原样透传 |
 {.fields meta="type default"}
 
-其它键（包括 `style` 与 `on*` 事件属性）会被丢弃，并在构建时告警。
+其它键（包括 `style`）会被丢弃，并在构建时告警；`on*` 事件属性在主题读到之前已被 Hugo 剥离，静默丢弃。
 
 ## 限制与常见问题 {#limits}
 
 - 颜色由类型决定，没有颜色参数。找不到合适的类型时，选最接近的一种，用标题表达具体含义。
 - 读者展开或收起的状态在刷新后不保留。
-- 放进 `{.steps}` 列表项或 `{{%/* steps */%}}` 步骤时，每一行 `>` 都要缩进到列表项文字的位置，见[步骤](/zh/docs/components/steps/)。
+- 放在 `{.steps}` 列表项里时，每行 `>` 缩进到列表项文字处；放在 `{{%/* steps */%}}` 步骤里时不缩进。见[步骤](/zh/docs/components/steps/)。
 
 ## 相关 {#related}
 

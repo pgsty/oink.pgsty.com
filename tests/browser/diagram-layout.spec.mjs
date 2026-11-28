@@ -121,9 +121,42 @@ for (const language of ['', '/zh']) {
     await page.waitForTimeout(300); // Let ResizeObserver and any vendor transitions settle.
     expect(await svg.locator(':scope > g').getAttribute('transform')).toBe(position);
     const reset = map.getByRole('button', { name: language ? '适应窗口' : 'Fit to window' });
+    const download = map.getByRole('button', { name: language ? '下载 SVG' : 'Download SVG' });
+    const controlStyles = await map.evaluate((node) => {
+      const box = node.getBoundingClientRect();
+      const bar = node.querySelector('.td-markmap__controls');
+      const buttons = [...node.querySelectorAll('.td-markmap__control')];
+      const barRect = bar.getBoundingClientRect();
+      return {
+        count: buttons.length,
+        atBottomRight:
+          barRect.right <= box.right + 1 &&
+          barRect.bottom <= box.bottom + 1 &&
+          barRect.left >= box.left + box.width / 2,
+        borderless: buttons.every(
+          (btn) => getComputedStyle(btn).borderTopWidth === '0px' && getComputedStyle(btn).backgroundColor === 'rgba(0, 0, 0, 0)',
+        ),
+      };
+    });
+    expect(controlStyles).toEqual({ count: 2, atBottomRight: true, borderless: true });
+
     await reset.focus();
     await page.keyboard.press('Enter');
     await expect.poll(fitted).toBe(true);
+
+    const downloadPromise = page.waitForEvent('download');
+    await download.click();
+    const file = await downloadPromise;
+    expect(file.suggestedFilename()).toMatch(/^markmap-\d+\.svg$/);
+    const stream = await file.createReadStream();
+    const chunks = [];
+    for await (const chunk of stream) chunks.push(chunk);
+    const svgText = Buffer.concat(chunks).toString('utf8');
+    expect(svgText).toContain('xmlns="http://www.w3.org/2000/svg"');
+    expect(svgText).toContain('viewBox="');
+    expect(svgText).toContain('<rect ');
+    expect(svgText).not.toContain('var(--mm-');
+
     await page.setViewportSize({ width: 820, height: 900 });
     await expect.poll(fitted).toBe(true);
     await page.setViewportSize({ width: 390, height: 844 });

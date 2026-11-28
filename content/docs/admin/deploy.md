@@ -345,6 +345,8 @@ Features you enable add their own requirements:
 - [Local PlantUML rendering](/docs/components/plantuml/#limits): same-origin scripts, `wasm-unsafe-eval` in `script-src` to compile WebAssembly, and `blob:` in `img-src`. No rendering-service origin is needed.
 - [Remote API specifications](/docs/write/openapi/#spec-file) and [self-hosted diagram services](/docs/components/plantuml/#server): their origins in `connect-src` and `img-src`.
 - [giscus](/docs/admin/comments/#privacy): both `script-src` and `frame-src`.
+- [Interactive maps](/docs/components/map/#configuration) (`params.map`): your tile and `dark_tiles` hosts in `img-src`.
+- [Video platform players](/docs/components/video/#platforms) (`params.video_embeds`): the enabled player origins (`https://www.youtube-nocookie.com`, `https://player.bilibili.com`, `https://player.vimeo.com`) in `frame-src`, plus any remote media, poster, subtitle track or social-avatar hosts in `media-src`, `img-src` and `connect-src`.
 - [Duo view](/docs/customize/i18n/#bilingual-view) and ReDoc API references render in same-origin frames, so `frame-src` (or `child-src`) must allow `'self'`, and responses must allow same-origin framing (no `X-Frame-Options: DENY` or `frame-ancestors 'none'`). Duo view also adds an inline bootstrap script to every HTML page, which changes the script hashes.
 
 Hash each inline script and style block you allow from the final deployed

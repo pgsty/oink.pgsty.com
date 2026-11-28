@@ -2,7 +2,7 @@
 title: Infographic
 linkTitle: Infographic
 description: 用 `infographic` 围栏和一个 AntV 模板，把标题与几个条目画成流程、时间线、漏斗、网格或层级信息图。
-weight: 160
+weight: 350
 search_keywords: [Infographic, 信息图, AntV, 流程图, 时间线, 漏斗, timeline, funnel, 模板, template]
 ---
 
@@ -291,7 +291,7 @@ data
 | `class` | 空格分隔的 class | — | 透传给容器 |
 {.fields meta="type default"}
 
-`style`、`on*` 与未知属性会告警并被忽略；围栏为空时告警，什么也不渲染。
+未知属性告警并忽略；`style` 被 Hugo 当作高亮选项取走，`on*` 被 Hugo 剥离，二者静默忽略。围栏为空时告警，什么也不渲染。
 
 DSL 的顶层键（由 AntV 定义）：
 

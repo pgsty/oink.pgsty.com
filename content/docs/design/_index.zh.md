@@ -6,15 +6,14 @@ weight: 70
 icon: fa-solid fa-compass-drafting
 no_list: true
 search_keywords: [OINK 设计, 维护者契约, 架构, 决策, 研究, 提案, PRD]
-contract_status: v1.6.0
+contract_status: v1.7.0
 cascade:
   search_boost: 0.6
   categories: [设计契约]
 ---
 
-> [!NOTE] 已发布版本与开发中的变更
-> 本站固定使用 OINK v1.6.0。架构、组件和外壳契约也记录了 `main` 上拟随 v1.7.0 发布的变更。
-> 使用同级主题仓库可预览这些变更。正式发布验收会在关闭替换与工作区后验证公开模块。
+> [!NOTE] OINK 1.7.0 契约
+> 这些契约描述 OINK v1.7.0。正式发布验收会在关闭替换与工作区后验证公开模块。
 
 本专栏是 OINK 可长期维护的设计记录。站内其它专栏按任务讲解如何搭建站点；
 这里集中说明现行不变量、这些选择背后的理由、用于比较方案的证据，以及仍处于
@@ -45,7 +44,7 @@ cascade:
 | -------------------------------------- | ------------------------------------------ |
 | [设计决策](/zh/docs/design/decisions/) | 已接受的诊断、配置、创作模型、Expo 与 CLI 设计理由       |
 | [设计研究](/zh/docs/design/research/)  | Goldmark 探针、消费站证据、CLI 验收与 10 月主题评审      |
-| [候选提案](/zh/docs/design/proposals/) | 知识图谱、媒体收敛、视觉预设与 CLI 路线图等活跃 PRD |
+| [候选提案](/zh/docs/design/proposals/) | 主题路线图、本地搜索、视觉预设、内容组件与 CLI 路线图等已接受及活跃 PRD |
 
 以后所有 OINK PRD 或 RFC 都必须以中英文页面对的形式放入
 `content/docs/design/proposals/`，不得再在仓库中创建 `plan/`、`plans/` 或

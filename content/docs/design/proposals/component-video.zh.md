@@ -6,21 +6,21 @@ weight: 28
 icon: fa-solid fa-film
 search_keywords: [视频, Video 组件, mp4, webm, GIF 替代, youtube, bilibili, vimeo, 嵌入, facade, 隐私占位, 字幕, 组件]
 design_kind: proposal
-design_status: implemented
+design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] 已实现，等待发布
-> 已在主题 `main` 分支中实现，并写入了[视频指南](/zh/docs/components/video/)。尚未包含在发布标签中。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
+> [!NOTE] 已随 OINK 1.7.0 接受并发布
+> 已随 OINK v1.7.0 发布并写入[视频指南](/zh/docs/components/video/)，规范行为归属[组件契约](/zh/docs/design/components/#timeline-media-social-and-maps)。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 2026-11-27 在 `main` 实现；等待发布 |
+| 状态 | 已接受并随 OINK v1.7.0 发布（2026-11-27 实现） |
 | 负责人 | OINK 维护者 |
 | 交付阶段 | S2（文件、自动播放），S4（平台卡片与播放器） |
 | 形态 | 原生形态：目标地址为视频文件或可识别视频平台 URL 的块级 Markdown 图片 |
 | 新增公共 API | 视频专用的图片属性 `poster`、`track`、`autoplay`；配置项 `params.video_embeds` |
-| 运行时 | 默认没有；自动播放视频和已启用的播放器使用 `js/chunks/media.js`（约 2 KB） |
+| 运行时 | 文件播放器与已启用的平台卡片共享 `js/chunks/media.js` |
 | 受影响范围 | `render-image.html`、共享资源查找、一个媒体 partial、一个样式表层、配置 schema，以及新指南 `/docs/components/video/` |
 
 ## 概要 {#summary}
@@ -54,7 +54,7 @@ proposal_date: 2026-11-27
 2. **已有先例**：GitLab Flavored Markdown 会把指向视频或音频文件的图片语法渲染为播放器，Obsidian 也会嵌入用图片语法书写的 YouTube 视频。OINK 自己的 Draw.io 组件就是一种原生图片形态。
 3. **URL 即身份**：读者、订阅源和 Agent 能理解的是平台 URL，它还携带起始时间。主题在构建期由它推导出播放器 URL，不抓取任何内容。
 4. **未经同意，不发第三方请求**：默认情况下，没有任何请求离开页面。站点显式启用后，也只在读者点击之后才连接平台。
-5. **渐进增强**：所有形态在没有 JavaScript 时都可用；运行时只增加感知视口的自动播放和就地播放器。
+5. **渐进增强**：所有形态在没有 JavaScript 时都可用；运行时着色显示文件播放进度、协调有声播放、按可见性控制自动播放，并在原位打开已启用的嵌入播放器。
 
 ## 目标与非目标 {#goals}
 
@@ -112,7 +112,7 @@ proposal_date: 2026-11-27
 </figure>
 ```
 
-与块级图片一样，没有 `caption` 或 `num` 的视频不带 `<figure>` 包裹。
+与块级图片不同，视频始终带 `<figure>` 包裹，有没有 `caption` 或 `num` 都一样。
 
 `autoplay=true` 输出 `muted loop playsinline` 和 `data-td-media-autoplay` 标记，但不输出 `autoplay` 属性。只有当视频至少一半可见、页面处于可见状态、且读者没有要求减少动态效果时，运行时才开始播放；视频离开视口时暂停。原生控件保留，因此动画随时可以暂停。没有 JavaScript 时，读者看到海报图或首帧，可以手动播放。
 
@@ -124,7 +124,7 @@ proposal_date: 2026-11-27
 | Bilibili | `bilibili.com/video/BV<id>` 或 `/video/av<number>`；接受 `p` 与 `t` 参数 | `https://player.bilibili.com/player.html?bvid=…&p=…&t=…&autoplay=1&danmaku=0` |
 | Vimeo | `vimeo.com/<number>`，未公开列出的视频可附加 `/<hash>` | `https://player.vimeo.com/video/<number>?h=…&dnt=1&autoplay=1` |
 
-构建任何 URL 之前，先按这些模式校验 ID；作者文本绝不会进入播放器 URL。无法离线解析的短链接（例如 `b23.tv`）只渲染不带播放器的卡片，并告警提示改用完整 URL 形式。
+构建任何 URL 之前，先按这些模式校验 ID；作者文本绝不会进入播放器 URL。`b23.tv/BV…` 形式的短链接可以解析出播放器；只有无法离线解析的不透明短链接（例如 `b23.tv/abc`）才渲染不带播放器的卡片，并告警提示改用完整 URL 形式。
 
 默认输出是一张卡片：海报图或中性底面、播放符号、方括号文本和平台名称，全部包在一个指向规范观看 URL 的链接内。不产生 iframe、脚本或缩略图请求。
 
@@ -145,7 +145,7 @@ params:
 
 | 输出 | 结果 |
 | --- | --- |
-| HTML | 如上所述；仅在有自动播放视频或已启用的播放器时加载 `media.js` |
+| HTML | 文件播放器和已启用的平台卡片加载共享的 `media.js` |
 | Print | 有海报图时显示海报图，加上图注与 Book 标签，并以可见文本列出文件或观看 URL；不含 `<video>` 或 `<iframe>` |
 | Markdown / LLMS | 作者编写的源码 |
 | RSS | 有海报图时输出海报图（绝对 URL），再加一个以方括号文本为文字的链接；不含 `<video>` 或 `<iframe>` |
@@ -161,7 +161,7 @@ params:
 | 方案 | 决定 | 理由 |
 | --- | --- | --- |
 | 初稿中的 `{{</* video */>}}`，带 `src`、`youtube`、`bilibili`、`vimeo`、`webm`、`mp4`、`controls`、`muted`、`loop`、`gif`、`ratio` 等参数 | 否决 | 约二十个参数重复表达了图片语法与插图属性已能表达的内容，而且短代码会成为放置视频的第二种方式 |
-| 覆盖 Hugo 的 `youtube` 与 `vimeo` | 否决 | Hugo 的 `vimeo` 可能在构建期向 Vimeo 发起抓取（其 simple 模式）；每多一个覆盖，就扩大一分与 Hugo 的分歧（见 [X 提案中的解析器发现](/zh/docs/design/proposals/component-social/#hugo-x)）；URL 比 ID 更清晰 |
+| 覆盖 Hugo 的 `youtube` 与 `vimeo` | 否决 | Hugo 的 `vimeo` 可能在构建期向 Vimeo 发起抓取（其 simple 模式）；每多一个覆盖，就扩大一分与 Hugo 的分歧（见[社交帖子提案中的解析器发现](/zh/docs/design/proposals/component-social/#hugo-x)）；URL 比 ID 更清晰 |
 | 会移除控件的 `gif=true` | 改名并修改 | `autoplay` 描述的是行为本身。移除控件不满足 WCAG 2.2.2（暂停、停止、隐藏） |
 | HTML 的 `autoplay` 属性 | 否决 | 它忽略减少动态效果偏好，离开屏幕后仍继续播放；运行时门控才是无障碍的形态 |
 | 远程平台缩略图 | 否决 | 每次浏览都会发出第三方请求 |
@@ -189,7 +189,7 @@ params:
 
 ## 验收标准 {#acceptance}
 
-- 没有自动播放视频或已启用播放器的页面，不加载媒体运行时。
+- 页面只有普通平台链接时不加载媒体运行时。
 - `video_embeds: []` 时，HTML 中不出现任何播放器主机 URL。
 - 在 `prefers-reduced-motion: reduce` 下绝不自动播放，离开屏幕时暂停。
 - Print、RSS、Markdown 与 LLMS 中不含 `<video>`、`<iframe>` 或运行时标记。
@@ -197,7 +197,7 @@ params:
 
 ## 待决问题 {#open-decisions}
 
-1. **无图注的视频**：建议与图片一致（不加 `<figure>`）。备选：始终包裹，以获得统一的框架。
+1. **无图注的视频（已解决）**：最终实现始终使用 `<figure class="td-media">` 包裹，以保持统一框架与打印／排版复制一致性。
 2. **字幕**：建议每页一个 `track`，各语言页面各自指定字幕文件。列表形式推迟。
 3. **Bilibili 弹幕**：建议在 S4 中固定 `danmaku=0`，不提供选项。
 4. **未知尺寸**：建议预留 16:9；竖屏视频需设置 `width`/`height` 或海报图。

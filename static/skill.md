@@ -20,7 +20,7 @@ open them when you need them, and use your own judgment in between.
 OINK is a local-first Hugo Module theme, a hard fork of Docsy. An OINK site is
 an ordinary Hugo repository: a config file, a `go.mod` that pins
 `github.com/pgsty/oink@<tag>`, `content/`, `data/`, and optionally `assets/`
-and `layouts/`. Hugo 0.169.0 or newer, in any edition, builds it and Go fetches
+and `layouts/`. Any Hugo edition meeting the [module minimum](https://github.com/pgsty/oink/blob/main/theme.toml) builds it and Go fetches
 the module; there is no Node, npm, Sass, or CDN step.
 
 What you have to work with:
@@ -29,11 +29,13 @@ What you have to work with:
 - home and landing pages assembled from YAML data out of 22 section types;
 - content components, most of them plain Markdown with one attribute line:
   callouts, steps, cards, tabs, annotated code, diagrams and charts, timelines,
-  changelog entries, video and audio players, quoted social posts, maps;
-- local search with a command palette, keyboard shortcuts, 32 interface
-  languages, Duo View for translations, versions, and taxonomies;
-- four visual presets with light and dark modes, print, and Markdown and
-  `llms.txt` outputs for agents.
+  changelog entries, video and audio players, quoted posts (`social`), maps;
+- local search with a command palette, 29 single-key shortcuts with local
+  browsing history, typeset rich-text copy, 32 interface languages, Duo View
+  for translations, versions, and taxonomies;
+- four visual presets (Paper ivory+clay default, Slate, Ink, Terminal) with
+  preset-specific CJK system typography, light and dark modes, print, and
+  Markdown and `llms.txt` outputs for agents.
 
 There is no CMS, login, database, or automatic translation.
 
@@ -43,7 +45,7 @@ one page, and its translation if there is one) before scaling up.
 
 ## Learn from real sites
 
-The [case library](https://oink.pgsty.com/case/) documents 45 production OINK
+The [case library](https://oink.pgsty.com/case/) documents 79 production OINK
 sites. Each write-up explains the design, its trade-offs, and which parts the
 site built itself rather than taking from the theme; those parts are not OINK
 features and may not suit your project. Each name below links to its write-up
@@ -237,8 +239,9 @@ are relative to `/docs/`.
 | When you are… | Read |
 | --- | --- |
 | deciding whether OINK fits, and what it adds | `about/`, `about/features/` |
-| creating a site, or adding OINK to an existing Hugo site | `start/from-scratch/` |
-| starting from a template with deploy workflows included | `start/starter/`, `start/anatomy/` |
+| browsing an OINK site or AI agent reports locally | `start/local/` |
+| creating a standalone site, or adding OINK to an existing Hugo site | `start/from-scratch/` |
+| adding an OINK `docs/` site inside an open-source repo with CI | `start/add-docs/` |
 | arranging folders into a sidebar; writing pages and front matter | `write/organize/`, `write/pages/`, `write/frontmatter/` |
 | writing a blog, a book, or photo albums | `write/blog/`, `write/book/`, `write/expo/` |
 | publishing releases and downloads, or an API reference | `write/releases/`, `write/openapi/` |
@@ -265,7 +268,7 @@ The site also has a hands-on tutorial book at `/book/`, release notes at
 (`hugo.yaml`), migration tools, and checkers are at
 <https://github.com/pgsty/oink>. Check its releases for the newest version;
 newer docs win over this file. Older tutorials and sites carry retired
-practice, such as OINK 0.4–1.4 keys, `exampleSite`, `type: landing`, Docsy
+practice, such as OINK 0.4–1.5 keys, `exampleSite`, `type: landing`, Docsy
 `blocks/*`, and Sass, so read them for intent, not syntax.
 
 ## Things worth knowing early

@@ -95,11 +95,11 @@ stand beside Song: Paper headings and Ink prose move to a system serif and
 Terminal prose to mono. Bundling a CJK web font was rejected for its size.
 Windows and Android rendering is unverified.
 A follow-up shortcut pass on 2026-11-27 finalized the bindings: `t` steps
-through offered presets, `y` cycles light, dark, and system color modes, and
-`v` switches blog/release/case index layouts.
+through offered presets, `y` cycles light, dark, and system color modes, `l`
+switches blog/release/case index layouts, and `v` cycles site versions.
 Typeset copy reuses the print palette instead of adding a third palette. The
 [architecture contract](/docs/design/architecture/#typeset-copy) owns its
-behavior. These changes follow OINK 1.6.0 and are unreleased.
+behavior. These changes ship in OINK 1.7.0.
 
 ## Evidence {#evidence}
 

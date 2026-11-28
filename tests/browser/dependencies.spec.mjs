@@ -249,6 +249,23 @@ for (const chunk of ['markmap.js', 'notes-html-*.js', 'mathjax-*.js']) {
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.route(`**/third_party/markmap/${chunk}`, route => route.abort());
+    if (chunk === 'notes-html-*.js') {
+      await page.route('**/third_party/markmap/markmap.js', async route => {
+        await page.evaluate(() => {
+          window.closedMapNotes = [];
+          const coordinator = window.OinkSurfaceCoordinator;
+          const register = coordinator.register;
+          coordinator.register = (name, close) => {
+            const unregister = register(name, close);
+            return () => {
+              if (name.startsWith('markmap-note-')) window.closedMapNotes.push(name);
+              unregister();
+            };
+          };
+        });
+        await route.continue();
+      });
+    }
     await page.goto('/tests/dependency-notes/');
     if (chunk !== 'markmap.js') {
       await page.getByRole('button', { name: 'Details: Rich notes', exact: true }).click();
@@ -262,10 +279,12 @@ for (const chunk of ['markmap.js', 'notes-html-*.js', 'mathjax-*.js']) {
       await expect(source).toContainText('hello <world> & friends');
       if (chunk === 'notes-html-*.js') {
         await expect(source.locator('..')).toBeFocused();
+        expect(await page.evaluate(() => window.closedMapNotes.length)).toBe(1);
         // A later appearance change must not call into a destroyed map.
         await page.evaluate(() => document.documentElement.dataset.bsTheme = 'dark');
         await page.getByRole('button', { name: 'Details: Independent notes', exact: true }).click();
         await expect(page.locator('pre > code.language-markmap')).toHaveCount(2);
+        expect(await page.evaluate(() => new Set(window.closedMapNotes).size)).toBe(2);
       }
     }
     expect(errors).toEqual([]);

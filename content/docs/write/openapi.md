@@ -77,7 +77,7 @@ shortcode turns it into an absolute URL based on `baseURL`: with
 `https://example.com/preview/openapi/docs-demo.yaml`. An `http` or `https` URL
 is used as given.
 
-Each `redoc` shortcode runs ReDoc 3.1.0 from the theme's local files in a frame
+Each `redoc` shortcode runs ReDoc 3.2.0 from the theme's local files in a frame
 of its own. The frame keeps its navigation in its own URL fragment, so it never
 disturbs the article's anchors or another reader on the same page. It uses
 ReDoc's light palette, scrolls independently, and has a plain link to the

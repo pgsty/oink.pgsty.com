@@ -2,7 +2,7 @@
 title: FileTree
 linkTitle: FileTree
 description: Draw an annotated directory tree in a `filetree` fence, with aligned comments, per-entry icons and collapsible directories.
-weight: 90
+weight: 380
 search_keywords: [FileTree, directory tree, tree, repository layout, fence, icon, tone, open]
 ---
 
@@ -197,7 +197,7 @@ the type, `{type=dir}` or `{type=file}` sets it.
 ```filetree {title="the content directory"}
 - content/
   - docs/                # the documentation tree
-    - components/         # 22 component pages    {open=false}
+    - components/         # 28 component pages    {open=false}
       - callout.md
       - filetree.md
       - image/            # page bundle: body + images  {type=dir}
@@ -211,7 +211,7 @@ the type, `{type=dir}` or `{type=file}` sets it.
 ```filetree {title="the content directory"}
 - content/
   - docs/                # the documentation tree
-    - components/         # 22 component pages    {open=false}
+    - components/         # 28 component pages    {open=false}
       - callout.md
       - filetree.md
       - image/            # page bundle: body + images  {type=dir}

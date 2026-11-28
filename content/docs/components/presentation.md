@@ -2,7 +2,7 @@
 title: Component presentation
 linkTitle: Presentation
 description: Cards, disclosures, tabs, and compact procedures across OINK's four visual presets.
-weight: 115
+weight: 910
 outputs: [HTML, markdown, print]
 search_keywords: [component styles, card list, compact steps, command strip, presets]
 ---

@@ -18,14 +18,14 @@ the page has no palette, index, or search engine. See [Search](/docs/customize/s
 | Click the search box in the navbar or sidebar | Full search mode |
 | <kbd>⌘</kbd> / <kbd>Ctrl</kbd> + <kbd>K</kbd> | Full search mode. Press again to close |
 | <kbd>/</kbd> | Full search mode |
-| <kbd>&#96;</kbd> (or <kbd>~</kbd>) | Command-only mode (equivalent to a prefilled `>`) |
+| <kbd>&#92;</kbd> | Command-only mode (equivalent to a prefilled `>`) |
 | <kbd>f</kbd> / <kbd>c</kbd> | The same two, provided by [keyboard navigation](/docs/customize/keyboard/) |
 | Typing a query beginning with `>` in the box | Command-only mode |
 
-On layouts where <kbd>&#96;</kbd> is a dead key or hard to reach, use <kbd>c</kbd>
+On layouts where <kbd>&#92;</kbd> is hard to reach, use <kbd>c</kbd>
 or type `>` instead.
 
-<kbd>/</kbd>, <kbd>&#96;</kbd>, <kbd>f</kbd>, and <kbd>c</kbd> are bare single keys.
+<kbd>/</kbd>, <kbd>&#92;</kbd>, <kbd>f</kbd>, and <kbd>c</kbd> are bare single keys.
 They do not open the palette during typing. This applies to focus in an input,
 textarea, select, or `contenteditable`, and to input-method composition. The
 keys type ordinary characters instead. The modified
@@ -44,11 +44,11 @@ With nothing typed, the palette lists four groups in a fixed order:
 | Group | Contents | Decided by |
 | --- | --- | --- |
 | Quick links | A few entry points chosen from the navbar's top-level menu | `params.ui.quick_links` |
-| Page actions | Copy Markdown, view Markdown source, edit this page, view history, create a child page, open an issue, print the section, open the duo view (`compare_translations`) | Repository configuration, whether this page has a Markdown output, and for the duo view `params.ui.compare` plus a same-origin translation |
-| Preferences | Switch version → switch language → switch theme | Whether the site configures versions, languages and the light/dark menu |
-| Commands | Open the GitHub repository, open the [browsing history](/docs/customize/keyboard/#history), then the site's own commands | `params.github_project_repo` (falling back to `github_repo`), whether keyboard navigation is on, and `ui.command_palette.commands` |
+| Page actions | Copy Markdown, Open in ChatGPT / Claude, view Markdown source, view history, edit this page, create a child page, create docs/project issue, print the section, open the duo view (`compare_translations`) | Repository configuration, `assistant_links`, whether this page has a Markdown output, and for the duo view `params.ui.compare` plus a same-origin translation |
+| Preferences | Switch version → switch language → switch style → switch theme | Whether the site configures versions, languages, the preset menu (`preset_menu`), and the light/dark menu |
+| Commands | Copy link (`copy_link`), open the GitHub repository, open the [browsing history](/docs/customize/keyboard/#history), then the site's own commands | Always available for `copy_link`, `params.github_project_repo` (falling back to `github_repo`), whether keyboard navigation is on, and `ui.command_palette.commands` |
 
-The three preferences follow the navbar order: version, language, theme.
+The four preferences follow the navbar order: version, language, style, theme.
 Selecting a preference such as "switch language" does not navigate immediately.
 The palette expands its options in place. Select an option in a second action.
 
@@ -64,7 +64,7 @@ If the theme can explain why an item is unavailable, the item remains listed.
 Without repository configuration, "edit this page" remains with an "unavailable"
 note.
 
-OINK 1.4.0 adds two adjacent **Search in** options for
+The palette also offers two adjacent **Search in** options for
 all sections or the current top-level section. It filters page results before the
 result limit, while commands and page actions remain available. The choice
 persists only while this page stays loaded. Matching sections appear beside
@@ -161,9 +161,7 @@ page_context_menu:
 Check the title menu and palette. Neither should offer assistant links on
 that page. See [AI-agent support](/docs/customize/agents/) for handoff behavior.
 
-The links open ChatGPT, Claude and Gemini. Gemini cannot receive a prompt
-through its address, so choosing it also copies the prompt to the clipboard
-for the reader to paste.
+The links open ChatGPT and Claude.
 
 `links` adds external actions that appear only in the menu beside the title, not
 in the palette:
@@ -200,8 +198,9 @@ do nothing and do not affect normal typing.
 
 ## Query-aware site actions {#search-tail}
 
-The runtime hook for trusted site JavaScript is available since OINK 1.1.
-Feature-detect it: v1.0.0 and pages without local search do not provide it.
+Trusted site JavaScript can register query-aware tail rows through
+`window.OinkCommandPalette.registerSearchTail`. Feature-detect the hook before
+calling it, because pages without local search do not provide it.
 Load the integration after the theme scripts, for example through
 `layouts/_partials/hooks/body-end.html`. This example assumes the site
 implements `openSiteAssistant` and owns its provider settings:

@@ -21,7 +21,7 @@ CC BY 4.0 只覆盖原创文档内容，不覆盖主题代码、商标、截图�
 
 ## 社区贡献者 {#community-contributors}
 
-OINK 由 PGSTY 维护。感谢 [@imbajin](https://github.com/imbajin) 报告并贡献了下列阅读体验修复，并一同提供了夹具、回归测试与双语文档。这些修复首次随 1.3.1 发布，**1.6.0** 继续保留。
+OINK 由 PGSTY 维护。感谢 [@imbajin](https://github.com/imbajin) 报告并贡献了下列阅读体验修复，并一同提供了夹具、回归测试与双语文档。这些修复首次随 1.3.1 发布，**1.7.0** 继续保留。
 
 | 贡献 | Pull request |
 | --- | --- |
@@ -48,44 +48,45 @@ OINK 由 PGSTY 维护。感谢 [@imbajin](https://github.com/imbajin) 报告并�
 
 浏览器需要的资源全部提交在主题仓库的 `assets/third_party/` 与 `static/webfonts/` 下，无需 npm 步骤，构建时也不下载任何东西；以 Hugo Module 方式解析主题时仍需要 Go 与可用的模块来源。`VENDOR.json` 是这批资源的机器可读清单，逐项记录名称、固定版本、来源 URL、许可证文件路径，以及每个选取产物的 SHA-256；清单还为两棵资源目录各记录一个整体校验值。
 
-下表与 [OINK v1.6.0 清单](https://github.com/pgsty/oink/blob/v1.6.0/VENDOR.json)一致（`VENDOR.json` 生成于 2026-11-23，schema 1，共 25 项）。版本随主题发布而变化，**请以所固定主题版本的清单为准**。全部来源都是 npm registry（`https://registry.npmjs.org/…`）。
+下表与 [OINK v1.7.0 清单](https://github.com/pgsty/oink/blob/v1.7.0/VENDOR.json)一致（`VENDOR.json` 生成于 2026-11-28，schema 1，共 26 项）。版本随主题发布而变化，**请以所固定主题版本的清单为准**。全部来源都是 npm registry（`https://registry.npmjs.org/…`）。
 
-| 项目                               | 版本     | 许可证                        | 在主题里做什么                   |
-|------------------------------------|----------|-------------------------------|----------------------------------|
-| bootstrap                          | 5.3.8    | MIT                           | 栅格、组件样式与 RTL 样式包      |
-| @fortawesome/fontawesome-free      | 7.3.1    | CC-BY-4.0 AND OFL-1.1 AND MIT | 全站图标                         |
-| @fontsource-variable/inter         | 5.3.0    | OFL-1.1                       | 界面与正文字体                   |
-| @fontsource-variable/ibm-plex-sans | 5.3.0    | OFL-1.1                       | Paper / Terminal 预设的正文字体  |
-| @fontsource/chakra-petch           | 5.3.0    | OFL-1.1                       | 品牌展示字体                     |
-| @fontsource/ibm-plex-mono          | 5.3.0    | OFL-1.1                       | 代码字体                         |
-| @docsearch/js                      | 5.2.0    | MIT                           | 可选的 Algolia DocSearch 前端    |
-| @docsearch/css                     | 5.2.0    | MIT                           | 同上的样式                       |
-| mermaid                            | 12.3.0   | MIT                           | Mermaid 图表                     |
-| katex                              | 0.19.1   | MIT                           | 数学公式样式与字体               |
-| swagger-ui-dist                    | 5.34.1   | Apache-2.0                    | OpenAPI 文档页                   |
-| redoc                              | 3.1.0    | MIT                           | OpenAPI 文档页                   |
-| asciinema-player                   | 3.18.0   | Apache-2.0                    | 终端录像回放                     |
-| echarts                            | 6.1.0    | Apache-2.0                    | 图表                             |
-| @antv/infographic                  | 0.2.20   | MIT                           | 信息图                           |
-| pako                               | 3.0.3    | MIT AND Zlib                  | 解压（图表数据）                 |
-| external-svg-loader                | 1.7.1    | MIT                           | 内联外部 SVG                     |
-| idb-keyval                         | 6.3.0    | Apache-2.0                    | 浏览器端缓存                     |
-| @plantuml/core                     | 1.2026.9 | MIT                           | 本地 PlantUML 图表引擎           |
-| @viz-js/viz                        | 3.31.0   | MIT AND EPL-2.0               | 本地 PlantUML 的 Graphviz 布局   |
-| @markmap/core                      | 1.1.0    | MIT                           | 思维导图（核心模型）             |
-| @markmap/parse                     | 1.1.0    | MIT                           | 思维导图（Markdown 解析器）      |
-| @markmap/render                    | 1.1.0    | MIT                           | 思维导图（SVG 渲染器）           |
-| @markmap/view                      | 1.1.0    | MIT                           | 思维导图（交互视图）             |
-| @markmap/plugin-math               | 1.1.0    | MIT                           | 思维导图公式渲染（MathJax）      |
+| 项目                               | 版本     | 许可证                        | 在主题里做什么                             |
+|------------------------------------|----------|-------------------------------|--------------------------------------------|
+| bootstrap                          | 5.3.8    | MIT                           | 栅格、组件样式与 RTL 样式包                |
+| @fortawesome/fontawesome-free      | 7.3.1    | CC-BY-4.0 AND OFL-1.1 AND MIT | 全站图标                                   |
+| @fontsource-variable/inter         | 5.3.0    | OFL-1.1                       | 界面与正文字体                             |
+| @fontsource-variable/ibm-plex-sans | 5.3.0    | OFL-1.1                       | Paper 预设正文与 Terminal 预设打印字体     |
+| @fontsource/chakra-petch           | 5.3.0    | OFL-1.1                       | 品牌展示字体                               |
+| @fontsource/ibm-plex-mono          | 5.3.0    | OFL-1.1                       | 代码字体（及 Terminal 预设屏幕字体）       |
+| @docsearch/js                      | 5.2.0    | MIT                           | 可选的 Algolia DocSearch 前端              |
+| @docsearch/css                     | 5.2.0    | MIT                           | 同上的样式                                 |
+| mermaid                            | 12.4.0   | MIT                           | Mermaid 图表                               |
+| katex                              | 0.19.1   | MIT                           | 数学公式样式与字体                         |
+| swagger-ui-dist                    | 5.36.0   | Apache-2.0                    | OpenAPI 文档页                             |
+| redoc                              | 3.2.0    | MIT                           | OpenAPI 文档页                             |
+| asciinema-player                   | 3.19.0   | Apache-2.0                    | 终端录像回放                               |
+| echarts                            | 6.1.0    | Apache-2.0                    | 图表                                       |
+| @antv/infographic                  | 0.2.20   | MIT                           | 信息图                                     |
+| leaflet                            | 1.9.4    | BSD-2-Clause                  | 交互地图（经 `params.map` 显式启用）       |
+| pako                               | 3.0.3    | MIT AND Zlib                  | 解压（图表数据）                           |
+| external-svg-loader                | 1.7.1    | MIT                           | 内联外部 SVG                               |
+| idb-keyval                         | 6.3.0    | Apache-2.0                    | 浏览器端缓存                               |
+| @plantuml/core                     | 1.2026.10 | MIT                           | 本地 PlantUML 图表引擎                     |
+| @viz-js/viz                        | 3.31.0   | MIT AND EPL-2.0               | 本地 PlantUML 的 Graphviz 布局             |
+| @markmap/core                      | 1.1.1    | MIT                           | 思维导图（核心模型）                       |
+| @markmap/parse                     | 1.1.1    | MIT                           | 思维导图（Markdown 解析器）                |
+| @markmap/render                    | 1.1.1    | MIT                           | 思维导图（SVG 渲染器）                     |
+| @markmap/view                      | 1.1.1    | MIT                           | 思维导图（交互视图）                       |
+| @markmap/plugin-math               | 1.1.1    | MIT                           | 思维导图公式渲染（MathJax）                |
 {.wide .expand}
 
-各许可证原文都放在 `assets/third_party/` 下对应资源的旁边，例如 `assets/third_party/bootstrap/LICENSE` 与 `assets/third_party/katex/LICENSE`；Swagger UI、ReDoc 与 ECharts 还保留了各自的 `NOTICE` 或随包依赖声明。`@viz-js/viz` 3.31.0 内含 Graphviz 16.1.0（**EPL-2.0**，替代原 EPL-1.0）与 Expat 2.8.5（MIT），它们的许可声明与上游源码链接随脚本存放在 `assets/third_party/plantuml/`。Markmap 1.1.0 的各个 scoped 包把内嵌的全部子包（含 MathJax 与 D3 原语）列在 `assets/third_party/markmap/PACKAGES.json` 与 `LICENSES.txt` 中。1.5.1 及更早版本随附的以下包已不再分发：Bootstrap 的 JavaScript bundle、`@popperjs/core`、`lunr`（连同 `assets/js/third_party/` 目录），以及旧版 Markmap 0.18、独立 D3、highlight.js 与 WebFontLoader；移除经过见 [1.6.0 发布说明](/zh/release/1.6.0/#leaner-runtime)。
+各许可证原文都放在 `assets/third_party/` 下对应资源的旁边，例如 `assets/third_party/bootstrap/LICENSE` 与 `assets/third_party/katex/LICENSE`；Mermaid 附带上游的 `THIRD_PARTY_NOTICES`。Swagger UI、ReDoc 与 ECharts 还保留了各自的 `NOTICE` 或随包依赖声明。`@viz-js/viz` 3.31.0 内含 Graphviz 16.1.0（**EPL-2.0**，替代原 EPL-1.0）与 Expat 2.8.5（MIT），它们的许可声明与上游源码链接随脚本存放在 `assets/third_party/plantuml/`。Markmap 1.1.1 的各个 scoped 包把内嵌的全部子包（含 MathJax 与 D3 原语）列在 `assets/third_party/markmap/PACKAGES.json` 与 `LICENSES.txt` 中。1.5.1 及更早版本随附的以下包已不再分发：Bootstrap 的 JavaScript bundle、`@popperjs/core`、`lunr`（连同 `assets/js/third_party/` 目录），以及旧版 Markmap 0.18、独立 D3、highlight.js 与 WebFontLoader；移除经过见 [1.6.0 发布说明](/zh/release/1.6.0/#leaner-runtime)。
 
 再分发主题时，必须一并保留上述全部许可与声明材料。更新某个运行时，要在同一次变更里同时更新产物、许可证文件、来源与校验值。
 
 ## 字体与图标 {#fonts-and-icons}
 
-Inter、IBM Plex Sans、Chakra Petch 与 IBM Plex Mono 四种字体采用 SIL Open Font License 1.1。OINK 1.6.0 在 `static/webfonts/` 下包含 33 个文件：14 个 Inter 子集、12 个 IBM Plex Sans 子集、4 个品牌字体文件和 3 个 Font Awesome 文件。Font Awesome Free 7.3.1 采用复合许可：图标图形为 CC BY 4.0，字体文件为 SIL OFL 1.1，代码为 MIT，原文见 `assets/third_party/Font-Awesome/LICENSE.txt`。
+Inter、IBM Plex Sans、Chakra Petch 与 IBM Plex Mono 四种字体采用 SIL Open Font License 1.1。OINK 1.7.0 在 `static/webfonts/` 下包含 33 个文件：14 个 Inter 子集、12 个 IBM Plex Sans 子集、4 个品牌字体文件和 3 个 Font Awesome 文件。Font Awesome Free 7.3.1 采用复合许可：图标图形为 CC BY 4.0，字体文件为 SIL OFL 1.1，代码为 MIT，原文见 `assets/third_party/Font-Awesome/LICENSE.txt`。
 
 主题不向任何远程字体服务发出请求：仓库里没有 Google Fonts 链接，字体只从站点自己的 `baseURL` 下发。更换字体或改用系统字体栈，见[品牌外观](/zh/docs/customize/brand/)。
 

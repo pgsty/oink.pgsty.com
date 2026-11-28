@@ -268,6 +268,8 @@ hugo --gc --minify --environment staging --baseURL "$PREVIEW_URL"
 - [PlantUML 本地渲染](/zh/docs/components/plantuml/#limits)：允许同源脚本，在 `script-src` 中允许 `wasm-unsafe-eval` 以编译 WebAssembly，在 `img-src` 中允许 `blob:`；不需要放行任何渲染服务。
 - [远程 API 规范](/zh/docs/write/openapi/#spec-file)与[自建图表服务](/zh/docs/components/plantuml/#server)：它们的来源加入 `connect-src` 与 `img-src`。
 - [giscus](/zh/docs/admin/comments/#privacy)：`script-src` 与 `frame-src` 都要放行。
+- [交互地图](/zh/docs/components/map/#configuration)（`params.map`）：将 `tiles` 与 `dark_tiles` 的主机加入 `img-src`。
+- [视频平台播放器](/zh/docs/components/video/#platforms)（`params.video_embeds`）：将已启用的播放器源（`https://www.youtube-nocookie.com`、`https://player.bilibili.com`、`https://player.vimeo.com`）加入 `frame-src`；如有远程媒体、海报图、字幕轨或社交帖子头像，将对应来源加入 `media-src`、`img-src` 与 `connect-src`。
 - [双列视图](/zh/docs/customize/i18n/#bilingual-view)与 ReDoc API 文档在同源 frame 中渲染，`frame-src`（或 `child-src`）必须允许 `'self'`，响应头也要允许同源嵌入（不能有 `X-Frame-Options: DENY` 或 `frame-ancestors 'none'`）。双列视图还会给每个 HTML 页面加一段行内启动脚本，脚本哈希随之改变。
 
 允许执行的行内脚本和样式块，按最终部署的字节计算哈希；或者由托管层在每次响应时，向策略头和对应标签同时注入新的 nonce。`<style>` 上的 nonce 管不到 `style="…"` 属性，后者要单独用 `style-src-attr` 放行。正文、配置、压缩方式或主题版本一变，哈希就会变，每次都要重新计算。

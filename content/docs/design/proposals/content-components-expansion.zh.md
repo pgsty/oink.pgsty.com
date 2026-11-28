@@ -6,16 +6,16 @@ weight: 26
 icon: fa-solid fa-puzzle-piece
 search_keywords: [内容组件, 组件扩展, 时间线, timeline, 更新日志, update, changelog, x, tweet, 社交帖子, 视频, video, 音频, audio, 地图, map, openstreetmap, leaflet, 评审]
 design_kind: proposal
-design_status: implemented
+design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] 已实现，等待发布
-> 六个组件都已在主题 `main` 分支中实现，写入了[组件指南](/zh/docs/components/)，并记录在[组件契约](/zh/docs/design/components/#timeline-media-social-and-maps)中。尚未包含在发布标签中。本页取代同日写成的第一版单页草案；每个组件各有一份提案。
+> [!NOTE] 已随 OINK 1.7.0 接受并发布
+> 六个组件均已随 OINK v1.7.0 发布，写入[组件指南](/zh/docs/components/)，规范行为归属[组件契约](/zh/docs/design/components/#timeline-media-social-and-maps)。本提案保留作为设计背景与理由记录。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 2026-11-27 在 `main` 实现；等待发布 |
+| 状态 | 已接受并随 OINK v1.7.0 发布（2026-11-27 实现） |
 | 负责人 | OINK 维护者 |
 | 范围 | OINK 主题；本文档站；一个可选的 `oink-cli` 辅助命令（另有提案） |
 | 受影响契约 | [组件](/zh/docs/design/components/)、[架构](/zh/docs/design/architecture/)、[组件指南](/zh/docs/components/)、配置参考 |
@@ -28,15 +28,15 @@ proposal_date: 2026-11-27
 | Timeline | 定义列表加 `{.timeline}` | 无（作者标记） | 无 | [Timeline 组件](/zh/docs/design/proposals/component-timeline/) |
 | Update | 标题加 `{.update date="…" tags="…"}` | 两个标题属性 | 无 | [Update 组件](/zh/docs/design/proposals/component-update/) |
 | 社交帖子 | `{{</* social */>}}…{{</* /social */>}}` | 一个短代码 | 无 | [社交帖子组件](/zh/docs/design/proposals/component-social/) |
-| Video | `![name](demo.mp4)` 与平台 URL | 图片钩子上的媒体属性；`params.video_embeds` | 仅自动播放或已启用的嵌入需要 | [Video 组件](/zh/docs/design/proposals/component-video/) |
-| Audio | `![name](episode.mp3)` | 图片钩子上的媒体属性 | 单播放器无；2 个及以上共享 `media.js` | [Audio 组件](/zh/docs/design/proposals/component-audio/) |
+| Video | `![name](demo.mp4)` 与平台 URL | 图片钩子上的媒体属性；`params.video_embeds` | 文件播放器和已启用的嵌入共享 `media.js` | [Video 组件](/zh/docs/design/proposals/component-video/) |
+| Audio | `![name](episode.mp3)` | 图片钩子上的媒体属性 | 文件播放器共享 `media.js` | [Audio 组件](/zh/docs/design/proposals/component-audio/) |
 | Map | `map` 数据围栏 | 一个围栏；`params.map` | 随主题内置（vendored）的 Leaflet，仅在启用时加载 | [Map 组件](/zh/docs/design/proposals/component-map/) |
 
 文档中的组件目录从 21 个增加到 27 个，短代码从 29 个增加到 30 个（新增 `social`）。图片与标题渲染钩子各增加分支，另新增一个围栏钩子（`map`）。
 
 ## 评审结论 {#verdict}
 
-六个组件都填补了真实的缺口，第一版草案对 OINK 基础设施的理解也很到位。它的问题在于形态：几乎给每个组件都配了新短代码、一长串参数和一个运行时。合计起来是 7 个新短代码、约一百个参数、字段与配置键、3 个新运行时 chunk，以及 16 个语言键。最终设计只有一个新短代码、约 35 个参数与键（大多是已有的 figure 与围栏属性）、一个小 chunk 加一个随主题内置引擎，以及五个语言键。已接受的 [Markdown 优先决策](/zh/docs/design/decisions/authoring/#consequences)要求提案先说明为什么 Markdown 加已有钩子不够用。逐个组件套用这项检验后，大部分接口都被去掉了：
+六个组件都填补了真实的缺口，第一版草案对 OINK 基础设施的理解也很到位。它的问题在于形态：几乎给每个组件都配了新短代码、一长串参数和一个运行时。合计起来是 7 个新短代码、约一百个参数、字段与配置键、3 个新运行时 chunk，以及 16 个语言键。最终设计只有一个新短代码、约 35 个参数与键（大多是已有的 figure 与围栏属性）、一个小 chunk 加一个随主题内置引擎，以及六个语言键。已接受的 [Markdown 优先决策](/zh/docs/design/decisions/authoring/#consequences)要求提案先说明为什么 Markdown 加已有钩子不够用。逐个组件套用这项检验后，大部分接口都被去掉了：
 
 | 草案要素 | 最终决定 | 主要理由 |
 | --- | --- | --- |
@@ -44,7 +44,7 @@ proposal_date: 2026-11-27
 | 带七个参数和粘性侧栏的 `{{%/* update */%}}` | 带 `date` 与 `tags` 的 `.update` 标题标记 | 标题已经承载大纲、锚点、搜索与 Print ID；侧栏与 TOC 重复 |
 | 带互动指标、认证徽章、图片列表、引用参数、数据文件和作者注册表的 `x` | 带六个参数和 Markdown 正文的 `social` | 图片、画廊与引用帖子都能由已有语法组合而成；数据快照会过时 |
 | 约二十个参数的 `video` 短代码 | 视频文件与平台 URL 使用图片语法 | 图片钩子已经负责资源解析、caption、编号与媒体降级；它目前会丢弃 `.mp4` |
-| 带章节、倍速、互斥播放和文字稿正文的 `audio` 短代码 | 图片语法；文字稿使用折叠提示块 | 原生控件已覆盖播放；章节与互斥播放等有证据再说 |
+| 带章节、倍速、互斥播放和文字稿正文的 `audio` 短代码 | 图片语法；文字稿使用折叠提示块 | 原生控件已覆盖播放；同页多播放器互斥由共享 `media.js` 实现，章节导航等有证据再说 |
 | `map` 围栏加单点短代码、命名样式、默认 CARTO | 一个围栏；不设默认瓦片服务商 | 只保留一种形态；主题不应替所有站点选定商业瓦片服务 |
 | 新增 `file-resolve.html`，照搬图片的查找顺序 | 抽出现有查找逻辑并共享 | 只有一套查找顺序，而不是两套 |
 
@@ -106,10 +106,8 @@ proposal_date: 2026-11-27
 
 | 组件 | HTML 运行时 | 加载条件 |
 | --- | --- | --- |
-| Timeline、Update、社交帖子、Audio | 无 | — |
-| 视频文件 | 无 | 默认 |
-| 视频 `autoplay=true` | `js/chunks/media.js`（约 2 KB） | 页面中有自动播放视频 |
-| 视频平台播放器 | 同一个 chunk | 页面中有已启用服务商的卡片 |
+| Timeline、Update、社交帖子 | 无 | — |
+| 视频或音频 | `js/chunks/media.js` | 页面含文件播放器或已启用的平台卡片 |
 | Map | `content-components.js` 适配器，加随主题内置的 Leaflet 及其 CSS | `params.map` 配置完整，且页面中有地图 |
 
 Markdown、Print 与 RSS 不设置其中任何标志。
@@ -118,7 +116,7 @@ Markdown、Print 与 RSS 不设置其中任何标志。
 
 新规则写在 `assets/css/td/` 下的纯 CSS 层文件中，在 `layouts/_partials/css/layers.html` 里排在 `rtl`、各预设、`accessibility` 与 `print` 之前。它们使用 `--td-*` token、逻辑属性和预设几何（Ink 与 Terminal 的平面表面），并覆盖强制颜色、减少动态效果、窄屏、长 token 与打印。作者标记（`.timeline`、`.update`）保持无前缀，生成的 class 使用 `td-`。
 
-六个组件合计新增五个语言键（社交帖子一个，Video 两个，Map 两个，其缩放按钮复用图表的现有键），已加入全部 32 个语言文件并提供母语翻译，由 `bin/check-i18n.py` 检查。
+六个组件合计新增六个语言键（社交帖子一个，Video 两个，Map 三个，其缩放按钮复用图表的现有键），已加入全部 32 个语言文件并提供母语翻译，由 `bin/check-i18n.py` 检查。
 
 ## 对第一版草案问题的答复 {#draft-questions}
 
@@ -139,13 +137,13 @@ Markdown、Print 与 RSS 不设置其中任何标志。
 | S3 | 社交帖子 | 一个短代码、一个语言键 |
 | S4 | 视频平台卡片与显式启用的播放器（`params.video_embeds`） | 涉及第三方 iframe；需要 CSP 与隐私评审 |
 | S5 | Map：随主题内置的 Leaflet、`params.map`、围栏 | 唯一新增的随主题内置引擎 |
-| 以后 | 根据 GPS 元数据为照片添加地图标记；音频章节与同时只播放一个音频；`oink fetch social` | 各自等待自己的证据 |
+| 以后 | 根据 GPS 元数据为照片添加地图标记；音频章节；`oink fetch social` | 各自等待自己的证据 |
 
 每个阶段交付时都附带 `tests/site/` 下的夹具、有意的 golden 更新、`/docs/components/` 下的中英文指南、契约更新，以及在本站进行的浏览器审阅。各阶段相互独立，放弃后面的阶段无须返工前面的阶段。
 
 ## 待决问题 {#open-decisions}
 
-1. **接受与发布。** 六个组件一次性纳入下一个版本，还是按阶段逐个接受。接受后，行为转入契约（契约中已起草），本组提案随之退役。
+1. **接受与发布（已解决）。** 六个组件均已纳入 OINK v1.7.0 发布，规范行为归属[组件契约](/zh/docs/design/components/#timeline-media-social-and-maps)。
 2. **演示媒体是否入 Git。** 指南中的视频与音频演示为本站仓库增加约 600 KB 二进制文件。可以留在页面包中，也可以移到对象存储，以 HTTPS URL 引用，媒体形态本身支持这种写法。
 
 ## 决策日志 {#decision-log}
@@ -153,4 +151,4 @@ Markdown、Print 与 RSS 不设置其中任何标志。
 - **2026-11-27（第一版草案）。** 在一个页面中写出六个组件的需求与架构：`timeline`/`event`、`{{%/* update */%}}`、带 `platform` 枚举的离线 `x`、`audio`、`video`，以及显式启用的 OpenStreetMap `map`。
 - **2026-11-27（评审）。** 拆分为六项提案加本概览页。把公共接口缩减为一个短代码（`x`）、一个围栏（`map`），以及图片与标题钩子中的分支。记录了上文的探针证据、`x` 解析问题、EXIF 配置要求和路线图冲突。
 - **2026-11-27（负责人）。** 把离线帖子组件改名为 `social`，不再与 Hugo 的 `x` 冲突。删去主题路线图中“不再新增组件家族”的表述，它从来不是负责人的决定；本页的路线图冲突一节随之删除。
-- **2026-11-27（实现）。** 六个组件都已在主题 main 分支的工作区中实现，附带夹具、golden、无效输入用例和运行时单元测试，主题完整检查全部通过；本站补齐了指南与演示。与草案的差异记录在各组件提案的决策日志中。
+- **2026-11-27（实现与接受）。** 六个组件已在主题 `main` 分支实现并纳入 OINK v1.7.0，附带夹具、golden、无效输入用例与运行时单元测试；本站补齐了指南与演示。与草案的差异记录在各组件提案的决策日志中。

@@ -120,7 +120,6 @@ test('default subpath output localizes manifests and keeps print static', () => 
         'copy_link',
         'open_chatgpt',
         'open_claude',
-        'open_gemini',
         'view_markdown',
         'view_history',
         'edit_page',

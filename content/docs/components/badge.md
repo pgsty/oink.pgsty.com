@@ -2,7 +2,7 @@
 title: Badge
 linkTitle: Badge
 description: Mark a feature, version or table cell with a short status label such as Beta or deprecated, in one of five semantic tones.
-weight: 180
+weight: 150
 search_keywords: [Badge, status label, tone, Beta, deprecated, neutral, info, success, warning, danger]
 ---
 

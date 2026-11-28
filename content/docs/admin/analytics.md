@@ -262,7 +262,7 @@ The page's `robots` meta tag follows the same rule: `index, follow` in a
 production build, `noindex, nofollow` otherwise and always in print output.
 
 The theme has no per-page `noindex` switch. To keep a page out of search
-engines reliably, do not publish it: use `draft: true` or Hugo's `_build`
+engines reliably, do not publish it: use `draft: true` or Hugo's `build`
 options. If the page must be published yet unindexed, write your own tag in
 the `head-end.html` hook; the page then carries two `robots` tags, and each
 search engine decides how to combine them.

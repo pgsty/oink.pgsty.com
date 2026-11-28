@@ -2,7 +2,7 @@
 title: Asciinema
 linkTitle: Asciinema
 description: Embed a .cast terminal recording that readers can play, pause and copy text from, with the player shipped in the theme.
-weight: 210
+weight: 450
 search_keywords: [Asciinema, terminal recording, cast, asciicast, screencast, demo, player, chapters, markers]
 ---
 
@@ -10,7 +10,7 @@ search_keywords: [Asciinema, terminal recording, cast, asciicast, screencast, de
 command-line procedure is easier to follow when watched: an installation, a
 migration, a long-running build. Unlike a video, the terminal output stays
 text, so readers can pause and copy a command out of the player, and the
-six-minute installation on this page weighs about 196 KB. For graphical
+three-minute installation on this page weighs about 196 KB. For graphical
 interfaces, use screenshots or a [video](/docs/components/video/) instead. The
 player and its styles ship with the theme, so nothing is downloaded at build
 time and no CDN is contacted.
@@ -26,7 +26,8 @@ time and no CDN is contacted.
 {{< asciinema file="images/install.cast" >}}
 
 This is a single-node Pigsty installation on Debian, recorded in a 120×36
-terminal and about 6 minutes 42 seconds long. To try it on your own site,
+terminal: 6 min 42 s of real time, which its 0.5 s idle limit plays back in
+about 3 minutes. To try it on your own site,
 download the [sample recording](/images/install.cast) to
 `static/images/install.cast`. `file` is a path from the site root, and the
 same value also finds a file under `assets/`, because the theme looks for a

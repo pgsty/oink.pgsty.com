@@ -2,7 +2,7 @@
 title: Fields
 linkTitle: Fields
 description: Document configuration keys, command flags and API fields as a field list that stays readable on a phone and gives every entry its own link.
-weight: 60
+weight: 140
 search_keywords: [Fields, field, configuration key, parameter, API field, meta, type, required, default, definition list, anchor]
 ---
 
@@ -119,8 +119,8 @@ list or style it from site CSS.
 Each entry gets a `field-<name>` anchor, and a link icon appears beside the
 name on hover. `page_width` in the first list on this page, for example, is
 [#field-page_width](#field-page_width). When a name occurs twice on one page,
-the second anchor gets `-2`, the third `-3`, the same rule Goldmark applies to
-duplicate headings.
+the second anchor gets `-2`, the third `-3` (unlike headings, which Goldmark
+suffixes `-1`, `-2`).
 
 To keep an anchor that other pages already link to, give the `field`
 shortcode an explicit `id`, such as `id="guc-work-mem"`; an empty, duplicate
@@ -246,8 +246,8 @@ The `field` shortcode:
 
 - The first column must be non-empty and unique within the table; a row with
   an empty or duplicate name warns and is skipped.
-- `.fields` cannot be combined with `.matrix`, `.full-width` or `num`, and
-  `meta` works only on a table that has `.fields`.
+- `.fields` cannot be combined with `.matrix`, `.full-width`, `.expand` or
+  `num`, and `meta` works only on a table that has `.fields`.
 - Table cells cannot hold block content; switch to the shortcode form for
   paragraphs, lists and code blocks.
 - `required` and `default` stay in English in every language, because they

@@ -2,7 +2,7 @@
 title: Video
 linkTitle: Video
 description: Embed product demos, screen recordings and muted loops that replace GIFs, and link YouTube, Bilibili or Vimeo talks without contacting the platform until a reader clicks.
-weight: 172
+weight: 430
 search_keywords: [Video, mp4, webm, poster, subtitles, WebVTT, autoplay, GIF, YouTube, Bilibili, Vimeo, embed, video_embeds]
 ---
 
@@ -15,9 +15,9 @@ because playing there connects the reader to the platform.
 
 Use a file for product demos, screen recordings and the short silent loops
 usually published as animated GIFs, and a platform card for talks and
-interviews that already live on a video site. There is no video shortcode, and
-a page loads no video JavaScript unless it has an autoplay video or a card for
-an opted-in platform.
+interviews that already live on a video site. The browser provides seeking, captions
+and fullscreen. The played portion uses the page’s accent color. Platform embeds
+use the provider's controls.
 
 ## Shortest form {#minimal}
 
@@ -182,6 +182,9 @@ The accepted URLs:
   `player.vimeo.com/video/NUMBER`, with `/HASH` or `?h=HASH` for an unlisted
   video. `#t=` or `t` sets the start time.
 
+A start time in any other form, such as `t=1:30`, warns and the video starts at
+0; write it as seconds or in `1h2m3s` form.
+
 Hosts may carry `www.` or `m.`. The theme validates the video ID and builds
 the player address from it, so no author text ever reaches an iframe. A URL on
 these hosts without a recognizable ID warns and renders a card without a
@@ -294,7 +297,8 @@ The attribute line `{…}` directly after a block video:
 {.fields meta="type default"}
 
 `link`, `command`, `options` and other keys warn as unknown attributes and are
-dropped; `style` and `on*` warn as unsafe.
+dropped; `style` warns as unsafe. Hugo strips `on*` handlers before the theme
+sees them, so they are dropped silently.
 
 The site setting:
 
@@ -310,6 +314,7 @@ The site setting:
 - One source file: no codec fallbacks across several `<source>` elements, no
   adaptive streaming (HLS or DASH), and no chapters, playlists or custom
   controls.
+- Site single-key shortcuts yield while focus is in a native player.
 - Three platforms only. Other video sites and arbitrary iframe addresses are
   not supported; link to them in prose.
 - No remote thumbnails. A card shows your `poster` or a plain surface.

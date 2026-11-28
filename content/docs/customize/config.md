@@ -293,10 +293,10 @@ breadcrumb row:
 | `params.ui.navbar_enabled` | boolean | true | Whether the site navbar renders. A page overrides it with a top-level `navbar_enabled`. See [Navigation and menus](/docs/customize/navigation/#navbar) |
 | `params.ui.navbar_autohide` | boolean | false | The navbar slides up out of view and returns when the pointer reaches its wake zone at the top. Inactive below 768px and on coarse pointers |
 | `params.ui.footer_style` | enum | fat | `fat` is a multi-column grid plus the copyright line, `slim` the copyright line only, `none` nothing |
-| `params.ui.dark_mode` | boolean or map | false | `true` turns on the dark palette and the light/dark control. `dark_mode: { show_menu: true }` adds only the control |
-| `params.ui.breadcrumb` | boolean | true | Breadcrumbs above the title. A top-level section never shows a one-level breadcrumb |
+| `params.ui.dark_mode` | boolean or map | false | `true` turns on the dark palette and the light/dark control. `{ show_menu: true }` implies `enable: true`; `{ enable: true, show_menu: false }` keeps the palette without showing the menu control |
+| `params.ui.breadcrumb` | boolean | per-shell (`true`; `false` in `blog`) | Breadcrumbs above the title. A top-level section never shows a one-level breadcrumb |
 | `params.ui.page_context_menu.enable` | boolean | true | The page-action split button at the right end of the breadcrumb row |
-| `params.ui.page_context_menu.assistant_links` | boolean | false | Adds "Open in ChatGPT", "Open in Claude" and "Open in Gemini". A click sends the page's full URL to that site |
+| `params.ui.page_context_menu.assistant_links` | boolean | false | Adds "Open in ChatGPT" and "Open in Claude". A click sends the page's full URL to that site |
 | `params.ui.page_context_menu.links` | list | [] | Your own external actions. `url` may use the `{url}`, `{title}` and `{markdown_url}` placeholders |
 | `params.ui.github_stars` | string or number | | Star count on the navbar GitHub mark. It is a constant you write; the page makes no request |
 | `params.ui.alt_site` | map | | Link to a sibling site in a single-language footer. Needs both `label` and an absolute `http(s)` `url` |
@@ -363,7 +363,7 @@ Backlinks sit in the right rail beside the outline.
 
 Local search is off by default. Turning it on also brings up the command
 palette, which opens from the navbar magnifier, {{< kbd "Cmd/Ctrl" "K" >}}, `/`
-and `` ` ``.
+and `\`.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -387,7 +387,7 @@ must not repeat a built-in action ID. Put per-language titles under
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.ui.keyboard_nav` | boolean | true | Thirty single-key shortcuts for navigation, page actions and the view, plus the browsing history and the reader's column width. With `false`, the runtime is left out of the page, so nothing is bound, recorded or restored. See [Keyboard navigation](/docs/customize/keyboard/) |
+| `params.ui.keyboard_nav` | boolean | true | Twenty-nine single-key shortcuts for navigation, page actions and the view, plus the browsing history and the reader's column width. With `false`, the runtime is left out of the page, so nothing is bound, recorded or restored. See [Keyboard navigation](/docs/customize/keyboard/) |
 {.fields meta="type default"}
 
 ## Image zoom {#image-zoom}
@@ -496,11 +496,12 @@ you choose. PlantUML renders in the reader's browser unless you set
 | `params.map.attribution` | string | | The plain-text attribution the tile service requires. Required when enabled |
 | `params.map.attribution_url` | string | | Optional `https://` URL turning `attribution` into a clickable link |
 | `params.map.dark_tiles` | string | | Optional tile template for dark mode |
-| `params.map.subdomains` | string | | Optional `{s}` subdomain characters (e.g. `abcd`, `01234567`); empty uses Leaflet's `abc` |
+| `params.map.subdomains` | string | | Optional `{s}` subdomain characters as a quoted string (e.g. `abcd`, `"01234567"`); empty uses Leaflet's `abc` |
 | `params.map.max_zoom` | integer | 19 | Highest zoom level, 1–22 |
 | `params.map.loading` | `lazy` \| `click` | `lazy` | Mount near viewport (`lazy`) or wait for a reader click (`click`) |
 | `params.highlight_classes` | boolean | true | Emits Chroma classes for syntax highlighting; `false` returns to Hugo's inline styles |
 | `params.ui.code_copy` | boolean | true | Copy button on code blocks. `false` removes it site-wide; a fence's own `copy=` still wins |
+| `params.ui.rich_copy` | boolean | true | Typeset HTML copy for article prose selections pasted into rich-text editors; overridable per page or cascade. See [Copying into rich-text editors](/docs/customize/print/#typeset-copy) |
 {.fields meta="type default"}
 
 Math needs no parameter, only the [`passthrough` setting](#goldmark).
@@ -594,13 +595,13 @@ same release tag as the theme pinned in your `go.mod`, because keys change
 between releases.
 
 With the VS Code YAML extension, map the site schema in your settings. This
-example uses OINK v1.6.0 and covers both common file names; replace the tag
+example uses OINK v1.7.0 and covers both common file names; replace the tag
 with the one in your `go.mod`:
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/v1.6.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
+    "https://raw.githubusercontent.com/pgsty/oink/v1.7.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```

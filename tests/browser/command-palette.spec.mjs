@@ -1,6 +1,11 @@
+import { readFileSync } from "node:fs";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
+const siteVersion = readFileSync(
+  new URL("../../hugo.yml", import.meta.url),
+  "utf8",
+).match(/^  version: (v\d+\.\d+\.\d+)$/m)?.[1];
 const docsPath = "/docs/customize/config/";
 const zhDocsPath = "/zh/docs/customize/config/";
 
@@ -64,7 +69,7 @@ test("empty Palette exposes shared quick links, page actions, and preferences", 
   await expect(actions).toContainText("Copy Markdown");
   await expect(actions).toContainText("Open in ChatGPT");
   await expect(actions).toContainText("Open in Claude");
-  await expect(actions).toContainText("Open in Gemini");
+  await expect(actions).not.toContainText("Open in Gemini");
   await expect(actions).toContainText("View markdown");
   await expect(actions).toContainText("View edit history");
   await expect(actions).toContainText("Edit this page");
@@ -75,7 +80,7 @@ test("empty Palette exposes shared quick links, page actions, and preferences", 
   const preferences = group(dialog, "Preferences");
   await expect(preferences).toContainText("Toggle color theme");
   await expect(preferences).toContainText("Switch language");
-  await expect(preferences).toContainText("v1.6.0");
+  await expect(preferences).toContainText(siteVersion);
   const commands = group(dialog, "Commands");
   await expect(commands).toContainText("OINK issues");
   await expect(commands).toContainText("Browsing history");
@@ -139,7 +144,7 @@ test("command mode is index-free and localizes configured commands", async ({
   expect(indexRequests).toEqual([]);
 });
 
-test("slash opens search, backtick and tilde open command mode, all yield to fields", async ({
+test("slash opens search, backslash opens command mode, both yield to fields", async ({
   page,
 }) => {
   await page.goto(docsPath, { waitUntil: "domcontentloaded" });
@@ -158,17 +163,61 @@ test("slash opens search, backtick and tilde open command mode, all yield to fie
   await expect(dialog).toBeHidden();
   await expect(opener).toBeFocused();
 
-  for (const key of ["`", "~"]) {
-    await page.keyboard.press(key);
-    await expect(dialog).toBeVisible();
-    await expect(input).toBeFocused();
-    await expect(input).toHaveValue(">");
-    await expect(group(dialog, "Quick links")).toHaveCount(0);
-    await expect(group(dialog, "Page actions")).toHaveCount(0);
+  await page.keyboard.press("\\");
+  await expect(dialog).toBeVisible();
+  await expect(input).toBeFocused();
+  await expect(input).toHaveValue(">");
+  await expect(group(dialog, "Quick links")).toHaveCount(0);
+  await expect(group(dialog, "Page actions")).toHaveCount(0);
 
-    await page.keyboard.press("Escape");
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(opener).toBeFocused();
+
+  // Rapid reopen within the 240 ms close fade, clearing stale ">" on search,
+  // CJK IME punctuation, and recovery after an interrupted composition.
+  await page.keyboard.press("\\");
+  await expect(dialog).toBeVisible();
+  await expect(input).toHaveValue(">");
+  await page.keyboard.press("Escape");
+  // Immediately press / without waiting for the 240 ms fade-out timer.
+  await page.keyboard.press("/");
+  await expect(dialog).toBeVisible();
+  await expect(input).toHaveValue("");
+  await expect(group(dialog, "Quick links")).toBeVisible();
+
+  // Interrupted IME composition closed via backdrop must not wedge / , \ or Escape.
+  await page.evaluate(() => {
+    const el = document.querySelector("#td-shell-search .td-shell-search__input");
+    el.dispatchEvent(new CompositionEvent("compositionstart", { bubbles: true }));
+    document.querySelector("#td-shell-search .td-shell-search__backdrop").click();
+  });
+  await expect(dialog).toBeHidden();
+
+  // CJK IME punctuation opens commands (\ -> 、) and search (/ -> ／), and Escape exits.
+  await page.evaluate(() => {
+    document.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "、", code: "Backslash", bubbles: true, cancelable: true }),
+    );
+  });
+  await expect(dialog).toBeVisible();
+  await expect(input).toHaveValue(">");
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+
+  await page.evaluate(() => {
+    document.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "／", code: "Slash", bubbles: true, cancelable: true }),
+    );
+  });
+  await expect(dialog).toBeVisible();
+  await expect(input).toHaveValue("");
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+
+  for (const unbound of ["`", "~"]) {
+    await page.keyboard.press(unbound);
     await expect(dialog).toBeHidden();
-    await expect(opener).toBeFocused();
   }
 
   await page.evaluate(() => {
@@ -181,10 +230,8 @@ test("slash opens search, backtick and tilde open command mode, all yield to fie
   await search.fill("docs");
   await search.press("/");
   await expect(search).toHaveValue("docs/");
-  await search.press("`");
-  await expect(search).toHaveValue("docs/`");
-  await search.press("~");
-  await expect(search).toHaveValue("docs/`~");
+  await search.press("\\");
+  await expect(search).toHaveValue("docs/\\");
   await expect(dialog).toBeHidden();
 });
 
@@ -223,9 +270,9 @@ test("built-in choice actions reuse theme, language, and version executors", asy
   await page.keyboard.press(
     process.platform === "darwin" ? "Meta+k" : "Control+k",
   );
-  await fillCommandAndWait(input, dialog, "> version", "v1.6.0");
+  await fillCommandAndWait(input, dialog, "> version", siteVersion);
   await page.keyboard.press("Enter");
-  await expect(dialog).toContainText("v1.6.0");
+  await expect(dialog).toContainText(siteVersion);
 });
 
 test("Copy Markdown executes once through the shared registry", async ({
@@ -262,7 +309,6 @@ test("URL actions match progressive-enhancement anchors", async ({ page }) => {
   for (const [id, selector] of [
     ["open_chatgpt", '[data-td-action="open_chatgpt"]'],
     ["open_claude", '[data-td-action="open_claude"]'],
-    ["open_gemini", '[data-td-action="open_gemini"]'],
     ["view_markdown", '[data-td-action="view_markdown"]'],
     ["view_history", '[data-td-action="view_history"]'],
     ["edit_page", '[data-td-action="edit_page"]'],
@@ -270,7 +316,7 @@ test("URL actions match progressive-enhancement anchors", async ({ page }) => {
   ]) {
     const descriptor = action(id);
     const anchor = controls.locator(selector);
-    if (id === "open_chatgpt" || id === "open_claude" || id === "open_gemini") {
+    if (id === "open_chatgpt" || id === "open_claude") {
       const href = new URL(await anchor.getAttribute("href"));
       expect(href.origin).toBe(new URL(descriptor.url).origin);
       const prompt = href.searchParams.get(

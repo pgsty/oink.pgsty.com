@@ -18,6 +18,35 @@ async function geometry(page) {
   return page.evaluate(() => ({ width: innerWidth, scroll: document.documentElement.scrollWidth }));
 }
 
+test('tabbed tables fill both inline edges and keep wide content scrollable', async ({ page }) => {
+  await page.goto('/zh/tests/table-reader/');
+  const tabs = page.locator('.td-tabs[data-td-tabs-group="reader-tabs"]');
+  for (const width of [1280, 390]) {
+    await page.setViewportSize({ width, height: 800 });
+    for (const direction of ['ltr', 'rtl']) {
+      await tabs.evaluate((el, dir) => { el.dir = dir; }, direction);
+      for (const label of ['Overview', 'Details']) {
+        await tabs.getByRole('tab', { name: label, exact: true }).click();
+        const table = tabs.locator('[role="tabpanel"]:visible table');
+        const gaps = await table.evaluate(el => {
+          const panel = el.closest('.td-tabs__panel').getBoundingClientRect();
+          const rect = el.getBoundingClientRect();
+          return [rect.left - panel.left, panel.right - rect.right];
+        });
+        for (const gap of gaps) expect(Math.abs(gap)).toBeLessThanOrEqual(1);
+      }
+    }
+  }
+  const wide = tabs.locator('[role="tabpanel"]:visible .td-table-scroll');
+  const overflow = await wide.evaluate(el => {
+    el.querySelector('table').style.minInlineSize = '65rem';
+    el.scrollLeft = -150;
+    return { scroll: Math.abs(el.scrollLeft), page: document.documentElement.scrollWidth - innerWidth };
+  });
+  expect(overflow.scroll).toBeGreaterThan(0);
+  expect(overflow.page).toBeLessThanOrEqual(0);
+});
+
 for (const locale of ['', '/zh']) {
   const path = `${locale}/tests/table-reader/`;
   const label = locale ? '展开表格' : 'Expand table';

@@ -2,7 +2,7 @@
 title: Cards
 linkTitle: Cards
 description: Turn a Markdown link list into a grid of navigation cards, and use the shortcode when cards need icons, badges or images.
-weight: 80
+weight: 250
 search_keywords: [Cards, card, link card, navigation card, section index, icon, badge]
 ---
 

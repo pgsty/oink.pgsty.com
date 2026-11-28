@@ -6,16 +6,16 @@ weight: 29
 icon: fa-solid fa-comment-dots
 search_keywords: [social, 社交帖子, x, twitter, 推文, bluesky, mastodon, threads, 微博, 离线嵌入, 引用, 组件]
 design_kind: proposal
-design_status: implemented
+design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] 已实现，等待发布
-> `social` 短代码已在主题 `main` 分支中实现，并写入了[社交帖子指南](/zh/docs/components/social/)。尚未包含在发布标签中。所依据的共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
+> [!NOTE] 已随 OINK 1.7.0 接受并发布
+> `social` 短代码已随 OINK v1.7.0 发布并写入[社交帖子指南](/zh/docs/components/social/)，规范行为归属[组件契约](/zh/docs/design/components/#timeline-media-social-and-maps)。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 2026-11-27 在 `main` 实现；等待发布 |
+| 状态 | 已接受并随 OINK v1.7.0 发布（2026-11-27 实现） |
 | 负责人 | OINK 维护者 |
 | 交付阶段 | S3 |
 | 形态 | 带 Markdown 正文的短代码：`{{</* social … */>}}…{{</* /social */>}}` |
@@ -81,7 +81,7 @@ Hugo 内置的 `x` 短代码在构建期向 X 请求 oEmbed 数据（Hugo 会在
 | --- | --- | --- |
 | `author` | 显示名称，纯文本 | 非字符串：告警并忽略 |
 | `handle` | 纯文本，按原样显示（`@name`、`@user@mastodon.social`） | 非字符串：告警并忽略 |
-| `avatar` | 图片路径，经 `content/image-resolve.html`（`parameter="avatar"`）处理；名称就在旁边，因此作为装饰图（`alt=""`） | 不安全协议或非图片资源：以 `avatar` 为参数名告警并丢弃；静态路径在项目自己的 `static/` 中找不到时（仅在该目录存在时检查，路径先解码并规范化），以 ID `social:avatar-static` 告警并保留路径，使用模块挂载或自定义 `staticDir` 的站点可把该 ID 加入 `ignoreLogs`；用 `..` 越出站点根目录的静态路径告警并保留路径；从不抓取远程 URL |
+| `avatar` | 图片路径，经 `content/image-resolve.html`（`parameter="avatar"`）处理；名称就在旁边，因此作为装饰图（`alt=""`） | 不安全协议或非图片资源：以 `avatar` 为参数名告警并丢弃；静态路径在项目自己的 `static/` 中找不到时（仅在该目录存在时检查，路径先解码并规范化），以 ID `social:avatar-static` 告警并保留路径，使用模块挂载或自定义 `staticDir` 的站点可把该 ID 加入 `ignoreLogs`；用 `..` 越出站点根目录的静态路径以 `social:avatar-static` 告警并丢弃，卡片改为显示首字母；从不抓取远程 URL |
 | `date` | 纯文本。`YYYY-MM`，或 `YYYY-MM-DD` 后接可选的 `T`／空格、`HH:MM`、可选 `:SS` 与可选 `Z`／`±HH:MM`，且是真实日历日期时，输出 `<time datetime>`（空格写成 `T`）；其他写法输出 `<span class="td-social__date">` | 非字符串：告警并忽略 |
 | `url` | 原帖地址，经共享 URL 策略处理（HTTP/HTTPS 附带 `rel="external"`，站内路径不附带）。可选，以便仍能引用已删除的帖子 | 无效：告警并丢弃 |
 | `platform` | `x`（顶层默认）、`bluesky`、`mastodon`、`threads`、`weibo`、`zhihu`、`telegram`、`linkedin`、`none`（嵌套默认） | 未知、为空或非字符串：告警，回退至当前层级默认值 |
@@ -182,7 +182,7 @@ Hugo 内置的 `x` 短代码保持可用且不变：它在构建期获取 oEmbed
 | 样式 | `assets/css/td/social.css` |
 | 语言文件 | 全部 32 个语言文件中的 `ui_social_view_original` |
 | 夹具 | `tests/site/content/fixtures/social.md` 及其中文对页，由 HTML、Markdown 与 Print golden 固定 |
-| 无效输入 | `bin/check-content-primitives.py` 中的 15 个 `social-*` 用例、`check_social_posts()` 及模板/样式契约校验，加上 `tests/browser/social.spec.mjs` 浏览器回归测试 |
+| 无效输入 | `bin/check-content-primitives.py` 中的 17 个 `social-*` 用例、`check_social_posts()` 及模板/样式契约校验，加上 `tests/browser/social.spec.mjs` 浏览器回归测试 |
 | 指南 | [社交帖子](/zh/docs/components/social/) |
 
 ## 验收标准 {#acceptance}

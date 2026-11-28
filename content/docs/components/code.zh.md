@@ -2,7 +2,7 @@
 title: 代码块
 linkTitle: 代码块
 description: 用普通 Markdown 围栏展示命令、配置与源码，带文件名标题、精确复制、行号、高亮、换行、折叠与可链接的行。
-weight: 30
+weight: 120
 search_keywords: [代码块, Code Block, 围栏, fence, 复制, copy, 行号, lineNos, 高亮, hl-lines, 折叠, collapse, 换行, wrap, Chroma, 语法高亮]
 aliases:
   - /docs/components/code-blocks/
@@ -22,7 +22,7 @@ SELECT datname, numbackends FROM pg_stat_database ORDER BY numbackends DESC;
 SELECT datname, numbackends FROM pg_stat_database ORDER BY numbackends DESC;
 ```
 
-不写任何属性的围栏也有完整的外框与复制按钮；没有标题的块就不显示标题栏。复制按钮位于右上角，鼠标悬停在块上或焦点进入块内时出现，在触屏设备上始终可见。页面上不显示语言名，站点 CSS 可以从块的 `data-language` 属性读到它。
+不写任何属性的围栏也有完整的外框与复制按钮；没有标题的块就不显示标题栏。复制按钮位于右上角，鼠标悬停在块上或焦点进入块内时出现，在触屏设备上始终可见。页面上不显示语言名，站点 CSS 可以从块的 `data-td-language` 属性读到它。
 
 语言标记就是 Chroma 的 lexer 名，绝大多数编程语言与文件格式都有对应的 lexer。比如 `diff` 围栏会用各自的颜色显示增加与删除的行，不需要额外的组件：
 
@@ -132,7 +132,7 @@ CHECKSUM=sha256:6d3dce4f7acb18f586469adcb80ab35f3e859f9837786e151cfbc2b3c0f587b2
 
 ## 折叠长代码 {#collapse}
 
-`collapse=N` 只显示前 N 行，下面放一个「显示全部 N 行」按钮，免得一整份配置文件把讲解挤出屏幕。
+`collapse=N` 只显示前 N 行，下面放一个「显示全部 M 行」按钮（M 为总行数），免得一整份配置文件把讲解挤出屏幕。
 
 ````markdown {title="源码"}
 ```yaml {title="hugo.yml" collapse=8}
@@ -246,7 +246,7 @@ ORDER BY n_live_tup DESC;
 
 跳到 [第 4 行](#ex-explain-4)。
 
-只要打算分享链接，就自己写 `id`。不写时主题也会生成一个页面内唯一的 ID，但它取决于围栏在页面中的位置，前面插入一个围栏，ID 就会改变，旧链接随之失效。`id` 不能含空格或控制字符，也不能与页面上的其它 ID 重复；无效或重复的 `id` 会告警，并换成自动生成的 ID。
+只要打算分享链接，就自己写 `id`。不写时主题也会生成一个页面内唯一的 ID，但它取决于围栏在页面中的位置，前面插入一个围栏，ID 就会改变，旧链接随之失效。`id` 不能含空格或控制字符，也不能与页面上的其它 ID 重复；空的或无效的 `id` 会告警，并换成自动生成的 ID；重复的 `id` 告警但不改名。
 
 ## 编号例 {#numbered}
 
@@ -320,7 +320,7 @@ sudo apt install hugo
 | `id` | 非空 token | 自动生成 | 稳定的块 ID 与行锚点前缀；不能含空白 |
 | `tab` | 非空字符串 | 无 | 标签名，见[标签页](/zh/docs/components/tabs/)；与 `num` 互斥 |
 | `group` | `^[a-z][a-z0-9_-]*$` | 无 | 写在一组的第一个围栏上，启用 hash / 同步 / 持久化；需要 `tab` |
-| `value` | `^[a-z0-9][a-z0-9_-]*$` | 无 | 分组内每个围栏必填，无分组时禁止；需要 `tab` |
+| `value` | `^[a-z0-9][a-z0-9_-]*$` | 无 | 分组时每个块必填；未分组时只用作面板标识；需要 `tab` |
 | `num` | `[0-9A-Za-z.-]+` | 无 | 编号示例（Book `eg`）；必须与 `caption` 同时出现 |
 | `caption` | 纯文本 | 无 | 编号示例的说明；必须与 `num` 同时出现 |
 | `class` | class 列表 | 无 | 追加到 `.td-code` 根元素；`td-code-command` 生成[命令条](#presentation) |
@@ -345,7 +345,7 @@ sudo apt install hugo
 - 高亮器只有 Chroma，没有 Shiki、Twoslash、浏览器端高亮，也没有可运行的代码演练场；补丁请用 `diff` 围栏。
 - `copy="command"` 只适用于 `console` 与 `shell-session` 两个 lexer，用在别处会告警并复制全部内容。
 - 自动生成的 ID 不是永久链接。凡是要从别处链接过来的行或块，都自己写 `id`。
-- `mermaid`、`math`、`chem`、`markmap`、`plantuml`、`echarts`、`infographic`、`checksums`、`filetree`、`gallery` 围栏不是代码块，各自渲染成独立的组件，没有代码外框，也没有复制按钮。
+- `mermaid`、`math`、`chem`、`markmap`、`plantuml`、`echarts`、`infographic`、`checksums`、`filetree`、`gallery`、`map` 围栏不是代码块，各自渲染成独立的组件，没有代码外框，也没有复制按钮。
 
 ## 相关 {#related}
 

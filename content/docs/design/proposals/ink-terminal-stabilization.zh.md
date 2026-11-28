@@ -9,8 +9,8 @@ design_status: draft
 proposal_date: 2026-10-26
 ---
 
-> [!WARNING] 草案——稳定化升级受阻
-> **放大字体会使共用页脚溢出。** 在 320px 视口、32px 根字号／默认字号下，英文 Ink 的文档宽度达到 424px，Terminal 达到 408px。对比覆盖样式没有修复这一共用缺陷。两份原型均未稳定，也未获准升级为稳定预设。
+> [!WARNING] 草案——10 月 26 日快照；字体方案已被 v1.7.0 取代
+> 10 月 26 日的探测中，**放大字体会使共用页脚溢出**：在 320px 视口、32px 根字号／默认字号下，英文 Ink 的文档宽度达到 424px，Terminal 达到 408px。OINK v1.7.0 随后修订了 Ink（系统衬线／宋体正文）与 Terminal（屏幕全等宽、打印 IBM Plex Sans）的字体方案，当前规范行为见[架构契约](/zh/docs/design/architecture/#visual-presets)与[视觉预设决策](/zh/docs/design/decisions/visual-presets/)。两套预设目前仍保持显式启用，尚未晋升为默认预设组合。
 
 ## 状态、归属与范围 {#status}
 

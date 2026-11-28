@@ -2,7 +2,7 @@
 title: 按键
 linkTitle: 按键
 description: 用 `kbd` 写快捷键：一个 shortcode 接一串按键名，输出语义化的按键序列，打印与 Markdown 输出里同样可读。
-weight: 190
+weight: 160
 search_keywords: [按键, Kbd, 快捷键, 键盘, shortcut, keyboard, Ctrl, Cmd, 组合键]
 ---
 
@@ -138,7 +138,7 @@ Markdown 里写原始的 `<kbd>` 标签得到同样的样式，GitHub 也这么�
 - 一个序列表示同时按下的一组键：先按 A 再按 B 这类连续操作写成两个 kbd 加一句说明（先按 {{< kbd "Escape" >}}，再按 {{< kbd "Enter" >}}）。
 - 不做平台检测：页面不会按访客的操作系统把 `Ctrl` 换成 `⌘`。
 - 不做按键映射与录制：菜单路径、手势、游戏杆不在范围内。
-- 漏写引号会让构建失败：`{{</* kbd Ctrl K */>}}` 里的 `Ctrl` 不是字符串参数。
+- 每个键都加引号：不加引号的单词碰巧可用，但不加引号的数字（如 `1`）不是字符串，会告警并跳过。
 - 不用它标命令：`hugo server` 写成行内代码，`Ctrl` 是按键。
 
 ## 相关 {#related}

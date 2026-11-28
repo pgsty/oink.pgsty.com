@@ -5,27 +5,24 @@ description: Repository assembly, configuration, diagnostics, localization, outp
 weight: 10
 icon: fa-solid fa-sitemap
 search_keywords: [OINK architecture, repository boundary, runtime, i18n, Docsy locales, output formats, security, accessibility, performance]
-contract_status: v1.6.0
+contract_status: v1.7.0
 ---
 
-> [!NOTE] Architecture versions
-> OINK v1.6.0 is the released baseline. The map tile and media player network
-> policies described below apply to the implementations on `main` for the
-> proposed v1.7.0 release.
+> [!NOTE] OINK 1.7.0 contract
+> This contract describes OINK v1.7.0.
 
 ## Hugo toolchain {#hugo-toolchain}
 
-**OINK v1.6.0** requires **Hugo 0.169.0** or newer in any edition (validated on
-**Hugo 0.170.1**) and **Go 1.27.4**. Development and checks pin no Hugo
-release: they use the installed Hugo, and the theme's CI installs the current
-release. `theme.toml` and `hugo.yaml` declare **0.169.0** as the oldest
-supported release. See [Runtime dependencies and 1.6.0 baseline](#unreleased-dependencies).
+**OINK v1.7.0** builds in any Hugo edition and uses **Go 1.27.4** for modules.
+The oldest supported Hugo is declared in the theme's [`theme.toml`](https://github.com/pgsty/oink/blob/main/theme.toml)
+and `hugo.yaml`. Development and checks use the installed Hugo. Theme CI installs
+the current release. See [Runtime dependencies and 1.7.0 baseline](#unreleased-dependencies).
 
 Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Warnings remain
 visible and are reviewed. Invalid-input tests verify their specific warning
 and safe fallback output directly.
 
-OINK v1.6.0 contains no Sass: its stylesheet is plain CSS that Hugo
+OINK v1.7.0 contains no Sass: its stylesheet is plain CSS that Hugo
 concatenates; see [Plain CSS stylesheet delivery](#stylesheet-delivery).
 Ordinary consumers need no Dart Sass, LibSass, or other Sass executable—a site
 build needs only the Hugo binary. Releases up to v1.5.1 compiled main and ReDoc
@@ -51,7 +48,7 @@ OINK includes the complete supported Font Awesome distribution because consumer 
 The official compiled Font Awesome CSS is a stable, fingerprinted vendor stylesheet.
 It loads before fingerprinted `main.css`, the theme's stylesheet, and the site's own styles.
 Site style changes therefore preserve the icon distribution's fingerprint, while cascade order still lets sites override its styles.
-Capability styles, including KaTeX, DocSearch, Swagger, and Asciinema, stay separate and load only when used.
+Capability styles, including KaTeX, DocSearch, Swagger, Asciinema, and Leaflet, stay separate and load only when used.
 Fingerprints permit immutable URLs. The deployment host controls their HTTP cache headers.
 
 Hugo types `docs`, `book`, `blog`, and `swagger` select reading shells. `params.ui.shell_types` may add types.
@@ -62,11 +59,9 @@ The [shell contract](/docs/design/shell/) defines immersive pages as a blog pres
 Layouts must render through `content/render.html` before `scripts.html` because render hooks and shortcodes register capability flags in the Page Store.
 Override the narrowest partial. Keep similar base templates separate when merging them would change Hugo lookup precedence.
 
-## Runtime dependencies and 1.6.0 baseline {#unreleased-dependencies}
+## Runtime dependencies and 1.7.0 baseline {#unreleased-dependencies}
 
-OINK v1.6.0 requires **Go 1.27.4** and **Hugo 0.169.0** or newer, in
-any edition. No Hugo release is pinned: development and checks use the
-installed one, and the theme's CI installs the current release. The stylesheet
+The [Hugo toolchain](#hugo-toolchain) applies to development and CI. The stylesheet
 is plain CSS that Hugo concatenates, and the consumer SCSS hooks are retired;
 see [Plain CSS stylesheet delivery](#stylesheet-delivery). Contributor browser checks
 use Node 26.13.0 and npm 12.2.2; these are not consumer build dependencies.
@@ -77,12 +72,12 @@ Pandoc 3.13, EPUBCheck 5.4.0 and Chrome headless shell 157.0.8103.50, with Java 
 The search close button's localized accessible name includes its visible
 `Esc` label and exposes `aria-keyshortcuts="Escape"` for speech and keyboard access.
 
-The refreshed runtime set (25 vendored dependencies in `VENDOR.json`) includes
-DocSearch 5.2.0, Mermaid 12.3.0, KaTeX 0.19.1,
-Markmap 1.1.0, Swagger UI 5.34.1, ReDoc 3.1.0, Asciinema 3.18.0,
-Infographic 0.2.20, Pako 3.0.3, idb-keyval 6.3.0 and Viz.js 3.31.0
-(Graphviz 16.1.0 and Expat 2.8.5). Font Awesome 7.3.1, Bootstrap 5.3.8,
-ECharts 6.1.0, the font packages and PlantUML core 1.2026.9 remain current
+The refreshed runtime set (26 vendored dependencies in `VENDOR.json`) includes
+DocSearch 5.2.0, Mermaid 12.4.0, KaTeX 0.19.1,
+Markmap 1.1.1, Swagger UI 5.36.0, ReDoc 3.2.0, Asciinema 3.19.0,
+Infographic 0.2.20, Pako 3.0.3, idb-keyval 6.3.0, PlantUML core 1.2026.10, Viz.js 3.31.0
+(Graphviz 16.1.0 and Expat 2.8.5), and Leaflet 1.9.4 (BSD-2-Clause). Font Awesome 7.3.1, Bootstrap 5.3.8,
+ECharts 6.1.0, and the font packages remain current
 stable releases. `VENDOR.json` remains the exact inventory.
 
 The `main` stylesheet retains Bootstrap's component CSS, including modals,
@@ -104,7 +99,7 @@ DocSearch uses the keyword-search bundle and adapts the existing `indexName`
 setting to the upstream `indices` API. Ask AI is not enabled.
 
 Markmap uses a local ESM graph built from `@markmap/core`, `parse`, `render`,
-`view` and `plugin-math` 1.1.0. Its D3 primitives, highlighting and lazy MathJax
+`view` and `plugin-math` 1.1.1. Its D3 primitives, highlighting and lazy MathJax
 are bundled; the old global autoloader, standalone D3 and WebFontLoader are
 retired. Every relative chunk is published together. See the
 [Markmap migration](/docs/components/markmap/#migration) before updating content.
@@ -162,7 +157,7 @@ as `css/<name>.css`. An unknown name warns.
 
 | Stylesheet | Consumer |
 | --- | --- |
-| `main` | Every theme page; 118 layers. `head-css.html` publishes it as `css/main.css`, or minified, fingerprinted and with an integrity attribute in production |
+| `main` | Every theme page; 123 layers. `head-css.html` publishes it as `css/main.css`, or minified, fingerprinted and with an integrity attribute in production |
 | `redoc.css` | Pages that register ReDoc. It is the single file `assets/css/td/redoc.css`, outside the layer lists, published the same way as `css/redoc.css` |
 | `chrome` | A site-owned shell that does not load `main`: tokens, typography, the four palettes, the site navbar, and the language, theme and appearance controls |
 | `landing` | Landing sections for a site-owned shell, loaded after `chrome`. It repeats the palettes, because they restyle Landing sections at equal specificity and must follow them |
@@ -248,7 +243,7 @@ Unsupported schemes, protocol-relative URLs, backslashes, whitespace, and same-s
 > [!NOTE] Self-contained PlantUML (since OINK 1.4.0)
 > `plantuml: true` or `plantuml.enable: true`
 > without an endpoint selects browser rendering. The two pinned local assets
-> (`@plantuml/core` 1.2026.9 and Viz.js 3.31.0 in 1.6.0) load only on HTML pages with
+> (`@plantuml/core` 1.2026.10 and Viz.js 3.31.0) load only on HTML pages with
 > PlantUML fences. Normal builds and readers need no Java, Graphviz executable,
 > npm installation, CDN or rendering service. A nonempty endpoint still selects
 > server mode and retains its validation and `svg` behavior; invalid endpoints
@@ -273,15 +268,15 @@ Unsupported schemes, protocol-relative URLs, backslashes, whitespace, and same-s
 > completed diagrams show images and the remainder retain source. Dedicated
 > outputs are unchanged.
 
-Asciinema, ECharts, Infographic and Markmap follow the same rule on HTML pages.
+Asciinema, ECharts, Infographic, Markmap, and Map (Leaflet) follow the same rule on HTML pages.
 The page publishes each engine without requesting it.
 A component on screen, within a short scroll below, or anywhere above the reader loads its engine and mounts.
-One further down waits, and a hidden one waits until it is shown.
+One further down waits, a hidden one waits until it is shown, and a Map configured with `loading: click` waits for an explicit click.
 Mounting above the reader would move the text being read, so everything above is due at once.
-Until it mounts, a player is its recording link, a map is its source, and a chart or infographic is an empty frame.
+Until it mounts, a player is its recording link, a Markmap is its source, a geographic Map keeps its numbered place list, and a chart or infographic is an empty frame.
 Ordinary browser printing cannot wait for a script: a mounted component prints as it is,
 and an unmounted chart or infographic prints its declared options or DSL, as the Print output does.
-If an engine cannot load, the chart or infographic shows that source and the player keeps its link.
+If an engine cannot load, the chart or infographic shows that source, the player keeps its link, and a geographic Map hides its canvas while keeping its place list.
 An engine a site has already loaded itself is used without a second request.
 Giscus is requested the same way, when the reader comes within a scroll of the comments or is already past them.
 A visit returning from sign-in, whose session is still in the address, and a site that sets `loading: eager` request it at once.
@@ -471,9 +466,9 @@ The skip-link destination shows a local outline around its title instead of the 
 Forced colors retain keyboard focus indication. No global focus-outline reset is used.
 
 Font roles are `ui`, `body`, `heading`, `code`, `display`, `meta`, `brand`, and `print`. They use `--td-*-font-family` properties.
-Setting `fonts.ui` changes interface text, prose, and headings in every preset, including Paper. An explicit `fonts.body` then supplies the prose and heading face unless `fonts.heading` supplies its own.
+An explicit `fonts.ui` changes interface text, prose, and headings in every preset, including Paper. An explicit `fonts.body`, with or without `fonts.ui`, supplies the prose face and the heading face unless `fonts.heading` names its own.
 `params.ui.typography` accepts `technical` or `system`. Both are part of the one stylesheet and need no runtime.
-OINK 1.6.0's stylesheet is plain CSS and reads no consumer Sass variable (1.5.1 and older let legacy Bootstrap/Docsy Sass variables initialize these roles).
+Since OINK 1.6.0, the stylesheet is plain CSS and reads no consumer Sass variable (1.5.1 and older let legacy Bootstrap/Docsy Sass variables initialize these roles).
 
 `params.ui.fonts` configures the same roles without an added stylesheet.
 It names faces without loading them, so readers must have the family or the site must declare it through its own `@font-face`.
@@ -538,11 +533,11 @@ prose, with red markers, underlined prose links, square geometry and no
 shadows. Terminal uses IBM Plex Mono for chrome, headings and prose, teal
 links, amber accents, 2 px corners and no shadows; its print role stays IBM
 Plex Sans. System typography requests no bundled text face unless the site
-explicitly overrides a role. No external font is introduced. Its
+explicitly overrides a role. No external font is introduced. Terminal's
 navigation density changes only on desktop; prose measure and mobile targets
 remain unchanged. CSS heading marks have empty accessible alternatives and
 are omitted in unsupported browsers. Explicit `fonts.ui` still supplies the
-main face unless a valid `fonts.body` overrides it. See the
+main face (including headings) unless a valid `fonts.body` or `fonts.heading` overrides it. See the
 [experiment record](/docs/design/research/2026-10-05-ink-terminal-experiment/).
 
 Han text uses fonts the reader already has; the theme ships no CJK file. Each

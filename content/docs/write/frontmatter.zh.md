@@ -89,7 +89,7 @@ cascade:
 | `theme_color` | 字符串 | 站点值 | 本页的强调色，`#rgb` 或 `#rrggbb`。写在分区根的 `cascade` 里，就给整个分区一个专属颜色，见[品牌外观](/zh/docs/customize/brand/#theme-color) |
 | `theme_color_dark` | 字符串 | 派生 | 暗色模式下的强调色。上层 cascade 设了这个键时，只覆盖 `theme_color` 的页面会继承 cascade 的暗色，所以两个要一起写。`theme_color: false` 让页面不再继承分区色 |
 | `page_context_menu` | 布尔 | 站点值（`true`） | 标题行的页面操作菜单：复制 Markdown、编辑本页、打印等 |
-| `page_context_menu.assistant_links` | 布尔 | 站点值（`false`） | ChatGPT、Claude 与 Gemini 三项，写成 `page_context_menu: { assistant_links: false }`。页面只能关掉它们，站点没开时页面无法单独开启 |
+| `page_context_menu.assistant_links` | 布尔 | 站点值（`false`） | ChatGPT 与 Claude 两项，写成 `page_context_menu: { assistant_links: false }`。页面只能关掉它们，站点没开时页面无法单独开启 |
 {.fields meta="type default"}
 
 ## 页面外壳 {#shell}
@@ -110,6 +110,7 @@ cascade:
 | `sidebar_expand_levels`、`sidebar_menu_compact`、`sidebar_menu_foldable`、`sidebar_item_overflow` | 同站点参数 | 站点值 | 逐页覆盖侧栏行为，取值见[配置总览](/zh/docs/customize/config/) |
 | `sidebar_width_min`、`sidebar_width_max` | 正整数 | 站点值（`220` / `480`） | 本页桌面侧栏拖拽宽度的上下限；下限大于上限时告警并恢复站点值 |
 | `code_copy` | 布尔 | 站点值（`true`） | 本页代码块默认是否带复制按钮；围栏自己写的 `copy=` 优先 |
+| `rich_copy` | 布尔 | 站点值（`true`） | 正文选区粘贴到富文本编辑器时的排版 HTML 复制 |
 | `toc_style` | `fixed` / `flow` | 站点值（`fixed`） | 固定的右栏面板，或从正文流中开始的较宽右栏 |
 | `toc_taxonomies` | 布尔 | 站点值（`true`） | 分类词云是否与页面目录一起进入右栏 |
 | `taxonomy_icons` | 映射 | 站点值 | 为本页（或经 `cascade` 为整个分区）覆盖各分类法的图标 |
@@ -138,7 +139,7 @@ cascade:
 
 ## 页尾：评论、反馈与出处 {#page-end}
 
-这一组决定正文之后跟着什么。顺序固定：反馈、出处、翻页器、评论，见[编写页面](/zh/docs/write/pages/#page-end)。
+这一组决定正文之后跟着什么。顺序固定：分享栏、反馈、出处、翻页器、评论，见[编写页面](/zh/docs/write/pages/#page-end)。
 
 | 键 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |

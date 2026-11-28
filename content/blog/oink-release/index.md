@@ -250,3 +250,9 @@ If you already have a Docsy site, you can migrate directly—in theory, any Docs
 **Not a good fit**: you need a CMS for multi-user online collaboration, dynamic content behind user accounts, a real-time data backend, or a complete frontend application framework. OINK is a Hugo theme, not a SaaS product or application server, and it does not try to disguise a static documentation site as a universal platform.
 
 I like Hugo precisely because it is **boring enough**: one binary, one content tree, one build command, and a static artifact you can put anywhere. OINK is not trying to repackage that simplicity inside a complex framework. It aims to squeeze everything modern engineering documentation genuinely needs back into that simple path.
+
+A good documentation framework should never make authors feel it running every day.
+
+It should simply make content easier to write, answers easier to find, and knowledge still **buildable, readable, and portable** years from now.
+
+That is OINK.

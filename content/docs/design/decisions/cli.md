@@ -789,10 +789,10 @@ or that operation must explicitly enable network access.
 The CLI does not download a Go toolchain, install packages, alter global
 configuration, or enable telemetry.
 
-The current development and validation baseline is Hugo Extended 0.169.0;
-the version gate requires 0.169.0 or newer. Do not enable `--panicOnWarning` or
-`HUGO_PANICONWARNING`; warnings stay visible, including Hugo's accepted upstream
-LibSass notice. Initialized sites use the CLI's separately maintained Starter
+The theme requires Hugo 0.169.0 or newer in any edition (validated on
+Hugo 0.170.1); earlier CLI snapshots targeting OINK 1.5.1 required Hugo Extended
+0.169.0 for LibSass. Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`;
+warnings stay visible. Initialized sites use the CLI's separately maintained Starter
 snapshot; theme upgrades follow the [upgrade guide](/docs/admin/upgrade/).
 Initialized sites retain ordinary Hugo inputs and need only their documented
 dependencies after removing the CLI.

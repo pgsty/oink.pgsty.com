@@ -50,7 +50,7 @@ search_keywords: [API, OpenAPI, Swagger, Swagger UI, Redoc, 接口文档, swagge
 
 路径相对于 `static/`，开头有无斜杠都一样，短代码会基于 `baseURL` 把它转成绝对 URL：`baseURL` 为 `https://example.com/preview/` 时，`openapi/docs-demo.yaml` 与 `/openapi/docs-demo.yaml` 都会变成 `https://example.com/preview/openapi/docs-demo.yaml`。`http` 或 `https` URL 则原样使用。
 
-每个 `redoc` 短代码都在独立的框架里运行 ReDoc 3.1.0，文件来自主题本地。框架把自己的导航记在自己的 URL 片段里，因此不会干扰文章锚点，也不会干扰同一页上的其他阅读器。它使用 ReDoc 的浅色配色、独立滚动，下方附一条指向规范的普通链接。遥测已关闭，ReDoc 的两张品牌图片改为内嵌，阅读器不会向任何 CDN 发请求；远程规范以及规范中引用的图片仍会从各自的主机获取。直接打开这个框架时，它只接受同源规范。如果站点的[内容安全策略](/zh/docs/admin/deploy/#csp)限制了框架，用 `frame-src 'self'` 放行阅读器。
+每个 `redoc` 短代码都在独立的框架里运行 ReDoc 3.2.0，文件来自主题本地。框架把自己的导航记在自己的 URL 片段里，因此不会干扰文章锚点，也不会干扰同一页上的其他阅读器。它使用 ReDoc 的浅色配色、独立滚动，下方附一条指向规范的普通链接。遥测已关闭，ReDoc 的两张品牌图片改为内嵌，阅读器不会向任何 CDN 发请求；远程规范以及规范中引用的图片仍会从各自的主机获取。直接打开这个框架时，它只接受同源规范。如果站点的[内容安全策略](/zh/docs/admin/deploy/#csp)限制了框架，用 `frame-src 'self'` 放行阅读器。
 
 ReDoc 能读取 OpenAPI、AsyncAPI 与 GraphQL 描述。代码示例写在 `x-codeSamples` 扩展里；旧规范中的 `x-code-samples` 需要改名。OINK 1.6.0 之前定制过 Redoc 短代码或其样式的站点，请阅读[升级到 1.6.0](/zh/docs/admin/upgrade/#preparing-1-6)。
 

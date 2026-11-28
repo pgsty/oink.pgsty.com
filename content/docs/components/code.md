@@ -2,7 +2,7 @@
 title: Code Blocks
 linkTitle: Code Blocks
 description: Show commands, configuration and source code in a Markdown fence with a filename, exact copying, line numbers, highlighting, wrapping, folding and linkable lines.
-weight: 30
+weight: 120
 search_keywords: [Code Block, fence, copy, lineNos, hl-lines, collapse, wrap, Chroma, syntax highlighting]
 aliases:
   - /docs/components/code-blocks/
@@ -33,7 +33,7 @@ Every fence gets the full frame and a copy button, even without attributes; a
 block without a title simply has no title bar. The copy button sits at the top
 right and appears when the pointer is over the block or focus is inside it, and
 on touch screens it is always visible. The language is not displayed, but site
-CSS can read it from the block's `data-language` attribute.
+CSS can read it from the block's `data-td-language` attribute.
 
 The language tag is a Chroma lexer name, and Chroma has a lexer for most
 languages and file formats. A `diff` fence, for example, shows added and
@@ -161,8 +161,8 @@ warns and turns wrapping off; use `lineNos="inline"` if you need both.
 
 ## Folding long code {#collapse}
 
-`collapse=N` shows the first N lines with a "show all N lines" button under
-them, so a complete configuration file does not push the explanation off the
+`collapse=N` shows the first N lines with a "Show all M lines" button under
+them, where M is the block's total line count, so a complete configuration file does not push the explanation off the
 screen.
 
 ````markdown {title="Source"}
@@ -303,8 +303,8 @@ Write the `id` yourself whenever you plan to share a link. Without one, the
 theme generates an ID that is unique on the page but depends on the fence's
 position, so adding a fence above it changes the ID and breaks old links. An
 `id` must not contain spaces or control characters, and must not repeat
-another ID on the page; an invalid or duplicate `id` warns and is replaced by
-a generated one.
+another ID on the page. An empty or invalid `id` warns and is replaced by a
+generated one; a duplicate `id` warns but is not renamed.
 
 ## Numbered examples {#numbered}
 
@@ -402,7 +402,7 @@ OINK's attributes, inside the `{…}` after the language on the opening line:
 | `id` | non-empty token | generated | Stable block ID and line-anchor prefix; no whitespace |
 | `tab` | non-empty string | none | Tab label, see [Tabs](/docs/components/tabs/); mutually exclusive with `num` |
 | `group` | `^[a-z][a-z0-9_-]*$` | none | On the first fence of a set; enables hash / sync / persistence; requires `tab` |
-| `value` | `^[a-z0-9][a-z0-9_-]*$` | none | Required on every fence of a group, forbidden without one; requires `tab` |
+| `value` | `^[a-z0-9][a-z0-9_-]*$` | none | Required on every block of a grouped set; ungrouped it only names the panel; requires `tab` |
 | `num` | `[0-9A-Za-z.-]+` | none | Numbered example (Book `eg`); must appear with `caption` |
 | `caption` | plain text | none | The numbered example's caption; must appear with `num` |
 | `class` | class list | none | Appended to the `.td-code` root element; `td-code-command` makes a [command strip](#presentation) |
@@ -436,7 +436,7 @@ unchanged:
 - A generated ID is not a permanent link. Write `id` for any line or block you
   link to from elsewhere.
 - `mermaid`, `math`, `chem`, `markmap`, `plantuml`, `echarts`, `infographic`,
-  `checksums`, `filetree` and `gallery` fences are not code blocks. Each
+  `checksums`, `filetree`, `gallery` and `map` fences are not code blocks. Each
   renders as its own component, without the code frame or copy button.
 
 ## Related {#related}

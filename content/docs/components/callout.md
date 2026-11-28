@@ -2,7 +2,7 @@
 title: Callouts
 linkTitle: Callouts
 description: Write notes, warnings, and collapsible asides with colors, icons, and titles. Use `> [!NOTE]` blockquotes without shortcodes.
-weight: 10
+weight: 110
 search_keywords: [Callout, Alert, Admonition, note, tip, warning, caution, details, collapsible]
 aliases:
   - /docs/components/layout/
@@ -28,7 +28,7 @@ seeing the boxes, so if a sentence of prose does the job, write the sentence.
 > Hugo Modules need Go on the machine; an offline archive does not.
 
 Without a title, the callout shows its type name in the page's language:
-"Note" in English, 「注意」 in Chinese.
+"Note" in English, 「说明」 in Chinese.
 
 ## Ten types {#types}
 
@@ -263,19 +263,20 @@ The attribute line `{…}`, immediately after the blockquote:
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `icon` | Font Awesome class pair | the type's icon | For example `fa-solid fa-database`; `DETAILS` has no default icon |
-| `class` | space-separated classes | — | Passed through verbatim for site CSS |
+| `class` | space-separated classes | — | Validated class tokens for site CSS; `data-*` and `aria-*` pass through |
 {.fields meta="type default"}
 
-Any other key, `style` and `on*` handlers included, is dropped with a build
-warning.
+Any other key, `style` included, is dropped with a build warning. Hugo strips
+`on*` handlers before the theme sees them, so they are dropped silently.
 
 ## Limits {#limits}
 
 - The type sets the color; there is no color parameter. When no type fits,
   take the closest one and let the title carry the meaning.
 - A reader's open or closed choice is not remembered after a reload.
-- Inside a `{.steps}` list item or a `{{%/* steps */%}}` step, indent every
-  `>` line to the list item's text. See [Steps](/docs/components/steps/).
+- Inside a `{.steps}` item, indent every `>` line to the item's text; inside a
+  `{{%/* steps */%}}` step, write it unindented. See
+  [Steps](/docs/components/steps/).
 
 ## Related {#related}
 

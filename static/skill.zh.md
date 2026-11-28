@@ -11,15 +11,15 @@ description: "Oink 建站：用 OINK 主题（github.com/pgsty/oink，文档 oin
 
 ## OINK 是什么
 
-OINK 是本地优先的 Hugo 模块主题，硬分叉自 Docsy。一个 OINK 站点就是普通的 Hugo 仓库：一份配置文件、一个固定 `github.com/pgsty/oink@<tag>` 的 `go.mod`、`content/`、`data/`，以及可选的 `assets/` 和 `layouts/`。用 Hugo 0.169.0 或更新版本构建（不限 edition），Go 负责拉取模块；不需要 Node、npm、Sass 或 CDN。
+OINK 是本地优先的 Hugo 模块主题，硬分叉自 Docsy。一个 OINK 站点就是普通的 Hugo 仓库：一份配置文件、一个固定 `github.com/pgsty/oink@<tag>` 的 `go.mod`、`content/`、`data/`，以及可选的 `assets/` 和 `layouts/`。用满足[模块最低要求](https://github.com/pgsty/oink/blob/main/theme.toml)的 Hugo 构建（不限 edition），Go 负责拉取模块；不需要 Node、npm、Sass 或 CDN。
 
 可以用上的东西：
 
 - Docs、Book、Blog、Swagger 四种阅读外壳，以及 Expo 相册；
 - 用 YAML 数据拼出来的首页和落地页，有 22 种区块可选；
-- 内容组件，大多是纯 Markdown 加一行属性：提示框、步骤、卡片、标签页、带注释的代码、图表、时间线、更新日志条目、视频和音频播放器、引用的社交帖子、地图；
-- 带命令面板的本地搜索、键盘快捷键、32 种界面语言、对照译文的双列视图、多版本、分类标签；
-- 四种外观预设及亮暗模式、打印，以及给 agent 读的 Markdown 和 `llms.txt` 输出。
+- 内容组件，大多是纯 Markdown 加一行属性：提示框、步骤、卡片、标签页、带注释的代码、图表、时间线、更新日志条目、视频和音频播放器、帖子引用、地图；
+- 带命令面板的本地搜索、29 个单键快捷键与本地浏览历史、排版富文本复制、32 种界面语言、对照译文的双列视图、多版本、分类标签；
+- 四种外观预设（默认暖白陶红 Paper、Slate、Ink、Terminal）及各自独立的系统中文排版、亮暗模式、打印，以及给 agent 读的 Markdown 和 `llms.txt` 输出。
 
 它不提供 CMS、登录、数据库或自动翻译。
 
@@ -27,7 +27,7 @@ OINK 是本地优先的 Hugo 模块主题，硬分叉自 Docsy。一个 OINK 站
 
 ## 参考真实站点
 
-[案例库](https://oink.pgsty.com/zh/case/)收录了 45 个线上运行的 OINK 站点。每篇介绍都讲了设计思路和取舍，并分清哪些是站点自己写的、哪些来自主题；站点自己写的部分不是 OINK 功能，未必适合你的项目。下面每个名字都链接到它的介绍（URL 后加 `index.md` 可读 Markdown），后面跟着线上站点，源码公开的还附上源码。
+[案例库](https://oink.pgsty.com/zh/case/)收录了 79 个线上运行的 OINK 站点。每篇介绍都讲了设计思路和取舍，并分清哪些是站点自己写的、哪些来自主题；站点自己写的部分不是 OINK 功能，未必适合你的项目。下面每个名字都链接到它的介绍（URL 后加 `index.md` 可读 Markdown），后面跟着线上站点，源码公开的还附上源码。
 
 挑最接近的一两个，先像读者一样逛一遍线上站点，再读源码。借鉴组织思路，配置要按自己的情况改；其余的由用户的内容和品味决定。
 
@@ -107,8 +107,9 @@ Book 外壳会给章节、图和表编号，解析交叉引用，并支持整书
 | 你在做… | 读这里 |
 | --- | --- |
 | 判断 OINK 是否合适，它增加了什么 | `about/`、`about/features/` |
-| 新建站点，或给已有 Hugo 站点接入 OINK | `start/from-scratch/` |
-| 从自带部署工作流的模板起步 | `start/starter/`、`start/anatomy/` |
+| 本地浏览已有站点或实时查看 AI Agent 报告 | `start/local/` |
+| 从零搭建独立站点，或给已有 Hugo 站点接入 OINK | `start/from-scratch/` |
+| 给开源项目的 `docs/` 目录加装文档站并配自动部署 | `start/add-docs/` |
 | 把目录组织成侧栏，编写页面和 front matter | `write/organize/`、`write/pages/`、`write/frontmatter/` |
 | 写博客、书或相册 | `write/blog/`、`write/book/`、`write/expo/` |
 | 发布版本与下载，或 API 参考 | `write/releases/`、`write/openapi/` |
@@ -130,7 +131,7 @@ Book 外壳会给章节、图和表编号，解析交叉引用，并支持整书
 | 排查出了问题的地方 | `admin/troubleshooting/` |
 | 核对主题应有的行为 | `design/`（维护者合同） |
 
-站点上还有一本动手教程书在 `/zh/book/`，发布说明在 `/zh/release/`，工程笔记在 `/zh/blog/`。主题的源码、默认值（`hugo.yaml`）、迁移工具和检查器在 <https://github.com/pgsty/oink>。到它的 Releases 查看最新版本；较新的文档优先于本文。旧教程和旧站点里有已经退役的做法，比如 OINK 0.4–1.4 的键名、`exampleSite`、`type: landing`、Docsy `blocks/*`、Sass，读它们是为了了解意图，不是照抄语法。
+站点上还有一本动手教程书在 `/zh/book/`，发布说明在 `/zh/release/`，工程笔记在 `/zh/blog/`。主题的源码、默认值（`hugo.yaml`）、迁移工具和检查器在 <https://github.com/pgsty/oink>。到它的 Releases 查看最新版本；较新的文档优先于本文。旧教程和旧站点里有已经退役的做法，比如 OINK 0.4–1.5 的键名与 SCSS 钩子、`exampleSite`、`type: landing`、Docsy `blocks/*`、Sass，读它们是为了了解意图，不是照抄语法。
 
 ## 值得早点知道的事
 

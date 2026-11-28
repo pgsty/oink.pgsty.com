@@ -127,6 +127,10 @@ components become static, and collapsed content is printed open.
 | [PlantUML](/docs/components/plantuml/) | The print view keeps the source and loads no runtime. A browser-printed page shows the rendered image, or the source if it has not rendered |
 | [ECharts](/docs/components/echarts/) · [Infographic](/docs/components/infographic/) | The print view keeps the fenced source and draws no chart. A browser-printed page shows the rendered chart, or the declared options / DSL if it has not mounted |
 | [Asciinema](/docs/components/asciinema/) · [OpenAPI](/docs/write/openapi/) | A labeled static link to the recording or specification; none of the three runtimes loads |
+| [Timeline](/docs/components/timeline/) · [Updates](/docs/components/update/) | Static axis or heading + metadata line on the light paper palette; avoids page breaks inside entries |
+| [Video](/docs/components/video/) · [Audio](/docs/components/audio/) | Static figure with poster (for video), caption and visible file or watch URL; no `<video>`, `<audio>` or `<iframe>` in the print view |
+| [Social](/docs/components/social/) | Static quoted card with author, body, attachments and original-post link on the paper palette |
+| [Maps](/docs/components/map/) | Numbered place list with coordinates and links; no Leaflet map canvas |
 | Cards / steps / badges / keys | Static, with content unchanged |
 
 Besides the shell, print leaves out the page action menu, the feedback widget,

@@ -2,7 +2,7 @@
 title: Markmap
 linkTitle: Markmap
 description: Use a `markmap` fence for an expandable mind map with zoom controls. Its source remains a readable Markdown outline.
-weight: 130
+weight: 370
 search_keywords: [Markmap, mind map, outline, tree diagram]
 ---
 
@@ -57,9 +57,10 @@ Then write the outline in a `markmap` fence:
 The first heading is the root, and the other headings and list items hang
 below it by level. Click the dot on a node to fold or unfold its branch, scroll
 to zoom, and drag to pan. The map refits itself whenever the column changes
-width until you drag or zoom; after that it keeps your position, and **Fit to
-window** below the map shows the whole outline again and resumes refitting. The
-button works from the keyboard and is hidden in print.
+width until you drag or zoom; after that it keeps your position, and the
+bottom-right icon controls let you **Fit to window** (showing the whole outline
+again and resuming automatic refitting) or **Download SVG**. Both controls work
+from the keyboard and are hidden in print.
 
 ## Depth {#depth}
 

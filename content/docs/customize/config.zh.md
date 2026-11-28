@@ -234,10 +234,10 @@ favicon 没有参数：主题按约定文件名在 `static/` 里查找（`favico
 | `params.ui.navbar_enabled` | boolean | true | 是否渲染站点顶栏；页面可用顶层 `navbar_enabled` 覆盖，见[导航与菜单](/zh/docs/customize/navigation/#navbar) |
 | `params.ui.navbar_autohide` | boolean | false | 顶栏收到视口上方，指针移到顶部的唤醒区时再出现；宽度小于 768px 或粗指针设备上不生效 |
 | `params.ui.footer_style` | enum | fat | `fat` 是多列网格加版权行，`slim` 只有版权行，`none` 不渲染 |
-| `params.ui.dark_mode` | boolean 或 map | false | `true` 同时打开深色调色板与深浅色控件；只要控件写 `dark_mode: { show_menu: true }` |
-| `params.ui.breadcrumb` | boolean | true | 标题上方的面包屑导航。顶层分区本来就不显示只有一级的面包屑 |
+| `params.ui.dark_mode` | boolean 或 map | false | `true` 同时打开深色调色板与深浅色控件；`{ show_menu: true }` 隐含 `enable: true`；`{ enable: true, show_menu: false }` 仅启用深色模式而不显示顶栏控件 |
+| `params.ui.breadcrumb` | boolean | 按外壳（`blog` 为 `false`，其余为 `true`） | 标题上方的面包屑导航。顶层分区本来就不显示只有一级的面包屑 |
 | `params.ui.page_context_menu.enable` | boolean | true | 面包屑行右端的页面操作拆分按钮 |
-| `params.ui.page_context_menu.assistant_links` | boolean | false | 加上「在 ChatGPT 中打开」「在 Claude 中打开」「在 Gemini 中打开」；点击时会把页面的完整 URL 发给对方站点 |
+| `params.ui.page_context_menu.assistant_links` | boolean | false | 加上「在 ChatGPT 中打开」「在 Claude 中打开」；点击时会把页面的完整 URL 发给对方站点 |
 | `params.ui.page_context_menu.links` | list | [] | 自定义外部操作，`url` 可使用 `{url}`、`{title}`、`{markdown_url}` 占位符 |
 | `params.ui.github_stars` | string 或 number | | 顶栏 GitHub 徽标上的星数，是你写死的常量，页面不发任何请求 |
 | `params.ui.alt_site` | map | | 单语言站点页脚里的姊妹站链接，`label` 与绝对 `http(s)` 地址 `url` 缺一不可 |
@@ -294,7 +294,7 @@ favicon 没有参数：主题按约定文件名在 `static/` 里查找（`favico
 
 ## 搜索与命令面板 {#search}
 
-本地搜索默认关闭。打开后命令面板随之出现，可以从顶栏放大镜、{{< kbd "Cmd/Ctrl" "K" >}}、`/` 和 `` ` `` 唤起。
+本地搜索默认关闭。打开后命令面板随之出现，可以从顶栏放大镜、{{< kbd "Cmd/Ctrl" "K" >}}、`/` 和 `\` 唤起。
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
@@ -315,7 +315,7 @@ favicon 没有参数：主题按约定文件名在 `static/` 里查找（`favico
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `params.ui.keyboard_nav` | boolean | true | 导航、页面操作与样式三组共三十个单键快捷键，以及浏览历史和读者设定的正文宽度。设为 `false` 后页面不加载这部分运行时，不绑定按键、不记录历史，也不恢复宽度，见[键盘导航](/zh/docs/customize/keyboard/) |
+| `params.ui.keyboard_nav` | boolean | true | 导航、页面操作与样式三组共二十九个单键快捷键，以及浏览历史和读者设定的正文宽度。设为 `false` 后页面不加载这部分运行时，不绑定按键、不记录历史，也不恢复宽度，见[键盘导航](/zh/docs/customize/keyboard/) |
 {.fields meta="type default"}
 
 ## 图片缩放 {#image-zoom}
@@ -414,11 +414,12 @@ Mermaid、KaTeX、ECharts、Infographic、Asciinema、Swagger UI 与 Redoc 会�
 | `params.map.attribution` | string | | 瓦片服务要求的纯文本署名；启用时必填 |
 | `params.map.attribution_url` | string | | 可选的 `https://` 链接，将署名渲染为可点击超链接 |
 | `params.map.dark_tiles` | string | | 可选，深色模式下使用的瓦片模板 |
-| `params.map.subdomains` | string | | 可选的 `{s}` 子域名字符集（如 `abcd`、`01234567`）；留空时沿用 Leaflet 的 `abc` |
+| `params.map.subdomains` | string | | 可选的 `{s}` 子域名字符集，写成带引号的字符串（如 `abcd`、`"01234567"`）；留空时沿用 Leaflet 的 `abc` |
 | `params.map.max_zoom` | integer | 19 | 最大缩放级别，1–22 |
 | `params.map.loading` | `lazy` \| `click` | `lazy` | 接近视口加载（`lazy`）或点击按钮后加载（`click`） |
 | `params.highlight_classes` | boolean | true | 语法高亮输出 Chroma class；设为 `false` 回到 Hugo 的行内样式 |
 | `params.ui.code_copy` | boolean | true | 代码块的复制按钮；设为 `false` 全站去掉，围栏自己写的 `copy=` 仍然优先 |
+| `params.ui.rich_copy` | boolean | true | 正文选区粘贴到富文本编辑器时的排版 HTML 复制，可按页或经 cascade 覆盖，见[复制到富文本编辑器](/zh/docs/customize/print/#typeset-copy) |
 {.fields meta="type default"}
 
 数学公式不需要参数，只需要 [`passthrough` 设置](#goldmark)。
@@ -499,12 +500,12 @@ outputs:
 
 主题为自己的配置发布了 JSON Schema，编辑器据此可以补全键名、悬停显示每个键的说明，并在你输入时标出类型错误。`schema/site-params.schema.json` 对应 `hugo.yml`，`schema/front-matter.schema.json` 对应页面 front matter。请从与 `go.mod` 中固定的主题版本相同的标签下取用，因为不同版本之间的键会变。
 
-使用 VS Code YAML 扩展时，在设置里映射站点 Schema。下例以 OINK v1.6.0 为例，同时覆盖两种常见文件名；把标签换成你 `go.mod` 里的版本：
+使用 VS Code YAML 扩展时，在设置里映射站点 Schema。下例以 OINK v1.7.0 为例，同时覆盖两种常见文件名；把标签换成你 `go.mod` 里的版本：
 
 ```json {title=".vscode/settings.json"}
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/pgsty/oink/v1.6.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
+    "https://raw.githubusercontent.com/pgsty/oink/v1.7.0/schema/site-params.schema.json": ["hugo.yml", "hugo.yaml"]
   }
 }
 ```

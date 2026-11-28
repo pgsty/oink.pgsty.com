@@ -2,7 +2,7 @@
 title: Includes
 linkTitle: Includes
 description: Reuse one source across pages with include for shared fragments and files, param for site and page values, and comment for notes that never publish.
-weight: 200
+weight: 260
 search_keywords: [include, file, snippet, reuse, readfile, param, interpolation, comment]
 params:
   pigsty_pg_major: 18

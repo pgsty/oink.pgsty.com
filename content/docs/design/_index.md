@@ -15,16 +15,14 @@ search_keywords:
     proposal,
     PRD,
   ]
-contract_status: v1.6.0
+contract_status: v1.7.0
 cascade:
   search_boost: 0.6
   categories: [Design]
 ---
 
-> [!NOTE] Release baseline and development changes
-> This site pins OINK v1.6.0. The architecture, component and shell contracts also
-> describe changes on `main` for the proposed v1.7.0 release. Use the sibling
-> checkout to preview those changes. Release acceptance checks the published
+> [!NOTE] OINK 1.7.0 contract
+> These contracts describe OINK v1.7.0. Release acceptance checks the published
 > module with replacements and workspaces disabled.
 
 This section explains how OINK works and why it has its present shape. It brings
@@ -57,7 +55,7 @@ this site explain how to build and maintain a site with OINK.
 | ------------------------------------ | --------------------------------------------------------------------------------- |
 | [Decisions](/docs/design/decisions/) | Accepted diagnostic, configuration, authoring, Expo, and CLI rationale                       |
 | [Research](/docs/design/research/)   | Goldmark probes, consumer evidence, CLI acceptance, and October theme reviews                             |
-| [Proposals](/docs/design/proposals/) | Active PRDs for knowledge graphs, media convergence, visual presets, and the CLI roadmap |
+| [Proposals](/docs/design/proposals/) | Accepted and active PRDs for theme roadmap, local search, visual presets, content components, and the CLI roadmap |
 
 Create each new OINK PRD or RFC as an English and Chinese page pair under
 `content/docs/design/proposals/`. Do not create another repository-local

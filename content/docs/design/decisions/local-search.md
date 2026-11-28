@@ -11,7 +11,10 @@ aliases:
 
 > [!NOTE] Accepted in OINK 1.4.0
 > Owner: OINK maintainers. Affected contract: [Shell](/docs/design/shell/#search-actions-and-runtime).
-> This search behavior ships in OINK 1.4.0.
+> This search behavior shipped in OINK 1.4.0. In OINK 1.6.0, the bundled Lunr
+> runtime was replaced by a zero-dependency scanning BM25 engine
+> ([Shell contract](/docs/design/shell/#search-engine)); this record preserves
+> the 1.4.0 query, section, and scope decisions.
 
 ## Evidence and scope {#scope}
 
@@ -77,9 +80,9 @@ budget-compliant configuration. The implementation never silently truncates it.
 
 Browser acceptance covers EN/ZH, 390/1440 px, light/dark, real anchor navigation,
 visible/announced partial states, native scope selection, Blog/Book roots,
-composition and command retention. The artifact directory for this local run is
-`/Users/vonng/tmp/oink-search-20261025/`; it contains exact commands, JSON timings,
-logs and screenshots. These dated measurements describe that corpus; 1.4.0 includes the accepted behavior.
+composition and command retention. The local artifact archive for this run
+recorded exact commands, JSON timings, logs, and screenshots. These dated
+measurements describe that corpus; 1.4.0 includes the accepted behavior.
 
 2026-10-26: Fixed cross-output contamination during index reads, added multi-output
 owner coverage, and completed the failed-route accessibility and file-tree retries.

@@ -132,7 +132,7 @@ style. Choose the one closest to your brand before changing colors by hand:
 
 | Preset | Look |
 | --- | --- |
-| `paper` | Ivory paper, ink text, underlined blue links, framed tables. The default |
+| `paper` | Ivory paper, clay accent, ink text, underlined blue links, framed tables. The default |
 | `slate` | A cool blue-gray technical look |
 | `ink` | Black and white surfaces, red markers, square panels. Experimental |
 | `terminal` | Monospace throughout, teal links, amber accents, compact navigation. Experimental |

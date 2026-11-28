@@ -603,7 +603,7 @@ Markdown 行号。
 
 CLI 不下载 Go 工具链，不安装软件包，不修改全局配置，也不启用遥测。
 
-当前开发与验收基线是 Hugo Extended 0.169.0；版本门禁要求 0.169.0 或更新版本。禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；告警保持可见，上游 LibSass 弃用告警允许出现。新建站点使用 CLI 独立维护的 Starter 快照，主题升级遵循[升级指南](/zh/docs/admin/upgrade/)。初始化站点保留普通 Hugo 输入，移除 CLI 后只需要站点文档要求的依赖。
+主题要求 Hugo 0.169.0 或更新版本（不限 edition，已在 Hugo 0.170.1 上验证）；早期面向 OINK 1.5.1 的 CLI 快照曾因 LibSass 要求 Hugo Extended 0.169.0。禁止启用 `--panicOnWarning` 或 `HUGO_PANICONWARNING`；告警保持可见。新建站点使用 CLI 独立维护的 Starter 快照，主题升级遵循[升级指南](/zh/docs/admin/upgrade/)。初始化站点保留普通 Hugo 输入，移除 CLI 后只需要站点文档要求的依赖。
 
 ## 已撤下本地 Studio {#studio}
 

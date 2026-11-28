@@ -2,7 +2,7 @@
 title: Mermaid
 linkTitle: Mermaid
 description: 用 `mermaid` 围栏把文本写成流程图、时序图、甘特图、类图与状态图，本地渲染、跟随深浅色、diff 友好。
-weight: 110
+weight: 310
 search_keywords: [Mermaid, 流程图, 时序图, 甘特图, 类图, ER 图, 状态图, flowchart, sequence, gantt, classDiagram, erDiagram, stateDiagram, 图表]
 aliases:
   - /docs/components/diagrams/
@@ -328,8 +328,8 @@ flowchart LR
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `params.mermaid` | map | 未设置 | 整个映射传给 Mermaid 的 `initialize()`；键名写小写，主题按 Mermaid 的大小写匹配回去 |
-| `params.mermaid.theme` | string | Mermaid 默认 | 浅色模式下的主题；深色模式始终使用 `dark` |
+| `params.mermaid` | map | 未设置 | 整个映射传给 Mermaid 的 `initialize()`；键名写小写，主题按 Mermaid 的大小写匹配回去；Mermaid 默认配置中没有的键会被静默丢弃 |
+| `params.mermaid.theme` | string | `default` | 浅色模式下的主题；深色模式始终使用 `dark`。未设置时还固定使用 `layout: dagre` 与 `look: classic` |
 {.fields meta="type default"}
 
 单张图的配置（`title`、`config`）写在围栏正文开头的 YAML 头里，它们是 Mermaid 的键，不是主题参数。

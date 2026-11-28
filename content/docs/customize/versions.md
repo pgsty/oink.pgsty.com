@@ -187,7 +187,7 @@ actually generates, including the language prefix if it has one.
 
 ## Related {#related}
 
-- [Navigation and menus](/docs/customize/navigation/) — where the version menu sits in the navbar and sidebar
+- [Navigation and menus](/docs/customize/navigation/) — where the version menu sits in the navbar and footer
 - [Command palette](/docs/customize/panel/) — "switch version" in the palette
 - [Deploy](/docs/admin/deploy/) — `baseURL`, subpaths and multi-target publishing
 - [Releases and downloads](/docs/write/releases/) — download data falling back to `params.version`

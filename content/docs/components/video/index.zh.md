@@ -2,13 +2,13 @@
 title: 视频
 linkTitle: 视频
 description: 在页面里放产品演示、屏幕录制和代替 GIF 的静音循环短片，并为 YouTube、Bilibili、Vimeo 上的视频生成卡片，读者点击之前不联系任何平台。
-weight: 172
+weight: 430
 search_keywords: [视频, Video, mp4, webm, 海报图, poster, 字幕, subtitles, WebVTT, 自动播放, autoplay, GIF, YouTube, Bilibili, B 站, Vimeo, 嵌入, 就地播放]
 ---
 
 视频的写法与图片相同：`![名称](tour.mp4)`，下一行可以跟一行属性。视频文件用浏览器原生的 `<video>` 播放器播放，不需要任何配置，也不依赖第三方服务。同样位置写 YouTube、Bilibili 或 Vimeo 的链接，则渲染为一张指向该平台的卡片；只有站点明确启用了这个平台，卡片才会在页面里就地播放，因为就地播放意味着读者的浏览器要连接这个平台。
 
-产品演示、屏幕录制，以及通常做成 GIF 动图的无声短演示，适合用视频文件；已经发布在视频网站上的演讲和访谈，适合用平台卡片。主题没有视频短代码；页面上没有自动播放视频、也没有已启用平台的卡片时，不加载任何视频 JavaScript。
+产品演示、屏幕录制，以及通常做成 GIF 动图的无声短演示，适合用视频文件；已经发布在视频网站上的演讲和访谈，适合用平台卡片。本地视频使用浏览器的进度拖动、字幕和全屏控件，进度条用当前页面的强调色标出已播放的部分。平台视频使用平台自己的控件。
 
 ## 最简例子 {#minimal}
 
@@ -117,6 +117,8 @@ YouTube、Bilibili 或 Vimeo 的链接渲染为一张卡片：
 - Bilibili：`bilibili.com/video/BV…`、`bilibili.com/video/av…`、直接携带 ID 的 `b23.tv/BV…` / `b23.tv/av…`，以及 Bilibili 嵌入代码里的 `src`，即 `https://player.bilibili.com/player.html?bvid=…`（或 `?aid=…`；复制来的地址以 `//` 开头，需补上 `https:`）。嵌入地址可以用数字 `cid` 指定分 P；未指定有效 `cid` 时按 `p` 选择集数。`t` 设定起始时间。
 - Vimeo：`vimeo.com/NUMBER`、`vimeo.com/manage/videos/NUMBER` 或 `player.vimeo.com/video/NUMBER`，不公开视频支持 `/HASH` 或 `?h=HASH`；`#t=` 或 `t` 设定起始时间。
 
+起始时间写成其他形式（例如 `t=1:30`）时会告警，视频从 0 开始；请写成秒数或 `1h2m3s` 形式。
+
 主机名可以带 `www.` 或 `m.`。主题先校验视频 ID，再用它拼出播放器地址，作者写的文字不会进入 iframe。这些主机上认不出 ID 的 URL 告警，渲染为没有播放器的卡片；不直接包含 ID 的 `b23.tv` 短链接（例如 `b23.tv/abc`）不联网无法解析，同样如此，改写完整的 `bilibili.com/video/BV…` 地址即可。
 
 卡片接受 `caption`、`num`、`id`、`poster`、`width` 与 `height`；`track` 与 `autoplay` 写在卡片上会告警。主题从不抓取平台缩略图，想要配图就把一张截图存进页面包，作为 `poster`。
@@ -180,7 +182,7 @@ HTML 中，视频是 `<figure class="td-media td-media--video">` 包着的原生
 | `data-*` / `aria-*` | 字符串 | — | 透传到 figure |
 {.fields meta="type default"}
 
-`link`、`command`、`options` 以及其他键作为未知属性告警并丢弃；`style` 与 `on*` 作为不安全属性告警。
+`link`、`command`、`options` 以及其他键作为未知属性告警并丢弃；`style` 作为不安全属性告警；`on*` 事件属性在主题读到之前已被 Hugo 剥离，静默丢弃。
 
 站点设置：
 
@@ -193,6 +195,7 @@ HTML 中，视频是 `<figure class="td-media td-media--video">` 包着的原生
 
 - 每个视频只有一条字幕轨道：每个语言版本写自己的文件，没有字幕列表或字幕菜单。
 - 只有一个源文件：没有多个 `<source>` 的编码回退，没有自适应流（HLS 或 DASH），也没有章节、播放列表或自定义控件。
+- 焦点位于原生播放器内时，全站单键快捷键自动让位。
 - 只支持三个平台：其他视频网站与任意 iframe 地址都不支持，在正文里给链接即可。
 - 不抓取远程缩略图：卡片显示你提供的 `poster` 或素色底面。
 - `width` 与 `height` 决定比例而非像素大小，且必须成对给出。播放器与卡片最高为视口高度的 80%，竖屏文件在 `<video>` 内左右留黑边（pillarbox），竖屏卡片与就地播放器则按该高度上限水平居中缩放。

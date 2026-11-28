@@ -8,37 +8,39 @@ The bilingual maintainer contracts under `content/docs/design/` are the
 canonical prose source for OINK architecture, components, reading shells,
 Landing pages, and migration boundaries.
 
-The site documents OINK `v1.6.0`. The bilingual release notes cover the plain
-CSS architecture, Bootstrap JS and Lunr removal, scanning BM25 search, runtime
-upgrades, and upgrade steps. Local theme development uses a sibling `../oink`
-checkout, while `make build` and `make serve` use the published version pinned
-in `go.mod`.
+The site documents OINK `v1.7.0`. The bilingual release notes cover the six new
+content components, typeset copy, the map of 29 shortcuts with browsing history
+and adjustable reading width, preset and CJK typography refinements, and
+upgrade steps. Local theme development uses a sibling `../oink` checkout, while
+`make build` and `make serve` use the published version pinned in `go.mod`.
 `content/docs/cli{,.zh}.md` introduces the separate, unreleased OINK CLI.
 
-## OINK 1.6.0
+## OINK 1.7.0
 
-[OINK v1.6.0](https://github.com/pgsty/oink/releases/tag/v1.6.0) is dated
-2026-11-23. It moves the stylesheet to plain CSS assembled by Hugo (supporting
-Hugo 0.170+ in any edition with no Sass compiler), removes Bootstrap's
-JavaScript bundle and Lunr, replaces local search with a scanning BM25 engine
-supporting unspaced CJK queries, field anchors, and automatic split indexes,
-and upgrades Markmap, ReDoc, Mermaid, KaTeX, DocSearch, and the rest of the
-vendored runtime set.
+[OINK v1.7.0](https://github.com/pgsty/oink/releases/tag/v1.7.0) is dated
+2026-11-28. It adds six content components (Timeline, Update, Video, Audio,
+Social, and Map with vendored Leaflet 1.9.4), typeset rich-text copy, a
+system of 29 single-key shortcuts with a top-layer sheet, local browsing
+history (`H`), fold-all (`O`), reading-width steps (`-`/`=`), and a reader
+opt-out; refines all four visual presets with Paper's ivory sheet, clay accent,
+and preset-specific CJK system typography; and adds Markmap corner SVG download
+controls, site ECharts themes (`window.OinkEchartsThemes`), and styled
+archived-version banners.
 
-- Release notes: [English](https://oink.pgsty.com/release/1.6.0/) /
-  [简体中文](https://oink.pgsty.com/zh/release/1.6.0/)
+- Release notes: [English](https://oink.pgsty.com/release/1.7.0/) /
+  [简体中文](https://oink.pgsty.com/zh/release/1.7.0/)
 - Contribution guide: [English](https://oink.pgsty.com/docs/about/contributing/) /
   [简体中文](https://oink.pgsty.com/zh/docs/about/contributing/)
 - [Upgrade and migration](https://oink.pgsty.com/docs/admin/upgrade/)
 
-OINK `v1.6.0` builds with Hugo **0.169.0** or newer in any edition (validated
-on **0.170.1**) and Go **1.27.4**. Historical release notes retain the
+OINK `v1.7.0` builds with any Hugo edition meeting the minimum in the theme's
+[`theme.toml`](https://github.com/pgsty/oink/blob/main/theme.toml) and Go **1.27.4**. Historical release notes retain the
 toolchain facts of their own versions.
 
 ## Starting a new OINK site
 
 Start new sites from the [`pgsty/oink-starter`](https://github.com/pgsty/oink-starter)
-template repository and follow the [Starter tutorial](https://oink.pgsty.com/docs/start/starter/).
+template repository and follow the [Get started guide](https://oink.pgsty.com/docs/start/).
 The starter pins a published release and includes neutral Docs, Blog, Book,
 language profiles, and GitHub Pages / Cloudflare Pages workflows without this
 repository's regression test suite.
@@ -54,7 +56,7 @@ private repositories. Installation is described in
 
 ## Local development
 
-Use Go 1.27.4 and Hugo 0.169.0+ (any edition; validated on 0.170.1) for both
+Use Go 1.27.4 and an installed Hugo meeting the module minimum for both
 published-pin builds and sibling theme development. No Sass compiler is
 required. Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`. Keep
 warnings visible. See the [architecture contract](content/docs/design/architecture.md#hugo-toolchain).
@@ -93,7 +95,7 @@ checker and the English/Chinese Design contract.
 
 Thank you to [@imbajin](https://github.com/imbajin) for the reading repairs,
 fixtures, tests, and bilingual documentation delivered in 1.3.1 and retained in
-1.6.0. [Acknowledgements](https://oink.pgsty.com/docs/about/license/#community-contributors)
+1.7.0. [Acknowledgements](https://oink.pgsty.com/docs/about/license/#community-contributors)
 link each contribution to its pull request. OINK preserves Docsy's history and
 notices; bundled runtimes, fonts, and icons keep their own licences, recorded in
 the theme's [VENDOR.json](https://github.com/pgsty/oink/blob/main/VENDOR.json).

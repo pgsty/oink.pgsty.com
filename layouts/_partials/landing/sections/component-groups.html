@@ -1,0 +1,50 @@
+{{- /* Grouped component wall for the home page.
+
+       - type: logo-wall
+         key: components
+         partial: landing/sections/component-groups.html
+
+     Organizes the 27 content components into cognitive groups while reusing
+     the theme's logo-wall card markup and grid tokens so all four visual
+     presets, light/dark modes, and print output stay consistent.
+
+     Data keys: eyebrow / title / text / columns / groups[].{key, title, meta, items} */ -}}
+{{- $page := .page -}}
+{{- $data := .data -}}
+{{- $id := .id -}}
+{{- $scope := printf "landing-%s" $id -}}
+{{- $cols := $data.columns | default 3 -}}
+<section id="{{ $id }}" class="td-landing-section td-landing-logo-wall-section td-component-groups{{ with $data.class }} {{ . }}{{ end }}"{{ with $data.title }} aria-labelledby="{{ $id }}-title"{{ end }}>
+  <div class="td-site-container">
+    {{- partial "landing/heading.html" (dict "page" $page "data" $data "id" $id) }}
+    {{- with $data.groups }}
+      {{- range $groupIndex, $group := . }}
+        {{- with $group.items }}
+    <div class="td-component-groups__group">
+      {{- if or $group.title $group.meta }}
+      <div class="td-component-groups__head">
+        {{- with $group.title }}<h3 class="td-component-groups__title">{{ . }}</h3>{{ end }}
+        {{- with $group.meta }}<span class="td-component-groups__meta">{{ . }}</span>{{ end }}
+      </div>
+      {{- end }}
+      <div class="td-landing-logo-wall" style="--td-columns: {{ $cols }}">
+        {{- range $itemIndex, $item := . }}
+          {{- $itemScope := printf "%s-group-%d-item-%d" $scope $groupIndex $itemIndex -}}
+          {{ partial "landing/items/logo.html" (dict "page" $page "scope" $itemScope "data" $data "item" $item) }}
+        {{- end }}
+      </div>
+    </div>
+        {{- end }}
+      {{- end }}
+    {{- else }}
+      {{- with $data.items }}
+    <div class="td-landing-logo-wall" style="--td-columns: {{ $cols }}">
+      {{- range $itemIndex, $item := . }}
+        {{- $itemScope := printf "%s-item-%d" $scope $itemIndex -}}
+        {{ partial "landing/items/logo.html" (dict "page" $page "scope" $itemScope "data" $data "item" $item) }}
+      {{- end }}
+    </div>
+      {{- end }}
+    {{- end }}
+  </div>
+</section>

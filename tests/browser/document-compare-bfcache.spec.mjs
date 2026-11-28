@@ -10,6 +10,26 @@ test.use({
   },
 });
 
+test('history counts a restored page as the latest visit and can clear a lone visit', async ({ page }) => {
+  const visits = () => page.evaluate(() => JSON.parse(localStorage.getItem('td-history:/') || '[]').map(entry => entry.url));
+  await page.addInitScript(() => {
+    addEventListener('pageshow', event => { window.restoredVisit = event.persisted; });
+  });
+  await page.goto('/book/');
+  await page.keyboard.press('h');
+  const clear = page.locator('[data-td-history-clear]');
+  await clear.click();
+  await expect(clear).toBeDisabled();
+  expect(await visits()).toEqual([]);
+  await page.keyboard.press('Escape');
+  await page.goto('/docs/components/audio/');
+  await page.goto('/docs/components/video/');
+  await page.evaluate(() => history.back());
+  await expect.poll(() => page.evaluate(() => window.restoredVisit)).toBe(true);
+  await page.goto('/docs/components/table/');
+  expect((await visits()).slice(0, 3)).toEqual(['/docs/components/table/', '/docs/components/audio/', '/docs/components/video/']);
+});
+
 test('compare: bfcache return reuses the reader entry and one Back closes it', async ({ page }) => {
   await page.addInitScript(() => {
     window.compareRestoredFromCache = false;

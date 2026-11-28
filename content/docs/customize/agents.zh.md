@@ -1,7 +1,7 @@
 ---
 title: Agent 支持
 linkTitle: Agent 支持
-description: 每一页多产出一份 .md，站点根目录多一份 llms.txt，读者可以把当前页交给 ChatGPT、Claude 或 Gemini。
+description: 每一页多产出一份 .md，站点根目录多一份 llms.txt，读者可以把当前页交给 ChatGPT 或 Claude。
 weight: 140
 search_keywords:
   [
@@ -236,7 +236,7 @@ outputs:
 
 ## 页面上的 Agent 动作 {#page-actions}
 
-面包屑行右端的页面操作菜单里，有五个条目与 agent 和聊天助手有关：
+面包屑行右端的页面操作菜单里，有四个条目与 agent 和聊天助手有关：
 
 | 条目 | 做什么 | 出现条件 |
 | --- | --- | --- |
@@ -244,11 +244,10 @@ outputs:
 | 查看 Markdown 源码 | 在新标签页打开 `.md` | 本页有 `markdown` 输出 |
 | 在 ChatGPT 中打开 | 带着关于本页的提示词打开 ChatGPT | `assistant_links: true` |
 | 在 Claude 中打开 | 带着关于本页的提示词打开 Claude | `assistant_links: true` |
-| 在 Gemini 中打开 | 复制提示词到剪贴板并打开 Gemini | `assistant_links: true` |
 
 前两条随 `markdown` 输出自动出现。「复制 Markdown」同时也是拆分按钮的左半边，显示为剪贴板图标，复制成功后短暂变成一个对勾。
 
-三个助手条目默认关闭，需要显式打开：
+两个助手条目默认关闭，需要显式打开：
 
 ```yaml {title="hugo.yml"}
 params:
@@ -258,7 +257,7 @@ params:
       assistant_links: true
 ```
 
-读者点击其中一个时，页面用地址栏里的完整 URL（含真实域名、查询串与锚点）拼出一句提示词，中文站是「请阅读 <URL> 的内容，以便我就此向你提问。」，然后带着它打开对方站点（Gemini 没有公开的提示词 URL 参数，因此打开新标签页前还会先将提示词复制到剪贴板）。**离开本站的只有这个 URL，页面正文不会被上传**，内容由对方自行抓取。不要把机密信息放进 URL，并在站点的隐私说明里写明这次交给第三方的过程。
+读者点击其中一个时，页面用地址栏里的完整 URL（含真实域名、查询串与锚点）拼出一句提示词，中文站是「请阅读 <URL> 的内容，以便我就此向你提问。」，然后带着它打开对方站点。**离开本站的只有这个 URL，页面正文不会被上传**，内容由对方自行抓取。不要把机密信息放进 URL，并在站点的隐私说明里写明这次交给第三方的过程。
 
 页面可以收紧站点策略，但不能放宽：front matter 里写 `page_context_menu: { assistant_links: false }` 会去掉本页的助手链接；站点没打开时，页面写 `true` 不起作用。`page_context_menu: false` 去掉本页的整个菜单。见[页面参数](/zh/docs/write/frontmatter/)。
 

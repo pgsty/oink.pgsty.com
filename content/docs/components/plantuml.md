@@ -2,7 +2,7 @@
 title: PlantUML
 linkTitle: PlantUML
 description: Render sequence, class, component, activity and use-case diagrams in the browser with bundled assets and no rendering service.
-weight: 120
+weight: 320
 comments: false
 search_keywords: [PlantUML, UML, local rendering, sequence, class, component, activity, usecase]
 ---
@@ -241,8 +241,8 @@ numbering, zoom); they warn and are ignored.
   sprite libraries are not available. A diagram that uses them stays as
   source. Make it self-contained, use a pre-rendered
   [image](/docs/components/image/), or switch to [server mode](#server).
-- The engine is `@plantuml/core` 1.2026.9 with Viz.js 3.31.0. The two scripts
-  total about 4.7 MB, or 1.6 MB gzipped; they load only when a diagram
+- The engine is `@plantuml/core` 1.2026.10 with Viz.js 3.31.0. The two scripts
+  total about 4.6 MB, or 1.5 MB gzipped; they load only when a diagram
   approaches the viewport, and normal HTTP caching applies.
 - Local rendering uses JavaScript and WebAssembly. A site with a strict
   Content Security Policy must allow its own scripts, `wasm-unsafe-eval` for

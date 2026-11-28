@@ -22,11 +22,11 @@ design_status: partially-implemented
 proposal_date: 2026-10-04
 ---
 
-> [!IMPORTANT] Phase 1 released in 1.2.0; Ink/Terminal opt-ins available
-> Paper, Slate and the Appearance menu ship with OINK 1.2.0. The [architecture contract](/docs/design/architecture/#visual-presets),
+> [!IMPORTANT] Phase 1 released in 1.2.0; refined in 1.7.0; Ink/Terminal opt-ins available
+> Paper, Slate and the Appearance menu ship with OINK 1.2.0; OINK 1.7.0 further refined all four presets, added per-preset CJK system typography, and finalized the `t`/`y` shortcuts. The [architecture contract](/docs/design/architecture/#visual-presets),
 > [accepted decision](/docs/design/decisions/visual-presets/) and
 > [acceptance record](/docs/design/research/2026-10-05-visual-presets-acceptance/)
-> own phase-one behavior and evidence. A subsequent [Ink/Terminal experiment](/docs/design/research/2026-10-05-ink-terminal-experiment/)
+> own current behavior and evidence. A subsequent [Ink/Terminal experiment](/docs/design/research/2026-10-05-ink-terminal-experiment/)
 > provides actual selectable output; this proposal remains active for their design acceptance. The October 4 injected screenshots are research prototypes; they
 > are distinct from the October 5 screenshots of actual theme output.
 

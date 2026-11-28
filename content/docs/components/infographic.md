@@ -2,7 +2,7 @@
 title: Infographic
 linkTitle: Infographic
 description: Turn a title and a short list of items into a flow, timeline, funnel, grid or hierarchy graphic with an `infographic` fence and an AntV template.
-weight: 160
+weight: 350
 search_keywords: [Infographic, AntV, flow, timeline, funnel, template]
 ---
 
@@ -318,7 +318,8 @@ The fence attribute line (```` ```infographic {…} ````):
 | `class` | space-separated classes | — | Passed through to the container |
 {.fields meta="type default"}
 
-`style`, `on*` and unknown attributes warn and are ignored. An empty fence
+Unknown attributes warn and are ignored; Hugo takes `style` as a highlighting
+option and strips `on*`, so both are ignored without a warning. An empty fence
 warns and renders nothing.
 
 The top-level DSL keys, defined by AntV:

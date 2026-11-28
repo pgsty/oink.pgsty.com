@@ -1,110 +1,99 @@
 ---
 title: 快速上手
 linkTitle: 快速上手
-description: 从官方 OINK Starter 建立可运行的本地基线，再依次定制内容、语言、品牌、集成与部署。
+description: 先克隆文档站本身用 Hugo 本地跑起来，再用一段提示词让 AI Agent 搭建自己的个人站；随后按需选择本地浏览、从零开始或为项目加装文档。
 weight: 20
 icon: fa-solid fa-rocket
 no_list: true
-search_keywords: [快速上手, agent 技能, AI agent, OINK Starter, 模板, 安装, Hugo, 本地预览, 部署]
+search_keywords:
+  [
+    快速上手,
+    AI agent,
+    agent 技能,
+    提示词,
+    个人站点,
+    克隆,
+    Hugo,
+    hugo serve,
+    安装,
+    get started,
+  ]
 aliases:
+  - /docs/start/starter/
   - /docs/tutorial/
   - /docs/tutorial/prerequisites/
   - /docs/tutorial/project-site/
 ---
 
-得到一个可用 OINK 站点的最快办法，是使用官方 GitHub 模板仓库
-[OINK Starter](https://github.com/pgsty/oink-starter)。它固定了当前的 OINK
-版本，克隆下来就能构建，并且自带一个三语的 Docs、Blog、Book 站点和部署
-workflow。你从修改一个能跑的站点开始，而不是从零件开始拼装。
+了解 OINK 最快的办法，不是从空目录一点点拼配置，而是直接克隆本文档站本身，在本地用 Hugo 跑起来。两分钟内你就能在浏览器里点遍整套功能，并对照 `content/` 里的源码看清每种写法；接下来，用一段提示词交给 AI Agent，就能直接搭出你自己的站点。
 
-## 选择起点 {#choose}
+## 准备工具 {#tools}
 
-| 你手上有 | 走这条路 | 最后得到 |
-| --- | --- | --- |
-| 什么都还没有 | [OINK Starter](/zh/docs/start/starter/) | 一个中、英、法三语的精简 Docs、Blog、Book 站点，附 GitHub Pages 与 Cloudflare Pages workflow |
-| 一个有内容的 Hugo 站点 | [从零安装](/zh/docs/start/from-scratch/) | 加上主题模块和三项 Goldmark 设置后，原有内容由 OINK 渲染 |
-| 一个 Docsy 站点或旧版 OINK 站点 | [版本升级](/zh/docs/admin/upgrade/) | 内容不变，受支持的语法完成迁移，站点覆盖逐项审过 |
+需要 Git、Go 1.27.4 或更新版本，以及 Hugo {{% param hugoMinVersion %}} 或更新版本（不限 edition）。需要 Go，是因为 Hugo 以 Go 模块的方式拉取主题；整个构建过程不需要 Node.js、npm 或 Sass 编译器。
 
-## 五分钟跑起来 {#baseline}
-
-1. ### 安装工具 {#tools}
-
-   需要 Git、Go 1.27.4 或更新版本，以及 Hugo {{% param hugoMinVersion %}}
-   或更新版本（不限 edition）。需要 Go，是因为 Hugo 以 Go 模块的方式下载主题；
-   构建本身不需要 Node.js、npm 或 Sass 编译器。
-
-   ```console
-   $ go version
-   go version go1.27.4 darwin/arm64
-   $ hugo version
-   hugo v0.169.0+extended+withdeploy darwin/arm64
-   ```
-
-   macOS 上执行 `brew install git go hugo` 即可装齐。Linux 与 Windows 请按
-   [Hugo 安装指南](https://gohugo.io/installation/)和
-   [Go 下载页](https://go.dev/dl/)安装。
-
-1. ### 创建站点 {#clone}
-
-   打算长期维护，就打开 [Starter](https://github.com/pgsty/oink-starter)，点击
-   **Use this template**，再克隆 GitHub 为你创建的新仓库。只想先试试，直接克隆原仓库：
-
-   ```bash
-   git clone https://github.com/pgsty/oink-starter.git my-docs
-   cd my-docs
-   hugo server
-   ```
-
-   第一次启动会慢一些，Hugo 要先把主题下载到模块缓存。
-
-1. ### 先看一遍 {#open}
-
-   打开 <http://localhost:1313/>。动手修改之前，先把 Docs、Blog、Book 点一遍，
-   切换到中文（`/zh/`）和法语（`/fr/`），试试搜索，再切换深浅色模式。此时发现的
-   问题一定不是你的修改造成的，报告或修复都容易得多。
-
-1. ### 做一处看得见的修改 {#first-change}
-
-   修改 `hugo.yaml` 顶部的 `title` 与 `baseURL`，再改 `data/home/en.yaml` 里的一句话。
-   浏览器会自动刷新。两处修改都显示出来，就说明配置、内容与固定版本的主题已经连通。
-{.steps}
-
-## 换成自己的站点 {#learning-path}
-
-每次只改一层，改完就预览。出了问题，你立刻知道是哪一处修改引起的。
-
-- [使用 OINK Starter](/zh/docs/start/starter/) — 完整流程：语言、身份、首页、内容、导航、品牌、集成、部署，按这个顺序来。
-- [Starter 仓库导览](/zh/docs/start/anatomy/) — 哪个文件管站点的哪一部分，哪些可以删。
-- [编写页面](/zh/docs/write/pages/) — front matter、标题、链接、图片与草稿。
-- [组件总览](/zh/docs/components/) — 提示块、标签页、图表等组件，等内容树稳定后再加。
-- [品牌外观](/zh/docs/customize/brand/) — Logo、强调色、字体、页宽与自定义 CSS。
-- [发布上线](/zh/docs/admin/deploy/) — 使用自带的 GitHub Pages 或 Cloudflare Pages workflow，并检查线上站点。
-{.cards}
-
-## 发布之前 {#publication-gate}
-
-在本地执行一遍与 Starter workflow 相同的生产构建：
-
-```bash
-hugo --cleanDestinationDir --gc --minify --environment production \
-  --printPathWarnings
+```console
+$ go version
+go version go1.27.4 darwin/arm64
+$ hugo version
+hugo v0.170.1+withdeploy darwin/arm64
 ```
 
-命令以 `Total in …` 结尾，`public/` 下每种语言一个目录，Docs、Blog、Book
-页面都在。推送前请读一遍告警：配置写错或集成配置不完整时，OINK 只告警并用安全的
-默认值继续构建，所以一条告警往往意味着某个你以为开着的功能其实没开。推送后，确认
-workflow 通过，再打开线上地址看一眼。
+macOS 上执行 `brew install git go hugo` 即可装齐。Linux 与 Windows 请按 [Hugo 安装指南](https://gohugo.io/installation/)和 [Go 下载页](https://go.dev/dl/)安装。
 
-## 用 AI agent 建站 {#agent-skill}
+## 第一步：克隆文档站并本地跑起来 {#clone}
 
-OINK 发布了一个 agent 技能 **Oink 建站**（`oink-site`）：一个 Markdown 文件，教编程
-agent 搭建、迁移和打磨 OINK 站点，内含 OINK 自家站点的审阅标准和[案例库](/zh/case/)
-中的经验。语法细节它会让 agent 回来查本文档，并要求 agent 在浏览器里检查自己的成果。
+直接把 `oink.pgsty.com` 克隆到本地，运行 `hugo serve` 启动开发服务器：
 
-- English：<https://oink.pgsty.com/skill.md>
-- 简体中文：<https://oink.pgsty.com/skill.zh.md>
+```bash {title="终端"}
+git clone https://github.com/pgsty/oink.pgsty.com.git
+cd oink.pgsty.com
+hugo serve
+```
 
-保存为技能后，开启一个新的 agent 会话：
+第一次启动会花几秒钟把固定版本的 OINK 主题下载到本机 Go 模块缓存，之后每次启动都是秒开。打开 <http://localhost:1313/>，亲手试一遍：
+
+- 逛逛 **文档**、**教程**、**案例** 与 **博客**，点右上角外观菜单，在浅色与深色模式下切换 Paper、Slate、Ink、Terminal 四套风格。
+- 按 {{< kbd "/" >}} 试试本地全文搜索，并在顶栏切换中英文。
+- 用编辑器打开 `content/docs/components/` 下的任意一页，改一句话保存，浏览器会自动刷新——你立刻能看到 Markdown 源码与页面效果的对应关系。
+
+这个仓库同时承担 OINK 的回归测试，配置较重，适合当作活参考来查阅和试玩；真正搭建自己的站点时，请按第二步或[从零开始](/zh/docs/start/from-scratch/)在干净目录里新建。
+
+## 第二步：用 AI Agent 建一个个人站 {#agent-skill}
+
+本地工具验证通过后，搭建自己站点最快的方式，是在一个空目录里打开 Claude Code 或 Codex 这类编程 Agent，把 OINK 建站技能（`oink-site`）和一段清晰的提示词交给它：
+
+```bash {title="终端"}
+mkdir my-site && cd my-site
+claude   # 或 codex，或任意能执行命令的编程 Agent
+```
+
+把下面提示词中 `<尖括号>` 里的信息换成你自己的内容，直接发给 Agent：
+
+```text {title="提示词：用 Hugo 和 OINK 搭建个人站点"}
+请阅读 https://oink.pgsty.com/skill.zh.md，严格按照其中的建站流程，
+在当前空目录里使用 Hugo 和 OINK 主题为我搭建一个个人站点。
+
+关于我：<你的名字>，<一句话简介，例如：后端与数据库工程师，分享工程实践与读书笔记>。
+域名：<https://you.example.com>。
+语言：<简体中文，或中英双语>。
+
+站点结构：
+- 首页使用 OINK 的数据驱动落地页：简短的个人介绍 Hero、各栏目的卡片入口，以及 GitHub / X 链接。
+- 博客栏目：使用卡片网格索引、标签分类与 RSS 订阅源，用我的口吻写三篇占位示例文章。
+- 笔记栏目：使用 Docs 阅读外壳，用来沉淀长期维护的技术笔记与备忘。
+- 关于页：包含个人简介、正在做的项目与联系方式。
+
+外观与工程规范：
+- 默认使用 Paper 预设，开启深色模式，外观菜单里提供 Paper、Slate、Ink、Terminal 四套风格。
+- 开启本地全文搜索、每页的 Markdown 输出与 llms.txt；配置 .gitignore 排除 public/、resources/、.hugo_build.lock 与 .hugo_cache/。
+- 在 go.mod 中固定当前最新发布的 OINK 标签版本，不要跟踪 main。
+
+构建确认没有意外告警后，运行 hugo serve，在浏览器里分别检查桌面端与移动端页面，最后告诉我接下来需要替换哪些占位内容。
+```
+
+技能文件（简体中文：<https://oink.pgsty.com/skill.zh.md>；English：<https://oink.pgsty.com/skill.md>）会引导 Agent 查阅本文档的当前语法，避开已退役的 Docsy 或旧版 OINK 写法，并把不同类型的站点对应到[案例库](/zh/case/)里的真实项目。
+
+如果你经常用 Agent 建站，可以把技能一次安装到本地，之后在新会话里直接说“使用 `oink-site` 技能”即可：
 
 ```bash {tab="Claude Code"}
 mkdir -p ~/.claude/skills/oink-site
@@ -116,6 +105,15 @@ mkdir -p ~/.codex/skills/oink-site
 curl -fsSL https://oink.pgsty.com/skill.zh.md -o ~/.codex/skills/oink-site/SKILL.md
 ```
 
-然后描述你想要的站点，例如“用 oink-site 技能为这个项目搭建一个中英双语文档站”。
-没有技能目录的 agent，把地址交给它就能直接读取。想要英文版，把地址换成
-`skill.md`。重新下载即可更新；文件里写明了它对应的 OINK 版本。
+重新下载即可更新技能文件，文件开头标明了对应的 OINK 版本。开源项目官网、命令行手册与在线书籍的提示词模板，见[一句提示词，建一个站](/zh/book/01-start/)。
+
+## 按场景继续深入 {#choose}
+
+看完演示、跑通第一站之后，按你手头项目的实际情况选下一篇：
+
+| 你当前的场景 | 阅读 | 你会学到 |
+| --- | --- | --- |
+| 手上已经有一个 OINK 站点仓库，想在本地舒服地阅读、边写边看，或实时查看 AI Agent 的工作报告 | [本地浏览](/zh/docs/start/local/) | 用 `hugo serve` 跑起本地服务器，实时阅读与编辑，并把浏览器变成 AI Agent 产出的实时看板 |
+| 想不靠模板，从零搭一个结构干净的独立 OINK 项目，或把已有 Hugo 站点切到 OINK | [从零开始](/zh/docs/start/from-scratch/) | 最小目录骨架、`hugo.yml` 核心配置、第一页写法，以及离线归档与 submodule 等安装方式 |
+| 已经有一个开源代码仓库，想在它的 `docs/` 目录下加装文档站并自动部署 | [加装文档](/zh/docs/start/add-docs/) | 独立的 `docs/` Hugo 子项目结构、`.gitignore` 排错与 GitHub / Cloudflare 自动构建配置 |
+| 正在升级旧版 OINK，或从 Docsy 迁移 | [版本升级](/zh/docs/admin/upgrade/) | 版本升级、语法迁移与站点覆盖项检查 |

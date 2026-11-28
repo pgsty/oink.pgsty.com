@@ -382,7 +382,7 @@ for (const [locale, path] of [
   ['zh', '/zh/docs/customize/config/'],
 ]) {
   for (const theme of ['light', 'dark']) {
-    test(`${locale} ${theme} shortcut help shows a hint on hover and opens the 3 x 10 dialog on click`, async ({
+    test(`${locale} ${theme} shortcut help shows the full sheet on hover and opens the 29-key dialog on click`, async ({
       page,
     }) => {
       await page.addInitScript((colorTheme) => {
@@ -395,38 +395,47 @@ for (const [locale, path] of [
         await expect(page.locator('html')).toHaveAttribute('data-bs-theme', theme);
 
         const trigger = page.locator('.td-shell-keyboard__trigger');
-        const hint = page.locator('.td-shell-keyboard-hint');
+        const hoverSheet = page.locator('.td-shell-keyboard .td-shell-keyboard-help');
         const dialog = page.locator('[data-td-keyboard-dialog]');
         await expect(trigger).toHaveAttribute('aria-keyshortcuts', "'");
         await expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
         await trigger.scrollIntoViewIfNeeded();
 
         if (width >= 768) {
-          // Hovering ? shows a short hint above the footer, not the full sheet.
+          // Hovering ? previews the full 29-row three-group cheat sheet above the footer.
           await trigger.hover();
-          await expect(hint).toBeVisible();
-          await expect(hint.locator('.td-shell-keyboard-hint__more')).toBeVisible();
-          await expect(hint.locator('.td-shell-keyboard-help__row')).toHaveCount(4);
-          await expect(hint.locator('kbd', { hasText: /^'$/ })).toHaveCount(1);
-          await expect(hint.locator('kbd', { hasText: /^H$/ })).toHaveCount(1);
-          await expect(hint.locator('pre, code')).toHaveCount(0);
-          const hintBox = await hint.boundingBox();
-          expect(hintBox).not.toBeNull();
-          expect(hintBox.x).toBeGreaterThanOrEqual(0);
-          expect(hintBox.x + hintBox.width).toBeLessThanOrEqual(width + 0.5);
+          await expect(hoverSheet).toBeVisible();
+          await expect(hoverSheet.locator('.td-shell-keyboard-help__section')).toHaveCount(3);
+          await expect(hoverSheet.locator('[data-td-shortcut]')).toHaveCount(29);
+          await expect(hoverSheet.locator('kbd', { hasText: /^'$/ })).toHaveCount(1);
+          await expect(hoverSheet.locator('kbd', { hasText: /^H$/ })).toHaveCount(1);
+          await expect(hoverSheet.locator('pre, code')).toHaveCount(0);
+          const sheetBox = await hoverSheet.boundingBox();
+          expect(sheetBox).not.toBeNull();
+          expect(sheetBox.x).toBeGreaterThanOrEqual(0);
+          expect(sheetBox.y).toBeGreaterThanOrEqual(0);
+          expect(sheetBox.x + sheetBox.width).toBeLessThanOrEqual(width + 0.5);
+          if (width >= 1200) {
+            const sectionRects = await hoverSheet.locator('.td-shell-keyboard-help__section').evaluateAll((els) =>
+              els.map((el) => el.getBoundingClientRect()),
+            );
+            expect(Math.abs(sectionRects[1].top - sectionRects[0].top)).toBeLessThanOrEqual(2);
+            expect(Math.abs(sectionRects[2].top - sectionRects[0].top)).toBeLessThanOrEqual(2);
+          }
           expect(
             await page.evaluate(() => document.documentElement.scrollWidth),
           ).toBeLessThanOrEqual(width);
 
-          // Clicking ? opens the centered dialog and hides the hint.
+          // Clicking ? opens the centered dialog with Enable shortcuts and hides the hover sheet.
           await trigger.click();
           await expect(dialog).toBeVisible();
-          await expect(dialog.locator('[data-td-shortcut]')).toHaveCount(30);
-          await expect(hint).toBeHidden();
+          await expect(dialog.locator('[data-td-shortcut]')).toHaveCount(29);
+          await expect(dialog.locator('[data-td-shortcut-preference] input[type="checkbox"]')).toBeChecked();
+          await expect(hoverSheet).toBeHidden();
           await page.keyboard.press('Escape');
           await expect(dialog).toBeHidden();
           await expect(trigger).toBeFocused();
-          await expect(hint).toBeHidden();
+          await expect(hoverSheet).toBeHidden();
         } else {
           // On phones, tapping ? opens the stacked dialog cleanly inside the viewport.
           await trigger.click();
@@ -484,7 +493,7 @@ test('bottom bar utilities keep their order and open upward', async ({ page }) =
     ['.td-version-menu__title', '.td-version-menu__list'],
     ['.td-language-selector__trigger', '.td-language-selector > ul'],
     ['[data-td-appearance-trigger]', '.td-shell-footline__theme dialog'],
-    ['.td-shell-keyboard__trigger', '.td-shell-keyboard-hint'],
+    ['.td-shell-keyboard__trigger', '.td-shell-keyboard-help'],
   ]) {
     const trigger = dock.locator(triggerSelector);
     const menu = dock.locator(menuSelector);
@@ -605,6 +614,7 @@ test('page actions are complete and keyboard operable', async ({ page }) => {
   await expect(context).toBeVisible();
   await expect(context).toContainText('Open in ChatGPT');
   await expect(context).toContainText('Open in Claude');
+  await expect(context).not.toContainText('Open in Gemini');
   await expect(context).toContainText('Copy Markdown');
   await expect(context).toContainText('View markdown');
   await expect(context).toContainText('View edit history');
@@ -616,6 +626,7 @@ test('page actions are complete and keyboard operable', async ({ page }) => {
 
   const chatgpt = context.locator('[data-td-page-open-in="chatgpt"]');
   const claude = context.locator('[data-td-page-open-in="claude"]');
+  await expect(context.locator('[data-td-page-open-in="gemini"]')).toHaveCount(0);
   await expect(chatgpt).toHaveAttribute('target', '_blank');
   await expect(chatgpt).toHaveAttribute('rel', 'noopener noreferrer');
   await expect(claude).toHaveAttribute('target', '_blank');
@@ -695,6 +706,7 @@ test('page actions localize AI labels and prompts', async ({ page }) => {
   const context = page.locator('[data-td-page-context]');
   await expect(context).toContainText('在 ChatGPT 中打开');
   await expect(context).toContainText('在 Claude 中打开');
+  await expect(context).not.toContainText('在 Gemini 中打开');
   await expect(context).toContainText('复制 Markdown');
   await expect(context).toContainText('查看 Markdown 源码');
   await expect(context).toContainText('查看编辑历史');

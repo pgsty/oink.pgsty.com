@@ -124,12 +124,14 @@ test.describe('Map component', () => {
     expect(afterState.stored).toBeNull();
     expect(afterState.inMap).toBe(true);
 
-    // Marker carries accessible place name, Enter opens popup, Escape closes it and restores focus.
+    // Marker carries accessible place name, Enter opens popup with thumbnail, Escape closes it and restores focus.
+    await expect(routeMap.locator('.td-map__places .td-map__thumb')).toHaveCount(4);
     const firstMarker = canvas.locator('.td-map__marker').first();
-    await expect(firstMarker).toHaveAttribute('aria-label', /^1\. Kyoto Station$/);
+    await expect(firstMarker).toHaveAttribute('aria-label', /^1\. Forbidden City$/);
     await firstMarker.focus();
     await page.keyboard.press('Enter');
     await expect(canvas.locator('.leaflet-popup')).toBeVisible();
+    await expect(canvas.locator('.leaflet-popup .td-map__popup img')).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(canvas.locator('.leaflet-popup')).toBeHidden();
     await expect(firstMarker).toBeFocused();
@@ -137,8 +139,9 @@ test.describe('Map component', () => {
     // Clicking a place in the list opens its popup; clicking an anchor link stays navigation.
     await routeMap.locator('.td-map__places > li').nth(1).click();
     await expect(canvas.locator('.leaflet-popup .td-map__popup-name')).toHaveText(
-      'Fushimi Inari Taisha',
+      'Jingshan Park',
     );
+    await expect(canvas.locator('.leaflet-popup .td-map__popup img')).toBeVisible();
   });
 
   test('localized Chinese labels include popup close button and rich-copy drops map canvas', async ({
@@ -158,6 +161,21 @@ test.describe('Map component', () => {
       'aria-label',
       '关闭',
     );
+    const popupMetrics = await canvas.evaluate((cv) => {
+      const content = cv.querySelector('.leaflet-popup-content');
+      const para = cv.querySelector('.td-map__popup p');
+      const cs = getComputedStyle(para);
+      const lineHeight = parseFloat(cs.lineHeight) || 20;
+      return {
+        contentWidth: content.getBoundingClientRect().width,
+        paraWidth: para.getBoundingClientRect().width,
+        paraHeight: para.getBoundingClientRect().height,
+        lineHeight,
+      };
+    });
+    expect(popupMetrics.contentWidth).toBeGreaterThanOrEqual(180);
+    expect(popupMetrics.paraWidth).toBeGreaterThanOrEqual(180);
+    expect(popupMetrics.paraHeight).toBeLessThanOrEqual(popupMetrics.lineHeight * 2.5);
 
     const copied = await page.evaluate(() => {
       const fig = document.querySelectorAll('[data-td-map]')[1];
@@ -165,7 +183,7 @@ test.describe('Map component', () => {
       const skin = window.OinkRichCopy.readSkin(getComputedStyle(document.documentElement), 'ltr');
       return window.OinkRichCopy.render(window.OinkRichCopy.collector(null, {}).walk(fig), skin);
     });
-    expect(copied).toContain('京都站');
+    expect(copied).toContain('故宫');
     expect(copied).not.toContain('OpenStreetMap contributors');
   });
 
@@ -196,6 +214,7 @@ test.describe('Map component', () => {
           const cv = fig.querySelector('.td-map__canvas');
           const marker = cv.querySelector('.td-map__marker');
           const popupWrap = cv.querySelector('.leaflet-popup-content-wrapper');
+          const popupContent = cv.querySelector('.leaflet-popup-content');
           const popupLink = cv.querySelector('a.td-map__popup-name');
           const closeBtn = cv.querySelector('.leaflet-popup-close-button');
           const linkRect = popupLink.getBoundingClientRect();
@@ -212,6 +231,7 @@ test.describe('Map component', () => {
             markerFg: getComputedStyle(marker).color,
             popupBg: getComputedStyle(popupWrap).backgroundColor,
             popupLinkFg: getComputedStyle(popupLink).color,
+            popupContentWidth: popupContent.getBoundingClientRect().width,
             overlap,
           };
         });
@@ -229,6 +249,12 @@ test.describe('Map component', () => {
           contrastRatio(metrics.popupLinkFg, metrics.popupBg),
           `${preset}-${theme} popup link contrast`,
         ).toBeGreaterThanOrEqual(4.5);
+        expect(metrics.popupContentWidth, `${preset}-${theme} popup width`).toBeGreaterThanOrEqual(
+          180,
+        );
+        expect(metrics.popupContentWidth, `${preset}-${theme} popup max width`).toBeLessThanOrEqual(
+          295,
+        );
         expect(metrics.overlap, `${preset}-${theme} popup close button overlap`).toBe(false);
       }
     }

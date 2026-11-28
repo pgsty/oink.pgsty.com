@@ -2,7 +2,7 @@
 title: 文件树
 linkTitle: 文件树
 description: 用 `filetree` 围栏画一棵带注释的目录树：注释列自动对齐，条目带图标，目录可以折叠。
-weight: 90
+weight: 380
 search_keywords: [文件树, FileTree, 目录树, tree, 目录结构, 仓库结构, 围栏, icon, tone, open]
 ---
 
@@ -164,7 +164,7 @@ content/docs
 ```filetree {title="内容目录"}
 - content/
   - docs/                # 文档树
-    - components/         # 22 个组件页        {open=false}
+    - components/         # 28 个组件页        {open=false}
       - callout.zh.md
       - filetree.zh.md
       - image/            # 页面包：正文 + 图  {type=dir}
@@ -178,7 +178,7 @@ content/docs
 ```filetree {title="内容目录"}
 - content/
   - docs/                # 文档树
-    - components/         # 22 个组件页        {open=false}
+    - components/         # 28 个组件页        {open=false}
       - callout.zh.md
       - filetree.zh.md
       - image/            # 页面包：正文 + 图  {type=dir}

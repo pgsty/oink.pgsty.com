@@ -15,13 +15,13 @@ search_keywords: [命令面板, command palette, Cmd+K, Ctrl+K, 快捷键, 页�
 | 点顶栏或侧栏的搜索框 | 完整搜索态 |
 | <kbd>⌘</kbd> / <kbd>Ctrl</kbd> + <kbd>K</kbd> | 完整搜索态；再按一次关闭 |
 | <kbd>/</kbd> | 完整搜索态 |
-| <kbd>&#96;</kbd>（或 <kbd>~</kbd>） | 纯命令态（等于预填了 `>`） |
+| <kbd>&#92;</kbd> | 纯命令态（等于预填了 `>`） |
 | <kbd>f</kbd> / <kbd>c</kbd> | 同上两者，由[键盘导航](/zh/docs/customize/keyboard/)提供 |
 | 在框里输入 `>` 开头的查询 | 纯命令态 |
 
-在 <kbd>&#96;</kbd> 是死键或不便按到的键盘布局上，改按 <kbd>c</kbd> 或输入 `>` 即可。
+在不便按到 <kbd>&#92;</kbd> 的键盘布局上，改按 <kbd>c</kbd> 或输入 `>` 即可。
 
-<kbd>/</kbd>、<kbd>&#96;</kbd>、<kbd>f</kbd>、<kbd>c</kbd> 都是裸单键，会给输入让行：焦点位于 input、textarea、select 或 `contenteditable` 中，以及正在用输入法组字时，按键作为普通字符输入。带修饰键的 <kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>K</kbd> 可以在输入框里打开面板，但同样会给输入法组字让行。
+<kbd>/</kbd>、<kbd>&#92;</kbd>、<kbd>f</kbd>、<kbd>c</kbd> 都是裸单键，会给输入让行：焦点位于 input、textarea、select 或 `contenteditable` 中，以及正在用输入法组字时，按键作为普通字符输入。带修饰键的 <kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>K</kbd> 可以在输入框里打开面板，但同样会给输入法组字让行。
 所有打开面板的快捷键都会让行于其他已打开的原生对话框或可见的 ARIA 对话框，
 包括固定定位的对话框；隐藏的 ARIA 对话框不会阻止快捷键。
 
@@ -33,11 +33,11 @@ search_keywords: [命令面板, command palette, Cmd+K, Ctrl+K, 快捷键, 页�
 | 分组 | 内容 | 谁决定 |
 | --- | --- | --- |
 | 快速链接 | 顶栏一级菜单里选出的几个入口 | `params.ui.quick_links` |
-| 页面操作 | 复制 Markdown、查看 Markdown 源码、编辑本页、查看修改历史、新建子页、提 issue、打印整节、打开双列视图（`compare_translations`） | 仓库配置、本页是否有 Markdown 输出；双列视图还取决于 `params.ui.compare` 与同源译文 |
-| 偏好设置 | 切换版本 → 切换语言 → 切换主题 | 站点是否配了多版本、多语言、深浅色菜单 |
-| 命令 | 打开 GitHub 仓库、打开[浏览历史](/zh/docs/customize/keyboard/#history)，之后是站点自定义命令 | `params.github_project_repo`（缺省回退到 `github_repo`）、是否开启键盘导航，以及 `ui.command_palette.commands` |
+| 页面操作 | 复制 Markdown、在 ChatGPT / Claude 中打开、查看 Markdown 源码、查看修改历史、编辑本页、新建子页、提交文档／项目议题、打印整节、打开双列视图（`compare_translations`） | 仓库配置、`assistant_links`、本页是否有 Markdown 输出；双列视图还取决于 `params.ui.compare` 与同源译文 |
+| 偏好设置 | 切换版本 → 切换语言 → 切换风格 → 切换主题 | 站点是否配了多版本、多语言、视觉预设菜单（`preset_menu`）与深浅色菜单 |
+| 命令 | 复制链接（`copy_link`）、打开 GitHub 仓库、打开[浏览历史](/zh/docs/customize/keyboard/#history)，之后是站点自定义命令 | `copy_link` 始终可用；其余取决于 `params.github_project_repo`（缺省回退到 `github_repo`）、是否开启键盘导航，以及 `ui.command_palette.commands` |
 
-偏好设置三项的顺序与顶栏控件一致（版本、语言、主题），面板与顶栏是同一个次序。选中「切换语言」这类项后，面板不立即跳转，而是就地展开可选项，再选一次。
+偏好设置四项的顺序与顶栏控件一致（版本、语言、风格、主题），面板与顶栏是同一个次序。选中「切换语言」这类项后，面板不立即跳转，而是就地展开可选项，再选一次。
 
 输入文字时，先是页面结果，按内容根分组（分组名是面包屑的第一段，组间顺序跟随顶栏一级菜单的顺序），命令与动作合并成一组排在最后。
 
@@ -45,7 +45,7 @@ search_keywords: [命令面板, command palette, Cmd+K, Ctrl+K, 快捷键, 页�
 
 不可用的项在能说明原因时仍然列出。站点没有配置仓库地址，「编辑本页」会带着「不可用」的说明留在列表里，而不是消失。
 
-OINK 1.4.0 的本地搜索增加了 **搜索范围** 分段选项，可在并排的全部栏目与当前顶层栏目之间切换。
+本地搜索提供 **搜索范围** 分段选项，可在并排的全部栏目与当前顶层栏目之间切换。
 它在应用结果数量上限之前过滤页面，命令与页面操作继续可用。选择只在当前页面加载期间保留。
 命中小节显示在页面标题旁，并打开真实标题锚点；同页多处命中合并为一行。
 部分匹配显示关键词覆盖数量，详见[查询语义](/zh/docs/customize/search/#cjk)。
@@ -121,8 +121,7 @@ page_context_menu:
 确认该页的标题菜单和命令面板均没有助理入口。跳转行为见
 [Agent 支持](/zh/docs/customize/agents/)。
 
-这些入口分别打开 ChatGPT、Claude 和 Gemini。Gemini 无法通过网址接收提示语，
-所以选择它时还会把提示语复制到剪贴板，由读者自行粘贴。
+这些入口分别打开 ChatGPT 和 Claude。
 
 `links` 是额外的外部动作，只出现在标题旁的菜单里，不进面板：
 
@@ -151,8 +150,8 @@ params:
 
 ## 使用当前查询的站点操作 {#search-tail}
 
-受信任站点 JavaScript 使用的运行时接口自 OINK 1.1 起提供。
-使用前检查能力是否存在：v1.0.0 和未启用本地搜索的页面不提供它。集成代码应在主题脚本
+受信任的站点 JavaScript 可通过 `window.OinkCommandPalette.registerSearchTail`
+注册基于当前查询的扩展行。调用前应先检查能力是否存在，因为未启用本地搜索的页面不提供该接口。集成代码应在主题脚本
 之后加载，例如使用 `layouts/_partials/hooks/body-end.html`。以下示例假定站点实现了
 `openSiteAssistant`，并自行管理服务商设置：
 

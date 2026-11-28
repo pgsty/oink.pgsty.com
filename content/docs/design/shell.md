@@ -5,13 +5,11 @@ description: Navigation authorities, immersive blog presentation, search, action
 weight: 30
 icon: fa-solid fa-window-maximize
 search_keywords: [OINK shell, navigation contract, search, actions, blog presentation, authors, series, pager]
-contract_status: v1.6.0
+contract_status: v1.7.0
 ---
 
-> [!NOTE] Shell versions
-> OINK v1.6.0 is the released baseline. The 30-key shortcut sheet, reader
-> preference, browsing history and typeset copy are on `main` for the proposed
-> v1.7.0 release.
+> [!NOTE] OINK 1.7.0 contract
+> This contract describes OINK v1.7.0.
 
 ## Authorities and navigation {#authorities-and-navigation}
 
@@ -320,7 +318,7 @@ An entry without an id or a title warns and is skipped.
 An entry is scored and opened like a section, and its title counts as a heading.
 The [proposal](/docs/design/proposals/local-search-engine/) records the design rationale and evaluation evidence.
 
-Built-in action IDs are `compare_translations`, `copy_markdown`, `copy_link`, `open_chatgpt`, `open_claude`, `open_gemini`, `view_markdown`, `view_history`, `edit_page`,
+Built-in action IDs are `compare_translations`, `copy_markdown`, `copy_link`, `open_chatgpt`, `open_claude`, `view_markdown`, `view_history`, `edit_page`,
 `create_child_page`, `create_issue`, `create_project_issue`, `print_section`, `print`, `switch_preset`, `switch_theme`, `switch_language`, `switch_version`, `open_github`, and `browse_history`.
 Outside the share bar, `copy_link` appears only in the Palette.
 Site commands under `languages.<lang>.params.ui.command_palette.commands` may open safe URLs or invoke built-in IDs. They never inject JavaScript.
@@ -357,7 +355,9 @@ Queries stay in the browser. No default telemetry is sent.
 `OinkSurfaceCoordinator` coordinates the Palette, Appearance, keyboard shortcuts help dialog, browsing history, Draw.io, Expo viewer, drawer, root, language, and version menus.
 Each surface controls focus restoration and Escape.
 Already closed Appearance menus do not restore focus when the coordinator closes them.
-Keyboard navigation ignores text-entry controls (`textarea`, `select`, `contenteditable`, and text-entry `input` types) and modals, while allowing non-text controls such as gallery layout radios and tile-size range sliders; modifiers suppress bindings except `Shift` for `<` (`Shift+,`), `>` (`Shift+.`), `+` (`Shift+=`), and the Palette's `~` (Shift with the backtick key). The desktop nonmodal Appearance panel permits search shortcuts; its mobile modal sheet and other open dialogs, including fixed-position ARIA dialogs, retain keyboard ownership.
+When the Command Palette, Browsing history or Duo View closes, focus returns to where the reader was without opening the hover menu around that element, such as the footer `?` sheet.
+In those three surfaces an Escape that cancels an input-method composition stays with the input method, both during the composition and as Safari's trailing keyCode 229 Escape right after `compositionend`; a later Escape closes the surface.
+Keyboard navigation ignores text-entry controls (`textarea`, `select`, `contenteditable`, and text-entry `input` types), a focused map canvas or native audio or video player (which keeps its own keys), and modals, while allowing non-text controls such as gallery layout radios and tile-size range sliders; modifiers suppress bindings except `Shift` when it produces `,` `.` `;` `<` `>` `=` or `+`. The desktop nonmodal Appearance panel permits search shortcuts; its mobile modal sheet and other open dialogs, including fixed-position ARIA dialogs, retain keyboard ownership.
 Inside the mobile drawer, Escape closes the root switcher first and returns focus to its trigger. A subsequent Escape closes the drawer. Moving focus outside the root switcher dismisses its popover.
 The version disclosure opens on hover, focus or tap. Tab and the up/down arrows reach the version links.
 Escape dismisses the list even when a touch browser leaves focus on the page body. A second Escape closes the drawer.
@@ -377,19 +377,19 @@ They emit no separate runtime and may be removed only in a future breaking relea
 `params.ui.keyboard_nav` (default `true`; site, page or cascade) adds the stable
 `js/chunks/keyboard.js` chunk, `history.js` followed by `keyboard-nav.js`, to
 interactive HTML pages. A page with `false` ships neither file, so it binds no
-key, records no history and restores no reading width. The map is thirty bare
-keys in three groups of ten, and the shortcut help lists them in this order:
+key, records no history and restores no reading width. The map is twenty-nine
+shortcuts in three groups (Navigation, Actions, View), and the shortcut help lists them in this order:
 
 | Group | Keys, in help order |
 | --- | --- |
 | Navigation | `w`/`s` tree move, `a`/`d` collapse/expand, `Enter`/`Space` open the focused tree item, `q`/`e` page, `k`/`j` heading, `x` language, `r` section, `v` version, `h` history, `g` home |
-| Actions | `/` and `f` search, `c` and `` ` `` commands, `u` edit, `n` child page, `i` docs issue, `o` fold all, `p` print, `[` ChatGPT, `]` Claude, `\` Gemini |
+| Actions | `/` and `f` search, `\` and `c` commands, `u` edit, `n` child page, `i` docs issue, `o` fold all, `p` print, `[` ChatGPT, `]` Claude |
 | View | `b` Duo View, `z` Zen Mode, `m` Markdown source, `t` preset, `y` color mode, `l` index layout, `;` gallery layout, `,`/`.` gallery size (`<`/`>` too), `-`/`=` reading width (`+` too), `'` help |
 
 Readers can disable global character shortcuts in the help dialog or at the
 focus stop following the skip link. The latter also serves footerless pages
 and pages with only local search. The preference covers the palette's bare
-punctuation keys. Ctrl/Cmd+K and native focus and activation keys still work.
+punctuation keys, including `/` and `\` produced with Shift or AltGraph. The exact Ctrl/Cmd+K chord and native focus and activation keys still work.
 The browser stores the choice under `td-single-key-shortcuts:` plus the
 encoded site base path. With storage unavailable, the switch works for the current page.
 
@@ -408,13 +408,13 @@ Scopes:
   work on shell pages and the home page; on the home page `k`/`j` move between
   `[data-td-landing] > section[id]`. Every other key works on every
   interactive page when its target exists and does nothing otherwise.
-- `/` and `` ` `` (also `~`) belong to the Command Palette and keep working
-  when `keyboard_nav` is `false`; `\` no longer opens commands. `f` and `c`
-  open the same instance, or on a standalone home page without a palette move
-  to `[data-td-keyboard-search-route]` and resume the requested mode there.
-- `u`, `n`, `i`, `p`, `m`, `[`, `]` and `\` run `edit_page`,
+- `/` and `\` belong to the Command Palette and keep working when
+  `keyboard_nav` is `false`. `f` and `c` open the same instance, or on a
+  standalone home page without a palette move to
+  `[data-td-keyboard-search-route]` and resume the requested mode there.
+- `u`, `n`, `i`, `p`, `m`, `[` and `]` run `edit_page`,
   `create_child_page`, `create_issue`, `print`, `view_markdown`,
-  `open_chatgpt`, `open_claude` and `open_gemini` through the action registry,
+  `open_chatgpt` and `open_claude` through the action registry,
   only while the descriptor is available (`p` falls back to `window.print()`
   when no `print` descriptor is registered). `x` and `v` move to the next
   available, non-active option with a URL of `switch_language` and
@@ -422,60 +422,59 @@ Scopes:
   `[data-td-language-route]`. `g` opens the manifest's `home`
   (`Site.Home.RelPermalink`), falling back to the brand link; on the home page
   it glides to the top.
-- `open_gemini` targets `https://gemini.google.com/app?q=` with the prompt and
-  shares the `assistant_links` gate and placements of the other assistants;
-  the page menu lists ChatGPT, Claude, Gemini. Gemini documents no prompt
-  parameter, so every activation first copies the prompt synchronously with
-  `OinkClipboard.copyNow` and then opens the tab.
-- `?` and the digits stay unbound. `l` as a language alias, `h` as a Zen alias,
-  the home page's `n` alias, `g` as tree activation, `v` for the index layout,
-  `m` for the gallery layout and `;` for help are retired.
+- `?` and the digits stay unbound. Of the 1.6.0 bindings, `h` for Zen Mode (now
+  `z`), `l` and `y` for languages (now `x`), `g` as tree activation (`Enter`
+  and `Space` remain; `g` goes home) and the home page's `n` alias are retired.
 
-The shortcut help is one sheet in `<template data-td-keyboard-help-source>`,
-rendered in the footer menu or, under `footer_style: none`, by `scripts.html`.
+The shortcut help is one per-language cached sheet (`.td-shell-keyboard-help`),
+rendered directly inside the footer hover menu or, under `footer_style: none`,
+inside `<template data-td-keyboard-help-source>` by `scripts.html`.
 It holds three `.td-shell-keyboard-help__section` groups
-(`td-shell-shortcuts-navigation`, `-actions`, `-view`) of ten
-`.td-shell-keyboard-help__row[data-td-shortcut]` rows. The row IDs, in order,
-are `tree-move`, `tree-toggle`, `tree-open`, `page-move`, `heading-move`,
-`language`, `route`, `version`, `history`, `home`; `search`, `commands`,
-`edit`, `new-page`, `issue`, `expand-all`, `print`, `chatgpt`, `claude`,
-`gemini`; `duo`, `zen`, `markdown`, `style`, `theme`, `layout`, `gallery`,
-`image-size`, `page-width`, `help`. `'` toggles a modal
-`<dialog data-td-keyboard-dialog>` cloned from the sheet with `-dialog` ID
-suffixes. Each opening evaluates every row against the live page; a row that
+(`td-shell-shortcuts-navigation`, `-actions`, `-view`) inside
+`.td-shell-keyboard-help__body`, totaling twenty-nine
+`.td-shell-keyboard-help__row[data-td-shortcut]` rows (ten, nine, and ten). The
+row IDs, in order, are `tree-move`, `tree-toggle`, `tree-open`, `page-move`,
+`heading-move`, `language`, `route`, `version`, `history`, `home`; `search`,
+`commands`, `edit`, `new-page`, `issue`, `expand-all`, `print`, `chatgpt`,
+`claude`; `duo`, `zen`, `markdown`, `style`, `theme`, `layout`, `gallery`,
+`image-size`, `page-width`, `help`. `'` or clicking the footer `?` trigger
+toggles a modal `<dialog data-td-keyboard-dialog>` cloned from the sheet with
+`-dialog` ID suffixes and the **Enable shortcuts** preference checkbox
+(`ui_single_key_shortcuts`, enabled by default). Each hover/focus preview and
+modal opening evaluates every row against the live page; a row that
 cannot run stays in place with `td-is-unavailable` and a visually hidden
 "unavailable" note, so the grid keeps its shape. Dimming never lowers opacity:
 the label takes the secondary text color and the keycaps lose their fill for a
 dashed border, which keeps WCAG AA contrast in every preset, and forced colors
-use `GrayText`. The dialog is
-`min(58rem, 100vw − 1.5rem)` wide with auto-fit columns of at least 16.5rem:
-three side by side on desktop, stacked on phones. `'`, Escape, the close button
-(`aria-keyshortcuts="Escape '"`) and a backdrop click close it, and focus
-returns to the trigger without reopening its hover card. Other shortcuts stand
-down while it is open.
+use `GrayText`. Both the hover popover (`min(54rem, 100vw − 4.5rem)`) and the
+modal dialog (`min(58rem, 100vw − 1.5rem)`) use auto-fit columns of at least
+16.5rem: three side by side on wide screens, wrapping cleanly on narrower
+viewports. `'`, Escape, the close button
+(`aria-keyshortcuts="Escape '"`) and a backdrop click close the dialog, and
+focus returns to the trigger without reopening its hover card. Other shortcuts
+stand down while it is open.
 
 The footer `?` trigger declares `aria-keyshortcuts="'"` and
-`aria-haspopup="dialog"`. Hover or focus shows a short hint card
-(`.td-shell-keyboard-hint`): search and commands when local search is on,
-history, help, and "Click for all shortcuts". A click opens the dialog. With
-`keyboard_nav: false` and local search on, the hint keeps only the `/` and
-`` ` `` rows and opens no dialog.
+`aria-haspopup="dialog"`. Hover or focus reveals the full three-group cheat
+sheet above the footer. Its height follows the space above the trigger as the page scrolls. Both the sheet and dialog refresh availability as the reading column resizes. A click opens the centered modal dialog. With
+`keyboard_nav: false` and local search on, the hover popover renders the
+compact `.td-shell-keyboard-help--compact` variant keeping only the `/` and
+`\` rows and opens no dialog.
 
 Browsing history is local. `history.js` records each HTML page load except the
 404 page as `{url, title, time}`: the path and query without the fragment, the
 `og:title` or document title, and the visit time. Entries live in
 `localStorage` under `td-history:` plus the URL-encoded path of `Site.BaseURL` with its trailing slash (for example, `td-history:/manual/` for every language of that site),
-newest first, unique by URL and capped at 100; entries outside the base path
+newest first, including visits restored from the back/forward cache, unique by URL and capped at 100; entries outside the base path
 or malformed ones are dropped, never repaired. The list is never transmitted.
 `h` or the palette-only `browse_history` action, available when
 `keyboard_nav` is on, opens `#td-shell-history[data-td-history]`, which
 reuses the palette surface classes. It omits the current page, filters on
 every typed token across title and path, and supports Up/Down, Enter (same
 tab), Ctrl/Cmd+Enter or a modified click (new tab), Shift+Delete (remove the
-selected entry) and the `[data-td-history-clear]` button (clear all, disabled
-when empty). With no rows the listbox stays childless and the empty or
-no-match text appears in the sibling `[data-td-history-empty]`. Escape (outside
-IME composition) or the backdrop closes it and restores focus (falling back to
+selected entry) and the `[data-td-history-clear]` button (clear all stored visits, including the current page, and disable only when storage is empty). With no rows the listbox stays childless and the empty or
+no-match text appears in the sibling `[data-td-history-empty]`. Escape (except
+one the input method keeps, as above) or the backdrop closes it and restores focus (falling back to
 `#td-main-content` when the opener is no longer rendered). Launching
 `browse_history` from the Command Palette closes the palette and restores the
 opener's focus first, so history returns to that opener on Escape. It holds
@@ -723,7 +722,7 @@ Each link announces its direction and the visible `linkTitle` of the destination
 
 Every rendered footer has an icon-only utility dock at the end of its bottom line.
 Dock order is version, language, theme, then keyboard help. Menus open upward.
-Hovering or focusing the keyboard-help trigger shows a short hint card; clicking it when `keyboard_nav` is enabled opens the three-group shortcut dialog described in [keyboard shortcuts](#keyboard-shortcuts).
+Hovering or focusing the keyboard-help trigger shows the full three-group shortcut sheet; clicking it when `keyboard_nav` is enabled opens the three-group shortcut dialog described in [keyboard shortcuts](#keyboard-shortcuts).
 The version control never shows the current branch or release label.
 The fat footer's collapse chevron follows the dock.
 Below `lg`, copyright, center content, and dock become three centered full-width rows, with the dock last.
@@ -764,7 +763,9 @@ target selector uses existing language order and the same icon, rounded trigger,
 floating menu style and selected and hover option states as the site's language bar. Its menu supports pointer and
 keyboard selection. Only the selected sibling is loaded, and replacing it
 preserves the synchronization preference. Each pane keeps its language,
-direction, footnotes and content components.
+direction, footnotes and content components. In a pane, an Escape that cancels
+an input-method composition stays with the input method under the rule in
+[Local search engine](#search-engine). The next Escape can close the reader.
 
 Below 900 CSS pixels, one toolbar row and one switcher row show one retained pane
 at a time. The title truncates while Sync Scroll and Close stay at the end. The
@@ -879,8 +880,9 @@ OINK 1.4.0 aligns search/command rows, sidebar corners, and Appearance controls 
 
 ## Archived-version banner {#archived-banner}
 
-> [!NOTE] Unreleased
-> Implemented on the theme's main branch after v1.6.0; no tagged release contains it yet.
+> [!NOTE] Styled in OINK 1.7.0
+> The archived-version banner predates 1.7.0. OINK v1.7.0 styles it, and warns
+> and omits it when `params.version` is missing.
 
 With `params.archived_version: true`, every HTML shell and Landing page opens
 with `version-banner.html`: a `td-page-notice td-page-notice--primary` element

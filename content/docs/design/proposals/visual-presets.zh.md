@@ -11,8 +11,8 @@ design_status: partially-implemented
 proposal_date: 2026-10-04
 ---
 
-> [!IMPORTANT] 第一阶段随 1.2.0 发布，Ink/Terminal 可显式启用
-> Paper、Slate 与外观菜单已随 OINK 1.2.0 发布。当前行为与证据由
+> [!IMPORTANT] 第一阶段随 1.2.0 发布，1.7.0 完成精修，Ink/Terminal 可显式启用
+> Paper、Slate 与外观菜单已随 OINK 1.2.0 发布；OINK 1.7.0 进一步精修了全部四套预设、引入分预设中文系统字体方案并定型 `t`/`y` 快捷键。当前行为与证据由
 > [架构契约](/zh/docs/design/architecture/#visual-presets)、
 > [已接受决策](/zh/docs/design/decisions/visual-presets/)和
 > [验收记录](/zh/docs/design/research/2026-10-05-visual-presets-acceptance/)管理。

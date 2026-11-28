@@ -206,7 +206,6 @@ params:
 | 复制 Markdown | `copy_markdown` | 页面启用了 `markdown` 输出格式 |
 | 在 ChatGPT 中打开 | `open_chatgpt` | `page_context_menu.assistant_links: true` |
 | 在 Claude 中打开 | `open_claude` | `page_context_menu.assistant_links: true` |
-| 在 Gemini 中打开 | `open_gemini` | `page_context_menu.assistant_links: true` |
 | 查看 Markdown 源码 | `view_markdown` | 页面启用了 `markdown` 输出格式 |
 | 查看编辑历史 | `view_history` | 设置了 `params.github_repo`，且能解析出本页源文件路径 |
 | 编辑当前页面 | `edit_page` | 同上 |
@@ -324,7 +323,7 @@ columns:
 
 `fat` 页脚版权行的末端有一个箭头，用来收起和恢复链接网格。网格默认展开，读者的选择以 `td-footer-collapsed` 键存在 `localStorage` 中，跨页面保留，与禅意模式无关。`slim` 与 `none` 没有这个箭头。
 
-页脚最底层栏的末尾是一组图标，依次为版本、语言、外观与快捷键帮助，之后是 `fat` 页脚的折叠箭头。各菜单向上展开。悬停快捷键帮助会显示一张简短提示卡，点击则打开列出全部三十个[快捷键](/zh/docs/customize/keyboard/#help)的对话框。版本按钮只显示图标，选项里仍是完整的版本名。侧栏不重复这组控件，`footer_style: none` 会连同页脚一起去掉最底层栏。
+页脚最底层栏的末尾是一组图标，依次为版本、语言、外观与快捷键帮助，之后是 `fat` 页脚的折叠箭头。各菜单向上展开。悬停快捷键帮助会直接展开完整的三栏[快捷键](/zh/docs/customize/keyboard/#help)速查表，点击则弹出居中的模态对话框。版本按钮只显示图标，选项里仍是完整的版本名。侧栏不重复这组控件，`footer_style: none` 会连同页脚一起去掉最底层栏。
 
 版权行与其中间的说明文字在[配置总览](/zh/docs/customize/config/#identity)中设置。
 

@@ -207,7 +207,7 @@ Disallow: /
 
 页面上的 `robots` meta 标签遵循同一规则：生产构建中是 `index, follow`，其它环境以及任何环境下的打印输出都是 `noindex, nofollow`。
 
-主题没有按页设置 `noindex` 的开关。要可靠地让某页不被收录，就不要发布它：用 `draft: true` 或 Hugo 的 `_build` 选项。页面必须发布却又不想被收录时，在 `head-end.html` 钩子里自己输出一条标签；这样页面上会有两条 `robots` 标签，如何合并由各家搜索引擎决定。
+主题没有按页设置 `noindex` 的开关。要可靠地让某页不被收录，就不要发布它：用 `draft: true` 或 Hugo 的 `build` 选项。页面必须发布却又不想被收录时，在 `head-end.html` 钩子里自己输出一条标签；这样页面上会有两条 `robots` 标签，如何合并由各家搜索引擎决定。
 
 ## 收录检查 {#indexing}
 

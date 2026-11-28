@@ -2,7 +2,7 @@
 title: Tables
 linkTitle: Tables
 description: Turn an ordinary Markdown table into a captioned table, a compatibility matrix, a field list, a numbered book table or a tab set, and give wide technical tables room to read.
-weight: 50
+weight: 130
 search_keywords: [Table, matrix, full-width, wide, technical tables, caption, numbered table, horizontal scroll, GFM]
 aliases:
   - /docs/components/tables/
@@ -250,7 +250,7 @@ See {{< xref tbl="9-1" anchor="tbl-iso" />}}.
 Adjacent tables with `{tab="…"}` become one tab set, by the same rules as
 adjacent code fences. A `group` on the first table adds a shareable URL hash,
 syncing and a remembered choice, and then every table needs a `value`. See
-[Tabs](/docs/components/tabs/) for the full rules.
+[Tabs](/docs/components/tabs/) for the full rules. Even two short columns fill the panel. A wide table scrolls within it.
 
 ```markdown {title="Source"}
 | Directory | Contents |
@@ -306,8 +306,8 @@ The attribute line on the row below the table:
 | `data-*` / `aria-*` | string | none | Passed through |
 {.fields meta="type default"}
 
-Any other key, `style` and `on*` handlers included, is dropped with a build
-warning.
+Any other key, `style` included, is dropped with a build warning. Hugo strips
+`on*` handlers before the theme sees them, so they are dropped silently.
 
 ## Limits {#limits}
 

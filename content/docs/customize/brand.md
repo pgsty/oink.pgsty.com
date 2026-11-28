@@ -364,8 +364,8 @@ The link columns come from `data/footer/<language>.yaml`, described in
 [Navigation and menus](/docs/customize/navigation/#footer). Until that file
 exists, a `fat` footer renders as `slim`, so you can switch it on before you
 write the links. Front matter, or a section's `cascade`, can set a different
-style; this site's documentation section uses `slim`. An unknown value warns
-and uses `fat`.
+style (for example, `slim` on a focused reading section while keeping `fat`
+elsewhere). An unknown value warns and uses `fat`.
 
 `params.copyright` is either a Markdown string or a map of `authors`,
 `from_year` and `to_year`, where `present` means the current year.

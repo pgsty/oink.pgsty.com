@@ -206,7 +206,7 @@ body.td-blog {
 
 | 预设 | 外观 |
 | --- | --- |
-| `paper`（默认） | 象牙纸色背景、墨色正文、带下划线的蓝色链接、陶土色强调、Plex Sans 与外框表格 |
+| `paper`（默认） | 象牙纸色背景、墨色正文、带下划线的蓝色链接、陶红色强调、Plex Sans 与外框表格 |
 | `slate` | 冷灰蓝的技术风格 |
 | `ink`（实验） | 黑白底色、红色标记、直角面板、带下划线的正文链接 |
 | `terminal`（实验） | 控件、标题与正文都用等宽字体，青色链接、琥珀色强调、紧凑的桌面导航 |
@@ -264,7 +264,7 @@ params:
 | `slim` | 只有版权行 |
 | `none` | 不显示页脚 |
 
-链接列来自 `data/footer/<语言>.yaml`，写法见[导航与菜单](/zh/docs/customize/navigation/#footer)。这个文件还不存在时，`fat` 页脚按 `slim` 渲染，所以可以先开启、再补链接。front matter 或分区的 `cascade` 可以单独指定样式，本站文档栏目用的就是 `slim`。无法识别的取值会告警并使用 `fat`。
+链接列来自 `data/footer/<语言>.yaml`，写法见[导航与菜单](/zh/docs/customize/navigation/#footer)。这个文件还不存在时，`fat` 页脚按 `slim` 渲染，所以可以先开启、再补链接。front matter 或分区的 `cascade` 可以单独指定样式（例如在需要专注阅读的栏目改用 `slim`，其余栏目保留 `fat`）。无法识别的取值会告警并使用 `fat`。
 
 `params.copyright` 可以是一段 Markdown 字符串，也可以是 `authors`、`from_year`、`to_year` 三个键组成的 map，`present` 表示当前年份。`footer_center_info` 是版权行中间的行内 Markdown，设为空字符串即可让那里留空。
 

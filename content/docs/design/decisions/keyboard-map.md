@@ -1,13 +1,16 @@
 ---
 title: Keyboard map
 linkTitle: Keyboard map
-description: Record why OINK binds thirty single keys in three groups of ten, dims what a page cannot run, and adds local history, fold-all, and a reader width.
+description: Record why OINK binds twenty-nine single-key shortcuts in three groups, dims what a page cannot run, and adds local history, fold-all, and a reader width.
 weight: 72
 icon: fa-solid fa-keyboard
 design_kind: decision
 design_status: accepted
 decision_date: 2026-11-27
 ---
+
+> [!NOTE] Accepted in OINK 1.7.0
+> This keyboard map, local history, fold-all, reader width, and reader shortcut switch ship in OINK v1.7.0.
 
 The [Shell contract](/docs/design/shell/#keyboard-shortcuts) defines the
 required bindings, hooks, and storage. The
@@ -16,8 +19,8 @@ required bindings, hooks, and storage. The
 ## Context {#context}
 
 Shortcuts had grown one feature at a time. Several keys carried two meanings
-or an alias (`h` and `z` for Zen Mode, `l` and `x` for language, `g` beside
-Enter in the tree, `n` only on the home page), the help sheet split into two
+or an alias (`l` and `y` for language, `g` beside Enter in the tree, `n` only
+on the home page), the help sheet split into two
 uneven columns, and frequent page actions such as editing, printing, or
 handing a page to an assistant had no key at all. Readers also asked for three
 capabilities the theme lacked: returning to recently read pages, opening every
@@ -25,25 +28,28 @@ folded block at once, and using spare width on large screens.
 
 ## Decisions {#decisions}
 
-### Three groups of ten {#three-groups}
+### Three groups {#three-groups}
 
-The project owner set the map on 2026-11-27: ten keys for navigation, ten for
-actions on the page, and ten for the view, each a bare key with one meaning.
+The project owner set the map on 2026-11-27: ten shortcuts for navigation,
+nine for actions on the page, and ten for the view, each a bare key with one
+meaning.
 The help sheet shows the same three columns in the same order, so the sheet
 doubles as a keyboard diagram. Neighboring keys share a purpose: `w` `a` `s`
-`d` for the tree, `q` `e` for paging, `[` `]` `\` for the three assistants,
-`,` `.` for image size, `-` `=` for width.
+`d` for the tree, `q` `e` for paging, `/` `\` for search and commands, `[` `]`
+for ChatGPT and Claude, `,` `.` for image size, `-` `=` for width.
 
 | Change | Reason |
 | --- | --- |
-| Aliases removed (`h`, `l`, `g`, home `n`) | Each letter is needed for its own feature; one key per action keeps the sheet honest |
-| Commands moved from `\` to `` ` `` | The backtick, with `~` above it, is the familiar console key, and `\` joins `[` `]` for Gemini |
-| Help moved from `;` to `'` | `'` sits beside `;`, which now cycles gallery layouts next to `l` for index layouts |
-| `m` now opens Markdown | Duo View, Zen Mode, and Markdown form one row of reading views: `b`, `z`, `m` |
+| Retired 1.6.0 bindings (`h` Zen → `z`, `l`/`y` language → `x`, `g` tree open, home `n`) | Each letter is needed for its own feature; one key per action keeps the sheet honest |
+| Commands stay on `\` (with `c`) | Mirrors `/` for search and stays consistent with earlier OINK releases; Gemini is omitted because it has no prompt URL parameter |
+| Help is `'` | `'` sits beside `;`, which cycles gallery layouts next to `l` for index layouts |
+| `m` opens Markdown | Duo View, Zen Mode, and Markdown form one row of reading views: `b`, `z`, `m` |
 
-`?` and the digits stay unbound, and Shift passes only for characters that
-need it (`<`, `>`, `+`, `~`), so browser and assistive-technology shortcuts
-keep their keys.
+`?` and the digits stay unbound, and modifiers suppress every binding except
+`Shift` when it produces `,` `.` `;` `<` `>` `=` or `+`, so browser and assistive-technology shortcuts
+keep their keys. Readers can also turn off all single-key shortcuts for
+themselves in the help sheet (`td-single-key-shortcuts:<basePath>`), keeping
+`Cmd/Ctrl+K` and `Escape` active.
 
 ### Dim, do not hide {#dim-not-hide}
 
@@ -54,11 +60,13 @@ one cached template per language; availability is decided in the browser each
 time the dialog opens, because it depends on live state such as a visible
 gallery or an open drawer.
 
-### A hint on hover, the sheet on click {#hint-and-sheet}
+### Full sheet on hover, modal dialog on click {#hint-and-sheet}
 
-Thirty rows are too much to flash on every pointer pass over the footer. The
-`?` button's hover card names only the keys a reader reaches for first and
-says that a click shows everything; the click, or `'`, opens the full dialog.
+Hovering or focusing the bottom-bar `?` button reveals the full three-group
+cheat sheet above the footer (three columns side by side on wide screens,
+wrapping cleanly on narrower screens), with unavailable rows already dimmed for
+the current page. Clicking `?` (or pressing `'`) opens the same sheet as a
+centered modal dialog with the **Enable shortcuts** toggle.
 
 ### History stays in the browser {#local-history}
 
@@ -87,18 +95,17 @@ still fills. A step that reaches the page's own width stops there and forgets
 the stored value, which restores every page's authored `page_width` without a
 separate reset key.
 
-### Gemini through the clipboard {#gemini}
+### Two assistants with prompt URLs {#assistants}
 
 ChatGPT and Claude accept a prompt in their URL; Gemini documents no such
-parameter. OINK opens Gemini with the same query string for readers whose
-browser honors it, and always copies the prompt first, synchronously, while
-the page still has focus. Gemini shares the opt-in `assistant_links` gate, so
-no site sends a URL to a third party without choosing to.
+parameter, so OINK does not include a built-in Gemini handoff. Both assistant
+actions stay behind the opt-in `assistant_links` gate, so no site sends a URL
+to a third party without choosing to.
 
 ## Consequences {#consequences}
 
-Readers who learned the retired aliases must relearn four keys, and sites that
-documented `;` or `\` must update their own pages. The keyboard chunk now
+Readers who learned the retired 1.6.0 keys must relearn them, and sites that
+documented the 1.6.0 keys (`h`, `l`, `y`, `t`, `g`) must update their pages. The keyboard chunk now
 carries the history runtime, and every page with keyboard navigation writes
 one small `localStorage` entry per visit. No new configuration, network
 request, or build step is introduced.
@@ -108,6 +115,6 @@ request, or build step is introduced.
 The theme's `bin/check-keyboard.py` checks the bound keys against the
 documented map, the chunk assembly, and the gating; `tests/js` covers the
 runtime units. The documentation site's `tests/browser/keyboard-nav.spec.mjs`
-owns browser acceptance: the 3 × 10 dialog and its dimmed rows, the hover hint,
+owns browser acceptance: the three-column dialog and its dimmed rows, the hover sheet,
 history recording and pruning, fold-all, the reader width across reloads, and
 the page-action keys.

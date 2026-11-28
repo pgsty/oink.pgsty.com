@@ -18,12 +18,11 @@ need it.
 
 ## Build and review
 
-For OINK **v1.6.0**, use Hugo **0.169.0** or newer (any edition, validated on
-**0.170.1**) and Go **1.27.4** (the module's minimum Go version). The theme and
+For OINK **v1.7.0**, use any Hugo edition meeting the minimum in the theme's
+[`theme.toml`](https://github.com/pgsty/oink/blob/main/theme.toml) and Go **1.27.4**. The theme and
 site stylesheets are plain CSS (`assets/css/project.css`) with no Sass compiler.
-(Until `go.mod` is bumped from `v1.5.1` to `v1.6.0`, published-pin builds need
-Hugo Extended `0.169.0`.) Do not enable `--panicOnWarning` or
-`HUGO_PANICONWARNING`; keep diagnostics visible and review them.
+Do not enable `--panicOnWarning` or `HUGO_PANICONWARNING`; keep diagnostics
+visible and review them.
 
 Read `AGENTS.md`, `TRANSLATION.md`, and the relevant bilingual contract under
 `content/docs/design/`. Clone the theme and site as siblings for theme work.

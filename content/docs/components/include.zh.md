@@ -2,7 +2,7 @@
 title: 引用
 linkTitle: 引用
 description: 让多页共用一份源头：include 引入共享片段与文件，param 打印站点或页面参数，comment 写永不发布的注释。
-weight: 200
+weight: 260
 search_keywords: [引用, include, 引入文件, 片段, snippet, 复用, readfile, param, 参数, 插值, comment, 注释]
 params:
   pigsty_pg_major: 18

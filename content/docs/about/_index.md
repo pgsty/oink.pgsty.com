@@ -22,11 +22,11 @@ your readers' browsers request nothing from third parties.
 OINK began as a fork of [Docsy](https://github.com/google/docsy). It keeps
 Docsy's content model and multilingual behavior and replaces the shell,
 navigation, search and components.
-[Forty-five production sites](/docs/about/showcase/) run on it: fourteen
-independent projects, among them Apache HugeGraph's bilingual documentation
-and a nine-language team portal at Red Hat AI Services, and 31 sites from the
-PGSTY and Vonng ecosystem, the largest of which spans nearly 5,000 Markdown
-files in eight languages, Arabic included.
+[Seventy-nine production sites](/docs/about/showcase/) run on it: 48
+independent projects, among them Apache HugeGraph's bilingual documentation,
+a nine-language team portal at Red Hat AI Services, and Cortrix's AI agent
+memory docs, plus 31 sites from the PGSTY and Vonng ecosystem, the largest of
+which spans nearly 5,000 Markdown files in eight languages, Arabic included.
 
 ![OINK turns Markdown content, configuration and local assets into one static documentation site](/images/hero-light.webp)
 {width="900" height="600" caption="One Hugo build produces a static site ready to host"}
@@ -77,11 +77,12 @@ supplies the shell and the reusable parts.
 
 Weigh two more things. Most features are off until you configure them,
 including search, dark mode, image zoom, comments, feedback and the Markdown
-and agent outputs; the [Starter](/docs/start/) turns the common ones on for
-you. And OINK is young and moves quickly: 1.0.0 shipped in August 2026 and
-1.6.0 three months later. Each site pins an exact release, so nothing changes
-until you raise the pin, and the [upgrade guide](/docs/admin/upgrade/) has a
-section for every release that asks you to change something.
+and agent outputs; the [Starter](https://github.com/pgsty/oink-starter) turns
+the common ones on for you. And OINK is young and moves quickly: 1.0.0 shipped
+in August 2026 and 1.7.0 three months later. Each site pins an exact release,
+so nothing changes until you raise the pin, and the
+[upgrade guide](/docs/admin/upgrade/) has a section for every release that asks
+you to change something.
 
 ## How it differs from other documentation systems {#comparison}
 
@@ -111,9 +112,9 @@ history, Apache-2.0 obligations and attribution; see
 
 - [Get started](/docs/start/) — Clone the Starter, preview it, make it yours one piece at a time, and deploy it.
 - [Components](/docs/components/) — Every component on its own page, source first, then the result.
-- [Showcase](/docs/about/showcase/) — 45 production sites and the OINK features each one uses.
+- [Showcase](/docs/about/showcase/) — 79 production sites and the OINK features each one uses.
 {.cards}
 
 Found a problem or want to send a fix? The
 [contribution guide](/docs/about/contributing/) says where it goes. The
-[1.6.0 release notes](/release/1.6.0/) describe the current release.
+[1.7.0 release notes](/release/1.7.0/) describe the current release.

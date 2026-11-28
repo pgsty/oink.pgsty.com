@@ -133,20 +133,24 @@ source still reads well on GitHub or in any editor:
 | Component | Shortest syntax | Page |
 | --- | --- | --- |
 | Callouts | `> [!NOTE]` on the first line of a blockquote | [Callouts](/docs/components/callout/) |
+| Code blocks | `{title="hugo.yml" copy=false}` on the fence info line | [Code Blocks](/docs/components/code/) |
+| Table extras | A table followed by `{.matrix}` or `{caption="…"}` | [Tables](/docs/components/table/) |
+| Field lists | A table followed by `{.fields meta="type default"}` | [Fields](/docs/components/fields/) |
 | Tabs | Two adjacent fences each carrying `{tab="Homebrew"}` | [Tabs](/docs/components/tabs/) |
 | Steps | An ordered list followed by a `{.steps}` line | [Steps](/docs/components/steps/) |
+| Timelines | A definition list followed by a `{.timeline}` line | [Timelines](/docs/components/timeline/) |
+| Updates | A heading with `{.update date="…" tags="…"}` | [Updates](/docs/components/update/) |
 | Cards | A list of links followed by a `{.cards}` line | [Cards](/docs/components/cards/) |
-| Field lists | A table followed by `{.fields meta="type default"}` | [Fields](/docs/components/fields/) |
-| Table extras | A table followed by `{.matrix}` or `{caption="…"}` | [Tables](/docs/components/table/) |
-| Code blocks | `{title="hugo.yml" copy=false}` on the fence info line | [Code Blocks](/docs/components/code/) |
-| Images | A standalone image followed by `{caption="…" width="600"}` | [Images](/docs/components/image/) |
+| Diagrams | A `mermaid` fence (also `plantuml`, `markmap`, `echarts`) | [Mermaid](/docs/components/mermaid/) |
+| Maps | A `map` fence with a YAML or JSON list of places | [Maps](/docs/components/map/) |
 | File trees | A `filetree` fence, one `- name/  # comment` per line | [FileTree](/docs/components/filetree/) |
 | Mathematics | A `math` fence, or display math wrapped in `$$` | [Math](/docs/components/math/) |
-| Diagrams | A `mermaid` fence (also `plantuml`, `markmap`, `echarts`) | [Mermaid](/docs/components/mermaid/) |
+| Images & media | A standalone image/video/audio line followed by `{caption="…"}` | [Images](/docs/components/image/) · [Video](/docs/components/video/) · [Audio](/docs/components/audio/) |
 
 The few components that need more than Markdown can express use shortcodes:
-badges, keyboard keys, file includes, terminal recordings, and the Book figure
-and table family. Their syntax is in [Components](/docs/components/).
+badges, keyboard keys (bare `<kbd>` also renders as a keycap), file includes,
+offline social posts (`social`), terminal recordings, and the Book figure and
+table family. Their syntax is in [Components](/docs/components/).
 
 The forms combine. Here a code fence and a callout sit inside steps:
 

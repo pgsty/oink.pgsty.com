@@ -6,23 +6,23 @@ weight: 28
 icon: fa-solid fa-film
 search_keywords: [video, mp4, webm, gif replacement, youtube, bilibili, vimeo, embed, facade, subtitles, component]
 design_kind: proposal
-design_status: implemented
+design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] Implemented, awaiting release
-> Implemented on the theme's `main` branch and documented in the
-> [Video guide](/docs/components/video/). Not yet in a tagged release. The shared decisions
-> are in the [overview](/docs/design/proposals/content-components-expansion/).
+> [!NOTE] Accepted in OINK 1.7.0
+> Shipped in OINK v1.7.0, documented in the [Video guide](/docs/components/video/),
+> and governed by the [Components contract](/docs/design/components/#timeline-media-social-and-maps).
+> Shared decisions are in the [overview](/docs/design/proposals/content-components-expansion/).
 
 | Record | Value |
 | --- | --- |
-| Status | Implemented 2026-11-27 on `main`; awaiting release |
+| Status | Accepted and shipped in OINK v1.7.0 (implemented 2026-11-27) |
 | Owner | OINK maintainers |
 | Delivery stages | S2 (files, autoplay), S4 (platform cards and players) |
 | Form | Native: a block Markdown image whose destination is a video file or a recognized video-platform URL |
 | New public API | Image attributes `poster`, `track`, `autoplay` for video; configuration `params.video_embeds` |
-| Runtime | None by default; `js/chunks/media.js` (about 2 KB) for autoplay videos and enabled players |
+| Runtime | Shared `js/chunks/media.js` for file players and enabled platform cards |
 | Affected surface | `render-image.html`, the shared resource lookup, a media partial, a stylesheet layer, the configuration schema, a new guide at `/docs/components/video/` |
 
 ## Summary {#summary}
@@ -80,7 +80,7 @@ built-in `youtube` or `vimeo` shortcode.
    page. With a site opt-in, the platform is contacted only after a reader
    clicks.
 5. **Progressive enhancement.** Every form works without JavaScript; the runtime
-   only adds viewport-aware autoplay and the in-place player.
+   colors file playback progress, coordinates audible players, gates autoplay on visibility, and opens enabled embeds in place.
 
 ## Goals and non-goals {#goals}
 
@@ -145,8 +145,8 @@ accessible name. Without `width`/`height` or a local poster, the box reserves
 </figure>
 ```
 
-Like a block image, a video without `caption` or `num` renders without the
-`<figure>` wrapper.
+Unlike a block image, a video always renders inside a `<figure>`, with or
+without `caption` or `num`.
 
 `autoplay=true` emits `muted loop playsinline` and a `data-td-media-autoplay`
 marker, but not the `autoplay` attribute. The runtime starts playback when at
@@ -164,9 +164,10 @@ reader sees the poster or first frame and plays it by hand.
 | Vimeo | `vimeo.com/<number>`, optionally `/<hash>` for unlisted videos | `https://player.vimeo.com/video/<number>?h=…&dnt=1&autoplay=1` |
 
 IDs are validated against these patterns before any URL is built; author text
-never enters a player URL. A short link that cannot be resolved offline
-(`b23.tv`, for example) renders the card without a player and warns with the
-full-URL form.
+never enters a player URL. A `b23.tv/BV…` short link resolves to the player;
+only an opaque short link that cannot be resolved offline, such as
+`b23.tv/abc`, renders the card without a player and warns with the full-URL
+form.
 
 Default output is a card: the poster or a neutral surface, a play glyph, the
 bracket text, and the platform name, all inside one link to the canonical watch
@@ -198,7 +199,7 @@ add the enabled player hosts to `frame-src`; the guide lists them.
 
 | Output | Result |
 | --- | --- |
-| HTML | As above; `media.js` only for autoplay videos or enabled players |
+| HTML | File players and enabled platform cards load the shared `media.js` |
 | Print | Poster when present, caption and Book label, and the file or watch URL as visible text; no `<video>` or `<iframe>` |
 | Markdown / LLMS | The authored source |
 | RSS | Poster (absolute URL) when present and a link with the bracket text; no `<video>` or `<iframe>` |
@@ -265,7 +266,7 @@ existing goldens verify. `params.video_embeds` is a new key.
 
 ## Acceptance criteria {#acceptance}
 
-- A page without autoplay videos or enabled players loads no media runtime.
+- Pages with only plain platform links omit the media runtime.
 - With `video_embeds: []`, the HTML contains no player host URL.
 - Autoplay never starts under `prefers-reduced-motion: reduce` and pauses
   off-screen.
@@ -275,8 +276,9 @@ existing goldens verify. `params.video_embeds` is a new key.
 
 ## Open decisions {#open-decisions}
 
-1. **Uncaptioned video.** Recommended: mirror images (no `<figure>`).
-   Alternative: always wrap, for a uniform frame.
+1. **Uncaptioned video (resolved).** The shipped implementation always wraps
+   videos in `<figure class="td-media">` for a uniform frame and consistent
+   print and typeset-copy output.
 2. **Subtitles.** Recommended: one `track` per page; each language page names
    its own file. A list form is deferred.
 3. **Bilibili comments.** Recommended: `danmaku=0` with no option in S4.

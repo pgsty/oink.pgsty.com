@@ -2,11 +2,11 @@
 title: Asciinema
 linkTitle: Asciinema
 description: 在页面里嵌入 .cast 终端录像，读者可以播放、暂停并从中复制文字，播放器随主题分发。
-weight: 210
+weight: 450
 search_keywords: [Asciinema, 终端录像, cast, asciicast, 录屏, 演示, terminal recording, 播放器, 章节, markers]
 ---
 
-`asciinema` 在页面里播放一段 `.cast` 终端录像。有些命令行流程看一遍比读一遍更容易明白，例如一次安装、一次迁移、一次耗时很长的构建，这时就用它。与视频不同，录像里的终端输出仍然是文字：读者可以暂停，直接从播放器里复制命令；本页那段六分多钟的安装录像也只有约 196 KB。图形界面的操作请用截图或[视频](/zh/docs/components/video/)。播放器与样式随主题分发，构建期不下载任何东西，运行时也不连接 CDN。
+`asciinema` 在页面里播放一段 `.cast` 终端录像。有些命令行流程看一遍比读一遍更容易明白，例如一次安装、一次迁移、一次耗时很长的构建，这时就用它。与视频不同，录像里的终端输出仍然是文字：读者可以暂停，直接从播放器里复制命令；本页那段三分钟的安装录像也只有约 196 KB。图形界面的操作请用截图或[视频](/zh/docs/components/video/)。播放器与样式随主题分发，构建期不下载任何东西，运行时也不连接 CDN。
 
 ## 最简例子 {#minimal}
 
@@ -18,7 +18,7 @@ search_keywords: [Asciinema, 终端录像, cast, asciicast, 录屏, 演示, term
 
 {{< asciinema file="images/install.cast" >}}
 
-这是 Pigsty 在一台 Debian 机器上的单机安装，终端尺寸 120×36，时长约 6 分 42 秒。想在自己的站点上试，把[示例录像](/images/install.cast)下载到 `static/images/install.cast`。`file` 写的是从站点根开始的路径；同样的写法也能找到 `assets/` 下的文件，因为主题会先查找全局资源。页面包里的文件找不到。不写 `title` 时，窗口标题显示 `file` 的值。
+这是 Pigsty 在一台 Debian 机器上的单机安装，终端尺寸 120×36，实录 6 分 42 秒，0.5 秒静默上限使播放约 3 分钟。想在自己的站点上试，把[示例录像](/images/install.cast)下载到 `static/images/install.cast`。`file` 写的是从站点根开始的路径；同样的写法也能找到 `assets/` 下的文件，因为主题会先查找全局资源。页面包里的文件找不到。不写 `title` 时，窗口标题显示 `file` 的值。
 
 ## 窗口标题与主题 {#title-theme}
 

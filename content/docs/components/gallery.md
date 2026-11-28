@@ -2,7 +2,7 @@
 title: Gallery
 linkTitle: Gallery
 description: Lay out a set of related screenshots as a responsive grid with a `gallery` fence, each with an optional description or link.
-weight: 170
+weight: 420
 search_keywords: [Gallery, screenshot grid, fence, image zoom, link, class]
 image_zoom: true
 ---

@@ -6,22 +6,22 @@ weight: 29
 icon: fa-solid fa-map-location-dot
 search_keywords: [地图, Map 组件, OpenStreetMap, Leaflet, 地点列表, 标记点, 路线, 游记, 瓦片, GPS, EXIF, 组件]
 design_kind: proposal
-design_status: implemented
+design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] 已实现，等待发布
-> 已在主题 `main` 分支中实现，并写入了[地图指南](/zh/docs/components/map/)。尚未包含在发布标签中。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
+> [!NOTE] 已随 OINK 1.7.0 接受并发布
+> 已随 OINK v1.7.0 发布并写入[地图指南](/zh/docs/components/map/)，规范行为归属[组件契约](/zh/docs/design/components/#timeline-media-social-and-maps)。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 2026-11-27 在 `main` 实现；等待发布 |
+| 状态 | 已接受并随 OINK v1.7.0 发布（2026-11-27 实现） |
 | 负责人 | OINK 维护者 |
 | 交付阶段 | S5；基于 GPS 元数据的照片标记点留待之后 |
 | 形态 | 数据围栏：```` ```map ```` 加 YAML 或 JSON 地点列表 |
 | 新增公共 API | `map` 围栏及其字段；配置 `params.map` |
 | 运行时 | 默认无；启用地图后经 `content-components.js` 加载随主题内置（vendored）的 Leaflet |
-| 受影响范围 | `layouts/_markup/render-codeblock-map.html`、`scripts.html`、`content-components.js`、`VENDOR.json`、一个样式表层、配置 schema、两个 locale 键，以及新指南 `/docs/components/map/` |
+| 受影响范围 | `layouts/_markup/render-codeblock-map.html`、`scripts.html`、`content-components.js`、`VENDOR.json`、一个样式表层、配置 schema、三个 locale 键，以及新指南 `/docs/components/map/` |
 
 ## 概要 {#summary}
 
@@ -39,7 +39,7 @@ proposal_date: 2026-11-27
 ```
 ````
 
-所有输出都把这些地点渲染为编号列表，包含名称、说明、缩略图，以及指向 OpenStreetMap 的坐标链接。这份列表就是内容本身。站点启用地图并指定瓦片服务后，HTML 会在列表上方显示一张交互地图，标记点编号与列表一一对应。默认情况下什么都不启用，也不选择任何瓦片服务。
+HTML、Print 和 RSS 把地点渲染为编号列表，包含名称、说明、缩略图和 OpenStreetMap 坐标链接。Markdown 和 LLMS 保留作者写的围栏。站点启用地图并指定瓦片服务后，HTML 会在列表上方显示一张交互地图，标记点编号与列表一一对应。默认情况下什么都不启用，也不选择任何瓦片服务。
 
 ## 问题 {#problem}
 
@@ -47,7 +47,7 @@ proposal_date: 2026-11-27
 
 ## 设计原则 {#principles}
 
-1. **列表是内容，地图只是增强。** 没有地图的读者（Print、RSS、LLMS、禁用 JavaScript、瓦片主机被屏蔽）也能按相同顺序看到相同的地点，链接照常可用。
+1. **列表是内容，地图只是增强。** 没有地图的读者（Print、RSS、禁用 JavaScript 或瓦片主机被屏蔽）也能按相同顺序看到相同的地点，链接照常可用。
 2. **配置完整后才产生网络请求。** 瓦片是读者浏览器发出的第三方请求。与 Draw.io 一样，主题不附带默认服务器，完成配置前保持关闭（[架构契约](/zh/docs/design/architecture/#configuration-and-diagnostics)）。
 3. **瓦片服务由站点选择。** 瓦片服务各有使用政策、配额、密钥和署名条款。主题若提供默认值，就等于替每个站点做了这项法律与运维上的选择。
 4. **只有一种形态。** 一个围栏放一个地点和放二十个同样容易，因此不另设短代码作为第二种形态。
@@ -57,7 +57,7 @@ proposal_date: 2026-11-27
 
 ### 目标 {#goals-list}
 
-- 零配置即可在所有输出中得到可读的地点列表。
+- 零配置即可在 HTML、Print 与 RSS 中得到静态列表，在 Markdown 与 LLMS 中读到原始地点数据。
 - 可选启用的交互地图：编号标记点，包含名称、说明、缩略图和链接的弹窗，可选的路线连线，以及提供时使用的暗色瓦片。
 - 不劫持页面滚动，支持键盘操作，控件已本地化。
 - 引擎随主题内置，只在需要它的页面加载。
@@ -94,8 +94,8 @@ proposal_date: 2026-11-27
 | --- | --- |
 | `caption` | 纯文本图注 |
 | `route` | 为 `true` 时按列表顺序用一条线连接各地点 |
-| `zoom` | 整数 1–19。默认：只有一个地点时为 15，否则自动缩放以容纳所有地点 |
-| `height` | 校验方式与 Infographic 围栏的 `height` 相同；默认是一个响应式画框，高度上限低于视口高度 |
+| `zoom` | 整数 1–22（实现范围；初稿为 1–19）。默认：只有一个地点时为 15，否则自动缩放以容纳所有地点 |
+| `height` | 正的 `px`、`rem`、`em`、`vh` 或 `vw` 长度；百分比或零告警并保留默认值，即一个高度上限低于视口高度的响应式画框 |
 | `id` | 经过校验的元素 ID |
 | `tab`、`group`、`value` | 共享的相邻标签页行为；所在面板显示时地图重新计算尺寸 |
 
@@ -103,7 +103,7 @@ proposal_date: 2026-11-27
 
 ### 静态形态 {#static-form}
 
-在所有输出中始终渲染：
+HTML、Print 和 RSS 使用以下静态列表。
 
 ```html
 <figure class="td-map">
@@ -196,7 +196,7 @@ Leaflet（BSD-2-Clause）体积小，不需要 WebGL，支持 HTML 标记和键�
 | `styles`、`center`、标记点 `icon` 与 `tone`、`fallback` 图片、`full` | 暂时移除 | 编号标记点把地图和列表绑定在一起；回退图片与列表重复 |
 | 地图挂载后隐藏列表 | 否决 | 列表是图例、无障碍替代内容，也是打印形态 |
 | 构建时渲染静态地图图片 | 否决 | 构建时需要瓦片，与离线构建相矛盾 |
-| 点击后才加载地图 | 推迟 | 接近视口时懒加载是各引擎的常规做法；如果隐私评审或触控滚动有需要，再重新考虑 |
+| 点击后才加载地图 | 以 `loading: click` 提供 | 接近视口时懒加载是各引擎的常规做法，仍是默认行为；隐私评审或触控滚动有需要时，`params.map.loading: click` 改为等读者点击按钮再加载 |
 
 代价：需要维护一个随主题内置的引擎；任何地图出现之前都要先完成配置；开箱即用时没有默认外观。这些都直接源自网络政策。
 

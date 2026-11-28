@@ -2,11 +2,11 @@
 title: 音频
 linkTitle: 音频
 description: 用图片语法把播客单集、语音样例或讲座录音放进页面，渲染为带标题的原生播放器，文字稿紧随其后。
-weight: 174
+weight: 440
 search_keywords: [音频, Audio, mp3, m4a, ogg, wav, flac, 播客, podcast, 语音样例, 文字稿, transcript, 播放器]
 ---
 
-像写图片一样写音频文件：`![标题](episode.mp3)`，它就成为一个带标题的 figure，里面是浏览器自带的音频播放器。适用于播客单集、语音样例、读音示范与讲座录音。没有新的 shortcode 要学，也不需要任何配置。页面上只有一个音频播放器时不加载任何脚本；有两个及以上播放器时，按页加载共享的轻量媒体运行时，让同页播放自动互斥。
+像写图片一样写音频文件：`![标题](episode.mp3)`，它就成为一个带标题的 figure，里面是浏览器自带的音频播放器。适用于播客单集、语音样例、读音示范与讲座录音。没有新的 shortcode 要学，也不需要任何配置。进度条用当前页面的强调色标出已播放的部分。共享的媒体脚本更新进度，开始播放一段录音时会暂停同页其他有声播放器。关闭 JavaScript 仍可使用浏览器自带的播放控件。
 
 ## 最简例子 {#minimal}
 
@@ -18,7 +18,7 @@ search_keywords: [音频, Audio, mp3, m4a, ogg, wav, flac, 播客, podcast, 语�
 
 录音没有画面，方括号文字承担了图片替代文字的职责：它既是可见的标题，也通过 `aria-labelledby` 作为播放器的无障碍名称。留空时构建会告警，并用文件名作为标题；方括号里的 Markdown 格式按纯文本显示，URL 后面的 Markdown `"title"` 会被忽略。不要把音频再包进外层 Markdown 链接（`[![…](episode.mp3)](…)`）：原生播放器内部已含回退链接，再套链接会生成非法的嵌套 `<a>`。
 
-页面上前 6 个音频播放器默认使用 `preload="metadata"`，不必下载整段录音就能显示时长；从第 7 个起默认切换为 `preload="none"`，避免多样例页面集中发起大量元数据请求。也可以用 `{preload="none"}` 或 `{preload="metadata"}` 显式覆盖。基于 Chromium 的浏览器还在播放器菜单里提供播放速度。
+页面上前 6 个音频播放器默认使用 `preload="metadata"`，不必下载整段录音就能显示时长；从第 7 个起默认切换为 `preload="none"`，避免多样例页面集中发起大量元数据请求。计数沿用 Hugo 的渲染顺序：先数直接写在页面里的播放器，再数标签页、帖子、include、卡片等 shortcode 正文里的播放器。也可以用 `{preload="none"}` 或 `{preload="metadata"}` 显式覆盖；shortcode 里的播放器如果必须显示时长，请显式写上 `{preload="metadata"}`。基于 Chromium 的浏览器还在播放器菜单里提供播放速度。
 
 这个文件是与本页放在同一页面包里的 MP3，时长 10 秒，大小 63 KB。与块级图片一样，播放器需要 `markup.goldmark.parser.wrapStandAloneImageWithinParagraph: false`，这是[站点前置配置](/zh/docs/components/#prerequisites)之一。
 
@@ -129,14 +129,15 @@ Hugo 本身不定义任何 `audio/*` 媒体类型。如果站点在 `mediaTypes`
 | `data-*` / `aria-*` | 字符串 | — | 透传到 figure |
 {.fields meta="type default"}
 
-`num`、`poster`、`autoplay`、`track`、`width`、`height`、`link`、`command`、`options` 以及其它键会作为未知属性告警并丢弃；`style` 与 `on*` 作为不安全属性告警。录音不是 Book 意义上的图，所以没有编号。
+`num`、`poster`、`autoplay`、`track`、`width`、`height`、`link`、`command`、`options` 以及其它键会作为未知属性告警并丢弃；`style` 作为不安全属性告警；`on*` 事件属性在主题读到之前已被 Hugo 剥离，静默丢弃。录音不是 Book 意义上的图，所以没有编号。
 
 ## 限制与常见问题 {#limits}
 
 - 没有封面图、章节与波形：标题和说明就是整个框。
-- 同页互斥播放：播放器变为有声时（带声音开始播放，或正在播放时被取消静音），会暂停页面上其它有声的 `<audio>` 与 `<video>` 播放器。静音或没有声音的播放器（例如自动播放循环）继续播放。YouTube、Bilibili 与 Vimeo 播放器运行在其它站点的框架中，既不会暂停别人，也不会被暂停。
+- 同页互斥播放：播放器变为有声时（带声音开始播放，或正在播放时被取消静音），会暂停页面上其它有声的 `<audio>` 与 `<video>` 播放器。静音或没有声音的播放器（例如自动播放循环）继续播放。打开平台卡片时会先暂停有声播放器；平台播放器开始播放后，本地无法再暂停它。
 - 主题不提供倍速控件。基于 Chromium 的浏览器在原生控件菜单里提供倍速，其它浏览器各不相同。
 - 原生播放器在各浏览器中的外观不同：基于 Chromium 的浏览器会跟随站点的浅色与深色 `color-scheme`，Firefox 与 Safari 在深色模式下仍保持固定的原生控件栏样式。
+- 焦点位于原生播放器内时，全站单键快捷键自动让位。
 - 每段录音只有一个源文件，没有备用格式。MP3 在所有现行浏览器中都能播放。
 - 没有播客订阅源：RSS 输出不带 `<enclosure>`，播客分发由站点自行处理。
 

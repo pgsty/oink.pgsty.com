@@ -30,36 +30,56 @@ line, **fence** is a code fence with a language tag, **shortcode** is
 for it: **none**, **per page** (only on pages that use it), or **site switch**
 (off until you enable it in `hugo.yml`, then per page).
 
+### Core writing {#writing}
+
 | Component | Use it for | Shortest form | Form | Runtime |
 | --- | --- | --- | --- | --- |
 | [Callouts](/docs/components/callout/) | A prerequisite, warning or aside the reader must not miss | `> [!NOTE]` | native | none |
-| [Images](/docs/components/image/) | Screenshots and figures with captions, sizing, zoom and numbering | `![alt](oink.webp)` | native | site switch |
 | [Code Blocks](/docs/components/code/) | Commands and source with a filename, exact copy, folding and line links | ```` ```sh ```` | fence | per page |
-| [Tabs](/docs/components/tabs/) | The same instructions for several platforms or languages | attribute `{tab="Linux"}` | native + shortcode | per page |
 | [Tables](/docs/components/table/) | Comparisons and matrices, full-width, captioned or numbered | `{.full-width}` | native | tabs or `.expand` only |
 | [Fields](/docs/components/fields/) | Parameter lists with type, required and default chips | `{.fields meta="type default"}` | native + shortcode | none |
+| [Badge](/docs/components/badge/) | A one- or two-word status beside a name, such as Beta | `{{</* badge text="Beta" */>}}` | shortcode | none |
+| [Kbd](/docs/components/kbd/) | Key names and keyboard shortcuts | `{{</* kbd "Ctrl" "K" */>}}` | shortcode | none |
+{.wide}
+
+### Structure & flow {#structure}
+
+| Component | Use it for | Shortest form | Form | Runtime |
+| --- | --- | --- | --- | --- |
+| [Tabs](/docs/components/tabs/) | The same instructions for several platforms or languages | attribute `{tab="Linux"}` | native + shortcode | per page |
 | [Steps](/docs/components/steps/) | A procedure the reader carries out in order | `{.steps}` | native + shortcode | none |
 | [Timeline](/docs/components/timeline/) | Dated or ordered events on an axis | `{.timeline}` on a definition list | native | none |
 | [Update](/docs/components/update/) | Changelog entries that stay headings in the table of contents | `## v1.6 {.update date="2026-11-23"}` | native | none |
 | [Cards](/docs/components/cards/) | A few parallel destinations for the reader to choose from | `{.cards}` | native + shortcode | none |
-| [FileTree](/docs/components/filetree/) | A directory layout with an aligned comment beside each entry | ```` ```filetree ```` | fence | per page |
-| [Math](/docs/components/math/) | Inline and display formulas, rendered by KaTeX at build time | `$$ … $$` | native | none |
+| [Includes](/docs/components/include/) | Reuse a file, print a site parameter, keep a note out of the output | `{{</* include file="parts/x.md" */>}}` | shortcode | none |
+{.wide}
+
+### Diagrams, charts & math {#diagrams}
+
+| Component | Use it for | Shortest form | Form | Runtime |
+| --- | --- | --- | --- | --- |
 | [Mermaid](/docs/components/mermaid/) | Flowcharts, sequence diagrams and Gantt charts drawn from text | ```` ```mermaid ```` | fence | per page |
 | [PlantUML](/docs/components/plantuml/) | UML diagrams, rendered in the browser or by your own server | ```` ```plantuml ```` | fence | site switch |
-| [Markmap](/docs/components/markmap/) | A Markdown outline drawn as a mind map | ```` ```markmap ```` | fence | site switch |
 | [Draw.io](/docs/components/drawio/) | Diagrams readers can open in the Draw.io editor; needs an editor address | `![alt](arch.drawio.svg)` | native | site switch |
 | [ECharts](/docs/components/echarts/) | Bar, line and pie charts declared as data | ```` ```echarts ```` | fence | per page |
 | [Infographic](/docs/components/infographic/) | AntV infographics that show order, hierarchy or comparison | ```` ```infographic ```` | fence | per page |
+| [Maps](/docs/components/map/) | Places as a list, plus an interactive map when enabled | ```` ```map ```` | fence | site switch |
+| [Markmap](/docs/components/markmap/) | A Markdown outline drawn as a mind map | ```` ```markmap ```` | fence | site switch |
+| [FileTree](/docs/components/filetree/) | A directory layout with an aligned comment beside each entry | ```` ```filetree ```` | fence | per page |
+| [Math](/docs/components/math/) | Inline and display formulas, rendered by KaTeX at build time | `$$ … $$` | native | none |
+{.wide}
+
+### Media & embeds {#media}
+
+| Component | Use it for | Shortest form | Form | Runtime |
+| --- | --- | --- | --- | --- |
+| [Images](/docs/components/image/) | Screenshots and figures with captions, sizing, zoom and numbering | `![alt](oink.webp)` | native | site switch |
 | [Gallery](/docs/components/gallery/) | A set of images browsed in one shared zoom dialog | ```` ```gallery ```` | fence | site switch |
 | [Video](/docs/components/video/) | Video files, looping demos, YouTube and Bilibili cards | `![name](demo.mp4)` | native | per page; players need a site switch |
-| [Audio](/docs/components/audio/) | Podcast episodes and voice samples in a titled native player | `![name](episode.mp3)` | native | none for one; per page for two+ |
-| [Social posts](/docs/components/social/) | Quote a social post without contacting its platform | `{{</* social author="…" */>}}` | shortcode | none |
-| [Map](/docs/components/map/) | Places as a list, plus an interactive map when enabled | ```` ```map ```` | fence | site switch |
-| [Badge](/docs/components/badge/) | A one- or two-word status beside a name, such as Beta | `{{</* badge text="Beta" */>}}` | shortcode | none |
-| [Kbd](/docs/components/kbd/) | Key names and keyboard shortcuts | `{{</* kbd "Ctrl" "K" */>}}` | shortcode | none |
-| [Includes](/docs/components/include/) | Reuse a file, print a site parameter, keep a note out of the output | `{{</* include file="parts/x.md" */>}}` | shortcode | none |
+| [Audio](/docs/components/audio/) | Podcast episodes and voice samples in a titled native player | `![name](episode.mp3)` | native | per page |
 | [Asciinema](/docs/components/asciinema/) | Terminal sessions replayed as selectable text | `{{</* asciinema file="images/x.cast" */>}}` | shortcode | per page |
-{.wide .expand}
+| [Social](/docs/components/social/) | Quote a social post without contacting its platform | `{{</* social author="…" */>}}` | shortcode | none |
+{.wide}
 
 A few entries in the *Runtime* column depend on what is on the page:
 
@@ -73,10 +93,11 @@ A few entries in the *Runtime* column depend on what is on the page:
   formulas are already HTML and MathML when the page is built.
 - Draw.io loads only on pages with PNG or SVG images, and it downloads each
   distinct image once to look for an editable copy.
-- Video and audio share `media.js`, loaded only for an autoplaying video, for a
-  card whose platform is listed in `params.video_embeds`, or on pages with two
-  or more audio/video players (for single-active playback). A map loads Leaflet
-  only when `params.map` is configured; otherwise it stays a list of places.
+- Video and audio share `media.js`, loaded on any page with a local audio or
+  video player (progress and single-active playback) or a card whose platform
+  is in `params.video_embeds`. A map loads Leaflet only when `params.map` is
+  enabled (`enable: true` with valid `tiles` and `attribution`); otherwise it
+  stays a list of places.
 
 No component loads a script in print, Markdown or RSS output. Each component
 page says what those outputs contain when it differs from what you would

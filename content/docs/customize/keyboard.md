@@ -3,15 +3,15 @@ title: Keyboard navigation
 linkTitle: Keyboard navigation
 description: Use single-key shortcuts and understand when typing disables them. Disable shortcuts for the site or individual pages.
 weight: 80
-search_keywords: [keyboard navigation, shortcuts, shortcut help, WASD, zen mode, browsing history, page width, expand all, Gemini, keyboard_nav, accessibility, skip link]
+search_keywords: [keyboard navigation, shortcuts, shortcut help, WASD, zen mode, browsing history, page width, expand all, keyboard_nav, accessibility, skip link]
 aliases:
   - /docs/advanced/keyboard/
 ---
 
 Your readers can work through your documentation without reaching for the
-mouse: every interactive OINK page answers thirty single-key shortcuts, ten for
-moving around, ten for acting on the page and ten for changing the view.
-Press {{< kbd "'" >}} on any page to see all thirty; keys the current page
+mouse: every interactive OINK page answers twenty-nine single-key shortcuts, ten
+for moving around, nine for acting on the page and ten for changing the view.
+Press {{< kbd "'" >}} on any page to see all twenty-nine; keys the current page
 cannot use are dimmed. Shortcuts are on by default, step aside whenever the
 reader is typing, and can be [turned off](#disable) for a site or a page.
 
@@ -95,7 +95,7 @@ site, newest first. The page you are on is left out, so {{< kbd "H" >}} then
 | {{< kbd "Shift" "Delete" >}} | Remove the selected entry |
 | {{< kbd "Esc" >}} | Close the list |
 
-The **Clear history** button empties the list. The command palette also offers
+**Clear history** removes all stored visits, including the current page. The command palette also offers
 a **Browsing history** command that opens the same list.
 
 History keeps the last 100 pages in this browser's `localStorage`, under a key
@@ -112,7 +112,7 @@ itself it scrolls back to the top.
 | Key | Action |
 | --- | --- |
 | {{< kbd "/" >}} {{< kbd "F" >}} | Search |
-| {{< kbd "C" >}} {{< kbd "`" >}} | Open the command palette with commands only |
+| {{< kbd `\` >}} {{< kbd "C" >}} | Open the command palette with commands only |
 | {{< kbd "U" >}} | Edit this page |
 | {{< kbd "N" >}} | Create a child page |
 | {{< kbd "I" >}} | Create a docs issue |
@@ -120,17 +120,16 @@ itself it scrolls back to the top.
 | {{< kbd "P" >}} | Print this page |
 | {{< kbd "[" >}} | Open in ChatGPT |
 | {{< kbd "]" >}} | Open in Claude |
-| {{< kbd `\` >}} | Open in Gemini |
 
 ### Search and commands {#search}
 
 {{< kbd "/" >}} opens the [command palette](/docs/customize/panel/) ready to
-search, and {{< kbd "`" >}} (also {{< kbd "~" >}}) opens it with commands only.
+search, and {{< kbd `\` >}} opens it with commands only.
 Both keys belong to the palette, so they keep working when keyboard
 navigation is off; {{< kbd "F" >}} and {{< kbd "C" >}} are the keyboard
 navigation equivalents. {{< kbd "⌘" "K" >}} on macOS and {{< kbd "Ctrl" "K" >}}
 elsewhere open the palette from anywhere, even a text field, and close it
-again. On layouts where {{< kbd "`" >}} is hard to reach, press {{< kbd "C" >}}
+again. On layouts where {{< kbd `\` >}} is hard to reach, press {{< kbd "C" >}}
 or type `>` at the start of the search box.
 
 The palette needs local search (`params.offline_search: true`); without it
@@ -145,11 +144,9 @@ a [repository](/docs/customize/repository/) configured for the site;
 they do nothing on generated pages such as tag lists. {{< kbd "P" >}} prints
 the page, exactly like the browser's print command.
 
-{{< kbd "[" >}}, {{< kbd "]" >}} and {{< kbd `\` >}} hand the page to an AI
-assistant in a new tab. They work only when the site enables
-`params.ui.page_context_menu.assistant_links`. Gemini cannot receive a prompt
-through its address, so OINK copies the prompt to the clipboard as it opens
-Gemini: paste it into the message box.
+{{< kbd "[" >}} and {{< kbd "]" >}} hand the page to ChatGPT or Claude in a new
+tab. They work only when the site enables
+`params.ui.page_context_menu.assistant_links`.
 
 ### Expand or collapse all {#expand-all}
 
@@ -200,7 +197,8 @@ publish it.
 {{< kbd "T" >}} steps through the visual styles the site offers in
 `params.ui.preset_menu` and wraps after the last one; it does nothing when the
 site offers a single style. {{< kbd "Y" >}} steps through light, dark and
-system color modes and does nothing when the color-mode menu is off. Both work
+system color modes and does nothing when the dark palette is off
+(`params.ui.dark_mode` disabled). Both work
 on every interactive page and remember the choice like the Appearance menu does.
 
 ### Index and gallery layouts {#layouts}
@@ -248,8 +246,8 @@ keys work even when `keyboard_nav` is off.
 
 ## Shortcut help {#help}
 
-{{< kbd "'" >}} opens all thirty shortcuts in a centered dialog: navigation,
-actions and view side by side, ten rows each. Rows the current page cannot run
+{{< kbd "'" >}} opens all twenty-nine shortcuts in a centered dialog: navigation,
+actions and view side by side (ten, nine and ten rows). Rows the current page cannot run
 stay in place but are dimmed, and screen readers hear them as unavailable, so
 the grid keeps the same shape everywhere. The dialog opens from anywhere: in
 the middle of a long page, in Zen Mode, or on pages without a footer
@@ -257,19 +255,21 @@ the middle of a long page, in Zen Mode, or on pages without a footer
 a click outside the dialog closes it.
 
 The question-mark button at the end of the footer's bottom bar offers the same
-dialog. Hovering or focusing it shows a short hint with the keys readers reach
-for first; clicking it opens the full dialog, and closing the dialog returns
-focus to the button.
+sheet. Hovering or focusing it previews all twenty-nine shortcuts directly
+above the footer (three columns side by side on wide screens, wrapping cleanly
+on narrower screens), with unavailable rows already dimmed; clicking it opens
+the centered modal dialog with the **Enable shortcuts** toggle, and closing the
+dialog returns focus to the button.
 
 With keyboard navigation off and local search on, the button keeps only the
-two palette keys, {{< kbd "/" >}} and {{< kbd "`" >}}, and opens no dialog.
+two palette keys, {{< kbd "/" >}} and {{< kbd `\` >}}, and opens no dialog.
 
 ## Keys left free {#reserved}
 
-{{< kbd "?" >}} and the digits are deliberately unbound, and every letter key
-pressed with a modifier keeps its browser or system meaning. Only
-{{< kbd "<" >}}, {{< kbd ">" >}}, {{< kbd "+" >}} and {{< kbd "~" >}} accept
-{{< kbd "Shift" >}}, because standard keyboards need it to type them.
+{{< kbd "?" >}} and the digits are deliberately unbound, and modified letters keep their usual meaning except for the exact search chord
+{{< kbd "Ctrl" "K" >}} or {{< kbd "⌘" "K" >}}. Use the character printed by
+your keyboard layout. For example, German {{< kbd "Shift" "7" >}} opens search.
+The gallery and width keys also accept Shift to produce `,`, `.`, `;`, `<`, `>`, `=` or `+`.
 
 ## When shortcuts stand down {#stand-down}
 
@@ -280,6 +280,8 @@ with typing or an overlay:
   `<input>` you type into, such as text, search, email, password or number.
   Non-text controls such as gallery layout radio buttons and the size slider
   keep the page shortcuts and their own arrow keys.
+- Focus is inside a map or a native audio or video player, which keeps its
+  own keys.
 - An input method is composing, which matters on every Chinese, Japanese or
   Korean site.
 - A modifier key is held. {{< kbd "⌘" "C" >}} still copies,
@@ -293,7 +295,7 @@ Comments load in an iframe, so their keystrokes never reach the page.
 
 ## Focus order and accessibility {#a11y}
 
-- **Skip link**: the first {{< kbd "Tab" >}} on a page reveals "Skip to main
+- **Skip link**: the first {{< kbd "Tab" >}} on a page reveals "Skip to
   content", which passes the navbar and sidebar in one step and marks the
   article title.
 - **Real focus**: tree navigation moves the actual DOM focus, so a screen reader
@@ -312,7 +314,7 @@ Comments load in an iframe, so their keystrokes never reach the page.
 ## Turning it off {#disable}
 
 To turn off single-key shortcuts for yourself, open shortcut help and uncheck
-**Single-key shortcuts**. At the start of any page with these shortcuts, Tab
+**Enable shortcuts** (enabled by default). At the start of any page with these shortcuts, Tab
 past **Skip to content** to reach the same checkbox. This also works on pages
 without a footer. Space toggles the checkbox. Your choice applies across the
 site’s languages in this browser. Ctrl+K or ⌘K still opens the search palette.
@@ -338,7 +340,7 @@ keyboard_nav: false
 The key takes a boolean only; see [Configuration](/docs/customize/config/) for
 the complete definition. A page with keyboard navigation off ships no keyboard
 runtime at all: no shortcuts, no browsing history recording and no restored
-page width. {{< kbd "/" >}}, {{< kbd "`" >}} and {{< kbd "⌘" "K" >}} belong to
+page width. {{< kbd "/" >}}, {{< kbd `\` >}} and {{< kbd "⌘" "K" >}} belong to
 search and keep working, and the footer's collapse arrow is unaffected.
 
 ## Verify {#verify}
@@ -358,7 +360,7 @@ prefix.
    With keyboard navigation off and no local search, the button is not
    generated.
 
-2. Open a documentation page and press {{< kbd "'" >}}: three columns of ten
+2. Open a documentation page and press {{< kbd "'" >}}: three columns
    appear, with dimmed rows for features this page lacks. Press it again to
    close the dialog.
 3. With focus in the article, press {{< kbd "S" >}} a few times. The sidebar
@@ -375,7 +377,7 @@ prefix.
 
 ## Related {#related}
 
-- [Command palette](/docs/customize/panel/): the dialog behind {{< kbd "/" >}}, {{< kbd "F" >}}, {{< kbd "C" >}} and {{< kbd "`" >}}
+- [Command palette](/docs/customize/panel/): the dialog behind {{< kbd "/" >}}, {{< kbd "F" >}}, {{< kbd `\` >}} and {{< kbd "C" >}}
 - [Search](/docs/customize/search/): where the palette's page results come from
 - [Layouts and page types](/docs/customize/layout/): which pages have a sidebar and an outline, and so which keys apply
 - [Kbd](/docs/components/kbd/): writing keycaps in your own pages

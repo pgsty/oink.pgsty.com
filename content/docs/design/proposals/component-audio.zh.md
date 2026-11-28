@@ -6,21 +6,21 @@ weight: 28
 icon: fa-solid fa-headphones
 search_keywords: [音频, audio, mp3, 播客, 语音样本, 文字稿, 播放器, 组件]
 design_kind: proposal
-design_status: implemented
+design_status: accepted
 proposal_date: 2026-11-27
 ---
 
-> [!NOTE] 已实现，等待发布
-> 已在主题 `main` 分支中实现，并写入了[音频指南](/zh/docs/components/audio/)。尚未包含在发布标签中。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
+> [!NOTE] 已随 OINK 1.7.0 接受并发布
+> 已随 OINK v1.7.0 发布并写入[音频指南](/zh/docs/components/audio/)，规范行为归属[组件契约](/zh/docs/design/components/#timeline-media-social-and-maps)。共同决策见[总览](/zh/docs/design/proposals/content-components-expansion/)。
 
 | 记录 | 内容 |
 | --- | --- |
-| 状态 | 2026-11-27 在 `main` 实现；等待发布 |
+| 状态 | 已接受并随 OINK v1.7.0 发布（2026-11-27 实现） |
 | 负责人 | OINK 维护者 |
 | 交付阶段 | S2，与视频文件一同交付 |
 | 形态 | 原生形态：目标为音频文件的块级 Markdown 图片 |
 | 新增公共 API | 除接受音频目标外没有新增；属性为 `caption`、`id` 与 `preload` |
-| 运行时 | 单个播放器无运行时；同页有 2 个及以上 `<audio>`/`<video>` 播放器时共享 `js/chunks/media.js`（同页互斥播放） |
+| 运行时 | 共享 `js/chunks/media.js` 显示播放进度并协调同页有声播放 |
 | 受影响范围 | 与 Video 共用的媒体 partial、一个样式表分节，以及新指南 `/docs/components/audio/` |
 
 ## 概要 {#summary}
@@ -60,7 +60,7 @@ Print 或 RSS 形态。光有一个播放器，读者无从得知它播放的是
 - 支持本地、页面包、全局 assets、`static/` 与对象存储中的音频文件。
 - 可见且具备无障碍名称的标题；可选的题注。
 - 带可用链接的静态 Print、RSS、Markdown 与 LLMS 形态。
-- 单个播放器零 JavaScript，同页有 2 个及以上播放器时共享 `js/chunks/media.js` 实现互斥播放；零配置。
+- 关闭 JavaScript 仍可原生播放。共享脚本以强调色显示已播进度，并暂停同页其他有声播放器。
 
 ### 非目标 {#non-goals}
 
@@ -125,7 +125,7 @@ Fragments `#t=30,60`），包括其中的百分号编码。
 
 | 输出 | 结果 |
 | --- | --- |
-| HTML | 如上；单个播放器无运行时，2 个及以上播放器加载 `js/chunks/media.js` |
+| HTML | 原生控件配合 `js/chunks/media.js` 以页面强调色显示进度 |
 | Print | 标题、题注，以及在屏幕与纸面均可见的 `.td-media__link` 文件 URL（`@media print` 强制纸张调色板） |
 | Markdown / LLMS | 作者编写的源码；随后的文字稿提示块保持为可读文本 |
 | RSS | 直接链接到文件绝对 URL 的标题，以及题注 |
@@ -145,7 +145,7 @@ Fragments `#t=30,60`），包括其中的百分号编码。
 | 方案 | 决定 | 理由 |
 | --- | --- | --- |
 | 初稿的 `{{</* audio */>}}`，带 `src`、`mp3`、`ogg`、`m4a`、`title`、`artist`、`cover`、`duration`、`chapters`、`caption`、`preload`、`loop`、`download`、`compact` 参数和文字稿正文 | 否决 | 编解码器回退已经过时；`duration` 与 `artist` 是会与文件脱节的事实；`cover` 与 `compact` 会造成两种布局；正文与折叠提示块重复 |
-| 用运行时实现倍速切换和章节 | 推迟 | 基于 Chromium 的浏览器中，原生控件已覆盖倍速；章节需要 WebVTT 实际需求再做。同页互斥播放已在同页 2 个及以上播放器时合入 `js/chunks/media.js` |
+| 用运行时实现倍速切换和章节 | 推迟 | 基于 Chromium 的浏览器中，原生控件已覆盖倍速；章节需要 WebVTT 实际需求再做。共享媒体脚本处理同页互斥播放 |
 | 像图片那样隐藏方括号文字 | 否决 | 只剩一个播放器时，视力正常的读者看不到任何标签 |
 | 作为 Book 图编号 | 否决 | 录音不是图；带编号的音频类别需要单独的 Book 索引，而目前没有这种需求 |
 
@@ -179,7 +179,7 @@ Fragments `#t=30,60`），包括其中的百分号编码。
 
 ## 验收标准 {#acceptance}
 
-- 单音频页面不加载运行时；同页有 2 个及以上播放器时加载 `js/chunks/media.js` 实现互斥播放。
+- 单个播放器以页面强调色显示进度，启动第二个有声播放器时暂停第一个。
 - 每个音频 figure 都有可见标题，并通过 `aria-labelledby`（带说明时另加 `aria-describedby`）提供无障碍名称。
 - Print、RSS、Markdown 与 LLMS 中不含 `<audio>` 元素，并保留可用链接（Print 屏幕与纸面均可见；RSS 标题直链）。
 - 紧随其后的 `> [!DETAILS]-` 文字稿在专用 Print 输出中展开，在屏幕上与播放器紧密配对。
@@ -187,7 +187,7 @@ Fragments `#t=30,60`），包括其中的百分号编码。
 ## 待决问题 {#open-decisions}
 
 1. **标题位置。** 已定：放在播放器上方并起始对齐。
-2. **S2 是否包含同页互斥播放。** 已定：通过 `js/chunks/media.js` 在同页 2 个及以上播放器时启用，单音频页面保持零 JS。
+2. **S2 是否包含同页互斥播放。** 已定：共享脚本为每个文件播放器显示进度，并协调同页多个播放器的有声播放。
 
 ## 决策日志 {#decision-log}
 

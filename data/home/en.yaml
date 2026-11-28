@@ -5,6 +5,7 @@ sections:
     key: content_types
   - type: logo-wall
     key: components
+    partial: landing/sections/component-groups.html
   - type: cards
     key: cases
     partial: landing/sections/case-cards.html
@@ -14,7 +15,7 @@ sections:
     key: faq
 
 hero:
-  eyebrow: OINK 1.6.0 · Local-first · Built with Hugo
+  eyebrow: OINK 1.7.0 · Local-first · Built with Hugo
   title_lines:
     - words:
         - { text: PGSTY OINK }
@@ -25,12 +26,12 @@ hero:
     dark: images/hero-dark.webp
     alt: OINK engineering documentation illustration
   actions:
-    - label: Start with OINK Starter
-      url: docs/start/starter/
+    - label: Get started
+      url: docs/start/
       icon: fa-solid fa-rocket
       style: primary
-    - label: What's new in 1.6.0
-      url: release/1.6.0/
+    - label: What's new in 1.7.0
+      url: release/1.7.0/
       icon: fa-solid fa-book-open
       style: ghost
 
@@ -45,9 +46,9 @@ capabilities:
       url: docs/start/
       motto: Ship docs, not build pipelines
       bullets:
-        - '[Starter and deployment guides](docs/start/) for your first site'
-        - '[Search](docs/customize/search/), [i18n](docs/customize/i18n/), [Duo View](docs/customize/i18n/#bilingual-view) and [versioning](docs/customize/versions/) built in'
-        - '[RSS](docs/write/blog/), [SEO](docs/admin/analytics/) and [Google Analytics](docs/admin/analytics/) ready'
+        - '[Quick-start, AI prompt and project-docs guides](docs/start/) for your first site'
+        - '[Search](docs/customize/search/), [29 keyboard shortcuts](docs/customize/keyboard/), [Duo View](docs/customize/i18n/#bilingual-view) and [versioning](docs/customize/versions/) built in'
+        - '[Typeset copy](docs/customize/print/#typeset-copy), [RSS](docs/write/blog/), [SEO](docs/admin/analytics/) and [Google Analytics](docs/admin/analytics/) ready'
       value: Focus on documentation, not site plumbing.
       visual:
         type: shell
@@ -69,9 +70,9 @@ capabilities:
       url: docs/customize/brand/#visual-presets
       motto: Paper · Slate · Ink · Terminal
       bullets:
-        - '[Paper](docs/customize/brand/#visual-presets) feels warm; Slate keeps the technical look'
-        - 'Ink uses black, white and red; Terminal pairs mono with sans'
-        - 'Set Style and Light separately; both persist across pages'
+        - '[Paper](docs/customize/brand/#visual-presets) pairs ivory sheets with a clay accent; Slate keeps the technical look'
+        - 'Ink contrasts black, white and red; Terminal sets prose and headings in mono'
+        - 'Each style sets its own CJK system typography; Style and Light persist separately'
       value: Same content, a different feel. Fonts and core scripts stay local.
       visual:
         type: components
@@ -80,7 +81,7 @@ capabilities:
           - {
               icon: fa-solid fa-file-lines,
               title: Paper,
-              detail: warm pages · default,
+              detail: ivory · clay · default,
             }
           - {
               icon: fa-solid fa-layer-group,
@@ -95,7 +96,7 @@ capabilities:
           - {
               icon: fa-solid fa-terminal,
               title: Terminal,
-              detail: mono · teal · amber,
+              detail: all-mono · teal · amber,
             }
     - ref: 03 / LOCAL FIRST
       title: Build with Hugo
@@ -137,23 +138,43 @@ capabilities:
         items:
           - {
               icon: fa-solid fa-code,
-              title: Code Groups,
-              url: docs/components/tabs/,
+              title: Code Blocks,
+              url: docs/components/code/,
             }
           - {
-              icon: fa-solid fa-tags,
+              icon: fa-solid fa-table-list,
+              title: Fields,
+              url: docs/components/fields/,
+            }
+          - {
+              icon: fa-solid fa-tag,
               title: Badge,
               url: docs/components/badge/,
             }
           - {
-              icon: fa-solid fa-keyboard,
-              title: Kbd,
-              url: docs/components/kbd/,
+              icon: fa-solid fa-folder,
+              title: Tabs,
+              url: docs/components/tabs/,
             }
           - {
-              icon: fa-solid fa-list-check,
-              title: Fields,
-              url: docs/components/fields/,
+              icon: fa-solid fa-list-ol,
+              title: Steps,
+              url: docs/components/steps/,
+            }
+          - {
+              icon: fa-solid fa-timeline,
+              title: Timeline,
+              url: docs/components/timeline/,
+            }
+          - {
+              icon: fa-solid fa-diagram-project,
+              title: Diagrams,
+              url: docs/components/mermaid/,
+            }
+          - {
+              icon: fa-solid fa-chart-line,
+              title: ECharts,
+              url: docs/components/echarts/,
             }
           - {
               icon: fa-solid fa-folder-tree,
@@ -171,29 +192,9 @@ capabilities:
               url: docs/components/gallery/,
             }
           - {
-              icon: fa-solid fa-chart-line,
-              title: ECharts,
-              url: docs/components/echarts/,
-            }
-          - {
-              icon: fa-solid fa-diagram-project,
-              title: Diagrams,
-              url: docs/components/mermaid/,
-            }
-          - {
               icon: fa-solid fa-terminal,
               title: Asciinema,
               url: docs/components/asciinema/,
-            }
-          - {
-              icon: fa-solid fa-chart-simple,
-              title: Infographic,
-              url: docs/components/infographic/,
-            }
-          - {
-              icon: fa-solid fa-file-code,
-              title: API Docs,
-              url: docs/write/openapi/,
             }
 
 content_types:
@@ -236,40 +237,61 @@ content_types:
 
 components:
   eyebrow: Component reference
-  title: 21 components, loaded on demand
+  title: 27 components, loaded on demand
   text: Each component has its own guide across HTML, print, Markdown and RSS; scripts load only where used.
-  layout: grid
   columns: 3
-  # Ordered by distinctiveness: the ones you rarely find elsewhere first,
-  # then the ones you reach for every day.
-  items:
-    - { title: ECharts,     icon: fa-solid fa-chart-line,           desc: '`echarts` data fence',           url: docs/components/echarts/ }
-    - { title: Infographic, icon: fa-solid fa-chart-pie,            desc: 'declarative data fence',         url: docs/components/infographic/ }
-    - { title: Markmap,     icon: fa-solid fa-sitemap,              desc: 'mind maps from headings',        url: docs/components/markmap/ }
-    - { title: Asciinema,   icon: fa-solid fa-terminal,             desc: 'terminal casts, local player',   url: docs/components/asciinema/ }
-    - { title: PlantUML,    icon: fa-solid fa-project-diagram,      desc: 'local or server UML',            url: docs/components/plantuml/ }
-    - { title: Draw.io,     icon: fa-solid fa-pen-ruler,            desc: 'diagrams that stay editable',    url: docs/components/drawio/ }
-    - { title: Mermaid,     icon: fa-solid fa-diagram-project,      desc: 'local diagram runtime',          url: docs/components/mermaid/ }
-    - { title: Math,        icon: fa-solid fa-square-root-variable, desc: 'KaTeX at build time',            url: docs/components/math/ }
-    - { title: File trees,  icon: fa-solid fa-folder-tree,          desc: '`filetree` data fence',          url: docs/components/filetree/ }
-    - { title: Galleries,   icon: fa-solid fa-images,               desc: '`gallery` data fence',           url: docs/components/gallery/ }
-    - { title: Code blocks, icon: fa-solid fa-code,                 desc: 'Chroma · lines · copy · fold',   url: docs/components/code/ }
-    - { title: Images,      icon: fa-solid fa-image,                desc: 'captions · sizing · zoom',        url: docs/components/image/ }
-    - { title: Tables,      icon: fa-solid fa-table,                desc: 'captions · numbers · matrix',     url: docs/components/table/ }
-    - { title: Fields,      icon: fa-solid fa-table-list,           desc: 'a table plus `{.fields}`',       url: docs/components/fields/ }
-    - { title: Callouts,    icon: fa-solid fa-circle-info,          desc: '`> [!NOTE]` · 10 types',         url: docs/components/callout/ }
-    - { title: Tabs,        icon: fa-solid fa-folder,               desc: 'fences with `{tab=}`',           url: docs/components/tabs/ }
-    - { title: Steps,       icon: fa-solid fa-list-ol,              desc: 'a list plus `{.steps}`',         url: docs/components/steps/ }
-    - { title: Cards,       icon: fa-solid fa-table-cells-large,    desc: 'a list plus `{.cards}`',         url: docs/components/cards/ }
-    - { title: Badges,      icon: fa-solid fa-tag,                  desc: 'inline status, five tones',      url: docs/components/badge/ }
-    - { title: Keys,        icon: fa-solid fa-keyboard,             desc: 'key names and chords',           url: docs/components/kbd/ }
-    - { title: Include,     icon: fa-solid fa-file-import,          desc: 'files, params, build notes',     url: docs/components/include/ }
+  # Ordered into four cognitive domains matching the docs sidebar and overview
+  # (6 + 6 + 9 + 6 = 27, every group fills complete 3-column rows).
+  groups:
+    - key: writing
+      title: Core writing
+      meta: 6 components · prose, code, tables & inline
+      items:
+        - { title: Callouts,    icon: fa-solid fa-circle-info,          desc: '`> [!NOTE]` · 10 types',         url: docs/components/callout/ }
+        - { title: Code Blocks, icon: fa-solid fa-code,                 desc: 'Chroma · lines · copy · fold',   url: docs/components/code/ }
+        - { title: Tables,      icon: fa-solid fa-table,                desc: 'captions · numbers · matrix',    url: docs/components/table/ }
+        - { title: Fields,      icon: fa-solid fa-table-list,           desc: 'a table plus `{.fields}`',       url: docs/components/fields/ }
+        - { title: Badge,       icon: fa-solid fa-tag,                  desc: 'inline status, five tones',      url: docs/components/badge/ }
+        - { title: Kbd,         icon: fa-solid fa-keyboard,             desc: 'key names and chords',           url: docs/components/kbd/ }
+    - key: structure
+      title: Structure & flow
+      meta: 6 components · tabs, sequences, cards & reuse
+      items:
+        - { title: Tabs,        icon: fa-solid fa-folder,               desc: 'fences with `{tab=}`',           url: docs/components/tabs/ }
+        - { title: Steps,       icon: fa-solid fa-list-ol,              desc: 'a list plus `{.steps}`',         url: docs/components/steps/ }
+        - { title: Timeline,    icon: fa-solid fa-timeline,             desc: 'definition list + `{.timeline}`', url: docs/components/timeline/ }
+        - { title: Update,      icon: fa-solid fa-clock-rotate-left,    desc: 'heading + `{.update}`',          url: docs/components/update/ }
+        - { title: Cards,       icon: fa-solid fa-table-cells-large,    desc: 'a list plus `{.cards}`',         url: docs/components/cards/ }
+        - { title: Includes,    icon: fa-solid fa-file-import,          desc: 'files, params, build notes',     url: docs/components/include/ }
+    - key: diagrams
+      title: Diagrams, charts & math
+      meta: 9 components · diagrams, data, trees & formulas
+      items:
+        - { title: Mermaid,     icon: fa-solid fa-diagram-project,      desc: 'local diagram runtime',          url: docs/components/mermaid/ }
+        - { title: PlantUML,    icon: fa-solid fa-project-diagram,      desc: 'local or server UML',            url: docs/components/plantuml/ }
+        - { title: Draw.io,     icon: fa-solid fa-pen-ruler,            desc: 'diagrams that stay editable',    url: docs/components/drawio/ }
+        - { title: ECharts,     icon: fa-solid fa-chart-line,           desc: '`echarts` data fence',           url: docs/components/echarts/ }
+        - { title: Infographic, icon: fa-solid fa-chart-pie,            desc: 'declarative data fence',         url: docs/components/infographic/ }
+        - { title: Maps,        icon: fa-solid fa-map-location-dot,     desc: '`map` fence · local Leaflet',    url: docs/components/map/ }
+        - { title: Markmap,     icon: fa-solid fa-sitemap,              desc: 'mind maps from headings',        url: docs/components/markmap/ }
+        - { title: FileTree,    icon: fa-solid fa-folder-tree,          desc: '`filetree` data fence',          url: docs/components/filetree/ }
+        - { title: Math,        icon: fa-solid fa-square-root-variable, desc: 'KaTeX at build time',            url: docs/components/math/ }
+    - key: media
+      title: Media & embeds
+      meta: 6 components · images, audio, video & quotes
+      items:
+        - { title: Images,      icon: fa-solid fa-image,                desc: 'captions · sizing · zoom',       url: docs/components/image/ }
+        - { title: Gallery,     icon: fa-solid fa-images,               desc: '`gallery` data fence',           url: docs/components/gallery/ }
+        - { title: Video,       icon: fa-solid fa-film,                 desc: 'native players · platform cards', url: docs/components/video/ }
+        - { title: Audio,       icon: fa-solid fa-volume-high,          desc: 'titled players · single-active', url: docs/components/audio/ }
+        - { title: Asciinema,   icon: fa-solid fa-terminal,             desc: 'terminal casts, local player',   url: docs/components/asciinema/ }
+        - { title: Social,      icon: fa-solid fa-quote-left,           desc: 'offline quoted post cards',      url: docs/components/social/ }
 
 cases:
   eyebrow: Showcase
   title: Built with OINK
   # Items come from content/case/ — see layouts/_partials/landing/sections/case-cards.html
-  text: Community projects and PGSTY sites in production — browse all 45 in the [Case library](case/).
+  text: Community projects and PGSTY sites in production — browse all 79 in the [Case library](case/).
   columns: 3
   groups:
     - key: community
@@ -277,7 +299,7 @@ cases:
     - key: ecosystem
       title: PGSTY Ecosystem
   footer_cta:
-    label: Browse all 45 cases
+    label: Browse all 79 cases
     url: case/
     icon: fa-solid fa-layer-group
   footer_guide:
@@ -286,8 +308,8 @@ cases:
 
 quickstart:
   eyebrow: Get started
-  title: Build your site with an AI agent
-  text: Replace the brackets with your site's details, then paste it into Claude Code, Codex, or any coding agent.
+  title: Build with coding agent
+  text: Replace [...] with your site's details, then paste it into Codex, Claude Code, Antigravity or any coding agent.
   class: td-home-prompt-box
   code: |-
     Build a site with Hugo and the OINK theme, following the OINK site-building skill: https://oink.pgsty.com/skill.md
@@ -299,14 +321,17 @@ faq:
   eyebrow: Before you commit
   title: Questions worth asking first
   items:
-    - question: What's new in OINK 1.6.0?
+    - question: What's new in OINK 1.7.0?
       answer: >-
-        [OINK 1.6.0](release/1.6.0/) moves the stylesheet to plain CSS for
-        Hugo 0.170+ compatibility, removes Bootstrap JS and Lunr, introduces
-        scanning BM25 local search with unspaced CJK queries, automatic split
-        indexes, and field anchors, and upgrades Markmap, ReDoc, Mermaid, KaTeX,
-        and the rest of the bundled runtimes. Any Hugo edition (0.169.0+) builds
-        it with no Sass compiler.
+        [OINK 1.7.0](release/1.7.0/) adds six content components (Timeline,
+        Update, Video, Audio, Social, and Map with vendored Leaflet
+        1.9.4), typeset rich-text copy for pasting cleanly into external
+        editors, 29 single-key shortcuts on a top-layer sheet,
+        local browsing history (`H`), fold-all (`O`), adjustable reading width
+        (`-`/`=`), and a reader opt-out; refines all four presets with Paper's
+        ivory sheet, clay accent, and preset-specific CJK system typography;
+        and adds Markmap corner SVG download controls, site ECharts themes, and
+        styled archived-version banners.
     - question: Do I need Node.js, npm or a bundler anywhere?
       answer: >-
         No. Site builds use Hugo alone (0.169.0 or newer, any edition) and plain
@@ -324,7 +349,7 @@ faq:
         migration](docs/admin/upgrade/).
     - question: Is OINK only for large documentation trees?
       answer: >-
-        No. The [45 showcase sites](docs/about/showcase/) run from a two-page
+        No. The [79 showcase sites](docs/about/showcase/) run from a two-page
         interactive utility and personal blogs to an eight-language, 5,000-page
         documentation hub, books, and Expo albums. The shell scales down as well
         as up.
@@ -348,9 +373,9 @@ faq:
       answer: >-
         With `markdown` in `outputs`, every page has an `index.md` sibling
         announced by `rel="alternate"`, and the `LLMS` format writes a
-        site-level `llms.txt`. The "open in ChatGPT / Claude" page actions exist
-        but are off by default, because they hand the reader's URL to a third
-        party.
+        site-level `llms.txt`. The "open in ChatGPT / Claude" page
+        actions exist but are off by default, because they hand the reader's URL
+        to a third party.
     - question: What is the license, and where does Docsy stand?
       answer: >-
         Apache License 2.0. OINK is a fork of Docsy that evolved independently;

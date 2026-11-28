@@ -24,7 +24,7 @@ proposal_date: 2026-11-21
 
 ## Recommendation {#recommendation}
 
-Make the next theme release about one thing: **leaving LibSass without asking consumers to install Dart Sass**. Hugo v0.170.0 removed LibSass and the extended edition. When this roadmap was drafted, OINK was pinned to 0.169.0, the last release that can build published v1.5.1, and its contract forbade the only upstream replacement. [R0](#sass-exit) settles this on the theme's main branch: the stylesheet is plain CSS, nothing compiles it, and no Hugo release is pinned. Until a release carries that work, published OINK cannot adopt any later Hugo release.
+Make the next theme release about one thing: **leaving LibSass without asking consumers to install Dart Sass**. Hugo v0.170.0 removed LibSass and the extended edition. When this roadmap was drafted, OINK was pinned to 0.169.0, the last release that can build published v1.5.1, and its contract forbade the only upstream replacement. [R0](#sass-exit) shipped in OINK v1.6.0: the stylesheet is plain CSS, nothing compiles it, and no Hugo release is pinned.
 
 After that, close what is half-built: first the small reader and author gaps that other frameworks treat as baseline, then version lifecycle, then a static API reference. Keep one content-model project active at a time, as the [CLI roadmap](/docs/design/proposals/oink-cli-roadmap/#roadmap) already requires.
 
@@ -110,7 +110,7 @@ Hugo itself added relevant capabilities since v0.153.0: a site matrix of languag
 
 ### What already works {#existing-strengths}
 
-OINK has 29 shortcodes, 22 Landing sections, Book publication, Duo View, visual presets, static backlinks, and local search with mixed CJK and Latin terms. Its static agent outputs are more complete than most open-source frameworks in the survey. Community issues mostly ask for correctness and reading comfort, not for more component families. R1 therefore concentrates on those gaps.
+As of OINK v1.7.0, the theme has 30 shortcodes (29 when drafted), 22 Landing sections, Book publication, Duo View, visual presets, static backlinks, and local search with mixed CJK and Latin terms. Its static agent outputs are more complete than most open-source frameworks in the survey. Community issues mostly ask for correctness and reading comfort, not for more component families. R1 therefore concentrates on those gaps.
 
 ## Goals and non-goals {#goals-and-non-goals}
 

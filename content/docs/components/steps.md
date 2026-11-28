@@ -2,7 +2,7 @@
 title: Steps
 linkTitle: Steps
 description: Add `{.steps}` to an ordered list for a numbered procedure. Use the steps shortcode when each step needs a table-of-contents heading.
-weight: 70
+weight: 220
 search_keywords: [Steps, ordered list, procedure, tutorial, ol, start, TOC]
 ---
 
@@ -36,8 +36,8 @@ spaces.
 {.steps}
 
 Put `{.steps}` on the line right after the last item. With a blank line in
-between, it no longer attaches to the list and shows up on the page as text in
-braces.
+between, Goldmark drops it without a warning and the list renders as a plain
+numbered list.
 
 ## What goes in a step {#blocks}
 
@@ -209,9 +209,8 @@ Push to `main`; the workflow the repository ships builds and publishes.
 {{% /steps %}}
 
 `steps` is the theme's only shortcode written with percent delimiters. That
-form hands its body to Goldmark as page Markdown, which is what puts its
-headings in the table of contents and lets a step hold container shortcodes
-such as `tabs`, `cards` and `fields`. The cost is that it cannot sit inside a
+form hands its body to Goldmark as page Markdown, which lets each step carry
+headings that enter the TOC. The cost is that it cannot sit inside a
 list item or inside another percent container, another `steps` included. Give
 every step in one procedure the same heading level.
 
@@ -221,7 +220,6 @@ every step in one procedure the same heading level.
 | --- | --- |
 | A step is a sentence or two plus a command | ordered list + `{.steps}` |
 | Each step needs a heading, a link and a place in the TOC | `{{%/* steps */%}}` |
-| A step must contain a `tabs`, `cards` or `fields` container | `{{%/* steps */%}}` |
 | The procedure itself has to nest inside another list item | ordered list + `{.steps}` |
 
 ## Optional presentation {#presentation}
@@ -252,8 +250,8 @@ as written, and RSS shows a plain list or titled sections.
 ## Limits {#limits}
 
 - Do not put a `{{%/* … */%}}` shortcode inside a list item: its multiline
-  output ends the list early. To put a container in a step, write the whole
-  procedure with the shortcode form instead.
+  output ends the list early. To put a `{{%/* … */%}}` shortcode in a step, use
+  the shortcode form.
 - Formatters such as Prettier may separate `{.steps}` from its list. Wrap the
   list in `<!-- prettier-ignore-start -->` and `<!-- prettier-ignore-end -->`.
 - `{.steps}` works only on ordered lists; a `-` list gets no numbers.

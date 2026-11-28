@@ -2,7 +2,7 @@
 title: Mermaid
 linkTitle: Mermaid
 description: Use a `mermaid` fence for flowcharts, sequence diagrams, Gantt charts, class diagrams, and state diagrams. Bundled Mermaid follows the color scheme; source diffs show changes.
-weight: 110
+weight: 310
 search_keywords: [Mermaid, flowchart, sequence, gantt, classDiagram, erDiagram, stateDiagram, diagram]
 aliases:
   - /docs/components/diagrams/
@@ -378,8 +378,8 @@ Site parameters (`hugo.yml`):
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `params.mermaid` | map | unset | The whole map is passed to Mermaid's `initialize()`; write keys in lowercase and the theme matches them back to Mermaid's casing |
-| `params.mermaid.theme` | string | Mermaid's default | The light-mode theme; dark mode always uses `dark` |
+| `params.mermaid` | map | unset | The whole map is passed to Mermaid's `initialize()`; write keys in lowercase and the theme matches them back to Mermaid's casing; keys absent from Mermaid's default config are dropped silently |
+| `params.mermaid.theme` | string | `default` | The light-mode theme; dark mode always uses `dark`. Unless set, `layout: dagre` and `look: classic` are pinned as well |
 {.fields meta="type default"}
 
 Settings for one diagram (`title`, `config`) go in the YAML header at the

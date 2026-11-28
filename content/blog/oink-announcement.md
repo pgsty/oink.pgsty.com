@@ -108,13 +108,14 @@ manifest records pinned third-party sources, licenses, artifacts, and checksums.
 
 ## Try the starter
 
-> [!NOTE] Setup instructions updated on 2026-10-17
-> This article records the original implementation preview. Use Hugo Extended
-> 0.168.0 for setup and validation today; the baseline advances with stable
-> releases. Older-Hugo compatibility testing and adaptation are discontinued.
+> [!NOTE] Historical preview post
+> This article records OINK's original implementation preview. Current releases
+> build with Hugo `0.169.0` or newer in any edition (no Sass compiler needed)
+> and Go `1.27.4` for Hugo Modules; follow [Get started](/docs/start/) for
+> up-to-date setup instructions.
 
-Install Git, Go 1.27 or newer, and Hugo Extended `0.168.0`, then evaluate the
-[official Starter](/docs/start/starter/):
+Install Git, Go, and Hugo per [Get started](/docs/start/#tools), then evaluate the
+[official Starter](https://github.com/pgsty/oink-starter):
 
 ```sh
 git clone https://github.com/pgsty/oink-starter.git my-docs

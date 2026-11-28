@@ -32,6 +32,7 @@ try {
   const config = readFileSync(new URL('../hugo.yml', import.meta.url), 'utf8');
   const goMod = readFileSync(new URL('../go.mod', import.meta.url), 'utf8');
   const siteVersion = config.match(/^  version: (v\d+\.\d+\.\d+)$/m)?.[1];
+  const versionMenu = config.match(/^  version_menu: (v\d+\.\d+\.\d+)$/m)?.[1];
   const latestVersion = config.match(
     /^    latest: [^\r\n]*?\b(v\d+\.\d+\.\d+)\b[^\r\n]*$/m,
   )?.[1];
@@ -45,6 +46,13 @@ try {
     siteVersion,
     `tdVersion.latest ${latestVersion ?? '(missing)'} differs from ${siteVersion}`,
   );
+  if (versionMenu) {
+    assert.equal(
+      versionMenu,
+      siteVersion,
+      `version_menu ${versionMenu} differs from ${siteVersion}`,
+    );
+  }
   assert.equal(
     pinnedTheme,
     siteVersion,

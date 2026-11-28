@@ -2,7 +2,7 @@
 title: ECharts
 linkTitle: ECharts
 description: Draw bar, line and pie charts by writing ECharts options as YAML or JSON in an `echarts` fence, with colors that follow light and dark mode.
-weight: 150
+weight: 340
 search_keywords: [ECharts, chart, bar, line, pie, height, theme, OinkEchartsFunctions, OinkEchartsThemes, registerTheme]
 ---
 
@@ -423,7 +423,8 @@ The fence attribute line (```` ```echarts {…} ````):
 | `class` | space-separated classes | — | Passed through to the container for site CSS |
 {.fields meta="type default"}
 
-`style`, `on*` handlers and unknown attributes warn and are ignored. An empty
+Unknown attributes warn and are ignored; Hugo takes `style` as a highlighting
+option and strips `on*`, so both are ignored without a warning. An empty
 fence warns and renders nothing. The option keys themselves belong to ECharts
 and are listed in its [option manual](https://echarts.apache.org/en/option.html).
 ECharts has no site-level setting in `hugo.yml`.

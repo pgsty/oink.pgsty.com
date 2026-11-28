@@ -75,12 +75,12 @@ matter、文档与博客 section、菜单、taxonomy、打印输出、仓库链�
 
 ## 体验 starter {#try-the-starter}
 
-> [!NOTE] 使用说明更新于 2026-10-17
-> 本文记录最初的实现预览。当前搭建与验收统一使用 Hugo Extended 0.168.0，基线随
-> 稳定版更新，不再测试或适配旧 Hugo。
+> [!NOTE] 历史预览文章
+> 本文记录 OINK 最初的实现预览。当前版本已改用纯 CSS，使用任意 edition 的
+> Hugo `0.169.0` 及以上版本（无需 Sass 编译器）与 Go `1.27.4` 构建；最新搭建步骤见[快速上手](/zh/docs/start/)。
 
-安装 Git、Go 1.27 或更新版本，以及 Hugo Extended `0.168.0`，再评估
-[官方 Starter](/zh/docs/start/starter/)：
+按[快速上手](/zh/docs/start/#tools)安装 Git、Go 与 Hugo，再评估
+[官方 Starter](https://github.com/pgsty/oink-starter)：
 
 ```sh
 git clone https://github.com/pgsty/oink-starter.git my-docs
