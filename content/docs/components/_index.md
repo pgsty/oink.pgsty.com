@@ -88,8 +88,9 @@ A few entries in the *Runtime* column depend on what is on the page:
 - Draw.io loads only on pages with PNG or SVG images, and it downloads each
   distinct image once to look for an editable copy.
 - Video and audio share `media.js`, loaded on any page with a local audio or
-  video player (progress and single-active playback) or a card whose platform
-  is in `params.video_embeds`. A map loads Leaflet only when `params.map` is
+  video player (the theme's control row, with native controls left only
+  without JavaScript, and one audible player at a time) or a card whose
+  platform is in `params.video_embeds`. A map loads Leaflet only when `params.map` is
   enabled (`enable: true` with valid `tiles` and `attribution`); otherwise it
   stays a list of places.
 

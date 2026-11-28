@@ -38,11 +38,9 @@ duration appears without downloading the recording; from the seventh player
 onward, the default switches to `preload="none"` to avoid a burst of metadata
 requests on long sample pages. The count follows Hugo's render order: players
 written directly in the page come first, then players inside shortcode bodies
-such as tabs, social posts, includes and cards. You can override either default
-with `{preload="none"}` or `{preload="metadata"}`; set `{preload="metadata"}`
+such as tabs, includes and cards. You can override either default with
+`{preload="none"}` or `{preload="metadata"}`; set `{preload="metadata"}`
 explicitly on a player inside a shortcode that must show its duration.
-Chromium-based browsers also put
-a playback speed control in the player's menu.
 
 This file is an 8-second, 50 KB MP3 stored beside the page in its bundle. Like
 a block image, the player needs

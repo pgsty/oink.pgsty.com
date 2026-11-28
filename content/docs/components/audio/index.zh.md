@@ -1,8 +1,8 @@
 ---
 title: 音频
 linkTitle: 音频
-description: 用图片语法把播客单集、语音样例或讲座录音放进页面，渲染为带标题的原生播放器，文字稿紧随其后。
-weight: 440
+description: 用图片语法把播客单集、语音样例或讲座录音放进页面，渲染为带标题的播放器，文字稿紧随其后。
+weight: 340
 search_keywords: [音频, Audio, mp3, m4a, ogg, wav, flac, 播客, podcast, 语音样例, 文字稿, transcript, 播放器]
 ---
 
@@ -18,7 +18,7 @@ search_keywords: [音频, Audio, mp3, m4a, ogg, wav, flac, 播客, podcast, 语�
 
 录音没有画面，方括号文字承担了图片替代文字的职责：它既是可见的标题，也通过 `aria-labelledby` 作为播放器的无障碍名称。留空时构建会告警，并用文件名作为标题；方括号里的 Markdown 格式按纯文本显示，URL 后面的 Markdown `"title"` 会被忽略。不要把音频再包进外层 Markdown 链接（`[![…](episode.mp3)](…)`）：原生播放器内部已含回退链接，再套链接会生成非法的嵌套 `<a>`。
 
-页面上前 6 个音频播放器默认使用 `preload="metadata"`，不必下载整段录音就能显示时长；从第 7 个起默认切换为 `preload="none"`，避免多样例页面集中发起大量元数据请求。计数沿用 Hugo 的渲染顺序：先数直接写在页面里的播放器，再数标签页、帖子、include、卡片等 shortcode 正文里的播放器。也可以用 `{preload="none"}` 或 `{preload="metadata"}` 显式覆盖；shortcode 里的播放器如果必须显示时长，请显式写上 `{preload="metadata"}`。基于 Chromium 的浏览器还在播放器菜单里提供播放速度。
+页面上前 6 个音频播放器默认使用 `preload="metadata"`，不必下载整段录音就能显示时长；从第 7 个起默认切换为 `preload="none"`，避免多样例页面集中发起大量元数据请求。计数沿用 Hugo 的渲染顺序：先数直接写在页面里的播放器，再数标签页、include、卡片等 shortcode 正文里的播放器。也可以用 `{preload="none"}` 或 `{preload="metadata"}` 显式覆盖；shortcode 里的播放器如果必须显示时长，请显式写上 `{preload="metadata"}`。
 
 这个文件是与本页放在同一页面包里的 MP3，时长 10 秒，大小 63 KB。与块级图片一样，播放器需要 `markup.goldmark.parser.wrapStandAloneImageWithinParagraph: false`，这是[站点前置配置](/zh/docs/components/#prerequisites)之一。
 

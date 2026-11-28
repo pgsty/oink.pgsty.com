@@ -69,7 +69,7 @@ no_list: true
 - 图片与画廊共用一个缩放对话框，需要 `params.ui.image_zoom: true`，且页面上至少有一张可缩放的图片。
 - 公式在构建期已经渲染成 HTML 与 MathML，所以页面只加载 KaTeX 样式表与字体，不加载脚本。
 - Draw.io 只在含 PNG 或 SVG 图片的页面加载，每个不同的图片地址只下载一次，用来查找可编辑副本。
-- 视频与音频共用 `media.js`：页面上有本地音频或视频播放器（显示进度、同页互斥播放），或有平台列在 `params.video_embeds` 中的卡片时加载。地图只在 `params.map` 启用（`enable: true` 且 `tiles`、`attribution` 有效）时加载 Leaflet，否则就是一份地点列表。
+- 视频与音频共用 `media.js`：页面上有本地音频或视频播放器（绘制主题自己的控件栏，没有 JavaScript 时才保留原生控件；同页只让一个播放器发声），或有平台列在 `params.video_embeds` 中的卡片时加载。地图只在 `params.map` 启用（`enable: true` 且 `tiles`、`attribution` 有效）时加载 Leaflet，否则就是一份地点列表。
 
 打印、Markdown 与 RSS 输出里，任何组件都不加载脚本。这几种输出的形态与预期不同时，各组件页会单独说明。
 

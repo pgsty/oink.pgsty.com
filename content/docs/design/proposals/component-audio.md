@@ -1,7 +1,7 @@
 ---
 title: "Audio component"
 linkTitle: Audio component
-description: Audio through ordinary Markdown image syntax — a labeled native player for podcasts, voice samples, and recordings, with transcripts in a folded callout and shared single-active playback when multiple players appear on a page.
+description: Audio through ordinary Markdown image syntax — a titled player with the theme's control row for podcasts, voice samples, and recordings, with transcripts in a folded callout and shared single-active playback when multiple players appear on a page.
 weight: 28
 icon: fa-solid fa-headphones
 search_keywords: [audio, mp3, podcast, voice sample, transcript, player, component]

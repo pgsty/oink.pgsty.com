@@ -280,7 +280,7 @@ with typing or an overlay:
   `<input>` you type into, such as text, search, email, password or number.
   Non-text controls such as gallery layout radio buttons and the size slider
   keep the page shortcuts and their own arrow keys.
-- Focus is inside a map or a native audio or video player, which keeps its
+- Focus is inside a map or an audio or video player, which keeps its
   own keys.
 - An input method is composing, which matters on every Chinese, Japanese or
   Korean site.

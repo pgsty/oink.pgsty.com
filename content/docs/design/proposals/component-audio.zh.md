@@ -1,7 +1,7 @@
 ---
 title: "Audio 组件"
 linkTitle: Audio 组件
-description: 用普通 Markdown 图片语法嵌入音频：为播客、语音样本和录音提供带标题的原生播放器，文字稿放进折叠提示块，同页多播放器共享互斥播放运行时。
+description: 用普通 Markdown 图片语法嵌入音频：为播客、语音样本和录音提供带标题、使用主题控件栏的播放器，文字稿放进折叠提示块，同页多播放器共享互斥播放运行时。
 weight: 28
 icon: fa-solid fa-headphones
 search_keywords: [音频, audio, mp3, 播客, 语音样本, 文字稿, 播放器, 组件]
