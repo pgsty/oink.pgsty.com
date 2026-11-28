@@ -101,6 +101,7 @@ The tool updates module pins and runs build checks without editing content or co
 | leaf `example`, `book-figures kind=` | `eg`, explicit `book-*` index | `eg` |
 | percent-delimited fields | angle-delimited `fields` / `field` | `fieldsdelim` |
 | Docsy `_param` placeholders and `card header=` highlights | Font Awesome / `badge` / `param` or callout | `param_placeholders` |
+| legacy `social` shortcode | `> [!SOCIAL]` callout + attribute line | `social` |
 | unsupported legacy shortcodes | manual review with source position | `reportonly` |
 
 ## Configuration and front matter {#configuration-and-front-matter}

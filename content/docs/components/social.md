@@ -224,26 +224,6 @@ kept.
 | Static `avatar` that climbs above the site root with `..` | Warns (ID `social:avatar-static`); the avatar is dropped and the card draws the initial instead |
 | Unknown attributes | Warn; ignored. `class`, `data-*` and `aria-*` pass to the card |
 
-## Upgrading from the 1.7.0 shortcode {#migrate}
-
-OINK 1.7.0 shipped this card as a `social` shortcode. The shortcode is gone,
-and a page that still calls it fails to build with
-`template for shortcode "social" not found`. The migration toolkit in the
-[OINK repository](https://github.com/pgsty/oink) rewrites each call into the
-callout and writes out the X icon that the shortcode drew by default on a
-top-level card. Run it from a checkout of that repository:
-
-```bash
-python3 bin/migrations/oink06.py migrate --site <site> --only social
-python3 bin/migrations/oink06.py migrate --site <site> --only social --write
-```
-
-The first command is a dry run that prints the diff. `author` becomes the
-title text and `handle` its code span; `avatar`, `date`, `url` and `platform`
-become the attribute line; a nested `social` becomes a nested callout. Calls
-the toolkit cannot express, such as one with extra parameters, are listed with
-their file and line and left unchanged.
-
 ## Hugo's `x` shortcode {#hugo-x}
 
 Hugo ships its own `x` shortcode, `{{</* x user="…" id="…" */>}}`, and OINK

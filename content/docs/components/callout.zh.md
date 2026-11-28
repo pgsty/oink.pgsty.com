@@ -242,6 +242,7 @@ aliases:
 
 ## 相关 {#related}
 
+- [帖子](/zh/docs/components/social/) — 用 `> [!SOCIAL]` 提示块离线引用社交帖子
 - [步骤](/zh/docs/components/steps/) — 步骤中放置提示块
 - [标签页](/zh/docs/components/tabs/) — 同一提示按平台分开呈现
 - [编写页面](/zh/docs/write/pages/) — 提示块与正文的取舍

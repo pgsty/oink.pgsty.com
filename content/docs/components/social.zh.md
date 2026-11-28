@@ -172,17 +172,6 @@ image_zoom: true
 | 用 `..` 越出站点根目录的静态 `avatar` | 告警（ID 同为 `social:avatar-static`）；丢弃头像，卡片改画首字符 |
 | 未知属性 | 告警；忽略。`class`、`data-*` 与 `aria-*` 传给卡片 |
 
-## 从 1.7.0 的短代码升级 {#migrate}
-
-OINK 1.7.0 以 `social` 短代码的形式发布了这张卡片。短代码已经移除，仍在调用它的页面会构建失败，报错 `template for shortcode "social" not found`。[OINK 仓库](https://github.com/pgsty/oink)里的迁移工具会把每次调用改写成提示块，并把短代码在顶层卡片上默认画出的 X 图标显式写进属性。请在该仓库的检出目录中运行：
-
-```bash
-python3 bin/migrations/oink06.py migrate --site <site> --only social
-python3 bin/migrations/oink06.py migrate --site <site> --only social --write
-```
-
-第一条命令只做预演并打印差异。`author` 变成标题文字，`handle` 变成标题里的行内代码；`avatar`、`date`、`url` 和 `platform` 变成属性行；嵌套的 `social` 变成嵌套的提示块。工具无法表达的调用（例如带了额外参数的）会连同文件和行号列出来，原样保留。
-
 ## Hugo 的 `x` 短代码 {#hugo-x}
 
 Hugo 自带一个 `x` 短代码 `{{</* x user="…" id="…" */>}}`，OINK 不改动它。它在构建期向 X 的 oEmbed 服务请求帖子，所以干净构建需要联网，原帖一删，引用也跟着消失。需要离线构建、长期可读的引用时，请用 `[!SOCIAL]` 提示块。

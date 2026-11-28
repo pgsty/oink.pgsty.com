@@ -95,7 +95,7 @@ ID 用短横线连接的小写英文单词，在页面内唯一。
 
 | 组件 | 最短语法 | 页面 |
 | --- | --- | --- |
-| 提示块 | 块引用首行写 `> [!NOTE]` | [提示块](/zh/docs/components/callout/) |
+| 提示块 | 块引用首行写 `> [!NOTE]`；写 `> [!SOCIAL]` 则引用一条社交帖子 | [提示块](/zh/docs/components/callout/) · [帖子](/zh/docs/components/social/) |
 | 代码块 | 围栏信息行写 `{title="hugo.yml" copy=false}` | [代码块](/zh/docs/components/code/) |
 | 表格增强 | 表格后面跟一行 `{.matrix}` 或 `{caption="…"}` | [表格](/zh/docs/components/table/) |
 | 参数表 | 表格后面跟一行 `{.fields meta="type default"}` | [参数表](/zh/docs/components/fields/) |
@@ -110,7 +110,7 @@ ID 用短横线连接的小写英文单词，在页面内唯一。
 | 公式 | `math` 围栏，或用 `$$` 包住的块级公式 | [公式](/zh/docs/components/math/) |
 | 图片与媒体 | 独立成段的图片／视频／音频后面跟一行 `{caption="…"}` | [图片](/zh/docs/components/image/) · [视频](/zh/docs/components/video/) · [音频](/zh/docs/components/audio/) |
 
-少数 Markdown 表达不了的组件使用短代码：徽章、按键（裸 `<kbd>` 同样渲染为键帽）、引用文件、离线帖子（`social`）、终端录像，以及 Book 的图表式例系列，语法见[组件总览](/zh/docs/components/)。
+少数 Markdown 表达不了的组件使用短代码：徽章、按键（裸 `<kbd>` 同样渲染为键帽）、引用文件、终端录像，以及 Book 的图表式例系列，语法见[组件总览](/zh/docs/components/)。
 
 这些写法可以组合使用。下面在步骤里放了代码围栏和提示块：
 

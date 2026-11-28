@@ -111,6 +111,7 @@ params:
 | 叶子 `example`、`book-figures kind=` | `eg`、显式 `book-*` 索引 | `eg` |
 | 百分号分隔的 fields | 尖括号分隔的 `fields` / `field` | `fieldsdelim` |
 | Docsy `_param` 占位符与 `card header=` 高亮 | Font Awesome / `badge` / `param` 或提示块 | `param_placeholders` |
+| 旧版 `social` shortcode | `> [!SOCIAL]` 提示块 + 属性行 | `social` |
 | 不支持的旧 shortcode | 报告源码位置，人工检查 | `reportonly` |
 
 ## 配置与 front matter {#configuration-and-front-matter}

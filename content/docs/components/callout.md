@@ -280,6 +280,7 @@ Any other key, `style` included, is dropped with a build warning. Hugo strips
 
 ## Related {#related}
 
+- [Social](/docs/components/social/) — `> [!SOCIAL]` callouts for offline quoted social posts
 - [Steps](/docs/components/steps/) — callouts inside a procedure
 - [Tabs](/docs/components/tabs/) — the same note split per platform
 - [Writing pages](/docs/write/pages/) — when to use a callout and when to use prose

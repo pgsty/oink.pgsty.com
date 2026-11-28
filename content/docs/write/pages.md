@@ -132,7 +132,7 @@ source still reads well on GitHub or in any editor:
 
 | Component | Shortest syntax | Page |
 | --- | --- | --- |
-| Callouts | `> [!NOTE]` on the first line of a blockquote | [Callouts](/docs/components/callout/) |
+| Callouts | `> [!NOTE]` on the first line of a blockquote; `> [!SOCIAL]` quotes a social post | [Callouts](/docs/components/callout/) · [Social](/docs/components/social/) |
 | Code blocks | `{title="hugo.yml" copy=false}` on the fence info line | [Code Blocks](/docs/components/code/) |
 | Table extras | A table followed by `{.matrix}` or `{caption="…"}` | [Tables](/docs/components/table/) |
 | Field lists | A table followed by `{.fields meta="type default"}` | [Fields](/docs/components/fields/) |
@@ -149,8 +149,7 @@ source still reads well on GitHub or in any editor:
 
 The few components that need more than Markdown can express use shortcodes:
 badges, keyboard keys (bare `<kbd>` also renders as a keycap), file includes,
-offline social posts (`social`), terminal recordings, and the Book figure and
-table family. Their syntax is in [Components](/docs/components/).
+terminal recordings, and the Book figure and table family. Their syntax is in [Components](/docs/components/).
 
 The forms combine. Here a code fence and a callout sit inside steps:
 

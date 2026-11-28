@@ -171,9 +171,9 @@ test('social adapts geometry, contrast and nested surfaces across all four prese
   }
 });
 
-test('social switches cleanly to paper palette in dark-mode browser print across all four presets', async ({ page }) => {
+test('social switches cleanly to paper palette in dark-mode browser print across every preset', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
-  for (const preset of ['paper', 'slate', 'ink', 'terminal']) {
+  for (const preset of ['paper', 'slate', 'github', 'ink', 'news', 'terminal']) {
     await page.addInitScript(({ p }) => {
       localStorage.setItem('td-preset', p);
       localStorage.setItem('td-color-theme', 'dark');
